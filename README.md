@@ -22,6 +22,9 @@ To test the following component:
 Write the following test fixture:
 
 ```csharp
+using Egil.RazorComponents.Testing;
+using Xunit;
+
 public class SrOnlyTest : RazorComponentFixture
 {
     [Fact(DisplayName = "SrOnly does not render anything when ChildContent is null")]
