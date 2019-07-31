@@ -2,8 +2,6 @@
 Prototype testing library that renders Razor Components as HTML and compare the result to an 
 expected result, using the [XMLDiff](https://www.xmlunit.org/) library and [Shouldly](https://github.com/shouldly/shouldly) for writing out error messages.
 
-**NOTE: Only tested with Preview-6**
-
 ## Examples
 The following examples uses XUnit and Shouldly for testing. 
 
