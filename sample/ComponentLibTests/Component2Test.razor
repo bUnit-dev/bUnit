@@ -1,0 +1,34 @@
+﻿@using Microsoft.Extensions.DependencyInjection;
+
+@code {
+    ServiceCollection TestServices
+    {
+        get
+        {
+            var res = new ServiceCollection();
+            // Add mocked services etc. here, e.g.: res.AddSingleton(x => Mock.Of<IJSRuntime>()); 
+            return res;
+        }
+    }
+}
+
+<Fact DisplayName="Component renders without params 2" Services=TestServices>
+    <Setup>
+        <Component1 />
+    </Setup>
+    <ExpectedOutput>
+        <div class="my-component xxx">
+            This Blazor component is defined in the <strong>ComponentLib</strong> package.
+        </div>
+    </ExpectedOutput>
+</Fact>
+<Fact>
+    <Setup>
+        <Component1 />
+    </Setup>
+    <ExpectedOutput>
+        <div class="my-component">
+            This Blazor component is defined in the <strong>ComponentLib</strong> package.
+        </div>
+    </ExpectedOutput>
+</Fact>

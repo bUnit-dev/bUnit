@@ -4,6 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Components.Rendering;
+using Org.XmlUnit;
 using Org.XmlUnit.Builder;
 using Org.XmlUnit.Diff;
 using Shouldly;
@@ -23,7 +24,7 @@ namespace Egil.RazorComponents.Testing
             diffResult.HasDifferences().ShouldBeFalse(CreateValidationErrorMessage(expectedHtml, testHtml, diffResult));
         }
 
-        private static Diff CreateDiff(string expectedHtml, string testHtml)
+        public static Diff CreateDiff(string expectedHtml, string testHtml)
         {
             Diff? diffResult = null;
 
@@ -31,18 +32,28 @@ namespace Egil.RazorComponents.Testing
             {
                 var test = Input.FromString(WrapInTestRoot(testHtml)).Build();
                 var control = Input.FromString(WrapInTestRoot(expectedHtml)).Build();
-                diffResult = DiffBuilder.Compare(control)
-                    .IgnoreWhitespace()
-                    .WithTest(test)
-                    .WithDifferenceEvaluator(DifferenceEvaluators.Chain(
-                        DifferenceEvaluators.Default,
-                        RegexAttributeDifferenceEvaluator.Default,
-                        CssClassAttributeDifferenceEvaluator.Default)
-                    )
-                    .Build();
+                diffResult = CreateDiff(control, test);
             }, CreateParseErrorText(expectedHtml, testHtml));
 
             return diffResult!;
+        }
+
+        public static Diff CreateDiff(XmlNode control, XmlNode test)
+        {
+            return CreateDiff(Input.FromNode(control).Build(), Input.FromNode(test).Build());
+        }
+
+        public static Diff CreateDiff(ISource control, ISource test)
+        {
+            return DiffBuilder.Compare(control)
+                .IgnoreWhitespace()
+                .WithTest(test)
+                .WithDifferenceEvaluator(DifferenceEvaluators.Chain(
+                    DifferenceEvaluators.Default,
+                    RegexAttributeDifferenceEvaluator.Default,
+                    CssClassAttributeDifferenceEvaluator.Default)
+                )
+                .Build();
         }
 
         private static string CreateParseErrorText(string expectedHtml, string testHtml)

@@ -7,6 +7,7 @@ namespace Egil.RazorComponents.Testing
     internal class CssClassAttributeDifferenceEvaluator
     {
         private readonly static char[] Space = new char[] { ' ' };
+
         public ComparisonResult Evaluate(Comparison comparison, ComparisonResult outcome)
         {
             if (outcome == ComparisonResult.EQUAL) return outcome;
