@@ -1,73 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.ExceptionServices;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using System.Xml;
-using Egil.RazorComponents.Testing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
-using Shouldly;
-using Xunit;
 
 namespace ComponentLib
 {
-
-    public abstract class RazorComponentFixture<T>
+    public class RazorComponentFixture : IDisposable
     {
-        private static readonly IServiceCollection EmptyServiceCollection = new ServiceCollection();
+        private readonly IDispatcher _dispatcher = Renderer.CreateDefaultDispatcher();
+        private readonly Func<string, string> _encoder = (t) => HtmlEncoder.Default.Encode(t);
+        private ServiceProvider? _serviceProvider;
+        private HtmlRenderer? _htmlRenderer;
 
-        public static IEnumerable<object[]> GetTestComponentsResults
+        public bool HasRendered { get; private set; } = false;
+
+        public IReadOnlyList<TestRenderResult> RenderResults { get; private set; } = Array.Empty<TestRenderResult>();
+
+        public RazorComponentFixture()
         {
-            get
-            {
-                return Assembly.GetAssembly(typeof(T))?.GetTypes()
-                    .Where(x => typeof(ComponentBase).IsAssignableFrom(x) && x.Name.EndsWith("test", StringComparison.OrdinalIgnoreCase))
-                    .SelectMany((x, i) =>
-                    {
-                        RenderFragment fragment = builder =>
-                        {
-                            builder.OpenComponent(0, x);
-                            builder.CloseComponent();
-                        };
 
-                        var testResult1 = RenderFragmentAsText(fragment, EmptyServiceCollection);
-                        var testResult = $"<TestResults>{string.Concat(testResult1.Tokens)}</TestResults>";
-                        var xmlDoc = new XmlDocument();
-                        xmlDoc.LoadXml(testResult);
-                        return xmlDoc.SelectNodes("TestResults/TestResult").Cast<XmlNode>()
-                            .Select(node => new object[] { node.Attributes.GetNamedItem("DisplayName")?.Value ?? $"{x.Name}[{i + 1}]", node });
-                    })
-                    .ToArray() ?? Array.Empty<object[]>();
-            }
         }
 
-        [Theory]
-#pragma warning disable xUnit1019 // MemberData must reference a member providing a valid data type
-        [MemberData(nameof(GetTestComponentsResults))]
-#pragma warning restore xUnit1019 // MemberData must reference a member providing a valid data type
-        public virtual void TestComponent2(string name, XmlNode result)
+        public void Render(RenderFragment renderFragment, IServiceCollection services)
         {
-            var expectedOutputNode = result.SelectSingleNode("ExpectedOutput");
-            var actualOutputNode = result.SelectSingleNode("ActualOutput");
-            var diff = ShouldlyRazorComponentTestExtensions.CreateDiff(expectedOutputNode.InnerXml, actualOutputNode.InnerXml);
-            diff.Differences.ShouldBeEmpty();
+            if (HasRendered) return;
+
+            _serviceProvider = services.BuildServiceProvider();
+            _htmlRenderer = new HtmlRenderer(_serviceProvider, _encoder, _dispatcher);
+            var paramCollection = ParameterCollection.FromDictionary(
+                new Dictionary<string, object>() { { "ChildContent", renderFragment } }
+                );
+            RenderResults = GetTestResults(paramCollection);
+
+            HasRendered = true;
         }
 
-        private static ComponentRenderedText RenderFragmentAsText(RenderFragment renderFragment, IServiceCollection services)
+        public void Dispose()
         {
-            IDispatcher _dispatcher = Renderer.CreateDefaultDispatcher();
-            Func<string, string> _encoder = (t) => HtmlEncoder.Default.Encode(t);
+            _serviceProvider?.Dispose();
+            _htmlRenderer?.Dispose();
+        }
 
-            var paramCollection = ParameterCollection.FromDictionary(new Dictionary<string, object>() { { "ChildContent", renderFragment } });
-
-            using var htmlRenderer = new HtmlRenderer(services.BuildServiceProvider(), _encoder, _dispatcher);
-
-            return GetResult(_dispatcher.InvokeAsync(() => htmlRenderer.RenderComponentAsync<RenderFragmentWrapper>(paramCollection)));
+        private IReadOnlyList<TestRenderResult> GetTestResults(ParameterCollection parameterCollection)
+        {
+            var renderResult = GetResult(
+                _dispatcher.InvokeAsync(() => _htmlRenderer.RenderComponentAsync<RenderFragmentWrapper>(parameterCollection))
+                );
+            return ParseRawXml(string.Concat(renderResult.Tokens));
         }
 
         private static ComponentRenderedText GetResult(Task<ComponentRenderedText> task)
@@ -83,6 +67,29 @@ namespace ComponentLib
                 ExceptionDispatchInfo.Capture(task.Exception!).Throw();
                 throw new InvalidOperationException("We will never hit this line");
             }
+        }
+
+        private static IReadOnlyList<TestRenderResult> ParseRawXml(string renderResults)
+        {
+            const string renderResultsElement = "RenderResults";
+
+            var xml = new XmlDocument();
+            xml.LoadXml($"<{renderResultsElement}>{renderResults}</{renderResultsElement}>");
+
+            var result = new List<TestRenderResult>();
+            foreach (XmlNode node in xml.SelectNodes($"{renderResultsElement}/{Fact.RenderResultElement}"))
+            {
+                if (node is null) continue;
+
+                result.Add(new TestRenderResult(
+                    id: node.Attributes.GetNamedItem("Id")?.Value ?? string.Empty,
+                    displayName: node.Attributes.GetNamedItem("DisplayName")?.Value ?? string.Empty,
+                    actual: node.SelectSingleNode(Fact.RenderedHtmlElement),
+                    expected: node.SelectSingleNode(Fact.ExpectedHtmlElement)
+                    ));
+            }
+
+            return result.AsReadOnly();
         }
     }
 }

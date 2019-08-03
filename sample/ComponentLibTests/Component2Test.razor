@@ -1,31 +1,49 @@
-﻿@using Microsoft.Extensions.DependencyInjection;
+﻿@inherits RazorComponentTest
+@using Xunit
+@using Moq
+@using Shouldly
+@using Microsoft.Extensions.DependencyInjection
+@using Microsoft.JSInterop
 
-@code {
-    ServiceCollection TestServices
+@code{
+    // Override AddServices to provide services used when renderinger
+    protected override void AddServices(IServiceCollection services)
     {
-        get
-        {
-            var res = new ServiceCollection();
-            // Add mocked services etc. here, e.g.: res.AddSingleton(x => Mock.Of<IJSRuntime>()); 
-            return res;
-        }
+        services.AddScoped<IJSRuntime>(_ => Mock.Of<IJSRuntime>());
+    }
+
+    // Use @ref to get a reference to the tested element
+    Component1 sut1;
+
+    // Add more than the default input/output html test in @code sections
+
+    [Fact]
+    public void CanReadPropFromSut()
+    {
+        sut1.AccessibleProp.ShouldBeTrue();
     }
 }
-
-<Fact DisplayName="Component renders without params 2" Services=TestServices>
-    <Setup>
-        <Component1 />
-    </Setup>
+<Fact>
+    <Setup><Component1 @ref="@sut1" /></Setup>
     <ExpectedOutput>
-        <div class="my-component xxx">
+        <div class="my-component">
             This Blazor component is defined in the <strong>ComponentLib</strong> package.
         </div>
     </ExpectedOutput>
 </Fact>
+
+@code {
+    // Access rendered result of Fact elements in the RenderResults list.
+    [Fact]
+    public void AnotherTest()
+    {
+        var expectedText = "This Blazor component is defined in the ComponentLib package.";
+
+        RenderResults[1].RenderedHtml.InnerText.Trim().ShouldBe(expectedText);
+    }
+}
 <Fact>
-    <Setup>
-        <Component1 />
-    </Setup>
+    <Setup><Component1 /></Setup>
     <ExpectedOutput>
         <div class="my-component">
             This Blazor component is defined in the <strong>ComponentLib</strong> package.

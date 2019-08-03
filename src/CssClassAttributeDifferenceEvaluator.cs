@@ -4,7 +4,7 @@ using Org.XmlUnit.Diff;
 
 namespace Egil.RazorComponents.Testing
 {
-    internal class CssClassAttributeDifferenceEvaluator
+    public class CssClassAttributeDifferenceEvaluator
     {
         private readonly static char[] Space = new char[] { ' ' };
 
@@ -22,6 +22,6 @@ namespace Egil.RazorComponents.Testing
             else return outcome;
         }
 
-        internal static readonly DifferenceEvaluator Default = new CssClassAttributeDifferenceEvaluator().Evaluate;
+        public static readonly DifferenceEvaluator Default = new CssClassAttributeDifferenceEvaluator().Evaluate;
     }
 }

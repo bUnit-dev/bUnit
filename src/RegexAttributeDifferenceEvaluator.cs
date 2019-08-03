@@ -3,7 +3,7 @@ using Org.XmlUnit.Diff;
 
 namespace Egil.RazorComponents.Testing
 {
-    internal class RegexAttributeDifferenceEvaluator
+    public class RegexAttributeDifferenceEvaluator
     {
         public ComparisonResult Evaluate(Comparison comparison, ComparisonResult outcome)
         {
@@ -18,6 +18,6 @@ namespace Egil.RazorComponents.Testing
             else return outcome;
         }
 
-        internal static readonly DifferenceEvaluator Default = new RegexAttributeDifferenceEvaluator().Evaluate;
+        public static readonly DifferenceEvaluator Default = new RegexAttributeDifferenceEvaluator().Evaluate;
     }
 }

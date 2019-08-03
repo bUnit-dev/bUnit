@@ -16,13 +16,15 @@ namespace ComponentLib
 {
     public class Fact : ComponentBase
     {
-        private static readonly IServiceCollection EmptyServiceCollection = new ServiceCollection();
+        internal const string RenderResultElement = "RenderResult";
+        internal const string ExpectedHtmlElement = nameof(ExpectedOutput);
+        internal const string RenderedHtmlElement = "RenderedHtml";
+
+        [Parameter]
+        public string? Id { get; set; }
 
         [Parameter]
         public string? DisplayName { get; set; }
-
-        [Parameter]
-        public IServiceCollection? Services { get; set; }
 
         [Parameter]
         public RenderFragment? Setup { get; set; }
@@ -32,48 +34,23 @@ namespace ComponentLib
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            if (Setup is null) throw new ArgumentNullException(nameof(Setup));
-            var actualOutput = string.Concat(RenderFragmentAsText(Setup, Services ?? EmptyServiceCollection).Tokens).Trim();
+            builder.OpenElement(0, RenderResultElement);
 
-            builder.OpenElement(0, "TestResult");
-            builder.AddAttribute(1, "DisplayName", DisplayName);
+            if (!string.IsNullOrEmpty(Id))
+                builder.AddAttribute(1, nameof(Id), Id);
 
-            builder.OpenElement(10, "ExpectedOutput");
+            if (!string.IsNullOrEmpty(DisplayName))
+                builder.AddAttribute(2, nameof(DisplayName), DisplayName);
+
+            builder.OpenElement(10, ExpectedHtmlElement);
             builder.AddContent(11, ExpectedOutput);
             builder.CloseElement();
-            
-            builder.OpenElement(20, "ActualOutput");
-            builder.AddMarkupContent(21, actualOutput);
+
+            builder.OpenElement(20, RenderedHtmlElement);
+            builder.AddContent(21, Setup);
             builder.CloseElement();
 
             builder.CloseElement();
-        }
-
-        private static ComponentRenderedText RenderFragmentAsText(RenderFragment renderFragment, IServiceCollection services)
-        {
-            IDispatcher _dispatcher = Renderer.CreateDefaultDispatcher();
-            Func<string, string> _encoder = (t) => HtmlEncoder.Default.Encode(t);
-
-            var paramCollection = ParameterCollection.FromDictionary(new Dictionary<string, object>() { { "ChildContent", renderFragment } });
-
-            using var htmlRenderer = new HtmlRenderer(services.BuildServiceProvider(), _encoder, _dispatcher);
-
-            return GetResult(_dispatcher.InvokeAsync(() => htmlRenderer.RenderComponentAsync<RenderFragmentWrapper>(paramCollection)));
-        }
-
-        private static ComponentRenderedText GetResult(Task<ComponentRenderedText> task)
-        {
-            if (!task.IsCompleted) throw new InvalidOperationException("This should not happen!");
-
-            if (task.IsCompletedSuccessfully)
-            {
-                return task.Result;
-            }
-            else
-            {
-                ExceptionDispatchInfo.Capture(task.Exception!).Throw();
-                throw new InvalidOperationException("We will never hit this line");
-            }
         }
     }
 }
