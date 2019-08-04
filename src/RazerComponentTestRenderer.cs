@@ -8,49 +8,38 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ComponentLib
+namespace Egil.RazorComponents.Testing
 {
-    public class RazorComponentFixture : IDisposable
+    public class RazerComponentTestRenderer : IDisposable
     {
         private readonly IDispatcher _dispatcher = Renderer.CreateDefaultDispatcher();
         private readonly Func<string, string> _encoder = (t) => HtmlEncoder.Default.Encode(t);
-        private ServiceProvider? _serviceProvider;
-        private HtmlRenderer? _htmlRenderer;
 
         public bool HasRendered { get; private set; } = false;
 
         public IReadOnlyList<TestRenderResult> RenderResults { get; private set; } = Array.Empty<TestRenderResult>();
 
-        public RazorComponentFixture()
-        {
+        public RazerComponentTestRenderer() { }
 
-        }
+        public void Dispose() { }
 
         public void Render(RenderFragment renderFragment, IServiceCollection services)
         {
             if (HasRendered) return;
 
-            _serviceProvider = services.BuildServiceProvider();
-            _htmlRenderer = new HtmlRenderer(_serviceProvider, _encoder, _dispatcher);
-            var paramCollection = ParameterCollection.FromDictionary(
-                new Dictionary<string, object>() { { "ChildContent", renderFragment } }
-                );
-            RenderResults = GetTestResults(paramCollection);
+            var paramCollection = ParameterCollection.FromDictionary(new Dictionary<string, object>() { { "ChildContent", renderFragment } });
+
+            using var serviceProvider = services.BuildServiceProvider();
+            using var htmlRenderer = new HtmlRenderer(serviceProvider, _encoder, _dispatcher);
+            RenderResults = GetTestResults(htmlRenderer, paramCollection);
 
             HasRendered = true;
         }
 
-        public void Dispose()
+        private IReadOnlyList<TestRenderResult> GetTestResults(HtmlRenderer htmlRenderer, ParameterCollection parameterCollection)
         {
-            _serviceProvider?.Dispose();
-            _htmlRenderer?.Dispose();
-        }
-
-        private IReadOnlyList<TestRenderResult> GetTestResults(ParameterCollection parameterCollection)
-        {
-            var renderResult = GetResult(
-                _dispatcher.InvokeAsync(() => _htmlRenderer.RenderComponentAsync<RenderFragmentWrapper>(parameterCollection))
-                );
+            var renderTask = _dispatcher.InvokeAsync(() => htmlRenderer.RenderComponentAsync<RenderFragmentWrapper>(parameterCollection));
+            var renderResult = GetResult(renderTask);
             return ParseRawXml(string.Concat(renderResult.Tokens));
         }
 
@@ -77,7 +66,7 @@ namespace ComponentLib
             xml.LoadXml($"<{renderResultsElement}>{renderResults}</{renderResultsElement}>");
 
             var result = new List<TestRenderResult>();
-            foreach (XmlNode node in xml.SelectNodes($"{renderResultsElement}/{Fact.RenderResultElement}"))
+            foreach (XmlNode? node in xml.SelectNodes($"{renderResultsElement}/{Fact.RenderResultElement}"))
             {
                 if (node is null) continue;
 

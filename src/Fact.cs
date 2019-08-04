@@ -5,14 +5,13 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Egil.RazorComponents.Testing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-namespace ComponentLib
+namespace Egil.RazorComponents.Testing
 {
     public class Fact : ComponentBase
     {

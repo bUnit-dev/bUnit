@@ -8,9 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
 
-namespace ComponentLib
+namespace Egil.RazorComponents.Testing
 {
-    [Trait("Category", "Razor Component Tests")]
     public abstract class RazorComponentTest // : IClassFixture<RazorComponentFixture>
     {
         public IReadOnlyList<TestRenderResult> RenderResults { get; }
@@ -21,11 +20,11 @@ namespace ComponentLib
             // Doesnt currently work as there have to be a parameter less constructor
             // for razor file generator to work, and if there are multiple, xunit
             // picks the first without parameters...
-            using var fixture = new RazorComponentFixture();
+            using var renderer = new RazerComponentTestRenderer();
             var services = new ServiceCollection();
             AddServices(services);
-            fixture.Render(BuildRenderTree, services);
-            RenderResults = fixture.RenderResults;
+            renderer.Render(BuildRenderTree, services);
+            RenderResults = renderer.RenderResults;
         }
 
         protected virtual void AddServices(IServiceCollection services) { }

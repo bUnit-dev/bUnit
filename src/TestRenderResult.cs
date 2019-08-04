@@ -1,9 +1,8 @@
 ﻿using System.Xml;
-using Egil.RazorComponents.Testing;
 using Org.XmlUnit.Builder;
 using Org.XmlUnit.Diff;
 
-namespace ComponentLib
+namespace Egil.RazorComponents.Testing
 {
     public readonly struct TestRenderResult
     {

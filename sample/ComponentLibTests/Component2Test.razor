@@ -1,8 +1,4 @@
-﻿@inherits RazorComponentTest
-@using Xunit
-@using Moq
-@using Shouldly
-@using Microsoft.Extensions.DependencyInjection
+﻿@using Microsoft.Extensions.DependencyInjection
 @using Microsoft.JSInterop
 
 @code{
@@ -13,7 +9,7 @@
     }
 
     // Use @ref to get a reference to the tested element
-    Component1 sut1;
+    Component1? sut1;
 
     // Add more than the default input/output html test in @code sections
 
