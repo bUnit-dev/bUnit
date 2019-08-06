@@ -30,7 +30,7 @@ If you have an idea, suggestion, or bug, please add an [issue](issues). Pull-req
 ```
 
 ## Example
-The test examples below tests the Bootstrap [`Alert.razor`](sample/ComponentLib/Alert.razor) sample component, using the [`AlertTests.razor`](sample/RazorComponentLibTests/AlertTests.razor), both found in the sample folder.
+The test examples below tests the Bootstrap [`Alert.razor`](sample/ComponentLib/Alert.razor) sample component, using the [`AlertTests.razor`](sample/RazorComponentLibTests/AlertTests.razor) test component, both found under the sample folder.
 
 ### Component under test
 ```cshtml
