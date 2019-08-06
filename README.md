@@ -153,7 +153,7 @@ E.g.:
 </Fact>
 ```
 
-**NOTE:** In the future, the 'DisplayName' attribute will be displayed by the test-runner.
+**NOTE:** In the future, the value in the 'DisplayName' attribute will be displayed by the test-runner.
 
 ### Custom tests
 If you want more control over the assertion, use a `<HtmlSnippet/>` component instead of a
