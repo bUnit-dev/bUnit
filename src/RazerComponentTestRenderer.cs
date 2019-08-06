@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Egil.RazorComponents.Testing
@@ -25,9 +26,7 @@ namespace Egil.RazorComponents.Testing
 
         public void Render(RenderFragment renderFragment, IServiceCollection services)
         {
-            if (HasRendered) return;
-
-            var paramCollection = ParameterCollection.FromDictionary(new Dictionary<string, object>() { { "ChildContent", renderFragment } });
+            var paramCollection = ParameterCollection.FromDictionary(new Dictionary<string, object>() { { RenderTreeBuilder.ChildContent, renderFragment } });
 
             using var serviceProvider = services.BuildServiceProvider();
             using var htmlRenderer = new HtmlRenderer(serviceProvider, _encoder, _dispatcher);
@@ -66,15 +65,16 @@ namespace Egil.RazorComponents.Testing
             xml.LoadXml($"<{renderResultsElement}>{renderResults}</{renderResultsElement}>");
 
             var result = new List<TestRenderResult>();
-            foreach (XmlNode? node in xml.SelectNodes($"{renderResultsElement}/{Fact.RenderResultElement}"))
+            foreach (XmlNode? node in xml.SelectNodes($"{renderResultsElement}/{Fact.ElementName}"))
             {
                 if (node is null) continue;
 
                 result.Add(new TestRenderResult(
                     id: node.Attributes.GetNamedItem("Id")?.Value ?? string.Empty,
                     displayName: node.Attributes.GetNamedItem("DisplayName")?.Value ?? string.Empty,
-                    actual: node.SelectSingleNode(Fact.RenderedHtmlElement),
-                    expected: node.SelectSingleNode(Fact.ExpectedHtmlElement)
+                    actual: node.SelectSingleNode(TestSetup.ElementName),
+                    expected: node.SelectSingleNode(ExpectedHtml.ElementName),
+                    xmlSnippets: node.SelectNodes(HtmlSnippet.ElementName)
                     ));
             }
 

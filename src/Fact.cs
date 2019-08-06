@@ -1,23 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.ExceptionServices;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
 
 namespace Egil.RazorComponents.Testing
 {
     public class Fact : ComponentBase
     {
-        internal const string RenderResultElement = "RenderResult";
-        internal const string ExpectedHtmlElement = nameof(ExpectedOutput);
-        internal const string RenderedHtmlElement = "RenderedHtml";
+        internal const string ElementName = "RenderResult";
 
         [Parameter]
         public string? Id { get; set; }
@@ -26,14 +15,13 @@ namespace Egil.RazorComponents.Testing
         public string? DisplayName { get; set; }
 
         [Parameter]
-        public RenderFragment? Setup { get; set; }
-
-        [Parameter]
-        public RenderFragment? ExpectedOutput { get; set; }
+        public RenderFragment? ChildContent { get; set; }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            builder.OpenElement(0, RenderResultElement);
+            if(ChildContent is null) throw new ArgumentNullException(nameof(ChildContent));
+
+            builder.OpenElement(0, ElementName);
 
             if (!string.IsNullOrEmpty(Id))
                 builder.AddAttribute(1, nameof(Id), Id);
@@ -41,13 +29,76 @@ namespace Egil.RazorComponents.Testing
             if (!string.IsNullOrEmpty(DisplayName))
                 builder.AddAttribute(2, nameof(DisplayName), DisplayName);
 
-            builder.OpenElement(10, ExpectedHtmlElement);
-            builder.AddContent(11, ExpectedOutput);
-            builder.CloseElement();
+            builder.AddContent(11, ChildContent);
 
-            builder.OpenElement(20, RenderedHtmlElement);
-            builder.AddContent(21, Setup);
             builder.CloseElement();
+        }
+    }
+
+    public class TestSetup : ComponentBase
+    {
+        internal const string ElementName = "RenderedHtml";
+
+        [Parameter]
+        public RenderFragment? ChildContent { get; set; }
+
+        [Parameter]
+        public string? Id { get; set; }
+
+        protected override void BuildRenderTree(RenderTreeBuilder builder)
+        {
+            builder.OpenElement(0, ElementName);
+
+            if (!string.IsNullOrEmpty(Id))
+                builder.AddAttribute(1, nameof(Id), Id);
+
+            builder.AddContent(2, ChildContent);
+
+            builder.CloseElement();
+        }
+    }
+
+    public class ExpectedHtml : ComponentBase
+    {
+        internal const string ElementName = "ExpectedHtml";
+
+        [Parameter]
+        public RenderFragment? ChildContent { get; set; }
+
+        [Parameter]
+        public string? Id { get; set; }
+
+        protected override void BuildRenderTree(RenderTreeBuilder builder)
+        {
+            builder.OpenElement(0, ElementName);
+
+            if (!string.IsNullOrEmpty(Id))
+                builder.AddAttribute(1, nameof(Id), Id);
+
+            builder.AddContent(2, ChildContent);
+
+            builder.CloseElement();
+        }
+    }
+
+    public class HtmlSnippet : ComponentBase
+    {
+        internal const string ElementName = "Html";
+
+        [Parameter]
+        public RenderFragment? ChildContent { get; set; }
+
+        [Parameter]
+        public string? Id { get; set; }
+
+        protected override void BuildRenderTree(RenderTreeBuilder builder)
+        {
+            builder.OpenElement(0, ElementName);
+
+            if (!string.IsNullOrEmpty(Id))
+                builder.AddAttribute(1, nameof(Id), Id);
+
+            builder.AddContent(2, ChildContent);
 
             builder.CloseElement();
         }

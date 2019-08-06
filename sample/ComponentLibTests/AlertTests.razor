@@ -1,0 +1,126 @@
+﻿If a Fact components has an TestSetup and ExpectedHtml component,
+the result of rendering the two will be compared using the default
+unit test, and if there is a difference, the test will fail.
+
+<Fact DisplayName="Alert renders as empty without child content">
+    <TestSetup>
+        <Alert />
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="alert fade show" role="alert"></div>
+    </ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="Alert renders with child content if provided">
+    <TestSetup>
+        <Alert>FOO BAR BAZ</Alert>
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="alert fade show" role="alert">FOO BAR BAZ</div>
+    </ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="Alert adds color when specified">
+    <TestSetup>
+        <Alert Color="primary" />
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="alert fade show alert-primary" role="alert"></div>
+    </ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="Providing a role overrides default role value">
+    <TestSetup>
+        <Alert Role="banner" />
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="alert fade show" role="banner"></div>
+    </ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="Setting Dismisasable to true renderes dismiss button below child content">
+    <TestSetup>
+        <Alert Dismissable>
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        </Alert>
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="alert fade show alert-dismissible" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <button type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&amp;times;</span>
+            </button>
+        </div>
+    </ExpectedHtml>
+</Fact>
+
+If you want more control over the assertion, use a HtmlSnippet component instead of a
+ExpectedHtml component. Then the default unit test will not run, and you can add your
+own, where you can access the RenderResults and do any comparison of the HTML (XML)
+you want.
+
+@code {
+    [Fact]
+    public void A_Custom_Test()
+    {
+        // assert
+        var result = RenderResults.Single(x => x.Id == (nameof(A_Custom_Test)));
+        result.RenderedHtml.ShouldBe(result.Snippets.First());
+    }
+}
+<Fact Id=@nameof(A_Custom_Test)>
+    <TestSetup>
+        <Alert Role="banner" Color="secondary" class="my-custom-class" Dismissable>
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        </Alert>
+    </TestSetup>
+    <HtmlSnippet>
+        <div class="alert fade show alert-secondary alert-dismissible my-custom-class" role="banner">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <button type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&amp;times;</span>
+            </button>
+        </div>
+    </HtmlSnippet>
+</Fact>
+
+If you want to assert directly on the rendered component or change its parameters
+and re-render, use the component reference syntax and the Render method.
+
+@code {
+    Alert sut;
+    bool isVisible = true;
+
+    [Fact(DisplayName = "When Visible is toggled to false, all child content is removed from alert")]
+    public async Task DismissTest()
+    {
+        // initial assert
+        var result = RenderResults.Single(x => x.Id == (nameof(DismissTest)));
+        result.RenderedHtml.ShouldBe(result.Snippets[0]);
+        sut.Visible.ShouldBeTrue();
+
+        // act
+        isVisible = false;
+        this.Render();
+
+        // dismiss assert
+        var dismissResult = RenderResults.Single(x => x.Id == (nameof(DismissTest)));
+        dismissResult.RenderedHtml.ShouldBe(result.Snippets[1]);
+        sut.Visible.ShouldBeFalse();
+    }
+}
+<Fact Id=@nameof(DismissTest)>
+    <TestSetup>
+        <Alert @ref="sut" Visible=@isVisible>
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        </Alert>
+    </TestSetup>
+    <HtmlSnippet>
+        <div class="alert fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        </div>
+    </HtmlSnippet>
+    <HtmlSnippet>
+        <div class="alert fade" role="alert"></div>
+    </HtmlSnippet>
+</Fact>

@@ -10,9 +10,11 @@ using Xunit;
 
 namespace Egil.RazorComponents.Testing
 {
-    public abstract class RazorComponentTest // : IClassFixture<RazorComponentFixture>
+    public abstract class RazorComponentTest : IDisposable // : IClassFixture<RazorComponentFixture>
     {
-        public IReadOnlyList<TestRenderResult> RenderResults { get; }
+        private RazerComponentTestRenderer _renderer;
+
+        public IReadOnlyList<TestRenderResult> RenderResults { get; private set; }
 
         public RazorComponentTest()
         {
@@ -20,71 +22,35 @@ namespace Egil.RazorComponents.Testing
             // Doesnt currently work as there have to be a parameter less constructor
             // for razor file generator to work, and if there are multiple, xunit
             // picks the first without parameters...
-            using var renderer = new RazerComponentTestRenderer();
+            _renderer = new RazerComponentTestRenderer();
+            Render();
+        }
+
+        public void Render()
+        {
             var services = new ServiceCollection();
             AddServices(services);
-            renderer.Render(BuildRenderTree, services);
-            RenderResults = renderer.RenderResults;
+            _renderer.Render(BuildRenderTree, services);
+            RenderResults = _renderer.RenderResults;
+        }
+
+        public void Dispose()
+        {
+            _renderer.Dispose();
+        }
+
+        [Fact(DisplayName = "Rendered HTML should be the same as expected HTML")]
+        public virtual void DefaultTest_RenderedHtml_Should_Be_ExpctedHtml()
+        {
+            foreach (var result in RenderResults)
+            {
+                if (result.ExpectedHtml is null) continue;
+                result.RenderedHtml.ShouldBe(result.ExpectedHtml);
+            }
         }
 
         protected virtual void AddServices(IServiceCollection services) { }
 
         protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
-
-        [Fact(DisplayName = "Rendered HTML should be the same as expected HTML")]
-        public virtual void ExecuteTest()
-        {
-            foreach (var result in RenderResults)
-            {
-                AssertRenderHtmlIsExpected(result);
-            }
-        }
-
-        protected static void AssertRenderHtmlIsExpected(TestRenderResult result)
-        {
-            var diff = result.CreateRenderDiff();
-            diff.HasDifferences().ShouldBeFalse(() => CreateValidationErrorMessage(result, diff));
-        }
-
-        private static string CreateValidationErrorMessage(TestRenderResult result, Org.XmlUnit.Diff.Diff diffResult)
-        {
-            const string Tab = "\t";
-            return $"should be" +
-                            $"{Environment.NewLine}{Environment.NewLine}{PrettyXml(result.ExpectedHtml?.FirstChild)}" +
-                            $"{Environment.NewLine}{Environment.NewLine}{Tab}but was" +
-                            $"{Environment.NewLine}{Environment.NewLine}{PrettyXml(result.RenderedHtml.FirstChild)}" +
-                            $"{Environment.NewLine}{Environment.NewLine}{Tab}with the following differences:" +
-                            $"{Environment.NewLine}{CreateDiffMessage(diffResult)}" +
-                            $"{Environment.NewLine}";
-        }
-
-        private static string CreateDiffMessage(Org.XmlUnit.Diff.Diff diffResult)
-        {
-            return diffResult.Differences
-                            .Select(diff => $"- {diff.ToString()}")
-                            .Aggregate(string.Empty, (acc, diff) => $"{acc}{Environment.NewLine}{diff}");
-        }
-
-        private static string PrettyXml(XmlNode? xml)
-        {
-            if (xml is null) return string.Empty;
-
-            var stringBuilder = new StringBuilder();
-            var settings = new XmlWriterSettings
-            {
-                OmitXmlDeclaration = true,
-                Indent = true,
-                NewLineOnAttributes = false,
-                ConformanceLevel = ConformanceLevel.Fragment,
-                IndentChars = "  ",
-            };
-
-            using (var xmlWriter = XmlWriter.Create(stringBuilder, settings))
-            {
-                xml.WriteTo(xmlWriter);
-            }
-
-            return stringBuilder.ToString();
-        }
     }
 }
