@@ -12,7 +12,7 @@ This is still early days for the library and nothing is set in stone with regard
 If you have an idea, suggestion, or bug, please add an [issue](issues). Pull-requests are also very welcome.
 
 ## Getting started
-1. Install the [Razor.Components.Testing.Library](https://www.nuget.org/packages/Razor.Components.Testing.Library) library from Nuget into your xUnit test project (https://www.nuget.org/packages/Razor.Components.Testing.Library).
+1. Install the [Razor.Components.Testing.Library](https://www.nuget.org/packages/Razor.Components.Testing.Library) library from Nuget into your xUnit test project.
 2. Optionally, add an `_Imports.razor` to test project to avoid typing using and inherits statements in each test files.
 3. Write `.razor`-based tests.
 
@@ -29,7 +29,6 @@ If you have an idea, suggestion, or bug, please add an [issue](issues). Pull-req
 ```
 
 ## Example
-The test example below uses the `[Alert](sample/ComponentLib/Alert.razor)` sample component in the sample folder:
+The test examples below tests the Bootstrap [`Alert`](sample/ComponentLib/Alert.razor) sample component found in the sample folder:
 
-https://github.com/egil/razor-component-testing-library/blob/2ad622c9ad0aa21a4454d8d4b681944c3c2e3f0a/sample/ComponentLib/Alert.razor
-
+https://github.com/egil/razor-component-testing-library/blob/7b018f1bdd358d786df003a83ac6721be211385e/sample/ComponentLib/Alert.razor#L1
