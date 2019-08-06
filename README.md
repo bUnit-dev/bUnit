@@ -16,7 +16,7 @@ If you have an idea, suggestion, or bug, please add an [issue](issues) or ping m
 ## Getting started
 1. Create the necessary projects (Razor Class Library and xUnit class Library). See the [sample project](master/sample) for an example.
 1. Install the [Razor.Components.Testing.Library](https://www.nuget.org/packages/Razor.Components.Testing.Library) library from Nuget into your xUnit test project.
-2. Optionally, add an `_Imports.razor` to test project to avoid typing using and inherits statements in each test files.
+2. Optionally, add an `_Imports.razor` to test project to avoid typing using and inherits statements in each test file.
 3. Write `.razor`-based tests.
 
 ### Example \_Imports.razor
@@ -34,7 +34,7 @@ If you have an idea, suggestion, or bug, please add an [issue](issues) or ping m
 ## Example
 The test examples below tests the Bootstrap [`Alert.razor`](sample/ComponentLib/Alert.razor) sample component, using the [`AlertTests.razor`](sample/RazorComponentLibTests/AlertTests.razor) test component, both found under the sample folder.
 
-### Component under test
+### Component under test - Alert.razor
 ```cshtml
 @code {
     [Parameter]
