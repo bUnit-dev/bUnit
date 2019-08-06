@@ -11,6 +11,8 @@ The library is currently tied to [xUnit](https://xunit.net/), but it is on the T
 This is still early days for the library and nothing is set in stone with regards to syntax and functionality.
 If you have an idea, suggestion, or bug, please add an [issue](issues). Pull-requests are also very welcome.
 
+[![Gitter](https://badges.gitter.im/razor-components-testing-library/community.svg)](https://gitter.im/razor-components-testing-library/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 ## Getting started
 1. Create the necessary projects (Razor Class Library and xUnit class Library). See the [sample project](master/sample) for an example.
 1. Install the [Razor.Components.Testing.Library](https://www.nuget.org/packages/Razor.Components.Testing.Library) library from Nuget into your xUnit test project.
