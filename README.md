@@ -186,9 +186,7 @@ you want.
 </Fact>
 ```
 
-If you want to assert directly on the rendered component or change its parameters
-and re-render, use the component reference syntax (`@ref`). The `Render` method allows
-you to trigger a re-render manually, on-demand.
+If you want to assert directly on the rendered component or change its parameters, use the component reference syntax (`@ref`). The `Render` method allows you to trigger a synchronous re-render manually as needed.
 
 ```cshtml
 @code {
