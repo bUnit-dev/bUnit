@@ -92,7 +92,7 @@ and re-render, use the component reference syntax and the Render method.
     bool isVisible = true;
 
     [Fact(DisplayName = "When Visible is toggled to false, all child content is removed from alert")]
-    public async Task DismissTest()
+    public void DismissTest()
     {
         // initial assert
         var result = RenderResults.Single(x => x.Id == (nameof(DismissTest)));
@@ -124,3 +124,13 @@ and re-render, use the component reference syntax and the Render method.
         <div class="alert fade" role="alert"></div>
     </HtmlSnippet>
 </Fact>
+
+If the component under test needs access to services, those can be injected by
+overriding the AddServices method. E.g.:
+
+@code {
+    protected override void AddServices(IServiceCollection services)
+    {
+        services.AddScoped<IJSRuntime>(_ => Mock.Of<IJSRuntime>());
+    }
+}

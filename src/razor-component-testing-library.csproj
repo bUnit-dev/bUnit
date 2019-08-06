@@ -1,28 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <RootNamespace>Egil.RazorComponents.Testing</RootNamespace>
     <LangVersion>8.0</LangVersion>
+    <RazorLangVersion>3.0</RazorLangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <PackageId>Razor.Components.Testing.Library</PackageId>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/egil/razor-component-testing-library</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/egil/razor-component-testing-library</PackageProjectUrl>
+    <PackageTags>razor-components unit-testing testing blazor blazor-server-side blazor-client-side</PackageTags>
+    <Version>0.1.0-preview7-19365-7-1</Version>
+    <Authors>Egil Hansen</Authors>
+    <Company>Egil Hansen</Company>
+    <Product>Razor Component Testing Library</Product>
+    <Description>Testing library for Razor Components, that allows you to define your component under test and the expected output HTML in a .razor files.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Browser" Version="3.0.0-preview7.19365.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.0.0-preview7.19365.7" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-    <PackageReference Include="Moq" Version="4.12.0" />
     <PackageReference Include="Shouldly" Version="3.0.2" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.6.0-preview7.19362.9" />
     <PackageReference Include="XMLUnit.Core" Version="2.7.1" />
     <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Test.razor">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

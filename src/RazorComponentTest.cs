@@ -12,7 +12,7 @@ namespace Egil.RazorComponents.Testing
 {
     public abstract class RazorComponentTest : IDisposable // : IClassFixture<RazorComponentFixture>
     {
-        private RazerComponentTestRenderer _renderer;
+        private readonly RazerComponentTestRenderer _renderer;
 
         public IReadOnlyList<TestRenderResult> RenderResults { get; private set; }
 

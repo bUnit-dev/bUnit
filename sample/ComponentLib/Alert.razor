@@ -1,4 +1,7 @@
 ﻿@code {
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; }
+
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
@@ -13,17 +16,22 @@
 
     [Parameter]
     public string Role { get; set; } = "alert";
-        
+
     [Parameter]
     public bool Visible { get; set; } = true;
+
+    public void Dismiss()
+    {
+        // Do something with JsRuntime
+    }
 
     private string CssClass
     {
         get
         {
             var cssClass = "alert fade";
-            
-            if(Visible)
+
+            if (Visible)
                 cssClass = $"{cssClass} show";
 
             if (Color != null)
