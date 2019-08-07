@@ -97,7 +97,7 @@ and re-render, use the component reference syntax and the Render method.
         // initial assert
         var result = RenderResults.Single(x => x.Id == (nameof(DismissTest)));
         result.RenderedHtml.ShouldBe(result.Snippets[0]);
-        sut.Visible.ShouldBeTrue();
+        Assert.Equal(true, sut.Visible);
 
         // act
         isVisible = false;
@@ -106,7 +106,7 @@ and re-render, use the component reference syntax and the Render method.
         // dismiss assert
         var dismissResult = RenderResults.Single(x => x.Id == (nameof(DismissTest)));
         dismissResult.RenderedHtml.ShouldBe(result.Snippets[1]);
-        sut.Visible.ShouldBeFalse();
+        Assert.Equal(false, sut.Visible);
     }
 }
 <Fact Id=@nameof(DismissTest)>

@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.89
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5D7B605-02D8-468C-9BDF-864CF93B12F9}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E006E9A4-F554-46DF-838F-812956521F64}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C929375E-BD70-4B78-88C1-BDD1623C3365}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.RazorComponents.Testing.Library", "src\Egil.RazorComponents.Testing.Library.csproj", "{AA96790B-67C9-4141-ACDB-037C8DC092EC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.RazorComponents.Testing.Library.Tests", "tests\Egil.RazorComponents.Testing.Library.Tests\Egil.RazorComponents.Testing.Library.Tests.csproj", "{1FA13D3B-9AD6-4253-A373-BEFE6B5B70A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA96790B-67C9-4141-ACDB-037C8DC092EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA96790B-67C9-4141-ACDB-037C8DC092EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA96790B-67C9-4141-ACDB-037C8DC092EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA96790B-67C9-4141-ACDB-037C8DC092EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FA13D3B-9AD6-4253-A373-BEFE6B5B70A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FA13D3B-9AD6-4253-A373-BEFE6B5B70A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FA13D3B-9AD6-4253-A373-BEFE6B5B70A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FA13D3B-9AD6-4253-A373-BEFE6B5B70A9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AA96790B-67C9-4141-ACDB-037C8DC092EC} = {E006E9A4-F554-46DF-838F-812956521F64}
+		{1FA13D3B-9AD6-4253-A373-BEFE6B5B70A9} = {C929375E-BD70-4B78-88C1-BDD1623C3365}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {24106918-1C86-4769-BDA6-9C80E64CD260}
+	EndGlobalSection
+EndGlobal

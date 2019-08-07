@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
-using Shouldly;
 using Xunit;
 
 namespace Egil.RazorComponents.Testing
@@ -24,6 +20,7 @@ namespace Egil.RazorComponents.Testing
             // picks the first without parameters...
             _renderer = new RazerComponentTestRenderer();
             Render();
+            RenderResults = _renderer.RenderResults;
         }
 
         public void Render()
@@ -45,6 +42,7 @@ namespace Egil.RazorComponents.Testing
             foreach (var result in RenderResults)
             {
                 if (result.ExpectedHtml is null) continue;
+
                 result.RenderedHtml.ShouldBe(result.ExpectedHtml);
             }
         }
