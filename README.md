@@ -1,8 +1,7 @@
 # Razor Components Testing Library
 Testing library for Razor Components, that allows you to easily define your component under test and the expected output HTML
 in a `.razor` file. It will automatically compare the input with the expected output using the 
-[XMLDiff](https://www.xmlunit.org/) library and pretty print error messages using the 
-[Shouldly](https://github.com/shouldly/shouldly) library.
+[XMLDiff](https://www.xmlunit.org/) library and pretty print error messages.
 
 The library is currently tied to [xUnit](https://xunit.net/), but it is on the TODO list to make it compatible with all
 .NET Core testing libraries.
@@ -27,7 +26,6 @@ If you have an idea, suggestion, or bug, please add an [issue](issues) or ping m
 @using Microsoft.JSInterop
 @using Xunit
 @using Moq
-@using Shouldly
 @using Egil.RazorComponents.Testing
 ```
 
@@ -201,7 +199,7 @@ If you want to assert directly on the rendered component or change its parameter
         // initial assert
         var result = RenderResults.Single(x => x.Id == (nameof(DismissTest)));
         result.RenderedHtml.ShouldBe(result.Snippets[0]);
-        sut.Visible.ShouldBeTrue();
+        Assert.Equal(true, sut.Visible);
 
         // act
         isVisible = false;
@@ -210,7 +208,7 @@ If you want to assert directly on the rendered component or change its parameter
         // dismiss assert
         var dismissResult = RenderResults.Single(x => x.Id == (nameof(DismissTest)));
         dismissResult.RenderedHtml.ShouldBe(result.Snippets[1]);
-        sut.Visible.ShouldBeFalse();
+        Assert.Equal(false, sut.Visible);
     }
 }
 <Fact Id=@nameof(DismissTest)>
