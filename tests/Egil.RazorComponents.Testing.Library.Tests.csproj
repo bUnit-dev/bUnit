@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Egil.RazorComponents.Testing.Library.csproj" />
+    <ProjectReference Include="..\src\Egil.RazorComponents.Testing.Library.csproj" />
   </ItemGroup>
 
 </Project>
