@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/egil/razor-components-testing-library</RepositoryUrl>
     <PackageProjectUrl>https://github.com/egil/razor-components-testing-library</PackageProjectUrl>
     <PackageTags>razor-components unit-testing testing blazor blazor-server-side blazor-client-side</PackageTags>
-    <Version>0.1.0-preview7-19365-7-4</Version>
+    <Version>0.1.0-preview7-19365-7-5</Version>
     <Authors>Egil Hansen</Authors>
     <Company>Egil Hansen</Company>
     <Product>Razor Component Testing Library</Product>
