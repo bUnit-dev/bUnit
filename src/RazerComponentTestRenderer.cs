@@ -13,6 +13,8 @@ namespace Egil.RazorComponents.Testing
 {
     public class RazerComponentTestRenderer : IDisposable
     {
+        private const string RenderResultsElement = "RenderResults";
+
         private readonly IDispatcher _dispatcher = Renderer.CreateDefaultDispatcher();
         private readonly Func<string, string> _encoder = (t) => HtmlEncoder.Default.Encode(t);
 
@@ -39,7 +41,7 @@ namespace Egil.RazorComponents.Testing
         {
             var renderTask = _dispatcher.InvokeAsync(() => htmlRenderer.RenderComponentAsync<RenderFragmentWrapper>(parameterCollection));
             var renderResult = GetResult(renderTask);
-            return ParseRawXml(string.Concat(renderResult.Tokens));
+            return ProcessRenderResult(string.Concat(renderResult.Tokens));
         }
 
         private static ComponentRenderedText GetResult(Task<ComponentRenderedText> task)
@@ -57,15 +59,12 @@ namespace Egil.RazorComponents.Testing
             }
         }
 
-        private static IReadOnlyList<TestRenderResult> ParseRawXml(string renderResults)
+        private static IReadOnlyList<TestRenderResult> ProcessRenderResult(string renderResults)
         {
-            const string renderResultsElement = "RenderResults";
-
-            var xml = new XmlDocument();
-            xml.LoadXml($"<{renderResultsElement}>{renderResults}</{renderResultsElement}>");
+            var xml = LoadRenderResult(renderResults);
 
             var result = new List<TestRenderResult>();
-            foreach (XmlNode? node in xml.SelectNodes($"{renderResultsElement}/{Fact.ElementName}"))
+            foreach (XmlNode? node in xml.SelectNodes($"{RenderResultsElement}/{Fact.ElementName}"))
             {
                 if (node is null) continue;
 
@@ -79,6 +78,22 @@ namespace Egil.RazorComponents.Testing
             }
 
             return result.AsReadOnly();
+        }
+
+        private static XmlDocument LoadRenderResult(string renderResults)
+        {
+            var renderResultXml = $"<{RenderResultsElement}>{renderResults}</{RenderResultsElement}>";
+            var xml = new XmlDocument();
+            try
+            {
+                xml.LoadXml(renderResultXml);
+                return xml;
+            }
+            catch (XmlException ex)
+            {
+                throw new RazorComponentRenderResultParseException($"An error occurred while trying to parse the " +
+                    $"render result of the test. Result XML: {Environment.NewLine}{renderResultXml}", ex);
+            }
         }
     }
 }
