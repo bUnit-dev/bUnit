@@ -91,8 +91,10 @@ namespace Egil.RazorComponents.Testing
             }
             catch (XmlException ex)
             {
-                throw new RazorComponentRenderResultParseException($"An error occurred while trying to parse the " +
-                    $"render result of the test. Result XML: {Environment.NewLine}{renderResultXml}", ex);
+                throw new RazorComponentRenderResultParseException($"An error occurred while trying to parse the render result of the test. {Environment.NewLine}" +
+                    $"{ex.Message}{Environment.NewLine} " +
+                    $"Result XML: {Environment.NewLine}" +
+                    $"{renderResultXml}", ex);
             }
         }
     }
