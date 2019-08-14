@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Org.XmlUnit.Diff;
 
@@ -14,13 +15,18 @@ namespace Egil.RazorComponents.Testing
             if (comparison.Type != ComparisonType.ATTR_VALUE) return outcome;
             if (!comparison.TestDetails.Target.Name.Equals("class", StringComparison.OrdinalIgnoreCase)) return outcome;
 
-            // BANG: Value should not be null on ControlDetails and TestDetails.
-            var expected = comparison.ControlDetails.Value.ToString()!.Split(Space, StringSplitOptions.RemoveEmptyEntries).ToHashSet();
-            var actual = comparison.TestDetails.Value.ToString()!.Split(Space, StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+            // BANG: Value should not be null on ControlDetails and TestDetails.            
+            var expected = comparison.ControlDetails.Value.ToString()!.Split(Space, StringSplitOptions.RemoveEmptyEntries);
+            var actual = comparison.TestDetails.Value.ToString()!.Split(Space, StringSplitOptions.RemoveEmptyEntries);
 
-            if (expected.SetEquals(actual))
-                return ComparisonResult.EQUAL;
+            if (SetEqual(expected, actual)) return ComparisonResult.EQUAL;
             else return outcome;
+        }
+
+        private static bool SetEqual(string[] expected, string[] actual)
+        {
+            if (expected.Length != actual.Length) return false;
+            return new HashSet<string>(expected).SetEquals(new HashSet<string>(actual));
         }
 
         public static readonly DifferenceEvaluator Default = new CssClassAttributeDifferenceEvaluator().Evaluate;

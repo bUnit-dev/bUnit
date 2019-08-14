@@ -46,7 +46,7 @@ namespace Egil.RazorComponents.Testing
         {
             if (!task.IsCompleted) throw new InvalidOperationException("This should not happen!");
 
-            if (task.IsCompletedSuccessfully)
+            if (task.Status == TaskStatus.RanToCompletion)
             {
                 return task.Result;
             }
