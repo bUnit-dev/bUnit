@@ -35,6 +35,9 @@ The test examples below tests the Bootstrap [`Alert.razor`](sample/ComponentLib/
 ### Component under test - Alert.razor
 ```cshtml
 @code {
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; }
+
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
@@ -49,17 +52,22 @@ The test examples below tests the Bootstrap [`Alert.razor`](sample/ComponentLib/
 
     [Parameter]
     public string Role { get; set; } = "alert";
-        
+
     [Parameter]
     public bool Visible { get; set; } = true;
+
+    public void Dismiss()
+    {
+        // Do something with JsRuntime
+    }
 
     private string CssClass
     {
         get
         {
             var cssClass = "alert fade";
-            
-            if(Visible)
+
+            if (Visible)
                 cssClass = $"{cssClass} show";
 
             if (Color != null)
@@ -190,7 +198,6 @@ If you want to assert directly on the rendered component or change its parameter
 
 ```cshtml
 @code {
-    Alert sut;
     bool isVisible = true;
 
     [Fact(DisplayName = "When Visible is toggled to false, all child content is removed from alert")]
@@ -199,7 +206,7 @@ If you want to assert directly on the rendered component or change its parameter
         // initial assert
         var result = RenderResults.Single(x => x.Id == (nameof(DismissTest)));
         result.RenderedHtml.ShouldBe(result.Snippets[0]);
-        Assert.Equal(true, sut.Visible);
+        //Assert.Equal(true, sut.Visible); BUG - sut field not generated: https://github.com/aspnet/AspNetCore/issues/13099
 
         // act
         isVisible = false;
@@ -208,7 +215,7 @@ If you want to assert directly on the rendered component or change its parameter
         // dismiss assert
         var dismissResult = RenderResults.Single(x => x.Id == (nameof(DismissTest)));
         dismissResult.RenderedHtml.ShouldBe(result.Snippets[1]);
-        Assert.Equal(false, sut.Visible);
+        //Assert.Equal(false, sut.Visible); BUG - sut field not generated: https://github.com/aspnet/AspNetCore/issues/13099
     }
 }
 <Fact Id=@nameof(DismissTest)>
