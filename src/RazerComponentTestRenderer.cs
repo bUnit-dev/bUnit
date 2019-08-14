@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Egil.RazorComponents.Testing
 {
@@ -15,7 +15,6 @@ namespace Egil.RazorComponents.Testing
     {
         private const string RenderResultsElement = "RenderResults";
 
-        private readonly IDispatcher _dispatcher = Renderer.CreateDefaultDispatcher();
         private readonly Func<string, string> _encoder = (t) => HtmlEncoder.Default.Encode(t);
 
         public bool HasRendered { get; private set; } = false;
@@ -28,18 +27,17 @@ namespace Egil.RazorComponents.Testing
 
         public void Render(RenderFragment renderFragment, IServiceCollection services)
         {
-            var paramCollection = ParameterCollection.FromDictionary(new Dictionary<string, object>() { { RenderTreeBuilder.ChildContent, renderFragment } });
-
             using var serviceProvider = services.BuildServiceProvider();
-            using var htmlRenderer = new HtmlRenderer(serviceProvider, _encoder, _dispatcher);
-            RenderResults = GetTestResults(htmlRenderer, paramCollection);
+            using var htmlRenderer = new HtmlRenderer(serviceProvider, NullLoggerFactory.Instance, _encoder);
+            RenderResults = GetTestResults(htmlRenderer, renderFragment);
 
             HasRendered = true;
         }
 
-        private IReadOnlyList<TestRenderResult> GetTestResults(HtmlRenderer htmlRenderer, ParameterCollection parameterCollection)
+        private IReadOnlyList<TestRenderResult> GetTestResults(HtmlRenderer htmlRenderer, RenderFragment renderFragment)
         {
-            var renderTask = _dispatcher.InvokeAsync(() => htmlRenderer.RenderComponentAsync<RenderFragmentWrapper>(parameterCollection));
+            var parameters = ParameterView.FromDictionary(new Dictionary<string, object>() { { "ChildContent", renderFragment } });
+            var renderTask = htmlRenderer.Dispatcher.InvokeAsync(() => htmlRenderer.RenderComponentAsync<RenderFragmentWrapper>(parameters));
             var renderResult = GetResult(renderTask);
             return ProcessRenderResult(string.Concat(renderResult.Tokens));
         }
