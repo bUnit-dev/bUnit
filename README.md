@@ -198,6 +198,7 @@ If you want to assert directly on the rendered component or change its parameter
 
 ```cshtml
 @code {
+    Alert sut;
     bool isVisible = true;
 
     [Fact(DisplayName = "When Visible is toggled to false, all child content is removed from alert")]
@@ -206,16 +207,16 @@ If you want to assert directly on the rendered component or change its parameter
         // initial assert
         var result = RenderResults.Single(x => x.Id == (nameof(DismissTest)));
         result.RenderedHtml.ShouldBe(result.Snippets[0]);
-        //Assert.Equal(true, sut.Visible); BUG - sut field not generated: https://github.com/aspnet/AspNetCore/issues/13099
+        Assert.Equal(true, sut.Visible);
 
         // act
         isVisible = false;
         this.Render();
 
-        // dismiss assert
+        // assert
         var dismissResult = RenderResults.Single(x => x.Id == (nameof(DismissTest)));
         dismissResult.RenderedHtml.ShouldBe(result.Snippets[1]);
-        //Assert.Equal(false, sut.Visible); BUG - sut field not generated: https://github.com/aspnet/AspNetCore/issues/13099
+        Assert.Equal(false, sut.Visible);
     }
 }
 <Fact Id=@nameof(DismissTest)>
