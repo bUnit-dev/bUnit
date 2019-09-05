@@ -13,8 +13,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-    <PackageReference Include="Moq" Version="4.12.0" />
-    <PackageReference Include="Razor.Components.Testing.Library" Version="0.1.0-preview8-19405-7-1" />
+    <PackageReference Include="Moq" Version="4.13.0" />
+    <PackageReference Include="Razor.Components.Testing.Library" Version="0.1.0-preview9-19424-4-1" />
     <PackageReference Include="xunit.assert" Version="2.4.1" />
     <PackageReference Include="xunit.core" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">

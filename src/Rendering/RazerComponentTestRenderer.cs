@@ -5,11 +5,10 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Rendering
 {
     public class RazerComponentTestRenderer : IDisposable
     {

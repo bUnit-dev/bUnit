@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Egil.RazorComponents.Testing.Rendering;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
