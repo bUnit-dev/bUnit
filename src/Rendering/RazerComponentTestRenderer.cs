@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.AspNetCore.Components;
@@ -79,6 +80,8 @@ namespace Egil.RazorComponents.Testing.Rendering
 
         private static XmlDocument LoadRenderResult(string renderResults)
         {
+            // Workaround for https://github.com/egil/razor-components-testing-library/issues/13 and https://github.com/aspnet/AspNetCore/issues/13793
+            renderResults = EscapeSelfClosingTags(renderResults);
             var renderResultXml = $"<{RenderResultsElement}>{renderResults}</{RenderResultsElement}>";
             var xml = new XmlDocument();
             try
@@ -92,6 +95,13 @@ namespace Egil.RazorComponents.Testing.Rendering
                     $"{ex.Message} Result XML:{Environment.NewLine}" +
                     $"{renderResultXml}", ex);
             }
+        }
+
+        private static readonly Regex SelfClosingTagsFinder = new Regex(@"<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static string EscapeSelfClosingTags(string html)
+        {
+            return SelfClosingTagsFinder.Replace(html, "<$1/>");
         }
     }
 }

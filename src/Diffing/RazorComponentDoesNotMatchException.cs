@@ -7,11 +7,20 @@ using Xunit.Sdk;
 
 namespace Egil.RazorComponents.Testing
 {
+    public class RazorComponentsMatchException : XunitException
+    {
+        public RazorComponentsMatchException(XmlNode expectedHtml) : base($"Expected HTML and Rendered HTML should not match." +
+            $"The expected HTML was:{Environment.NewLine}" +
+            $"{expectedHtml.PrettyXml()}")
+        {
+        }
+    }
+
     public class RazorComponentDoesNotMatchException : AssertActualExpectedException
     {
         public RazorComponentDoesNotMatchException(XmlNode expectedHtml, XmlNode renderedHtml, Diff diffResult)
-            : base(PrettyXml(expectedHtml),
-                  PrettyXml(renderedHtml),
+            : base(expectedHtml.PrettyXml(),
+                  renderedHtml.PrettyXml(),
                   CreateDiffMessage(diffResult),
                   "Expected HTML",
                   "Rendered HTML")
@@ -29,31 +38,6 @@ namespace Egil.RazorComponents.Testing
             {
                 result.AppendLine($"{i + 1}) {diffs[i].ToString()}");
             }
-
-            return result.ToString();
-        }
-
-        private static string PrettyXml(XmlNode? xml)
-        {
-            if (xml is null) return string.Empty;
-
-            var result = new StringBuilder();
-            var settings = new XmlWriterSettings
-            {
-                OmitXmlDeclaration = true,
-                Indent = true,
-                NewLineOnAttributes = false,
-                ConformanceLevel = ConformanceLevel.Fragment,
-                IndentChars = "  ",
-            };
-
-            using (var xmlWriter = XmlWriter.Create(result, settings))
-            {
-                xml.WriteTo(xmlWriter);
-            }
-
-            result.Insert(0, Environment.NewLine);
-            result.AppendLine();
 
             return result.ToString();
         }

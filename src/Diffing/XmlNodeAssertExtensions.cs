@@ -1,4 +1,6 @@
-﻿using System.Xml;
+﻿using System;
+using System.Text;
+using System.Xml;
 using Org.XmlUnit;
 using Org.XmlUnit.Builder;
 using Org.XmlUnit.Diff;
@@ -13,6 +15,13 @@ namespace Egil.RazorComponents.Testing
             var diffResult = CreateDiff(expectedHtml, renderedHtml);
             if (diffResult.HasDifferences())
                 throw new RazorComponentDoesNotMatchException(expectedHtml.FirstChild, renderedHtml.FirstChild, diffResult);
+        }
+
+        public static void ShouldNotBe(this XmlNode renderedHtml, XmlNode expectedHtml)
+        {
+            var diffResult = CreateDiff(expectedHtml, renderedHtml);
+            if (!diffResult.HasDifferences())
+                throw new RazorComponentsMatchException(expectedHtml.FirstChild);
         }
 
         private static Diff CreateDiff(XmlNode control, XmlNode test)
@@ -33,6 +42,31 @@ namespace Egil.RazorComponents.Testing
                     CssClassAttributeDifferenceEvaluator.Default)
                 )
                 .Build();
+        }
+
+        public static string PrettyXml(this XmlNode? xml)
+        {
+            if (xml is null) return string.Empty;
+
+            var result = new StringBuilder();
+            var settings = new XmlWriterSettings
+            {
+                OmitXmlDeclaration = true,
+                Indent = true,
+                NewLineOnAttributes = false,
+                ConformanceLevel = ConformanceLevel.Fragment,
+                IndentChars = "  ",
+            };
+
+            using (var xmlWriter = XmlWriter.Create(result, settings))
+            {
+                xml.WriteTo(xmlWriter);
+            }
+
+            result.Insert(0, Environment.NewLine);
+            result.AppendLine();
+
+            return result.ToString();
         }
     }
 }

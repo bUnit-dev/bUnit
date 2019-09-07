@@ -1,0 +1,41 @@
+﻿@inherits Egil.RazorComponents.Testing.RazorComponentTest
+@using Egil.RazorComponents.Testing
+
+<Fact DisplayName="Self-closing tags are compared correctly">
+    <TestSetup>
+        <div>
+            <area />
+            <base />
+            <br />
+            <col />
+            <embed />
+            <hr />
+            <img />
+            <input />
+            <link />
+            <meta />
+            <param />
+            <source />
+            <track />
+            <wbr />
+        </div>
+    </TestSetup>
+    <ExpectedHtml>
+        <div>
+            <area />
+            <base />
+            <br />
+            <col />
+            <embed />
+            <hr />
+            <img />
+            <input />
+            <link />
+            <meta />
+            <param />
+            <source />
+            <track />
+            <wbr />
+        </div>
+    </ExpectedHtml>
+</Fact>
