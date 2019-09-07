@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
@@ -18,9 +19,11 @@ namespace Egil.RazorComponents.Testing
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
 
+        [SuppressMessage("Usage", "CA2208:Instantiate argument exceptions correctly", Justification = "<Pending>")]
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             if (ChildContent is null) throw new ArgumentNullException(nameof(ChildContent));
+            if (builder is null) throw new ArgumentNullException(nameof(builder));
 
             builder.OpenElement(0, ElementName);
 
@@ -50,6 +53,8 @@ namespace Egil.RazorComponents.Testing
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+            if (builder is null) throw new ArgumentNullException(nameof(builder));
+
             builder.OpenElement(0, GetElementName());
 
             if (!string.IsNullOrEmpty(Id))

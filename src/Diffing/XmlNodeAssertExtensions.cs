@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using Egil.RazorComponents.Testing.Diffing;
 using Org.XmlUnit;
 using Org.XmlUnit.Builder;
 using Org.XmlUnit.Diff;
@@ -9,9 +11,12 @@ namespace Egil.RazorComponents.Testing
 {
 
     public static class XmlNodeAssertExtensions
-    {        
+    {
         public static void ShouldBe(this XmlNode renderedHtml, XmlNode expectedHtml)
         {
+            if (renderedHtml is null) throw new ArgumentNullException(nameof(renderedHtml));
+            if (expectedHtml is null) throw new ArgumentNullException(nameof(expectedHtml));
+
             var diffResult = CreateDiff(expectedHtml, renderedHtml);
             if (diffResult.HasDifferences())
                 throw new RazorComponentDoesNotMatchException(expectedHtml.FirstChild, renderedHtml.FirstChild, diffResult);
@@ -19,6 +24,9 @@ namespace Egil.RazorComponents.Testing
 
         public static void ShouldNotBe(this XmlNode renderedHtml, XmlNode expectedHtml)
         {
+            if (renderedHtml is null) throw new ArgumentNullException(nameof(renderedHtml));
+            if (expectedHtml is null) throw new ArgumentNullException(nameof(expectedHtml));
+
             var diffResult = CreateDiff(expectedHtml, renderedHtml);
             if (!diffResult.HasDifferences())
                 throw new RazorComponentsMatchException(expectedHtml.FirstChild);
@@ -35,11 +43,12 @@ namespace Egil.RazorComponents.Testing
         {
             return DiffBuilder.Compare(control)
                 .IgnoreWhitespace()
+                .WithNamespaceContext(new Dictionary<string, string>() { { "regex", "urn:egil.razorcomponents.testing.library.regex" } })
                 .WithTest(test)
                 .WithDifferenceEvaluator(DifferenceEvaluators.Chain(
                     DifferenceEvaluators.Default,
-                    RegexAttributeDifferenceEvaluator.Default,
-                    CssClassAttributeDifferenceEvaluator.Default)
+                    HtmlDifferenceEvaluators.RegexAttributeDifferenceEvaluator,
+                    HtmlDifferenceEvaluators.CssClassAttributeDifferenceEvaluator)
                 )
                 .Build();
         }

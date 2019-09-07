@@ -7,7 +7,7 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <RootNamespace>Egil.RazorComponents.Testing.Library</RootNamespace>
+    <RootNamespace>Egil.RazorComponents.Testing</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

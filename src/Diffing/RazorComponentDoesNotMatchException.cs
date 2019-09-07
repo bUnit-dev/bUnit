@@ -1,21 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using System.Xml;
 using Org.XmlUnit.Diff;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Diffing
 {
-    public class RazorComponentsMatchException : XunitException
-    {
-        public RazorComponentsMatchException(XmlNode expectedHtml) : base($"Expected HTML and Rendered HTML should not match." +
-            $"The expected HTML was:{Environment.NewLine}" +
-            $"{expectedHtml.PrettyXml()}")
-        {
-        }
-    }
-
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "<Pending>")]
     public class RazorComponentDoesNotMatchException : AssertActualExpectedException
     {
         public RazorComponentDoesNotMatchException(XmlNode expectedHtml, XmlNode renderedHtml, Diff diffResult)

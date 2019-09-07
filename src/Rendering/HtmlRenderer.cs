@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Components;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Egil.RazorComponents.Testing.Rendering
 {
@@ -14,6 +15,7 @@ namespace Egil.RazorComponents.Testing.Rendering
     /// Copied from <see cref="https://github.com/aspnet/AspNetCore/blob/v3.0.0-preview9.19424.4/src/Mvc/Mvc.ViewFeatures/src/RazorComponents/HtmlRenderer.cs"/>
     /// since this class was made internal in preview-9
     /// </summary>
+    [SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "Recommended by AspNetCore team")]
     public class HtmlRenderer : Renderer
     {
         private static readonly HashSet<string> SelfClosingElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)

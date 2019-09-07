@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using Shouldly;
 using Xunit;
+using Egil.RazorComponents.Testing.Rendering;
 
-namespace Egil.RazorComponents.Testing.Library.Diffing
+namespace Egil.RazorComponents.Testing.Diffing
 {
     public class XmlNodeAssertExtensionsTests
     {
@@ -62,12 +63,12 @@ namespace Egil.RazorComponents.Testing.Library.Diffing
             renderedHtml.ShouldBe(expectedHtml);
         }
 
-        [Fact(DisplayName = "Expected HTML with 'RegEx:' at the start of their attribute uses the following regex string to compare attribute")]
+        [Fact(DisplayName = "Expected HTML attributes with 'regex:' prefix compares the content of the test target using regex")]
         public void RegexAttrTest()
         {
             var (renderedHtml, expectedHtml) = CreateTestXml(
                 $"<div class='id-{GetHashCode()}'></div>",
-                $"<div class='RegEx:^id-[\\d]+$'></div>"
+                $"<div regex:class='^id-[\\d]+$'></div>"
             );
 
             renderedHtml.ShouldBe(expectedHtml);
@@ -76,7 +77,7 @@ namespace Egil.RazorComponents.Testing.Library.Diffing
         private static (XmlNode RenderedHtml, XmlNode ExpectedHtml) CreateTestXml(string renderedHtml, string expectedHtml)
         {
             var doc = new XmlDocument();
-            doc.LoadXml("<RenderResult>" +
+            doc.LoadRenderResultXml("<RenderResult>" +
                 $"<RenderedHtml><Html>{renderedHtml}</Html></RenderedHtml>" +
                 $"<ExpectedHtml><Html>{expectedHtml}</Html></ExpectedHtml>" +
                 "</RenderResult>");

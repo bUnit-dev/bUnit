@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml;
 using Org.XmlUnit.Builder;
@@ -6,6 +8,7 @@ using Org.XmlUnit.Diff;
 
 namespace Egil.RazorComponents.Testing
 {
+    [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
     public readonly struct TestRenderResult
     {
         public string Id { get; }
@@ -16,6 +19,8 @@ namespace Egil.RazorComponents.Testing
 
         public TestRenderResult(string id, string displayName, XmlNode actual, XmlNode? expected, XmlNodeList xmlSnippets)
         {
+            if(xmlSnippets is null) throw new ArgumentNullException(nameof(xmlSnippets));
+
             Id = id;
             DisplayName = displayName;
             RenderedHtml = actual;

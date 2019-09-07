@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Egil.RazorComponents.Testing.Rendering
 {
-    public class RazerComponentTestRenderer : IDisposable
+    public sealed class RazerComponentTestRenderer : IDisposable
     {
         private const string RenderResultsElement = "RenderResults";
 
@@ -34,7 +34,7 @@ namespace Egil.RazorComponents.Testing.Rendering
             HasRendered = true;
         }
 
-        private IReadOnlyList<TestRenderResult> GetTestResults(HtmlRenderer htmlRenderer, RenderFragment renderFragment)
+        private static IReadOnlyList<TestRenderResult> GetTestResults(HtmlRenderer htmlRenderer, RenderFragment renderFragment)
         {
             var parameters = ParameterView.FromDictionary(new Dictionary<string, object>() { { "ChildContent", renderFragment } });
             var renderTask = htmlRenderer.Dispatcher.InvokeAsync(() => htmlRenderer.RenderComponentAsync<RenderFragmentWrapper>(parameters));
@@ -83,18 +83,9 @@ namespace Egil.RazorComponents.Testing.Rendering
             // Workaround for https://github.com/egil/razor-components-testing-library/issues/13 and https://github.com/aspnet/AspNetCore/issues/13793
             renderResults = EscapeSelfClosingTags(renderResults);
             var renderResultXml = $"<{RenderResultsElement}>{renderResults}</{RenderResultsElement}>";
-            var xml = new XmlDocument();
-            try
-            {
-                xml.LoadXml(renderResultXml);
-                return xml;
-            }
-            catch (XmlException ex)
-            {
-                throw new RazorComponentRenderResultParseException($"An error occurred while trying to parse the render result of the test. {Environment.NewLine}" +
-                    $"{ex.Message} Result XML:{Environment.NewLine}" +
-                    $"{renderResultXml}", ex);
-            }
+            var result = new XmlDocument();
+            result.LoadRenderResultXml(renderResultXml);
+            return result;
         }
 
         private static readonly Regex SelfClosingTagsFinder = new Regex(@"<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)>", RegexOptions.Compiled | RegexOptions.IgnoreCase);

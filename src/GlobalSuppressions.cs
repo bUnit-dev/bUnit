@@ -2,3 +2,8 @@
     Justification = "I will take the chance",
     Scope = "namespaceanddescendants",
     Target = "Egil.RazorComponents.Testing")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", 
+    "CA1303:Do not pass literals as localized parameters", 
+    Justification = "<Pending>",
+    Scope = "namespaceanddescendants",
+    Target = "Egil.RazorComponents.Testing")]

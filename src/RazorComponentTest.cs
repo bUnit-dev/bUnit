@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Egil.RazorComponents.Testing.Rendering;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
@@ -8,6 +9,7 @@ using Xunit;
 
 namespace Egil.RazorComponents.Testing
 {
+    [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>")]
     public abstract class RazorComponentTest : IDisposable // : IClassFixture<RazorComponentFixture>
     {
         private readonly RazerComponentTestRenderer _renderer;
@@ -33,13 +35,14 @@ namespace Egil.RazorComponents.Testing
             RenderResults = _renderer.RenderResults;
         }
 
+        [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "<Pending>")]
         public void Dispose()
         {
             _renderer.Dispose();
         }
 
         [Fact(DisplayName = "Rendered HTML should be the same as expected HTML")]
-        public virtual void DefaultTest_RenderedHtml_Should_Be_ExpctedHtml()
+        public virtual void DefaultTestRenderedHtmlShouldBeExpctedHtml()
         {
             foreach (var result in RenderResults)
             {
