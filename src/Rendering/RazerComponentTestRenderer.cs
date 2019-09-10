@@ -88,7 +88,7 @@ namespace Egil.RazorComponents.Testing.Rendering
             return result;
         }
 
-        private static readonly Regex SelfClosingTagsFinder = new Regex(@"<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex SelfClosingTagsFinder = new Regex(@"<((?:area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)[^>]*)>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static string EscapeSelfClosingTags(string html)
         {

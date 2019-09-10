@@ -3,37 +3,37 @@
 <Fact DisplayName="Self-closing tags are compared correctly">
     <TestSetup>
         <div>
-            <area />
-            <base />
+            <area shape="rect" coords="184,6,253,27" href="https://mozilla.org" target="_blank" alt="Mozilla" />
+            <base target="_blank" href="http://www.example.com/" />
             <br />
-            <col />
-            <embed />
+            <col span="2" class="batman" />
+            <embed type="video/webm" src="/media/examples/flower.mp4" width="250" height="200" />
             <hr />
-            <img />
-            <input />
-            <link />
-            <meta />
-            <param />
-            <source />
-            <track />
+            <img src="asdf" alt="asdf" />
+            <input type="button" value="button" id="button" />
+            <link href="/media/examples/link-element-example.css" rel="stylesheet" />
+            <meta name="color-scheme" content="dark light" />
+            <param name="asdf" value="asdf" />
+            <source src="/media/examples/flower.webm" type="video/webm" />
+            <track default="true" kind="captions" srclang="en" src="/media/examples/friday.vtt" />
             <wbr />
         </div>
     </TestSetup>
     <ExpectedHtml>
         <div>
-            <area />
-            <base />
+            <area shape="rect" coords="184,6,253,27" href="https://mozilla.org" target="_blank" alt="Mozilla" />
+            <base target="_blank" href="http://www.example.com/" />
             <br />
-            <col />
-            <embed />
+            <col span="2" class="batman" />
+            <embed type="video/webm" src="/media/examples/flower.mp4" width="250" height="200" />
             <hr />
-            <img />
-            <input />
-            <link />
-            <meta />
-            <param />
-            <source />
-            <track />
+            <img src="asdf" alt="asdf" />
+            <input type="button" value="button" id="button" />
+            <link href="/media/examples/link-element-example.css" rel="stylesheet" />
+            <meta name="color-scheme" content="dark light" />
+            <param name="asdf" value="asdf" />
+            <source src="/media/examples/flower.webm" type="video/webm" />
+            <track default="true" kind="captions" srclang="en" src="/media/examples/friday.vtt" />
             <wbr />
         </div>
     </ExpectedHtml>
