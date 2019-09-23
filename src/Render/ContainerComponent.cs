@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -39,7 +40,15 @@ namespace Egil.RazorComponents.Testing.Render
             throw new NotImplementedException($"{nameof(ContainerComponent)} shouldn't receive any parameters");
         }
 
-        public (int Id, TComponent Component) FindComponentUnderTest<TComponent>() where TComponent : IComponent
+        public void RenderComponentUnderTest(RenderFragment renderFragment)
+        {
+            _renderer.DispatchAndAssertNoSynchronousErrors(() =>
+            {                
+                _renderHandle.Render(renderFragment);
+            });
+        }
+
+        public List<(int Id, T Component)> Find<T>()
         {
             var ownFrames = _renderer.GetCurrentRenderTreeFrames(_componentId);
             if (ownFrames.Count == 0)
@@ -47,30 +56,19 @@ namespace Egil.RazorComponents.Testing.Render
                 throw new InvalidOperationException($"{nameof(ContainerComponent)} hasn't yet rendered");
             }
 
-            ref var childComponentFrame = ref ownFrames.Array[0];
-            if (childComponentFrame.FrameType == RenderTreeFrameType.Component && childComponentFrame.Component is TComponent component)
+            var result = new List<(int Id, T Component)>();
+            for (int i = 0; i < ownFrames.Count; i++)
             {
-                return (childComponentFrame.ComponentId, component);
-            }
-            else throw new Exception("Component not found");
-        }
-
-        public void RenderComponentUnderTest(Type componentType, ParameterView parameters)
-        {
-            _renderer.DispatchAndAssertNoSynchronousErrors(() =>
-            {
-                _renderHandle.Render(builder =>
+                ref var frame = ref ownFrames.Array[i];
+                if (frame.FrameType == RenderTreeFrameType.Component &&
+                    frame.Component != null &&
+                    frame.Component is T factFrame)
                 {
-                    builder.OpenComponent(0, componentType);
-
-                    foreach (var parameterValue in parameters)
-                    {
-                        builder.AddAttribute(1, parameterValue.Name, parameterValue.Value);
-                    }
-
-                    builder.CloseComponent();
-                });
-            });
+                    result.Add((frame.ComponentId, factFrame));
+                }
+            }
+            return result;
         }
+
     }
 }

@@ -1,15 +1,20 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using AngleSharp;
+using AngleSharp.Dom;
+using AngleSharp.Html.Parser;
+using AngleSharp.Io;
+using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Egil.RazorComponents.Testing.Render
 {
-    public class RenderedComponent<TComponent> where TComponent : IComponent
+    public class RenderedComponent<TComponent> where TComponent : class, IComponent
     {
+        private readonly IBrowsingContext _browsingContext = BrowsingContext.New(Configuration.Default);
         private readonly TestRenderer _renderer;
         private readonly ContainerComponent _containerTestRootComponent;
         private int _testComponentId;
-        private TComponent _testComponentInstance;
+        private TComponent? _testComponentInstance;
 
         internal RenderedComponent(TestRenderer renderer)
         {
@@ -17,7 +22,7 @@ namespace Egil.RazorComponents.Testing.Render
             _containerTestRootComponent = new ContainerComponent(_renderer);
         }
 
-        public TComponent Instance => _testComponentInstance;
+        public TComponent? Instance => _testComponentInstance;
 
         public string GetMarkup()
         {
@@ -26,31 +31,30 @@ namespace Egil.RazorComponents.Testing.Render
 
         internal void SetParametersAndRender(ParameterView parameters)
         {
-            _containerTestRootComponent.RenderComponentUnderTest(typeof(TComponent), parameters);
-            var foundTestComponent = _containerTestRootComponent.FindComponentUnderTest<TComponent>();
-            _testComponentId = foundTestComponent.Id;
-            _testComponentInstance = foundTestComponent.Component;
+            //_containerTestRootComponent.RenderComponentUnderTest(typeof(TComponent), parameters);
+            //(_testComponentId, _testComponentInstance) = _containerTestRootComponent.FindComponentUnderTest<TComponent>();
         }
 
-        public HtmlNode Find(string selector)
+        public IElement Find(string selector)
         {
             return FindAll(selector).FirstOrDefault();
         }
 
-        public ICollection<HtmlNode> FindAll(string selector)
+        public IHtmlCollection<IElement> FindAll(string selector)
         {
-            // Rather than using HTML strings, it would be faster and more powerful
-            // to implement Fizzler's APIs for walking directly over the rendered
-            // frames, since Fizzler's core isn't tied to HTML (or HtmlAgilityPack).
-            // The most awkward part of this will be handling Markup frames, since
-            // they are HTML strings so would need to be parsed, or perhaps you can
-            // pass through those calls into Fizzler.Systems.HtmlAgilityPack.
-
             var markup = GetMarkup();
-            var html = new TestHtmlDocument(_renderer);
 
-            html.LoadHtml(markup);
-            return html.DocumentNode.QuerySelectorAll(selector).ToList();
+            var document = _browsingContext.OpenAsync(x => x.Content(markup)).GetAwaiter().GetResult();
+            return document.QuerySelectorAll(selector);
+
+            //var parser = context.GetService<IHtmlParser>();
+            //var rootElement = document.QuerySelector(root) ?? document.CreateElement(root);
+            //var actualFragment = parser.ParseFragment(actual, rootElement);
+
+            //var html = new TestHtmlDocument(_renderer);
+
+            //html.LoadHtml(markup);
+            //return html.DocumentNode.QuerySelectorAll(selector).ToList();
         }
     }
 }

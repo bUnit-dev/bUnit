@@ -1,0 +1,64 @@
+﻿@code {
+    //[Inject]
+    //private IJSRuntime JsRuntime { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? Color { get; set; }
+
+    [Parameter]
+    public bool Dismissable { get; set; } = false;
+
+    [Parameter]
+    public string Role { get; set; } = "alert";
+
+    [Parameter]
+    public bool Visible { get; set; } = true;
+
+    public void Dismiss()
+    {
+        // Do something with JsRuntime
+    }
+
+    private string CssClass
+    {
+        get
+        {
+            var cssClass = "alert fade";
+
+            if (Visible)
+                cssClass = $"{cssClass} show";
+
+            if (Color != null)
+                cssClass = $"{cssClass} alert-{Color}";
+
+            if (Dismissable)
+                cssClass = $"{cssClass} alert-dismissible";
+
+            if (Class != null)
+                cssClass = $"{cssClass} {Class}";
+
+            return cssClass;
+        }
+    }
+}
+<div class=@CssClass role=@Role>
+    @if (Visible)
+    {
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+        @if (Dismissable)
+        {
+            <button type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&amp;times;</span>
+            </button>
+        }
+    }
+</div>

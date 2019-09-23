@@ -11,7 +11,7 @@ namespace Egil.RazorComponents.Testing.Render
     [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     internal class TestRenderer : Renderer
     {
-        private Exception _unhandledException;
+        private Exception? _unhandledException;
 
         private TaskCompletionSource<object> _nextRenderTcs = new TaskCompletionSource<object>();
 

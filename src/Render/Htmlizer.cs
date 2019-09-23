@@ -161,7 +161,7 @@ namespace Egil.RazorComponents.Testing.Render
 
         private static int RenderAttributes(
             HtmlRenderingContext context,
-            ArrayRange<RenderTreeFrame> frames, int position, int maxElements, out string capturedValueAttribute)
+            ArrayRange<RenderTreeFrame> frames, int position, int maxElements, out string? capturedValueAttribute)
         {
             capturedValueAttribute = null;
 
@@ -225,7 +225,7 @@ namespace Egil.RazorComponents.Testing.Render
 
             public List<string> Result { get; } = new List<string>();
 
-            public string ClosestSelectValueAsString { get; set; }
+            public string? ClosestSelectValueAsString { get; set; }
         }
     }
 }

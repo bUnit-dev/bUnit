@@ -1,0 +1,75 @@
+﻿@*@inherits TestComponentBase
+@using Egil.RazorComponents.Testing.TestComponents
+@using Xunit
+@using AngleSharp.Dom
+@using AngleSharp.Html.Dom
+
+<Test Given="Clicking the dismiss button removes all content and sets Visible to false"
+      When=@((Alert alert, IHtmlElement element) => element.Click(selector: "button.close"))
+      Then=@((Alert alert, IHtmlElement element) =>
+             {
+                 Assert.False(alert.Visible);
+                 Assert.Equal(element.InnerHtml.Trim(), string.Empty);
+             })>
+    <Alert Dismissable="true">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    </Alert>
+</Test>
+
+<Given TComponent="Alert"
+       Description="Clicking the dismiss button removes all content and sets Visible to false"
+       When=@((alert, element) => element.Click("button.close"))
+       Then=@((alert, element) =>
+             {
+                 Assert.False(alert.Visible);
+                 Assert.Equal(element.InnerHtml.Trim(), string.Empty);
+             })>
+    <Alert Dismissable="true">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    </Alert>
+</Given>
+
+<Test Method="Clicking_Dismiss_Button_Removes_All_Content">
+    <Alert >
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    </Alert>
+</Test>
+@code {
+    void Clicking_Dismiss_Button_Removes_All_Content(TestSetup<Alert> setup)
+    {
+        var (cut, html) = setup;
+        html.Click("button.close");
+        
+    }
+}
+
+<Test Method="Clicking_Dismiss_Button_Removes_All_Content">
+    <Alert Dismissable="true">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    </Alert>
+</Test>
+@code {
+    void Clicking_Dismiss_Button_Removes_All_Content(TestSetup<Alert> setup)
+    {
+        var (cut, html) = setup;
+        html.Click("button.close");
+
+    }
+}
+
+<CompareTest DisplayName="Setting Dismisasable to true renderes dismiss button below child content">
+    <Given>
+        <Alert Dismissable="true">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        </Alert>
+    </Given>
+    <Expect>
+        <div class="alert fade show alert-dismissible" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <button type="button" class="close" aria-label:regex="some regex to use">
+                <span aria-hidden="true">&amp;times;</span>
+            </button>
+        </div>
+    </Expect>
+</CompareTest>*@
+

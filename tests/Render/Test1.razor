@@ -1,0 +1,21 @@
+﻿@inherits TestComponentBase
+@using Egil.RazorComponents.Testing.TestComponents
+@using Xunit
+
+<Fact DisplayName="first test displayname" Id="first test id">
+    <TestSetup>
+        <Simple1 Header="Test Header" />
+    </TestSetup>
+    <ExpectedHtml>
+        <h1>Test Header</h1>
+    </ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="second test displayname" Id="second test id">
+    <TestSetup>
+        <Simple1 Header="Second Header" />
+    </TestSetup>
+    <ExpectedHtml>
+        <h1>Second Header</h1>
+    </ExpectedHtml>
+</Fact>

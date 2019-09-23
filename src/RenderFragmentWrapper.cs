@@ -14,7 +14,7 @@ namespace Egil.RazorComponents.Testing
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             if (ChildContent is null) throw new ArgumentNullException(nameof(ChildContent));
-            if(builder is null) throw new ArgumentNullException(nameof(builder));
+            if (builder is null) throw new ArgumentNullException(nameof(builder));
 
             builder.AddContent(0, ChildContent);
         }

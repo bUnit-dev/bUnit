@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.13.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />

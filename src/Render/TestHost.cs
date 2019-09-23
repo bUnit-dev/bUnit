@@ -50,7 +50,7 @@ namespace Egil.RazorComponents.Testing.Render
             }
         }
 
-        public RenderedComponent<TComponent> AddComponent<TComponent>() where TComponent : IComponent
+        public RenderedComponent<TComponent> AddComponent<TComponent>() where TComponent : class, IComponent
         {
             var result = new RenderedComponent<TComponent>(Renderer);
             result.SetParametersAndRender(ParameterView.Empty);
