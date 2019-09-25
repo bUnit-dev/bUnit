@@ -13,7 +13,7 @@ If you have an idea, suggestion, or bug, please add an [issue](issues) or ping m
 [![Gitter](https://badges.gitter.im/razor-components-testing-library/community.svg)](https://gitter.im/razor-components-testing-library/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Getting started
-1. Create the necessary projects (Razor Class Library and xUnit class Library). See the [sample project](master/sample) for an example.
+1. Create the necessary projects (Razor Class Library and xUnit class Library). See the [sample project](/sample) for an example.
 1. Install the [Razor.Components.Testing.Library](https://www.nuget.org/packages/Razor.Components.Testing.Library) library from Nuget into your xUnit test project.
 2. Optionally, add an `_Imports.razor` to test project to avoid typing using and inherits statements in each test file.
 3. Write `.razor`-based tests.
