@@ -1,5 +1,5 @@
-# Razor Components Testing Library
-Testing library for Razor Components, that allows you to easily define your component under test and the expected output HTML
+# Blazor/Razor Components Testing Library
+Testing library for Blazor Components/Razor Components, that allows you to easily define your component under test and the expected output HTML
 in a `.razor` file. It will automatically compare the input with the expected output using the 
 [XMLDiff](https://www.xmlunit.org/) library and pretty print error messages.
 
