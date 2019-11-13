@@ -1,0 +1,13 @@
+﻿@inherits TestComponentBase
+@using Microsoft.Extensions.DependencyInjection
+@using Microsoft.JSInterop
+@using Egil.RazorComponents.Testing.Mocks
+
+<Snapshot AddServices="srvs => srvs.AddSingleton<IJSRuntime>(new JsRuntimeMock())">
+    <Given>
+        <Alert>HELLO WORLD ALERT</Alert>
+    </Given>
+    <Expect>
+        <div class="alert fade show" role="alert">HELLO WORLD ALERT</div>
+    </Expect>
+</Snapshot>

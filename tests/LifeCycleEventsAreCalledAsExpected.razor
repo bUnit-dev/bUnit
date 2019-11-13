@@ -1,0 +1,37 @@
+﻿@inherits TestComponentBase
+@using Shouldly
+@using Microsoft.Extensions.DependencyInjection
+
+<Test TestMethod="Test" TSubject="LifeCycleTracker">
+    <LifeCycleTracker />
+</Test>
+@code {
+    void Test(TestContext<LifeCycleTracker> context)
+    {
+        var component = context.Component;
+
+        component.LifeCycleMethodCalled["SetParametersAsync"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnInitialized"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnInitializedAsync"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnParametersSet"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnParametersSetAsync"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnAfterRenderFirstRender"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnAfterRenderAsyncFirstRender"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnAfterRender"].ShouldBe(0);
+        component.LifeCycleMethodCalled["OnAfterRenderAsync"].ShouldBe(0);
+        component.LifeCycleMethodCalled["Dispose"].ShouldBe(0);
+
+        context.Render();
+
+        component.LifeCycleMethodCalled["SetParametersAsync"].ShouldBe(2);
+        component.LifeCycleMethodCalled["OnInitialized"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnInitializedAsync"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnParametersSet"].ShouldBe(2);
+        component.LifeCycleMethodCalled["OnParametersSetAsync"].ShouldBe(2);
+        component.LifeCycleMethodCalled["OnAfterRenderFirstRender"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnAfterRenderAsyncFirstRender"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnAfterRender"].ShouldBe(1);
+        component.LifeCycleMethodCalled["OnAfterRenderAsync"].ShouldBe(1);
+        component.LifeCycleMethodCalled["Dispose"].ShouldBe(0);
+    }
+}

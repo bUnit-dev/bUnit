@@ -1,0 +1,10 @@
+﻿@inherits TestComponentBase
+
+<Snapshot Description="Can do simple snapshot testing">
+    <Given>
+        <Simple1 Header="foo" AttrValue="bar" />
+    </Given>
+    <Expect>
+        <h1 attr="bar">foo</h1>
+    </Expect>
+</Snapshot>
