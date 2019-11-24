@@ -1,0 +1,66 @@
+﻿@inherits TestComponentBase
+@using Shouldly
+
+<Fixture Test="Test">
+    <ComponentUnderTest>
+        <Wrapper>
+            @if (shouldRenderTracker)
+            {
+                <LifeCycleTracker Number="renderTrigger" @ref="tracker" />
+            }
+        </Wrapper>
+    </ComponentUnderTest>
+</Fixture>
+@code {
+    bool shouldRenderTracker = true;
+    int renderTrigger = 0;
+    LifeCycleTracker tracker;
+
+    void Test(TestContext context)
+    {
+        var cut = context.GetComponentUnderTest<Wrapper>();
+        var callLog = tracker.LifeCycleMethodCallLog;
+
+        // assert first render called expected methods
+        callLog["SetParametersAsync"].ShouldBe(1);
+        callLog["OnInitialized"].ShouldBe(1);
+        callLog["OnInitializedAsync"].ShouldBe(1);
+        callLog["OnParametersSet"].ShouldBe(1);
+        callLog["OnParametersSetAsync"].ShouldBe(1);
+        callLog["OnAfterRenderFirstRender"].ShouldBe(1);
+        callLog["OnAfterRenderAsyncFirstRender"].ShouldBe(1);
+        callLog["OnAfterRender"].ShouldBe(0);
+        callLog["OnAfterRenderAsync"].ShouldBe(0);
+        callLog["Dispose"].ShouldBe(0);
+
+        renderTrigger = 1;
+        cut.Render();
+
+        // assert second render called expected methods
+        callLog["SetParametersAsync"].ShouldBe(2);
+        callLog["OnInitialized"].ShouldBe(1);
+        callLog["OnInitializedAsync"].ShouldBe(1);
+        callLog["OnParametersSet"].ShouldBe(2);
+        callLog["OnParametersSetAsync"].ShouldBe(2);
+        callLog["OnAfterRenderFirstRender"].ShouldBe(1);
+        callLog["OnAfterRenderAsyncFirstRender"].ShouldBe(1);
+        callLog["OnAfterRender"].ShouldBe(1);
+        callLog["OnAfterRenderAsync"].ShouldBe(1);
+        callLog["Dispose"].ShouldBe(0);
+
+        shouldRenderTracker = false;
+        cut.Render();
+
+        // assert removal of component called dispose method
+        callLog["SetParametersAsync"].ShouldBe(2);
+        callLog["OnInitialized"].ShouldBe(1);
+        callLog["OnInitializedAsync"].ShouldBe(1);
+        callLog["OnParametersSet"].ShouldBe(2);
+        callLog["OnParametersSetAsync"].ShouldBe(2);
+        callLog["OnAfterRenderFirstRender"].ShouldBe(1);
+        callLog["OnAfterRenderAsyncFirstRender"].ShouldBe(1);
+        callLog["OnAfterRender"].ShouldBe(1);
+        callLog["OnAfterRenderAsync"].ShouldBe(1);
+        callLog["Dispose"].ShouldBe(1);
+    }
+}

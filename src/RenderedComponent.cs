@@ -1,52 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AngleSharp.Dom;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Testing
 {
-    public class RenderedComponent<TComponent> : IRenderedFragment where TComponent : class, IComponent
+    public class RenderedComponent<TComponent> : RenderedFragment, IRenderedFragment
+        where TComponent : class, IComponent
     {
-        private readonly TestRenderer _renderer;
-        private readonly HtmlParser _htmlParser;
-        private TComponent? _instance;
+        public TComponent Instance { get; }
 
-        protected ContainerComponent Container { get; }
-
-        protected int ComponentId { get; set; }
-
-        public TComponent Instance
+        internal RenderedComponent(TestHost testContext, ParameterView parameters) : this(testContext, TypeBasedRenderTreeBuilder(parameters))
         {
-            get => _instance ?? throw new InvalidOperationException("Render component first before retrieving the instance.");
-            private set => _instance = value;
         }
 
-        internal RenderedComponent(TestRenderer renderer, HtmlParser htmlParser)
+        internal RenderedComponent(TestHost testContext, RenderFragment renderFragment) : base(testContext, renderFragment)
         {
-            _renderer = renderer;
-            _htmlParser = htmlParser;
-            Container = new ContainerComponent(_renderer);
+            (_, Instance) = Container.GetComponent<TComponent>();
         }
 
-        public string GetMarkup() => Htmlizer.GetHtml(_renderer, ComponentId);
-
-        public INodeList GetNodes()
+        public void Render()
         {
-            var markup = GetMarkup();
-            return _htmlParser.Parse(markup);
+            SetParametersAndRender(ParameterView.Empty);
         }
 
-        internal void SetParametersAndRender(ParameterView parameters)
+        public void SetParametersAndRender(params (string paramName, object valueValue)[] parameters)
         {
-            Container.RenderComponentUnderTest(typeof(TComponent), parameters);
-            (ComponentId, Instance) = Container.GetComponent<TComponent>();
+            if (parameters.Length > 0)
+            {
+                var paramDict = parameters.ToDictionary(x => x.paramName, x => x.valueValue);
+                var parameterView = ParameterView.FromDictionary(paramDict);
+                SetParametersAndRender(parameterView);
+            }
+            else
+            {
+                SetParametersAndRender(ParameterView.Empty);
+            }
         }
 
-        internal void Render(RenderFragment renderFragment)
+        public void SetParametersAndRender(ParameterView parameters)
         {
-            Container.RenderComponentUnderTest(renderFragment);
-            (ComponentId, Instance) = Container.GetComponent<TComponent>();
+            TestContext.Renderer.DispatchAndAssertNoSynchronousErrors(() =>
+            {
+                Instance.SetParametersAsync(parameters);
+            });
+        }
+
+        private static RenderFragment TypeBasedRenderTreeBuilder(ParameterView parameters)
+        {
+            return builder =>
+            {
+                builder.OpenComponent(0, typeof(TComponent));
+
+                foreach (var parameterValue in parameters)
+                {
+                    builder.AddAttribute(1, parameterValue.Name, parameterValue.Value);
+                }
+
+                builder.CloseComponent();
+            };
         }
     }
 }

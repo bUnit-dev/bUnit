@@ -6,13 +6,13 @@
 @using Microsoft.Extensions.DependencyInjection
 @using Mocks
 
-<Fixture Setup="Setup" Tests=@(new Test[]{ ListStartsOutAsEmpty, AddingTaskToListWorks2 })>
+<Fixture Setup="Setup" Tests=@(new Test[]{ ListStartsOutAsEmpty, AddingTaskToListWorks })>
     <ComponentUnderTest>
-        <TodoList Label="Enter your task" />
+        <TodoList Label=@labelText />
     </ComponentUnderTest>
     <Fragment Id="InitiallyExpected">
         <div class="input-group mb-3 p-3">
-            <input value="" type="text" class="form-control" placeholder="Enter your task" aria-label="Enter your task" />
+            <input value="" type="text" class="form-control" placeholder=@labelText aria-label=@labelText />
             <div class="input-group-append">
                 <button class="btn btn-secondary" type="button">Add task</button>
             </div>
@@ -24,6 +24,8 @@
     </Fragment>
 </Fixture>
 @code {
+    private string labelText = "Enter your task here";
+
     void Setup(TestContext context)
     {
         context.AddService<IJSRuntime>(new JsRuntimeMock());
@@ -73,34 +75,5 @@
         var diffs = cut.CompareTo(initialExpected);
         diffs.Count.ShouldBe(1);
         diffs.First().ShouldBeAddition(expectedItem);
-    }
-}
-
-<Fixture Test=Foo>
-    <ComponentUnderTest>
-        <TodoList Label="New todo" />
-    </ComponentUnderTest>
-    <Fragment Id="InitiallyExpected">
-        <div class="input-group mb-3 p-3">
-            <input value="" type="text" class="form-control" placeholder="Enter your task" aria-label="Enter your task" />
-            <div class="input-group-append">
-                <button class="btn btn-secondary" type="button">Add task</button>
-            </div>
-        </div>
-        <ol class="list-group"></ol>
-    </Fragment>
-    <Fragment Id="AddedTodoItem">
-        <TodoItem IsDone="false" Text="Say hello to the world" />
-    </Fragment>
-</Fixture>
-@code {
-    void Foo(TestContext context)
-    {
-        // arrange/act
-        var cut = context.GetComponentUnderTest<TodoList>();
-        var expected = context.GetFragment("InitiallyExpected");
-
-        // assert
-        cut.ShouldBe(expected);
     }
 }

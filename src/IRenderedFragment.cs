@@ -10,6 +10,8 @@ namespace Egil.RazorComponents.Testing
         string GetMarkup();
 
         INodeList GetNodes();
+
+        TestHost TestContext { get; }
     }
 
     public static class RenderedFragmentExtensions
@@ -17,7 +19,7 @@ namespace Egil.RazorComponents.Testing
         public static IElement Find(this IRenderedFragment renderedFragment, string selector)
         {
             if (renderedFragment is null) throw new ArgumentNullException(nameof(renderedFragment));
-            var nodes = renderedFragment.GetNodes();            
+            var nodes = renderedFragment.GetNodes();
             return nodes.QuerySelector(selector);
         }
 

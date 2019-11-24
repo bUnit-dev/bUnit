@@ -67,32 +67,11 @@ namespace Egil.RazorComponents.Testing
             return result;
         }
 
-        public void RenderComponentUnderTest(Type componentType, ParameterView parameters)
-        {
-            _renderer.DispatchAndAssertNoSynchronousErrors(() =>
-            {
-                _renderHandle.Render(builder =>
-                {
-                    builder.OpenComponent(0, componentType);
-
-                    foreach (var parameterValue in parameters)
-                    {
-                        builder.AddAttribute(1, parameterValue.Name, parameterValue.Value);
-                    }
-
-                    builder.CloseComponent();
-                });
-            });
-        }
-
         public void RenderComponentUnderTest(RenderFragment renderFragment)
         {
             _renderer.DispatchAndAssertNoSynchronousErrors(() =>
             {
-                _renderHandle.Render(builder =>
-                {
-                    builder.AddContent(0, renderFragment);
-                });
+                _renderHandle.Render(renderFragment);
             });
         }
     }

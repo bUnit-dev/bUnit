@@ -2,40 +2,34 @@
 using System.Linq;
 using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Egil.RazorComponents.Testing
 {
     public class RenderedFragment : IRenderedFragment
     {
-        private readonly TestRenderer _renderer;
-        private readonly HtmlParser _htmlParser;
-        private readonly int _componentId;
-        private ContainerComponent _container;
-        private string? markup;
-        private INodeList? _nodes;
+        private readonly RenderFragment _renderFragment;
+        protected int ComponentId { get; }
+        protected ContainerComponent Container { get; }
+        public TestHost TestContext { get; }
 
-        internal RenderedFragment(TestRenderer renderer, HtmlParser htmlParser)
+        internal RenderedFragment(TestHost testContext, RenderFragment renderFragment)
         {
-            _renderer = renderer;
-            _htmlParser = htmlParser;
-            _container = new ContainerComponent(_renderer);
-            _componentId = _container.ComponentId;
+            TestContext = testContext;
+            _renderFragment = renderFragment;
+            Container = new ContainerComponent(testContext.Renderer);
+            ComponentId = Container.ComponentId;
+            Container.RenderComponentUnderTest(_renderFragment);
         }
 
         public string GetMarkup()
         {
-            if (markup is null)
-                markup = Htmlizer.GetHtml(_renderer, _componentId);
-            return markup;
+            return Htmlizer.GetHtml(TestContext.Renderer, ComponentId);
         }
 
         public INodeList GetNodes()
         {
-            if(_nodes is null)
-                _nodes = _htmlParser.Parse(GetMarkup());
-            return _nodes;
+            return TestContext.HtmlParser.Parse(GetMarkup());
         }
-
-        internal void Render(RenderFragment renderFragment) => _container.RenderComponentUnderTest(renderFragment);
     }
 }

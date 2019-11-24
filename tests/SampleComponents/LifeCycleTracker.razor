@@ -1,8 +1,7 @@
 ﻿@implements IDisposable
-
 @code {
-    public Dictionary<string, int> LifeCycleMethodCalled { get; } = new Dictionary<string, int>
-{
+    public Dictionary<string, int> LifeCycleMethodCallLog { get; } = new Dictionary<string, int>
+    {
         { nameof(SetParametersAsync), 0 },
         { nameof(OnInitialized), 0 },
         { nameof(OnInitializedAsync), 0 },
@@ -15,41 +14,43 @@
         { nameof(Dispose), 0 }
     };
 
+    [Parameter] public int Number { get; set; }
+
     public override Task SetParametersAsync(ParameterView parameters)
     {
-        LifeCycleMethodCalled[nameof(SetParametersAsync)] += 1;
+        LifeCycleMethodCallLog[nameof(SetParametersAsync)] += 1;
         return base.SetParametersAsync(parameters);
     }
 
-    protected override void OnInitialized() => LifeCycleMethodCalled[nameof(OnInitialized)] += 1;
+    protected override void OnInitialized() => LifeCycleMethodCallLog[nameof(OnInitialized)] += 1;
 
     protected override Task OnInitializedAsync()
     {
-        LifeCycleMethodCalled[nameof(OnInitializedAsync)] += 1;
+        LifeCycleMethodCallLog[nameof(OnInitializedAsync)] += 1;
         return Task.CompletedTask;
     }
 
-    protected override void OnParametersSet() => LifeCycleMethodCalled[nameof(OnParametersSet)] += 1;
+    protected override void OnParametersSet() => LifeCycleMethodCallLog[nameof(OnParametersSet)] += 1;
 
     protected override Task OnParametersSetAsync()
     {
-        LifeCycleMethodCalled[nameof(OnParametersSetAsync)] += 1;
+        LifeCycleMethodCallLog[nameof(OnParametersSetAsync)] += 1;
         return base.OnParametersSetAsync();
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
-        LifeCycleMethodCalled[nameof(OnAfterRender) + (firstRender ? "FirstRender" : "")] += 1;
+        LifeCycleMethodCallLog[nameof(OnAfterRender) + (firstRender ? "FirstRender" : "")] += 1;
     }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        LifeCycleMethodCalled[nameof(OnAfterRenderAsync) + (firstRender ? "FirstRender" : "")] += 1;
+        LifeCycleMethodCallLog[nameof(OnAfterRenderAsync) + (firstRender ? "FirstRender" : "")] += 1;
         return base.OnAfterRenderAsync(firstRender);
     }
 
     public void Dispose()
     {
-        LifeCycleMethodCalled[nameof(Dispose)] += 1;
+        LifeCycleMethodCallLog[nameof(Dispose)] += 1;
     }
 }

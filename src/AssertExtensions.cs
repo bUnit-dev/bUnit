@@ -53,6 +53,17 @@ namespace Egil.RazorComponents.Testing
                 : $"{userMessage}.{Environment.NewLine}";
         }
 
+        public static void ShouldBe(this IRenderedFragment actual, string expected, string? userMessage = null)
+        {
+            if (actual is null) throw new ArgumentNullException(nameof(actual));
+            if (expected is null) throw new ArgumentNullException(nameof(expected));
+
+            var actualNodes = actual.GetNodes();
+            var expectedNodes = actual.TestContext.HtmlParser.Parse(expected);
+
+            actualNodes.ShouldBe(expectedNodes, userMessage);
+        }
+
         public static void ShouldBe(this IRenderedFragment actual, IRenderedFragment expected, string? userMessage = null)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));

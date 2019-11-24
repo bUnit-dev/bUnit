@@ -14,7 +14,12 @@ namespace Egil.RazorComponents.Testing
 
         public HtmlParser(TestRenderer testRenderer, HtmlComparer comparer)
         {
-            var config = Configuration.Default.WithCss().With(testRenderer).With(comparer);
+            var config = Configuration.Default
+                .WithCss()
+                .With(testRenderer)
+                .With(comparer)
+                .With(this);
+
             _context = BrowsingContext.New(config);
             _htmlParser = _context.GetService<IHtmlParser>();
             _document = _context.OpenNewAsync().Result;
