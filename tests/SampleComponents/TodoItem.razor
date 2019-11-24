@@ -1,0 +1,10 @@
+﻿<li class="list-group-item list-group-item-action">
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheck1" @bind="IsDone">
+        <label class="custom-control-label" for="customCheck1">@Text</label>
+    </div>
+</li>
+@code {
+    [Parameter] public string Text { get; set; } = string.Empty;
+    [Parameter] public bool IsDone { get; set; }
+}

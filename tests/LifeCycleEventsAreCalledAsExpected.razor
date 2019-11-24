@@ -1,4 +1,4 @@
-﻿@inherits TestComponentBase
+﻿@*@inherits TestComponentBase
 @using Shouldly
 @using Microsoft.Extensions.DependencyInjection
 
@@ -34,4 +34,4 @@
         component.LifeCycleMethodCalled["OnAfterRenderAsync"].ShouldBe(1);
         component.LifeCycleMethodCalled["Dispose"].ShouldBe(0);
     }
-}
+}*@

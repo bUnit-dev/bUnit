@@ -1,11 +1,11 @@
-﻿@inherits TestComponentBase
+﻿@*@inherits TestComponentBase
 @using Shouldly
 
 <Test TestMethod="Test2" TSubject="Simple1">
     <Simple1 Header=@header AttrValue="" />
 </Test>
 
-@code{
+@code {
     string header = "Initial Header";
 
     void Test2(TestContext<Simple1> context)
@@ -23,4 +23,4 @@
         var thirdHtml = context.GetHtml();
         secondHtml.ShouldNotBe(thirdHtml);
     }
-}
+}*@

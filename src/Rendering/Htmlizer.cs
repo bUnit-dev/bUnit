@@ -10,6 +10,7 @@ namespace Egil.RazorComponents.Testing
     [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     internal class Htmlizer
     {
+        internal const string EVENT_HANDLE_ID_ATTR_PREFIX = "blazor:";
         private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
 
         private static readonly HashSet<string> SelfClosingElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -188,7 +189,12 @@ namespace Egil.RazorComponents.Testing
 
                 if (frame.AttributeEventHandlerId > 0)
                 {
-                    result.Add($" {frame.AttributeName}=\"{frame.AttributeEventHandlerId}\"");
+                    // NOTE: this was changed from  
+                    //       result.Add($" {frame.AttributeName}=\"{frame.AttributeEventHandlerId}\"");
+                    //       to the following to make it more obvious
+                    //       that this is a generated/special blazor attribute
+                    //       used for tracking event handler id's
+                    result.Add($" {EVENT_HANDLE_ID_ATTR_PREFIX }{frame.AttributeName}=\"{frame.AttributeEventHandlerId}\"");
                     continue;
                 }
 

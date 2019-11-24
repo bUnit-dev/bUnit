@@ -1,0 +1,106 @@
+﻿@inherits TestComponentBase
+@using Microsoft.JSInterop
+@using AngleSharp.Html.Dom
+@using AngleSharp.Diffing.Core
+@using Shouldly
+@using Microsoft.Extensions.DependencyInjection
+@using Mocks
+
+<Fixture Setup="Setup" Tests=@(new Test[]{ ListStartsOutAsEmpty, AddingTaskToListWorks2 })>
+    <ComponentUnderTest>
+        <TodoList Label="Enter your task" />
+    </ComponentUnderTest>
+    <Fragment Id="InitiallyExpected">
+        <div class="input-group mb-3 p-3">
+            <input value="" type="text" class="form-control" placeholder="Enter your task" aria-label="Enter your task" />
+            <div class="input-group-append">
+                <button class="btn btn-secondary" type="button">Add task</button>
+            </div>
+        </div>
+        <ol class="list-group"></ol>
+    </Fragment>
+    <Fragment Id="AddedTodoItem">
+        <TodoItem IsDone="false" Text="Say hello to the world" />
+    </Fragment>
+</Fixture>
+@code {
+    void Setup(TestContext context)
+    {
+        context.AddService<IJSRuntime>(new JsRuntimeMock());
+    }
+
+    void ListStartsOutAsEmpty(TestContext context)
+    {
+        // arrange/act
+        var cut = context.GetComponentUnderTest<TodoList>();
+        var expected = context.GetFragment("InitiallyExpected");
+
+        // assert
+        cut.ShouldBe(expected);
+    }
+
+    void AddingTaskToListWorks(TestContext context)
+    {
+        // arrange
+        var newItemText = "Add new todo to todo list";
+        var cut = context.GetComponentUnderTest<TodoList>();
+        var initialExpected = context.GetFragment("InitiallyExpected");
+        var expectedItem = context.AddComponent<TodoItem>((nameof(TodoItem.Text), newItemText));
+
+        // act
+        cut.Find("input").Change(newItemText);
+        cut.Find("button").Click();
+
+        // assert
+        var diffs = cut.CompareTo(initialExpected);
+        diffs.Count.ShouldBe(1);
+        diffs.First().ShouldBeAddition(expectedItem);
+    }
+
+    void AddingTaskToListWorks2(TestContext context)
+    {
+        // arrange
+        var newItemText = "Add new todo to todo list";
+        var cut = context.GetComponentUnderTest<TodoList>();
+        var initialExpected = context.GetFragment("InitiallyExpected");
+        var expectedItem = context.GetFragment<TodoItem>("AddedTodoItem");
+
+        // act
+        cut.Find("input").Change(expectedItem.Instance.Text);
+        cut.Find("button").Click();
+
+        // assert
+        var diffs = cut.CompareTo(initialExpected);
+        diffs.Count.ShouldBe(1);
+        diffs.First().ShouldBeAddition(expectedItem);
+    }
+}
+
+<Fixture Test=Foo>
+    <ComponentUnderTest>
+        <TodoList Label="New todo" />
+    </ComponentUnderTest>
+    <Fragment Id="InitiallyExpected">
+        <div class="input-group mb-3 p-3">
+            <input value="" type="text" class="form-control" placeholder="Enter your task" aria-label="Enter your task" />
+            <div class="input-group-append">
+                <button class="btn btn-secondary" type="button">Add task</button>
+            </div>
+        </div>
+        <ol class="list-group"></ol>
+    </Fragment>
+    <Fragment Id="AddedTodoItem">
+        <TodoItem IsDone="false" Text="Say hello to the world" />
+    </Fragment>
+</Fixture>
+@code {
+    void Foo(TestContext context)
+    {
+        // arrange/act
+        var cut = context.GetComponentUnderTest<TodoList>();
+        var expected = context.GetFragment("InitiallyExpected");
+
+        // assert
+        cut.ShouldBe(expected);
+    }
+}

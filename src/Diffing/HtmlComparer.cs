@@ -1,45 +1,34 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using AngleSharp.Diffing.Strategies;
 using AngleSharp.Diffing;
-using AngleSharp.Html.Parser;
-using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Diffing.Core;
+using Xunit.Abstractions;
+using Egil.RazorComponents.Testing.Diffing;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Diffing
 {
-    public sealed class HtmlComparer : IHtmlComparer
+    public sealed class HtmlComparer
     {
-        private readonly IBrowsingContext _context;
-        private readonly IHtmlParser _htmlParser;
-        private readonly IDocument _document;
         private readonly HtmlDifferenceEngine _differenceEngine;
 
         public HtmlComparer()
         {
-            var diffOptions = new DiffingStrategyPipeline();
-            diffOptions.AddDefaultOptions();
-            _differenceEngine = new HtmlDifferenceEngine(diffOptions);
-            var config = Configuration.Default.WithCss();
-            _context = BrowsingContext.New(config);
-            _htmlParser = _context.GetService<IHtmlParser>();
-            _document = _context.OpenNewAsync().Result;
+            var strategy = new DiffingStrategyPipeline();
+            strategy.AddDefaultOptions();
+            strategy.AddFilter(BlazorDiffingHelpers.BlazorEventHandlerIdAttrFilter, isSpecializedFilter: true);
+            _differenceEngine = new HtmlDifferenceEngine(strategy);
         }
 
-        public List<IDiff> Compare(string controlHtml, string testHtml)
+        public IEnumerable<IDiff> Compare(INode controlHtml, INode testHtml)
         {
-            return _differenceEngine.Compare(Parse(controlHtml), Parse(testHtml)).ToList();
+            return _differenceEngine.Compare(controlHtml, testHtml);
         }
 
-        public void Dispose()
+        public IEnumerable<IDiff> Compare(IEnumerable<INode> controlHtml, IEnumerable<INode> testHtml)
         {
-            _document.Dispose();
-        }
-
-        private INodeList Parse(string html)
-        {
-            return _htmlParser.ParseFragment(html, _document.Body);
+            return _differenceEngine.Compare(controlHtml, testHtml);
         }
     }
+
 }

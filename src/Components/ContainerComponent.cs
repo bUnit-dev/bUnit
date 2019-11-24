@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Testing
@@ -16,20 +17,20 @@ namespace Egil.RazorComponents.Testing
     // not a good entrypoint for unit tests, because their asynchrony is all about waiting
     // for quiescence. We don't want that in tests because we want to assert about all
     // possible states, including loading states.
+
     [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
-    public class TestRenderingContext : IComponent, ITestRenderingContext
+    public class ContainerComponent : IComponent
     {
-        private readonly int _componentId;
+        private readonly TestRenderer _renderer;
         private RenderHandle _renderHandle;
 
-        internal TestRenderer Renderer { get; }
+        public int ComponentId { get; private set; }
 
-        public TestRenderingContext(TestRenderer renderer)
+        public ContainerComponent(TestRenderer renderer)
         {
             if (renderer is null) throw new ArgumentNullException(nameof(renderer));
-
-            Renderer = renderer;
-            _componentId = renderer.AttachTestRootComponent(this);
+            _renderer = renderer;
+            ComponentId = _renderer.AttachTestRootComponent(this);
         }
 
         public void Attach(RenderHandle renderHandle)
@@ -39,25 +40,17 @@ namespace Egil.RazorComponents.Testing
 
         public Task SetParametersAsync(ParameterView parameters)
         {
-            throw new NotImplementedException($"{nameof(TestRenderingContext)} shouldn't receive any parameters");
+            throw new InvalidOperationException($"{nameof(ContainerComponent)} shouldn't receive any parameters");
         }
 
-        public void RenderComponentUnderTest(RenderFragment renderFragment)
-        {
-            Renderer.DispatchAndAssertNoSynchronousErrors(() =>
-            {
-                _renderHandle.Render(renderFragment);
-            });
-        }
+        public (int Id, T Component) GetComponent<T>() => GetComponents<T>().First();
 
-        public List<(int Id, IComponent Component)> GetComponents() => GetComponents<IComponent>();
-
-        public List<(int Id, T Component)> GetComponents<T>()
+        public IEnumerable<(int Id, T Component)> GetComponents<T>()
         {
-            var ownFrames = Renderer.GetCurrentRenderTreeFrames(_componentId);
+            var ownFrames = _renderer.GetCurrentRenderTreeFrames(ComponentId);
             if (ownFrames.Count == 0)
             {
-                throw new InvalidOperationException($"{nameof(TestRenderingContext)} hasn't yet rendered");
+                throw new InvalidOperationException($"{nameof(ContainerComponent)} hasn't yet rendered");
             }
 
             var result = new List<(int Id, T Component)>();
@@ -74,26 +67,33 @@ namespace Egil.RazorComponents.Testing
             return result;
         }
 
-        public string GetHtml(int componentId)
+        public void RenderComponentUnderTest(Type componentType, ParameterView parameters)
         {
-            return Htmlizer.GetHtml(Renderer, componentId);
-        }
-
-        public void WaitForNextRender(Action trigger)
-        {
-            var task = Renderer.NextRender;
-            if (!(trigger is null)) trigger();
-            task.Wait(millisecondsTimeout: 1000);
-
-            if (!task.IsCompleted)
+            _renderer.DispatchAndAssertNoSynchronousErrors(() =>
             {
-                throw new TimeoutException("No render occurred within the timeout period.");
-            }
+                _renderHandle.Render(builder =>
+                {
+                    builder.OpenComponent(0, componentType);
+
+                    foreach (var parameterValue in parameters)
+                    {
+                        builder.AddAttribute(1, parameterValue.Name, parameterValue.Value);
+                    }
+
+                    builder.CloseComponent();
+                });
+            });
         }
 
-        public void DispatchAndAssertNoSynchronousErrors(Action dispatchAction)
+        public void RenderComponentUnderTest(RenderFragment renderFragment)
         {
-            Renderer.DispatchAndAssertNoSynchronousErrors(dispatchAction);
+            _renderer.DispatchAndAssertNoSynchronousErrors(() =>
+            {
+                _renderHandle.Render(builder =>
+                {
+                    builder.AddContent(0, renderFragment);
+                });
+            });
         }
     }
 }

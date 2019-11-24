@@ -1,4 +1,19 @@
 ﻿@using Microsoft.JSInterop
+<div class=@CssClass role=@Role>
+    @if (Visible)
+    {
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+        @if (Dismissable)
+        {
+            <button type="button" class="close" aria-label="Close" @onclick="DismissAlert">
+                <span aria-hidden="true">&amp;times;</span>
+            </button>
+        }
+    }
+</div>
 @code {
     [Inject] private IJSRuntime JsRuntime { get; set; } = default!;
 
@@ -9,10 +24,7 @@
     [Parameter] public string Role { get; set; } = "alert";
     [Parameter] public bool Visible { get; set; } = true;
 
-    public void Dismiss()
-    {
-        // Do something with JsRuntime
-    }
+    private void DismissAlert() => Visible = false;
 
     private string CssClass
     {
@@ -36,18 +48,3 @@
         }
     }
 }
-<div class=@CssClass role=@Role>
-    @if (Visible)
-    {
-        @if (ChildContent != null)
-        {
-            @ChildContent
-        }
-        @if (Dismissable)
-        {
-            <button type="button" class="close" aria-label="Close">
-                <span aria-hidden="true">&amp;times;</span>
-            </button>
-        }
-    }
-</div>

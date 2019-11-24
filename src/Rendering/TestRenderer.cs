@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Testing
 {
+    // https://github.com/aspnet/AspNetCore/blob/master/src/Components/Components/src/RenderTree/Renderer.cs
     [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     public class TestRenderer : Renderer
     {
@@ -15,17 +16,31 @@ namespace Egil.RazorComponents.Testing
 
         private TaskCompletionSource<object> _nextRenderTcs = new TaskCompletionSource<object>();
 
-        public TestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory) : base(serviceProvider, loggerFactory)
+        public TestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+            : base(serviceProvider, loggerFactory)
         {
         }
 
-        public new ArrayRange<RenderTreeFrame> GetCurrentRenderTreeFrames(int componentId) => base.GetCurrentRenderTreeFrames(componentId);
+        public new ArrayRange<RenderTreeFrame> GetCurrentRenderTreeFrames(int componentId)
+            => base.GetCurrentRenderTreeFrames(componentId);
 
-        public int AttachTestRootComponent(TestRenderingContext testRootComponent) => AssignRootComponentId(testRootComponent);
+        public int AttachTestRootComponent(IComponent testRootComponent)
+            => AssignRootComponentId(testRootComponent);
 
         public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
         {
-            var task = Dispatcher.InvokeAsync(() => base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs));
+            var task = Dispatcher.InvokeAsync(() =>
+            {
+                try
+                {
+                    base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
+                }
+                catch (Exception e)
+                {
+                    _unhandledException = e;
+                    throw;
+                }
+            });
             AssertNoSynchronousErrors();
             return task;
         }
@@ -33,12 +48,6 @@ namespace Egil.RazorComponents.Testing
         public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
 
         public Task NextRender => _nextRenderTcs.Task;
-
-        public void DispatchAndAssertNoSynchronousErrors(Action callback)
-        {
-            Dispatcher.InvokeAsync(callback).Wait();
-            AssertNoSynchronousErrors();
-        }
 
         protected override void HandleException(Exception exception)
         {
@@ -54,9 +63,15 @@ namespace Egil.RazorComponents.Testing
             return Task.CompletedTask;
         }
 
+        public void DispatchAndAssertNoSynchronousErrors(Action callback)
+        {
+            Dispatcher.InvokeAsync(callback).Wait();
+            AssertNoSynchronousErrors();
+        }
+
         private void AssertNoSynchronousErrors()
         {
-            if (_unhandledException != null)
+            if (_unhandledException is { })
             {
                 ExceptionDispatchInfo.Capture(_unhandledException).Throw();
             }

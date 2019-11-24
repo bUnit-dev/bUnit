@@ -1,13 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
-[assembly: SuppressMessage("Reliability", "BL0006:The types in 'Microsoft.AspNetCore.Components.RenderTree' are not recommended for use outside of the Blazor framework. These type definitions will change in future releases.",
-    Justification = "I will take the chance",
-    Scope = "namespaceanddescendants",
+﻿// This file is used by Code Analysis to maintain SuppressMessage
+// attributes that are applied to this project.
+// Project-level suppressions either have no target or are given
+// a specific target and scoped to a namespace, type, member, etc.
+using System.Diagnostics.CodeAnalysis;
+[assembly: SuppressMessage("Usage", "BL0006:Do not use RenderTree types", 
+    Justification = "<Pending>", 
+    Scope = "namespaceanddescendants", 
     Target = "Egil.RazorComponents.Testing")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", 
-    "CA1303:Do not pass literals as localized parameters", 
-    Justification = "<Pending>",
-    Scope = "namespaceanddescendants",
-    Target = "Egil.RazorComponents.Testing")]
-
-[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>", Scope = "member", Target = "~M:Egil.RazorComponents.Testing.Expect.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)")]
-[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>", Scope = "member", Target = "~M:Egil.RazorComponents.Testing.Given.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)")]
+[assembly: SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "No need to translate at this point", Scope = "namespaceanddescendants", Target = "Egil.RazorComponents.Testing")]
