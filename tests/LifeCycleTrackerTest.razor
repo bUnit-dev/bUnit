@@ -14,10 +14,10 @@
 @code {
     bool shouldRenderTracker = true;
     int renderTrigger = 0;
-    LifeCycleTracker tracker;
+    LifeCycleTracker tracker = default!; // set during initial render by framework - should not be null!
 
     void Test(TestContext context)
-    {
+    {        
         var cut = context.GetComponentUnderTest<Wrapper>();
         var callLog = tracker.LifeCycleMethodCallLog;
 

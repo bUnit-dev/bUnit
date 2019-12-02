@@ -7,21 +7,23 @@
 <ol class="list-group">
     @foreach (var item in items)
     {
-        <TodoItem Text=@item.Text IsDone=@item.IsDone />
+        @ItemsTemplate(item);@*<TodoItem Todo=@item TodoChanged="SortTasks" />*@
     }
 </ol>
 
 @code{
     [Parameter] public string Label { get; set; } = "Task description";
+    [Parameter] public RenderFragment<Todo> ItemsTemplate { get; set; } = default!;
 
-    private List<(string Text, bool IsDone)> items = new List<(string Text, bool IsDone)>();
+    private List<Todo> items = new List<Todo>();
     private string NewTaskValue { get; set; } = string.Empty;
 
     private void AddTask(MouseEventArgs e)
     {
         if (!string.IsNullOrWhiteSpace(NewTaskValue))
         {
-            items.Add((NewTaskValue, false));
+
+            items.Add(new Todo { Text = NewTaskValue });
         }
         NewTaskValue = string.Empty;
     }

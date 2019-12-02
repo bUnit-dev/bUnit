@@ -10,38 +10,25 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Testing
 {
+
     // TODO: add support for all event types listed here:
     //       https://github.com/aspnet/AspNetCore/blob/master/src/Components/Web/src/Web/EventHandlers.cs
     public static class EventDispatchExtensions
     {
-        public static void Click(this IElement element)
-        {
-            _ = ClickAsync(element);
-        }
+        public static void Click(this IElement element) => _ = ClickAsync(element);
 
-        public static Task ClickAsync(this IElement element)
-        {
-            return element.TriggerEventAsync("onclick", new MouseEventArgs());
-        }
-        public static void Submit(this IElement element)
-        {
-            _ = SubmitAsync(element);
-        }
+        public static Task ClickAsync(this IElement element) => element.TriggerEventAsync("onclick", new MouseEventArgs());
+
+        public static void Submit(this IElement element) => _ = SubmitAsync(element);
 
         public static Task SubmitAsync(this IElement element)
-        {
-            return element.TriggerEventAsync("onsubmit", new EventArgs());
-        }
+            => element.TriggerEventAsync("onsubmit", new EventArgs());
 
         public static void Change(this IElement element, string newValue)
-        {
-            _ = ChangeAsync(element, newValue);
-        }
+            => _ = ChangeAsync(element, newValue);
 
         public static Task ChangeAsync(this IElement element, string newValue)
-        {
-            return element.TriggerEventAsync("onchange", new ChangeEventArgs { Value = newValue });
-        }
+            => element.TriggerEventAsync("onchange", new ChangeEventArgs { Value = newValue });
 
         public static void Change(this IElement element, bool newValue)
         {
@@ -49,14 +36,12 @@ namespace Egil.RazorComponents.Testing
         }
 
         public static Task ChangeAsync(this IElement element, bool newValue)
-        {
-            return element.TriggerEventAsync("onchange", new ChangeEventArgs { Value = newValue });
-        }
+            => element.TriggerEventAsync("onchange", new ChangeEventArgs { Value = newValue });
 
         [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
         public static Task TriggerEventAsync(this IElement element, string attributeName, EventArgs eventArgs)
         {
-            if(element is null) throw new ArgumentNullException(nameof(element));
+            if (element is null) throw new ArgumentNullException(nameof(element));
 
             var eventHandlerIdString = element.GetAttribute($"{Htmlizer.EVENT_HANDLE_ID_ATTR_PREFIX}{attributeName}");
 
@@ -66,7 +51,7 @@ namespace Egil.RazorComponents.Testing
             var eventHandlerId = ulong.Parse(eventHandlerIdString, CultureInfo.InvariantCulture);
 
             var renderer = element.Owner.Context.GetService<TestRenderer>();
-            return renderer.DispatchEventAsync(eventHandlerId, 
+            return renderer.DispatchEventAsync(eventHandlerId,
                 new EventFieldInfo(),
                 eventArgs);
         }

@@ -19,6 +19,11 @@ namespace Egil.RazorComponents.Testing
             _testData = testData;
         }
 
+        public RenderedComponent<IComponent> GetComponentUnderTest()
+        {
+            return GetComponentUnderTest<IComponent>();
+        }
+
         public RenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : class, IComponent
         {
             var fragmentKey = nameof(GetComponentUnderTest);

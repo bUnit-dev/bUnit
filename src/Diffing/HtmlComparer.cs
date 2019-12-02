@@ -17,6 +17,23 @@ namespace Egil.RazorComponents.Testing.Diffing
             var strategy = new DiffingStrategyPipeline();
             strategy.AddDefaultOptions();
             strategy.AddFilter(BlazorDiffingHelpers.BlazorEventHandlerIdAttrFilter, isSpecializedFilter: true);
+            //strategy.AddComparer((in AttributeComparison comparison, CompareResult currentDecision) =>
+            //{
+            //    if (currentDecision.IsSameOrSkip()) return currentDecision;
+
+            //    (var ctrlElm, var testElm) = comparison.GetAttributeElements();
+
+            //    if(ctrlElm.NodeName == "INPUT" && comparison.Control.Attribute.Name == "id")
+            //    {
+            //        return CompareResult.Same;
+            //    }
+            //    else if (ctrlElm.NodeName == "LABEL" && comparison.Control.Attribute.Name == "for")
+            //    {
+            //        return CompareResult.Same;
+            //    }
+
+            //    return currentDecision;
+            //}, isSpecializedComparer: true);
             _differenceEngine = new HtmlDifferenceEngine(strategy);
         }
 

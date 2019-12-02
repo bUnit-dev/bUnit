@@ -13,7 +13,7 @@ namespace Egil.RazorComponents.Testing
         public virtual Task SetParametersAsync(ParameterView parameters)
         {
             parameters.SetParameterProperties(this);
-            if (ChildContent is null) throw new InvalidOperationException($"No {nameof(ChildContent)} specified.");
+            if (ChildContent is null) throw new InvalidOperationException($"No {nameof(ChildContent)} specified in test component.");
             return Task.CompletedTask;
         }
     }

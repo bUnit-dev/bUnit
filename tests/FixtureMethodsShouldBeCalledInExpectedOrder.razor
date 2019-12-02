@@ -1,0 +1,53 @@
+﻿@inherits TestComponentBase
+@using Shouldly
+@*
+    TODO:
+    - Test methods are called in expected order
+    - ComponentUnderTest is returned by context.GetComponentUnderTest<T>
+    - Multiple calls to context.GetComponentUnderTest<T> returns same instance
+*@
+<Fixture Setup="Setup" Test="Test1" Tests=@(new Test[] { Test2, Test3 })>
+    <ComponentUnderTest><div/></ComponentUnderTest>
+</Fixture>
+@code{
+    List<string> callOrder = new List<string>();
+    TestContext? seenContext;
+
+    void Setup(TestContext context)
+    {
+        seenContext = context;
+        callOrder.Add(nameof(Setup));
+        callOrder.Count.ShouldBe(1);
+        callOrder[0].ShouldBe(nameof(Setup));
+    }
+
+    void Test1(TestContext context)
+    {
+        callOrder.Add(nameof(Test1));
+        callOrder.Count.ShouldBe(2);
+        callOrder[0].ShouldBe(nameof(Setup));
+        callOrder[1].ShouldBe(nameof(Test1));
+        context.ShouldBe(seenContext);
+    }
+
+    void Test2(TestContext context)
+    {
+        callOrder.Add(nameof(Test2));
+        callOrder.Count.ShouldBe(3);
+        callOrder[0].ShouldBe(nameof(Setup));
+        callOrder[1].ShouldBe(nameof(Test1));
+        callOrder[2].ShouldBe(nameof(Test2));
+        context.ShouldBe(seenContext);
+    }
+
+    void Test3(TestContext context)
+    {
+        callOrder.Add(nameof(Test3));
+        callOrder.Count.ShouldBe(4);
+        callOrder[0].ShouldBe(nameof(Setup));
+        callOrder[1].ShouldBe(nameof(Test1));
+        callOrder[2].ShouldBe(nameof(Test2));
+        callOrder[3].ShouldBe(nameof(Test3));
+        context.ShouldBe(seenContext);
+    }
+}

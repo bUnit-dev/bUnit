@@ -70,6 +70,14 @@ namespace Egil.RazorComponents.Testing
             return AddComponent<TComponent>(parameterView);
         }
 
+        public RenderedComponent<TComponent> AddComponent<TComponent>(RenderFragment childContent, params (string paramName, object valueValue)[] parameters) where TComponent : class, IComponent
+        {
+            var paramDict = parameters.ToDictionary(x => x.paramName, x => x.valueValue);
+            paramDict.Add("ChildContent", childContent);
+            var parameterView = ParameterView.FromDictionary(paramDict);
+            return AddComponent<TComponent>(parameterView);
+        }
+
         public RenderedComponent<TComponent> AddComponent<TComponent>(ParameterView parameters) where TComponent : class, IComponent
         {
             var result = new RenderedComponent<TComponent>(this, parameters);
@@ -77,11 +85,11 @@ namespace Egil.RazorComponents.Testing
         }
 
         #region IDisposable Support
-        private bool disposed = false;
+        private bool _disposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
@@ -90,7 +98,7 @@ namespace Egil.RazorComponents.Testing
                     if (_htmlParser.IsValueCreated)
                         _htmlParser.Value.Dispose();
                 }
-                disposed = true;
+                _disposed = true;
             }
         }
 

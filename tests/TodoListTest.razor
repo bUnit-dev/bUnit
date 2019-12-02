@@ -6,9 +6,13 @@
 @using Microsoft.Extensions.DependencyInjection
 @using Mocks
 
-<Fixture Setup="Setup" Tests=@(new Test[]{ ListStartsOutAsEmpty, AddingTaskToListWorks })>
+<Fixture Setup="Setup" Tests=@(new Test[] { ListStartsOutAsEmpty, AddingTaskToListWorksAlternative })>
     <ComponentUnderTest>
-        <TodoList Label=@labelText />
+        <TodoList Label=@labelText>
+            <ItemsTemplate>
+                <TodoItem Todo=@context />
+            </ItemsTemplate>
+        </TodoList>
     </ComponentUnderTest>
     <Fragment Id="InitiallyExpected">
         <div class="input-group mb-3 p-3">
@@ -20,11 +24,12 @@
         <ol class="list-group"></ol>
     </Fragment>
     <Fragment Id="AddedTodoItem">
-        <TodoItem IsDone="false" Text="Say hello to the world" />
+        <TodoItem Todo=@(new Todo { Text = newTodoText })></TodoItem>
     </Fragment>
 </Fixture>
 @code {
     private string labelText = "Enter your task here";
+    private string newTodoText = "Say Hello World Blazor!";
 
     void Setup(TestContext context)
     {
@@ -44,13 +49,12 @@
     void AddingTaskToListWorks(TestContext context)
     {
         // arrange
-        var newItemText = "Add new todo to todo list";
         var cut = context.GetComponentUnderTest<TodoList>();
         var initialExpected = context.GetFragment("InitiallyExpected");
-        var expectedItem = context.AddComponent<TodoItem>((nameof(TodoItem.Text), newItemText));
+        var expectedItem = context.AddComponent<TodoItem>((nameof(TodoItem.Todo), new Todo { Text = newTodoText }));
 
         // act
-        cut.Find("input").Change(newItemText);
+        cut.Find("input").Change(newTodoText);
         cut.Find("button").Click();
 
         // assert
@@ -59,16 +63,15 @@
         diffs.First().ShouldBeAddition(expectedItem);
     }
 
-    void AddingTaskToListWorks2(TestContext context)
+    void AddingTaskToListWorksAlternative(TestContext context)
     {
         // arrange
-        var newItemText = "Add new todo to todo list";
         var cut = context.GetComponentUnderTest<TodoList>();
         var initialExpected = context.GetFragment("InitiallyExpected");
         var expectedItem = context.GetFragment<TodoItem>("AddedTodoItem");
 
         // act
-        cut.Find("input").Change(expectedItem.Instance.Text);
+        cut.Find("input").Change(newTodoText);
         cut.Find("button").Click();
 
         // assert
