@@ -11,7 +11,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/egil/razor-components-testing-library</PackageProjectUrl>
     <PackageTags>razor-components unit-testing testing blazor blazor-server-side blazor-client-side</PackageTags>
-    <Version>0.1.0-preview9-19424-4-3</Version>
+    <Version>0.3.0</Version>
     <Authors>Egil Hansen</Authors>
     <Company>Egil Hansen</Company>
     <Product>Razor Component Testing Library</Product>
@@ -28,6 +28,11 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.0" />
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.13.0" />
     <PackageReference Include="AngleSharp.Css" Version="0.13.0" />

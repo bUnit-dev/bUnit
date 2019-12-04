@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AngleSharp;
 using AngleSharp.Diffing.Core;
@@ -9,7 +10,12 @@ using Xunit;
 namespace Egil.RazorComponents.Testing
 {
     public static class ShouldBeTextChangeAssertExtensions
-    {        
+    {
+        public static void ShouldHaveSingleTextChange(this IReadOnlyList<IDiff> diffs, string expectedChange, string? userMessage = null)
+        {
+            AssertExtensions.ShouldHaveSingleChange(diffs).ShouldBeTextChange(expectedChange, userMessage);
+        }
+
         public static void ShouldBeTextChange(this IDiff actualChange, string expectedChange, string? userMessage = null)
         {
             if (actualChange is null) throw new ArgumentNullException(nameof(actualChange));
@@ -40,7 +46,7 @@ namespace Egil.RazorComponents.Testing
 
             if (diffs.Count != 0)
             {
-                var msg = diffs.ToDiffAssertMessage(expectedChange.ToHtml(), actual.Test.Node.ToHtml(), userMessage);
+                var msg = diffs.ToDiffAssertMessage(expectedChange, actual.Test.Node, userMessage);
                 Assert.True(diffs.Count == 0, msg);
             }
         }

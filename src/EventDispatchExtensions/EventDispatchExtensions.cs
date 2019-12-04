@@ -33,10 +33,7 @@ namespace Egil.RazorComponents.Testing
         public static Task ChangeAsync(this IElement element, string newValue)
             => element.TriggerEventAsync("onchange", new ChangeEventArgs { Value = newValue });
 
-        public static void Change(this IElement element, bool newValue)
-        {
-            _ = ChangeAsync(element, newValue);
-        }
+        public static void Change(this IElement element, bool newValue) => _ = ChangeAsync(element, newValue);
 
         public static Task ChangeAsync(this IElement element, bool newValue)
             => element.TriggerEventAsync("onchange", new ChangeEventArgs { Value = newValue });
@@ -46,7 +43,7 @@ namespace Egil.RazorComponents.Testing
         {
             if (element is null) throw new ArgumentNullException(nameof(element));
 
-            var eventHandlerIdString = element.GetAttribute($"{Htmlizer.EVENT_HANDLE_ID_ATTR_PREFIX}{attributeName}");
+            var eventHandlerIdString = element.GetAttribute(Htmlizer.ToBlazorAttribute(attributeName));
 
             if (string.IsNullOrEmpty(eventHandlerIdString))
                 throw new ArgumentException($"The element does not have an event handler for the event '{attributeName}'.");

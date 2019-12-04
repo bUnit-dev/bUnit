@@ -41,7 +41,7 @@ namespace Egil.RazorComponents.Testing
 
             if (diffs.Count != 0)
             {
-                var msg = diffs.ToDiffAssertMessage(expectedChange.ToHtml(), actual.Control.Node.ToHtml(), userMessage);
+                var msg = diffs.ToDiffAssertMessage(expectedChange, actual.Control.Node, userMessage);
                 Assert.True(diffs.Count == 0, msg);
             }
         }

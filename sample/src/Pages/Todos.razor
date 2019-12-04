@@ -1,0 +1,33 @@
+﻿@page "/todos"
+@inject ITodoService todoService
+
+<h1>Todos</h1>
+<p>Be smart - todo!</p>
+
+<TodoList OnAddingTodo="AddingTodo" Items="_todos">
+    <ItemsTemplate>
+        <TodoItem Todo=@context OnCompleted="CompleteTodo" />
+        <TodoItem Todo=@context OnCompleted=@(id => CompleteTodo(id)) />
+    </ItemsTemplate>
+</TodoList>
+
+@code {
+    IReadOnlyList<Todo> _todos = Array.Empty<Todo>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _todos = await todoService.Get();
+    }
+
+    private async Task AddingTodo(Todo todo)
+    {
+        todoService.Add(todo);
+        _todos = await todoService.Get();
+    }
+    
+    private async Task CompleteTodo(int todoId)
+    {
+        todoService.Complete(todoId);
+        _todos = await todoService.Get();
+    }
+}

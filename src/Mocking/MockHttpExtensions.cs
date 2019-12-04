@@ -12,7 +12,7 @@ namespace Egil.RazorComponents.Testing
 {
     public static class MockHttpExtensions
     {
-        public static MockHttpMessageHandler AddMockHttp(this TestContext host)
+        public static MockHttpMessageHandler AddMockHttp(this TestHost host)
         {
             if(host is null) throw new ArgumentNullException(nameof(host));
 

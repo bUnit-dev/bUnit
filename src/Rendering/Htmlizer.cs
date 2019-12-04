@@ -10,13 +10,21 @@ namespace Egil.RazorComponents.Testing
     [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     internal class Htmlizer
     {
-        internal const string EVENT_HANDLE_ID_ATTR_PREFIX = "blazor:";
+        private const string EVENT_HANDLE_ID_ATTR_PREFIX = "blazor:";
         private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
 
         private static readonly HashSet<string> SelfClosingElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"
         };
+
+        public static bool IsBlazorAttribute(string attributeName) 
+            => attributeName.StartsWith(EVENT_HANDLE_ID_ATTR_PREFIX, StringComparison.Ordinal);
+
+        public static string ToBlazorAttribute(string attributeName)
+        {
+            return $"{EVENT_HANDLE_ID_ATTR_PREFIX}{attributeName}";
+        }
 
         public static string GetHtml(TestRenderer renderer, int componentId)
         {

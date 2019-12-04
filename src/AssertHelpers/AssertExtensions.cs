@@ -15,9 +15,13 @@ namespace Egil.RazorComponents.Testing
         public static IDiff ShouldHaveSingleChange(this IReadOnlyList<IDiff> diffs)
         {
             if (diffs is null) throw new ArgumentNullException(nameof(diffs));
-
             Assert.Equal(1, diffs.Count);
             return diffs[0];
+        }
+
+        public static void ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T>[] elementInspectors)
+        {
+            Assert.Collection(collection, elementInspectors);
         }
 
         public static void ShouldHaveChanges(this IReadOnlyList<IDiff> diffs, params Action<IDiff>[] expectedDiffAsserts)
@@ -50,7 +54,7 @@ namespace Egil.RazorComponents.Testing
 
             if (diffs.Count != 0)
             {
-                var msg = diffs.ToDiffAssertMessage(expected.ToHtml(), actual.ToHtml(), userMessage);
+                var msg = diffs.ToDiffAssertMessage(expected, actual, userMessage);
                 Assert.True(diffs.Count == 0, msg);
             }
         }

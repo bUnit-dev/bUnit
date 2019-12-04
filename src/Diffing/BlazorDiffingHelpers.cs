@@ -9,7 +9,7 @@ namespace Egil.RazorComponents.Testing.Diffing
         {
             if (currentDecision == FilterDecision.Exclude) return currentDecision;
 
-            if (attrSource.Attribute.Name.StartsWith(Htmlizer.EVENT_HANDLE_ID_ATTR_PREFIX, StringComparison.Ordinal))
+            if (Htmlizer.IsBlazorAttribute(attrSource.Attribute.Name))
                 return FilterDecision.Exclude;
 
             return currentDecision;
