@@ -1,5 +1,8 @@
-﻿<div class="input-group mb-3 p-3">
-    <input type="text" class="form-control" placeholder=@Label aria-label=@Label @bind="NewTaskValue">
+﻿@using Egil.RazorComponents.Testing.Library.SampleApp.Data
+@page "/todolist"
+
+<div class="input-group mb-3 p-3">
+    <input type="text" class="form-control" placeholder=@Label aria-label=@Label @bind="NewTaskValue" />
     <div class="input-group-append">
         <button class="btn btn-secondary" type="button" @onclick="AddTask">Add task</button>
     </div>
@@ -7,7 +10,7 @@
 <ol class="list-group">
     @foreach (var item in items)
     {
-        @ItemsTemplate(item);@*<TodoItem Todo=@item TodoChanged="SortTasks" />*@
+        @ItemsTemplate(item);
     }
 </ol>
 

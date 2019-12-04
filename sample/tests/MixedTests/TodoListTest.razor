@@ -1,10 +1,8 @@
-﻿@inherits TestComponentBase
+﻿@*@inherits TestComponentBase
 @using Microsoft.JSInterop
 @using AngleSharp.Html.Dom
 @using AngleSharp.Diffing.Core
 @using Shouldly
-@using Microsoft.Extensions.DependencyInjection
-@using Mocks
 
 <Fixture Setup="Setup" Tests=@(new Test[] { ListStartsOutAsEmpty, AddingTaskToListWorksAlternative })>
     <ComponentUnderTest>
@@ -79,4 +77,4 @@
         diffs.Count.ShouldBe(1);
         diffs.First().ShouldBeAddition(expectedItem);
     }
-}
+}*@

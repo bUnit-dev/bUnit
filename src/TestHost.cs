@@ -45,6 +45,14 @@ namespace Egil.RazorComponents.Testing
             _serviceCollection.AddSingleton(typeof(TService), implementation);
         }
 
+        public void AddService<TService, TImplementation>() where TService : class where TImplementation : class, TService
+        {
+            if (_renderer.IsValueCreated)
+                throw new InvalidOperationException("Cannot configure services after the host has started operation");
+
+            _serviceCollection.AddSingleton<TService, TImplementation>();
+        }
+
         public void WaitForNextRender(Action trigger)
         {
             if (trigger is null) throw new ArgumentNullException(nameof(trigger));

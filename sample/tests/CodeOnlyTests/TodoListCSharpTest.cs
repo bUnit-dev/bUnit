@@ -4,21 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Html.Dom;
-using Egil.RazorComponents.Testing.SampleComponents;
+using Egil.RazorComponents.Testing.Library.SampleApp.Data;
+using Egil.RazorComponents.Testing.Library.SampleApp.Pages;
+using Egil.RazorComponents.Testing.Library.SampleApp.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using System.Diagnostics.CodeAnalysis;
 using Shouldly;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class TodoListCSharpTest : IDisposable
+    public class TodoListTest : ComponentFixtureBase
     {
-        private readonly TestHost testHost = new TestHost();
-
-        public void Dispose() => testHost.Dispose();
-
         static RenderFragment<Todo> CreateTodoItemTemplate()
         {
             return todo => builder =>
@@ -33,7 +31,7 @@ namespace Egil.RazorComponents.Testing
         public void ListStartsOutAsEmpty()
         {
             var labelText = "Type your todo here";
-            var cut = testHost.AddComponent<TodoList>(
+            var cut = TestHost.AddComponent<TodoList>(
                 (nameof(TodoList.Label), labelText),
                 (nameof(TodoList.ItemsTemplate), CreateTodoItemTemplate())
             );
@@ -53,7 +51,7 @@ namespace Egil.RazorComponents.Testing
         {
             // arrange
             var newItemText = "Add new todo to todo list";
-            var cut = testHost.AddComponent<TodoList>((nameof(TodoList.ItemsTemplate), CreateTodoItemTemplate()));
+            var cut = TestHost.AddComponent<TodoList>((nameof(TodoList.ItemsTemplate), CreateTodoItemTemplate()));
 
             // act
             cut.Find("input").Change(newItemText);

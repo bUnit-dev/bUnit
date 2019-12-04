@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Egil.RazorComponents.Testing.Library.SampleApp.Pages;
+using Shouldly;
+using Xunit;
+
+namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
+{
+    public class CounterTest : ComponentFixtureBase
+    {
+        [Fact]
+        public void InitialHtmlIsCorrect()
+        {
+            var cut = TestHost.AddComponent<Counter>();
+            var expectedHtml = @"<h1>Counter</h1>
+                                 <p>Current count: 0</p>
+                                 <button class=""btn btn-primary"">Click me</button>";
+            cut.ShouldBe(expectedHtml);
+        }
+
+        [Theory]
+        [InlineData(1, "Current count: 1")]
+        [InlineData(2, "Current count: 2")]
+        [InlineData(3, "Current count: 3")]
+        public void AfterBtnClickCounterIsIncremented(int numberOfClicks, string expectedCountMsg)
+        {
+            var cut = TestHost.AddComponent<Counter>();
+            var initialHtml = cut.GetMarkup();
+
+            cut.Find("button").Click(numberOfClicks);
+
+            cut.CompareTo(initialHtml)
+                .ShouldHaveSingleChange()
+                .ShouldBeTextChange(expectedCountMsg);
+        }
+    }
+}

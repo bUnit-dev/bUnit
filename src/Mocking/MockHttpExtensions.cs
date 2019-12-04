@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Net.Http.Headers;
 using Xunit.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Egil.RazorComponents.Testing
 {
@@ -22,8 +23,8 @@ namespace Egil.RazorComponents.Testing
             return mockHttp;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2008:Do not create tasks without passing a TaskScheduler", Justification = "<Pending>")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
+        [SuppressMessage("Reliability", "CA2008:Do not create tasks without passing a TaskScheduler", Justification = "<Pending>")]
+        [SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
         public static TaskCompletionSource<object> Capture(this MockHttpMessageHandler handler, string url)
         {
             if (handler is null) throw new ArgumentNullException(nameof(handler));

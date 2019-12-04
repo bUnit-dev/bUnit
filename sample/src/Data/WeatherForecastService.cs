@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.Data
 {
-    public class WeatherForecastService
+    public class WeatherForecastService : IWeatherForecastService
     {
         private static readonly string[] Summaries = new[]
         {

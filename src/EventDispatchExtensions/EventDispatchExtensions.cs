@@ -15,7 +15,10 @@ namespace Egil.RazorComponents.Testing
     //       https://github.com/aspnet/AspNetCore/blob/master/src/Components/Web/src/Web/EventHandlers.cs
     public static class EventDispatchExtensions
     {
-        public static void Click(this IElement element) => _ = ClickAsync(element);
+        public static void Click(this IElement element, int numberOfClicks = 1)
+        {
+            for (int i = 0; i < numberOfClicks; i++) _ = ClickAsync(element);
+        }
 
         public static Task ClickAsync(this IElement element) => element.TriggerEventAsync("onclick", new MouseEventArgs());
 
