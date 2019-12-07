@@ -9,12 +9,12 @@ using Xunit;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class CounterTest : ComponentFixtureBase
+    public class CounterTest : ComponentTestBase
     {
         [Fact]
         public void InitialHtmlIsCorrect()
         {
-            var cut = TestHost.AddComponent<Counter>();
+            var cut = RenderComponent<Counter>();
             var expectedHtml = @"<h1>Counter</h1>
                                  <p>Current count: 0</p>
                                  <button class=""btn btn-primary"">Click me</button>";
@@ -28,7 +28,7 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
         [InlineData(3, "Current count: 3")]
         public void AfterBtnClickCounterIsIncremented(int numberOfClicks, string expectedCountMsg)
         {
-            var cut = TestHost.AddComponent<Counter>();
+            var cut = RenderComponent<Counter>();
 
             cut.Find("button").Click(numberOfClicks);
 
@@ -40,7 +40,7 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
         public void CounterStagesTest()
         {
             // Initial rendering
-            var cut = TestHost.AddComponent<Counter>();
+            var cut = RenderComponent<Counter>();
             var expectedHtml = @"<h1>Counter</h1>
                                  <p>Current count: 0</p>
                                  <button class=""btn btn-primary"">Click me</button>";

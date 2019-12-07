@@ -1,7 +1,10 @@
-﻿using Egil.RazorComponents.Testing.Library.SampleApp.Components;
+﻿using AngleSharp.Dom;
+using Egil.RazorComponents.Testing.Library.SampleApp.Components;
 using Egil.RazorComponents.Testing.Library.SampleApp.Data;
+using Egil.RazorComponents.Testing.Mocking.JSInterop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +14,7 @@ using Xunit;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class TodoListTest : ComponentFixtureBase
+    public class TodoListTest : ComponentTestBase
     {
         private string GetExpectedHtml(string label = "Task description", string itemsHtml = "") =>
             $@"<form>
@@ -28,19 +31,27 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
         [Fact(DisplayName = "Task list renders as empty with default html when no items is provided")]
         public void Test001()
         {
-            TestHost.AddMockJsRuntime();
-            var cut = TestHost.AddComponent<TodoList>();
+            // arrange
+            Services.AddMockJsRuntime();
 
+            // act
+            var cut = RenderComponent<TodoList>();
+
+            // assert
             cut.ShouldBe(GetExpectedHtml());
         }
 
         [Fact(DisplayName = "Task list with custom label renders correctly")]
         public void Test002()
         {
-            TestHost.AddMockJsRuntime();
+            // arrange
+            Services.AddMockJsRuntime();
             var label = "hello world";
-            var cut = TestHost.AddComponent<TodoList>((nameof(TodoList.Label), label));
 
+            // act
+            var cut = RenderComponent<TodoList>((nameof(TodoList.Label), label));
+
+            // assert
             cut.ShouldBe(GetExpectedHtml(label: label));
         }
 
@@ -48,23 +59,80 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
         public void Test003()
         {
             // arrange
-            TestHost.AddMockJsRuntime();
+            Services.AddMockJsRuntime();
+            RenderFragment<Todo> itemTemplate = todo => builder => builder.AddMarkupContent(0, $"<li>{todo.Id}</li>");
             var items = new[] { new Todo { Id = 42 }, new Todo { Id = 1337 } };
 
             // act
-            var cut = TestHost.AddComponent<TodoList>(
+            var cut = RenderComponent<TodoList>(
                 (nameof(TodoList.Items), items),
-                (nameof(TodoList.ItemsTemplate), GetItemTemplate())
+                (nameof(TodoList.ItemsTemplate), itemTemplate)
             );
 
             // assert
             var expectedHtml = GetExpectedHtml(itemsHtml: $"<li>{items[0].Id}</li><li>{items[1].Id}</li>");
             cut.ShouldBe(expectedHtml);
+        }
 
-            RenderFragment<Todo> GetItemTemplate()
-            { 
-                return todo => builder => builder.AddMarkupContent(0, $"<li>{todo.Id}</li>");
-            }
+        [Fact(DisplayName = "After first render, the new task input field has focus")]
+        public void Test004()
+        {
+            // arrange
+            var jsRtMock = Services.AddMockJsRuntime();
+
+            // act
+            var cut = RenderComponent<TodoList>();
+
+            // assert that there is a call to document.body.focus.call with a single argument,
+            // a reference to the input element.
+            jsRtMock.VerifyInvoke("document.body.focus.call")
+                .Arguments.Single().ShouldBeElementReferenceTo(cut.Find("input"));
+        }
+
+        [Fact(DisplayName = "The new task input field does not receive focus explicitly after second and later renders")]
+        public void Test0041()
+        {
+            // arrange
+            var jsRtMock = Services.AddMockJsRuntime();
+
+            // act 
+            var cut = RenderComponent<TodoList>(); // first render
+            cut.Render(); // second render
+
+            // assert
+            jsRtMock.VerifyInvoke("document.body.focus.call", calledTimes: 1);
+        }
+
+
+        [Fact(DisplayName = "When a text entered in the add task input field and the form is submitted, " +
+                            "the OnAddingTodo is raised with a new Todo containing the entered text")]
+        public void Test005()
+        {
+            var jsRtMock = Services.AddMockJsRuntime();
+            var taskValue = "HELLO WORLD TASK";
+            var createdTask = default(Todo);
+            var cut = RenderComponent<TodoList>(
+                (nameof(TodoList.OnAddingTodo), EventCallback.Factory.Create<Todo>(this, task => createdTask = task))
+            );
+
+            cut.Find("input").Change(taskValue);
+            cut.Find("form").Submit();
+
+            createdTask.ShouldNotBeNull().Text.ShouldBe(taskValue);
+        }
+
+        [Fact(DisplayName = "When add task form is submitted with no text OnAddingTodo is not called")]
+        public void Test006()
+        {
+            var jsRtMock = Services.AddMockJsRuntime();
+            var createdTask = default(Todo);
+            var cut = RenderComponent<TodoList>(
+                (nameof(TodoList.OnAddingTodo), EventCallback.Factory.Create<Todo>(this, task => createdTask = task))
+            );
+
+            cut.Find("form").Submit();
+
+            createdTask.ShouldBeNull();
         }
     }
 }

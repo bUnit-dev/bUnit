@@ -1,0 +1,20 @@
+﻿@inherits TestComponentBase
+@using Shouldly
+
+<Fixture Test="Test">
+    <Fragment Id="fst">
+        <div @ref="refElm" />
+    </Fragment>
+</Fixture>
+@code {
+    ElementReference refElm;
+
+    void Test(TestContext context)
+    {
+        var cut = context.GetFragment("fst");
+        
+        var html = cut.GetMarkup();
+
+        html.ShouldContain($"=\"{refElm.Id}\"");
+    }
+}

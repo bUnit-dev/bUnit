@@ -13,17 +13,23 @@ namespace Egil.RazorComponents.Testing
             Indentation = "  "
         };
 
-        public string Attribute(IAttr attribute) => _formatter.Attribute(attribute);
+        public string Attribute(IAttr attribute)
+            => Htmlizer.IsBlazorAttribute(attribute?.Name ?? string.Empty)
+                ? string.Empty
+                : _formatter.Attribute(attribute);
+
         public string CloseTag(IElement element, bool selfClosing) => _formatter.CloseTag(element, selfClosing);
         public string Comment(IComment comment) => _formatter.Comment(comment);
         public string Doctype(IDocumentType doctype) => _formatter.Doctype(doctype);
         public string OpenTag(IElement element, bool selfClosing)
-        {            
+        {
+            if(element is null) throw new ArgumentNullException(nameof(element));
+
             var result = _formatter.OpenTag(element, selfClosing);
 
             foreach (var attr in element.Attributes)
             {
-                if(Htmlizer.IsBlazorAttribute(attr.Name))
+                if (Htmlizer.IsBlazorAttribute(attr.Name))
                 {
                     var attrToRemove = " " + HtmlMarkupFormatter.Instance.Attribute(attr);
                     result = result.Replace(attrToRemove, "", StringComparison.Ordinal);

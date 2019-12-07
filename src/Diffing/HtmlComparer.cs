@@ -30,5 +30,4 @@ namespace Egil.RazorComponents.Testing.Diffing
             return _differenceEngine.Compare(controlHtml, testHtml);
         }
     }
-
 }

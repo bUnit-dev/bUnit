@@ -11,7 +11,7 @@ using Shouldly;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class FetchDataTest : ComponentFixtureBase
+    public class FetchDataTest : ComponentTestBase
     {
         class MockForecastService : IWeatherForecastService
         {
@@ -23,8 +23,8 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
         [Fact]
         public void InitialLoadingHtmlRendersCorrectly()
         {
-            TestHost.AddService<IWeatherForecastService, MockForecastService>();
-            var cut = TestHost.AddComponent<FetchData>();
+            Services.AddService<IWeatherForecastService, MockForecastService>();
+            var cut = RenderComponent<FetchData>();
             var initialExpectedHtml = @"<h1>Weather forecast</h1>
                                         <p>This component demonstrates fetching data from a service.</p>
                                         <p><em>Loading...</em></p>";
@@ -37,16 +37,16 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
         {
             // setup mock
             var mockForecastService = new MockForecastService();
-            TestHost.AddService<IWeatherForecastService>(mockForecastService);
+            Services.AddService<IWeatherForecastService>(mockForecastService);
 
             // arrange
             var forecasts = new[] { new WeatherForecast { Date = DateTime.Now, Summary = "Testy", TemperatureC = 42 } };
-            var cut = TestHost.AddComponent<FetchData>();
+            var cut = RenderComponent<FetchData>();
             var initialHtml = cut.GetMarkup();
-            var expectedDataTable = TestHost.AddComponent<ForecastDataTable>((nameof(ForecastDataTable.Forecasts), forecasts));
+            var expectedDataTable = RenderComponent<ForecastDataTable>((nameof(ForecastDataTable.Forecasts), forecasts));
 
             // act
-            TestHost.WaitForNextRender(() => mockForecastService.Task.SetResult(forecasts));
+            WaitForNextRender(() => mockForecastService.Task.SetResult(forecasts));
 
             // assert
             cut.CompareTo(initialHtml)
@@ -61,15 +61,15 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
         {
             // setup mock
             var mockForecastService = new MockForecastService();
-            TestHost.AddService<IWeatherForecastService>(mockForecastService);
+            Services.AddService<IWeatherForecastService>(mockForecastService);
 
             // arrange
             var forecasts = new[] { new WeatherForecast { Date = DateTime.Now, Summary = "Testy", TemperatureC = 42 } };
-            var cut = TestHost.AddComponent<FetchData>();
-            var expectedDataTable = TestHost.AddComponent<ForecastDataTable>((nameof(ForecastDataTable.Forecasts), forecasts));
+            var cut = RenderComponent<FetchData>();
+            var expectedDataTable = RenderComponent<ForecastDataTable>((nameof(ForecastDataTable.Forecasts), forecasts));
 
             // act
-            TestHost.WaitForNextRender(() => mockForecastService.Task.SetResult(forecasts));
+            WaitForNextRender(() => mockForecastService.Task.SetResult(forecasts));
 
             // assert
             cut.GetChangesSinceFirstRender().ShouldHaveChanges(

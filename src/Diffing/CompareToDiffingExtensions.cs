@@ -7,7 +7,7 @@ using Egil.RazorComponents.Testing.Diffing;
 
 namespace Egil.RazorComponents.Testing
 {
-    public static class CompareToAssertExtensions
+    public static class CompareToDiffingExtensions
     {
         public static IReadOnlyList<IDiff> CompareTo(this IRenderedFragment actual, string expected)
         {

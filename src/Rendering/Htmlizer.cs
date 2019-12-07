@@ -10,7 +10,7 @@ namespace Egil.RazorComponents.Testing
     [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     internal class Htmlizer
     {
-        private const string EVENT_HANDLE_ID_ATTR_PREFIX = "blazor:";
+        private const string BLAZOR_ATTR_PREFIX = "blazor:";
         private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
 
         private static readonly HashSet<string> SelfClosingElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -19,11 +19,11 @@ namespace Egil.RazorComponents.Testing
         };
 
         public static bool IsBlazorAttribute(string attributeName) 
-            => attributeName.StartsWith(EVENT_HANDLE_ID_ATTR_PREFIX, StringComparison.Ordinal);
+            => attributeName.StartsWith(BLAZOR_ATTR_PREFIX, StringComparison.Ordinal);
 
         public static string ToBlazorAttribute(string attributeName)
         {
-            return $"{EVENT_HANDLE_ID_ATTR_PREFIX}{attributeName}";
+            return $"{BLAZOR_ATTR_PREFIX}{attributeName}";
         }
 
         public static string GetHtml(TestRenderer renderer, int componentId)
@@ -185,10 +185,27 @@ namespace Egil.RazorComponents.Testing
             {
                 var candidateIndex = position + i;
                 ref var frame = ref frames.Array[candidateIndex];
-                if (frame.FrameType != RenderTreeFrameType.Attribute)
+
+                // NOTE: The following is the original from HtmlRenderer.cs
+                // 
+                //   if (frame.FrameType != RenderTreeFrameType.Attribute)
+                //   {
+                //       return candidateIndex;
+                //   }
+                //
+                // The next two if block have been added instead. 
+                // This will enable verification of element ref capture in unit tests.
+                if (frame.FrameType != RenderTreeFrameType.Attribute && frame.FrameType != RenderTreeFrameType.ElementReferenceCapture)
                 {
                     return candidateIndex;
                 }
+
+                if(frame.FrameType == RenderTreeFrameType.ElementReferenceCapture)
+                {
+                    result.Add($" {BLAZOR_ATTR_PREFIX}elementreference=\"{frame.AttributeName}\"");
+                    return candidateIndex;
+                }
+                // End of addition
 
                 if (frame.AttributeName.Equals("value", StringComparison.OrdinalIgnoreCase))
                 {
@@ -202,7 +219,7 @@ namespace Egil.RazorComponents.Testing
                     //       to the following to make it more obvious
                     //       that this is a generated/special blazor attribute
                     //       used for tracking event handler id's
-                    result.Add($" {EVENT_HANDLE_ID_ATTR_PREFIX }{frame.AttributeName}=\"{frame.AttributeEventHandlerId}\"");
+                    result.Add($" {BLAZOR_ATTR_PREFIX}{frame.AttributeName}=\"{frame.AttributeEventHandlerId}\"");
                     continue;
                 }
 

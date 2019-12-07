@@ -3,6 +3,7 @@ using System.Linq;
 using AngleSharp;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
+using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Diffing;
 using Xunit;
 
@@ -41,8 +42,7 @@ namespace Egil.RazorComponents.Testing
 
             if (diffs.Count != 0)
             {
-                var msg = diffs.ToDiffAssertMessage(expectedChange, actual.Control.Node, userMessage);
-                Assert.True(diffs.Count == 0, msg);
+                HtmlEqualException.ThrowHtmlEqualException(diffs, expectedChange, actual.Control.Node, userMessage);
             }
         }
     }

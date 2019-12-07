@@ -12,14 +12,14 @@ namespace Egil.RazorComponents.Testing
 {
     public static class MockHttpExtensions
     {
-        public static MockHttpMessageHandler AddMockHttp(this TestHost host)
+        public static MockHttpMessageHandler AddMockHttp(this TestServiceProvider serviceProvider)
         {
-            if(host is null) throw new ArgumentNullException(nameof(host));
+            if(serviceProvider is null) throw new ArgumentNullException(nameof(serviceProvider));
 
             var mockHttp = new MockHttpMessageHandler();
             var httpClient = mockHttp.ToHttpClient();
             httpClient.BaseAddress = new Uri("http://example.com");
-            host.AddService(httpClient);
+            serviceProvider.AddService(httpClient);
             return mockHttp;
         }
 

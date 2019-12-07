@@ -1,17 +1,18 @@
 ﻿using System;
+using Egil.RazorComponents.Testing.Mocking.JSInterop;
 using Microsoft.JSInterop;
 
 namespace Egil.RazorComponents.Testing
 {
     public static class MockJsRuntimeExtensions
     {
-        public static MockJsRuntimeInvokeHandler AddMockJsRuntime(this TestHost host, bool strictMode = false)
+        public static MockJsRuntimeInvokeHandler AddMockJsRuntime(this TestServiceProvider serviceProvider, JsRuntimeMockMode mode = JsRuntimeMockMode.Loose)
         {
-            if (host is null) throw new ArgumentNullException(nameof(host));
+            if (serviceProvider is null) throw new ArgumentNullException(nameof(serviceProvider));
 
-            var result = new MockJsRuntimeInvokeHandler() { StrictMode = strictMode };
+            var result = new MockJsRuntimeInvokeHandler(mode);
 
-            host.AddService(result.ToJsRuntime());
+            serviceProvider.AddService(result.ToJsRuntime());
 
             return result;
         }

@@ -11,20 +11,20 @@ using Xunit;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class TodoItemTest : ComponentFixtureBase
+    public class TodoItemTest : ComponentTestBase
     {
         [Fact(DisplayName = "When no Todo is passed to item an exception is thrown")]
         public void Test001()
         {
-            Should.Throw<ArgumentException>(() => TestHost.AddComponent<TodoItem>());
-            Should.Throw<InvalidOperationException>(() => TestHost.AddComponent<TodoItem>((nameof(TodoItem.Todo), null)));
+            Should.Throw<ArgumentException>(() => RenderComponent<TodoItem>());
+            Should.Throw<InvalidOperationException>(() => RenderComponent<TodoItem>((nameof(TodoItem.Todo), null)));
         }
 
         [Fact(DisplayName = "The control renders the expected output")]
         public void Test002()
         {
             var todo = new Todo { Id = 42, Text = "Hello world" };
-            var cut = TestHost.AddComponent<TodoItem>((nameof(TodoItem.Todo), todo));
+            var cut = RenderComponent<TodoItem>((nameof(TodoItem.Todo), todo));
 
             cut.ShouldBe($@"<li class=""list-group-item list-group-item-action"">
                                 <span>{todo.Text}</span>
@@ -38,7 +38,7 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
             var todo = new Todo { Id = 42, Text = "Hello world" };
             var completedId = 0;
             var onCompleteHandler = EventCallback.Factory.Create(this, (int id) => completedId = id);
-            var cut = TestHost.AddComponent<TodoItem>(
+            var cut = RenderComponent<TodoItem>(
                 (nameof(TodoItem.Todo), todo),
                 (nameof(TodoItem.OnCompleted), onCompleteHandler)
             );
