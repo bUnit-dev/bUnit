@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Dom;
+using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Library.SampleApp.Components;
 using Egil.RazorComponents.Testing.Library.SampleApp.Data;
 using Egil.RazorComponents.Testing.Mocking.JSInterop;
@@ -14,7 +15,7 @@ using Xunit;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class TodoListTest : ComponentTestBase
+    public class TodoListTest : TestContext
     {
         private string GetExpectedHtml(string label = "Task description", string itemsHtml = "") =>
             $@"<form>

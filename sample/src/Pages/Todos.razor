@@ -7,7 +7,6 @@
 <TodoList OnAddingTodo="AddingTodo" Items="_todos">
     <ItemsTemplate>
         <TodoItem Todo=@context OnCompleted="CompleteTodo" />
-        <TodoItem Todo=@context OnCompleted=@(id => CompleteTodo(id)) />
     </ItemsTemplate>
 </TodoList>
 

@@ -14,12 +14,12 @@ namespace Egil.RazorComponents.Testing
         private readonly string _firstRenderMarkup;
         private string? _lastSnapshotMarkup;
 
-        protected int ComponentId { get; }
+        protected int ComponentId { get; set; }
         protected ContainerComponent Container { get; }
 
-        public TestHost TestContext { get; }
+        public ITestContext TestContext { get; }
 
-        internal RenderedFragment(TestHost testContext, RenderFragment renderFragment)
+        internal RenderedFragment(TestContext testContext, RenderFragment renderFragment)
         {
             TestContext = testContext;
             _renderFragment = renderFragment;
@@ -35,7 +35,7 @@ namespace Egil.RazorComponents.Testing
 
         public IReadOnlyList<IDiff> GetChangesSinceSnapshot()
         {
-            if (_lastSnapshotMarkup is null) 
+            if (_lastSnapshotMarkup is null)
                 throw new InvalidOperationException($"No snapshot exists to compare with. Call {nameof(TakeSnapshot)} to create one.");
             return this.CompareTo(_lastSnapshotMarkup);
         }

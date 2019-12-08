@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Asserting;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Asserting
 {
     public static class DiffAssertExtensions
     {
@@ -48,7 +47,7 @@ namespace Egil.RazorComponents.Testing
         {
             var diffs = actual.CompareTo(expected);
 
-            if (diffs.Count != 0) 
+            if (diffs.Count != 0)
                 HtmlEqualException.ThrowHtmlEqualException(diffs, expected, actual, userMessage);
         }
     }

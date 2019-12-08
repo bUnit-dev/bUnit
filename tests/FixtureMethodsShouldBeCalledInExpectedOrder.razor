@@ -10,9 +10,9 @@
 </Fixture>
 @code{
     List<string> callOrder = new List<string>();
-    TestContext? seenContext;
+    IRazorTestContext? seenContext;
 
-    void Setup(TestContext context)
+    void Setup(IRazorTestContext context)
     {
         seenContext = context;
         callOrder.Add(nameof(Setup));
@@ -20,7 +20,7 @@
         callOrder[0].ShouldBe(nameof(Setup));
     }
 
-    void Test1(TestContext context)
+    void Test1(IRazorTestContext context)
     {
         callOrder.Add(nameof(Test1));
         callOrder.Count.ShouldBe(2);
@@ -29,7 +29,7 @@
         context.ShouldBe(seenContext);
     }
 
-    void Test2(TestContext context)
+    void Test2(IRazorTestContext context)
     {
         callOrder.Add(nameof(Test2));
         callOrder.Count.ShouldBe(3);
@@ -39,7 +39,7 @@
         context.ShouldBe(seenContext);
     }
 
-    void Test3(TestContext context)
+    void Test3(IRazorTestContext context)
     {
         callOrder.Add(nameof(Test3));
         callOrder.Count.ShouldBe(4);

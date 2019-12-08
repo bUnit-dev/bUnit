@@ -2,16 +2,16 @@
 @using Shouldly
 
 <Fixture Test="Test">
-    <Fragment Id="fst">
+    <Fragment>
         <div @ref="refElm" />
     </Fragment>
 </Fixture>
 @code {
     ElementReference refElm;
 
-    void Test(TestContext context)
+    void Test(IRazorTestContext context)
     {
-        var cut = context.GetFragment("fst");
+        var cut = context.RenderFragment();
         
         var html = cut.GetMarkup();
 

@@ -18,10 +18,11 @@
 @code {
     private ElementReference _inputRef;
     private string NewTaskValue { get; set; } = string.Empty;
+    private IEnumerable<Todo> _todos = Array.Empty<Todo>();
 
     [Parameter] public string Label { get; set; } = "Task description";
     [Parameter] public RenderFragment<Todo> ItemsTemplate { get; set; } = default!;
-    [Parameter] public IEnumerable<Todo> Items { get; set; } = Array.Empty<Todo>();
+    [Parameter] public IEnumerable<Todo> Items { get => _todos; set => _todos = value ?? Array.Empty<Todo>(); }
     [Parameter] public EventCallback<Todo> OnAddingTodo { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

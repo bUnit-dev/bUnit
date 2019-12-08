@@ -14,6 +14,6 @@ namespace Egil.RazorComponents.Testing
         [Parameter] public Test Test { get => _test; set => _test = value ?? NoopTestMethod; }
         [Parameter] public IReadOnlyCollection<Test> Tests { get => _tests; set => _tests = value ?? Array.Empty<Test>(); }
 
-        private static void NoopTestMethod(TestContext context) { }
+        private static void NoopTestMethod(IRazorTestContext _) { }
     }
 }

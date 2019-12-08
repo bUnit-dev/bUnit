@@ -8,10 +8,11 @@ using Egil.RazorComponents.Testing.Library.SampleApp.Components;
 using Xunit;
 using Egil.RazorComponents.Testing.Library.SampleApp.Pages;
 using Shouldly;
+using Egil.RazorComponents.Testing.Asserting;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class FetchDataTest : ComponentTestBase
+    public class FetchDataTest : TestContext
     {
         class MockForecastService : IWeatherForecastService
         {

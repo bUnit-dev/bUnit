@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Library.SampleApp.Pages;
 using Shouldly;
 using Xunit;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class CounterTest : ComponentTestBase
+    public class CounterTest : TestContext
     {
         [Fact]
         public void InitialHtmlIsCorrect()

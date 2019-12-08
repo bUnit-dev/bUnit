@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Testing
 {
-    public delegate void Test(TestContext context);
+    public delegate void Test(IRazorTestContext context);
 }

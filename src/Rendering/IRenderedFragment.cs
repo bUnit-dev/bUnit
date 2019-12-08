@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 
 namespace Egil.RazorComponents.Testing
@@ -10,8 +11,10 @@ namespace Egil.RazorComponents.Testing
         string GetMarkup();
 
         INodeList GetNodes();
-
-        TestHost TestContext { get; }
+        void TakeSnapshot();
+        IReadOnlyList<IDiff> GetChangesSinceFirstRender();
+        IReadOnlyList<IDiff> GetChangesSinceSnapshot();
+        ITestContext TestContext { get; }
     }
 
     public static class RenderedFragmentExtensions

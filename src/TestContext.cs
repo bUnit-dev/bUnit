@@ -1,81 +1,124 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Egil.RazorComponents.Testing.Diffing;
+﻿using Egil.RazorComponents.Testing.Diffing;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Testing
 {
-    public sealed class TestContext : TestHost
+    /// <summary>
+    /// A test context is a factory that makes it possible to create components under tests.
+    /// </summary>
+    public class TestContext : ITestContext, IDisposable
     {
-        private readonly IReadOnlyList<FragmentBase> _testData;
-        private readonly Dictionary<string, IRenderedFragment> _renderedFragments = new Dictionary<string, IRenderedFragment>();
+        private readonly Lazy<TestRenderer> _renderer;
+        private readonly Lazy<HtmlParser> _htmlParser;
 
-        public TestContext(IReadOnlyList<FragmentBase> testData)
+        /// <inheritdoc/>
+        public TestRenderer Renderer => _renderer.Value;
+
+        /// <inheritdoc/>
+        public HtmlParser HtmlParser => _htmlParser.Value;
+
+        /// <inheritdoc/>
+        public TestServiceProvider Services { get; } = new TestServiceProvider();
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="TestContext"/> class.
+        /// </summary>
+        public TestContext()
         {
-            _testData = testData;
+            _renderer = new Lazy<TestRenderer>(() =>
+            {
+                var loggerFactory = Services.GetService<ILoggerFactory>() ?? new NullLoggerFactory();
+                return new TestRenderer(Services, loggerFactory);
+            });
+            _htmlParser = new Lazy<HtmlParser>(() =>
+            {
+                return new HtmlParser(Renderer, new HtmlComparer());
+            });
         }
 
-        public RenderedComponent<IComponent> GetComponentUnderTest()
+        /// <inheritdoc/>
+        //public IRenderedComponent<TComponent> RenderComponent<TComponent>() where TComponent : class, IComponent
+        //{
+        //    return RenderComponent<TComponent>(ParameterView.Empty);
+        //}
+
+        /// <inheritdoc/>
+        //public IRenderedComponent<TComponent> RenderComponent<TComponent>(params (string paramName, object? valueValue)[] parameters) where TComponent : class, IComponent
+        //{
+        //    var paramDict = parameters.ToDictionary(x => x.paramName, x => x.valueValue);
+        //    var parameterView = ParameterView.FromDictionary(paramDict);
+        //    return RenderComponent<TComponent>(parameterView);
+        //}
+
+        public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
         {
-            return GetComponentUnderTest<IComponent>();
+            var result = new RenderedComponent<TComponent>(this, parameters);
+            return result;
         }
 
-        public RenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : class, IComponent
+        /// <inheritdoc/>
+        public IRenderedComponent<TComponent> RenderComponent<TComponent>(RenderFragment childContent, params ComponentParameter[] parameters) where TComponent : class, IComponent
         {
-            var fragmentKey = nameof(GetComponentUnderTest);
+            var pAndCC = parameters.Concat(new[] { new ComponentParameter("ChildContent", childContent) }).ToArray();
+            return RenderComponent<TComponent>(pAndCC);
+        }
 
-            if (_renderedFragments.TryGetValue(fragmentKey, out var fragment))
-            {
-                return (RenderedComponent<TComponent>)fragment;
-            }
-            else
-            {
-                var componentUnderTest = _testData.OfType<ComponentUnderTest>().Single();
-                var result = new RenderedComponent<TComponent>(this, componentUnderTest.ChildContent);
-                _renderedFragments.Add(fragmentKey, result);
+        /// <inheritdoc/>
+        public IRenderedComponent<TComponent> RenderComponent<TComponent>(ParameterView parameters) where TComponent : class, IComponent
+        {
+            var result = new RenderedComponent<TComponent>(this, parameters);
+            return result;
+        }
 
-                return result;
+        /// <inheritdoc/>
+        public void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
+        {
+            if (renderTrigger is null) throw new ArgumentNullException(nameof(renderTrigger));
+            var task = Renderer.NextRender;
+            renderTrigger();
+            task.Wait(timeout ?? TimeSpan.FromSeconds(1));
+
+            if (!task.IsCompleted)
+            {
+                throw new TimeoutException("No render occurred within the timeout period.");
             }
         }
 
-        public RenderedComponent<TComponent> GetFragment<TComponent>(string id) where TComponent : class, IComponent
+        #region IDisposable Support
+        private bool _disposed = false;
+
+        protected virtual void Dispose(bool disposing)
         {
-            var fragmentKey = nameof(GetFragment) + id;
-            if (_renderedFragments.TryGetValue(fragmentKey, out var renderedFragment))
+            if (!_disposed)
             {
-                return (RenderedComponent<TComponent>)renderedFragment;
-            }
-            else
-            {
-                var fragment = _testData.OfType<Fragment>().Single(x => x.Id.Equals(id, StringComparison.Ordinal));
+                if (disposing)
+                {
+                    if (_renderer.IsValueCreated)
+                        _renderer.Value.Dispose();
+                    if (_htmlParser.IsValueCreated)
+                        _htmlParser.Value.Dispose();
 
-                var result = new RenderedComponent<TComponent>(this, fragment.ChildContent);
-                _renderedFragments.Add(fragmentKey, result);
-
-                return result;
+                    Services.Dispose();
+                }
+                _disposed = true;
             }
         }
 
-        public RenderedFragment GetFragment(string id)
+        /// <inheritdoc/>
+        public void Dispose()
         {
-            var fragmentKey = nameof(GetFragment) + id;
-            if (_renderedFragments.TryGetValue(fragmentKey, out var renderedFragment))
-            {
-                return (RenderedFragment)renderedFragment;
-            }
-            else
-            {
-                var fragment = _testData.OfType<Fragment>().Single(x => x.Id.Equals(id, StringComparison.Ordinal));
-
-                var result = new RenderedFragment(this, fragment.ChildContent);
-                _renderedFragments.Add(fragmentKey, result);
-
-                return result;
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }

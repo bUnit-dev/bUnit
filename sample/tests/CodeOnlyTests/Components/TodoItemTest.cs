@@ -1,4 +1,5 @@
-﻿using Egil.RazorComponents.Testing.Library.SampleApp.Components;
+﻿using Egil.RazorComponents.Testing.Asserting;
+using Egil.RazorComponents.Testing.Library.SampleApp.Components;
 using Egil.RazorComponents.Testing.Library.SampleApp.Data;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
@@ -11,7 +12,7 @@ using Xunit;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class TodoItemTest : ComponentTestBase
+    public class TodoItemTest : TestContext
     {
         [Fact(DisplayName = "When no Todo is passed to item an exception is thrown")]
         public void Test001()
@@ -26,7 +27,7 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
             var todo = new Todo { Id = 42, Text = "Hello world" };
             var cut = RenderComponent<TodoItem>((nameof(TodoItem.Todo), todo));
 
-            cut.ShouldBe($@"<li class=""list-group-item list-group-item-action"">
+            cut.ShouldBe($@"<li id=""todo-{todo.Id}"" class=""list-group-item list-group-item-action"">
                                 <span>{todo.Text}</span>
                                 <span class=""float-right text-danger"">(click to complete)</span>
                             </li>");

@@ -1,4 +1,4 @@
-﻿<li class="list-group-item list-group-item-action" @onclick="Complete">
+﻿<li id="todo-@(Todo.Id)" class="list-group-item list-group-item-action" @onclick="Complete">
     <span>@Todo.Text</span>
     <span class="float-right text-danger">(click to complete)</span>
 </li>

@@ -38,7 +38,7 @@ namespace Egil.RazorComponents.Testing
                 container.RenderComponentUnderTest(fixture.ChildContent);
                 var testData = container.GetComponents<FragmentBase>().Select(x => x.Component).ToArray();
 
-                using var context = new TestContext(testData);
+                using var context = new RazorTestContext(testData);
                 fixture.Setup(context);
                 fixture.Test(context);
                 foreach (var test in fixture.Tests)
