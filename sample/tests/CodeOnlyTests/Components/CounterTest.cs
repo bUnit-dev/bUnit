@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class CounterTest : TestContext
+    public class CounterTest : ComponentTestFixture
     {
         [Fact]
         public void InitialHtmlIsCorrect()

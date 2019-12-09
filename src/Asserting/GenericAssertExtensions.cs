@@ -7,13 +7,30 @@ using Xunit.Sdk;
 
 namespace Egil.RazorComponents.Testing
 {
+    /// <summary>
+    /// Generic test assertions
+    /// </summary>
     public static class GenericAssertExtensions
     {
+        /// <summary>
+        /// Verifies that a collection contains exactly a given number of elements, which
+        /// meet the criteria provided by the element inspectors.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection">The collection to be inspected</param>
+        /// <param name="elementInspectors">The element inspectors, which inspect each element in turn. The total number of element inspectors must exactly match the number of elements in the collection.</param>
         public static void ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T>[] elementInspectors)
         {
             Assert.Collection(collection, elementInspectors);
         }
 
+        /// <summary>
+        /// Verifies that a collection contains exactly a given number of elements, which
+        /// meet the criteria provided by the element inspectors.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection">The collection to be inspected</param>
+        /// <param name="elementInspectors">The element inspectors, which inspect each element and its index in the collection in turn. The total number of element inspectors must exactly match the number of elements in the collection.</param>
         public static void ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T, int>[] elementInspectors)
         {
             T[] elements = collection.ToArray();
@@ -36,6 +53,12 @@ namespace Egil.RazorComponents.Testing
             }
         }
 
+        /// <summary>
+        /// Verifies that an object reference is not null.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="actual">The object to be validated.</param>
+        /// <returns>The verified object.</returns>
         public static T ShouldNotBeNull<T>(this T? actual) where T : class
         {
             if (actual is { })

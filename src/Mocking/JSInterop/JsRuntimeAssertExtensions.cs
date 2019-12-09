@@ -1,6 +1,5 @@
 ﻿using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Extensions;
-using Egil.RazorComponents.Testing.Mocking.JsInterop;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ namespace Egil.RazorComponents.Testing.Mocking.JSInterop
             if (handler is null) throw new ArgumentNullException(nameof(handler));
             if (handler.Invocations.TryGetValue(identifier, out var invocations) && invocations.Count > 0)
             {
-                JsInvokeCountExpectedException.ThrowJsInvokeCountExpectedException(identifier, 0, invocations.Count, nameof(VerifyNotInvoke), userMessage);
+                throw new JsInvokeCountExpectedException(identifier, 0, invocations.Count, nameof(VerifyNotInvoke), userMessage);
             }
         }
 
@@ -32,7 +31,7 @@ namespace Egil.RazorComponents.Testing.Mocking.JSInterop
 
             if (invocations.Count != calledTimes)
             {
-                JsInvokeCountExpectedException.ThrowJsInvokeCountExpectedException(identifier, calledTimes, invocations.Count, nameof(VerifyInvoke), userMessage);
+                throw new JsInvokeCountExpectedException(identifier, calledTimes, invocations.Count, nameof(VerifyInvoke), userMessage);
             }
 
             return invocations;

@@ -4,6 +4,7 @@ using System.Linq;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Diffing;
+using Egil.RazorComponents.Testing.Extensions;
 
 namespace Egil.RazorComponents.Testing
 {
@@ -28,6 +29,30 @@ namespace Egil.RazorComponents.Testing
             return actual.GetNodes().CompareTo(expected.GetNodes());
         }
 
+        public static IReadOnlyList<IDiff> CompareTo(this INode actual, INodeList expected)
+        {
+            if (actual is null) throw new ArgumentNullException(nameof(actual));
+            if (expected is null) throw new ArgumentNullException(nameof(expected));
+
+            var comparer = actual.GetHtmlComparer()
+                ?? expected.GetHtmlComparer()
+                ?? new HtmlComparer();
+
+            return comparer.Compare(expected, actual.AsEnumerable()).ToArray();
+        }
+
+        public static IReadOnlyList<IDiff> CompareTo(this INodeList actual, INode expected)
+        {
+            if (actual is null) throw new ArgumentNullException(nameof(actual));
+            if (expected is null) throw new ArgumentNullException(nameof(expected));
+
+            var comparer = expected.GetHtmlComparer()
+                ?? actual.GetHtmlComparer()
+                ?? new HtmlComparer();
+
+            return comparer.Compare(expected.AsEnumerable(), actual).ToArray();
+        }
+
         public static IReadOnlyList<IDiff> CompareTo(this INodeList actual, INodeList expected)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));
@@ -35,9 +60,9 @@ namespace Egil.RazorComponents.Testing
 
             if (actual.Length == 0 && expected.Length == 0) return Array.Empty<IDiff>();
 
-            var comparer = actual.Length > 0
-                ? actual[0].Owner.Context.GetService<HtmlComparer>()
-                : expected[0].Owner.Context.GetService<HtmlComparer>();
+            var comparer = actual.GetHtmlComparer()
+                ?? expected.GetHtmlComparer()
+                ?? new HtmlComparer();
 
             return comparer.Compare(expected, actual).ToArray();
         }

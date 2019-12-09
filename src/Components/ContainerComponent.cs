@@ -83,6 +83,12 @@ namespace Egil.RazorComponents.Testing
                     }
                     else if (frame.Component.IsCascadingValueComponent())
                     {
+                        // It seems as if CascadingValue components works a little different
+                        // than regular components with child content is not rendered
+                        // and available via GetCurrentRenderTreeFrames for the componentId
+                        // of the component that had the CascadingValue as a child.
+                        // Thus we call GetComponents recursivly with the CascadingValue's
+                        // componentId to see if the TComponent is inside it.
                         result.AddRange(GetComponents<TComponent>(frame.ComponentId));
                     }
                 }

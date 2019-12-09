@@ -15,7 +15,7 @@ using Xunit;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class TodoListTest : TestContext
+    public class TodoListTest : ComponentTestFixture
     {
         private string GetExpectedHtml(string label = "Task description", string itemsHtml = "") =>
             $@"<form>
@@ -113,7 +113,7 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
             var taskValue = "HELLO WORLD TASK";
             var createdTask = default(Todo);
             var cut = RenderComponent<TodoList>(
-                (nameof(TodoList.OnAddingTodo), EventCallback.Factory.Create<Todo>(this, task => createdTask = task))
+                EventCallback<Todo>(nameof(TodoList.OnAddingTodo), task => createdTask = task)
             );
 
             cut.Find("input").Change(taskValue);
@@ -128,7 +128,7 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
             var jsRtMock = Services.AddMockJsRuntime();
             var createdTask = default(Todo);
             var cut = RenderComponent<TodoList>(
-                (nameof(TodoList.OnAddingTodo), EventCallback.Factory.Create<Todo>(this, task => createdTask = task))
+                EventCallback<Todo>(nameof(TodoList.OnAddingTodo), task => createdTask = task)
             );
 
             cut.Find("form").Submit();

@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Testing
 {
-    // https://github.com/aspnet/AspNetCore/blob/master/src/Components/Components/src/RenderTree/Renderer.cs
+    /// <summary>
+    /// A custom Blazor renderer used when testing Blazor components.
+    /// </summary>
     [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     public class TestRenderer : Renderer
     {
@@ -16,17 +18,21 @@ namespace Egil.RazorComponents.Testing
 
         private TaskCompletionSource<object> _nextRenderTcs = new TaskCompletionSource<object>();
 
+        /// <inheritdoc/>
         public TestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
             : base(serviceProvider, loggerFactory)
         {
         }
 
+        /// <inheritdoc/>
         public new ArrayRange<RenderTreeFrame> GetCurrentRenderTreeFrames(int componentId)
             => base.GetCurrentRenderTreeFrames(componentId);
 
+        /// <inheritdoc/>
         public int AttachTestRootComponent(IComponent testRootComponent)
             => AssignRootComponentId(testRootComponent);
 
+        /// <inheritdoc/>
         public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
         {
             var task = Dispatcher.InvokeAsync(() =>
@@ -45,15 +51,21 @@ namespace Egil.RazorComponents.Testing
             return task;
         }
 
+        /// <inheritdoc/>
         public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
 
+        /// <summary>
+        /// Gets a task that completes after the next render.
+        /// </summary>
         public Task NextRender => _nextRenderTcs.Task;
 
+        /// <inheritdoc/>
         protected override void HandleException(Exception exception)
         {
             _unhandledException = exception;
         }
 
+        /// <inheritdoc/>
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
         {
             // TODO: Capture batches (and the state of component output) for individual inspection
@@ -63,6 +75,11 @@ namespace Egil.RazorComponents.Testing
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Dispatches an callback in the context of the renderer synchronously and 
+        /// asserts no errors happened during dispatch
+        /// </summary>
+        /// <param name="callback"></param>
         public void DispatchAndAssertNoSynchronousErrors(Action callback)
         {
             Dispatcher.InvokeAsync(callback).Wait();

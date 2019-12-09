@@ -46,19 +46,6 @@ namespace Egil.RazorComponents.Testing
         }
 
         /// <inheritdoc/>
-        //public IRenderedComponent<TComponent> RenderComponent<TComponent>() where TComponent : class, IComponent
-        //{
-        //    return RenderComponent<TComponent>(ParameterView.Empty);
-        //}
-
-        /// <inheritdoc/>
-        //public IRenderedComponent<TComponent> RenderComponent<TComponent>(params (string paramName, object? valueValue)[] parameters) where TComponent : class, IComponent
-        //{
-        //    var paramDict = parameters.ToDictionary(x => x.paramName, x => x.valueValue);
-        //    var parameterView = ParameterView.FromDictionary(paramDict);
-        //    return RenderComponent<TComponent>(parameterView);
-        //}
-
         public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
         {
             var result = new RenderedComponent<TComponent>(this, parameters);
@@ -68,7 +55,7 @@ namespace Egil.RazorComponents.Testing
         /// <inheritdoc/>
         public IRenderedComponent<TComponent> RenderComponent<TComponent>(RenderFragment childContent, params ComponentParameter[] parameters) where TComponent : class, IComponent
         {
-            var pAndCC = parameters.Concat(new[] { new ComponentParameter("ChildContent", childContent) }).ToArray();
+            var pAndCC = parameters.Concat(new[] { ComponentParameter.CreateParameter("ChildContent", childContent) }).ToArray();
             return RenderComponent<TComponent>(pAndCC);
         }
 
@@ -96,6 +83,7 @@ namespace Egil.RazorComponents.Testing
         #region IDisposable Support
         private bool _disposed = false;
 
+        /// <inheritdoc/>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)

@@ -5,28 +5,31 @@ using System.IO;
 using System.Linq;
 using AngleSharp;
 using AngleSharp.Diffing.Core;
+using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Extensions;
-using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Asserting
+namespace Xunit.Sdk
 {
+    /// <summary>
+    /// Represents an differences between pieces of markup.
+    /// </summary>
     [SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "<Pending>")]
     public class HtmlEqualException : AssertActualExpectedException
     {
+        /// <summary>
+        /// Creates an instance of the <see cref="HtmlEqualException"/> type.
+        /// </summary>
         public HtmlEqualException(IEnumerable<IDiff> diffs, IMarkupFormattable expected, IMarkupFormattable actual, string? userMessage, Exception innerException)
             : base(PrintHtml(expected), PrintHtml(actual), CreateUserMessage(diffs, userMessage), "Expected HTML", "Actual HTML", innerException)
         {
         }
 
+        /// <summary>
+        /// Creates an instance of the <see cref="HtmlEqualException"/> type.
+        /// </summary>
         public HtmlEqualException(IEnumerable<IDiff> diffs, IMarkupFormattable expected, IMarkupFormattable actual, string? userMessage)
             : base(PrintHtml(expected), PrintHtml(actual), CreateUserMessage(diffs, userMessage), "Expected HTML", "Actual HTML")
         {
-        }
-
-        public static void ThrowHtmlEqualException(IEnumerable<IDiff> diffs, IMarkupFormattable expected, IMarkupFormattable actual, string? userMessage)
-        {
-            // This throws an because the output in the test runner is much prettier. The full type is not prefixed to the message.
-            throw new AssertActualExpectedException(PrintHtml(expected), PrintHtml(actual), CreateUserMessage(diffs, userMessage), "Expected HTML", "Actual HTML");
         }
 
         private static string CreateUserMessage(IEnumerable<IDiff> diffs, string? userMessage)

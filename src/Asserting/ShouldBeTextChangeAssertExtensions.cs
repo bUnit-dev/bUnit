@@ -7,6 +7,7 @@ using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Diffing;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Egil.RazorComponents.Testing
 {
@@ -47,7 +48,7 @@ namespace Egil.RazorComponents.Testing
 
             if (diffs.Count != 0)
             {
-                HtmlEqualException.ThrowHtmlEqualException(diffs,expectedChange, actual.Test.Node, userMessage);
+                throw new HtmlEqualException(diffs,expectedChange, actual.Test.Node, userMessage);
             }
         }
     }

@@ -3,14 +3,16 @@ using Microsoft.JSInterop;
 using System.Threading;
 using System.Collections.Generic;
 using Xunit;
-using Egil.RazorComponents.Testing.Mocking.JsInterop;
 
 namespace Egil.RazorComponents.Testing.Mocking.JSInterop
 {
     public class MockJsRuntimeInvokeHandler
     {
-        private Dictionary<string, List<JsRuntimeInvocation>> _invocations = new Dictionary<string, List<JsRuntimeInvocation>>();
+        private readonly Dictionary<string, List<JsRuntimeInvocation>> _invocations = new Dictionary<string, List<JsRuntimeInvocation>>();
 
+        /// <summary>
+        /// Gets a dictionary of all <see cref="List{JsRuntimeInvocation}"/> this mock has observed.
+        /// </summary>
         public IReadOnlyDictionary<string, List<JsRuntimeInvocation>> Invocations => _invocations;
 
         public JsRuntimeMockMode Mode { get; }

@@ -12,7 +12,7 @@ using Egil.RazorComponents.Testing.Asserting;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class FetchDataTest : TestContext
+    public class FetchDataTest : ComponentTestFixture
     {
         class MockForecastService : IWeatherForecastService
         {
@@ -44,12 +44,12 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
             var forecasts = new[] { new WeatherForecast { Date = DateTime.Now, Summary = "Testy", TemperatureC = 42 } };
             var cut = RenderComponent<FetchData>();
             var initialHtml = cut.GetMarkup();
-            var expectedDataTable = RenderComponent<ForecastDataTable>((nameof(ForecastDataTable.Forecasts), forecasts));
 
             // act
             WaitForNextRender(() => mockForecastService.Task.SetResult(forecasts));
 
             // assert
+            var expectedDataTable = RenderComponent<ForecastDataTable>((nameof(ForecastDataTable.Forecasts), forecasts));
             cut.CompareTo(initialHtml)
                 .ShouldHaveChanges(
                     diff => diff.ShouldBeRemoval("<p><em>Loading...</em></p>"),

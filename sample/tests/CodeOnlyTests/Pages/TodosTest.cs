@@ -11,7 +11,7 @@ using Egil.RazorComponents.Testing.Library.SampleApp.Data;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests.Pages
 {
-    public class TodosTest : TestContext
+    public class TodosTest : ComponentTestFixture
     {
         public TodosTest()
         {
@@ -45,14 +45,17 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests.Pages
         [Fact(DisplayName = "When a todo is marked as completed, the todo service is invoked")]
         public void Test002()
         {
+            // arrange
             var todos = new[] { new Todo { Id = 1, Text = "First" } };
             var todoSrv = new Mock<ITodoService>();
             todoSrv.Setup(x => x.Get()).Returns(Task.FromResult<IReadOnlyList<Todo>>(todos));
             Services.AddService(todoSrv.Object);
-            var page = RenderComponent<Todos>();
 
+            // act
+            var page = RenderComponent<Todos>();
             page.Find("#todo-1").Click();
 
+            // assert
             todoSrv.Verify(srv => srv.Complete(todos[0].Id), Times.Once);
         }
 

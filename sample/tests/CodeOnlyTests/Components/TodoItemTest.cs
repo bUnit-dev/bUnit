@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
-    public class TodoItemTest : TestContext
+    public class TodoItemTest : ComponentTestFixture
     {
         [Fact(DisplayName = "When no Todo is passed to item an exception is thrown")]
         public void Test001()
@@ -38,10 +38,9 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
         {
             var todo = new Todo { Id = 42, Text = "Hello world" };
             var completedId = 0;
-            var onCompleteHandler = EventCallback.Factory.Create(this, (int id) => completedId = id);
             var cut = RenderComponent<TodoItem>(
                 (nameof(TodoItem.Todo), todo),
-                (nameof(TodoItem.OnCompleted), onCompleteHandler)
+                EventCallback(nameof(TodoItem.OnCompleted), (int id) => completedId = id)
             );
 
             cut.Find("li").Click();
