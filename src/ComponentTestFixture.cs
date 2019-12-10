@@ -144,7 +144,7 @@ namespace Egil.RazorComponents.Testing
         }
 
         /// <summary>
-        /// Creates a Child Content <see cref="ComponentParameter"/> with the provided <paramref name="markup"/> as the <see cref="RenderFragment"/>.
+        /// Creates a ChildContent <see cref="ComponentParameter"/> with the provided <paramref name="markup"/> as the <see cref="RenderFragment"/>.
         /// </summary>
         /// <param name="markup">Markup to pass to the child content parameter</param>
         /// <returns>The <see cref="ComponentParameter"/>.</returns>
@@ -153,6 +153,13 @@ namespace Egil.RazorComponents.Testing
             return ComponentParameter.CreateParameter(nameof(ChildContent), markup.ToMarkupRenderFragment());
         }
 
+        /// <summary>
+        /// Creates a ChildContent <see cref="RenderFragment"/> which will render a <typeparamref name="TComponent"/> component
+        /// with the provided <paramref name="parameters"/> as input.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of the component to render with the <see cref="RenderFragment"/></typeparam>
+        /// <param name="parameters">Parameters to pass to the <typeparamref name="TComponent"/>.</param>
+        /// <returns>The <see cref="ComponentParameter"/>.</returns>
         protected static ComponentParameter ChildContent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
         {
             return ComponentParameter.CreateParameter(nameof(ChildContent), parameters.ToComponentRenderFragment<TComponent>());

@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Net.Http.Headers;
-using Xunit.Abstractions;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Egil.RazorComponents.Testing
@@ -14,7 +13,7 @@ namespace Egil.RazorComponents.Testing
     {
         public static MockHttpMessageHandler AddMockHttp(this TestServiceProvider serviceProvider)
         {
-            if(serviceProvider is null) throw new ArgumentNullException(nameof(serviceProvider));
+            if (serviceProvider is null) throw new ArgumentNullException(nameof(serviceProvider));
 
             var mockHttp = new MockHttpMessageHandler();
             var httpClient = mockHttp.ToHttpClient();
@@ -35,8 +34,10 @@ namespace Egil.RazorComponents.Testing
             {
                 return tcs.Task.ContinueWith(task =>
                 {
-                    var response = new HttpResponseMessage(HttpStatusCode.OK);
-                    response.Content = new StringContent(JsonSerializer.Serialize(task.Result));
+                    var response = new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent(JsonSerializer.Serialize(task.Result))
+                    };
                     response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return response;
                 });

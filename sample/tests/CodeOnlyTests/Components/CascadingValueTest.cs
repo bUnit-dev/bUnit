@@ -10,7 +10,7 @@ using Shouldly;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests.Components
 {
-    public class ThemedXXTest : ComponentTestFixture
+    public class CascadingValueTest : ComponentTestFixture
     {
         [Fact(DisplayName = "Themed button uses provided theme info to set class attribute")]
         public void Test001()

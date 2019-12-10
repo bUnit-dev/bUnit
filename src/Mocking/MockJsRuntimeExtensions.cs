@@ -1,6 +1,4 @@
 ﻿using System;
-using Egil.RazorComponents.Testing.Mocking.JSInterop;
-using Microsoft.JSInterop;
 
 namespace Egil.RazorComponents.Testing
 {

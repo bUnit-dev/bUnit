@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Testing.Library.SampleApp.Components;
-using Egil.RazorComponents.Testing.Asserting;
 using Shouldly;
 using Xunit;
 

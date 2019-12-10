@@ -1,0 +1,23 @@
+﻿@inject IJSRuntime jsRuntime
+
+<p>@searchResult</p>
+
+@code {
+    string searchResult = string.Empty;
+
+    // Assumes the following function is available in the DOM
+    // <script>
+    //     function queryWiki(query) {
+    //         return fetch('https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&search=' + query)
+    //             .then(x => x.text());
+    //     }
+    // </script>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            searchResult = await jsRuntime.InvokeAsync<string>("queryWiki", "blazor");
+            StateHasChanged();
+        }
+    }
+}

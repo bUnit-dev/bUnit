@@ -3,7 +3,7 @@ using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Diffing
 {
     public class DiffMarkupFormatter : IMarkupFormatter
     {

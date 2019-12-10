@@ -1,0 +1,53 @@
+﻿@inherits TestComponentBase
+
+<Fixture Setup="Setup" Tests="new Test[]{ InitialLoadingHtmlRendersCorrectly, AfterDataLoadsItIsDisplayedInAForecastTable }">
+    <ComponentUnderTest>
+        <FetchData />
+    </ComponentUnderTest>
+    <Fragment Id="InitialRender">
+        <h1>Weather forecast</h1>
+        <p>This component demonstrates fetching data from a service.</p>
+        <p><em>Loading...</em></p>
+    </Fragment>
+    <Fragment Id="ForecastDataTableRender">
+        <ForecastDataTable Forecasts="forecasts" />
+    </Fragment>
+</Fixture>
+@code {
+    private WeatherForecast[] forecasts = new[]
+    {
+        new WeatherForecast { Date = DateTime.Now, Summary = "Testy", TemperatureC = 42 }
+    };
+
+    private MockForecastService forecastService = new MockForecastService();
+
+    void Setup(IRazorTestContext context)
+    {
+        context.Services.AddService<IWeatherForecastService>(forecastService);
+    }
+
+    void InitialLoadingHtmlRendersCorrectly(IRazorTestContext context)
+    {
+        // act
+        var cut = context.RenderComponentUnderTest<FetchData>();
+
+        // assert
+        cut.ShouldBe(context.RenderFragment("InitialRender"));
+    }
+
+    void AfterDataLoadsItIsDisplayedInAForecastTable(IRazorTestContext context)
+    {
+        // arrange
+        var expectedAddition = context.RenderFragment("ForecastDataTableRender");
+        var cut = context.RenderComponent<FetchData>();
+
+        // act
+        context.WaitForNextRender(() => forecastService.Task.SetResult(forecasts));
+
+        // assert
+        cut.GetChangesSinceFirstRender().ShouldHaveChanges(
+            diff => diff.ShouldBeRemoval("<p><em>Loading...</em></p>"),
+            diff => diff.ShouldBeAddition(expectedAddition)
+        );
+    }
+}

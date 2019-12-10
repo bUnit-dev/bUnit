@@ -1,4 +1,5 @@
 ﻿using System;
+using Egil.RazorComponents.Testing.Diffing;
 using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Testing
@@ -22,22 +23,7 @@ namespace Egil.RazorComponents.Testing
         /// <summary>
         /// Gets the HTML parser used to parse HTML produced by components and fragments in this test context.
         /// </summary>
-        HtmlParser HtmlParser { get; }
-
-        ///// <summary>
-        ///// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
-        ///// </summary>
-        ///// <typeparam name="TComponent">Type of the component to render</typeparam>
-        ///// <returns>The rendered <typeparamref name="TComponent"/></returns>
-        //IRenderedComponent<TComponent> RenderComponent<TComponent>() where TComponent : class, IComponent;
-
-        ///// <summary>
-        ///// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
-        ///// </summary>
-        ///// <typeparam name="TComponent">Type of the component to render</typeparam>
-        ///// <param name="parameters">Parameters to pass to the component when it is rendered</param>
-        ///// <returns>The rendered <typeparamref name="TComponent"/></returns>
-        //IRenderedComponent<TComponent> RenderComponent<TComponent>(ParameterView parameters) where TComponent : class, IComponent;
+        TestHtmlParser HtmlParser { get; }
 
         /// <summary>
         /// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
@@ -46,8 +32,6 @@ namespace Egil.RazorComponents.Testing
         /// <param name="parameters">Parameters to pass to the component when it is rendered</param>
         /// <returns>The rendered <typeparamref name="TComponent"/></returns>
         IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent;
-        //IRenderedComponent<TComponent> RenderComponent<TComponent>(params (string paramName, object? valueValue)[] parameters) where TComponent : class, IComponent;
-        
 
         /// <summary>
         /// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.

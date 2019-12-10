@@ -1,0 +1,38 @@
+﻿@inherits TestComponentBase
+@using Shouldly
+
+<Fixture Test=MarkupPassedViaChildContent>
+    <ComponentUnderTest>
+        <ThemedButton>
+            <h1>Foo bar button</h1>
+        </ThemedButton>
+    </ComponentUnderTest>
+    <Fragment><h1>Foo bar button</h1></Fragment>
+</Fixture>
+@code {
+    void MarkupPassedViaChildContent(IRazorTestContext context)
+    {
+        var expectedChildContent = context.RenderFragment();
+
+        var cut = context.RenderComponentUnderTest();
+
+        cut.Find("button").ChildNodes.ShouldBe(expectedChildContent);
+    }
+}
+
+<Fixture>
+    <ComponentUnderTest>
+        <ThemedElement>
+            <ThemedButton id="btn">@btnContent</ThemedButton>
+        </ThemedElement>
+    </ComponentUnderTest>
+</Fixture>
+@code {
+    string btnContent = "BUTTTOOOON";
+    void ComponentsPassedViaChildContent(IRazorTestContext context)
+    {
+        var cut = context.RenderComponentUnderTest();
+
+        cut.Find("#btn").TextContent.ShouldBe(btnContent);
+    }
+}

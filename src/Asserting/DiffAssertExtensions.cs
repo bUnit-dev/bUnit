@@ -11,7 +11,7 @@ using Egil.RazorComponents.Testing.Extensions;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Asserting
+namespace Egil.RazorComponents.Testing
 {
     /// <summary>
     /// A collection of <see cref="IDiff"/> assert extensions and generic assert extensions
@@ -128,7 +128,7 @@ namespace Egil.RazorComponents.Testing.Asserting
             }
             else
             {
-                using var newParser = new HtmlParser();
+                using var newParser = new TestHtmlParser();
                 expectedNodes = newParser.Parse(expected);
             }
             ShouldBe(actual, expectedNodes, userMessage);

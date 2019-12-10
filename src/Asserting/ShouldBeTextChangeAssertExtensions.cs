@@ -4,7 +4,6 @@ using System.Linq;
 using AngleSharp;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Diffing;
 using Xunit;
 using Xunit.Sdk;
@@ -24,7 +23,7 @@ namespace Egil.RazorComponents.Testing
             if (expectedChange is null) throw new ArgumentNullException(nameof(expectedChange));
 
             var actual = Assert.IsType<NodeDiff>(actualChange);
-            var parser = actual.Control.Node.Owner.Context.GetService<HtmlParser>();
+            var parser = actual.Control.Node.Owner.Context.GetService<TestHtmlParser>();
             var expected = parser.Parse(expectedChange);
 
             ShouldBeTextChange(actualChange, expected, userMessage);

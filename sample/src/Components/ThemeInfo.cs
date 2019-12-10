@@ -10,4 +10,12 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.Components
     {
         public string? Value { get; set; }
     }
+
+    //    <script>
+    //        function queryWiki(query) {
+    //            return fetch('https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&search=' + query)
+    //                .then(x => x.text());
+    //        }
+    //    </script>
+
 }

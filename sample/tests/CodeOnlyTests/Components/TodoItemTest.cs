@@ -1,5 +1,4 @@
-﻿using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.Library.SampleApp.Components;
+﻿using Egil.RazorComponents.Testing.Library.SampleApp.Components;
 using Egil.RazorComponents.Testing.Library.SampleApp.Data;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
@@ -21,11 +20,13 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
             Should.Throw<InvalidOperationException>(() => RenderComponent<TodoItem>((nameof(TodoItem.Todo), null)));
         }
 
-        [Fact(DisplayName = "The control renders the expected output")]
+        [Fact(DisplayName = "The component renders the expected output")]
         public void Test002()
         {
             var todo = new Todo { Id = 42, Text = "Hello world" };
             var cut = RenderComponent<TodoItem>((nameof(TodoItem.Todo), todo));
+
+            cut.ShouldBe(cut);
 
             cut.ShouldBe($@"<li id=""todo-{todo.Id}"" class=""list-group-item list-group-item-action"">
                                 <span>{todo.Text}</span>

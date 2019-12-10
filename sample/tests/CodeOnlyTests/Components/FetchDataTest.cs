@@ -2,25 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Egil.RazorComponents.Testing.Library.SampleApp.Data;
 using Egil.RazorComponents.Testing.Library.SampleApp.Components;
 using Xunit;
 using Egil.RazorComponents.Testing.Library.SampleApp.Pages;
 using Shouldly;
-using Egil.RazorComponents.Testing.Asserting;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
 {
     public class FetchDataTest : ComponentTestFixture
     {
-        class MockForecastService : IWeatherForecastService
-        {
-            public TaskCompletionSource<WeatherForecast[]> Task { get; } = new TaskCompletionSource<WeatherForecast[]>();
-
-            public Task<WeatherForecast[]> GetForecastAsync(DateTime startDate) => Task.Task;
-        }
-
         [Fact]
         public void InitialLoadingHtmlRendersCorrectly()
         {

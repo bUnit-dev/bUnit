@@ -4,13 +4,13 @@ using AngleSharp.Dom;
 using System;
 using Egil.RazorComponents.Testing.Diffing;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Diffing
 {
     /// <summary>
     /// A AngleSharp based HTML Parse that can parse markup strings
     /// into a <see cref="INodeList"/>.
     /// </summary>
-    public sealed class HtmlParser : IDisposable
+    public sealed class TestHtmlParser : IDisposable
     {
         private readonly IBrowsingContext _context;
         private readonly IHtmlParser _htmlParser;
@@ -20,7 +20,7 @@ namespace Egil.RazorComponents.Testing
         /// Creates an instance of the parser with a AngleSharp context 
         /// without a <see cref="TestRenderer"/> registered.
         /// </summary>
-        public HtmlParser()
+        public TestHtmlParser()
         {
             var config = Configuration.Default
                 .WithCss()
@@ -38,7 +38,7 @@ namespace Egil.RazorComponents.Testing
         /// </summary>
         /// <param name="testRenderer"></param>
         /// <param name="comparer"></param>
-        public HtmlParser(TestRenderer testRenderer, HtmlComparer comparer)
+        public TestHtmlParser(TestRenderer testRenderer, HtmlComparer comparer)
         {
             var config = Configuration.Default
                 .WithCss()

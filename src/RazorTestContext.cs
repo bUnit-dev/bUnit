@@ -45,7 +45,7 @@ namespace Egil.RazorComponents.Testing
         /// <inheritdoc/>
         public IRenderedComponent<TComponent> RenderFragment<TComponent>(string? id = null) where TComponent : class, IComponent
         {
-            var key = nameof(RenderFragment) + (id ?? string.Empty);
+            var key = id ?? nameof(Fragment);
 
             return id is null
                 ? RenderFragment(key, SelectFirstFragment, Factory)
@@ -58,7 +58,7 @@ namespace Egil.RazorComponents.Testing
         /// <inheritdoc/>
         public IRenderedFragment RenderFragment(string? id = null)
         {
-            var key = nameof(RenderFragment) + (id ?? string.Empty);
+            var key = id ?? nameof(Fragment);
 
             return id is null
                 ? RenderFragment(key, SelectFirstFragment, Factory)

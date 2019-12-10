@@ -29,10 +29,10 @@ namespace Egil.RazorComponents.Testing
         public void Render() => SetParametersAndRender(ParameterView.Empty);
 
         /// <inheritdoc/>
-        public void SetParametersAndRender(IReadOnlyList<ComponentParameter> parameters)
+        public void SetParametersAndRender(params ComponentParameter[] parameters)
         {
             var parameterView = ParameterView.Empty;
-            if (parameters?.Count > 0)
+            if (parameters.Length > 0)
             {
                 var paramDict = parameters.ToDictionary(x => x.Name, x => x.Value);
                 parameterView = ParameterView.FromDictionary(paramDict);

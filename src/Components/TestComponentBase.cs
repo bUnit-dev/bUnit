@@ -11,12 +11,16 @@ using Xunit;
 
 namespace Egil.RazorComponents.Testing
 {
+    /// <summary>
+    /// Base test class/test runner, that runs Fixtures defined in razor files.
+    /// </summary>
     public abstract class TestComponentBase : IDisposable
     {
         private readonly ServiceCollection _serviceCollection = new ServiceCollection();
         private readonly Lazy<TestRenderer> _renderer;
         private bool _isDisposed = false;
 
+        /// <inheritdoc/>
         public TestComponentBase()
         {
             _renderer = new Lazy<TestRenderer>(() =>
@@ -27,6 +31,10 @@ namespace Egil.RazorComponents.Testing
             });
         }
 
+        /// <summary>
+        /// Called by the XUnit test runner. Finds all Fixture components
+        /// in the file and runs their associated tests.
+        /// </summary>
         [Fact]
         public void ComponentTest()
         {
@@ -48,9 +56,11 @@ namespace Egil.RazorComponents.Testing
             }
         }
 
+        /// <inheritdoc/>
         protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
 
         #region IDisposable Support
+        /// <inheritdoc/>
         protected virtual void Dispose(bool disposing)
         {
             if (_isDisposed) return;
@@ -60,6 +70,7 @@ namespace Egil.RazorComponents.Testing
             }
             _isDisposed = true;
         }
+        /// <inheritdoc/>
         public void Dispose()
         {
             Dispose(true);

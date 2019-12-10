@@ -3,7 +3,6 @@ using System.Linq;
 using AngleSharp;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Diffing;
 using Egil.RazorComponents.Testing.Extensions;
 using Xunit;
@@ -37,7 +36,7 @@ namespace Egil.RazorComponents.Testing
             }
             else
             {
-                using var newParser = new HtmlParser();
+                using var newParser = new TestHtmlParser();
                 expected = newParser.Parse(expectedChange);
             }
 

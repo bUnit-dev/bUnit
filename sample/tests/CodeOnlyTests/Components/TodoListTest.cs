@@ -1,8 +1,6 @@
 ﻿using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Library.SampleApp.Components;
 using Egil.RazorComponents.Testing.Library.SampleApp.Data;
-using Egil.RazorComponents.Testing.Mocking.JSInterop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Shouldly;

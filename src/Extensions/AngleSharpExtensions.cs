@@ -172,23 +172,23 @@ namespace Egil.RazorComponents.Testing.Extensions
 
 
         /// <summary>
-        /// Gets the <see cref="HtmlParser"/> stored in the <paramref name="node"/>s
+        /// Gets the <see cref="TestHtmlParser"/> stored in the <paramref name="node"/>s
         /// owning context, if one is available. 
         /// </summary>
         /// <param name="node"></param>
-        /// <returns>The <see cref="HtmlParser"/> or null if not found.</returns>
-        public static HtmlParser? GetHtmlParser(this INode? node)
+        /// <returns>The <see cref="TestHtmlParser"/> or null if not found.</returns>
+        public static TestHtmlParser? GetHtmlParser(this INode? node)
         {
-            return node?.Owner.Context.GetService<HtmlParser>();
+            return node?.Owner.Context.GetService<TestHtmlParser>();
         }
 
         /// <summary>
-        /// Gets the <see cref="HtmlParser"/> stored in the <paramref name="nodes"/>s
+        /// Gets the <see cref="TestHtmlParser"/> stored in the <paramref name="nodes"/>s
         /// owning context, if one is available. 
         /// </summary>
         /// <param name="nodes"></param>
-        /// <returns>The <see cref="HtmlParser"/> or null if not found.</returns>
-        public static HtmlParser? GetHtmlParser(this INodeList nodes)
+        /// <returns>The <see cref="TestHtmlParser"/> or null if not found.</returns>
+        public static TestHtmlParser? GetHtmlParser(this INodeList nodes)
         {
             return nodes?.Length > 0 ? nodes[0].GetHtmlParser() : null;
         }

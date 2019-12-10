@@ -37,7 +37,7 @@ namespace Egil.RazorComponents.Testing
             }
             else
             {
-                using var newParser = new HtmlParser();
+                using var newParser = new TestHtmlParser();
                 expected = newParser.Parse(expectedChange);
             }
 

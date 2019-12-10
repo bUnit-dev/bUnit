@@ -18,13 +18,13 @@ namespace Egil.RazorComponents.Testing
     public class TestContext : ITestContext, IDisposable
     {
         private readonly Lazy<TestRenderer> _renderer;
-        private readonly Lazy<HtmlParser> _htmlParser;
+        private readonly Lazy<TestHtmlParser> _htmlParser;
 
         /// <inheritdoc/>
         public TestRenderer Renderer => _renderer.Value;
 
         /// <inheritdoc/>
-        public HtmlParser HtmlParser => _htmlParser.Value;
+        public TestHtmlParser HtmlParser => _htmlParser.Value;
 
         /// <inheritdoc/>
         public TestServiceProvider Services { get; } = new TestServiceProvider();
@@ -39,9 +39,9 @@ namespace Egil.RazorComponents.Testing
                 var loggerFactory = Services.GetService<ILoggerFactory>() ?? new NullLoggerFactory();
                 return new TestRenderer(Services, loggerFactory);
             });
-            _htmlParser = new Lazy<HtmlParser>(() =>
+            _htmlParser = new Lazy<TestHtmlParser>(() =>
             {
-                return new HtmlParser(Renderer, new HtmlComparer());
+                return new TestHtmlParser(Renderer, new HtmlComparer());
             });
         }
 

@@ -1,0 +1,39 @@
+﻿@inherits TestComponentBase
+
+<Fixture Setup="ctx => ctx.Services.AddMockJsRuntime()">
+    <ComponentUnderTest>
+        <TodoList></TodoList>
+    </ComponentUnderTest>
+    <Fragment>
+        <form>
+            <div class="input-group">
+                <input value="" type="text" class="form-control"
+                       placeholder="Task description" aria-label="Task description" />
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="submit">Add task</button>
+                </div>
+            </div>
+        </form>
+        <ol class="list-group"></ol>
+    </Fragment>
+</Fixture>
+@code {
+    void EmptyTodoList(IRazorTestContext context)
+    {
+        var cut = context.RenderComponentUnderTest();
+
+        cut.ShouldBe(context.RenderFragment());
+    }
+
+    void SettingLabel(IRazorTestContext context)
+    {
+        var cut = context.RenderComponentUnderTest<TodoList>();
+
+        cut.SetParametersAndRender((nameof(TodoList.Label), "LABEL"));
+
+        cut.GetChangesSinceFirstRender().ShouldAllBe (
+            diff => diff.ShouldBeTextChange("LABEL"),
+            diff => diff.ShouldBeTextChange("LABEL")
+        );
+    }
+}

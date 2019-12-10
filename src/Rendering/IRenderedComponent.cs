@@ -29,6 +29,6 @@ namespace Egil.RazorComponents.Testing
         /// Render the component under test again.
         /// </summary>
         /// <param name="parameters">Parameters to pass to the component upon rendered</param>
-        void SetParametersAndRender(IReadOnlyList<ComponentParameter> parameters);
+        void SetParametersAndRender(params ComponentParameter[] parameters);
     }
 }

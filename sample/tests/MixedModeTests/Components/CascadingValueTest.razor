@@ -1,0 +1,42 @@
+﻿@inherits TestComponentBase
+@using Shouldly
+
+<Fixture Test="ThemedButtonUsesClassPassedByCascadingValue">
+    <ComponentUnderTest>
+        <CascadingValue Value=@(new ThemeInfo { Value = cssClass })>
+            <ThemedButton>Click ME!</ThemedButton>
+        </CascadingValue>
+    </ComponentUnderTest>
+</Fixture>
+@code {
+    string cssClass = "BUTTON";
+
+    void ThemedButtonUsesClassPassedByCascadingValue(IRazorTestContext context)
+    {
+        var cut = context.RenderComponentUnderTest();
+
+        cut.Find("button").ClassList.ShouldContain(cssClass);
+    }
+}
+
+<Fixture Test="ThemedButtonUsesNamedCascadingValue">
+    <ComponentUnderTest>
+        <CascadingValue Name=@nameof(ThemedElement.Class)
+                        Value=@(new ThemeInfo { Value = "FOO" })>
+            <CascadingValue Name=@nameof(ThemedElement.Title)
+                            Value=@(new ThemeInfo { Value = "BAR" })>
+                <ThemedElement />
+            </CascadingValue>
+        </CascadingValue>
+    </ComponentUnderTest>
+</Fixture>
+@code {
+    void ThemedButtonUsesNamedCascadingValue(IRazorTestContext context)
+    {
+        var cut = context.RenderComponentUnderTest();
+
+        var elm = cut.Find("div");
+        elm.ClassList.ShouldContain("FOO");
+        elm.GetAttribute("title").ShouldContain("BAR");
+    }
+}

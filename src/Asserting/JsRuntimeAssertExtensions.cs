@@ -6,8 +6,11 @@ using System.Collections.Generic;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Mocking.JSInterop
+namespace Egil.RazorComponents.Testing
 {
+    /// <summary>
+    /// Assert extensions for JsRuntimeMock
+    /// </summary>
     public static class JsRuntimeAssertExtensions
     {
         public static void VerifyNotInvoke(this MockJsRuntimeInvokeHandler handler, string identifier, string? userMessage = null)
