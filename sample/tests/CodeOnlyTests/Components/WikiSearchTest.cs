@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Egil.RazorComponents.Testing.Library.SampleApp.Components;
+using Egil.RazorComponents.Testing.SampleApp.Components;
 using Shouldly;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests.Components
+namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
 {
     public class WikiSearchTest : ComponentTestFixture
     {

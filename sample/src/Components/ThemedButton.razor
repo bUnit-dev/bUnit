@@ -3,13 +3,13 @@
 </button>
 @code {
     [Parameter(CaptureUnmatchedValues = true)]
-    public IReadOnlyDictionary<string, object> Attributes { get; set; }
+    public IReadOnlyDictionary<string, object>? Attributes { get; set; }
 
     [CascadingParameter]
     public ThemeInfo? Theme { get; set; }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment? ChildContent { get; set; }
 
     protected override void OnAfterRender(bool firstRender)
     {

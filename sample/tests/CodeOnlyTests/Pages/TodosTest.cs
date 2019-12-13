@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Moq;
-using Egil.RazorComponents.Testing.Library.SampleApp.Pages;
-using Egil.RazorComponents.Testing.Library.SampleApp.Data;
+using Egil.RazorComponents.Testing.SampleApp.Data;
 using Egil.RazorComponents.Testing.EventDispatchExtensions;
+using Egil.RazorComponents.Testing.SampleApp.Pages;
 
-namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests.Pages
+namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Pages
 {
     public class TodosTest : ComponentTestFixture
     {
@@ -28,7 +28,7 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests.Pages
             // setup ITodoService
             var getTask = new TaskCompletionSource<IReadOnlyList<Todo>>();
             var todoSrv = new Mock<ITodoService>();
-            todoSrv.Setup(x => x.Get()).Returns(getTask.Task);
+            todoSrv.Setup(x => x.GetAll()).Returns(getTask.Task);
             Services.AddService(todoSrv.Object);
 
             // act
@@ -49,7 +49,7 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests.Pages
             // arrange
             var todos = new[] { new Todo { Id = 1, Text = "First" } };
             var todoSrv = new Mock<ITodoService>();
-            todoSrv.Setup(x => x.Get()).Returns(Task.FromResult<IReadOnlyList<Todo>>(todos));
+            todoSrv.Setup(x => x.GetAll()).Returns(Task.FromResult<IReadOnlyList<Todo>>(todos));
             Services.AddService(todoSrv.Object);
 
             // act

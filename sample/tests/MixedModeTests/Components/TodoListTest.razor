@@ -74,7 +74,7 @@
     </ComponentUnderTest>
 </Fixture>
 @code {
-    MockJsRuntimeInvokeHandler jsRtMock;
+    MockJsRuntimeInvokeHandler jsRtMock = default!;
     Todo? createdTodo;
 
     void OnAddingTodoHandler(Todo todo) => createdTodo = todo;

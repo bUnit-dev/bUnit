@@ -15,18 +15,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _todos = await todoService.Get();
+        _todos = await todoService.GetAll();
     }
 
     private async Task AddingTodo(Todo todo)
     {
         todoService.Add(todo);
-        _todos = await todoService.Get();
+        _todos = await todoService.GetAll();
     }
     
     private async Task CompleteTodo(int todoId)
     {
         todoService.Complete(todoId);
-        _todos = await todoService.Get();
+        _todos = await todoService.GetAll();
     }
 }

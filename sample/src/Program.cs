@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Egil.RazorComponents.Testing.Library.SampleApp
+namespace Egil.RazorComponents.Testing.SampleApp
 {
     public sealed class Program
     {

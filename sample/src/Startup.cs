@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Egil.RazorComponents.Testing.Library.SampleApp.Data;
+using Egil.RazorComponents.Testing.SampleApp.Data;
 
-namespace Egil.RazorComponents.Testing.Library.SampleApp
+namespace Egil.RazorComponents.Testing.SampleApp
 {
     public class Startup
     {

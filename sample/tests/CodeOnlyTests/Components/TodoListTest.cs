@@ -1,7 +1,7 @@
 ﻿using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.EventDispatchExtensions;
-using Egil.RazorComponents.Testing.Library.SampleApp.Components;
-using Egil.RazorComponents.Testing.Library.SampleApp.Data;
+using Egil.RazorComponents.Testing.SampleApp.Components;
+using Egil.RazorComponents.Testing.SampleApp.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Shouldly;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
+namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
 {
     public class TodoListTest : ComponentTestFixture
     {

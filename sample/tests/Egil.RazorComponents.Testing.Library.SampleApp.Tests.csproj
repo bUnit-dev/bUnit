@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
-    <RootNamespace>Egil.RazorComponents.Testing.Library.SampleApp</RootNamespace>
+    <RootNamespace>Egil.RazorComponents.Testing.SampleApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

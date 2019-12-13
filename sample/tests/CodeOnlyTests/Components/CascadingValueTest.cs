@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Egil.RazorComponents.Testing.Library.SampleApp.Components;
+using Egil.RazorComponents.Testing.SampleApp.Components;
 using Xunit;
 using Shouldly;
 
-namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests.Components
+namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
 {
     public class CascadingValueTest : ComponentTestFixture
     {

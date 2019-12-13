@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Egil.RazorComponents.Testing.Library.SampleApp.Data;
-using Egil.RazorComponents.Testing.Library.SampleApp.Components;
+using Egil.RazorComponents.Testing.SampleApp.Data;
+using Egil.RazorComponents.Testing.SampleApp.Components;
 using Xunit;
-using Egil.RazorComponents.Testing.Library.SampleApp.Pages;
+using Egil.RazorComponents.Testing.SampleApp.Pages;
 using Shouldly;
 
-namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
+namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
 {
     public class FetchDataTest : ComponentTestFixture
     {
