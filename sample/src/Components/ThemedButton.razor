@@ -1,0 +1,18 @@
+﻿<button class=@(Theme?.Value ?? "NO-THEME") @attributes="Attributes">
+    @ChildContent
+</button>
+@code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? Attributes { get; set; }
+
+    [CascadingParameter]
+    public ThemeInfo? Theme { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+    }
+}

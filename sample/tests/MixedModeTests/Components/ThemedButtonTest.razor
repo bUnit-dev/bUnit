@@ -1,0 +1,22 @@
+﻿@inherits TestComponentBase
+@using Shouldly
+
+<Fixture Test="Test">
+    <ComponentUnderTest>
+        <NoArgs/>
+        <CascadingValue Value="theme">
+            <ThemedButton><NoArgs /></ThemedButton>
+        </CascadingValue>
+    </ComponentUnderTest>
+</Fixture>
+
+@code {
+    private ThemeInfo theme = new ThemeInfo { Value = "btn btn-secondary" };
+
+    void Test(IRazorTestContext context)
+    {
+        var cut = context.GetComponentUnderTest<ThemedButton>();
+        var x = cut.GetMarkup();
+        cut.Find("button").ClassList.ShouldContain("btn");
+    }
+}

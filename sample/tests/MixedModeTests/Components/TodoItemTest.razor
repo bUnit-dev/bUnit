@@ -1,0 +1,38 @@
+﻿@inherits TestComponentBase
+@using Egil.RazorComponents.Testing
+@using Xunit
+
+<Fixture Tests="new Test[]{ TheComponentRendersExpectedOutput, WhenItemIsClickedOnCompleteEventIsRaised }">
+    <ComponentUnderTest>
+        <TodoItem Todo="todo" OnCompleted="id => clickedTodoId = id"></TodoItem>
+    </ComponentUnderTest>
+    <Fragment>
+        <li id="todo-@todo.Id" class="list-group-item list-group-item-action">
+            <span>@todo.Text</span>
+            <span class="float-right text-danger">(click to complete)</span>
+        </li>
+    </Fragment>
+</Fixture>
+@code {
+    Todo todo = new Todo { Id = 42, Text = "Hello world" };
+    int clickedTodoId = 0;
+
+    void TheComponentRendersExpectedOutput(IRazorTestContext context)
+    {
+        // act
+        var cut = context.GetComponentUnderTest();
+        var expected = context.GetFragment();
+
+        // assert
+        cut.ShouldBe(expected);
+    }
+
+    void WhenItemIsClickedOnCompleteEventIsRaised(IRazorTestContext context)
+    {
+        var cut = context.GetComponentUnderTest();
+
+        cut.Find("li").Click();
+
+        Assert.Equal(todo.Id, clickedTodoId);
+    }
+}
