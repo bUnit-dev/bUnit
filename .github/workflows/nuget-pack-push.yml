@@ -1,0 +1,18 @@
+name: CI
+on:
+  push:
+    tags:
+      - '*'
+jobs:  
+  build:    
+    name: Push ${{ github.ref }} to NUGET
+    runs-on: ubuntu-latest  
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'  
+    - run: dotnet build -c Release
+    - run: dotnet test -c Release
+    - run: dotnet pack -c Release -o ${GITHUB_WORKSPACE}
+    - run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
