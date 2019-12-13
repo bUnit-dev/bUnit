@@ -41,6 +41,12 @@ namespace Egil.RazorComponents.Testing
             var container = new ContainerComponent(_renderer.Value);
             container.RenderComponentUnderTest(BuildRenderTree);
 
+            ExecuteFixtureTests(container);
+            ExecuteSnapshotTests(container);
+        }
+
+        private void ExecuteFixtureTests(ContainerComponent container)
+        {
             foreach (var (_, fixture) in container.GetComponents<Fixture>())
             {
                 container.RenderComponentUnderTest(fixture.ChildContent);
@@ -53,6 +59,21 @@ namespace Egil.RazorComponents.Testing
                 {
                     test(context);
                 }
+            }
+        }
+
+        private void ExecuteSnapshotTests(ContainerComponent container)
+        {
+            foreach (var (_, snapshot) in container.GetComponents<SnapshotTest>())
+            {
+                container.RenderComponentUnderTest(snapshot.ChildContent);
+                var testinput = container.GetComponents<FragmentBase>().Select(x => x.Component).ToArray();
+
+                using var context = new SnapshotTestContext(testinput);
+                snapshot.Setup(context);
+                var actual = context.RenderTestInput();
+                var expected = context.RenderExpectedOutput();
+                actual.ShouldBe(expected, snapshot.Description);
             }
         }
 

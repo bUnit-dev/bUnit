@@ -20,8 +20,8 @@
     void TheComponentRendersExpectedOutput(IRazorTestContext context)
     {
         // act
-        var cut = context.RenderComponentUnderTest();
-        var expected = context.RenderFragment();
+        var cut = context.GetComponentUnderTest();
+        var expected = context.GetFragment();
 
         // assert
         cut.ShouldBe(expected);
@@ -29,7 +29,7 @@
 
     void WhenItemIsClickedOnCompleteEventIsRaised(IRazorTestContext context)
     {
-        var cut = context.RenderComponentUnderTest();
+        var cut = context.GetComponentUnderTest();
 
         cut.Find("li").Click();
 

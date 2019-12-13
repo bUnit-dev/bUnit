@@ -25,51 +25,50 @@ namespace Egil.RazorComponents.Testing
         }
 
         /// <inheritdoc/>
-        public IRenderedFragment RenderComponentUnderTest()
+        public IRenderedFragment GetComponentUnderTest()
         {
-            return RenderFragment(nameof(RenderComponentUnderTest), SelectComponentUnderTest, Factory);
+            return GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory);
 
             static IRenderedFragment Factory(RazorTestContext context, RenderFragment fragment)
                 => new RenderedFragment(context, fragment);
         }
 
         /// <inheritdoc/>
-        public IRenderedComponent<TComponent> RenderComponentUnderTest<TComponent>() where TComponent : class, IComponent
+        public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : class, IComponent
         {
-            return RenderFragment(nameof(RenderComponentUnderTest), SelectComponentUnderTest, Factory);
+            return GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory);
 
             static IRenderedComponent<TComponent> Factory(RazorTestContext context, RenderFragment fragment)
                 => new RenderedComponent<TComponent>(context, fragment);
         }
 
         /// <inheritdoc/>
-        public IRenderedComponent<TComponent> RenderFragment<TComponent>(string? id = null) where TComponent : class, IComponent
+        public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : class, IComponent
         {
             var key = id ?? nameof(Fragment);
 
             return id is null
-                ? RenderFragment(key, SelectFirstFragment, Factory)
-                : RenderFragment(key, SelectFragmentById, Factory);
+                ? GetOrRenderFragment(key, SelectFirstFragment, Factory)
+                : GetOrRenderFragment(key, SelectFragmentById, Factory);
 
             static IRenderedComponent<TComponent> Factory(RazorTestContext context, RenderFragment fragment)
                 => new RenderedComponent<TComponent>(context, fragment);
         }
 
         /// <inheritdoc/>
-        public IRenderedFragment RenderFragment(string? id = null)
+        public IRenderedFragment GetFragment(string? id = null)
         {
             var key = id ?? nameof(Fragment);
 
             return id is null
-                ? RenderFragment(key, SelectFirstFragment, Factory)
-                : RenderFragment(key, SelectFragmentById, Factory);
+                ? GetOrRenderFragment(key, SelectFirstFragment, Factory)
+                : GetOrRenderFragment(key, SelectFragmentById, Factory);
 
             static IRenderedFragment Factory(RazorTestContext context, RenderFragment fragment)
                 => new RenderedFragment(context, fragment);
         }
 
-        /// <inheritdoc/>
-        private TRenderedFragment RenderFragment<TRenderedFragment>(string id, Func<string, FragmentBase> fragmentSelector, Func<RazorTestContext, RenderFragment, TRenderedFragment> renderedFragmentFactory)
+        protected TRenderedFragment GetOrRenderFragment<TRenderedFragment>(string id, Func<string, FragmentBase> fragmentSelector, Func<RazorTestContext, RenderFragment, TRenderedFragment> renderedFragmentFactory)
             where TRenderedFragment : IRenderedFragment
         {
             if (_renderedFragments.TryGetValue(id, out var renderedFragment))
@@ -100,4 +99,5 @@ namespace Egil.RazorComponents.Testing
             return _testData.OfType<ComponentUnderTest>().Single();
         }
     }
+
 }

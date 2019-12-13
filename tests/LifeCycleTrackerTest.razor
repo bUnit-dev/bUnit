@@ -18,7 +18,7 @@
 
     void Test(IRazorTestContext context)
     {        
-        var cut = context.RenderComponentUnderTest<Wrapper>();
+        var cut = context.GetComponentUnderTest<Wrapper>();
         var callLog = tracker.LifeCycleMethodCallLog;
 
         // assert first render called expected methods

@@ -15,7 +15,7 @@
 
     void Test(IRazorTestContext context)
     {
-        var cut = context.RenderComponentUnderTest<ThemedButton>();
+        var cut = context.GetComponentUnderTest<ThemedButton>();
         var x = cut.GetMarkup();
         cut.Find("button").ClassList.ShouldContain("btn");
     }

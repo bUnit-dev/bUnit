@@ -9,40 +9,48 @@ namespace Egil.RazorComponents.Testing
     public interface IRazorTestContext : ITestContext
     {
         /// <summary>
-        /// Renders the HTML/component defined in the &lt;Fixture&gt;&lt;ComponentUnderTest&gt;...&lt;ComponentUnderTest/&gt;&lt;Fixture/&gt; element.
+        /// Gets (and renders) the HTML/component defined in the &lt;Fixture&gt;&lt;ComponentUnderTest&gt;...&lt;ComponentUnderTest/&gt;&lt;Fixture/&gt; element.
+        /// 
+        /// The HTML/component is only rendered the first this method is called.
         /// </summary>
         /// <returns>A <see cref="IRenderedFragment"/></returns>
-        IRenderedFragment RenderComponentUnderTest();
+        IRenderedFragment GetComponentUnderTest();
 
         /// <summary>
-        /// Renders the component of type <typeparamref name="TComponent"/> defined in the 
+        /// Gets (and renders) the component of type <typeparamref name="TComponent"/> defined in the 
         /// &lt;Fixture&gt;&lt;ComponentUnderTest&gt;...&lt;ComponentUnderTest/&gt;&lt;Fixture/&gt; element.
+        /// 
+        /// The HTML/component is only rendered the first this method is called.
         /// </summary>
         /// <typeparam name="TComponent">The type of component to render</typeparam>
         /// <returns>A <see cref="IRenderedComponent{TComponent}"/></returns>
-        IRenderedComponent<TComponent> RenderComponentUnderTest<TComponent>() where TComponent : class, IComponent;
+        IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : class, IComponent;
 
         /// <summary>
-        /// Renders the HTML/component defined in the 
+        /// Gets (and renders) the HTML/component defined in the 
         /// &lt;Fixture&gt;&lt;Fragment id="<paramref name="id"/>" &gt;...&lt;Fragment/&gt;&lt;Fixture/&gt; element.
         ///
         /// If <paramref name="id"/> is null/not provided, the component defined in the first &lt;Fragment/&gt; in 
-        /// the &lt;Fixture/&gt; element is returned
+        /// the &lt;Fixture/&gt; element is returned.
+        /// 
+        /// The HTML/component is only rendered the first this method is called.
         /// </summary>
         /// <param name="id">The id of the fragment where the HTML/component is defined in Razor syntax.</param>
         /// <returns>A <see cref="IRenderedFragment"/></returns>
-        IRenderedFragment RenderFragment(string? id = null);
+        IRenderedFragment GetFragment(string? id = null);
 
         /// <summary>
-        /// Renders the component of type <typeparamref name="TComponent"/> defined in the 
+        /// Gets (and renders) the component of type <typeparamref name="TComponent"/> defined in the 
         /// &lt;Fixture&gt;&lt;Fragment id="<paramref name="id"/>" &gt;...&lt;Fragment/&gt;&lt;Fixture/&gt; element.
         /// 
         /// If <paramref name="id"/> is null/not provided, the component defined in the first &lt;Fragment/&gt; in 
-        /// the &lt;Fixture/&gt; element is returned
+        /// the &lt;Fixture/&gt; element is returned.
+        /// 
+        /// The HTML/component is only rendered the first this method is called.
         /// </summary>
         /// <typeparam name="TComponent">The type of component to render</typeparam>
         /// <param name="id">The id of the fragment where the component is defined in Razor syntax.</param>
         /// <returns>A <see cref="IRenderedComponent{TComponent}"/></returns>
-        IRenderedComponent<TComponent> RenderFragment<TComponent>(string? id = null) where TComponent : class, IComponent;
+        IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : class, IComponent;
     }
 }

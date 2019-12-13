@@ -12,23 +12,24 @@
     void InitialHtmlIsCorrect(IRazorTestContext context)
     {
         // act
-        var cut = context.RenderComponentUnderTest<Counter>();
+        var cut = context.GetComponentUnderTest<Counter>();
 
         // assert
-        cut.ShouldBe(context.RenderFragment());
+        cut.ShouldBe(context.GetFragment());
     }
 
     void AfterBtnClickCounterIsIncremented(IRazorTestContext context)
     {
         // arrange
-        var cut = context.RenderComponentUnderTest<Counter>();
+        var cut = context.GetComponentUnderTest<Counter>();
 
         // act
-        cut.Find("button").Click(numberOfClicks: 3);
+        cut.Find("button").Click(); // first click
+        cut.Find("button").Click(); // 2nd click
+        cut.Find("button").Click(); // 3rd click
 
         // assert
-        cut.GetChangesSinceFirstRender()
-            .ShouldHaveSingleTextChange("Current count: 3");
+        cut.GetChangesSinceFirstRender().ShouldHaveSingleTextChange("Current count: 3");
     }
 }
 

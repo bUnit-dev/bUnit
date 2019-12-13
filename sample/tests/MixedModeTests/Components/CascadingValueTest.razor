@@ -13,7 +13,7 @@
 
     void ThemedButtonUsesClassPassedByCascadingValue(IRazorTestContext context)
     {
-        var cut = context.RenderComponentUnderTest();
+        var cut = context.GetComponentUnderTest();
 
         cut.Find("button").ClassList.ShouldContain(cssClass);
     }
@@ -33,7 +33,7 @@
 @code {
     void ThemedButtonUsesNamedCascadingValue(IRazorTestContext context)
     {
-        var cut = context.RenderComponentUnderTest();
+        var cut = context.GetComponentUnderTest();
 
         var elm = cut.Find("div");
         elm.ClassList.ShouldContain("FOO");

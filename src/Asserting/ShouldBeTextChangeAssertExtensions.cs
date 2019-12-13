@@ -47,7 +47,40 @@ namespace Egil.RazorComponents.Testing
 
             if (diffs.Count != 0)
             {
-                throw new HtmlEqualException(diffs,expectedChange, actual.Test.Node, userMessage);
+                throw new HtmlEqualException(diffs, expectedChange, actual.Test.Node, userMessage);
+            }
+        }
+
+        /// <summary>
+        /// Verifies that the <paramref name="actualChange"/> diff is a change to the value of the specific attribute (<paramref name="expectedAttrName"/>).
+        /// </summary>
+        /// <param name="actualChange">The actual change that has happened.</param>
+        /// <param name="expectedAttrName">The expected name of the changed attribute.</param>
+        /// <param name="expectedAttrValue">The expected value of the changed attribute.</param>
+        /// <param name="userMessage">A custom user message to show when the verification fails.</param>
+        public static void ShouldBeAttributeChange(this IDiff actualChange, string expectedAttrName, string expectedAttrValue, string? userMessage = null)
+        {
+            if (actualChange is null) throw new ArgumentNullException(nameof(actualChange));
+            if (expectedAttrName is null) throw new ArgumentNullException(nameof(expectedAttrName));
+            if (expectedAttrValue is null) throw new ArgumentNullException(nameof(expectedAttrValue));
+
+            var actual = Assert.IsType<AttrDiff>(actualChange);
+
+            if (!expectedAttrName.Equals(actual.Test.Attribute.Name, StringComparison.Ordinal))
+            {
+                throw new AssertActualExpectedException(
+                    expectedAttrName, actual.Test.Attribute.Name,
+                    userMessage ?? "The name of the changed attribute does not match the expected name.",
+                    "Expected attribute name",
+                    "Actual attribute name");
+            }
+            if (!expectedAttrValue.Equals(actual.Test.Attribute.Value, StringComparison.Ordinal))
+            {
+                throw new AssertActualExpectedException(
+                    expectedAttrValue, actual.Test.Attribute.Value,
+                    userMessage ?? "The value of the changed attribute does not match the expected value.",
+                    "Expected attribute value",
+                    "Actual attribute value");
             }
         }
     }

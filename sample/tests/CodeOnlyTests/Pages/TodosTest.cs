@@ -8,6 +8,7 @@ using Xunit;
 using Moq;
 using Egil.RazorComponents.Testing.Library.SampleApp.Pages;
 using Egil.RazorComponents.Testing.Library.SampleApp.Data;
+using Egil.RazorComponents.Testing.EventDispatchExtensions;
 
 namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests.Pages
 {

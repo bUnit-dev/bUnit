@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using Egil.RazorComponents.Testing.Library.SampleApp.Pages;
 using Shouldly;
 using Xunit;
@@ -20,20 +21,6 @@ namespace Egil.RazorComponents.Testing.Library.SampleApp.CodeOnlyTests
                                  <button class=""btn btn-primary"">Click me</button>";
 
             cut.ShouldBe(expectedHtml);
-        }
-
-        [Theory]
-        [InlineData(1, "Current count: 1")]
-        [InlineData(2, "Current count: 2")]
-        [InlineData(3, "Current count: 3")]
-        public void AfterBtnClickCounterIsIncremented(int numberOfClicks, string expectedCountMsg)
-        {
-            var cut = RenderComponent<Counter>();
-
-            cut.Find("button").Click(numberOfClicks);
-
-            cut.GetChangesSinceFirstRender()
-                .ShouldHaveSingleTextChange(expectedCountMsg);
         }
 
         [Fact]

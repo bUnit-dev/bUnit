@@ -29,16 +29,16 @@
     void InitialLoadingHtmlRendersCorrectly(IRazorTestContext context)
     {
         // act
-        var cut = context.RenderComponentUnderTest<FetchData>();
+        var cut = context.GetComponentUnderTest<FetchData>();
 
         // assert
-        cut.ShouldBe(context.RenderFragment("InitialRender"));
+        cut.ShouldBe(context.GetFragment("InitialRender"));
     }
 
     void AfterDataLoadsItIsDisplayedInAForecastTable(IRazorTestContext context)
     {
         // arrange
-        var expectedAddition = context.RenderFragment("ForecastDataTableRender");
+        var expectedAddition = context.GetFragment("ForecastDataTableRender");
         var cut = context.RenderComponent<FetchData>();
 
         // act

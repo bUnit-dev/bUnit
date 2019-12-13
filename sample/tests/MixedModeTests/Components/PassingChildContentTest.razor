@@ -12,9 +12,9 @@
 @code {
     void MarkupPassedViaChildContent(IRazorTestContext context)
     {
-        var expectedChildContent = context.RenderFragment();
+        var expectedChildContent = context.GetFragment();
 
-        var cut = context.RenderComponentUnderTest();
+        var cut = context.GetComponentUnderTest();
 
         cut.Find("button").ChildNodes.ShouldBe(expectedChildContent);
     }
@@ -31,7 +31,7 @@
     string btnContent = "BUTTTOOOON";
     void ComponentsPassedViaChildContent(IRazorTestContext context)
     {
-        var cut = context.RenderComponentUnderTest();
+        var cut = context.GetComponentUnderTest();
 
         cut.Find("#btn").TextContent.ShouldBe(btnContent);
     }

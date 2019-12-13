@@ -1,4 +1,5 @@
-﻿using Egil.RazorComponents.Testing.Library.SampleApp.Components;
+﻿using Egil.RazorComponents.Testing.EventDispatchExtensions;
+using Egil.RazorComponents.Testing.Library.SampleApp.Components;
 using Egil.RazorComponents.Testing.Library.SampleApp.Data;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
