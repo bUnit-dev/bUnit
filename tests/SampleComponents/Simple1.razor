@@ -1,0 +1,5 @@
+﻿@code {
+    [Parameter] public string Header { get; set; } = string.Empty;
+    [Parameter] public string AttrValue { get; set; } = string.Empty;
+}
+<h1 attr=@AttrValue>@Header</h1>

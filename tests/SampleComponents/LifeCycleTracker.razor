@@ -1,0 +1,56 @@
+﻿@implements IDisposable
+@code {
+    public Dictionary<string, int> LifeCycleMethodCallLog { get; } = new Dictionary<string, int>
+    {
+        { nameof(SetParametersAsync), 0 },
+        { nameof(OnInitialized), 0 },
+        { nameof(OnInitializedAsync), 0 },
+        { nameof(OnParametersSet), 0 },
+        { nameof(OnParametersSetAsync), 0 },
+        { nameof(OnAfterRender)+"FirstRender", 0 },
+        { nameof(OnAfterRenderAsync)+"FirstRender", 0 },
+        { nameof(OnAfterRender), 0 },
+        { nameof(OnAfterRenderAsync), 0 },
+        { nameof(Dispose), 0 }
+    };
+
+    [Parameter] public int Number { get; set; }
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        LifeCycleMethodCallLog[nameof(SetParametersAsync)] += 1;
+        return base.SetParametersAsync(parameters);
+    }
+
+    protected override void OnInitialized() => LifeCycleMethodCallLog[nameof(OnInitialized)] += 1;
+
+    protected override Task OnInitializedAsync()
+    {
+        LifeCycleMethodCallLog[nameof(OnInitializedAsync)] += 1;
+        return Task.CompletedTask;
+    }
+
+    protected override void OnParametersSet() => LifeCycleMethodCallLog[nameof(OnParametersSet)] += 1;
+
+    protected override Task OnParametersSetAsync()
+    {
+        LifeCycleMethodCallLog[nameof(OnParametersSetAsync)] += 1;
+        return base.OnParametersSetAsync();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        LifeCycleMethodCallLog[nameof(OnAfterRender) + (firstRender ? "FirstRender" : "")] += 1;
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        LifeCycleMethodCallLog[nameof(OnAfterRenderAsync) + (firstRender ? "FirstRender" : "")] += 1;
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    public void Dispose()
+    {
+        LifeCycleMethodCallLog[nameof(Dispose)] += 1;
+    }
+}

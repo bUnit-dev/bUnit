@@ -1,0 +1,130 @@
+﻿@inherits TestComponentBase
+@using Xunit
+
+<Fixture Setup="ctx => ctx.Services.AddMockJsRuntime()"
+         Tests="new Test[]{ EmptyTodoList, SettingLabel, TaskListRendersItemsUsingItemTemplate }">
+    <ComponentUnderTest>
+        <TodoList>
+            <ItemsTemplate>
+                <TodoItem Todo=@context />
+            </ItemsTemplate>
+        </TodoList>
+    </ComponentUnderTest>
+    <Fragment Id="EmptyTodoListRender">
+        <form>
+            <div class="input-group">
+                <input value="" type="text" class="form-control"
+                       placeholder="Task description" aria-label="Task description" />
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="submit">Add task</button>
+                </div>
+            </div>
+        </form>
+        <ol class="list-group"></ol>
+    </Fragment>
+    <Fragment Id="TodoItemRender">
+        <TodoItem Todo="@TestItems[0]" />
+    </Fragment>
+</Fixture>
+@code {
+    Todo[] TestItems { get; } = new[] { new Todo { Id = 42 } };
+
+    void EmptyTodoList(IRazorTestContext context)
+    {
+        var cut = context.GetComponentUnderTest<TodoList>();
+
+        cut.ShouldBe(context.GetFragment("EmptyTodoListRender"));
+    }
+
+    void SettingLabel(IRazorTestContext context)
+    {
+        var cut = context.GetComponentUnderTest<TodoList>();
+
+        cut.SetParametersAndRender((nameof(TodoList.Label), "LABEL"));
+
+        cut.GetChangesSinceFirstRender().ShouldAllBe(
+            diff => diff.ShouldBeAttributeChange("placeholder", "LABEL"),
+            diff => diff.ShouldBeAttributeChange("aria-label", "LABEL")
+        );
+    }
+
+    void TaskListRendersItemsUsingItemTemplate(IRazorTestContext context)
+    {
+        var cut = context.GetComponentUnderTest<TodoList>();
+        cut.TakeSnapshot();
+
+        cut.SetParametersAndRender((nameof(TodoList.Items), TestItems));
+
+        var diffs = cut.GetChangesSinceSnapshot();
+        diffs.ShouldHaveSingleChange()
+        .ShouldBeAddition(context.GetFragment("TodoItemRender"));
+    }
+}
+
+<Fixture Setup="Setup"
+         Tests="new Test[]{ OnFirstRenderInputFieldGetsFocus,
+                AfterFirstRenderInputFieldDoesntGetFocusAfterRerenders,
+                WhenAddTaskFormIsSubmittedWithNoTextOnAddingTodoIsNotCalled }">
+    <ComponentUnderTest>
+        <TodoList OnAddingTodo="OnAddingTodoHandler">
+            <ItemsTemplate>
+                <TodoItem Todo=@context />
+            </ItemsTemplate>
+        </TodoList>
+    </ComponentUnderTest>
+</Fixture>
+@code {
+    MockJsRuntimeInvokeHandler jsRtMock;
+    Todo? createdTodo;
+
+    void OnAddingTodoHandler(Todo todo) => createdTodo = todo;
+
+    void Setup(IRazorTestContext context)
+    {
+        jsRtMock = context.Services.AddMockJsRuntime();
+    }
+
+    void OnFirstRenderInputFieldGetsFocus(IRazorTestContext context)
+    {
+        var cut = context.GetComponentUnderTest<TodoList>();
+
+        // assert that there is a call to document.body.focus.call with a single argument,
+        // a reference to the input element.
+        jsRtMock.VerifyInvoke("document.body.focus.call")
+            .Arguments.Single().ShouldBeElementReferenceTo(cut.Find("input"));
+    }
+
+    void AfterFirstRenderInputFieldDoesntGetFocusAfterRerenders(IRazorTestContext context)
+    {
+        var cut = context.GetComponentUnderTest<TodoList>();
+
+        cut.Render(); // second render
+        cut.Render(); // thrid render
+        cut.Render(); // ...
+        cut.Render();
+
+        jsRtMock.VerifyInvoke("document.body.focus.call", calledTimes: 1);
+    }
+
+    void WhenAddTaskFormIsSubmittedWithNoTextOnAddingTodoIsNotCalled(IRazorTestContext context)
+    {
+        var cut = context.GetComponentUnderTest<TodoList>();
+
+        cut.Find("form").Submit();
+
+        Assert.Null(createdTodo);
+    }
+
+    void WhenAddTaskFormIsSubmittedWithTextOnAddingTodoIsCalled(IRazorTestContext context)
+    {
+        createdTodo = null;
+        var cut = context.GetComponentUnderTest<TodoList>();
+        var taskValue = "HELLO WORLD TASK";
+
+        cut.Find("input").Change(taskValue);
+        cut.Find("form").Submit();
+
+        Assert.NotNull(createdTodo);
+        Assert.Equal(taskValue, createdTodo?.Text);
+    }
+}

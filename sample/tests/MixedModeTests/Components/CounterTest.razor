@@ -1,0 +1,35 @@
+﻿@inherits TestComponentBase
+
+<Fixture Tests="new Test[]{ InitialHtmlIsCorrect, AfterBtnClickCounterIsIncremented }">
+    <ComponentUnderTest><Counter /></ComponentUnderTest>
+    <Fragment>
+        <h1>Counter</h1>
+        <p>Current count: 0</p>
+        <button class="btn btn-primary">Click me</button>
+    </Fragment>
+</Fixture>
+@code {
+    void InitialHtmlIsCorrect(IRazorTestContext context)
+    {
+        // act
+        var cut = context.GetComponentUnderTest<Counter>();
+
+        // assert
+        cut.ShouldBe(context.GetFragment());
+    }
+
+    void AfterBtnClickCounterIsIncremented(IRazorTestContext context)
+    {
+        // arrange
+        var cut = context.GetComponentUnderTest<Counter>();
+
+        // act
+        cut.Find("button").Click(); // first click
+        cut.Find("button").Click(); // 2nd click
+        cut.Find("button").Click(); // 3rd click
+
+        // assert
+        cut.GetChangesSinceFirstRender().ShouldHaveSingleTextChange("Current count: 3");
+    }
+}
+

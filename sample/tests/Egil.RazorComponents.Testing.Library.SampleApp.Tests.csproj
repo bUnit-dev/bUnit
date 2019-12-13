@@ -3,11 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
-    <RootNamespace>Egil.RazorComponents.Testing</RootNamespace>
+    <RootNamespace>Egil.RazorComponents.Testing.Library.SampleApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="Shouldly" Version="3.0.2" />
     <PackageReference Include="xunit.assert" Version="2.4.1" />
     <PackageReference Include="xunit.core" Version="2.4.1" />
@@ -18,7 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Egil.RazorComponents.Testing.Library.csproj" />
+    <ProjectReference Include="..\..\src\Egil.RazorComponents.Testing.Library.csproj" />
+    <ProjectReference Include="..\src\Egil.RazorComponents.Testing.Library.SampleApp.csproj" />
   </ItemGroup>
 
 </Project>

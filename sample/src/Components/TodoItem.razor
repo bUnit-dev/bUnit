@@ -1,0 +1,27 @@
+﻿<li id="todo-@(Todo.Id)" class="list-group-item list-group-item-action" @onclick="Complete">
+    <span>@Todo.Text</span>
+    <span class="float-right text-danger">(click to complete)</span>
+</li>
+@code {
+    private Todo _todo = Todo.Empty;
+
+    [Parameter]
+    public Todo Todo
+    {
+        get => _todo;
+        set => _todo = value ?? throw new ArgumentNullException(nameof(Todo));
+    }
+
+    [Parameter] public EventCallback<int> OnCompleted { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (Todo == Todo.Empty)
+            throw new ArgumentException($"The {nameof(Todo)} parameter was not set.");
+    }
+
+    private void Complete()
+    {
+        OnCompleted.InvokeAsync(Todo.Id);
+    }
+}
