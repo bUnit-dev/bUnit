@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RootNamespace>Egil.RazorComponents.Testing</RootNamespace>    
     <TargetFramework>netstandard2.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
@@ -17,7 +17,7 @@
     <Company>Egil Hansen</Company>
     <Product>Razor Component Testing Library</Product>
     <Description>
-      Testing library for Razor Components, that allows you to easily define your component under test and the expected output HTML in a .razor files. See the projects GitHub page for usage details: https://github.com/egil/razor-components-testing-library
+      A testing library for Blazor Components. You can easily define components under test in C# or Razor syntax, it has intelligent HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
     </Description>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
