@@ -12,8 +12,8 @@ All examples can be found in the [CodeOnlyTests](../sample/tests/CodeOnlyTests) 
 5. [Testing components with EventCallback parameters](#testing-components-with-eventcallback-parameters)
 6. [Testing components with cascading-value parameters](#testing-components-with-cascading-value-parameters)
 7. [Testing components that use on IJsRuntime](#testing-components-that-use-on-ijsruntime)  
-   7.1 [Verifying element references](#verifying-element-references)
-8. [Testing components with injected dependencies]()
+   7.1 [Verifying element references passed to InvokeAsync](#verifying-element-references-passed-to-invokeasync)
+8. [Testing components with injected dependencies](#testing-components-with-injected-dependencies)
 
 ## Creating new test classes
 
@@ -55,7 +55,7 @@ The following unit-tests verifies that the [Counter.razor](../sample/src/Pages/C
 }
 ```
 
-The [CounterTest.cs](../sample/test/CodeOnlyTests/Pages/CounterTest.cs) looks like this:
+The [CounterTest.cs](../sample/tests/CodeOnlyTests/Pages/CounterTest.cs) looks like this:
 
 ```csharp
 public class CounterTest : ComponentTestFixture
@@ -157,7 +157,7 @@ The component under test will be the [Aside.razor](../sample/src/Components/Asid
 }
 ```
 
-The [AsideTest.cs](../sample/test/CodeOnlyTests/Components/AsideTest.cs) looks like this:
+The [AsideTest.cs](../sample/tests/CodeOnlyTests/Components/AsideTest.cs) looks like this:
 
 ```csharp
 public class AsideTest : ComponentTestFixture
@@ -329,7 +329,7 @@ To show how to pass an `EventCallback` to a component under test, we will use th
 }
 ```
 
-The relevant part of [ThemedButtonTest.cs](../sample/test/CodeOnlyTests/Components/ThemedButtonTest.cs) looks like this:
+The relevant part of [ThemedButtonTest.cs](../sample/tests/CodeOnlyTests/Components/ThemedButtonTest.cs) looks like this:
 
 ```csharp
 public class ThemedButtonTest : ComponentTestFixture
@@ -456,7 +456,7 @@ To help us test the Mock JSRuntime, we have the [WikiSearch.razor](../sample/src
 }
 ```
 
-The [WikiSearchTest.cs](../sample/test/CodeOnlyTests/Components/WikiSearchTest.cs) looks like this:
+The [WikiSearchTest.cs](../sample/tests/CodeOnlyTests/Components/WikiSearchTest.cs) looks like this:
 
 ```csharp
 public class WikiSearchTest : ComponentTestFixture
@@ -546,7 +546,7 @@ For example, consider the [FocussingInput.razor](../sample/src/Components/Focuss
 }
 ```
 
-The the [FocussingInputTest.cs](../sample/test/CodeOnlyTests/Components/FocussingInputTest.cs) looks like this:
+The the [FocussingInputTest.cs](../sample/tests/CodeOnlyTests/Components/FocussingInputTest.cs) looks like this:
 
 ```csharp
 public class FocussingInputTest : ComponentTestFixture
@@ -573,3 +573,77 @@ public class FocussingInputTest : ComponentTestFixture
 ```
 
 The last line verifies that there was a single argument to the invocation, and via the `ShouldBeElementReferenceTo` checks, that the `<input />` was indeed the referenced element.
+
+## Testing components with injected dependencies
+
+The demonstrate service injection, lets refactor the [FetchData.razor](../sample/src/Pages/FetchData.razor) component that comes with the default Razor app template, to make it more testable:
+
+- Extract an interface from [WeatherForecastService](../sample/src/Data/WeatherForecastService.cs), name it [IWeatherForecastService](../sample/src/Data/IWeatherForecastService.cs), and have `FetchData` take a dependency on it.
+
+- Extract the `<table>` inside the `else` branch in the [FetchData.razor](../sample/src/Pages/FetchData.razor) component into its own component. Lets name it [ForecastDataTable](../sample/src/Pages/FetchData.razor).
+
+- In the [FetchData.razor](../sample/src/Pages/FetchData.razor), pass the variable `forecasts` to the [ForecastDataTable](../sample/src/Pages/FetchData.razor) component.
+
+Now we just need a [MockForecastService.cs](../sample/tests/MockForecastService.cs). It looks like this:
+
+```csharp
+internal class MockForecastService : IWeatherForecastService
+{
+    public TaskCompletionSource<WeatherForecast[]> Task { get; } = new TaskCompletionSource<WeatherForecast[]>();
+    public Task<WeatherForecast[]> GetForecastAsync(DateTime startDate) => Task.Task;
+}
+```
+
+With the mock in place, we can write the [FetchDataTest.cs](../sample/tests/CodeOnlyTests/Pages/FetchDataTest.cs), which looks like this:
+
+```csharp
+public class FetchDataTest : ComponentTestFixture
+{
+    [Fact(DisplayName = "Fetch data component renders expected initial markup")]
+    public void Test001()
+    {
+        // Arrange - add the mock forecast service
+        Services.AddService<IWeatherForecastService, MockForecastService>();
+
+        // Act - render the FetchData component
+        var cut = RenderComponent<FetchData>();
+
+        // Assert that it renders the initial loading message
+        var initialExpectedHtml = @"<h1>Weather forecast</h1>
+                                    <p>This component demonstrates fetching data from a service.</p>
+                                    <p><em>Loading...</em></p>";
+        cut.ShouldBe(initialExpectedHtml);
+    }
+
+    [Fact(DisplayName = "After data loads it is displayed in a ForecastTable component")]
+    public void Test002()
+    {
+        // Setup the mock forecast service
+        var forecasts = new[] { new WeatherForecast { Date = DateTime.Now, Summary = "Testy", TemperatureC = 42 } };
+        var mockForecastService = new MockForecastService();
+        Services.AddService<IWeatherForecastService>(mockForecastService);
+
+        // Arrange - render the FetchData component
+        var cut = RenderComponent<FetchData>();
+
+        // Act - pass the test forecasts to the component via the mock services
+        WaitForNextRender(() => mockForecastService.Task.SetResult(forecasts));
+
+        // Assert
+        // Render an new instance of the ForecastDataTable, passing in the test data
+        var expectedDataTable = RenderComponent<ForecastDataTable>((nameof(ForecastDataTable.Forecasts), forecasts));
+        // Assert that the CUT has two changes, one removal of the loading message and one addition which matched the
+        // rendered HTML from the expectedDataTable.
+        cut.GetChangesSinceFirstRender().ShouldHaveChanges(
+            diff => diff.ShouldBeRemoval("<p><em>Loading...</em></p>"),
+            diff => diff.ShouldBeAddition(expectedDataTable)
+        );
+    }
+}
+```
+
+- In `Test001` we use the `Services.AddService` method to register the dependency and the performs a regular "initial render" verification.
+
+- `Test002` creates a new instance of the mock service and registers that with the the service provider. It then renders the CUT and uses `WaitForNextRender` to pass the test data to the mock services task, which then completes and the CUT gets the data.
+
+- In the assert step we expect the CUT to use a `ForecastDataTable` to render the forecast data. Thus, to make our assertion more simple and stable to changes, we render an instance of the `ForecastDataTable` use that to verify that the expected addition after the CUT receives the forecast data is as it should be.
