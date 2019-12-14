@@ -1,0 +1,15 @@
+name: CI
+
+on: [push]
+
+jobs:  
+  build:    
+    name: Executing tests
+    runs-on: ubuntu-latest  
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'  
+    - run: dotnet build -c Release
+    - run: dotnet test -c Release
