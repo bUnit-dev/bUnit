@@ -8,8 +8,8 @@ All examples can be found in the [CodeOnlyTests](../sample/tests/CodeOnlyTests) 
 2. [Testing components without parameters](#testing-components-without-parameters)
 3. [Testing components with regular parameters](#testing-components-with-regular-parameters)
 4. [Testing components with child content](#testing-components-with-child-content)
-5. [Testing components with `EventCallback` parameters](#testing-components-with-eventcallback-parameters)
-6. [Testing components with cascading-value parameters](#testing-components-with-cascading value-parameters)
+5. [Testing components with EventCallback parameters](#testing-components-with-eventcallback-parameters)
+6. [Testing components with cascading-value parameters](#testing-components-with-cascading-value-parameters)
 
 ## Creating new test classes
 
