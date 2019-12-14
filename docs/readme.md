@@ -29,41 +29,51 @@ This framework's goal is to make it easy to write _comprehensive, stable unit te
 Follow these steps to set up a new test project:
 
 1. Create a new Razor Class Library (`dotnet new razorclasslib`).
-2. Add the following package references to your testing library:
 
-   - `Razor.Components.Testing.Library`
+2. Ensure `TargetFramework` is `netcoreapp3.1`, e.g. set `<TargetFramework>netcoreapp3.1</TargetFramework>` in your .csproj file.
+
+3. Add the following package references to your testing library:
+
+   - `Razor.Components.Testing.Library` (make sure to get `1.0.0-beta-1` version)
    - `Microsoft.NET.Test.Sdk`
    - `xunit.core`
-   - `xunit.assert`
+   - `xunit.assert` (can be replaced with `Shouldly` or another assertion library)
    - `xunit.runner.visualstudio` (if using Visual Studio)
 
    Optionally, but recommended packages are [`Moq`](https://github.com/Moq) and [`Shouldly`](https://github.com/shouldly). _Moq_ is a good generic mocking library, and _Shouldly_ is a fluent syntax assert library, that makes test more readable and produce easily readable assert errors.
 
-3. Add a reference to the Blazor (class library) project(s) where the components you want to test is located.
+4. Add a reference to the Blazor (class library) project(s) where the components you want to test is located.
 
-4. Start writing tests (see examples below to get started).
+5. Start writing tests (see examples below to get started).
 
 ## Examples
 
 Examples are split into three sections, one for each style/declaration type.
 
-1. [C#-based tests](csharp-examples.md)
-2. [Razor/C# mixed-mode tests](razor-examples.md)
-3. [Snapshot tests](snapshot-examples.md)
+1. [C#-based tests](csharp-examples.md)  
+   Examples of tests written entirely in C#
+2. [Razor/C# mixed-mode tests](razor-examples.md)  
+   Examples of tests written in Razor files using Razor code to declare/arrange the component under test and expected HTML, and C# code for driving the test.
+3. [Snapshot tests](snapshot-examples.md)  
+   Examples of snapshot tests written in Razor code, where the component under test and expected output is declared in Razor syntax and automatically verified.
 
 ## References
 
-See source code documentation for now.
+The following sections are planned but not done yet. A lot of the public methods are however documented, so view the documentation in the source code for now.
 
-1. [Semantic HTML diffing options](html-diffing-options.md)
+Upcoming sections:
+
+1. [Built-in assertions](#)
+2. [Component creation and rendering](#)
+3. [Semantic HTML diffing options](#)
 
 ## Contribute
 
 To get in touch, ask questions or provide feedback, you can:
 
-- Create a new [issue](https://github.com/egil/razor-components-testing-library/issues)
-- Join the library's Gitter channel ([![Gitter](https://badges.gitter.im/razor-components-testing-library/community.svg)](https://gitter.im/razor-components-testing-library/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge))
-- Ping me on Twitter ([@egilhansen](https://twitter.com/egilhansen))
+- Create a new [issue](https://github.com/egil/razor-components-testing-library/issues).
+- Join the library's Gitter channel [![Gitter](https://badges.gitter.im/razor-components-testing-library/community.svg)](https://gitter.im/razor-components-testing-library/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+- Ping me on Twitter: [@egilhansen](https://twitter.com/egilhansen)
 
 There are a few ways you can help improve this library.
 
