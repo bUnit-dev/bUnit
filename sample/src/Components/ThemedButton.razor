@@ -1,18 +1,17 @@
-﻿<button class=@(Theme?.Value ?? "NO-THEME") @attributes="Attributes">
+﻿<button @onclick="HandleOnClick"
+        class=@Theme?.Value
+        title=@Title?.Value
+        @attributes="Attributes">
     @ChildContent
 </button>
 @code {
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? Attributes { get; set; }
 
-    [CascadingParameter]
-    public ThemeInfo? Theme { get; set; }
+    [CascadingParameter] public ThemeInfo? Theme { get; set; }
+    [CascadingParameter(Name = nameof(Title))] public ThemeInfo? Title { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-    }
+    private Task HandleOnClick(MouseEventArgs args) => OnClick.InvokeAsync(args);
 }

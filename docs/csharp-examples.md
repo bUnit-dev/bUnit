@@ -4,10 +4,12 @@ In the following examples, the terminology **component under test** (abbreviated
 
 All examples can be found in the [CodeOnlyTests](../sample/tests/CodeOnlyTests) folder in the [Sample project](../sample/).
 
-1. [Creating new test classes](creating-new-test-classes)
-2. [Testing components without parameters](testing-components-without-parameters)
-3. [Testing components with regular parameters](testing-components-with-regular-parameters)
-4. [Testing components with child content](testing-components-with-child-content)
+1. [Creating new test classes](#creating-new-test-classes)
+2. [Testing components without parameters](#testing-components-without-parameters)
+3. [Testing components with regular parameters](#testing-components-with-regular-parameters)
+4. [Testing components with child content](#testing-components-with-child-content)
+5. [Testing components with `EventCallback` parameters](#testing-components-with-eventcallback-parameters)
+6. [Testing components with cascading-value parameters](#testing-components-with-cascading value-parameters)
 
 ## Creating new test classes
 
@@ -49,7 +51,7 @@ The following unit-tests verifies that the [Counter.razor](../sample/src/Pages/C
 }
 ```
 
-These are the unit tests:
+The [CounterTest.cs](../sample/test/CodeOnlyTests/Pages/CounterTest.cs) looks like this:
 
 ```csharp
 public class CounterTest : ComponentTestFixture
@@ -151,7 +153,7 @@ The component under test will be the [Aside.razor](../sample/src/Components/Asid
 }
 ```
 
-Here is a test:
+The [AsideTest.cs](../sample/test/CodeOnlyTests/Components/AsideTest.cs) looks like this:
 
 ```csharp
 public class AsideTest : ComponentTestFixture
@@ -190,7 +192,7 @@ The second parameter, `class` is explicitly declared in the `Aside` class. It is
 
 ## Testing components with child content
 
-The `Aside` component listed in the previous section also has a `ChildContent` parameter, so lets add a few tests that passes markup and components to it through that.
+The [Aside.razor](../sample/src/Components/Aside.razor) component listed in the previous section also has a `ChildContent` parameter, so lets add a few tests that passes markup and components to it through that.
 
 ```csharp
 public class AsideTest : ComponentTestFixture
@@ -253,4 +255,121 @@ public class AsideTest : ComponentTestFixture
 }
 ```
 
-In `Test002` above we use the `ChildContent(...)` helper method to create a ChildContent parameter and pass that to the `Aside` component. The overload, `ChildContent<TComponent>(component params)`, used in `Test003`, allows us to create render fragment that will render a component (of type `TComponent`) with the specified parameters. The `ChildContent<TComponent>(...)` has the same parameter options as the `RenderComponent<TComponent>` method has.
+- In `Test002` above we use the `ChildContent(...)` helper method to create a ChildContent parameter and pass that to the `Aside` component.
+- The overload, `ChildContent<TComponent>(...)`, used in `Test003`, allows us to create a render fragment that will render a component (of type `TComponent`) with the specified parameters.  
+  The `ChildContent<TComponent>(...)` has the same parameter options as the `RenderComponent<TComponent>` method has.
+
+## Testing components with `EventCallback` parameters
+
+To show how to pass an `EventCallback` to a component under test, we will use the [ThemedButton.razor](../sample/src/Components/ThemedButton.razor), which looks like this:
+
+```cshtml
+<button @onclick="HandleOnClick"
+        class=@Theme?.Value
+        title=@Title?.Value
+        @attributes="Attributes">
+    @ChildContent
+</button>
+@code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? Attributes { get; set; }
+
+    [CascadingParameter] public ThemeInfo? Theme { get; set; }
+    [CascadingParameter(Name = nameof(Title))] public ThemeInfo? Title { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    private Task HandleOnClick(MouseEventArgs args) => OnClick.InvokeAsync(args);
+}
+```
+
+The relevant part of [ThemedButtonTest.cs](../sample/test/CodeOnlyTests/Components/ThemedButtonTest.cs) looks like this:
+
+```csharp
+public class ThemedButtonTest : ComponentTestFixture
+{
+    [Fact(DisplayName = "When button is clicked, the OnClick event callback is triggered")]
+    public void Test001()
+    {
+        var wasCalled = false;
+        // Arrange - pass a lambda in as parameter to the OnClick parameter.
+        //
+        // This is equivalent to the follow Razor code:
+        //
+        // <ThemedButton OnClick="(_) => wasCalled = true"></ThemedButton>
+        var cut = RenderComponent<ThemedButton>(
+            EventCallback(nameof(ThemedButton.OnClick), (MouseEventArgs _) => wasCalled = true)
+        );
+
+        // Act - click the button in CUT
+        cut.Find("button").Click();
+
+        // Assert - check if callback was triggered
+        wasCalled.ShouldBeTrue();
+    }
+}
+```
+
+`Test001` above uses the `EventCallback(parammeterName, callback)` helper method the generate a proper `EventCallback` object. There are many overloads, that should enable all the normal scenarios that is possible via Razor code.
+
+## Testing components with cascading-value parameters
+
+If a component under test accepts cascading values, like [ThemedButton.razor](../sample/src/Components/ThemedButton.razor) listed above, we can pass one or more cascading values to it like so:
+
+```csharp
+public class ThemedButtonTest : ComponentTestFixture
+{
+    [Fact(DisplayName = "Themed button uses provided theme info to set class attribute")]
+    public void Test002()
+    {
+        // Arrange - create an instance of the ThemeInfo class to passs to the ThemedButton
+        var theme = new ThemeInfo() { Value = "BUTTON" };
+
+        // Act - Render the ThemedButton component, passing in the instance of ThemeInfo
+        // as an _unnamed_ cascading value.
+        //
+        // This is equivalent to the follow Razor code:
+        //
+        // <CascadingValue Value="theme">
+        //     <ThemedButton></ThemedButton>
+        // </CascadingValue>
+        var cut = RenderComponent<ThemedButton>(
+            CascadingValue(theme)
+        );
+
+        // Assert - check that the class specified in the cascading value was indeed used.
+        cut.Find("button").ClassList.ShouldContain(theme.Value);
+    }
+
+    [Fact(DisplayName = "Named cascading values are passed to components")]
+    public void Test003()
+    {
+        // Arrange - create two instances of the ThemeInfo class to passs to the ThemedButton
+        var theme = new ThemeInfo() { Value = "BUTTON" };
+        var titleTheme = new ThemeInfo() { Value = "BAR" };
+
+        // Act - Render the ThemedButton component, passing in the instances of ThemeInfo
+        // as an _unnamed_ and a _named_ cascading value.
+        //
+        // This is equivalent to the follow Razor code:
+        //
+        // <CascadingValue Value="theme">
+        //     <CascadingValue Name="Title" Value="titleTheme">
+        //         <ThemedButton></ThemedButton>
+        //     </CascadingValue>
+        // </CascadingValue>
+        var cut = RenderComponent<ThemedButton>(
+            CascadingValue(theme),
+            CascadingValue(nameof(ThemedButton.Title), titleTheme)
+        );
+
+        // Assert - check that the class and title specified in the cascading values was indeed used.
+        var elm = cut.Find("button");
+        elm.ClassList.ShouldContain(theme.Value);
+        elm.GetAttribute("title").ShouldContain(titleTheme.Value);
+    }
+}
+```
+
+- `Test002` above uses the `CascadingValue(object value)` helper method to pass an **unnamed** cascading value to the CUT.
+- `Test003` above demonstrates how multiple (named) cascading values can be passed to a component under test.

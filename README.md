@@ -1,5 +1,5 @@
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/egil/razor-components-testing-library/CI)](https://github.com/egil/razor-components-testing-library/actions?query=workflow%3ACI)
-[![GitHub Tag](https://img.shields.io/github/tag/egil/razor-components-testing-library.svg?style=flat-square)](https://github.com/egil/razor-components-testing-library/releases)
+[![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/razor-components-testing-library?include_prereleases)](https://github.com/egil/razor-components-testing-library/releases)
 [![Nuget](https://img.shields.io/nuget/vpre/Razor.Components.Testing.Library)](https://www.nuget.org/packages/Razor.Components.Testing.Library/)
 [![Issues Open](https://img.shields.io/github/issues/egil/razor-components-testing-library.svg?style=flat-square)](https://github.com/egil/razor-components-testing-library/issues)
 [![Gitter](https://badges.gitter.im/razor-components-testing-library/community.svg)](https://gitter.im/razor-components-testing-library/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
