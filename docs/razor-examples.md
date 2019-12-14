@@ -297,6 +297,8 @@ The follow test verifies some of the component logic around new todo creation an
 }
 ```
 
+More examples to come.
+
 ## Known issues
 
 These are the known issues:

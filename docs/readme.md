@@ -50,9 +50,9 @@ Follow these steps to set up a new test project:
 
 Examples are split into three sections, one for each style/declaration type.
 
-1. [C#-based tests](csharp-examples.md)  
-   Examples of tests written entirely in C#
-2. [Razor/C# mixed-mode tests](razor-examples.md)  
+1. [C# tests](csharp-examples.md)  
+   Examples of tests written entirely in C#.
+2. [Razor test component tests](razor-examples.md)  
    Examples of tests written in Razor files using Razor code to declare/arrange the component under test and expected HTML, and C# code for driving the test.
 3. [Snapshot tests](snapshot-examples.md)  
    Examples of snapshot tests written in Razor code, where the component under test and expected output is declared in Razor syntax and automatically verified.
