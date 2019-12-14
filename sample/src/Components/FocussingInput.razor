@@ -1,0 +1,18 @@
+﻿@inject IJSRuntime jsRuntime
+
+<input @ref="_inputRef" @attributes="Attributes" />
+
+@code {
+    private ElementReference _inputRef;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? Attributes { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("document.body.focus.call", _inputRef);
+        }
+    }
+}

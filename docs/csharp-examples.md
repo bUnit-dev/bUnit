@@ -6,10 +6,14 @@ All examples can be found in the [CodeOnlyTests](../sample/tests/CodeOnlyTests) 
 
 1. [Creating new test classes](#creating-new-test-classes)
 2. [Testing components without parameters](#testing-components-without-parameters)
-3. [Testing components with regular parameters](#testing-components-with-regular-parameters)
+3. [Testing components with parameters](#testing-components-with-parameters)  
+   3.1. [Passing new parameters to an already rendered component](#passing-new-parameters-to-an-already-rendered-component)
 4. [Testing components with child content](#testing-components-with-child-content)
 5. [Testing components with EventCallback parameters](#testing-components-with-eventcallback-parameters)
 6. [Testing components with cascading-value parameters](#testing-components-with-cascading-value-parameters)
+7. [Testing components that use on IJsRuntime](#testing-components-that-use-on-ijsruntime)  
+   7.1 [Verifying element references](#verifying-element-references)
+8. [Testing components with injected dependencies]()
 
 ## Creating new test classes
 
@@ -129,7 +133,7 @@ A few things worth noting about the tests above:
 
    With the _targeted_ version, we cannot guarantee that there are not other changes in other places of the rendered HTML, if that is a concern, use the strict style. If it is not, then the targeted style can lead to simpler test.
 
-## Testing components with regular parameters
+## Testing components with parameters
 
 In the following tests we will pass regular parameters to a component under test, e.g. `[Parameter] public SomeType PropName { get; set; }` style properties, where `SomeType` **is not** a `RenderFragment` or a `EventCallback` type.
 
@@ -190,6 +194,48 @@ As highlighted in the code, I recommend using the [`nameof`](https://docs.micros
 
 The second parameter, `class` is explicitly declared in the `Aside` class. It is instead `Attributes` parameter, that captures all unmatched parameters.
 
+### Passing new parameters to an already rendered component
+
+Sometimes we want to test what happens when a component is re-rendered, possible with new parameters. This can be done using the `cut.Render()` and the `cut.SetParametersAndRender()` methods, for example:
+
+```csharp
+    [Fact(DisplayName = "Passing new parameters to Aside updates the rendered HTML correctly")]
+    public void Test002()
+    {
+        // Arrange - initial render of Aside
+        var cut = RenderComponent<Aside>();
+
+        // Act - set the Header parameter and re-render the CUT
+        cut.SetParametersAndRender((nameof(Aside.Header), "HEADER"));
+
+        // Assert - Check that we have exactly one change since the first render,
+        // and that it is an addition to the DOM tree
+        cut.GetChangesSinceFirstRender()
+            .ShouldHaveSingleChange()
+            .ShouldBeAddition("<header>HEADER</header>");
+
+        // Arrange - Create a snapshot of the current rendered HTML for later comparisons
+        cut.TakeSnapshot();
+
+        // Act - Set the Header parameter to null again and re-render
+        cut.SetParametersAndRender((nameof(Aside.Header), null));
+
+        // Assert - Check that we have exactly one change since compared with the snapshot we took,
+        // and that it is an addition to the DOM tree.
+        cut.GetChangesSinceSnapshot()
+            .ShouldHaveSingleChange()
+            .ShouldBeRemoval("<header>HEADER</header>");
+    }
+```
+
+Some notes on `Test002` above:
+
+- The `cut.SetParametersAndRender()` method has the same overloads as the `RenderComponent()` method.
+- The `ShouldHaveSingleChange()` method asserts that only a single difference is found by the compare method, and returns that diff object.
+- The `ShouldBeAddition()` method verifies that a difference is an addition with the specified content (doing a semantic HTML comparison).
+- The `cut.TakeSnapshot()` method saves the current rendered HTML for later comparisons.
+- The `cut.GetChangesSinceSnapshot()` compares the current rendered HTML with the one saved by the `TakeSnapshot()` method.
+
 ## Testing components with child content
 
 The [Aside.razor](../sample/src/Components/Aside.razor) component listed in the previous section also has a `ChildContent` parameter, so lets add a few tests that passes markup and components to it through that.
@@ -197,8 +243,8 @@ The [Aside.razor](../sample/src/Components/Aside.razor) component listed in the 
 ```csharp
 public class AsideTest : ComponentTestFixture
 {
-    [Fact(DisplayName = "Aside should render child markup content correctly")]
-    public void Test002()
+   [Fact(DisplayName = "Aside should render child markup content correctly")]
+    public void Test003()
     {
         // Arrange
         var content = "<p>I like simple tests and I cannot lie</p>";
@@ -221,7 +267,7 @@ public class AsideTest : ComponentTestFixture
     }
 
     [Fact(DisplayName = "Aside should render a child component correctly")]
-    public void Test003()
+    public void Test004()
     {
         // Arrange - set up test data
         var outerAsideHeader = "Hello outside";
@@ -255,8 +301,8 @@ public class AsideTest : ComponentTestFixture
 }
 ```
 
-- In `Test002` above we use the `ChildContent(...)` helper method to create a ChildContent parameter and pass that to the `Aside` component.
-- The overload, `ChildContent<TComponent>(...)`, used in `Test003`, allows us to create a render fragment that will render a component (of type `TComponent`) with the specified parameters.  
+- In `Test003` above we use the `ChildContent(...)` helper method to create a ChildContent parameter and pass that to the `Aside` component.
+- The overload, `ChildContent<TComponent>(...)`, used in `Test004`, allows us to create a render fragment that will render a component (of type `TComponent`) with the specified parameters.  
   The `ChildContent<TComponent>(...)` has the same parameter options as the `RenderComponent<TComponent>` method has.
 
 ## Testing components with `EventCallback` parameters
@@ -373,3 +419,157 @@ public class ThemedButtonTest : ComponentTestFixture
 
 - `Test002` above uses the `CascadingValue(object value)` helper method to pass an **unnamed** cascading value to the CUT.
 - `Test003` above demonstrates how multiple (named) cascading values can be passed to a component under test.
+
+## Testing components that use on `IJsRuntime`
+
+It is not uncommon to have components use Blazor's JSInterop functionality to call JavaScript, e.g. after first render.
+
+To make it easy to mock calls to JavaScript, the library comes with a `IJsRuntime` mocking helper, that allows you to specify return how JSInterop calls should be handled, and to verify that they have happened.
+
+If you have more complex mocking needs, you could look to frameworks like [Moq](https://github.com/Moq).
+
+To help us test the Mock JSRuntime, we have the [WikiSearch.razor](../sample/src/Components/WikiSearch.razor) component, which looks like this:
+
+```cshtml
+@inject IJSRuntime jsRuntime
+
+<p>@searchResult</p>
+
+@code {
+    string searchResult = string.Empty;
+
+    // Assumes the following function is available in the DOM
+    // <script>
+    //     function queryWiki(query) {
+    //         return fetch('https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&search=' + query)
+    //             .then(x => x.text());
+    //     }
+    // </script>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            searchResult = await jsRuntime.InvokeAsync<string>("queryWiki", "blazor");
+            StateHasChanged();
+        }
+    }
+}
+```
+
+The [WikiSearchTest.cs](../sample/test/CodeOnlyTests/Components/WikiSearchTest.cs) looks like this:
+
+```csharp
+public class WikiSearchTest : ComponentTestFixture
+{
+    [Fact(DisplayName = "WikiSearch renders an empty P element initially")]
+    public void Test001()
+    {
+        // Arrange
+        // Registered the MockJsRuntime in "Loose" mode with the service provider used when rendering components.
+        // JsRuntimeMockMode.Loose is the default. It configures the mock to just return the default
+        // value for whatever is requested in a InvokeAsync call if no call has explicitly been set up.
+        var jsMock = Services.AddMockJsRuntime();
+
+        // Act - render the WikiSearch component
+        var cut = RenderComponent<WikiSearch>();
+
+        // Assert
+        // Check that the components initial HTML is as expected
+        // and that the mock was called with the expected JS identifier and arguments.
+        cut.ShouldBe("<p></p>");
+        jsMock.VerifyInvoke("queryWiki").Arguments.Single().ShouldBe("blazor");
+    }
+
+    [Fact(DisplayName = "On first render WikiSearch uses JSInterop to query wiki and display the result")]
+    public void Test002()
+    {
+        // Arrange
+        // Registered the MockJsRuntime in "strict" mode with the service provider used when rendering components.
+        // JsRuntimeMockMode.Strict mode configures the mock to throw an error if it receives an InvokeAsync call
+        // it has not been set up to handle.
+        var jsMock = Services.AddMockJsRuntime(JsRuntimeMockMode.Strict);
+
+        // Set up the mock to handle the expected call
+        var expectedSearchResult = "SEARCH RESULT";
+        var plannedInvocation = jsMock.Setup<string>("queryWiki", "blazor");
+
+        // Render the WikiSearch and verify that there is no content in the paragraph element
+        var cut = RenderComponent<WikiSearch>();
+        cut.Find("p").InnerHtml.ShouldBeEmpty();
+
+        // Act
+        // Use the WaitForNextRender to block until the component has finished re-rendered.
+        // The plannedInvocation.SetResult will return the result to the component is waiting
+        // for in its OnAfterRender from the await jsRuntime.InvokeAsync<string>("queryWiki", "blazor") call.
+        WaitForNextRender(() => plannedInvocation.SetResult(expectedSearchResult));
+
+        // Assert
+        // Verify that the result was received and correct placed in the paragraph element.
+        cut.Find("p").InnerHtml.ShouldBe(expectedSearchResult);
+    }
+}
+```
+
+- `Test001` just injects the mock in "Loose" mode. It means it will only returns a `default(TValue)` for calls to `InvokeAsync<TValue>(...)` it receives. This allows us to test components that expects a `IJsRuntime` to be injected, but where the test we want to perform isn't dependent on it providing any specific return value.
+
+  In "Loose" mode it is still possible to call `VerifyInvoke(identifier)` and assert against the expected invocation.
+
+- `Test002` injects and configures the mock in strict mode. That requires us to configure all the expected calls the mock should handle. If it receives a call it has not been configured for, an exception is thrown and the test fails.
+
+- The `WaitForNextRender(Action)` helper method is used to block until a (async) render completes, that the action passed to it has triggered.
+  In `Test002` we trigger a render by setting the result on the planned invocation, which causes the `await jsRuntime.InvokeAsync<string>("queryWiki", "blazor")` call in the CUT to complete, and the component to trigger a re-render by calling the `StateHasChanged()` method.
+
+### Verifying element references passed to InvokeAsync
+
+If you want to verify that a element reference (`ElementReference`) passed to a IJsRuntime.InvokeAsync call is references the expected DOM element, you can do so with the `ShouldBeElementReferenceTo()` assert helper.
+
+For example, consider the [FocussingInput.razor](../sample/src/Components/FocussingInput.razor) component, which looks like this:
+
+```cshtml
+@inject IJSRuntime jsRuntime
+
+<input @ref="_inputRef" @attributes="Attributes" />
+
+@code {
+    private ElementReference _inputRef;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? Attributes { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("document.body.focus.call", _inputRef);
+        }
+    }
+}
+```
+
+The the [FocussingInputTest.cs](../sample/test/CodeOnlyTests/Components/FocussingInputTest.cs) looks like this:
+
+```csharp
+public class FocussingInputTest : ComponentTestFixture
+{
+    [Fact(DisplayName = "After first render, the new input field has focus")]
+    public void Test001()
+    {
+        // Arrange - add the IJsRuntime mock
+        var jsRtMock = Services.AddMockJsRuntime();
+
+        // Act - render the FocussingInput component, causing
+        // the OnAfterRender(firstRender: true) to be called
+        var cut = RenderComponent<FocussingInput>();
+
+        // Assert
+        // that there is a single call to document.body.focus.call
+        var invocation = jsRtMock.VerifyInvoke("document.body.focus.call");
+        // Assert that the invocation received a single argument
+        // and that it was a reference to the input element.
+        var expectedReferencedElement = cut.Find("input");
+        invocation.Arguments.Single().ShouldBeElementReferenceTo(expectedReferencedElement);
+    }
+}
+```
+
+The last line verifies that there was a single argument to the invocation, and via the `ShouldBeElementReferenceTo` checks, that the `<input />` was indeed the referenced element.
