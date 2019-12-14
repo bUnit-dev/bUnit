@@ -53,6 +53,10 @@ Examples are split into three sections, one for each style/declaration type.
 
 ## References
 
+See source code documentation for now.
+
+1. [Semantic HTML diffing options](html-diffing-options.md)
+
 ## Contribute
 
 To get in touch, ask questions or provide feedback, you can:

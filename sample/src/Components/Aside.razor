@@ -1,0 +1,15 @@
+﻿<aside @attributes="Attributes">
+    @if (Header is { })
+    {
+        <header>@Header</header>
+    }
+    @ChildContent
+</aside>
+@code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? Attributes { get; set; }
+
+    [Parameter] public string? Header { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

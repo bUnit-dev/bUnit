@@ -17,6 +17,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
         [Fact(DisplayName = "When no Todo is passed to item an exception is thrown")]
         public void Test001()
         {
+            // Act/Assert - attempt to render the TodoItem component without required parameters set
             Should.Throw<ArgumentException>(() => RenderComponent<TodoItem>());
             Should.Throw<InvalidOperationException>(() => RenderComponent<TodoItem>((nameof(TodoItem.Todo), null)));
         }
@@ -24,10 +25,11 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
         [Fact(DisplayName = "The component renders the expected output")]
         public void Test002()
         {
+            // Arrange
             var todo = new Todo { Id = 42, Text = "Hello world" };
-            var cut = RenderComponent<TodoItem>((nameof(TodoItem.Todo), todo));
 
-            cut.ShouldBe(cut);
+            // Act - renders the component, passing 
+            var cut = RenderComponent<TodoItem>((nameof(TodoItem.Todo), todo));
 
             cut.ShouldBe($@"<li id=""todo-{todo.Id}"" class=""list-group-item list-group-item-action"">
                                 <span>{todo.Text}</span>
