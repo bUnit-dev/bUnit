@@ -82,7 +82,7 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// </summary>
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-        public static void MouseOver(this IElement element, MouseEventArgs eventArgs) 
+        public static void MouseOver(this IElement element, MouseEventArgs eventArgs)
             => _ = MouseOverAsync(element, eventArgs);
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// </summary>
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-        public static void MouseOut(this IElement element, MouseEventArgs eventArgs) 
+        public static void MouseOut(this IElement element, MouseEventArgs eventArgs)
             => _ = MouseOutAsync(element, eventArgs);
 
         /// <summary>
@@ -608,8 +608,12 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
         /// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
         /// <param name="type">Gets or sets the type of the event.</param>
-        public static void Wheel(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-            => _ = WheelAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+        /// <param name="deltaX">The horizontal scroll amount.</param>
+        /// <param name="deltaY">The vertical scroll amount.</param>
+        /// <param name="deltaZ">The scroll amount for the z-axis.</param>
+        /// <param name="deltaMode">The unit of the delta values scroll amount.</param>
+        public static void Wheel(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, double deltaX = default, double deltaY = default, double deltaZ = default, long deltaMode = default)
+            => _ = WheelAsync(element, new WheelEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DeltaX = deltaX, DeltaY = deltaY, DeltaZ = deltaZ, DeltaMode = deltaMode });
 
         /// <summary>
         /// Raises the <c>@onwheel</c> event on <paramref name="element"/>, passing the provided
@@ -639,9 +643,13 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
         /// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
         /// <param name="type">Gets or sets the type of the event.</param>
+        /// <param name="deltaX">The horizontal scroll amount.</param>
+        /// <param name="deltaY">The vertical scroll amount.</param>
+        /// <param name="deltaZ">The scroll amount for the z-axis.</param>
+        /// <param name="deltaMode">The unit of the delta values scroll amount.</param>
         /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task WheelAsync(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-            => WheelAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+        public static Task WheelAsync(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, double deltaX = default, double deltaY = default, double deltaZ = default, long deltaMode = default)
+            => WheelAsync(element, new WheelEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DeltaX = deltaX, DeltaY = deltaY, DeltaZ = deltaZ, DeltaMode = deltaMode });
 
         /// <summary>
         /// Raises the <c>@onwheel</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -649,7 +657,7 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// </summary>
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-        public static void Wheel(this IElement element, MouseEventArgs eventArgs)
+        public static void Wheel(this IElement element, WheelEventArgs eventArgs)
             => _ = WheelAsync(element, eventArgs);
 
         /// <summary>
@@ -659,7 +667,7 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="eventArgs">The event arguments to pass to the event handler.</param>
         /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task WheelAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onwheel", eventArgs);
+        public static Task WheelAsync(this IElement element, WheelEventArgs eventArgs) => element.TriggerEventAsync("onwheel", eventArgs);
 
         /// <summary>
         /// Raises the <c>@onmousewheel</c> event on <paramref name="element"/>,  passing the provided
@@ -689,8 +697,12 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
         /// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
         /// <param name="type">Gets or sets the type of the event.</param>
-        public static void MouseWheel(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-            => _ = MouseWheelAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+        /// <param name="deltaX">The horizontal scroll amount.</param>
+        /// <param name="deltaY">The vertical scroll amount.</param>
+        /// <param name="deltaZ">The scroll amount for the z-axis.</param>
+        /// <param name="deltaMode">The unit of the delta values scroll amount.</param>
+        public static void MouseWheel(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, double deltaX = default, double deltaY = default, double deltaZ = default, long deltaMode = default)
+            => MouseWheelAsync(element, new WheelEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DeltaX = deltaX, DeltaY = deltaY, DeltaZ = deltaZ, DeltaMode = deltaMode });
 
         /// <summary>
         /// Raises the <c>@onmousewheel</c> event on <paramref name="element"/>, passing the provided
@@ -720,9 +732,13 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
         /// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
         /// <param name="type">Gets or sets the type of the event.</param>
+        /// <param name="deltaX">The horizontal scroll amount.</param>
+        /// <param name="deltaY">The vertical scroll amount.</param>
+        /// <param name="deltaZ">The scroll amount for the z-axis.</param>
+        /// <param name="deltaMode">The unit of the delta values scroll amount.</param>
         /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task MouseWheelAsync(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-            => MouseWheelAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+        public static Task MouseWheelAsync(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, double deltaX = default, double deltaY = default, double deltaZ = default, long deltaMode = default)
+            => MouseWheelAsync(element, new WheelEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DeltaX = deltaX, DeltaY = deltaY, DeltaZ = deltaZ, DeltaMode = deltaMode });
 
         /// <summary>
         /// Raises the <c>@onmousewheel</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -730,7 +746,7 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// </summary>
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-        public static void MouseWheel(this IElement element, MouseEventArgs eventArgs)
+        public static void MouseWheel(this IElement element, WheelEventArgs eventArgs)
             => _ = MouseWheelAsync(element, eventArgs);
 
         /// <summary>
@@ -740,7 +756,7 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="eventArgs">The event arguments to pass to the event handler.</param>
         /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task MouseWheelAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onmousewheel", eventArgs);
+        public static Task MouseWheelAsync(this IElement element, WheelEventArgs eventArgs) => element.TriggerEventAsync("onmousewheel", eventArgs);
 
         /// <summary>
         /// Raises the <c>@oncontextmenu</c> event on <paramref name="element"/>,  passing the provided
@@ -821,6 +837,6 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="eventArgs">The event arguments to pass to the event handler.</param>
         /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task ContextMenuAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("oncontextmenu", eventArgs);        
+        public static Task ContextMenuAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("oncontextmenu", eventArgs);
     }
 }

@@ -2,7 +2,7 @@
 
 In the following examples, the terminology **component under test** (abbreviated CUT) is used to mean the component that is the target of the test. The examples below use the `Shouldly` assertion library as well. If you prefer not to use that just replace the assertions with the ones from your own favorite assertion library.
 
-All examples can be found in the [CodeOnlyTests](../sample/tests/CodeOnlyTests) folder in the [Sample project](../sample/).
+All examples can be found in the [Tests](../sample/tests/Tests) folder in the [Sample project](../sample/).
 
 1. [Creating new test classes](#creating-new-test-classes)
 2. [Testing components without parameters](#testing-components-without-parameters)
@@ -14,6 +14,7 @@ All examples can be found in the [CodeOnlyTests](../sample/tests/CodeOnlyTests) 
 7. [Testing components that use on IJsRuntime](#testing-components-that-use-on-ijsruntime)  
    7.1 [Verifying element references passed to InvokeAsync](#verifying-element-references-passed-to-invokeasync)
 8. [Testing components with injected dependencies](#testing-components-with-injected-dependencies)
+9. [Dispatching @on-events from tests](#Dispatching-on-events-from-tests)
 
 ## Creating new test classes
 
@@ -55,7 +56,7 @@ The following unit-tests verifies that the [Counter.razor](../sample/src/Pages/C
 }
 ```
 
-The [CounterTest.cs](../sample/tests/CodeOnlyTests/Pages/CounterTest.cs) looks like this:
+The [CounterTest.cs](../sample/tests/Tests/Pages/CounterTest.cs) looks like this:
 
 ```csharp
 public class CounterTest : ComponentTestFixture
@@ -157,7 +158,7 @@ The component under test will be the [Aside.razor](../sample/src/Components/Asid
 }
 ```
 
-The [AsideTest.cs](../sample/tests/CodeOnlyTests/Components/AsideTest.cs) looks like this:
+The [AsideTest.cs](../sample/tests/Tests/Components/AsideTest.cs) looks like this:
 
 ```csharp
 public class AsideTest : ComponentTestFixture
@@ -329,7 +330,7 @@ To show how to pass an `EventCallback` to a component under test, we will use th
 }
 ```
 
-The relevant part of [ThemedButtonTest.cs](../sample/tests/CodeOnlyTests/Components/ThemedButtonTest.cs) looks like this:
+The relevant part of [ThemedButtonTest.cs](../sample/tests/Tests/Components/ThemedButtonTest.cs) looks like this:
 
 ```csharp
 public class ThemedButtonTest : ComponentTestFixture
@@ -456,7 +457,7 @@ To help us test the Mock JSRuntime, we have the [WikiSearch.razor](../sample/src
 }
 ```
 
-The [WikiSearchTest.cs](../sample/tests/CodeOnlyTests/Components/WikiSearchTest.cs) looks like this:
+The [WikiSearchTest.cs](../sample/tests/Tests/Components/WikiSearchTest.cs) looks like this:
 
 ```csharp
 public class WikiSearchTest : ComponentTestFixture
@@ -546,7 +547,7 @@ For example, consider the [FocussingInput.razor](../sample/src/Components/Focuss
 }
 ```
 
-The the [FocussingInputTest.cs](../sample/tests/CodeOnlyTests/Components/FocussingInputTest.cs) looks like this:
+The the [FocussingInputTest.cs](../sample/tests/Tests/Components/FocussingInputTest.cs) looks like this:
 
 ```csharp
 public class FocussingInputTest : ComponentTestFixture
@@ -594,7 +595,7 @@ internal class MockForecastService : IWeatherForecastService
 }
 ```
 
-With the mock in place, we can write the [FetchDataTest.cs](../sample/tests/CodeOnlyTests/Pages/FetchDataTest.cs), which looks like this:
+With the mock in place, we can write the [FetchDataTest.cs](../sample/tests/Tests/Pages/FetchDataTest.cs), which looks like this:
 
 ```csharp
 public class FetchDataTest : ComponentTestFixture
@@ -647,3 +648,61 @@ public class FetchDataTest : ComponentTestFixture
 - `Test002` creates a new instance of the mock service and registers that with the the service provider. It then renders the CUT and uses `WaitForNextRender` to pass the test data to the mock services task, which then completes and the CUT gets the data.
 
 - In the assert step we expect the CUT to use a `ForecastDataTable` to render the forecast data. Thus, to make our assertion more simple and stable to changes, we render an instance of the `ForecastDataTable` use that to verify that the expected addition after the CUT receives the forecast data is as it should be.
+
+## Dispatching `@on-events` during testing
+
+In the previous sections we have seen a few examples of method calls that trigger `@on-event` handlers, e.g. `cut.Find(selector).Click()` that triggers the `@onclick` event handler attached to the element that matches the search query.
+
+The following triggers are currently available in PascalCase, without the `@on`-prefix. E.g. the `@onbeforeactivate` event is available as `BeforeActivate()` in various overloads. I expect to add the missing events soon.
+
+The currently available event triggers are:
+
+```
+// General events
+@onactivate
+@onbeforeactivate
+@onbeforedeactivate
+@ondeactivate
+@onended
+@onfullscreenchange
+@onfullscreenerror
+@onloadeddata
+@onloadedmetadata
+@onpointerlockchange
+@onpointerlockerror
+@onreadystatechange
+@onscroll
+
+// Focus events
+@onfocus
+@onblur
+@onfocusin
+@onfocusout
+
+// Input events
+@onchange
+@oninput
+@oninvalid
+@onreset
+@onselect
+@onselectstart
+@onselectionchange
+@onsubmit
+
+// Keyboard events
+@onkeydown
+@onkeyup
+@onkeypress
+
+// Mouse events
+@onmouseover
+@onmouseout
+@onmousemove
+@onmousedown
+@onmouseup
+@onclick
+@ondblclick
+@onwheel
+@onmousewheel
+@oncontextmenu
+```
