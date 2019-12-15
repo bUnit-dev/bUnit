@@ -1,4 +1,4 @@
-# Writing Blazor Component tests in C
+# Writing Blazor Component tests in C#
 
 In the following examples, the terminology **component under test** (abbreviated CUT) is used to mean the component that is the target of the test. The examples below use the `Shouldly` assertion library as well. If you prefer not to use that just replace the assertions with the ones from your own favorite assertion library.
 
