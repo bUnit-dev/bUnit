@@ -9,8 +9,8 @@ A testing library for Blazor Components. You can easily define components under 
 
 This library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. To see how, head to the documentation pages:
 
-1. [Introduction](docs)
-2. [Getting started](docs/#getting-started)
-3. [Examples](docs/#examples)
-4. [References](docs/#references)
-5. [Contribute](docs/#contribute)
+1. [Introduction](docs/readme.md)
+2. [Getting started](docs/readme.md#getting-started)
+3. [Examples](docs/readme.md#examples)
+4. [References](docs/readme.md#references)
+5. [Contribute](docs/readme.md#contribute)
