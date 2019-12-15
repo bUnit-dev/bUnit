@@ -198,7 +198,7 @@ In the test above, we use an overload of the `RenderComponent<TComponent>()` met
 
 As highlighted in the code, I recommend using the [`nameof`](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/nameof) to get the name of declared parameters from the component, so any changes to the name through refactoring automatically updates the test.
 
-The second parameter, `class` is explicitly declared in the `Aside` class. It is instead `Attributes` parameter, that captures all unmatched parameters.
+The second parameter, `class` is not explicitly declared in the `Aside` class. It is instead the `Attributes` parameter, that captures all unmatched parameters.
 
 ### Passing new parameters to an already rendered component
 
