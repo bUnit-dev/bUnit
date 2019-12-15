@@ -56,7 +56,6 @@ Examples are split into three sections, one for each style/declaration type.
    Examples of tests written in Razor files using Razor code to declare/arrange the component under test and expected HTML, and C# code for driving the test.
 3. [Snapshot tests](snapshot-examples.md)  
    Examples of snapshot tests written in Razor code, where the component under test and expected output is declared in Razor syntax and automatically verified.
-4. []
 
 ## References
 
