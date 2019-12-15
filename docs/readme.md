@@ -1,6 +1,6 @@
 # Blazor Component Testing
 
-This framework's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components.
+This library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components.
 
 1. [Introduction](#introduction)
 2. [Getting started](#getting-started)
@@ -10,7 +10,7 @@ This framework's goal is to make it easy to write _comprehensive, stable unit te
 
 ## Introduction
 
-**To make tests easy to write**, the framework provides a few different ways of define the **component under test** (CUT):
+**To make tests easy to write**, the library provides a few different ways of define the **component under test** (CUT):
 
 1. Render components from C# code via the `RenderComponent<TComponent>(params...)` method, that allow you to easily pass component parameters, cascading values, event callbacks to the component.
 
@@ -56,6 +56,7 @@ Examples are split into three sections, one for each style/declaration type.
    Examples of tests written in Razor files using Razor code to declare/arrange the component under test and expected HTML, and C# code for driving the test.
 3. [Snapshot tests](snapshot-examples.md)  
    Examples of snapshot tests written in Razor code, where the component under test and expected output is declared in Razor syntax and automatically verified.
+4. []
 
 ## References
 
@@ -63,7 +64,8 @@ The following sections are planned but not done yet. A lot of the public methods
 
 Upcoming sections:
 
-1. [Built-in assertions](#)
+1. [Built-in assertions](#)  
+   1.1 [Controlling HTML diffing](#)
 2. [Component creation and rendering](#)
 3. [Semantic HTML diffing options](#)
 

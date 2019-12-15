@@ -68,6 +68,10 @@ namespace Egil.RazorComponents.Testing
                 => new RenderedFragment(context, fragment);
         }
 
+        /// <summary>
+        /// Gets or renders the fragment specified in the id.
+        /// For internal use mainly.
+        /// </summary>
         protected TRenderedFragment GetOrRenderFragment<TRenderedFragment>(string id, Func<string, FragmentBase> fragmentSelector, Func<RazorTestContext, RenderFragment, TRenderedFragment> renderedFragmentFactory)
             where TRenderedFragment : IRenderedFragment
         {

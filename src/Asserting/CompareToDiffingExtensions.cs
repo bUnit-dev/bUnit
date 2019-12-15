@@ -6,7 +6,7 @@ using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Diffing;
 using Egil.RazorComponents.Testing.Extensions;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Asserting
 {
     public static class CompareToExtensions
     {

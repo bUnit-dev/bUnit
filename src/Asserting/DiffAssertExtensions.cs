@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
+using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Diffing;
 using Egil.RazorComponents.Testing.Extensions;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Asserting
 {
     /// <summary>
     /// A collection of <see cref="IDiff"/> assert extensions and generic assert extensions

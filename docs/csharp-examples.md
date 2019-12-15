@@ -18,9 +18,14 @@ All examples can be found in the [Tests](../sample/tests/Tests) folder in the [S
 
 ## Creating new test classes
 
-All test classes are currently expected to inherit from `ComponentTestFixture`, which contains all the logic for rendering components and correctly dispose of renderers and HTML parsers after each test. For example:
+All test classes are currently expected to inherit from `ComponentTestFixture`, which contains all the logic for rendering components and correctly dispose of renderers and HTML parsers after each test. The example below includes the needed using statements as well:
 
 ```csharp
+using Egil.RazorComponents.Testing;
+using Egil.RazorComponents.Testing.Asserting;
+using Egil.RazorComponents.Testing.EventDispatchExtensions;
+using Xunit;
+
 public class MyComponentTest : ComponentTestFixture
 {
   [Fact]

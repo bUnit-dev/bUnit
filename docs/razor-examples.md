@@ -20,6 +20,7 @@ You will also need to import a few namespaces to make asserting and mocking poss
 ```cshtml
 @inherits TestComponentBase
 @using Egil.RazorComponents.Testing
+@using Egil.RazorComponents.Testing.Asserting
 @using Egil.RazorComponents.Testing.EventDispatchExtensions
 @using Xunit @*or e.g. Shouldly*@
 ```

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
+using Egil.RazorComponents.Testing.Asserting;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 

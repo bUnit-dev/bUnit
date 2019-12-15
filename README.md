@@ -7,7 +7,7 @@
 # Blazor Components Testing Library
 A testing library for Blazor Components. You can easily define components under test in C# or Razor syntax, it has intelligent HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock `IJsRuntime`, and perform snapshot testing.
 
-This framework's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. To see how, head to the documentation pages:
+This library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. To see how, head to the documentation pages:
 
 1. [Introduction](docs)
 2. [Getting started](docs/#getting-started)

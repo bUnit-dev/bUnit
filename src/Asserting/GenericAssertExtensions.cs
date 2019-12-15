@@ -5,7 +5,7 @@ using System.Linq;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Asserting
 {
     /// <summary>
     /// Generic test assertions
@@ -51,23 +51,6 @@ namespace Egil.RazorComponents.Testing
                     throw new CollectionException(collection, expectedCount, actualCount, idx, ex);
                 }
             }
-        }
-
-        /// <summary>
-        /// Verifies that an object reference is not null.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="actual">The object to be validated.</param>
-        /// <returns>The verified object.</returns>
-        public static T ShouldNotBeNull<T>(this T? actual) where T : class
-        {
-            if (actual is { })
-            {
-                return actual;
-            }
-
-            Assert.NotNull(actual);
-            return default!; // BANG here because assert will throw and we will never reach this.
         }
     }
 }

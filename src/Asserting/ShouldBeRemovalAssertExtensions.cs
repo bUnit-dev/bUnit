@@ -8,7 +8,7 @@ using Egil.RazorComponents.Testing.Extensions;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Asserting
 {
     /// <summary>
     /// A set of removal diff assert extensions 

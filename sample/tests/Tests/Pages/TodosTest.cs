@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Moq;
+using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.SampleApp.Data;
 using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using Egil.RazorComponents.Testing.SampleApp.Pages;
