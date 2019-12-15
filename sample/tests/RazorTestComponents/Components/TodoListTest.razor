@@ -2,7 +2,8 @@
 @using Xunit
 
 <Fixture Setup="ctx => ctx.Services.AddMockJsRuntime()"
-         Tests="new Test[]{ EmptyTodoList, SettingLabel, TaskListRendersItemsUsingItemTemplate }">
+         Test="EmptyTodoList"
+         Tests="new Test[]{ SettingLabel, TaskListRendersItemsUsingItemTemplate }">
     <ComponentUnderTest>
         <TodoList>
             <ItemsTemplate>
@@ -31,17 +32,24 @@
 
     void EmptyTodoList(IRazorTestContext context)
     {
+        // Act - get the CUT
         var cut = context.GetComponentUnderTest<TodoList>();
 
-        cut.ShouldBe(context.GetFragment("EmptyTodoListRender"));
+        // Assert - get the expected initial rendered HTML from the fragment 
+        // and use it to verify the initial rendered HTML
+        var expectedInitialRender = context.GetFragment("EmptyTodoListRender");
+        cut.ShouldBe(expectedInitialRender);
     }
 
     void SettingLabel(IRazorTestContext context)
     {
+        // Arrange - get the CUT
         var cut = context.GetComponentUnderTest<TodoList>();
 
+        // Act - update label 
         cut.SetParametersAndRender((nameof(TodoList.Label), "LABEL"));
 
+        // Assert - verifiy that the placeholder and aria-label has changed
         cut.GetChangesSinceFirstRender().ShouldAllBe(
             diff => diff.ShouldBeAttributeChange("placeholder", "LABEL"),
             diff => diff.ShouldBeAttributeChange("aria-label", "LABEL")
@@ -50,14 +58,17 @@
 
     void TaskListRendersItemsUsingItemTemplate(IRazorTestContext context)
     {
+        // Arrange - get the cut and take a snapshot of the current render tree output
         var cut = context.GetComponentUnderTest<TodoList>();
         cut.TakeSnapshot();
 
+        // Act - assign test todo items to the CUT
         cut.SetParametersAndRender((nameof(TodoList.Items), TestItems));
 
+        // Assert - get the diffs since the snapshot and compare to the expected.
         var diffs = cut.GetChangesSinceSnapshot();
-        diffs.ShouldHaveSingleChange()
-        .ShouldBeAddition(context.GetFragment("TodoItemRender"));
+        var expected = context.GetFragment("TodoItemRender");
+        diffs.ShouldHaveSingleChange().ShouldBeAddition(expected);
     }
 }
 
@@ -86,9 +97,10 @@
 
     void OnFirstRenderInputFieldGetsFocus(IRazorTestContext context)
     {
+        // Act
         var cut = context.GetComponentUnderTest<TodoList>();
 
-        // assert that there is a call to document.body.focus.call with a single argument,
+        // Assert that there is a call to document.body.focus.call with a single argument,
         // a reference to the input element.
         jsRtMock.VerifyInvoke("document.body.focus.call")
             .Arguments.Single().ShouldBeElementReferenceTo(cut.Find("input"));
@@ -96,34 +108,44 @@
 
     void AfterFirstRenderInputFieldDoesntGetFocusAfterRerenders(IRazorTestContext context)
     {
+        // Arrange
         var cut = context.GetComponentUnderTest<TodoList>();
 
+        // Act
         cut.Render(); // second render
         cut.Render(); // thrid render
         cut.Render(); // ...
         cut.Render();
 
+        // Assert that focus logic only runs on first render (only called 1 time).
         jsRtMock.VerifyInvoke("document.body.focus.call", calledTimes: 1);
     }
 
     void WhenAddTaskFormIsSubmittedWithNoTextOnAddingTodoIsNotCalled(IRazorTestContext context)
     {
+        // Arrange
         var cut = context.GetComponentUnderTest<TodoList>();
 
+        // Act - submit the empty form
         cut.Find("form").Submit();
 
+        // Assert - verify that no task was created
         Assert.Null(createdTodo);
     }
 
     void WhenAddTaskFormIsSubmittedWithTextOnAddingTodoIsCalled(IRazorTestContext context)
     {
+        // Arrange - ensure createdTask is null
         createdTodo = null;
         var cut = context.GetComponentUnderTest<TodoList>();
         var taskValue = "HELLO WORLD TASK";
 
+        // Act - find input field and change its value, then submit the form
         cut.Find("input").Change(taskValue);
         cut.Find("form").Submit();
 
+        // Assert that a new task has been passed to the EventCallback listener and that the 
+        // new task has the expected value
         Assert.NotNull(createdTodo);
         Assert.Equal(taskValue, createdTodo?.Text);
     }

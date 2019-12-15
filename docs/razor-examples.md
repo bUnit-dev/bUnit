@@ -2,11 +2,12 @@
 
 The library supports specifying the component under test and other markup/fragments using Razor syntax. The advantage is that we get Visual Studio help writing Razor and HTML, which is a much nicer experience than writing HTML in a string in a C# class/file. This is especially useful for more complex scenarios, where e.g. a component under test has many parameters or complex child contents.
 
-**NOTE:** This feature is _EXPERIMENTAL_ and syntax and API will likely changed.
+**NOTE:** This feature is _EXPERIMENTAL_ and syntax and API will likely changed. See [Contribute](readme.md/#contribute) for info on how to provide feedback and suggestions.
 
 1. [Creating new test component](#creating-new-test-component)
-1. [Defining test cases](#defining-test-cases)
-1. [Known issues](#known-issues)
+2. [Defining test cases](#defining-test-cases)
+3. [Examples](#examples)
+4. [Known issues](#known-issues)
 
 ## Creating new test component
 
@@ -77,7 +78,7 @@ The code above works as follows:
 
 - Inside the `Test` methods you can do all the things you can in C#-based tests, e.g. assert against the CUT. The only difference is that some methods such as `TakeSnapshot()` is not available on the local scope, but through the `IRazorTestContext` object passed to each Test method.
 
-### Examples
+## Examples
 
 Here is a few examples that demonstrate how Razor test components can be used. More can be found in the [samples/tests/RazorComponentTests](../samples/tests/RazorComponentTests) samples folder.
 
