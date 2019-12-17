@@ -4,7 +4,7 @@ The library has basic support for snapshot testing, declared via Razor syntax in
 
 Notable features that are missing at the moment is the ability to auto-generate the expected output and to trigger updates of expected output.
 
-**NOTE:** This feature is _EXPERIMENTAL_ and syntax and API will likely changed. See [Contribute](readme.md/#contribute) for info on how to provide feedback and suggestions.
+**NOTE:** This feature is _EXPERIMENTAL_, and syntax and API will likely be changed. See [Contribute](readme.md/#contribute) for info on how to provide feedback and suggestions.
 
 1. [Creating new snapshot test component](#creating-new-snapshot-test-component)
 2. [Defining snapshot test cases](#defining-snapshot-test-cases)
@@ -17,7 +17,7 @@ To create Razor-based snapshot tests, we need to create snapshot test components
 
 All snapshot test components must inherit from `TestComponentBase`, e.g. by adding `@inherits TestComponentBase` to the top of your .razor file.
 
-**Tip:** In the folder you keep your Razor-based snapshot tests, add a `_Imports.razor` file, and put `@inherits TestComponentBase` into that as well as any using statements you need. Then all snapshot test components inherits the correct base component by default and have the default imports available.
+**Tip:** In the folder you keep your Razor-based snapshot tests, add a `_Imports.razor` file, and put `@inherits TestComponentBase` into that as well as any using statements you need. Then all snapshot test components inherit the correct base component by default and have the default imports available.
 
 ## Defining snapshot test cases
 
