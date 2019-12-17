@@ -1,6 +1,6 @@
 # Writing Blazor Component tests in C#
 
-In the following examples, the terminology **component under test** (abbreviated CUT) is used to mean the component that is the target of the test. The examples below use the `Shouldly` assertion library as well. If you prefer not to use that just replace the assertions with the ones from your own favorite assertion library.
+In the following examples, the terminology **component under test** (abbreviated CUT) is used to mean the component that is the target of the test. The examples below use the `Shouldly` assertion library as well. If you prefer not to use that, just replace the assertions with the ones from your own favorite assertion library.
 
 All examples can be found in the [Tests](../sample/tests/Tests) folder in the [Sample project](../sample/).
 
@@ -135,9 +135,9 @@ A few things worth noting about the tests above:
 2. The "**strict**" test (`ClickingButtonIncreasesCountStrict`) and the "**targeted**" test (`ClickingButtonIncreasesCountTargeted`) takes two different approaches to verifying CUT renders the expected output:
 
    - The **strict** version generates a diff between the initial rendered HTML and the rendered HTML after the button click, and then asserts that the compare result only contains the expected change.
-   - The **targeted** version finds the `<p>` element expect to have changed, and asserts against its text content.
+   - The **targeted** version finds the `<p>` element expect to have changed and asserts against its text content.
 
-   With the _targeted_ version, we cannot guarantee that there are not other changes in other places of the rendered HTML, if that is a concern, use the strict style. If it is not, then the targeted style can lead to simpler test.
+   With the _targeted_ version, we cannot guarantee that there are no other changes in other places of the rendered HTML, if that is a concern, use the strict style. If it is not, then the targeted style can lead to simpler test.
 
 ## Testing components with parameters
 
@@ -198,7 +198,7 @@ In the test above, we use an overload of the `RenderComponent<TComponent>()` met
 
 As highlighted in the code, I recommend using the [`nameof`](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/nameof) to get the name of declared parameters from the component, so any changes to the name through refactoring automatically updates the test.
 
-The second parameter, `class` is not explicitly declared in the `Aside` class. It is instead the `Attributes` parameter, that captures all unmatched parameters.
+The second parameter, `class` is not explicitly declared in the `Aside` class. It is instead the `Attributes` parameter, that captures it and all other unmatched parameters.
 
 ### Passing new parameters to an already rendered component
 
@@ -244,7 +244,7 @@ Some notes on `Test002` above:
 
 ## Testing components with child content
 
-The [Aside.razor](../sample/src/Components/Aside.razor) component listed in the previous section also has a `ChildContent` parameter, so lets add a few tests that passes markup and components to it through that.
+The [Aside.razor](../sample/src/Components/Aside.razor) component listed in the previous section also has a `ChildContent` parameter, so let's add a few tests that passes markup and components to it through that.
 
 ```csharp
 public class AsideTest : ComponentTestFixture
@@ -430,11 +430,11 @@ public class ThemedButtonTest : ComponentTestFixture
 
 It is not uncommon to have components use Blazor's JSInterop functionality to call JavaScript, e.g. after first render.
 
-To make it easy to mock calls to JavaScript, the library comes with a `IJsRuntime` mocking helper, that allows you to specify return how JSInterop calls should be handled, and to verify that they have happened.
+To make it easy to mock calls to JavaScript, the library comes with an `IJsRuntime` mocking helper, that allows you to specify return how JSInterop calls should be handled, and to verify that they have happened.
 
 If you have more complex mocking needs, you could look to frameworks like [Moq](https://github.com/Moq).
 
-To help us test the Mock JSRuntime, we have the [WikiSearch.razor](../sample/src/Components/WikiSearch.razor) component, which looks like this:
+To help demonstrate testing using the mock JSRuntime, we have the [WikiSearch.razor](../sample/src/Components/WikiSearch.razor) component, which looks like this:
 
 ```cshtml
 @inject IJSRuntime jsRuntime
@@ -473,7 +473,7 @@ public class WikiSearchTest : ComponentTestFixture
         // Arrange
         // Registered the MockJsRuntime in "Loose" mode with the service provider used when rendering components.
         // JsRuntimeMockMode.Loose is the default. It configures the mock to just return the default
-        // value for whatever is requested in a InvokeAsync call if no call has explicitly been set up.
+        // value for whatever is requested in an InvokeAsync call if no call has explicitly been set up.
         var jsMock = Services.AddMockJsRuntime();
 
         // Act - render the WikiSearch component
@@ -516,7 +516,7 @@ public class WikiSearchTest : ComponentTestFixture
 }
 ```
 
-- `Test001` just injects the mock in "Loose" mode. It means it will only returns a `default(TValue)` for calls to `InvokeAsync<TValue>(...)` it receives. This allows us to test components that expects a `IJsRuntime` to be injected, but where the test we want to perform isn't dependent on it providing any specific return value.
+- `Test001` just injects the mock in "Loose" mode. It means it will only returns a `default(TValue)` for calls to `InvokeAsync<TValue>(...)` it receives. This allows us to test components that expects an `IJsRuntime` to be injected, but where the test we want to perform isn't dependent on it providing any specific return value.
 
   In "Loose" mode it is still possible to call `VerifyInvoke(identifier)` and assert against the expected invocation.
 
@@ -527,7 +527,7 @@ public class WikiSearchTest : ComponentTestFixture
 
 ### Verifying element references passed to InvokeAsync
 
-If you want to verify that a element reference (`ElementReference`) passed to a IJsRuntime.InvokeAsync call is references the expected DOM element, you can do so with the `ShouldBeElementReferenceTo()` assert helper.
+If you want to verify that an element reference (`ElementReference`) passed to a IJsRuntime.InvokeAsync call is references the expected DOM element, you can do so with the `ShouldBeElementReferenceTo()` assert helper.
 
 For example, consider the [FocussingInput.razor](../sample/src/Components/FocussingInput.razor) component, which looks like this:
 
@@ -586,7 +586,7 @@ The demonstrate service injection, lets refactor the [FetchData.razor](../sample
 
 - Extract an interface from [WeatherForecastService](../sample/src/Data/WeatherForecastService.cs), name it [IWeatherForecastService](../sample/src/Data/IWeatherForecastService.cs), and have `FetchData` take a dependency on it.
 
-- Extract the `<table>` inside the `else` branch in the [FetchData.razor](../sample/src/Pages/FetchData.razor) component into its own component. Lets name it [ForecastDataTable](../sample/src/Pages/FetchData.razor).
+- Extract the `<table>` inside the `else` branch in the [FetchData.razor](../sample/src/Pages/FetchData.razor) component into its own component. Let's name it [ForecastDataTable](../sample/src/Pages/FetchData.razor).
 
 - In the [FetchData.razor](../sample/src/Pages/FetchData.razor), pass the variable `forecasts` to the [ForecastDataTable](../sample/src/Pages/FetchData.razor) component.
 
@@ -650,9 +650,9 @@ public class FetchDataTest : ComponentTestFixture
 
 - In `Test001` we use the `Services.AddService` method to register the dependency and the performs a regular "initial render" verification.
 
-- `Test002` creates a new instance of the mock service and registers that with the the service provider. It then renders the CUT and uses `WaitForNextRender` to pass the test data to the mock services task, which then completes and the CUT gets the data.
+- `Test002` creates a new instance of the mock service and registers that with the the service provider. It then renders the CUT and uses `WaitForNextRender` to pass the test data to the mock services task, which then completes, and the CUT gets the data.
 
-- In the assert step we expect the CUT to use a `ForecastDataTable` to render the forecast data. Thus, to make our assertion more simple and stable to changes, we render an instance of the `ForecastDataTable` use that to verify that the expected addition after the CUT receives the forecast data is as it should be.
+- In the assert step we expect the CUT to use a `ForecastDataTable` to render the forecast data. Thus, to make our assertion simpler and more stable to changes, we render an instance of the `ForecastDataTable` use that to verify that the expected addition after the CUT receives the forecast data is as it should be.
 
 ## Dispatching `@on-events` during testing
 
