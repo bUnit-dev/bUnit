@@ -10,7 +10,7 @@ This library's goal is to make it easy to write _comprehensive, stable unit test
 
 ## Introduction
 
-**To make tests easy to write**, the library provides a few different ways of define the **component under test** (CUT):
+**To make tests easy to write**, the library provides a few different ways of defining the **component under test** (CUT):
 
 1. Render components from C# code via the `RenderComponent<TComponent>(params...)` method, that allow you to easily pass component parameters, cascading values, event callbacks to the component.
 
@@ -22,7 +22,7 @@ This library's goal is to make it easy to write _comprehensive, stable unit test
 
 1. Inspect components state/properties directly.
 2. Query the rendered HTML and assert against that directly. This is supported by [AngleSharp](https://anglesharp.github.io/)'s full implementation of the HTML5 DOM API.
-3. Perform a stable semantic comparison the rendered HTML from a component under test with expected HTML. This is supported by the [AngleSharp.Diffing](https://github.com/AngleSharp/AngleSharp.Diffing) library, which e.g. will ignore insignificant whitespace, attribute order on elements, order of classes in `class="..."` attributes, handle boolean attributes correctly, among other things.
+3. Perform a stable semantic comparison the rendered HTML from a component under test with an expected HTML string. This is supported by the [AngleSharp.Diffing](https://github.com/AngleSharp/AngleSharp.Diffing) library, which will ignore insignificant whitespace, attribute order on elements, order of classes in `class="..."` attributes, handle boolean attributes correctly, among other things.
 
 ## Getting started
 
@@ -34,7 +34,7 @@ Follow these steps to set up a new test project:
 
 3. Add the following package references to your testing library:
 
-   - `Razor.Components.Testing.Library` (make sure to get `1.0.0-beta-1` version)
+   - `Razor.Components.Testing.Library` (make sure to get the `1.0.0` version)
    - `Microsoft.NET.Test.Sdk`
    - `xunit.core`
    - `xunit.assert` (can be replaced with `Shouldly` or another assertion library)
@@ -82,6 +82,6 @@ There are a few ways you can help improve this library.
 
 2. Suggest tweaks to the library's API or assertion helpers (create issue).
 
-3. Find a bug or mistake in the library, create an issue, or even better, send in a pull request.
+3. Found a bug or mistake in the library, create an issue, or even better, send in a pull request.
 
-4. Help with documentation and/or good examples. If you figured out a elegant way to test a scenario, share it through an issue, or add it to the samples project (pull request), or add it to the documentation (pull request).
+4. Help with documentation and/or good examples. If you figured out an elegant way to test a scenario, share it through an issue, or add it to the samples project (pull request), or add it to the documentation (pull request).
