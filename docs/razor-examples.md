@@ -1,8 +1,8 @@
 # Writing Blazor Component tests in a mix of Razor and C# code
 
-The library supports specifying the component under test and other markup/fragments using Razor syntax. The advantage is that we get Visual Studio help writing Razor and HTML, which is a much nicer experience than writing HTML in a string in a C# class/file. This is especially useful for more complex scenarios, where e.g. a component under test has many parameters or complex child contents.
+The library supports specifying the component under test and other markup/fragments using Razor syntax. The advantage is that we get Visual Studio's help writing Razor and HTML with IntelliSense and auto complete, which is a much nicer experience than writing HTML in a string in a C# class/file. This is especially useful for more complex scenarios, where e.g. a component under test has many parameters or complex child contents.
 
-**NOTE:** This feature is _EXPERIMENTAL_ and syntax and API will likely changed. See [Contribute](readme.md/#contribute) for info on how to provide feedback and suggestions.
+**NOTE:** This feature is _EXPERIMENTAL_, and syntax and API will likely be changed. See [Contribute](readme.md/#contribute) for info on how to provide feedback and suggestions.
 
 1. [Creating new test component](#creating-new-test-component)
 2. [Defining test cases](#defining-test-cases)
@@ -25,13 +25,13 @@ You will also need to import a few namespaces to make asserting and mocking poss
 @using Xunit @*or e.g. Shouldly*@
 ```
 
-**Tip:** In the folder you keep your Razor-based tests, add a `_Imports.razor` file, and put the above into that. Then all test components inherits the correct base component by default and have the default imports available.
+**Tip:** In the folder you keep your Razor-based tests, add a `_Imports.razor` file, and put the above into that. Then all test components inherit the correct base component by default and have the default imports available.
 
 ## Defining test cases
 
-When you have a Razor test component created, its time to add test cases. This is done via the `<Fixture>` component and related test methods and child components.
+When you have a Razor test component created, it's time to add test cases. This is done via the `<Fixture>` component and related test methods and child components.
 
-Lets look at what options we have by setting up an empty test case, first the code:
+Let's look at what options we have by setting up an empty test case, first the code:
 
 ```cshtml
 <Fixture Setup="Setup"
@@ -75,7 +75,7 @@ The code above works as follows:
 - It is inside child component `<ComponentUnderTest>` where you declare the component under test.
 - Any markup or component fragments that is needed for the test can be declared inside the optional `<Fragment>` components. The `Id` parameter is optional, and only needed if you have more than one.
 
-- To render and get the component under test or any of the fragments, use the `GetComponentUnderTest<TComponent>()` method on the `IRazorTestContext` object. `GetFragment()` can be called both with and without a `TComponent`, e.g. if its just markup defined in it.
+- To render and get the component under test or any of the fragments, use the `GetComponentUnderTest<TComponent>()` method on the `IRazorTestContext` object. `GetFragment()` can be called both with and without a `TComponent`, e.g. if it's just markup defined in it.
 
 - Inside the `Test` methods you can do all the things you can in C#-based tests, e.g. assert against the CUT. The only difference is that some methods such as `TakeSnapshot()` is not available on the local scope, but through the `IRazorTestContext` object passed to each Test method.
 
@@ -128,9 +128,9 @@ This example shows how [ThemedElement.razor](../sample/src/Components/ThemedElem
 }
 ```
 
-This example shows how [ThemedButton.razor](../sample/src/Components/ThemedButton.razor) can be tested with with child content, and how a `<Fragment>` can be used to specify the expected output.
+This example shows how [ThemedButton.razor](../sample/src/Components/ThemedButton.razor) can be tested with child content, and how a `<Fragment>` can be used to specify the expected output.
 
-Lets look at a more complex example, a test of the [TodoList.razor](../sample/src/Pages/TodoList.razor) component:
+Let's look at a more complex example, a test of the [TodoList.razor](../sample/src/Pages/TodoList.razor) component:
 
 ```cshtml
 <Fixture Setup="ctx => ctx.Services.AddMockJsRuntime()"
