@@ -34,7 +34,7 @@ Follow these steps to set up a new test project:
 
 3. Add the following package references to your testing library:
 
-   - `Razor.Components.Testing.Library` (make sure to get the `1.0.0` version)
+   - `Razor.Components.Testing.Library` (make sure to get the latest `1.0.0` beta version)
    - `Microsoft.NET.Test.Sdk`
    - `xunit.core`
    - `xunit.assert` (can be replaced with `Shouldly` or another assertion library)
