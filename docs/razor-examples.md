@@ -22,7 +22,7 @@ You will also need to import a few namespaces to make asserting and mocking poss
 @using Egil.RazorComponents.Testing
 @using Egil.RazorComponents.Testing.Asserting
 @using Egil.RazorComponents.Testing.EventDispatchExtensions
-@using Xunit @*or e.g. Shouldly*@
+@using Xunit @*or e.g. Shouldly, but see known issues below related to Shouldly *@
 ```
 
 **Tip:** In the folder you keep your Razor-based tests, add a `_Imports.razor` file, and put the above into that. Then all test components inherit the correct base component by default and have the default imports available.
