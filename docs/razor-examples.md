@@ -2,7 +2,7 @@
 
 The library supports specifying the component under test and other markup/fragments using Razor syntax. The advantage is that we get Visual Studio's help writing Razor and HTML with IntelliSense and auto complete, which is a much nicer experience than writing HTML in a string in a C# class/file. This is especially useful for more complex scenarios, where e.g. a component under test has many parameters or complex child contents.
 
-**NOTE:** This feature is _EXPERIMENTAL_, and syntax and API will likely be changed. See [Contribute](readme.md/#contribute) for info on how to provide feedback and suggestions.
+**NOTE:** This feature is _EXPERIMENTAL_ and syntax and API will likely be changed. Check known issues before proceeding. See [Contribute](readme.md/#contribute) for info on how to provide feedback and suggestions.
 
 1. [Creating new test component](#creating-new-test-component)
 2. [Defining test cases](#defining-test-cases)
@@ -25,7 +25,7 @@ You will also need to import a few namespaces to make asserting and mocking poss
 @using Xunit @*or e.g. Shouldly, but see known issues below related to Shouldly *@
 ```
 
-**Tip:** In the folder you keep your Razor-based tests, add a `_Imports.razor` file, and put the above into that. Then all test components inherit the correct base component by default and have the default imports available.
+**Tip:** In the folder you keep your Razor-based tests, add a `_Imports.razor` file, and put the above into that. Then all test components inherit the correct base component by default and have the default imports available. Note that the Visual Studios test runner thinks your `_Imports.razor` test as well when you add `@inherits TestComponentBase` to it.
 
 ## Defining test cases
 
