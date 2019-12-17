@@ -35,10 +35,10 @@ Follow these steps to set up a new test project:
 3. Add the following package references to your testing library:
 
    - `Razor.Components.Testing.Library` (make sure to get the latest `1.0.0` beta version)
-   - `Microsoft.NET.Test.Sdk`
-   - `xunit.core`
-   - `xunit.assert` (can be replaced with `Shouldly` or another assertion library)
-   - `xunit.runner.visualstudio` (if using Visual Studio)
+   - `Microsoft.NET.Test.Sdk` (get latest stable)
+   - `xunit.core` (get latest stable)
+   - `xunit.assert` (get latest stable, can be replaced with `Shouldly` or another assertion library)
+   - `xunit.runner.visualstudio` (get latest stable, if using Visual Studio)
 
    Optionally, but recommended packages are [`Moq`](https://github.com/Moq) and [`Shouldly`](https://github.com/shouldly). _Moq_ is a good generic mocking library, and _Shouldly_ is a fluent syntax assert library, that makes test more readable and produce easily readable assert errors.
 
