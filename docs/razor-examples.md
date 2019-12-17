@@ -80,7 +80,6 @@ The code above works as follows:
 - Inside the `Test` methods you can do all the things you can in C#-based tests, e.g. assert against the CUT. The only difference is that some methods such as `TakeSnapshot()` is not available on the local scope, but through the `IRazorTestContext` object passed to each Test method.
 
 ## Examples
-
 Here is a few examples that demonstrate how Razor test components can be used. More can be found in the [samples/tests/RazorComponentTests](../samples/tests/RazorComponentTests) samples folder.
 
 ```cshtml
