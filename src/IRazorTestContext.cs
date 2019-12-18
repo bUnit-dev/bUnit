@@ -9,7 +9,7 @@ namespace Egil.RazorComponents.Testing
     public interface IRazorTestContext : ITestContext
     {
         /// <summary>
-        /// Gets (and renders) the HTML/component defined in the &lt;Fixture&gt;&lt;ComponentUnderTest&gt;...&lt;ComponentUnderTest/&gt;&lt;Fixture/&gt; element.
+        /// Gets (and renders) the markup/component defined in the &lt;Fixture&gt;&lt;ComponentUnderTest&gt;...&lt;ComponentUnderTest/&gt;&lt;Fixture/&gt; element.
         /// 
         /// The HTML/component is only rendered the first this method is called.
         /// </summary>
@@ -27,7 +27,7 @@ namespace Egil.RazorComponents.Testing
         IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : class, IComponent;
 
         /// <summary>
-        /// Gets (and renders) the HTML/component defined in the 
+        /// Gets (and renders) the markup/component defined in the 
         /// &lt;Fixture&gt;&lt;Fragment id="<paramref name="id"/>" &gt;...&lt;Fragment/&gt;&lt;Fixture/&gt; element.
         ///
         /// If <paramref name="id"/> is null/not provided, the component defined in the first &lt;Fragment/&gt; in 

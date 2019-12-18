@@ -22,7 +22,7 @@ namespace Egil.RazorComponents.Testing
         /// Gets and sets the id of the fragment being rendered.
         /// </summary>
         protected int ComponentId { get; set; }
-        
+
         /// <summary>
         /// Gets the container that handles the (re)rendering of the fragment.
         /// </summary>

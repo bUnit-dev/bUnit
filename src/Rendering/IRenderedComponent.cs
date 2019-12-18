@@ -7,7 +7,7 @@ namespace Egil.RazorComponents.Testing
     /// Represents a rendered component-under-test. 
     /// </summary>
     /// <typeparam name="TComponent">The type of the component under test</typeparam>
-    public interface IRenderedComponent<TComponent> : IRenderedFragment where TComponent : class, IComponent
+    public interface IRenderedComponent<out TComponent> : IRenderedFragment where TComponent : class, IComponent
     {
         /// <summary>
         /// Gets the component under test

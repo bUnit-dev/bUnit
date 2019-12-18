@@ -1,10 +1,6 @@
 ﻿@inherits TestComponentBase
 @using Shouldly
-@*
-    TODO:
-    - ComponentUnderTest is returned by context.GetComponentUnderTest<T>
-    - Multiple calls to context.GetComponentUnderTest<T> returns same instance
-*@
+
 <Fixture Setup="Setup" Test="Test1" Tests=@(new Test[] { Test2, Test3 })>
     <ComponentUnderTest><div/></ComponentUnderTest>
 </Fixture>

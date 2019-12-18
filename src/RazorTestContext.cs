@@ -25,70 +25,51 @@ namespace Egil.RazorComponents.Testing
         }
 
         /// <inheritdoc/>
-        public IRenderedFragment GetComponentUnderTest()
-        {
-            return GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory);
-
-            static IRenderedFragment Factory(RazorTestContext context, RenderFragment fragment)
-                => new RenderedFragment(context, fragment);
-        }
+        public IRenderedFragment GetComponentUnderTest() => GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory);
 
         /// <inheritdoc/>
         public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : class, IComponent
         {
-            return GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory);
-
-            static IRenderedComponent<TComponent> Factory(RazorTestContext context, RenderFragment fragment)
-                => new RenderedComponent<TComponent>(context, fragment);
-        }
-
-        /// <inheritdoc/>
-        public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : class, IComponent
-        {
-            var key = id ?? nameof(Fragment);
-
-            return id is null
-                ? GetOrRenderFragment(key, SelectFirstFragment, Factory)
-                : GetOrRenderFragment(key, SelectFragmentById, Factory);
-
-            static IRenderedComponent<TComponent> Factory(RazorTestContext context, RenderFragment fragment)
-                => new RenderedComponent<TComponent>(context, fragment);
+            var result = GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory<TComponent>);
+            return TryCastTo<TComponent>(result);
         }
 
         /// <inheritdoc/>
         public IRenderedFragment GetFragment(string? id = null)
         {
-            var key = id ?? nameof(Fragment);
+            var key = id ?? SelectFirstFragment().Id;
+            var result = GetOrRenderFragment(key, SelectFragmentById, Factory);
+            return result;
+        }
 
-            return id is null
-                ? GetOrRenderFragment(key, SelectFirstFragment, Factory)
-                : GetOrRenderFragment(key, SelectFragmentById, Factory);
-
-            static IRenderedFragment Factory(RazorTestContext context, RenderFragment fragment)
-                => new RenderedFragment(context, fragment);
+        /// <inheritdoc/>
+        public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : class, IComponent
+        {
+            var key = id ?? SelectFirstFragment().Id;
+            var result = GetOrRenderFragment(key, SelectFragmentById, Factory<TComponent>);
+            return TryCastTo<TComponent>(result);
         }
 
         /// <summary>
         /// Gets or renders the fragment specified in the id.
         /// For internal use mainly.
         /// </summary>
-        protected TRenderedFragment GetOrRenderFragment<TRenderedFragment>(string id, Func<string, FragmentBase> fragmentSelector, Func<RazorTestContext, RenderFragment, TRenderedFragment> renderedFragmentFactory)
-            where TRenderedFragment : IRenderedFragment
+        private IRenderedFragment GetOrRenderFragment(string id, Func<string, FragmentBase> fragmentSelector, Func<RazorTestContext, RenderFragment, IRenderedFragment> renderedFragmentFactory)
         {
             if (_renderedFragments.TryGetValue(id, out var renderedFragment))
             {
-                return (TRenderedFragment)renderedFragment;
+                return renderedFragment;
             }
             else
             {
-                var fragment = fragmentSelector(id);// 
+                var fragment = fragmentSelector(id);
                 var result = renderedFragmentFactory(this, fragment.ChildContent);
                 _renderedFragments.Add(id, result);
                 return result;
             }
         }
 
-        private Fragment SelectFirstFragment(string _)
+        private Fragment SelectFirstFragment()
         {
             return _testData.OfType<Fragment>().First();
         }
@@ -102,6 +83,37 @@ namespace Egil.RazorComponents.Testing
         {
             return _testData.OfType<ComponentUnderTest>().Single();
         }
+
+        private IRenderedComponent<TComponent> Factory<TComponent>(RazorTestContext context, RenderFragment fragment) where TComponent : class, IComponent
+            => new RenderedComponent<TComponent>(context, fragment);
+
+        private IRenderedFragment Factory(RazorTestContext context, RenderFragment fragment) 
+            => new RenderedFragment(context, fragment);
+
+        private IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : class, IComponent
+        {
+            if (target is IRenderedComponent<TComponent> result)
+            {
+                return result;
+            }
+
+            if (target is IRenderedComponent<IComponent> other)
+            {
+                throw new InvalidOperationException($"The generic version of {sourceMethod} has previously returned an object of type IRenderedComponent<{other.Instance.GetType().Name}>. " +
+                    $"That cannot be cast to an object of type IRenderedComponent<{typeof(TComponent).Name}>.");
+            }
+
+            if (target is IRenderedFragment)
+            {
+                throw new InvalidOperationException($"It is not possible to call the generic version of {sourceMethod} after " +
+                    $"the non-generic version has been called on the same test context. Change all calls to the same generic version and try again.");
+            }
+            else
+            {
+                throw new Exception($"This line should never have been reached. An unknown type was placed inside the {nameof(_renderedFragments)}.");
+            }
+        }
+
     }
 
 }
