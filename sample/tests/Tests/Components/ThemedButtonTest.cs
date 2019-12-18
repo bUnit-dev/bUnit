@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Egil.RazorComponents.Testing.Asserting;
+using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using Egil.RazorComponents.Testing.SampleApp.Components;
 using Xunit;
 using Shouldly;
 using Microsoft.AspNetCore.Components.Web;
-using Egil.RazorComponents.Testing.EventDispatchExtensions;
 
 namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
 {
