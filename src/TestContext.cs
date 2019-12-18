@@ -53,13 +53,6 @@ namespace Egil.RazorComponents.Testing
         }
 
         /// <inheritdoc/>
-        public IRenderedComponent<TComponent> RenderComponent<TComponent>(RenderFragment childContent, params ComponentParameter[] parameters) where TComponent : class, IComponent
-        {
-            var pAndCC = parameters.Concat(new[] { ComponentParameter.CreateParameter("ChildContent", childContent) }).ToArray();
-            return RenderComponent<TComponent>(pAndCC);
-        }
-
-        /// <inheritdoc/>
         public IRenderedComponent<TComponent> RenderComponent<TComponent>(ParameterView parameters) where TComponent : class, IComponent
         {
             var result = new RenderedComponent<TComponent>(this, parameters);

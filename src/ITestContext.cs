@@ -34,15 +34,6 @@ namespace Egil.RazorComponents.Testing
         IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent;
 
         /// <summary>
-        /// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
-        /// </summary>
-        /// <typeparam name="TComponent">Type of the component to render</typeparam>
-        /// <param name="childContent">Child content to pass to the component when it is rendered</param>
-        /// <param name="parameters">Parameters to pass to the component when it is rendered</param>
-        /// <returns>The rendered <typeparamref name="TComponent"/></returns>
-        IRenderedComponent<TComponent> RenderComponent<TComponent>(RenderFragment childContent, params ComponentParameter[] parameters) where TComponent : class, IComponent;
-
-        /// <summary>
         /// Executes the provided <paramref name="renderTrigger"/> action and waits for a render to occur.
         /// Use this when you have a component that is awaiting e.g. a service to return data to it before rendering again.
         /// </summary>

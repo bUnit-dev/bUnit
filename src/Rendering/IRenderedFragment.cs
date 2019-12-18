@@ -15,7 +15,7 @@ namespace Egil.RazorComponents.Testing
         /// Gets the <see cref="ITestContext"/> which this rendered fragment belongs to.
         /// </summary>
         ITestContext TestContext { get; }
-        
+
         /// <summary>
         /// Gets the HTML markup from the rendered fragment/component.
         /// </summary>
@@ -53,21 +53,29 @@ namespace Egil.RazorComponents.Testing
         void TakeSnapshot();
 
         /// <summary>
-        /// Returns the first element within the rendered fragment or component under test 
-        /// (using depth-first pre-order traversal of the document's nodes) that matches the 
-        /// specified group of selectors.
+        /// Returns the first element from the rendered fragment or component under test,
+        /// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
+        /// of the rendered nodes.
         /// </summary>
-        /// <param name="selector">The group of selectors to use.</param>
-        public IElement Find(string selector) => GetNodes().QuerySelector(selector);
+        /// <param name="cssSelector">The group of selectors to use.</param>
+        public IElement Find(string cssSelector)
+        {
+            var result = GetNodes().QuerySelector(cssSelector);
+            if (result is null)
+                throw new ElementNotFoundException(cssSelector);
+            else
+                return result;
+        }
 
         /// <summary>
-        /// Returns a list of the elements within the rendered fragment or component under test, 
-        /// (using depth-first pre-order traversal of the document's nodes) that match the specified group of selectors.
+        /// Returns a list of elements from the rendered fragment or component under test, 
+        /// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
+        /// of the rendered nodes.
         /// </summary>
-        /// <param name="selector">The group of selectors to use.</param>
-        public IHtmlCollection<IElement> FindAll(string selector)
+        /// <param name="cssSelector">The group of selectors to use.</param>
+        public IHtmlCollection<IElement> FindAll(string cssSelector)
         {
-            return GetNodes().QuerySelectorAll(selector);
+            return GetNodes().QuerySelectorAll(cssSelector);
         }
     }
 }
