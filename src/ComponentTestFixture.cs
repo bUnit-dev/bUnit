@@ -144,34 +144,60 @@ namespace Egil.RazorComponents.Testing
         }
 
         /// <summary>
-        /// Creates a ChildContent <see cref="ComponentParameter"/> with the provided <paramref name="markup"/> as the <see cref="RenderFragment"/>.
+        /// Creates a ChildContent <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> with the provided 
+        /// <paramref name="markup"/> as rendered output.
         /// </summary>
         /// <param name="markup">Markup to pass to the child content parameter</param>
         /// <returns>The <see cref="ComponentParameter"/>.</returns>
         protected static ComponentParameter ChildContent(string markup)
         {
-            return ComponentParameter.CreateParameter(nameof(ChildContent), markup.ToMarkupRenderFragment());
+            return RenderFragment(nameof(ChildContent), markup);
         }
 
         /// <summary>
-        /// Creates a ChildContent <see cref="RenderFragment"/> which will render a <typeparamref name="TComponent"/> component
+        /// Creates a ChildContent <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> which will render a <typeparamref name="TComponent"/> component
         /// with the provided <paramref name="parameters"/> as input.
         /// </summary>
-        /// <typeparam name="TComponent">The type of the component to render with the <see cref="RenderFragment"/></typeparam>
+        /// <typeparam name="TComponent">The type of the component to render with the <see cref="Microsoft.AspNetCore.Components.RenderFragment"/></typeparam>
         /// <param name="parameters">Parameters to pass to the <typeparamref name="TComponent"/>.</param>
         /// <returns>The <see cref="ComponentParameter"/>.</returns>
         protected static ComponentParameter ChildContent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
         {
-            return ComponentParameter.CreateParameter(nameof(ChildContent), parameters.ToComponentRenderFragment<TComponent>());
+            return RenderFragment<TComponent>(nameof(ChildContent), parameters);
         }
 
         /// <summary>
-        /// Creates a component parameter which will pass the <paramref name="template"/> <see cref="RenderFragment{TValue}" />
+        /// Creates a <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> with the provided 
+        /// <paramref name="markup"/> as rendered output and passes it to the parameter specified in <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name">Parameter name.</param>
+        /// <param name="markup">Markup to pass to the render fragment parameter</param>
+        /// <returns>The <see cref="ComponentParameter"/>.</returns>
+        protected static ComponentParameter RenderFragment(string name, string markup)
+        {
+            return ComponentParameter.CreateParameter(name, markup.ToMarkupRenderFragment());
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> which will render a <typeparamref name="TComponent"/> component
+        /// with the provided <paramref name="parameters"/> as input, and passes it to the parameter specified in <paramref name="name"/>.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of the component to render with the <see cref="Microsoft.AspNetCore.Components.RenderFragment"/></typeparam>
+        /// <param name="name">Parameter name.</param>
+        /// <param name="parameters">Parameters to pass to the <typeparamref name="TComponent"/>.</param>
+        /// <returns>The <see cref="ComponentParameter"/>.</returns>
+        protected static ComponentParameter RenderFragment<TComponent>(string name, params ComponentParameter[] parameters) where TComponent : class, IComponent
+        {
+            return ComponentParameter.CreateParameter(name, parameters.ToComponentRenderFragment<TComponent>());
+        }
+
+        /// <summary>
+        /// Creates a component parameter which will pass the <paramref name="template"/> <see cref="Microsoft.AspNetCore.Components.RenderFragment{TValue}" />
         /// to the parameter with the name <paramref name="name"/>.
         /// </summary>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="name">Parameter name</param>
-        /// <param name="template"><see cref="RenderFragment{TValue}" /> to pass to the parameter</param>
+        /// <typeparam name="TValue">The value used to build the content.</typeparam>
+        /// <param name="name">Parameter name.</param>
+        /// <param name="template"><see cref="Microsoft.AspNetCore.Components.RenderFragment{TValue}" /> to pass to the parameter.</param>
         /// <returns>The <see cref="ComponentParameter"/>.</returns>
         protected static ComponentParameter Template<TValue>(string name, RenderFragment<TValue> template)
         {

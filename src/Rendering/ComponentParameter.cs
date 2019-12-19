@@ -31,12 +31,15 @@ namespace Egil.RazorComponents.Testing
 
         private ComponentParameter(string? name, object? value, bool isCascadingValue)
         {
+            if (isCascadingValue && value is null)
+                throw new ArgumentNullException(nameof(value), "Cascading values cannot be set to null");
+
+            if(!isCascadingValue && name is null)
+                throw new ArgumentNullException(nameof(name), "A parameters name cannot be set to null");
+
             Name = name;
             Value = value;
             IsCascadingValue = isCascadingValue;
-
-            if(IsCascadingValue && value is null)
-                throw new ArgumentNullException(nameof(value), "Cascading values cannot be set to null");
         }
 
         /// <summary>

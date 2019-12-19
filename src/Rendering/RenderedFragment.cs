@@ -31,8 +31,13 @@ namespace Egil.RazorComponents.Testing
         /// <inheritdoc/>
         public ITestContext TestContext { get; }
 
-        internal RenderedFragment(TestContext testContext, RenderFragment renderFragment)
+        /// <summary>
+        /// Instantiates a <see cref="RenderedFragment"/> which will render the <paramref name="renderFragment"/> passed to it.
+        /// </summary>
+        public RenderedFragment(ITestContext testContext, RenderFragment renderFragment)
         {
+            if (testContext is null) throw new ArgumentNullException(nameof(testContext));
+
             TestContext = testContext;
             _renderFragment = renderFragment;
             Container = new ContainerComponent(testContext.Renderer);

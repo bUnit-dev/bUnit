@@ -14,21 +14,21 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Egil.RazorComponents.Testing.IRenderedFragment">
-    <Position X="3.5" Y="7" Width="3.25" />
+    <Position X="9.75" Y="1.25" Width="3.25" />
     <TypeIdentifier>
       <HashCode>CAgAAAAAAAAAAAAAABAQACAAAAAIAAAAAAAAAQQAAAA=</HashCode>
       <FileName>Rendering\IRenderedFragment.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Egil.RazorComponents.Testing.IRenderedComponent&lt;TComponent&gt;">
-    <Position X="2.75" Y="10.25" Width="4.75" />
+    <Position X="9" Y="4.5" Width="4.75" />
     <TypeIdentifier>
       <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQBAAAAAAAAA=</HashCode>
       <FileName>Rendering\IRenderedComponent.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Egil.RazorComponents.Testing.IRazorTestContext">
-    <Position X="3" Y="4.5" Width="5.5" />
+    <Position X="2.75" Y="4.5" Width="5.5" />
     <TypeIdentifier>
       <HashCode>QAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IRazorTestContext.cs</FileName>
