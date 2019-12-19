@@ -164,5 +164,18 @@ namespace Egil.RazorComponents.Testing
         {
             return ComponentParameter.CreateParameter(nameof(ChildContent), parameters.ToComponentRenderFragment<TComponent>());
         }
+
+        /// <summary>
+        /// Creates a component parameter which will pass the <paramref name="template"/> <see cref="RenderFragment{TValue}" />
+        /// to the parameter with the name <paramref name="name"/>.
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="name">Parameter name</param>
+        /// <param name="template"><see cref="RenderFragment{TValue}" /> to pass to the parameter</param>
+        /// <returns>The <see cref="ComponentParameter"/>.</returns>
+        protected static ComponentParameter Template<TValue>(string name, RenderFragment<TValue> template)
+        {
+            return ComponentParameter.CreateParameter(name, template);
+        }
     }
 }
