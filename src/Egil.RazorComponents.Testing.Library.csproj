@@ -12,7 +12,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/egil/razor-components-testing-library</PackageProjectUrl>
     <PackageTags>razor-components unit-testing testing blazor blazor-server-side blazor-client-side</PackageTags>
-    <Version>1.0.0-beta-2</Version>
+    <Version>1.0.0-beta-3</Version>
     <Authors>Egil Hansen</Authors>
     <Company>Egil Hansen</Company>
     <Product>Razor Component Testing Library</Product>
