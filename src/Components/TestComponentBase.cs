@@ -37,7 +37,7 @@ namespace Egil.RazorComponents.Testing
         /// in the file and runs their associated tests.
         /// </summary>
         [Fact]
-        public void ComponentTest()
+        public void RazorTest()
         {
             var container = new ContainerComponent(_renderer.Value);
             container.RenderComponentUnderTest(BuildRenderTree);
