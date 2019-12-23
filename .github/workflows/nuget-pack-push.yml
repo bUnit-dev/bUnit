@@ -12,7 +12,10 @@ jobs:
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.100'  
-    - run: dotnet build -c Release
-    - run: dotnet test -c Release
-    - run: dotnet pack -c Release -o ${GITHUB_WORKSPACE}
-    - run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}    
+    - run: dotnet build -c Release -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
+    - run: dotnet test -c Release -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
+    - run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
+    #- run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
