@@ -18,4 +18,4 @@ jobs:
     - run: dotnet build -c Release -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
     - run: dotnet test -c Release -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
     - run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
-    #- run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+    - run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
