@@ -11,5 +11,8 @@ jobs:
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.100'  
-    - run: dotnet build -c Release
-    - run: dotnet test -c Release
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+    - run: dotnet build -c Release /nowarn:CS1591
+    - run: dotnet test -c Release /nowarn:CS1591
