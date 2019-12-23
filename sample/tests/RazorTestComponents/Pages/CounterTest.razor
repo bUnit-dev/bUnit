@@ -15,7 +15,7 @@
         var cut = context.GetComponentUnderTest<Counter>();
 
         // assert
-        cut.ShouldBe(context.GetFragment());
+        cut.MarkupMatches(context.GetFragment());
     }
 
     void AfterBtnClickCounterIsIncremented(IRazorTestContext context)

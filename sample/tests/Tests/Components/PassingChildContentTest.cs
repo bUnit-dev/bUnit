@@ -19,7 +19,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
 
             var cut = RenderComponent<ThemedButton>(ChildContent(markup));
 
-            cut.Find("button").ChildNodes.ShouldBe(markup);
+            cut.Find("button").ChildNodes.MarkupMatches(markup);
         }
 
         [Fact(DisplayName = "A component render fragment passed to child content is rendered as expected")]
@@ -36,9 +36,9 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
             );
 
             // assert by going through ThemedElement's root DIV
-            cut.Find("div").ChildNodes.ShouldBe(expectedChildContent);
+            cut.Find("div").ChildNodes.MarkupMatches(expectedChildContent);
             // assert by finding the child content by its ID tag and comparing to the expected
-            cut.Find("#test").ShouldBe(expectedChildContent);
+            cut.Find("#test").MarkupMatches(expectedChildContent);
         }
     }
 }

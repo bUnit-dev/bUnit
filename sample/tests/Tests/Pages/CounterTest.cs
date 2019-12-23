@@ -27,7 +27,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
 
             // Here we use the HTML diffing library to assert that the rendered HTML
             // from CUT is semantically the same as the expected HTML string above.
-            cut.ShouldBe(expectedHtml);
+            cut.MarkupMatches(expectedHtml);
         }
 
         [Fact]

@@ -32,10 +32,10 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
             // Act - renders the component, passing 
             var cut = RenderComponent<TodoItem>((nameof(TodoItem.Todo), todo));
 
-            cut.ShouldBe($@"<li id=""todo-{todo.Id}"" class=""list-group-item list-group-item-action"">
-                                <span>{todo.Text}</span>
-                                <span class=""float-right text-danger"">(click to complete)</span>
-                            </li>");
+            cut.MarkupMatches($@"<li id=""todo-{todo.Id}"" class=""list-group-item list-group-item-action"">
+                                         <span>{todo.Text}</span>
+                                         <span class=""float-right text-danger"">(click to complete)</span>
+                                     </li>");
         }
 
         [Fact(DisplayName = "When item or link is clicked, the OnCompleted event is raised")]

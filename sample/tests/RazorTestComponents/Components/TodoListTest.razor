@@ -38,7 +38,7 @@
         // Assert - get the expected initial rendered HTML from the fragment 
         // and use it to verify the initial rendered HTML
         var expectedInitialRender = context.GetFragment("EmptyTodoListRender");
-        cut.ShouldBe(expectedInitialRender);
+        cut.MarkupMatches(expectedInitialRender);
     }
 
     void SettingLabel(IRazorTestContext context)

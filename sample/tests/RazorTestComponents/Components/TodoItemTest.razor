@@ -24,7 +24,7 @@
         var expected = context.GetFragment();
 
         // assert
-        cut.ShouldBe(expected);
+        cut.MarkupMatches(expected);
     }
 
     void WhenItemIsClickedOnCompleteEventIsRaised(IRazorTestContext context)
