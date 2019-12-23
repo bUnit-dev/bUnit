@@ -14,5 +14,5 @@ jobs:
     - name: Get the version
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-    - run: dotnet build -c Release /nowarn:CS1591
+    - run: dotnet build -c Release -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
     - run: dotnet test -c Release /nowarn:CS1591
