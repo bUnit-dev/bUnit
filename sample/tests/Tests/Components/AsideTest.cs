@@ -32,7 +32,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
             );
 
             // Assert - verify that the rendered HTML from the Aside component matches the expected output.
-            cut.ShouldBe($@"<aside class=""{cssClass}""><header>{header}</header></aside>");
+            cut.MarkupMatches($@"<aside class=""{cssClass}""><header>{header}</header></aside>");
         }
 
         [Fact(DisplayName = "Passing new parameters to Aside updates the rendered HTML correctly")]
@@ -83,7 +83,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
             );
 
             // Assert - verify that the rendered HTML from the Aside component matches the expected output.
-            cut.ShouldBe($@"<aside>{content}</aside>");
+            cut.MarkupMatches($@"<aside>{content}</aside>");
         }
 
         [Fact(DisplayName = "Aside should render a child component correctly")]
@@ -111,12 +111,12 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
             );
 
             // Assert - verify that the rendered HTML from the Aside component matches the expected output.
-            cut.ShouldBe($@"<aside>
-                            <header>{outerAsideHeader}</header>
-                            <aside>
-                                <header>{nestedAsideHeader}</header>
-                            </aside>
-                        </aside>");
+            cut.MarkupMatches($@"<aside>
+                                         <header>{outerAsideHeader}</header>
+                                         <aside>
+                                             <header>{nestedAsideHeader}</header>
+                                         </aside>
+                                     </aside>");
         }
     }
 }

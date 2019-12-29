@@ -74,7 +74,7 @@ namespace Egil.RazorComponents.Testing
                 snapshot.Setup(context);
                 var actual = context.RenderTestInput();
                 var expected = context.RenderExpectedOutput();
-                actual.ShouldBe(expected, snapshot.Description);
+                actual.MarkupMatches(expected, snapshot.Description);
             }
         }
 

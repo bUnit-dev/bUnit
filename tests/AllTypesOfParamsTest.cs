@@ -10,6 +10,7 @@ using Egil.RazorComponents.Testing.SampleComponents;
 
 namespace Egil.RazorComponents.Testing
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>")]
     public class AllTypesOfParamsTest : ComponentTestFixture
     {
         [Fact(DisplayName = "All types of parameters are correctly assigned to component on render")]
@@ -37,8 +38,8 @@ namespace Egil.RazorComponents.Testing
             instance.NamedCascadingValue.ShouldBe(1337);
             Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(null)).Message.ShouldBe("NonGenericCallback");
             Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
-            new RenderedFragment(this, instance.ChildContent).GetMarkup().ShouldBe(nameof(ChildContent));
-            new RenderedFragment(this, instance.OtherContent).GetMarkup().ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
+            new RenderedFragment(this, instance.ChildContent!).GetMarkup().ShouldBe(nameof(ChildContent));
+            new RenderedFragment(this, instance.OtherContent!).GetMarkup().ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
             Should.Throw<Exception>(() => instance.ItemTemplate!("")(null)).Message.ShouldBe("ItemTemplate");
         }
 
@@ -76,8 +77,8 @@ namespace Egil.RazorComponents.Testing
             instance.RegularParam.ShouldBe("some value");
             Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(null)).Message.ShouldBe("NonGenericCallback");
             Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
-            new RenderedFragment(this, instance.ChildContent).GetMarkup().ShouldBe(nameof(ChildContent));
-            new RenderedFragment(this, instance.OtherContent).GetMarkup().ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
+            new RenderedFragment(this, instance.ChildContent!).GetMarkup().ShouldBe(nameof(ChildContent));
+            new RenderedFragment(this, instance.OtherContent!).GetMarkup().ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
             Should.Throw<Exception>(() => instance.ItemTemplate!("")(null)).Message.ShouldBe("ItemTemplate");
         }
 

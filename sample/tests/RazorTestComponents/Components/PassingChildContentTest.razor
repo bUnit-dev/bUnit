@@ -16,7 +16,7 @@
 
         var cut = context.GetComponentUnderTest();
 
-        cut.Find("button").ChildNodes.ShouldBe(expectedChildContent);
+        cut.Find("button").ChildNodes.MarkupMatches(expectedChildContent);
     }
 }
 

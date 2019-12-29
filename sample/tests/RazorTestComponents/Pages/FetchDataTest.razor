@@ -32,7 +32,7 @@
         var cut = context.GetComponentUnderTest<FetchData>();
 
         // assert
-        cut.ShouldBe(context.GetFragment("InitialRender"));
+        cut.MarkupMatches(context.GetFragment("InitialRender"));
     }
 
     void AfterDataLoadsItIsDisplayedInAForecastTable(IRazorTestContext context)
