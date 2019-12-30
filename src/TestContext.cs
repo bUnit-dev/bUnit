@@ -21,13 +21,13 @@ namespace Egil.RazorComponents.Testing
         private readonly Lazy<TestHtmlParser> _htmlParser;
 
         /// <inheritdoc/>
-        public TestRenderer Renderer => _renderer.Value;
+        public virtual TestRenderer Renderer => _renderer.Value;
 
         /// <inheritdoc/>
-        public TestHtmlParser HtmlParser => _htmlParser.Value;
+        public virtual TestHtmlParser HtmlParser => _htmlParser.Value;
 
         /// <inheritdoc/>
-        public TestServiceProvider Services { get; } = new TestServiceProvider();
+        public virtual TestServiceProvider Services { get; } = new TestServiceProvider();
 
         /// <summary>
         /// Creates a new instance of the <see cref="TestContext"/> class.
@@ -46,21 +46,14 @@ namespace Egil.RazorComponents.Testing
         }
 
         /// <inheritdoc/>
-        public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
+        public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
         {
             var result = new RenderedComponent<TComponent>(this, parameters);
             return result;
         }
 
         /// <inheritdoc/>
-        public IRenderedComponent<TComponent> RenderComponent<TComponent>(ParameterView parameters) where TComponent : class, IComponent
-        {
-            var result = new RenderedComponent<TComponent>(this, parameters);
-            return result;
-        }
-
-        /// <inheritdoc/>
-        public void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
+        public virtual void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
         {
             if (renderTrigger is null) throw new ArgumentNullException(nameof(renderTrigger));
             var task = Renderer.NextRender;

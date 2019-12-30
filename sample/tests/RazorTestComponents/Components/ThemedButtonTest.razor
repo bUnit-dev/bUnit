@@ -13,9 +13,9 @@
 @code {
     private ThemeInfo theme = new ThemeInfo { Value = "btn btn-secondary" };
 
-    void Test(IRazorTestContext context)
+    void Test()
     {
-        var cut = context.GetComponentUnderTest<ThemedButton>();
+        var cut = GetComponentUnderTest<ThemedButton>();
         var x = cut.GetMarkup();
         cut.Find("button").ClassList.ShouldContain("btn");
     }

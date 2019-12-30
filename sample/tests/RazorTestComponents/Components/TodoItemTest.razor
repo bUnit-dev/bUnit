@@ -1,8 +1,6 @@
 ﻿@inherits TestComponentBase
-@using Egil.RazorComponents.Testing
-@using Xunit
 
-<Fixture Tests="new Test[]{ TheComponentRendersExpectedOutput, WhenItemIsClickedOnCompleteEventIsRaised }">
+<Fixture Tests="new Action[]{ TheComponentRendersExpectedOutput, WhenItemIsClickedOnCompleteEventIsRaised }">
     <ComponentUnderTest>
         <TodoItem Todo="todo" OnCompleted="id => clickedTodoId = id"></TodoItem>
     </ComponentUnderTest>
@@ -17,19 +15,19 @@
     Todo todo = new Todo { Id = 42, Text = "Hello world" };
     int clickedTodoId = 0;
 
-    void TheComponentRendersExpectedOutput(IRazorTestContext context)
+    void TheComponentRendersExpectedOutput()
     {
         // act
-        var cut = context.GetComponentUnderTest();
-        var expected = context.GetFragment();
+        var cut = GetComponentUnderTest();
+        var expected = GetFragment();
 
         // assert
         cut.MarkupMatches(expected);
     }
 
-    void WhenItemIsClickedOnCompleteEventIsRaised(IRazorTestContext context)
+    void WhenItemIsClickedOnCompleteEventIsRaised()
     {
-        var cut = context.GetComponentUnderTest();
+        var cut = GetComponentUnderTest();
 
         cut.Find("li").Click();
 

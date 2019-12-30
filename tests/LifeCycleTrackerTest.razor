@@ -16,9 +16,9 @@
     int renderTrigger = 0;
     LifeCycleTracker tracker = default!; // set during initial render by framework - should not be null!
 
-    void Test(IRazorTestContext context)
+    void Test()
     {        
-        var cut = context.GetComponentUnderTest<Wrapper>();
+        var cut = GetComponentUnderTest<Wrapper>();
         var callLog = tracker.LifeCycleMethodCallLog;
 
         // assert first render called expected methods

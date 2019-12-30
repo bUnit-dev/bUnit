@@ -7,10 +7,11 @@ using Shouldly;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Testing.Extensions;
 using Egil.RazorComponents.Testing.SampleComponents;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Egil.RazorComponents.Testing
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>")]
+    [SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>")]
     public class AllTypesOfParamsTest : ComponentTestFixture
     {
         [Fact(DisplayName = "All types of parameters are correctly assigned to component on render")]

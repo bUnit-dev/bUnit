@@ -10,11 +10,11 @@
     <Fragment><h1>Foo bar button</h1></Fragment>
 </Fixture>
 @code {
-    void MarkupPassedViaChildContent(IRazorTestContext context)
+    void MarkupPassedViaChildContent()
     {
-        var expectedChildContent = context.GetFragment();
+        var expectedChildContent = GetFragment();
 
-        var cut = context.GetComponentUnderTest();
+        var cut = GetComponentUnderTest();
 
         cut.Find("button").ChildNodes.MarkupMatches(expectedChildContent);
     }
@@ -29,9 +29,9 @@
 </Fixture>
 @code {
     string btnContent = "BUTTTOOOON";
-    void ComponentsPassedViaChildContent(IRazorTestContext context)
+    void ComponentsPassedViaChildContent()
     {
-        var cut = context.GetComponentUnderTest();
+        var cut = GetComponentUnderTest();
 
         cut.Find("#btn").TextContent.ShouldBe(btnContent);
     }

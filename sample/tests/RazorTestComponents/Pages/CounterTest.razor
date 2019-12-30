@@ -1,6 +1,6 @@
 ﻿@inherits TestComponentBase
 
-<Fixture Tests="new Test[]{ InitialHtmlIsCorrect, AfterBtnClickCounterIsIncremented }">
+<Fixture Tests="new Action[]{ InitialHtmlIsCorrect, AfterBtnClickCounterIsIncremented }">
     <ComponentUnderTest><Counter /></ComponentUnderTest>
     <Fragment>
         <h1>Counter</h1>
@@ -9,19 +9,19 @@
     </Fragment>
 </Fixture>
 @code {
-    void InitialHtmlIsCorrect(IRazorTestContext context)
+    void InitialHtmlIsCorrect()
     {
         // act
-        var cut = context.GetComponentUnderTest<Counter>();
+        var cut = GetComponentUnderTest<Counter>();
 
         // assert
-        cut.MarkupMatches(context.GetFragment());
+        cut.MarkupMatches(GetFragment());
     }
 
-    void AfterBtnClickCounterIsIncremented(IRazorTestContext context)
+    void AfterBtnClickCounterIsIncremented()
     {
         // arrange
-        var cut = context.GetComponentUnderTest<Counter>();
+        var cut = GetComponentUnderTest<Counter>();
 
         // act
         cut.Find("button").Click(); // first click

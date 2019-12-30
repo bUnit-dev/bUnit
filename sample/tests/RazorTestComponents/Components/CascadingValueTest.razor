@@ -11,9 +11,9 @@
 @code {
     string cssClass = "BUTTON";
 
-    void ThemedButtonUsesClassPassedByCascadingValue(IRazorTestContext context)
+    void ThemedButtonUsesClassPassedByCascadingValue()
     {
-        var cut = context.GetComponentUnderTest();
+        var cut = GetComponentUnderTest();
 
         cut.Find("button").ClassList.ShouldContain(cssClass);
     }
@@ -31,9 +31,9 @@
     </ComponentUnderTest>
 </Fixture>
 @code {
-    void ThemedButtonUsesNamedCascadingValue(IRazorTestContext context)
+    void ThemedButtonUsesNamedCascadingValue()
     {
-        var cut = context.GetComponentUnderTest();
+        var cut = GetComponentUnderTest();
 
         var elm = cut.Find("div");
         elm.ClassList.ShouldContain("FOO");

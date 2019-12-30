@@ -7,7 +7,7 @@ namespace Egil.RazorComponents.Testing
     /// <summary>
     /// A test context is a factory that makes it possible to create components under tests.
     /// </summary>
-    public interface ITestContext
+    public interface ITestContext : IDisposable
     {
         /// <summary>
         /// Gets the service collection and service provider that is used when a 

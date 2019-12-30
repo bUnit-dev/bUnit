@@ -1,5 +1,4 @@
 ﻿@inherits TestComponentBase
-@using Xunit
 
 <Fixture Test="CallingGetMultipleTimesReturnsSameInstance">
     <ComponentUnderTest>
@@ -11,25 +10,25 @@
     </Fragment>
 </Fixture>
 @code{
-    void CallingGetMultipleTimesReturnsSameInstance(IRazorTestContext context)
+    void CallingGetMultipleTimesReturnsSameInstance()
     {
-        var cut1 = context.GetComponentUnderTest<Wrapper>();
-        var cut2 = context.GetComponentUnderTest<Wrapper>();
+        var cut1 = GetComponentUnderTest<Wrapper>();
+        var cut2 = GetComponentUnderTest<Wrapper>();
 
         Assert.True(ReferenceEquals(cut1, cut2), "Getting CUT multiple times should return the same instance");
         Assert.Equal("CUT", cut1.GetMarkup());
 
-        var firstFragmentNoId1 = context.GetFragment();
-        var firstFragmentId1 = context.GetFragment("first");
-        var firstFragmentNoId2 = context.GetFragment();
-        var firstFragmentId2 = context.GetFragment("first");
+        var firstFragmentNoId1 = GetFragment();
+        var firstFragmentId1 = GetFragment("first");
+        var firstFragmentNoId2 = GetFragment();
+        var firstFragmentId2 = GetFragment("first");
         Assert.True(ReferenceEquals(firstFragmentNoId1, firstFragmentId1), "Getting first fragment with and without id should return the same instance");
         Assert.True(ReferenceEquals(firstFragmentNoId1, firstFragmentNoId2), "Getting first fragment multiple times should return the same instance");
         Assert.True(ReferenceEquals(firstFragmentId1, firstFragmentId2), "Getting first fragment multiple times should return the same instance");
         Assert.Equal("first", firstFragmentNoId1.GetMarkup());
 
-        var secondFragmentId1 = context.GetFragment<Wrapper>("second");
-        var secondFragmentId2 = context.GetFragment<Wrapper>("second");
+        var secondFragmentId1 = GetFragment<Wrapper>("second");
+        var secondFragmentId2 = GetFragment<Wrapper>("second");
 
         Assert.True(ReferenceEquals(secondFragmentId1, secondFragmentId2), "Getting fragment multiple times should return the same instance");
         Assert.Equal("second", secondFragmentId2.GetMarkup());
@@ -45,17 +44,17 @@
     </Fragment>
 </Fixture>
 @code{
-    void CallingGenericGetAfterNonGenericGetThrows(IRazorTestContext context)
+    void CallingGenericGetAfterNonGenericGetThrows()
     {
-        context.GetComponentUnderTest();
+        GetComponentUnderTest();
 
         // It should not be possible to call the generic GetComponentUnderTest after the non-generic has been called
-        Assert.Throws<InvalidOperationException>(() => context.GetComponentUnderTest<Wrapper>());
+        Assert.Throws<InvalidOperationException>(() => GetComponentUnderTest<Wrapper>());
 
-        context.GetFragment();
+        GetFragment();
 
         // It should not be possible to call the generic GetFragment after the non-generic has been called
-        Assert.Throws<InvalidOperationException>(() => context.GetFragment<Wrapper>());
+        Assert.Throws<InvalidOperationException>(() => GetFragment<Wrapper>());
     }
 }
 
@@ -68,10 +67,10 @@
     </Fragment>
 </Fixture>
 @code{
-    void CallingGetCutOrGetFragmentWithWrongGenericTypeThrows(IRazorTestContext context)
+    void CallingGetCutOrGetFragmentWithWrongGenericTypeThrows()
     {        
-        Assert.Throws<InvalidOperationException>(() => context.GetComponentUnderTest<Simple1>());
-        Assert.Throws<InvalidOperationException>(() => context.GetFragment<Simple1>());
+        Assert.Throws<InvalidOperationException>(() => GetComponentUnderTest<Simple1>());
+        Assert.Throws<InvalidOperationException>(() => GetFragment<Simple1>());
     }
 }
 
@@ -84,11 +83,11 @@
     </Fragment>
 </Fixture>
 @code{
-    void CallingGetCutOrGetFragmentWithIncompatibleGenericTypeThrows(IRazorTestContext context)
+    void CallingGetCutOrGetFragmentWithIncompatibleGenericTypeThrows()
     {
-        context.GetComponentUnderTest<Wrapper>();
-        context.GetFragment<Wrapper>();
-        Assert.Throws<InvalidOperationException>(() => context.GetComponentUnderTest<Simple1>());
-        Assert.Throws<InvalidOperationException>(() => context.GetFragment<Simple1>());
+        GetComponentUnderTest<Wrapper>();
+        GetFragment<Wrapper>();
+        Assert.Throws<InvalidOperationException>(() => GetComponentUnderTest<Simple1>());
+        Assert.Throws<InvalidOperationException>(() => GetFragment<Simple1>());
     }
 }
