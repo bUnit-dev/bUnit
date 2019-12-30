@@ -2,7 +2,11 @@ name: CD
 on:
   release:
     types:
-      - published
+      - published        
+      #- created
+      #- edited
+      #- deleted
+      #- prereleased
 
 jobs:  
   build:    
@@ -15,8 +19,8 @@ jobs:
         dotnet-version: '3.1.100'  
     - name: Get the version
       id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}    
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}    
     - run: dotnet build -c Release -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
-    - run: dotnet test -c Release -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
-    - run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
-    - run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+    #- run: dotnet test -c Release -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
+    #- run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
+    #- run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json

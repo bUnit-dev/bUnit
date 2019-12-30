@@ -11,6 +11,6 @@ jobs:
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.100'  
-    - run: dotnet build -c Release /nowarn:CS1591
+    - run: dotnet build -c Release
     - run: dotnet test -c Release /nowarn:CS1591
     - run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=1.0.0 /nowarn:CS1591
