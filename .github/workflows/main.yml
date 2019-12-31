@@ -23,6 +23,6 @@ jobs:
         with:
           find: "[[VERSION]]"
           replace: $VERSION
-          include: "*.csproj"
+          include: "Company.RazorTests1.csproj"
       - name: Creating template package
         run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE} -p:PackageVersion=$VERSION
