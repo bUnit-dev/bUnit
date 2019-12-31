@@ -3,14 +3,26 @@ name: CI
 on: [push, pull_request]
 
 jobs:  
-  build:    
-    name: Executing tests
+  build:        
+    env:
+      VERSION: 1.0.0-beta-1337
     runs-on: ubuntu-latest  
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'  
-    - run: dotnet build -c Release
-    - run: dotnet test -c Release /nowarn:CS1591
-    - run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=1.0.0 /nowarn:CS1591
+    steps:    
+      - uses: actions/checkout@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.100'      
+      - name: Building project
+        run: dotnet build -c Release
+      - name: Running tests
+        run: dotnet test -c Release /nowarn:CS1591
+      - name: Creating package
+        run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=$VERSION /nowarn:CS1591
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "[[VERSION]]"
+          replace: $VERSION
+          include: "Company.RazorTests1.csproj"
+      - name: Creating template package
+        run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE} -p:PackageVersion=$VERSION
