@@ -30,5 +30,7 @@ jobs:
         run: dotnet new --install ${GITHUB_WORKSPACE}/Razor.Components.Testing.Library.Template.$VERSION.nupkg
       - name: Create razor test project
         run: dotnet new razortest -o ${GITHUB_WORKSPACE}/Test
+      - name: Restore packages
+        run: dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}
       - name: Run tests in test project       
         run: dotnet test ${GITHUB_WORKSPACE}/Test
