@@ -13,7 +13,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@master
         with:
           find: "TESTING_LIB_VERSION"
-          replace: $VERSION
+          replace: "$VERSION"
           include: "Company.RazorTests1.csproj"
       - uses: actions/setup-dotnet@v1
         with:
@@ -31,6 +31,6 @@ jobs:
       - name: Create razor test project
         run: dotnet new razortest -o ${GITHUB_WORKSPACE}/Test
       - name: Restore packages
-        run: dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}
+        run: dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE} --verbosity d
       - name: Run tests in test project       
         run: dotnet test ${GITHUB_WORKSPACE}/Test
