@@ -29,5 +29,6 @@ jobs:
       - name: Verifying template
         run: |
           dotnet new --install ${GITHUB_WORKSPACE}/Razor.Components.Testing.Library.Template.$VERSION.nupkg
-          dotnet new razortest -o ${GITHUB_WORKSPACE}/Test --nuget-source ${GITHUB_WORKSPACE}          
+          dotnet new razortest -o ${GITHUB_WORKSPACE}/Test --no-restore
+          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}
           dotnet test ${GITHUB_WORKSPACE}/Test
