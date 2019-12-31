@@ -55,7 +55,7 @@ namespace Egil.RazorComponents.Testing
         public void RazorTest()
         {
             var container = new ContainerComponent(_renderer.Value);
-            container.RenderComponentUnderTest(BuildRenderTree);
+            container.Render(BuildRenderTree);
 
             ExecuteFixtureTests(container);
             ExecuteSnapshotTests(container);
@@ -96,7 +96,7 @@ namespace Egil.RazorComponents.Testing
         {
             foreach (var (_, fixture) in container.GetComponents<Fixture>())
             {
-                container.RenderComponentUnderTest(fixture.ChildContent);
+                container.Render(fixture.ChildContent);
                 var testData = container.GetComponents<FragmentBase>().Select(x => x.Component).ToArray();
 
                 _testContextAdapter.ActivateRazorTestContext(testData);
@@ -129,7 +129,7 @@ namespace Egil.RazorComponents.Testing
         {
             foreach (var (_, snapshot) in container.GetComponents<SnapshotTest>())
             {
-                container.RenderComponentUnderTest(snapshot.ChildContent);
+                container.Render(snapshot.ChildContent);
                 var testData = container.GetComponents<FragmentBase>().Select(x => x.Component).ToArray();
 
                 var context = _testContextAdapter.ActivateSnapshotTestContext(testData);

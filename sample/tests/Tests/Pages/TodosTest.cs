@@ -36,7 +36,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Pages
             var page = RenderComponent<Todos>();
             WaitForNextRender(() => getTask.SetResult(todos));
 
-            // assert
+            // assert            
             page.FindAll("li")
                 .ShouldAllBe(
                     (elm, idx) => elm.Id.ShouldBe($"todo-{todos[idx].Id}"),

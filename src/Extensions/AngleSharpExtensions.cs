@@ -161,6 +161,30 @@ namespace Egil.RazorComponents.Testing.Extensions
         }
 
         /// <summary>
+        /// Returns the first element within this element (using depth-first pre-order traversal
+        /// of the document's nodes) that matches the specified group of selectors.
+        /// </summary>
+        /// <param name="selector">The group of selectors to use.</param>
+        /// <param name="nodelist">The elements to search within</param>
+        public static IElement Find(this INodeList nodelist, string selector)
+        {
+            if (nodelist is null) throw new ArgumentNullException(nameof(nodelist));
+            return nodelist.QuerySelector(selector);
+        }
+
+        /// <summary>
+        /// Returns a list of the elements within the rendered fragment or component under test, 
+        /// (using depth-first pre-order traversal of the document's nodes) that match the specified group of selectors.
+        /// </summary>
+        /// <param name="selector">The group of selectors to use.</param>
+        /// <param name="nodelist">The elements to search within</param>
+        public static IHtmlCollection<IElement> FindAll(this INodeList nodelist, string selector)
+        {
+            if (nodelist is null) throw new ArgumentNullException(nameof(nodelist));
+            return nodelist.QuerySelectorAll(selector);
+        }
+
+        /// <summary>
         /// Wraps the <paramref name="node"/> in an <see cref="IEnumerable{INode}"/>.
         /// </summary>
         /// <param name="node">The node to wrap</param>

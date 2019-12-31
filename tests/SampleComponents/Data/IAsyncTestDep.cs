@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Egil.RazorComponents.Testing.SampleComponents
+namespace Egil.RazorComponents.Testing.SampleComponents.Data
 {
-    public interface ITestDep
+    public interface IAsyncTestDep
     {
-        string Name { get; }
+        Task<string> GetData();
     }
 }

@@ -60,7 +60,7 @@
     {
         // Arrange - get the cut and take a snapshot of the current render tree output
         var cut = GetComponentUnderTest<TodoList>();
-        cut.TakeSnapshot();
+        cut.SaveSnapshot();
 
         // Act - assign test todo items to the CUT
         cut.SetParametersAndRender((nameof(TodoList.Items), TestItems));

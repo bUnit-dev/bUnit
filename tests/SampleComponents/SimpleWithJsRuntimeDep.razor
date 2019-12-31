@@ -1,0 +1,14 @@
+﻿@inject IJSRuntime jsRuntime
+<p>@name</p>
+@code{
+    string name = string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            name = await jsRuntime.InvokeAsync<string>("getdata");
+            StateHasChanged();
+        }
+    }
+}

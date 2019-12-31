@@ -8,10 +8,18 @@ using Egil.RazorComponents.Testing.Extensions;
 namespace Egil.RazorComponents.Testing
 {
     /// <inheritdoc/>
-    public class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent> where TComponent : class, IComponent
+    public class RenderedComponent<TComponent> : RenderedFragmentBase, IRenderedComponent<TComponent>
+        where TComponent : class, IComponent
     {
         /// <inheritdoc/>
+        protected override int ComponentId { get; }
+
+        /// <inheritdoc/>
+        protected override string FirstRenderMarkup { get; }
+
+        /// <inheritdoc/>
         public TComponent Instance { get; }
+
 
         /// <summary>
         /// Instantiates a <see cref="RenderedComponent{TComponent}"/> which will render a component of type <typeparamref name="TComponent"/>
@@ -35,6 +43,7 @@ namespace Egil.RazorComponents.Testing
             : base(testContext, renderFragment)
         {
             (ComponentId, Instance) = Container.GetComponent<TComponent>();
+            FirstRenderMarkup = GetMarkup();
         }
 
         /// <inheritdoc/>
@@ -49,7 +58,7 @@ namespace Egil.RazorComponents.Testing
                 var paramDict = new Dictionary<string, object?>(parameters.Length);
                 foreach (var param in parameters)
                 {
-                    if(param.IsCascadingValue)
+                    if (param.IsCascadingValue)
                         throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(SetParametersAndRender)} method.");
 
                     paramDict.Add(param.Name!, param.Value);
@@ -66,6 +75,7 @@ namespace Egil.RazorComponents.Testing
             {
                 Instance.SetParametersAsync(parameters);
             });
+
         }
     }
 }

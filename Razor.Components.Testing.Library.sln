@@ -25,12 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.RazorComponents.Testin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.RazorComponents.Testing.Library.SampleApp.Tests", "sample\tests\Egil.RazorComponents.Testing.Library.SampleApp.Tests.csproj", "{A7B05744-AA61-4F8E-8173-5DE812A4A745}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{0DA340B9-D12D-413B-9B89-83A450FCB47C}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\main.yml = .github\workflows\main.yml
-		.github\workflows\nuget-pack-push.yml = .github\workflows\nuget-pack-push.yml
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,7 +56,6 @@ Global
 		{04E0142A-33CC-4E30-B903-F1370D94AD8C} = {C929375E-BD70-4B78-88C1-BDD1623C3365}
 		{D1FE0F2A-D856-417E-A1FD-4ECE9C64D3AE} = {26D90CB9-AF66-4F42-A16E-39D2CF69C8FB}
 		{A7B05744-AA61-4F8E-8173-5DE812A4A745} = {26D90CB9-AF66-4F42-A16E-39D2CF69C8FB}
-		{0DA340B9-D12D-413B-9B89-83A450FCB47C} = {A5D7B605-02D8-468C-9BDF-864CF93B12F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24106918-1C86-4769-BDA6-9C80E64CD260}

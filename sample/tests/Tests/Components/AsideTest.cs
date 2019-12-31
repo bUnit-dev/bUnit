@@ -51,7 +51,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
                 .ShouldBeAddition("<header>HEADER</header>");
 
             // Arrange - Create a snapshot of the current rendered HTML for later comparisons
-            cut.TakeSnapshot();
+            cut.SaveSnapshot();
 
             // Act - Set the Header parameter to null again and re-render
             cut.SetParametersAndRender((nameof(Aside.Header), null));
