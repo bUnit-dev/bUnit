@@ -21,9 +21,9 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: "[[VERSION]]"
+          find: TESTING_LIB_VERSION
           replace: $VERSION
-          include: "Company.RazorTests1.csproj"
+          include: Company.RazorTests1.csproj"
       - name: Creating template package
         run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE} -p:PackageVersion=$VERSION
       - name: Install template package        
