@@ -4,8 +4,8 @@ on: [push, pull_request]
 
 jobs:  
   build:        
-    env:
-      VERSION: 1.0.0-beta-3 #1.0.0-beta-1337
+    env:  #1.0.0-beta-1337
+      VERSION: 1.0.0-beta-3
     runs-on: ubuntu-latest  
     steps:    
       - uses: actions/checkout@v1
@@ -13,7 +13,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@master
         with:
           find: "TESTING_LIB_VERSION"
-          replace: "$VERSION"
+          replace: $VERSION
           include: "Company.RazorTests1.csproj"
       - uses: actions/setup-dotnet@v1
         with:
