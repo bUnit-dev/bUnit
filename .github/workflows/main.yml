@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 env:
-  VERSION: 0.0.1
+  VERSION: 1337.0.0
 
 jobs:  
   build:
