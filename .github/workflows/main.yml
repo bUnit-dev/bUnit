@@ -10,11 +10,9 @@ jobs:
     steps:    
       - uses: actions/checkout@v1
       - name: Update version string
-        uses: jacobtomlinson/gha-find-replace@master
+        uses: cschleiden/replace-tokens@v1
         with:
-          find: "TESTING_LIB_VERSION"
-          replace: $VERSION
-          include: "Company.RazorTests1.csproj"
+          files: '["**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.100'      
