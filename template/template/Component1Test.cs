@@ -14,9 +14,9 @@ namespace Company.RazorTests1
     {
       var cut = RenderComponent<Component1>();
 
-      cut.ShouldBe(@"<div class=""my-component"">
-                      This Blazor component is defined in the <strong>razorclasslib1</strong> package.
-                    </div>");
+      cut.MarkupMatches(@"<div class=""my-component"">
+                            This Blazor component is defined in the <strong>razorclasslib1</strong> package.
+                          </div>");
     }
   }
 }
