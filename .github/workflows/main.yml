@@ -1,3 +1,4 @@
+
 name: CI
 
 on: [push, pull_request]
@@ -6,8 +7,8 @@ env:
   VERSION: 1337.0.0
 
 jobs:  
-  initialize:
-    name: Initialize
+  build:
+    name: Build and verify library
     runs-on: ubuntu-latest  
     steps:    
       - uses: actions/checkout@v1
@@ -17,22 +18,18 @@ jobs:
           files: '["**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.100'       
-  build:
-    needs: [initialize]
-    name: Build and verify library
-    runs-on: ubuntu-latest  
-    steps:    
-      - run: dotnet build -c Release
-      - run: dotnet test -c Release /nowarn:CS1591
-      - run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=$VERSION /nowarn:CS1591
-  template:
-    needs: [initialize, build]
-    name: Build and verify template
-    runs-on: ubuntu-latest
-    steps:
-      - run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE} -p:PackageVersion=$VERSION
-      - run: dotnet new --install ${GITHUB_WORKSPACE}/Razor.Components.Testing.Library.Template.$VERSION.nupkg
-      - run: dotnet new razortest -o ${GITHUB_WORKSPACE}/Test
-      - run: dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}
-      - run: dotnet test ${GITHUB_WORKSPACE}/Test
+          dotnet-version: '3.1.100'      
+      - name: Building and verifying library
+        run: |
+          dotnet build -c Release
+          dotnet test -c Release /nowarn:CS1591
+      - name: Creating library package
+        run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=$VERSION /nowarn:CS1591
+      - name: Buidling template package
+        run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE} -p:PackageVersion=$VERSION
+      - name: Verifying template
+        run: |
+          dotnet new --install ${GITHUB_WORKSPACE}/Razor.Components.Testing.Library.Template.$VERSION.nupkg
+          dotnet new razortest -o ${GITHUB_WORKSPACE}/Test
+          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}
+          dotnet test ${GITHUB_WORKSPACE}/Test
