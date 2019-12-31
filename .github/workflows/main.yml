@@ -26,3 +26,9 @@ jobs:
           include: "Company.RazorTests1.csproj"
       - name: Creating template package
         run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE} -p:PackageVersion=$VERSION
+      - name: Install template package        
+        run: dotnet new --install ${GITHUB_WORKSPACE}/Razor.Components.Testing.Library.Template.$VERSION.nupkg
+      - name: Create razor test project
+        run: dotnet new razortest -o ${GITHUB_WORKSPACE}/Test
+      - name: Run tests in test project       
+        run: dotnet test ${GITHUB_WORKSPACE}/Test
