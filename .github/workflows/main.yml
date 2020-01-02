@@ -23,3 +23,20 @@ jobs:
         uses: cschleiden/replace-tokens@v1
         with:
           files: '["*.csproj", "**/*.csproj"]'
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.100'      
+      - name: Building and verifying library
+        run: |
+          dotnet build -c Release
+          dotnet test -c Release /nowarn:CS1591
+      - name: Creating library package
+        run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=$VERSION /nowarn:CS1591
+      - name: Buidling template package
+        run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE} -p:version=$VERSION -p:PackageVersion=$VERSION
+      - name: Verifying template
+        run: |
+          dotnet new --install ${GITHUB_WORKSPACE}/Razor.Components.Testing.Library.Template.$VERSION.nupkg
+          dotnet new razortest -o ${GITHUB_WORKSPACE}/Test
+          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}
+          dotnet test ${GITHUB_WORKSPACE}/Test
