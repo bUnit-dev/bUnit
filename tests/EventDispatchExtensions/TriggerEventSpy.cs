@@ -17,6 +17,8 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
 
         public TriggerEventSpy(Func<ComponentParameter[], IRenderedComponent<TriggerTester<TEventArgs>>> componentRenderer, string element, string eventName)
         {
+            if (componentRenderer is null) throw new ArgumentNullException(nameof(componentRenderer));
+
             _renderedComponent = componentRenderer(new ComponentParameter[] {
                     (nameof(TriggerTester<TEventArgs>.Element), element),
                     (nameof(TriggerTester<TEventArgs>.EventName), eventName),
@@ -27,11 +29,15 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
 
         public void Trigger(Action<IElement> trigger)
         {
+            if (trigger is null) throw new ArgumentNullException(nameof(trigger));
+
             trigger(_renderedComponent.Find(_element));
         }
 
         public Task Trigger(Func<IElement, Task> trigger)
         {
+            if (trigger is null) throw new ArgumentNullException(nameof(trigger));
+
             return trigger(_renderedComponent.Find(_element));
         }
 

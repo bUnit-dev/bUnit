@@ -16,6 +16,8 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         [MemberData(nameof(GetEventHelperMethods), typeof(GeneralEventDispatchExtensions))]
         public async Task CanRaiseEvents(MethodInfo helper)
         {
+            if (helper is null) throw new ArgumentNullException(nameof(helper));
+
             if (helper.Name == nameof(GeneralEventDispatchExtensions.TriggerEventAsync)) return;
 
             await VerifyEventRaisesCorrectly(helper, EventArgs.Empty);

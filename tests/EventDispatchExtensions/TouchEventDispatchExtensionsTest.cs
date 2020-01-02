@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Xunit;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Egil.RazorComponents.Testing.EventDispatchExtensions
 {
@@ -15,6 +16,7 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
 
         [Theory(DisplayName = "Touch events are raised correctly through helpers")]
         [MemberData(nameof(GetEventHelperMethods), typeof(TouchEventDispatchExtensions))]
+        [SuppressMessage("Performance", "CA1825:Avoid zero-length array allocations.", Justification = "<Pending>")]
         public async Task CanRaiseEvents(MethodInfo helper)
         {
             var expected = new TouchEventArgs

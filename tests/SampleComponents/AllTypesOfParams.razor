@@ -2,7 +2,7 @@
 @inject IJSRuntime jsRuntime
 @code {
     [Parameter(CaptureUnmatchedValues = true)]
-    public IReadOnlyDictionary<string, object> Attributes { get; set; }
+    public IReadOnlyDictionary<string, object> Attributes { get; set; } = default!;
 
     [Parameter]
     public string? RegularParam { get; set; }

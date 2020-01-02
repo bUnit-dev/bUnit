@@ -8,6 +8,7 @@ using DeepEqual.Syntax;
 using Egil.RazorComponents.Testing.SampleComponents;
 using Shouldly;
 using Xunit;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Egil.RazorComponents.Testing.EventDispatchExtensions
 {
@@ -25,6 +26,8 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
 
         protected async Task VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string methodName, string eventName)[] methodNameEventMap)
         {
+            if (helper is null) throw new ArgumentNullException(nameof(helper));
+
             var eventName = methodNameEventMap.SingleOrDefault(x => x.methodName.Equals(helper.Name, StringComparison.Ordinal)).eventName
                 ?? GetEventNameFromMethod(helper);
 
@@ -85,8 +88,10 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
             }
         }
 
-        protected static string GetEventNameFromMethod(MethodInfo helper)
+        private static string GetEventNameFromMethod(MethodInfo helper)
         {
+            if (helper is null) throw new ArgumentNullException(nameof(helper));
+
             var nameLength = helper.Name.Length;
 
             if (helper.Name.EndsWith("Async", StringComparison.Ordinal))
@@ -99,16 +104,22 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
             return eventName;
         }
 
+        [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "<Pending>")]
         public static IEnumerable<MethodInfo[]> GetEventHelperMethods(Type helperClassType)
         {
+            if (helperClassType is null) throw new ArgumentNullException(nameof(helperClassType));
+
             return helperClassType.GetMethods()
                 .Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement))
                 .Select(x => new[] { x })
                 .ToArray();
         }
 
+        [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "<Pending>")]
         public static IEnumerable<MethodInfo[]> GetEventHelperMethods(Type helperClassType, Func<MethodInfo, bool> customFilter)
         {
+            if (helperClassType is null) throw new ArgumentNullException(nameof(helperClassType));
+
             return helperClassType.GetMethods()
                 .Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement) && customFilter(x))
                 .Select(x => new[] { x })
