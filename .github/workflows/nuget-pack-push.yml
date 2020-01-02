@@ -1,12 +1,9 @@
 name: CD
 
 on:
-  release:
-    types:
-      - published        
-      - created
-      - edited
-      - prereleased
+  push:
+    tags: 
+      - 'v*.*.*'
 
 env:
   VERSION: 0.0.0
@@ -21,5 +18,6 @@ jobs:
       - name: Setting environment variables
         run: |          
           echo "::set-env name=COMMIT::$GITHUB_SHA"
-          echo "::set-env name=VERSION::${GITHUB_REF/refs\/tags\//}"
+          echo "::set-env name=VERSION::${GITHUB_REF/refs\/tags\//}"                    
           echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
+      - run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
