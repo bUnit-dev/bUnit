@@ -12,6 +12,7 @@ jobs:
     name: Build and verify library    
     runs-on: ubuntu-latest  
     steps:    
+      - run: echo "::set-env name=GITHUB_BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
       - run: echo Version $VERSION - Branch $GITHUB_BRANCH - Commit $GITHUB_SHA
       - uses: actions/checkout@v1
       - uses: rlespinasse/github-slug-action@master
