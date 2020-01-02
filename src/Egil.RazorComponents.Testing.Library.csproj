@@ -26,7 +26,7 @@
     </Description>
     <PackageDescription>
       A unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
-#{VERSION}#
+
 This library's goal is to make it easy to write comprehensive, stable unit tests for Blazor Components/Razor Components. To see how, head to the Wiki pages: https://github.com/egil/razor-components-testing-library/wiki
     </PackageDescription>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
