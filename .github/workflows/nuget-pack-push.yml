@@ -22,5 +22,5 @@ jobs:
         run: |
           echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
           echo "::set-env name=COMMIT::$GITHUB_SHA"
-          echo "::set-env name=VERSION::${GITHUB_REF/refs\/tags\//}
+          echo "::set-env name=VERSION::$(echo ${GITHUB_REF:10})
           echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
