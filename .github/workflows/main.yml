@@ -6,7 +6,7 @@ on: [push, pull_request]
 env:
   VERSION: 1337.0.0
   BRANCH: ''
-  COMMIT: ${{GITHUB_SHA}}
+  COMMIT: ${GITHUB_SHA}
   
 jobs:  
   build:
