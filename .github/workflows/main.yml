@@ -6,7 +6,7 @@ on: [push, pull_request]
 env:
   VERSION: 1337.0.0
   BRANCH: ''
-  COMMIT: ${GITHUB_SHA}
+  COMMIT: ''
   
 jobs:  
   build:
@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest  
     steps:    
       - run: echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+      - run: echo "::set-env name=COMMIT::$GITHUB_SHA"
       - run: echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
       - uses: actions/checkout@v1   
       - name: Update tokens in project files
