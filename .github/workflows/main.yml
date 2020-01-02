@@ -12,7 +12,7 @@ jobs:
     name: Build and verify library    
     runs-on: ubuntu-latest  
     steps:    
-      - run: echo Version = $VERSION | Branch = $GITHUB_BRANCH | Commit = $GITHUB_SHA
+      - run: echo "Version = $VERSION | Branch = $GITHUB_BRANCH | Commit = $GITHUB_SHA"
       - uses: actions/checkout@v1
       - name: Update version string
         uses: cschleiden/replace-tokens@v1
