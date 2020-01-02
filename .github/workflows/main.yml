@@ -6,7 +6,7 @@ on: [push, pull_request]
 env:
   VERSION: 1337.0.0
   BRANCH: ''
-  COMMIT: $GITHUB_SHA
+  COMMIT: ${{GITHUB_SHA}}
   
 jobs:  
   build:
@@ -15,14 +15,7 @@ jobs:
     steps:    
       - run: echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
       - run: echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
-      - uses: actions/checkout@v1
-      - uses: rlespinasse/github-slug-action@master
-      - name: Print slug variables
-        run: |
-          echo ${{ env.GITHUB_REF_SLUG }}
-          echo ${{ env.GITHUB_HEAD_REF_SLUG }}
-          echo ${{ env.GITHUB_BASE_REF_SLUG }}
-          echo ${{ env.GITHUB_SHA_SHORT }}        
+      - uses: actions/checkout@v1   
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
