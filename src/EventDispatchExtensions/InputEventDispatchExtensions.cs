@@ -23,16 +23,6 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
             => _ = ChangeAsync(element, new ChangeEventArgs { Value = value });
 
         /// <summary>
-        /// Raises the <c>@onchange</c> event on <paramref name="element"/>,  passing the provided
-        /// properties to the event handler via a <see cref="ChangeEventArgs"/> object
-        /// </summary>
-        /// <param name="element">The element to raise the event on.</param>
-        /// <param name="value">The new value</param>
-        /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task ChangeAsync(this IElement element, string value)
-            => ChangeAsync(element, new ChangeEventArgs { Value = value });
-
-        /// <summary>
         /// Raises the <c>@onchange</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
         /// to the event handler.
         /// </summary>
@@ -58,16 +48,6 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// <param name="value">The new value</param>        
         public static void Input(this IElement element, string value)
             => _ = InputAsync(element, new ChangeEventArgs { Value = value });
-
-        /// <summary>
-        /// Raises the <c>@oninput</c> event on <paramref name="element"/>,  passing the provided
-        /// properties to the event handler via a <see cref="ChangeEventArgs"/> object
-        /// </summary>
-        /// <param name="element">The element to raise the event on.</param>
-        /// <param name="value">The new value</param>
-        /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task InputAsync(this IElement element, string value)
-            => InputAsync(element, new ChangeEventArgs { Value = value });
 
         /// <summary>
         /// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>

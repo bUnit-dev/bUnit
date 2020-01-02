@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DeepEqual" Version="2.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="Shouldly" Version="3.0.2" />
     <PackageReference Include="xunit.assert" Version="2.4.1" />
