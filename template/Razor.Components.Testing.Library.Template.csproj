@@ -8,7 +8,13 @@
     <Company>Egil Hansen</Company>
 	  <Copyright>Egil Hansen</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>A project template for a testing Blazor/Razor components using the Razor.Components.Testing.Library library.</Description>
+	<Description>A project template for a testing Blazor/Razor components using the Razor Components Testing Library.</Description>
+	<PackageDescription>A project template for a testing Blazor/Razor components using the Razor Components Testing Library.
+	
+      The Razor Components Testing Library is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
+
+This library's goal is to make it easy to write comprehensive, stable unit tests for Blazor Components/Razor Components. To see how, head to the Wiki pages: https://github.com/egil/razor-components-testing-library/wiki
+    </PackageDescription>	
     <PackageTags>blazor component testing;blazor test;component test;unit test;integration test;</PackageTags>
 	  <PackageProjectUrl>https://github.com/egil/razor-components-testing-library</PackageProjectUrl>
     <TargetFramework>netstandard2.1</TargetFramework>
