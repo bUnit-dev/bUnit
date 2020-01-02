@@ -112,11 +112,11 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
 
             // Assert - verify that the rendered HTML from the Aside component matches the expected output.
             cut.MarkupMatches($@"<aside>
-                                         <header>{outerAsideHeader}</header>
-                                         <aside>
-                                             <header>{nestedAsideHeader}</header>
-                                         </aside>
-                                     </aside>");
+                                    <header>{outerAsideHeader}</header>
+                                    <aside>
+                                        <header>{nestedAsideHeader}</header>
+                                    </aside>
+                                 </aside>");
         }
     }
 }
