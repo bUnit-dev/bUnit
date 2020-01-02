@@ -14,8 +14,8 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/egil/razor-components-testing-library</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryBranch>#{GITHUB_BRANCH}#</RepositoryBranch>
-    <RepositoryCommit>#{GITHUB_SHA}#</RepositoryCommit>
+    <RepositoryBranch>#{BRANCH}#</RepositoryBranch>
+    <RepositoryCommit>#{COMMIT}#</RepositoryCommit>
     <PackageProjectUrl>https://github.com/egil/razor-components-testing-library</PackageProjectUrl>
     <PackageTags>razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags> 
     <Authors>Egil Hansen</Authors>
