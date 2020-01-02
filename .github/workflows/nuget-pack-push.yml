@@ -1,13 +1,16 @@
 name: CD
 
 on:
-  push:
-    tags: 
-      - 'v*.*.*'
+  release:
+    types:
+      - published        
+      - created
+      - edited
+      - prereleased
 
 env:
   VERSION: 0.0.0
-  BRANCH: ""
+  BRANCH: "master"
   COMMIT: ""
   
 jobs:  
@@ -17,8 +20,7 @@ jobs:
     steps:
       - name: Setting environment variables
         run: |          
-          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+          #echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
           echo "::set-env name=COMMIT::$GITHUB_SHA"
-          echo "::set-env name=VERSION::${GITHUB_REF/refs\/tags\/v/}"                    
-      - run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
-      - run: echo Version $VERSION - Branch $BRANCH - Commit $COMMIT - release_version - $RELEASE_VERSION
+          echo "::set-env name=VERSION::${GITHUB_REF/refs\/tags\/v/}"      
+      - run: echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
