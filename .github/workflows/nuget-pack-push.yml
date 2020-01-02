@@ -7,8 +7,8 @@ on:
 
 env:
   VERSION: 0.0.0
-  BRANCH: "master"
-  COMMIT: ''
+  BRANCH: ""
+  COMMIT: ""
   
 jobs:  
   build:
@@ -17,7 +17,8 @@ jobs:
     steps:
       - name: Setting environment variables
         run: |          
+          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
           echo "::set-env name=COMMIT::$GITHUB_SHA"
-          echo "::set-env name=VERSION::${GITHUB_REF/refs\/tags\//}"                    
-          echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
+          echo "::set-env name=VERSION::${GITHUB_REF/refs\/tags\/v/}"                    
       - run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
+      - run: echo Version $VERSION - Branch $BRANCH - Commit $COMMIT - release_version - $RELEASE_VERSION
