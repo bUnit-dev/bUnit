@@ -5,17 +5,19 @@ on: [push, pull_request]
 
 env:
   VERSION: 1337.0.0
+  GITHUB_BRANCH: ${GITHUB_REF/refs\/heads\/}
 
 jobs:  
   build:
-    name: Build and verify library
+    name: Build and verify library    
     runs-on: ubuntu-latest  
     steps:    
+      - run: echo Version = $VERSION | Branch = $GITHUB_BRANCH | Commit = $GITHUB_SHA
       - uses: actions/checkout@v1
       - name: Update version string
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["**/*.csproj"]'
+          files: '["**/*.csproj"]'        
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.100'      
