@@ -26,7 +26,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
             var initialExpectedHtml = @"<h1>Weather forecast</h1>
                                     <p>This component demonstrates fetching data from a service.</p>
                                     <p><em>Loading...</em></p>";
-            cut.ShouldBe(initialExpectedHtml);
+            cut.MarkupMatches(initialExpectedHtml);
         }
 
         [Fact(DisplayName = "After data loads it is displayed in a ForecastTable component")]

@@ -3,24 +3,39 @@ on:
   release:
     types:
       - published        
-      #- created
-      #- edited
-      #- deleted
-      #- prereleased
+      - created
+      - edited
+      - prereleased
+
+env:
+  VERSION: ${GITHUB_REF/refs\/tags\/v/}
 
 jobs:  
-  build:    
-    name: Push ${{ github.ref }} to NUGET
+  build:
+    name: Build and verify library
     runs-on: ubuntu-latest  
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'  
-    - name: Get the version
-      id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}    
-    - run: dotnet build -c Release -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
-    #- run: dotnet test -c Release -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
-    #- run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=${{ steps.get_version.outputs.VERSION }} /nowarn:CS1591
-    #- run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+    steps:    
+      - uses: actions/checkout@v1
+      - name: Update version string
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["**/*.csproj"]'
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.100'      
+      - name: Building and verifying library
+        run: |
+          dotnet build -c Release
+          dotnet test -c Release /nowarn:CS1591
+      - name: Creating library package
+        run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=$VERSION /nowarn:CS1591
+      - name: Buidling template package
+        run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE} -p:PackageVersion=$VERSION
+      - name: Verifying template
+        run: |
+          dotnet new --install ${GITHUB_WORKSPACE}/Razor.Components.Testing.Library.Template.$VERSION.nupkg
+          dotnet new razortest -o ${GITHUB_WORKSPACE}/Test
+          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}
+          dotnet test ${GITHUB_WORKSPACE}/Test
+      #- name: Push packages to NuGet.org
+        #run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate

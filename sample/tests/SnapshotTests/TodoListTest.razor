@@ -1,7 +1,7 @@
 ﻿@inherits TestComponentBase
 
 <SnapshotTest Description="A todolist with one todo added should render correctly"
-              Setup="ctx => ctx.Services.AddMockJsRuntime()">
+              Setup="() => Services.AddMockJsRuntime()">
     <TestInput>
         <TodoList Label="My label" Items=@(new Todo[]{ new Todo{ Id=42, Text="Check out this new thing called Blazor" } })>
             <ItemsTemplate Context="todo">

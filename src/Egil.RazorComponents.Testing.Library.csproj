@@ -5,19 +5,30 @@
     <RootNamespace>Egil.RazorComponents.Testing</RootNamespace>    
     <TargetFramework>netstandard2.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
+  </PropertyGroup>
+  
+  <PropertyGroup>
     <PackageId>Razor.Components.Testing.Library</PackageId>
+    <Title>Razor Components Testing Library</Title>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/egil/razor-components-testing-library</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <RepositoryBranch>#{BRANCH}#</RepositoryBranch>
+    <RepositoryCommit>#{COMMIT}#</RepositoryCommit>
     <PackageProjectUrl>https://github.com/egil/razor-components-testing-library</PackageProjectUrl>
-    <PackageTags>razor-components unit-testing testing blazor blazor-server-side blazor-client-side</PackageTags>   
+    <PackageTags>razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags> 
     <Authors>Egil Hansen</Authors>
     <Company>Egil Hansen</Company>
     <Product>Razor Component Testing Library</Product>
     <Description>
-      A testing library for Blazor Components. You can easily define components under test in C# or Razor syntax, it has intelligent HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
+      A unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
     </Description>
+    <PackageDescription>
+      A unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
+
+This library's goal is to make it easy to write comprehensive, stable unit tests for Blazor Components/Razor Components. To see how, head to the Wiki pages: https://github.com/egil/razor-components-testing-library/wiki
+    </PackageDescription>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
@@ -36,14 +47,13 @@
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.13.0" />
     <PackageReference Include="AngleSharp.Css" Version="0.13.0" />
-    <PackageReference Include="AngleSharp.Diffing" Version="0.13.0-preview-3" />
+    <PackageReference Include="AngleSharp.Diffing" Version="0.13.2" />
     <PackageReference Include="RichardSzalay.MockHttp" Version="6.0.0" />
     <PackageReference Include="xunit.assert" Version="2.4.1" />
     <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>

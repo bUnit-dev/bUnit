@@ -15,10 +15,10 @@ namespace Egil.RazorComponents.Testing
     /// </summary>
     public class SnapshotTest : FragmentBase
     {
-        private Action<ITestContext> _setup = NoopTestMethod;
+        private Action _setup = NoopTestMethod;
 
         /// <summary>
-        /// A description or name for the test that will be displayed when the test fails.
+        /// A description or name for the test that will be displayed if the test fails.
         /// </summary>
         [Parameter] public string? Description { get; set; }
 
@@ -26,9 +26,9 @@ namespace Egil.RazorComponents.Testing
         /// A method to be called <see cref="TestInput"/> component and <see cref="ExpectedOutput"/> component
         /// is rendered. Use to e.g. setup services that the test input needs to render.
         /// </summary>
-        [Parameter] public Action<ITestContext> Setup { get => _setup; set => _setup = value ?? NoopTestMethod; }
+        [Parameter] public Action Setup { get => _setup; set => _setup = value ?? NoopTestMethod; }
 
-        private static void NoopTestMethod(ITestContext _) { }
+        private static void NoopTestMethod() { }
     }
 
     /// <summary>

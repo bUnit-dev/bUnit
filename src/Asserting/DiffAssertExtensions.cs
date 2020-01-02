@@ -5,15 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Diffing.Core;
-using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.Diffing;
-using Egil.RazorComponents.Testing.Extensions;
 using Xunit;
-using Xunit.Sdk;
 
 namespace Egil.RazorComponents.Testing.Asserting
 {
+
     /// <summary>
     /// A collection of <see cref="IDiff"/> assert extensions and generic assert extensions
     /// </summary>
@@ -43,145 +40,5 @@ namespace Egil.RazorComponents.Testing.Asserting
             Assert.Collection(diffs, diffInspectors);
         }
 
-        /// <summary>
-        /// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragment"/> is equal
-        /// to the <paramref name="expected"/> markup, using the <see cref="HtmlComparer"/> 
-        /// type.
-        /// </summary>
-        /// <param name="actual">The rendered fragment to verify.</param>
-        /// <param name="expected">The expected markup.</param>
-        /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void ShouldBe(this IRenderedFragment actual, string expected, string? userMessage = null)
-        {
-            if (actual is null) throw new ArgumentNullException(nameof(actual));
-            if (expected is null) throw new ArgumentNullException(nameof(expected));
-
-            var actualNodes = actual.GetNodes();
-            var expectedNodes = actual.TestContext.HtmlParser.Parse(expected);
-
-            actualNodes.ShouldBe(expectedNodes, userMessage);
-        }
-
-        /// <summary>
-        /// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragment"/> is equal
-        /// to the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> 
-        /// type.
-        /// </summary>
-        /// <param name="actual">The rendered fragment to verify.</param>
-        /// <param name="expected">The expected rendered fragment.</param>
-        /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void ShouldBe(this IRenderedFragment actual, IRenderedFragment expected, string? userMessage = null)
-        {
-            if (actual is null) throw new ArgumentNullException(nameof(actual));
-            if (expected is null) throw new ArgumentNullException(nameof(expected));
-
-            actual.GetNodes().ShouldBe(expected.GetNodes(), userMessage);
-        }
-
-        /// <summary>
-        /// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> is equal
-        /// to the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> 
-        /// type.
-        /// </summary>
-        /// <param name="actual">The list of nodes to verify.</param>
-        /// <param name="expected">The expected rendered fragment.</param>
-        /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void ShouldBe(this INodeList actual, IRenderedFragment expected, string? userMessage = null)
-        {
-            if (actual is null) throw new ArgumentNullException(nameof(actual));
-            if (expected is null) throw new ArgumentNullException(nameof(expected));
-
-            actual.ShouldBe(expected.GetNodes(), userMessage);
-        }
-
-        /// <summary>
-        /// Verifies that the <paramref name="actual"/> <see cref="INode"/> is equal
-        /// to the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> 
-        /// type.
-        /// </summary>
-        /// <param name="actual">The node to verify.</param>
-        /// <param name="expected">The expected rendered fragment.</param>
-        /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void ShouldBe(this INode actual, IRenderedFragment expected, string? userMessage = null)
-        {
-            if (actual is null) throw new ArgumentNullException(nameof(actual));
-            if (expected is null) throw new ArgumentNullException(nameof(expected));
-
-            actual.ShouldBe(expected.GetNodes(), userMessage);
-        }
-
-        /// <summary>
-        /// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> is equal
-        /// to the <paramref name="expected"/> markup, using the <see cref="HtmlComparer"/> 
-        /// type.
-        /// </summary>
-        /// <param name="actual">The list of nodes to verify.</param>
-        /// <param name="expected">The expected markup.</param>
-        /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void ShouldBe(this INodeList actual, string expected, string? userMessage = null)
-        {
-            if (actual is null) throw new ArgumentNullException(nameof(actual));
-
-            INodeList expectedNodes;
-            if (actual.Length > 0 && actual[0].GetHtmlParser() is { } parser)
-            {
-                expectedNodes = parser.Parse(expected);
-            }
-            else
-            {
-                using var newParser = new TestHtmlParser();
-                expectedNodes = newParser.Parse(expected);
-            }
-            ShouldBe(actual, expectedNodes, userMessage);
-        }
-
-        /// <summary>
-        /// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> is equal
-        /// to the <paramref name="expected"/> <see cref="INodeList"/>, using the <see cref="HtmlComparer"/> 
-        /// type.
-        /// </summary>
-        /// <param name="actual">The list of nodes to verify.</param>
-        /// <param name="expected">The expected list of nodes.</param>
-        /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void ShouldBe(this INodeList actual, INodeList expected, string? userMessage = null)
-        {
-            var diffs = actual.CompareTo(expected);
-
-            if (diffs.Count != 0)
-                throw new HtmlEqualException(diffs, expected, actual, userMessage);
-        }
-
-        /// <summary>
-        /// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> is equal
-        /// to the <paramref name="expected"/> <see cref="INode"/>, using the <see cref="HtmlComparer"/> 
-        /// type.
-        /// </summary>
-        /// <param name="actual">The list of nodes to verify.</param>
-        /// <param name="expected">The expected node.</param>
-        /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void ShouldBe(this INodeList actual, INode expected, string? userMessage = null)
-        {
-            var diffs = actual.CompareTo(expected);
-
-            if (diffs.Count != 0)
-                throw new HtmlEqualException(diffs, expected, actual, userMessage);
-        }
-
-        /// <summary>
-        /// Verifies that the <paramref name="actual"/> <see cref="INode"/> is equal
-        /// to the <paramref name="expected"/> <see cref="INodeList"/>, using the <see cref="HtmlComparer"/> 
-        /// type.
-        /// </summary>
-        /// <param name="actual">The node to verify.</param>
-        /// <param name="expected">The expected list of nodes.</param>
-        /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-
-        public static void ShouldBe(this INode actual, INodeList expected, string? userMessage = null)
-        {
-            var diffs = actual.CompareTo(expected);
-
-            if (diffs.Count != 0)
-                throw new HtmlEqualException(diffs, expected, actual, userMessage);
-        }
     }
 }

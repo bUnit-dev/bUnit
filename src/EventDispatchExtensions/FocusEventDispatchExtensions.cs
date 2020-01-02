@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Dom;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System.Threading.Tasks;
 
@@ -16,15 +17,6 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="type">The type of the event.</param>
         public static void Focus(this IElement element, string? type = default) => _ = FocusAsync(element, new FocusEventArgs { Type = type });
-
-        /// <summary>
-        /// Raises the <c>@onfocus</c> event on <paramref name="element"/>, passing the provided
-        /// properties to the event handler via a <see cref="FocusEventArgs"/> object
-        /// </summary>
-        /// <param name="element">The element to raise the event on.</param>
-        /// <param name="type">The type of the event.</param>
-        /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task FocusAsync(this IElement element, string? type = default) => FocusAsync(element, new FocusEventArgs { Type = type });
 
         /// <summary>
         /// Raises the <c>@onfocus</c> event on <paramref name="element"/>, passing the provided
@@ -53,15 +45,6 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
 
         /// <summary>
         /// Raises the <c>@onblur</c> event on <paramref name="element"/>, passing the provided
-        /// properties to the event handler via a <see cref="FocusEventArgs"/> object
-        /// </summary>
-        /// <param name="element">The element to raise the event on.</param>
-        /// <param name="type">The type of the event.</param>
-        /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task BlurAsync(this IElement element, string? type = default) => BlurAsync(element, new FocusEventArgs { Type = type });
-
-        /// <summary>
-        /// Raises the <c>@onblur</c> event on <paramref name="element"/>, passing the provided
         /// event arguments to the event handler.
         /// </summary>
         /// <param name="element">The element to raise the event on.</param>
@@ -87,15 +70,6 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
 
         /// <summary>
         /// Raises the <c>@onfocusin</c> event on <paramref name="element"/>, passing the provided
-        /// properties to the event handler via a <see cref="FocusEventArgs"/> object
-        /// </summary>
-        /// <param name="element">The element to raise the event on.</param>
-        /// <param name="type">The type of the event.</param>
-        /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task FocusInAsync(this IElement element, string? type = default) => FocusInAsync(element, new FocusEventArgs { Type = type });
-
-        /// <summary>
-        /// Raises the <c>@onfocusin</c> event on <paramref name="element"/>, passing the provided
         /// event arguments to the event handler.
         /// </summary>
         /// <param name="element">The element to raise the event on.</param>
@@ -118,15 +92,6 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="type">The type of the event.</param>
         public static void FocusOut(this IElement element, string? type = default) => _ = FocusOutAsync(element, new FocusEventArgs { Type = type });
-
-        /// <summary>
-        /// Raises the <c>@onfocusout</c> event on <paramref name="element"/>, passing the provided
-        /// properties to the event handler via a <see cref="FocusEventArgs"/> object
-        /// </summary>
-        /// <param name="element">The element to raise the event on.</param>
-        /// <param name="type">The type of the event.</param>
-        /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task FocusOutAsync(this IElement element, string? type = default) => FocusOutAsync(element, new FocusEventArgs { Type = type });
 
         /// <summary>
         /// Raises the <c>@onfocusout</c> event on <paramref name="element"/>, passing the provided

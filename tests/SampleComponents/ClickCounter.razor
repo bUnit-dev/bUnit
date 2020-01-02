@@ -1,0 +1,7 @@
+﻿<button @onclick="IncreaseCount">Click to count</button>
+<p>@count</p>
+
+@code {
+    int count = 0;
+    void IncreaseCount() => count++;
+}

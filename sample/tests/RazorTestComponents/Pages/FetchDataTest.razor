@@ -1,6 +1,6 @@
 ﻿@inherits TestComponentBase
 
-<Fixture Setup="Setup" Tests="new Test[]{ InitialLoadingHtmlRendersCorrectly, AfterDataLoadsItIsDisplayedInAForecastTable }">
+<Fixture Setup="Setup" Tests="new Action[]{ InitialLoadingHtmlRendersCorrectly, AfterDataLoadsItIsDisplayedInAForecastTable }">
     <ComponentUnderTest>
         <FetchData />
     </ComponentUnderTest>
@@ -21,28 +21,28 @@
 
     private MockForecastService forecastService = new MockForecastService();
 
-    void Setup(IRazorTestContext context)
+    void Setup()
     {
-        context.Services.AddService<IWeatherForecastService>(forecastService);
+        Services.AddService<IWeatherForecastService>(forecastService);
     }
 
-    void InitialLoadingHtmlRendersCorrectly(IRazorTestContext context)
+    void InitialLoadingHtmlRendersCorrectly()
     {
         // act
-        var cut = context.GetComponentUnderTest<FetchData>();
+        var cut = GetComponentUnderTest<FetchData>();
 
         // assert
-        cut.ShouldBe(context.GetFragment("InitialRender"));
+        cut.MarkupMatches(GetFragment("InitialRender"));
     }
 
-    void AfterDataLoadsItIsDisplayedInAForecastTable(IRazorTestContext context)
+    void AfterDataLoadsItIsDisplayedInAForecastTable()
     {
         // arrange
-        var expectedAddition = context.GetFragment("ForecastDataTableRender");
-        var cut = context.RenderComponent<FetchData>();
+        var expectedAddition = GetFragment("ForecastDataTableRender");
+        var cut = RenderComponent<FetchData>();
 
         // act
-        context.WaitForNextRender(() => forecastService.Task.SetResult(forecasts));
+        WaitForNextRender(() => forecastService.Task.SetResult(forecasts));
 
         // assert
         cut.GetChangesSinceFirstRender().ShouldHaveChanges(

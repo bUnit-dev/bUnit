@@ -39,7 +39,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
             var cut = RenderComponent<TodoList>();
 
             // assert
-            cut.ShouldBe(GetExpectedHtml());
+            cut.MarkupMatches(GetExpectedHtml());
         }
 
         [Fact(DisplayName = "Task list with custom label renders correctly")]
@@ -53,7 +53,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
             var cut = RenderComponent<TodoList>((nameof(TodoList.Label), label));
 
             // assert
-            cut.ShouldBe(GetExpectedHtml(label: label));
+            cut.MarkupMatches(GetExpectedHtml(label: label));
         }
 
         [Fact(DisplayName = "Task list renders Items using ItemTemplate")]
@@ -72,7 +72,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
 
             // assert
             var expectedHtml = GetExpectedHtml(itemsHtml: $"<li>{items[0].Id}</li><li>{items[1].Id}</li>");
-            cut.ShouldBe(expectedHtml);
+            cut.MarkupMatches(expectedHtml);
         }
 
         [Fact(DisplayName = "After first render, the new task input field has focus")]

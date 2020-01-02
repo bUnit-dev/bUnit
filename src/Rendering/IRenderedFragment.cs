@@ -39,7 +39,7 @@ namespace Egil.RazorComponents.Testing
 
         /// <summary>
         /// Performs a comparison of the markup produced by the rendering of the 
-        /// fragment or component under test at the time the <see cref="TakeSnapshot"/> was called
+        /// fragment or component under test at the time the <see cref="SaveSnapshot"/> was called
         /// with the current rendering of the fragment or component under test.
         /// </summary>
         /// <returns>A list of differences found.</returns>
@@ -50,7 +50,7 @@ namespace Egil.RazorComponents.Testing
         /// Use the method <see cref="GetChangesSinceSnapshot"/> later to get the difference between
         /// the snapshot and the rendered markup at that time.
         /// </summary>
-        void TakeSnapshot();
+        void SaveSnapshot();
 
         /// <summary>
         /// Returns the first element from the rendered fragment or component under test,

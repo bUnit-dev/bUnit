@@ -1,25 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Diffing;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Egil.RazorComponents.Testing
 {
     /// <summary>
     /// Base test class/test runner, that runs Fixtures defined in razor files.
     /// </summary>
-    public abstract class TestComponentBase : IDisposable
+    public abstract class TestComponentBase : ComponentTestFixture, IRazorTestContext
     {
         private readonly ServiceCollection _serviceCollection = new ServiceCollection();
         private readonly Lazy<TestRenderer> _renderer;
+        private readonly TestContextAdapter _testContextAdapter = new TestContextAdapter();
         private bool _isDisposed = false;
+
+        /// <inheritdoc/>
+        public override TestServiceProvider Services
+            => _testContextAdapter.HasActiveContext ? _testContextAdapter.Services : base.Services;
+
+        /// <inheritdoc/>
+        public override TestRenderer Renderer
+            => _testContextAdapter.HasActiveContext ? _testContextAdapter.Renderer : base.Renderer;
+
+        /// <inheritdoc/>
+        public override TestHtmlParser HtmlParser
+            => _testContextAdapter.HasActiveContext ? _testContextAdapter.HtmlParser : base.HtmlParser;
 
         /// <inheritdoc/>
         public TestComponentBase()
@@ -36,30 +51,77 @@ namespace Egil.RazorComponents.Testing
         /// Called by the XUnit test runner. Finds all Fixture components
         /// in the file and runs their associated tests.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Razor test runner")]
         public void RazorTest()
         {
             var container = new ContainerComponent(_renderer.Value);
-            container.RenderComponentUnderTest(BuildRenderTree);
+            container.Render(BuildRenderTree);
 
             ExecuteFixtureTests(container);
             ExecuteSnapshotTests(container);
+        }
+
+        /// <inheritdoc/>
+        public IRenderedFragment GetComponentUnderTest()
+            => _testContextAdapter.GetComponentUnderTest();
+
+        /// <inheritdoc/>
+        public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : class, IComponent
+            => _testContextAdapter.GetComponentUnderTest<TComponent>();
+
+        /// <inheritdoc/>
+        public IRenderedFragment GetFragment(string? id = null)
+            => _testContextAdapter.GetFragment(id);
+
+        /// <inheritdoc/>
+        public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : class, IComponent
+            => _testContextAdapter.GetFragment<TComponent>(id);
+
+        /// <inheritdoc/>
+        public override IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)
+            => _testContextAdapter.HasActiveContext
+                ? _testContextAdapter.RenderComponent<TComponent>(parameters)
+                : base.RenderComponent<TComponent>(parameters);
+
+        /// <inheritdoc/>
+        public override void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
+        {
+            if (_testContextAdapter.HasActiveContext)
+                _testContextAdapter.WaitForNextRender(renderTrigger, timeout);
+            else
+                base.WaitForNextRender(renderTrigger, timeout);
         }
 
         private void ExecuteFixtureTests(ContainerComponent container)
         {
             foreach (var (_, fixture) in container.GetComponents<Fixture>())
             {
-                container.RenderComponentUnderTest(fixture.ChildContent);
+                container.Render(fixture.ChildContent);
                 var testData = container.GetComponents<FragmentBase>().Select(x => x.Component).ToArray();
 
-                using var context = new RazorTestContext(testData);
-                fixture.Setup(context);
-                fixture.Test(context);
+                _testContextAdapter.ActivateRazorTestContext(testData);
+                
+                InvokeFixtureAction(fixture, fixture.Setup);
+                InvokeFixtureAction(fixture, fixture.Test);
+
                 foreach (var test in fixture.Tests)
                 {
-                    test(context);
+                    InvokeFixtureAction(fixture, test);
                 }
+
+                _testContextAdapter.DisposeActiveTestContext();
+            }
+        }
+
+        private static void InvokeFixtureAction(Fixture fixture, Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                throw new FixtureFailedException(fixture.Description ?? $"{action.Method.Name} failed:", ex);
             }
         }
 
@@ -67,37 +129,35 @@ namespace Egil.RazorComponents.Testing
         {
             foreach (var (_, snapshot) in container.GetComponents<SnapshotTest>())
             {
-                container.RenderComponentUnderTest(snapshot.ChildContent);
-                var testinput = container.GetComponents<FragmentBase>().Select(x => x.Component).ToArray();
+                container.Render(snapshot.ChildContent);
+                var testData = container.GetComponents<FragmentBase>().Select(x => x.Component).ToArray();
 
-                using var context = new SnapshotTestContext(testinput);
-                snapshot.Setup(context);
+                var context = _testContextAdapter.ActivateSnapshotTestContext(testData);
+                snapshot.Setup();
                 var actual = context.RenderTestInput();
                 var expected = context.RenderExpectedOutput();
-                actual.ShouldBe(expected, snapshot.Description);
+                actual.MarkupMatches(expected, snapshot.Description);
+                _testContextAdapter.DisposeActiveTestContext();
             }
         }
 
         /// <inheritdoc/>
         protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
 
-        #region IDisposable Support
         /// <inheritdoc/>
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
+
             if (_isDisposed) return;
+
             if (disposing)
             {
-                if (_renderer.IsValueCreated) _renderer.Value.Dispose();
+                if (_renderer.IsValueCreated)
+                    _renderer.Value.Dispose();
+                _testContextAdapter.Dispose();
             }
             _isDisposed = true;
         }
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        #endregion
     }
 }

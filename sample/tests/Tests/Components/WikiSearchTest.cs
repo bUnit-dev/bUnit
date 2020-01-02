@@ -27,7 +27,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
             // Assert
             // Check that the components initial HTML is as expected
             // and that the mock was called with the expected JS identifier and arguments.
-            cut.ShouldBe("<p></p>");
+            cut.MarkupMatches("<p></p>");
             jsMock.VerifyInvoke("queryWiki").Arguments.Single().ShouldBe("blazor");
         }
 

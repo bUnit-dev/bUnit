@@ -10,26 +10,42 @@ using Egil.RazorComponents.Testing.Extensions;
 
 namespace Egil.RazorComponents.Testing
 {
+    /// <summary>
+    /// Represents a Razor component that can be used to render and re-render a render fragment into.
+    /// </summary>
     [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     public class ContainerComponent : IComponent
     {
         private readonly TestRenderer _renderer;
         private RenderHandle _renderHandle;
 
+        /// <summary>
+        /// Gets the id of the <see cref="ContainerComponent"/> after it has been rendered the first time.
+        /// </summary>
         public int ComponentId { get; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="ContainerComponent"/> class.
+        /// </summary>
+        /// <param name="renderer"></param>
         public ContainerComponent(TestRenderer renderer)
         {
             if (renderer is null) throw new ArgumentNullException(nameof(renderer));
             _renderer = renderer;
-            ComponentId = _renderer.AttachTestRootComponent(this);
+            ComponentId = _renderer.AttachTestRootComponent(this);            
         }
 
+        /// <inheritdoc/>
         public void Attach(RenderHandle renderHandle) => _renderHandle = renderHandle;
 
+        /// <inheritdoc/>
         public Task SetParametersAsync(ParameterView parameters) => throw new InvalidOperationException($"{nameof(ContainerComponent)} shouldn't receive any parameters");
 
-        public void RenderComponentUnderTest(RenderFragment renderFragment)
+        /// <summary>
+        /// Renders a <see cref="RenderFragment"/> inside the <see cref="ContainerComponent"/>.
+        /// </summary>
+        /// <param name="renderFragment">The render fragment to render.</param>
+        public void Render(RenderFragment renderFragment)
         {
             _renderer.DispatchAndAssertNoSynchronousErrors(() =>
             {

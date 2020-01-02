@@ -1,0 +1,58 @@
+﻿{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Egil Hansen",
+  "classifications": [
+    "Test", "Razor", "Blazor", "Library"
+  ],
+  "name": "Razor Component Testing Project",
+  "description": "A project for a testing Blazor/Razor components using the Razor.Components.Testing.Library library.",
+  "generatorVersions": "[1.0.0.0-*)",
+  "identity": "Egil.RazorComponents.TestingProject",
+  "groupIdentity": "Egil.RazorComponents.Testing",
+  "shortName": "razortest",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "Company.RazorTests1",
+  "defaultName": "RazorTestProject1",
+  "preferNameDirectory": true,
+  "symbols": {
+    "HostIdentifier": {
+      "type": "bind",
+      "binding": "HostIdentifier"
+    },
+    "skipRestore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "If specified, skips the automatic restore of the project on create.",
+      "defaultValue": "false"
+    }
+  },
+  "primaryOutputs": [
+    { "path": "Company.RazorTests1.csproj" },
+    {
+      "condition": "(HostIdentifier != \"dotnetcli\" && HostIdentifier != \"dotnetcli-preview\")",
+      "path": "Component1Test.cs"
+    }
+  ],
+  "postActions": [
+    {
+      "condition": "(!skipRestore)",
+      "description": "Restore NuGet packages required by this project.",
+      "manualInstructions": [{ "text": "Run 'dotnet restore'" }],
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true
+    },
+    {
+      "condition": "(HostIdentifier != \"dotnetcli\" && HostIdentifier != \"dotnetcli-preview\")",
+      "description": "Opens Component1Test.cs in the editor",
+      "manualInstructions": [],
+      "actionId": "84C0DA21-51C8-4541-9940-6CA19AF04EE6",
+      "args": {
+        "files": "1"
+      },
+      "continueOnError": true
+    }
+  ]
+}
