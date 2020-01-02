@@ -19,8 +19,7 @@ jobs:
     runs-on: ubuntu-latest  
     steps:
       - name: Setting environment variables
-        run: |
-          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+        run: |          
           echo "::set-env name=COMMIT::$GITHUB_SHA"
-          echo "::set-env name=VERSION::$(echo ${GITHUB_REF:10})
+          echo "::set-env name=VERSION::${GITHUB_REF/refs\/tags\//}
           echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
