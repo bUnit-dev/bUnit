@@ -3,10 +3,9 @@ on:
   release:
     types:
       - published        
-      #- created
-      #- edited
-      #- deleted
-      #- prereleased
+      - created
+      - edited
+      - prereleased
 
 env:
   VERSION: ${GITHUB_REF/refs\/tags\/v/}
@@ -39,4 +38,4 @@ jobs:
           dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}
           dotnet test ${GITHUB_WORKSPACE}/Test
       #- name: Push packages to NuGet.org
-        #run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+        #run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
