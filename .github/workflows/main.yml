@@ -12,10 +12,12 @@ jobs:
   build:
     name: Build and verify library    
     runs-on: ubuntu-latest  
-    steps:    
-      - run: echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
-      - run: echo "::set-env name=COMMIT::$GITHUB_SHA"
-      - run: echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
+    steps:
+      - name: Setting environment variables
+        run: |
+          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+          echo "::set-env name=COMMIT::$GITHUB_SHA"
+          echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
       - uses: actions/checkout@v1   
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
