@@ -21,12 +21,12 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
         {
             var expected = new TouchEventArgs
             {
-                AltKey=true,
+                AltKey = true,
                 ChangedTouches = new TouchPoint[0],
-                CtrlKey=true,
-                Detail=13L,
-                MetaKey=true,
-                ShiftKey=true,
+                CtrlKey = true,
+                Detail = 13L,
+                MetaKey = true,
+                ShiftKey = true,
                 TargetTouches = new TouchPoint[0],
                 Touches = new TouchPoint[0],
                 Type = "TOUCH"
