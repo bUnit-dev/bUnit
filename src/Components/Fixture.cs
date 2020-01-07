@@ -13,11 +13,11 @@ namespace Egil.RazorComponents.Testing
     public class Fixture : FragmentBase
     {
         private Action _setup = NoopTestMethod;
-        private Func<Task> _asyncSetup = NoopAsyncTestMethod;
+        private Func<Task> _setupAsync = NoopAsyncTestMethod;
         private Action _test = NoopTestMethod;
-        private Func<Task> _asyncTest = NoopAsyncTestMethod;
+        private Func<Task> _testAsync = NoopAsyncTestMethod;
         private IReadOnlyCollection<Action> _tests = Array.Empty<Action>();
-        private IReadOnlyCollection<Func<Task>> _asyncTests = Array.Empty<Func<Task>>();
+        private IReadOnlyCollection<Func<Task>> _testsAsync = Array.Empty<Func<Task>>();
 
         /// <summary>
         /// A description or name for the test that will be displayed if the test fails.
@@ -26,15 +26,15 @@ namespace Egil.RazorComponents.Testing
 
         /// <summary>
         /// Gets or sets the setup action to perform before the <see cref="Test"/> action,
-        /// <see cref="AsyncTest"/> action and <see cref="Tests"/> and <see cref="AsyncTests"/> actions are invoked.
+        /// <see cref="TestAsync"/> action and <see cref="Tests"/> and <see cref="TestsAsync"/> actions are invoked.
         /// </summary>
         [Parameter] public Action Setup { get => _setup; set => _setup = value ?? NoopTestMethod; }
 
         /// <summary>
         /// Gets or sets the setup asynchronous action to perform before the <see cref="Test"/> action,
-        /// <see cref="AsyncTest"/> action and <see cref="Tests"/> and <see cref="AsyncTests"/> actions are invoked.
+        /// <see cref="TestAsync"/> action and <see cref="Tests"/> and <see cref="TestsAsync"/> actions are invoked.
         /// </summary>
-        [Parameter] public Func<Task> AsyncSetup { get => _asyncSetup; set => _asyncSetup = value ?? NoopAsyncTestMethod; }
+        [Parameter] public Func<Task> SetupAsync { get => _setupAsync; set => _setupAsync = value ?? NoopAsyncTestMethod; }
 
         /// <summary>
         /// Gets or sets the first test action to invoke, after the <see cref="Setup"/> action has
@@ -46,13 +46,13 @@ namespace Egil.RazorComponents.Testing
         [Parameter] public Action Test { get => _test; set => _test = value ?? NoopTestMethod; }
 
         /// <summary>
-        /// Gets or sets the first test action to invoke, after the <see cref="AsyncSetup"/> action has
+        /// Gets or sets the first test action to invoke, after the <see cref="SetupAsync"/> action has
         /// executed (if provided).
         /// 
         /// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
         /// defined in the <see cref="Fixture"/>.
         /// </summary>
-        [Parameter] public Func<Task> AsyncTest { get => _asyncTest; set => _asyncTest = value ?? NoopAsyncTestMethod; }
+        [Parameter] public Func<Task> TestAsync { get => _testAsync; set => _testAsync = value ?? NoopAsyncTestMethod; }
 
         /// <summary>
         /// Gets or sets the test actions to invoke, one at the time, in the order they are placed 
@@ -66,13 +66,13 @@ namespace Egil.RazorComponents.Testing
 
         /// <summary>
         /// Gets or sets the test actions to invoke, one at the time, in the order they are placed 
-        /// into the collection, after the <see cref="AsyncSetup"/> action and the <see cref="AsyncTest"/> action has
+        /// into the collection, after the <see cref="SetupAsync"/> action and the <see cref="TestAsync"/> action has
         /// executed (if provided).
         /// 
         /// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
         /// defined in the <see cref="Fixture"/>.
         /// </summary>
-        [Parameter] public IReadOnlyCollection<Func<Task>> AsyncTests { get => _asyncTests; set => _asyncTests = value ?? Array.Empty<Func<Task>>(); }
+        [Parameter] public IReadOnlyCollection<Func<Task>> TestsAsync { get => _testsAsync; set => _testsAsync = value ?? Array.Empty<Func<Task>>(); }
 
         private static void NoopTestMethod() { }
 

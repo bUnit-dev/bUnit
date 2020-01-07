@@ -103,16 +103,16 @@ namespace Egil.RazorComponents.Testing
                 _testContextAdapter.ActivateRazorTestContext(testData);
                 
                 InvokeFixtureAction(fixture, fixture.Setup);
-                await InvokeFixtureAction(fixture, fixture.AsyncSetup).ConfigureAwait(false);
+                await InvokeFixtureAction(fixture, fixture.SetupAsync).ConfigureAwait(false);
                 InvokeFixtureAction(fixture, fixture.Test);
-                await InvokeFixtureAction(fixture, fixture.AsyncTest).ConfigureAwait(false);
+                await InvokeFixtureAction(fixture, fixture.TestAsync).ConfigureAwait(false);
 
                 foreach (var test in fixture.Tests)
                 {
                     InvokeFixtureAction(fixture, test);
                 }
 
-                foreach (var test in fixture.AsyncTests)
+                foreach (var test in fixture.TestsAsync)
                 {
                     await InvokeFixtureAction(fixture, test).ConfigureAwait(false);
                 }
