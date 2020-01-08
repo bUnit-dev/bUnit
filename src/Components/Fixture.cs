@@ -31,7 +31,7 @@ namespace Egil.RazorComponents.Testing
         [Parameter] public Action Setup { get => _setup; set => _setup = value ?? NoopTestMethod; }
 
         /// <summary>
-        /// Gets or sets the setup asynchronous action to perform before the <see cref="Test"/> action,
+        /// Gets or sets the asynchronous setup action to perform before the <see cref="Test"/> action,
         /// <see cref="TestAsync"/> action and <see cref="Tests"/> and <see cref="TestsAsync"/> actions are invoked.
         /// </summary>
         [Parameter] public Func<Task> SetupAsync { get => _setupAsync; set => _setupAsync = value ?? NoopAsyncTestMethod; }
