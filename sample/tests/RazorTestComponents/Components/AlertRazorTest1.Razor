@@ -1,0 +1,170 @@
+﻿@inherits TestComponentBase
+
+@code{
+    void Setup()
+    {
+        Services.AddMockJsRuntime();
+    }
+}
+
+<Fixture Setup="Setup" Test="Test001"
+         Description="Given no parameters, Alert produces no markup">
+    <ComponentUnderTest>
+
+        <Alert />
+
+    </ComponentUnderTest>
+</Fixture>
+@code {
+    void Test001()
+    {
+        // arrange
+        //IRenderedFragment cut = GetComponentUnderTest();
+        IRenderedComponent<Alert> cut = GetComponentUnderTest<Alert>();
+
+        // Act
+        // todo
+
+        // Assert
+        // todo
+    }
+}
+
+<Fixture Setup="Setup" Test="Test002"
+         Description="Given Child Content as input,
+                      Alert renders it inside its element">
+    <ComponentUnderTest>
+
+        <Alert>
+            <Paragraph IsLast="true">
+                .NET Conf: Focus on Blazor is a free, one-day livestream event that features ...
+            </Paragraph>
+        </Alert>
+
+    </ComponentUnderTest>
+</Fixture>
+@code {
+    void Test002()
+    {
+        // arrange
+        var cut = GetComponentUnderTest<Alert>();
+
+        // Act
+        // todo
+
+        // Assert
+        // todo
+    }
+}
+
+<Fixture Setup="Setup" Test="Test003"
+         Description="Given a Header as input,
+                      Alert renders the header text in the expected element">
+    <ComponentUnderTest>
+
+        <Alert Header="It is time to focus on Blazor"></Alert>
+
+    </ComponentUnderTest>
+</Fixture>
+@code {
+    void Test003()
+    {
+        // arrange
+        var cut = GetComponentUnderTest<Alert>();
+
+        // Act
+        // todo
+
+        // Assert
+        // todo
+    }
+}
+
+<Fixture Setup="Setup"
+         Test="Given_Header_and_Localizer_Alert_Uses_Lozalizer_to_lozalize_Header_text">
+    <ComponentUnderTest>
+
+        <CascadingValue Value=@localizer>
+            <Alert Header=@headerKey></Alert>
+        </CascadingValue>
+
+    </ComponentUnderTest>
+</Fixture>
+@code {
+    Localizer localizer = new Localizer() { CultureCode = "Yoda" };
+    string headerKey = "alert-heading";
+
+    void Given_Header_and_Localizer_Alert_Uses_Lozalizer_to_lozalize_Header_text()
+    {
+        // arrange
+        localizer.Add(headerKey, "Time to focus on Blazor it is.");
+        var cut = GetComponentUnderTest<Alert>();
+
+        // Act
+        // todo
+
+        // Assert
+        // todo
+    }
+}
+
+<Fixture Setup="Setup" Test="Test005"
+         Description="Alert calls OnDismissing callback when dismiss button is clicked">
+    <ComponentUnderTest>
+
+        <Alert OnDismissing=@(args => dismissingEvent = args)>
+            Some alert content...
+        </Alert>
+
+    </ComponentUnderTest>
+</Fixture>
+@code {
+    DismissingEventArgs? dismissingEvent = default;
+
+    void Test005()
+    {
+        // arrange
+        var cut = GetComponentUnderTest<Alert>();
+
+        // Act
+        // todo
+
+        // Assert
+        // todo
+    }
+}
+
+<Fixture Setup="Setup" Test="Test006"
+         Description="Alert renders correctly when all input is provided">
+    <ComponentUnderTest>
+
+        <CascadingValue Value="localizer2">
+            <Alert Header="alert-heading"
+                   OnDismissing="args => dismissingEventArgs = args"
+                   OnDismissed="alert => dismissedAlert = alert">
+                <Paragraph IsLast="true">
+                    .NET Conf: Focus on Blazor is a free ...
+                </Paragraph>
+            </Alert>
+        </CascadingValue>
+
+    </ComponentUnderTest>
+</Fixture>
+@code {
+    DismissingEventArgs? dismissingEventArgs = default;
+    Alert? dismissedAlert = default;
+    Localizer localizer2 = new Localizer() { CultureCode = "Yoda" };
+
+    void Test006()
+    {
+        // arrange
+        localizer2.Add("alert-heading", "Time to focus on Blazor it is.");
+        var cut = GetComponentUnderTest<Alert>();
+
+        // Act
+        // todo
+
+        // Assert
+        // todo
+    }
+}

@@ -1,0 +1,34 @@
+﻿@page "/dotnetconf"
+
+@* No params *@
+<Alert>
+</Alert>
+
+
+<Alert Header="It is time to focus on Blazor"
+       OnDismissing="DissingAlert"
+       OnDismissed="DismissedAlert">
+    <p class="mb-0">.NET Conf: Focus on Blazor is a free, one-day livestream event that features speakers from the community and .NET product teams that are working on building web apps with C# and Blazor. You don't need to use JavaScript anymore with Blazor technology! Blazor lets you build interactive web UIs using C# instead of JavaScript.</p>
+</Alert>
+
+<h1>Hello .NET Conf</h1>
+<ol>
+    @foreach (var msg in dismissMessages)
+    {
+        <li class="h3">@msg</li>
+    }
+</ol>
+
+@code {
+    private List<string> dismissMessages = new List<string>();
+
+    private void DissingAlert(DismissingEventArgs dismissingEvent)
+    {
+        dismissMessages.Add($"Alert Dismissing");
+    }
+
+    private void DismissedAlert(Alert dismissedAlert)
+    {
+        dismissMessages.Add($"Alert Dismissed");
+    }
+}

@@ -1,0 +1,13 @@
+﻿@if(ChildContent is { })
+{
+    <p class=@CssClass>@ChildContent</p>
+}
+@code{
+    private string CssClass => IsLast ? "mb-0" : string.Empty;
+
+    [Parameter]
+    public bool IsLast { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}
