@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Testing
@@ -12,8 +13,11 @@ namespace Egil.RazorComponents.Testing
     public class Fixture : FragmentBase
     {
         private Action _setup = NoopTestMethod;
+        private Func<Task> _asyncSetup = NoopAsyncTestMethod;
         private Action _test = NoopTestMethod;
+        private Func<Task> _asyncTest = NoopAsyncTestMethod;
         private IReadOnlyCollection<Action> _tests = Array.Empty<Action>();
+        private IReadOnlyCollection<Func<Task>> _asyncTests = Array.Empty<Func<Task>>();
 
         /// <summary>
         /// A description or name for the test that will be displayed if the test fails.
@@ -21,10 +25,16 @@ namespace Egil.RazorComponents.Testing
         [Parameter] public string? Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the setup action to perform before the <see cref="Test"/> action
-        /// and <see cref="Tests"/> actions are invoked.
+        /// Gets or sets the setup action to perform before the <see cref="Test"/> action,
+        /// <see cref="AsyncTest"/> action and <see cref="Tests"/> and <see cref="AsyncTests"/> actions are invoked.
         /// </summary>
         [Parameter] public Action Setup { get => _setup; set => _setup = value ?? NoopTestMethod; }
+
+        /// <summary>
+        /// Gets or sets the setup asynchronous action to perform before the <see cref="Test"/> action,
+        /// <see cref="AsyncTest"/> action and <see cref="Tests"/> and <see cref="AsyncTests"/> actions are invoked.
+        /// </summary>
+        [Parameter] public Func<Task> AsyncSetup { get => _asyncSetup; set => _asyncSetup = value ?? NoopAsyncTestMethod; }
 
         /// <summary>
         /// Gets or sets the first test action to invoke, after the <see cref="Setup"/> action has
@@ -36,6 +46,15 @@ namespace Egil.RazorComponents.Testing
         [Parameter] public Action Test { get => _test; set => _test = value ?? NoopTestMethod; }
 
         /// <summary>
+        /// Gets or sets the first test action to invoke, after the <see cref="AsyncSetup"/> action has
+        /// executed (if provided).
+        /// 
+        /// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
+        /// defined in the <see cref="Fixture"/>.
+        /// </summary>
+        [Parameter] public Func<Task> AsyncTest { get => _asyncTest; set => _asyncTest = value ?? NoopAsyncTestMethod; }
+
+        /// <summary>
         /// Gets or sets the test actions to invoke, one at the time, in the order they are placed 
         /// into the collection, after the <see cref="Setup"/> action and the <see cref="Test"/> action has
         /// executed (if provided).
@@ -45,6 +64,18 @@ namespace Egil.RazorComponents.Testing
         /// </summary>
         [Parameter] public IReadOnlyCollection<Action> Tests { get => _tests; set => _tests = value ?? Array.Empty<Action>(); }
 
+        /// <summary>
+        /// Gets or sets the test actions to invoke, one at the time, in the order they are placed 
+        /// into the collection, after the <see cref="AsyncSetup"/> action and the <see cref="AsyncTest"/> action has
+        /// executed (if provided).
+        /// 
+        /// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
+        /// defined in the <see cref="Fixture"/>.
+        /// </summary>
+        [Parameter] public IReadOnlyCollection<Func<Task>> AsyncTests { get => _asyncTests; set => _asyncTests = value ?? Array.Empty<Func<Task>>(); }
+
         private static void NoopTestMethod() { }
+
+        private static Task NoopAsyncTestMethod() => Task.CompletedTask;
     }
 }
