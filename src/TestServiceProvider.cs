@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Egil.RazorComponents.Testing.Mocking.JSInterop;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
@@ -12,6 +14,11 @@ namespace Egil.RazorComponents.Testing
     {
         private readonly ServiceCollection _serviceCollection = new ServiceCollection();
         private ServiceProvider? _serviceProvider;
+
+        public TestServiceProvider()
+        {
+            _serviceCollection.AddSingleton<IJSRuntime, DefaultJsRuntime>();
+        }
 
         /// <summary>
         /// Gets whether this <see cref="TestServiceProvider"/> has been initialized, and 
