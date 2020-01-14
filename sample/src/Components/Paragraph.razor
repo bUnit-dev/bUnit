@@ -1,6 +1,8 @@
 ﻿@if(ChildContent is { })
 {
-    <p class=@CssClass>@ChildContent</p>
+    <p class=@CssClass>
+        @ChildContent
+    </p>
 }
 @code{
     private string CssClass => IsLast ? "mb-0" : string.Empty;

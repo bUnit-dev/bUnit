@@ -24,7 +24,7 @@
                 .then(x => x.text());
         }
 
-        function delayedCallback() {
+        function transitionFinished() {
             return new Promise(function (resolve, reject) {
                 setTimeout(resolve, 1000);
             });
