@@ -1,0 +1,25 @@
+﻿@inherits TestComponentBase
+
+<SnapshotTest Setup="() => Services.AddMockJsRuntime()"
+              Description="Alert renders correctly when all input is provided">
+    <TestInput>
+        <Alert Header="It is time to focus on Blazor">
+            <Paragraph IsLast="true">
+                .NET Conf: Focus on Blazor is a free ...
+            </Paragraph>
+        </Alert>
+    </TestInput>
+    <ExpectedOutput>
+        <div role="alert" class="alert alert-info alert-dismissible fade show">
+            <h4 class="alert-heading">It is time to focus on Blazor</h4>
+            <div class="alert-content">
+                <Paragraph IsLast="true">
+                    .NET Conf: Focus on Blazor is a free ...
+                </Paragraph>
+            </div>
+            <button type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </ExpectedOutput>
+</SnapshotTest>

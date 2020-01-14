@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AngleSharp.Diffing.Core;
 using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using Egil.RazorComponents.Testing.SampleApp.Pages;
@@ -71,6 +72,30 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
             // Repeat the above steps to ensure that counter works for multiple clicks
             cut.Find("button").Click();
             cut.Find("p").TextContent.Trim().ShouldBe("Current count: 2");
+        }
+
+        [Fact(DisplayName = "Clicking Counter button increases count")]
+        public void Test()
+        {
+            // Arrange
+            var cut = RenderComponent<Counter>();
+
+            // Act
+            cut.Find("button").Click();
+
+            // Assert
+            IReadOnlyList<IDiff> diffs = cut.GetChangesSinceFirstRender();
+            diffs.ShouldHaveSingleTextChange("Current count: 1");
+
+            Assert.Equal("Current count: 1", cut.Find("p").TextContent.Trim());
+
+            // Act
+            cut.SaveSnapshot();
+            cut.Find("button").Click();
+
+            // Assert
+            diffs = cut.GetChangesSinceSnapshot();
+            diffs.ShouldHaveSingleTextChange("Current count: 2");
         }
     }
 }

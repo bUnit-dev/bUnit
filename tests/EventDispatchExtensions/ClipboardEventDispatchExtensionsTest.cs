@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
+using Egil.RazorComponents.Testing.SampleComponents;
+using Egil.RazorComponents.Testing.SampleComponents.Data;
 using Microsoft.AspNetCore.Components.Web;
+using Moq;
+using Shouldly;
 using Xunit;
 
 namespace Egil.RazorComponents.Testing.EventDispatchExtensions
