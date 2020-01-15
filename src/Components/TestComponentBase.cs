@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Diffing;
 using Microsoft.AspNetCore.Components;
@@ -52,12 +53,12 @@ namespace Egil.RazorComponents.Testing
         /// in the file and runs their associated tests.
         /// </summary>
         [Fact(DisplayName = "Razor test runner")]
-        public void RazorTest()
+        public async Task RazorTest()
         {
             var container = new ContainerComponent(_renderer.Value);
             container.Render(BuildRenderTree);
 
-            ExecuteFixtureTests(container);
+            await ExecuteFixtureTests(container).ConfigureAwait(false);
             ExecuteSnapshotTests(container);
         }
 
@@ -92,7 +93,7 @@ namespace Egil.RazorComponents.Testing
                 base.WaitForNextRender(renderTrigger, timeout);
         }
 
-        private void ExecuteFixtureTests(ContainerComponent container)
+        private async Task ExecuteFixtureTests(ContainerComponent container)
         {
             foreach (var (_, fixture) in container.GetComponents<Fixture>())
             {
@@ -102,11 +103,18 @@ namespace Egil.RazorComponents.Testing
                 _testContextAdapter.ActivateRazorTestContext(testData);
                 
                 InvokeFixtureAction(fixture, fixture.Setup);
+                await InvokeFixtureAction(fixture, fixture.SetupAsync).ConfigureAwait(false);
                 InvokeFixtureAction(fixture, fixture.Test);
+                await InvokeFixtureAction(fixture, fixture.TestAsync).ConfigureAwait(false);
 
                 foreach (var test in fixture.Tests)
                 {
                     InvokeFixtureAction(fixture, test);
+                }
+
+                foreach (var test in fixture.TestsAsync)
+                {
+                    await InvokeFixtureAction(fixture, test).ConfigureAwait(false);
                 }
 
                 _testContextAdapter.DisposeActiveTestContext();
@@ -118,6 +126,18 @@ namespace Egil.RazorComponents.Testing
             try
             {
                 action();
+            }
+            catch (Exception ex)
+            {
+                throw new FixtureFailedException(fixture.Description ?? $"{action.Method.Name} failed:", ex);
+            }
+        }
+
+        private static async Task InvokeFixtureAction(Fixture fixture, Func<Task> action)
+        {
+            try
+            {
+                await action().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
