@@ -10,6 +10,9 @@ using Xunit.Sdk;
 
 namespace Egil.RazorComponents.Testing.Asserting
 {
+    /// <summary>
+    /// Verification helpers for text
+    /// </summary>
     public static class ShouldBeTextChangeAssertExtensions
     {
         public static void ShouldHaveSingleTextChange(this IReadOnlyList<IDiff> diffs, string expectedChange, string? userMessage = null)

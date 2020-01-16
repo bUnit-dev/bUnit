@@ -26,7 +26,7 @@ namespace Egil.RazorComponents.Testing.Asserting
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
             var actualNodes = actual.GetNodes();
-            var expectedNodes = actual.TestContext.HtmlParser.Parse(expected);
+            var expectedNodes = actual.TestContext.CreateNodes(expected);
 
             actualNodes.MarkupMatches(expectedNodes, userMessage);
         }

@@ -1,4 +1,5 @@
-﻿using Egil.RazorComponents.Testing.Diffing;
+﻿using AngleSharp.Dom;
+using Egil.RazorComponents.Testing.Diffing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,9 +25,6 @@ namespace Egil.RazorComponents.Testing
         public virtual TestRenderer Renderer => _renderer.Value;
 
         /// <inheritdoc/>
-        public virtual TestHtmlParser HtmlParser => _htmlParser.Value;
-
-        /// <inheritdoc/>
         public virtual TestServiceProvider Services { get; } = new TestServiceProvider();
 
         /// <summary>
@@ -44,6 +42,10 @@ namespace Egil.RazorComponents.Testing
                 return new TestHtmlParser(Renderer, new HtmlComparer());
             });
         }
+
+        /// <inheritdoc/>
+        public virtual INodeList CreateNodes(string markup)
+            => _htmlParser.Value.Parse(markup);
 
         /// <inheritdoc/>
         public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent

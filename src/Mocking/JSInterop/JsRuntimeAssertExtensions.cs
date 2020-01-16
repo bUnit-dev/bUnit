@@ -43,6 +43,7 @@ namespace Egil.RazorComponents.Testing
         /// </summary>
         /// <param name="handler">Handler to verify against.</param>
         /// <param name="identifier">Identifier of invocation that should have been invoked.</param>
+        /// <param name="calledTimes">The number of times the invocation is expected to have been called.</param>
         /// <param name="userMessage">A custom user message to display if the assertion fails.</param>
         /// <returns>The <see cref="JsRuntimeInvocation"/>.</returns>
         public static IReadOnlyList<JsRuntimeInvocation> VerifyInvoke(this MockJsRuntimeInvokeHandler handler, string identifier, int calledTimes, string? userMessage = null)

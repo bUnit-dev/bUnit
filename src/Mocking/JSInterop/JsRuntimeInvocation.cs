@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace Egil.RazorComponents.Testing
@@ -7,6 +8,7 @@ namespace Egil.RazorComponents.Testing
     /// <summary>
     /// Represents an invocation of JavaScript via the JsRuntime Mock
     /// </summary>
+    [SuppressMessage("Design", "CA1068:CancellationToken parameters must come last", Justification = "<Pending>")]
     public readonly struct JsRuntimeInvocation : IEquatable<JsRuntimeInvocation>
     {
         /// <summary>
@@ -23,6 +25,7 @@ namespace Egil.RazorComponents.Testing
         /// Gets the arguments used in the invocation.
         /// </summary>
         public IReadOnlyList<object> Arguments { get; }
+
 
         /// <summary>
         /// Creates an instance of the <see cref="JsRuntimeInvocation"/>.

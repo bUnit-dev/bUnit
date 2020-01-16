@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Diffing;
 using Microsoft.AspNetCore.Components;
@@ -34,10 +35,6 @@ namespace Egil.RazorComponents.Testing
             => _testContextAdapter.HasActiveContext ? _testContextAdapter.Renderer : base.Renderer;
 
         /// <inheritdoc/>
-        public override TestHtmlParser HtmlParser
-            => _testContextAdapter.HasActiveContext ? _testContextAdapter.HtmlParser : base.HtmlParser;
-
-        /// <inheritdoc/>
         public TestComponentBase()
         {
             _renderer = new Lazy<TestRenderer>(() =>
@@ -61,7 +58,7 @@ namespace Egil.RazorComponents.Testing
             await ExecuteFixtureTests(container).ConfigureAwait(false);
             ExecuteSnapshotTests(container);
         }
-
+        
         /// <inheritdoc/>
         public IRenderedFragment GetComponentUnderTest()
             => _testContextAdapter.GetComponentUnderTest();
@@ -77,6 +74,12 @@ namespace Egil.RazorComponents.Testing
         /// <inheritdoc/>
         public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : class, IComponent
             => _testContextAdapter.GetFragment<TComponent>(id);
+
+        /// <inheritdoc/>
+        public override INodeList CreateNodes(string markup)
+            => _testContextAdapter.HasActiveContext
+                ? _testContextAdapter.CreateNodes(markup)
+                : base.CreateNodes(markup);
 
         /// <inheritdoc/>
         public override IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)

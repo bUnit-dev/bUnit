@@ -66,7 +66,7 @@ namespace Egil.RazorComponents.Testing
                 throw new InvalidOperationException($"No snapshot exists to compare with. Call {nameof(SaveSnapshot)} to create one.");
 
             if(_snapshotNodes is null)
-                _snapshotNodes = TestContext.HtmlParser.Parse(_snapshotMarkup);
+                _snapshotNodes = TestContext.CreateNodes(_snapshotMarkup);
 
             return GetNodes().CompareTo(_snapshotNodes);
         }
@@ -76,7 +76,7 @@ namespace Egil.RazorComponents.Testing
         public IReadOnlyList<IDiff> GetChangesSinceFirstRender()
         {
             if (_firstRenderNodes is null)
-                _firstRenderNodes = TestContext.HtmlParser.Parse(FirstRenderMarkup);
+                _firstRenderNodes = TestContext.CreateNodes(FirstRenderMarkup);
             return GetNodes().CompareTo(_firstRenderNodes);
         }
 
@@ -93,7 +93,7 @@ namespace Egil.RazorComponents.Testing
         public INodeList GetNodes()
         {
             if (_latestRenderNodes is null)
-                _latestRenderNodes = TestContext.HtmlParser.Parse(GetMarkup());
+                _latestRenderNodes = TestContext.CreateNodes(GetMarkup());
             return _latestRenderNodes;
         }
 
