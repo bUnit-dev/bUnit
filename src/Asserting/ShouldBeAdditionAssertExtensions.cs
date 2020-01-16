@@ -55,7 +55,7 @@ namespace Egil.RazorComponents.Testing.Asserting
         public static void ShouldBeAddition(this IDiff actualChange, IRenderedFragment expectedChange, string? userMessage = null)
         {
             if (expectedChange is null) throw new ArgumentNullException(nameof(expectedChange));
-            ShouldBeAddition(actualChange, expectedChange.GetNodes(), userMessage);
+            ShouldBeAddition(actualChange, expectedChange.Nodes, userMessage);
         }
 
         /// <summary>

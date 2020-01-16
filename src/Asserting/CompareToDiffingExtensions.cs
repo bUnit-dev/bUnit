@@ -25,10 +25,9 @@ namespace Egil.RazorComponents.Testing.Asserting
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
-            var actualNodes = actual.GetNodes();
             var expectedNodes = actual.TestContext.CreateNodes(expected);
 
-            return actualNodes.CompareTo(expectedNodes);
+            return actual.Nodes.CompareTo(expectedNodes);
         }
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace Egil.RazorComponents.Testing.Asserting
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
-            return actual.GetNodes().CompareTo(expected.GetNodes());
+            return actual.Nodes.CompareTo(expected.Nodes);
         }
 
         /// <summary>

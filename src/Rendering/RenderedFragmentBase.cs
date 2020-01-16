@@ -39,6 +39,28 @@ namespace Egil.RazorComponents.Testing
         /// <inheritdoc/>
         public ITestContext TestContext { get; }
 
+        /// <inheritdoc/>
+        public string Markup
+        {
+            get
+            {
+                if (_latestRenderMarkup is null)
+                    _latestRenderMarkup = Htmlizer.GetHtml(TestContext.Renderer, ComponentId);
+                return _latestRenderMarkup;
+            }
+        }
+
+        /// <inheritdoc/>
+        public INodeList Nodes
+        {
+            get
+            {
+                if (_latestRenderNodes is null)
+                    _latestRenderNodes = TestContext.CreateNodes(Markup);
+                return _latestRenderNodes;
+            }
+        }
+
         /// <summary>
         /// Creates an instance of the <see cref="RenderedFragmentBase"/> class.
         /// </summary>
@@ -56,7 +78,7 @@ namespace Egil.RazorComponents.Testing
         public void SaveSnapshot()
         {
             _snapshotNodes = null;
-            _snapshotMarkup = GetMarkup();
+            _snapshotMarkup = Markup;
         }
 
         /// <inheritdoc/>
@@ -65,10 +87,10 @@ namespace Egil.RazorComponents.Testing
             if (_snapshotMarkup is null)
                 throw new InvalidOperationException($"No snapshot exists to compare with. Call {nameof(SaveSnapshot)} to create one.");
 
-            if(_snapshotNodes is null)
+            if (_snapshotNodes is null)
                 _snapshotNodes = TestContext.CreateNodes(_snapshotMarkup);
 
-            return GetNodes().CompareTo(_snapshotNodes);
+            return Nodes.CompareTo(_snapshotNodes);
         }
 
 
@@ -77,24 +99,7 @@ namespace Egil.RazorComponents.Testing
         {
             if (_firstRenderNodes is null)
                 _firstRenderNodes = TestContext.CreateNodes(FirstRenderMarkup);
-            return GetNodes().CompareTo(_firstRenderNodes);
-        }
-
-
-        /// <inheritdoc/>
-        public string GetMarkup()
-        {
-            if (_latestRenderMarkup is null)
-                _latestRenderMarkup = Htmlizer.GetHtml(TestContext.Renderer, ComponentId);
-            return _latestRenderMarkup;
-        }
-
-        /// <inheritdoc/>
-        public INodeList GetNodes()
-        {
-            if (_latestRenderNodes is null)
-                _latestRenderNodes = TestContext.CreateNodes(GetMarkup());
-            return _latestRenderNodes;
+            return Nodes.CompareTo(_firstRenderNodes);
         }
 
         private void ComponentMarkupChanged(in RenderBatch renderBatch)

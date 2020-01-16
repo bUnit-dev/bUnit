@@ -13,7 +13,7 @@
     {
         var cut = GetFragment();
 
-        var html = cut.GetMarkup();
+        var html = cut.Markup;
 
         html.ShouldContain($"=\"{refElm.Id}\"");
     }

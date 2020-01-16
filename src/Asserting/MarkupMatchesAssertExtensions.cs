@@ -25,10 +25,9 @@ namespace Egil.RazorComponents.Testing.Asserting
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
-            var actualNodes = actual.GetNodes();
             var expectedNodes = actual.TestContext.CreateNodes(expected);
 
-            actualNodes.MarkupMatches(expectedNodes, userMessage);
+            actual.Nodes.MarkupMatches(expectedNodes, userMessage);
         }
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace Egil.RazorComponents.Testing.Asserting
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
-            actual.GetNodes().MarkupMatches(expected.GetNodes(), userMessage);
+            actual.Nodes.MarkupMatches(expected.Nodes, userMessage);
         }
 
         /// <summary>
@@ -61,7 +60,7 @@ namespace Egil.RazorComponents.Testing.Asserting
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
-            actual.MarkupMatches(expected.GetNodes(), userMessage);
+            actual.MarkupMatches(expected.Nodes, userMessage);
         }
 
         /// <summary>
@@ -78,7 +77,7 @@ namespace Egil.RazorComponents.Testing.Asserting
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
-            actual.MarkupMatches(expected.GetNodes(), userMessage);
+            actual.MarkupMatches(expected.Nodes, userMessage);
         }
 
         /// <summary>

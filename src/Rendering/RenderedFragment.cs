@@ -26,7 +26,7 @@ namespace Egil.RazorComponents.Testing
         public RenderedFragment(ITestContext testContext, RenderFragment renderFragment)
             : base(testContext, renderFragment)
         {
-            FirstRenderMarkup = GetMarkup();
+            FirstRenderMarkup = Markup;
         }
     }
 }

@@ -27,47 +27,47 @@ namespace Egil.RazorComponents.Testing
             result.ShouldNotBeNull();
         }
 
-        [Fact(DisplayName = "GetNodes should return new instance when " +
+        [Fact(DisplayName = "Nodes should return new instance when " +
                             "async operation during OnInit causes component to re-render")]
         public void Test003()
         {
             var testData = new AsyncNameDep();
             Services.AddService<IAsyncTestDep>(testData);
             var cut = RenderComponent<SimpleWithAyncDeps>();
-            var initialValue = cut.GetNodes().Find("p").OuterHtml;
+            var initialValue = cut.Nodes.Find("p").OuterHtml;
 
             WaitForNextRender(() => testData.SetResult("Steve Sanderson"));
 
-            var steveValue = cut.GetNodes().Find("p").OuterHtml;
+            var steveValue = cut.Nodes.Find("p").OuterHtml;
             steveValue.ShouldNotBe(initialValue);
         }
 
-        [Fact(DisplayName = "GetNodes should return new instance when " +
+        [Fact(DisplayName = "Nodes should return new instance when " +
                     "async operation/StateHasChanged during OnAfterRender causes component to re-render")]
         public void Test004()
         {
             var invocation = Services.AddMockJsRuntime().Setup<string>("getdata");
             var cut = RenderComponent<SimpleWithJsRuntimeDep>();
-            var initialValue = cut.GetNodes().Find("p").OuterHtml;
+            var initialValue = cut.Nodes.Find("p").OuterHtml;
 
             WaitForNextRender(() => invocation.SetResult("Steve Sanderson"));
 
-            var steveValue = cut.GetNodes().Find("p").OuterHtml;
+            var steveValue = cut.Nodes.Find("p").OuterHtml;
             steveValue.ShouldNotBe(initialValue);
         }
 
-        [Fact(DisplayName = "GetNodes on a components with child component returns " +
+        [Fact(DisplayName = "Nodes on a components with child component returns " +
                             "new instance when the child component has changes")]
         public void Test005()
         {
             var invocation = Services.AddMockJsRuntime().Setup<string>("getdata");
             var notcut = RenderComponent<Wrapper>(ChildContent<Simple1>());
             var cut = RenderComponent<Wrapper>(ChildContent<SimpleWithJsRuntimeDep>());
-            var initialValue = cut.GetNodes();
+            var initialValue = cut.Nodes;
 
             WaitForNextRender(() => invocation.SetResult("Steve Sanderson"), TimeSpan.FromDays(1));
 
-            Assert.NotSame(initialValue, cut.GetNodes());
+            Assert.NotSame(initialValue, cut.Nodes);
         }
     }
 

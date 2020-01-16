@@ -15,7 +15,6 @@
     void Test()
     {
         var cut = GetComponentUnderTest<ThemedButton>();
-        var x = cut.GetMarkup();
         cut.Find("button").ClassList.ShouldContain("btn");
     }
 }

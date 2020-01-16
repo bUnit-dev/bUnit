@@ -43,7 +43,7 @@ namespace Egil.RazorComponents.Testing
             : base(testContext, renderFragment)
         {
             (ComponentId, Instance) = Container.GetComponent<TComponent>();
-            FirstRenderMarkup = GetMarkup();
+            FirstRenderMarkup = Markup;
         }
 
         /// <inheritdoc/>

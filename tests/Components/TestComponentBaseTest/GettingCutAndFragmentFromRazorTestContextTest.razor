@@ -16,7 +16,7 @@
         var cut2 = GetComponentUnderTest<Wrapper>();
 
         Assert.True(ReferenceEquals(cut1, cut2), "Getting CUT multiple times should return the same instance");
-        Assert.Equal("CUT", cut1.GetMarkup());
+        Assert.Equal("CUT", cut1.Markup);
 
         var firstFragmentNoId1 = GetFragment();
         var firstFragmentId1 = GetFragment("first");
@@ -25,13 +25,13 @@
         Assert.True(ReferenceEquals(firstFragmentNoId1, firstFragmentId1), "Getting first fragment with and without id should return the same instance");
         Assert.True(ReferenceEquals(firstFragmentNoId1, firstFragmentNoId2), "Getting first fragment multiple times should return the same instance");
         Assert.True(ReferenceEquals(firstFragmentId1, firstFragmentId2), "Getting first fragment multiple times should return the same instance");
-        Assert.Equal("first", firstFragmentNoId1.GetMarkup());
+        Assert.Equal("first", firstFragmentNoId1.Markup);
 
         var secondFragmentId1 = GetFragment<Wrapper>("second");
         var secondFragmentId2 = GetFragment<Wrapper>("second");
 
         Assert.True(ReferenceEquals(secondFragmentId1, secondFragmentId2), "Getting fragment multiple times should return the same instance");
-        Assert.Equal("second", secondFragmentId2.GetMarkup());
+        Assert.Equal("second", secondFragmentId2.Markup);
     }
 }
 
