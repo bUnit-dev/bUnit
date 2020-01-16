@@ -120,11 +120,11 @@ namespace Egil.RazorComponents.Testing.Mocking.JSInterop
         {
             using var htmlParser = new TestHtmlParser();
             var elmRef = new ElementReference(Guid.NewGuid().ToString());
-            var elm = htmlParser.Parse($"<p {Htmlizer.ELEMENT_REFERENCE_ATTR_NAME}=\"ASDF\" />").First() as IElement;
+            var elm = (IElement)htmlParser.Parse($"<p {Htmlizer.ELEMENT_REFERENCE_ATTR_NAME}=\"ASDF\" />").First();
 
             Should.Throw<AssertActualExpectedException>(() => elmRef.ShouldBeElementReferenceTo(elm));
 
-            var elmWithoutRefAttr = htmlParser.Parse($"<p />").First() as IElement;
+            var elmWithoutRefAttr = (IElement)htmlParser.Parse($"<p />").First();
 
             Should.Throw<AssertActualExpectedException>(() => elmRef.ShouldBeElementReferenceTo(elmWithoutRefAttr));
         }

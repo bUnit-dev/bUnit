@@ -1,4 +1,4 @@
-﻿@*@inherits TestComponentBase
+﻿@inherits TestComponentBase
 
 
 <Fixture Test="Test">
@@ -9,12 +9,12 @@
 @code {
     ElementReference refElm;
 
-    void Test(IRazorTestContext context)
+    void Test()
     {
-        var cut = context.GetFragment();
-        
+        var cut = GetFragment();
+
         var html = cut.GetMarkup();
 
         html.ShouldContain($"=\"{refElm.Id}\"");
     }
-}*@
+}

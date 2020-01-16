@@ -25,7 +25,8 @@ namespace Egil.RazorComponents.Testing.TestUtililities
         /// <returns>An instance of <paramref name="type"/>.</returns>
         public static object ToMockInstance(this Type type)
         {
-            // Type to mock must be an interface, a delegate, or a non-sealed, non-static class.
+            if (type is null) throw new ArgumentNullException(nameof(type));
+
             if (type.IsMockable())
             {
                 var result = MockOfInfo.MakeGenericMethod(type).Invoke(null, Array.Empty<object>());
@@ -50,6 +51,8 @@ namespace Egil.RazorComponents.Testing.TestUtililities
         /// </summary>
         public static bool IsMockable(this Type type)
         {
+            if (type is null) throw new ArgumentNullException(nameof(type));
+
             if (type.IsSealed)
                 return type.IsDelegateType();
             return true;
@@ -62,6 +65,5 @@ namespace Egil.RazorComponents.Testing.TestUtililities
         {
             return Equals(type, DelegateType);
         }
-
     }
 }

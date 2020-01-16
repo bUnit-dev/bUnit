@@ -12,7 +12,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Egil.RazorComponents.Testing
 {
     [SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>")]
-    public class AllTypesOfParamsTest : ComponentTestFixture
+    public class ComponentTestFixtureTest : ComponentTestFixture
     {
         [Fact(DisplayName = "All types of parameters are correctly assigned to component on render")]
         public void Test001()
