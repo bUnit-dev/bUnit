@@ -2,8 +2,15 @@
 
 namespace Egil.RazorComponents.Testing
 {
+    /// <summary>
+    /// Helper methods for registering the MockJsRuntime with a <see cref="TestServiceProvider"/>.
+    /// </summary>
     public static class MockJsRuntimeExtensions
     {
+        /// <summary>
+        /// Adds the <see cref="MockJsRuntimeInvokeHandler"/> to the <see cref="TestServiceProvider"/>.
+        /// </summary>
+        /// <returns>The added <see cref="MockJsRuntimeInvokeHandler"/>.</returns>
         public static MockJsRuntimeInvokeHandler AddMockJsRuntime(this TestServiceProvider serviceProvider, JsRuntimeMockMode mode = JsRuntimeMockMode.Loose)
         {
             if (serviceProvider is null) throw new ArgumentNullException(nameof(serviceProvider));
