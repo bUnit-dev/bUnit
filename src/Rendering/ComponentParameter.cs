@@ -34,7 +34,7 @@ namespace Egil.RazorComponents.Testing
             if (isCascadingValue && value is null)
                 throw new ArgumentNullException(nameof(value), "Cascading values cannot be set to null");
 
-            if(!isCascadingValue && name is null)
+            if (!isCascadingValue && name is null)
                 throw new ArgumentNullException(nameof(name), "A parameters name cannot be set to null");
 
             Name = name;
@@ -47,46 +47,45 @@ namespace Egil.RazorComponents.Testing
         /// </summary>
         /// <param name="name">Name of the parameter to pass to the component</param>
         /// <param name="value">Value or null to pass the component</param>
-        public static ComponentParameter CreateParameter(string name, object? value) => new ComponentParameter(name, value, false);
+        public static ComponentParameter CreateParameter(string name, object? value) 
+            => new ComponentParameter(name, value, false);
 
         /// <summary>
         /// Create a Cascading Value parameter for a component under test.
         /// </summary>
         /// <param name="name">A optional name for the cascading value</param>
         /// <param name="value">The cascading value</param>
-        public static ComponentParameter CreateCascadingValue(string? name, object value) => new ComponentParameter(name, value, true);
+        public static ComponentParameter CreateCascadingValue(string? name, object value) 
+            => new ComponentParameter(name, value, true);
 
         /// <summary>
         /// Create a parameter for a component under test.
         /// </summary>
         /// <param name="input">A name/value pair for the parameter</param>
-        public static implicit operator ComponentParameter((string name, object? value) input) => CreateParameter(input.name, input.value);
+        public static implicit operator ComponentParameter((string name, object? value) input) 
+            => CreateParameter(input.name, input.value);
 
         /// <summary>
         /// Create a parameter or cascading value for a component under test.
         /// </summary>
         /// <param name="input">A name/value/isCascadingValue triple for the parameter</param>
-        public static implicit operator ComponentParameter((string? name, object? value, bool isCascadingValue) input) => new ComponentParameter(input.name, input.value, input.isCascadingValue);
+        public static implicit operator ComponentParameter((string? name, object? value, bool isCascadingValue) input) 
+            => new ComponentParameter(input.name, input.value, input.isCascadingValue);
 
         /// <inheritdoc/>
-        public bool Equals(ComponentParameter other) => Name == other.Name && Value == other.Value && IsCascadingValue == other.IsCascadingValue;
+        public bool Equals(ComponentParameter other)
+            => string.Equals(Name, other.Name, StringComparison.Ordinal) && Value == other.Value && IsCascadingValue == other.IsCascadingValue;
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => obj is ComponentParameter other && Equals(other);
 
         /// <inheritdoc/>
-        public override int GetHashCode() => (Name, Value, IsCascadingValue).GetHashCode();
+        public override int GetHashCode() => HashCode.Combine(Name, Value, IsCascadingValue);
 
         /// <inheritdoc/>
-        public static bool operator ==(ComponentParameter left, ComponentParameter right)
-        {
-            return left.Equals(right);
-        }
+        public static bool operator ==(ComponentParameter left, ComponentParameter right) => left.Equals(right);
 
         /// <inheritdoc/>
-        public static bool operator !=(ComponentParameter left, ComponentParameter right)
-        {
-            return !(left == right);
-        }
+        public static bool operator !=(ComponentParameter left, ComponentParameter right) => !(left == right);
     }
 }
