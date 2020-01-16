@@ -10,59 +10,8 @@ namespace Egil.RazorComponents.Testing.Asserting
     /// <summary>
     /// Collection test assertions
     /// </summary>
-    public static class GenericAssertExtensions
-    {
-        /// <summary>
-        /// Verifies that <paramref name="actual"/> is not null
-        /// and returns <paramref name="actual"/> again.
-        /// </summary>
-        /// <returns>Returns <paramref name="actual"/> if it is not null.</returns>
-        public static T ShouldNotBeNull<T>([NotNullIfNotNull("actual")]this T? actual) where T : class
-        {
-            if (actual is null)
-                throw new XunitException($"{nameof(ShouldNotBeNull)}() Failure");
-            return actual;
-        }
-
-        /// <summary>
-        /// Verifies that <paramref name="actual"/> is not null
-        /// and returns <paramref name="actual"/> again.
-        /// </summary>
-        /// <returns>Returns <paramref name="actual"/> if it is not null.</returns>
-        public static T ShouldNotBeNull<T>([NotNullIfNotNull("actual")]this T? actual) where T : struct
-        {
-            if (actual is null)
-                throw new XunitException($"{nameof(ShouldNotBeNull)}() Failure");
-            return actual.Value;
-        }
-
-        /// <summary>
-        /// Verifies that a nullable <paramref name="actual"/> is not null
-        /// and of type <typeparamref name="T"/>.
-        /// </summary>
-        /// <returns>Returns <paramref name="actual"/> as <typeparamref name="T"/>.</returns>
-        public static T ShouldBeOfType<T>([NotNullIfNotNull("actual")]this object? actual)
-        {
-            return Assert.IsType<T>(actual);
-        }
-
-        /// <summary>
-        /// Verifies that a non nullable struct is the same as its nullable counter part.
-        /// </summary>
-        public static void ShouldBe<T>(this T actual, T? expected)
-             where T : struct
-        {
-            Assert.Equal(expected, actual);
-        }
-    }
-
-    /// <summary>
-    /// Collection test assertions
-    /// </summary>
     public static class CollectionAssertExtensions
     {
-
-
         /// <summary>
         /// Verifies that a collection contains exactly a given number of elements, which
         /// meet the criteria provided by the element inspectors.

@@ -37,7 +37,7 @@ namespace Egil.RazorComponents.Testing.Asserting
         /// The total number of <see cref="IDiff"/> inspectors must exactly match the number of <see cref="IDiff"/>s in the collection</param>
         public static void ShouldHaveChanges(this IReadOnlyList<IDiff> diffs, params Action<IDiff>[] diffInspectors)
         {
-            Assert.Collection(diffs, diffInspectors);
+            CollectionAssertExtensions.ShouldAllBe(diffs, diffInspectors);
         }
 
     }

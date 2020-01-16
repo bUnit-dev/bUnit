@@ -28,7 +28,7 @@ namespace Egil.RazorComponents.Testing.Asserting
                 exception = ex;
             };
 
-            var actual = exception.ShouldNotBeNull().ShouldBeOfType<CollectionException>();
+            var actual = exception.ShouldBeOfType<CollectionException>();
             actual.ActualCount.ShouldBe(collection.Length);
             actual.ExpectedCount.ShouldBe(1);
         }
@@ -49,7 +49,7 @@ namespace Egil.RazorComponents.Testing.Asserting
                 exception = ex;
             };
 
-            var actual = exception.ShouldNotBeNull().ShouldBeOfType<CollectionException>();
+            var actual = exception.ShouldBeOfType<CollectionException>();
             actual.IndexFailurePoint.ShouldBe(1);
         }
 
@@ -70,7 +70,7 @@ namespace Egil.RazorComponents.Testing.Asserting
                 exception = ex;
             };
 
-            var actual = exception.ShouldNotBeNull().ShouldBeOfType<CollectionException>();
+            var actual = exception.ShouldBeOfType<CollectionException>();
             actual.ActualCount.ShouldBe(collection.Length);
             actual.ExpectedCount.ShouldBe(1);
         }
@@ -91,7 +91,7 @@ namespace Egil.RazorComponents.Testing.Asserting
                 exception = ex;
             };
 
-            var actual = exception.ShouldNotBeNull().ShouldBeOfType<CollectionException>();
+            var actual = exception.ShouldBeOfType<CollectionException>();
             actual.IndexFailurePoint.ShouldBe(1);
         }
 
