@@ -4,6 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AngleSharp;
+using AngleSharp.Dom;
+using Moq;
+using Shouldly;
 using Xunit;
 
 namespace Egil.RazorComponents.Testing.EventDispatchExtensions
@@ -22,5 +26,38 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
 
             await VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
         }
+
+        [Fact(DisplayName = "TriggerEventAsync throws element is null")]
+        public void Test001()
+        {
+            IElement elm = default!;
+            Should.Throw<ArgumentNullException>(() => elm.TriggerEventAsync("", EventArgs.Empty))
+                .ParamName.ShouldBe("element");
+        }
+
+        [Fact(DisplayName = "TriggerEventAsync throws if element does not contain an attribute with the blazor event-name")]
+        public void Test002()
+        {
+            var elmMock = new Mock<IElement>();
+            elmMock.Setup(x => x.GetAttribute(It.IsAny<string>())).Returns(() => null!);
+
+            Should.Throw<ArgumentException>(() => elmMock.Object.TriggerEventAsync("click", EventArgs.Empty));
+        }
+
+        [Fact(DisplayName = "TriggerEventAsync throws if element was not rendered through blazor (has a TestRendere in its context)")]
+        public void Test003()
+        {
+            var elmMock = new Mock<IElement>();
+            var docMock = new Mock<IDocument>();
+            var ctxMock = new Mock<IBrowsingContext>();
+
+            elmMock.Setup(x => x.GetAttribute(It.IsAny<string>())).Returns("1");
+            elmMock.SetupGet(x => x.Owner).Returns(docMock.Object);
+            docMock.SetupGet(x => x.Context).Returns(ctxMock.Object);
+            ctxMock.Setup(x => x.GetService<TestRenderer>()).Returns(() => null!);
+
+            Should.Throw<InvalidOperationException>(() => elmMock.Object.TriggerEventAsync("click", EventArgs.Empty));
+        }
+
     }
 }

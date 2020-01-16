@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Testing.EventDispatchExtensions
 {
-    // TODO: add support for all event types listed here: https://github.com/aspnet/AspNetCore/blob/master/src/Components/Web/src/Web/EventHandlers.cs
-
     /// <summary>
     /// General event dispatch helper extension methods.
     /// </summary>
