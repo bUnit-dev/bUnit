@@ -15,11 +15,23 @@ namespace Egil.RazorComponents.Testing.Asserting
     /// </summary>
     public static class ShouldBeTextChangeAssertExtensions
     {
+        /// <summary>
+        /// Verifies that a list of diffs contains only a single change, and that change is a change to a text node.
+        /// </summary>
+        /// <param name="diffs">The list of diffs to verify against.</param>
+        /// <param name="expectedChange">The expected text change.</param>
+        /// <param name="userMessage">A custom error message to show if the verification fails.</param>
         public static void ShouldHaveSingleTextChange(this IReadOnlyList<IDiff> diffs, string expectedChange, string? userMessage = null)
         {
             DiffAssertExtensions.ShouldHaveSingleChange(diffs).ShouldBeTextChange(expectedChange, userMessage);
         }
 
+        /// <summary>
+        /// Verifies that a diff is a change to a text node.
+        /// </summary>
+        /// <param name="actualChange">The diff to verify.</param>
+        /// <param name="expectedChange">The expected text change.</param>
+        /// <param name="userMessage">A custom error message to show if the verification fails.</param>
         public static void ShouldBeTextChange(this IDiff actualChange, string expectedChange, string? userMessage = null)
         {
             if (actualChange is null) throw new ArgumentNullException(nameof(actualChange));
@@ -32,12 +44,24 @@ namespace Egil.RazorComponents.Testing.Asserting
             ShouldBeTextChange(actualChange, expected, userMessage);
         }
 
+        /// <summary>
+        /// Verifies that a diff is a change to a text node.
+        /// </summary>
+        /// <param name="actualChange">The diff to verify.</param>
+        /// <param name="expectedChange">The rendered fragment containing the expected text change.</param>
+        /// <param name="userMessage">A custom error message to show if the verification fails.</param>
         public static void ShouldBeTextChange(this IDiff actualChange, IRenderedFragment expectedChange, string? userMessage = null)
         {
             if (expectedChange is null) throw new ArgumentNullException(nameof(expectedChange));
             ShouldBeTextChange(actualChange, expectedChange.GetNodes(), userMessage);
         }
 
+        /// <summary>
+        /// Verifies that a diff is a change to a text node.
+        /// </summary>
+        /// <param name="actualChange">The diff to verify.</param>
+        /// <param name="expectedChange">The node list containing the expected text change.</param>
+        /// <param name="userMessage">A custom error message to show if the verification fails.</param>
         public static void ShouldBeTextChange(this IDiff actualChange, INodeList expectedChange, string? userMessage = null)
         {
             if (actualChange is null) throw new ArgumentNullException(nameof(actualChange));

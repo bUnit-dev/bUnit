@@ -4,12 +4,20 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Testing
 {
+    /// <summary>
+    /// Represents a fragment that can be used in <see cref="SnapshotTest"/> or <see cref="Fixture"/>.
+    /// </summary>
     public abstract class FragmentBase : IComponent
     {
+        /// <summary>
+        /// Gets or sets the child content of the fragment.
+        /// </summary>
         [Parameter] public RenderFragment ChildContent { get; set; } = default!;
 
+        /// <inheritdoc />
         public void Attach(RenderHandle renderHandle) { }
 
+        /// <inheritdoc />
         public virtual Task SetParametersAsync(ParameterView parameters)
         {
             parameters.SetParameterProperties(this);
