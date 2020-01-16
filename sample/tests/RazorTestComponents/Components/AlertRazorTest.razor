@@ -1,7 +1,7 @@
 ﻿@inherits TestComponentBase
 
 @code {
-    MockJsRuntimeInvokeHandler MockJsRuntime { get; set; }
+    MockJsRuntimeInvokeHandler MockJsRuntime { get; set; } = default!;
 
     void Setup()
     {

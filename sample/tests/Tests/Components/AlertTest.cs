@@ -208,7 +208,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.Tests.Components
             cut.MarkupMatches(string.Empty);
         }
 
-        [Fact(DisplayName = "Alert can be dismissed via Dismiss() mehod")]
+        [Fact(DisplayName = "Alert can be dismissed via Dismiss() method")]
         public async Task Test008()
         {
             // Arrange            
