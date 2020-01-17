@@ -25,14 +25,25 @@ namespace Egil.RazorComponents.Testing.Mocking.JSInterop
         /// </summary>
         /// <param name="invocation">The unplanned invocation.</param>
         public UnplannedJsInvocationException(JsRuntimeInvocation invocation)
-            : base($"The invocation of '{invocation.Identifier} with arguments '[{PrintArguments(invocation.Arguments)}]")
+            : base($"The invocation of '{invocation.Identifier}' {PrintArguments(invocation.Arguments)} was not expected.")
         {
             Invocation = invocation;
         }
 
         private static string PrintArguments(IReadOnlyList<object> arguments)
         {
-            return string.Join(", ", arguments.Select(x => x.ToString()));
+            if (arguments.Count == 0)
+            {
+                return "without arguments";
+            }
+            else if (arguments.Count == 1)
+            { 
+                return $"with the argument [{arguments[0].ToString()}]";
+            }
+            else
+            {
+                return $"with arguments [{string.Join(", ", arguments.Select(x => x.ToString()))}]";
+            }                
         }
     }
 }
