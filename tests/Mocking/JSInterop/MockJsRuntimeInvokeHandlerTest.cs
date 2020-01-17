@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Shouldly;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.JSInterop
+namespace Egil.RazorComponents.Testing.Mocking.JSInterop
 {
     public class MockJsRuntimeInvokeHandlerTest
     {

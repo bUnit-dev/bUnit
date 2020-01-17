@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Mocking.JSInterop
 {
     /// <summary>
     /// Represents an invocation of JavaScript via the JsRuntime Mock

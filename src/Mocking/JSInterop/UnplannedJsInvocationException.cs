@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Mocking.JSInterop
 {
     /// <summary>
     /// Exception use to indicate that an unplanned invocation was

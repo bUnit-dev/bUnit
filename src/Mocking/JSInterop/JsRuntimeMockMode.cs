@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Mocking.JSInterop
 {
     /// <summary>
     /// The execution mode of the <see cref="MockJsRuntimeExtensions"/>.

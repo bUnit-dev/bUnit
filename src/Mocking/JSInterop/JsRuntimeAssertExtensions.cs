@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Mocking.JSInterop
 {
     /// <summary>
     /// Assert extensions for JsRuntimeMock
