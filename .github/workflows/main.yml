@@ -28,8 +28,10 @@ jobs:
           dotnet-version: '3.1.100'      
       - name: Building and verifying library
         run: |
-          dotnet build -c Release /nowarn:CS1591
+          dotnet build -c Release
           dotnet test -c Release /nowarn:CS1591
+          dotnet build sample -c Release
+          dotnet test sample -c Release
       - name: Creating library package
         run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=$VERSION /nowarn:CS1591
       - name: Buidling template package
