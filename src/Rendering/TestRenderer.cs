@@ -30,6 +30,14 @@ namespace Egil.RazorComponents.Testing
         public StructAction<RenderBatch>? OnRenderingHasComponentUpdates { get; set; }
 
         /// <inheritdoc/>
+        public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
+
+        /// <summary>
+        /// Gets a task that completes after the next render.
+        /// </summary>
+        public Task NextRender => _nextRenderTcs.Task;
+
+        /// <inheritdoc/>
         public TestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
             : base(serviceProvider, loggerFactory)
         {
@@ -61,14 +69,6 @@ namespace Egil.RazorComponents.Testing
             AssertNoSynchronousErrors();
             return task;
         }
-
-        /// <inheritdoc/>
-        public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
-
-        /// <summary>
-        /// Gets a task that completes after the next render.
-        /// </summary>
-        public Task NextRender => _nextRenderTcs.Task;
 
         /// <inheritdoc/>
         protected override void HandleException(Exception exception)

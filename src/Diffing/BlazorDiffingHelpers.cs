@@ -3,8 +3,14 @@ using AngleSharp.Diffing.Core;
 
 namespace Egil.RazorComponents.Testing.Diffing
 {
+    /// <summary>
+    /// Blazor Dffing Helpers
+    /// </summary>
     public static class BlazorDiffingHelpers
     {
+        /// <summary>
+        /// Represents a diffing filter that removes all special Blazor attributes added by the <see cref="TestRenderer"/>/<see cref="Htmlizer"/>.
+        /// </summary>
         public static FilterDecision BlazorEventHandlerIdAttrFilter(in AttributeComparisonSource attrSource, FilterDecision currentDecision)
         {
             if (currentDecision == FilterDecision.Exclude) return currentDecision;

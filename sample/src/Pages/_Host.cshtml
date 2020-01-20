@@ -23,6 +23,12 @@
             return fetch('https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&search=' + query)
                 .then(x => x.text());
         }
+
+        function transitionFinished() {
+            return new Promise(function (resolve, reject) {
+                setTimeout(resolve, 1000);
+            });
+        }
     </script>
 </body>
 </html>

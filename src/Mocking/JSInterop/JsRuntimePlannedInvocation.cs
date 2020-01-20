@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Egil.RazorComponents.Testing
+namespace Egil.RazorComponents.Testing.Mocking.JSInterop
 {
     /// <summary>
     /// Represents a planned invocation of a JavaScript function with specific arguments.

@@ -26,7 +26,7 @@ namespace Egil.RazorComponents.Testing.Asserting
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
             var actualNodes = actual.GetNodes();
-            var expectedNodes = actual.TestContext.HtmlParser.Parse(expected);
+            var expectedNodes = actual.TestContext.CreateNodes(expected);
 
             actualNodes.MarkupMatches(expectedNodes, userMessage);
         }
@@ -79,6 +79,32 @@ namespace Egil.RazorComponents.Testing.Asserting
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
             actual.MarkupMatches(expected.GetNodes(), userMessage);
+        }
+
+        /// <summary>
+        /// Verifies that the <paramref name="actual"/> <see cref="INode"/> matches
+        /// the <paramref name="expected"/> markup, using the <see cref="HtmlComparer"/> 
+        /// type.
+        /// </summary>
+        /// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
+        /// <param name="actual">The node to verify.</param>
+        /// <param name="expected">The expected markup.</param>
+        /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+        public static void MarkupMatches(this INode actual, string expected, string? userMessage = null)
+        {
+            if (actual is null) throw new ArgumentNullException(nameof(actual));
+
+            INodeList expectedNodes;
+            if (actual.GetHtmlParser() is { } parser)
+            {
+                expectedNodes = parser.Parse(expected);
+            }
+            else
+            {
+                using var newParser = new TestHtmlParser();
+                expectedNodes = newParser.Parse(expected);
+            }
+            MarkupMatches(actual, expectedNodes, userMessage);
         }
 
         /// <summary>

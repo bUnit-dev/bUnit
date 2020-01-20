@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.SampleApp.Components;
+using Egil.RazorComponents.Testing.Mocking.JSInterop;
 using Shouldly;
 using Xunit;
 
@@ -12,7 +13,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
 {
     public class WikiSearchTest : ComponentTestFixture
     {
-        [Fact(DisplayName = "WikiSearch renders an empty P element initially")]
+        [Fact(DisplayName = "WikiSearch renders an empty PRE element initially")]
         public void Test001()
         {
             // Arrange
@@ -27,7 +28,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
             // Assert
             // Check that the components initial HTML is as expected
             // and that the mock was called with the expected JS identifier and arguments.
-            cut.MarkupMatches("<p></p>");
+            cut.MarkupMatches(@"<pre class:ignore></pre>");
             jsMock.VerifyInvoke("queryWiki").Arguments.Single().ShouldBe("blazor");
         }
 
@@ -46,7 +47,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
 
             // Render the WikiSearch and verify that there is no content in the paragraph element
             var cut = RenderComponent<WikiSearch>();
-            cut.Find("p").InnerHtml.ShouldBeEmpty();
+            cut.Find("pre").InnerHtml.Trim().ShouldBeEmpty();
 
             // Act
             // Use the WaitForNextRender to block until the component has finished re-rendered.
@@ -56,7 +57,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
 
             // Assert
             // Verify that the result was received and correct placed in the paragraph element.
-            cut.Find("p").InnerHtml.ShouldBe(expectedSearchResult);
+            cut.Find("pre").InnerHtml.Trim().ShouldBe(expectedSearchResult);
         }
     }
 }

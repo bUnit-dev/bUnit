@@ -1,0 +1,73 @@
+﻿@inject IJSRuntime jsRuntime
+
+@if (IsVisible)
+{
+    <div role="alert" @attributes="AdditionalAttributes" class=@CssClass>
+        @if (Header is { })
+        {
+            <h4 class="alert-heading">@Localizer[Header]</h4>
+        }
+        <div class="alert-content">
+            @ChildContent
+        </div>
+        <button @onclick="DismissClicked" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@code {
+    private const string DefaultCssClass = "alert alert-info alert-dismissible fade";
+
+    private string ShowCssClass => Dismissing ? "" : "show";
+    private string CssClass => AdditionalAttributes?.ContainsKey("class") ?? false
+        ? $"{DefaultCssClass} {AdditionalAttributes["class"]} {ShowCssClass}"
+        : $"{DefaultCssClass} {ShowCssClass}";
+
+    private bool Dismissing { get; set; }
+
+    [CascadingParameter]
+    private Localizer Localizer { get; set; } = Localizer.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    [Parameter]
+    public string? Header { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback<DismissingEventArgs> OnDismissing { get; set; }
+
+    [Parameter]
+    public EventCallback<Alert> OnDismissed { get; set; }
+
+    public bool IsVisible { get; private set; } = true;
+
+    public async Task Dismiss()
+    {
+        await DismissClicked();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task DismissClicked()
+    {
+        var dismissingArgs = new DismissingEventArgs(this);
+
+        await OnDismissing.InvokeAsync(dismissingArgs);
+
+        if (dismissingArgs.Cancel)
+            return;
+
+        Dismissing = true;
+
+        await jsRuntime.InvokeVoidAsync("window.transitionFinished");
+
+        Dismissing = false;
+        IsVisible = false;
+
+        await OnDismissed.InvokeAsync(this);
+    }
+}

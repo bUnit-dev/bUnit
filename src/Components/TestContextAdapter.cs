@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Diffing;
 using Microsoft.AspNetCore.Components;
 
@@ -13,8 +14,6 @@ namespace Egil.RazorComponents.Testing
         public TestServiceProvider Services => _testContext?.Services ?? throw new InvalidOperationException("No active test context in the adapter");
 
         public TestRenderer Renderer => _testContext?.Renderer ?? throw new InvalidOperationException("No active test context in the adapter");
-
-        public TestHtmlParser HtmlParser => _testContext?.HtmlParser ?? throw new InvalidOperationException("No active test context in the adapter");
 
         public bool HasActiveContext => !(_testContext is null);
 
@@ -41,6 +40,7 @@ namespace Egil.RazorComponents.Testing
         public void Dispose()
         {
             _testContext?.Dispose();
+            _razorTestContext?.Dispose();
             _testContext = null;
             _razorTestContext = null;
         }
@@ -67,5 +67,8 @@ namespace Egil.RazorComponents.Testing
 
         public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
             => _testContext?.RenderComponent<TComponent>(parameters) ?? throw new InvalidOperationException("No active test context in the adapter");
+
+        public INodeList CreateNodes(string markup)
+            => _testContext?.CreateNodes(markup) ?? throw new InvalidOperationException("No active test context in the adapter");
     }    
 }

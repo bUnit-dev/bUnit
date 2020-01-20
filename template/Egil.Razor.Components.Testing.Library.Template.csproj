@@ -26,6 +26,10 @@ This library's goal is to make it easy to write comprehensive, stable unit tests
   <ItemGroup>
     <Content Include="template\**\*" Exclude="template\**\bin\**;template\**\obj\**;template\**\.vs\**" />
     <Compile Remove="**\*" />
+    <Compile Remove="template\obj\**" />
+    <Content Remove="template\obj\**" />
+    <EmbeddedResource Remove="template\obj\**" />
+    <None Remove="template\obj\**" />
   </ItemGroup>
 
 </Project>

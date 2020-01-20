@@ -19,6 +19,7 @@
 
     void Test1()
     {
+        this.
         GetComponentUnderTest<SimpleWithDeps>().Find("p").TextContent.ShouldBe(dep1Expected.Name);
         GetFragment<Simple1>().ShouldNotBeNull();
     }
@@ -27,6 +28,13 @@
     {
         GetComponentUnderTest<SimpleWithDeps>().Find("p").TextContent.ShouldBe(dep1Expected.Name);
         GetFragment<Simple1>().ShouldNotBeNull();
+    }
+
+    Task TestAsync1()
+    {
+        GetComponentUnderTest<SimpleWithDeps>().Find("p").TextContent.ShouldBe(dep1Expected.Name);
+        GetFragment<Simple1>().ShouldNotBeNull();
+        return Task.CompletedTask;
     }
 }
 

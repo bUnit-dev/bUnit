@@ -1,4 +1,5 @@
 ﻿using System;
+using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Diffing;
 using Microsoft.AspNetCore.Components;
 
@@ -19,11 +20,14 @@ namespace Egil.RazorComponents.Testing
         /// Gets the renderer used to render the components and fragments in this test context.
         /// </summary>
         TestRenderer Renderer { get; }
-        
+
         /// <summary>
-        /// Gets the HTML parser used to parse HTML produced by components and fragments in this test context.
+        /// Parses a markup HTML string using the AngleSharps HTML5 parser
+        /// and returns a list of nodes.
         /// </summary>
-        TestHtmlParser HtmlParser { get; }
+        /// <param name="markup">The markup to parse.</param>
+        /// <returns>The <see cref="INodeList"/>.</returns>
+        INodeList CreateNodes(string markup);
 
         /// <summary>
         /// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
