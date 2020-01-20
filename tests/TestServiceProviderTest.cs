@@ -14,13 +14,20 @@ namespace Egil.RazorComponents.Testing
 {
     public class TestServiceProviderTest : ComponentTestFixture
     {
-        [Fact(DisplayName = "The test service provider should register a default IJSRuntime " +
+        [Fact(DisplayName = "The test service provider should register a placeholder IJSRuntime " +
              "which throws exceptions")]
         public void Test001()
         {
             var ex = Assert.Throws<AggregateException>(() => RenderComponent<SimpleWithJsRuntimeDep>());
-            Assert.Equal(DefaultJsRuntime.MissingJsRuntimeMessage, ex.InnerException?.Message);
-            Assert.Equal(DefaultJsRuntime.MissingJsRuntimeHelpLink, ex.InnerException?.HelpLink);
+            Assert.True(ex?.InnerException is MissingMockJsRuntimeException);
+        }
+
+        [Fact(DisplayName = "The placeholder IJSRuntime is overriden by a supplied mock and does not throw")]
+        public void Test002()
+        {
+            Services.AddMockJsRuntime();
+
+            RenderComponent<SimpleWithJsRuntimeDep>();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Egil.RazorComponents.Testing
 
         public TestServiceProvider()
         {
-            _serviceCollection.AddSingleton<IJSRuntime, DefaultJsRuntime>();
+            _serviceCollection.AddSingleton<IJSRuntime, PlaceholderJsRuntime>();
         }
 
         /// <summary>
