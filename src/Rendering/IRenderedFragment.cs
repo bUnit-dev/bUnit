@@ -19,15 +19,13 @@ namespace Egil.RazorComponents.Testing
         /// <summary>
         /// Gets the HTML markup from the rendered fragment/component.
         /// </summary>
-        /// <returns></returns>
-        string GetMarkup();
+        string Markup { get; }
 
         /// <summary>
         /// Gets the AngleSharp <see cref="INodeList"/> based
         /// on the HTML markup from the rendered fragment/component.
         /// </summary>
-        /// <returns></returns>
-        INodeList GetNodes();
+        INodeList Nodes { get; }
 
         /// <summary>
         /// Performs a comparison of the markup produced by the initial rendering of the 
@@ -60,7 +58,7 @@ namespace Egil.RazorComponents.Testing
         /// <param name="cssSelector">The group of selectors to use.</param>
         public IElement Find(string cssSelector)
         {
-            var result = GetNodes().QuerySelector(cssSelector);
+            var result = Nodes.QuerySelector(cssSelector);
             if (result is null)
                 throw new ElementNotFoundException(cssSelector);
             else
@@ -75,7 +73,7 @@ namespace Egil.RazorComponents.Testing
         /// <param name="cssSelector">The group of selectors to use.</param>
         public IHtmlCollection<IElement> FindAll(string cssSelector)
         {
-            return GetNodes().QuerySelectorAll(cssSelector);
+            return Nodes.QuerySelectorAll(cssSelector);
         }
     }
 }

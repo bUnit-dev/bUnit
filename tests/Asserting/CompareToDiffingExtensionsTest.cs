@@ -54,7 +54,7 @@ namespace Egil.RazorComponents.Testing.Asserting
             var rf1 = RenderComponent<Simple1>((nameof(Simple1.Header), "FOO"));
             var rf2 = RenderComponent<Simple1>((nameof(Simple1.Header), "BAR"));
 
-            rf1.CompareTo(rf2.GetMarkup()).Count.ShouldBe(1);
+            rf1.CompareTo(rf2.Markup).Count.ShouldBe(1);
         }
 
         [Fact(DisplayName = "CompareTo with rendered fragment and rendered fragment")]
@@ -73,9 +73,8 @@ namespace Egil.RazorComponents.Testing.Asserting
             var rf2 = RenderComponent<Simple1>((nameof(Simple1.Header), "BAR"));
 
             var elm = rf1.Find("h1");            
-            elm.CompareTo(rf2.GetNodes()).Count.ShouldBe(1);
+            elm.CompareTo(rf2.Nodes).Count.ShouldBe(1);
         }
-
 
         [Fact(DisplayName = "CompareTo with INodeList and INode")]
         public void Test005()
@@ -84,7 +83,7 @@ namespace Egil.RazorComponents.Testing.Asserting
             var rf2 = RenderComponent<Simple1>((nameof(Simple1.Header), "BAR"));
 
             var elm = rf1.Find("h1");            
-            rf2.GetNodes().CompareTo(elm).Count.ShouldBe(1);
+            rf2.Nodes.CompareTo(elm).Count.ShouldBe(1);
         }
     }
 }

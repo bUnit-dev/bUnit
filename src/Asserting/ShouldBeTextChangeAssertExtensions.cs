@@ -53,7 +53,7 @@ namespace Egil.RazorComponents.Testing.Asserting
         public static void ShouldBeTextChange(this IDiff actualChange, IRenderedFragment expectedChange, string? userMessage = null)
         {
             if (expectedChange is null) throw new ArgumentNullException(nameof(expectedChange));
-            ShouldBeTextChange(actualChange, expectedChange.GetNodes(), userMessage);
+            ShouldBeTextChange(actualChange, expectedChange.Nodes, userMessage);
         }
 
         /// <summary>

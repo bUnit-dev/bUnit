@@ -39,8 +39,8 @@ namespace Egil.RazorComponents.Testing
             instance.NamedCascadingValue.ShouldBe(1337);
             Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(null)).Message.ShouldBe("NonGenericCallback");
             Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
-            new RenderedFragment(this, instance.ChildContent!).GetMarkup().ShouldBe(nameof(ChildContent));
-            new RenderedFragment(this, instance.OtherContent!).GetMarkup().ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
+            new RenderedFragment(this, instance.ChildContent!).Markup.ShouldBe(nameof(ChildContent));
+            new RenderedFragment(this, instance.OtherContent!).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
             Should.Throw<Exception>(() => instance.ItemTemplate!("")(null)).Message.ShouldBe("ItemTemplate");
         }
 
@@ -78,8 +78,8 @@ namespace Egil.RazorComponents.Testing
             instance.RegularParam.ShouldBe("some value");
             Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(null)).Message.ShouldBe("NonGenericCallback");
             Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
-            new RenderedFragment(this, instance.ChildContent!).GetMarkup().ShouldBe(nameof(ChildContent));
-            new RenderedFragment(this, instance.OtherContent!).GetMarkup().ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
+            new RenderedFragment(this, instance.ChildContent!).Markup.ShouldBe(nameof(ChildContent));
+            new RenderedFragment(this, instance.OtherContent!).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
             Should.Throw<Exception>(() => instance.ItemTemplate!("")(null)).Message.ShouldBe("ItemTemplate");
         }
 
