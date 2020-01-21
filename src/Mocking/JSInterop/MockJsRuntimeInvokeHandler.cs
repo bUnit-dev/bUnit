@@ -52,7 +52,7 @@ namespace Egil.RazorComponents.Testing.Mocking.JSInterop
         /// <typeparam name="TResult">The result type of the invocation</typeparam>
         /// <param name="identifier">The identifier to setup a response for</param>
         /// <param name="argumentsMatcher">A matcher that is passed arguments received in invocations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
-        /// <returns>A <see cref="TaskCompletionSource{TResult}"/> whose <see cref="Task"/> is returned when the <paramref name="identifier"/> is invoked.</returns>
+        /// <returns>A <see cref="JsRuntimePlannedInvocation{TResult}"/>.</returns>
         public JsRuntimePlannedInvocation<TResult> Setup<TResult>(string identifier, Func<IReadOnlyList<object>, bool> argumentsMatcher)
         {
             var result = new JsRuntimePlannedInvocation<TResult>(identifier, argumentsMatcher);
@@ -68,13 +68,41 @@ namespace Egil.RazorComponents.Testing.Mocking.JSInterop
         /// <typeparam name="TResult"></typeparam>
         /// <param name="identifier">The identifier to setup a response for</param>
         /// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
-        /// <returns>A <see cref="TaskCompletionSource{TResult}"/> whose <see cref="Task"/> is returned when the <paramref name="identifier"/> is invoked.</returns>
+        /// <returns>A <see cref="JsRuntimePlannedInvocation{TResult}"/>.</returns>
         public JsRuntimePlannedInvocation<TResult> Setup<TResult>(string identifier, params object[] arguments)
         {
             return Setup<TResult>(identifier, args => Enumerable.SequenceEqual(args, arguments));
         }
 
-        private void AddPlannedInvocation<TResult>(JsRuntimePlannedInvocation<TResult> planned)
+        /// <summary>
+        /// Configure a planned JSInterop invocation with the <paramref name="identifier"/> and arguments
+        /// passing the <paramref name="argumentsMatcher"/> test, that should not receive any result.
+        /// </summary>
+        /// <param name="identifier">The identifier to setup a response for</param>
+        /// <param name="argumentsMatcher">A matcher that is passed arguments received in invocations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
+        /// <returns>A <see cref="JsRuntimePlannedInvocation"/>.</returns>
+        public JsRuntimePlannedInvocation SetupVoid(string identifier, Func<IReadOnlyList<object>, bool> argumentsMatcher)
+        {
+            var result = new JsRuntimePlannedInvocation(identifier, argumentsMatcher);
+
+            AddPlannedInvocation(result);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Configure a planned JSInterop invocation with the <paramref name="identifier"/> 
+        /// and <paramref name="arguments"/>, that should not receive any result.
+        /// </summary>
+        /// <param name="identifier">The identifier to setup a response for</param>
+        /// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
+        /// <returns>A <see cref="JsRuntimePlannedInvocation"/>.</returns>
+        public JsRuntimePlannedInvocation SetupVoid(string identifier, params object[] arguments)
+        {
+            return SetupVoid(identifier, args => Enumerable.SequenceEqual(args, arguments));
+        }
+
+        private void AddPlannedInvocation<TResult>(JsRuntimePlannedInvocationBase<TResult> planned)
         {
             if (!_plannedInvocations.ContainsKey(planned.Identifier))
             {
@@ -119,15 +147,13 @@ namespace Egil.RazorComponents.Testing.Mocking.JSInterop
 
                 if (_handlers._plannedInvocations.TryGetValue(identifier, out var plannedInvocations))
                 {
-                    var planned = plannedInvocations.OfType<JsRuntimePlannedInvocation<TValue>>()
+                    var planned = plannedInvocations.OfType<JsRuntimePlannedInvocationBase<TValue>>()
                         .SingleOrDefault(x => x.Matches(invocation));
 
-                    // TODO: Should we check the CancellationToken at this point and automatically call
-                    // TrySetCanceled(CancellationToken) on the TaskCompletionSource? (https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1.trysetcanceled?view=netcore-3.0#System_Threading_Tasks_TaskCompletionSource_1_TrySetCanceled_System_Threading_CancellationToken_)
                     if (planned is { })
                     {
-                        planned.AddInvocation(invocation);
-                        result = new ValueTask<TValue>(planned.CompletionSource.Task);
+                        var task = planned.RegisterInvocation(invocation);
+                        result = new ValueTask<TValue>(task);
                     }
                 }
 
