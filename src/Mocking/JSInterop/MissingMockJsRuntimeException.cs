@@ -26,7 +26,7 @@ namespace Egil.RazorComponents.Testing
 
         /// <summary>
         /// Creates a new instance of the <see cref="MissingMockJsRuntimeException"/>
-        /// with the provided <see cref="Invocation"/> attached.
+        /// with the arguments used in the invocation.
         /// </summary>
         /// <param name="identifier">The identifer used in the invocation.</param>
         /// <param name="arguments">The args used in the invocation, if any</param>
