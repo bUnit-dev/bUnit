@@ -37,11 +37,5 @@ namespace Egil.RazorComponents.Testing
             Args = args;
             HelpLink = "https://github.com/egil/razor-components-testing-library/wiki/Mocking-JsRuntime";
         }
-
-
-        private static string PrintArguments(IReadOnlyList<object> arguments)
-        {
-            return string.Join(", ", arguments.Select(x => x.ToString()));
-        }
     }
 }
