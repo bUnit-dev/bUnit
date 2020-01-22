@@ -34,7 +34,7 @@ namespace Egil.RazorComponents.Testing
             : base($"This test requires a IJsRuntime to be supplied, because the component under test invokes the IJsRuntime during the test. The invoked method is '{identifier}' and the invocation args are stored in the Args property of this exception. Guidance on mocking the IJsRuntime is available in the testing library's Wiki.") 
         {
             Identifier = identifier;
-            Args = args;
+            Arguments = arguments;
             HelpLink = "https://github.com/egil/razor-components-testing-library/wiki/Mocking-JsRuntime";
         }
     }
