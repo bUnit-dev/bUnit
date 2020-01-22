@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Net.Http.Headers;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Egil.RazorComponents.Testing
 {
@@ -27,7 +28,7 @@ namespace Egil.RazorComponents.Testing
             var mockHttp = new MockHttpMessageHandler();
             var httpClient = mockHttp.ToHttpClient();
             httpClient.BaseAddress = new Uri("http://example.com");
-            serviceProvider.AddService(httpClient);
+            serviceProvider.AddSingleton(httpClient);
             return mockHttp;
         }
 

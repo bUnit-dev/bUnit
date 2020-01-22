@@ -1,10 +1,12 @@
 ﻿using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Diffing;
+using Egil.RazorComponents.Testing.Mocking.JSInterop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.JSInterop;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -32,9 +34,11 @@ namespace Egil.RazorComponents.Testing
         /// </summary>
         public TestContext()
         {
+            Services.AddSingleton<IJSRuntime>(new PlaceholderJsRuntime());
+
             _renderer = new Lazy<TestRenderer>(() =>
             {
-                var loggerFactory = Services.GetService<ILoggerFactory>() ?? new NullLoggerFactory();
+                var loggerFactory = Services.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance;
                 return new TestRenderer(Services, loggerFactory);
             });
             _htmlParser = new Lazy<TestHtmlParser>(() =>
