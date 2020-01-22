@@ -1,7 +1,7 @@
 
 name: CI
 
-on: [push, pull_request]
+on: push
 
 env:
   VERSION: 1337.0.0
