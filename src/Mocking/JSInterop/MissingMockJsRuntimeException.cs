@@ -29,7 +29,7 @@ namespace Egil.RazorComponents.Testing
         /// with the provided <see cref="Invocation"/> attached.
         /// </summary>
         /// <param name="identifier">The identifer used in the invocation.</param>
-        /// <param name="args">The args used in the invocation, if any</param>
+        /// <param name="arguments">The args used in the invocation, if any</param>
         public MissingMockJsRuntimeException(string identifier, object[] args)
             : base($"This test requires a IJsRuntime to be supplied, because the component under test invokes the IJsRuntime during the test. The invoked method is '{identifier}' and the invocation args are stored in the Args property of this exception. Guidance on mocking the IJsRuntime is available in the testing library's Wiki.") 
         {
