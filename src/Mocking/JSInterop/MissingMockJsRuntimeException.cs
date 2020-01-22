@@ -22,7 +22,7 @@ namespace Egil.RazorComponents.Testing
         /// <summary>
         /// Arguments passed to the JSInvoke method.
         /// </summary>
-        public object[] Args { get; }
+        public IReadOnlyList<object> Arguments { get; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="MissingMockJsRuntimeException"/>
