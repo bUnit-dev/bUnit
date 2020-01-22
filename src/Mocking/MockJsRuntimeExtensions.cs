@@ -1,5 +1,6 @@
 ﻿using System;
 using Egil.RazorComponents.Testing.Mocking.JSInterop;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Egil.RazorComponents.Testing
 {
@@ -18,7 +19,7 @@ namespace Egil.RazorComponents.Testing
 
             var result = new MockJsRuntimeInvokeHandler(mode);
 
-            serviceProvider.AddService(result.ToJsRuntime());
+            serviceProvider.AddSingleton(result.ToJsRuntime());
 
             return result;
         }

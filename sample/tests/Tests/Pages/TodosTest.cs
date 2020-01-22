@@ -10,6 +10,7 @@ using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.SampleApp.Data;
 using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using Egil.RazorComponents.Testing.SampleApp.Pages;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Pages
 {
@@ -30,7 +31,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Pages
             var getTask = new TaskCompletionSource<IReadOnlyList<Todo>>();
             var todoSrv = new Mock<ITodoService>();
             todoSrv.Setup(x => x.GetAll()).Returns(getTask.Task);
-            Services.AddService(todoSrv.Object);
+            Services.AddSingleton(todoSrv.Object);
 
             // act
             var page = RenderComponent<Todos>();
@@ -51,7 +52,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Pages
             var todos = new[] { new Todo { Id = 1, Text = "First" } };
             var todoSrv = new Mock<ITodoService>();
             todoSrv.Setup(x => x.GetAll()).Returns(Task.FromResult<IReadOnlyList<Todo>>(todos));
-            Services.AddService(todoSrv.Object);
+            Services.AddSingleton(todoSrv.Object);
 
             // act
             var page = RenderComponent<Todos>();
@@ -66,7 +67,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Pages
         {
             // arrange
             var todoSrv = new Mock<ITodoService>();
-            Services.AddService(todoSrv.Object);
+            Services.AddSingleton(todoSrv.Object);
             var page = RenderComponent<Todos>();
 
             // act

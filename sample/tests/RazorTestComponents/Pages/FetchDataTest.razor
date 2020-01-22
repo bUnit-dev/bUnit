@@ -23,7 +23,7 @@
 
     void Setup()
     {
-        Services.AddService<IWeatherForecastService>(forecastService);
+        Services.AddSingleton<IWeatherForecastService>(forecastService);
     }
 
     void InitialLoadingHtmlRendersCorrectly()

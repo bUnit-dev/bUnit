@@ -1,6 +1,7 @@
 ﻿using Egil.RazorComponents.Testing.Extensions;
 using Egil.RazorComponents.Testing.SampleComponents;
 using Egil.RazorComponents.Testing.SampleComponents.Data;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace Egil.RazorComponents.Testing
         public void Test003()
         {
             var testData = new AsyncNameDep();
-            Services.AddService<IAsyncTestDep>(testData);
+            Services.AddSingleton<IAsyncTestDep>(testData);
             var cut = RenderComponent<SimpleWithAyncDeps>();
             var initialValue = cut.Nodes.Find("p").OuterHtml;
 
