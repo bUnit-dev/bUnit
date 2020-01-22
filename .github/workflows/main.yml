@@ -24,8 +24,8 @@ jobs:
         with:
           files: '["*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
-        #with:
-        #  dotnet-version: '3.1.100'      
+        with:
+          dotnet-version: '3.1.101'      
       - name: Building and verifying library
         run: |
           dotnet build -c Release
