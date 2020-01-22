@@ -56,7 +56,7 @@ namespace Egil.RazorComponents.Testing
             container.Render(BuildRenderTree);
 
             await ExecuteFixtureTests(container).ConfigureAwait(false);
-            ExecuteSnapshotTests(container);
+            await ExecuteSnapshotTests(container).ConfigureAwait(false);
         }
         
         /// <inheritdoc/>
@@ -148,7 +148,7 @@ namespace Egil.RazorComponents.Testing
             }
         }
 
-        private void ExecuteSnapshotTests(ContainerComponent container)
+        private async Task ExecuteSnapshotTests(ContainerComponent container)
         {
             foreach (var (_, snapshot) in container.GetComponents<SnapshotTest>())
             {
@@ -157,6 +157,7 @@ namespace Egil.RazorComponents.Testing
 
                 var context = _testContextAdapter.ActivateSnapshotTestContext(testData);
                 snapshot.Setup();
+                await snapshot.SetupAsync().ConfigureAwait(false);
                 var actual = context.RenderTestInput();
                 var expected = context.RenderExpectedOutput();
                 actual.MarkupMatches(expected, snapshot.Description);

@@ -16,6 +16,7 @@ namespace Egil.RazorComponents.Testing
     public class SnapshotTest : FragmentBase
     {
         private Action _setup = NoopTestMethod;
+        private Func<Task> _setupAsync = NoopTestMethodAsync;
 
         /// <summary>
         /// A description or name for the test that will be displayed if the test fails.
@@ -23,12 +24,16 @@ namespace Egil.RazorComponents.Testing
         [Parameter] public string? Description { get; set; }
 
         /// <summary>
-        /// A method to be called <see cref="TestInput"/> component and <see cref="ExpectedOutput"/> component
-        /// is rendered. Use to e.g. setup services that the test input needs to render.
+        /// Gets or sets the setup action to perform before the <see cref="TestInput"/> and <see cref="ExpectedOutput"/>
+        /// is rendered and compared.
         /// </summary>
         [Parameter] public Action Setup { get => _setup; set => _setup = value ?? NoopTestMethod; }
 
-        private static void NoopTestMethod() { }
+        /// <summary>
+        /// Gets or sets the setup action to perform before the <see cref="TestInput"/> and <see cref="ExpectedOutput"/>
+        /// is rendered and compared.
+        /// </summary>
+        [Parameter] public Func<Task> SetupAsync { get => _setupAsync; set => _setupAsync = value ?? NoopTestMethodAsync; }
     }
 
     /// <summary>

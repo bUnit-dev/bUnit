@@ -13,9 +13,9 @@ namespace Egil.RazorComponents.Testing
     public class Fixture : FragmentBase
     {
         private Action _setup = NoopTestMethod;
-        private Func<Task> _setupAsync = NoopAsyncTestMethod;
+        private Func<Task> _setupAsync = NoopTestMethodAsync;
         private Action _test = NoopTestMethod;
-        private Func<Task> _testAsync = NoopAsyncTestMethod;
+        private Func<Task> _testAsync = NoopTestMethodAsync;
         private IReadOnlyCollection<Action> _tests = Array.Empty<Action>();
         private IReadOnlyCollection<Func<Task>> _testsAsync = Array.Empty<Func<Task>>();
 
@@ -34,7 +34,7 @@ namespace Egil.RazorComponents.Testing
         /// Gets or sets the asynchronous setup action to perform before the <see cref="Test"/> action,
         /// <see cref="TestAsync"/> action and <see cref="Tests"/> and <see cref="TestsAsync"/> actions are invoked.
         /// </summary>
-        [Parameter] public Func<Task> SetupAsync { get => _setupAsync; set => _setupAsync = value ?? NoopAsyncTestMethod; }
+        [Parameter] public Func<Task> SetupAsync { get => _setupAsync; set => _setupAsync = value ?? NoopTestMethodAsync; }
 
         /// <summary>
         /// Gets or sets the first test action to invoke, after the <see cref="Setup"/> action has
@@ -52,7 +52,7 @@ namespace Egil.RazorComponents.Testing
         /// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
         /// defined in the <see cref="Fixture"/>.
         /// </summary>
-        [Parameter] public Func<Task> TestAsync { get => _testAsync; set => _testAsync = value ?? NoopAsyncTestMethod; }
+        [Parameter] public Func<Task> TestAsync { get => _testAsync; set => _testAsync = value ?? NoopTestMethodAsync; }
 
         /// <summary>
         /// Gets or sets the test actions to invoke, one at the time, in the order they are placed 
@@ -73,9 +73,5 @@ namespace Egil.RazorComponents.Testing
         /// defined in the <see cref="Fixture"/>.
         /// </summary>
         [Parameter] public IReadOnlyCollection<Func<Task>> TestsAsync { get => _testsAsync; set => _testsAsync = value ?? Array.Empty<Func<Task>>(); }
-
-        private static void NoopTestMethod() { }
-
-        private static Task NoopAsyncTestMethod() => Task.CompletedTask;
     }
 }

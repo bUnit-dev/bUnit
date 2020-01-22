@@ -9,6 +9,9 @@ namespace Egil.RazorComponents.Testing
     /// </summary>
     public abstract class FragmentBase : IComponent
     {
+        internal static void NoopTestMethod() { }
+        internal static Task NoopTestMethodAsync() => Task.CompletedTask;
+
         /// <summary>
         /// Gets or sets the child content of the fragment.
         /// </summary>

@@ -1,0 +1,13 @@
+@inherits TestComponentBase
+@using Shouldly
+
+<SnapshotTest Setup="() => Services">
+    <TestInput>
+        <SimpleWithDeps></SimpleWithDeps>
+        <SimpleWithAyncDeps></SimpleWithAyncDeps>
+    </TestInput>
+    <ExpectedOutput>
+        @inject ITestDep testDep
+<p>@testDep.Name</p>
+    </ExpectedOutput>
+</SnapshotTest>
