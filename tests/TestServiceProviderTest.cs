@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace Bunit
+namespace Egil.RazorComponents.Testing
 {
     public class TestServiceProviderTest : ComponentTestFixture
     {
