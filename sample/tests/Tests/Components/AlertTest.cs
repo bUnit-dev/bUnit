@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.EventDispatchExtensions;
+using Egil.RazorComponents.Testing.Mocking.JSInterop;
 using Egil.RazorComponents.Testing.SampleApp.Components;
 using Egil.RazorComponents.Testing.SampleApp.Data;
 using Microsoft.AspNetCore.Authentication;
@@ -208,7 +209,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.Tests.Components
             cut.MarkupMatches(string.Empty);
         }
 
-        [Fact(DisplayName = "Alert can be dismissed via Dismiss() mehod")]
+        [Fact(DisplayName = "Alert can be dismissed via Dismiss() method")]
         public async Task Test008()
         {
             // Arrange            

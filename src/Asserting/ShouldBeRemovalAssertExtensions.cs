@@ -54,7 +54,7 @@ namespace Egil.RazorComponents.Testing.Asserting
         public static void ShouldBeRemoval(this IDiff actualChange, IRenderedFragment expectedChange, string? userMessage = null)
         {
             if (expectedChange is null) throw new ArgumentNullException(nameof(expectedChange));
-            ShouldBeRemoval(actualChange, expectedChange.GetNodes(), userMessage);
+            ShouldBeRemoval(actualChange, expectedChange.Nodes, userMessage);
         }
 
         /// <summary>

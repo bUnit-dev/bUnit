@@ -14,11 +14,12 @@
 
     void Setup1()
     {
-        Services.AddService<ITestDep>(dep1Expected);
+        Services.AddSingleton<ITestDep>(dep1Expected);
     }
 
     void Test1()
     {
+        this.
         GetComponentUnderTest<SimpleWithDeps>().Find("p").TextContent.ShouldBe(dep1Expected.Name);
         GetFragment<Simple1>().ShouldNotBeNull();
     }
@@ -27,6 +28,13 @@
     {
         GetComponentUnderTest<SimpleWithDeps>().Find("p").TextContent.ShouldBe(dep1Expected.Name);
         GetFragment<Simple1>().ShouldNotBeNull();
+    }
+
+    Task TestAsync1()
+    {
+        GetComponentUnderTest<SimpleWithDeps>().Find("p").TextContent.ShouldBe(dep1Expected.Name);
+        GetFragment<Simple1>().ShouldNotBeNull();
+        return Task.CompletedTask;
     }
 }
 
@@ -44,7 +52,7 @@
 
     void Setup2()
     {
-        Services.AddService<ITestDep>(dep2Expected);
+        Services.AddSingleton<ITestDep>(dep2Expected);
     }
 
     void Test2()
@@ -78,7 +86,7 @@
     }
 }
 
-<SnapshotTest Description="Snapshot tests should have own context" Setup="() => Services.AddService<ITestDep>(new Dep3())">
+<SnapshotTest Description="Snapshot tests should have own context" Setup="() => Services.AddSingleton<ITestDep>(new Dep3())">
     <TestInput><SimpleWithDeps /></TestInput>
     <ExpectedOutput><p>@nameof(Dep3)</p></ExpectedOutput>
 </SnapshotTest>

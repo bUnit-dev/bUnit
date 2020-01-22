@@ -23,5 +23,17 @@ namespace Egil.RazorComponents.Testing
         {
             CssSelector = cssSelector;
         }
+
+        /// <inheritdoc/>
+        public ElementNotFoundException()
+        {
+            CssSelector = string.Empty;
+        }
+
+        /// <inheritdoc/>
+        public ElementNotFoundException(string message, Exception innerException) : base(message, innerException)
+        {
+            CssSelector = string.Empty;
+        }
     }
 }

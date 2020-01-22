@@ -19,14 +19,6 @@ namespace Xunit.Sdk
         /// <summary>
         /// Creates an instance of the <see cref="HtmlEqualException"/> type.
         /// </summary>
-        public HtmlEqualException(IEnumerable<IDiff> diffs, IMarkupFormattable expected, IMarkupFormattable actual, string? userMessage, Exception innerException)
-            : base(PrintHtml(expected), PrintHtml(actual), CreateUserMessage(diffs, userMessage), "Expected HTML", "Actual HTML", innerException)
-        {
-        }
-
-        /// <summary>
-        /// Creates an instance of the <see cref="HtmlEqualException"/> type.
-        /// </summary>
         public HtmlEqualException(IEnumerable<IDiff> diffs, IMarkupFormattable expected, IMarkupFormattable actual, string? userMessage)
             : base(PrintHtml(expected), PrintHtml(actual), CreateUserMessage(diffs, userMessage), "Expected HTML", "Actual HTML")
         {

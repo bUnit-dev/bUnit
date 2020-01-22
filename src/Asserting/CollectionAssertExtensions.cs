@@ -8,9 +8,9 @@ using Xunit.Sdk;
 namespace Egil.RazorComponents.Testing.Asserting
 {
     /// <summary>
-    /// Generic test assertions
+    /// Collection test assertions
     /// </summary>
-    public static class GenericAssertExtensions
+    public static class CollectionAssertExtensions
     {
         /// <summary>
         /// Verifies that a collection contains exactly a given number of elements, which

@@ -1,7 +1,9 @@
 ﻿using Shouldly;
 using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Asserting;
+using Egil.RazorComponents.Testing.Mocking.JSInterop;
 using Egil.RazorComponents.Testing.EventDispatchExtensions;
+using Egil.RazorComponents.Testing.Mocking.JSInterop;
 using Egil.RazorComponents.Testing.SampleApp.Components;
 using Egil.RazorComponents.Testing.SampleApp.Data;
 using Microsoft.AspNetCore.Components;
@@ -119,8 +121,8 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
             cut.Find("input").Change(taskValue);
             cut.Find("form").Submit();
 
-            createdTask.ShouldNotBeNull();
-            createdTask?.Text.ShouldBe(taskValue);
+            createdTask = createdTask.ShouldBeOfType<Todo>();
+            createdTask.Text.ShouldBe(taskValue);
         }
 
         [Fact(DisplayName = "When add task form is submitted with no text OnAddingTodo is not called")]

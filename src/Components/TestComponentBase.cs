@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
+using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Diffing;
 using Microsoft.AspNetCore.Components;
@@ -33,10 +35,6 @@ namespace Egil.RazorComponents.Testing
             => _testContextAdapter.HasActiveContext ? _testContextAdapter.Renderer : base.Renderer;
 
         /// <inheritdoc/>
-        public override TestHtmlParser HtmlParser
-            => _testContextAdapter.HasActiveContext ? _testContextAdapter.HtmlParser : base.HtmlParser;
-
-        /// <inheritdoc/>
         public TestComponentBase()
         {
             _renderer = new Lazy<TestRenderer>(() =>
@@ -52,15 +50,15 @@ namespace Egil.RazorComponents.Testing
         /// in the file and runs their associated tests.
         /// </summary>
         [Fact(DisplayName = "Razor test runner")]
-        public void RazorTest()
+        public async Task RazorTest()
         {
             var container = new ContainerComponent(_renderer.Value);
             container.Render(BuildRenderTree);
 
-            ExecuteFixtureTests(container);
-            ExecuteSnapshotTests(container);
+            await ExecuteFixtureTests(container).ConfigureAwait(false);
+            await ExecuteSnapshotTests(container).ConfigureAwait(false);
         }
-
+        
         /// <inheritdoc/>
         public IRenderedFragment GetComponentUnderTest()
             => _testContextAdapter.GetComponentUnderTest();
@@ -78,6 +76,12 @@ namespace Egil.RazorComponents.Testing
             => _testContextAdapter.GetFragment<TComponent>(id);
 
         /// <inheritdoc/>
+        public override INodeList CreateNodes(string markup)
+            => _testContextAdapter.HasActiveContext
+                ? _testContextAdapter.CreateNodes(markup)
+                : base.CreateNodes(markup);
+
+        /// <inheritdoc/>
         public override IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)
             => _testContextAdapter.HasActiveContext
                 ? _testContextAdapter.RenderComponent<TComponent>(parameters)
@@ -92,7 +96,7 @@ namespace Egil.RazorComponents.Testing
                 base.WaitForNextRender(renderTrigger, timeout);
         }
 
-        private void ExecuteFixtureTests(ContainerComponent container)
+        private async Task ExecuteFixtureTests(ContainerComponent container)
         {
             foreach (var (_, fixture) in container.GetComponents<Fixture>())
             {
@@ -102,11 +106,18 @@ namespace Egil.RazorComponents.Testing
                 _testContextAdapter.ActivateRazorTestContext(testData);
                 
                 InvokeFixtureAction(fixture, fixture.Setup);
+                await InvokeFixtureAction(fixture, fixture.SetupAsync).ConfigureAwait(false);
                 InvokeFixtureAction(fixture, fixture.Test);
+                await InvokeFixtureAction(fixture, fixture.TestAsync).ConfigureAwait(false);
 
                 foreach (var test in fixture.Tests)
                 {
                     InvokeFixtureAction(fixture, test);
+                }
+
+                foreach (var test in fixture.TestsAsync)
+                {
+                    await InvokeFixtureAction(fixture, test).ConfigureAwait(false);
                 }
 
                 _testContextAdapter.DisposeActiveTestContext();
@@ -125,7 +136,19 @@ namespace Egil.RazorComponents.Testing
             }
         }
 
-        private void ExecuteSnapshotTests(ContainerComponent container)
+        private static async Task InvokeFixtureAction(Fixture fixture, Func<Task> action)
+        {
+            try
+            {
+                await action().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FixtureFailedException(fixture.Description ?? $"{action.Method.Name} failed:", ex);
+            }
+        }
+
+        private async Task ExecuteSnapshotTests(ContainerComponent container)
         {
             foreach (var (_, snapshot) in container.GetComponents<SnapshotTest>())
             {
@@ -134,6 +157,7 @@ namespace Egil.RazorComponents.Testing
 
                 var context = _testContextAdapter.ActivateSnapshotTestContext(testData);
                 snapshot.Setup();
+                await snapshot.SetupAsync().ConfigureAwait(false);
                 var actual = context.RenderTestInput();
                 var expected = context.RenderExpectedOutput();
                 actual.MarkupMatches(expected, snapshot.Description);

@@ -22,3 +22,10 @@ This library's goal is to make it easy to write _comprehensive, stable unit test
 - [Mocking JsRuntime](https://github.com/egil/razor-components-testing-library/wiki/Mocking-JsRuntime)
 - [References](https://github.com/egil/razor-components-testing-library/wiki/References)
 - [Contribute](https://github.com/egil/razor-components-testing-library/wiki/Contribute)
+
+## Contributors
+
+Shout outs and a big thank you to the contributors to this library. Here they are, in alphabetically:
+
+- [Michael J Conrad (@Siphonophora)](https://github.com/Siphonophora)
+- [Rastislav Novotný (@duracellko)](https://github.com/duracellko)

@@ -194,7 +194,6 @@ namespace Egil.RazorComponents.Testing.Extensions
             yield return node;
         }
 
-
         /// <summary>
         /// Gets the <see cref="TestHtmlParser"/> stored in the <paramref name="node"/>s
         /// owning context, if one is available. 

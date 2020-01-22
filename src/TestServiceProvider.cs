@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Egil.RazorComponents.Testing
 {
@@ -8,10 +10,16 @@ namespace Egil.RazorComponents.Testing
     /// Represents a <see cref="IServiceProvider"/> and <see cref="IServiceCollection"/> 
     /// as a single type used for test purposes.
     /// </summary>
-    public sealed class TestServiceProvider : IServiceProvider, IDisposable
+    [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix")]
+    public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, IDisposable
     {
-        private readonly ServiceCollection _serviceCollection = new ServiceCollection();
+        private readonly IServiceCollection _serviceCollection;
         private ServiceProvider? _serviceProvider;
+
+        /// <summary>
+        /// Gets a reusable default test service provider.
+        /// </summary>
+        public static readonly IServiceProvider Default = new TestServiceProvider(new ServiceCollection(), true);
 
         /// <summary>
         /// Gets whether this <see cref="TestServiceProvider"/> has been initialized, and 
@@ -19,131 +27,36 @@ namespace Egil.RazorComponents.Testing
         /// </summary>
         public bool IsProviderInitialized => _serviceProvider is { };
 
-        /// <summary>
-        /// Adds a singleton service of the type specified in TService with an implementation
-        /// type specified in TImplementation using the factory specified in implementationFactory
-        /// to this <see cref="TestServiceProvider"/>.
-        /// </summary>
-        /// <typeparam name="TService">The type of the service to add.</typeparam>
-        /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
-        /// <param name="implementationFactory">The factory that creates the service.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public TestServiceProvider AddService<TService, TImplementation>(Func<IServiceProvider, TImplementation> implementationFactory)
-            where TService : class
-            where TImplementation : class, TService
+        /// <inheritdoc/>
+        public int Count => _serviceCollection.Count;
+
+        /// <inheritdoc/>
+        public bool IsReadOnly => IsProviderInitialized || _serviceCollection.IsReadOnly;
+
+        /// <inheritdoc/>
+        public ServiceDescriptor this[int index]
         {
-            CheckInitializedAndThrow();
-            _serviceCollection.AddSingleton<TService, TImplementation>(implementationFactory);
-            return this;
+            get => _serviceCollection[index];
+            set
+            {
+                CheckInitializedAndThrow();
+                _serviceCollection[index] = value;
+            }
         }
 
         /// <summary>
-        /// Adds a singleton service of the type specified in <typeparamref name="TService"/> with a factory specified
-        /// in <paramref name="implementationFactory"/> to this <see cref="TestServiceProvider"/>.
+        /// Creates an instance of the <see cref="TestServiceProvider"/> and sets its service collection to the
+        /// provided <paramref name="initialServiceCollection"/>, if any.
         /// </summary>
-        /// <typeparam name="TService">The type of the service to add.</typeparam>
-        /// <param name="implementationFactory">The factory that creates the service.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public TestServiceProvider AddService<TService>(Func<IServiceProvider, TService> implementationFactory) where TService : class
+        /// <param name="initialServiceCollection"></param>
+        public TestServiceProvider(IServiceCollection? initialServiceCollection = null) : this(initialServiceCollection ?? new ServiceCollection(), false)
         {
-            CheckInitializedAndThrow();
-            _serviceCollection.AddSingleton<TService>(implementationFactory);
-            return this;
         }
 
-        /// <summary>
-        /// Adds a singleton service of the type specified in <typeparamref name="TService"/> to this <see cref="TestServiceProvider"/>.
-        /// </summary>
-        /// <typeparam name="TService">The type of the service to add.</typeparam>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public TestServiceProvider AddService<TService>() where TService : class
+        private TestServiceProvider(IServiceCollection initialServiceCollection, bool initializeProvider)
         {
-            CheckInitializedAndThrow();
-            _serviceCollection.AddSingleton<TService>();
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a singleton service of the type specified in <paramref name="serviceType"/> to this <see cref="TestServiceProvider"/>.
-        /// </summary>
-        /// <param name="serviceType">The type of the service to register and the implementation to use.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public TestServiceProvider AddService(Type serviceType)
-        {
-            CheckInitializedAndThrow();
-            _serviceCollection.AddSingleton(serviceType);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a singleton service of the type specified in <typeparamref name="TService"/> with an implementation
-        /// type specified in <typeparamref name="TService"/> to this <see cref="TestServiceProvider"/>.
-        /// </summary>
-        /// <typeparam name="TService">The type of the service to add.</typeparam>
-        /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public TestServiceProvider AddService<TService, TImplementation>()
-            where TService : class
-            where TImplementation : class, TService
-        {
-            CheckInitializedAndThrow();
-            _serviceCollection.AddSingleton<TService, TImplementation>();
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a singleton service of the type specified in <paramref name="serviceType"/> with a factory
-        /// specified in <paramref name="implementationFactory"/> to this <see cref="TestServiceProvider"/>.
-        /// </summary>
-        /// <param name="serviceType">The type of the service to register.</param>
-        /// <param name="implementationFactory">The factory that creates the service.</param>
-        /// <returns></returns>
-        public TestServiceProvider AddService(Type serviceType, Func<IServiceProvider, object> implementationFactory)
-        {
-            CheckInitializedAndThrow();
-            _serviceCollection.AddSingleton(serviceType, implementationFactory);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a singleton service of the type specified in <paramref name="serviceType"/> with an implementation
-        /// of the type specified in <paramref name="implementationType"/> to this <see cref="TestServiceProvider"/>.
-        /// </summary>
-        /// <param name="serviceType">The type of the service to register.</param>
-        /// <param name="implementationType">The implementation type of the service.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>        
-        public TestServiceProvider AddService(Type serviceType, Type implementationType)
-        {
-            CheckInitializedAndThrow();
-            _serviceCollection.AddSingleton(serviceType, implementationType);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a singleton service of the type specified in <typeparamref name="TService"/> with an instance specified in 
-        /// <paramref name="implementationInstance"/> to this <see cref="TestServiceProvider"/>.
-        /// </summary>
-        /// <param name="implementationInstance">The instance of the service.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public TestServiceProvider AddService<TService>(TService implementationInstance) where TService : class
-        {
-            CheckInitializedAndThrow();
-            _serviceCollection.AddSingleton<TService>(implementationInstance);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a singleton service of the type specified in <paramref name="serviceType"/> with an instance specified in 
-        /// <paramref name="implementationInstance"/> to this <see cref="TestServiceProvider"/>.
-        /// </summary>
-        /// <param name="serviceType">The type of the service to register.</param>
-        /// <param name="implementationInstance">The instance of the service.</param>
-        /// <returns>A reference to this instance after the operation has completed.</returns>
-        public TestServiceProvider AddService(Type serviceType, object implementationInstance)
-        {
-            CheckInitializedAndThrow();
-            _serviceCollection.AddSingleton(serviceType, implementationInstance);
-            return this;
+            _serviceCollection = initialServiceCollection;
+            if (initializeProvider) _serviceProvider = _serviceCollection.BuildServiceProvider();
         }
 
         /// <summary>
@@ -151,12 +64,7 @@ namespace Egil.RazorComponents.Testing
         /// </summary>
         /// <typeparam name="TService">The type of service object to get.</typeparam>
         /// <returns>A service object of type T or null if there is no such service.</returns>        
-        public TService GetService<TService>()
-        {
-            if (_serviceProvider is null)
-                _serviceProvider = _serviceCollection.BuildServiceProvider();
-            return _serviceProvider.GetService<TService>();
-        }
+        public TService GetService<TService>() => (TService)GetService(typeof(TService));
 
         /// <inheritdoc/>
         public object GetService(Type serviceType)
@@ -168,15 +76,60 @@ namespace Egil.RazorComponents.Testing
         }
 
         /// <inheritdoc/>
+        public IEnumerator<ServiceDescriptor> GetEnumerator() => _serviceCollection.GetEnumerator();
+
+        /// <inheritdoc/>
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        /// <inheritdoc/>
         public void Dispose()
         {
             _serviceProvider?.Dispose();
         }
 
+        /// <inheritdoc/>
+        public int IndexOf(ServiceDescriptor item) => _serviceCollection.IndexOf(item);
+        /// <inheritdoc/>
+        public void Insert(int index, ServiceDescriptor item)
+        {
+            CheckInitializedAndThrow();
+            _serviceCollection.Insert(index, item);
+        }
+        /// <inheritdoc/>
+        public void RemoveAt(int index)
+        {
+            CheckInitializedAndThrow();
+            _serviceCollection.RemoveAt(index);
+        }
+
+        /// <inheritdoc/>
+        public void Add(ServiceDescriptor item)
+        {
+            CheckInitializedAndThrow();
+            _serviceCollection.Add(item);
+        }
+        /// <inheritdoc/>
+        public void Clear()
+        {
+            CheckInitializedAndThrow();
+            _serviceCollection.Clear();
+        }
+
+        /// <inheritdoc/>
+        public bool Contains(ServiceDescriptor item) => _serviceCollection.Contains(item);
+        /// <inheritdoc/>
+        public void CopyTo(ServiceDescriptor[] array, int arrayIndex) => _serviceCollection.CopyTo(array, arrayIndex);
+        /// <inheritdoc/>
+        public bool Remove(ServiceDescriptor item)
+        {
+            CheckInitializedAndThrow();
+            return _serviceCollection.Remove(item);
+        }
+
         private void CheckInitializedAndThrow()
         {
             if (IsProviderInitialized)
-                throw new InvalidOperationException("New services cannot be added to provider after it has been initialized.");
+                throw new InvalidOperationException("Services cannot be added to provider after it has been initialized.");
         }
     }
 }

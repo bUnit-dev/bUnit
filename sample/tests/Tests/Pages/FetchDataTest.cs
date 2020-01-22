@@ -8,6 +8,7 @@ using Egil.RazorComponents.Testing.SampleApp.Components;
 using Xunit;
 using Egil.RazorComponents.Testing.SampleApp.Pages;
 using Shouldly;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
 {
@@ -17,7 +18,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
         public void Test001()
         {
             // Arrange - add the mock forecast service
-            Services.AddService<IWeatherForecastService, MockForecastService>();
+            Services.AddSingleton<IWeatherForecastService, MockForecastService>();
 
             // Act - render the FetchData component
             var cut = RenderComponent<FetchData>();
@@ -35,7 +36,7 @@ namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
             // Setup the mock forecast service
             var forecasts = new[] { new WeatherForecast { Date = DateTime.Now, Summary = "Testy", TemperatureC = 42 } };
             var mockForecastService = new MockForecastService();
-            Services.AddService<IWeatherForecastService>(mockForecastService);
+            Services.AddSingleton<IWeatherForecastService>(mockForecastService);
 
             // Arrange - render the FetchData component
             var cut = RenderComponent<FetchData>();

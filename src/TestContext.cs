@@ -1,9 +1,12 @@
-﻿using Egil.RazorComponents.Testing.Diffing;
+﻿using AngleSharp.Dom;
+using Egil.RazorComponents.Testing.Diffing;
+using Egil.RazorComponents.Testing.Mocking.JSInterop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.JSInterop;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -24,9 +27,6 @@ namespace Egil.RazorComponents.Testing
         public virtual TestRenderer Renderer => _renderer.Value;
 
         /// <inheritdoc/>
-        public virtual TestHtmlParser HtmlParser => _htmlParser.Value;
-
-        /// <inheritdoc/>
         public virtual TestServiceProvider Services { get; } = new TestServiceProvider();
 
         /// <summary>
@@ -34,9 +34,11 @@ namespace Egil.RazorComponents.Testing
         /// </summary>
         public TestContext()
         {
+            Services.AddSingleton<IJSRuntime>(new PlaceholderJsRuntime());
+
             _renderer = new Lazy<TestRenderer>(() =>
             {
-                var loggerFactory = Services.GetService<ILoggerFactory>() ?? new NullLoggerFactory();
+                var loggerFactory = Services.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance;
                 return new TestRenderer(Services, loggerFactory);
             });
             _htmlParser = new Lazy<TestHtmlParser>(() =>
@@ -44,6 +46,10 @@ namespace Egil.RazorComponents.Testing
                 return new TestHtmlParser(Renderer, new HtmlComparer());
             });
         }
+
+        /// <inheritdoc/>
+        public virtual INodeList CreateNodes(string markup)
+            => _htmlParser.Value.Parse(markup);
 
         /// <inheritdoc/>
         public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent

@@ -10,7 +10,6 @@ namespace Egil.RazorComponents.Testing
     [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     internal class Htmlizer
     {
-        private const string BLAZOR_ATTR_PREFIX = "blazor:";
         private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
 
         private static readonly HashSet<string> SelfClosingElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -18,7 +17,10 @@ namespace Egil.RazorComponents.Testing
             "area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"
         };
 
-        public static bool IsBlazorAttribute(string attributeName) 
+        public const string BLAZOR_ATTR_PREFIX = "blazor:";
+        public const string ELEMENT_REFERENCE_ATTR_NAME = BLAZOR_ATTR_PREFIX + "elementreference";
+
+        public static bool IsBlazorAttribute(string attributeName)
             => attributeName.StartsWith(BLAZOR_ATTR_PREFIX, StringComparison.Ordinal);
 
         public static string ToBlazorAttribute(string attributeName)
@@ -200,9 +202,9 @@ namespace Egil.RazorComponents.Testing
                     return candidateIndex;
                 }
 
-                if(frame.FrameType == RenderTreeFrameType.ElementReferenceCapture)
+                if (frame.FrameType == RenderTreeFrameType.ElementReferenceCapture)
                 {
-                    result.Add($" {BLAZOR_ATTR_PREFIX}elementreference=\"{frame.AttributeName}\"");
+                    result.Add($" {ELEMENT_REFERENCE_ATTR_NAME}=\"{frame.AttributeName}\"");
                     return candidateIndex;
                 }
                 // End of addition
