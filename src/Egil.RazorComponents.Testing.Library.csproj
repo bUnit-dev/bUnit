@@ -40,8 +40,8 @@ This library's goal is to make it easy to write comprehensive, stable unit tests
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.*" />
   </ItemGroup>
 
   <ItemGroup>
