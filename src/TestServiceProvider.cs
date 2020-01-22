@@ -44,6 +44,11 @@ namespace Egil.RazorComponents.Testing
             }
         }
 
+        /// <summary>
+        /// Creates an instance of the <see cref="TestServiceProvider"/> and sets its service collection to the
+        /// provided <paramref name="initialServiceCollection"/>, if any.
+        /// </summary>
+        /// <param name="initialServiceCollection"></param>
         public TestServiceProvider(IServiceCollection? initialServiceCollection = null) : this(initialServiceCollection ?? new ServiceCollection(), false)
         {
         }
