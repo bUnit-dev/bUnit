@@ -24,8 +24,8 @@ jobs:
         with:
           files: '["*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'      
+        #with:
+        #  dotnet-version: '3.1.100'      
       - name: Building and verifying library
         run: |
           dotnet build -c Release
@@ -40,5 +40,5 @@ jobs:
         run: |
           dotnet new --install ${GITHUB_WORKSPACE}/template/Razor.Components.Testing.Library.Template.$VERSION.nupkg
           dotnet new razortest -o ${GITHUB_WORKSPACE}/Test
-          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}
+          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/lib
           dotnet test ${GITHUB_WORKSPACE}/Test
