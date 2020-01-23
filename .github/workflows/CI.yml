@@ -3,9 +3,9 @@ name: CI
 on: push
 
 env:
-  VERSION: 1337.0.0
-  BRANCH: ''
-  COMMIT: ''
+  VERSION: '1.0.0-beta-5'
+  BRANCH: 'master'
+  COMMIT: 'ae02abedfe6a23e99f47e1b7c43342858ee7f14e'
   
 jobs:  
   build:
@@ -41,3 +41,6 @@ jobs:
           dotnet new razortest -o ${GITHUB_WORKSPACE}/Test
           dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/lib
           dotnet test ${GITHUB_WORKSPACE}/Test
+      - name: Push packages to NuGet.org
+        run: | 
+          dotnet nuget push ${GITHUB_WORKSPACE}/template/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate     
