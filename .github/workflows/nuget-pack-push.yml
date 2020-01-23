@@ -1,4 +1,4 @@
-name: CD
+name: NUGET-PACK-PUSH
 
 on:
   release:
@@ -34,14 +34,16 @@ jobs:
           dotnet build -c Release /nowarn:CS1591
           dotnet test -c Release /nowarn:CS1591
       - name: Creating library package
-        run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE} -p:version=$VERSION /nowarn:CS1591
+        run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
       - name: Buidling template package
-        run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE} -p:version=$VERSION -p:PackageVersion=$VERSION
+        run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE}/template -p:version=$VERSION -p:PackageVersion=$VERSION
       - name: Verifying template
         run: |
-          dotnet new --install ${GITHUB_WORKSPACE}/Razor.Components.Testing.Library.Template.$VERSION.nupkg
+          dotnet new --install ${GITHUB_WORKSPACE}/template/Razor.Components.Testing.Library.Template.$VERSION.nupkg
           dotnet new razortest -o ${GITHUB_WORKSPACE}/Test
-          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}
+          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/lib
           dotnet test ${GITHUB_WORKSPACE}/Test
       - name: Push packages to NuGet.org
-        run: dotnet nuget push ${GITHUB_WORKSPACE}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: | 
+          dotnet nuget push ${GITHUB_WORKSPACE}/lib/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push ${GITHUB_WORKSPACE}/template/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate       
