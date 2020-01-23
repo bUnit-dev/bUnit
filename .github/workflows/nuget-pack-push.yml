@@ -3,7 +3,8 @@ name: NUGET-PACK-PUSH
 on:
   release:
     types:
-      - published        
+      - published
+      - edited
 
 env:
   VERSION: 0.0.0
