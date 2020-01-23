@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Testing.Extensions;
+using AngleSharp.Css.Dom;
 
 namespace Egil.RazorComponents.Testing
 {
@@ -32,7 +33,7 @@ namespace Egil.RazorComponents.Testing
         {
             if (renderer is null) throw new ArgumentNullException(nameof(renderer));
             _renderer = renderer;
-            ComponentId = _renderer.AttachTestRootComponent(this);            
+            ComponentId = _renderer.AttachTestRootComponent(this);
         }
 
         /// <inheritdoc/>
@@ -58,17 +59,14 @@ namespace Egil.RazorComponents.Testing
         /// component is found, its child content is also searched recursively.
         /// </summary>
         /// <typeparam name="TComponent">The type of component to find</typeparam>
-        /// <exception cref="InvalidOperationException">When there are more than one component of type <typeparamref name="TComponent"/> found or if none are found.</exception>
+        /// <exception cref="InvalidOperationException">When a component of type <typeparamref name="TComponent"/> was not found.</exception>
         public (int Id, TComponent Component) GetComponent<TComponent>() where TComponent : IComponent
         {
-            var result = GetComponents<TComponent>();
-
-            if (result.Count == 1) 
-                return result[0];
-            else if (result.Count == 0)
-                throw new InvalidOperationException($"No components of type {typeof(TComponent)} were found in the render tree.");
+            var result = GetComponent<TComponent>(ComponentId);
+            if (result.HasValue)
+                return result.Value;
             else
-                throw new InvalidOperationException($"More than one component of type {typeof(TComponent)} was found in the render tree.");
+                throw new InvalidOperationException($"No components of type {typeof(TComponent)} were found in the render tree.");
         }
 
         /// <summary>
@@ -84,7 +82,7 @@ namespace Egil.RazorComponents.Testing
             var ownFrames = _renderer.GetCurrentRenderTreeFrames(componentId);
             if (ownFrames.Count == 0)
             {
-                throw new InvalidOperationException($"{nameof(ContainerComponent)} hasn't yet rendered");
+                return Array.Empty<(int Id, TComponent Component)>();
             }
 
             var result = new List<(int Id, TComponent Component)>();
@@ -97,20 +95,32 @@ namespace Egil.RazorComponents.Testing
                     {
                         result.Add((frame.ComponentId, component));
                     }
-                    else if (frame.Component.IsCascadingValueComponent())
-                    {
-                        // It seems as if CascadingValue components works a little different
-                        // than regular components with child content is not rendered
-                        // and available via GetCurrentRenderTreeFrames for the componentId
-                        // of the component that had the CascadingValue as a child.
-                        // Thus we call GetComponents recursively with the CascadingValue's
-                        // componentId to see if the TComponent is inside it.
-                        result.AddRange(GetComponents<TComponent>(frame.ComponentId));
-                    }
+                    result.AddRange(GetComponents<TComponent>(frame.ComponentId));
                 }
             }
 
             return result;
+        }
+
+        private (int Id, TComponent Component)? GetComponent<TComponent>(int componentId) where TComponent : IComponent
+        {
+            var ownFrames = _renderer.GetCurrentRenderTreeFrames(componentId);
+
+            for (int i = 0; i < ownFrames.Count; i++)
+            {
+                ref var frame = ref ownFrames.Array[i];
+                if (frame.FrameType == RenderTreeFrameType.Component)
+                {
+                    if (frame.Component is TComponent component)
+                    {
+                        return (frame.ComponentId, component);
+                    }
+                    var result = GetComponent<TComponent>(frame.ComponentId);
+                    if (result != null) return result;
+                }
+            }
+
+            return null;
         }
     }
 }

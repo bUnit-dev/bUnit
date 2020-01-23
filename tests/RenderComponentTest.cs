@@ -22,7 +22,7 @@ namespace Egil.RazorComponents.Testing
 
         [Fact(DisplayName = "Nodes should return new instance " +
                             "when a SetParametersAndRender has caused changes to DOM tree")]
-        public void Tets004()
+        public void Test004()
         {
             var cut = RenderComponent<Wrapper>(ChildContent("<div>"));
             var initialNodes = cut.Nodes;
@@ -35,7 +35,7 @@ namespace Egil.RazorComponents.Testing
 
         [Fact(DisplayName = "Nodes should return new instance " +
                             "when a Render has caused changes to DOM tree")]
-        public void Tets005()
+        public void Test005()
         {
             var cut = RenderComponent<RenderCounter>();
             var initialNodes = cut.Nodes;
@@ -44,20 +44,5 @@ namespace Egil.RazorComponents.Testing
 
             Assert.NotSame(initialNodes, cut.Nodes);
         }
-
-        [Fact(DisplayName = "Nodes should return new instance " +
-                            "when a event handler trigger has caused changes to DOM tree")]
-        public void Tets006()
-        {
-            var cut = RenderComponent<ClickCounter>();
-            var initialNodes = cut.Nodes;
-
-            cut.Find("button").Click();
-
-            Assert.NotSame(initialNodes, cut.Nodes);
-        }
-
-
     }
-
 }
