@@ -47,7 +47,7 @@ This library's goal is to make it easy to write comprehensive, stable unit tests
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.13.0" />
     <PackageReference Include="AngleSharp.Css" Version="0.13.0" />
-    <PackageReference Include="AngleSharp.Diffing" Version="0.13.2" />
+    <PackageReference Include="AngleSharp.Diffing" Version="0.13.3-alpha-44" />
     <PackageReference Include="RichardSzalay.MockHttp" Version="6.0.0" />
     <PackageReference Include="xunit.assert" Version="2.4.1" />
     <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
