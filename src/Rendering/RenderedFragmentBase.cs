@@ -93,7 +93,6 @@ namespace Egil.RazorComponents.Testing
             return Nodes.CompareTo(_snapshotNodes);
         }
 
-
         /// <inheritdoc/>
         public IReadOnlyList<IDiff> GetChangesSinceFirstRender()
         {
@@ -104,24 +103,30 @@ namespace Egil.RazorComponents.Testing
 
         private void ComponentMarkupChanged(in RenderBatch renderBatch)
         {
-            if (renderBatch.HasUpdatesTo(ComponentId) || HasChildComponentUpdated(renderBatch))
+            if (renderBatch.HasUpdatesTo(ComponentId) || HasChildComponentUpdated(renderBatch, ComponentId))
             {
                 ResetLatestRenderCache();
             }
         }
 
-        private bool HasChildComponentUpdated(in RenderBatch renderBatch)
+        private bool HasChildComponentUpdated(in RenderBatch renderBatch, int componentId)
         {
-            var frames = TestContext.Renderer.GetCurrentRenderTreeFrames(ComponentId);
+            var frames = TestContext.Renderer.GetCurrentRenderTreeFrames(componentId);
+
             for (int i = 0; i < frames.Count; i++)
             {
                 var frame = frames.Array[i];
-
-                if (renderBatch.HasUpdatesTo(frame.ComponentId))
+                if (frame.FrameType == RenderTreeFrameType.Component)
                 {
-                    return true;
+                    if (renderBatch.HasUpdatesTo(frame.ComponentId))
+                    {
+                        return true;
+                    }
+                    if (HasChildComponentUpdated(in renderBatch, frame.ComponentId))
+                    {
+                        return true;
+                    }
                 }
-
             }
             return false;
         }

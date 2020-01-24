@@ -1,0 +1,9 @@
+﻿<button @onclick="IncreaseCount">Click to render again</button>
+
+@code {
+    public int RenderCount { get; private set; }
+    
+    void IncreaseCount() { }
+
+    protected override void OnAfterRender(bool firstRender) => RenderCount++;
+}

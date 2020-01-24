@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Egil.RazorComponents.Testing
+namespace Xunit.Sdk
 {
     /// <summary>
     /// Represents a failure to find an element in the searched target

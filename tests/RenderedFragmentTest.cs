@@ -1,6 +1,8 @@
-﻿using Egil.RazorComponents.Testing.Extensions;
+﻿using Egil.RazorComponents.Testing.EventDispatchExtensions;
+using Egil.RazorComponents.Testing.Extensions;
 using Egil.RazorComponents.Testing.SampleComponents;
 using Egil.RazorComponents.Testing.SampleComponents.Data;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System;
@@ -8,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Egil.RazorComponents.Testing
 {
@@ -70,6 +73,51 @@ namespace Egil.RazorComponents.Testing
 
             Assert.NotSame(initialValue, cut.Nodes);
         }
+
+
+        [Fact(DisplayName = "Nodes should return new instance " +
+                            "when a event handler trigger has caused changes to DOM tree")]
+        public void Test006()
+        {
+            var cut = RenderComponent<ClickCounter>();
+            var initialNodes = cut.Nodes;
+
+            cut.Find("button").Click();
+
+            Assert.NotSame(initialNodes, cut.Nodes);
+        }
+
+        [Fact(DisplayName = "Nodes should return new instance " +
+                            "when a nested component has caused the DOM tree to change")]
+        public void Test007()
+        {
+            var cut = RenderComponent<Wrapper>(
+                ChildContent<CascadingValue<string>>(
+                    ("Value", "FOO"),
+                    ChildContent<ClickCounter>()
+                )
+            );
+            var initialNodes = cut.Nodes;
+
+            cut.Find("button").Click();
+
+            Assert.NotSame(initialNodes, cut.Nodes);
+        }
+
+        [Fact(DisplayName = "Nodes should return the same instance " +
+                            "when a re-render does not causes the DOM to change")]
+        public void Test008()
+        {
+            var cut = RenderComponent<RenderOnClick>();
+            var initialNodes = cut.Nodes;
+
+            cut.Find("button").Click();
+
+            cut.Instance.RenderCount.ShouldBe(2);
+            Assert.Same(initialNodes, cut.Nodes);
+        }
+
+
     }
 
 }
