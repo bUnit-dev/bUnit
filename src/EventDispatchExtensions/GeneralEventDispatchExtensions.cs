@@ -31,7 +31,7 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
             var eventHandlerIdString = element.GetAttribute(Htmlizer.ToBlazorAttribute(eventName));
 
             if (string.IsNullOrEmpty(eventHandlerIdString))
-                throw new ArgumentException($"The element does not have an event handler for the event '{eventName}'.");
+                throw new NoEventHandlerOnElementException($"The element does not have an event handler for the event '{eventName}'.");
 
             var eventHandlerId = ulong.Parse(eventHandlerIdString, CultureInfo.InvariantCulture);
 

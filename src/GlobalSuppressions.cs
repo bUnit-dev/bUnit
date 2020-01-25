@@ -9,3 +9,4 @@ using System.Diagnostics.CodeAnalysis;
     Target = "Egil.RazorComponents.Testing")]
 [assembly: SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", 
     Justification = "No need to translate at this point", Scope = "namespaceanddescendants", Target = "Egil.RazorComponents.Testing")]
+[assembly: SuppressMessage("Design", "CA1032:Implement standard exception constructors", Scope = "namespaceanddescendants", Target = "Egil.RazorComponents.Testing")]

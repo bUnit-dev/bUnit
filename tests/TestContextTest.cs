@@ -4,12 +4,16 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using AngleSharp.Dom;
 using BasicTestApp;
+using DeepEqual.Syntax;
 using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using Egil.RazorComponents.Testing.TestUtililities;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -26,8 +30,8 @@ namespace Egil.RazorComponents.Testing
         [Fact]
         public void CanRenderTextOnlyComponent()
         {
-            var appElement = RenderComponent<TextOnlyComponent>();
-            Assert.Equal("Hello from TextOnlyComponent", appElement.Markup);
+            var cut = RenderComponent<TextOnlyComponent>();
+            Assert.Equal("Hello from TextOnlyComponent", cut.Markup);
         }
 
         // This verifies that we've correctly configured the Razor language version via MSBuild.
@@ -35,8 +39,8 @@ namespace Egil.RazorComponents.Testing
         [Fact]
         public void CanRenderComponentWithDataDash()
         {
-            var appElement = RenderComponent<DataDashComponent>();
-            var element = appElement.Find("#cool_beans");
+            var cut = RenderComponent<DataDashComponent>();
+            var element = cut.Find("#cool_beans");
             Assert.Equal("17", element.GetAttribute("data-tab"));
             Assert.Equal("17", element.TextContent);
         }
@@ -44,8 +48,8 @@ namespace Egil.RazorComponents.Testing
         [Fact]
         public void CanRenderComponentWithAttributes()
         {
-            var appElement = RenderComponent<RedTextComponent>();
-            var styledElement = appElement.Find("h1");
+            var cut = RenderComponent<RedTextComponent>();
+            var styledElement = cut.Find("h1");
             Assert.Equal("Hello, world!", styledElement.TextContent);
             Assert.Equal("color: red;", styledElement.GetAttribute("style"));
             Assert.Equal("somevalue", styledElement.GetAttribute("customattribute"));
@@ -55,13 +59,13 @@ namespace Egil.RazorComponents.Testing
         public void CanTriggerEvents()
         {
             // Initial count is zero
-            var appElement = RenderComponent<CounterComponent>();
-            var countDisplayElement = appElement.Find("p");
+            var cut = RenderComponent<CounterComponent>();
+            var countDisplayElement = cut.Find("p");
             Assert.Equal("Current count: 0", countDisplayElement.TextContent);
 
             // Clicking button increments count
-            appElement.Find("button").Click();
-            Assert.Equal("Current count: 1", appElement.Find("p").TextContent);
+            cut.Find("button").Click();
+            Assert.Equal("Current count: 1", cut.Find("p").TextContent);
         }
 
         [Fact]
@@ -79,68 +83,73 @@ namespace Egil.RazorComponents.Testing
             // Clicking 'tock' completes the task, which updates the state
             // This click causes two renders, thus WaitForNextUpdate is needed
             // to wait for the markup to be updated.
-            //cut.Find("#tock").Click();
             cut.WaitForNextUpdate(() => cut.Find("#tock").Click());
             Assert.Equal("Stopped", cut.Find("#state").TextContent);
         }
 
-        //[Fact]
-        //public void CanTriggerKeyPressEvents()
-        //{
-        //    // List is initially empty
-        //    var appElement = RenderComponent<KeyPressEventComponent>();
-        //    var inputElement = appElement.Find("input");
-        //    var liElements = appElement.FindAll("li");
-        //    Assert.Empty(liElements);
+        [Fact]
+        public void CanTriggerKeyPressEvents()
+        {
+            // List is initially empty
+            var cut = RenderComponent<KeyPressEventComponent>();
+            var inputElement = cut.Find("input");
+            var liElements = cut.FindAll("li");
+            Assert.Empty(liElements);
 
-        //    // Typing adds element
-        //    inputElement.Keypress("a");
-        //    Assert.All(appElement.FindAll("li"), li => Assert.Equal("a", li.TextContent));
+            // Typing adds element
+            inputElement.KeyPress("a");
+            Assert.Collection(cut.FindAll("li"), li => Assert.Equal("a", li.TextContent));
 
-        //    // Typing again adds another element
-        //    inputElement.Keypress("b");
-        //    Assert.All(appElement.FindAll("li"),
-        //        li => Assert.Equal("a", li.Text),
-        //        li => Assert.Equal("b", li.Text));
+            // Typing again adds another element
+            inputElement.KeyPress("b");
+            Assert.Collection(cut.FindAll("li"),
+                li => Assert.Equal("a", li.TextContent),
+                li => Assert.Equal("b", li.TextContent)
+            );
+        }
 
-        //    // Textbox contains typed text
-        //    Assert.Equal("ab", appElement.Find("input").GetAttribute("value"));
-        //}
+        [Fact(DisplayName = "After KeyPress event is triggered, <input value=''> contains keys passed to KeyPress", Skip = "Issue #46")]
+        public void Test001()
+        {
+            var cut = RenderComponent<KeyPressEventComponent>();
 
-        //[Fact]
-        //public void CanAddAndRemoveEventHandlersDynamically()
-        //{
-        //    var appElement = RenderComponent<CounterComponent>();
-        //    var countDisplayElement = appElement.Find("p");
-        //    var incrementButton = appElement.Find("button");
-        //    var toggleClickHandlerCheckbox = appElement.Find("[type=checkbox]");
+            cut.Find("input").KeyPress("abc");
 
-        //    // Initial count is zero; clicking button increments count
-        //    Assert.Equal("Current count: 0", countDisplayElement.TextContent);
-        //    incrementButton.Click();
-        //    Assert.Equal("Current count: 1", () => countDisplayElement.TextContent);
+            cut.Find("input").GetAttribute("value").ShouldBe("abc");
+        }
 
-        //    // We can remove an event handler
-        //    toggleClickHandlerCheckbox.Click();
-        //    Browser.Empty(() => appElement.FindAll("#listening-message"));
-        //    incrementButton.Click();
-        //    Assert.Equal("Current count: 1", () => countDisplayElement.TextContent);
+        [Fact]
+        public void CanAddAndRemoveEventHandlersDynamically()
+        {
+            var cut = RenderComponent<CounterComponent>();
 
-        //    // We can add an event handler
-        //    toggleClickHandlerCheckbox.Click();
-        //    appElement.Find("#listening-message");
-        //    incrementButton.Click();
-        //    Assert.Equal("Current count: 2", () => countDisplayElement.TextContent);
-        //}
+            // Initial count is zero; clicking button increments count
+            Assert.Equal("Current count: 0", cut.Find("p").TextContent);
+            cut.Find("button").Click();
+            Assert.Equal("Current count: 1", cut.Find("p").TextContent);
+
+            // We can remove an event handler
+            cut.Find("[type=checkbox]").Change(false);
+            cut.FindAll("#listening-message").ShouldBeEmpty();
+
+            cut.Find("button").Click();
+            Assert.Equal("Current count: 1", cut.Find("p").TextContent);
+
+            // We can add an event handler
+            cut.Find("[type=checkbox]").Change(true);
+            cut.Find("#listening-message");
+            cut.Find("button").Click();
+            Assert.Equal("Current count: 2", cut.Find("p").TextContent);
+        }
 
         //[Fact]
         //public void CanRenderChildComponents()
         //{
-        //    var appElement = RenderComponent<ParentChildComponent>();
+        //    var cut = RenderComponent<ParentChildComponent>();
         //    Assert.Equal("Parent component",
-        //        appElement.Find("fieldset > legend").Text);
+        //        cut.Find("fieldset > legend").Text);
 
-        //    var styledElement = appElement.Find("fieldset > h1");
+        //    var styledElement = cut.Find("fieldset > h1");
         //    Assert.Equal("Hello, world!", styledElement.TextContent);
         //    Assert.Equal("color: red;", styledElement.GetAttribute("style"));
         //    Assert.Equal("somevalue", styledElement.GetAttribute("customattribute"));
@@ -150,27 +159,27 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanRenderChildContent_StaticHtmlBlock()
         //{
-        //    var appElement = RenderComponent<HtmlBlockChildContent>();
+        //    var cut = RenderComponent<HtmlBlockChildContent>();
         //    Assert.Equal("<p>Some-Static-Text</p>",
-        //        appElement.Find("#foo").GetAttribute("innerHTML"));
+        //        cut.Find("#foo").GetAttribute("innerHTML"));
         //}
 
         //// Verifies we can rewite more complex HTML content into blocks
         //[Fact]
         //public void CanRenderChildContent_MixedHtmlBlock()
         //{
-        //    var appElement = RenderComponent<HtmlMixedChildContent>();
+        //    var cut = RenderComponent<HtmlMixedChildContent>();
 
-        //    var one = appElement.Find("#one");
+        //    var one = cut.Find("#one");
         //    Assert.Equal("<p>Some-Static-Text</p>", one.GetAttribute("innerHTML"));
 
-        //    var two = appElement.Find("#two");
+        //    var two = cut.Find("#two");
         //    Assert.Equal("<span>More-Static-Text</span>", two.GetAttribute("innerHTML"));
 
-        //    var three = appElement.Find("#three");
+        //    var three = cut.Find("#three");
         //    Assert.Equal("Some-Dynamic-Text", three.GetAttribute("innerHTML"));
 
-        //    var four = appElement.Find("#four");
+        //    var four = cut.Find("#four");
         //    Assert.Equal("But this is static", four.GetAttribute("innerHTML"));
         //}
 
@@ -178,18 +187,18 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanRenderChildContent_EncodedHtmlInBlock()
         //{
-        //    var appElement = RenderComponent<HtmlEncodedChildContent>();
+        //    var cut = RenderComponent<HtmlEncodedChildContent>();
 
-        //    var one = appElement.Find("#one");
+        //    var one = cut.Find("#one");
         //    Assert.Equal("<p>Some-Static-Text</p>", one.GetAttribute("innerHTML"));
 
-        //    var two = appElement.Find("#two");
+        //    var two = cut.Find("#two");
         //    Assert.Equal("&lt;span&gt;More-Static-Text&lt;/span&gt;", two.GetAttribute("innerHTML"));
 
-        //    var three = appElement.Find("#three");
+        //    var three = cut.Find("#three");
         //    Assert.Equal("Some-Dynamic-Text", three.GetAttribute("innerHTML"));
 
-        //    var four = appElement.Find("#four");
+        //    var four = cut.Find("#four");
         //    Assert.Equal("But this is static", four.GetAttribute("innerHTML"));
         //}
 
@@ -197,13 +206,13 @@ namespace Egil.RazorComponents.Testing
         //public void CanTriggerEventsOnChildComponents()
         //{
         //    // Counter is displayed as child component. Initial count is zero.
-        //    var appElement = RenderComponent<CounterComponentWrapper>();
-        //    var counterDisplay = appElement
+        //    var cut = RenderComponent<CounterComponentWrapper>();
+        //    var counterDisplay = cut
         //        .FindAll("p")
         //        .Single(element => element.TextContent == "Current count: 0");
 
         //    // Clicking increments count in child component
-        //    appElement.Find("button").Click();
+        //    cut.Find("button").Click();
         //    Assert.Equal("Current count: 1", () => counterDisplay.Text);
         //}
 
@@ -211,14 +220,14 @@ namespace Egil.RazorComponents.Testing
         //public void ChildComponentsRerenderWhenPropertiesChanged()
         //{
         //    // Count value is displayed in child component with initial value zero
-        //    var appElement = RenderComponent<CounterComponentUsingChild>();
-        //    var wholeCounterElement = appElement.Find("p");
+        //    var cut = RenderComponent<CounterComponentUsingChild>();
+        //    var wholeCounterElement = cut.Find("p");
         //    var messageElementInChild = wholeCounterElement.FindElement(By.ClassName("message"));
         //    Assert.Equal("Current count: 0", wholeCounterElement.TextContent);
         //    Assert.Equal("0", messageElementInChild.Text);
 
         //    // Clicking increments count in child element
-        //    appElement.Find("button").Click();
+        //    cut.Find("button").Click();
         //    Assert.Equal("1", () => messageElementInChild.Text);
         //}
 
@@ -226,10 +235,10 @@ namespace Egil.RazorComponents.Testing
         //public void CanAddAndRemoveChildComponentsDynamically()
         //{
         //    // Initially there are zero child components
-        //    var appElement = RenderComponent<AddRemoveChildComponents>();
-        //    var addButton = appElement.FindElement(By.ClassName("addChild"));
-        //    var removeButton = appElement.FindElement(By.ClassName("removeChild"));
-        //    Func<IEnumerable<IWebElement>> childComponentWrappers = () => appElement.FindAll("p");
+        //    var cut = RenderComponent<AddRemoveChildComponents>();
+        //    var addButton = cut.FindElement(By.ClassName("addChild"));
+        //    var removeButton = cut.FindElement(By.ClassName("removeChild"));
+        //    Func<IEnumerable<IWebElement>> childComponentWrappers = () => cut.FindAll("p");
         //    Assert.Empty(childComponentWrappers());
 
         //    // Click to add/remove some child components
@@ -256,10 +265,10 @@ namespace Egil.RazorComponents.Testing
         //public void ChildComponentsNotifiedWhenPropertiesChanged()
         //{
         //    // Child component receives notification that lets it compute a property before first render
-        //    var appElement = RenderComponent<PropertiesChangedHandlerParent>();
-        //    var suppliedValueElement = appElement.FindElement(By.ClassName("supplied"));
-        //    var computedValueElement = appElement.FindElement(By.ClassName("computed"));
-        //    var incrementButton = appElement.Find("button");
+        //    var cut = RenderComponent<PropertiesChangedHandlerParent>();
+        //    var suppliedValueElement = cut.FindElement(By.ClassName("supplied"));
+        //    var computedValueElement = cut.FindElement(By.ClassName("computed"));
+        //    var incrementButton = cut.Find("button");
         //    Assert.Equal("You supplied: 100", suppliedValueElement.TextContent);
         //    Assert.Equal("I computed: 200", computedValueElement.TextContent);
 
@@ -273,14 +282,14 @@ namespace Egil.RazorComponents.Testing
         //public void CanRenderFragmentsWhilePreservingSurroundingElements()
         //{
         //    // Initially, the region isn't shown
-        //    var appElement = RenderComponent<RenderFragmentToggler>();
-        //    var originalButton = appElement.Find("button");
-        //    Func<IEnumerable<IWebElement>> fragmentElements = () => appElement.FindAll("p[name=fragment-element]");
+        //    var cut = RenderComponent<RenderFragmentToggler>();
+        //    var originalButton = cut.Find("button");
+        //    Func<IEnumerable<IWebElement>> fragmentElements = () => cut.FindAll("p[name=fragment-element]");
         //    Assert.Empty(fragmentElements());
 
         //    // The JS-side DOM builder handles regions correctly, placing elements
         //    // after the region after the corresponding elements
-        //    Assert.Equal("The end", appElement.FindElements(By.CssSelector("div > *:last-child")).Single().Text);
+        //    Assert.Equal("The end", cut.FindElements(By.CssSelector("div > *:last-child")).Single().Text);
 
         //    // When we click the button, the region is shown
         //    originalButton.Click();
@@ -296,8 +305,8 @@ namespace Egil.RazorComponents.Testing
         //{
         //    // The component is able to compile and output these type names only because
         //    // of the _ViewImports.cshtml files at the same and ancestor levels
-        //    var appElement = RenderComponent<ComponentUsingImports>();
-        //    Assert.Collection(appElement.FindAll("p"),
+        //    var cut = RenderComponent<ComponentUsingImports>();
+        //    Assert.Collection(cut.FindAll("p"),
         //        elem => Assert.Equal(typeof(Complex).FullName, elem.Text),
         //        elem => Assert.Equal(typeof(AssemblyHashAlgorithm).FullName, elem.Text));
         //}
@@ -305,25 +314,25 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanUseComponentAndStaticContentFromExternalNuGetPackage()
         //{
-        //    var appElement = RenderComponent<ExternalContentPackage>();
+        //    var cut = RenderComponent<ExternalContentPackage>();
 
         //    // NuGet packages can use JS interop features to provide
         //    // .NET code access to browser APIs
-        //    var showPromptButton = appElement.FindAll("button").First();
+        //    var showPromptButton = cut.FindAll("button").First();
         //    showPromptButton.Click();
 
         //    var modal = new WebDriverWait(Browser, TimeSpan.FromSeconds(3))
         //        .Until(SwitchToAlert);
         //    modal.SendKeys("Some value from test");
         //    modal.Accept();
-        //    var promptResult = appElement.Find("strong");
+        //    var promptResult = cut.Find("strong");
         //    Assert.Equal("Some value from test", () => promptResult.Text);
 
         //    // NuGet packages can also embed entire components (themselves
         //    // authored as Razor files), including static content. The CSS value
         //    // here is in a .css file, so if it's correct we know that static content
         //    // file was loaded.
-        //    var specialStyleDiv = appElement.FindElement(By.ClassName("special-style"));
+        //    var specialStyleDiv = cut.FindElement(By.ClassName("special-style"));
         //    Assert.Equal("50px", specialStyleDiv.GetCssValue("padding"));
 
         //    // The external components are fully functional, not just static HTML
@@ -336,44 +345,44 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanRenderSvgWithCorrectNamespace()
         //{
-        //    var appElement = RenderComponent<SvgComponent>();
+        //    var cut = RenderComponent<SvgComponent>();
 
-        //    var svgElement = appElement.FindElement(By.XPath("//*[local-name()='svg' and namespace-uri()='http://www.w3.org/2000/svg']"));
+        //    var svgElement = cut.FindElement(By.XPath("//*[local-name()='svg' and namespace-uri()='http://www.w3.org/2000/svg']"));
         //    Assert.NotNull(svgElement);
 
-        //    var svgCircleElement = appElement.FindElement(By.XPath("//*[local-name()='circle' and namespace-uri()='http://www.w3.org/2000/svg']"));
+        //    var svgCircleElement = cut.FindElement(By.XPath("//*[local-name()='circle' and namespace-uri()='http://www.w3.org/2000/svg']"));
         //    Assert.NotNull(svgCircleElement);
         //    Assert.Equal("10", svgCircleElement.GetAttribute("r"));
 
-        //    appElement.Find("button").Click();
+        //    cut.Find("button").Click();
         //    Assert.Equal("20", () => svgCircleElement.GetAttribute("r"));
         //}
 
         //[Fact]
         //public void CanRenderSvgChildComponentWithCorrectNamespace()
         //{
-        //    var appElement = RenderComponent<SvgWithChildComponent>();
+        //    var cut = RenderComponent<SvgWithChildComponent>();
 
-        //    var svgElement = appElement.FindElement(By.XPath("//*[local-name()='svg' and namespace-uri()='http://www.w3.org/2000/svg']"));
+        //    var svgElement = cut.FindElement(By.XPath("//*[local-name()='svg' and namespace-uri()='http://www.w3.org/2000/svg']"));
         //    Assert.NotNull(svgElement);
 
-        //    var svgCircleElement = appElement.FindElement(By.XPath("//*[local-name()='circle' and namespace-uri()='http://www.w3.org/2000/svg']"));
+        //    var svgCircleElement = cut.FindElement(By.XPath("//*[local-name()='circle' and namespace-uri()='http://www.w3.org/2000/svg']"));
         //    Assert.NotNull(svgCircleElement);
         //}
 
         //[Fact]
         //public void LogicalElementInsertionWorksHierarchically()
         //{
-        //    var appElement = RenderComponent<LogicalElementInsertionCases>();
-        //    Assert.Equal("First Second Third", () => appElement.TextContent);
+        //    var cut = RenderComponent<LogicalElementInsertionCases>();
+        //    Assert.Equal("First Second Third", () => cut.TextContent);
         //}
 
         //[Fact]
         //public void CanUseJsInteropToReferenceElements()
         //{
-        //    var appElement = RenderComponent<ElementRefComponent>();
-        //    var inputElement = appElement.Find("#capturedElement");
-        //    var buttonElement = appElement.Find("button");
+        //    var cut = RenderComponent<ElementRefComponent>();
+        //    var inputElement = cut.Find("#capturedElement");
+        //    var buttonElement = cut.Find("button");
 
         //    Assert.Equal(string.Empty, inputElement.GetAttribute("value"));
 
@@ -386,21 +395,21 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanCaptureReferencesToDynamicallyAddedElements()
         //{
-        //    var appElement = RenderComponent<ElementRefComponent>();
-        //    var buttonElement = appElement.Find("button");
-        //    var checkbox = appElement.Find("input[type=checkbox]");
+        //    var cut = RenderComponent<ElementRefComponent>();
+        //    var buttonElement = cut.Find("button");
+        //    var checkbox = cut.Find("input[type=checkbox]");
 
         //    // We're going to remove the input. But first, put in some contents
         //    // so we can observe it's not the same instance later
-        //    appElement.Find("#capturedElement").SendKeys("some text");
+        //    cut.Find("#capturedElement").SendKeys("some text");
 
         //    // Remove the captured element
         //    checkbox.Click();
-        //    Browser.Empty(() => appElement.FindAll("#capturedElement"));
+        //    Browser.Empty(() => cut.FindAll("#capturedElement"));
 
         //    // Re-add it; observe it starts empty again
         //    checkbox.Click();
-        //    var inputElement = appElement.Find("#capturedElement");
+        //    var inputElement = cut.Find("#capturedElement");
         //    Assert.Equal(string.Empty, inputElement.GetAttribute("value"));
 
         //    // See that the capture variable was automatically updated to reference the new instance
@@ -411,29 +420,29 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanCaptureReferencesToDynamicallyAddedComponents()
         //{
-        //    var appElement = RenderComponent<ComponentRefComponent>();
+        //    var cut = RenderComponent<ComponentRefComponent>();
         //    var incrementButtonSelector = By.CssSelector("#child-component button");
         //    var currentCountTextSelector = By.CssSelector("#child-component p:first-of-type");
-        //    var resetButton = appElement.Find("#reset-child");
-        //    var toggleChildCheckbox = appElement.Find("#toggle-child");
-        //    Func<string> currentCountText = () => appElement.FindElement(currentCountTextSelector).Text;
+        //    var resetButton = cut.Find("#reset-child");
+        //    var toggleChildCheckbox = cut.Find("#toggle-child");
+        //    Func<string> currentCountText = () => cut.FindElement(currentCountTextSelector).Text;
 
         //    // Verify the reference was captured initially
-        //    appElement.FindElement(incrementButtonSelector).Click();
+        //    cut.FindElement(incrementButtonSelector).Click();
         //    Assert.Equal("Current count: 1", currentCountText);
         //    resetButton.Click();
         //    Assert.Equal("Current count: 0", currentCountText);
-        //    appElement.FindElement(incrementButtonSelector).Click();
+        //    cut.FindElement(incrementButtonSelector).Click();
         //    Assert.Equal("Current count: 1", currentCountText);
 
         //    // Remove and re-add a new instance of the child, checking the text was reset
         //    toggleChildCheckbox.Click();
-        //    Browser.Empty(() => appElement.FindElements(incrementButtonSelector));
+        //    Browser.Empty(() => cut.FindElements(incrementButtonSelector));
         //    toggleChildCheckbox.Click();
         //    Assert.Equal("Current count: 0", currentCountText);
 
         //    // Verify we have a new working reference
-        //    appElement.FindElement(incrementButtonSelector).Click();
+        //    cut.FindElement(incrementButtonSelector).Click();
         //    Assert.Equal("Current count: 1", currentCountText);
         //    resetButton.Click();
         //    Assert.Equal("Current count: 0", currentCountText);
@@ -442,53 +451,53 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanUseJsInteropForRefElementsDuringOnAfterRender()
         //{
-        //    var appElement = RenderComponent<AfterRenderInteropComponent>();
+        //    var cut = RenderComponent<AfterRenderInteropComponent>();
         //    Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));
         //}
 
         //[Fact]
         //public void CanRenderMarkupBlocks()
         //{
-        //    var appElement = RenderComponent<MarkupBlockComponent>();
+        //    var cut = RenderComponent<MarkupBlockComponent>();
 
         //    // Static markup
         //    Assert.Equal(
         //        "attributes",
-        //        appElement.FindElement(By.CssSelector("p span#attribute-example")).Text);
+        //        cut.FindElement(By.CssSelector("p span#attribute-example")).Text);
 
         //    // Dynamic markup (from a custom RenderFragment)
         //    Assert.Equal(
         //        "[Here is an example. We support multiple-top-level nodes.]",
-        //        appElement.Find("#dynamic-markup-block").Text);
+        //        cut.Find("#dynamic-markup-block").Text);
         //    Assert.Equal(
         //        "example",
-        //        appElement.FindElement(By.CssSelector("#dynamic-markup-block strong#dynamic-element em")).Text);
+        //        cut.FindElement(By.CssSelector("#dynamic-markup-block strong#dynamic-element em")).Text);
 
         //    // Dynamic markup (from a MarkupString)
         //    Assert.Equal(
         //        "This is a markup string.",
-        //        appElement.FindElement(By.ClassName("markup-string-value")).Text);
+        //        cut.FindElement(By.ClassName("markup-string-value")).Text);
         //    Assert.Equal(
         //        "markup string",
-        //        appElement.Find(".markup-string-value em").Text);
+        //        cut.Find(".markup-string-value em").Text);
 
         //    // Updating markup blocks
-        //    appElement.Find("button").Click();
+        //    cut.Find("button").Click();
         //    Browser.Equal(
         //        "[The output was changed completely.]",
-        //        () => appElement.Find("#dynamic-markup-block").Text);
+        //        () => cut.Find("#dynamic-markup-block").Text);
         //    Assert.Equal(
         //        "changed",
-        //        appElement.FindElement(By.CssSelector("#dynamic-markup-block span em")).Text);
+        //        cut.FindElement(By.CssSelector("#dynamic-markup-block span em")).Text);
         //}
 
         //[Fact]
         //public void CanRenderRazorTemplates()
         //{
-        //    var appElement = RenderComponent<RazorTemplates>();
+        //    var cut = RenderComponent<RazorTemplates>();
 
         //    // code block template (component parameter)
-        //    var element = appElement.FindElement(By.CssSelector("div#codeblocktemplate ol"));
+        //    var element = cut.FindElement(By.CssSelector("div#codeblocktemplate ol"));
         //    Assert.Collection(
         //        element.FindAll("li"),
         //        e => Assert.Equal("#1 - a", e.Text),
@@ -499,9 +508,9 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanRenderMultipleChildContent()
         //{
-        //    var appElement = RenderComponent<MultipleChildContent>();
+        //    var cut = RenderComponent<MultipleChildContent>();
 
-        //    var table = appElement.Find("table");
+        //    var table = cut.Find("table");
 
         //    var thead = table.Find("thead");
         //    Assert.Collection(
@@ -513,7 +522,7 @@ namespace Egil.RazorComponents.Testing
         //    var tfoot = table.Find("tfoot");
         //    Assert.Empty(tfoot.FindAll("td"));
 
-        //    var toggle = appElement.Find("#toggle");
+        //    var toggle = cut.Find("#toggle");
         //    toggle.Click();
 
         //    Browser.Collection(
@@ -530,23 +539,23 @@ namespace Egil.RazorComponents.Testing
         //        string.Empty,
         //        Enumerable.Range(0, 100).Select(_ => "😊"));
 
-        //    var appElement = RenderComponent<ConcurrentRenderParent>();
+        //    var cut = RenderComponent<ConcurrentRenderParent>();
 
         //    // It's supposed to pause the rendering for this long. The WaitAssert below
         //    // allows it to take up extra time if needed.
         //    await Task.Delay(1000);
 
-        //    var outputElement = appElement.Find("#concurrent-render-output");
+        //    var outputElement = cut.Find("#concurrent-render-output");
         //    Assert.Equal(expectedOutput, () => outputElement.TextContent);
         //}
 
         //[Fact]
         //public void CanDispatchRenderToSyncContext()
         //{
-        //    var appElement = RenderComponent<DispatchingComponent>();
-        //    var result = appElement.Find("#result");
+        //    var cut = RenderComponent<DispatchingComponent>();
+        //    var result = cut.Find("#result");
 
-        //    appElement.Find("#run-with-dispatch").Click();
+        //    cut.Find("#run-with-dispatch").Click();
 
         //    Assert.Equal("Success (completed synchronously)", () => result.Text);
         //}
@@ -554,10 +563,10 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanDoubleDispatchRenderToSyncContext()
         //{
-        //    var appElement = RenderComponent<DispatchingComponent>();
-        //    var result = appElement.Find("#result");
+        //    var cut = RenderComponent<DispatchingComponent>();
+        //    var result = cut.Find("#result");
 
-        //    appElement.Find("#run-with-double-dispatch").Click();
+        //    cut.Find("#run-with-double-dispatch").Click();
 
         //    Assert.Equal("Success (completed synchronously)", () => result.Text);
         //}
@@ -565,10 +574,10 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanDispatchAsyncWorkToSyncContext()
         //{
-        //    var appElement = RenderComponent<DispatchingComponent>();
-        //    var result = appElement.Find("#result");
+        //    var cut = RenderComponent<DispatchingComponent>();
+        //    var result = cut.Find("#result");
 
-        //    appElement.Find("#run-async-with-dispatch").Click();
+        //    cut.Find("#run-async-with-dispatch").Click();
 
         //    Assert.Equal("First Second Third Fourth Fifth", () => result.Text);
         //}
@@ -576,26 +585,26 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanPerformInteropImmediatelyOnComponentInsertion()
         //{
-        //    var appElement = RenderComponent<InteropOnInitializationComponent>();
-        //    Assert.Equal("Hello from interop call", () => appElement.Find("#val-get-by-interop").Text);
-        //    Assert.Equal("Hello from interop call", () => appElement.Find("#val-set-by-interop").GetAttribute("value"));
+        //    var cut = RenderComponent<InteropOnInitializationComponent>();
+        //    Assert.Equal("Hello from interop call", () => cut.Find("#val-get-by-interop").Text);
+        //    Assert.Equal("Hello from interop call", () => cut.Find("#val-set-by-interop").GetAttribute("value"));
         //}
 
         //[Fact]
         //public void CanUseAddMultipleAttributes()
         //{
-        //    var appElement = RenderComponent<DuplicateAttributesComponent>();
+        //    var cut = RenderComponent<DuplicateAttributesComponent>();
 
         //    var selector = By.CssSelector("#duplicate-on-element > div");
         //    Browser.Exists(selector);
 
-        //    var element = appElement.FindElement(selector);
+        //    var element = cut.FindElement(selector);
         //    Assert.Equal(string.Empty, element.GetAttribute("bool")); // attribute is present
         //    Assert.Equal("middle-value", element.GetAttribute("string"));
         //    Assert.Equal("unmatched-value", element.GetAttribute("unmatched"));
 
         //    selector = By.CssSelector("#duplicate-on-element-override > div");
-        //    element = appElement.FindElement(selector);
+        //    element = cut.FindElement(selector);
         //    Assert.Null(element.GetAttribute("bool")); // attribute is not present
         //    Assert.Equal("other-text", element.GetAttribute("string"));
         //    Assert.Equal("unmatched-value", element.GetAttribute("unmatched"));
@@ -604,27 +613,27 @@ namespace Egil.RazorComponents.Testing
         //[Fact]
         //public void CanPatchRenderTreeToMatchLatestDOMState()
         //{
-        //    var appElement = RenderComponent<MovingCheckboxesComponent>();
+        //    var cut = RenderComponent<MovingCheckboxesComponent>();
         //    var incompleteItemsSelector = By.CssSelector(".incomplete-items li");
         //    var completeItemsSelector = By.CssSelector(".complete-items li");
         //    Browser.Exists(incompleteItemsSelector);
 
         //    // Mark first item as done; observe the remaining incomplete item appears unchecked
         //    // because the diff algorithm explicitly unchecks it
-        //    appElement.Find(".incomplete-items .item-isdone").Click();
+        //    cut.Find(".incomplete-items .item-isdone").Click();
         //    Browser.True(() =>
         //    {
-        //        var incompleteLIs = appElement.FindElements(incompleteItemsSelector);
+        //        var incompleteLIs = cut.FindElements(incompleteItemsSelector);
         //        return incompleteLIs.Count == 1
         //            && !incompleteLIs[0].Find(".item-isdone").Selected;
         //    });
 
         //    // Mark first done item as not done; observe the remaining complete item appears checked
         //    // because the diff algorithm explicitly re-checks it
-        //    appElement.Find(".complete-items .item-isdone").Click();
+        //    cut.Find(".complete-items .item-isdone").Click();
         //    Browser.True(() =>
         //    {
-        //        var completeLIs = appElement.FindElements(completeItemsSelector);
+        //        var completeLIs = cut.FindElements(completeItemsSelector);
         //        return completeLIs.Count == 2
         //            && completeLIs[0].Find(".item-isdone").Selected;
         //    });
