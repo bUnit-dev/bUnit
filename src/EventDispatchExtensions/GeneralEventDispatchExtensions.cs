@@ -39,7 +39,7 @@ namespace Egil.RazorComponents.Testing.EventDispatchExtensions
             if (renderer is null)
                 throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(TestRenderer)}'.");
 
-            return renderer.DispatchEventAsync(eventHandlerId, new EventFieldInfo(), eventArgs);
+            return renderer.DispatchEventAsync(eventHandlerId, new EventFieldInfo() { FieldValue = eventName}, eventArgs);
         }
 
         /// <summary>

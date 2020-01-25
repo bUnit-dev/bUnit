@@ -19,7 +19,7 @@ namespace Egil.RazorComponents.Testing
     public class TestRenderer : Renderer
     {
         private Exception? _unhandledException;
-
+        private ILogger _logger;
         private TaskCompletionSource<object?> _nextRenderTcs = new TaskCompletionSource<object?>();
 
         /// <summary>
@@ -41,6 +41,7 @@ namespace Egil.RazorComponents.Testing
         public TestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
             : base(serviceProvider, loggerFactory)
         {
+            _logger = loggerFactory.CreateLogger(GetType().FullName);
         }
 
         /// <inheritdoc/>
@@ -54,11 +55,12 @@ namespace Egil.RazorComponents.Testing
         /// <inheritdoc/>
         public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
         {
+            _logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Starting trigger of '{fieldInfo.FieldValue}'");
             var task = Dispatcher.InvokeAsync(() =>
             {
                 try
                 {
-                    base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
+                    return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
                 }
                 catch (Exception e)
                 {
@@ -67,6 +69,7 @@ namespace Egil.RazorComponents.Testing
                 }
             });
             AssertNoSynchronousErrors();
+            _logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Finished trigger of '{fieldInfo.FieldValue}'");
             return task;
         }
 
@@ -79,6 +82,8 @@ namespace Egil.RazorComponents.Testing
         /// <inheritdoc/>
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
         {
+            _logger.LogDebug(new EventId(0, nameof(UpdateDisplayAsync)), $"New render batch with ReferenceFrames = {renderBatch.ReferenceFrames.Count}, UpdatedComponents = {renderBatch.UpdatedComponents.Count}, DisposedComponentIDs = {renderBatch.DisposedComponentIDs.Count}, DisposedEventHandlerIDs = {renderBatch.DisposedEventHandlerIDs.Count}");
+
             // TODO: Capture batches (and the state of component output) for individual inspection
             var prevTcs = _nextRenderTcs;
             _nextRenderTcs = new TaskCompletionSource<object?>();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Xunit.Sdk;
@@ -50,6 +51,19 @@ namespace Egil.RazorComponents.Testing
         /// the snapshot and the rendered markup at that time.
         /// </summary>
         void SaveSnapshot();
+
+        /// <summary>
+        /// Trigger an update/render of the component under test using the 
+        /// provided <paramref name="renderTrigger"/> and waits for 
+        /// the next update to the component/fragment to happen.
+        /// A timeout can be specified using the <paramref name="timeout"/> argument (default is 1 second).
+        /// 
+        /// Note: when a debugger is attached, the timeout is infinite.
+        /// </summary>
+        /// <param name="renderTrigger">The action that triggers a render/update of the component/fragment</param>
+        /// <param name="timeout">An optional amount of time to wait before throwing.</param>
+        /// <exception cref="TimeoutException">Thrown when the timeout is passed, and no update has been detected to the component/fragment.</exception>
+        void WaitForNextUpdate(Action renderTrigger, TimeSpan? timeout = null);
 
         /// <summary>
         /// Returns the first element from the rendered fragment or component under test,

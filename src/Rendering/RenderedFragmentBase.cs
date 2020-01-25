@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
+using System.Threading.Tasks;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Egil.RazorComponents.Testing.Asserting;
@@ -20,6 +24,7 @@ namespace Egil.RazorComponents.Testing
         private INodeList? _firstRenderNodes;
         private INodeList? _latestRenderNodes;
         private INodeList? _snapshotNodes;
+        private TaskCompletionSource<object?> _nextRender = new TaskCompletionSource<object?>();
 
         /// <summary>
         /// Gets the id of the rendered component or fragment.
@@ -101,6 +106,22 @@ namespace Egil.RazorComponents.Testing
             return Nodes.CompareTo(_firstRenderNodes);
         }
 
+        /// <inheritdoc/>
+        public void WaitForNextUpdate(Action? renderTrigger = null, TimeSpan? timeout = null)
+        {
+            var waitTime = Debugger.IsAttached ? Timeout.InfiniteTimeSpan : timeout ?? TimeSpan.FromSeconds(1);
+            var task = _nextRender.Task;
+
+            if (!(renderTrigger is null)) renderTrigger();
+
+            task.Wait(waitTime);
+
+            if (!task.IsCompleted)
+            {
+                throw new TimeoutException("No render occurred within the timeout period.");
+            }
+        }
+
         private void ComponentMarkupChanged(in RenderBatch renderBatch)
         {
             if (renderBatch.HasUpdatesTo(ComponentId) || HasChildComponentUpdated(renderBatch, ComponentId))
@@ -135,6 +156,8 @@ namespace Egil.RazorComponents.Testing
         {
             _latestRenderMarkup = null;
             _latestRenderNodes = null;
+            _nextRender.SetResult(null);
+            _nextRender = new TaskCompletionSource<object?>();
         }
     }
 }
