@@ -8,6 +8,7 @@ using AngleSharp.Dom;
 using BasicTestApp;
 using DeepEqual.Syntax;
 using Egil.RazorComponents.Testing.EventDispatchExtensions;
+using Egil.RazorComponents.Testing.Extensions;
 using Egil.RazorComponents.Testing.TestUtililities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -142,132 +143,119 @@ namespace Egil.RazorComponents.Testing
             Assert.Equal("Current count: 2", cut.Find("p").TextContent);
         }
 
-        //[Fact]
-        //public void CanRenderChildComponents()
-        //{
-        //    var cut = RenderComponent<ParentChildComponent>();
-        //    Assert.Equal("Parent component",
-        //        cut.Find("fieldset > legend").Text);
+        [Fact]
+        public void CanRenderChildComponents()
+        {
+            var cut = RenderComponent<ParentChildComponent>();
+            Assert.Equal("Parent component", cut.Find("fieldset > legend").TextContent);
 
-        //    var styledElement = cut.Find("fieldset > h1");
-        //    Assert.Equal("Hello, world!", styledElement.TextContent);
-        //    Assert.Equal("color: red;", styledElement.GetAttribute("style"));
-        //    Assert.Equal("somevalue", styledElement.GetAttribute("customattribute"));
-        //}
+            var styledElement = cut.Find("fieldset > h1");
+            Assert.Equal("Hello, world!", styledElement.TextContent);
+            Assert.Equal("color: red;", styledElement.GetAttribute("style"));
+            Assert.Equal("somevalue", styledElement.GetAttribute("customattribute"));
+        }
 
-        //// Verifies we can render HTML content as a single block
-        //[Fact]
-        //public void CanRenderChildContent_StaticHtmlBlock()
-        //{
-        //    var cut = RenderComponent<HtmlBlockChildContent>();
-        //    Assert.Equal("<p>Some-Static-Text</p>",
-        //        cut.Find("#foo").GetAttribute("innerHTML"));
-        //}
+        [Fact(DisplayName = "Verifies we can render HTML content as a single block")]
+        public void CanRenderChildContent_StaticHtmlBlock()
+        {
+            var cut = RenderComponent<HtmlBlockChildContent>();
+            Assert.Equal("<p>Some-Static-Text</p>", cut.Find("#foo").InnerHtml);
+        }
 
-        //// Verifies we can rewite more complex HTML content into blocks
-        //[Fact]
-        //public void CanRenderChildContent_MixedHtmlBlock()
-        //{
-        //    var cut = RenderComponent<HtmlMixedChildContent>();
+        [Fact(DisplayName = "Verifies we can rewite more complex HTML content into blocks")]
+        public void CanRenderChildContent_MixedHtmlBlock()
+        {
+            var cut = RenderComponent<HtmlMixedChildContent>();
 
-        //    var one = cut.Find("#one");
-        //    Assert.Equal("<p>Some-Static-Text</p>", one.GetAttribute("innerHTML"));
+            var one = cut.Find("#one");
+            Assert.Equal("<p>Some-Static-Text</p>", one.InnerHtml);
 
-        //    var two = cut.Find("#two");
-        //    Assert.Equal("<span>More-Static-Text</span>", two.GetAttribute("innerHTML"));
+            var two = cut.Find("#two");
+            Assert.Equal("<span>More-Static-Text</span>", two.InnerHtml);
 
-        //    var three = cut.Find("#three");
-        //    Assert.Equal("Some-Dynamic-Text", three.GetAttribute("innerHTML"));
+            var three = cut.Find("#three");
+            Assert.Equal("Some-Dynamic-Text", three.InnerHtml);
 
-        //    var four = cut.Find("#four");
-        //    Assert.Equal("But this is static", four.GetAttribute("innerHTML"));
-        //}
+            var four = cut.Find("#four");
+            Assert.Equal("But this is static", four.InnerHtml);
+        }
 
-        //// Verifies we can rewrite HTML blocks with encoded HTML
-        //[Fact]
-        //public void CanRenderChildContent_EncodedHtmlInBlock()
-        //{
-        //    var cut = RenderComponent<HtmlEncodedChildContent>();
+        [Fact(DisplayName = "Verifies we can rewrite HTML blocks with encoded HTML")]
+        public void CanRenderChildContent_EncodedHtmlInBlock()
+        {
+            var cut = RenderComponent<HtmlEncodedChildContent>();
 
-        //    var one = cut.Find("#one");
-        //    Assert.Equal("<p>Some-Static-Text</p>", one.GetAttribute("innerHTML"));
+            var one = cut.Find("#one");
+            Assert.Equal("<p>Some-Static-Text</p>", one.InnerHtml);
 
-        //    var two = cut.Find("#two");
-        //    Assert.Equal("&lt;span&gt;More-Static-Text&lt;/span&gt;", two.GetAttribute("innerHTML"));
+            var two = cut.Find("#two");
+            Assert.Equal("&lt;span&gt;More-Static-Text&lt;/span&gt;", two.InnerHtml);
 
-        //    var three = cut.Find("#three");
-        //    Assert.Equal("Some-Dynamic-Text", three.GetAttribute("innerHTML"));
+            var three = cut.Find("#three");
+            Assert.Equal("Some-Dynamic-Text", three.InnerHtml);
 
-        //    var four = cut.Find("#four");
-        //    Assert.Equal("But this is static", four.GetAttribute("innerHTML"));
-        //}
+            var four = cut.Find("#four");
+            Assert.Equal("But this is static", four.InnerHtml);
+        }
 
-        //[Fact]
-        //public void CanTriggerEventsOnChildComponents()
-        //{
-        //    // Counter is displayed as child component. Initial count is zero.
-        //    var cut = RenderComponent<CounterComponentWrapper>();
-        //    var counterDisplay = cut
-        //        .FindAll("p")
-        //        .Single(element => element.TextContent == "Current count: 0");
+        [Fact]
+        public void CanTriggerEventsOnChildComponents()
+        {
+            // Counter is displayed as child component. Initial count is zero.
+            var cut = RenderComponent<CounterComponentWrapper>();
 
-        //    // Clicking increments count in child component
-        //    cut.Find("button").Click();
-        //    Assert.Equal("Current count: 1", () => counterDisplay.Text);
-        //}
+            // Clicking increments count in child component
+            cut.Find("button").Click();
 
-        //[Fact]
-        //public void ChildComponentsRerenderWhenPropertiesChanged()
-        //{
-        //    // Count value is displayed in child component with initial value zero
-        //    var cut = RenderComponent<CounterComponentUsingChild>();
-        //    var wholeCounterElement = cut.Find("p");
-        //    var messageElementInChild = wholeCounterElement.FindElement(By.ClassName("message"));
-        //    Assert.Equal("Current count: 0", wholeCounterElement.TextContent);
-        //    Assert.Equal("0", messageElementInChild.Text);
+            Assert.Equal("Current count: 1", cut.Find("h1+p").TextContent);
+        }
 
-        //    // Clicking increments count in child element
-        //    cut.Find("button").Click();
-        //    Assert.Equal("1", () => messageElementInChild.Text);
-        //}
+        [Fact]
+        public void ChildComponentsRerenderWhenPropertiesChanged()
+        {
+            // Count value is displayed in child component with initial value zero
+            var cut = RenderComponent<CounterComponentUsingChild>();
+            Assert.Equal("Current count: 0", cut.Find("p").TextContent);
+            Assert.Equal("0", cut.Find("p .message").TextContent);
 
-        //[Fact]
-        //public void CanAddAndRemoveChildComponentsDynamically()
-        //{
-        //    // Initially there are zero child components
-        //    var cut = RenderComponent<AddRemoveChildComponents>();
-        //    var addButton = cut.FindElement(By.ClassName("addChild"));
-        //    var removeButton = cut.FindElement(By.ClassName("removeChild"));
-        //    Func<IEnumerable<IWebElement>> childComponentWrappers = () => cut.FindAll("p");
-        //    Assert.Empty(childComponentWrappers());
+            // Clicking increments count in child element
+            cut.Find("button").Click();
+            Assert.Equal("1", cut.Find("p .message").TextContent);
+        }
 
-        //    // Click to add/remove some child components
-        //    addButton.Click();
-        //    Browser.Collection(childComponentWrappers,
-        //        elem => Assert.Equal("Child 1", elem.FindElement(By.ClassName("message")).Text));
+        [Fact]
+        public void CanAddAndRemoveChildComponentsDynamically()
+        {
+            // Initially there are zero child components
+            var cut = RenderComponent<AddRemoveChildComponents>();
+            Assert.Empty(cut.FindAll("p"));
 
-        //    addButton.Click();
-        //    Browser.Collection(childComponentWrappers,
-        //        elem => Assert.Equal("Child 1", elem.FindElement(By.ClassName("message")).Text),
-        //        elem => Assert.Equal("Child 2", elem.FindElement(By.ClassName("message")).Text));
+            // Click to add/remove some child components
+            cut.Find(".addChild").Click();
+            Assert.Collection(cut.FindAll("p"), elem => Assert.Equal("Child 1", elem.Find(".message").TextContent));
 
-        //    removeButton.Click();
-        //    Browser.Collection(childComponentWrappers,
-        //        elem => Assert.Equal("Child 1", elem.FindElement(By.ClassName("message")).Text));
+            cut.Find(".addChild").Click();
+            Assert.Collection(cut.FindAll("p"),
+                elem => Assert.Equal("Child 1", elem.Find(".message").TextContent),
+                elem => Assert.Equal("Child 2", elem.Find(".message").TextContent));
 
-        //    addButton.Click();
-        //    Browser.Collection(childComponentWrappers,
-        //        elem => Assert.Equal("Child 1", elem.FindElement(By.ClassName("message")).Text),
-        //        elem => Assert.Equal("Child 3", elem.FindElement(By.ClassName("message")).Text));
-        //}
+            cut.Find(".removeChild").Click();
+            Assert.Collection(cut.FindAll("p"),
+                elem => Assert.Equal("Child 1", elem.Find(".message").TextContent));
+
+            cut.Find(".addChild").Click();
+            Assert.Collection(cut.FindAll("p"),
+                elem => Assert.Equal("Child 1", elem.Find(".message").TextContent),
+                elem => Assert.Equal("Child 3", elem.Find(".message").TextContent));
+        }
 
         //[Fact]
         //public void ChildComponentsNotifiedWhenPropertiesChanged()
         //{
         //    // Child component receives notification that lets it compute a property before first render
         //    var cut = RenderComponent<PropertiesChangedHandlerParent>();
-        //    var suppliedValueElement = cut.FindElement(By.ClassName("supplied"));
-        //    var computedValueElement = cut.FindElement(By.ClassName("computed"));
+        //    var suppliedValueElement = cut.Find(".supplied");
+        //    var computedValueElement = cut.Find(".computed");
         //    var incrementButton = cut.Find("button");
         //    Assert.Equal("You supplied: 100", suppliedValueElement.TextContent);
         //    Assert.Equal("I computed: 200", computedValueElement.TextContent);
@@ -289,7 +277,7 @@ namespace Egil.RazorComponents.Testing
 
         //    // The JS-side DOM builder handles regions correctly, placing elements
         //    // after the region after the corresponding elements
-        //    Assert.Equal("The end", cut.FindElements(By.CssSelector("div > *:last-child")).Single().Text);
+        //    Assert.Equal("The end", cut.FindElements(By.CssSelector("div > *:last-child")).Single().TextContent);
 
         //    // When we click the button, the region is shown
         //    originalButton.Click();
@@ -307,8 +295,8 @@ namespace Egil.RazorComponents.Testing
         //    // of the _ViewImports.cshtml files at the same and ancestor levels
         //    var cut = RenderComponent<ComponentUsingImports>();
         //    Assert.Collection(cut.FindAll("p"),
-        //        elem => Assert.Equal(typeof(Complex).FullName, elem.Text),
-        //        elem => Assert.Equal(typeof(AssemblyHashAlgorithm).FullName, elem.Text));
+        //        elem => Assert.Equal(typeof(Complex).FullName, elem.TextContent),
+        //        elem => Assert.Equal(typeof(AssemblyHashAlgorithm).FullName, elem.TextContent));
         //}
 
         //[Fact]
@@ -326,7 +314,7 @@ namespace Egil.RazorComponents.Testing
         //    modal.SendKeys("Some value from test");
         //    modal.Accept();
         //    var promptResult = cut.Find("strong");
-        //    Assert.Equal("Some value from test", () => promptResult.Text);
+        //    Assert.Equal("Some value from test", () => promptResult.TextContent);
 
         //    // NuGet packages can also embed entire components (themselves
         //    // authored as Razor files), including static content. The CSS value
@@ -337,9 +325,9 @@ namespace Egil.RazorComponents.Testing
 
         //    // The external components are fully functional, not just static HTML
         //    var externalComponentButton = specialStyleDiv.Find("button");
-        //    Assert.Equal("Click me", externalComponentButton.Text);
+        //    Assert.Equal("Click me", externalComponentButton.TextContent);
         //    externalComponentButton.Click();
-        //    Assert.Equal("It works", () => externalComponentButton.Text);
+        //    Assert.Equal("It works", () => externalComponentButton.TextContent);
         //}
 
         //[Fact]
@@ -463,32 +451,32 @@ namespace Egil.RazorComponents.Testing
         //    // Static markup
         //    Assert.Equal(
         //        "attributes",
-        //        cut.FindElement(By.CssSelector("p span#attribute-example")).Text);
+        //        cut.FindElement(By.CssSelector("p span#attribute-example")).TextContent);
 
         //    // Dynamic markup (from a custom RenderFragment)
         //    Assert.Equal(
         //        "[Here is an example. We support multiple-top-level nodes.]",
-        //        cut.Find("#dynamic-markup-block").Text);
+        //        cut.Find("#dynamic-markup-block").TextContent);
         //    Assert.Equal(
         //        "example",
-        //        cut.FindElement(By.CssSelector("#dynamic-markup-block strong#dynamic-element em")).Text);
+        //        cut.FindElement(By.CssSelector("#dynamic-markup-block strong#dynamic-element em")).TextContent);
 
         //    // Dynamic markup (from a MarkupString)
         //    Assert.Equal(
         //        "This is a markup string.",
-        //        cut.FindElement(By.ClassName("markup-string-value")).Text);
+        //        cut.FindElement(By.ClassName("markup-string-value")).TextContent);
         //    Assert.Equal(
         //        "markup string",
-        //        cut.Find(".markup-string-value em").Text);
+        //        cut.Find(".markup-string-value em").TextContent);
 
         //    // Updating markup blocks
         //    cut.Find("button").Click();
         //    Browser.Equal(
         //        "[The output was changed completely.]",
-        //        () => cut.Find("#dynamic-markup-block").Text);
+        //        () => cut.Find("#dynamic-markup-block").TextContent);
         //    Assert.Equal(
         //        "changed",
-        //        cut.FindElement(By.CssSelector("#dynamic-markup-block span em")).Text);
+        //        cut.FindElement(By.CssSelector("#dynamic-markup-block span em")).TextContent);
         //}
 
         //[Fact]
@@ -500,9 +488,9 @@ namespace Egil.RazorComponents.Testing
         //    var element = cut.FindElement(By.CssSelector("div#codeblocktemplate ol"));
         //    Assert.Collection(
         //        element.FindAll("li"),
-        //        e => Assert.Equal("#1 - a", e.Text),
-        //        e => Assert.Equal("#2 - b", e.Text),
-        //        e => Assert.Equal("#3 - c", e.Text));
+        //        e => Assert.Equal("#1 - a", e.TextContent),
+        //        e => Assert.Equal("#2 - b", e.TextContent),
+        //        e => Assert.Equal("#3 - c", e.TextContent));
         //}
 
         //[Fact]
@@ -515,9 +503,9 @@ namespace Egil.RazorComponents.Testing
         //    var thead = table.Find("thead");
         //    Assert.Collection(
         //        thead.FindAll("th"),
-        //        e => Assert.Equal("Col1", e.Text),
-        //        e => Assert.Equal("Col2", e.Text),
-        //        e => Assert.Equal("Col3", e.Text));
+        //        e => Assert.Equal("Col1", e.TextContent),
+        //        e => Assert.Equal("Col2", e.TextContent),
+        //        e => Assert.Equal("Col3", e.TextContent));
 
         //    var tfoot = table.Find("tfoot");
         //    Assert.Empty(tfoot.FindAll("td"));
@@ -527,9 +515,9 @@ namespace Egil.RazorComponents.Testing
 
         //    Browser.Collection(
         //        () => tfoot.FindAll("td"),
-        //        e => Assert.Equal("The", e.Text),
-        //        e => Assert.Equal("", e.Text),
-        //        e => Assert.Equal("End", e.Text));
+        //        e => Assert.Equal("The", e.TextContent),
+        //        e => Assert.Equal("", e.TextContent),
+        //        e => Assert.Equal("End", e.TextContent));
         //}
 
         //[Fact]
@@ -557,7 +545,7 @@ namespace Egil.RazorComponents.Testing
 
         //    cut.Find("#run-with-dispatch").Click();
 
-        //    Assert.Equal("Success (completed synchronously)", () => result.Text);
+        //    Assert.Equal("Success (completed synchronously)", () => result.TextContent);
         //}
 
         //[Fact]
@@ -568,7 +556,7 @@ namespace Egil.RazorComponents.Testing
 
         //    cut.Find("#run-with-double-dispatch").Click();
 
-        //    Assert.Equal("Success (completed synchronously)", () => result.Text);
+        //    Assert.Equal("Success (completed synchronously)", () => result.TextContent);
         //}
 
         //[Fact]
@@ -579,14 +567,14 @@ namespace Egil.RazorComponents.Testing
 
         //    cut.Find("#run-async-with-dispatch").Click();
 
-        //    Assert.Equal("First Second Third Fourth Fifth", () => result.Text);
+        //    Assert.Equal("First Second Third Fourth Fifth", () => result.TextContent);
         //}
 
         //[Fact]
         //public void CanPerformInteropImmediatelyOnComponentInsertion()
         //{
         //    var cut = RenderComponent<InteropOnInitializationComponent>();
-        //    Assert.Equal("Hello from interop call", () => cut.Find("#val-get-by-interop").Text);
+        //    Assert.Equal("Hello from interop call", () => cut.Find("#val-get-by-interop").TextContent);
         //    Assert.Equal("Hello from interop call", () => cut.Find("#val-set-by-interop").GetAttribute("value"));
         //}
 
