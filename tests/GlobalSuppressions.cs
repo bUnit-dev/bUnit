@@ -5,3 +5,6 @@
 [assembly: SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "<Pending>")]
 [assembly: SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "In tests its ok to catch the general exception type")]
 [assembly: SuppressMessage("Usage", "CA2234:Pass system uri objects instead of strings", Justification = "<Pending>")]
+[assembly: SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Test method names like underscores")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>", 
+    Scope = "namespaceanddescendants", Target = "Egil.RazorComponents.Testing")]

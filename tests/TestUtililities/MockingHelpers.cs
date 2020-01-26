@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Moq;
@@ -64,6 +65,54 @@ namespace Egil.RazorComponents.Testing.TestUtililities
         public static bool IsDelegateType(this Type type)
         {
             return Equals(type, DelegateType);
+        }
+
+        /// <summary>
+        /// Create a default instance of the <paramref name="type"/>.
+        /// </summary>
+        /// <returns>The default value</returns>
+        public static object? GetDefault(this Type type)
+        {
+            if (type.GetTypeInfo().IsValueType)
+            {
+                return Activator.CreateInstance(type);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets all methods (and property methods) of an interface, and any interfaces it implements.
+        /// </summary>
+        public static List<MethodInfo> GetInterfaceMethods(this Type type)
+        {
+            if (type is null) throw new ArgumentNullException(nameof(type));
+
+            var result = new List<MethodInfo>();
+
+            foreach (var mi in type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
+            {
+                result.Add(mi);
+            }
+
+            foreach (var baseType in type.GetInterfaces())
+            {
+                result.AddRange(GetInterfaceMethods(baseType));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a parameter array containing a default or mocked instance of all parameters a method takes when invoked.
+        /// </summary>
+        public static object?[] CreateMethodArguments(this MethodInfo method)
+        {
+            if (method is null) throw new ArgumentNullException(nameof(method));
+
+            var parameters = method.GetParameters();
+            return parameters.Length == 0
+                ? Array.Empty<object?>()
+                : parameters.Select(p => p.ParameterType.IsMockable() ? p.ParameterType.ToMockInstance() : p.ParameterType.GetDefault()).ToArray();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Egil.RazorComponents.Testing.TestUtililities
         {
             if (!IsEnabled(logLevel)) return;
             if (formatter is null) return;
-            _output.WriteLine($"{logLevel.ToString()} | {_name} | {eventId.Id}:{eventId.Name} | {formatter(state, exception)}");
+            _output.WriteLine($"{logLevel} | {_name} | {eventId.Id}:{eventId.Name} | {formatter(state, exception)}");
         }
     }
 }

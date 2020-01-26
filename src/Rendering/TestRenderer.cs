@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,8 +19,8 @@ namespace Egil.RazorComponents.Testing
     [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     public class TestRenderer : Renderer
     {
+        private readonly ILogger _logger;
         private Exception? _unhandledException;
-        private ILogger _logger;
         private TaskCompletionSource<object?> _nextRenderTcs = new TaskCompletionSource<object?>();
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace Egil.RazorComponents.Testing
         public TestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
             : base(serviceProvider, loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger(GetType().FullName);
+            _logger = loggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance;
         }
 
         /// <inheritdoc/>
@@ -55,6 +56,8 @@ namespace Egil.RazorComponents.Testing
         /// <inheritdoc/>
         public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
         {
+            if(fieldInfo is null) throw new ArgumentNullException(nameof(fieldInfo));
+
             _logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Starting trigger of '{fieldInfo.FieldValue}'");
             var task = Dispatcher.InvokeAsync(() =>
             {
