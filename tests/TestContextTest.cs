@@ -84,7 +84,7 @@ namespace Egil.RazorComponents.Testing
             // Clicking 'tock' completes the task, which updates the state
             // This click causes two renders, thus WaitForNextUpdate is needed
             // to wait for the markup to be updated.
-            cut.WaitForNextUpdate(() => cut.Find("#tock").Click());
+            cut.WaitForNextChange(() => cut.Find("#tock").Click());
             Assert.Equal("Stopped", cut.Find("#state").TextContent);
         }
 

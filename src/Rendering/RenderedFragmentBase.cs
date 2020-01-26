@@ -24,7 +24,7 @@ namespace Egil.RazorComponents.Testing
         private INodeList? _firstRenderNodes;
         private INodeList? _latestRenderNodes;
         private INodeList? _snapshotNodes;
-        private TaskCompletionSource<object?> _nextRender = new TaskCompletionSource<object?>();
+        private TaskCompletionSource<object?> _nextChange = new TaskCompletionSource<object?>();
 
         /// <summary>
         /// Gets the id of the rendered component or fragment.
@@ -107,10 +107,10 @@ namespace Egil.RazorComponents.Testing
         }
 
         /// <inheritdoc/>
-        public void WaitForNextUpdate(Action? renderTrigger = null, TimeSpan? timeout = null)
+        public void WaitForNextChange(Action? renderTrigger = null, TimeSpan? timeout = null)
         {
             var waitTime = Debugger.IsAttached ? Timeout.InfiniteTimeSpan : timeout ?? TimeSpan.FromSeconds(1);
-            var task = _nextRender.Task;
+            var task = _nextChange.Task;
 
             if (!(renderTrigger is null)) renderTrigger();
 
@@ -156,8 +156,8 @@ namespace Egil.RazorComponents.Testing
         {
             _latestRenderMarkup = null;
             _latestRenderNodes = null;
-            _nextRender.SetResult(null);
-            _nextRender = new TaskCompletionSource<object?>();
+            _nextChange.SetResult(null);
+            _nextChange = new TaskCompletionSource<object?>();
         }
     }
 }
