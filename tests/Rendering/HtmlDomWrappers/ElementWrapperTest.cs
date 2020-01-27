@@ -43,7 +43,7 @@ namespace Egil.RazorComponents.Testing.Rendering.HtmlDomWrappers
 
             var sut = new ElementWrapper(() => elmMock);
 
-            sut.WrappedNode.ShouldBe(elmMock);
+            sut.WrappedObject.ShouldBe(elmMock);
         }
 
         [Fact(DisplayName = "Wrapper refreshes wrapped node after MarkAsStale is called")]
@@ -51,11 +51,11 @@ namespace Egil.RazorComponents.Testing.Rendering.HtmlDomWrappers
         {
             var callCount = 0;
             var sut = new ElementWrapper(() => { callCount++; return Mock.Of<IElement>(); });
-            var firstWrapped = sut.WrappedNode;
+            var firstWrapped = sut.WrappedObject;
 
             sut.MarkAsStale();
 
-            sut.WrappedNode.ShouldNotBe(firstWrapped);
+            sut.WrappedObject.ShouldNotBe(firstWrapped);
             callCount.ShouldBe(2);
         }
 
@@ -64,7 +64,7 @@ namespace Egil.RazorComponents.Testing.Rendering.HtmlDomWrappers
         {
             var sut = new ElementWrapper(() => null);
 
-            Should.Throw<NodeNoLongerAvailableException>(() => sut.WrappedNode);
+            Should.Throw<NodeNoLongerAvailableException>(() => sut.WrappedObject);
         }
 
         [Fact(DisplayName = "When a method or property on an wrapped node returns an INode, it is wrapped")]
@@ -77,7 +77,7 @@ namespace Egil.RazorComponents.Testing.Rendering.HtmlDomWrappers
 
             var parent = sut.ParentElement;
 
-            parent.ShouldBeOfType<ElementWrapper>().WrappedNode.ShouldBe(elmParent);
+            parent.ShouldBeOfType<ElementWrapper>().WrappedObject.ShouldBe(elmParent);
         }
 
         [Fact(DisplayName = "The same wrapper is used every time")]
@@ -97,11 +97,11 @@ namespace Egil.RazorComponents.Testing.Rendering.HtmlDomWrappers
             elmMock.SetupGet(x => x.ParentElement).Returns(() => new Mock<IElement>().Object);
             var sut = new ElementWrapper(() => elmMock.Object);
             var parentElementWrapper = ((ElementWrapper)sut.ParentElement);
-            var initialWrappedParentNode = parentElementWrapper.WrappedNode;
+            var initialWrappedParentNode = parentElementWrapper.WrappedObject;
 
             sut.MarkAsStale();
 
-            initialWrappedParentNode.ShouldNotBeSameAs(parentElementWrapper.WrappedNode);
+            initialWrappedParentNode.ShouldNotBeSameAs(parentElementWrapper.WrappedObject);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -12,171 +11,122 @@ using AngleSharp.Html.Dom;
 
 namespace Egil.RazorComponents.Testing.Rendering.HtmlDomWrappers
 {
-    internal interface INodeWrapper
+    internal class ElementWrapper : WrapperBase<IElement>, IElement
     {
-        void MarkAsStale();
-    }
-
-    internal abstract class DomNodeWrapper<TNode> : INodeWrapper where TNode : class, INode
-    {
-        private readonly Func<TNode?> _getDomNode;
-        private readonly Dictionary<int, INodeWrapper> _wrappers = new Dictionary<int, INodeWrapper>();
-
-        private TNode? _wrappedNode;
-
-        public TNode WrappedNode
-        {
-            get
-            {
-                if (_wrappedNode is null)
-                {
-                    _wrappedNode = _getDomNode();
-                    if (_wrappedNode is null)
-                        throw new NodeNoLongerAvailableException();
-                }
-                return _wrappedNode!;
-            }
-        }
-        
-        internal DomNodeWrapper(Func<TNode?> getWrappedNode)
-        {
-            _getDomNode = getWrappedNode;
-            _wrappedNode = getWrappedNode();
-        }
-
-        public void MarkAsStale()
-        {
-            _wrappedNode = null;
-            foreach (var wrapped in _wrappers.Values) wrapped.MarkAsStale();
-        }
-
-        protected IElement GetOrWrap(int key, Func<IElement> nodeQuery)
-        {
-            if (!_wrappers.TryGetValue(key, out var result))
-            {
-                result = new ElementWrapper(nodeQuery);
-                _wrappers.Add(key, result);
-            }
-            return (IElement)result;
-        }
-    }
-
-    internal class ElementWrapper : DomNodeWrapper<IElement>, IElement
-    {
-        public ElementWrapper(Func<IElement?> getDomNode) : base(getDomNode)
+        public ElementWrapper(Func<IElement?> getWrapped) : base(getWrapped)
         {
         }
 
-        public string Prefix => WrappedNode.Prefix;
+        public string Prefix => WrappedObject.Prefix;
 
-        public string LocalName => WrappedNode.LocalName;
+        public string LocalName => WrappedObject.LocalName;
 
-        public string NamespaceUri => WrappedNode.NamespaceUri;
+        public string NamespaceUri => WrappedObject.NamespaceUri;
 
-        public INamedNodeMap Attributes => WrappedNode.Attributes;
+        public INamedNodeMap Attributes => WrappedObject.Attributes;
 
-        public ITokenList ClassList => WrappedNode.ClassList;
+        public ITokenList ClassList => WrappedObject.ClassList;
 
-        public string ClassName { get => WrappedNode.ClassName; set => WrappedNode.ClassName = value; }
-        public string Id { get => WrappedNode.Id; set => WrappedNode.Id = value; }
-        public string InnerHtml { get => WrappedNode.InnerHtml; set => WrappedNode.InnerHtml = value; }
-        public string OuterHtml { get => WrappedNode.OuterHtml; set => WrappedNode.OuterHtml = value; }
+        public string ClassName { get => WrappedObject.ClassName; set => WrappedObject.ClassName = value; }
+        public string Id { get => WrappedObject.Id; set => WrappedObject.Id = value; }
+        public string InnerHtml { get => WrappedObject.InnerHtml; set => WrappedObject.InnerHtml = value; }
+        public string OuterHtml { get => WrappedObject.OuterHtml; set => WrappedObject.OuterHtml = value; }
 
-        public string TagName => WrappedNode.TagName;
+        public string TagName => WrappedObject.TagName;
 
-        public IElement AssignedSlot => WrappedNode.AssignedSlot;
+        public IElement AssignedSlot => WrappedObject.AssignedSlot;
 
-        public string Slot { get => WrappedNode.Slot; set => WrappedNode.Slot = value; }
+        public string Slot { get => WrappedObject.Slot; set => WrappedObject.Slot = value; }
 
-        public IShadowRoot ShadowRoot => WrappedNode.ShadowRoot;
+        public IShadowRoot ShadowRoot => WrappedObject.ShadowRoot;
 
-        public bool IsFocused => WrappedNode.IsFocused;
+        public bool IsFocused => WrappedObject.IsFocused;
 
-        public ISourceReference SourceReference => WrappedNode.SourceReference;
+        public ISourceReference SourceReference => WrappedObject.SourceReference;
 
-        public string BaseUri => WrappedNode.BaseUri;
+        public string BaseUri => WrappedObject.BaseUri;
 
-        public Url BaseUrl => WrappedNode.BaseUrl;
+        public Url BaseUrl => WrappedObject.BaseUrl;
 
-        public string NodeName => WrappedNode.NodeName;
+        public string NodeName => WrappedObject.NodeName;
 
-        public INodeList ChildNodes => WrappedNode.ChildNodes;
+        public INodeList ChildNodes => WrappedObject.ChildNodes;
 
-        public IDocument Owner => WrappedNode.Owner;
+        public IDocument Owner => WrappedObject.Owner;
 
         public static int ParentElementKey = HashCode.Combine(nameof(ParentElement));
-        public IElement ParentElement => GetOrWrap(ParentElementKey, () => WrappedNode.ParentElement);
+        public IElement ParentElement => GetOrWrap<IElement>(ParentElementKey, () => WrappedObject.ParentElement);
 
-        public INode Parent => WrappedNode.Parent;
+        public INode Parent => WrappedObject.Parent;
 
-        public INode FirstChild => WrappedNode.FirstChild;
+        public INode FirstChild => WrappedObject.FirstChild;
 
-        public INode LastChild => WrappedNode.LastChild;
+        public INode LastChild => WrappedObject.LastChild;
 
-        public INode NextSibling => WrappedNode.NextSibling;
+        public INode NextSibling => WrappedObject.NextSibling;
 
-        public INode PreviousSibling => WrappedNode.PreviousSibling;
+        public INode PreviousSibling => WrappedObject.PreviousSibling;
 
-        public NodeType NodeType => WrappedNode.NodeType;
+        public NodeType NodeType => WrappedObject.NodeType;
 
-        public string NodeValue { get => WrappedNode.NodeValue; set => WrappedNode.NodeValue = value; }
-        public string TextContent { get => WrappedNode.TextContent; set => WrappedNode.TextContent = value; }
+        public string NodeValue { get => WrappedObject.NodeValue; set => WrappedObject.NodeValue = value; }
+        public string TextContent { get => WrappedObject.TextContent; set => WrappedObject.TextContent = value; }
 
-        public bool HasChildNodes => WrappedNode.HasChildNodes;
+        public bool HasChildNodes => WrappedObject.HasChildNodes;
 
-        public NodeFlags Flags => WrappedNode.Flags;
+        public NodeFlags Flags => WrappedObject.Flags;
 
-        public IHtmlCollection<IElement> Children => WrappedNode.Children;
+        public IHtmlCollection<IElement> Children => WrappedObject.Children;
 
-        public IElement FirstElementChild => WrappedNode.FirstElementChild;
+        public IElement FirstElementChild => WrappedObject.FirstElementChild;
 
-        public IElement LastElementChild => WrappedNode.LastElementChild;
+        public IElement LastElementChild => WrappedObject.LastElementChild;
 
-        public int ChildElementCount => WrappedNode.ChildElementCount;
+        public int ChildElementCount => WrappedObject.ChildElementCount;
 
-        public IElement NextElementSibling => WrappedNode.NextElementSibling;
+        public IElement NextElementSibling => WrappedObject.NextElementSibling;
 
-        public IElement PreviousElementSibling => WrappedNode.PreviousElementSibling;
+        public IElement PreviousElementSibling => WrappedObject.PreviousElementSibling;
 
-        public void Insert(AdjacentPosition position, string html) => WrappedNode.Insert(position, html);
-        public bool HasAttribute(string name) => WrappedNode.HasAttribute(name);
-        public bool HasAttribute(string namespaceUri, string localName) => WrappedNode.HasAttribute(namespaceUri, localName);
-        public string GetAttribute(string name) => WrappedNode.GetAttribute(name);
-        public string GetAttribute(string namespaceUri, string localName) => WrappedNode.GetAttribute(namespaceUri, localName);
-        public void SetAttribute(string name, string value) => WrappedNode.SetAttribute(name, value);
-        public void SetAttribute(string namespaceUri, string name, string value) => WrappedNode.SetAttribute(namespaceUri, name, value);
-        public bool RemoveAttribute(string name) => WrappedNode.RemoveAttribute(name);
-        public bool RemoveAttribute(string namespaceUri, string localName) => WrappedNode.RemoveAttribute(namespaceUri, localName);
-        public IHtmlCollection<IElement> GetElementsByClassName(string classNames) => WrappedNode.GetElementsByClassName(classNames);
-        public IHtmlCollection<IElement> GetElementsByTagName(string tagName) => WrappedNode.GetElementsByTagName(tagName);
-        public IHtmlCollection<IElement> GetElementsByTagNameNS(string namespaceUri, string tagName) => WrappedNode.GetElementsByTagNameNS(namespaceUri, tagName);
-        public bool Matches(string selectors) => WrappedNode.Matches(selectors);
-        public IElement Closest(string selectors) => WrappedNode.Closest(selectors);
-        public IShadowRoot AttachShadow(ShadowRootMode mode = ShadowRootMode.Open) => WrappedNode.AttachShadow(mode);
-        public INode Clone(bool deep = true) => WrappedNode.Clone(deep);
-        public bool Equals(INode otherNode) => WrappedNode.Equals(otherNode);
-        public DocumentPositions CompareDocumentPosition(INode otherNode) => WrappedNode.CompareDocumentPosition(otherNode);
-        public void Normalize() => WrappedNode.Normalize();
-        public bool Contains(INode otherNode) => WrappedNode.Contains(otherNode);
-        public bool IsDefaultNamespace(string namespaceUri) => WrappedNode.IsDefaultNamespace(namespaceUri);
-        public string LookupNamespaceUri(string prefix) => WrappedNode.LookupNamespaceUri(prefix);
-        public string LookupPrefix(string namespaceUri) => WrappedNode.LookupPrefix(namespaceUri);
-        public INode AppendChild(INode child) => WrappedNode.AppendChild(child);
-        public INode InsertBefore(INode newElement, INode referenceElement) => WrappedNode.InsertBefore(newElement, referenceElement);
-        public INode RemoveChild(INode child) => WrappedNode.RemoveChild(child);
-        public INode ReplaceChild(INode newChild, INode oldChild) => WrappedNode.ReplaceChild(newChild, oldChild);
-        public void AddEventListener(string type, DomEventHandler? callback = null, bool capture = false) => WrappedNode.AddEventListener(type, callback, capture);
-        public void RemoveEventListener(string type, DomEventHandler? callback = null, bool capture = false) => WrappedNode.RemoveEventListener(type, callback, capture);
-        public void InvokeEventListener(Event ev) => WrappedNode.InvokeEventListener(ev);
-        public bool Dispatch(Event ev) => WrappedNode.Dispatch(ev);
-        public void ToHtml(TextWriter writer, IMarkupFormatter formatter) => WrappedNode.ToHtml(writer, formatter);
-        public void Append(params INode[] nodes) => WrappedNode.Append(nodes);
-        public void Prepend(params INode[] nodes) => WrappedNode.Prepend(nodes);
-        public IElement QuerySelector(string selectors) => WrappedNode.QuerySelector(selectors);
-        public IHtmlCollection<IElement> QuerySelectorAll(string selectors) => WrappedNode.QuerySelectorAll(selectors);
-        public void Before(params INode[] nodes) => WrappedNode.Before(nodes);
-        public void After(params INode[] nodes) => WrappedNode.After(nodes);
-        public void Replace(params INode[] nodes) => WrappedNode.Replace(nodes);
-        public void Remove() => WrappedNode.Remove();
+        public void Insert(AdjacentPosition position, string html) => WrappedObject.Insert(position, html);
+        public bool HasAttribute(string name) => WrappedObject.HasAttribute(name);
+        public bool HasAttribute(string namespaceUri, string localName) => WrappedObject.HasAttribute(namespaceUri, localName);
+        public string GetAttribute(string name) => WrappedObject.GetAttribute(name);
+        public string GetAttribute(string namespaceUri, string localName) => WrappedObject.GetAttribute(namespaceUri, localName);
+        public void SetAttribute(string name, string value) => WrappedObject.SetAttribute(name, value);
+        public void SetAttribute(string namespaceUri, string name, string value) => WrappedObject.SetAttribute(namespaceUri, name, value);
+        public bool RemoveAttribute(string name) => WrappedObject.RemoveAttribute(name);
+        public bool RemoveAttribute(string namespaceUri, string localName) => WrappedObject.RemoveAttribute(namespaceUri, localName);
+        public IHtmlCollection<IElement> GetElementsByClassName(string classNames) => WrappedObject.GetElementsByClassName(classNames);
+        public IHtmlCollection<IElement> GetElementsByTagName(string tagName) => WrappedObject.GetElementsByTagName(tagName);
+        public IHtmlCollection<IElement> GetElementsByTagNameNS(string namespaceUri, string tagName) => WrappedObject.GetElementsByTagNameNS(namespaceUri, tagName);
+        public bool Matches(string selectors) => WrappedObject.Matches(selectors);
+        public IElement Closest(string selectors) => WrappedObject.Closest(selectors);
+        public IShadowRoot AttachShadow(ShadowRootMode mode = ShadowRootMode.Open) => WrappedObject.AttachShadow(mode);
+        public INode Clone(bool deep = true) => WrappedObject.Clone(deep);
+        public bool Equals(INode otherNode) => WrappedObject.Equals(otherNode);
+        public DocumentPositions CompareDocumentPosition(INode otherNode) => WrappedObject.CompareDocumentPosition(otherNode);
+        public void Normalize() => WrappedObject.Normalize();
+        public bool Contains(INode otherNode) => WrappedObject.Contains(otherNode);
+        public bool IsDefaultNamespace(string namespaceUri) => WrappedObject.IsDefaultNamespace(namespaceUri);
+        public string LookupNamespaceUri(string prefix) => WrappedObject.LookupNamespaceUri(prefix);
+        public string LookupPrefix(string namespaceUri) => WrappedObject.LookupPrefix(namespaceUri);
+        public INode AppendChild(INode child) => WrappedObject.AppendChild(child);
+        public INode InsertBefore(INode newElement, INode referenceElement) => WrappedObject.InsertBefore(newElement, referenceElement);
+        public INode RemoveChild(INode child) => WrappedObject.RemoveChild(child);
+        public INode ReplaceChild(INode newChild, INode oldChild) => WrappedObject.ReplaceChild(newChild, oldChild);
+        public void AddEventListener(string type, DomEventHandler? callback = null, bool capture = false) => WrappedObject.AddEventListener(type, callback, capture);
+        public void RemoveEventListener(string type, DomEventHandler? callback = null, bool capture = false) => WrappedObject.RemoveEventListener(type, callback, capture);
+        public void InvokeEventListener(Event ev) => WrappedObject.InvokeEventListener(ev);
+        public bool Dispatch(Event ev) => WrappedObject.Dispatch(ev);
+        public void ToHtml(TextWriter writer, IMarkupFormatter formatter) => WrappedObject.ToHtml(writer, formatter);
+        public void Append(params INode[] nodes) => WrappedObject.Append(nodes);
+        public void Prepend(params INode[] nodes) => WrappedObject.Prepend(nodes);
+        public IElement QuerySelector(string selectors) => WrappedObject.QuerySelector(selectors);
+        public IHtmlCollection<IElement> QuerySelectorAll(string selectors) => WrappedObject.QuerySelectorAll(selectors);
+        public void Before(params INode[] nodes) => WrappedObject.Before(nodes);
+        public void After(params INode[] nodes) => WrappedObject.After(nodes);
+        public void Replace(params INode[] nodes) => WrappedObject.Replace(nodes);
+        public void Remove() => WrappedObject.Remove();
     }
 }
