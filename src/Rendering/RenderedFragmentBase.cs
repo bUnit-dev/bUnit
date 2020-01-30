@@ -156,8 +156,8 @@ namespace Egil.RazorComponents.Testing
         {
             _latestRenderMarkup = null;
             _latestRenderNodes = null;
-            _nextChange.SetResult(null);
-            _nextChange = new TaskCompletionSource<object?>();
+            var nextChange = Interlocked.Exchange(ref _nextChange, new TaskCompletionSource<object?>());
+            nextChange.SetResult(null);
         }
     }
 }
