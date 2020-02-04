@@ -1,0 +1,37 @@
+﻿@code {
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("Hello world");
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        Console.WriteLine("Hello world");
+        return base.OnInitializedAsync();
+    }
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine("Hello world");
+        base.OnParametersSet();
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        Console.WriteLine("Hello world");
+        return base.OnParametersSetAsync();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine("Hello world");
+        base.OnAfterRender(firstRender);
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        Console.WriteLine("Hello world");
+
+        return base.OnAfterRenderAsync(firstRender);
+    }
+}

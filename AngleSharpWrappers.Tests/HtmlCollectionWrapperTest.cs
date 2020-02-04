@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
+using AngleSharp.Media.Dom;
 using Moq;
 using Shouldly;
 using Xunit;
@@ -102,7 +104,7 @@ namespace AngleSharpWrappers
             var colMock = new Mock<IHtmlCollection<IElement>>();
             var elm1 = new Mock<IElement>().Object;
             colMock.SetupGet(x => x[0]).Returns(() => new Mock<IElement>().Object);
-            var sut = new HtmlCollectionWrapper<IElement>(() => colMock.Object);            
+            var sut = new HtmlCollectionWrapper<IElement>(() => colMock.Object);
             var colElmWrapper = (ElementWrapper)sut[0];
             var initialWrappedColElm = colElmWrapper.WrappedObject;
 

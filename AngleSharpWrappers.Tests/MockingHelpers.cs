@@ -148,6 +148,25 @@ namespace AngleSharpWrappers
             return result;
         }
 
+        public static List<EventInfo> GetInterfaceEvents(this Type type)
+        {
+            if (type is null) throw new ArgumentNullException(nameof(type));
+
+            var result = new List<EventInfo>();
+
+            foreach (var mi in type.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
+            {
+                result.Add(mi);
+            }
+
+            foreach (var baseType in type.GetInterfaces())
+            {
+                result.AddRange(GetInterfaceEvents(baseType));
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Creates a parameter array containing a default or mocked instance of all parameters a method takes when invoked.
         /// </summary>

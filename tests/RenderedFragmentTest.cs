@@ -117,6 +117,11 @@ namespace Egil.RazorComponents.Testing
             Assert.Same(initialNodes, cut.Nodes);
         }
 
+        [Fact(DisplayName = "Can render component with Console.WriteLine calls")]
+        public void Test010()
+        {
+            var cut = RenderComponent<CallsConsole>();
+        }
 
     }
 
