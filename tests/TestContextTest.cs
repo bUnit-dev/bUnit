@@ -215,12 +215,14 @@ namespace Egil.RazorComponents.Testing
         {
             // Count value is displayed in child component with initial value zero
             var cut = RenderComponent<CounterComponentUsingChild>();
-            Assert.Equal("Current count: 0", cut.Find("p").TextContent);
-            Assert.Equal("0", cut.Find("p .message").TextContent);
+            var pElm = cut.Find("p");
+            var messageElm = cut.Find("p .message");
+            Assert.Equal("Current count: 0", pElm.TextContent);
+            Assert.Equal("0", messageElm.TextContent);
 
             // Clicking increments count in child element
             cut.Find("button").Click();
-            Assert.Equal("1", cut.Find("p .message").TextContent);
+            Assert.Equal("1", messageElm.TextContent);
         }
 
         [Fact]

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
+using AngleSharpWrappers;
 using Egil.RazorComponents.Testing.Asserting;
 using Egil.RazorComponents.Testing.Extensions;
 using Microsoft.AspNetCore.Components;
@@ -22,7 +23,7 @@ namespace Egil.RazorComponents.Testing
         private string? _snapshotMarkup;
         private string? _latestRenderMarkup;
         private INodeList? _firstRenderNodes;
-        private INodeList? _latestRenderNodes;
+        private NodeListWrapper? _latestRenderNodes;
         private INodeList? _snapshotNodes;
         private TaskCompletionSource<object?> _nextChange = new TaskCompletionSource<object?>();
 
@@ -61,7 +62,7 @@ namespace Egil.RazorComponents.Testing
             get
             {
                 if (_latestRenderNodes is null)
-                    _latestRenderNodes = TestContext.CreateNodes(Markup);
+                    _latestRenderNodes = new NodeListWrapper(TestContext.CreateNodes(Markup), () => TestContext.CreateNodes(Markup));
                 return _latestRenderNodes;
             }
         }
@@ -155,7 +156,7 @@ namespace Egil.RazorComponents.Testing
         private void ResetLatestRenderCache()
         {
             _latestRenderMarkup = null;
-            _latestRenderNodes = null;
+            _latestRenderNodes?.MarkAsStale();
             var nextChange = Interlocked.Exchange(ref _nextChange, new TaskCompletionSource<object?>());
             nextChange.SetResult(null);
         }

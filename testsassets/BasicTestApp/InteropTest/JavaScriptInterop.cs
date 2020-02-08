@@ -30,7 +30,7 @@ namespace BasicTestApp.InteropTest
         [JSInvokable]
         public static void VoidParameterless()
         {
-            Invocations[nameof(VoidParameterless)] = new object[0];
+            Invocations[nameof(VoidParameterless)] = Array.Empty<object>();
         }
 
         [JSInvokable]
@@ -206,7 +206,7 @@ namespace BasicTestApp.InteropTest
         [JSInvokable]
         public static Task VoidParameterlessAsync()
         {
-            Invocations[nameof(VoidParameterlessAsync)] = new object[0];
+            Invocations[nameof(VoidParameterlessAsync)] = Array.Empty<object>();
             return Task.CompletedTask;
         }
 

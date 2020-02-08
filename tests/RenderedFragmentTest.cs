@@ -1,4 +1,6 @@
-﻿using Egil.RazorComponents.Testing.EventDispatchExtensions;
+﻿using AngleSharp.Dom;
+using Egil.RazorComponents.Testing.Asserting;
+using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using Egil.RazorComponents.Testing.Extensions;
 using Egil.RazorComponents.Testing.SampleComponents;
 using Egil.RazorComponents.Testing.SampleComponents.Data;
@@ -60,18 +62,21 @@ namespace Egil.RazorComponents.Testing
             steveValue.ShouldNotBe(initialValue);
         }
 
-        [Fact(DisplayName = "Nodes on a components with child component returns " +
-                            "new instance when the child component has changes")]
+        [Fact(DisplayName = "Given a components with a child component, " +
+                            "when component markup changes, " +
+                            "then the DOM nodes are updated to reflect the change")]
         public void Test005()
         {
             var invocation = Services.AddMockJsRuntime().Setup<string>("getdata");
             var notcut = RenderComponent<Wrapper>(ChildContent<Simple1>());
             var cut = RenderComponent<Wrapper>(ChildContent<SimpleWithJsRuntimeDep>());
-            var initialValue = cut.Nodes;
+            var pElm = cut.Nodes.Find("p");
 
-            WaitForNextRender(() => invocation.SetResult("Steve Sanderson"), TimeSpan.FromDays(1));
+            pElm.MarkupMatches("<p></p>");
 
-            Assert.NotSame(initialValue, cut.Nodes);
+            WaitForNextRender(() => invocation.SetResult("Steve Sanderson"));
+
+            pElm.MarkupMatches("<p>Steve Sanderson</p>");
         }
 
 
@@ -80,11 +85,13 @@ namespace Egil.RazorComponents.Testing
         public void Test006()
         {
             var cut = RenderComponent<ClickCounter>();
-            var initialNodes = cut.Nodes;
+            var pElm = cut.Nodes.Find("p");
+
+            pElm.TextContent.ShouldBe("0");
 
             cut.Find("button").Click();
 
-            Assert.NotSame(initialNodes, cut.Nodes);
+            pElm.TextContent.ShouldBe("1");
         }
 
         [Fact(DisplayName = "Nodes should return new instance " +
@@ -97,11 +104,13 @@ namespace Egil.RazorComponents.Testing
                     ChildContent<ClickCounter>()
                 )
             );
-            var initialNodes = cut.Nodes;
+            var pElm = cut.Nodes.Find("p");
+
+            pElm.TextContent.ShouldBe("0");
 
             cut.Find("button").Click();
 
-            Assert.NotSame(initialNodes, cut.Nodes);
+            pElm.TextContent.ShouldBe("1");
         }
 
         [Fact(DisplayName = "Nodes should return the same instance " +

@@ -8,9 +8,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.JSInterop;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Testing
@@ -62,9 +64,11 @@ namespace Egil.RazorComponents.Testing
         public virtual void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
         {
             if (renderTrigger is null) throw new ArgumentNullException(nameof(renderTrigger));
+            var waitTime = Debugger.IsAttached ? Timeout.InfiniteTimeSpan : timeout ?? TimeSpan.FromSeconds(1);
+
             var task = Renderer.NextRender;
             renderTrigger();
-            task.Wait(timeout ?? TimeSpan.FromSeconds(1));
+            task.Wait(waitTime);
 
             if (!task.IsCompleted)
             {

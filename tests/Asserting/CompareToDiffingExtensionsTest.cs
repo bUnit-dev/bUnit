@@ -5,8 +5,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
+using AngleSharpWrappers;
 using Egil.RazorComponents.Testing.SampleComponents;
 using Egil.RazorComponents.Testing.TestUtililities;
+using Egil.RazorComponents.Testing.Extensions;
 using Shouldly;
 using Xunit;
 
@@ -71,9 +73,14 @@ namespace Egil.RazorComponents.Testing.Asserting
         {
             var rf1 = RenderComponent<Simple1>((nameof(Simple1.Header), "FOO"));
             var rf2 = RenderComponent<Simple1>((nameof(Simple1.Header), "BAR"));
+            //INodeList rf1n = new NodeListWrapper(() => rf1.Nodes);
+            //INodeList rf2n = new NodeListWrapper(() => rf2.Nodes);
 
-            var elm = rf1.Find("h1");            
+            var elm = rf1.Find("h1");
             elm.CompareTo(rf2.Nodes).Count.ShouldBe(1);
+
+            //var elm1n = rf1n.Find("h1");
+            //elm1n.CompareTo(rf2n).Count.ShouldBe(1);
         }
 
         [Fact(DisplayName = "CompareTo with INodeList and INode")]
@@ -82,7 +89,7 @@ namespace Egil.RazorComponents.Testing.Asserting
             var rf1 = RenderComponent<Simple1>((nameof(Simple1.Header), "FOO"));
             var rf2 = RenderComponent<Simple1>((nameof(Simple1.Header), "BAR"));
 
-            var elm = rf1.Find("h1");            
+            var elm = rf1.Find("h1");
             rf2.Nodes.CompareTo(elm).Count.ShouldBe(1);
         }
     }

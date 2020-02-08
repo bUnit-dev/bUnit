@@ -1,4 +1,7 @@
-﻿using Egil.RazorComponents.Testing.EventDispatchExtensions;
+﻿using System.Linq;
+using AngleSharp;
+using AngleSharp.Dom;
+using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using Egil.RazorComponents.Testing.SampleComponents;
 using Shouldly;
 using Xunit;
@@ -29,7 +32,7 @@ namespace Egil.RazorComponents.Testing
 
             cut.SetParametersAndRender(ChildContent("<p>"));
 
-            Assert.NotSame(initialNodes, cut.Nodes);
+            //Assert.NotSame(initialNodes, cut.Nodes);
             cut.Find("p").ShouldNotBeNull();
         }
 
@@ -38,11 +41,12 @@ namespace Egil.RazorComponents.Testing
         public void Test005()
         {
             var cut = RenderComponent<RenderCounter>();
-            var initialNodes = cut.Nodes;
+            var nodes = cut.Nodes;
+            var initialHtml = nodes.ToHtml();
 
             cut.Render();
 
-            Assert.NotSame(initialNodes, cut.Nodes);
+            initialHtml.ShouldNotBe(nodes.ToHtml());
         }
     }
 }
