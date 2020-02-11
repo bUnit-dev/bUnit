@@ -5,7 +5,6 @@ using AngleSharp.Dom;
 using AngleSharp.Diffing.Core;
 using Xunit.Abstractions;
 using Egil.RazorComponents.Testing.Diffing;
-using AngleSharpWrappers;
 using System.Linq;
 using System;
 

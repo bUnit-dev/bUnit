@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AngleSharpWrappers;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Xunit.Sdk;
