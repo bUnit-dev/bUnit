@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AngleSharpWrappers;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Xunit.Sdk;
@@ -64,31 +65,5 @@ namespace Egil.RazorComponents.Testing
         /// <param name="timeout">An optional amount of time to wait before throwing.</param>
         /// <exception cref="TimeoutException">Thrown when the timeout is passed, and no update has been detected to the component/fragment.</exception>
         void WaitForNextChange(Action renderTrigger, TimeSpan? timeout = null);
-
-        /// <summary>
-        /// Returns the first element from the rendered fragment or component under test,
-        /// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
-        /// of the rendered nodes.
-        /// </summary>
-        /// <param name="cssSelector">The group of selectors to use.</param>
-        public IElement Find(string cssSelector)
-        {
-            var result = Nodes.QuerySelector(cssSelector);
-            if (result is null)
-                throw new ElementNotFoundException(cssSelector);
-            else
-                return result;
-        }
-
-        /// <summary>
-        /// Returns a list of elements from the rendered fragment or component under test, 
-        /// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
-        /// of the rendered nodes.
-        /// </summary>
-        /// <param name="cssSelector">The group of selectors to use.</param>
-        public IHtmlCollection<IElement> FindAll(string cssSelector)
-        {
-            return Nodes.QuerySelectorAll(cssSelector);
-        }
     }
 }

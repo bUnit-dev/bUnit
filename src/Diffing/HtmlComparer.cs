@@ -34,9 +34,7 @@ namespace Egil.RazorComponents.Testing.Diffing
         /// </summary>
         public IEnumerable<IDiff> Compare(INode controlHtml, INode testHtml)
         {
-            if (controlHtml is Wrapper<INode> ctrlNode) { controlHtml = ctrlNode.WrappedObject; }
-            if (testHtml is Wrapper<INode> testNode) { testHtml = testNode.WrappedObject; }
-            return _differenceEngine.Compare(controlHtml.Unwrap(), testHtml.Unwrap()); // TOOD unwrap!
+            return _differenceEngine.Compare(controlHtml, testHtml);
         }
 
         /// <summary>
@@ -44,7 +42,7 @@ namespace Egil.RazorComponents.Testing.Diffing
         /// </summary>
         public IEnumerable<IDiff> Compare(IEnumerable<INode> controlHtml, IEnumerable<INode> testHtml)
         {
-            return _differenceEngine.Compare(controlHtml.Unwrap(), testHtml.Unwrap());
+            return _differenceEngine.Compare(controlHtml, testHtml);
         }
     }
 }

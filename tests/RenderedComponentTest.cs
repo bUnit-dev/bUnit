@@ -35,18 +35,17 @@ namespace Egil.RazorComponents.Testing
             //Assert.NotSame(initialNodes, cut.Nodes);
             cut.Find("p").ShouldNotBeNull();
         }
-
+        
         [Fact(DisplayName = "Nodes should return new instance " +
-                            "when a Render has caused changes to DOM tree")]
+                    "when a Render has caused changes to DOM tree")]
         public void Test005()
         {
             var cut = RenderComponent<RenderCounter>();
-            var nodes = cut.Nodes;
-            var initialHtml = nodes.ToHtml();
+            var initialNodes = cut.Nodes;
 
             cut.Render();
 
-            initialHtml.ShouldNotBe(nodes.ToHtml());
+            Assert.NotSame(initialNodes, cut.Nodes);
         }
     }
 }

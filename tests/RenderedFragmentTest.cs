@@ -62,36 +62,30 @@ namespace Egil.RazorComponents.Testing
             steveValue.ShouldNotBe(initialValue);
         }
 
-        [Fact(DisplayName = "Given a components with a child component, " +
-                            "when component markup changes, " +
-                            "then the DOM nodes are updated to reflect the change")]
+        [Fact(DisplayName = "Nodes on a components with child component returns " +
+                            "new instance when the child component has changes")]
         public void Test005()
         {
             var invocation = Services.AddMockJsRuntime().Setup<string>("getdata");
             var notcut = RenderComponent<Wrapper>(ChildContent<Simple1>());
             var cut = RenderComponent<Wrapper>(ChildContent<SimpleWithJsRuntimeDep>());
-            var pElm = cut.Nodes.Find("p");
+            var initialValue = cut.Nodes;
 
-            pElm.MarkupMatches("<p></p>");
+            WaitForNextRender(() => invocation.SetResult("Steve Sanderson"), TimeSpan.FromDays(1));
 
-            WaitForNextRender(() => invocation.SetResult("Steve Sanderson"));
-
-            pElm.MarkupMatches("<p>Steve Sanderson</p>");
+            Assert.NotSame(initialValue, cut.Nodes);
         }
-
 
         [Fact(DisplayName = "Nodes should return new instance " +
                             "when a event handler trigger has caused changes to DOM tree")]
         public void Test006()
         {
             var cut = RenderComponent<ClickCounter>();
-            var pElm = cut.Nodes.Find("p");
-
-            pElm.TextContent.ShouldBe("0");
+            var initialNodes = cut.Nodes;
 
             cut.Find("button").Click();
 
-            pElm.TextContent.ShouldBe("1");
+            Assert.NotSame(initialNodes, cut.Nodes);
         }
 
         [Fact(DisplayName = "Nodes should return new instance " +
@@ -104,13 +98,11 @@ namespace Egil.RazorComponents.Testing
                     ChildContent<ClickCounter>()
                 )
             );
-            var pElm = cut.Nodes.Find("p");
-
-            pElm.TextContent.ShouldBe("0");
+            var initialNodes = cut.Nodes;
 
             cut.Find("button").Click();
 
-            pElm.TextContent.ShouldBe("1");
+            Assert.NotSame(initialNodes, cut.Nodes);
         }
 
         [Fact(DisplayName = "Nodes should return the same instance " +

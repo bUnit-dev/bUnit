@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using AngleSharp.Dom;
 using BasicTestApp;
 using DeepEqual.Syntax;
+using Egil.RazorComponents.Testing;
 using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using Egil.RazorComponents.Testing.Extensions;
 using Egil.RazorComponents.Testing.TestUtililities;
+using Egil.RazorComponents.Testing.Asserting;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +22,12 @@ using Xunit.Abstractions;
 
 namespace Egil.RazorComponents.Testing
 {
-    // FindElements\(By\.Id\("([\.\>\s\d\w-=\[\]]+)"\)\)
+    /// <summary>
+    /// This tests are based on the tests from the following AspNetCore tests class.
+    /// The aim is to only modify the original tests to not use Selenium, and instead use the
+    /// <see cref="TextContext" />.
+    /// https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs
+    /// </summary>
     public class TestContextTest : ComponentTestFixture
     {
         public TestContextTest(ITestOutputHelper output)
@@ -79,13 +86,13 @@ namespace Egil.RazorComponents.Testing
 
             // Clicking 'tick' changes the state, and starts a task
             cut.Find("#tick").Click();
-            Assert.Equal("Started", cut.Find("#state").TextContent);
+            Assert.Equal("Started", stateElement.TextContent);
 
             // Clicking 'tock' completes the task, which updates the state
             // This click causes two renders, thus WaitForNextUpdate is needed
             // to wait for the markup to be updated.
             cut.WaitForNextChange(() => cut.Find("#tock").Click());
-            Assert.Equal("Stopped", cut.Find("#state").TextContent);
+            Assert.Equal("Stopped", stateElement.TextContent);
         }
 
         [Fact]
@@ -94,16 +101,16 @@ namespace Egil.RazorComponents.Testing
             // List is initially empty
             var cut = RenderComponent<KeyPressEventComponent>();
             var inputElement = cut.Find("input");
-            var liElements = cut.FindAll("li");
-            Assert.Empty(liElements);
+            Func<IHtmlCollection<IElement>> liElements = () => cut.FindAll("li");
+            liElements.ShouldBeEmpty();
 
             // Typing adds element
             inputElement.KeyPress("a");
-            Assert.Collection(cut.FindAll("li"), li => Assert.Equal("a", li.TextContent));
+            liElements.ShouldAllBe(li => Assert.Equal("a", li.TextContent));
 
             // Typing again adds another element
             inputElement.KeyPress("b");
-            Assert.Collection(cut.FindAll("li"),
+            liElements.ShouldAllBe(
                 li => Assert.Equal("a", li.TextContent),
                 li => Assert.Equal("b", li.TextContent)
             );
@@ -123,24 +130,26 @@ namespace Egil.RazorComponents.Testing
         public void CanAddAndRemoveEventHandlersDynamically()
         {
             var cut = RenderComponent<CounterComponent>();
+            var countDisplayElement = cut.Find("p");
+            var incrementButton = cut.Find("button");
+            var toggleClickHandlerCheckbox = cut.Find("[type=checkbox]");
 
             // Initial count is zero; clicking button increments count
-            Assert.Equal("Current count: 0", cut.Find("p").TextContent);
-            cut.Find("button").Click();
-            Assert.Equal("Current count: 1", cut.Find("p").TextContent);
+            Assert.Equal("Current count: 0", countDisplayElement.TextContent);
+            incrementButton.Click();
+            Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 
             // We can remove an event handler
-            cut.Find("[type=checkbox]").Change(false);
-            cut.FindAll("#listening-message").ShouldBeEmpty();
-
-            cut.Find("button").Click();
-            Assert.Equal("Current count: 1", cut.Find("p").TextContent);
+            toggleClickHandlerCheckbox.Change(false);
+            Assert.Empty(cut.FindAll("#listening-message"));
+            incrementButton.Click();
+            Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 
             // We can add an event handler
-            cut.Find("[type=checkbox]").Change(true);
-            cut.Find("#listening-message");
-            cut.Find("button").Click();
-            Assert.Equal("Current count: 2", cut.Find("p").TextContent);
+            toggleClickHandlerCheckbox.Change(true);
+            cut.Find("#listening-message"); // throws if non is found.
+            incrementButton.Click();
+            Assert.Equal("Current count: 2", countDisplayElement.TextContent);
         }
 
         [Fact]
@@ -215,14 +224,14 @@ namespace Egil.RazorComponents.Testing
         {
             // Count value is displayed in child component with initial value zero
             var cut = RenderComponent<CounterComponentUsingChild>();
-            var pElm = cut.Find("p");
-            var messageElm = cut.Find("p .message");
-            Assert.Equal("Current count: 0", pElm.TextContent);
-            Assert.Equal("0", messageElm.TextContent);
+            var wholeCounterElement = cut.Find("p");
+            var messageElementInChild = cut.Find("p .message");
+            Assert.Equal("Current count: 0", wholeCounterElement.TextContent);
+            Assert.Equal("0", messageElementInChild.TextContent);
 
             // Clicking increments count in child element
             cut.Find("button").Click();
-            Assert.Equal("1", messageElm.TextContent);
+            Assert.Equal("1", messageElementInChild.TextContent);
         }
 
         [Fact]
@@ -230,65 +239,69 @@ namespace Egil.RazorComponents.Testing
         {
             // Initially there are zero child components
             var cut = RenderComponent<AddRemoveChildComponents>();
+            var addButton = cut.Find(".addChild");
+            var removeButton = cut.Find(".removeChild");
             Assert.Empty(cut.FindAll("p"));
 
             // Click to add/remove some child components
-            cut.Find(".addChild").Click();
-            Assert.Collection(cut.FindAll("p"), elem => Assert.Equal("Child 1", elem.Find(".message").TextContent));
+            addButton.Click();
+            Assert.Collection(cut.FindAll("p"),
+                elem => Assert.Equal("Child 1", elem.Find(".message").TextContent));
 
-            cut.Find(".addChild").Click();
+            addButton.Click();
             Assert.Collection(cut.FindAll("p"),
                 elem => Assert.Equal("Child 1", elem.Find(".message").TextContent),
                 elem => Assert.Equal("Child 2", elem.Find(".message").TextContent));
 
-            cut.Find(".removeChild").Click();
+            removeButton.Click();
             Assert.Collection(cut.FindAll("p"),
                 elem => Assert.Equal("Child 1", elem.Find(".message").TextContent));
 
-            cut.Find(".addChild").Click();
+            addButton.Click();
             Assert.Collection(cut.FindAll("p"),
                 elem => Assert.Equal("Child 1", elem.Find(".message").TextContent),
                 elem => Assert.Equal("Child 3", elem.Find(".message").TextContent));
         }
 
-        //[Fact]
-        //public void ChildComponentsNotifiedWhenPropertiesChanged()
-        //{
-        //    // Child component receives notification that lets it compute a property before first render
-        //    var cut = RenderComponent<PropertiesChangedHandlerParent>();
-        //    var suppliedValueElement = cut.Find(".supplied");
-        //    var computedValueElement = cut.Find(".computed");
-        //    var incrementButton = cut.Find("button");
-        //    Assert.Equal("You supplied: 100", suppliedValueElement.TextContent);
-        //    Assert.Equal("I computed: 200", computedValueElement.TextContent);
+        [Fact]
+        public void ChildComponentsNotifiedWhenPropertiesChanged()
+        {
+            // Child component receives notification that lets it compute a property before first render
+            var cut = RenderComponent<PropertiesChangedHandlerParent>();
+            var suppliedValueElement = cut.Find(".supplied");
+            var computedValueElement = cut.Find(".computed");
+            var incrementButton = cut.Find("button");
+            Assert.Equal("You supplied: 100", suppliedValueElement.TextContent);
+            Assert.Equal("I computed: 200", computedValueElement.TextContent);
 
-        //    // When property changes, child is renotified before rerender
-        //    incrementButton.Click();
-        //    Assert.Equal("You supplied: 101", () => suppliedValueElement.TextContent);
-        //    Assert.Equal("I computed: 202", computedValueElement.TextContent);
-        //}
+            // When property changes, child is renotified before rerender
+            incrementButton.Click();
+            Assert.Equal("You supplied: 101", suppliedValueElement.TextContent);
+            Assert.Equal("I computed: 202", computedValueElement.TextContent);
+        }
 
-        //[Fact]
-        //public void CanRenderFragmentsWhilePreservingSurroundingElements()
-        //{
-        //    // Initially, the region isn't shown
-        //    var cut = RenderComponent<RenderFragmentToggler>();
-        //    var originalButton = cut.Find("button");
-        //    Func<IEnumerable<IWebElement>> fragmentElements = () => cut.FindAll("p[name=fragment-element]");
-        //    Assert.Empty(fragmentElements());
+        [Fact]
+        public void CanRenderFragmentsWhilePreservingSurroundingElements()
+        {
+            // Initially, the region isn't shown
+            var cut = RenderComponent<RenderFragmentToggler>();
+            var originalButton = cut.Find("button");
+            
+            Func<IEnumerable<IElement>> fragmentElements = () => cut.FindAll("p[name=fragment-element]");
+            Assert.Empty(fragmentElements());
 
-        //    // The JS-side DOM builder handles regions correctly, placing elements
-        //    // after the region after the corresponding elements
-        //    Assert.Equal("The end", cut.FindElements(By.CssSelector("div > *:last-child")).Single().TextContent);
+            // The JS-side DOM builder handles regions correctly, placing elements
+            // after the region after the corresponding elements
+            Assert.Equal("The end", cut.Find("div > *:last-child").TextContent);
 
-        //    // When we click the button, the region is shown
-        //    originalButton.Click();
-        //    Browser.Single(fragmentElements);
+            // When we click the button, the region is shown
+            originalButton.Click();
+            fragmentElements().Single();
 
-        //    // The button itself was preserved, so we can click it again and see the effect
-        //    originalButton.Click();
-        //    Browser.Empty(fragmentElements);
-        //}
+            // The button itself was preserved, so we can click it again and see the effect
+            originalButton.Click();
+            Assert.Empty(fragmentElements());
+        }
 
         //[Fact]
         //public void CanUseViewImportsHierarchically()

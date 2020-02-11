@@ -20,11 +20,12 @@ namespace Egil.RazorComponents.Testing
     /// </summary>
     public abstract class RenderedFragmentBase : IRenderedFragment
     {
+        private readonly WrapperFactory _wrapperFactory = new WrapperFactory();
         private string? _snapshotMarkup;
         private string? _latestRenderMarkup;
         private INodeList? _firstRenderNodes;
-        private NodeListWrapper? _latestRenderNodes;
         private INodeList? _snapshotNodes;
+        private INodeList? _latestRenderNodes;
         private TaskCompletionSource<object?> _nextChange = new TaskCompletionSource<object?>();
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace Egil.RazorComponents.Testing
             get
             {
                 if (_latestRenderNodes is null)
-                    _latestRenderNodes = new NodeListWrapper(TestContext.CreateNodes(Markup), () => TestContext.CreateNodes(Markup));
+                    _latestRenderNodes = TestContext.CreateNodes(Markup);
                 return _latestRenderNodes;
             }
         }
@@ -156,8 +157,9 @@ namespace Egil.RazorComponents.Testing
         private void ResetLatestRenderCache()
         {
             _latestRenderMarkup = null;
-            _latestRenderNodes?.MarkAsStale();
-            var nextChange = Interlocked.Exchange(ref _nextChange, new TaskCompletionSource<object?>());
+            _latestRenderNodes = null;
+            var nextChange = _nextChange;
+            _nextChange = new TaskCompletionSource<object?>();
             nextChange.SetResult(null);
         }
     }
