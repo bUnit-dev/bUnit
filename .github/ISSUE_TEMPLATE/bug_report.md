@@ -7,8 +7,10 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**NOTE:** _Remove any parts of the template you do not need and replace the default text in each section with your own._
+
+**Describe the bug or question**
+A clear and concise description of what the bug or question is.
 
 **Example:**
 Testing this component:
@@ -19,7 +21,7 @@ Component under test
 
 With this test:
 
-```cshtml
+```csharp
 Unit test in C# or Razor or Snapshot that fails.
 ```
 
