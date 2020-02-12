@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing.SampleApp.Data
+namespace Bunit.SampleApp.Data
 {
     public class Localizer
     {

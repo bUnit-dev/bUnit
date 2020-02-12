@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Egil.RazorComponents.Testing.SampleApp.Data;
+using Bunit.SampleApp.Data;
 
-namespace Egil.RazorComponents.Testing.SampleApp
+namespace Bunit.SampleApp
 {
     internal class MockForecastService : IWeatherForecastService
     {

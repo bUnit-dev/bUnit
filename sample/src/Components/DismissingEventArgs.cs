@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Egil.RazorComponents.Testing.SampleApp.Components
+namespace Bunit.SampleApp.Components
 {
     public class DismissingEventArgs
     {

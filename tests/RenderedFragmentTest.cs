@@ -1,4 +1,5 @@
-﻿using Bunit.SampleComponents;
+﻿using Bunit.Mocking.JSInterop;
+using Bunit.SampleComponents;
 using Bunit.SampleComponents.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;

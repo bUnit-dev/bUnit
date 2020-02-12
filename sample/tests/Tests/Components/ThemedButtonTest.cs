@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.EventDispatchExtensions;
-using Egil.RazorComponents.Testing.SampleApp.Components;
+using Bunit.SampleApp.Components;
 using Xunit;
 using Shouldly;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
+namespace Bunit.SampleApp.CodeOnlyTests.Components
 {
     public class ThemedButtonTest : ComponentTestFixture
     {

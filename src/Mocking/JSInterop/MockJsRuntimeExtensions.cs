@@ -2,7 +2,7 @@
 using Bunit.Mocking.JSInterop;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Bunit
+namespace Bunit.Mocking.JSInterop
 {
     /// <summary>
     /// Helper methods for registering the MockJsRuntime with a <see cref="TestServiceProvider"/>.

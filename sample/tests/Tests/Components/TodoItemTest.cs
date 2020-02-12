@@ -1,7 +1,5 @@
-﻿using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.EventDispatchExtensions;
-using Egil.RazorComponents.Testing.SampleApp.Components;
-using Egil.RazorComponents.Testing.SampleApp.Data;
+﻿using Bunit.SampleApp.Components;
+using Bunit.SampleApp.Data;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
 using System;
@@ -11,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
+namespace Bunit.SampleApp.CodeOnlyTests
 {
     public class TodoItemTest : ComponentTestFixture
     {

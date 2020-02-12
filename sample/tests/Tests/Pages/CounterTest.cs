@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Diffing.Core;
-using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.EventDispatchExtensions;
-using Egil.RazorComponents.Testing.SampleApp.Pages;
+using Bunit.SampleApp.Pages;
 using Shouldly;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
+namespace Bunit.SampleApp.CodeOnlyTests
 {
     public class CounterTest : ComponentTestFixture
     {

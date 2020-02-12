@@ -6,13 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Moq;
-using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.SampleApp.Data;
-using Egil.RazorComponents.Testing.EventDispatchExtensions;
-using Egil.RazorComponents.Testing.SampleApp.Pages;
+using Bunit.SampleApp.Data;
+using Bunit.SampleApp.Pages;
 using Microsoft.Extensions.DependencyInjection;
+using Bunit.Mocking.JSInterop;
 
-namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Pages
+namespace Bunit.SampleApp.CodeOnlyTests.Pages
 {
     public class TodosTest : ComponentTestFixture
     {

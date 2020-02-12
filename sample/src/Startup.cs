@@ -10,9 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Diagnostics.CodeAnalysis;
-using Egil.RazorComponents.Testing.SampleApp.Data;
+using Bunit.SampleApp.Data;
 
-namespace Egil.RazorComponents.Testing.SampleApp
+namespace Bunit.SampleApp
 {
     [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
     public class Startup

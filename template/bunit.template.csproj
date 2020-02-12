@@ -22,6 +22,8 @@
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
+    <AssemblyName>Bunit.Template</AssemblyName>
+    <RootNamespace>Bunit</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

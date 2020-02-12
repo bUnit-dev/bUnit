@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using Bunit;
+using Bunit.Mocking.JSInterop;
 
 namespace Company.RazorTests1
 {
