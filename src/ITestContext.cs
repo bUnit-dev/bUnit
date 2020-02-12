@@ -1,9 +1,9 @@
 ﻿using System;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Diffing;
+using Bunit.Diffing;
 using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// A test context is a factory that makes it possible to create components under tests.

@@ -1,15 +1,13 @@
 ﻿using System;
-using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using Microsoft.AspNetCore.Components;
 using Xunit;
 using Shouldly;
 using System.Threading.Tasks;
-using Egil.RazorComponents.Testing.Extensions;
-using Egil.RazorComponents.Testing.SampleComponents;
+using Bunit.SampleComponents;
 using System.Diagnostics.CodeAnalysis;
+using Bunit.Mocking.JSInterop;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     [SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>")]
     public class ComponentTestFixtureTest : ComponentTestFixture

@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
-    <RootNamespace>Egil.RazorComponents.Testing.SampleApp</RootNamespace>
+    <RootNamespace>Bunit.SampleApp</RootNamespace>
+    <AssemblyName>Bunit.SampleApp</AssemblyName>
   </PropertyGroup>
 
 </Project>

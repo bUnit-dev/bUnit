@@ -3,7 +3,7 @@ using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html;
 
-namespace Egil.RazorComponents.Testing.Diffing
+namespace Bunit.Diffing
 {
     /// <summary>
     /// A markup formatter, that skips any special Blazor attributes added by the <see cref="TestRenderer"/>/<see cref="Htmlizer"/>.

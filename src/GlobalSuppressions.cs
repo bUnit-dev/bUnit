@@ -6,6 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Usage", "BL0006:Do not use RenderTree types", 
     Justification = "<Pending>", 
     Scope = "namespaceanddescendants", 
-    Target = "Egil.RazorComponents.Testing")]
+    Target = "Bunit")]
 [assembly: SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", 
-    Justification = "No need to translate at this point", Scope = "namespaceanddescendants", Target = "Egil.RazorComponents.Testing")]
+    Justification = "No need to translate at this point", Scope = "namespaceanddescendants", Target = "Bunit")]

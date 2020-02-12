@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
-    <RootNamespace>Egil.RazorComponents.Testing</RootNamespace>
+    <RootNamespace>Bunit</RootNamespace>
+    <AssemblyName>Bunit.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Egil.RazorComponents.Testing.Library.csproj" />
+    <ProjectReference Include="..\src\bunit.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@ using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Represents a rendered fragment.

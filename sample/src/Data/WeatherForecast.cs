@@ -1,6 +1,6 @@
 using System;
 
-namespace Egil.RazorComponents.Testing.SampleApp.Data
+namespace Bunit.SampleApp.Data
 {
     public class WeatherForecast
     {

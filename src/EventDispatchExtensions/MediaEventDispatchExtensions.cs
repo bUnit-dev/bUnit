@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     /// <summary>
     /// Media event dispatch helper extension methods.

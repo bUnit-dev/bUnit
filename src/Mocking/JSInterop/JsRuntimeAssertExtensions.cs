@@ -1,12 +1,11 @@
 ﻿using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Extensions;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Mocking.JSInterop
+namespace Bunit.Mocking.JSInterop
 {
     /// <summary>
     /// Assert extensions for JsRuntimeMock

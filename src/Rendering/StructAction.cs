@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Egil.RazorComponents.Testing.Extensions
+namespace Bunit
 {
     /// <summary>
     /// Represents an Action delegate, that allows <c>readonly struct</c> to be passed using

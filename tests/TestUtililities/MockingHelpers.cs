@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Moq;
 
-namespace Egil.RazorComponents.Testing.TestUtililities
+namespace Bunit.TestUtililities
 {
     /// <summary>
     /// Helper methods for creating mocks.

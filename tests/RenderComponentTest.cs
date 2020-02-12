@@ -1,9 +1,8 @@
-﻿using Egil.RazorComponents.Testing.EventDispatchExtensions;
-using Egil.RazorComponents.Testing.SampleComponents;
+﻿using Bunit.SampleComponents;
 using Shouldly;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     public class RenderComponentTest : ComponentTestFixture
     {

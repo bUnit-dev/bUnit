@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.SampleApp.Components;
+using Bunit.SampleApp.Components;
 using Shouldly;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests.Components
+namespace Bunit.SampleApp.CodeOnlyTests.Components
 {
     public class PassingChildContentTest : ComponentTestFixture
     {

@@ -6,10 +6,9 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using Egil.RazorComponents.Testing.Extensions;
 using AngleSharp.Css.Dom;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Represents a Razor component that can be used to render and re-render a render fragment into.

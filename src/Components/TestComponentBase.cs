@@ -4,8 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.Diffing;
+using Bunit.Diffing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +13,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Base test class/test runner, that runs Fixtures defined in razor files.

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Egil.RazorComponents.Testing.SampleApp.Data
+namespace Bunit.SampleApp.Data
 {
     public class WeatherForecastService : IWeatherForecastService
     {

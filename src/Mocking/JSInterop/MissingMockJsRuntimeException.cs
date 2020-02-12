@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Egil.RazorComponents.Testing
+namespace Xunit.Sdk
 {
     /// <summary>
     /// Exception use to indicate that a MockJsRuntime is required by a test

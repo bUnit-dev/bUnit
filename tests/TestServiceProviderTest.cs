@@ -1,9 +1,7 @@
-﻿using Egil.RazorComponents.Testing;
-using Egil.RazorComponents.Testing.EventDispatchExtensions;
-using Egil.RazorComponents.Testing.Extensions;
-using Egil.RazorComponents.Testing.Mocking.JSInterop;
-using Egil.RazorComponents.Testing.SampleComponents;
-using Egil.RazorComponents.Testing.SampleComponents.Data;
+﻿using Bunit;
+using Bunit.Mocking.JSInterop;
+using Bunit.SampleComponents;
+using Bunit.SampleComponents.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System;
@@ -12,8 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
+using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     public class TestServiceProviderTest : ComponentTestFixture
     {

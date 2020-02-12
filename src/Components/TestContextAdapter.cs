@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Diffing;
+using Bunit.Diffing;
 using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     internal sealed class TestContextAdapter : IDisposable
     {

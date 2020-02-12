@@ -1,8 +1,8 @@
 ﻿using System;
-using Egil.RazorComponents.Testing.Mocking.JSInterop;
+using Bunit.Mocking.JSInterop;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit.Mocking.JSInterop
 {
     /// <summary>
     /// Helper methods for registering the MockJsRuntime with a <see cref="TestServiceProvider"/>.

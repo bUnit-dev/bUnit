@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Egil.RazorComponents.Testing.Extensions;
 using Microsoft.AspNetCore.Components;
 using EC = Microsoft.AspNetCore.Components.EventCallback;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Base class for test classes that contains XUnit Razor component tests.

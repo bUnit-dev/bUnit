@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Represents an abstract <see cref="IRenderedFragment"/> with base functionality.

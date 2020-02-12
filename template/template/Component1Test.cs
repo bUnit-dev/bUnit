@@ -1,10 +1,7 @@
 using System;
 using Xunit;
-using Egil.RazorComponents.Testing;
-using Egil.RazorComponents.Testing.Diffing;
-using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.Mocking.JSInterop;
-using Egil.RazorComponents.Testing.EventDispatchExtensions;
+using Bunit;
+using Bunit.Mocking.JSInterop;
 
 namespace Company.RazorTests1
 {

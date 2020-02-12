@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Egil.RazorComponents.Testing.SampleApp.Data
+namespace Bunit.SampleApp.Data
 {
     public interface ITodoService
     {

@@ -3,12 +3,11 @@ using System.Linq;
 using AngleSharp;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Extensions;
-using Egil.RazorComponents.Testing.Diffing;
+using Bunit.Diffing;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Asserting
+namespace Bunit
 {
     /// <summary>
     /// A set of addition diff assert extensions 

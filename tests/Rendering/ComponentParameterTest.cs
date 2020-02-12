@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Shouldly;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.Rendering
+namespace Bunit
 {
     public class ComponentParameterTest
     {

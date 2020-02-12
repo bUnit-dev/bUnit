@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Diffing;
+using Bunit.Diffing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Moq;
@@ -12,7 +12,7 @@ using Shouldly;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Mocking.JSInterop
+namespace Bunit.Mocking.JSInterop
 {
     public class JsRuntimeAssertExtensionsTest
     {

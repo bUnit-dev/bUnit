@@ -7,8 +7,8 @@
   "name": "Razor Component Testing Project",
   "description": "A project for a testing Blazor/Razor components using the Razor.Components.Testing.Library library.",
   "generatorVersions": "[1.0.0.0-*)",
-  "identity": "Egil.RazorComponents.TestingProject",
-  "groupIdentity": "Egil.RazorComponents.Testing",
+  "identity": "BunitProject",
+  "groupIdentity": "Bunit",
   "shortName": "razortest",
   "tags": {
     "language": "C#",
