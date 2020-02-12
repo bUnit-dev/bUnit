@@ -3,12 +3,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing.Extensions
+namespace Bunit
 {
     /// <summary>
     /// Extensions for Blazor types.
     /// </summary>
-    public static class BlazorExtensions
+    internal static class BlazorExtensions
     {
         private static readonly Type CascadingValueType = typeof(CascadingValue<>);
 

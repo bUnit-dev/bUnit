@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Egil.RazorComponents.Testing.SampleComponents.Data
+namespace Bunit.SampleComponents.Data
 {
     public class AsyncNameDep : IAsyncTestDep
     {

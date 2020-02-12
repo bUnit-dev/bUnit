@@ -1,10 +1,9 @@
 ﻿using System;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Diffing;
-using Egil.RazorComponents.Testing.Extensions;
+using Bunit.Diffing;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Asserting
+namespace Bunit
 {
     /// <summary>
     /// Assert helpers for comparing markup

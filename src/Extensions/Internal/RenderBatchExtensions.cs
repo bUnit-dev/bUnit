@@ -5,13 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.RenderTree;
 
-namespace Egil.RazorComponents.Testing.Extensions
+namespace Bunit
 {
-
     /// <summary>
     /// Helper methods for working with <see cref="RenderBatch"/>.
     /// </summary>
-    public static class RenderBatchExtensions
+    internal static class RenderBatchExtensions
     {
         /// <summary>
         /// Checks a <see cref="RenderBatch"/> for updates to a component with the specified <paramref name="componentId"/>.

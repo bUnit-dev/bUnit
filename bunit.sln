@@ -15,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E006E9A4-F55
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C929375E-BD70-4B78-88C1-BDD1623C3365}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.RazorComponents.Testing.Library", "src\Egil.RazorComponents.Testing.Library.csproj", "{AA96790B-67C9-4141-ACDB-037C8DC092EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit", "src\bunit.csproj", "{AA96790B-67C9-4141-ACDB-037C8DC092EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.RazorComponents.Testing.Library.Tests", "tests\Egil.RazorComponents.Testing.Library.Tests.csproj", "{04E0142A-33CC-4E30-B903-F1370D94AD8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.tests", "tests\bunit.tests.csproj", "{04E0142A-33CC-4E30-B903-F1370D94AD8C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.Razor.Components.Testing.Library.Template", "template\Egil.Razor.Components.Testing.Library.Template.csproj", "{FB46378D-BFB8-4C72-9CA3-0407D4665218}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.template", "template\bunit.template.csproj", "{FB46378D-BFB8-4C72-9CA3-0407D4665218}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

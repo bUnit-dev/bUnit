@@ -8,7 +8,7 @@ using RichardSzalay.MockHttp;
 using Shouldly;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.Mocking
+namespace Bunit
 {
     public class MockHttpExtensionsTest
     {

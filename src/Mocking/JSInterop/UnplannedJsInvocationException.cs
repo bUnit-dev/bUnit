@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics.CodeAnalysis;
+using Bunit.Mocking.JSInterop;
 
-namespace Egil.RazorComponents.Testing.Mocking.JSInterop
+namespace Xunit.Sdk
 {
     /// <summary>
     /// Exception use to indicate that an unplanned invocation was

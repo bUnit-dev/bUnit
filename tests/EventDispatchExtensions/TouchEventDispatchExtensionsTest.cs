@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Xunit;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     public class TouchEventDispatchExtensionsTest : EventDispatchExtensionsTest<TouchEventArgs>
     {

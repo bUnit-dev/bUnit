@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<MouseEventArgs>
     {

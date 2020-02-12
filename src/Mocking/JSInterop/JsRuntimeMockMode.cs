@@ -1,6 +1,7 @@
 ﻿using Microsoft.JSInterop;
+using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Mocking.JSInterop
+namespace Bunit.Mocking.JSInterop
 {
     /// <summary>
     /// The execution mode of the <see cref="MockJsRuntimeExtensions"/>.

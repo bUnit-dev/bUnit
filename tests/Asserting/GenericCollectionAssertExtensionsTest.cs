@@ -7,7 +7,7 @@ using Shouldly;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Asserting
+namespace Bunit
 {
     public class GenericCollectionAssertExtensionsTest
     {

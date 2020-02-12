@@ -10,7 +10,7 @@ using Moq;
 using Shouldly;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<EventArgs>
     {

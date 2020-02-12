@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Represents a test context used in snapshot testing.

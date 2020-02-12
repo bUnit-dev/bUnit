@@ -2,10 +2,10 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.SampleComponents;
+using Bunit.SampleComponents;
 using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     public class TriggerEventSpy<TEventArgs> where TEventArgs : EventArgs, new()
     {

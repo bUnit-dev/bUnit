@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     /// <summary>
     /// Pointer event dispatch helper extension methods.

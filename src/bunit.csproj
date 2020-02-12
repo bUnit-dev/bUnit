@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <RootNamespace>Egil.RazorComponents.Testing</RootNamespace>    
+    <RootNamespace>Bunit</RootNamespace>    
     <TargetFramework>netstandard2.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
   </PropertyGroup>
   
   <PropertyGroup>
-    <PackageId>Razor.Components.Testing.Library</PackageId>
-    <Title>Razor Components Testing Library</Title>
+    <PackageId>bunit</PackageId>
+    <Title>bUnit</Title>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/egil/razor-components-testing-library</RepositoryUrl>
@@ -17,17 +17,17 @@
     <RepositoryBranch>#{BRANCH}#</RepositoryBranch>
     <RepositoryCommit>#{COMMIT}#</RepositoryCommit>
     <PackageProjectUrl>https://github.com/egil/razor-components-testing-library</PackageProjectUrl>
-    <PackageTags>razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags> 
+    <PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags> 
     <Authors>Egil Hansen</Authors>
     <Company>Egil Hansen</Company>
-    <Product>Razor Component Testing Library</Product>
+    <Product>bUnit</Product>
     <Description>
-      A unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
+      **bUnit**, previously known as **Blazor Components Testing Library**, is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
     </Description>
     <PackageDescription>
-      A unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
+      **bUnit**, previously known as **Blazor Components Testing Library**, is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
 
-This library's goal is to make it easy to write comprehensive, stable unit tests for Blazor Components/Razor Components. To see how, head to the Wiki pages: https://github.com/egil/razor-components-testing-library/wiki
+      This library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. To see how, head to the Wiki pages: https://github.com/egil/razor-components-testing-library/wiki
     </PackageDescription>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -40,7 +40,7 @@ This library's goal is to make it easy to write comprehensive, stable unit tests
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing.Extensions
+namespace Bunit
 {
     /// <summary>
     /// Helpful extensions for working with <see cref="ComponentParameter"/> and collections of these.
     /// </summary>
-    public static class ComponentParamenterExtensions
+    internal static class ComponentParamenterExtensions
     {
         /// <summary>
         /// Creates a <see cref="RenderFragment"/> that will render a component of <typeparamref name="TComponent"/> type,

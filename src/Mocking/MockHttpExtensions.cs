@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Helper methods for adding a Mock HTTP client to a service provider.

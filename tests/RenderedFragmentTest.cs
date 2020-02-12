@@ -1,7 +1,5 @@
-﻿using Egil.RazorComponents.Testing.EventDispatchExtensions;
-using Egil.RazorComponents.Testing.Extensions;
-using Egil.RazorComponents.Testing.SampleComponents;
-using Egil.RazorComponents.Testing.SampleComponents.Data;
+﻿using Bunit.SampleComponents;
+using Bunit.SampleComponents.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -12,7 +10,7 @@ using System.Text;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     public class RenderedFragmentTest : ComponentTestFixture
     {

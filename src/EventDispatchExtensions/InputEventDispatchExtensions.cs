@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     /// <summary>
     /// Input event dispatch helper extension methods.

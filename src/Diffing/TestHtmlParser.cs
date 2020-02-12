@@ -2,9 +2,9 @@
 using AngleSharp;
 using AngleSharp.Dom;
 using System;
-using Egil.RazorComponents.Testing.Diffing;
+using Bunit.Diffing;
 
-namespace Egil.RazorComponents.Testing.Diffing
+namespace Bunit.Diffing
 {
     /// <summary>
     /// A AngleSharp based HTML Parse that can parse markup strings

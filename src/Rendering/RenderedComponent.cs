@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using AngleSharp.Diffing.Core;
 using Microsoft.AspNetCore.Components;
-using Egil.RazorComponents.Testing.Extensions;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <inheritdoc/>
-    public class RenderedComponent<TComponent> : RenderedFragmentBase, IRenderedComponent<TComponent>
+    internal class RenderedComponent<TComponent> : RenderedFragmentBase, IRenderedComponent<TComponent>
         where TComponent : class, IComponent
     {
         /// <inheritdoc/>

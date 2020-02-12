@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Diffing.Core;
-using Egil.RazorComponents.Testing.Diffing;
+using Bunit.Diffing;
 using Moq;
 using Shouldly;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Asserting
+namespace Bunit
 {
     public class DiffAssertExtensionsTest
     {
