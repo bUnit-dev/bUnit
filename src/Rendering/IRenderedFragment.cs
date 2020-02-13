@@ -13,12 +13,6 @@ namespace Bunit
     /// </summary>
     public interface IRenderedFragment
     {
-        ///// <summary>
-        ///// Gets an <see cref="IObservable{RenderEvent}"/> which will provide subscribers with <see cref="RenderEvent"/>s from the
-        ///// <see cref="IRenderedFragment"/> during its life time.
-        ///// </summary>
-        //IObservable<RenderEvent> RenderEvents { get; }
-
         /// <summary>
         /// Gets the <see cref="ITestContext"/> which this rendered fragment belongs to.
         /// </summary>
