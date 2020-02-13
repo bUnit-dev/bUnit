@@ -11,7 +11,7 @@ namespace Bunit
     /// Helper methods for querying <see cref="IElement"/> types.
     /// </summary>
     public static class ElementQueryExtensions
-    {        
+    {
         /// <summary>
         /// Returns the first element within this element (using depth-first pre-order traversal
         /// of the document's nodes) that matches the specified group of selectors.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Xunit.Sdk;
@@ -12,6 +13,11 @@ namespace Bunit
     /// </summary>
     public interface IRenderedFragment
     {
+        /// <summary>
+        /// Gets a <see cref="Task"/> which will complete when the <see cref="IRenderedFragment"/> is rendered again.
+        /// </summary>
+        Task NextRender { get; }
+
         /// <summary>
         /// Gets the <see cref="ITestContext"/> which this rendered fragment belongs to.
         /// </summary>
@@ -50,31 +56,5 @@ namespace Bunit
         /// the snapshot and the rendered markup at that time.
         /// </summary>
         void SaveSnapshot();
-
-        /// <summary>
-        /// Returns the first element from the rendered fragment or component under test,
-        /// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
-        /// of the rendered nodes.
-        /// </summary>
-        /// <param name="cssSelector">The group of selectors to use.</param>
-        public IElement Find(string cssSelector)
-        {
-            var result = Nodes.QuerySelector(cssSelector);
-            if (result is null)
-                throw new ElementNotFoundException(cssSelector);
-            else
-                return result;
-        }
-
-        /// <summary>
-        /// Returns a list of elements from the rendered fragment or component under test, 
-        /// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
-        /// of the rendered nodes.
-        /// </summary>
-        /// <param name="cssSelector">The group of selectors to use.</param>
-        public IHtmlCollection<IElement> FindAll(string cssSelector)
-        {
-            return Nodes.QuerySelectorAll(cssSelector);
-        }
     }
 }
