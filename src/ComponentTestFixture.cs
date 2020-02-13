@@ -13,6 +13,15 @@ namespace Bunit
     /// </summary>
     public abstract class ComponentTestFixture : TestContext
     {
+        /// <summary>
+        /// Executes the provided <paramref name="renderTrigger"/> action and waits for a render to occur.
+        /// Use this when you have a component that is awaiting e.g. a service to return data to it before rendering again.
+        /// </summary>
+        /// <param name="testContext">The context to wait against.</param>
+        /// <param name="renderTrigger">The action that somehow causes one or more components to render.</param>
+        /// <param name="timeout">The maximum time to wait for the next render. If not provided the default is 1 second.</param>
+        /// <exception cref="TimeoutException">Thrown when the next render did not happen within the specified <paramref name="timeout"/>.</exception>
+        [Obsolete("TODO - Use IRenderedFragment.VerifyChange or IRenderedFragment.WaitForState instead.", false)]
         protected void WaitForNextRender(Action? renderTrigger = null, TimeSpan? timeout = null)
         {
             TestContextExtensions.WaitForNextRender(this, renderTrigger, timeout);
