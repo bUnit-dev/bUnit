@@ -58,20 +58,6 @@ namespace Bunit
             return result;
         }
 
-        /// <inheritdoc/>
-        public virtual void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
-        {
-            if (renderTrigger is null) throw new ArgumentNullException(nameof(renderTrigger));
-            var task = Renderer.NextRender;
-            renderTrigger();
-            task.Wait(timeout ?? TimeSpan.FromSeconds(1));
-
-            if (!task.IsCompleted)
-            {
-                throw new TimeoutException("No render occurred within the timeout period.");
-            }
-        }
-
         #region IDisposable Support
         private bool _disposed = false;
 

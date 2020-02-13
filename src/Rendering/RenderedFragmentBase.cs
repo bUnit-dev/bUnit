@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components;
@@ -13,6 +14,7 @@ namespace Bunit
     /// </summary>
     public abstract class RenderedFragmentBase : IRenderedFragment
     {
+        private readonly RenderEventSubscriber _renderEventSubscriber;
         private string? _snapshotMarkup;
         private string? _latestRenderMarkup;
         private INodeList? _firstRenderNodes;
@@ -69,7 +71,8 @@ namespace Bunit
             TestContext = testContext;
             Container = new ContainerComponent(testContext.Renderer);
             Container.Render(renderFragment);
-            testContext.Renderer.OnRenderingHasComponentUpdates += ComponentMarkupChanged;
+            _renderEventSubscriber = new RenderEventSubscriber(testContext.Renderer.RenderEvents);
+            _renderEventSubscriber.OnRender = ComponentMarkupChanged;
         }
 
         /// <inheritdoc/>
@@ -99,9 +102,9 @@ namespace Bunit
             return Nodes.CompareTo(_firstRenderNodes);
         }
 
-        private void ComponentMarkupChanged(in RenderBatch renderBatch)
+        private void ComponentMarkupChanged(RenderEvent renderBatch)
         {
-            if (renderBatch.HasUpdatesTo(ComponentId) || HasChildComponentUpdated(renderBatch, ComponentId))
+            if (renderBatch.RenderBatch.HasUpdatesTo(ComponentId) || HasChildComponentUpdated(renderBatch.RenderBatch, ComponentId))
             {
                 ResetLatestRenderCache();
             }

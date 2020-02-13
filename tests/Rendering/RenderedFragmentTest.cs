@@ -37,12 +37,14 @@ namespace Bunit
             var testData = new AsyncNameDep();
             Services.AddSingleton<IAsyncTestDep>(testData);
             var cut = RenderComponent<SimpleWithAyncDeps>();
-            var initialValue = cut.Nodes.Find("p").OuterHtml;
+            var initialValue = cut.Nodes.Find("p").TextContent;
+            var expectedValue = "Steve Sanderson";
 
-            WaitForNextRender(() => testData.SetResult("Steve Sanderson"));
+            WaitForNextRender(() => testData.SetResult(expectedValue));
 
-            var steveValue = cut.Nodes.Find("p").OuterHtml;
+            var steveValue = cut.Nodes.Find("p").TextContent;
             steveValue.ShouldNotBe(initialValue);
+            steveValue.ShouldBe(expectedValue);
         }
 
         [Fact(DisplayName = "Nodes should return new instance when " +

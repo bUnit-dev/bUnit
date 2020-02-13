@@ -13,6 +13,11 @@ namespace Bunit
     /// </summary>
     public abstract class ComponentTestFixture : TestContext
     {
+        protected void WaitForNextRender(Action? renderTrigger = null, TimeSpan? timeout = null)
+        {
+            TestContextExtensions.WaitForNextRender(this, renderTrigger, timeout);
+        }
+
         /// <summary>
         /// Creates a <see cref="ComponentParameter"/> with an <see cref="Microsoft.AspNetCore.Components.EventCallback"/> as parameter value 
         /// for this <see cref="TestContext"/> and

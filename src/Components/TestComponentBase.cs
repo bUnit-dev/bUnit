@@ -86,14 +86,14 @@ namespace Bunit
                 ? _testContextAdapter.RenderComponent<TComponent>(parameters)
                 : base.RenderComponent<TComponent>(parameters);
 
-        /// <inheritdoc/>
-        public override void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
-        {
-            if (_testContextAdapter.HasActiveContext)
-                _testContextAdapter.WaitForNextRender(renderTrigger, timeout);
-            else
-                base.WaitForNextRender(renderTrigger, timeout);
-        }
+        ///// <inheritdoc/>
+        //public override void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
+        //{
+        //    if (_testContextAdapter.HasActiveContext)
+        //        _testContextAdapter.WaitForNextRender(renderTrigger, timeout);
+        //    else
+        //        base.WaitForNextRender(renderTrigger, timeout);
+        //}
 
         private async Task ExecuteFixtureTests(ContainerComponent container)
         {

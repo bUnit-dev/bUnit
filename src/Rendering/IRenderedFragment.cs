@@ -13,10 +13,11 @@ namespace Bunit
     /// </summary>
     public interface IRenderedFragment
     {
-        /// <summary>
-        /// Gets a <see cref="Task"/> which will complete when the <see cref="IRenderedFragment"/> is rendered again.
-        /// </summary>
-        Task NextRender { get; }
+        ///// <summary>
+        ///// Gets an <see cref="IObservable{RenderEvent}"/> which will provide subscribers with <see cref="RenderEvent"/>s from the
+        ///// <see cref="IRenderedFragment"/> during its life time.
+        ///// </summary>
+        //IObservable<RenderEvent> RenderEvents { get; }
 
         /// <summary>
         /// Gets the <see cref="ITestContext"/> which this rendered fragment belongs to.
