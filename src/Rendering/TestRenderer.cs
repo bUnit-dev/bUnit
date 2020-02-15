@@ -72,7 +72,7 @@ namespace Bunit
         /// <inheritdoc/>
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
         {
-            var renderEvent = new RenderEvent(in renderBatch);
+            var renderEvent = new RenderEvent(in renderBatch, this);
             _renderEventPublisher.OnRender(renderEvent);
             return Task.CompletedTask;
         }

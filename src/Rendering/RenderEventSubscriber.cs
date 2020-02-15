@@ -10,7 +10,7 @@ namespace Bunit
     /// Represents a subscriber to <see cref="RenderEvent"/>s, published by
     /// the <see cref="TestRenderer"/>.
     /// </summary>
-    public sealed class RenderEventSubscriber : IObserver<RenderEvent>, IDisposable
+    public sealed class RenderEventSubscriber : IObserver<RenderEvent>
     {
         private IDisposable _unsubscriber;
 
@@ -58,11 +58,6 @@ namespace Bunit
         {
             _unsubscriber.Dispose();
         }
-
-        /// <summary>
-        /// Unsubscribes from the observable.
-        /// </summary>
-        public void Dispose() => Unsubscribe();
 
         /// <inheritdoc/>
         void IObserver<RenderEvent>.OnNext(RenderEvent value)

@@ -11,14 +11,18 @@ using Xunit;
 
 namespace Bunit
 {
-    public class TestContextTest : ComponentTestFixture
+    public class TestRendererTest : ComponentTestFixture
     {
-        [Fact]
-        public void MyTestMethod()
+        [Fact(DisplayName = "Renderer pushes render events to subscribers when renders occur")]
+        public void Test001()
         {
-            using var res = new RenderEventSubscriber(Renderer.RenderEvents);
+            var res = new RenderEventSubscriber(Renderer.RenderEvents);
             var sut = RenderComponent<TwoChildren>();
+            
+            res.RenderCount.ShouldBe(1);
+
             sut.Find("button").Click();
+            
             res.RenderCount.ShouldBe(2);
         }
 

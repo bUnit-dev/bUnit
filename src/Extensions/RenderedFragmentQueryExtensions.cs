@@ -18,6 +18,7 @@ namespace Bunit
         /// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
         /// of the rendered nodes.
         /// </summary>
+        /// <param name="renderedFragment">The rendered fragment to search.</param>
         /// <param name="cssSelector">The group of selectors to use.</param>
         public static IElement Find(this IRenderedFragment renderedFragment, string cssSelector)
         {
@@ -34,6 +35,7 @@ namespace Bunit
         /// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
         /// of the rendered nodes.
         /// </summary>
+        /// <param name="renderedFragment">The rendered fragment to search.</param>
         /// <param name="cssSelector">The group of selectors to use.</param>
         public static IHtmlCollection<IElement> FindAll(this IRenderedFragment renderedFragment, string cssSelector)
         {

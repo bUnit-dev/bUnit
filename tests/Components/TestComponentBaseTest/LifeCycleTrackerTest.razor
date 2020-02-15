@@ -19,7 +19,7 @@
     void Test()
     {        
         var cut = GetComponentUnderTest<Wrapper>();
-        var callLog = tracker.LifeCycleMethodCallLog;
+        var callLog = tracker.CallLog;
 
         // assert first render called expected methods
         callLog["SetParametersAsync"].ShouldBe(1);

@@ -249,12 +249,12 @@ namespace Bunit
 
         private class HtmlRenderingContext
         {
+            public TestRenderer Renderer { get; }
+
             public HtmlRenderingContext(TestRenderer renderer)
             {
                 Renderer = renderer;
             }
-
-            public TestRenderer Renderer { get; }
 
             public List<string> Result { get; } = new List<string>();
 

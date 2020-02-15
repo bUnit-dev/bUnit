@@ -19,24 +19,28 @@ namespace Bunit
         /// </summary>
         /// <param name="testContext">The context to wait against.</param>
         /// <param name="renderTrigger">The action that somehow causes one or more components to render.</param>
-        /// <param name="timeout">The maximum time to wait for the next render. If not provided the default is 1 second.</param>
-        /// <exception cref="TimeoutException">Thrown when the next render did not happen within the specified <paramref name="timeout"/>.</exception>
+        /// <param name="timeout">The maximum time to wait for the next render. If not provided the default is 1 second. During debugging, the timeout is automatically set to infinite.</param>
         public static void WaitForNextRender(this ITestContext testContext, Action? renderTrigger = null, TimeSpan? timeout = null)
         {
             if (testContext is null) throw new ArgumentNullException(nameof(testContext));
 
             var waitTime = Debugger.IsAttached ? Timeout.InfiniteTimeSpan : timeout ?? TimeSpan.FromSeconds(1);
+            var rvs = new RenderEventSubscriber(testContext.Renderer.RenderEvents);
+            try
+            {
+                renderTrigger?.Invoke();
 
-            using var rvs = new RenderEventSubscriber(testContext.Renderer.RenderEvents);
+                if (rvs.RenderCount >= 1) return;
 
-            renderTrigger?.Invoke();
-
-            if (rvs.RenderCount >= 1) return;
-
-            if (SpinWait.SpinUntil(() => rvs.RenderCount >= 1, waitTime))
-                return;
-            else
-                throw new TimeoutException("No render occurred within the timeout period.");
+                if (SpinWait.SpinUntil(() => rvs.RenderCount >= 1, waitTime))
+                    return;
+                else
+                    throw new TimeoutException("No render occurred within the timeout period.");
+            }
+            finally
+            {
+                rvs.Unsubscribe();
+            }
         }
     }
 

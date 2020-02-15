@@ -22,11 +22,6 @@ namespace Bunit
         private INodeList? _snapshotNodes;
 
         /// <summary>
-        /// Gets the id of the rendered component or fragment.
-        /// </summary>
-        protected abstract int ComponentId { get; }
-
-        /// <summary>
         /// Gets the first rendered markup.
         /// </summary>
         protected abstract string FirstRenderMarkup { get; }
@@ -38,6 +33,9 @@ namespace Bunit
 
         /// <inheritdoc/>
         public ITestContext TestContext { get; }
+
+        /// <inheritdoc/>
+        public abstract int ComponentId { get; }
 
         /// <inheritdoc/>
         public string Markup
@@ -61,18 +59,51 @@ namespace Bunit
             }
         }
 
+        /// <inheritdoc/>
+        public IObservable<RenderEvent> RenderEvents { get; }
+
         /// <summary>
         /// Creates an instance of the <see cref="RenderedFragmentBase"/> class.
         /// </summary>
-        public RenderedFragmentBase(ITestContext testContext, RenderFragment renderFragment)
+        protected RenderedFragmentBase(ITestContext testContext, RenderFragment renderFragment)
+            : this(testContext, testContext is { } ctx ? new ContainerComponent(ctx.Renderer) : throw new ArgumentNullException(nameof(testContext)))
+        {
+            Container.Render(renderFragment);
+        }
+
+        /// <summary>
+        /// Creates an instance of the <see cref="RenderedFragmentBase"/> class.
+        /// </summary>
+        protected RenderedFragmentBase(ITestContext testContext, ContainerComponent container)
         {
             if (testContext is null) throw new ArgumentNullException(nameof(testContext));
+            if (container is null) throw new ArgumentNullException(nameof(container));
 
             TestContext = testContext;
-            Container = new ContainerComponent(testContext.Renderer);
-            Container.Render(renderFragment);
-            _renderEventSubscriber = new RenderEventSubscriber(testContext.Renderer.RenderEvents);
-            _renderEventSubscriber.OnRender = ComponentMarkupChanged;
+            Container = container;
+            RenderEvents = new RenderEventFilter(testContext.Renderer.RenderEvents, RenderFilter);
+            _renderEventSubscriber = new RenderEventSubscriber(testContext.Renderer.RenderEvents)
+            {
+                OnRender = ComponentRendered
+            };
+        }
+
+        /// <inheritdoc/>
+        public IRenderedComponent<T> FindComponent<T>() where T : class, IComponent
+        {
+            var (id, component) = Container.GetComponent<T>();
+            return new RenderedComponent<T>(TestContext, Container, id, component);
+        }
+
+        /// <inheritdoc/>
+        public IReadOnlyList<IRenderedComponent<T>> FindComponents<T>() where T : class, IComponent
+        {
+            var result = new List<IRenderedComponent<T>>();
+            foreach (var (id, component) in Container.GetComponents<T>())
+            {
+                result.Add(new RenderedComponent<T>(TestContext, Container, id, component));
+            }
+            return result;
         }
 
         /// <inheritdoc/>
@@ -102,34 +133,14 @@ namespace Bunit
             return Nodes.CompareTo(_firstRenderNodes);
         }
 
-        private void ComponentMarkupChanged(RenderEvent renderBatch)
+        private bool RenderFilter(RenderEvent renderEvent) => renderEvent.DidComponentRender(ComponentId);
+
+        private void ComponentRendered(RenderEvent renderEvent)
         {
-            if (renderBatch.RenderBatch.HasUpdatesTo(ComponentId) || HasChildComponentUpdated(renderBatch.RenderBatch, ComponentId))
+            if (renderEvent.HasChangesTo(ComponentId))
             {
                 ResetLatestRenderCache();
             }
-        }
-
-        private bool HasChildComponentUpdated(in RenderBatch renderBatch, int componentId)
-        {
-            var frames = TestContext.Renderer.GetCurrentRenderTreeFrames(componentId);
-
-            for (int i = 0; i < frames.Count; i++)
-            {
-                var frame = frames.Array[i];
-                if (frame.FrameType == RenderTreeFrameType.Component)
-                {
-                    if (renderBatch.HasUpdatesTo(frame.ComponentId))
-                    {
-                        return true;
-                    }
-                    if (HasChildComponentUpdated(in renderBatch, frame.ComponentId))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         private void ResetLatestRenderCache()

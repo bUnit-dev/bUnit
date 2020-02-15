@@ -118,7 +118,98 @@ namespace Bunit
             Assert.Same(initialNodes, cut.Nodes);
         }
 
+        [Fact(DisplayName = "Changes to event handler should return a new instance of DOM tree")]
+        public void Test009()
+        {
+            var cut = RenderComponent<ToggleClickHandler>();
+            cut.Find("#btn").Click();
 
+            cut.Instance.Counter.ShouldBe(1);
+
+            cut.SetParametersAndRender((nameof(ToggleClickHandler.HandleClicks), false));
+
+            cut.Find("#btn").Click();
+
+            cut.Instance.Counter.ShouldBe(1);
+        }
+
+        [Fact(DisplayName = "GetComponent returns first component of requested type using a depth first search")]
+        public void Test100()
+        {
+            var wrapper = RenderComponent<TwoComponentWrapper>(
+                RenderFragment<Wrapper>(nameof(TwoComponentWrapper.First),
+                    ChildContent<Simple1>((nameof(Simple1.Header), "First")
+                )),
+                RenderFragment<Simple1>(nameof(TwoComponentWrapper.Second), (nameof(Simple1.Header), "Second"))
+            );
+            var cut = wrapper.FindComponent<Simple1>();
+
+            cut.Instance.Header.ShouldBe("First");
+        }
+
+        [Fact(DisplayName = "GetComponent returns CUT if it is the first component of the requested type")]
+        public void Test101()
+        {
+            var cut = RenderComponent<Simple1>();
+
+            var cutAgain = cut.FindComponent<Simple1>();
+
+            cut.Instance.ShouldBe(cutAgain.Instance);
+        }
+
+        [Fact(DisplayName = "GetComponent throws when component of requested type is not in the render tree")]
+        public void Test102()
+        {
+            var wrapper = RenderComponent<Wrapper>();
+
+            Should.Throw<ComponentNotFoundException>(() => wrapper.FindComponent<Simple1>());
+        }
+
+        [Fact(DisplayName = "GetComponents returns all components of requested type using a depth first order")]
+        public void Test103()
+        {
+            var wrapper = RenderComponent<TwoComponentWrapper>(
+                RenderFragment<Wrapper>(nameof(TwoComponentWrapper.First),
+                    ChildContent<Simple1>((nameof(Simple1.Header), "First")
+                )),
+                RenderFragment<Simple1>(nameof(TwoComponentWrapper.Second), (nameof(Simple1.Header), "Second"))
+            );
+            var cuts = wrapper.FindComponents<Simple1>();
+
+            cuts.Count.ShouldBe(2);
+            cuts[0].Instance.Header.ShouldBe("First");
+            cuts[1].Instance.Header.ShouldBe("Second");
+        }
+
+        [Fact(DisplayName = "Render events for non-rendered sub components are not emitted")]
+        public void Test010()
+        {
+            var renderSub = new RenderEventSubscriber(Renderer.RenderEvents);
+            var wrapper = RenderComponent<TwoComponentWrapper>(
+                RenderFragment<Simple1>(nameof(TwoComponentWrapper.First)),
+                RenderFragment<Simple1>(nameof(TwoComponentWrapper.Second))
+            );
+            var cuts = wrapper.FindComponents<Simple1>();
+            var wrapperSub = new RenderEventSubscriber(wrapper.RenderEvents);
+            var cutSub1 = new RenderEventSubscriber(cuts[0].RenderEvents);
+            var cutSub2 = new RenderEventSubscriber(cuts[1].RenderEvents);
+
+            renderSub.RenderCount.ShouldBe(1);
+
+            cuts[0].Render();
+
+            renderSub.RenderCount.ShouldBe(2);
+            wrapperSub.RenderCount.ShouldBe(1);
+            cutSub1.RenderCount.ShouldBe(1);
+            cutSub2.RenderCount.ShouldBe(0);
+
+            cuts[1].Render();
+
+            renderSub.RenderCount.ShouldBe(3);
+            wrapperSub.RenderCount.ShouldBe(2);
+            cutSub1.RenderCount.ShouldBe(1);
+            cutSub2.RenderCount.ShouldBe(1);
+        }
     }
 
 }
