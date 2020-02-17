@@ -24,15 +24,17 @@ namespace Bunit
         {
             if (testContext is null) throw new ArgumentNullException(nameof(testContext));
 
-            var waitTime = Debugger.IsAttached ? Timeout.InfiniteTimeSpan : timeout ?? TimeSpan.FromSeconds(1);
+            var waitTime = timeout.GetRuntimeTimeout();
+
             var rvs = new RenderEventSubscriber(testContext.Renderer.RenderEvents);
+
             try
             {
                 renderTrigger?.Invoke();
 
-                if (rvs.RenderCount >= 1) return;
+                if (rvs.RenderCount > 0) return;
 
-                if (SpinWait.SpinUntil(() => rvs.RenderCount >= 1, waitTime))
+                if (SpinWait.SpinUntil(ShouldSpin, waitTime) && rvs.RenderCount > 0)
                     return;
                 else
                     throw new TimeoutException("No render occurred within the timeout period.");
@@ -41,6 +43,8 @@ namespace Bunit
             {
                 rvs.Unsubscribe();
             }
+
+            bool ShouldSpin() => rvs.RenderCount > 0 || rvs.IsCompleted;
         }
     }
 

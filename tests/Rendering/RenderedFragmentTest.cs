@@ -1,4 +1,5 @@
-﻿using Bunit.Mocking.JSInterop;
+﻿using Bunit.Extensions.Xunit;
+using Bunit.Mocking.JSInterop;
 using Bunit.SampleComponents;
 using Bunit.SampleComponents.Data;
 using Microsoft.AspNetCore.Components;
@@ -9,12 +10,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
+using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace Bunit
 {
     public class RenderedFragmentTest : ComponentTestFixture
     {
+        public RenderedFragmentTest(ITestOutputHelper output)
+        {
+            Services.AddXunitLogger(output);
+        }
+
         [Fact(DisplayName = "Find throws an exception if no element matches the css selector")]
         public void Test001()
         {
@@ -70,7 +77,7 @@ namespace Bunit
             var cut = RenderComponent<Wrapper>(ChildContent<SimpleWithJsRuntimeDep>());
             var initialValue = cut.Nodes;
 
-            WaitForNextRender(() => invocation.SetResult("Steve Sanderson"), TimeSpan.FromDays(1));
+            WaitForNextRender(() => invocation.SetResult("Steve Sanderson"), TimeSpan.FromSeconds(2));
 
             Assert.NotSame(initialValue, cut.Nodes);
         }
@@ -209,6 +216,36 @@ namespace Bunit
             wrapperSub.RenderCount.ShouldBe(2);
             cutSub1.RenderCount.ShouldBe(1);
             cutSub2.RenderCount.ShouldBe(1);
+        }
+
+        [Fact]
+        public void CanTriggerAsyncEventHandlers()
+        {
+            // Initial state is stopped
+            var cut = RenderComponent<TwoRendersTwoChanges>();
+            var stateElement = cut.Find("#state");
+            stateElement.TextContent.ShouldBe("Stopped");
+
+            // Clicking 'tick' changes the state, and starts a task
+            cut.Find("#tick").Click();
+            cut.Find("#state").TextContent.ShouldBe("Started");
+
+            // Clicking 'tock' completes the task, which updates the state
+            // This click causes two renders, thus something is needed to await here.
+            cut.Find("#tock").Click();
+            cut.VerifyAsyncChanges(
+                () => cut.Find("#state").TextContent.ShouldBe("Stopped")
+            );
+        }
+
+        [Fact(DisplayName = "VerifyAyncChanges throws verification exception after timeout")]
+        public void Test011()
+        {
+            var cut = RenderComponent<Simple1>();
+
+            Should.Throw<ShouldAssertException>(() =>
+                cut.VerifyAsyncChanges(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(100))
+            );
         }
     }
 

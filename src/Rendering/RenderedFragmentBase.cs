@@ -82,10 +82,7 @@ namespace Bunit
             TestContext = testContext;
             Container = container;
             RenderEvents = new RenderEventFilter(testContext.Renderer.RenderEvents, RenderFilter);
-            _renderEventSubscriber = new RenderEventSubscriber(testContext.Renderer.RenderEvents)
-            {
-                OnRender = ComponentRendered
-            };
+            _renderEventSubscriber = new RenderEventSubscriber(testContext.Renderer.RenderEvents, ComponentRendered);
         }
 
         /// <inheritdoc/>
@@ -133,11 +130,12 @@ namespace Bunit
             return Nodes.CompareTo(_firstRenderNodes);
         }
 
-        private bool RenderFilter(RenderEvent renderEvent) => renderEvent.DidComponentRender(ComponentId);
+        private bool RenderFilter(RenderEvent renderEvent)
+            => renderEvent.DidComponentRender(this);
 
         private void ComponentRendered(RenderEvent renderEvent)
         {
-            if (renderEvent.HasChangesTo(ComponentId))
+            if (renderEvent.HasChangesTo(this))
             {
                 ResetLatestRenderCache();
             }

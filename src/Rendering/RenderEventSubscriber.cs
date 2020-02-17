@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bunit
 {
@@ -10,9 +6,11 @@ namespace Bunit
     /// Represents a subscriber to <see cref="RenderEvent"/>s, published by
     /// the <see cref="TestRenderer"/>.
     /// </summary>
-    public sealed class RenderEventSubscriber : IObserver<RenderEvent>
+    public class RenderEventSubscriber : IObserver<RenderEvent>
     {
-        private IDisposable _unsubscriber;
+        private readonly IDisposable _unsubscriber;
+        private readonly Action<RenderEvent>? _onRender;
+        private readonly Action? _onCompleted;
 
         /// <summary>
         /// Gets the number of renders that have occurred since subscribing.
@@ -31,23 +29,17 @@ namespace Bunit
         public RenderEvent? LatestRenderEvent { get; private set; }
 
         /// <summary>
-        /// Gets or sets a callback to invoke when a <see cref="RenderEvent"/> is received.
-        /// </summary>
-        public Action<RenderEvent>? OnRender { get; set; }
-
-        /// <summary>
-        /// Gets or sets a callback to invoke when the <see cref="TestRenderer"/> is 
-        /// disposed and no more renders will happen.
-        /// </summary>
-        public Action? OnCompleted { get; set; }
-
-        /// <summary>
         /// Creates an instance of the <see cref="RenderEventSubscriber"/>, and
         /// subscribes to the provided <paramref name="observable"/>.
         /// </summary>
-        public RenderEventSubscriber(IObservable<RenderEvent> observable)
+        /// <param name="observable">The observable to observe.</param>
+        /// <param name="onRender">A callback to invoke when a <see cref="RenderEvent"/> is received.</param>
+        /// <param name="onCompleted">A callback to invoke when no more renders will happen.</param>
+        public RenderEventSubscriber(IObservable<RenderEvent> observable, Action<RenderEvent>? onRender = null, Action? onCompleted = null)
         {
             if (observable is null) throw new ArgumentNullException(nameof(observable));
+            _onRender = onRender;
+            _onCompleted = onCompleted;
             _unsubscriber = observable.Subscribe(this);
         }
 
@@ -60,22 +52,22 @@ namespace Bunit
         }
 
         /// <inheritdoc/>
-        void IObserver<RenderEvent>.OnNext(RenderEvent value)
+        public virtual void OnNext(RenderEvent value)
         {
             RenderCount += 1;
             LatestRenderEvent = value;
-            OnRender?.Invoke(value);
+            _onRender?.Invoke(value);
         }
 
         /// <inheritdoc/>
-        void IObserver<RenderEvent>.OnCompleted()
+        public virtual void OnCompleted()
         {
             IsCompleted = true;
-            OnCompleted?.Invoke();
+            _onCompleted?.Invoke();
         }
 
         /// <inheritdoc/>
-        void IObserver<RenderEvent>.OnError(Exception error)
-            => throw new AggregateException("The renderer throw an error", error);
+        public virtual void OnError(Exception exception)
+            => throw new AggregateException("The renderer throw an error", exception);
     }
 }

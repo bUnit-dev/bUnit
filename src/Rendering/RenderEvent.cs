@@ -25,12 +25,24 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Checks whether the component with <paramref name="componentId"/> or one or more of 
+        /// Checks whether the <paramref name="renderedFragment"/> or one or more of 
         /// its sub components was changed during the <see cref="RenderEvent"/>.
         /// </summary>
-        /// <param name="componentId">Id of component to check for updates to.</param>
+        /// <param name="renderedFragment">Component to check for updates to.</param>
         /// <returns>True if <see cref="RenderEvent"/> contains updates to component, false otherwise.</returns>
-        public bool HasChangesTo(int componentId)
+        public bool HasChangesTo(IRenderedFragment renderedFragment)
+            => HasChangesTo((renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment))).ComponentId);
+
+        /// <summary>
+        /// Checks whether the <paramref name="renderedFragment"/> or one or more of 
+        /// its sub components was rendered during the <see cref="RenderEvent"/>.
+        /// </summary>
+        /// <param name="renderedFragment">Component to check if rendered.</param>
+        /// <returns>True if the component or a sub component rendered, false otherwise.</returns>
+        public bool DidComponentRender(IRenderedFragment renderedFragment)
+            => DidComponentRender((renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment))).ComponentId);
+
+        private bool HasChangesTo(int componentId)
         {
             for (int i = 0; i < RenderBatch.UpdatedComponents.Count; i++)
             {
@@ -46,13 +58,19 @@ namespace Bunit
             return HasChangedToChildren(_renderer.GetCurrentRenderTreeFrames(componentId));
         }
 
-        /// <summary>
-        /// Checks whether the component with <paramref name="componentId"/> or one or more of 
-        /// its sub components was rendered during the <see cref="RenderEvent"/>.
-        /// </summary>
-        /// <param name="componentId">Id of component to check if rendered.</param>
-        /// <returns>True if the component or a sub component rendered, false otherwise.</returns>
-        public bool DidComponentRender(int componentId)
+        private bool HasChangedToChildren(ArrayRange<RenderTreeFrame> componentRenderTreeFrames)
+        {
+            for (int i = 0; i < componentRenderTreeFrames.Count; i++)
+            {
+                var frame = componentRenderTreeFrames.Array[i];
+                if (frame.FrameType == RenderTreeFrameType.Component)
+                    if (HasChangesTo(frame.ComponentId))
+                        return true;
+            }
+            return false;
+        }
+
+        private bool DidComponentRender(int componentId)
         {
             for (int i = 0; i < RenderBatch.UpdatedComponents.Count; i++)
             {
@@ -66,18 +84,6 @@ namespace Bunit
                     return true;
             }
             return DidChildComponentRender(_renderer.GetCurrentRenderTreeFrames(componentId));
-        }
-
-        private bool HasChangedToChildren(ArrayRange<RenderTreeFrame> componentRenderTreeFrames)
-        {
-            for (int i = 0; i < componentRenderTreeFrames.Count; i++)
-            {
-                var frame = componentRenderTreeFrames.Array[i];
-                if (frame.FrameType == RenderTreeFrameType.Component)
-                    if (HasChangesTo(frame.ComponentId))
-                        return true;
-            }
-            return false;
         }
 
         private bool DidChildComponentRender(ArrayRange<RenderTreeFrame> componentRenderTreeFrames)
