@@ -22,7 +22,7 @@ namespace Bunit
         /// <exception cref="TimeoutException">Thrown when the next render did not happen within the specified <paramref name="timeout"/>.</exception>
         protected void WaitForNextRender(Action? renderTrigger = null, TimeSpan? timeout = null)
         {
-            TestContextExtensions.WaitForNextRender(this, renderTrigger, timeout);
+            AsyncRenderingHelperExtensions.WaitForNextRender(this, renderTrigger, timeout);
         }
 
         /// <summary>

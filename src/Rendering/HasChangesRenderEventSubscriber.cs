@@ -10,8 +10,8 @@ namespace Bunit
         /// <summary>
         /// Creates an instance of the <see cref="HasChangesRenderEventSubscriber"/>.
         /// </summary>
-        public HasChangesRenderEventSubscriber(IRenderedFragment testTarget, Action<RenderEvent>? onRender = null, Action? onCompleted = null)
-            : base((testTarget ?? throw new ArgumentNullException(nameof(testTarget))).RenderEvents, onRender, onCompleted)
+        public HasChangesRenderEventSubscriber(IRenderedFragment testTarget, Action<RenderEvent>? onChange = null, Action? onCompleted = null)
+            : base((testTarget ?? throw new ArgumentNullException(nameof(testTarget))).RenderEvents, onChange, onCompleted)
         {
             _testTarget = testTarget;
         }

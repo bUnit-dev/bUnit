@@ -218,8 +218,8 @@ namespace Bunit
             cutSub2.RenderCount.ShouldBe(1);
         }
 
-        [Fact]
-        public void CanTriggerAsyncEventHandlers()
+        [Fact(DisplayName = "VerifyAsyncChanges can wait for multiple renders and changes to occur")]
+        public void Test110()
         {
             // Initial state is stopped
             var cut = RenderComponent<TwoRendersTwoChanges>();
@@ -247,6 +247,36 @@ namespace Bunit
                 cut.VerifyAsyncChanges(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(100))
             );
         }
+
+        [Fact(DisplayName = "WaitForState throws TimeoutException exception after timeout")]
+        public void Test012()
+        {
+            var cut = RenderComponent<Simple1>();
+
+            Should.Throw<TimeoutException>(() =>
+                cut.WaitForState(() => string.IsNullOrEmpty(cut.Markup), TimeSpan.FromMilliseconds(100))
+            );
+        }
+
+        [Fact(DisplayName = "WaitForState can wait for multiple renders and changes to occur")]
+        public void Test013()
+        {
+            // Initial state is stopped
+            var cut = RenderComponent<TwoRendersTwoChanges>();
+            var stateElement = cut.Find("#state");
+            stateElement.TextContent.ShouldBe("Stopped");
+
+            // Clicking 'tick' changes the state, and starts a task
+            cut.Find("#tick").Click();
+            cut.Find("#state").TextContent.ShouldBe("Started");
+
+            // Clicking 'tock' completes the task, which updates the state
+            // This click causes two renders, thus something is needed to await here.
+            cut.Find("#tock").Click();
+            cut.WaitForState(() => cut.Find("#state").TextContent == "Stopped");
+            cut.Find("#state").TextContent.ShouldBe("Stopped");
+        }
+
     }
 
 }

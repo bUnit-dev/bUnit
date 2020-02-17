@@ -46,14 +46,50 @@ namespace Bunit
             bool ShouldSpin() => rvs.RenderCount > 0 || rvs.IsCompleted;
         }
 
+
+
+        /// <summary>
+        /// Uses the provided <paramref name="statePredicate"/> action to verify 
+        /// that an expected state has been reached in the <paramref name="renderedFragment"/>
+        /// within the specified <paramref name="timeout"/> (default is one second).
+        /// </summary>
+        /// <param name="renderedFragment"></param>
+        /// <param name="statePredicate"></param>
+        /// <param name="timeout">  </param>
+        public static void WaitForState(this IRenderedFragment renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
+        {
+            if (renderedFragment is null) throw new ArgumentNullException(nameof(renderedFragment));
+            if (statePredicate is null) throw new ArgumentNullException(nameof(statePredicate));
+
+            var spinTime = timeout.GetRuntimeTimeout();
+            var predicateResult = false;
+
+            var rvs = new RenderEventSubscriber(renderedFragment.RenderEvents, onRender: TryPredicate);
+            try
+            {
+                predicateResult = statePredicate();
+                if (predicateResult) return;
+
+                SpinWait.SpinUntil(ShouldSpin, spinTime);
+
+                if (!predicateResult) throw new TimeoutException("The predicate did not pass within the timeout period.");
+            }
+            finally
+            {
+                rvs.Unsubscribe();
+            }
+            bool ShouldSpin() => predicateResult || rvs.IsCompleted;
+            void TryPredicate(RenderEvent _ = default) => predicateResult = statePredicate();
+        }
+
         /// <summary>
         /// Uses the provided <paramref name="verification"/> action to verify 
         /// that an expected change has occurred in the <paramref name="renderedFragment"/>
-        /// without the specified <paramref name="timeout"/> (default is one second).
+        /// within the specified <paramref name="timeout"/> (default is one second).
         /// </summary>
-        /// <param name="renderedFragment"></param>
-        /// <param name="verification"></param>
-        /// <param name="timeout">  </param>
+        /// <param name="renderedFragment">The rendered component or fragment to verify against.</param>
+        /// <param name="verification">The verification or assertion to perform.</param>
+        /// <param name="timeout">The maximum time to attempt the verification.</param>
         public static void VerifyAsyncChanges(this IRenderedFragment renderedFragment, Action verification, TimeSpan? timeout = null)
         {
             if (renderedFragment is null) throw new ArgumentNullException(nameof(renderedFragment));
@@ -66,7 +102,7 @@ namespace Bunit
             var failure = default(Exception);
             var status = FAILING;
 
-            using var rvs = new HasChangesRenderEventSubscriber(renderedFragment, TryVerification);
+            using var rvs = new HasChangesRenderEventSubscriber(renderedFragment, onChange: TryVerification);
 
             TryVerification();
             if (status == PASSED) return;
