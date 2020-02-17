@@ -33,6 +33,9 @@ namespace Bunit
 
                 if (rvs.RenderCount > 0) return;
 
+                // RenderEventSubscriber (rvs) receive render events on the renderer's thread, where as 
+                // the WaitForNextRender is started from the test runners thread.
+                // Thus it is safe to SpinWait on the test thread and wait for the RenderCount to go above 0.
                 if (SpinWait.SpinUntil(ShouldSpin, waitTime) && rvs.RenderCount > 0)
                     return;
                 else
@@ -67,9 +70,18 @@ namespace Bunit
             var rvs = new RenderEventSubscriber(renderedFragment.RenderEvents, onRender: TryPredicate);
             try
             {
-                predicateResult = statePredicate();
+                TryPredicate();
                 if (predicateResult) return;
 
+                // RenderEventSubscriber (rvs) receive render events on the renderer's thread, where as 
+                // the WaitForState is started from the test runners thread.
+                // Thus it is safe to SpinWait on the test thread and wait for statePredicate to pass.
+                // When a render event is received by rvs, the state predicate will execute on the
+                // renderer thread.
+                // 
+                // Therefore, we use Volatile.Read/Volatile.Write in the helper methods below to ensure
+                // that an update to the variable predicateResult is not cached in a local CPU, and 
+                // not available in a secondary CPU, if the two threads are running on a different CPUs
                 SpinWait.SpinUntil(ShouldSpin, spinTime);
 
                 if (!predicateResult) throw new TimeoutException("The predicate did not pass within the timeout period.");
@@ -78,8 +90,8 @@ namespace Bunit
             {
                 rvs.Unsubscribe();
             }
-            bool ShouldSpin() => predicateResult || rvs.IsCompleted;
-            void TryPredicate(RenderEvent _ = default) => predicateResult = statePredicate();
+            bool ShouldSpin() => Volatile.Read(ref predicateResult) || rvs.IsCompleted;
+            void TryPredicate(RenderEvent _ = default!) => Volatile.Write(ref predicateResult, statePredicate());
         }
 
         /// <summary>
@@ -107,16 +119,25 @@ namespace Bunit
             TryVerification();
             if (status == PASSED) return;
 
+            // HasChangesRenderEventSubscriber (rvs) receive render events on the renderer's thread, where as 
+            // the VerifyAsyncChanges is started from the test runners thread.
+            // Thus it is safe to SpinWait on the test thread and wait for verification to pass.
+            // When a render event is received by rvs, the verification action will execute on the
+            // renderer thread.
+            // 
+            // Therefore, we use Volatile.Read/Volatile.Write in the helper methods below to ensure
+            // that an update to the variable status is not cached in a local CPU, and 
+            // not available in a secondary CPU, if the two threads are running on a different CPUs
             SpinWait.SpinUntil(ShouldSpin, spinTime);
 
             if (status != PASSED && failure is { }) throw failure;
 
-            void TryVerification(RenderEvent _ = default)
+            void TryVerification(RenderEvent _ = default!)
             {
                 try
                 {
                     verification();
-                    status = PASSED;
+                    Volatile.Write(ref status, PASSED);
                     failure = null;
                 }
                 catch (Exception e)
@@ -125,7 +146,7 @@ namespace Bunit
                 }
             }
 
-            bool ShouldSpin() => status != FAILING || rvs.IsCompleted;
+            bool ShouldSpin() => Volatile.Read(ref status) != FAILING || rvs.IsCompleted;
         }
     }
 }

@@ -6,21 +6,22 @@ namespace Bunit
     /// <summary>
     /// Represents a render event for a <see cref="IRenderedFragment"/> or generally from the <see cref="TestRenderer"/>.
     /// </summary>
-    public readonly struct RenderEvent : IEquatable<RenderEvent>
+    public sealed class RenderEvent
     {
         private readonly TestRenderer _renderer;
+        private readonly RenderBatch _renderBatch;
 
         /// <summary>
         /// Gets the related <see cref="RenderBatch"/> from the render.
         /// </summary>
-        public RenderBatch RenderBatch { get; }
+        public ref readonly RenderBatch RenderBatch => ref _renderBatch;
 
         /// <summary>
         /// Creates an instance of the <see cref="RenderEvent"/> type.
         /// </summary>
         public RenderEvent(in RenderBatch renderBatch, TestRenderer renderer)
         {
-            RenderBatch = renderBatch;
+            _renderBatch = renderBatch;
             _renderer = renderer;
         }
 
@@ -44,15 +45,15 @@ namespace Bunit
 
         private bool HasChangesTo(int componentId)
         {
-            for (int i = 0; i < RenderBatch.UpdatedComponents.Count; i++)
+            for (int i = 0; i < _renderBatch.UpdatedComponents.Count; i++)
             {
-                var update = RenderBatch.UpdatedComponents.Array[i];
+                var update = _renderBatch.UpdatedComponents.Array[i];
                 if (update.ComponentId == componentId && update.Edits.Count > 0)
                     return true;
             }
-            for (int i = 0; i < RenderBatch.DisposedEventHandlerIDs.Count; i++)
+            for (int i = 0; i < _renderBatch.DisposedEventHandlerIDs.Count; i++)
             {
-                if (RenderBatch.DisposedEventHandlerIDs.Array[i].Equals(componentId))
+                if (_renderBatch.DisposedEventHandlerIDs.Array[i].Equals(componentId))
                     return true;
             }
             return HasChangedToChildren(_renderer.GetCurrentRenderTreeFrames(componentId));
@@ -72,15 +73,15 @@ namespace Bunit
 
         private bool DidComponentRender(int componentId)
         {
-            for (int i = 0; i < RenderBatch.UpdatedComponents.Count; i++)
+            for (int i = 0; i < _renderBatch.UpdatedComponents.Count; i++)
             {
-                var update = RenderBatch.UpdatedComponents.Array[i];
+                var update = _renderBatch.UpdatedComponents.Array[i];
                 if (update.ComponentId == componentId)
                     return true;
             }
-            for (int i = 0; i < RenderBatch.DisposedEventHandlerIDs.Count; i++)
+            for (int i = 0; i < _renderBatch.DisposedEventHandlerIDs.Count; i++)
             {
-                if (RenderBatch.DisposedEventHandlerIDs.Array[i].Equals(componentId))
+                if (_renderBatch.DisposedEventHandlerIDs.Array[i].Equals(componentId))
                     return true;
             }
             return DidChildComponentRender(_renderer.GetCurrentRenderTreeFrames(componentId));
@@ -97,20 +98,5 @@ namespace Bunit
             }
             return false;
         }
-
-        /// <inheritdoc/>
-        public bool Equals(RenderEvent other) => RenderBatch.Equals(other.RenderBatch);
-
-        /// <inheritdoc/>
-        public override bool Equals(object obj) => obj is RenderEvent other && Equals(other);
-
-        /// <inheritdoc/>
-        public override int GetHashCode() => HashCode.Combine(RenderBatch);
-
-        /// <inheritdoc/>
-        public static bool operator ==(RenderEvent left, RenderEvent right) => left.Equals(right);
-
-        /// <inheritdoc/>
-        public static bool operator !=(RenderEvent left, RenderEvent right) => !left.Equals(right);
     }
 }
