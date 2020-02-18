@@ -4,8 +4,8 @@
   "classifications": [
     "Test", "Razor", "Blazor", "Library"
   ],
-  "name": "Razor Component Testing Project",
-  "description": "A project for a testing Blazor/Razor components using the Razor.Components.Testing.Library library.",
+  "name": "bUnit Testing Project",
+  "description": "A project for a testing Blazor/Razor components using the bUnit library.",
   "generatorVersions": "[1.0.0.0-*)",
   "identity": "BunitProject",
   "groupIdentity": "Bunit",
