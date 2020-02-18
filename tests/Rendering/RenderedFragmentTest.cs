@@ -233,7 +233,7 @@ namespace Bunit
             // Clicking 'tock' completes the task, which updates the state
             // This click causes two renders, thus something is needed to await here.
             cut.Find("#tock").Click();
-            cut.VerifyAsyncChanges(
+            cut.WaitForAssertion(
                 () => cut.Find("#state").TextContent.ShouldBe("Stopped")
             );
         }
@@ -244,7 +244,7 @@ namespace Bunit
             var cut = RenderComponent<Simple1>();
 
             Should.Throw<ShouldAssertException>(() =>
-                cut.VerifyAsyncChanges(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(100))
+                cut.WaitForAssertion(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(100))
             );
         }
 

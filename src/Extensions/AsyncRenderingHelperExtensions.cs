@@ -18,7 +18,7 @@ namespace Bunit
         /// </summary>
         /// <param name="testContext">The context to wait against.</param>
         /// <param name="renderTrigger">The action that somehow causes one or more components to render.</param>
-        /// <param name="timeout">The maximum time to wait for the next render. If not provided the default is 1 second. During debugging, the timeout is automatically set to infinite.</param>
+        /// <param name="timeout">The maximum time to wait for the next render. If not provided the default is 1 second. During debugging, the timeout is automatically set to infinite.</param>        
         public static void WaitForNextRender(this ITestContext testContext, Action? renderTrigger = null, TimeSpan? timeout = null)
         {
             if (testContext is null) throw new ArgumentNullException(nameof(testContext));
@@ -48,8 +48,6 @@ namespace Bunit
 
             bool ShouldSpin() => rvs.RenderCount > 0 || rvs.IsCompleted;
         }
-
-
 
         /// <summary>
         /// Uses the provided <paramref name="statePredicate"/> action to verify 
@@ -95,17 +93,17 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Uses the provided <paramref name="verification"/> action to verify 
+        /// Uses the provided <paramref name="assertion"/> action to verify/assert 
         /// that an expected change has occurred in the <paramref name="renderedFragment"/>
         /// within the specified <paramref name="timeout"/> (default is one second).
         /// </summary>
         /// <param name="renderedFragment">The rendered component or fragment to verify against.</param>
-        /// <param name="verification">The verification or assertion to perform.</param>
+        /// <param name="assertion">The verification or assertion to perform.</param>
         /// <param name="timeout">The maximum time to attempt the verification.</param>
-        public static void VerifyAsyncChanges(this IRenderedFragment renderedFragment, Action verification, TimeSpan? timeout = null)
+        public static void WaitForAssertion(this IRenderedFragment renderedFragment, Action assertion, TimeSpan? timeout = null)
         {
             if (renderedFragment is null) throw new ArgumentNullException(nameof(renderedFragment));
-            if (verification is null) throw new ArgumentNullException(nameof(verification));
+            if (assertion is null) throw new ArgumentNullException(nameof(assertion));
 
             const int FAILING = 0;
             const int PASSED = 1;
@@ -136,7 +134,7 @@ namespace Bunit
             {
                 try
                 {
-                    verification();
+                    assertion();
                     Volatile.Write(ref status, PASSED);
                     failure = null;
                 }
