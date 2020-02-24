@@ -16,7 +16,7 @@ namespace Bunit.Rendering
         public void Test001()
         {
             var pub = new RenderEventPublisher();
-            var sub = new RenderEventSubscriber(pub);
+            var sub = new ConcurrentRenderEventSubscriber(pub);
 
             pub.OnRender(new RenderEvent(new RenderBatch(), null!));
 
@@ -40,7 +40,7 @@ namespace Bunit.Rendering
         public void Test003()
         {
             var pub = new RenderEventPublisher();
-            var sub = new RenderEventSubscriber(pub);
+            var sub = new ConcurrentRenderEventSubscriber(pub);
 
             sub.Unsubscribe();
 

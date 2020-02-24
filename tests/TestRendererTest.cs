@@ -16,7 +16,7 @@ namespace Bunit
         [Fact(DisplayName = "Renderer pushes render events to subscribers when renders occur")]
         public void Test001()
         {
-            var res = new RenderEventSubscriber(Renderer.RenderEvents);
+            var res = new ConcurrentRenderEventSubscriber(Renderer.RenderEvents);
             var sut = RenderComponent<TwoChildren>();
             
             res.RenderCount.ShouldBe(1);

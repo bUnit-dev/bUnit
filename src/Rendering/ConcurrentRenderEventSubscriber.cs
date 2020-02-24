@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Bunit
 {
@@ -6,36 +7,39 @@ namespace Bunit
     /// Represents a subscriber to <see cref="RenderEvent"/>s, published by
     /// the <see cref="TestRenderer"/>.
     /// </summary>
-    public class RenderEventSubscriber : IObserver<RenderEvent>
+    public class ConcurrentRenderEventSubscriber : IObserver<RenderEvent>
     {
         private readonly IDisposable _unsubscriber;
         private readonly Action<RenderEvent>? _onRender;
         private readonly Action? _onCompleted;
+        private int _renderCount;
+        private bool _isCompleted;
+        private RenderEvent? _latestRenderEvent;
 
         /// <summary>
         /// Gets the number of renders that have occurred since subscribing.
         /// </summary>
-        public int RenderCount { get; private set; }
+        public int RenderCount => Volatile.Read(ref _renderCount);
 
         /// <summary>
         /// Gets whether the <see cref="TestRenderer"/> is disposed an no more
         /// renders will happen.
         /// </summary>
-        public bool IsCompleted { get; private set; }
+        public bool IsCompleted => Volatile.Read(ref _isCompleted);
 
         /// <summary>
         /// Gets the latests <see cref="RenderEvent"/> received by the <see cref="TestRenderer"/>.
         /// </summary>
-        public RenderEvent? LatestRenderEvent { get; private set; }
+        public RenderEvent? LatestRenderEvent => Volatile.Read(ref _latestRenderEvent);
 
         /// <summary>
-        /// Creates an instance of the <see cref="RenderEventSubscriber"/>, and
+        /// Creates an instance of the <see cref="ConcurrentRenderEventSubscriber"/>, and
         /// subscribes to the provided <paramref name="observable"/>.
         /// </summary>
         /// <param name="observable">The observable to observe.</param>
         /// <param name="onRender">A callback to invoke when a <see cref="RenderEvent"/> is received.</param>
         /// <param name="onCompleted">A callback to invoke when no more renders will happen.</param>
-        public RenderEventSubscriber(IObservable<RenderEvent> observable, Action<RenderEvent>? onRender = null, Action? onCompleted = null)
+        public ConcurrentRenderEventSubscriber(IObservable<RenderEvent> observable, Action<RenderEvent>? onRender = null, Action? onCompleted = null)
         {
             if (observable is null) throw new ArgumentNullException(nameof(observable));
             _onRender = onRender;
@@ -54,15 +58,15 @@ namespace Bunit
         /// <inheritdoc/>
         public virtual void OnNext(RenderEvent value)
         {
-            RenderCount += 1;
-            LatestRenderEvent = value;
+            Interlocked.Increment(ref _renderCount);
+            Volatile.Write(ref _latestRenderEvent, value);
             _onRender?.Invoke(value);
         }
 
         /// <inheritdoc/>
         public virtual void OnCompleted()
         {
-            IsCompleted = true;
+            Volatile.Write(ref _isCompleted, true);
             _onCompleted?.Invoke();
         }
 

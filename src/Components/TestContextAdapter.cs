@@ -62,7 +62,7 @@ namespace Bunit
             if (_testContext is null)
                 throw new InvalidOperationException("No active test context in the adapter");
             else
-                _testContext.WaitForNextRender(renderTrigger, timeout);
+                _testContext.WaitForRender(renderTrigger, timeout);
         }
 
         public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent

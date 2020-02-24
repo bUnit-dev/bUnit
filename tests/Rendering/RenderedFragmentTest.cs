@@ -1,4 +1,5 @@
-﻿using Bunit.Extensions.Xunit;
+﻿using AngleSharp.Dom;
+using Bunit.Extensions.Xunit;
 using Bunit.Mocking.JSInterop;
 using Bunit.SampleComponents;
 using Bunit.SampleComponents.Data;
@@ -37,50 +38,7 @@ namespace Bunit
             result.ShouldNotBeNull();
         }
 
-        [Fact(DisplayName = "Nodes should return new instance when " +
-                            "async operation during OnInit causes component to re-render")]
-        public void Test003()
-        {
-            var testData = new AsyncNameDep();
-            Services.AddSingleton<IAsyncTestDep>(testData);
-            var cut = RenderComponent<SimpleWithAyncDeps>();
-            var initialValue = cut.Nodes.Find("p").TextContent;
-            var expectedValue = "Steve Sanderson";
-
-            WaitForNextRender(() => testData.SetResult(expectedValue));
-
-            var steveValue = cut.Nodes.Find("p").TextContent;
-            steveValue.ShouldNotBe(initialValue);
-            steveValue.ShouldBe(expectedValue);
-        }
-
-        [Fact(DisplayName = "Nodes should return new instance when " +
-                    "async operation/StateHasChanged during OnAfterRender causes component to re-render")]
-        public void Test004()
-        {
-            var invocation = Services.AddMockJsRuntime().Setup<string>("getdata");
-            var cut = RenderComponent<SimpleWithJsRuntimeDep>();
-            var initialValue = cut.Nodes.Find("p").OuterHtml;
-
-            WaitForNextRender(() => invocation.SetResult("Steve Sanderson"));
-
-            var steveValue = cut.Nodes.Find("p").OuterHtml;
-            steveValue.ShouldNotBe(initialValue);
-        }
-
-        [Fact(DisplayName = "Nodes on a components with child component returns " +
-                            "new instance when the child component has changes")]
-        public void Test005()
-        {
-            var invocation = Services.AddMockJsRuntime().Setup<string>("getdata");
-            var notcut = RenderComponent<Wrapper>(ChildContent<Simple1>());
-            var cut = RenderComponent<Wrapper>(ChildContent<SimpleWithJsRuntimeDep>());
-            var initialValue = cut.Nodes;
-
-            WaitForNextRender(() => invocation.SetResult("Steve Sanderson"), TimeSpan.FromSeconds(2));
-
-            Assert.NotSame(initialValue, cut.Nodes);
-        }
+       
 
 
         [Fact(DisplayName = "Nodes should return new instance " +
@@ -191,15 +149,15 @@ namespace Bunit
         [Fact(DisplayName = "Render events for non-rendered sub components are not emitted")]
         public void Test010()
         {
-            var renderSub = new RenderEventSubscriber(Renderer.RenderEvents);
+            var renderSub = new ConcurrentRenderEventSubscriber(Renderer.RenderEvents);
             var wrapper = RenderComponent<TwoComponentWrapper>(
                 RenderFragment<Simple1>(nameof(TwoComponentWrapper.First)),
                 RenderFragment<Simple1>(nameof(TwoComponentWrapper.Second))
             );
             var cuts = wrapper.FindComponents<Simple1>();
-            var wrapperSub = new RenderEventSubscriber(wrapper.RenderEvents);
-            var cutSub1 = new RenderEventSubscriber(cuts[0].RenderEvents);
-            var cutSub2 = new RenderEventSubscriber(cuts[1].RenderEvents);
+            var wrapperSub = new ConcurrentRenderEventSubscriber(wrapper.RenderEvents);
+            var cutSub1 = new ConcurrentRenderEventSubscriber(cuts[0].RenderEvents);
+            var cutSub2 = new ConcurrentRenderEventSubscriber(cuts[1].RenderEvents);
 
             renderSub.RenderCount.ShouldBe(1);
 
@@ -216,67 +174,6 @@ namespace Bunit
             wrapperSub.RenderCount.ShouldBe(2);
             cutSub1.RenderCount.ShouldBe(1);
             cutSub2.RenderCount.ShouldBe(1);
-        }
-
-        [Fact(DisplayName = "VerifyAsyncChanges can wait for multiple renders and changes to occur")]
-        public void Test110()
-        {
-            // Initial state is stopped
-            var cut = RenderComponent<TwoRendersTwoChanges>();
-            var stateElement = cut.Find("#state");
-            stateElement.TextContent.ShouldBe("Stopped");
-
-            // Clicking 'tick' changes the state, and starts a task
-            cut.Find("#tick").Click();
-            cut.Find("#state").TextContent.ShouldBe("Started");
-
-            // Clicking 'tock' completes the task, which updates the state
-            // This click causes two renders, thus something is needed to await here.
-            cut.Find("#tock").Click();
-            cut.WaitForAssertion(
-                () => cut.Find("#state").TextContent.ShouldBe("Stopped")
-            );
-        }
-
-        [Fact(DisplayName = "VerifyAyncChanges throws verification exception after timeout")]
-        public void Test011()
-        {
-            var cut = RenderComponent<Simple1>();
-
-            Should.Throw<ShouldAssertException>(() =>
-                cut.WaitForAssertion(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(100))
-            );
-        }
-
-        [Fact(DisplayName = "WaitForState throws TimeoutException exception after timeout")]
-        public void Test012()
-        {
-            var cut = RenderComponent<Simple1>();
-
-            Should.Throw<TimeoutException>(() =>
-                cut.WaitForState(() => string.IsNullOrEmpty(cut.Markup), TimeSpan.FromMilliseconds(100))
-            );
-        }
-
-        [Fact(DisplayName = "WaitForState can wait for multiple renders and changes to occur")]
-        public void Test013()
-        {
-            // Initial state is stopped
-            var cut = RenderComponent<TwoRendersTwoChanges>();
-            var stateElement = cut.Find("#state");
-            stateElement.TextContent.ShouldBe("Stopped");
-
-            // Clicking 'tick' changes the state, and starts a task
-            cut.Find("#tick").Click();
-            cut.Find("#state").TextContent.ShouldBe("Started");
-
-            // Clicking 'tock' completes the task, which updates the state
-            // This click causes two renders, thus something is needed to await here.
-            cut.Find("#tock").Click();
-            cut.WaitForState(() => cut.Find("#state").TextContent == "Stopped");
-            cut.Find("#state").TextContent.ShouldBe("Stopped");
-        }
-
+        }     
     }
-
 }

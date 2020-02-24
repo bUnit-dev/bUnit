@@ -3,7 +3,7 @@
 namespace Bunit
 {
     /// <inheritdoc/>
-    public sealed class ComponentChangeEventSubscriber : RenderEventSubscriber, IDisposable
+    public sealed class ComponentChangeEventSubscriber : ConcurrentRenderEventSubscriber
     {
         private readonly IRenderedFragment _testTarget;
 
@@ -22,7 +22,5 @@ namespace Bunit
             if (value.HasChangesTo(_testTarget))
                 base.OnNext(value);
         }
-        /// <inheritdoc/>
-        public void Dispose() => Unsubscribe();
     }
 }

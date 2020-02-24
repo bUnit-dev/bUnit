@@ -14,7 +14,7 @@ namespace Bunit
     /// </summary>
     public abstract class RenderedFragmentBase : IRenderedFragment
     {
-        private readonly RenderEventSubscriber _renderEventSubscriber;
+        private readonly ConcurrentRenderEventSubscriber _renderEventSubscriber;
         private string? _snapshotMarkup;
         private string? _latestRenderMarkup;
         private INodeList? _firstRenderNodes;
@@ -82,7 +82,7 @@ namespace Bunit
             TestContext = testContext;
             Container = container;
             RenderEvents = new RenderEventFilter(testContext.Renderer.RenderEvents, RenderFilter);
-            _renderEventSubscriber = new RenderEventSubscriber(testContext.Renderer.RenderEvents, ComponentRendered);
+            _renderEventSubscriber = new ConcurrentRenderEventSubscriber(testContext.Renderer.RenderEvents, ComponentRendered);
         }
 
         /// <inheritdoc/>

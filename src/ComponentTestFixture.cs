@@ -18,11 +18,11 @@ namespace Bunit
         /// Use this when you have a component that is awaiting e.g. a service to return data to it before rendering again.
         /// </summary>
         /// <param name="renderTrigger">The action that somehow causes one or more components to render.</param>
-        /// <param name="timeout">The maximum time to wait for the next render. If not provided the default is 1 second. During debugging, the timeout is automatically set to infinite.</param>
-        /// <exception cref="TimeoutException">Thrown when the next render did not happen within the specified <paramref name="timeout"/>.</exception>
-        protected void WaitForNextRender(Action? renderTrigger = null, TimeSpan? timeout = null)
+        /// <param name="timeout">The maximum time to wait for the next render. If not provided the default is 1 second. During debugging, the timeout is automatically set to infinite.</param>        
+        /// <exception cref="WaitForRenderFailedException">Thrown if no render happens within the specified <paramref name="timeout"/>, or the default of 1 second, if non is specified.</exception>
+        protected void WaitForRender(Action? renderTrigger = null, TimeSpan? timeout = null)
         {
-            AsyncRenderingHelperExtensions.WaitForNextRender(this, renderTrigger, timeout);
+            RenderWaitingHelperExtensions.WaitForRender(this, renderTrigger, timeout);
         }
 
         /// <summary>
