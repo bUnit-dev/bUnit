@@ -112,7 +112,7 @@ namespace Bunit
             var failure = default(Exception);
             var status = FAILING;
 
-            using var rvs = new HasChangesRenderEventSubscriber(renderedFragment, onChange: TryVerification);
+            using var rvs = new ComponentChangeEventSubscriber(renderedFragment, onChange: TryVerification);
 
             TryVerification();
             if (status == PASSED) return;

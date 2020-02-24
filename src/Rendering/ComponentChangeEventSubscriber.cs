@@ -3,14 +3,14 @@
 namespace Bunit
 {
     /// <inheritdoc/>
-    public sealed class HasChangesRenderEventSubscriber : RenderEventSubscriber, IDisposable
+    public sealed class ComponentChangeEventSubscriber : RenderEventSubscriber, IDisposable
     {
         private readonly IRenderedFragment _testTarget;
 
         /// <summary>
-        /// Creates an instance of the <see cref="HasChangesRenderEventSubscriber"/>.
+        /// Creates an instance of the <see cref="ComponentChangeEventSubscriber"/>.
         /// </summary>
-        public HasChangesRenderEventSubscriber(IRenderedFragment testTarget, Action<RenderEvent>? onChange = null, Action? onCompleted = null)
+        public ComponentChangeEventSubscriber(IRenderedFragment testTarget, Action<RenderEvent>? onChange = null, Action? onCompleted = null)
             : base((testTarget ?? throw new ArgumentNullException(nameof(testTarget))).RenderEvents, onChange, onCompleted)
         {
             _testTarget = testTarget;

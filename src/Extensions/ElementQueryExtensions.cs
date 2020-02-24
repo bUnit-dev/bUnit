@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
+using AngleSharpWrappers;
 
 namespace Bunit
 {
@@ -21,7 +22,8 @@ namespace Bunit
         public static IElement Find(this IElement element, string selector)
         {
             if (element is null) throw new ArgumentNullException(nameof(element));
-            return element.QuerySelector(selector);
+
+            return element.QuerySelector(selector);            
         }
 
         /// <summary>

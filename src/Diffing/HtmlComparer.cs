@@ -5,6 +5,7 @@ using AngleSharp.Dom;
 using AngleSharp.Diffing.Core;
 using Xunit.Abstractions;
 using Bunit.Diffing;
+using AngleSharpWrappers;
 
 namespace Bunit.Diffing
 {
@@ -31,7 +32,7 @@ namespace Bunit.Diffing
         /// </summary>
         public IEnumerable<IDiff> Compare(INode controlHtml, INode testHtml)
         {
-            return _differenceEngine.Compare(controlHtml, testHtml);
+            return _differenceEngine.Compare(controlHtml.Unwrap(), testHtml.Unwrap());
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace Bunit.Diffing
         /// </summary>
         public IEnumerable<IDiff> Compare(IEnumerable<INode> controlHtml, IEnumerable<INode> testHtml)
         {
-            return _differenceEngine.Compare(controlHtml, testHtml);
+            return _differenceEngine.Compare(controlHtml.Unwrap(), testHtml.Unwrap());
         }
     }
 }
