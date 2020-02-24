@@ -1,6 +1,10 @@
 name: CI
 
-on: push
+on:
+  push:
+    paths-ignore:
+    - 'docs/**'
+    - '.github/**'
 
 env:
   VERSION: 1337.0.0
