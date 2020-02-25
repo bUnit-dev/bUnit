@@ -34,7 +34,7 @@ namespace Bunit.SampleApp.CodeOnlyTests.Pages
 
             // act
             var page = RenderComponent<Todos>();
-            WaitForNextRender(() => getTask.SetResult(todos));
+            WaitForRender(() => getTask.SetResult(todos));
 
             // assert            
             page.FindAll("li")

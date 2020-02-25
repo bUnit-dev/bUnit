@@ -52,7 +52,7 @@ namespace Bunit.SampleApp.CodeOnlyTests.Components
             // Use the WaitForNextRender to block until the component has finished re-rendered.
             // The plannedInvocation.SetResult will return the result to the component is waiting 
             // for in its OnAfterRender from the await jsRuntime.InvokeAsync<string>("queryWiki", "blazor") call.
-            WaitForNextRender(() => plannedInvocation.SetResult(expectedSearchResult));
+            WaitForRender(() => plannedInvocation.SetResult(expectedSearchResult));
 
             // Assert
             // Verify that the result was received and correct placed in the paragraph element.

@@ -201,7 +201,7 @@
         Assert.DoesNotContain("show", cut.Find(".alert").ClassList);
 
         // Act - complete
-        WaitForNextRender(() =>
+        WaitForRender(() =>
         {
             plannedInvocation.SetResult(default!);
         });
