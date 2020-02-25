@@ -14,10 +14,10 @@ namespace Bunit
     public static class RenderWaitingHelperExtensions
     {
         /// <summary>
-        /// Executes the provided <paramref name="renderTrigger"/> action and waits for a render to occur.
-        /// Use this when you have a component that is awaiting e.g. a service to return data to it before rendering again.
+        /// Wait for the next render to happen, or the <paramref name="timeout"/> is reached (default is one second).
+        /// If a <paramref name="renderTrigger"/> action is provided, it is invoked before the waiting.
         /// </summary>
-        /// <param name="testContext">The context to wait against.</param>
+        /// <param name="testContext">The test context to wait against.</param>
         /// <param name="renderTrigger">The action that somehow causes one or more components to render.</param>
         /// <param name="timeout">The maximum time to wait for the next render. If not provided the default is 1 second. During debugging, the timeout is automatically set to infinite.</param>        
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="testContext"/> is null</exception>
@@ -53,12 +53,10 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Uses the provided <paramref name="statePredicate"/> action to verify 
-        /// that an expected state has been reached. The <paramref name="statePredicate"/> is 
-        /// invoked every time the <paramref name="renderedFragment"/> renders, and will
-        /// break the waiting as soon as the <paramref name="statePredicate"/> passes.
-        /// 
-        /// The waiting will terminate with a <see cref="WaitForStateFailedException" /> when the specified <paramref name="timeout"/> (default is one second) is reached.
+        /// Wait until the provided <paramref name="statePredicate"/> action returns true,
+        /// or the <paramref name="timeout"/> is reached (default is one second).
+        /// The <paramref name="statePredicate"/> is evaluated initially, and then each time
+        /// the <paramref name="renderedFragment"/> renders.
         /// </summary>
         /// <param name="renderedFragment"></param>
         /// <param name="statePredicate"></param>
@@ -77,7 +75,7 @@ namespace Bunit
             var failure = default(Exception);
             var status = STATE_MISMATCH;
 
-            var rvs = new ComponentChangeEventSubscriber(renderedFragment, onChange: TryVerification);
+            var rvs = new ConcurrentRenderEventSubscriber(renderedFragment.RenderEvents, onRender: TryVerification);
             try
             {
                 TryVerification();
@@ -129,9 +127,11 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Uses the provided <paramref name="assertion"/> action to verify/assert 
-        /// that an expected change has occurred in the <paramref name="renderedFragment"/>
-        /// within the specified <paramref name="timeout"/> (default is one second).
+        /// Wait until the provided <paramref name="assertion"/> action passes (i.e. does not throw an 
+        /// assertion exception), or the <paramref name="timeout"/> is reached (default is one second).
+        /// 
+        /// The <paramref name="assertion"/> is attempted initially, and then each time
+        /// the <paramref name="renderedFragment"/> renders.
         /// </summary>
         /// <param name="renderedFragment">The rendered component or fragment to verify against.</param>
         /// <param name="assertion">The verification or assertion to perform.</param>
@@ -149,7 +149,7 @@ namespace Bunit
             var failure = default(Exception);
             var status = FAILING;
 
-            var rvs = new ComponentChangeEventSubscriber(renderedFragment, onChange: TryVerification);
+            var rvs = new ConcurrentRenderEventSubscriber(renderedFragment.RenderEvents, onRender: TryVerification);
             try
             {
                 TryVerification();
