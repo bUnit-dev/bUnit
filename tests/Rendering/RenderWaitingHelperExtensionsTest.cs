@@ -17,6 +17,7 @@ namespace Bunit.Rendering
     {
         [Fact(DisplayName = "Nodes should return new instance when " +
                            "async operation during OnInit causes component to re-render")]
+        [Obsolete("Calls to WaitForNextRender is obsolete, but still needs tests")]
         public void Test003()
         {
             var testData = new AsyncNameDep();
@@ -25,7 +26,7 @@ namespace Bunit.Rendering
             var initialValue = cut.Nodes.QuerySelector("p").TextContent;
             var expectedValue = "Steve Sanderson";
 
-            WaitForRender(() => testData.SetResult(expectedValue));
+            WaitForNextRender(() => testData.SetResult(expectedValue));
 
             var steveValue = cut.Nodes.QuerySelector("p").TextContent;
             steveValue.ShouldNotBe(initialValue);
@@ -34,13 +35,14 @@ namespace Bunit.Rendering
 
         [Fact(DisplayName = "Nodes should return new instance when " +
                     "async operation/StateHasChanged during OnAfterRender causes component to re-render")]
+        [Obsolete("Calls to WaitForNextRender is obsolete, but still needs tests")]
         public void Test004()
         {
             var invocation = Services.AddMockJsRuntime().Setup<string>("getdata");
             var cut = RenderComponent<SimpleWithJsRuntimeDep>();
             var initialValue = cut.Nodes.QuerySelector("p").OuterHtml;
 
-            WaitForRender(() => invocation.SetResult("Steve Sanderson"));
+            WaitForNextRender(() => invocation.SetResult("NEW DATA"));
 
             var steveValue = cut.Nodes.QuerySelector("p").OuterHtml;
             steveValue.ShouldNotBe(initialValue);
@@ -48,6 +50,7 @@ namespace Bunit.Rendering
 
         [Fact(DisplayName = "Nodes on a components with child component returns " +
                             "new instance when the child component has changes")]
+        [Obsolete("Calls to WaitForNextRender is obsolete, but still needs tests")]
         public void Test005()
         {
             var invocation = Services.AddMockJsRuntime().Setup<string>("getdata");
@@ -55,19 +58,20 @@ namespace Bunit.Rendering
             var cut = RenderComponent<Wrapper>(ChildContent<SimpleWithJsRuntimeDep>());
             var initialValue = cut.Nodes;
 
-            WaitForRender(() => invocation.SetResult("Steve Sanderson"), TimeSpan.FromSeconds(2));
+            WaitForNextRender(() => invocation.SetResult("NEW DATA"), TimeSpan.FromSeconds(2));
 
             Assert.NotSame(initialValue, cut.Nodes);
         }
 
         [Fact(DisplayName = "WaitForRender throws WaitForRenderFailedException when a render does not happen within the timeout period")]
+        [Obsolete("Calls to WaitForNextRender is obsolete, but still needs tests")]
         public void Test006()
         {
             const string expectedMessage = "No render happened before the timeout period passed.";
             var cut = RenderComponent<Simple1>();
 
             var expected = Should.Throw<WaitForRenderFailedException>(() =>
-                WaitForRender(timeout: TimeSpan.FromMilliseconds(10))
+                WaitForNextRender(timeout: TimeSpan.FromMilliseconds(10))
             );
 
             expected.Message.ShouldBe(expectedMessage);

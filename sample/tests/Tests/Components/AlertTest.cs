@@ -172,7 +172,7 @@ namespace Bunit.SampleApp.Tests.Components
             Assert.NotNull(dismissingEvent);
 
             // Act
-            WaitForRender(() =>
+            WaitForNextRender(() =>
             {
                 plannedInvocation.SetResult(default!);
             });
@@ -198,7 +198,7 @@ namespace Bunit.SampleApp.Tests.Components
             Assert.DoesNotContain("show", cut.Find(".alert").ClassList);
 
             // Act - complete 
-            WaitForRender(() =>
+            WaitForNextRender(() =>
             {
                 plannedInvocation.SetResult(default!);
             });

@@ -42,7 +42,7 @@
         var cut = RenderComponent<FetchData>();
 
         // act
-        WaitForRender(() => forecastService.Task.SetResult(forecasts));
+        WaitForNextRender(() => forecastService.Task.SetResult(forecasts));
 
         // assert
         cut.GetChangesSinceFirstRender().ShouldHaveChanges(

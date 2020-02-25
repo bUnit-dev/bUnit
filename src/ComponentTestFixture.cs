@@ -14,16 +14,41 @@ namespace Bunit
     public abstract class ComponentTestFixture : TestContext
     {
         /// <summary>
-        /// Executes the provided <paramref name="renderTrigger"/> action and waits for a render to occur.
-        /// Use this when you have a component that is awaiting e.g. a service to return data to it before rendering again.
+        /// Wait for the next render to happen, or the <paramref name="timeout"/> is reached (default is one second).
+        /// If a <paramref name="renderTrigger"/> action is provided, it is invoked before the waiting.
         /// </summary>
         /// <param name="renderTrigger">The action that somehow causes one or more components to render.</param>
         /// <param name="timeout">The maximum time to wait for the next render. If not provided the default is 1 second. During debugging, the timeout is automatically set to infinite.</param>        
         /// <exception cref="WaitForRenderFailedException">Thrown if no render happens within the specified <paramref name="timeout"/>, or the default of 1 second, if non is specified.</exception>
-        protected void WaitForRender(Action? renderTrigger = null, TimeSpan? timeout = null)
-        {
-            RenderWaitingHelperExtensions.WaitForRender(this, renderTrigger, timeout);
-        }
+        [Obsolete("Use either the WaitForState or WaitForAssertion method instead. It will make your test more resilient to insignificant changes, as they will wait across multiple renders instead of just one. To make the change, run any render trigger first, then call either WaitForState or WaitForAssertion with the appropriate input. This method will be removed before the 1.0.0 release.", false)]
+        protected void WaitForNextRender(Action? renderTrigger = null, TimeSpan? timeout = null)
+            => RenderWaitingHelperExtensions.WaitForNextRender(this, renderTrigger, timeout);
+
+        /// <summary>
+        /// Wait until the provided <paramref name="statePredicate"/> action returns true,
+        /// or the <paramref name="timeout"/> is reached (default is one second).
+        /// 
+        /// The <paramref name="statePredicate"/> is evaluated initially, and then each time
+        /// the renderer in the test context renders.
+        /// </summary>
+        /// <param name="statePredicate">The predicate to invoke after each render, which returns true when the desired state has been reached.</param>
+        /// <param name="timeout">The maximum time to wait for the desired state.</param>
+        /// <exception cref="WaitForStateFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
+        protected void WaitForState(Func<bool> statePredicate, TimeSpan? timeout = null)
+            => RenderWaitingHelperExtensions.WaitForState(this, statePredicate, timeout);
+
+        /// <summary>
+        /// Wait until the provided <paramref name="assertion"/> action passes (i.e. does not throw an 
+        /// assertion exception), or the <paramref name="timeout"/> is reached (default is one second).
+        /// 
+        /// The <paramref name="assertion"/> is attempted initially, and then each time
+        /// the renderer in the test context renders.
+        /// </summary>
+        /// <param name="assertion">The verification or assertion to perform.</param>
+        /// <param name="timeout">The maximum time to attempt the verification.</param>
+        /// <exception cref="WaitForAssertionFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
+        protected void WaitForAssertion(Action assertion, TimeSpan? timeout = null)
+            => RenderWaitingHelperExtensions.WaitForAssertion(this, assertion, timeout);
 
         /// <summary>
         /// Creates a <see cref="ComponentParameter"/> with an <see cref="Microsoft.AspNetCore.Components.EventCallback"/> as parameter value 

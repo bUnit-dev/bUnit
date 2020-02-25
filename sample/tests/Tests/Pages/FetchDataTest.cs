@@ -41,7 +41,7 @@ namespace Bunit.SampleApp.CodeOnlyTests
             var cut = RenderComponent<FetchData>();
 
             // Act - pass the test forecasts to the component via the mock services
-            WaitForRender(() => mockForecastService.Task.SetResult(forecasts));
+            WaitForNextRender(() => mockForecastService.Task.SetResult(forecasts));
 
             // Assert
             // Render an new instance of the ForecastDataTable, passing in the test data
