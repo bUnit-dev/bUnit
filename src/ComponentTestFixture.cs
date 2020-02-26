@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
+using Xunit.Abstractions;
 using EC = Microsoft.AspNetCore.Components.EventCallback;
 
 namespace Bunit
@@ -228,7 +230,7 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Creates a component parameter which will pass the <paramref name="template"/> <see cref="Microsoft.AspNetCore.Components.RenderFragment{TValue}" />
+        /// Creates a template component parameter which will pass the <paramref name="template"/> <see cref="Microsoft.AspNetCore.Components.RenderFragment{TValue}" />
         /// to the parameter with the name <paramref name="name"/>.
         /// </summary>
         /// <typeparam name="TValue">The value used to build the content.</typeparam>
@@ -238,6 +240,20 @@ namespace Bunit
         protected static ComponentParameter Template<TValue>(string name, RenderFragment<TValue> template)
         {
             return ComponentParameter.CreateParameter(name, template);
+        }
+
+        /// <summary>
+        /// Creates a template component parameter which will pass the a <see cref="Microsoft.AspNetCore.Components.RenderFragment{TValue}" />
+        /// to the parameter with the name <paramref name="name"/>.
+        /// The <paramref name="markupFactory"/> will be used to generate the markup inside the template.
+        /// </summary>
+        /// <typeparam name="TValue">The value used to build the content.</typeparam>
+        /// <param name="name">Parameter name.</param>
+        /// <param name="markupFactory">A markup factory that takes a <typeparamref name="TValue"/> as input and returns markup/HTML.</param>
+        /// <returns>The <see cref="ComponentParameter"/>.</returns>
+        protected static ComponentParameter Template<TValue>(string name, Func<TValue, string> markupFactory)
+        {
+            return Template<TValue>(name, value => (RenderTreeBuilder builder) => builder.AddMarkupContent(0, markupFactory(value)));
         }
     }
 }
