@@ -31,8 +31,8 @@ namespace Bunit
             if (_element is null)
             {
                 var queryResult = _testTarget.Nodes.QuerySelector(_cssSelector);
-                if(queryResult is TElement element)
-                    _element = element;                
+                if (queryResult is TElement element)
+                    _element = element;
             }
             return _element ?? throw new ElementNotFoundException();
         }

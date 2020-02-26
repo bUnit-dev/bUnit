@@ -5,6 +5,7 @@ using Bunit.SampleComponents;
 using Bunit.SampleComponents.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Bunit
     {
         public RenderedFragmentTest(ITestOutputHelper output)
         {
-            Services.AddXunitLogger(output);
+            Services.AddXunitLogger(output, minimumLogLevel: LogLevel.Debug);
         }
 
         [Fact(DisplayName = "Find throws an exception if no element matches the css selector")]
@@ -37,9 +38,6 @@ namespace Bunit
             var result = cut.Find("div");
             result.ShouldNotBeNull();
         }
-
-       
-
 
         [Fact(DisplayName = "Nodes should return new instance " +
                             "when a event handler trigger has caused changes to DOM tree")]
@@ -174,6 +172,6 @@ namespace Bunit
             wrapperSub.RenderCount.ShouldBe(2);
             cutSub1.RenderCount.ShouldBe(1);
             cutSub2.RenderCount.ShouldBe(1);
-        }     
+        }
     }
 }

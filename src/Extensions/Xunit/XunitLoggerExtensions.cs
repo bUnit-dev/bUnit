@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Bunit.Extensions.Xunit;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace Bunit.Extensions.Xunit
+namespace Bunit
 {
     /// <summary>
     /// Helper method for registering the xUnit test logger.
