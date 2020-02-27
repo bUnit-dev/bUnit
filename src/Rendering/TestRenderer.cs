@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Threading;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Bunit
 {
@@ -18,6 +19,7 @@ namespace Bunit
     public class TestRenderer : Renderer
     {
         private readonly RenderEventPublisher _renderEventPublisher;
+        private readonly ILogger _logger;
         private Exception? _unhandledException;
 
         /// <inheritdoc/>
@@ -30,10 +32,10 @@ namespace Bunit
         public IObservable<RenderEvent> RenderEvents { get; }
 
         /// <inheritdoc/>
-        public TestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
-            : base(serviceProvider, loggerFactory)
+        public TestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory) : base(serviceProvider, loggerFactory)
         {
             _renderEventPublisher = new RenderEventPublisher();
+            _logger = loggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance;
             RenderEvents = _renderEventPublisher;
         }
 
@@ -48,11 +50,14 @@ namespace Bunit
         /// <inheritdoc/>
         public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
         {
+            if (fieldInfo is null) throw new ArgumentNullException(nameof(fieldInfo));
+            _logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Starting trigger of '{fieldInfo.FieldValue}'");
+
             var task = Dispatcher.InvokeAsync(() =>
             {
                 try
                 {
-                    base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
+                    return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
                 }
                 catch (Exception e)
                 {
@@ -60,7 +65,10 @@ namespace Bunit
                     throw;
                 }
             });
+
             AssertNoSynchronousErrors();
+
+            _logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Finished trigger of '{fieldInfo.FieldValue}'");
             return task;
         }
 
@@ -73,6 +81,7 @@ namespace Bunit
         /// <inheritdoc/>
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
         {
+            _logger.LogDebug(new EventId(0, nameof(UpdateDisplayAsync)), $"New render batch with ReferenceFrames = {renderBatch.ReferenceFrames.Count}, UpdatedComponents = {renderBatch.UpdatedComponents.Count}, DisposedComponentIDs = {renderBatch.DisposedComponentIDs.Count}, DisposedEventHandlerIDs = {renderBatch.DisposedEventHandlerIDs.Count}");
             var renderEvent = new RenderEvent(in renderBatch, this);
             _renderEventPublisher.OnRender(renderEvent);
             return Task.CompletedTask;

@@ -36,8 +36,8 @@ namespace Bunit
         /// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
         /// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
         /// <param name="type">The type of the event.</param>
-        public static void Keydown(this IElement element, string key, string? code = default, float location = default, bool repeat = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-            => KeydownAsync(element, new KeyboardEventArgs { Key = key, Code = code, Location = location, Repeat = repeat, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+        public static void KeyDown(this IElement element, string key, string? code = default, float location = default, bool repeat = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
+            => KeyDownAsync(element, new KeyboardEventArgs { Key = key, Code = code, Location = location, Repeat = repeat, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
 
         /// <summary>
         /// Raises the <c>@onkeydown</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -45,7 +45,7 @@ namespace Bunit
         /// </summary>
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-        public static void Keydown(this IElement element, KeyboardEventArgs eventArgs) => _ = KeydownAsync(element, eventArgs);
+        public static void KeyDown(this IElement element, KeyboardEventArgs eventArgs) => _ = KeyDownAsync(element, eventArgs);
 
         /// <summary>
         /// Raises the <c>@onkeydown</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -54,7 +54,7 @@ namespace Bunit
         /// <param name="element"></param>
         /// <param name="eventArgs"></param>
         /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task KeydownAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeydown", eventArgs);
+        public static Task KeyDownAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeydown", eventArgs);
 
         /// <summary>
         /// Raises the <c>@onkeyup</c> event on <paramref name="element"/>,  passing the provided
@@ -79,8 +79,8 @@ namespace Bunit
         /// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
         /// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
         /// <param name="type">The type of the event.</param>
-        public static void Keyup(this IElement element, string key, string? code = default, float location = default, bool repeat = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-            => KeyupAsync(element, new KeyboardEventArgs { Key = key, Code = code, Location = location, Repeat = repeat, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+        public static void KeyUp(this IElement element, string key, string? code = default, float location = default, bool repeat = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
+            => KeyUpAsync(element, new KeyboardEventArgs { Key = key, Code = code, Location = location, Repeat = repeat, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
 
         /// <summary>
         /// Raises the <c>@onkeyup</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -88,7 +88,7 @@ namespace Bunit
         /// </summary>
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-        public static void Keyup(this IElement element, KeyboardEventArgs eventArgs) => _ = KeyupAsync(element, eventArgs);
+        public static void KeyUp(this IElement element, KeyboardEventArgs eventArgs) => _ = KeyUpAsync(element, eventArgs);
 
         /// <summary>
         /// Raises the <c>@onkeyup</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -97,7 +97,7 @@ namespace Bunit
         /// <param name="element"></param>
         /// <param name="eventArgs"></param>
         /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task KeyupAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeyup", eventArgs);
+        public static Task KeyUpAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeyup", eventArgs);
 
         /// <summary>
         /// Raises the <c>@onkeypress</c> event on <paramref name="element"/>,  passing the provided
@@ -122,8 +122,8 @@ namespace Bunit
         /// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
         /// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
         /// <param name="type">The type of the event.</param>
-        public static void Keypress(this IElement element, string key, string? code = default, float location = default, bool repeat = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-            => KeypressAsync(element, new KeyboardEventArgs { Key = key, Code = code, Location = location, Repeat = repeat, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+        public static void KeyPress(this IElement element, string key, string? code = default, float location = default, bool repeat = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
+            => KeyPressAsync(element, new KeyboardEventArgs { Key = key, Code = code, Location = location, Repeat = repeat, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
 
         /// <summary>
         /// Raises the <c>@onkeypress</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -131,7 +131,7 @@ namespace Bunit
         /// </summary>
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-        public static void Keypress(this IElement element, KeyboardEventArgs eventArgs) => _ = KeypressAsync(element, eventArgs);
+        public static void KeyPress(this IElement element, KeyboardEventArgs eventArgs) => _ = KeyPressAsync(element, eventArgs);
 
         /// <summary>
         /// Raises the <c>@onkeypress</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -140,6 +140,6 @@ namespace Bunit
         /// <param name="element"></param>
         /// <param name="eventArgs"></param>
         /// <returns>A task that completes when the event handler is done.</returns>
-        public static Task KeypressAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeypress", eventArgs);
+        public static Task KeyPressAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeypress", eventArgs);
     }
 }

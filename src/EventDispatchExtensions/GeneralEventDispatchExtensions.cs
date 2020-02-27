@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bunit
@@ -31,7 +32,7 @@ namespace Bunit
             var eventHandlerIdString = element.GetAttribute(Htmlizer.ToBlazorAttribute(eventName));
 
             if (string.IsNullOrEmpty(eventHandlerIdString))
-                throw new ArgumentException($"The element does not have an event handler for the event '{eventName}'.");
+                throw new MissingEventHandlerException(element, eventName);
 
             var eventHandlerId = ulong.Parse(eventHandlerIdString, CultureInfo.InvariantCulture);
 
@@ -39,7 +40,7 @@ namespace Bunit
             if (renderer is null)
                 throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(TestRenderer)}'.");
 
-            return renderer.DispatchEventAsync(eventHandlerId, new EventFieldInfo(), eventArgs);
+            return renderer.DispatchEventAsync(eventHandlerId, new EventFieldInfo() { FieldValue = eventName }, eventArgs);
         }
 
         /// <summary>

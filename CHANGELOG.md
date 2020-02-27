@@ -8,19 +8,16 @@ This release includes a name change from Blazor Components Testing Library to **
 
 ### Added
 - **`WaitForState(Func<bool> statePredicate, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `IRenderedFragment`.**  
-  
   This method will wait (block) until the provided statePredicate returns true, or the timeout is reached (during debugging the timeout is disabled). Each time the renderer in the test context renders, or the rendered fragment renders, the statePredicate is evaluated. 
   
   You use this method, if you have a component under test, that requires _one or more asynchronous triggered renders_, to get to a desired state, before the test can continue. 
 
 - **`WaitForAssertion(Action assertion, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `IRenderedFragment`.**   
-
   This method will wait (block) until the provided assertion method passes, i.e. runs without throwing an assert exception, or until the timeout is reached (during debugging the timeout is disabled). Each time the renderer in the test context renders, or the rendered fragment renders, the assertion is attempted.
 
   You use this method, if you have a component under test, that requires _one or more asynchronous triggered renders_, to get to a desired state, before the test can continue. 
 
 - **Added support for capturing log statements from the renderer and components under test into the test output.**   
-   
   To enable this, add a constructor to your test classes that takes the `ITestOutputHelper` as input, then in the constructor call `Services.AddXunitLogger` and pass the `ITestOutputHelper` to it, e.g.:  
 
   ```csharp
@@ -60,7 +57,6 @@ This release includes a name change from Blazor Components Testing Library to **
   ```
 
 - **Added simpler `Template` helper method**  
-  
   To make it easier to test components with `RenderFragment<T>` parameters (template components) in C# based tests, a new `Template<TValue>(string name, Func<TValue, string> markupFactory)` helper methods have been added. It allows you to create a mock template that uses the `markupFactory` to create the rendered markup from the template. 
 
   This is an example of testing the `SimpleWithTemplate.razor`, which looks like this:
@@ -98,22 +94,82 @@ This release includes a name change from Blazor Components Testing Library to **
   );
   ```
 
+- **Added logging to TestRenderer.** To make it easier to understand the rendering life-cycle during a test, the `TestRenderer` will now log when ever it dispatches an event or renders a component (the log statements can be access by capturing debug logs in the test results, as mentioned above).
+
 ### Changed
 - **Namespaces is now `Bunit`**  
   The namespaces have changed from `Egil.RazorComponents.Testing.Library.*` to simply `Bunit` for the library, and `Bunit.Mocking.JSInterop` for the JSInterop mocking support.
 
-- **Auto-updating `IElement`s returned from `Find()`**  
-  `IRenderedFragment.Find(string cssSelector)` now returns a `IElement`, which internally will update itself, whenever the rendered fragment it was found in, changes. This means you can now search for an element once in your test and assign it to a variable, and then continue to assert against the same instance, even after triggering renders of the component under test.  
+- **Auto-refreshing `IElement`s returned from `Find()`**  
+  `IRenderedFragment.Find(string cssSelector)` now returns a `IElement`, which internally will refresh itself, whenever the rendered fragment it was found in, changes. This means you can now search for an element once in your test and assign it to a variable, and then continue to assert against the same instance, even after triggering renders of the component under test.  
 
   For example, instead of having `cut.Find("p")` in multiple places in the same test, you can do `var p = cut.Find("p")` once, and the use the variable `p` all the places you would otherwise have the `Find(...)` statement.
 
-### Deprecated
-- `WaitForNextRender` has been deprecated (marked as obsolete), since the added `WaitForState` and `WaitForAssertion` provide a much better foundation to build stable tests on. The plan is to remove completely from the library with the final 1.0.0 release.
+- **Refreshable element collection returned from `FindAll`.**  
+  The `FindAll` query method on `IRenderedFragment` now returns a new type, the `IRefreshableElementCollection<IElement>` type, and the method also takes a second optional argument now, `bool enableAutoRefresh = false`.
 
-- `AddMockHttp` and related helper methods for working with the [mockhttp](https://github.com/richardszalay/mockhttp) library has been removed from the library. This was done because the library really shouldn't have a dependency on a 3. party mocking library. It adds maintenance overhead and uneeded dependencies to it.  
+  The `IRefreshableElementCollection` is a special collection type that can rerun the query to refresh its the collection of elements that are found by the CSS selector. This can either be done manually by calling the `Refresh()` method, or automatically whenever the rendered fragment renders and has changes, by setting the property `EnableAutoRefresh` to `true` (default set to `false`).
+
+  Here are two example tests, that both test the following `ClickAddsLi.razor` component:
+
+  ```cshtml
+  <ul>
+      @foreach (var x in Enumerable.Range(0, Counter))
+      {
+          <li>@x</li>
+      }
+  </ul>
+  <button @onclick="() => Counter++"></button>
+  @code {
+      public int Counter { get; set; } = 0;
+  }
+  ```
+  
+  The first tests uses auto refresh, set through the optional parameter `enableAutoRefresh` passed to FindAll:
+
+  ```csharp
+  public void AutoRefreshQueriesForNewElementsAutomatically()
+  {
+      var cut = RenderComponent<ClickAddsLi>();
+      var liElements = cut.FindAll("li", enableAutoRefresh: true);
+      liElements.Count.ShouldBe(0);
+  
+      cut.Find("button").Click();
+  
+      liElements.Count.ShouldBe(1);
+  }
+  ```
+
+  The second test refreshes the collection manually through the `Refresh()` method on the collection:
+  
+  ```csharp
+  public void RefreshQueriesForNewElements()
+  {
+      var cut = RenderComponent<ClickAddsLi>();
+      var liElements = cut.FindAll("li");
+      liElements.Count.ShouldBe(0);
+  
+      cut.Find("button").Click();
+  
+      liElements.Refresh(); // Refresh the collection
+      liElements.Count.ShouldBe(1);
+  }
+  ```
+
+- **Custom exception when event handler is missing.** Attempting to triggering a event handler on an element which does not have an handler attached now throws a `MissingEventHandlerException` exception, instead of an `ArgumentException`.
+
+### Deprecated
+- **`WaitForNextRender` has been deprecated (marked as obsolete)**, since the added `WaitForState` and `WaitForAssertion` provide a much better foundation to build stable tests on. The plan is to remove completely from the library with the final 1.0.0 release.
+
+### Removed
+- **`AddMockHttp` and related helper methods have been removed.**  
+  The mocking of HTTPClient, supported through the [mockhttp](https://github.com/richardszalay/mockhttp) library, has been removed from the library. This was done because the library really shouldn't have a dependency on a 3. party mocking library. It adds maintenance overhead and uneeded dependencies to it.  
   
   If you are using mockhttp, you can easily add again to your testing project. See [TODO Guide to mocking HttpClient](#) in the docs to learn how.
 
-### Removed
 ### Fixed
+- **Wrong casing on keyboard event dispatch helpers.**  
+  The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
+
+
 ### Security

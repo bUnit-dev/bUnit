@@ -41,7 +41,7 @@ namespace Bunit
             var elmMock = new Mock<IElement>();
             elmMock.Setup(x => x.GetAttribute(It.IsAny<string>())).Returns(() => null!);
 
-            Should.Throw<ArgumentException>(() => elmMock.Object.TriggerEventAsync("click", EventArgs.Empty));
+            Should.Throw<MissingEventHandlerException>(() => elmMock.Object.Click());
         }
 
         [Fact(DisplayName = "TriggerEventAsync throws if element was not rendered through blazor (has a TestRendere in its context)")]
