@@ -14,7 +14,6 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/egil/razor-components-testing-library</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>1.0.0-beta-6</Version>
     <RepositoryBranch>#{BRANCH}#</RepositoryBranch>
     <RepositoryCommit>#{COMMIT}#</RepositoryCommit>
     <PackageProjectUrl>https://github.com/egil/razor-components-testing-library</PackageProjectUrl>
