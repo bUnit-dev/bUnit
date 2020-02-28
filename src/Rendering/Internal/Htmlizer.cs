@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Components.RenderTree;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text.Encodings.Web;
 
 namespace Bunit
@@ -188,26 +190,16 @@ namespace Bunit
                 var candidateIndex = position + i;
                 ref var frame = ref frames.Array[candidateIndex];
 
-                // NOTE: The following is the original from HtmlRenderer.cs
-                // 
-                //   if (frame.FrameType != RenderTreeFrameType.Attribute)
-                //   {
-                //       return candidateIndex;
-                //   }
-                //
-                // The next two if block have been added instead. 
-                // This will enable verification of element ref capture in unit tests.
-                if (frame.FrameType != RenderTreeFrameType.Attribute && frame.FrameType != RenderTreeFrameType.ElementReferenceCapture)
-                {
-                    return candidateIndex;
-                }
-
+                // Added to write ElementReferenceCaptureId to DOM
                 if (frame.FrameType == RenderTreeFrameType.ElementReferenceCapture)
                 {
-                    result.Add($" {ELEMENT_REFERENCE_ATTR_NAME}=\"{frame.AttributeName}\"");
+                    result.Add($" {ELEMENT_REFERENCE_ATTR_NAME}=\"{frame.ElementReferenceCaptureId}\"");
+                }
+
+                if (frame.FrameType != RenderTreeFrameType.Attribute)
+                {
                     return candidateIndex;
                 }
-                // End of addition
 
                 if (frame.AttributeName.Equals("value", StringComparison.OrdinalIgnoreCase))
                 {
@@ -249,12 +241,12 @@ namespace Bunit
 
         private class HtmlRenderingContext
         {
+            public TestRenderer Renderer { get; }
+
             public HtmlRenderingContext(TestRenderer renderer)
             {
                 Renderer = renderer;
             }
-
-            public TestRenderer Renderer { get; }
 
             public List<string> Result { get; } = new List<string>();
 

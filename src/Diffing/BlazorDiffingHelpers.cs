@@ -1,5 +1,4 @@
-﻿using System;
-using AngleSharp.Diffing.Core;
+﻿using AngleSharp.Diffing.Core;
 
 namespace Bunit.Diffing
 {

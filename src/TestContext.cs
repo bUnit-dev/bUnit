@@ -2,16 +2,11 @@
 using Bunit.Diffing;
 using Bunit.Mocking.JSInterop;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.JSInterop;
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace Bunit
 {
@@ -56,20 +51,6 @@ namespace Bunit
         {
             var result = new RenderedComponent<TComponent>(this, parameters);
             return result;
-        }
-
-        /// <inheritdoc/>
-        public virtual void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
-        {
-            if (renderTrigger is null) throw new ArgumentNullException(nameof(renderTrigger));
-            var task = Renderer.NextRender;
-            renderTrigger();
-            task.Wait(timeout ?? TimeSpan.FromSeconds(1));
-
-            if (!task.IsCompleted)
-            {
-                throw new TimeoutException("No render occurred within the timeout period.");
-            }
         }
 
         #region IDisposable Support

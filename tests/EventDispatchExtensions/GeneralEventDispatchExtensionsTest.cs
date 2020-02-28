@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Dom;
@@ -41,7 +38,7 @@ namespace Bunit
             var elmMock = new Mock<IElement>();
             elmMock.Setup(x => x.GetAttribute(It.IsAny<string>())).Returns(() => null!);
 
-            Should.Throw<ArgumentException>(() => elmMock.Object.TriggerEventAsync("click", EventArgs.Empty));
+            Should.Throw<MissingEventHandlerException>(() => elmMock.Object.Click());
         }
 
         [Fact(DisplayName = "TriggerEventAsync throws if element was not rendered through blazor (has a TestRendere in its context)")]

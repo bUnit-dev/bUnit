@@ -1,8 +1,6 @@
 ﻿using System;
-using Microsoft.AspNetCore.Components;
 using Xunit;
 using Shouldly;
-using System.Threading.Tasks;
 using Bunit.SampleComponents;
 using System.Diagnostics.CodeAnalysis;
 using Bunit.Mocking.JSInterop;
@@ -91,6 +89,22 @@ namespace Bunit
             // assert
             Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(CascadingValue(42)));
             Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(CascadingValue(nameof(AllTypesOfParams<string>.NamedCascadingValue), 1337)));
+        }
+
+        [Fact(DisplayName = "Template(name, markupFactory) helper correctly renders markup template")]
+        public void Test100()
+        {
+            var cut = RenderComponent<SimpleWithTemplate<int>>(
+                (nameof(SimpleWithTemplate<int>.Data), new int[] { 1, 2 }),
+                Template<int>(nameof(SimpleWithTemplate<int>.Template), num => $"<p>{num}</p>")
+            );
+
+            var expected = RenderComponent<SimpleWithTemplate<int>>(
+                (nameof(SimpleWithTemplate<int>.Data), new int[] { 1, 2 }),
+                Template<int>(nameof(SimpleWithTemplate<int>.Template), num => builder => builder.AddMarkupContent(0, $"<p>{num}</p>"))
+            );
+
+            cut.MarkupMatches(expected);
         }
     }
 }

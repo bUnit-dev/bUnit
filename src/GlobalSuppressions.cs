@@ -9,3 +9,5 @@ using System.Diagnostics.CodeAnalysis;
     Target = "Bunit")]
 [assembly: SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", 
     Justification = "No need to translate at this point", Scope = "namespaceanddescendants", Target = "Bunit")]
+[assembly: SuppressMessage("Design", "CA1032:Implement standard exception constructors")]
+[assembly: SuppressMessage("Design", "CA1064:Exceptions should be public")]

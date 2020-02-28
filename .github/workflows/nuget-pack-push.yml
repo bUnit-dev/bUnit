@@ -41,7 +41,7 @@ jobs:
       - name: Verifying template
         run: |
           dotnet new --install ${GITHUB_WORKSPACE}/template/bunit.template.$VERSION.nupkg
-          dotnet new razortest -o ${GITHUB_WORKSPACE}/Test
+          dotnet new bunit -o ${GITHUB_WORKSPACE}/Test
           dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/lib
           dotnet test ${GITHUB_WORKSPACE}/Test
       - name: Push packages to NuGet.org

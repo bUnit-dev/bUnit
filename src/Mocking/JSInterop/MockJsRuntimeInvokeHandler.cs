@@ -2,7 +2,6 @@
 using Microsoft.JSInterop;
 using System.Threading;
 using System.Collections.Generic;
-using Xunit;
 using System;
 using System.Linq;
 using Xunit.Sdk;

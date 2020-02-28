@@ -2,12 +2,10 @@
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Bunit
 {
@@ -17,29 +15,25 @@ namespace Bunit
     [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     public class TestRenderer : Renderer
     {
+        private readonly RenderEventPublisher _renderEventPublisher;
+        private readonly ILogger _logger;
         private Exception? _unhandledException;
-
-        private TaskCompletionSource<object?> _nextRenderTcs = new TaskCompletionSource<object?>();
-
-        /// <summary>
-        /// Gets or sets an action that will be triggered whenever the renderer
-        /// detects changes in rendered markup in components or fragments 
-        /// after a render.
-        /// </summary>
-        public StructAction<RenderBatch>? OnRenderingHasComponentUpdates { get; set; }
 
         /// <inheritdoc/>
         public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
 
         /// <summary>
-        /// Gets a task that completes after the next render.
+        /// Gets an <see cref="IObservable{RenderEvent}"/> which will provide subscribers with <see cref="RenderEvent"/>s from the
+        /// <see cref="TestRenderer"/> during its life time.
         /// </summary>
-        public Task NextRender => _nextRenderTcs.Task;
+        public IObservable<RenderEvent> RenderEvents { get; }
 
         /// <inheritdoc/>
-        public TestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
-            : base(serviceProvider, loggerFactory)
+        public TestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory) : base(serviceProvider, loggerFactory)
         {
+            _renderEventPublisher = new RenderEventPublisher();
+            _logger = loggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance;
+            RenderEvents = _renderEventPublisher;
         }
 
         /// <inheritdoc/>
@@ -53,11 +47,14 @@ namespace Bunit
         /// <inheritdoc/>
         public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
         {
+            if (fieldInfo is null) throw new ArgumentNullException(nameof(fieldInfo));
+            _logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Starting trigger of '{fieldInfo.FieldValue}'");
+
             var task = Dispatcher.InvokeAsync(() =>
             {
                 try
                 {
-                    base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
+                    return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
                 }
                 catch (Exception e)
                 {
@@ -65,7 +62,10 @@ namespace Bunit
                     throw;
                 }
             });
+
             AssertNoSynchronousErrors();
+
+            _logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Finished trigger of '{fieldInfo.FieldValue}'");
             return task;
         }
 
@@ -78,29 +78,10 @@ namespace Bunit
         /// <inheritdoc/>
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
         {
-            // TODO: Capture batches (and the state of component output) for individual inspection
-            var prevTcs = _nextRenderTcs;
-            _nextRenderTcs = new TaskCompletionSource<object?>();
-
-            NotifyOfComponentsWithChangedMarkup(renderBatch);
-
-            prevTcs.SetResult(null);
+            _logger.LogDebug(new EventId(0, nameof(UpdateDisplayAsync)), $"New render batch with ReferenceFrames = {renderBatch.ReferenceFrames.Count}, UpdatedComponents = {renderBatch.UpdatedComponents.Count}, DisposedComponentIDs = {renderBatch.DisposedComponentIDs.Count}, DisposedEventHandlerIDs = {renderBatch.DisposedEventHandlerIDs.Count}");
+            var renderEvent = new RenderEvent(in renderBatch, this);
+            _renderEventPublisher.OnRender(renderEvent);
             return Task.CompletedTask;
-        }
-
-        private void NotifyOfComponentsWithChangedMarkup(in RenderBatch renderBatch)
-        {
-            if (renderBatch.UpdatedComponents.Count > 0)
-            {
-                for (int i = 0; i < renderBatch.UpdatedComponents.Count; i++)
-                {
-                    if (renderBatch.UpdatedComponents.Array[i].Edits.Count > 0)
-                    {
-                        OnRenderingHasComponentUpdates?.Invoke(renderBatch);
-                        return;
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -117,7 +98,7 @@ namespace Bunit
         /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
-            OnRenderingHasComponentUpdates = null;
+            _renderEventPublisher.OnCompleted();
             base.Dispose(disposing);
         }
 

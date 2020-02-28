@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Bunit.Mocking.JSInterop
 {

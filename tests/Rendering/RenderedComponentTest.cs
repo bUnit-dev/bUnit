@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Bunit
 {
-    public class RenderComponentTest : ComponentTestFixture
+    public class RenderedComponentTest : ComponentTestFixture
     {
         [Fact(DisplayName = "Nodes should return the same instance " +
                             "when a render has not resulted in any changes")]

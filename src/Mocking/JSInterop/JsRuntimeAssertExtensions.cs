@@ -48,10 +48,14 @@ namespace Bunit.Mocking.JSInterop
         public static IReadOnlyList<JsRuntimeInvocation> VerifyInvoke(this MockJsRuntimeInvokeHandler handler, string identifier, int calledTimes, string? userMessage = null)
         {
             if (handler is null) throw new ArgumentNullException(nameof(handler));
+
             if (calledTimes < 1)
                 throw new ArgumentException($"Use {nameof(VerifyNotInvoke)} to verify an identifier has not been invoked.", nameof(calledTimes));
 
-            var invocations = handler.Invocations[identifier];
+            if (!handler.Invocations.TryGetValue(identifier, out var invocations) )
+            {
+                throw new JsInvokeCountExpectedException(identifier, calledTimes, 0, nameof(VerifyInvoke), userMessage);
+            }
 
             if (invocations.Count != calledTimes)
             {

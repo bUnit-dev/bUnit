@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using AngleSharp;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Bunit.Diffing;

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using Bunit.Mocking.JSInterop;
-using Xunit.Sdk;
 
 namespace Xunit.Sdk
 {

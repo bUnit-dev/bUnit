@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components;
@@ -19,7 +16,7 @@ namespace Bunit
         /// </summary>
         /// <param name="element">The element to raise the event on.</param>
         /// <param name="value">The new value</param>        
-        public static void Change(this IElement element, string value)
+        public static void Change(this IElement element, object value)
             => _ = ChangeAsync(element, new ChangeEventArgs { Value = value });
 
         /// <summary>

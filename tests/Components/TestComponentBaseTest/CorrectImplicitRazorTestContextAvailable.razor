@@ -9,12 +9,21 @@
     </Fragment>
 </Fixture>
 @code {
+    private ITestOutputHelper _output;
+
+    public CorrectImplicitRazorTestContextAvailable(ITestOutputHelper output)
+    {
+        _output = output;
+        Services.AddXunitLogger(_output);
+    }
+
     class Dep1 : ITestDep { public string Name => nameof(Dep1); }
     ITestDep dep1Expected = new Dep1();
 
     void Setup1()
     {
         Services.AddSingleton<ITestDep>(dep1Expected);
+        Services.AddXunitLogger(_output);
     }
 
     void Test1()

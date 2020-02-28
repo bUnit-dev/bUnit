@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using AngleSharp.Diffing.Core;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -11,14 +9,13 @@ namespace Bunit
         where TComponent : class, IComponent
     {
         /// <inheritdoc/>
-        protected override int ComponentId { get; }
-
-        /// <inheritdoc/>
         protected override string FirstRenderMarkup { get; }
 
         /// <inheritdoc/>
-        public TComponent Instance { get; }
+        public override int ComponentId { get; }
 
+        /// <inheritdoc/>
+        public TComponent Instance { get; }
 
         /// <summary>
         /// Instantiates a <see cref="RenderedComponent{TComponent}"/> which will render a component of type <typeparamref name="TComponent"/>
@@ -42,6 +39,14 @@ namespace Bunit
             : base(testContext, renderFragment)
         {
             (ComponentId, Instance) = Container.GetComponent<TComponent>();
+            FirstRenderMarkup = Markup;
+        }
+
+        internal RenderedComponent(ITestContext testContext, ContainerComponent container, int componentId, TComponent component)
+            : base(testContext, container)
+        {
+            ComponentId = componentId;
+            Instance = component;
             FirstRenderMarkup = Markup;
         }
 

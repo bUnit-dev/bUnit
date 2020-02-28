@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
-using Bunit.Diffing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
@@ -85,16 +82,7 @@ namespace Bunit
             => _testContextAdapter.HasActiveContext
                 ? _testContextAdapter.RenderComponent<TComponent>(parameters)
                 : base.RenderComponent<TComponent>(parameters);
-
-        /// <inheritdoc/>
-        public override void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
-        {
-            if (_testContextAdapter.HasActiveContext)
-                _testContextAdapter.WaitForNextRender(renderTrigger, timeout);
-            else
-                base.WaitForNextRender(renderTrigger, timeout);
-        }
-
+        
         private async Task ExecuteFixtureTests(ContainerComponent container)
         {
             foreach (var (_, fixture) in container.GetComponents<Fixture>())

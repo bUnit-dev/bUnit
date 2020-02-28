@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using AngleSharp.Dom;
-using Bunit.Diffing;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -57,18 +56,10 @@ namespace Bunit
         public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id) where TComponent : class, IComponent
             => _razorTestContext?.GetFragment<TComponent>(id) ?? throw new InvalidOperationException($"{nameof(GetFragment)} is only available in Razor based tests.");
 
-        public void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
-        {
-            if (_testContext is null)
-                throw new InvalidOperationException("No active test context in the adapter");
-            else
-                _testContext.WaitForNextRender(renderTrigger, timeout);
-        }
-
         public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
             => _testContext?.RenderComponent<TComponent>(parameters) ?? throw new InvalidOperationException("No active test context in the adapter");
 
         public INodeList CreateNodes(string markup)
             => _testContext?.CreateNodes(markup) ?? throw new InvalidOperationException("No active test context in the adapter");
-    }    
+    }
 }

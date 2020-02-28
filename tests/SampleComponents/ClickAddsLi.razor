@@ -1,0 +1,10 @@
+﻿<ul>
+    @foreach (var x in Enumerable.Range(0, Counter))
+    {
+        <li>@x</li>
+    }
+</ul>
+<button @onclick="() => Counter++"></button>
+@code {
+    public int Counter { get; set; } = 0;
+}

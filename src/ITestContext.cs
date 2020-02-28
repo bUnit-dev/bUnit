@@ -1,6 +1,5 @@
 ﻿using System;
 using AngleSharp.Dom;
-using Bunit.Diffing;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -36,14 +35,5 @@ namespace Bunit
         /// <param name="parameters">Parameters to pass to the component when it is rendered</param>
         /// <returns>The rendered <typeparamref name="TComponent"/></returns>
         IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent;
-
-        /// <summary>
-        /// Executes the provided <paramref name="renderTrigger"/> action and waits for a render to occur.
-        /// Use this when you have a component that is awaiting e.g. a service to return data to it before rendering again.
-        /// </summary>
-        /// <param name="renderTrigger">The action that somehow causes one or more components to render.</param>
-        /// <param name="timeout">The maximum time to wait for the next render. If not provided the default is 1 second.</param>
-        /// <exception cref="TimeoutException">Thrown when the next render did not happen within the specified <paramref name="timeout"/>.</exception>
-        void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null);
     }
 }
