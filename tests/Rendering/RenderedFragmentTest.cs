@@ -1,10 +1,10 @@
-﻿using Bunit.SampleComponents;
+﻿using Bunit.Extensions;
+using Bunit.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace Bunit
 {

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Numerics;
 using Bunit.BlazorE2E.BasicTestApp;
 using Bunit.BlazorE2E.BasicTestApp.HierarchicalImportsTest.Subdir;
+using Bunit.Mocking.JSInterop;
+using Microsoft.AspNetCore.Components;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -299,36 +301,37 @@ namespace Bunit.BlazorE2E
                 elem => Assert.Equal(typeof(AssemblyHashAlgorithm).FullName, elem.TextContent));
         }
 
-        [Fact(Skip = "Test doesn't make sense in this context")]
-        public void CanUseComponentAndStaticContentFromExternalNuGetPackage()
-        {
-            //var appElement = Browser.MountTestComponent<ExternalContentPackage>();
+        // Test removed since doesn't make sense in this context.
+        //[Fact]
+        //public void CanUseComponentAndStaticContentFromExternalNuGetPackage()
+        //{
+        //    var appElement = Browser.MountTestComponent<ExternalContentPackage>();
 
-            //// NuGet packages can use JS interop features to provide
-            //// .NET code access to browser APIs
-            //var showPromptButton = appElement.FindElements(By.TagName("button")).First();
-            //showPromptButton.Click();
+        //    // NuGet packages can use JS interop features to provide
+        //    // .NET code access to browser APIs
+        //    var showPromptButton = appElement.FindElements(By.TagName("button")).First();
+        //    showPromptButton.Click();
 
-            //var modal = new WebDriverWait(Browser, TimeSpan.FromSeconds(3))
-            //    .Until(SwitchToAlert);
-            //modal.SendKeys("Some value from test");
-            //modal.Accept();
-            //var promptResult = appElement.FindElement(By.TagName("strong"));
-            //Browser.Equal("Some value from test", () => promptResult.Text);
+        //    var modal = new WebDriverWait(Browser, TimeSpan.FromSeconds(3))
+        //        .Until(SwitchToAlert);
+        //    modal.SendKeys("Some value from test");
+        //    modal.Accept();
+        //    var promptResult = appElement.FindElement(By.TagName("strong"));
+        //    Browser.Equal("Some value from test", () => promptResult.Text);
 
-            //// NuGet packages can also embed entire components (themselves
-            //// authored as Razor files), including static content. The CSS value
-            //// here is in a .css file, so if it's correct we know that static content
-            //// file was loaded.
-            //var specialStyleDiv = appElement.FindElement(By.ClassName("special-style"));
-            //Assert.Equal("50px", specialStyleDiv.GetCssValue("padding"));
+        //    // NuGet packages can also embed entire components (themselves
+        //    // authored as Razor files), including static content. The CSS value
+        //    // here is in a .css file, so if it's correct we know that static content
+        //    // file was loaded.
+        //    var specialStyleDiv = appElement.FindElement(By.ClassName("special-style"));
+        //    Assert.Equal("50px", specialStyleDiv.GetCssValue("padding"));
 
-            //// The external components are fully functional, not just static HTML
-            //var externalComponentButton = specialStyleDiv.FindElement(By.TagName("button"));
-            //Assert.Equal("Click me", externalComponentButton.Text);
-            //externalComponentButton.Click();
-            //Browser.Equal("It works", () => externalComponentButton.Text);
-        }
+        //    // The external components are fully functional, not just static HTML
+        //    var externalComponentButton = specialStyleDiv.FindElement(By.TagName("button"));
+        //    Assert.Equal("Click me", externalComponentButton.Text);
+        //    externalComponentButton.Click();
+        //    Browser.Equal("It works", () => externalComponentButton.Text);
+        //}
 
         [Fact]
         public void CanRenderSvgWithCorrectNamespace()
@@ -365,24 +368,40 @@ namespace Bunit.BlazorE2E
             cut.MarkupMatches("First Second Third");
         }
 
-        [Fact(Skip = "Test depends on javascript changing the DOM, thus doesnt make sense in this context. Test recreated in TestRendererTest.")]
+        [Fact]
         public void CanUseJsInteropToReferenceElements()
         {
-            //var cut = RenderComponent<ElementRefComponent>();
-            //var inputElement = cut.Find("#capturedElement");
-            //var buttonElement = cut.Find("button");
+            // NOTE: This test required JS to modify the DOM. Test rewritten to use MockJsRuntime
+            //       The original test code is here:
+            // var cut = RenderComponent<ElementRefComponent>();
+            // var inputElement = cut.Find("#capturedElement");
+            // var buttonElement = cut.Find("button");
 
-            //Assert.Equal(string.Empty, inputElement.GetAttribute("value"));
+            // Assert.Equal(string.Empty, inputElement.GetAttribute("value"));
 
-            //buttonElement.Click();
-            //Assert.Equal("Clicks: 1", inputElement.GetAttribute("value"));
-            //buttonElement.Click();
-            //Assert.Equal("Clicks: 2", inputElement.GetAttribute("value"));
+            // buttonElement.Click();
+            // Assert.Equal("Clicks: 1", inputElement.GetAttribute("value"));
+            // buttonElement.Click();
+            // Assert.Equal("Clicks: 2", inputElement.GetAttribute("value"));
+
+            var mockJs = Services.AddMockJsRuntime();
+            var cut = RenderComponent<ElementRefComponent>();
+            var inputElement = cut.Find("#capturedElement");
+            var refId = inputElement.GetAttribute(Htmlizer.ELEMENT_REFERENCE_ATTR_NAME);
+            var buttonElement = cut.Find("button");
+
+            buttonElement.Click();
+            mockJs.VerifyInvoke("setElementValue")
+                .Arguments[0]
+                .ShouldBeOfType<ElementReference>()
+                .Id.ShouldBe(refId);
         }
 
-        [Fact(Skip = "Test depends on javascript changing the DOM, thus doesnt make sense in this context. Test recreated in TestRendererTest.")]
+        [Fact]
         public void CanCaptureReferencesToDynamicallyAddedElements()
         {
+            // NOTE: This test required JS to modify the DOM. Test rewritten to use MockJsRuntime
+            //       The original test code is here:
             //var cut = RenderComponent<ElementRefComponent>();
             //var buttonElement = cut.Find("button");
             //var checkbox = cut.Find("input[type=checkbox]");
@@ -403,6 +422,33 @@ namespace Bunit.BlazorE2E
             //// See that the capture variable was automatically updated to reference the new instance
             //buttonElement.Click();
             //Assert.Equal("Clicks: 1", () => inputElement.GetAttribute("value"));
+
+            var mockJs = Services.AddMockJsRuntime();
+
+            var cut = RenderComponent<ElementRefComponent>();
+            var buttonElement = cut.Find("button");
+            var checkbox = cut.Find("input[type=checkbox]");
+
+            // We're going to remove the input. But first, put in some contents
+            // so we can observe it's not the same instance later
+            cut.Find("#capturedElement");
+
+            // Remove the captured element
+            checkbox.Change(false);
+            Should.Throw<ElementNotFoundException>(() => cut.Find("#capturedElement"));
+
+            // Re-add it; observe it starts empty again
+            checkbox.Change(true);
+            var inputElement = cut.Find("#capturedElement");
+            var refId = inputElement.GetAttribute(Htmlizer.ELEMENT_REFERENCE_ATTR_NAME);
+
+            // See that the capture variable was automatically updated to reference the new instance
+            buttonElement.Click();
+
+            mockJs.VerifyInvoke("setElementValue")
+                .Arguments[0]
+                .ShouldBeOfType<ElementReference>()
+                .Id.ShouldBe(refId);
         }
 
         [Fact]
@@ -436,12 +482,13 @@ namespace Bunit.BlazorE2E
             Assert.Equal("Current count: 0", currentCountText());
         }
 
-        [Fact(Skip = "Test depends on javascript changing the DOM, thus doesnt make sense in this context. Test recreated in TestRendererTest.")]
-        public void CanUseJsInteropForRefElementsDuringOnAfterRender()
-        {
-            //var cut = RenderComponent<AfterRenderInteropComponent>();
-            //Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));
-        }
+        // Test depends on javascript changing the DOM, thus doesnt make sense in this context. 
+        //[Fact]
+        //public void CanUseJsInteropForRefElementsDuringOnAfterRender()
+        //{
+        //    var cut = RenderComponent<AfterRenderInteropComponent>();
+        //    Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));
+        //}
 
         [Fact]
         public void CanRenderMarkupBlocks()
@@ -521,7 +568,7 @@ namespace Bunit.BlazorE2E
 
             cut.WaitForAssertion(
                 () => Assert.Equal(expectedOutput, outputElement.TextContent.Trim()),
-                timeout: TimeSpan.FromMilliseconds(2000)
+                timeout: TimeSpan.FromSeconds(2000)
             );
         }
 
@@ -558,13 +605,14 @@ namespace Bunit.BlazorE2E
             cut.WaitForAssertion(() => Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim()), timeout: TimeSpan.FromSeconds(2));
         }
 
-        [Fact(Skip = "Test depends on javascript changing the DOM, thus doesnt make sense in this context. Test recreated in TestRendererTest.")]
-        public void CanPerformInteropImmediatelyOnComponentInsertion()
-        {
-            //var cut = RenderComponent<InteropOnInitializationComponent>();
-            //Assert.Equal("Hello from interop call", () => cut.Find("#val-get-by-interop").TextContent);
-            //Assert.Equal("Hello from interop call", () => cut.Find("#val-set-by-interop").GetAttribute("value"));
-        }
+        // Test removed since it does not have any value in this context.
+        //[Fact]
+        //public void CanPerformInteropImmediatelyOnComponentInsertion()
+        //{
+        //    var cut = RenderComponent<InteropOnInitializationComponent>();
+        //    Assert.Equal("Hello from interop call", () => cut.Find("#val-get-by-interop").TextContent);
+        //    Assert.Equal("Hello from interop call", () => cut.Find("#val-set-by-interop").GetAttribute("value"));
+        //}
 
         [Fact]
         public void CanUseAddMultipleAttributes()

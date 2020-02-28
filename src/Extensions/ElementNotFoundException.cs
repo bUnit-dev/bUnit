@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xunit.Sdk
+namespace Bunit
 {
     /// <summary>
     /// Represents a failure to find an element in the searched target

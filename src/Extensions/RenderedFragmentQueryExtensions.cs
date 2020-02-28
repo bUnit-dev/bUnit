@@ -1,7 +1,7 @@
 ﻿using System;
 using AngleSharp.Dom;
 using AngleSharpWrappers;
-using Xunit.Sdk;
+using Bunit.Extensions;
 
 namespace Bunit
 {

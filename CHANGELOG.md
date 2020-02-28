@@ -1,10 +1,18 @@
 # Changelog
-All notable changes to this project will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+All notable changes to **bUnit** will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-This release includes a name change from Blazor Components Testing Library to **bUnit**. It also brings along two extra helper methods for working with asynchronously rendering components during testing, and a bunch of internal optimizations and tweaks to the code.
+This release includes a **name change from Blazor Components Testing Library to bUnit**. It also brings along two extra helper methods for working with asynchronously rendering components during testing, and a bunch of internal optimizations and tweaks to the code.
 
 *Why change the name?* Naming is hard, and I initial chose a very product-namy name, that quite clearly stated what the library was for. However, the name isn't very searchable, since it just contains generic keywords, plus, bUnit is just much cooler. It also gave me the opportunity to remove my name from all the namespaces and simplify those.
+
+### NuGet
+The latest version of the library is availble on NuGet:
+
+|  | Type | Link |
+| ------------- | ----- | ---- |
+| [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) | Library | [https://www.nuget.org/packages/bunit/](https://www.nuget.org/packages/bunit/) | 
+| [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) | Template | [https://www.nuget.org/packages/bunit.template/](https://www.nuget.org/packages/bunit.template/) | 
 
 ### Added
 - **`WaitForState(Func<bool> statePredicate, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `IRenderedFragment`.**  
@@ -12,10 +20,65 @@ This release includes a name change from Blazor Components Testing Library to **
   
   You use this method, if you have a component under test, that requires _one or more asynchronous triggered renders_, to get to a desired state, before the test can continue. 
 
+  The following example tests the `DelayedRenderOnClick.razor` component:
+
+  ```cshtml
+  // DelayedRenderOnClick.razor
+  <p>Times Clicked: @TimesClicked</p>
+  <button @onclick="ClickCounter">Trigger Render</button>
+  @code
+  {
+      public int TimesClicked { get; private set; }
+  
+      async Task ClickCounter()
+      {
+          await Task.Delay(1); // wait 1 millisecond
+          TimesClicked += 1;
+      }
+  }
+  ```
+
+  This is a test that uses `WaitForState` to wait until the component under test has a desired state, before the test continues:
+
+  ```csharp
+  [Fact]
+  public void WaitForStateExample()
+  {
+      // Arrange
+      var cut = RenderComponent<DelayedRenderOnClick>();
+  
+      // Act
+      cut.Find("button").Click();
+      cut.WaitForState(() => cut.Instance.TimesClicked == 1);
+  
+      // Assert
+      cut.Find("p").TextContent.ShouldBe("Times Clicked: 1");
+  }
+  ```
+
 - **`WaitForAssertion(Action assertion, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `IRenderedFragment`.**   
   This method will wait (block) until the provided assertion method passes, i.e. runs without throwing an assert exception, or until the timeout is reached (during debugging the timeout is disabled). Each time the renderer in the test context renders, or the rendered fragment renders, the assertion is attempted.
 
   You use this method, if you have a component under test, that requires _one or more asynchronous triggered renders_, to get to a desired state, before the test can continue. 
+
+  This is a test that tests the `DelayedRenderOnClick.razor` listed above, and that uses `WaitForAssertion` to attempt the assertion each time the component under test renders:
+
+  ```csharp
+  [Fact]
+  public void WaitForAssertionExample()
+  {
+      // Arrange
+      var cut = RenderComponent<DelayedRenderOnClick>();
+  
+      // Act
+      cut.Find("button").Click();
+  
+      // Assert
+      cut.WaitForAssertion(
+          () => cut.Find("p").TextContent.ShouldBe("Times Clicked: 1")
+      );
+  }
+  ```
 
 - **Added support for capturing log statements from the renderer and components under test into the test output.**   
   To enable this, add a constructor to your test classes that takes the `ITestOutputHelper` as input, then in the constructor call `Services.AddXunitLogger` and pass the `ITestOutputHelper` to it, e.g.:  
@@ -96,6 +159,11 @@ This release includes a name change from Blazor Components Testing Library to **
 
 - **Added logging to TestRenderer.** To make it easier to understand the rendering life-cycle during a test, the `TestRenderer` will now log when ever it dispatches an event or renders a component (the log statements can be access by capturing debug logs in the test results, as mentioned above).
 
+- **Added some of the Blazor frameworks end-2-end tests.** To get better test coverage of the many rendering scenarios supported by Blazor, the [ComponentRenderingTest.cs](https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs) tests from the Blazor frameworks test suite has been converted from a Selenium to a bUnit. The testing style is very similar, so few changes was necessary to port the tests. The two test classes are here, if you want to compare:
+
+  -  [bUnit's ComponentRenderingTest.cs](/master/tests/BlazorE2E/ComponentRenderingTest.cs)
+  -  [Blazor's ComponentRenderingTest.cs](https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs)
+
 ### Changed
 - **Namespaces is now `Bunit`**  
   The namespaces have changed from `Egil.RazorComponents.Testing.Library.*` to simply `Bunit` for the library, and `Bunit.Mocking.JSInterop` for the JSInterop mocking support.
@@ -170,6 +238,3 @@ This release includes a name change from Blazor Components Testing Library to **
 ### Fixed
 - **Wrong casing on keyboard event dispatch helpers.**  
   The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
-
-
-### Security
