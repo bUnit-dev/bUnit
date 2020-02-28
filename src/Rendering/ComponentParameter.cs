@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Represents a single parameter supplied to an <see cref="Microsoft.AspNetCore.Components.IComponent"/>

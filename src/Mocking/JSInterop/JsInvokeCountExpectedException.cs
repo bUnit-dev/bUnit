@@ -1,7 +1,5 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using Egil.RazorComponents.Testing.Mocking.JSInterop;
-using Xunit.Sdk;
+﻿using System.Diagnostics.CodeAnalysis;
+using Bunit.Mocking.JSInterop;
 
 namespace Xunit.Sdk
 {

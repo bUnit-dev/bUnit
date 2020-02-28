@@ -2,14 +2,10 @@
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading.Tasks;
-using Egil.RazorComponents.Testing.Extensions;
-using AngleSharp.Css.Dom;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Represents a Razor component that can be used to render and re-render a render fragment into.
@@ -59,14 +55,14 @@ namespace Egil.RazorComponents.Testing
         /// component is found, its child content is also searched recursively.
         /// </summary>
         /// <typeparam name="TComponent">The type of component to find</typeparam>
-        /// <exception cref="InvalidOperationException">When a component of type <typeparamref name="TComponent"/> was not found.</exception>
+        /// <exception cref="ComponentNotFoundException">When a component of type <typeparamref name="TComponent"/> was not found.</exception>
         public (int Id, TComponent Component) GetComponent<TComponent>() where TComponent : IComponent
         {
             var result = GetComponent<TComponent>(ComponentId);
             if (result.HasValue)
                 return result.Value;
             else
-                throw new InvalidOperationException($"No components of type {typeof(TComponent)} were found in the render tree.");
+                throw new ComponentNotFoundException(typeof(TComponent));
         }
 
         /// <summary>

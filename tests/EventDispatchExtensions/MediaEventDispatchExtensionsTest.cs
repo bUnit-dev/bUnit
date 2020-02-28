@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     public class MediaEventDispatchExtensionsTest : EventDispatchExtensionsTest<EventArgs>
     {

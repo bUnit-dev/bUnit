@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Represents a rendered component-under-test. 

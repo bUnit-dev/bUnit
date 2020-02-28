@@ -2,14 +2,14 @@
   "$schema": "http://json.schemastore.org/template",
   "author": "Egil Hansen",
   "classifications": [
-    "Test", "Razor", "Blazor", "Library"
+    "Test", "bUnit", "Blazor"
   ],
-  "name": "Razor Component Testing Project",
-  "description": "A project for a testing Blazor/Razor components using the Razor.Components.Testing.Library library.",
+  "name": "bUnit Test Project",
+  "description": "A project for a testing Blazor/Razor components using the bUnit library.",
   "generatorVersions": "[1.0.0.0-*)",
-  "identity": "Egil.RazorComponents.TestingProject",
-  "groupIdentity": "Egil.RazorComponents.Testing",
-  "shortName": "razortest",
+  "identity": "BunitProject",
+  "groupIdentity": "Bunit",
+  "shortName": "bunit",
   "tags": {
     "language": "C#",
     "type": "project"

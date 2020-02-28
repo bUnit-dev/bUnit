@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Shouldly;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.Mocking.JSInterop
+namespace Bunit.Mocking.JSInterop
 {
     public class JsRuntimeInvocationTest
     {

@@ -1,14 +1,12 @@
 using System;
 using System.Threading.Tasks;
-using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.EventDispatchExtensions;
-using Egil.RazorComponents.Testing.Mocking.JSInterop;
-using Egil.RazorComponents.Testing.SampleApp.Components;
-using Egil.RazorComponents.Testing.SampleApp.Data;
+using Bunit.Mocking.JSInterop;
+using Bunit.SampleApp.Components;
+using Bunit.SampleApp.Data;
 using Microsoft.AspNetCore.Authentication;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.SampleApp.Tests.Components
+namespace Bunit.SampleApp.Tests.Components
 {
     public class AlertTest2 : ComponentTestFixture
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Represents a single fixture in a Razor based test. Used to

@@ -2,11 +2,11 @@
 using Microsoft.JSInterop;
 using System.Threading;
 using System.Collections.Generic;
-using Xunit;
 using System;
 using System.Linq;
+using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Mocking.JSInterop
+namespace Bunit.Mocking.JSInterop
 {
     /// <summary>
     /// Represents an invoke handler for a mock of a <see cref="IJSRuntime"/>.

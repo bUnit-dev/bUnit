@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     public class PointerEventDispatchExtensionsTest : EventDispatchExtensionsTest<PointerEventArgs>
     {

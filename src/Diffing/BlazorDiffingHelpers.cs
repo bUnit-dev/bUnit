@@ -1,7 +1,6 @@
-﻿using System;
-using AngleSharp.Diffing.Core;
+﻿using AngleSharp.Diffing.Core;
 
-namespace Egil.RazorComponents.Testing.Diffing
+namespace Bunit.Diffing
 {
     /// <summary>
     /// Blazor Dffing Helpers

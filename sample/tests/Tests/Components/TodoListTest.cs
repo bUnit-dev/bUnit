@@ -1,11 +1,8 @@
 ﻿using Shouldly;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.Mocking.JSInterop;
-using Egil.RazorComponents.Testing.EventDispatchExtensions;
-using Egil.RazorComponents.Testing.Mocking.JSInterop;
-using Egil.RazorComponents.Testing.SampleApp.Components;
-using Egil.RazorComponents.Testing.SampleApp.Data;
+using Bunit.Mocking.JSInterop;
+using Bunit.SampleApp.Components;
+using Bunit.SampleApp.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -15,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.SampleApp.CodeOnlyTests
+namespace Bunit.SampleApp.CodeOnlyTests
 {
     public class TodoListTest : ComponentTestFixture
     {

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AngleSharp.Diffing.Core;
-using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Asserting;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
+﻿using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Represents a rendered fragment.
@@ -15,10 +8,10 @@ namespace Egil.RazorComponents.Testing
     public class RenderedFragment : RenderedFragmentBase
     {
         /// <inheritdoc/>
-        protected override int ComponentId => Container.ComponentId;
+        protected override string FirstRenderMarkup { get; }
 
         /// <inheritdoc/>
-        protected override string FirstRenderMarkup { get; }
+        public override int ComponentId => Container.ComponentId;
 
         /// <summary>
         /// Instantiates a <see cref="RenderedFragment"/> which will render the <paramref name="renderFragment"/> passed to it.

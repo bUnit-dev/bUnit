@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Threading.Tasks;
-using AngleSharp;
 using AngleSharp.Diffing.Core;
-using Egil.RazorComponents.Testing.Asserting;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.Asserting
+namespace Bunit
 {
 
     /// <summary>

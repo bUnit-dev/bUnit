@@ -69,8 +69,8 @@
 @code{
     void CallingGetCutOrGetFragmentWithWrongGenericTypeThrows()
     {        
-        Assert.Throws<InvalidOperationException>(() => GetComponentUnderTest<Simple1>());
-        Assert.Throws<InvalidOperationException>(() => GetFragment<Simple1>());
+        Assert.Throws<ComponentNotFoundException>(() => GetComponentUnderTest<Simple1>());
+        Assert.Throws<ComponentNotFoundException>(() => GetFragment<Simple1>());
     }
 }
 

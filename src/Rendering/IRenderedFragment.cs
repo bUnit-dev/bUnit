@@ -1,17 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Xunit.Sdk;
+using Microsoft.AspNetCore.Components;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Represents a rendered fragment.
     /// </summary>
     public interface IRenderedFragment
     {
+        /// <summary>
+        /// Gets the id of the rendered component or fragment.
+        /// </summary>
+        int ComponentId { get; }
+
+        /// <summary>
+        /// Gets an <see cref="IObservable{RenderEvent}"/> which will provide subscribers with <see cref="RenderEvent"/>s 
+        /// whenever the <see cref="IRenderedFragment"/> is rendered.
+        /// </summary>
+        IObservable<RenderEvent> RenderEvents { get; }
+
+        /// <summary>
+        /// Finds the first component of type <typeparamref name="TComponent"/> in the render tree of 
+        /// this <see cref="IRenderedFragment"/>.
+        /// </summary>
+        /// <typeparam name="TComponent">Type of component to find.</typeparam>
+        /// <exception cref="ComponentNotFoundException">Thrown if a component of type <typeparamref name="TComponent"/> was not found in the render tree.</exception>
+        /// <returns>The <see cref="IRenderedComponent{T}"/>.</returns>
+        IRenderedComponent<TComponent> FindComponent<TComponent>() where TComponent : class, IComponent;
+
+        /// <summary>
+        /// Finds all components of type <typeparamref name="TComponent"/> in the render tree of 
+        /// this <see cref="IRenderedFragment"/>.
+        /// </summary>
+        /// <typeparam name="TComponent">Type of components to find.</typeparam>
+        /// <returns>The <see cref="IRenderedComponent{T}"/>s</returns>
+        IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>() where TComponent : class, IComponent;
+
         /// <summary>
         /// Gets the <see cref="ITestContext"/> which this rendered fragment belongs to.
         /// </summary>
@@ -50,31 +77,5 @@ namespace Egil.RazorComponents.Testing
         /// the snapshot and the rendered markup at that time.
         /// </summary>
         void SaveSnapshot();
-
-        /// <summary>
-        /// Returns the first element from the rendered fragment or component under test,
-        /// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
-        /// of the rendered nodes.
-        /// </summary>
-        /// <param name="cssSelector">The group of selectors to use.</param>
-        public IElement Find(string cssSelector)
-        {
-            var result = Nodes.QuerySelector(cssSelector);
-            if (result is null)
-                throw new ElementNotFoundException(cssSelector);
-            else
-                return result;
-        }
-
-        /// <summary>
-        /// Returns a list of elements from the rendered fragment or component under test, 
-        /// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
-        /// of the rendered nodes.
-        /// </summary>
-        /// <param name="cssSelector">The group of selectors to use.</param>
-        public IHtmlCollection<IElement> FindAll(string cssSelector)
-        {
-            return Nodes.QuerySelectorAll(cssSelector);
-        }
     }
 }

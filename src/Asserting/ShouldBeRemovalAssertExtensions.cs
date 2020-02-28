@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Linq;
-using AngleSharp;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Diffing;
-using Egil.RazorComponents.Testing.Extensions;
+using Bunit.Diffing;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Asserting
+namespace Bunit
 {
     /// <summary>
     /// A set of removal diff assert extensions 

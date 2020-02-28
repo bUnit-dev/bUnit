@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     /// <summary>
     /// Clipboard event dispatch helper extension methods.

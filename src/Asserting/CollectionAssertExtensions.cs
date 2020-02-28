@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing.Asserting
+namespace Bunit
 {
     /// <summary>
     /// Collection test assertions

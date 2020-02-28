@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
-using System.Diagnostics.CodeAnalysis;
 
-namespace Egil.RazorComponents.Testing.Mocking.JSInterop
+namespace Bunit.Mocking.JSInterop
 {
     /// <summary>
     /// Represents a planned invocation of a JavaScript function which returns nothing, with specific arguments.

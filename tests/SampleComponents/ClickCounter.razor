@@ -1,7 +1,7 @@
 ﻿<button @onclick="IncreaseCount">Click to count</button>
-<p>@count</p>
+<p>@Count</p>
 
 @code {
-    int count = 0;
-    void IncreaseCount() => count++;
+    public int Count { get; private set; } = 0;
+    void IncreaseCount() => Count++;
 }

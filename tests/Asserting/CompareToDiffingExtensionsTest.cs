@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.SampleComponents;
-using Egil.RazorComponents.Testing.TestUtililities;
+using Bunit.SampleComponents;
+using Bunit.TestUtililities;
 using Shouldly;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.Asserting
+namespace Bunit
 {
     public class CompareToDiffingExtensionsTest : ComponentTestFixture
     {

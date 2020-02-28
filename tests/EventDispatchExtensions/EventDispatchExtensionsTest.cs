@@ -5,12 +5,11 @@ using System.Reflection;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using DeepEqual.Syntax;
-using Egil.RazorComponents.Testing.SampleComponents;
+using Bunit.SampleComponents;
 using Shouldly;
-using Xunit;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     public abstract class EventDispatchExtensionsTest<TEventArgs> : ComponentTestFixture
         where TEventArgs : EventArgs, new()

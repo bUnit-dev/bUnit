@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Asserting;
-using Egil.RazorComponents.Testing.Diffing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +10,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Egil.RazorComponents.Testing
+namespace Bunit
 {
     /// <summary>
     /// Base test class/test runner, that runs Fixtures defined in razor files.
@@ -86,16 +82,7 @@ namespace Egil.RazorComponents.Testing
             => _testContextAdapter.HasActiveContext
                 ? _testContextAdapter.RenderComponent<TComponent>(parameters)
                 : base.RenderComponent<TComponent>(parameters);
-
-        /// <inheritdoc/>
-        public override void WaitForNextRender(Action renderTrigger, TimeSpan? timeout = null)
-        {
-            if (_testContextAdapter.HasActiveContext)
-                _testContextAdapter.WaitForNextRender(renderTrigger, timeout);
-            else
-                base.WaitForNextRender(renderTrigger, timeout);
-        }
-
+        
         private async Task ExecuteFixtureTests(ContainerComponent container)
         {
             foreach (var (_, fixture) in container.GetComponents<Fixture>())

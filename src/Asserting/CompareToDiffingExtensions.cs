@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Egil.RazorComponents.Testing.Diffing;
-using Egil.RazorComponents.Testing.Extensions;
+using Bunit.Diffing;
 
-namespace Egil.RazorComponents.Testing.Asserting
+namespace Bunit
 {
     /// <summary>
     /// Extension methods that allows different rendered fragments to be compared to others or strings.

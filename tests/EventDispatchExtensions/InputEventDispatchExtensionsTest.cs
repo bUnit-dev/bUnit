@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Xunit;
 
-namespace Egil.RazorComponents.Testing.EventDispatchExtensions
+namespace Bunit
 {
     public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<ChangeEventArgs>
     {
