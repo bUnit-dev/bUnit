@@ -1,12 +1,8 @@
-﻿using AngleSharp;
-using AngleSharp.Dom;
-using Microsoft.AspNetCore.Components;
+﻿using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components.RenderTree;
-using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bunit

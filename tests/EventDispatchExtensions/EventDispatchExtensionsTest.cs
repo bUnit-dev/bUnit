@@ -7,7 +7,6 @@ using AngleSharp.Dom;
 using DeepEqual.Syntax;
 using Bunit.SampleComponents;
 using Shouldly;
-using Xunit;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Bunit

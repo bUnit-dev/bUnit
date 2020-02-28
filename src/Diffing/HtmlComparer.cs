@@ -3,8 +3,6 @@ using AngleSharp.Diffing.Strategies;
 using AngleSharp.Diffing;
 using AngleSharp.Dom;
 using AngleSharp.Diffing.Core;
-using Xunit.Abstractions;
-using Bunit.Diffing;
 using AngleSharpWrappers;
 
 namespace Bunit.Diffing

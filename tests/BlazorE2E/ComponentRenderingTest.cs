@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration.Assemblies;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using AngleSharp.Dom;
 using Bunit.BlazorE2E.BasicTestApp;
 using Bunit.BlazorE2E.BasicTestApp.HierarchicalImportsTest.Subdir;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -444,196 +436,173 @@ namespace Bunit.BlazorE2E
             Assert.Equal("Current count: 0", currentCountText());
         }
 
-        //[Fact]
-        //public void CanUseJsInteropForRefElementsDuringOnAfterRender()
-        //{
-        //    var cut = RenderComponent<AfterRenderInteropComponent>();
-        //    Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));
-        //}
+        [Fact(Skip = "Test depends on javascript changing the DOM, thus doesnt make sense in this context. Test recreated in TestRendererTest.")]
+        public void CanUseJsInteropForRefElementsDuringOnAfterRender()
+        {
+            //var cut = RenderComponent<AfterRenderInteropComponent>();
+            //Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));
+        }
 
-        //[Fact]
-        //public void CanRenderMarkupBlocks()
-        //{
-        //    var cut = RenderComponent<MarkupBlockComponent>();
+        [Fact]
+        public void CanRenderMarkupBlocks()
+        {
+            var cut = RenderComponent<MarkupBlockComponent>();
 
-        //    // Static markup
-        //    Assert.Equal(
-        //        "attributes",
-        //        cut.FindElement(By.CssSelector("p span#attribute-example")).TextContent);
+            // Static markup
+            Assert.Equal("attributes", cut.Find("p span#attribute-example").TextContent);
 
-        //    // Dynamic markup (from a custom RenderFragment)
-        //    Assert.Equal(
-        //        "[Here is an example. We support multiple-top-level nodes.]",
-        //        cut.Find("#dynamic-markup-block").TextContent);
-        //    Assert.Equal(
-        //        "example",
-        //        cut.FindElement(By.CssSelector("#dynamic-markup-block strong#dynamic-element em")).TextContent);
+            // Dynamic markup (from a custom RenderFragment)
+            Assert.Equal("[Here is an example. We support multiple-top-level nodes.]", cut.Find("#dynamic-markup-block").TextContent.Trim());
+            Assert.Equal("example", cut.Find("#dynamic-markup-block strong#dynamic-element em").TextContent);
 
-        //    // Dynamic markup (from a MarkupString)
-        //    Assert.Equal(
-        //        "This is a markup string.",
-        //        cut.FindElement(By.ClassName("markup-string-value")).TextContent);
-        //    Assert.Equal(
-        //        "markup string",
-        //        cut.Find(".markup-string-value em").TextContent);
+            // Dynamic markup (from a MarkupString)
+            Assert.Equal("This is a markup string.", cut.Find(".markup-string-value").TextContent);
+            Assert.Equal("markup string", cut.Find(".markup-string-value em").TextContent);
 
-        //    // Updating markup blocks
-        //    cut.Find("button").Click();
-        //    Browser.Equal(
-        //        "[The output was changed completely.]",
-        //        () => cut.Find("#dynamic-markup-block").TextContent);
-        //    Assert.Equal(
-        //        "changed",
-        //        cut.FindElement(By.CssSelector("#dynamic-markup-block span em")).TextContent);
-        //}
+            // Updating markup blocks
+            cut.Find("button").Click();
+            Assert.Equal("[The output was changed completely.]", cut.Find("#dynamic-markup-block").TextContent.Trim());
+            Assert.Equal("changed", cut.Find("#dynamic-markup-block span em").TextContent);
+        }
 
-        //[Fact]
-        //public void CanRenderRazorTemplates()
-        //{
-        //    var cut = RenderComponent<RazorTemplates>();
+        [Fact]
+        public void CanRenderRazorTemplates()
+        {
+            var cut = RenderComponent<RazorTemplates>();
 
-        //    // code block template (component parameter)
-        //    var element = cut.FindElement(By.CssSelector("div#codeblocktemplate ol"));
-        //    Assert.Collection(
-        //        element.FindAll("li"),
-        //        e => Assert.Equal("#1 - a", e.TextContent),
-        //        e => Assert.Equal("#2 - b", e.TextContent),
-        //        e => Assert.Equal("#3 - c", e.TextContent));
-        //}
+            // code block template (component parameter)
+            var element = cut.Find("div#codeblocktemplate ol");
+            Assert.Collection(element.QuerySelectorAll("li"),
+                e => Assert.Equal("#1 - a", e.TextContent),
+                e => Assert.Equal("#2 - b", e.TextContent),
+                e => Assert.Equal("#3 - c", e.TextContent));
+        }
 
-        //[Fact]
-        //public void CanRenderMultipleChildContent()
-        //{
-        //    var cut = RenderComponent<MultipleChildContent>();
+        [Fact]
+        public void CanRenderMultipleChildContent()
+        {
+            var cut = RenderComponent<MultipleChildContent>();
 
-        //    var table = cut.Find("table");
+            var table = cut.Find("table");
 
-        //    var thead = table.Find("thead");
-        //    Assert.Collection(
-        //        thead.FindAll("th"),
-        //        e => Assert.Equal("Col1", e.TextContent),
-        //        e => Assert.Equal("Col2", e.TextContent),
-        //        e => Assert.Equal("Col3", e.TextContent));
+            var thead = table.QuerySelector("thead");
+            Assert.Collection(
+                thead.QuerySelectorAll("th"),
+                e => Assert.Equal("Col1", e.TextContent),
+                e => Assert.Equal("Col2", e.TextContent),
+                e => Assert.Equal("Col3", e.TextContent));
 
-        //    var tfoot = table.Find("tfoot");
-        //    Assert.Empty(tfoot.FindAll("td"));
+            var tfootElements = cut.FindAll("table tfoot td", enableAutoRefresh: true);
+            Assert.Empty(tfootElements);
+            var toggle = cut.Find("#toggle");
+            toggle.Change(true);
 
-        //    var toggle = cut.Find("#toggle");
-        //    toggle.Click();
+            Assert.Collection(tfootElements,
+                e => Assert.Equal("The", e.TextContent),
+                e => Assert.Equal("", e.TextContent),
+                e => Assert.Equal("End", e.TextContent)
+            );
+        }
 
-        //    Browser.Collection(
-        //        () => tfoot.FindAll("td"),
-        //        e => Assert.Equal("The", e.TextContent),
-        //        e => Assert.Equal("", e.TextContent),
-        //        e => Assert.Equal("End", e.TextContent));
-        //}
+        [Fact]
+        public void CanAcceptSimultaneousRenderRequests()
+        {
+            var expectedOutput = string.Join(
+                string.Empty,
+                Enumerable.Range(0, 100).Select(_ => "😊"));
 
-        //[Fact]
-        //public async Task CanAcceptSimultaneousRenderRequests()
-        //{
-        //    var expectedOutput = string.Join(
-        //        string.Empty,
-        //        Enumerable.Range(0, 100).Select(_ => "😊"));
+            var cut = RenderComponent<ConcurrentRenderParent>();
 
-        //    var cut = RenderComponent<ConcurrentRenderParent>();
+            // It's supposed to pause the rendering for this long. The WaitAssert below
+            // allows it to take up extra time if needed.
+            //await Task.Delay(1000);
 
-        //    // It's supposed to pause the rendering for this long. The WaitAssert below
-        //    // allows it to take up extra time if needed.
-        //    await Task.Delay(1000);
+            var outputElement = cut.Find("#concurrent-render-output");
 
-        //    var outputElement = cut.Find("#concurrent-render-output");
-        //    Assert.Equal(expectedOutput, () => outputElement.TextContent);
-        //}
+            cut.WaitForAssertion(
+                () => Assert.Equal(expectedOutput, outputElement.TextContent.Trim()),
+                timeout: TimeSpan.FromMilliseconds(2000)
+            );
+        }
 
-        //[Fact]
-        //public void CanDispatchRenderToSyncContext()
-        //{
-        //    var cut = RenderComponent<DispatchingComponent>();
-        //    var result = cut.Find("#result");
+        [Fact]
+        public void CanDispatchRenderToSyncContext()
+        {
+            var cut = RenderComponent<DispatchingComponent>();
+            var result = cut.Find("#result");
 
-        //    cut.Find("#run-with-dispatch").Click();
+            cut.Find("#run-with-dispatch").Click();
 
-        //    Assert.Equal("Success (completed synchronously)", () => result.TextContent);
-        //}
+            cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
+        }
 
-        //[Fact]
-        //public void CanDoubleDispatchRenderToSyncContext()
-        //{
-        //    var cut = RenderComponent<DispatchingComponent>();
-        //    var result = cut.Find("#result");
+        [Fact]
+        public void CanDoubleDispatchRenderToSyncContext()
+        {
+            var cut = RenderComponent<DispatchingComponent>();
+            var result = cut.Find("#result");
 
-        //    cut.Find("#run-with-double-dispatch").Click();
+            cut.Find("#run-with-double-dispatch").Click();
 
-        //    Assert.Equal("Success (completed synchronously)", () => result.TextContent);
-        //}
+            cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
+        }
 
-        //[Fact]
-        //public void CanDispatchAsyncWorkToSyncContext()
-        //{
-        //    var cut = RenderComponent<DispatchingComponent>();
-        //    var result = cut.Find("#result");
+        [Fact]
+        public void CanDispatchAsyncWorkToSyncContext()
+        {
+            var cut = RenderComponent<DispatchingComponent>();
+            var result = cut.Find("#result");
 
-        //    cut.Find("#run-async-with-dispatch").Click();
+            cut.Find("#run-async-with-dispatch").Click();
 
-        //    Assert.Equal("First Second Third Fourth Fifth", () => result.TextContent);
-        //}
+            cut.WaitForAssertion(() => Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim()), timeout: TimeSpan.FromSeconds(2));
+        }
 
-        //[Fact]
-        //public void CanPerformInteropImmediatelyOnComponentInsertion()
-        //{
-        //    var cut = RenderComponent<InteropOnInitializationComponent>();
-        //    Assert.Equal("Hello from interop call", () => cut.Find("#val-get-by-interop").TextContent);
-        //    Assert.Equal("Hello from interop call", () => cut.Find("#val-set-by-interop").GetAttribute("value"));
-        //}
+        [Fact(Skip = "Test depends on javascript changing the DOM, thus doesnt make sense in this context. Test recreated in TestRendererTest.")]
+        public void CanPerformInteropImmediatelyOnComponentInsertion()
+        {
+            //var cut = RenderComponent<InteropOnInitializationComponent>();
+            //Assert.Equal("Hello from interop call", () => cut.Find("#val-get-by-interop").TextContent);
+            //Assert.Equal("Hello from interop call", () => cut.Find("#val-set-by-interop").GetAttribute("value"));
+        }
 
-        //[Fact]
-        //public void CanUseAddMultipleAttributes()
-        //{
-        //    var cut = RenderComponent<DuplicateAttributesComponent>();
+        [Fact]
+        public void CanUseAddMultipleAttributes()
+        {
+            var cut = RenderComponent<DuplicateAttributesComponent>();
 
-        //    var selector = By.CssSelector("#duplicate-on-element > div");
-        //    Browser.Exists(selector);
+            var element = cut.Find("#duplicate-on-element > div");
+            Assert.True(element.HasAttribute("bool")); // attribute is present
+            Assert.Equal("middle-value", element.GetAttribute("string"));
+            Assert.Equal("unmatched-value", element.GetAttribute("unmatched"));
 
-        //    var element = cut.FindElement(selector);
-        //    Assert.Equal(string.Empty, element.GetAttribute("bool")); // attribute is present
-        //    Assert.Equal("middle-value", element.GetAttribute("string"));
-        //    Assert.Equal("unmatched-value", element.GetAttribute("unmatched"));
+            element = cut.Find("#duplicate-on-element-override > div");
+            Assert.False(element.HasAttribute("bool")); // attribute is not present
+            Assert.Equal("other-text", element.GetAttribute("string"));
+            Assert.Equal("unmatched-value", element.GetAttribute("unmatched"));
+        }
 
-        //    selector = By.CssSelector("#duplicate-on-element-override > div");
-        //    element = cut.FindElement(selector);
-        //    Assert.Null(element.GetAttribute("bool")); // attribute is not present
-        //    Assert.Equal("other-text", element.GetAttribute("string"));
-        //    Assert.Equal("unmatched-value", element.GetAttribute("unmatched"));
-        //}
+        [Fact]
+        public void CanPatchRenderTreeToMatchLatestDOMState()
+        {
+            var cut = RenderComponent<MovingCheckboxesComponent>();
+            var incompleteItemsSelector = ".incomplete-items li";
+            var completeItemsSelector = ".complete-items li";
 
-        //[Fact]
-        //public void CanPatchRenderTreeToMatchLatestDOMState()
-        //{
-        //    var cut = RenderComponent<MovingCheckboxesComponent>();
-        //    var incompleteItemsSelector = By.CssSelector(".incomplete-items li");
-        //    var completeItemsSelector = By.CssSelector(".complete-items li");
-        //    Browser.Exists(incompleteItemsSelector);
+            // Mark first item as done; observe the remaining incomplete item appears unchecked
+            // because the diff algorithm explicitly unchecks it
+            cut.Find(".incomplete-items .item-isdone").Change(true);
+            var incompleteLIs = cut.FindAll(incompleteItemsSelector);
+            Assert.Equal(1, incompleteLIs.Count);
+            Assert.False(incompleteLIs[0].QuerySelector(".item-isdone").HasAttribute("checked"));
 
-        //    // Mark first item as done; observe the remaining incomplete item appears unchecked
-        //    // because the diff algorithm explicitly unchecks it
-        //    cut.Find(".incomplete-items .item-isdone").Click();
-        //    Browser.True(() =>
-        //    {
-        //        var incompleteLIs = cut.FindElements(incompleteItemsSelector);
-        //        return incompleteLIs.Count == 1
-        //            && !incompleteLIs[0].Find(".item-isdone").Selected;
-        //    });
-
-        //    // Mark first done item as not done; observe the remaining complete item appears checked
-        //    // because the diff algorithm explicitly re-checks it
-        //    cut.Find(".complete-items .item-isdone").Click();
-        //    Browser.True(() =>
-        //    {
-        //        var completeLIs = cut.FindElements(completeItemsSelector);
-        //        return completeLIs.Count == 2
-        //            && completeLIs[0].Find(".item-isdone").Selected;
-        //    });
-        //}
+            // Mark first done item as not done; observe the remaining complete item appears checked
+            // because the diff algorithm explicitly re-checks it
+            cut.Find(".complete-items .item-isdone").Change(false);
+            var completeLIs = cut.FindAll(completeItemsSelector);
+            Assert.Equal(2, completeLIs.Count);
+            Assert.True(completeLIs[0].QuerySelector(".item-isdone").HasAttribute("checked"));
+        }
 
     }
 }

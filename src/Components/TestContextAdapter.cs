@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using AngleSharp.Dom;
-using Bunit.Diffing;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit

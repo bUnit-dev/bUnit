@@ -1,16 +1,7 @@
-﻿using AngleSharp.Dom;
-using Bunit.Extensions.Xunit;
-using Bunit.Mocking.JSInterop;
-using Bunit.SampleComponents;
-using Bunit.SampleComponents.Data;
+﻿using Bunit.SampleComponents;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;

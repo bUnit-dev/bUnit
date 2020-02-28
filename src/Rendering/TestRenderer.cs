@@ -2,12 +2,9 @@
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
-using System.Threading;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Bunit

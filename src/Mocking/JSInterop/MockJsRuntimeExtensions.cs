@@ -1,5 +1,4 @@
 ﻿using System;
-using Bunit.Mocking.JSInterop;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit.Mocking.JSInterop

@@ -2,7 +2,6 @@
 using AngleSharp;
 using AngleSharp.Dom;
 using System;
-using Bunit.Diffing;
 
 namespace Bunit.Diffing
 {

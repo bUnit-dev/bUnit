@@ -1,8 +1,6 @@
 ﻿using System;
-using Microsoft.AspNetCore.Components;
 using Xunit;
 using Shouldly;
-using System.Threading.Tasks;
 using Bunit.SampleComponents;
 using System.Diagnostics.CodeAnalysis;
 using Bunit.Mocking.JSInterop;

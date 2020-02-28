@@ -1,14 +1,6 @@
-﻿using AngleSharp;
-using AngleSharp.Dom;
-using AngleSharp.Html;
-using AngleSharp.Text;
+﻿using AngleSharp.Dom;
 using Bunit.Diffing;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bunit
 {

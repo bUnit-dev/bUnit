@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading;
+﻿using System.Reflection;
 using System.Threading.Tasks;
-using Bunit.SampleComponents;
-using Bunit.SampleComponents.Data;
 using Microsoft.AspNetCore.Components.Web;
-using Moq;
-using Shouldly;
 using Xunit;
 
 namespace Bunit
