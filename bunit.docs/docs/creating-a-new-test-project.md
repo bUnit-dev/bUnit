@@ -3,7 +3,7 @@
 To create a project for testing you Blazor components, first install the [bUnit Project Template](https://www.nuget.org/packages/bunit.template/) from NuGet, using this command:
 
 ```
-dotnet new --install bunit.template::#{VERSION}#
+dotnet new --install bunit.template::1.0.0-beta-6
 ```
 
 Then to create a new project, use the following command:
@@ -29,7 +29,7 @@ If you do not want to use the Blazor test project template, you can create an em
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.0" />
-    <PackageReference Include="bunit" Version="#{VERSION}#" />
+    <PackageReference Include="bunit" Version="1.0.0-beta-6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
