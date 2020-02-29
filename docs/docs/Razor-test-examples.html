@@ -1,0 +1,335 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Razor test examples | bUnit </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Razor test examples | bUnit ">
+    <meta name="generator" content="docfx 2.49.0.0">
+    <meta name="description" content="bUnit is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.">
+    <!--<link rel="shortcut icon" href="../favicon.ico">-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img height="90%" id="logo" class="img" src="..//images/blazor-logo.png" alt="bUnit">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="razor-test-examples">Razor test examples</h1>
+
+<p>In the following examples, the terminology <strong>component under test</strong> (abbreviated CUT) is used to mean the component that is the target of the test. The examples below use the <code>Shouldly</code> assertion library as well. If you prefer not to use that just replace the assertions with the ones from your own favorite assertion library.</p>
+<p>All examples can be found in the <a href="https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/Tests">Tests</a> folder in the <a href="https://github.com/egil/razor-components-testing-library/tree/master/sample/">Sample project</a>.</p>
+<h2 id="examples">Examples</h2>
+<p>Here is a few examples that demonstrate how Razor test components can be used. More can be found in the <a href="https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/RazorComponentTests">sample/tests/RazorComponentTests</a> samples folder.</p>
+<pre><code class="lang-cshtml">&lt;Fixture Test=&quot;ThemedButtonUsesNamedCascadingValue&quot;&gt;
+    &lt;ComponentUnderTest&gt;
+        &lt;CascadingValue Name=@nameof(ThemedElement.Class) Value=@(new ThemeInfo { Value = &quot;FOO&quot; })&gt;
+            &lt;CascadingValue Name=@nameof(ThemedElement.Title) Value=@(new ThemeInfo { Value = &quot;BAR&quot; })&gt;
+                &lt;ThemedElement /&gt;
+            &lt;/CascadingValue&gt;
+        &lt;/CascadingValue&gt;
+    &lt;/ComponentUnderTest&gt;
+&lt;/Fixture&gt;
+@code {
+    void ThemedButtonUsesNamedCascadingValue()
+    {
+        var cut = GetComponentUnderTest();
+
+        var elm = cut.Find(&quot;div&quot;);
+        elm.ClassList.ShouldContain(&quot;FOO&quot;);
+        elm.GetAttribute(&quot;title&quot;).ShouldContain(&quot;BAR&quot;);
+    }
+}
+</code></pre>
+<p>This example shows how <a href="https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Components/ThemedElement.razor">ThemedElement.razor</a> can be tested with cascading values.</p>
+<pre><code class="lang-cshtml">&lt;Fixture Test=MarkupPassedViaChildContent&gt;
+    &lt;ComponentUnderTest&gt;
+        &lt;ThemedButton&gt;
+            &lt;h1&gt;Foo bar button&lt;/h1&gt;
+        &lt;/ThemedButton&gt;
+    &lt;/ComponentUnderTest&gt;
+    &lt;Fragment&gt;&lt;h1&gt;Foo bar button&lt;/h1&gt;&lt;/Fragment&gt;
+&lt;/Fixture&gt;
+@code {
+    void MarkupPassedViaChildContent()
+    {
+        var expectedChildContent = GetFragment();
+
+        var cut = GetComponentUnderTest();
+
+        cut.Find(&quot;button&quot;).ChildNodes.MarkupMatches(expectedChildContent);
+    }
+}
+</code></pre>
+<p>This example shows how <a href="https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Components/ThemedButton.razor">ThemedButton.razor</a> can be tested with with child content, and how a <code>&lt;Fragment&gt;</code> can be used to specify the expected output.</p>
+<p>Lets look at a more complex example, a test of the <a href="https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Pages/TodoList.razor">TodoList.razor</a> component:</p>
+<pre><code class="lang-cshtml">&lt;Fixture Setup=&quot;() =&gt; Services.AddMockJsRuntime()&quot;
+         Test=&quot;EmptyTodoList&quot;
+         Tests=&quot;new Action[]{ SettingLabel, TaskListRendersItemsUsingItemTemplate }&quot;&gt;
+    &lt;ComponentUnderTest&gt;
+        &lt;TodoList&gt;
+            &lt;ItemsTemplate&gt;
+                &lt;TodoItem Todo=@context /&gt;
+            &lt;/ItemsTemplate&gt;
+        &lt;/TodoList&gt;
+    &lt;/ComponentUnderTest&gt;
+    &lt;Fragment Id=&quot;EmptyTodoListRender&quot;&gt;
+        &lt;form&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input value=&quot;&quot; type=&quot;text&quot; class=&quot;form-control&quot;
+                       placeholder=&quot;Task description&quot; aria-label=&quot;Task description&quot; /&gt;
+                &lt;div class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;submit&quot;&gt;Add task&lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+        &lt;ol class=&quot;list-group&quot;&gt;&lt;/ol&gt;
+    &lt;/Fragment&gt;
+    &lt;Fragment Id=&quot;TodoItemRender&quot;&gt;
+        &lt;TodoItem Todo=&quot;@TestItems[0]&quot; /&gt;
+    &lt;/Fragment&gt;
+&lt;/Fixture&gt;
+@code {
+    Todo[] TestItems { get; } = new[] { new Todo { Id = 42 } };
+
+    void EmptyTodoList()
+    {
+        // Act - get the CUT
+        var cut = GetComponentUnderTest&lt;TodoList&gt;();
+
+        // Assert - get the expected initial rendered HTML from the fragment
+        // and use it to verify the initial rendered HTML
+        var expectedInitialRender = GetFragment(&quot;EmptyTodoListRender&quot;);
+        cut.MarkupMatches(expectedInitialRender);
+    }
+
+    void SettingLabel()
+    {
+        // Arrange - get the CUT
+        var cut = GetComponentUnderTest&lt;TodoList&gt;();
+
+        // Act - update label
+        cut.SetParametersAndRender((nameof(TodoList.Label), &quot;LABEL&quot;));
+
+        // Assert - verifiy that the placeholder and aria-label has changed
+        cut.GetChangesSinceFirstRender().ShouldAllBe(
+            diff =&gt; diff.ShouldBeAttributeChange(&quot;placeholder&quot;, &quot;LABEL&quot;),
+            diff =&gt; diff.ShouldBeAttributeChange(&quot;aria-label&quot;, &quot;LABEL&quot;)
+        );
+    }
+
+    void TaskListRendersItemsUsingItemTemplate()
+    {
+        // Arrange - get the cut and take a snapshot of the current render tree output
+        var cut = GetComponentUnderTest&lt;TodoList&gt;();
+        cut.SaveSnapshot();
+
+        // Act - assign test todo items to the CUT
+        cut.SetParametersAndRender((nameof(TodoList.Items), TestItems));
+
+        // Assert - get the diffs since the snapshot and compare to the expected.
+        var diffs = cut.GetChangesSinceSnapshot();
+        var expected = GetFragment(&quot;TodoItemRender&quot;);
+        diffs.ShouldHaveSingleChange().ShouldBeAddition(expected);
+    }
+}
+</code></pre>
+<p>A few things worth noting here:</p>
+<ul>
+<li><p>The <code>Fixture</code> methods are called in this order:</p>
+<ol>
+<li><code>Setup</code> (inline)</li>
+<li><code>EmptyTodoList</code></li>
+<li><code>SettingLabel</code></li>
+<li><code>TaskListRendersItemsUsingItemTemplate</code></li>
+</ol>
+</li>
+<li><p>The CUT is only initialized once, the first time <code>GetComponentUnderTest&lt;TodoList&gt;()</code> is called. Subsequent calls return the same instance.</p>
+</li>
+</ul>
+<p>The follow test verifies some of the component logic around new todo creation and setting focus to the input field on first render:</p>
+<pre><code class="lang-cshtml">&lt;Fixture Setup=&quot;Setup&quot;
+         Tests=&quot;new Action[]{ OnFirstRenderInputFieldGetsFocus,
+                AfterFirstRenderInputFieldDoesntGetFocusAfterRerenders,
+                WhenAddTaskFormIsSubmittedWithNoTextOnAddingTodoIsNotCalled }&quot;&gt;
+    &lt;ComponentUnderTest&gt;
+        &lt;TodoList OnAddingTodo=&quot;OnAddingTodoHandler&quot;&gt;
+            &lt;ItemsTemplate&gt;
+                &lt;TodoItem Todo=@context /&gt;
+            &lt;/ItemsTemplate&gt;
+        &lt;/TodoList&gt;
+    &lt;/ComponentUnderTest&gt;
+&lt;/Fixture&gt;
+@code {
+    MockJsRuntimeInvokeHandler jsRtMock = default!;
+    Todo? createdTodo;
+
+    void OnAddingTodoHandler(Todo todo) =&gt; createdTodo = todo;
+
+    void Setup()
+    {
+        jsRtMock = Services.AddMockJsRuntime();
+    }
+
+    void OnFirstRenderInputFieldGetsFocus()
+    {
+        // Act
+        var cut = GetComponentUnderTest&lt;TodoList&gt;();
+
+        // Assert that there is a call to document.body.focus.call with a single argument,
+        // a reference to the input element.
+        jsRtMock.VerifyInvoke(&quot;document.body.focus.call&quot;)
+            .Arguments.Single().ShouldBeElementReferenceTo(cut.Find(&quot;input&quot;));
+    }
+
+    void AfterFirstRenderInputFieldDoesntGetFocusAfterRerenders()
+    {
+        // Arrange
+        var cut = GetComponentUnderTest&lt;TodoList&gt;();
+
+        // Act
+        cut.Render(); // second render
+        cut.Render(); // thrid render
+        cut.Render(); // ...
+        cut.Render();
+
+        // Assert that focus logic only runs on first render (only called 1 time).
+        jsRtMock.VerifyInvoke(&quot;document.body.focus.call&quot;, calledTimes: 1);
+    }
+
+    void WhenAddTaskFormIsSubmittedWithNoTextOnAddingTodoIsNotCalled()
+    {
+        // Arrange
+        var cut = GetComponentUnderTest&lt;TodoList&gt;();
+
+        // Act - submit the empty form
+        cut.Find(&quot;form&quot;).Submit();
+
+        // Assert - verify that no task was created
+        Assert.Null(createdTodo);
+    }
+
+    void WhenAddTaskFormIsSubmittedWithTextOnAddingTodoIsCalled()
+    {
+        // Arrange - ensure createdTask is null
+        createdTodo = null;
+        var cut = GetComponentUnderTest&lt;TodoList&gt;();
+        var taskValue = &quot;HELLO WORLD TASK&quot;;
+
+        // Act - find input field and change its value, then submit the form
+        cut.Find(&quot;input&quot;).Change(taskValue);
+        cut.Find(&quot;form&quot;).Submit();
+
+        // Assert that a new task has been passed to the EventCallback listener and that the
+        // new task has the expected value
+        Assert.NotNull(createdTodo);
+        Assert.Equal(taskValue, createdTodo?.Text);
+    }
+}
+</code></pre>
+<p>More examples to come.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/egil/bunit/blob/dev/bunit.docs/docs/Razor-test-examples.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

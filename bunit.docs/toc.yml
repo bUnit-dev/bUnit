@@ -1,0 +1,7 @@
+- name: Getting Started
+  href: docs/getting-started.html
+- name: Documentation
+  href: docs/
+- name: API References
+  href: api/
+  homepage: api/index.md

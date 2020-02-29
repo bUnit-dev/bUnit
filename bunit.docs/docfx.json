@@ -1,0 +1,76 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "bunit.csproj"
+          ],
+          "src": "../src"
+        }
+      ],
+      "dest": "api",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "api/index.md"
+        ]
+      },
+      {
+        "files": [
+          "docs/**.md",
+          "docs/**/toc.yml",
+          "toc.yml",
+          "*.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**",
+          ".nojekyll",
+          "site.webmanifest",
+          "*.png"
+        ]
+      }
+    ],
+    "overwrite": [
+      {
+        "files": [
+          "apidoc/**.md"
+        ],
+        "exclude": [
+          "obj/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "dest": "../docs",
+    "globalMetadataFiles": [],
+    "fileMetadataFiles": [],
+    "template": [
+      "default",
+      "templates/bunit"
+    ],
+    "globalMetadata": {
+      "_appName": "bUnit",
+      "_appTitle": "bUnit",
+      "_description": "bUnit is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.",
+      "_enableSearch": true,
+      "_appLogoPath": "/images/blazor-logo.png"
+    },
+    "postProcessors": [],
+    "markdownEngineName": "markdig",
+    "noLangKeyword": false,
+    "keepFileLink": false,
+    "cleanupCacheHistory": false,
+    "disableGitFeatures": false
+  }
+}

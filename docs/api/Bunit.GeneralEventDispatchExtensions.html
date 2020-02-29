@@ -1,0 +1,1327 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class GeneralEventDispatchExtensions
+   | bUnit </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class GeneralEventDispatchExtensions
+   | bUnit ">
+    <meta name="generator" content="docfx 2.49.0.0">
+    <meta name="description" content="bUnit is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.">
+    <!--<link rel="shortcut icon" href="../favicon.ico">-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img height="90%" id="logo" class="img" src="..//images/blazor-logo.png" alt="bUnit">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Bunit.GeneralEventDispatchExtensions">
+  
+  
+  <h1 id="Bunit_GeneralEventDispatchExtensions" data-uid="Bunit.GeneralEventDispatchExtensions" class="text-break">Class GeneralEventDispatchExtensions
+  </h1>
+  <div class="markdown level0 summary"><p>General event dispatch helper extension methods.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">GeneralEventDispatchExtensions</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Bunit.html">Bunit</a></h6>
+  <h6><strong>Assembly</strong>: Bunit.dll</h6>
+  <h5 id="Bunit_GeneralEventDispatchExtensions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class GeneralEventDispatchExtensions : object</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_Activate_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.Activate(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L47">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_Activate_" data-uid="Bunit.GeneralEventDispatchExtensions.Activate*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_Activate_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.Activate(IElement)">Activate(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onactivate</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Activate(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_ActivateAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.ActivateAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L55">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_ActivateAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.ActivateAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_ActivateAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.ActivateAsync(IElement)">ActivateAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onactivate</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task ActivateAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_BeforeActivate_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.BeforeActivate(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L62">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_BeforeActivate_" data-uid="Bunit.GeneralEventDispatchExtensions.BeforeActivate*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_BeforeActivate_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.BeforeActivate(IElement)">BeforeActivate(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onbeforeactivate</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BeforeActivate(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_BeforeActivateAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.BeforeActivateAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L70">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_BeforeActivateAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.BeforeActivateAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_BeforeActivateAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.BeforeActivateAsync(IElement)">BeforeActivateAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onbeforeactivate</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task BeforeActivateAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_BeforeDeactivate_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.BeforeDeactivate(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L77">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_BeforeDeactivate_" data-uid="Bunit.GeneralEventDispatchExtensions.BeforeDeactivate*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_BeforeDeactivate_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.BeforeDeactivate(IElement)">BeforeDeactivate(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onbeforedeactivate</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BeforeDeactivate(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_BeforeDeactivateAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.BeforeDeactivateAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L85">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_BeforeDeactivateAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.BeforeDeactivateAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_BeforeDeactivateAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.BeforeDeactivateAsync(IElement)">BeforeDeactivateAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onbeforedeactivate</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task BeforeDeactivateAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_Deactivate_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.Deactivate(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L92">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_Deactivate_" data-uid="Bunit.GeneralEventDispatchExtensions.Deactivate*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_Deactivate_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.Deactivate(IElement)">Deactivate(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@ondeactivate</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Deactivate(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_DeactivateAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.DeactivateAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L100">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_DeactivateAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.DeactivateAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_DeactivateAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.DeactivateAsync(IElement)">DeactivateAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@ondeactivate</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task DeactivateAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_Ended_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.Ended(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L107">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_Ended_" data-uid="Bunit.GeneralEventDispatchExtensions.Ended*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_Ended_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.Ended(IElement)">Ended(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onended</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Ended(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_EndedAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.EndedAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L115">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_EndedAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.EndedAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_EndedAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.EndedAsync(IElement)">EndedAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onended</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task EndedAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_FullscreenChange_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.FullscreenChange(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L122">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_FullscreenChange_" data-uid="Bunit.GeneralEventDispatchExtensions.FullscreenChange*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_FullscreenChange_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.FullscreenChange(IElement)">FullscreenChange(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onfullscreenchange</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void FullscreenChange(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_FullscreenChangeAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.FullscreenChangeAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L130">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_FullscreenChangeAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.FullscreenChangeAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_FullscreenChangeAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.FullscreenChangeAsync(IElement)">FullscreenChangeAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onfullscreenchange</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task FullscreenChangeAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_FullscreenError_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.FullscreenError(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L137">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_FullscreenError_" data-uid="Bunit.GeneralEventDispatchExtensions.FullscreenError*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_FullscreenError_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.FullscreenError(IElement)">FullscreenError(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onfullscreenerror</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void FullscreenError(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_FullscreenErrorAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.FullscreenErrorAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L145">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_FullscreenErrorAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.FullscreenErrorAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_FullscreenErrorAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.FullscreenErrorAsync(IElement)">FullscreenErrorAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onfullscreenerror</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task FullscreenErrorAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_LoadedData_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.LoadedData(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L152">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_LoadedData_" data-uid="Bunit.GeneralEventDispatchExtensions.LoadedData*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_LoadedData_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.LoadedData(IElement)">LoadedData(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onloadeddata</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void LoadedData(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_LoadedDataAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.LoadedDataAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L160">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_LoadedDataAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.LoadedDataAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_LoadedDataAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.LoadedDataAsync(IElement)">LoadedDataAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onloadeddata</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task LoadedDataAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_LoadedMetadata_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.LoadedMetadata(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L167">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_LoadedMetadata_" data-uid="Bunit.GeneralEventDispatchExtensions.LoadedMetadata*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_LoadedMetadata_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.LoadedMetadata(IElement)">LoadedMetadata(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onloadedmetadata</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void LoadedMetadata(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_LoadedMetadataAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.LoadedMetadataAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L175">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_LoadedMetadataAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.LoadedMetadataAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_LoadedMetadataAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.LoadedMetadataAsync(IElement)">LoadedMetadataAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onloadedmetadata</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task LoadedMetadataAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_PointerlockChange_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.PointerlockChange(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L182">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_PointerlockChange_" data-uid="Bunit.GeneralEventDispatchExtensions.PointerlockChange*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_PointerlockChange_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.PointerlockChange(IElement)">PointerlockChange(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onpointerlockchange</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PointerlockChange(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_PointerlockChangeAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.PointerlockChangeAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L190">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_PointerlockChangeAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.PointerlockChangeAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_PointerlockChangeAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.PointerlockChangeAsync(IElement)">PointerlockChangeAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onpointerlockchange</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task PointerlockChangeAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_PointerlockError_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.PointerlockError(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L197">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_PointerlockError_" data-uid="Bunit.GeneralEventDispatchExtensions.PointerlockError*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_PointerlockError_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.PointerlockError(IElement)">PointerlockError(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onpointerlockerror</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PointerlockError(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_PointerlockErrorAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.PointerlockErrorAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L205">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_PointerlockErrorAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.PointerlockErrorAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_PointerlockErrorAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.PointerlockErrorAsync(IElement)">PointerlockErrorAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onpointerlockerror</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task PointerlockErrorAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_ReadystateChange_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.ReadystateChange(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L212">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_ReadystateChange_" data-uid="Bunit.GeneralEventDispatchExtensions.ReadystateChange*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_ReadystateChange_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.ReadystateChange(IElement)">ReadystateChange(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onreadystatechange</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ReadystateChange(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_ReadystateChangeAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.ReadystateChangeAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L220">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_ReadystateChangeAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.ReadystateChangeAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_ReadystateChangeAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.ReadystateChangeAsync(IElement)">ReadystateChangeAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onreadystatechange</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task ReadystateChangeAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_Scroll_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.Scroll(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L227">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_Scroll_" data-uid="Bunit.GeneralEventDispatchExtensions.Scroll*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_Scroll_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.Scroll(IElement)">Scroll(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onscroll</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Scroll(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_ScrollAsync_IElement_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.ScrollAsync(IElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L235">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_ScrollAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.ScrollAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_ScrollAsync_IElement_" data-uid="Bunit.GeneralEventDispatchExtensions.ScrollAsync(IElement)">ScrollAsync(IElement)</h4>
+  <div class="markdown level1 summary"><p>Raises the <code>@onscroll</code> event on <code data-dev-comment-type="paramref" class="paramref">element</code>, passing an empty (<see cref="!:EventArgs.Empty"></see>)
+to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task ScrollAsync(this IElement element)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A task that completes when the event handler is done.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions_TriggerEventAsync_IElement_System_String_EventArgs_.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions.TriggerEventAsync(IElement%2CSystem.String%2CEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L23">View Source</a>
+  </span>
+  <a id="Bunit_GeneralEventDispatchExtensions_TriggerEventAsync_" data-uid="Bunit.GeneralEventDispatchExtensions.TriggerEventAsync*"></a>
+  <h4 id="Bunit_GeneralEventDispatchExtensions_TriggerEventAsync_IElement_System_String_EventArgs_" data-uid="Bunit.GeneralEventDispatchExtensions.TriggerEventAsync(IElement,System.String,EventArgs)">TriggerEventAsync(IElement, String, EventArgs)</h4>
+  <div class="markdown level1 summary"><p>Raises the event <code data-dev-comment-type="paramref" class="paramref">eventName</code> on the element <code data-dev-comment-type="paramref" class="paramref">element</code>
+passing the <code data-dev-comment-type="paramref" class="paramref">eventArgs</code> to the event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task TriggerEventAsync(this IElement element, string eventName, EventArgs eventArgs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IElement</span></td>
+        <td><span class="parametername">element</span></td>
+        <td><p>The element to raise the event on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">eventName</span></td>
+        <td><p>The name of the event to raise (using on-form, e.g. <code>onclick</code>).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">EventArgs</span></td>
+        <td><span class="parametername">eventArgs</span></td>
+        <td><p>The event arguments to pass to the event handler</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/egil/bunit/new/dev/apiSpec/new?filename=Bunit_GeneralEventDispatchExtensions.md&amp;value=---%0Auid%3A%20Bunit.GeneralEventDispatchExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/egil/bunit/blob/dev/src/EventDispatchExtensions/GeneralEventDispatchExtensions.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
