@@ -6,6 +6,9 @@ This release includes a **name change from Blazor Components Testing Library to 
 
 *Why change the name?* Naming is hard, and I initial chose a very product-namy name, that quite clearly stated what the library was for. However, the name isn't very searchable, since it just contains generic keywords, plus, bUnit is just much cooler. It also gave me the opportunity to remove my name from all the namespaces and simplify those.
 
+### Contributions
+Hugh thanks to [Rastislav Novotný (@duracellko)](https://github.com/duracellko)) for his input and review of the `WaitForX` logic added in this release.
+
 ### NuGet
 The latest version of the library is availble on NuGet:
 

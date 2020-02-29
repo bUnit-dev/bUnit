@@ -1,8 +1,8 @@
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/egil/razor-components-testing-library/CI?logo=github&style=flat-square)](https://github.com/egil/razor-components-testing-library/actions?query=workflow%3ACI)
-[![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/razor-components-testing-library?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/razor-components-testing-library/releases)
-[![Nuget](https://img.shields.io/nuget/dt/Razor.Components.Testing.Library?logo=nuget&style=flat-square)](https://www.nuget.org/packages/Razor.Components.Testing.Library/)
-[![Issues Open](https://img.shields.io/github/issues/egil/razor-components-testing-library.svg?style=flat-square&logo=github&style=flat-square)](https://github.com/egil/razor-components-testing-library/issues)
-[![Gitter](https://img.shields.io/gitter/room/razor-components-testing-library/community?logo=gitter&style=flat-square)](https://gitter.im/razor-components-testing-library/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/egil/bunit/CI?logo=github&style=flat-square)](https://github.com/egil/bunit/actions?query=workflow%3ACI)
+[![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
+[![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
+[![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github&style=flat-square)](https://github.com/egil/bunit/issues)
+[![Gitter](https://img.shields.io/gitter/room/bunit/community?logo=gitter&style=flat-square)](https://gitter.im/bunit/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # bUnit
 
@@ -10,7 +10,7 @@
 
 This library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. To see how, head to the Wiki pages:
 
-- [Home](https://github.com/egil/razor-components-testing-library/wiki)
+- [Home](https://bunit.egilhansen.com)
 - [Getting started](https://github.com/egil/razor-components-testing-library/wiki/Getting-Started)
 - [C# based testing](https://github.com/egil/razor-components-testing-library/wiki/C%23-based-testing)
   - [C# test examples](https://github.com/egil/razor-components-testing-library/wiki/C%23-test-examples)
