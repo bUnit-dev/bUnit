@@ -2,12 +2,14 @@
 All notable changes to **bUnit** will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.0.0-beta-6] - 2020-03-01
 This release includes a **name change from Blazor Components Testing Library to bUnit**. It also brings along two extra helper methods for working with asynchronously rendering components during testing, and a bunch of internal optimizations and tweaks to the code.
 
 *Why change the name?* Naming is hard, and I initial chose a very product-namy name, that quite clearly stated what the library was for. However, the name isn't very searchable, since it just contains generic keywords, plus, bUnit is just much cooler. It also gave me the opportunity to remove my name from all the namespaces and simplify those.
 
 ### Contributions
-Hugh thanks to [Rastislav Novotný (@duracellko)](https://github.com/duracellko)) for his input and review of the `WaitForX` logic added in this release.
+Hugh thanks to [Rastislav NovotnÃ½ (@duracellko)](https://github.com/duracellko)) for his input and review of the `WaitForX` logic added in this release.
 
 ### NuGet
 The latest version of the library is availble on NuGet:
