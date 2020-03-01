@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Razor-based testing | bUnit </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Razor-based testing | bUnit ">
+    <meta name="generator" content="docfx 2.49.0.0">
+    <meta name="description" content="bUnit is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.">
+    <!--<link rel="shortcut icon" href="../favicon.ico">-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img height="90%" id="logo" class="img" src="..//images/blazor-logo.png" alt="bUnit">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="razor-based-testing">Razor-based testing</h1>
+
+<p>This pages documents how to do Blazor/Razor component testing from <code>.razor</code> files.</p>
+<p>Before you get started, make sure you have read the <a href="/docs/getting-started.html">Getting started</a> page and in particular the <a href="/docs/basics-of-blazor-component-testing.html">Basics of Blazor component testing</a> section. It wont take long, and it will ensure you get a good start at component testing.</p>
+<blockquote>
+<p><strong>NOTE:</strong> This feature is <em>EXPERIMENTAL</em> and syntax and API will likely changed. Here are a few limitations to be aware of at the moment:</p>
+<ul>
+<li>The xUnit test runner can detect and execute tests in Razor test components, but is not able to distinguish the individual <code>&lt;Fixture&gt;</code>'s from each other. They are all executed together, one at the time. The solution is planned, see the <a href="https://github.com/egil/razor-components-testing-library/issues/4">related issue</a> for details.</li>
+<li>Go to the <a href="/docs/contribute">Contribute</a> page for info on how to provide feedback and suggestions.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>TIP:</strong> Working with and asserting against the rendered component and its output is covered on the <a href="/docs/working-with-rendered-components-and-fragments.html">Working with rendered components and fragments</a> page.</p>
+</blockquote>
+<p><strong>Content:</strong></p>
+<ul>
+<li><a href="#creating-a-new-razor-test-component">Creating a new Razor test component</a></li>
+<li><a href="#defining-testsfixtures-in-test-components">Defining tests/fixtures in test components</a></li>
+<li><a href="#executing-test-cases">Executing test cases</a></li>
+</ul>
+<p><strong>Further reading:</strong></p>
+<ul>
+<li><a href="/docs/working-with-rendered-components-and-fragments.html">Working with rendered components and fragments</a></li>
+<li><a href="/docs/semantic-html-markup-comparison.html">Semantic HTML markup comparison</a></li>
+<li><a href="/docs/mocking-jsruntime.html">Mocking JsRuntime</a></li>
+<li><a href="/docs/razor-test-examples.html">Razor test examples</a></li>
+</ul>
+<h2 id="creating-a-new-razor-test-component">Creating a new Razor test component</h2>
+<p>To create Razor based tests, we need to create test components. All test components must inherit from <code>TestComponentBase</code>, e.g. by adding <code>@inherits TestComponentBase</code> to the top of your .razor file. The <code>TestComponentBase</code> contains all the logic for rendering components and correctly dispose of renderers, components, and HTML parsers after each test.</p>
+<p>For example:</p>
+<pre><code class="lang-cshtml">@inherits TestComponentBase
+
+&lt;Fixture Test=&quot;Test1&quot;&gt;
+  &lt;ComponentUnderTest&gt;
+    &lt;MyComponent /&gt;
+  &lt;/ComponentUnderTest&gt;
+&lt;/Fixture&gt;
+@code {
+  void Test1()
+  {
+    // assert and verification
+  }
+}
+</code></pre>
+<p>You will also need to import a few namespaces to make asserting and mocking possible. They are best placed in an <code>_Imports.razor</code> file next to your Razor test components, e.g.:</p>
+<pre><code class="lang-cshtml">@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Extensions.DependencyInjection
+@using Bunit
+@using Bunit.Mocking.JSInterop
+@using Xunit
+</code></pre>
+<blockquote>
+<p><strong>NOTE:</strong> The <code>_Imports.razor</code> has already been created for you if you are using the <a href="/docs/creating-a-new-test-project.html">Blazor test project template</a>.</p>
+</blockquote>
+<h2 id="defining-testsfixtures-in-test-components">Defining tests/fixtures in test components</h2>
+<p>When you have a Razor test component created, its time to add test cases/fixtures to it. This is done via the <code>&lt;Fixture&gt;</code> component and related test methods and child components.</p>
+<p>Lets look at what options we have by setting up an empty test case, first the code:</p>
+<pre><code class="lang-cshtml">&lt;Fixture Description=&quot;MyComponent renders as expected&quot; @* Optional - description is shown in error message if test fails *@
+         Setup=&quot;Setup&quot; @* Optional - method called first *@
+         SetupAsync=&quot;SetupAsync&quot; @* Optional - method called after Setup *@
+         Test=&quot;Test1&quot; @*  Optional - method called after Setup/SetupAsync *@
+         TestAsync=&quot;Test1Async&quot; @*  Optional - method called after Test *@
+         Tests=&quot;new Action[]{ Test2, Test3 }&quot;&gt; @*  Optional - methods are called after Test/TestAsync, one at the time *@
+         TestsAsync=&quot;new Func&lt;Task&gt;[]{ Test2Async, Test3Async }&quot;&gt; @*  Optional - methods are called after Tests, one at the time *@
+  &lt;ComponentUnderTest&gt;
+    &lt;MyComponent /&gt;
+  &lt;/ComponentUnderTest&gt;
+  &lt;Fragment id=&quot;first&quot;&gt;
+    &lt;h1&gt;First Fragment&lt;/h1&gt;
+  &lt;/Fragment&gt;
+  &lt;Fragment id=&quot;second&quot;&gt;
+    &lt;MyOtherComponent /&gt;
+  &lt;/Fragment&gt;
+&lt;/Fixture&gt;
+@code {
+  // Called first if present when added to the Setup parameter
+  // on a &lt;Fixture&gt; component (can be named anything)
+  void Setup()
+  {
+    // Add services and do other setup work in this method.
+    Services.AddMockJsRuntime();
+  }
+
+  // Called after Setup if present when added to the Setup parameter
+  // on a &lt;Fixture&gt; component (can be named anything)
+  Task SetupAsync() =&gt; Task.CompletedTask;
+
+  // Called after Setup when added to the Test parameter to a
+  // &lt;Fixture&gt; component (can be named anything)
+  void Test1()
+  {
+    // Renders a MyComponent component and assigns the result to
+    // a cut variable. CUT is short for Component Under Test.
+    IRenderedComponent&lt;MyComponent&gt; cut = GetComponentUnderTest&lt;MyComponent&gt;();
+
+    // Renders the markup in the &quot;first&quot; fragment by calling GetFragment without an id.
+    IRenderedFragment firstFragment = GetFragment();
+
+    // Renders the markup in the &quot;first&quot; fragment by calling GetFragment with an id.
+    IRenderedFragment alsoFirstFragment = GetFragment(&quot;first&quot;);
+
+    // Both first fragments refers to the same instance.
+    Assert.Equal(firstFragment, alsoFirstFragment);
+
+    // Renders a MyOtherComponent component defined in the second fragment.
+    IRenderedComponent&lt;MyOtherComponent&gt; myOtherComponent = GetFragment&lt;MyOtherComponent&gt;(&quot;second&quot;);
+  }
+
+  Task Test1Async() =&gt; Task.CompletedTask;
+
+  // Called after Test when added to the Tests parameter to a
+  // &lt;Fixture&gt; component (can be named anything). Methods in
+  // the Tests parameter is called in the order they are present in the
+  // array.
+  void Test2()
+  {
+    // do more testing on CUT, f1 and f2 by retriving them.
+  }
+
+  void Test3()
+  {
+    // do more testing on CUT, f1 and f2 by retriving them.
+  }
+
+  Task Test2Async() =&gt; Task.CompletedTask;
+
+  Task Test3Async() =&gt; Task.CompletedTask;
+}
+</code></pre>
+<p>The code above works as follows:</p>
+<ul>
+<li><p>All the <code>&lt;Fixture&gt;</code> components defined in the test component is found by the <code>TestComponentBase</code>'s test method. For each <code>Fixture</code>, it calls the related methods in the following order (if they are present):</p>
+<ol>
+<li><code>Setup</code></li>
+<li><code>SetupAsync</code></li>
+<li><code>Test</code></li>
+<li><code>TestAsync</code></li>
+<li><code>Tests</code>, one at the time, in the order they appear in the array.</li>
+<li><code>TestsAsync</code>, one at the time, in the order they appear in the array.</li>
+</ol>
+</li>
+<li><p>The <code>Description</code> parameter on the <code>&lt;Fixture&gt;</code> element is displayed in the test runners error window if the test fails.</p>
+</li>
+<li><p>It is inside child component <code>&lt;ComponentUnderTest&gt;</code> where you declare the component under test.</p>
+</li>
+<li><p>Any markup or component fragments that is needed for the test can be declared inside the optional <code>&lt;Fragment&gt;</code> components. The <code>Id</code> parameter is optional, and only needed if you have more than one.</p>
+</li>
+<li><p>To render and get the component under test or any of the fragments, use the <code>GetComponentUnderTest&lt;TComponent&gt;()</code> method, where <code>TComponent</code> is the type of the component you have defined under the <code>&lt;ComponentUnderTest&gt;</code> element.</p>
+</li>
+<li><p><code>GetFragment()</code> can be called both with and without a <code>TComponent</code>, e.g. if its just markup defined in it. If an <code>id</code> is not provided to the <code>GetFragment</code> method, the first declared <code>&lt;Fragment&gt;</code> is returned.</p>
+</li>
+<li><p>Inside the test methods you can do all the things you can in C#-based tests, e.g. assert against the CUT.</p>
+</li>
+</ul>
+<h2 id="executing-test-cases">Executing test cases</h2>
+<p>Since Blazor test component use xUnit under the hood as a test runner, you execute your tests them in exactly the same way as you would normal xUnit unit tests, i.e. by running <code>dotnet test</code> from the console or running the tests through the Test Explorer in Visual Studio.</p>
+<p>Do note the current limitations mentioned at the top of the page.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/egil/bunit/blob/master/bunit.docs/docs/razor-based-testing.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

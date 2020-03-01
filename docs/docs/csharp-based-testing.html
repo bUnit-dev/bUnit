@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>C# based testing | bUnit </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="C# based testing | bUnit ">
+    <meta name="generator" content="docfx 2.49.0.0">
+    <meta name="description" content="bUnit is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.">
+    <!--<link rel="shortcut icon" href="../favicon.ico">-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img height="90%" id="logo" class="img" src="..//images/blazor-logo.png" alt="bUnit">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="c-based-testing">C# based testing</h1>
+
+<p>This pages documents how to do Blazor/Razor component testing using just C#.</p>
+<p>Before you get started, make sure you have read the <a href="/docs/getting-started.html">Getting started</a> page and in particular the <a href="/docs/basics-of-blazor-component-testing.html">Basics of Blazor component testing</a> section. It wont take long, and it will ensure you get a good start at component testing.</p>
+<blockquote>
+<p><strong>NOTE:</strong> You are currently required to write your tests using the xUnit framework. If popular demand requires it, this library can be made test framework independent in the future.</p>
+</blockquote>
+<blockquote>
+<p><strong>TIP:</strong> Working with and asserting against the rendered component and its output is covered on the <a href="/docs/working-with-rendered-components-and-fragments.html">Working with rendered components and fragments</a> page.</p>
+</blockquote>
+<p><strong>Content:</strong></p>
+<ul>
+<li><a href="#creating-an-new-test-class">Creating an new test class</a></li>
+<li><a href="#executing-test-cases">Executing test cases</a></li>
+<li><a href="#rendering-components-during-tests">Rendering components during tests</a></li>
+<li><a href="#passing-parameters-to-components-during-render">Passing parameters and services to components during render</a></li>
+<li><a href="#registering-and-injecting-services-into-components-during-render">Registering and injecting services into components during render</a></li>
+</ul>
+<p><strong>Further reading:</strong></p>
+<ul>
+<li><a href="/docs/working-with-rendered-components-and-fragments.html">Working with rendered components and fragments</a></li>
+<li><a href="/docs/semantic-html-markup-comparison.html">Semantic HTML markup comparison</a></li>
+<li><a href="/docs/mocking-jsruntime.html">Mocking JsRuntime</a></li>
+<li><a href="/docs/csharp-test-examples.html">C# test examples</a></li>
+</ul>
+<h2 id="creating-an-new-test-class">Creating an new test class</h2>
+<p>All test classes are expected to inherit from <code>ComponentTestFixture</code>, which implements the <code>ITestContext</code> interface. The example below includes the needed using statements as well:</p>
+<pre><code class="lang-csharp">using System;
+using Bunit;
+using Bunit.Mocking.JSInterop;
+using Microsoft.Extensions.DependencyInjection;
+using Xunit;
+
+public class MyComponentTest : ComponentTestFixture
+{
+  [Fact]
+  public void MyFirstTest()
+  {
+    // ...
+  }
+}
+</code></pre>
+<p>The <code>ComponentTestFixture</code> contains all the logic for rendering components and correctly dispose of renderers, components, and HTML parsers after each test.</p>
+<h2 id="executing-test-cases">Executing test cases</h2>
+<p>Since Blazor component tests are just regular xUnit test/facts, you execute them in exactly the same way as you would normal tests, i.e. by running <code>dotnet test</code> from the console or running the tests through the Test Explorer in Visual Studio.</p>
+<h2 id="rendering-components-during-tests">Rendering components during tests</h2>
+<p>To render a component, we use the <code>RenderComponent&lt;TComponent&gt;(params ComponentParameter[] parameters)</code> method. It will take the component (<code>TComponent</code>) through its usual life-cycle from <code>OnInitialized</code> to <code>OnAfterRender</code>. For example:</p>
+<pre><code class="lang-csharp">public class ComponentTest : ComponentTestFixture // implements the ITestContext interface
+{
+  [Fact]
+  public void Test1()
+  {
+    // Renders a MyComponent component and assigns the result to
+    // a cut variable. CUT is short for Component Under Test.
+    IRenderedComponent&lt;MyComponent&gt; cut = RenderComponent&lt;MyComponent&gt;();
+  }
+}
+</code></pre>
+<p>The <code>RenderComponent&lt;TComponent&gt;(params ComponentParameter[] parameters) : IRenderedComponent&lt;MyComponent&gt;</code> method has these parts:</p>
+<ul>
+<li><code>TComponent</code> is the type of component you want to render.</li>
+<li><code>ComponentParameter[] parameters</code> represents parameters that will be passed to the component during render.</li>
+<li><code>IRenderedComponent&lt;TComponent&gt;</code> is the representation of the rendered component. Working with the rendered component and its output is covered on the <a href="/docs/working-with-rendered-components-and-fragments.html">Working with rendered components and fragments</a> page.</li>
+</ul>
+<h3 id="passing-parameters-to-components-during-render">Passing parameters to components during render</h3>
+<p>There are four types of parameters you can pass to a component being rendered through the <code>RenderComponent()</code> method:</p>
+<ul>
+<li>Cascading values (normally provided by the <code>&lt;CascadingValue&gt;</code> component in <code>.razor</code> files).</li>
+<li>Event callbacks (of type <code>EventCallback&lt;T&gt;</code> or <code>EventCallback</code>).</li>
+<li>Child content, render fragments, or templates (of type <code>RenderFragment</code> and <code>RenderFragment&lt;T&gt;</code>).</li>
+<li>All other normal parameters, including unmatched parameters.</li>
+</ul>
+<p>In addition to parameters, services can also be registered in the <code>ITestContext</code> and injected during component render.</p>
+<p>To show how, let us look at a few examples that correctly pass parameters and services to the following <code>AllTypesOfParams&lt;TItem&gt;</code> component:</p>
+<pre><code class="lang-cshtml">@typeparam TItem
+@inject IJSRuntime jsRuntime
+@code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary&lt;string, object&gt; Attributes { get; set; }
+
+    [Parameter]
+    public string RegularParam { get; set; }
+
+    [CascadingParameter]
+    public int UnnamedCascadingValue { get; set; }
+
+    [CascadingParameter(Name = &quot;Named&quot;)]
+    public int NamedCascadingValue { get; set; }
+
+    [Parameter]
+    public EventCallback NonGenericCallback { get; set; }
+
+    [Parameter]
+    public EventCallback&lt;EventArgs&gt; GenericCallback { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment OtherContent { get; set; }
+
+    [Parameter]
+    public RenderFragment&lt;TItem&gt; ItemTemplate { get; set; }
+}
+</code></pre>
+<p>And to render the <code>AllTypesOfParams&lt;TItem&gt;</code> component with all possible parameters set, use the following code:</p>
+<pre><code class="lang-csharp">var cut = RenderComponent&lt;AllTypesOfParams&lt;string&gt;&gt;(
+    // pass name-value attribute to be captured by the Attributes parameter
+    (&quot;some-unmatched-attribute&quot;, &quot;unmatched value&quot;),
+    // pass value to the RegularParam parameter
+    (&quot;RegularParam&quot;, &quot;some value&quot;),
+    // pass value to the UnnamedCascadingValue cascading parameter
+    CascadingValue(42),
+    // pass value to the NamedCascadingValue cascading parameter
+    CascadingValue(&quot;Named&quot;, 1337),
+     // pass action callback to the NonGenericCallback parameter
+    EventCallback(&quot;NonGenericCallback&quot;, () =&gt; { /* logic here */ }),
+     // pass action callback to the GenericCallback parameter
+    EventCallback(&quot;GenericCallback&quot;, (EventArgs args) =&gt; { /* logic here */ }),
+    // pass render fragment to the ChildContent parameter
+    ChildContent(&quot;&lt;h1&gt;hello world&lt;/h1&gt;&quot;),
+    // paas render fragment to the OtherContent parameter
+    RenderFragment(&quot;OtherContent&quot;, &quot;&lt;h1&gt;hello world&lt;/h1&gt;&quot;),
+    // pass an template render fragment to the ItemTemplate parameter
+    Template&lt;string&gt;(&quot;ItemTemplate&quot;, (item) =&gt; (builder) =&gt; { })
+);
+</code></pre>
+<ul>
+<li><strong>Regular parameters</strong> can easily be passed as <code>(string name, object? value)</code> pairs (they are automatically converted to a ComponentParameter). We see two examples of that with the <em>&quot;RegularParam&quot;</em> and the unmatched attribute <em>&quot;some-unmatched-attribute&quot;</em>.</li>
+<li><strong>Cascading values</strong> can be passed both as named and unnamed via the <code>CascadingValue</code> helper method, as we see in the example above with <em>&quot;UnnamedCascadingValue&quot;</em> and <em>&quot;NamedCascadingValue&quot;</em>.</li>
+<li><strong>Event callbacks</strong> can be passed as <code>Func</code> and <code>Action</code> types with and without input and return types, using the <code>EventCallback</code> helper method. The example above shows two examples in <em>&quot;NonGenericCallback&quot;</em> and <em>&quot;GenericCallback&quot;</em></li>
+<li><strong>Child content</strong> and general <strong>Render fragments</strong> is passed to a component using the <code>ChildContent</code> or <code>RenderFragment</code> helper methods. The <code>ChildContent</code> and <code>RenderFragment</code> methods has two overloads, one that takes a (markup) string and a generic version, e.g. for child content, <code>ChildContent&lt;TComponent&gt;(params ComponentParameter[] parameters)</code>, which will generate the necessary render fragment to render a component as the child content. Note that the methods takes the same input arguments as the <code>RenderComponent</code> method, which means it too can be passed all the types of parameters shown in the example above.</li>
+<li><strong>Templates</strong> render fragments can be passed via the <code>Template&lt;TValue&gt;</code> method, which takes the name of the parameter and a <code>RenderFragment&lt;TValue&gt;</code> as input. Unfortunately, you will have to turn to the <code>RenderTreeBuilder</code> API to create templates at the moment.</li>
+</ul>
+<p><em><strong>TIP:</strong></em> Use the <code>nameof(Component.Parameter)</code> method to get parameter names in a refactor-safe way. For example, if we have a component <code>MyComponent</code> with a parameter named <code>RegularParam</code>, then use this when rendering:</p>
+<pre><code class="lang-csharp">var cut = RenderComponent&lt;MyComponent&gt;(
+  (nameof(MyComponent.RegularParam), &quot;some value&quot;)
+);
+</code></pre>
+<h3 id="registering-and-injecting-services-into-components-during-render">Registering and injecting services into components during render</h3>
+<p>When testing components that require services to be injected into them, i.e. <code>@inject IJsRuntime jsRuntime</code>, you must register the services or a mock thereof before you render your component.</p>
+<p>This is done via the <code>ITestContext.Services</code> property. Once a component has been rendered, no more services can be added to the service collection.</p>
+<p>If for example we want to render the with a dependency on an <code>IMyService</code>, we first have to call one of the <code>AddSingleton</code> methods on the service collection and register it. All the normal <code>AddSingleton</code> <code>ServiceCollection</code> overloads are available.</p>
+<p>In the case if a <code>IJsRuntime</code> dependency, we can however use the built-in <a href="/docs/mocking-jsruntime.html">Mocking JsRuntime</a>. For example:</p>
+<pre><code class="lang-csharp">public class ComponentTest : ComponentTestFixture // implements the ITestContext interface
+{
+  [Fact]
+  public void Test1()
+  {
+    // Add an custom service to the services collection
+    Services.AddSingleton&lt;IMyService&gt;(new MyService());
+
+    // Add the Mock JsRuntime service
+    Services.AddMockJsRuntime();
+
+    // Renders a MyComponent component and assigns the result to
+    // a cut variable. CUT is short for Component Under Test.
+    IRenderedComponent&lt;MyComponent&gt; cut = RenderComponent&lt;MyComponent&gt;();
+  }
+}
+</code></pre>
+<p>See the page <a href="/docs/mocking-jsruntime.html">Mocking JsRuntime</a> for more details mock.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/egil/bunit/blob/master/bunit.docs/docs/csharp-based-testing.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
