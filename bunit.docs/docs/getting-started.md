@@ -4,8 +4,8 @@ Testing Blazor components is **_not_** the same as testing a regular class. It b
 
 Thus, for first time Blazor component testers, the recommended reading is (5-10 minutes):
 
-- [Basics of Blazor component testing](/docs/Basics-of-Blazor-component-testing.html)
-- [Creating a new test project](/docs/Creating-a-new-test-project.html)
+- [Basics of Blazor component testing](/docs/basics-of-blazor-component-testing.html)
+- [Creating a new test project](/docs/creating-a-new-test-project.html)
 
 If you prefer a **video based tutorial**, check out:
 

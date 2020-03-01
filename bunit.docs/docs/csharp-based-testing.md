@@ -2,11 +2,11 @@
 
 This pages documents how to do Blazor/Razor component testing using just C#.
 
-Before you get started, make sure you have read the [Getting started](/docs/Getting-Started.html) page and in particular the [Basics of Blazor component testing](/docs/Basics-of-Blazor-component-testing.html) section. It wont take long, and it will ensure you get a good start at component testing.
+Before you get started, make sure you have read the [Getting started](/docs/getting-started.html) page and in particular the [Basics of Blazor component testing](/docs/basics-of-blazor-component-testing.html) section. It wont take long, and it will ensure you get a good start at component testing.
 
 > **NOTE:** You are currently required to write your tests using the xUnit framework. If popular demand requires it, this library can be made test framework independent in the future.
 
-> **TIP:** Working with and asserting against the rendered component and its output is covered on the [Working with rendered components and fragments](/docs/Working-with-rendered-components-and-fragments.html) page.
+> **TIP:** Working with and asserting against the rendered component and its output is covered on the [Working with rendered components and fragments](/docs/working-with-rendered-components-and-fragments.html) page.
 
 **Content:**
 
@@ -18,10 +18,10 @@ Before you get started, make sure you have read the [Getting started](/docs/Gett
 
 **Further reading:**
 
-- [Working with rendered components and fragments](/docs/Working-with-rendered-components-and-fragments.html)
-- [Semantic HTML markup comparison](/docs/Semantic-HTML-markup-comparison.html)
-- [Mocking JsRuntime](/docs/Mocking-JsRuntime.html)
-- [C# test examples](/docs/CSharp-test-examples.html)
+- [Working with rendered components and fragments](/docs/working-with-rendered-components-and-fragments.html)
+- [Semantic HTML markup comparison](/docs/semantic-html-markup-comparison.html)
+- [Mocking JsRuntime](/docs/mocking-jsruntime.html)
+- [C# test examples](/docs/csharp-test-examples.html)
 
 ## Creating an new test class
 
@@ -71,7 +71,7 @@ The `RenderComponent<TComponent>(params ComponentParameter[] parameters) : IRend
 
 - `TComponent` is the type of component you want to render.
 - `ComponentParameter[] parameters` represents parameters that will be passed to the component during render.
-- `IRenderedComponent<TComponent>` is the representation of the rendered component. Working with the rendered component and its output is covered on the [Working with rendered components and fragments](/docs/Working-with-rendered-components-and-fragments.html) page.
+- `IRenderedComponent<TComponent>` is the representation of the rendered component. Working with the rendered component and its output is covered on the [Working with rendered components and fragments](/docs/working-with-rendered-components-and-fragments.html) page.
 
 ### Passing parameters to components during render
 
@@ -166,7 +166,7 @@ This is done via the `ITestContext.Services` property. Once a component has been
 
 If for example we want to render the with a dependency on an `IMyService`, we first have to call one of the `AddSingleton` methods on the service collection and register it. All the normal `AddSingleton` `ServiceCollection` overloads are available.
 
-In the case if a `IJsRuntime` dependency, we can however use the built-in [Mocking JsRuntime](/docs/Mocking-JsRuntime.html). For example:
+In the case if a `IJsRuntime` dependency, we can however use the built-in [Mocking JsRuntime](/docs/mocking-jsruntime.html). For example:
 
 ```csharp
 public class ComponentTest : ComponentTestFixture // implements the ITestContext interface
@@ -187,12 +187,4 @@ public class ComponentTest : ComponentTestFixture // implements the ITestContext
 }
 ```
 
-See the page [Mocking JsRuntime](/docs/Mocking-JsRuntime.html) for more details mock.
-
-## Further reading
-
-To learn how to work with and assert against `IRenderedComponent`s visit the related pages:
-
-- [Working with rendered components and fragments](/docs/Working-with-rendered-components-and-fragments.html)
-- [Semantic HTML markup comparison](/docs/Semantic-HTML-markup-comparison.html)
-- [Mocking JsRuntime](/docs/Mocking-JsRuntime.html)
+See the page [Mocking JsRuntime](/docs/mocking-jsruntime.html) for more details mock.

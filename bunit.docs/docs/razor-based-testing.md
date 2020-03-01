@@ -2,14 +2,14 @@
 
 This pages documents how to do Blazor/Razor component testing from `.razor` files.
 
-Before you get started, make sure you have read the [Getting started](/docs/Getting-Started.html) page and in particular the [Basics of Blazor component testing](/docs/Basics-of-Blazor-component-testing.html) section. It wont take long, and it will ensure you get a good start at component testing.
+Before you get started, make sure you have read the [Getting started](/docs/getting-started.html) page and in particular the [Basics of Blazor component testing](/docs/basics-of-blazor-component-testing.html) section. It wont take long, and it will ensure you get a good start at component testing.
 
 > **NOTE:** This feature is _EXPERIMENTAL_ and syntax and API will likely changed. Here are a few limitations to be aware of at the moment:
 >
 > - The xUnit test runner can detect and execute tests in Razor test components, but is not able to distinguish the individual `<Fixture>`'s from each other. They are all executed together, one at the time. The solution is planned, see the [related issue](https://github.com/egil/razor-components-testing-library/issues/4) for details.
-> - Go to the [Contribute](https://github.com/egil/razor-components-testing-library/wiki/Contribute) page for info on how to provide feedback and suggestions.
+> - Go to the [Contribute](/docs/contribute) page for info on how to provide feedback and suggestions.
 
-> **TIP:** Working with and asserting against the rendered component and its output is covered on the [Working with rendered components and fragments](/docs/Working-with-rendered-components-and-fragments.html) page.
+> **TIP:** Working with and asserting against the rendered component and its output is covered on the [Working with rendered components and fragments](/docs/working-with-rendered-components-and-fragments.html) page.
 
 **Content:**
 
@@ -19,10 +19,10 @@ Before you get started, make sure you have read the [Getting started](/docs/Gett
 
 **Further reading:**
 
-- [Working with rendered components and fragments](/docs/Working-with-rendered-components-and-fragments.html)
-- [Semantic HTML markup comparison](/docs/Semantic-HTML-markup-comparison.html)
-- [Mocking JsRuntime](/docs/Mocking-JsRuntime.html)
-- [Razor test examples](/docs/Razor-test-examples.html)
+- [Working with rendered components and fragments](/docs/working-with-rendered-components-and-fragments.html)
+- [Semantic HTML markup comparison](/docs/semantic-html-markup-comparison.html)
+- [Mocking JsRuntime](/docs/mocking-jsruntime.html)
+- [Razor test examples](/docs/razor-test-examples.html)
 
 ## Creating a new Razor test component
 
@@ -56,7 +56,7 @@ You will also need to import a few namespaces to make asserting and mocking poss
 @using Xunit
 ```
 
-> **NOTE:** The `_Imports.razor` has already been created for you if you are using the [Blazor test project template](/docs/Creating-a-new-test-project.html).
+> **NOTE:** The `_Imports.razor` has already been created for you if you are using the [Blazor test project template](/docs/creating-a-new-test-project.html).
 
 ## Defining tests/fixtures in test components
 
