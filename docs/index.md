@@ -16,3 +16,4 @@ Shout outs and a big thank you to the contributors to this library. Here they ar
 
 - [Michael J Conrad (@Siphonophora)](https://github.com/Siphonophora)
 - [Rastislav Novotný (@duracellko)](https://github.com/duracellko)
+x
