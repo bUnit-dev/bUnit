@@ -6,9 +6,12 @@ on:
       - master
     paths-ignore:
       - '!docs/**'
+      - '.github/**'
 
 env:
   VERSION: '1.0.0-beta-6'
+  BRANCH: "master"
+  COMMIT: ""
 
 jobs:
   build:
@@ -20,7 +23,7 @@ jobs:
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["*.md", "**/*.md"]'
+          files: '["docs/*.md", "docs/**/*.md", "*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.101'
