@@ -17,8 +17,8 @@
     "content": [
       {
         "files": [
-          "api/**.yml"//,
-          //"api/index.md"
+          "api/**.yml",
+          "api/index.md"
         ]
       },
       {
