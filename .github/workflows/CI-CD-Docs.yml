@@ -38,3 +38,6 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.GH_DOCS }}
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: docs/_site # The folder the action should deploy.
+          CLEAN: true
+          CLEAN_EXCLUDE: '["CNAME"]'
+          DEBUG: true
