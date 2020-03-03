@@ -2,14 +2,14 @@ name: Build and Deploy Docs
 
 on:
   push:
-    branches: 
-      - master
+    branches-ignore: 
+      - '!master'
     paths-ignore:
-    - 'docs/**'
-    - '.github/**'
+      - 'docs/**'
+      - '.github/**'
 
 env:
-  VERSION: '0.0.0'
+  VERSION: '1.0.0-beta-6'
 
 jobs:
   build:
@@ -17,14 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          persist-credentials: false
-      - name: Get current version
-        id: currentVersion
-        uses: "WyriHaximus/github-action-get-previous-tag@master"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"  
-      - name: Set version env
-        run: echo "::set-env name=VERSION::${steps.currentVersion.outputs.tag\/v/}"      
+          persist-credentials: false      
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
