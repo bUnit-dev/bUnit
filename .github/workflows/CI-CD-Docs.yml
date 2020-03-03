@@ -2,8 +2,8 @@ name: Build and Deploy Docs
 
 on:
   push:
-    branches-ignore: 
-      - '!master'
+    branches: 
+      - 'master'
     paths-ignore:
       - 'docs/**'
       - '.github/**'
