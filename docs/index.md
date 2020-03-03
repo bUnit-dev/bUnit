@@ -20,4 +20,3 @@ Shout outs and a big thank you to the contributors to this library. Here they ar
 ### Version info:
 
 - #{VERSION}#
-- #{BRANCH}#
