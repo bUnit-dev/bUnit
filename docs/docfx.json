@@ -4,9 +4,10 @@
       "src": [
         {
           "files": [
-            "../src/bunit.csproj"
+            "src/bunit.csproj"
           ]
-        }
+        },
+        "cwd": ".."
       ],
       "dest": "api",
       "disableGitFeatures": false,
