@@ -4,9 +4,8 @@
       "src": [
         {
           "files": [
-            "bunit.csproj"
-          ],
-          "src": "../src"
+            "../src/bunit.csproj"
+          ]
         }
       ],
       "dest": "api",
@@ -49,6 +48,7 @@
         ],
         "exclude": [
           "obj/**",
+          "bin/**",
           "_site/**"
         ]
       }
