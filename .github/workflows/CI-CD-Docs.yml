@@ -10,8 +10,9 @@ on:
 
 env:
   VERSION: '1.0.0-beta-6'
-  BRANCH: "master"
-  COMMIT: ""
+  BRANCH: 'master'
+  COMMIT: ''
+  DOCFX_SOURCE_BRANCH_NAME: 'master'
 
 jobs:
   build:
@@ -24,10 +25,13 @@ jobs:
         uses: cschleiden/replace-tokens@v1
         with:
           files: '["docs/*.md", "docs/**/*.md", "*.csproj", "**/*.csproj"]'
-      - uses: nikeee/docfx-action@master
-        name: Build Documentation
+      - uses: actions/setup-dotnet@v1
         with:
-          args: docs/docfx.json
+          dotnet-version: '3.1.101'      
+      - name: Building library and docs
+        run: |
+          dotnet build src/bunit.csproj
+          dotnet build docs/docs.csproj
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
