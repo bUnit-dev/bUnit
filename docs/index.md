@@ -6,7 +6,7 @@
 
 # bUnit - a testing library for Blazor Components
 
-**bUnit**, previously known as **Blazor Components Testing Library**, is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
+**bUnit**, previously known as **Blazor Components Testing Library**, is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax, and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
 
 This library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. To see how, go to the [Documentation pages](/docs).
 
