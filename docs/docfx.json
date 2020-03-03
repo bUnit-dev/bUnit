@@ -3,11 +3,10 @@
     {
       "src": [
         {
-          "files": [
-            "src/bunit.csproj"
-          ]
-        },
-        "cwd": ".."
+          "files": [ "bunit.csproj" ],
+          "exclude": [ "**/bin/**", "**/obj/**" ],
+          "src": "../src"
+        }
       ],
       "dest": "api",
       "disableGitFeatures": false,
