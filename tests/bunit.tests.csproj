@@ -2,9 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <IsPackable>false</IsPackable>
-    <RootNamespace>Bunit</RootNamespace>
-    <AssemblyName>Bunit.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

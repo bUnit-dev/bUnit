@@ -3,6 +3,12 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>
+    <Authors>Egil Hansen</Authors>
+    <Company>Egil Hansen</Company>
+    <Copyright>Egil Hansen</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/egil/bunit</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/egil/bunit</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
