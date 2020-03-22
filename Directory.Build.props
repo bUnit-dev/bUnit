@@ -9,6 +9,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/egil/bunit</PackageProjectUrl>
     <RepositoryUrl>https://github.com/egil/bunit</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryBranch>#{BRANCH}#</RepositoryBranch>
+    <RepositoryCommit>#{COMMIT}#</RepositoryCommit>
   </PropertyGroup>
 
   <ItemGroup>
