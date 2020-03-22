@@ -10,9 +10,6 @@
   <PropertyGroup>
     <PackageId>bunit</PackageId>
     <Title>bUnit</Title>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryBranch>#{BRANCH}#</RepositoryBranch>
-    <RepositoryCommit>#{COMMIT}#</RepositoryCommit>
     <PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
     <Product>bUnit</Product>
     <Description>
