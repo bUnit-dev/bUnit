@@ -3,6 +3,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Removed
+- The generic collection assertion methods `ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T, int>[] elementInspectors)` and `ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T>[] elementInspectors)` have been removed from the library.
+
 ## [1.0.0-beta-6] - 2020-03-01
 This release includes a **name change from Blazor Components Testing Library to bUnit**. It also brings along two extra helper methods for working with asynchronously rendering components during testing, and a bunch of internal optimizations and tweaks to the code.
 
