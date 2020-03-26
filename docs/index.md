@@ -10,7 +10,7 @@
 
 This library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. To see how, go to the [Documentation pages](/docs).
 
-To browse the source code and provide feedback, head to https://github.com/egil/bunit/
+To browse the source code and provide feedback, head to https://github.com/egil/bunit/.
 
 ### Contributors
 
@@ -18,5 +18,3 @@ Shout outs and a big thank you to the contributors to this library. Here they ar
 
 - [Michael J Conrad (@Siphonophora)](https://github.com/Siphonophora)
 - [Rastislav Novotný (@duracellko)](https://github.com/duracellko)
-
-Version: #{VERSION}#
