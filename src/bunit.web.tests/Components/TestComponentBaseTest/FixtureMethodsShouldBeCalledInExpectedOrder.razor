@@ -1,94 +1,94 @@
-﻿@inherits TestComponentBase
+@inherits TestComponentBase
 
-<Fixture Setup="Setup" 
-         Test="Test1" 
-         TestAsync="TestAsync1" 
-         Tests=@(new Action[] { Test2, Test3 })
-         TestsAsync=@(new Func<Task>[] { TestAsync2, TestAsync3 })>
-    <ComponentUnderTest><div /></ComponentUnderTest>
+<Fixture Setup="Setup"
+		 Test="Test1"
+		 TestAsync="TestAsync1"
+		 Tests=@(new Action[] { Test2, Test3 })
+		 TestsAsync=@(new Func<Task>[] { TestAsync2, TestAsync3 })>
+	<ComponentUnderTest><div /></ComponentUnderTest>
 </Fixture>
 @code{
-    List<string> callOrder = new List<string>();
-    IRazorTestContext? seenContext;
+	List<string> callOrder = new List<string>();
+	IRazorTestContext? seenContext;
 
-    void Setup()
-    {
-        seenContext = this;
-        callOrder.Add(nameof(Setup));
-        callOrder.Count.ShouldBe(1);
-        callOrder[0].ShouldBe(nameof(Setup));
-    }
+	void Setup()
+	{
+		seenContext = this;
+		callOrder.Add(nameof(Setup));
+		callOrder.Count.ShouldBe(1);
+		callOrder[0].ShouldBe(nameof(Setup));
+	}
 
-    void Test1()
-    {
-        callOrder.Add(nameof(Test1));
-        callOrder.Count.ShouldBe(2);
-        callOrder[0].ShouldBe(nameof(Setup));
-        callOrder[1].ShouldBe(nameof(Test1));
-        this.ShouldBe(seenContext);
-    }
+	void Test1()
+	{
+		callOrder.Add(nameof(Test1));
+		callOrder.Count.ShouldBe(2);
+		callOrder[0].ShouldBe(nameof(Setup));
+		callOrder[1].ShouldBe(nameof(Test1));
+		this.ShouldBe(seenContext);
+	}
 
-    Task TestAsync1()
-    {
-        callOrder.Add(nameof(TestAsync1));
-        callOrder.Count.ShouldBe(3);
-        callOrder[0].ShouldBe(nameof(Setup));
-        callOrder[1].ShouldBe(nameof(Test1));
-        callOrder[2].ShouldBe(nameof(TestAsync1));
-        this.ShouldBe(seenContext);
-        return Task.CompletedTask;
-    }
+	Task TestAsync1()
+	{
+		callOrder.Add(nameof(TestAsync1));
+		callOrder.Count.ShouldBe(3);
+		callOrder[0].ShouldBe(nameof(Setup));
+		callOrder[1].ShouldBe(nameof(Test1));
+		callOrder[2].ShouldBe(nameof(TestAsync1));
+		this.ShouldBe(seenContext);
+		return Task.CompletedTask;
+	}
 
-    void Test2()
-    {
-        callOrder.Add(nameof(Test2));
-        callOrder.Count.ShouldBe(4);
-        callOrder[0].ShouldBe(nameof(Setup));
-        callOrder[1].ShouldBe(nameof(Test1));
-        callOrder[2].ShouldBe(nameof(TestAsync1));
-        callOrder[3].ShouldBe(nameof(Test2));
-        this.ShouldBe(seenContext);
-    }
+	void Test2()
+	{
+		callOrder.Add(nameof(Test2));
+		callOrder.Count.ShouldBe(4);
+		callOrder[0].ShouldBe(nameof(Setup));
+		callOrder[1].ShouldBe(nameof(Test1));
+		callOrder[2].ShouldBe(nameof(TestAsync1));
+		callOrder[3].ShouldBe(nameof(Test2));
+		this.ShouldBe(seenContext);
+	}
 
-    void Test3()
-    {
-        callOrder.Add(nameof(Test3));
-        callOrder.Count.ShouldBe(5);
-        callOrder[0].ShouldBe(nameof(Setup));
-        callOrder[1].ShouldBe(nameof(Test1));
-        callOrder[2].ShouldBe(nameof(TestAsync1));
-        callOrder[3].ShouldBe(nameof(Test2));
-        callOrder[4].ShouldBe(nameof(Test3));
+	void Test3()
+	{
+		callOrder.Add(nameof(Test3));
+		callOrder.Count.ShouldBe(5);
+		callOrder[0].ShouldBe(nameof(Setup));
+		callOrder[1].ShouldBe(nameof(Test1));
+		callOrder[2].ShouldBe(nameof(TestAsync1));
+		callOrder[3].ShouldBe(nameof(Test2));
+		callOrder[4].ShouldBe(nameof(Test3));
 
-        this.ShouldBe(seenContext);
-    }
+		this.ShouldBe(seenContext);
+	}
 
-    Task TestAsync2()
-    {
-        callOrder.Add(nameof(TestAsync2));
-        callOrder.Count.ShouldBe(6);
-        callOrder[0].ShouldBe(nameof(Setup));
-        callOrder[1].ShouldBe(nameof(Test1));
-        callOrder[2].ShouldBe(nameof(TestAsync1));
-        callOrder[3].ShouldBe(nameof(Test2));
-        callOrder[4].ShouldBe(nameof(Test3));
-        callOrder[5].ShouldBe(nameof(TestAsync2));
-        this.ShouldBe(seenContext);
-        return Task.CompletedTask;
-    }
+	Task TestAsync2()
+	{
+		callOrder.Add(nameof(TestAsync2));
+		callOrder.Count.ShouldBe(6);
+		callOrder[0].ShouldBe(nameof(Setup));
+		callOrder[1].ShouldBe(nameof(Test1));
+		callOrder[2].ShouldBe(nameof(TestAsync1));
+		callOrder[3].ShouldBe(nameof(Test2));
+		callOrder[4].ShouldBe(nameof(Test3));
+		callOrder[5].ShouldBe(nameof(TestAsync2));
+		this.ShouldBe(seenContext);
+		return Task.CompletedTask;
+	}
 
-    Task TestAsync3()
-    {
-        callOrder.Add(nameof(TestAsync3));
-        callOrder.Count.ShouldBe(7);
-        callOrder[0].ShouldBe(nameof(Setup));
-        callOrder[1].ShouldBe(nameof(Test1));
-        callOrder[2].ShouldBe(nameof(TestAsync1));
-        callOrder[3].ShouldBe(nameof(Test2));
-        callOrder[4].ShouldBe(nameof(Test3));
-        callOrder[5].ShouldBe(nameof(TestAsync2));
-        callOrder[6].ShouldBe(nameof(TestAsync3));
-        this.ShouldBe(seenContext);
-        return Task.CompletedTask;
-    }
+	Task TestAsync3()
+	{
+		callOrder.Add(nameof(TestAsync3));
+		callOrder.Count.ShouldBe(7);
+		callOrder[0].ShouldBe(nameof(Setup));
+		callOrder[1].ShouldBe(nameof(Test1));
+		callOrder[2].ShouldBe(nameof(TestAsync1));
+		callOrder[3].ShouldBe(nameof(Test2));
+		callOrder[4].ShouldBe(nameof(Test3));
+		callOrder[5].ShouldBe(nameof(TestAsync2));
+		callOrder[6].ShouldBe(nameof(TestAsync3));
+		this.ShouldBe(seenContext);
+		return Task.CompletedTask;
+	}
 }

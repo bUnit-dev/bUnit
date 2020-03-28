@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
@@ -9,8 +9,8 @@ namespace Bunit
     /// </summary>
     public abstract class FragmentBase : IComponent
     {
-        internal static void NoopTestMethod() { }
-        internal static Task NoopTestMethodAsync() => Task.CompletedTask;
+        protected static void NoopTestMethod() { }
+        protected static Task NoopTestMethodAsync() => Task.CompletedTask;
 
         /// <summary>
         /// Gets or sets the child content of the fragment.

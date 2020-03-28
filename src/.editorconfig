@@ -13,6 +13,9 @@ dotnet_sort_system_directives_first = true
 [*.{xml,config,*proj,nuspec,props,resx,targets,yml,tasks}]
 indent_size = 2
 
+[*.{htm,html,css,scss}]
+indent_size = 2
+
 [*.json]
 indent_size = 2
 

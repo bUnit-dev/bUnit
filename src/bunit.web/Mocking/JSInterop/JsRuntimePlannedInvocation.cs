@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
 
@@ -104,6 +104,7 @@ namespace Bunit.Mocking.JSInterop
 
         internal Task<TResult> RegisterInvocation(JsRuntimeInvocation invocation)
         {
+			// TODO: https://github.com/egil/bunit/issues/78
             if (_completionSource.Task.IsCompleted)
                 _completionSource = new TaskCompletionSource<TResult>();
 
