@@ -19,7 +19,7 @@ namespace Bunit
 
 		public TestServiceProvider Services => throw new NotImplementedException();
 
-		public TestRenderer Renderer => throw new NotImplementedException();
+		public IObservable<RenderEvent> RenderEvents => throw new NotImplementedException();
 
 		public static IEnumerable<RazorTest[]> RazorTestsSource()
 		{

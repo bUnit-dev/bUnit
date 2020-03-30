@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+using System;
+using AngleSharp.Browser;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
 {
@@ -16,8 +19,8 @@ namespace Bunit
         /// <summary>
         /// Instantiates a <see cref="RenderedFragment"/> which will render the <paramref name="renderFragment"/> passed to it.
         /// </summary>
-        public RenderedFragment(ITestContext testContext, RenderFragment renderFragment)
-            : base(testContext, renderFragment)
+        public RenderedFragment(IServiceProvider services, RenderFragment renderFragment)
+            : base(services, renderFragment)
         {
             FirstRenderMarkup = Markup;
         }

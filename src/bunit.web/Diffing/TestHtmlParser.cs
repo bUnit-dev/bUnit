@@ -1,4 +1,4 @@
-﻿using AngleSharp.Html.Parser;
+using AngleSharp.Html.Parser;
 using AngleSharp;
 using AngleSharp.Dom;
 using System;
@@ -33,16 +33,15 @@ namespace Bunit.Diffing
 
         /// <summary>
         /// Creates an instance of the parser with a AngleSharp context 
-        /// with the <paramref name="testRenderer"/> and <paramref name="comparer"/> registered.
+        /// with the <paramref name="testRenderer"/> registered.
         /// </summary>
         /// <param name="testRenderer"></param>
-        /// <param name="comparer"></param>
-        public TestHtmlParser(TestRenderer testRenderer, HtmlComparer comparer)
+        public TestHtmlParser(TestRenderer testRenderer)
         {
             var config = Configuration.Default
                 .WithCss()
                 .With(testRenderer)
-                .With(comparer)
+                .With(new HtmlComparer())
                 .With(this);
 
             _context = BrowsingContext.New(config);

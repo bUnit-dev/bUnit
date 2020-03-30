@@ -1,4 +1,4 @@
-﻿using AngleSharp.Dom;
+using AngleSharp.Dom;
 using Bunit.Diffing;
 using Bunit.Mocking.JSInterop;
 using Microsoft.AspNetCore.Components;
@@ -15,41 +15,36 @@ namespace Bunit
     /// </summary>
     public class TestContext : ITestContext, IDisposable
     {
-        private readonly Lazy<TestRenderer> _renderer;
-        private readonly Lazy<TestHtmlParser> _htmlParser;
-
-        /// <inheritdoc/>
-        public virtual TestRenderer Renderer => _renderer.Value;
+		private TestRenderer? _testRenderer;
 
         /// <inheritdoc/>
         public virtual TestServiceProvider Services { get; } = new TestServiceProvider();
 
-        /// <summary>
-        /// Creates a new instance of the <see cref="TestContext"/> class.
-        /// </summary>
-        public TestContext()
+		/// <inheritdoc/>
+		public IObservable<RenderEvent> RenderEvents
+		{
+			get
+			{
+				if(_testRenderer is null)
+					_testRenderer = Services.GetRequiredService<TestRenderer>();
+				return _testRenderer.RenderEvents;
+			}
+		}
+
+		/// <summary>
+		/// Creates a new instance of the <see cref="TestContext"/> class.
+		/// </summary>
+		public TestContext()
         {
             Services.AddSingleton<IJSRuntime>(new PlaceholderJsRuntime());
-
-            _renderer = new Lazy<TestRenderer>(() =>
-            {
-                var loggerFactory = Services.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance;
-                return new TestRenderer(Services, loggerFactory);
-            });
-            _htmlParser = new Lazy<TestHtmlParser>(() =>
-            {
-                return new TestHtmlParser(Renderer, new HtmlComparer());
-            });
+			Services.AddSingleton<TestRenderer>(srv => new TestRenderer(srv, srv.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance));
+			Services.AddSingleton<TestHtmlParser>(srv => new TestHtmlParser(srv.GetRequiredService<TestRenderer>()));
         }
-
-        /// <inheritdoc/>
-        public virtual INodeList CreateNodes(string markup)
-            => _htmlParser.Value.Parse(markup);
 
         /// <inheritdoc/>
         public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
         {
-            var result = new RenderedComponent<TComponent>(this, parameters);
+            var result = new RenderedComponent<TComponent>(Services, parameters);
             return result;
         }
 
@@ -63,11 +58,6 @@ namespace Bunit
             {
                 if (disposing)
                 {
-                    if (_renderer.IsValueCreated)
-                        _renderer.Value.Dispose();
-                    if (_htmlParser.IsValueCreated)
-                        _htmlParser.Value.Dispose();
-
                     Services.Dispose();
                 }
                 _disposed = true;

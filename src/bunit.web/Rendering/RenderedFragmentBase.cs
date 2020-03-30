@@ -1,147 +1,154 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
+using Bunit.Diffing;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
 {
-    /// <summary>
-    /// Represents an abstract <see cref="IRenderedFragment"/> with base functionality.
-    /// </summary>
-    public abstract class RenderedFragmentBase : IRenderedFragment
-    {
-        private readonly ConcurrentRenderEventSubscriber _renderEventSubscriber;
-        private string? _snapshotMarkup;
-        private string? _latestRenderMarkup;
-        private INodeList? _firstRenderNodes;
-        private INodeList? _latestRenderNodes;
-        private INodeList? _snapshotNodes;
+	/// <summary>
+	/// Represents an abstract <see cref="IRenderedFragment"/> with base functionality.
+	/// </summary>
+	public abstract class RenderedFragmentBase : IRenderedFragment
+	{
+		private readonly ConcurrentRenderEventSubscriber _renderEventSubscriber;
+		private string? _snapshotMarkup;
+		private string? _latestRenderMarkup;
+		private INodeList? _firstRenderNodes;
+		private INodeList? _latestRenderNodes;
+		private INodeList? _snapshotNodes;
 
-        /// <summary>
-        /// Gets the first rendered markup.
-        /// </summary>
-        protected abstract string FirstRenderMarkup { get; }
+		protected TestHtmlParser HtmlParser { get; }
+		protected TestRenderer Renderer { get; }
 
-        /// <summary>
-        /// Gets the container that handles the (re)rendering of the fragment.
-        /// </summary>
-        protected ContainerComponent Container { get; }
+		/// <summary>
+		/// Gets the first rendered markup.
+		/// </summary>
+		protected abstract string FirstRenderMarkup { get; }
 
-        /// <inheritdoc/>
-        public ITestContext TestContext { get; }
+		/// <summary>
+		/// Gets the container that handles the (re)rendering of the fragment.
+		/// </summary>
+		protected ContainerComponent Container { get; }
 
-        /// <inheritdoc/>
-        public abstract int ComponentId { get; }
+		/// <inheritdoc/>
+		public IServiceProvider Services { get; }
 
-        /// <inheritdoc/>
-        public string Markup
-        {
-            get
-            {
-                if (_latestRenderMarkup is null)
-                    _latestRenderMarkup = Htmlizer.GetHtml(TestContext.Renderer, ComponentId);
-                return _latestRenderMarkup;
-            }
-        }
+		/// <inheritdoc/>
+		public abstract int ComponentId { get; }
 
-        /// <inheritdoc/>
-        public INodeList Nodes
-        {
-            get
-            {
-                if (_latestRenderNodes is null)
-                    _latestRenderNodes = TestContext.CreateNodes(Markup);
-                return _latestRenderNodes;
-            }
-        }
+		/// <inheritdoc/>
+		public string Markup
+		{
+			get
+			{
+				if (_latestRenderMarkup is null)
+					_latestRenderMarkup = Htmlizer.GetHtml(Renderer, ComponentId);
+				return _latestRenderMarkup;
+			}
+		}
 
-        /// <inheritdoc/>
-        public IObservable<RenderEvent> RenderEvents { get; }
+		/// <inheritdoc/>
+		public INodeList Nodes
+		{
+			get
+			{
+				if (_latestRenderNodes is null)
+					_latestRenderNodes = HtmlParser.Parse(Markup);
+				return _latestRenderNodes;
+			}
+		}
 
-        /// <summary>
-        /// Creates an instance of the <see cref="RenderedFragmentBase"/> class.
-        /// </summary>
-        protected RenderedFragmentBase(ITestContext testContext, RenderFragment renderFragment)
-            : this(testContext, testContext is { } ctx ? new ContainerComponent(ctx.Renderer) : throw new ArgumentNullException(nameof(testContext)))
-        {
-            Container.Render(renderFragment);
-        }
+		/// <inheritdoc/>
+		public IObservable<RenderEvent> RenderEvents { get; }
 
-        /// <summary>
-        /// Creates an instance of the <see cref="RenderedFragmentBase"/> class.
-        /// </summary>
-        protected RenderedFragmentBase(ITestContext testContext, ContainerComponent container)
-        {
-            if (testContext is null) throw new ArgumentNullException(nameof(testContext));
-            if (container is null) throw new ArgumentNullException(nameof(container));
+		/// <summary>
+		/// Creates an instance of the <see cref="RenderedFragmentBase"/> class.
+		/// </summary>
+		protected RenderedFragmentBase(IServiceProvider services, RenderFragment renderFragment) : this(services, container: null)
+		{
+			Container.Render(renderFragment);
+		}
 
-            TestContext = testContext;
-            Container = container;
-            RenderEvents = new RenderEventFilter(testContext.Renderer.RenderEvents, RenderFilter);
-            _renderEventSubscriber = new ConcurrentRenderEventSubscriber(testContext.Renderer.RenderEvents, ComponentRendered);
-        }
+		/// <summary>
+		/// Creates an instance of the <see cref="RenderedFragmentBase"/> class.
+		/// </summary>
+		protected RenderedFragmentBase(IServiceProvider services, ContainerComponent? container = null)
+		{
+			if (services is null)
+				throw new ArgumentNullException(nameof(services));
 
-        /// <inheritdoc/>
-        public IRenderedComponent<T> FindComponent<T>() where T : class, IComponent
-        {
-            var (id, component) = Container.GetComponent<T>();
-            return new RenderedComponent<T>(TestContext, Container, id, component);
-        }
+			HtmlParser = services.GetRequiredService<TestHtmlParser>();
+			Renderer = services.GetRequiredService<TestRenderer>();
+			Services = services;
+			Container = container ?? new ContainerComponent(Renderer);
+			RenderEvents = new RenderEventFilter(Renderer.RenderEvents, RenderFilter);
+			_renderEventSubscriber = new ConcurrentRenderEventSubscriber(Renderer.RenderEvents, ComponentRendered);
+		}
 
-        /// <inheritdoc/>
-        public IReadOnlyList<IRenderedComponent<T>> FindComponents<T>() where T : class, IComponent
-        {
-            var result = new List<IRenderedComponent<T>>();
-            foreach (var (id, component) in Container.GetComponents<T>())
-            {
-                result.Add(new RenderedComponent<T>(TestContext, Container, id, component));
-            }
-            return result;
-        }
+		/// <inheritdoc/>
+		public IRenderedComponent<T> FindComponent<T>() where T : class, IComponent
+		{
+			var (id, component) = Container.GetComponent<T>();
+			return new RenderedComponent<T>(Services, Container, id, component);
+		}
 
-        /// <inheritdoc/>
-        public void SaveSnapshot()
-        {
-            _snapshotNodes = null;
-            _snapshotMarkup = Markup;
-        }
+		/// <inheritdoc/>
+		public IReadOnlyList<IRenderedComponent<T>> FindComponents<T>() where T : class, IComponent
+		{
+			var result = new List<IRenderedComponent<T>>();
+			foreach (var (id, component) in Container.GetComponents<T>())
+			{
+				result.Add(new RenderedComponent<T>(Services, Container, id, component));
+			}
+			return result;
+		}
 
-        /// <inheritdoc/>
-        public IReadOnlyList<IDiff> GetChangesSinceSnapshot()
-        {
-            if (_snapshotMarkup is null)
-                throw new InvalidOperationException($"No snapshot exists to compare with. Call {nameof(SaveSnapshot)} to create one.");
+		/// <inheritdoc/>
+		public void SaveSnapshot()
+		{
+			_snapshotNodes = null;
+			_snapshotMarkup = Markup;
+		}
 
-            if (_snapshotNodes is null)
-                _snapshotNodes = TestContext.CreateNodes(_snapshotMarkup);
+		/// <inheritdoc/>
+		public IReadOnlyList<IDiff> GetChangesSinceSnapshot()
+		{
+			if (_snapshotMarkup is null)
+				throw new InvalidOperationException($"No snapshot exists to compare with. Call {nameof(SaveSnapshot)} to create one.");
 
-            return Nodes.CompareTo(_snapshotNodes);
-        }
+			if (_snapshotNodes is null)
+				_snapshotNodes = HtmlParser.Parse(_snapshotMarkup);
 
-        /// <inheritdoc/>
-        public IReadOnlyList<IDiff> GetChangesSinceFirstRender()
-        {
-            if (_firstRenderNodes is null)
-                _firstRenderNodes = TestContext.CreateNodes(FirstRenderMarkup);
-            return Nodes.CompareTo(_firstRenderNodes);
-        }
+			return Nodes.CompareTo(_snapshotNodes);
+		}
 
-        private bool RenderFilter(RenderEvent renderEvent)
-            => renderEvent.DidComponentRender(this);
+		/// <inheritdoc/>
+		public IReadOnlyList<IDiff> GetChangesSinceFirstRender()
+		{
+			if (_firstRenderNodes is null)
+				_firstRenderNodes = HtmlParser.Parse(FirstRenderMarkup);
+			return Nodes.CompareTo(_firstRenderNodes);
+		}
 
-        private void ComponentRendered(RenderEvent renderEvent)
-        {
-            if (renderEvent.HasChangesTo(this))
-            {
-                ResetLatestRenderCache();
-            }
-        }
+		private bool RenderFilter(RenderEvent renderEvent)
+			=> renderEvent.DidComponentRender(this);
 
-        private void ResetLatestRenderCache()
-        {
-            _latestRenderMarkup = null;
-            _latestRenderNodes = null;
-        }
-    }
+		private void ComponentRendered(RenderEvent renderEvent)
+		{
+			if (renderEvent.HasChangesTo(this))
+			{
+				ResetLatestRenderCache();
+			}
+		}
+
+		private void ResetLatestRenderCache()
+		{
+			_latestRenderMarkup = null;
+			_latestRenderNodes = null;
+		}
+	}
 }

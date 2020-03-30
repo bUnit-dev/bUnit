@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
@@ -40,9 +40,9 @@ namespace Bunit
         IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>() where TComponent : class, IComponent;
 
         /// <summary>
-        /// Gets the <see cref="ITestContext"/> which this rendered fragment belongs to.
+        /// Gets the <see cref="IServiceProvider"/> used when rendering the component.
         /// </summary>
-        ITestContext TestContext { get; }
+        IServiceProvider Services { get; }
 
         /// <summary>
         /// Gets the HTML markup from the rendered fragment/component.

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Components;
@@ -54,7 +54,7 @@ namespace Bunit
         /// Gets or renders the fragment specified in the id.
         /// For internal use mainly.
         /// </summary>
-        private IRenderedFragment GetOrRenderFragment(string id, Func<string, FragmentBase> fragmentSelector, Func<RazorTestContext, RenderFragment, IRenderedFragment> renderedFragmentFactory)
+        private IRenderedFragment GetOrRenderFragment(string id, Func<string, FragmentBase> fragmentSelector, Func<IServiceProvider, RenderFragment, IRenderedFragment> renderedFragmentFactory)
         {
             if (_renderedFragments.TryGetValue(id, out var renderedFragment))
             {
@@ -63,7 +63,7 @@ namespace Bunit
             else
             {
                 var fragment = fragmentSelector(id);
-                var result = renderedFragmentFactory(this, fragment.ChildContent);
+                var result = renderedFragmentFactory(Services, fragment.ChildContent);
                 _renderedFragments.Add(id, result);
                 return result;
             }
@@ -84,11 +84,11 @@ namespace Bunit
             return _testData.OfType<ComponentUnderTest>().Single();
         }
 
-        private IRenderedComponent<TComponent> Factory<TComponent>(RazorTestContext context, RenderFragment fragment) where TComponent : class, IComponent
-            => new RenderedComponent<TComponent>(context, fragment);
+        private IRenderedComponent<TComponent> Factory<TComponent>(IServiceProvider services, RenderFragment fragment) where TComponent : class, IComponent
+            => new RenderedComponent<TComponent>(services, fragment);
 
-        private IRenderedFragment Factory(RazorTestContext context, RenderFragment fragment) 
-            => new RenderedFragment(context, fragment);
+        private IRenderedFragment Factory(IServiceProvider services, RenderFragment fragment) 
+            => new RenderedFragment(services, fragment);
 
         private IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : class, IComponent
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Bunit.BlazorE2E.BasicTestApp;
 using Bunit.Extensions;
@@ -15,7 +15,7 @@ namespace Bunit
         [Fact(DisplayName = "Renderer pushes render events to subscribers when renders occur")]
         public void Test001()
         {
-            var res = new ConcurrentRenderEventSubscriber(Renderer.RenderEvents);
+            var res = new ConcurrentRenderEventSubscriber(RenderEvents);
             var sut = RenderComponent<TwoChildren>();
 
             res.RenderCount.ShouldBe(1);

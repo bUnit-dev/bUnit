@@ -26,10 +26,6 @@ namespace Bunit
             => _testContextAdapter.HasActiveContext ? _testContextAdapter.Services : base.Services;
 
         /// <inheritdoc/>
-        public override TestRenderer Renderer
-            => _testContextAdapter.HasActiveContext ? _testContextAdapter.Renderer : base.Renderer;
-
-        /// <inheritdoc/>
         public TestComponentBase()
         {
             _renderer = new Lazy<TestRenderer>(() =>
@@ -69,12 +65,6 @@ namespace Bunit
         /// <inheritdoc/>
         public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : class, IComponent
             => _testContextAdapter.GetFragment<TComponent>(id);
-
-        /// <inheritdoc/>
-        public override INodeList CreateNodes(string markup)
-            => _testContextAdapter.HasActiveContext
-                ? _testContextAdapter.CreateNodes(markup)
-                : base.CreateNodes(markup);
 
         /// <inheritdoc/>
         public override IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)

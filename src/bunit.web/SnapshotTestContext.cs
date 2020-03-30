@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Bunit
@@ -22,7 +22,7 @@ namespace Bunit
         public IRenderedFragment RenderTestInput()
         {
             var fragment = _testData.OfType<TestInput>().Single();
-            return new RenderedFragment(this, fragment.ChildContent);
+            return new RenderedFragment(Services, fragment.ChildContent);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Bunit
         public IRenderedFragment RenderExpectedOutput()
         {
             var fragment = _testData.OfType<ExpectedOutput>().Single();
-            return new RenderedFragment(this, fragment.ChildContent);
+            return new RenderedFragment(Services, fragment.ChildContent);
         }
     }
 }

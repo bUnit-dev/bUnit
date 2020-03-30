@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 
@@ -21,29 +21,29 @@ namespace Bunit
         /// Instantiates a <see cref="RenderedComponent{TComponent}"/> which will render a component of type <typeparamref name="TComponent"/>
         /// with the provided <paramref name="parameters"/>.
         /// </summary>
-        public RenderedComponent(ITestContext testContext, IReadOnlyList<ComponentParameter> parameters)
-            : this(testContext, parameters.ToComponentRenderFragment<TComponent>()) { }
+        public RenderedComponent(IServiceProvider services, IReadOnlyList<ComponentParameter> parameters)
+            : this(services, parameters.ToComponentRenderFragment<TComponent>()) { }
 
         /// <summary>
         /// Instantiates a <see cref="RenderedComponent{TComponent}"/> which will render a component of type <typeparamref name="TComponent"/>
         /// with the provided <paramref name="parameters"/>.
         /// </summary>
-        public RenderedComponent(ITestContext testContext, ParameterView parameters)
-            : this(testContext, parameters.ToComponentRenderFragment<TComponent>()) { }
+        public RenderedComponent(IServiceProvider services, ParameterView parameters)
+            : this(services, parameters.ToComponentRenderFragment<TComponent>()) { }
 
         /// <summary>
         /// Instantiates a <see cref="RenderedComponent{TComponent}"/> which will render the <paramref name="renderFragment"/> passed to it 
         /// and attempt to find a component of type <typeparamref name="TComponent"/> in the render result.
         /// </summary>
-        public RenderedComponent(ITestContext testContext, RenderFragment renderFragment)
-            : base(testContext, renderFragment)
+        public RenderedComponent(IServiceProvider services, RenderFragment renderFragment)
+            : base(services, renderFragment)
         {
             (ComponentId, Instance) = Container.GetComponent<TComponent>();
             FirstRenderMarkup = Markup;
         }
 
-        internal RenderedComponent(ITestContext testContext, ContainerComponent container, int componentId, TComponent component)
-            : base(testContext, container)
+        internal RenderedComponent(IServiceProvider services, ContainerComponent container, int componentId, TComponent component)
+            : base(services, container)
         {
             ComponentId = componentId;
             Instance = component;
@@ -75,11 +75,10 @@ namespace Bunit
         /// <inheritdoc/>
         public void SetParametersAndRender(ParameterView parameters)
         {
-            TestContext.Renderer.DispatchAndAssertNoSynchronousErrors(() =>
+            Renderer.DispatchAndAssertNoSynchronousErrors(() =>
             {
                 Instance.SetParametersAsync(parameters);
             });
-
         }
     }
 }

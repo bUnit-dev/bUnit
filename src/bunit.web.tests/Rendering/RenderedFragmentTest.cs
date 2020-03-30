@@ -1,4 +1,4 @@
-﻿using Bunit.Extensions;
+using Bunit.Extensions;
 using Bunit.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
@@ -138,7 +138,7 @@ namespace Bunit
         [Fact(DisplayName = "Render events for non-rendered sub components are not emitted")]
         public void Test010()
         {
-            var renderSub = new ConcurrentRenderEventSubscriber(Renderer.RenderEvents);
+            var renderSub = new ConcurrentRenderEventSubscriber(RenderEvents);
             var wrapper = RenderComponent<TwoComponentWrapper>(
                 RenderFragment<Simple1>(nameof(TwoComponentWrapper.First)),
                 RenderFragment<Simple1>(nameof(TwoComponentWrapper.Second))

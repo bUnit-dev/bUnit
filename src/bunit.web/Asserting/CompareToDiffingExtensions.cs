@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Bunit.Diffing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
 {
@@ -24,7 +25,8 @@ namespace Bunit
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
-            var expectedNodes = actual.TestContext.CreateNodes(expected);
+			var htmlParser = actual.Services.GetRequiredService<TestHtmlParser>();
+            var expectedNodes = htmlParser.Parse(expected);
 
             return actual.Nodes.CompareTo(expectedNodes);
         }

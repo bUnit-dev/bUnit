@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Diagnostics.CodeAnalysis;
 
@@ -22,7 +22,7 @@ namespace Bunit
         /// <exception cref="WaitForRenderFailedException">Thrown if no render happens within the specified <paramref name="timeout"/>, or the default of 1 second, if non is specified.</exception>
         [Obsolete("Use either the WaitForState or WaitForAssertion method instead. It will make your test more resilient to insignificant changes, as they will wait across multiple renders instead of just one. To make the change, run any render trigger first, then call either WaitForState or WaitForAssertion with the appropriate input. This method will be removed before the 1.0.0 release.", false)]
         public static void WaitForNextRender(this ITestContext testContext, Action? renderTrigger = null, TimeSpan? timeout = null)
-            => WaitForRender(testContext?.Renderer.RenderEvents ?? throw new ArgumentNullException(nameof(testContext)), renderTrigger, timeout);
+            => WaitForRender(testContext.RenderEvents, renderTrigger, timeout);
 
         /// <summary>
         /// Wait until the provided <paramref name="statePredicate"/> action returns true,
@@ -37,7 +37,7 @@ namespace Bunit
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="testContext"/> is null.</exception>
         /// <exception cref="WaitForStateFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
         public static void WaitForState(this ITestContext testContext, Func<bool> statePredicate, TimeSpan? timeout = null)
-            => WaitForState(testContext?.Renderer.RenderEvents ?? throw new ArgumentNullException(nameof(testContext)), statePredicate, timeout);
+            => WaitForState(testContext.RenderEvents, statePredicate, timeout);
 
         /// <summary>
         /// Wait until the provided <paramref name="assertion"/> action passes (i.e. does not throw an 
@@ -52,7 +52,7 @@ namespace Bunit
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="testContext"/> is null.</exception>
         /// <exception cref="WaitForAssertionFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
         public static void WaitForAssertion(this ITestContext testContext, Action assertion, TimeSpan? timeout = null)
-            => WaitForAssertion(testContext?.Renderer.RenderEvents ?? throw new ArgumentNullException(nameof(testContext)), assertion, timeout);
+            => WaitForAssertion(testContext.RenderEvents, assertion, timeout);
 
         /// <summary>
         /// Wait until the provided <paramref name="statePredicate"/> action returns true,
@@ -66,7 +66,7 @@ namespace Bunit
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="renderedFragment"/> is null.</exception>
         /// <exception cref="WaitForStateFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
         public static void WaitForState(this IRenderedFragment renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
-            => WaitForState(renderedFragment?.RenderEvents ?? throw new ArgumentNullException(nameof(renderedFragment)), statePredicate, timeout);
+            => WaitForState(renderedFragment.RenderEvents, statePredicate, timeout);
 
         /// <summary>
         /// Wait until the provided <paramref name="assertion"/> action passes (i.e. does not throw an 
@@ -81,7 +81,7 @@ namespace Bunit
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="renderedFragment"/> is null.</exception>
         /// <exception cref="WaitForAssertionFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
         public static void WaitForAssertion(this IRenderedFragment renderedFragment, Action assertion, TimeSpan? timeout = null)
-            => WaitForAssertion(renderedFragment?.RenderEvents ?? throw new ArgumentNullException(nameof(renderedFragment)), assertion, timeout);
+            => WaitForAssertion(renderedFragment.RenderEvents, assertion, timeout);
 
         private static void WaitForRender(IObservable<RenderEvent> renderEventObservable, Action? renderTrigger = null, TimeSpan? timeout = null)
         {

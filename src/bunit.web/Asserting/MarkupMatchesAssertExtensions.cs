@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using AngleSharp.Dom;
 using Bunit.Diffing;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit.Sdk;
 
 namespace Bunit
@@ -24,7 +25,8 @@ namespace Bunit
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
-            var expectedNodes = actual.TestContext.CreateNodes(expected);
+			var htmlParser = actual.Services.GetRequiredService<TestHtmlParser>();
+            var expectedNodes = htmlParser.Parse(expected);
 
             actual.Nodes.MarkupMatches(expectedNodes, userMessage);
         }

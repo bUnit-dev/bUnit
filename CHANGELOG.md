@@ -2,6 +2,8 @@
 All notable changes to **bUnit** will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Better error description from `MarkupMatches` when two sets of markup are different.
 
 ### Removed
 - The generic collection assertion methods `ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T, int>[] elementInspectors)` and `ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T>[] elementInspectors)` have been removed from the library.
