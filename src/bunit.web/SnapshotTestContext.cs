@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using Bunit.RazorTesting;
 
 namespace Bunit
 {
-    /// <summary>
-    /// Represents a test context used in snapshot testing.
-    /// </summary>
-    public class SnapshotTestContext : TestContext
+	/// <summary>
+	/// Represents a test context used in snapshot testing.
+	/// </summary>
+	public class SnapshotTestContext : TestContext
     {
         private readonly IReadOnlyList<FragmentBase> _testData;
 

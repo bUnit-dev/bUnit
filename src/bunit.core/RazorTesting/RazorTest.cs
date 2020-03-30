@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit
+namespace Bunit.RazorTesting
 {
 	/// <summary>
 	/// Represents a component used to define tests in Razor files.
@@ -22,6 +22,10 @@ namespace Bunit
 		/// </summary>
 		[Parameter] public string? Skip { get; set; }
 
+		/// <summary>
+		/// Run the test logic of the <see cref="RazorTest"/>.
+		/// </summary>
+		/// <returns></returns>
 		public abstract Task RunTest();
 
 		/// <inheritdoc/>

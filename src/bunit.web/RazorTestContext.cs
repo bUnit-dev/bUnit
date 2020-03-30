@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bunit.RazorTesting;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
 {
-    /// <summary>
-    /// A razor test context is a factory that makes it possible to create components under tests,
-    /// either directly or through components declared in razor code.
-    /// </summary>
-    public class RazorTestContext : TestContext, IRazorTestContext
+	/// <summary>
+	/// A razor test context is a factory that makes it possible to create components under tests,
+	/// either directly or through components declared in razor code.
+	/// </summary>
+	public class RazorTestContext : TestContext, IRazorTestContext
     {
         private readonly IReadOnlyList<FragmentBase> _testData;
         private readonly Dictionary<string, IRenderedFragment> _renderedFragments = new Dictionary<string, IRenderedFragment>();

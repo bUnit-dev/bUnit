@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using AngleSharp.Dom;
+using Bunit.RazorTesting;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
 {
-    internal sealed class TestContextAdapter : IDisposable
+	internal sealed class TestContextAdapter : IDisposable
     {
         private ITestContext? _testContext;
         private IRazorTestContext? _razorTestContext;

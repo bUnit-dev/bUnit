@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Bunit.RazorTesting;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -69,6 +70,7 @@ namespace Bunit
 		/// </summary>
 		[Parameter] public IReadOnlyCollection<Func<Task>> TestsAsync { get => _testsAsync; set => _testsAsync = value ?? Array.Empty<Func<Task>>(); }
 
+		/// <inheritdoc/>
 		public override Task RunTest() => throw new NotImplementedException();
 	}
 }

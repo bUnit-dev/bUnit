@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 
 namespace Bunit
 {
     /// <summary>
-    /// Represents an exception that is thrown when a search for a component in a 
-    /// <see cref="IRenderedFragment"/> did not succeed.
+    /// Represents an exception that is thrown when a search for a component did not succeed.
     /// </summary>
     public class ComponentNotFoundException : Exception
     {

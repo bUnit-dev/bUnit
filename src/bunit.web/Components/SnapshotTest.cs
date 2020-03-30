@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Bunit.RazorTesting;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -27,6 +28,7 @@ namespace Bunit
 		/// </summary>
 		[Parameter] public Func<Task> SetupAsync { get => _setupAsync; set => _setupAsync = value ?? NoopTestMethodAsync; }
 
+		/// <inheritdoc/>
 		public override Task RunTest() => throw new NotImplementedException();
 	}
 

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Bunit
 {
-    internal class RenderEventObservable : IObservable<RenderEvent>
+    public class RenderEventObservable : IObservable<RenderEvent>
     {
         protected HashSet<IObserver<RenderEvent>> Observers { get; } = new HashSet<IObserver<RenderEvent>>();
 
@@ -37,7 +37,7 @@ namespace Bunit
         }
     }
 
-    internal sealed class RenderEventFilter : RenderEventObservable, IObservable<RenderEvent>, IObserver<RenderEvent>
+    public sealed class RenderEventFilter : RenderEventObservable, IObservable<RenderEvent>, IObserver<RenderEvent>
     {
         private readonly IObservable<RenderEvent> _source;
         private readonly Func<RenderEvent, bool> _forwardEvent;
@@ -87,7 +87,7 @@ namespace Bunit
         }
     }
 
-    internal sealed class RenderEventPublisher : RenderEventObservable, IObservable<RenderEvent>
+    public sealed class RenderEventPublisher : RenderEventObservable, IObservable<RenderEvent>
     {
         private bool _isCompleted;
 

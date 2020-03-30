@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.RenderTree;
 namespace Bunit
 {
 	/// <summary>
-	/// Represents a render event for a <see cref="IRenderedFragment"/> or generally from the <see cref="TestRenderer"/>.
+	/// Represents a render event for a <see cref="IRenderedFragmentCore"/> or generally from the <see cref="TestRenderer"/>.
 	/// </summary>
 	public sealed class RenderEvent
 	{
@@ -31,7 +31,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="renderedFragment">Component to check for updates to.</param>
 		/// <returns>True if <see cref="RenderEvent"/> contains updates to component, false otherwise.</returns>
-		public bool HasChangesTo(IRenderedFragment renderedFragment)
+		public bool HasChangesTo(IRenderedFragmentCore renderedFragment)
 			=> HasChangesTo((renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment))).ComponentId);
 
 		/// <summary>
@@ -40,7 +40,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="renderedFragment">Component to check if rendered.</param>
 		/// <returns>True if the component or a sub component rendered, false otherwise.</returns>
-		public bool DidComponentRender(IRenderedFragment renderedFragment)
+		public bool DidComponentRender(IRenderedFragmentCore renderedFragment)
 			=> DidComponentRender((renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment))).ComponentId);
 
 		private bool HasChangesTo(int componentId)

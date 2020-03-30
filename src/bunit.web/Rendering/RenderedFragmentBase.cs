@@ -21,7 +21,11 @@ namespace Bunit
 		private INodeList? _latestRenderNodes;
 		private INodeList? _snapshotNodes;
 
-		protected TestHtmlParser HtmlParser { get; }
+		private TestHtmlParser HtmlParser { get; }
+
+		/// <summary>
+		/// Gets the renderer used to render the <see cref="IRenderedFragment"/>.
+		/// </summary>
 		protected TestRenderer Renderer { get; }
 
 		/// <summary>

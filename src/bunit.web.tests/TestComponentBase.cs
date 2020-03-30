@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
+using Bunit.RazorTesting;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,10 +12,10 @@ using Xunit;
 
 namespace Bunit
 {
-    /// <summary>
-    /// Base test class/test runner, that runs Fixtures defined in razor files.
-    /// </summary>
-    public abstract class TestComponentBase : ComponentTestFixture, IRazorTestContext
+	/// <summary>
+	/// Base test class/test runner, that runs Fixtures defined in razor files.
+	/// </summary>
+	public abstract class TestComponentBase : ComponentTestFixture, IRazorTestContext
     {
         private readonly ServiceCollection _serviceCollection = new ServiceCollection();
         private readonly Lazy<TestRenderer> _renderer;
