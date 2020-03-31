@@ -102,16 +102,6 @@ namespace Bunit
             cut.Instance.Header.ShouldBe("First");
         }
 
-        [Fact(DisplayName = "FindComponent returns CUT if it is the first component of the requested type", Skip = "doesnt make much sense tbh")]
-        public void Test101()
-        {
-            var cut = RenderComponent<Simple1>();
-
-            var cutAgain = cut.FindComponent<Simple1>();
-
-            cut.Instance.ShouldBe(cutAgain.Instance);
-        }
-
         [Fact(DisplayName = "GetComponent throws when component of requested type is not in the render tree")]
         public void Test102()
         {
