@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Bunit.Rendering;
 using Shouldly;
 using Xunit;
 
 namespace Bunit
 {
-    public class ComponentParameterTest
+	public class ComponentParameterTest
     {
         public static IEnumerable<object[]> GetEqualsTestData()
         {

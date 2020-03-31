@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
 {
-    /// <summary>
-    /// Helpful extensions for working with <see cref="ComponentParameter"/> and collections of these.
-    /// </summary>
-    internal static class ComponentParamenterExtensions
+	/// <summary>
+	/// Helpful extensions for working with <see cref="ComponentParameter"/> and collections of these.
+	/// </summary>
+	internal static class ComponentParamenterExtensions
     {
         /// <summary>
         /// Creates a <see cref="RenderFragment"/> that will render a component of <typeparamref name="TComponent"/> type,

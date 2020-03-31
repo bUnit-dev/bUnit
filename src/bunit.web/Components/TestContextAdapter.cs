@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using AngleSharp.Dom;
 using Bunit.RazorTesting;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit

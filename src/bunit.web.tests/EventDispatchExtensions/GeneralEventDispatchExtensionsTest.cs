@@ -3,13 +3,14 @@ using System.Reflection;
 using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Dom;
+using Bunit.Rendering;
 using Moq;
 using Shouldly;
 using Xunit;
 
 namespace Bunit
 {
-    public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<EventArgs>
+	public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<EventArgs>
     {
         protected override string ElementName => "p";
 

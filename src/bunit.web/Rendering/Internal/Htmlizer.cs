@@ -1,3 +1,4 @@
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
@@ -9,7 +10,7 @@ using System.Text.Encodings.Web;
 
 namespace Bunit
 {
-    [SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
+	[SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     internal class Htmlizer
     {
         private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;

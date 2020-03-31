@@ -1,4 +1,5 @@
 using AngleSharp.Dom;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -7,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Bunit
 {
-    /// <summary>
-    /// General event dispatch helper extension methods.
-    /// </summary>
-    public static class GeneralEventDispatchExtensions
+	/// <summary>
+	/// General event dispatch helper extension methods.
+	/// </summary>
+	public static class GeneralEventDispatchExtensions
     {
         /// <summary>
         /// Raises the event <paramref name="eventName"/> on the element <paramref name="element"/>

@@ -1,10 +1,11 @@
 using System;
 using AngleSharp.Dom;
 using AngleSharpWrappers;
+using Bunit.Rendering;
 
 namespace Bunit
 {
-    internal sealed class ElementFactory<TElement> : ConcurrentRenderEventSubscriber, IElementFactory<TElement>
+	internal sealed class ElementFactory<TElement> : ConcurrentRenderEventSubscriber, IElementFactory<TElement>
         where TElement : class, IElement
     {
         private readonly IRenderedFragment _testTarget;
@@ -21,7 +22,7 @@ namespace Bunit
 
         public override void OnNext(RenderEvent value)
         {
-            if (value.HasChangesTo(_testTarget))
+            if (value.HasChangesTo(_testTarget.ComponentId))
                 _element = null;
         }
 

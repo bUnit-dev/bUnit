@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Components.RenderTree;
 
-namespace Bunit
+namespace Bunit.Rendering
 {
 	/// <summary>
 	/// Represents a render event for a <see cref="IRenderedFragmentCore"/> or generally from the <see cref="TestRendererOld"/>.
@@ -31,8 +31,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="renderedFragment">Component to check for updates to.</param>
 		/// <returns>True if <see cref="RenderEvent"/> contains updates to component, false otherwise.</returns>
-		public bool HasChangesTo(IRenderedFragmentCore renderedFragment)
-			=> HasChangesTo((renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment))).ComponentId);
+		public bool HasChangesTo(int componentId) => HasChangesToRoot(componentId);
 
 		/// <summary>
 		/// Checks whether the <paramref name="renderedFragment"/> or one or more of 
@@ -40,22 +39,19 @@ namespace Bunit
 		/// </summary>
 		/// <param name="renderedFragment">Component to check if rendered.</param>
 		/// <returns>True if the component or a sub component rendered, false otherwise.</returns>
-		public bool DidComponentRender(IRenderedFragmentCore renderedFragment)
-			=> DidComponentRender((renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment))).ComponentId);
+		public bool DidComponentRender(int componentId) => DidComponentRenderRoot(componentId);
 
-		private bool HasChangesTo(int componentId)
+		private bool HasChangesToRoot(int componentId)
 		{
-			for (int i = 0; i < _renderBatch.UpdatedComponents.Count; i++)
+			for (var i = 0; i < _renderBatch.UpdatedComponents.Count; i++)
 			{
 				var update = _renderBatch.UpdatedComponents.Array[i];
 				if (update.ComponentId == componentId && update.Edits.Count > 0)
 					return true;
 			}
-			for (int i = 0; i < _renderBatch.DisposedEventHandlerIDs.Count; i++)
-			{
+			for (var i = 0; i < _renderBatch.DisposedEventHandlerIDs.Count; i++)
 				if (_renderBatch.DisposedEventHandlerIDs.Array[i].Equals(componentId))
 					return true;
-			}
 
 			var renderFrames = _renderer.GetCurrentRenderTreeFrames(componentId);
 			return HasChangedToChildren(renderFrames);
@@ -63,39 +59,37 @@ namespace Bunit
 
 		private bool HasChangedToChildren(ArrayRange<RenderTreeFrame> componentRenderTreeFrames)
 		{
-			for (int i = 0; i < componentRenderTreeFrames.Count; i++)
+			for (var i = 0; i < componentRenderTreeFrames.Count; i++)
 			{
 				var frame = componentRenderTreeFrames.Array[i];
 				if (frame.FrameType == RenderTreeFrameType.Component)
-					if (HasChangesTo(frame.ComponentId))
+					if (HasChangesToRoot(frame.ComponentId))
 						return true;
 			}
 			return false;
 		}
 
-		private bool DidComponentRender(int componentId)
+		private bool DidComponentRenderRoot(int componentId)
 		{
-			for (int i = 0; i < _renderBatch.UpdatedComponents.Count; i++)
+			for (var i = 0; i < _renderBatch.UpdatedComponents.Count; i++)
 			{
 				var update = _renderBatch.UpdatedComponents.Array[i];
 				if (update.ComponentId == componentId)
 					return true;
 			}
-			for (int i = 0; i < _renderBatch.DisposedEventHandlerIDs.Count; i++)
-			{
+			for (var i = 0; i < _renderBatch.DisposedEventHandlerIDs.Count; i++)
 				if (_renderBatch.DisposedEventHandlerIDs.Array[i].Equals(componentId))
 					return true;
-			}
 			return DidChildComponentRender(_renderer.GetCurrentRenderTreeFrames(componentId));
 		}
 
 		private bool DidChildComponentRender(ArrayRange<RenderTreeFrame> componentRenderTreeFrames)
 		{
-			for (int i = 0; i < componentRenderTreeFrames.Count; i++)
+			for (var i = 0; i < componentRenderTreeFrames.Count; i++)
 			{
 				var frame = componentRenderTreeFrames.Array[i];
 				if (frame.FrameType == RenderTreeFrameType.Component)
-					if (DidComponentRender(frame.ComponentId))
+					if (DidComponentRenderRoot(frame.ComponentId))
 						return true;
 			}
 			return false;

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
+using Bunit.Rendering;
 using Bunit.SampleComponents;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
 {
-    public class TriggerEventSpy<TEventArgs> where TEventArgs : EventArgs, new()
+	public class TriggerEventSpy<TEventArgs> where TEventArgs : EventArgs, new()
     {
         private readonly IRenderedComponent<TriggerTester<TEventArgs>> _renderedComponent;
         private readonly string _element;

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Bunit.Rendering
 {
-    public class RenderEventPubSubTest
+	public class RenderEventPubSubTest
     {
         [Fact(DisplayName = "When a subscriber subscribes to a publisher it can receives events from publisher")]
         public void Test001()

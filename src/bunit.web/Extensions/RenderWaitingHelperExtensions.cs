@@ -1,14 +1,15 @@
 using System;
 using System.Threading;
 using System.Diagnostics.CodeAnalysis;
+using Bunit.Rendering;
 
 namespace Bunit
 {
 
-    /// <summary>
-    /// Helper methods dealing with async rendering during testing.
-    /// </summary>
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+	/// <summary>
+	/// Helper methods dealing with async rendering during testing.
+	/// </summary>
+	[SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
     public static class RenderWaitingHelperExtensions
     {
         /// <summary>

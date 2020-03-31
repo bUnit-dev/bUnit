@@ -1,9 +1,10 @@
-﻿using System;
+using System;
+using Bunit.Rendering;
 
 namespace Bunit
 {
-    /// <inheritdoc/>
-    public sealed class ComponentChangeEventSubscriber : ConcurrentRenderEventSubscriber
+	/// <inheritdoc/>
+	public sealed class ComponentChangeEventSubscriber : ConcurrentRenderEventSubscriber
     {
         private readonly IRenderedFragmentCore _testTarget;
 
@@ -19,7 +20,7 @@ namespace Bunit
         /// <inheritdoc/>
         public override void OnNext(RenderEvent value)
         {
-            if (value.HasChangesTo(_testTarget))
+            if (value.HasChangesTo(_testTarget.ComponentId))
                 base.OnNext(value);
         }
     }

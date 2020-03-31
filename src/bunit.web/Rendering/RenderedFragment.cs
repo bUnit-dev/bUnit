@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Bunit.Diffing;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
@@ -81,24 +82,6 @@ namespace Bunit
 			FirstRenderMarkup = Markup;
 		}
 
-		///// <inheritdoc/>
-		//public IRenderedComponent<T> FindComponent<T>() where T : IComponent
-		//{
-		//	var (id, component) = Renderer.FindComponent<T>(ComponentId);
-		//	return new RenderedComponent<T>(Services, Container, id, component);
-		//}
-
-		///// <inheritdoc/>
-		//public IReadOnlyList<IRenderedComponent<T>> FindComponents<T>() where T : class, IComponent
-		//{
-		//	var result = new List<IRenderedComponent<T>>();
-		//	foreach (var (id, component) in Container.GetComponents<T>())
-		//	{
-		//		result.Add(new RenderedComponent<T>(Services, Container, id, component));
-		//	}
-		//	return result;
-		//}
-
 		/// <inheritdoc/>
 		public void SaveSnapshot()
 		{
@@ -127,11 +110,11 @@ namespace Bunit
 		}
 
 		private bool RenderFilter(RenderEvent renderEvent)
-			=> renderEvent.DidComponentRender(this);
+			=> renderEvent.DidComponentRender(this.ComponentId);
 
 		private void ComponentRendered(RenderEvent renderEvent)
 		{
-			if (renderEvent.HasChangesTo(this))
+			if (renderEvent.HasChangesTo(this.ComponentId))
 			{
 				ResetLatestRenderCache();
 			}

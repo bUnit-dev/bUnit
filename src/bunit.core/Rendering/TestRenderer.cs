@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Bunit
+namespace Bunit.Rendering
 {
 	/// <summary>
 	/// Generalized Blazor renderer for testing purposes.
@@ -170,15 +170,13 @@ namespace Bunit
 		{
 			var ownFrames = GetCurrentRenderTreeFrames(rootComponentId);
 
-			for (int i = 0; i < ownFrames.Count; i++)
+			for (var i = 0; i < ownFrames.Count; i++)
 			{
 				ref var frame = ref ownFrames.Array[i];
 				if (frame.FrameType == RenderTreeFrameType.Component)
 				{
 					if (frame.Component is TComponent component)
-					{
 						return (frame.ComponentId, component);
-					}
 					var result = GetComponent<TComponent>(frame.ComponentId);
 					if (result != null)
 						return result;
@@ -197,15 +195,13 @@ namespace Bunit
 
 			var result = new List<(int ComponentId, TComponent Component)>();
 
-			for (int i = 0; i < ownFrames.Count; i++)
+			for (var i = 0; i < ownFrames.Count; i++)
 			{
 				ref var frame = ref ownFrames.Array[i];
 				if (frame.FrameType == RenderTreeFrameType.Component)
 				{
 					if (frame.Component is TComponent component)
-					{
 						result.Add((frame.ComponentId, component));
-					}
 					result.AddRange(GetComponents<TComponent>(frame.ComponentId));
 				}
 			}
@@ -249,7 +245,7 @@ namespace Bunit
 				{
 					builder.OpenComponent(0, componentType);
 
-					for (int i = 0; i < parameters.Count; i++)
+					for (var i = 0; i < parameters.Count; i++)
 					{
 						var para = parameters[i];
 						if (!para.IsCascadingValue)

@@ -1,6 +1,7 @@
 using AngleSharp.Dom;
 using Bunit.Diffing;
 using Bunit.Mocking.JSInterop;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,10 +11,10 @@ using System;
 
 namespace Bunit
 {
-    /// <summary>
-    /// A test context is a factory that makes it possible to create components under tests.
-    /// </summary>
-    public class TestContext : ITestContext, IDisposable
+	/// <summary>
+	/// A test context is a factory that makes it possible to create components under tests.
+	/// </summary>
+	public class TestContext : ITestContext, IDisposable
     {
 		private TestRenderer? _testRenderer;
 

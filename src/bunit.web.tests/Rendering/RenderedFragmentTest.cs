@@ -1,4 +1,5 @@
 using Bunit.Extensions;
+using Bunit.Rendering;
 using Bunit.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using Xunit.Abstractions;
 
 namespace Bunit
 {
-    public class RenderedFragmentTest : ComponentTestFixture
+	public class RenderedFragmentTest : ComponentTestFixture
     {
         public RenderedFragmentTest(ITestOutputHelper output)
         {

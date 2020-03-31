@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading;
+using Bunit.Rendering;
 
 namespace Bunit
 {
-    /// <summary>
-    /// Represents a subscriber to <see cref="RenderEvent"/>s, published by
-    /// the <see cref="TestRendererOld"/>.
-    /// </summary>
-    public class ConcurrentRenderEventSubscriber : IObserver<RenderEvent>
+	/// <summary>
+	/// Represents a subscriber to <see cref="RenderEvent"/>s, published by
+	/// the <see cref="TestRendererOld"/>.
+	/// </summary>
+	public class ConcurrentRenderEventSubscriber : IObserver<RenderEvent>
     {
         private readonly IDisposable _unsubscriber;
         private readonly Action<RenderEvent>? _onRender;

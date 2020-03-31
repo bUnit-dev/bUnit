@@ -2,14 +2,15 @@ using AngleSharp.Html.Parser;
 using AngleSharp;
 using AngleSharp.Dom;
 using System;
+using Bunit.Rendering;
 
 namespace Bunit.Diffing
 {
-    /// <summary>
-    /// A AngleSharp based HTML Parse that can parse markup strings
-    /// into a <see cref="INodeList"/>.
-    /// </summary>
-    public sealed class TestHtmlParser : IDisposable
+	/// <summary>
+	/// A AngleSharp based HTML Parse that can parse markup strings
+	/// into a <see cref="INodeList"/>.
+	/// </summary>
+	public sealed class TestHtmlParser : IDisposable
     {
         private readonly IBrowsingContext _context;
         private readonly IHtmlParser _htmlParser;

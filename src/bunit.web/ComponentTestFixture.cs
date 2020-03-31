@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using EC = Microsoft.AspNetCore.Components.EventCallback;
 
 namespace Bunit
 {
-    /// <summary>
-    /// Base class for test classes that contains XUnit Razor component tests.
-    /// </summary>
-    public abstract class ComponentTestFixture : TestContext
+	/// <summary>
+	/// Base class for test classes that contains XUnit Razor component tests.
+	/// </summary>
+	public abstract class ComponentTestFixture : TestContext
     {
         /// <summary>
         /// Wait for the next render to happen, or the <paramref name="timeout"/> is reached (default is one second).

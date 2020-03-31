@@ -21,7 +21,7 @@ namespace Bunit
 	public abstract class TestComponentBase : ComponentTestFixture, IRazorTestContext
 	{
 		private static readonly ServiceProvider ServiceProvider = new ServiceCollection().BuildServiceProvider();
-		private static readonly RazorTestRenderer RazorRenderer = new RazorTestRenderer(ServiceProvider, NullLoggerFactory.Instance);
+		private readonly RazorTestRenderer RazorRenderer = new RazorTestRenderer(ServiceProvider, NullLoggerFactory.Instance);
 		private readonly TestContextAdapter _testContextAdapter = new TestContextAdapter();
 		private bool _isDisposed = false;
 
