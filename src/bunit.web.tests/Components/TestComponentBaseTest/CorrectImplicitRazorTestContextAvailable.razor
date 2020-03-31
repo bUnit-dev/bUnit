@@ -28,7 +28,6 @@
 
     void Test1()
     {
-        this.
         GetComponentUnderTest<SimpleWithDeps>().Find("p").TextContent.ShouldBe(dep1Expected.Name);
         GetFragment<Simple1>().ShouldNotBeNull();
     }

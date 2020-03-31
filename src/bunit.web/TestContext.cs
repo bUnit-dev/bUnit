@@ -17,19 +17,23 @@ namespace Bunit
     {
 		private TestRenderer? _testRenderer;
 
+		/// <summary>
+		/// Gets the renderer used by the test context.
+		/// </summary>
+		protected TestRenderer Renderer
+		{
+			get
+			{
+				if(_testRenderer is null)_testRenderer = Services.GetRequiredService<TestRenderer>();
+				return _testRenderer;
+			}
+		}
+
         /// <inheritdoc/>
         public virtual TestServiceProvider Services { get; } = new TestServiceProvider();
 
 		/// <inheritdoc/>
-		public IObservable<RenderEvent> RenderEvents
-		{
-			get
-			{
-				if(_testRenderer is null)
-					_testRenderer = Services.GetRequiredService<TestRenderer>();
-				return _testRenderer.RenderEvents;
-			}
-		}
+		public IObservable<RenderEvent> RenderEvents => Renderer.RenderEvents;
 
 		/// <summary>
 		/// Creates a new instance of the <see cref="TestContext"/> class.
@@ -42,10 +46,10 @@ namespace Bunit
         }
 
         /// <inheritdoc/>
-        public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
+        public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
         {
-            var result = new RenderedComponent<TComponent>(Services, parameters);
-            return result;
+			var renderResult = Renderer.RenderComponent<TComponent>(parameters).GetAwaiter().GetResult();
+            return new RenderedComponent<TComponent>(Services, renderResult.ComponentId, renderResult.Component);
         }
 
         #region IDisposable Support

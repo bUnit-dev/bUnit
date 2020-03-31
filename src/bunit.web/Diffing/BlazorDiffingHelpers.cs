@@ -8,7 +8,7 @@ namespace Bunit.Diffing
     public static class BlazorDiffingHelpers
     {
         /// <summary>
-        /// Represents a diffing filter that removes all special Blazor attributes added by the <see cref="TestRenderer"/>/<see cref="Htmlizer"/>.
+        /// Represents a diffing filter that removes all special Blazor attributes added by the <see cref="TestRendererOld"/>/<see cref="Htmlizer"/>.
         /// </summary>
         public static FilterDecision BlazorEventHandlerIdAttrFilter(in AttributeComparisonSource attrSource, FilterDecision currentDecision)
         {

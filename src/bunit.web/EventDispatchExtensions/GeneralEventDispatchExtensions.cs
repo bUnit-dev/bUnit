@@ -1,4 +1,4 @@
-﻿using AngleSharp.Dom;
+using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Diagnostics.CodeAnalysis;

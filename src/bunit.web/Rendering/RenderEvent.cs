@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.RenderTree;
 namespace Bunit
 {
 	/// <summary>
-	/// Represents a render event for a <see cref="IRenderedFragmentCore"/> or generally from the <see cref="TestRenderer"/>.
+	/// Represents a render event for a <see cref="IRenderedFragmentCore"/> or generally from the <see cref="TestRendererOld"/>.
 	/// </summary>
 	public sealed class RenderEvent
 	{

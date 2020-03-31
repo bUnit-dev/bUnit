@@ -87,7 +87,7 @@ namespace Bunit
             cut.Instance.Counter.ShouldBe(1);
         }
 
-        [Fact(DisplayName = "GetComponent returns first component of requested type using a depth first search")]
+        [Fact(DisplayName = "FindComponent returns first component of requested type using a depth first search")]
         public void Test100()
         {
             var wrapper = RenderComponent<TwoComponentWrapper>(
@@ -96,12 +96,13 @@ namespace Bunit
                 )),
                 RenderFragment<Simple1>(nameof(TwoComponentWrapper.Second), (nameof(Simple1.Header), "Second"))
             );
+
             var cut = wrapper.FindComponent<Simple1>();
 
             cut.Instance.Header.ShouldBe("First");
         }
 
-        [Fact(DisplayName = "GetComponent returns CUT if it is the first component of the requested type")]
+        [Fact(DisplayName = "FindComponent returns CUT if it is the first component of the requested type", Skip = "doesnt make much sense tbh")]
         public void Test101()
         {
             var cut = RenderComponent<Simple1>();

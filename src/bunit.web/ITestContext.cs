@@ -26,6 +26,6 @@ namespace Bunit
 		/// <typeparam name="TComponent">Type of the component to render</typeparam>
 		/// <param name="parameters">Parameters to pass to the component when it is rendered</param>
 		/// <returns>The rendered <typeparamref name="TComponent"/></returns>
-		IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent;
+		IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent;
 	}
 }

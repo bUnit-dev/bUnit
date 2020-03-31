@@ -4,81 +4,47 @@ using Microsoft.AspNetCore.Components;
 
 namespace Bunit
 {
-    /// <inheritdoc/>
-    internal class RenderedComponent<TComponent> : RenderedFragmentBase, IRenderedComponent<TComponent>
-        where TComponent : class, IComponent
-    {
-        /// <inheritdoc/>
-        protected override string FirstRenderMarkup { get; }
+	/// <inheritdoc/>
+	internal class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent>
+		where TComponent : IComponent
+	{
+		/// <inheritdoc/>
+		public TComponent Instance { get; }
 
-        /// <inheritdoc/>
-        public override int ComponentId { get; }
+		public RenderedComponent(IServiceProvider services, int componentId, TComponent component) : base(services, componentId)
+		{
+			Instance = component;
+		}
 
-        /// <inheritdoc/>
-        public TComponent Instance { get; }
+		/// <inheritdoc/>
+		public void Render() => SetParametersAndRender(ParameterView.Empty);
 
-        /// <summary>
-        /// Instantiates a <see cref="RenderedComponent{TComponent}"/> which will render a component of type <typeparamref name="TComponent"/>
-        /// with the provided <paramref name="parameters"/>.
-        /// </summary>
-        public RenderedComponent(IServiceProvider services, IReadOnlyList<ComponentParameter> parameters)
-            : this(services, parameters.ToComponentRenderFragment<TComponent>()) { }
+		/// <inheritdoc/>
+		public void SetParametersAndRender(params ComponentParameter[] parameters)
+		{
+			var parameterView = ParameterView.Empty;
+			if (parameters.Length > 0)
+			{
+				var paramDict = new Dictionary<string, object?>(parameters.Length);
+				foreach (var param in parameters)
+				{
+					if (param.IsCascadingValue)
+						throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(SetParametersAndRender)} method.");
 
-        /// <summary>
-        /// Instantiates a <see cref="RenderedComponent{TComponent}"/> which will render a component of type <typeparamref name="TComponent"/>
-        /// with the provided <paramref name="parameters"/>.
-        /// </summary>
-        public RenderedComponent(IServiceProvider services, ParameterView parameters)
-            : this(services, parameters.ToComponentRenderFragment<TComponent>()) { }
+					paramDict.Add(param.Name!, param.Value);
+				}
+				parameterView = ParameterView.FromDictionary(paramDict);
+			}
+			SetParametersAndRender(parameterView);
+		}
 
-        /// <summary>
-        /// Instantiates a <see cref="RenderedComponent{TComponent}"/> which will render the <paramref name="renderFragment"/> passed to it 
-        /// and attempt to find a component of type <typeparamref name="TComponent"/> in the render result.
-        /// </summary>
-        public RenderedComponent(IServiceProvider services, RenderFragment renderFragment)
-            : base(services, renderFragment)
-        {
-            (ComponentId, Instance) = Container.GetComponent<TComponent>();
-            FirstRenderMarkup = Markup;
-        }
-
-        internal RenderedComponent(IServiceProvider services, ContainerComponent container, int componentId, TComponent component)
-            : base(services, container)
-        {
-            ComponentId = componentId;
-            Instance = component;
-            FirstRenderMarkup = Markup;
-        }
-
-        /// <inheritdoc/>
-        public void Render() => SetParametersAndRender(ParameterView.Empty);
-
-        /// <inheritdoc/>
-        public void SetParametersAndRender(params ComponentParameter[] parameters)
-        {
-            var parameterView = ParameterView.Empty;
-            if (parameters.Length > 0)
-            {
-                var paramDict = new Dictionary<string, object?>(parameters.Length);
-                foreach (var param in parameters)
-                {
-                    if (param.IsCascadingValue)
-                        throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(SetParametersAndRender)} method.");
-
-                    paramDict.Add(param.Name!, param.Value);
-                }
-                parameterView = ParameterView.FromDictionary(paramDict);
-            }
-            SetParametersAndRender(parameterView);
-        }
-
-        /// <inheritdoc/>
-        public void SetParametersAndRender(ParameterView parameters)
-        {
-            Renderer.DispatchAndAssertNoSynchronousErrors(() =>
-            {
-                Instance.SetParametersAsync(parameters);
-            });
-        }
-    }
+		/// <inheritdoc/>
+		public void SetParametersAndRender(ParameterView parameters)
+		{
+			Renderer.InvokeAsync(() =>
+			{
+				Instance.SetParametersAsync(parameters);
+			});
+		}
+	}
 }

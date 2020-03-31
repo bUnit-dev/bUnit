@@ -51,11 +51,11 @@ namespace Bunit
 		protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
 
 		public IRenderedFragment GetComponentUnderTest() => throw new NotImplementedException();
-		public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : class, IComponent => throw new NotImplementedException();
+		public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent => throw new NotImplementedException();
 		public IRenderedFragment GetFragment(string? id = null) => throw new NotImplementedException();
-		public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : class, IComponent => throw new NotImplementedException();
+		public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent :  IComponent => throw new NotImplementedException();
 		public INodeList CreateNodes(string markup) => throw new NotImplementedException();
-		public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
+		public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
 			=> throw new NotImplementedException();
 		public void Dispose() { } // => throw new NotImplementedException();
 	}

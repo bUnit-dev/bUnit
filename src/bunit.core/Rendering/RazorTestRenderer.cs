@@ -26,6 +26,7 @@ namespace Bunit.Rendering
 		/// </summary>
 		public RazorTestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory) : base(serviceProvider, loggerFactory) { }
 
+
 		/// <summary>
 		/// Renders an instance of the specified Razor-based test.
 		/// </summary>
@@ -35,7 +36,7 @@ namespace Bunit.Rendering
 		{
 			var componentId = await Dispatcher.InvokeAsync(() => RenderComponent(componentType)).ConfigureAwait(false);
 			AssertNoUnhandledExceptions();
-			return GetRazorTests(componentId);
+			return GetRazorTests<RazorTest>(componentId);
 		}
 
 		private async Task<int> RenderComponent(Type componentType)
@@ -46,15 +47,35 @@ namespace Bunit.Rendering
 			return componentId;
 		}
 
-		private IReadOnlyList<RazorTest> GetRazorTests(int fromComponentId)
+		public async Task<IReadOnlyList<TComponent>> RenderAndGetTestComponents<TComponent>(RenderFragment renderFragment)
+			where TComponent : FragmentBase
 		{
-			var result = new List<RazorTest>();
+			var componentId = await RenderFragmentInsideWrapper(renderFragment);
+			return GetRazorTests<TComponent>(componentId);
+		}
+
+		private async Task<int> RenderFragmentInsideWrapper(RenderFragment renderFragment)
+		{
+			var wrapper = new WrapperComponent();
+			var wrapperId = AssignRootComponentId(wrapper);
+
+			await Dispatcher.InvokeAsync(() => wrapper.Render(renderFragment)).ConfigureAwait(false);
+
+			AssertNoUnhandledExceptions();
+
+			return wrapperId;
+		}
+
+		private IReadOnlyList<TComponent> GetRazorTests<TComponent>(int fromComponentId)
+			where TComponent : FragmentBase
+		{
+			var result = new List<TComponent>();
 			var ownFrames = GetCurrentRenderTreeFrames(fromComponentId);
 			for (var i = 0; i < ownFrames.Count; i++)
 			{
 				ref var frame = ref ownFrames.Array[i];
 				if (frame.FrameType == RenderTreeFrameType.Component)
-					if (frame.Component is RazorTest component)
+					if (frame.Component is TComponent component)
 						result.Add(component);
 			}
 			return result;
@@ -72,6 +93,20 @@ namespace Bunit.Rendering
 			{
 				_unhandledException = null;
 				ExceptionDispatchInfo.Capture(unhandled).Throw();
+			}
+		}
+
+		private class WrapperComponent : IComponent
+		{
+			private RenderHandle _renderHandle;
+
+			public void Attach(RenderHandle renderHandle) => _renderHandle = renderHandle;
+
+			public Task SetParametersAsync(ParameterView parameters) => throw new InvalidOperationException($"WrapperComponent shouldn't receive any parameters");
+
+			public void Render(RenderFragment renderFragment)
+			{
+				_renderHandle.Render(renderFragment);
 			}
 		}
 	}
