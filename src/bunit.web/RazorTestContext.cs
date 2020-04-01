@@ -29,7 +29,7 @@ namespace Bunit
 		public IWebRenderedFragment GetComponentUnderTest() => GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory);
 
 		/// <inheritdoc/>
-		public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
+		public IWebRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
 		{
 			var result = GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory<TComponent>);
 			return TryCastTo<TComponent>(result);
@@ -44,7 +44,7 @@ namespace Bunit
 		}
 
 		/// <inheritdoc/>
-		public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : IComponent
+		public IWebRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : IComponent
 		{
 			var key = id ?? SelectFirstFragment().Id;
 			var result = GetOrRenderFragment(key, SelectFragmentById, Factory<TComponent>);
@@ -85,7 +85,7 @@ namespace Bunit
 			return _testData.OfType<ComponentUnderTest>().Single();
 		}
 
-		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment) where TComponent : IComponent
+		private IWebRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment) where TComponent : IComponent
 		{
 			var renderId = Renderer.RenderFragment(fragment).GetAwaiter().GetResult();
 			var compInfo = Renderer.FindComponent<TComponent>(renderId);
@@ -98,14 +98,14 @@ namespace Bunit
 			return new RenderedFragment(Services, renderId);
 		}
 
-		private IRenderedComponent<TComponent> TryCastTo<TComponent>(IWebRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : IComponent
+		private IWebRenderedComponent<TComponent> TryCastTo<TComponent>(IWebRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : IComponent
 		{
-			if (target is IRenderedComponent<TComponent> result)
+			if (target is IWebRenderedComponent<TComponent> result)
 			{
 				return result;
 			}
 
-			if (target is IRenderedComponent<IComponent> other)
+			if (target is IWebRenderedComponent<IComponent> other)
 			{
 				throw new InvalidOperationException($"The generic version of {sourceMethod} has previously returned an object of type IRenderedComponent<{other.Instance.GetType().Name}>. " +
 					$"That cannot be cast to an object of type IRenderedComponent<{typeof(TComponent).Name}>.");

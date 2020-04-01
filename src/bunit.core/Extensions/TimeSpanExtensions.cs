@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading;
 
@@ -7,7 +7,7 @@ namespace Bunit
     /// <summary>
     /// Helper methods for working with <see cref="TimeSpan"/>.
     /// </summary>
-    internal static class TimeSpanExtensions
+    public static class TimeSpanExtensions
     {
         /// <summary>
         /// Returns a timeout time as a <see cref="TimeSpan"/>, set to <see cref="Timeout.InfiniteTimeSpan"/>

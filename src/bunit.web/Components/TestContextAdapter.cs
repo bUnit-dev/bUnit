@@ -9,7 +9,7 @@ namespace Bunit
 {
 	internal sealed class TestContextAdapter : IDisposable
     {
-        private ITestContext? _testContext;
+        private IWebTestContext? _testContext;
         private IRazorTestContext? _razorTestContext;
 
         public TestServiceProvider Services => _testContext?.Services ?? throw new InvalidOperationException("No active test context in the adapter");
@@ -47,16 +47,16 @@ namespace Bunit
         public IWebRenderedFragment GetComponentUnderTest()
             => _razorTestContext?.GetComponentUnderTest() ?? throw new InvalidOperationException($"{nameof(GetComponentUnderTest)} is only available in Razor based tests.");
 
-        public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
+        public IWebRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
             => _razorTestContext?.GetComponentUnderTest<TComponent>() ?? throw new InvalidOperationException($"{nameof(GetComponentUnderTest)} is only available in Razor based tests.");
 
         public IWebRenderedFragment GetFragment(string? id = null)
             => _razorTestContext?.GetFragment(id) ?? throw new InvalidOperationException($"{nameof(GetFragment)} is only available in Razor based tests.");
 
-        public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id) where TComponent : IComponent
+        public IWebRenderedComponent<TComponent> GetFragment<TComponent>(string? id) where TComponent : IComponent
             => _razorTestContext?.GetFragment<TComponent>(id) ?? throw new InvalidOperationException($"{nameof(GetFragment)} is only available in Razor based tests.");
 
-        public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
+        public IWebRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
             => _testContext?.RenderComponent<TComponent>(parameters) ?? throw new InvalidOperationException("No active test context in the adapter");
     }
 }

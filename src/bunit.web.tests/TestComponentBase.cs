@@ -34,7 +34,7 @@ namespace Bunit
 			=> _testContextAdapter.GetComponentUnderTest();
 
 		/// <inheritdoc/>
-		public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
+		public IWebRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
 			=> _testContextAdapter.GetComponentUnderTest<TComponent>();
 
 		/// <inheritdoc/>
@@ -42,11 +42,11 @@ namespace Bunit
 			=> _testContextAdapter.GetFragment(id);
 
 		/// <inheritdoc/>
-		public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : IComponent
+		public IWebRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : IComponent
 			=> _testContextAdapter.GetFragment<TComponent>(id);
 
 		/// <inheritdoc/>
-		public override IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)
+		public override IWebRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)
 			=> _testContextAdapter.HasActiveContext
 				? _testContextAdapter.RenderComponent<TComponent>(parameters)
 				: base.RenderComponent<TComponent>(parameters);

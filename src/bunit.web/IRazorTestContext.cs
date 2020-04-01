@@ -24,7 +24,7 @@ namespace Bunit
         /// </summary>
         /// <typeparam name="TComponent">The type of component to render</typeparam>
         /// <returns>A <see cref="IRenderedComponent{TComponent}"/></returns>
-        IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent;
+        IWebRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent;
 
         /// <summary>
         /// Gets (and renders) the markup/component defined in the 
@@ -51,6 +51,6 @@ namespace Bunit
         /// <typeparam name="TComponent">The type of component to render</typeparam>
         /// <param name="id">The id of the fragment where the component is defined in Razor syntax.</param>
         /// <returns>A <see cref="IRenderedComponent{TComponent}"/></returns>
-        IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : IComponent;
+        IWebRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : IComponent;
     }
 }
