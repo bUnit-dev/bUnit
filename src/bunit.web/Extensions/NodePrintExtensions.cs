@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -117,7 +117,7 @@ namespace Bunit
 
             foreach (var attribute in element.Attributes)
             {
-                result.Append(' ').Append(HtmlMarkupFormatter.Instance.Attribute(attribute));
+                result.Append(' ').Append(DiffMarkupFormatter.Instance.ConvertToString(attribute));
             }
 
             if (element.HasChildNodes)

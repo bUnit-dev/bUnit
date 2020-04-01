@@ -20,7 +20,7 @@ namespace Bunit
         /// <param name="actual">The rendered fragment to verify.</param>
         /// <param name="expected">The expected markup.</param>
         /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void MarkupMatches(this IRenderedFragment actual, string expected, string? userMessage = null)
+        public static void MarkupMatches(this IWebRenderedFragment actual, string expected, string? userMessage = null)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
@@ -39,7 +39,7 @@ namespace Bunit
         /// <param name="actual">The rendered fragment to verify.</param>
         /// <param name="expected">The expected rendered fragment.</param>
         /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void MarkupMatches(this IRenderedFragment actual, IRenderedFragment expected, string? userMessage = null)
+        public static void MarkupMatches(this IWebRenderedFragment actual, IWebRenderedFragment expected, string? userMessage = null)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
@@ -56,7 +56,7 @@ namespace Bunit
         /// <param name="actual">The list of nodes to verify.</param>
         /// <param name="expected">The expected rendered fragment.</param>
         /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void MarkupMatches(this INodeList actual, IRenderedFragment expected, string? userMessage = null)
+        public static void MarkupMatches(this INodeList actual, IWebRenderedFragment expected, string? userMessage = null)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
@@ -73,7 +73,7 @@ namespace Bunit
         /// <param name="actual">The node to verify.</param>
         /// <param name="expected">The expected rendered fragment.</param>
         /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void MarkupMatches(this INode actual, IRenderedFragment expected, string? userMessage = null)
+        public static void MarkupMatches(this INode actual, IWebRenderedFragment expected, string? userMessage = null)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));

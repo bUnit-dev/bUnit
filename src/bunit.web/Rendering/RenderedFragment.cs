@@ -4,6 +4,7 @@ using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Bunit.Diffing;
 using Bunit.Rendering;
+using Bunit.Rendering.RenderEvents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +14,7 @@ namespace Bunit
 	/// <summary>
 	/// Represents an abstract <see cref="IRenderedFragment"/> with base functionality.
 	/// </summary>
-	public class RenderedFragment : IRenderedFragment
+	public class RenderedFragment : IWebRenderedFragment
 	{
 		private readonly ConcurrentRenderEventSubscriber _renderEventSubscriber;
 		private string? _snapshotMarkup;
@@ -66,7 +67,7 @@ namespace Bunit
 		public IObservable<RenderEvent> RenderEvents { get; }
 
 		/// <summary>
-		/// Creates an instance of the <see cref="RenderedFragmentBase"/> class.
+		/// Creates an instance of the <see cref="RenderedFragment"/> class.
 		/// </summary>
 		public RenderedFragment(IServiceProvider services, int componentId)
 		{

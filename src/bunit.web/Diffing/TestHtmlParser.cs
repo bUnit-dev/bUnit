@@ -18,7 +18,7 @@ namespace Bunit.Diffing
 
         /// <summary>
         /// Creates an instance of the parser with a AngleSharp context 
-        /// without a <see cref="TestRendererOld"/> registered.
+        /// without a <see cref="TestRenderer"/> registered.
         /// </summary>
         public TestHtmlParser()
         {

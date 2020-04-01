@@ -1,18 +1,18 @@
 using System;
 using AngleSharp.Dom;
 using AngleSharpWrappers;
-using Bunit.Rendering;
+using Bunit.Rendering.RenderEvents;
 
 namespace Bunit
 {
 	internal sealed class ElementFactory<TElement> : ConcurrentRenderEventSubscriber, IElementFactory<TElement>
         where TElement : class, IElement
     {
-        private readonly IRenderedFragment _testTarget;
+        private readonly IWebRenderedFragment _testTarget;
         private readonly string _cssSelector;
         private TElement? _element;
 
-        public ElementFactory(IRenderedFragment testTarget, TElement initialElement, string cssSelector)
+        public ElementFactory(IWebRenderedFragment testTarget, TElement initialElement, string cssSelector)
             : base((testTarget ?? throw new ArgumentNullException(nameof(testTarget))).RenderEvents)
         {
             _testTarget = testTarget;

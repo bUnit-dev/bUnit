@@ -2,6 +2,7 @@ using AngleSharp.Dom;
 using Bunit.Diffing;
 using Bunit.Mocking.JSInterop;
 using Bunit.Rendering;
+using Bunit.Rendering.RenderEvents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

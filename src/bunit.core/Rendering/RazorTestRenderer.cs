@@ -39,19 +39,25 @@ namespace Bunit.Rendering
 			return GetRazorTests<RazorTest>(componentId);
 		}
 
+		/// <summary>
+		/// Renders the provided <paramref name="renderFragment"/>.
+		/// </summary>
+		/// <typeparam name="TComponent">The type of components to find in the render tree after renderinger.</typeparam>
+		/// <param name="renderFragment">The <see cref="RenderFragment"/> to render.</param>
+		/// <returns>A list of <typeparamref name="TComponent"/> found in the <paramref name="renderFragment"/>'s render tree.</returns>
+		public async Task<IReadOnlyList<TComponent>> RenderAndGetTestComponents<TComponent>(RenderFragment renderFragment)
+			where TComponent : FragmentBase
+		{
+			var componentId = await RenderFragmentInsideWrapper(renderFragment);
+			return GetRazorTests<TComponent>(componentId);
+		}
+
 		private async Task<int> RenderComponent(Type componentType)
 		{
 			var component = InstantiateComponent(componentType);
 			var componentId = AssignRootComponentId(component);
 			await RenderRootComponentAsync(componentId).ConfigureAwait(false);
 			return componentId;
-		}
-
-		public async Task<IReadOnlyList<TComponent>> RenderAndGetTestComponents<TComponent>(RenderFragment renderFragment)
-			where TComponent : FragmentBase
-		{
-			var componentId = await RenderFragmentInsideWrapper(renderFragment);
-			return GetRazorTests<TComponent>(componentId);
 		}
 
 		private async Task<int> RenderFragmentInsideWrapper(RenderFragment renderFragment)

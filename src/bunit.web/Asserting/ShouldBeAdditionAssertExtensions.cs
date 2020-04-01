@@ -50,7 +50,7 @@ namespace Bunit
 		/// <param name="actualChange">The change to verify</param>
 		/// <param name="expectedChange">The expected additions to verify against</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-		public static void ShouldBeAddition(this IDiff actualChange, IRenderedFragment expectedChange, string? userMessage = null)
+		public static void ShouldBeAddition(this IDiff actualChange, IWebRenderedFragment expectedChange, string? userMessage = null)
 		{
 			if (expectedChange is null)
 				throw new ArgumentNullException(nameof(expectedChange));

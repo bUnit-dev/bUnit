@@ -1,10 +1,10 @@
 using System;
 using Microsoft.AspNetCore.Components.RenderTree;
 
-namespace Bunit.Rendering
+namespace Bunit.Rendering.RenderEvents
 {
 	/// <summary>
-	/// Represents a render event for a <see cref="IRenderedFragmentCore"/> or generally from the <see cref="TestRendererOld"/>.
+	/// Represents a render event from a <see cref="TestRenderer"/>.
 	/// </summary>
 	public sealed class RenderEvent
 	{
@@ -26,18 +26,18 @@ namespace Bunit.Rendering
 		}
 
 		/// <summary>
-		/// Checks whether the <paramref name="renderedFragment"/> or one or more of 
+		/// Checks whether the a component with <paramref name="componentId"/> or one or more of 
 		/// its sub components was changed during the <see cref="RenderEvent"/>.
 		/// </summary>
-		/// <param name="renderedFragment">Component to check for updates to.</param>
+		/// <param name="componentId">Id of component to check for updates to.</param>
 		/// <returns>True if <see cref="RenderEvent"/> contains updates to component, false otherwise.</returns>
 		public bool HasChangesTo(int componentId) => HasChangesToRoot(componentId);
 
 		/// <summary>
-		/// Checks whether the <paramref name="renderedFragment"/> or one or more of 
+		/// Checks whether the a component with <paramref name="componentId"/> or one or more of 
 		/// its sub components was rendered during the <see cref="RenderEvent"/>.
 		/// </summary>
-		/// <param name="renderedFragment">Component to check if rendered.</param>
+		/// <param name="componentId">Id of component to check if rendered.</param>
 		/// <returns>True if the component or a sub component rendered, false otherwise.</returns>
 		public bool DidComponentRender(int componentId) => DidComponentRenderRoot(componentId);
 

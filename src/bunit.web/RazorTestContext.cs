@@ -13,7 +13,7 @@ namespace Bunit
 	public class RazorTestContext : TestContext, IRazorTestContext
 	{
 		private readonly IReadOnlyList<FragmentBase> _testData;
-		private readonly Dictionary<string, IRenderedFragment> _renderedFragments = new Dictionary<string, IRenderedFragment>();
+		private readonly Dictionary<string, IWebRenderedFragment> _renderedFragments = new Dictionary<string, IWebRenderedFragment>();
 
 		/// <summary>
 		/// Creates an instance of the <see cref="RazorTestContext"/> that has access the fragments defined 
@@ -26,7 +26,7 @@ namespace Bunit
 		}
 
 		/// <inheritdoc/>
-		public IRenderedFragment GetComponentUnderTest() => GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory);
+		public IWebRenderedFragment GetComponentUnderTest() => GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory);
 
 		/// <inheritdoc/>
 		public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
@@ -36,7 +36,7 @@ namespace Bunit
 		}
 
 		/// <inheritdoc/>
-		public IRenderedFragment GetFragment(string? id = null)
+		public IWebRenderedFragment GetFragment(string? id = null)
 		{
 			var key = id ?? SelectFirstFragment().Id;
 			var result = GetOrRenderFragment(key, SelectFragmentById, Factory);
@@ -55,7 +55,7 @@ namespace Bunit
 		/// Gets or renders the fragment specified in the id.
 		/// For internal use mainly.
 		/// </summary>
-		private IRenderedFragment GetOrRenderFragment(string id, Func<string, FragmentBase> fragmentSelector, Func<RenderFragment, IRenderedFragment> renderedFragmentFactory)
+		private IWebRenderedFragment GetOrRenderFragment(string id, Func<string, FragmentBase> fragmentSelector, Func<RenderFragment, IWebRenderedFragment> renderedFragmentFactory)
 		{
 			if (_renderedFragments.TryGetValue(id, out var renderedFragment))
 			{
@@ -92,13 +92,13 @@ namespace Bunit
 			return new RenderedComponent<TComponent>(Services, compInfo.ComponentId, compInfo.Component);
 		}
 
-		private IRenderedFragment Factory(RenderFragment fragment)
+		private IWebRenderedFragment Factory(RenderFragment fragment)
 		{
 			var renderId = Renderer.RenderFragment(fragment).GetAwaiter().GetResult();
 			return new RenderedFragment(Services, renderId);
 		}
 
-		private IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : IComponent
+		private IRenderedComponent<TComponent> TryCastTo<TComponent>(IWebRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : IComponent
 		{
 			if (target is IRenderedComponent<TComponent> result)
 			{

@@ -7,7 +7,7 @@ namespace Bunit
 	/// Represents a rendered component-under-test. 
 	/// </summary>
 	/// <typeparam name="TComponent">The type of the component under test</typeparam>
-	public interface IRenderedComponent<out TComponent> : IRenderedFragment where TComponent : IComponent
+	public interface IRenderedComponent<out TComponent> : IWebRenderedFragment where TComponent : IComponent
     {
         /// <summary>
         /// Gets the component under test

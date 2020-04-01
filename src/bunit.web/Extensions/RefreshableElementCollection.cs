@@ -1,12 +1,13 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using AngleSharp.Dom;
+using Bunit.Rendering.RenderEvents;
 
 namespace Bunit
 {
-    internal class RefreshableElementCollection : IRefreshableElementCollection<IElement>
+	internal class RefreshableElementCollection : IRefreshableElementCollection<IElement>
     {
-        private readonly IRenderedFragment _renderedFragment;
+        private readonly IWebRenderedFragment _renderedFragment;
         private readonly string _cssSelector;
         private IHtmlCollection<IElement> _elements;
         private ComponentChangeEventSubscriber? _changeEvents;
@@ -32,7 +33,7 @@ namespace Bunit
             }
         }
 
-        public RefreshableElementCollection(IRenderedFragment renderedFragment, string cssSelector)
+        public RefreshableElementCollection(IWebRenderedFragment renderedFragment, string cssSelector)
         {
             _renderedFragment = renderedFragment;
             _cssSelector = cssSelector;

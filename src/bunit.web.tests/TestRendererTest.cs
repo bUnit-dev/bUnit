@@ -3,6 +3,7 @@ using System.Linq;
 using Bunit.BlazorE2E.BasicTestApp;
 using Bunit.Extensions;
 using Bunit.Mocking.JSInterop;
+using Bunit.Rendering.RenderEvents;
 using Bunit.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
@@ -10,7 +11,7 @@ using Xunit;
 
 namespace Bunit
 {
-    public class TestRendererTest : ComponentTestFixture
+	public class TestRendererTest : ComponentTestFixture
     {
         [Fact(DisplayName = "Renderer pushes render events to subscribers when renders occur")]
         public void Test001()

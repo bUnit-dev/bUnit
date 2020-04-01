@@ -44,13 +44,13 @@ namespace Bunit
             _razorTestContext = null;
         }
 
-        public IRenderedFragment GetComponentUnderTest()
+        public IWebRenderedFragment GetComponentUnderTest()
             => _razorTestContext?.GetComponentUnderTest() ?? throw new InvalidOperationException($"{nameof(GetComponentUnderTest)} is only available in Razor based tests.");
 
         public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
             => _razorTestContext?.GetComponentUnderTest<TComponent>() ?? throw new InvalidOperationException($"{nameof(GetComponentUnderTest)} is only available in Razor based tests.");
 
-        public IRenderedFragment GetFragment(string? id = null)
+        public IWebRenderedFragment GetFragment(string? id = null)
             => _razorTestContext?.GetFragment(id) ?? throw new InvalidOperationException($"{nameof(GetFragment)} is only available in Razor based tests.");
 
         public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id) where TComponent : IComponent

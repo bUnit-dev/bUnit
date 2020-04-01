@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Diagnostics.CodeAnalysis;
-using Bunit.Rendering;
+using Bunit.Rendering.RenderEvents;
 
 namespace Bunit
 {

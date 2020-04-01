@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging.Abstractions;
+using Bunit.Rendering.RenderEvents;
 
 namespace Bunit.Rendering
 {
@@ -54,11 +55,23 @@ namespace Bunit.Rendering
 			return FindComponent<TComponent>(wrapperId);
 		}
 
+		/// <summary>
+		/// Renders the provided <paramref name="renderFragment"/> inside a wrapper and returns
+		/// the wrappers component id.
+		/// </summary>
+		/// <param name="renderFragment"><see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
+		/// <returns>The id of the wrapper component which the <paramref name="renderFragment"/> is rendered inside.</returns>
 		public Task<int> RenderFragment(RenderFragment renderFragment)
 		{
 			return RenderFragmentInsideWrapper(renderFragment);
 		}
 
+		/// <summary>
+		/// Performs a depth-first search for a <typeparamref name="TComponent"/> child component of the component with the <paramref name="parentComponentId"/>.
+		/// </summary>
+		/// <typeparam name="TComponent">Type of component to look for.</typeparam>
+		/// <param name="parentComponentId">The id of the parent component.</param>
+		/// <returns>The first matching child component.</returns>
 		public (int ComponentId, TComponent Component) FindComponent<TComponent>(int parentComponentId)
 		{
 			var result = GetComponent<TComponent>(parentComponentId);
@@ -68,6 +81,12 @@ namespace Bunit.Rendering
 				throw new ComponentNotFoundException(typeof(TComponent));
 		}
 
+		/// <summary>
+		/// Performs a depth-first search for all <typeparamref name="TComponent"/> child components of the component with the <paramref name="parentComponentId"/>.
+		/// </summary>
+		/// <typeparam name="TComponent">Type of components to look for.</typeparam>
+		/// <param name="parentComponentId">The id of the parent component.</param>
+		/// <returns>The matching child components.</returns>
 		public IReadOnlyList<(int ComponentId, TComponent Component)> FindComponents<TComponent>(int parentComponentId)
 		{
 			return GetComponents<TComponent>(parentComponentId);

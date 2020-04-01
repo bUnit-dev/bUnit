@@ -1,4 +1,5 @@
 ﻿using System;
+using Bunit.Rendering.RenderEvents;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Shouldly;
 using Xunit;

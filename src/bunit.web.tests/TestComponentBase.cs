@@ -30,7 +30,7 @@ namespace Bunit
 			=> _testContextAdapter.HasActiveContext ? _testContextAdapter.Services : base.Services;
 
 		/// <inheritdoc/>
-		public IRenderedFragment GetComponentUnderTest()
+		public IWebRenderedFragment GetComponentUnderTest()
 			=> _testContextAdapter.GetComponentUnderTest();
 
 		/// <inheritdoc/>
@@ -38,7 +38,7 @@ namespace Bunit
 			=> _testContextAdapter.GetComponentUnderTest<TComponent>();
 
 		/// <inheritdoc/>
-		public IRenderedFragment GetFragment(string? id = null)
+		public IWebRenderedFragment GetFragment(string? id = null)
 			=> _testContextAdapter.GetFragment(id);
 
 		/// <inheritdoc/>

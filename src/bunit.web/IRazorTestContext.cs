@@ -14,7 +14,7 @@ namespace Bunit
         /// The HTML/component is only rendered the first this method is called.
         /// </summary>
         /// <returns>A <see cref="IRenderedFragment"/></returns>
-        IRenderedFragment GetComponentUnderTest();
+        IWebRenderedFragment GetComponentUnderTest();
 
         /// <summary>
         /// Gets (and renders) the component of type <typeparamref name="TComponent"/> defined in the 
@@ -37,7 +37,7 @@ namespace Bunit
         /// </summary>
         /// <param name="id">The id of the fragment where the HTML/component is defined in Razor syntax.</param>
         /// <returns>A <see cref="IRenderedFragment"/></returns>
-        IRenderedFragment GetFragment(string? id = null);
+        IWebRenderedFragment GetFragment(string? id = null);
 
         /// <summary>
         /// Gets (and renders) the component of type <typeparamref name="TComponent"/> defined in the 

@@ -21,7 +21,7 @@ namespace Bunit
 		/// <summary>
 		/// Renders the test input.
 		/// </summary>       
-		public IRenderedFragment RenderTestInput()
+		public IWebRenderedFragment RenderTestInput()
 		{
 			var fragment = _testData.OfType<TestInput>().Single();
 			var renderId = Renderer.RenderFragment(fragment.ChildContent).GetAwaiter().GetResult();
@@ -31,7 +31,7 @@ namespace Bunit
 		/// <summary>
 		/// Renders the expected output.
 		/// </summary>       
-		public IRenderedFragment RenderExpectedOutput()
+		public IWebRenderedFragment RenderExpectedOutput()
 		{
 			var fragment = _testData.OfType<ExpectedOutput>().Single();
 			var renderId = Renderer.RenderFragment(fragment.ChildContent).GetAwaiter().GetResult();

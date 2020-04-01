@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
+using Bunit.Rendering.RenderEvents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
@@ -50,9 +51,9 @@ namespace Bunit
 		Task IComponent.SetParametersAsync(ParameterView parameters) => Task.CompletedTask;
 		protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
 
-		public IRenderedFragment GetComponentUnderTest() => throw new NotImplementedException();
+		public IWebRenderedFragment GetComponentUnderTest() => throw new NotImplementedException();
 		public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent => throw new NotImplementedException();
-		public IRenderedFragment GetFragment(string? id = null) => throw new NotImplementedException();
+		public IWebRenderedFragment GetFragment(string? id = null) => throw new NotImplementedException();
 		public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent :  IComponent => throw new NotImplementedException();
 		public INodeList CreateNodes(string markup) => throw new NotImplementedException();
 		public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
