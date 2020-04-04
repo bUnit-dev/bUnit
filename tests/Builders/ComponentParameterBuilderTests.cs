@@ -16,10 +16,10 @@ namespace Bunit
             _sut = new ComponentParameterBuilder<AllTypesOfParams<string>>();
         }
 
-        [Theory]
+        [Theory(DisplayName = "Add Nullable Integer and Build")]
         [InlineData(null)]
         [InlineData(42)]
-        public void Add_NullableInteger_And_Build_Should_Return_Correct_ReadonlyCollection(int? value)
+        public void Test001(int? value)
         {
             // Arrange and Act
             _sut.Add(c => c.NamedCascadingValue, value);
@@ -33,11 +33,11 @@ namespace Bunit
             parameter.Value.ShouldBe(value);
         }
 
-        [Theory]
+        [Theory(DisplayName = "Add String and Build")]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("foo")]
-        public void Add_String_And_Build_Should_Return_Correct_ReadonlyCollection(string? value)
+        public void Test002(string? value)
         {
             // Arrange and Act
             _sut.Add(c => c.RegularParam, value);
@@ -51,8 +51,8 @@ namespace Bunit
             parameter.Value.ShouldBe(value);
         }
 
-        [Fact]
-        public void AddCascading_Integer_Without_Name_Return_Correct_ReadonlyCollection()
+        [Fact(DisplayName = "AddCascading Integer without a name and Build")]
+        public void Test003()
         {
             // Arrange
             const int value = 42;
@@ -69,8 +69,8 @@ namespace Bunit
             parameter.Value.ShouldBe(value);
         }
 
-        [Fact]
-        public void Add_Multiple_And_Build_Should_Return_Correct_ReadonlyCollection()
+        [Fact(DisplayName = "Add multiple and Build")]
+        public void Test004()
         {
             // Arrange and Act
             _sut.Add(c => c.NamedCascadingValue, 42).Add(c => c.RegularParam, "bar");
@@ -88,8 +88,26 @@ namespace Bunit
             second.Value.ShouldBe("bar");
         }
 
-        [Fact]
-        public void Add_GenericCallback_And_Build_Should_Return_Correct_ReadonlyCollection()
+        [Fact(DisplayName = "Add NonGenericCallback and Build")]
+        public void Test005()
+        {
+            // Arrange
+            EventCallback callback = EventCallback.Empty;
+
+            // Act
+            _sut.Add(c => c.NonGenericCallback, callback);
+            var result = _sut.Build();
+
+            // Assert
+            result.Count.ShouldBe(1);
+
+            var parameter = result.First();
+            parameter.Name.ShouldBe("NonGenericCallback");
+            parameter.Value.ShouldBe(callback);
+        }
+
+        [Fact(DisplayName = "Add GenericCallback and Build")]
+        public void Test006()
         {
             // Arrange
             EventCallback<EventArgs> callback = EventCallback<EventArgs>.Empty;
@@ -106,8 +124,8 @@ namespace Bunit
             parameter.Value.ShouldBe(callback);
         }
 
-        [Fact]
-        public void Add_Duplicate_Property_Should_Throw_Exception()
+        [Fact(DisplayName = "Add duplicate name should throw Exception")]
+        public void Test100()
         {
             // Arrange
             _sut.Add(c => c.NamedCascadingValue, null);
@@ -116,8 +134,8 @@ namespace Bunit
             Assert.Throws<ArgumentException>(() => _sut.Add(c => c.NamedCascadingValue, null));
         }
 
-        [Fact]
-        public void AddCascading_With_NullValue_Should_Throw_Exception()
+        [Fact(DisplayName = "AddCascading with null value should throw Exception")]
+        public void Test101()
         {
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => _sut.AddCascading(c => c.NamedCascadingValue, null));
