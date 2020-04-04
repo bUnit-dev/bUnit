@@ -53,6 +53,20 @@ namespace Bunit
             return result;
         }
 
+        /// <inheritdoc/>
+        public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterBuilder<TComponent>> action) where TComponent : class, IComponent
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            var builder = new ComponentParameterBuilder<TComponent>();
+            action(builder);
+
+            return RenderComponent<TComponent>(builder.Build());
+        }
+
         #region IDisposable Support
         private bool _disposed = false;
 

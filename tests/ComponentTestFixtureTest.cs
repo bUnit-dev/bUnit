@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Xunit;
 using Shouldly;
 using Bunit.SampleComponents;
 using System.Diagnostics.CodeAnalysis;
 using Bunit.Mocking.JSInterop;
+using System.Collections.Generic;
 
 namespace Bunit
 {
@@ -89,6 +91,44 @@ namespace Bunit
             // assert
             Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(CascadingValue(42)));
             Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(CascadingValue(nameof(AllTypesOfParams<string>.NamedCascadingValue), 1337)));
+        }
+
+        [Fact(DisplayName = "All types of strongly-typed parameters are correctly assigned to component on render")]
+        public void Test004()
+        {
+            Services.AddMockJsRuntime();
+
+            var cutOld = RenderComponent<AllTypesOfParams<string>>(
+                ("some-unmatched-attribute", "unmatched value"),
+                (nameof(AllTypesOfParams<string>.RegularParam), "some value"),
+                CascadingValue(42),
+                CascadingValue(nameof(AllTypesOfParams<string>.NamedCascadingValue), 1337),
+                EventCallback(nameof(AllTypesOfParams<string>.NonGenericCallback), () => throw new Exception("NonGenericCallback")),
+                EventCallback(nameof(AllTypesOfParams<string>.GenericCallback), (EventArgs args) => throw new Exception("GenericCallback")),
+                ChildContent(nameof(ChildContent)),
+                RenderFragment(nameof(AllTypesOfParams<string>.OtherContent), nameof(AllTypesOfParams<string>.OtherContent)),
+                Template<string>(nameof(AllTypesOfParams<string>.ItemTemplate), (item) => (builder) => throw new Exception("ItemTemplate"))
+            );
+
+            var cut = RenderComponent<AllTypesOfParams<string>>(builder => builder
+                .Add(c => c.RegularParam, "some value")
+                .AddCascading(42)
+                .AddCascading(c => c.NamedCascadingValue, 1337)
+                .Add(c => c.NonGenericCallback, () => throw new Exception("NonGenericCallback"))
+                .Add(c => c.GenericCallback, (EventArgs args) => throw new Exception("GenericCallback"))
+            );
+
+            // assert that all parameters have been set correctly
+            var instance = cut.Instance;
+            //instance.Attributes["some-unmatched-attribute"].ShouldBe("unmatched value");
+            instance.RegularParam.ShouldBe("some value");
+            instance.UnnamedCascadingValue.ShouldBe(42);
+            instance.NamedCascadingValue.ShouldBe(1337);
+            Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(null)).Message.ShouldBe("NonGenericCallback");
+            Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
+            //new RenderedFragment(this, instance.ChildContent!).Markup.ShouldBe(nameof(ChildContent));
+            //new RenderedFragment(this, instance.OtherContent!).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
+            //Should.Throw<Exception>(() => instance.ItemTemplate!("")(null)).Message.ShouldBe("ItemTemplate");
         }
 
         [Fact(DisplayName = "Template(name, markupFactory) helper correctly renders markup template")]

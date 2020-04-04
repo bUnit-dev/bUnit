@@ -54,7 +54,7 @@ namespace Bunit
             await ExecuteFixtureTests(container).ConfigureAwait(false);
             await ExecuteSnapshotTests(container).ConfigureAwait(false);
         }
-        
+
         /// <inheritdoc/>
         public IRenderedFragment GetComponentUnderTest()
             => _testContextAdapter.GetComponentUnderTest();
@@ -82,7 +82,7 @@ namespace Bunit
             => _testContextAdapter.HasActiveContext
                 ? _testContextAdapter.RenderComponent<TComponent>(parameters)
                 : base.RenderComponent<TComponent>(parameters);
-        
+
         private async Task ExecuteFixtureTests(ContainerComponent container)
         {
             foreach (var (_, fixture) in container.GetComponents<Fixture>())
@@ -91,7 +91,7 @@ namespace Bunit
                 var testData = container.GetComponents<FragmentBase>().Select(x => x.Component).ToArray();
 
                 _testContextAdapter.ActivateRazorTestContext(testData);
-                
+
                 InvokeFixtureAction(fixture, fixture.Setup);
                 await InvokeFixtureAction(fixture, fixture.SetupAsync).ConfigureAwait(false);
                 InvokeFixtureAction(fixture, fixture.Test);
