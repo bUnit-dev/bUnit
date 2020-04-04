@@ -72,6 +72,12 @@ namespace Bunit
             return this;
         }
 
+        /// <summary>
+        /// Add a non generic <see cref="EventCallback"/> parameter with a value for this builder.
+        /// </summary>
+        /// <param name="expression">The property or field expression</param>
+        /// <param name="callback">The event callback.</param>
+        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
         public ComponentParameterBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback>> expression, Func<Task> callback)
         {
             if (expression == null)
@@ -87,6 +93,12 @@ namespace Bunit
             return this;
         }
 
+        /// <summary>
+        /// Add a generic <see cref="EventCallback"/> parameter with a value for this builder.
+        /// </summary>
+        /// <param name="expression">The property or field expression</param>
+        /// <param name="callback">The event callback.</param>
+        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
         public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<EventArgs>>> expression, Func<TValue, Task> callback)
         {
             if (expression == null)
@@ -100,6 +112,15 @@ namespace Bunit
 
             AddParameterToList(ComponentParameter.CreateParameter(GetParameterName(expression), EventCallback.Factory.Create(this, callback)));
             return this;
+        }
+
+        /// <summary>
+        /// Create a <see cref="ComponentParameter"/> collection.
+        /// </summary>
+        /// <returns>A IReadOnlyCollection of <see cref="ComponentParameter"/></returns>
+        public IReadOnlyCollection<ComponentParameter> Build()
+        {
+            return _componentParameters.ToArray();
         }
 
         private static string GetParameterName<TValue>(Expression<Func<TComponent, TValue>> expression)
@@ -122,15 +143,6 @@ namespace Bunit
             {
                 throw new ArgumentException($"A parameter with the name '{parameter.Name}' has already been added.");
             }
-        }
-
-        /// <summary>
-        /// Create a <see cref="ComponentParameter"/> collection.
-        /// </summary>
-        /// <returns>A IReadOnlyCollection of <see cref="ComponentParameter"/></returns>
-        public IReadOnlyCollection<ComponentParameter> Build()
-        {
-            return _componentParameters.ToArray();
         }
     }
 }
