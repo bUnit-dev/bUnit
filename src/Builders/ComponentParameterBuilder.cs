@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -8,9 +9,9 @@ using Microsoft.AspNetCore.Components;
 namespace Bunit
 {
     /// <summary>
-    /// 
+    /// A builder which makes it possible to add typed ComponentParameters.
     /// </summary>
-    /// <typeparam name="TComponent"></typeparam>
+    /// <typeparam name="TComponent">The type of component to render</typeparam>
     public sealed class ComponentParameterBuilder<TComponent> where TComponent : class, IComponent
     {
         private readonly ICollection<ComponentParameter> _componentParameters = new List<ComponentParameter>();
@@ -22,14 +23,16 @@ namespace Bunit
         /// <param name="expression">The property or field expression</param>
         /// <param name="value">The value</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, TValue>> expression, TValue value)
+        public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, TValue>> expression, [AllowNull] TValue value)
         {
             if (expression == null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            AddParameterToList(ComponentParameter.CreateParameter(GetParameterName(expression), value));
+            AddParameterToList(ComponentParameter<TComponent, TValue>.CreateParameter(expression, value));
+
+            //AddParameterToList(ComponentParameter.CreateParameter(GetParameterNameFromMethodExpression(expression), value));
             return this;
         }
 
@@ -52,7 +55,9 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(value));
             }
 
-            AddParameterToList(ComponentParameter.CreateCascadingValue(GetParameterName(expression), value));
+            AddParameterToList(ComponentParameter<TComponent, TValue>.CreateCascadingValue(expression, value));
+
+            // AddParameterToList(ComponentParameter.CreateCascadingValue(GetParameterNameFromMethodExpression(expression), value));
             return this;
         }
 
@@ -89,7 +94,9 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(callback));
             }
 
-            AddParameterToList(ComponentParameter.CreateParameter(GetParameterName(expression), EventCallback.Factory.Create(this, callback)));
+            AddParameterToList(ComponentParameter<TComponent, EventCallback>.CreateParameter(expression, EventCallback.Factory.Create(this, callback)));
+
+            // AddParameterToList(ComponentParameter.CreateParameter(GetParameterNameFromMethodExpression(expression), EventCallback.Factory.Create(this, callback)));
             return this;
         }
 
@@ -99,7 +106,7 @@ namespace Bunit
         /// <param name="expression">The property or field expression</param>
         /// <param name="callback">The event callback.</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<EventArgs>>> expression, Func<TValue, Task> callback)
+        public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<EventArgs>>> expression, Func<EventArgs, Task> callback)
         {
             if (expression == null)
             {
@@ -110,7 +117,9 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(callback));
             }
 
-            AddParameterToList(ComponentParameter.CreateParameter(GetParameterName(expression), EventCallback.Factory.Create(this, callback)));
+            AddParameterToList(ComponentParameter<TComponent, EventCallback<EventArgs>>.CreateParameter(expression, EventCallback.Factory.Create(this, callback)));
+
+            // AddParameterToList(ComponentParameter.CreateParameter(GetParameterNameFromMethodExpression(expression), EventCallback.Factory.Create(this, callback)));
             return this;
         }
 
@@ -123,15 +132,15 @@ namespace Bunit
             return _componentParameters.ToArray();
         }
 
-        private static string GetParameterName<TValue>(Expression<Func<TComponent, TValue>> expression)
-        {
-            if (expression.Body is MemberExpression memberExpression)
-            {
-                return memberExpression.Member.Name;
-            }
+        //private static string GetParameterNameFromMethodExpression<TValue>(Expression<Func<TComponent, TValue>> expression)
+        //{
+        //    if (expression.Body is MemberExpression memberExpression)
+        //    {
+        //        return memberExpression.Member.Name;
+        //    }
 
-            throw new ArgumentException($"The expression '{expression}' does not resolve to a Property or Field on the class '{typeof(TComponent)}'.");
-        }
+        //    throw new ArgumentException($"The expression '{expression}' does not resolve to a Property or Field on the class '{typeof(TComponent)}'.");
+        //}
 
         private void AddParameterToList(ComponentParameter parameter)
         {
