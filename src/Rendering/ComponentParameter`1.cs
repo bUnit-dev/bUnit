@@ -73,7 +73,7 @@ namespace Bunit
         /// </summary>
         /// <param name="expression">The property or field expression</param>
         /// <param name="value">The cascading value</param>
-        public static ComponentParameter CreateCascadingValue(Expression<Func<TComponent, TValue>> expression, TValue value)
+        public static ComponentParameter CreateCascadingValue(Expression<Func<TComponent, TValue>> expression, [DisallowNull] TValue value)
             => ComponentParameter.CreateCascadingValue(GetParameterNameFromMethodExpression(expression), value);
 
         /// <summary>
@@ -92,10 +92,10 @@ namespace Bunit
 
         /// <inheritdoc/>
         public bool Equals(ComponentParameter<TComponent, TValue> other)
-            => string.Equals(Name, other.Name, StringComparison.Ordinal) && object.Equals(Value, other.Value) && IsCascadingValue == other.IsCascadingValue;
+            => string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase) && Equals(Value, other.Value) && IsCascadingValue == other.IsCascadingValue;
 
         /// <inheritdoc/>
-        public override bool Equals(object obj) => obj is ComponentParameter other && Equals(other);
+        public override bool Equals(object obj) => obj is ComponentParameter<TComponent, TValue> other && Equals(other);
 
         /// <inheritdoc/>
         public override int GetHashCode() => HashCode.Combine(Name, Value, IsCascadingValue);
