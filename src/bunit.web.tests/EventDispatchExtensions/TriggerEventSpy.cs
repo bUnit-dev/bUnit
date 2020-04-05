@@ -9,13 +9,13 @@ namespace Bunit
 {
 	public class TriggerEventSpy<TEventArgs> where TEventArgs : EventArgs, new()
     {
-        private readonly IWebRenderedComponent<TriggerTester<TEventArgs>> _renderedComponent;
+        private readonly IRenderedComponent<TriggerTester<TEventArgs>> _renderedComponent;
         private readonly string _element;
         private TEventArgs? _receivedEvent;
 
         public TEventArgs RaisedEvent => _receivedEvent!;
 
-        public TriggerEventSpy(Func<ComponentParameter[], IWebRenderedComponent<TriggerTester<TEventArgs>>> componentRenderer, string element, string eventName)
+        public TriggerEventSpy(Func<ComponentParameter[], IRenderedComponent<TriggerTester<TEventArgs>>> componentRenderer, string element, string eventName)
         {
             if (componentRenderer is null) throw new ArgumentNullException(nameof(componentRenderer));
 

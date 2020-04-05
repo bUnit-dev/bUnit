@@ -5,7 +5,7 @@ namespace Bunit
 {
     /// <summary>
     /// Represents a <see cref="IElement"/> collection, which queries and finds its
-    /// elements in an <see cref="IRenderedFragment"/>, based on a CSS selector.
+    /// elements in an <see cref="IRenderedFragmentCore"/>, based on a CSS selector.
     /// The collection can be refreshed either manually or automatically.
     /// </summary>
     /// <typeparam name="T">The type of <see cref="IElement"/> in the collection.</typeparam>
@@ -13,7 +13,7 @@ namespace Bunit
     {
         /// <summary>
         /// Gets or sets whether the collection automatically refreshes when the 
-        /// <see cref="IRenderedFragment"/> changes.
+        /// <see cref="IRenderedFragmentCore"/> changes.
         /// </summary>
         bool EnableAutoRefresh { get; set; }
 

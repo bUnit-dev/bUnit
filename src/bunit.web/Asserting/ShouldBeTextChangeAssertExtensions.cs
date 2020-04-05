@@ -53,7 +53,7 @@ namespace Bunit
 		/// <param name="actualChange">The diff to verify.</param>
 		/// <param name="expectedChange">The rendered fragment containing the expected text change.</param>
 		/// <param name="userMessage">A custom error message to show if the verification fails.</param>
-		public static void ShouldBeTextChange(this IDiff actualChange, IWebRenderedFragment expectedChange, string? userMessage = null)
+		public static void ShouldBeTextChange(this IDiff actualChange, IRenderedFragment expectedChange, string? userMessage = null)
 		{
 			if (expectedChange is null)
 				throw new ArgumentNullException(nameof(expectedChange));

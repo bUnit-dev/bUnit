@@ -10,16 +10,6 @@ namespace Bunit.RazorTesting
 	public abstract class FragmentBase : IComponent
 	{
 		/// <summary>
-		/// A no-op test method.
-		/// </summary>
-		protected static void NoopTestMethod() { }
-
-		/// <summary>
-		/// A no-op async test method
-		/// </summary>
-		protected static Task NoopTestMethodAsync() => Task.CompletedTask;
-
-		/// <summary>
 		/// Gets or sets the child content of the fragment.
 		/// </summary>
 		[Parameter] public RenderFragment ChildContent { get; set; } = default!;

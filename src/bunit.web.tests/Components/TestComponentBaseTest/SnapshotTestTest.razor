@@ -5,8 +5,8 @@
 	class Dep2 : IAsyncTestDep { public Task<string> GetData() => Task.FromResult("BAR"); }
 }
 
-<SnapshotTest Setup="() => Services.AddSingleton<ITestDep, Dep1>()"
-			  SetupAsync="() => { Services.AddSingleton<IAsyncTestDep, Dep2>(); return Task.CompletedTask; }">
+<SnapshotTest Setup="x => x.Services.AddSingleton<ITestDep, Dep1>()"
+			  SetupAsync="x => { x.Services.AddSingleton<IAsyncTestDep, Dep2>(); return Task.CompletedTask; }">
 	<TestInput>
 		<SimpleWithDeps></SimpleWithDeps>
 		<SimpleWithAyncDeps></SimpleWithAyncDeps>

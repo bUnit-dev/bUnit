@@ -12,9 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Bunit
 {
 	/// <summary>
-	/// Represents an abstract <see cref="IRenderedFragment"/> with base functionality.
+	/// Represents an abstract <see cref="IRenderedFragmentCore"/> with base functionality.
 	/// </summary>
-	public class RenderedFragment : IWebRenderedFragment
+	public class RenderedFragment : IRenderedFragment
 	{
 		private readonly ConcurrentRenderEventSubscriber _renderEventSubscriber;
 		private string? _snapshotMarkup;
@@ -26,7 +26,7 @@ namespace Bunit
 		private TestHtmlParser HtmlParser { get; }
 
 		/// <summary>
-		/// Gets the renderer used to render the <see cref="IRenderedFragment"/>.
+		/// Gets the renderer used to render the <see cref="IRenderedFragmentCore"/>.
 		/// </summary>
 		protected TestRenderer Renderer { get; }
 

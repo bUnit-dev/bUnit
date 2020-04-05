@@ -8,7 +8,7 @@ using EC = Microsoft.AspNetCore.Components.EventCallback;
 namespace Bunit
 {
 	/// <summary>
-	/// Base class for test classes that contains XUnit Razor component tests.
+	/// Base class for test classes that contains Razor component tests.
 	/// </summary>
 	public abstract class ComponentTestFixture : TestContext
     {

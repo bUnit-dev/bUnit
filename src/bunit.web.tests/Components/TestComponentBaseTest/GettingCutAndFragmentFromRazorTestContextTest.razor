@@ -10,7 +10,7 @@
 	</Fragment>
 </Fixture>
 @code{
-	void CallingGetMultipleTimesReturnsSameInstance()
+	void CallingGetMultipleTimesReturnsSameInstance(Fixture f)
 	{
 		var cut1 = GetComponentUnderTest<Wrapper>();
 		var cut2 = GetComponentUnderTest<Wrapper>();
@@ -44,7 +44,7 @@
 	</Fragment>
 </Fixture>
 @code{
-	void CallingGenericGetAfterNonGenericGetThrows()
+	void CallingGenericGetAfterNonGenericGetThrows(Fixture f)
 	{
 		GetComponentUnderTest();
 
@@ -67,7 +67,7 @@
 	</Fragment>
 </Fixture>
 @code{
-	void CallingGetCutOrGetFragmentWithWrongGenericTypeThrows()
+	void CallingGetCutOrGetFragmentWithWrongGenericTypeThrows(Fixture f)
 	{
 		Assert.Throws<ComponentNotFoundException>(() => GetComponentUnderTest<Simple1>());
 		Assert.Throws<ComponentNotFoundException>(() => GetFragment<Simple1>());
@@ -83,7 +83,7 @@
 	</Fragment>
 </Fixture>
 @code{
-	void CallingGetCutOrGetFragmentWithIncompatibleGenericTypeThrows()
+	void CallingGetCutOrGetFragmentWithIncompatibleGenericTypeThrows(Fixture f)
 	{
 		GetComponentUnderTest<Wrapper>();
 		GetFragment<Wrapper>();

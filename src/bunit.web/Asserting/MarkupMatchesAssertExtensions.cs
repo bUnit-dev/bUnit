@@ -13,14 +13,14 @@ namespace Bunit
     {
 
         /// <summary>
-        /// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragment"/> matches
+        /// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragmentCore"/> matches
         /// the <paramref name="expected"/> markup, using the <see cref="HtmlComparer"/> type.
         /// </summary>
         /// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
         /// <param name="actual">The rendered fragment to verify.</param>
         /// <param name="expected">The expected markup.</param>
         /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void MarkupMatches(this IWebRenderedFragment actual, string expected, string? userMessage = null)
+        public static void MarkupMatches(this IRenderedFragment actual, string expected, string? userMessage = null)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
@@ -32,14 +32,14 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragment"/> matches
-        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> type.
+        /// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragmentCore"/> matches
+        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentCore"/>, using the <see cref="HtmlComparer"/> type.
         /// </summary>
         /// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
         /// <param name="actual">The rendered fragment to verify.</param>
         /// <param name="expected">The expected rendered fragment.</param>
         /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void MarkupMatches(this IWebRenderedFragment actual, IWebRenderedFragment expected, string? userMessage = null)
+        public static void MarkupMatches(this IRenderedFragment actual, IRenderedFragment expected, string? userMessage = null)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
@@ -49,14 +49,14 @@ namespace Bunit
 
         /// <summary>
         /// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> matches
-        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> 
+        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentCore"/>, using the <see cref="HtmlComparer"/> 
         /// type.
         /// </summary>
         /// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
         /// <param name="actual">The list of nodes to verify.</param>
         /// <param name="expected">The expected rendered fragment.</param>
         /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void MarkupMatches(this INodeList actual, IWebRenderedFragment expected, string? userMessage = null)
+        public static void MarkupMatches(this INodeList actual, IRenderedFragment expected, string? userMessage = null)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
@@ -66,14 +66,14 @@ namespace Bunit
 
         /// <summary>
         /// Verifies that the <paramref name="actual"/> <see cref="INode"/> matches
-        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> 
+        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentCore"/>, using the <see cref="HtmlComparer"/> 
         /// type.
         /// </summary>
         /// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
         /// <param name="actual">The node to verify.</param>
         /// <param name="expected">The expected rendered fragment.</param>
         /// <param name="userMessage">A custom user message to display in case the verification fails.</param>
-        public static void MarkupMatches(this INode actual, IWebRenderedFragment expected, string? userMessage = null)
+        public static void MarkupMatches(this INode actual, IRenderedFragment expected, string? userMessage = null)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));

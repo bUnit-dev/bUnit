@@ -7,7 +7,7 @@ namespace Bunit
 {
 	internal class RefreshableElementCollection : IRefreshableElementCollection<IElement>
     {
-        private readonly IWebRenderedFragment _renderedFragment;
+        private readonly IRenderedFragment _renderedFragment;
         private readonly string _cssSelector;
         private IHtmlCollection<IElement> _elements;
         private ComponentChangeEventSubscriber? _changeEvents;
@@ -33,7 +33,7 @@ namespace Bunit
             }
         }
 
-        public RefreshableElementCollection(IWebRenderedFragment renderedFragment, string cssSelector)
+        public RefreshableElementCollection(IRenderedFragment renderedFragment, string cssSelector)
         {
             _renderedFragment = renderedFragment;
             _cssSelector = cssSelector;

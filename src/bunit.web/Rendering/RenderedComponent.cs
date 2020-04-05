@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Components;
 namespace Bunit
 {
 	/// <inheritdoc/>
-	internal class RenderedComponent<TComponent> : RenderedFragment, IWebRenderedComponent<TComponent>
-		where TComponent : IComponent
+	internal class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent> where TComponent : IComponent
 	{
 		/// <inheritdoc/>
 		public TComponent Instance { get; }

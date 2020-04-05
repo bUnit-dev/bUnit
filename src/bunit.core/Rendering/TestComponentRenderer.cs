@@ -14,7 +14,7 @@ namespace Bunit.Rendering
 	/// <summary>
 	/// Represents a renderer specifically for rendering Razor-based test files (but not the actual tests inside).
 	/// </summary>
-	public class RazorTestRenderer : Renderer
+	public class TestComponentRenderer : Renderer
 	{
 		private Exception? _unhandledException;
 
@@ -22,9 +22,9 @@ namespace Bunit.Rendering
 		public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
 
 		/// <summary>
-		/// Creates an instance of the <see cref="RazorTestRenderer"/>.
+		/// Creates an instance of the <see cref="TestComponentRenderer"/>.
 		/// </summary>
-		public RazorTestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory) : base(serviceProvider, loggerFactory) { }
+		public TestComponentRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory) : base(serviceProvider, loggerFactory) { }
 
 
 		/// <summary>
@@ -42,11 +42,10 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// Renders the provided <paramref name="renderFragment"/>.
 		/// </summary>
-		/// <typeparam name="TComponent">The type of components to find in the render tree after renderinger.</typeparam>
+		/// <typeparam name="TComponent">The type of components to find in the render tree after rendering.</typeparam>
 		/// <param name="renderFragment">The <see cref="RenderFragment"/> to render.</param>
 		/// <returns>A list of <typeparamref name="TComponent"/> found in the <paramref name="renderFragment"/>'s render tree.</returns>
 		public async Task<IReadOnlyList<TComponent>> RenderAndGetTestComponents<TComponent>(RenderFragment renderFragment)
-			where TComponent : FragmentBase
 		{
 			var componentId = await RenderFragmentInsideWrapper(renderFragment);
 			return GetRazorTests<TComponent>(componentId);
@@ -73,7 +72,6 @@ namespace Bunit.Rendering
 		}
 
 		private IReadOnlyList<TComponent> GetRazorTests<TComponent>(int fromComponentId)
-			where TComponent : FragmentBase
 		{
 			var result = new List<TComponent>();
 			var ownFrames = GetCurrentRenderTreeFrames(fromComponentId);

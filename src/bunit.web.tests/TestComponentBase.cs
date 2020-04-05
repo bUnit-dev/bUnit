@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
+using Bunit.Rendering.RenderEvents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,38 +19,32 @@ namespace Bunit
 	/// <summary>
 	/// Base test class/test runner, that runs Fixtures defined in razor files.
 	/// </summary>
-	public abstract class TestComponentBase : ComponentTestFixture, IRazorTestContext
+	public abstract class TestComponentBase
 	{
 		private static readonly ServiceProvider ServiceProvider = new ServiceCollection().BuildServiceProvider();
-		private readonly RazorTestRenderer RazorRenderer = new RazorTestRenderer(ServiceProvider, NullLoggerFactory.Instance);
-		private readonly TestContextAdapter _testContextAdapter = new TestContextAdapter();
-		private bool _isDisposed = false;
+		private readonly TestComponentRenderer RazorRenderer = new TestComponentRenderer(ServiceProvider, NullLoggerFactory.Instance);
 
-		/// <inheritdoc/>
-		public override TestServiceProvider Services
-			=> _testContextAdapter.HasActiveContext ? _testContextAdapter.Services : base.Services;
+		private Fixture? _activeFixtureTest;
 
-		/// <inheritdoc/>
-		public IWebRenderedFragment GetComponentUnderTest()
-			=> _testContextAdapter.GetComponentUnderTest();
+		public RazorTest? ActiveTest { get; private set; }
 
-		/// <inheritdoc/>
-		public IWebRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
-			=> _testContextAdapter.GetComponentUnderTest<TComponent>();
+		public TestServiceProvider Services => ActiveTest?.Services ?? throw new InvalidOperationException("No active Razor test.");
 
-		/// <inheritdoc/>
-		public IWebRenderedFragment GetFragment(string? id = null)
-			=> _testContextAdapter.GetFragment(id);
+		public TestRenderer Renderer => ActiveTest?.Renderer ?? throw new InvalidOperationException("No active Razor test.");
 
-		/// <inheritdoc/>
-		public IWebRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : IComponent
-			=> _testContextAdapter.GetFragment<TComponent>(id);
+		public IObservable<RenderEvent> RenderEvents => ActiveTest?.RenderEvents ?? throw new InvalidOperationException("No active Razor test.");
 
-		/// <inheritdoc/>
-		public override IWebRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)
-			=> _testContextAdapter.HasActiveContext
-				? _testContextAdapter.RenderComponent<TComponent>(parameters)
-				: base.RenderComponent<TComponent>(parameters);
+		public IRenderedFragment GetComponentUnderTest() => _activeFixtureTest?.GetComponentUnderTest() ?? throw new InvalidOperationException("No active Razor test.");
+
+		public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
+			=> _activeFixtureTest?.GetComponentUnderTest<TComponent>() ?? throw new InvalidOperationException("No active Razor test.");
+
+		public IRenderedFragment GetFragment(string? id = null) => _activeFixtureTest?.GetFragment(id) ?? throw new InvalidOperationException("No active Razor test.");
+
+		public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : IComponent
+			=> _activeFixtureTest?.GetFragment<TComponent>(id) ?? throw new InvalidOperationException("No active Razor test.");
+
+		protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
 
 		/// <summary>
 		/// Called by the XUnit test runner. Finds all Fixture components
@@ -58,95 +53,18 @@ namespace Bunit
 		[Fact(DisplayName = "Razor test runner")]
 		public async Task RazorTest()
 		{
-			var tests = await RazorRenderer.RenderAndGetTestComponents<RazorTest>(BuildRenderTree);
+			var tests = await RazorRenderer.RenderAndGetTestComponents<RazorTest>(BuildRenderTree).ConfigureAwait(false);
 
-			await ExecuteFixtureTests(tests.OfType<Fixture>()).ConfigureAwait(false);
-			await ExecuteSnapshotTests(tests.OfType<SnapshotTest>()).ConfigureAwait(false);
-		}
-
-		private async Task ExecuteFixtureTests(IEnumerable<Fixture> fixtures)
-		{
-			foreach (var fixture in fixtures)
+			foreach (var test in tests)
 			{
-				var testData = await RazorRenderer.RenderAndGetTestComponents<FragmentBase>(fixture.ChildContent);
+				ActiveTest = test;
+				if(test is Fixture fixture) _activeFixtureTest = fixture;
 
-				_testContextAdapter.ActivateRazorTestContext(testData);
+				await test.RunTest().ConfigureAwait(false);
 
-				InvokeFixtureAction(fixture, fixture.Setup);
-				await InvokeFixtureAction(fixture, fixture.SetupAsync).ConfigureAwait(false);
-				InvokeFixtureAction(fixture, fixture.Test);
-				await InvokeFixtureAction(fixture, fixture.TestAsync).ConfigureAwait(false);
-
-				foreach (var test in fixture.Tests)
-				{
-					InvokeFixtureAction(fixture, test);
-				}
-
-				foreach (var test in fixture.TestsAsync)
-				{
-					await InvokeFixtureAction(fixture, test).ConfigureAwait(false);
-				}
-
-				_testContextAdapter.DisposeActiveTestContext();
+				ActiveTest=null;
+				_activeFixtureTest = null;
 			}
-		}
-
-		private static void InvokeFixtureAction(Fixture fixture, Action action)
-		{
-			try
-			{
-				action();
-			}
-			catch (Exception ex)
-			{
-				throw new FixtureFailedException(fixture.Description ?? $"{action.Method.Name} failed:", ex);
-			}
-		}
-
-		private static async Task InvokeFixtureAction(Fixture fixture, Func<Task> action)
-		{
-			try
-			{
-				await action().ConfigureAwait(false);
-			}
-			catch (Exception ex)
-			{
-				throw new FixtureFailedException(fixture.Description ?? $"{action.Method.Name} failed:", ex);
-			}
-		}
-
-		private async Task ExecuteSnapshotTests(IEnumerable<SnapshotTest> snapshotTests)
-		{
-			foreach (var snapshot in snapshotTests)
-			{
-				var testData = await RazorRenderer.RenderAndGetTestComponents<FragmentBase>(snapshot.ChildContent);
-
-				var context = _testContextAdapter.ActivateSnapshotTestContext(testData);
-				snapshot.Setup();
-				await snapshot.SetupAsync().ConfigureAwait(false);
-				var actual = context.RenderTestInput();
-				var expected = context.RenderExpectedOutput();
-				actual.MarkupMatches(expected, snapshot.Description);
-				_testContextAdapter.DisposeActiveTestContext();
-			}
-		}
-
-		/// <inheritdoc/>
-		protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
-
-		/// <inheritdoc/>
-		protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
-
-			if (_isDisposed)
-				return;
-
-			if (disposing)
-			{
-				_testContextAdapter.Dispose();
-			}
-			_isDisposed = true;
 		}
 	}
 }

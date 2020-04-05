@@ -8,7 +8,7 @@ namespace Bunit
 	/// <summary>
 	/// Represents a rendered fragment.
 	/// </summary>
-	public interface IWebRenderedFragment : IRenderedFragment
+	public interface IRenderedFragment : IRenderedFragmentCore
 	{
 		/// <summary>
 		/// Gets the HTML markup from the rendered fragment/component.

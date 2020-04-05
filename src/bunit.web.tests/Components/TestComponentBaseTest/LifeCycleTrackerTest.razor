@@ -15,7 +15,7 @@
 	int renderTrigger = 0;
 	//LifeCycleTracker tracker = default!; // set during initial render by framework - should not be null!
 
-	void Test()
+	void Test(Fixture fixture)
 	{
 		var cut = GetComponentUnderTest<Wrapper>();
 		var callLog = cut.FindComponent<LifeCycleTracker>().Instance.CallLog;// tracker.CallLog;

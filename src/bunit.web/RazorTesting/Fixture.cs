@@ -1,28 +1,34 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bunit.RazorTesting;
+using System.Text;
+using System.Threading.Tasks;
+using Bunit.Diffing;
+using Bunit.Mocking.JSInterop;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 
-namespace Bunit
+namespace Bunit.RazorTesting
 {
-	/// <summary>
-	/// A razor test context is a factory that makes it possible to create components under tests,
-	/// either directly or through components declared in razor code.
-	/// </summary>
-	public class RazorTestContext : TestContext
+	/// <inheritdoc/>
+	public class Fixture : FixtureBase<Fixture>
 	{
-		private readonly IReadOnlyList<FragmentBase> _testData;
 		private readonly Dictionary<string, IRenderedFragment> _renderedFragments = new Dictionary<string, IRenderedFragment>();
+		private IReadOnlyList<FragmentBase>? _testData;
 
-		/// <summary>
-		/// Creates an instance of the <see cref="RazorTestContext"/> that has access the fragments defined 
-		/// in the associated &lt;Fixture&gt; element.
-		/// </summary>
-		/// <param name="testData"></param>
-		public RazorTestContext(IReadOnlyList<FragmentBase> testData)
+		private IReadOnlyList<FragmentBase> TestData
 		{
-			_testData = testData;
+			get
+			{
+				if (_testData is null)
+				{
+					var id = Renderer.RenderFragment(ChildContent).GetAwaiter().GetResult();
+					_testData = Renderer.FindComponents<FragmentBase>(id).Select(x => x.Component).ToArray();
+				}
+				return _testData;
+			}
 		}
 
 		/// <summary>
@@ -105,17 +111,17 @@ namespace Bunit
 
 		private Fragment SelectFirstFragment()
 		{
-			return _testData.OfType<Fragment>().First();
+			return TestData.OfType<Fragment>().First();
 		}
 
 		private Fragment SelectFragmentById(string id)
 		{
-			return _testData.OfType<Fragment>().Single(x => x.Id.Equals(id, StringComparison.Ordinal));
+			return TestData.OfType<Fragment>().Single(x => x.Id.Equals(id, StringComparison.Ordinal));
 		}
 
 		private ComponentUnderTest SelectComponentUnderTest(string _)
 		{
-			return _testData.OfType<ComponentUnderTest>().Single();
+			return TestData.OfType<ComponentUnderTest>().Single();
 		}
 
 		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment) where TComponent : IComponent
@@ -153,6 +159,14 @@ namespace Bunit
 			{
 				throw new Exception($"This line should never have been reached. An unknown type was placed inside the {nameof(_renderedFragments)}.");
 			}
+		}
+
+		/// <inheritdoc/>
+		protected override Task Run()
+		{
+			Services.AddSingleton<IJSRuntime>(new PlaceholderJsRuntime());
+			Services.AddSingleton<TestHtmlParser>(srv => new TestHtmlParser(srv.GetRequiredService<TestRenderer>()));
+			return base.Run(this);
 		}
 	}
 }

@@ -5,7 +5,7 @@ using AngleSharpWrappers;
 namespace Bunit
 {
     /// <summary>
-    /// Helper methods for querying <see cref="IRenderedFragment"/>.
+    /// Helper methods for querying <see cref="IRenderedFragmentCore"/>.
     /// </summary>
     public static class WebRenderedFragmentQueryExtensions
     {
@@ -16,7 +16,7 @@ namespace Bunit
         /// </summary>
         /// <param name="renderedFragment">The rendered fragment to search.</param>
         /// <param name="cssSelector">The group of selectors to use.</param>
-        public static IElement Find(this IWebRenderedFragment renderedFragment, string cssSelector)
+        public static IElement Find(this IRenderedFragment renderedFragment, string cssSelector)
         {
             if (renderedFragment is null) throw new ArgumentNullException(nameof(renderedFragment));
             var result = renderedFragment.Nodes.QuerySelector(cssSelector);
@@ -33,7 +33,7 @@ namespace Bunit
         /// <param name="cssSelector">The group of selectors to use.</param>
         /// <param name="enableAutoRefresh">If true, the returned <see cref="IRefreshableElementCollection{IElement}"/> will automatically refresh its <see cref="IElement"/>s whenever the <paramref name="renderedFragment"/> changes.</param>
         /// <returns>An <see cref="IRefreshableElementCollection{IElement}"/>, that can be refreshed to execute the search again.</returns>
-        public static IRefreshableElementCollection<IElement> FindAll(this IWebRenderedFragment renderedFragment, string cssSelector, bool enableAutoRefresh = false)
+        public static IRefreshableElementCollection<IElement> FindAll(this IRenderedFragment renderedFragment, string cssSelector, bool enableAutoRefresh = false)
         {
             if (renderedFragment is null) throw new ArgumentNullException(nameof(renderedFragment));
             return new RefreshableElementCollection(renderedFragment, cssSelector) { EnableAutoRefresh = enableAutoRefresh };

@@ -1,12 +1,12 @@
 @inherits XunitTestComponentBase<Simple>
 
-<Fixture Test="() => { }" Description="My First Test">
+<Fixture Test="x => { }" Description="My First Test">
 	<ComponentUnderTest>
 		<Simple1>ASDF</Simple1>
 	</ComponentUnderTest>
 </Fixture>
 
-<Fixture Test="() => { }" Description="My second Test">
+<Fixture Test="x => { }" Description="My second Test">
 	<ComponentUnderTest>
 		<Simple1>ASDF</Simple1>
 	</ComponentUnderTest>
@@ -17,7 +17,7 @@
 	<ExpectedOutput><h1>asdf</h1></ExpectedOutput>
 </SnapshotTest>
 
-<Fixture Test="() => { }" Description="My Second Test" Skip="NOT NOW">
+<Fixture Test="x => { }" Description="My Second Test" Skip="NOT NOW">
 	<ComponentUnderTest>
 		<Simple1>ASDF</Simple1>
 	</ComponentUnderTest>

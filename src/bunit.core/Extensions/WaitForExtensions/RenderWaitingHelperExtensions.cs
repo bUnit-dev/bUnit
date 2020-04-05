@@ -66,7 +66,7 @@ namespace Bunit
         /// <param name="timeout">The maximum time to wait for the desired state.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="renderedFragment"/> is null.</exception>
         /// <exception cref="WaitForStateFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
-        public static void WaitForState(this IRenderedFragment renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
+        public static void WaitForState(this IRenderedFragmentCore renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
             => WaitForState(renderedFragment.RenderEvents, statePredicate, timeout);
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Bunit
         /// <param name="timeout">The maximum time to attempt the verification.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="renderedFragment"/> is null.</exception>
         /// <exception cref="WaitForAssertionFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
-        public static void WaitForAssertion(this IRenderedFragment renderedFragment, Action assertion, TimeSpan? timeout = null)
+        public static void WaitForAssertion(this IRenderedFragmentCore renderedFragment, Action assertion, TimeSpan? timeout = null)
             => WaitForAssertion(renderedFragment.RenderEvents, assertion, timeout);
 
         private static void WaitForRender(IObservable<RenderEvent> renderEventObservable, Action? renderTrigger = null, TimeSpan? timeout = null)

@@ -8,9 +8,9 @@
 @code {
     ElementReference refElm;
 
-    void Test()
+    void Test(Fixture fixture)
     {
-        var cut = GetFragment();
+        var cut = fixture.GetFragment();
 
         var html = cut.Markup;
 

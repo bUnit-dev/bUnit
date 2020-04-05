@@ -14,13 +14,13 @@ namespace Bunit
     public static class CompareToExtensions
     {
         /// <summary>
-        /// Compare the rendered markup in the <paramref name="actual"/> <see cref="IRenderedFragment"/>
+        /// Compare the rendered markup in the <paramref name="actual"/> <see cref="IRenderedFragmentCore"/>
         /// with that in the <paramref name="expected"/> markup string.
         /// </summary>
         /// <param name="actual">Source of rendered markup to check.</param>
         /// <param name="expected">Markup to compare with.</param>
         /// <returns>Any differences found.</returns>
-        public static IReadOnlyList<IDiff> CompareTo(this IWebRenderedFragment actual, string expected)
+        public static IReadOnlyList<IDiff> CompareTo(this IRenderedFragment actual, string expected)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
@@ -32,13 +32,13 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Compare the rendered markup in the <paramref name="actual"/> <see cref = "IRenderedFragment" /> to
-        /// the rendered markup in the <paramref name="expected"/> <see cref = "IRenderedFragment" />
+        /// Compare the rendered markup in the <paramref name="actual"/> <see cref = "IRenderedFragmentCore" /> to
+        /// the rendered markup in the <paramref name="expected"/> <see cref = "IRenderedFragmentCore" />
         /// </summary>
         /// <param name="actual">Source of rendered markup to check.</param>
         /// <param name="expected">Source of rendered markup to compare with.</param>
         /// <returns>Any differences found.</returns>
-        public static IReadOnlyList<IDiff> CompareTo(this IWebRenderedFragment actual, IWebRenderedFragment expected)
+        public static IReadOnlyList<IDiff> CompareTo(this IRenderedFragment actual, IRenderedFragment expected)
         {
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));

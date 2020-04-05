@@ -1,4 +1,5 @@
 using System;
+using Bunit.Rendering;
 using Bunit.Rendering.RenderEvents;
 
 namespace Bunit
@@ -8,6 +9,11 @@ namespace Bunit
 	/// </summary>
 	public partial interface ITestContext : IDisposable
 	{
+		/// <summary>
+		/// Gets the renderer used by the test context.
+		/// </summary>
+		TestRenderer Renderer { get; }
+
 		/// <summary>
 		/// Gets the service collection and service provider that is used when a 
 		/// component is rendered by the test context.
