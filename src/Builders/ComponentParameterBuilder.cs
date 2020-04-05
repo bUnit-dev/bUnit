@@ -144,7 +144,7 @@ namespace Bunit
 
         private void AddParameterToList(ComponentParameter parameter)
         {
-            if (!_componentParameters.Any(cp => string.Equals(cp.Name, parameter.Name, StringComparison.OrdinalIgnoreCase)))
+            if (_componentParameters.All(cp => cp.Name != parameter.Name))
             {
                 _componentParameters.Add(parameter);
             }

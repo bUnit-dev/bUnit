@@ -92,7 +92,7 @@ namespace Bunit
 
         /// <inheritdoc/>
         public bool Equals(ComponentParameter<TComponent, TValue> other)
-            => string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase) && Equals(Value, other.Value) && IsCascadingValue == other.IsCascadingValue;
+            => string.Equals(Name, other.Name, StringComparison.Ordinal) && Equals(Value, other.Value) && IsCascadingValue == other.IsCascadingValue;
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => obj is ComponentParameter<TComponent, TValue> other && Equals(other);
