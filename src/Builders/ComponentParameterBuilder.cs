@@ -43,7 +43,7 @@ namespace Bunit
         /// <param name="expression">The property or field expression</param>
         /// <param name="value">The value</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        public ComponentParameterBuilder<TComponent> AddCascading<TValue>(Expression<Func<TComponent, TValue>> expression, TValue value)
+        public ComponentParameterBuilder<TComponent> AddCascading<TValue>(Expression<Func<TComponent, TValue>> expression, [DisallowNull] TValue value)
         {
             if (expression == null)
             {
@@ -106,7 +106,7 @@ namespace Bunit
         /// <param name="expression">The property or field expression</param>
         /// <param name="callback">The event callback.</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<EventArgs>>> expression, Func<EventArgs, Task> callback)
+        public ComponentParameterBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback<EventArgs>>> expression, Func<EventArgs, Task> callback)
         {
             if (expression == null)
             {
