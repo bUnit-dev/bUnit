@@ -28,11 +28,11 @@ namespace Bunit
         /// </summary>
         public bool IsCascadingValue { get; }
 
-        private ComponentParameter(Expression<Func<TComponent, TValue>> expression, [AllowNull] TValue value, bool isCascadingValue)
+        private ComponentParameter(Expression<Func<TComponent, TValue>> parameterSelector, [AllowNull] TValue value, bool isCascadingValue)
         {
-            if (expression == null)
+            if (parameterSelector == null)
             {
-                throw new ArgumentNullException(nameof(expression));
+                throw new ArgumentNullException(nameof(parameterSelector));
             }
 
             if (isCascadingValue && value is null)
@@ -40,55 +40,55 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(value), "Cascading values cannot be set to null");
             }
 
-            Name = GetParameterNameFromMethodExpression(expression);
+            Name = GetParameterNameFromParameterSelectorExpression(parameterSelector);
             Value = value;
             IsCascadingValue = isCascadingValue;
         }
 
-        private static string GetParameterNameFromMethodExpression<T>(Expression<Func<TComponent, T>> expression)
+        private static string GetParameterNameFromParameterSelectorExpression<T>(Expression<Func<TComponent, T>> parameterSelector)
         {
-            if (expression == null)
+            if (parameterSelector == null)
             {
-                throw new ArgumentNullException(nameof(expression));
+                throw new ArgumentNullException(nameof(parameterSelector));
             }
 
-            if (expression.Body is MemberExpression memberExpression)
+            if (parameterSelector.Body is MemberExpression memberExpression)
             {
                 return memberExpression.Member.Name;
             }
 
-            throw new ArgumentException($"The expression '{expression}' does not resolve to a Property or Field on the class '{typeof(TComponent)}'.");
+            throw new ArgumentException($"The expression '{parameterSelector}' does not resolve to a Property or Field on the class '{typeof(TComponent)}'.");
         }
 
         /// <summary>
         /// Create a parameter for a component under test.
         /// </summary>
-        /// <param name="expression">The property or field expression</param>
+        /// <param name="parameterSelector">The property or field parameter selector</param>
         /// <param name="value">Value or null to pass the component</param>
-        public static ComponentParameter CreateParameter(Expression<Func<TComponent, TValue>> expression, [AllowNull] TValue value)
-            => ComponentParameter.CreateParameter(GetParameterNameFromMethodExpression(expression), value);
+        public static ComponentParameter CreateParameter(Expression<Func<TComponent, TValue>> parameterSelector, [AllowNull] TValue value)
+            => ComponentParameter.CreateParameter(GetParameterNameFromParameterSelectorExpression(parameterSelector), value);
 
         /// <summary>
         /// Create a Cascading Value parameter for a component under test.
         /// </summary>
-        /// <param name="expression">The property or field expression</param>
+        /// <param name="parameterSelector">The property or field parameter selector</param>
         /// <param name="value">The cascading value</param>
-        public static ComponentParameter CreateCascadingValue(Expression<Func<TComponent, TValue>> expression, [DisallowNull] TValue value)
-            => ComponentParameter.CreateCascadingValue(GetParameterNameFromMethodExpression(expression), value);
+        public static ComponentParameter CreateCascadingValue(Expression<Func<TComponent, TValue>> parameterSelector, [DisallowNull] TValue value)
+            => ComponentParameter.CreateCascadingValue(GetParameterNameFromParameterSelectorExpression(parameterSelector), value);
 
         /// <summary>
         /// Create a parameter for a component under test.
         /// </summary>
         /// <param name="input">A name/value pair for the parameter</param>
-        public static implicit operator ComponentParameter<TComponent, TValue>((Expression<Func<TComponent, TValue>> expression, TValue value) input)
-            => new ComponentParameter<TComponent, TValue>(input.expression, input.value, false);
+        public static implicit operator ComponentParameter<TComponent, TValue>((Expression<Func<TComponent, TValue>> parameterSelector, TValue value) input)
+            => new ComponentParameter<TComponent, TValue>(input.parameterSelector, input.value, false);
 
         /// <summary>
         /// Create a parameter or cascading value for a component under test.
         /// </summary>
         /// <param name="input">A name/value/isCascadingValue triple for the parameter</param>
-        public static implicit operator ComponentParameter<TComponent, TValue>((Expression<Func<TComponent, TValue>> expression, TValue value, bool isCascadingValue) input)
-            => new ComponentParameter<TComponent, TValue>(input.expression, input.value, input.isCascadingValue);
+        public static implicit operator ComponentParameter<TComponent, TValue>((Expression<Func<TComponent, TValue>> parameterSelector, TValue value, bool isCascadingValue) input)
+            => new ComponentParameter<TComponent, TValue>(input.parameterSelector, input.value, input.isCascadingValue);
 
         /// <inheritdoc/>
         public bool Equals(ComponentParameter<TComponent, TValue> other)
