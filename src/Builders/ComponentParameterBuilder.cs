@@ -144,7 +144,7 @@ namespace Bunit
                     throw new ArgumentException($"The property '{propertyInfo.Name}' selected by the provided '{parameterSelector}' does not have the [Parameter] or [CascadingParameter] attribute in the component '{typeof(TComponent)}'.");
                 }
 
-                if (parameterAttribute != null)
+                if (parameterAttribute is {})
                 {
                     return (propertyInfo.Name, false);
                 }
