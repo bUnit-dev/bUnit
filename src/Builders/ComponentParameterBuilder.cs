@@ -15,7 +15,7 @@ namespace Bunit
     /// <typeparam name="TComponent">The type of component to render</typeparam>
     public sealed class ComponentParameterBuilder<TComponent> where TComponent : class, IComponent
     {
-        private readonly ICollection<ComponentParameter> _componentParameters = new List<ComponentParameter>();
+        private readonly List<ComponentParameter> _componentParameters = new List<ComponentParameter>();
 
         /// <summary>
         /// Add a property selector with a value to this builder.
@@ -125,7 +125,7 @@ namespace Bunit
         /// <returns>A IReadOnlyCollection of <see cref="ComponentParameter"/></returns>
         public IReadOnlyCollection<ComponentParameter> Build()
         {
-            return _componentParameters.ToArray();
+            return _componentParameters;
         }
 
         private static (string name, bool isCascading) GetDetailsFromExpression<T>(Expression<Func<TComponent, T>> parameterSelector)
