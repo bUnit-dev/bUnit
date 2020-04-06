@@ -141,7 +141,7 @@ namespace Bunit
                 var cascadingParameterAttribute = propertyInfo.GetCustomAttribute<CascadingParameterAttribute>();
                 if (parameterAttribute is null && cascadingParameterAttribute is null)
                 {
-                    throw new ArgumentException($"The parameterSelector '{parameterSelector}' does not have the [Parameter] or [CascadingParameter] attribute set on the property '{propertyInfo.Name}' in the class '{typeof(TComponent)}'.");
+                    throw new ArgumentException($"The property '{propertyInfo.Name}' selected by the provided '{parameterSelector}' does not have the [Parameter] or [CascadingParameter] attribute in the component '{typeof(TComponent)}'.");
                 }
 
                 if (parameterAttribute != null)
