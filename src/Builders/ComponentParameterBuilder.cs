@@ -20,7 +20,7 @@ namespace Bunit
         /// Add a property or field-expression with normal value to this builder.
         /// </summary>
         /// <typeparam name="TValue">The generic Value type</typeparam>
-        /// <param name="parameterSelector">The property or field parameter selector</param>
+        /// <param name="parameterSelector">The parameter selector</param>
         /// <param name="value">The value</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
         public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, TValue>> parameterSelector, [AllowNull] TValue value)
@@ -40,7 +40,7 @@ namespace Bunit
         /// Add a property or field-expression with a cascading value to this builder.
         /// </summary>
         /// <typeparam name="TValue">The generic Value type</typeparam>
-        /// <param name="parameterSelector">The property or field parameter selector</param>
+        /// <param name="parameterSelector">The parameter selector</param>
         /// <param name="value">The value</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
         public ComponentParameterBuilder<TComponent> AddCascading<TValue>(Expression<Func<TComponent, TValue>> parameterSelector, [DisallowNull] TValue value)
@@ -80,7 +80,7 @@ namespace Bunit
         /// <summary>
         /// Add a non generic <see cref="EventCallback"/> parameter with a value for this builder.
         /// </summary>
-        /// <param name="parameterSelector">The property or field parameter selector</param>
+        /// <param name="parameterSelector">The parameter selector</param>
         /// <param name="callback">The event callback.</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
         public ComponentParameterBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback>> parameterSelector, Func<Task> callback)
@@ -103,7 +103,7 @@ namespace Bunit
         /// <summary>
         /// Add a generic <see cref="EventCallback"/> parameter with a value for this builder.
         /// </summary>
-        /// <param name="parameterSelector">The property or field parameter selector</param>
+        /// <param name="parameterSelector">The parameter selector</param>
         /// <param name="callback">The event callback.</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
         public ComponentParameterBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback<EventArgs>>> parameterSelector, Func<EventArgs, Task> callback)

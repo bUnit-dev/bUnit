@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using System.Reflection;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -52,18 +53,18 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(parameterSelector));
             }
 
-            if (parameterSelector.Body is MemberExpression memberExpression)
+            if (parameterSelector.Body is MemberExpression memberExpression && memberExpression.Member is PropertyInfo propertyInfo)
             {
-                return memberExpression.Member.Name;
+                return propertyInfo.Name;
             }
 
-            throw new ArgumentException($"The expression '{parameterSelector}' does not resolve to a Property or Field on the class '{typeof(TComponent)}'.");
+            throw new ArgumentException($"The expression '{parameterSelector}' does not resolve to a Property on the class '{typeof(TComponent)}'.");
         }
 
         /// <summary>
         /// Create a parameter for a component under test.
         /// </summary>
-        /// <param name="parameterSelector">The property or field parameter selector</param>
+        /// <param name="parameterSelector">The parameter selector</param>
         /// <param name="value">Value or null to pass the component</param>
         public static ComponentParameter CreateParameter(Expression<Func<TComponent, TValue>> parameterSelector, [AllowNull] TValue value)
             => ComponentParameter.CreateParameter(GetParameterNameFromParameterSelectorExpression(parameterSelector), value);
@@ -71,7 +72,7 @@ namespace Bunit
         /// <summary>
         /// Create a Cascading Value parameter for a component under test.
         /// </summary>
-        /// <param name="parameterSelector">The property or field parameter selector</param>
+        /// <param name="parameterSelector">The parameter selector</param>
         /// <param name="value">The cascading value</param>
         public static ComponentParameter CreateCascadingValue(Expression<Func<TComponent, TValue>> parameterSelector, [DisallowNull] TValue value)
             => ComponentParameter.CreateCascadingValue(GetParameterNameFromParameterSelectorExpression(parameterSelector), value);
