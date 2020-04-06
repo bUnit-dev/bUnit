@@ -150,7 +150,7 @@ namespace Bunit
             }
             else
             {
-                throw new ArgumentException($"A parameter with the name '{parameter.Name}' has already been added.");
+                throw new ArgumentException($"A parameter with the name '{parameter.Name}' has already been added to the {nameof(ComponentParameterBuilder<TComponent>)}.");
             }
         }
     }
