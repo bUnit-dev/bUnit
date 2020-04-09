@@ -102,7 +102,7 @@ namespace Bunit
 
         private static (string name, bool isCascading) GetDetailsFromExpression<T>(Expression<Func<TComponent, T>> parameterSelector)
         {
-            if (parameterSelector == null)
+            if (parameterSelector is null)
             {
                 throw new ArgumentNullException(nameof(parameterSelector));
             }
