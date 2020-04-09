@@ -37,21 +37,6 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add an unnamed cascading parameter with a value to this builder.
-        /// </summary>
-        /// <param name="value">The value</param>
-        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        public ComponentParameterBuilder<TComponent> Add(object value)
-        {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            return AddParameterToList(null, value, true);
-        }
-
-        /// <summary>
         /// Add a non generic <see cref="EventCallback"/> parameter with a value for this builder.
         /// </summary>
         /// <param name="parameterSelector">The parameter selector</param>
@@ -107,11 +92,14 @@ namespace Bunit
             {
                 var parameterAttribute = propertyInfo.GetCustomAttribute<ParameterAttribute>();
                 var cascadingParameterAttribute = propertyInfo.GetCustomAttribute<CascadingParameterAttribute>();
+
+                // If both attributes are missing -> throw exception
                 if (parameterAttribute is null && cascadingParameterAttribute is null)
                 {
                     throw new ArgumentException($"The property '{propertyInfo.Name}' selected by the provided '{parameterSelector}' does not have the [Parameter] or [CascadingParameter] attribute defined in the component '{typeof(TComponent)}'.");
                 }
 
+                // If ParameterAttribute is defined, get the name from the property and indicate that it's a normal property
                 if (parameterAttribute is { })
                 {
                     return (propertyInfo.Name, false);
@@ -119,9 +107,11 @@ namespace Bunit
 
                 if (!string.IsNullOrEmpty(cascadingParameterAttribute.Name))
                 {
+                    // The CascadingParameterAttribute is defined, get the defined name from this attribute and indicate that it's a cascading property
                     return (cascadingParameterAttribute.Name, true);
                 }
 
+                // The CascadingParameterAttribute is defined, get the name from the property and indicate that it's a cascading property
                 return (propertyInfo.Name, true);
             }
 

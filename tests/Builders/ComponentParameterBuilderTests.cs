@@ -53,24 +53,6 @@ namespace Bunit
             parameter.Value.ShouldBe(value);
         }
 
-        [Fact(DisplayName = "Add UnnamedParameter (integer) and Build")]
-        public void Test003()
-        {
-            // Arrange
-            const int value = 42;
-            _sut.Add(value);
-
-            // Act
-            var result = _sut.Build();
-
-            // Assert
-            result.Count.ShouldBe(1);
-
-            var parameter = result.First();
-            parameter.Name.ShouldBeNull();
-            parameter.Value.ShouldBe(value);
-        }
-
         [Fact(DisplayName = "Add multiple and Build")]
         public void Test004()
         {
