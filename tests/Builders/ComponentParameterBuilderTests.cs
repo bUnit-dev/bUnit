@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Bunit.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
@@ -93,7 +94,8 @@ namespace Bunit
         public void Test005()
         {
             // Arrange
-            EventCallback callback = EventCallback.Empty;
+            var @event = EventCallback.Empty;
+            Func<Task> callback = () => Task.FromResult(@event);
 
             // Act
             _sut.Add(c => c.NonGenericCallback, callback);
@@ -104,14 +106,15 @@ namespace Bunit
 
             var parameter = result.First();
             parameter.Name.ShouldBe("NonGenericCallback");
-            parameter.Value.ShouldBe(callback);
+            parameter.Value.ShouldNotBeNull();
         }
 
         [Fact(DisplayName = "Add Parameter (GenericCallback) and Build")]
         public void Test006()
         {
             // Arrange
-            EventCallback<EventArgs> callback = EventCallback<EventArgs>.Empty;
+            var @event = EventCallback<EventArgs>.Empty;
+            Func<EventArgs, Task> callback = (args) => Task.FromResult(@event);
 
             // Act
             _sut.Add(c => c.GenericCallback, callback);
@@ -122,7 +125,7 @@ namespace Bunit
 
             var parameter = result.First();
             parameter.Name.ShouldBe("GenericCallback");
-            parameter.Value.ShouldBe(callback);
+            parameter.Value.ShouldNotBeNull();
         }
 
         [Fact(DisplayName = "Add duplicate name should throw Exception")]

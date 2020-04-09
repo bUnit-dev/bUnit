@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using EC = Microsoft.AspNetCore.Components.EventCallback;
 
 namespace Bunit
 {
@@ -29,7 +30,6 @@ namespace Bunit
             if (parameterSelector is null)
             {
                 throw new ArgumentNullException(nameof(parameterSelector));
-                // return AddParameterToList(null, value, true);
             }
 
             var details = GetDetailsFromExpression(parameterSelector);
@@ -41,9 +41,9 @@ namespace Bunit
         /// </summary>
         /// <param name="value">The value</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        public ComponentParameterBuilder<TComponent> Add([NotNull] object value)
+        public ComponentParameterBuilder<TComponent> Add(object value)
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -57,18 +57,18 @@ namespace Bunit
         /// <param name="parameterSelector">The parameter selector</param>
         /// <param name="callback">The event callback.</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        public ComponentParameterBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback>> parameterSelector, Func<Task> callback)
+        public ComponentParameterBuilder<TComponent> Add(Expression<Func<TComponent, EC>> parameterSelector, Func<Task> callback)
         {
-            if (parameterSelector == null)
+            if (parameterSelector is null)
             {
                 throw new ArgumentNullException(nameof(parameterSelector));
             }
-            if (callback == null)
+            if (callback is null)
             {
                 throw new ArgumentNullException(nameof(callback));
             }
 
-            return Add(parameterSelector, EventCallback.Factory.Create(this, callback));
+            return Add(parameterSelector, EC.Factory.Create(this, callback));
         }
 
         /// <summary>
@@ -77,18 +77,19 @@ namespace Bunit
         /// <param name="parameterSelector">The parameter selector</param>
         /// <param name="callback">The event callback.</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        public ComponentParameterBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback<EventArgs>>> parameterSelector, Func<EventArgs, Task> callback)
+        public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>>> parameterSelector, Func<TValue, Task> callback)
         {
-            if (parameterSelector == null)
+            if (parameterSelector is null)
             {
                 throw new ArgumentNullException(nameof(parameterSelector));
             }
-            if (callback == null)
+            if (callback is null)
             {
                 throw new ArgumentNullException(nameof(callback));
             }
 
-            return Add(parameterSelector, EventCallback.Factory.Create(this, callback));
+            var details = GetDetailsFromExpression(parameterSelector);
+            return AddParameterToList(details.name, EC.Factory.Create(this, callback), details.isCascading);
         }
 
         /// <summary>
@@ -100,20 +101,15 @@ namespace Bunit
             return _componentParameters;
         }
 
-        private static (string name, bool isCascading) GetDetailsFromExpression<T>(Expression<Func<TComponent, T>> parameterSelector)
+        private static (string name, bool isCascading) GetDetailsFromExpression<T>([NotNull] Expression<Func<TComponent, T>> parameterSelector)
         {
-            if (parameterSelector is null)
-            {
-                throw new ArgumentNullException(nameof(parameterSelector));
-            }
-
             if (parameterSelector.Body is MemberExpression memberExpression && memberExpression.Member is PropertyInfo propertyInfo)
             {
                 var parameterAttribute = propertyInfo.GetCustomAttribute<ParameterAttribute>();
                 var cascadingParameterAttribute = propertyInfo.GetCustomAttribute<CascadingParameterAttribute>();
                 if (parameterAttribute is null && cascadingParameterAttribute is null)
                 {
-                    throw new ArgumentException($"The property '{propertyInfo.Name}' selected by the provided '{parameterSelector}' does not have the [Parameter] or [CascadingParameter] attribute in the component '{typeof(TComponent)}'.");
+                    throw new ArgumentException($"The property '{propertyInfo.Name}' selected by the provided '{parameterSelector}' does not have the [Parameter] or [CascadingParameter] attribute defined in the component '{typeof(TComponent)}'.");
                 }
 
                 if (parameterAttribute is { })
