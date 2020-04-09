@@ -16,7 +16,7 @@ namespace Bunit
             _sut = new ComponentParameterBuilder<AllTypesOfParams<string>>();
         }
 
-        [Fact(DisplayName = "Add Integer and Build")]
+        [Fact(DisplayName = "Add CascadingParameter (nullable integer) and Build")]
         public void Test001()
         {
             // Arrange
@@ -34,7 +34,7 @@ namespace Bunit
             parameter.Value.ShouldBe(value);
         }
 
-        [Theory(DisplayName = "Add String and Build")]
+        [Theory(DisplayName = "Add Parameter (string) and Build")]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("foo")]
@@ -52,7 +52,7 @@ namespace Bunit
             parameter.Value.ShouldBe(value);
         }
 
-        [Fact(DisplayName = "Add Integer without a name and Build")]
+        [Fact(DisplayName = "Add UnnamedParameter (integer) and Build")]
         public void Test003()
         {
             // Arrange
@@ -89,7 +89,7 @@ namespace Bunit
             second.Value.ShouldBe("bar");
         }
 
-        [Fact(DisplayName = "Add NonGenericCallback and Build")]
+        [Fact(DisplayName = "Add Parameter (NonGenericCallback) and Build")]
         public void Test005()
         {
             // Arrange
@@ -107,7 +107,7 @@ namespace Bunit
             parameter.Value.ShouldBe(callback);
         }
 
-        [Fact(DisplayName = "Add GenericCallback and Build")]
+        [Fact(DisplayName = "Add Parameter (GenericCallback) and Build")]
         public void Test006()
         {
             // Arrange
@@ -135,14 +135,14 @@ namespace Bunit
             Assert.Throws<ArgumentException>(() => _sut.Add(c => c.NamedCascadingValue, 43));
         }
 
-        [Fact(DisplayName = "Add with null value for CascadingParameter should throw Exception")]
+        [Fact(DisplayName = "Add CascadingParameter (with null value) should throw Exception")]
         public void Test101()
         {
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => _sut.Add(c => c.NamedCascadingValue, null));
         }
 
-        [Fact(DisplayName = "Add with a property which does have the [Parameter] or [CascadingParameter] attribute defined should throw Exception")]
+        [Fact(DisplayName = "Add with a property which does not have the [Parameter] or [CascadingParameter] attribute defined should throw Exception")]
         public void Test102()
         {
             // Act and Assert

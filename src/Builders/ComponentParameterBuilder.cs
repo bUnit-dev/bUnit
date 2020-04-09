@@ -29,54 +29,26 @@ namespace Bunit
             if (parameterSelector is null)
             {
                 throw new ArgumentNullException(nameof(parameterSelector));
+                // return AddParameterToList(null, value, true);
             }
 
             var details = GetDetailsFromExpression(parameterSelector);
-            var parameter = details.isCascading
-                ? ComponentParameter.CreateCascadingValue(details.name, value)
-                : ComponentParameter.CreateParameter(details.name, value);
-
-            AddParameterToList(parameter);
-            return this;
+            return AddParameterToList(details.name, value, details.isCascading);
         }
-
-        ///// <summary>
-        ///// Add a property or field-expression with a cascading value to this builder.
-        ///// </summary>
-        ///// <typeparam name="TValue">The generic Value type</typeparam>
-        ///// <param name="parameterSelector">The parameter selector</param>
-        ///// <param name="value">The value</param>
-        ///// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        //public ComponentParameterBuilder<TComponent> AddCascading<TValue>(Expression<Func<TComponent, TValue>> parameterSelector, [DisallowNull] TValue value)
-        //{
-        //    if (parameterSelector == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(parameterSelector));
-        //    }
-
-        //    if (value == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(value));
-        //    }
-
-        //    AddParameterToList(ComponentParameter.CreateCascadingValue(GetParameterNameFromExpression(parameterSelector), value));
-        //    return this;
-        //}
 
         /// <summary>
         /// Add an unnamed cascading parameter with a value to this builder.
         /// </summary>
         /// <param name="value">The value</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        public ComponentParameterBuilder<TComponent> Add(object value)
+        public ComponentParameterBuilder<TComponent> Add([NotNull] object value)
         {
             if (value == null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
 
-            AddParameterToList(ComponentParameter.CreateCascadingValue(null, value));
-            return this;
+            return AddParameterToList(null, value, true);
         }
 
         /// <summary>
@@ -144,7 +116,7 @@ namespace Bunit
                     throw new ArgumentException($"The property '{propertyInfo.Name}' selected by the provided '{parameterSelector}' does not have the [Parameter] or [CascadingParameter] attribute in the component '{typeof(TComponent)}'.");
                 }
 
-                if (parameterAttribute is {})
+                if (parameterAttribute is { })
                 {
                     return (propertyInfo.Name, false);
                 }
@@ -157,19 +129,22 @@ namespace Bunit
                 return (propertyInfo.Name, true);
             }
 
-            throw new ArgumentException($"The parameterSelector '{parameterSelector}' does not resolve to a property on the class '{typeof(TComponent)}'.");
+            throw new ArgumentException($"The parameterSelector '{parameterSelector}' does not resolve to a property on the component '{typeof(TComponent)}'.");
         }
 
-        private void AddParameterToList(ComponentParameter parameter)
+        private ComponentParameterBuilder<TComponent> AddParameterToList(string? name, object? value, bool isCascading)
         {
-            if (_componentParameters.All(cp => cp.Name != parameter.Name))
+            if (_componentParameters.All(cp => cp.Name != name))
             {
+                var parameter = isCascading ?
+                    ComponentParameter.CreateCascadingValue(name, value) :
+                    ComponentParameter.CreateParameter(name, value);
                 _componentParameters.Add(parameter);
+
+                return this;
             }
-            else
-            {
-                throw new ArgumentException($"A parameter with the name '{parameter.Name}' has already been added to the {nameof(ComponentParameterBuilder<TComponent>)}.");
-            }
+
+            throw new ArgumentException($"A parameter with the name '{name}' has already been added to the {nameof(ComponentParameterBuilder<TComponent>)}.");
         }
     }
 }
