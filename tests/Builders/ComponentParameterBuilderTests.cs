@@ -53,27 +53,56 @@ namespace Bunit
             parameter.Value.ShouldBe(value);
         }
 
-        [Fact(DisplayName = "Add multiple and Build")]
-        public void Test004()
+        [Fact(DisplayName = "Add Parameter (RenderFragment) and Build")]
+        public void Test003()
         {
-            // Arrange and Act
-            _sut.Add(c => c.NamedCascadingValue, 42).Add(c => c.RegularParam, "bar");
+            // Arrange
+            string value = "test";
+
+            // Act
+            _sut.Add(c => c.OtherContent, value);
             var result = _sut.Build();
 
             // Assert
-            result.Count.ShouldBe(2);
+            result.Count.ShouldBe(1);
 
-            var first = result.First();
-            first.Name.ShouldBe("NamedCascadingValue");
-            first.Value.ShouldBe(42);
+            var parameter = result.First();
+            parameter.Name.ShouldBe("OtherContent");
+            parameter.Value.ShouldBeOfType<RenderFragment>();
+        }
 
-            var second = result.Last();
-            second.Name.ShouldBe("RegularParam");
-            second.Value.ShouldBe("bar");
+        [Fact(DisplayName = "Add Parameter (RenderFragment<TValue>) and Build")]
+        public void Test004()
+        {
+            // Arrange and Act
+            _sut.Add(c => c.ItemTemplate, num => $"<p>{num}</p>");
+            var result = _sut.Build();
+
+            // Assert
+            result.Count.ShouldBe(1);
+
+            var parameter = result.First();
+            parameter.Name.ShouldBe("ItemTemplate");
+            parameter.Value.ShouldBeOfType<RenderFragment<string>>();
+        }
+
+        [Fact(DisplayName = "Add Parameter (Template) and Build")]
+        public void Test005()
+        {
+            // Arrange and Act
+            _sut.Add(c => c.ItemTemplate, num => builder => builder.AddMarkupContent(0, $"<p>{num}</p>"));
+            var result = _sut.Build();
+
+            // Assert
+            result.Count.ShouldBe(1);
+
+            var parameter = result.First();
+            parameter.Name.ShouldBe("ItemTemplate");
+            parameter.Value.ShouldBeOfType<RenderFragment<string>>();
         }
 
         [Fact(DisplayName = "Add Parameter (NonGenericCallback) and Build")]
-        public void Test005()
+        public void Test006()
         {
             // Arrange
             var @event = EventCallback.Empty;
@@ -92,7 +121,7 @@ namespace Bunit
         }
 
         [Fact(DisplayName = "Add Parameter (GenericCallback) and Build")]
-        public void Test006()
+        public void Test007()
         {
             // Arrange
             var @event = EventCallback<EventArgs>.Empty;
@@ -108,6 +137,25 @@ namespace Bunit
             var parameter = result.First();
             parameter.Name.ShouldBe("GenericCallback");
             parameter.Value.ShouldNotBeNull();
+        }
+
+        [Fact(DisplayName = "Add multiple and Build")]
+        public void Test009()
+        {
+            // Arrange and Act
+            _sut.Add(c => c.NamedCascadingValue, 42).Add(c => c.RegularParam, "bar");
+            var result = _sut.Build();
+
+            // Assert
+            result.Count.ShouldBe(2);
+
+            var first = result.First();
+            first.Name.ShouldBe("NamedCascadingValue");
+            first.Value.ShouldBe(42);
+
+            var second = result.Last();
+            second.Name.ShouldBe("RegularParam");
+            second.Value.ShouldBe("bar");
         }
 
         [Fact(DisplayName = "Add duplicate name should throw Exception")]
