@@ -150,22 +150,22 @@ namespace Bunit
         /// Add a child parameter using a child component builder.
         /// </summary>
         /// <param name="parameterSelector">The parameter selector</param>
-        /// <param name="childComponentParameterBuilder">The builder for the child component.</param>
+        /// <param name="childBuilderAction">The builder action for the child component.</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        public ComponentParameterBuilder<TComponent> Add<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, ComponentParameterBuilder<TChildComponent> childComponentParameterBuilder) where TChildComponent : class, IComponent
+        public ComponentParameterBuilder<TComponent> Add<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, Action<ComponentParameterBuilder<TChildComponent>> childBuilderAction) where TChildComponent : class, IComponent
         {
             if (parameterSelector is null)
             {
                 throw new ArgumentNullException(nameof(parameterSelector));
             }
 
-            if (childComponentParameterBuilder is null)
+            if (childBuilderAction is null)
             {
-                throw new ArgumentNullException(nameof(childComponentParameterBuilder));
+                throw new ArgumentNullException(nameof(childBuilderAction));
             }
 
             var details = GetDetailsFromExpression(parameterSelector);
-            return AddParameterToList(details.name, childComponentParameterBuilder, details.isCascading);
+            return AddParameterToList(details.name, childBuilderAction, details.isCascading);
         }
 
         /// <summary>
