@@ -225,12 +225,12 @@ namespace Bunit
             var propertyInfo = typeof(TComponent).GetProperty(ParameterNameChildContent);
             if (propertyInfo is null || (propertyInfo.PropertyType != typeof(RenderFragment)))
             {
-                throw new ArgumentException($"No property with the name '{ParameterNameChildContent}' and type {typeof(RenderFragment).Name} is defined on the component '{typeof(TComponent)}'.");
+                throw new ArgumentException($"No public property with the name '{ParameterNameChildContent}' and type {typeof(RenderFragment).Name} is defined on the component '{typeof(TComponent)}'.");
             }
 
             if (!TryGetDetailsFromPropertyInfo(propertyInfo, out string name, out bool isCascading))
             {
-                throw new ArgumentException($"The property with the name '{ParameterNameChildContent}' does not have the [Parameter] or [CascadingParameter] attribute defined in the component '{typeof(TComponent)}'.");
+                throw new ArgumentException($"The public property with the name '{ParameterNameChildContent}' does not have the [Parameter] or [CascadingParameter] attribute defined in the component '{typeof(TComponent)}'.");
             }
 
             return (name, isCascading);
@@ -242,13 +242,13 @@ namespace Bunit
             {
                 if (!TryGetDetailsFromPropertyInfo(propertyInfo, out string name, out bool isCascading))
                 {
-                    throw new ArgumentException($"The property '{propertyInfo.Name}' selected by the provided '{parameterSelector}' does not have the [Parameter] or [CascadingParameter] attribute defined in the component '{typeof(TComponent)}'.");
+                    throw new ArgumentException($"The public property '{propertyInfo.Name}' selected by the provided '{parameterSelector}' does not have the [Parameter] or [CascadingParameter] attribute defined in the component '{typeof(TComponent)}'.");
                 }
 
                 return (name, isCascading);
             }
 
-            throw new ArgumentException($"The parameterSelector '{parameterSelector}' does not resolve to a property on the component '{typeof(TComponent)}'.");
+            throw new ArgumentException($"The parameterSelector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.");
         }
 
         private static bool TryGetDetailsFromPropertyInfo(PropertyInfo propertyInfo, out string name, out bool isCascading)
@@ -289,10 +289,7 @@ namespace Bunit
         {
             if (_componentParameters.All(cp => cp.Name != name))
             {
-                var parameter = isCascading ?
-                    ComponentParameter.CreateCascadingValue(name, value) :
-                    ComponentParameter.CreateParameter(name, value);
-                _componentParameters.Add(parameter);
+                _componentParameters.Add((name, value, isCascading));
 
                 return this;
             }
