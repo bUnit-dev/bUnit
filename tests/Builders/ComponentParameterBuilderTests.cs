@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Bunit.SampleComponents;
 using Microsoft.AspNetCore.Components;
@@ -191,6 +190,47 @@ namespace Bunit
             second.Value.ShouldBeOfType<RenderFragment>();
         }
 
+        [Fact(DisplayName = "Add ChildContent with Builder and Build")]
+        public void Test010()
+        {
+            // Arrange
+            var sut = new ComponentParameterBuilder<Wrapper>()
+                .AddChildContent<Simple1>(childBuilder =>
+                {
+                    childBuilder
+                        .Add(c => c.Header, "H1")
+                        .Add(c => c.AttrValue, "A1");
+                });
+
+            // Act
+            var result = sut.Build();
+
+            // Assert
+            result.Count.ShouldBe(1);
+
+            var first = result[0];
+            first.Name.ShouldBe("ChildContent");
+            first.Value.ShouldBeOfType<RenderFragment>();
+        }
+
+        [Fact(DisplayName = "Add ChildContent with markup and Build")]
+        public void Test011()
+        {
+            // Arrange
+            var sut = new ComponentParameterBuilder<Wrapper>()
+                .AddChildContent("x");
+
+            // Act
+            var result = sut.Build();
+
+            // Assert
+            result.Count.ShouldBe(1);
+
+            var first = result[0];
+            first.Name.ShouldBe("ChildContent");
+            first.Value.ShouldBeOfType<RenderFragment>();
+        }
+
         [Fact(DisplayName = "Add duplicate name should throw Exception")]
         public void Test100()
         {
@@ -215,8 +255,18 @@ namespace Bunit
             Assert.Throws<ArgumentException>(() => _sut.Add(c => c.NoParameterProperty, 42));
         }
 
-        [Fact(DisplayName = "Add with a selectorExpression which is not a property should throw Exception")]
+        [Fact(DisplayName = "AddChildContent without a ChildContent property defined should throw Exception")]
         public void Test103()
+        {
+            // Arrange
+            var sut = new ComponentParameterBuilder<Simple1>();
+
+            // Act and Assert
+            Assert.Throws<ArgumentException>(() => sut.AddChildContent("html"));
+        }
+
+        [Fact(DisplayName = "Add with a selectorExpression which is not a property should throw Exception")]
+        public void Test104()
         {
             // Act and Assert
             Assert.Throws<ArgumentException>(() => _sut.Add(c => c.DummyMethod(), 42));
