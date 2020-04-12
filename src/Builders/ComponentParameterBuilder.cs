@@ -223,9 +223,9 @@ namespace Bunit
         private static (string name, bool isCascading) GetChildContentParameterDetails()
         {
             var propertyInfo = typeof(TComponent).GetProperty(ParameterNameChildContent);
-            if (propertyInfo is null)
+            if (propertyInfo is null || (propertyInfo.PropertyType != typeof(RenderFragment)))
             {
-                throw new ArgumentException($"No property with the name '{ParameterNameChildContent}' is defined on the component '{typeof(TComponent)}'.");
+                throw new ArgumentException($"No property with the name '{ParameterNameChildContent}' and type {typeof(RenderFragment).Name} is defined on the component '{typeof(TComponent)}'.");
             }
 
             if (!TryGetDetailsFromPropertyInfo(propertyInfo, out string name, out bool isCascading))
