@@ -157,22 +157,21 @@ namespace Bunit
             second.Value.ShouldBe("bar");
         }
 
-        [Fact(DisplayName = "Add multiple ChildContents and Build")]
+        [Fact(DisplayName = "Add multiple RenderFragments using ChildBuilders and Build")]
         public void Test009()
         {
             // Arrange
             var sut = new ComponentParameterBuilder<TwoComponentWrapper>()
-                .AddChildContent<Simple1>(wrapper => wrapper.First, childBuilder =>
+                .Add<Simple1>(wrapper => wrapper.First, childBuilder =>
                 {
                     childBuilder
                         .Add(c => c.Header, "H1")
                         .Add(c => c.AttrValue, "A1");
                 })
-                .AddChildContent<Simple1>(wrapper => wrapper.Second, childBuilder =>
+                .Add<AllTypesOfParams<int>>(wrapper => wrapper.Second, childBuilder =>
                 {
                     childBuilder
-                        .Add(c => c.Header, "H2")
-                        .Add(c => c.AttrValue, "A2");
+                        .Add(c => c.RegularParam, "test");
                 });
 
             // Act
