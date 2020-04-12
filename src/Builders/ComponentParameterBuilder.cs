@@ -267,7 +267,7 @@ namespace Bunit
             {
                 if (!string.IsNullOrEmpty(cascadingParameterAttribute.Name))
                 {
-                    // The CascadingParameterAttribute is defined, get the defined name from this attribute and indicate that it's a cascading property
+                    // The CascadingParameterAttribute is defined and has a valid name, get the defined name from this attribute and indicate that it's a cascading property
                     name = cascadingParameterAttribute.Name;
                     isCascading = true;
                     return true;
