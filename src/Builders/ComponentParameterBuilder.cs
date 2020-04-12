@@ -37,7 +37,7 @@ namespace Bunit
         }
 
         /// <summary>
-        ///  Add a property selector with a value to this builder.
+        /// Add a property selector with a string value to this builder.
         /// </summary>
         /// <param name="parameterSelector">The parameter selector</param>
         /// <param name="markup"/> as rendered output and passes it to the parameter specified in <paramref name="parameterSelector"/>.
@@ -59,7 +59,7 @@ namespace Bunit
         }
 
         /// <summary>
-        ///  Add a property selector with a value to this builder.
+        /// Add a property selector with a value to this builder.
         /// </summary>
         /// <typeparam name="TValue">The value used to build the content.</typeparam>
         /// <param name="parameterSelector">The parameter selector</param>
@@ -82,7 +82,7 @@ namespace Bunit
         }
 
         /// <summary>
-        ///  Add a property selector with a value to this builder.
+        /// Add a property selector with a value to this builder.
         /// </summary>
         /// <typeparam name="TValue">The value used to build the content.</typeparam>
         /// <param name="parameterSelector">The parameter selector</param>
@@ -152,7 +152,7 @@ namespace Bunit
         /// <param name="parameterSelector">The parameter selector</param>
         /// <param name="childBuilderAction">The builder action for the child component.</param>
         /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
-        public ComponentParameterBuilder<TComponent> Add<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, Action<ComponentParameterBuilder<TChildComponent>> childBuilderAction) where TChildComponent : class, IComponent
+        public ComponentParameterBuilder<TComponent> AddChildContent<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, Action<ComponentParameterBuilder<TChildComponent>> childBuilderAction) where TChildComponent : class, IComponent
         {
             if (parameterSelector is null)
             {

@@ -140,7 +140,7 @@ namespace Bunit
         }
 
         [Fact(DisplayName = "Add multiple and Build")]
-        public void Test009()
+        public void Test008()
         {
             // Arrange and Act
             _sut.Add(c => c.NamedCascadingValue, 42).Add(c => c.RegularParam, "bar");
@@ -156,6 +156,39 @@ namespace Bunit
             var second = result.Last();
             second.Name.ShouldBe("RegularParam");
             second.Value.ShouldBe("bar");
+        }
+
+        [Fact(DisplayName = "Add child and Build")]
+        public void Test009()
+        {
+            // Arrange
+            var sut = new ComponentParameterBuilder<TwoComponentWrapper>()
+                .AddChildContent<Simple1>(wrapper => wrapper.First, childBuilder =>
+                {
+                    childBuilder
+                        .Add(c => c.Header, "H1")
+                        .Add(c => c.AttrValue, "A1");
+                })
+                .AddChildContent<Simple1>(wrapper => wrapper.Second, childBuilder =>
+                {
+                    childBuilder
+                        .Add(c => c.Header, "H2")
+                        .Add(c => c.AttrValue, "A2");
+                });
+
+            // Act
+            var result = sut.Build();
+
+            // Assert
+            result.Count.ShouldBe(2);
+
+            var first = result.First();
+            first.Name.ShouldBe("First");
+            first.Value.ShouldBeOfType<Action<ComponentParameterBuilder<Simple1>>>();
+
+            var second = result.Last();
+            second.Name.ShouldBe("Second");
+            second.Value.ShouldBeOfType<Action<ComponentParameterBuilder<Simple1>>>();
         }
 
         [Fact(DisplayName = "Add duplicate name should throw Exception")]
