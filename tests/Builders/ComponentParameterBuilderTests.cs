@@ -30,7 +30,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
-            parameter.Name.ShouldBe("NamedCascadingValue");
+            parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.NamedCascadingValue));
             parameter.Value.ShouldBe(value);
         }
 
@@ -48,7 +48,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
-            parameter.Name.ShouldBe("RegularParam");
+            parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.RegularParam));
             parameter.Value.ShouldBe(value);
         }
 
@@ -66,7 +66,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
-            parameter.Name.ShouldBe("OtherContent");
+            parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
             parameter.Value.ShouldBeOfType<RenderFragment>();
         }
 
@@ -81,7 +81,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
-            parameter.Name.ShouldBe("ItemTemplate");
+            parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.ItemTemplate));
             parameter.Value.ShouldBeOfType<RenderFragment<string>>();
         }
 
@@ -96,7 +96,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
-            parameter.Name.ShouldBe("ItemTemplate");
+            parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.ItemTemplate));
             parameter.Value.ShouldBeOfType<RenderFragment<string>>();
         }
 
@@ -115,7 +115,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
-            parameter.Name.ShouldBe("NonGenericCallback");
+            parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.NonGenericCallback));
             parameter.Value.ShouldNotBeNull();
         }
 
@@ -134,7 +134,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
-            parameter.Name.ShouldBe("GenericCallback");
+            parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.GenericCallback));
             parameter.Value.ShouldNotBeNull();
         }
 
@@ -149,11 +149,11 @@ namespace Bunit
             result.Count.ShouldBe(2);
 
             var first = result[0];
-            first.Name.ShouldBe("NamedCascadingValue");
+            first.Name.ShouldBe(nameof(AllTypesOfParams<string>.NamedCascadingValue));
             first.Value.ShouldBe(42);
 
             var second = result[1];
-            second.Name.ShouldBe("RegularParam");
+            second.Name.ShouldBe(nameof(AllTypesOfParams<string>.RegularParam));
             second.Value.ShouldBe("bar");
         }
 
@@ -182,11 +182,11 @@ namespace Bunit
             result.Count.ShouldBe(2);
 
             var first = result[0];
-            first.Name.ShouldBe("First");
+            first.Name.ShouldBe(nameof(TwoComponentWrapper.First));
             first.Value.ShouldBeOfType<RenderFragment>();
 
             var second = result[1];
-            second.Name.ShouldBe("Second");
+            second.Name.ShouldBe(nameof(TwoComponentWrapper.Second));
             second.Value.ShouldBeOfType<RenderFragment>();
         }
 
@@ -209,7 +209,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var first = result[0];
-            first.Name.ShouldBe("ChildContent");
+            first.Name.ShouldBe(nameof(Wrapper.ChildContent));
             first.Value.ShouldBeOfType<RenderFragment>();
         }
 
@@ -227,7 +227,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var first = result[0];
-            first.Name.ShouldBe("ChildContent");
+            first.Name.ShouldBe(nameof(Wrapper.ChildContent));
             first.Value.ShouldBeOfType<RenderFragment>();
         }
 
