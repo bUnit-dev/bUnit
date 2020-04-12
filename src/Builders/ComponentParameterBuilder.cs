@@ -164,15 +164,20 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(childBuilderAction));
             }
 
+            var childComponentParameterBuilder = new ComponentParameterBuilder<TChildComponent>();
+            childBuilderAction(childComponentParameterBuilder);
+
+            var childFragment = childComponentParameterBuilder.Build().ToComponentRenderFragment<TChildComponent>();
+
             var details = GetDetailsFromExpression(parameterSelector);
-            return AddParameterToList(details.name, childBuilderAction, details.isCascading);
+            return AddParameterToList(details.name, childFragment, details.isCascading);
         }
 
         /// <summary>
         /// Create a <see cref="ComponentParameter"/> collection.
         /// </summary>
         /// <returns>A IReadOnlyCollection of <see cref="ComponentParameter"/></returns>
-        public IReadOnlyCollection<ComponentParameter> Build()
+        public IReadOnlyList<ComponentParameter> Build()
         {
             return _componentParameters;
         }

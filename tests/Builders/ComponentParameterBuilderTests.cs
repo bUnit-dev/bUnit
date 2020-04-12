@@ -30,7 +30,7 @@ namespace Bunit
             // Assert
             result.Count.ShouldBe(1);
 
-            var parameter = result.First();
+            var parameter = result[0];
             parameter.Name.ShouldBe("NamedCascadingValue");
             parameter.Value.ShouldBe(value);
         }
@@ -48,7 +48,7 @@ namespace Bunit
             // Assert
             result.Count.ShouldBe(1);
 
-            var parameter = result.First();
+            var parameter = result[0];
             parameter.Name.ShouldBe("RegularParam");
             parameter.Value.ShouldBe(value);
         }
@@ -66,7 +66,7 @@ namespace Bunit
             // Assert
             result.Count.ShouldBe(1);
 
-            var parameter = result.First();
+            var parameter = result[0];
             parameter.Name.ShouldBe("OtherContent");
             parameter.Value.ShouldBeOfType<RenderFragment>();
         }
@@ -81,7 +81,7 @@ namespace Bunit
             // Assert
             result.Count.ShouldBe(1);
 
-            var parameter = result.First();
+            var parameter = result[0];
             parameter.Name.ShouldBe("ItemTemplate");
             parameter.Value.ShouldBeOfType<RenderFragment<string>>();
         }
@@ -96,7 +96,7 @@ namespace Bunit
             // Assert
             result.Count.ShouldBe(1);
 
-            var parameter = result.First();
+            var parameter = result[0];
             parameter.Name.ShouldBe("ItemTemplate");
             parameter.Value.ShouldBeOfType<RenderFragment<string>>();
         }
@@ -115,7 +115,7 @@ namespace Bunit
             // Assert
             result.Count.ShouldBe(1);
 
-            var parameter = result.First();
+            var parameter = result[0];
             parameter.Name.ShouldBe("NonGenericCallback");
             parameter.Value.ShouldNotBeNull();
         }
@@ -134,7 +134,7 @@ namespace Bunit
             // Assert
             result.Count.ShouldBe(1);
 
-            var parameter = result.First();
+            var parameter = result[0];
             parameter.Name.ShouldBe("GenericCallback");
             parameter.Value.ShouldNotBeNull();
         }
@@ -149,16 +149,16 @@ namespace Bunit
             // Assert
             result.Count.ShouldBe(2);
 
-            var first = result.First();
+            var first = result[0];
             first.Name.ShouldBe("NamedCascadingValue");
             first.Value.ShouldBe(42);
 
-            var second = result.Last();
+            var second = result[1];
             second.Name.ShouldBe("RegularParam");
             second.Value.ShouldBe("bar");
         }
 
-        [Fact(DisplayName = "Add child and Build")]
+        [Fact(DisplayName = "Add multiple ChildContents and Build")]
         public void Test009()
         {
             // Arrange
@@ -182,13 +182,13 @@ namespace Bunit
             // Assert
             result.Count.ShouldBe(2);
 
-            var first = result.First();
+            var first = result[0];
             first.Name.ShouldBe("First");
-            first.Value.ShouldBeOfType<Action<ComponentParameterBuilder<Simple1>>>();
+            first.Value.ShouldBeOfType<RenderFragment>();
 
-            var second = result.Last();
+            var second = result[1];
             second.Name.ShouldBe("Second");
-            second.Value.ShouldBeOfType<Action<ComponentParameterBuilder<Simple1>>>();
+            second.Value.ShouldBeOfType<RenderFragment>();
         }
 
         [Fact(DisplayName = "Add duplicate name should throw Exception")]
