@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.JSInterop;
 using System;
+using System.Linq;
 
 namespace Bunit
 {
@@ -51,6 +52,20 @@ namespace Bunit
         {
             var result = new RenderedComponent<TComponent>(this, parameters);
             return result;
+        }
+
+        // Stef : Example to understand the functionality
+        public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterBuilder<TComponent>> action) where TComponent : class, IComponent
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            var builder = new ComponentParameterBuilder<TComponent>();
+            action(builder);
+
+            return RenderComponent<TComponent>(builder.Build().ToArray());
         }
 
         #region IDisposable Support

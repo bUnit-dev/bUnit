@@ -35,5 +35,8 @@ namespace Bunit
         /// <param name="parameters">Parameters to pass to the component when it is rendered</param>
         /// <returns>The rendered <typeparamref name="TComponent"/></returns>
         IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent;
+
+        // Stef : Example to understand the functionality
+        IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterBuilder<TComponent>> action) where TComponent : class, IComponent;
     }
 }
