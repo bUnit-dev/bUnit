@@ -33,8 +33,8 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(parameterSelector));
             }
 
-            var details = GetDetailsFromExpression(parameterSelector);
-            return AddParameterToList(details.name, value, details.isCascading);
+            var (name, isCascading) = GetDetailsFromExpression(parameterSelector);
+            return AddParameterToList(name, value, isCascading);
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(markup));
             }
 
-            var details = GetDetailsFromExpression(parameterSelector);
-            return AddParameterToList(details.name, markup.ToMarkupRenderFragment(), details.isCascading);
+            var (name, isCascading) = GetDetailsFromExpression(parameterSelector);
+            return AddParameterToList(name, markup.ToMarkupRenderFragment(), isCascading);
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(template));
             }
 
-            var details = GetDetailsFromExpression(parameterSelector);
-            return AddParameterToList(details.name, template, details.isCascading);
+            var (name, isCascading) = GetDetailsFromExpression(parameterSelector);
+            return AddParameterToList(name, template, isCascading);
         }
 
         /// <summary>
@@ -143,8 +143,8 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(callback));
             }
 
-            var details = GetDetailsFromExpression(parameterSelector);
-            return AddParameterToList(details.name, EC.Factory.Create(this, callback), details.isCascading);
+            var (name, isCascading) = GetDetailsFromExpression(parameterSelector);
+            return AddParameterToList(name, EC.Factory.Create(this, callback), isCascading);
         }
 
         /// <summary>
@@ -165,13 +165,13 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(childBuilderAction));
             }
 
-            var details = GetDetailsFromExpression(parameterSelector);
+            var (name, isCascading) = GetDetailsFromExpression(parameterSelector);
 
             var childComponentParameterBuilder = new ComponentParameterBuilder<TChildComponent>();
             childBuilderAction(childComponentParameterBuilder);
 
             var childFragment = childComponentParameterBuilder.Build().ToComponentRenderFragment<TChildComponent>();
-            return AddParameterToList(details.name, childFragment, details.isCascading);
+            return AddParameterToList(name, childFragment, isCascading);
         }
 
         /// <summary>
@@ -186,13 +186,13 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(childBuilderAction));
             }
 
-            var details = GetChildContentParameterDetails();
+            var (name, isCascading) = GetChildContentParameterDetails();
 
             var childComponentParameterBuilder = new ComponentParameterBuilder<TChildComponent>();
             childBuilderAction(childComponentParameterBuilder);
 
             var childFragment = childComponentParameterBuilder.Build().ToComponentRenderFragment<TChildComponent>();
-            return AddParameterToList(details.name, childFragment, details.isCascading);
+            return AddParameterToList(name, childFragment, isCascading);
         }
 
         /// <summary>
@@ -207,8 +207,8 @@ namespace Bunit
                 throw new ArgumentNullException(nameof(markup));
             }
 
-            var details = GetChildContentParameterDetails();
-            return AddParameterToList(details.name, markup.ToMarkupRenderFragment(), details.isCascading);
+            var (name, isCascading) = GetChildContentParameterDetails();
+            return AddParameterToList(name, markup.ToMarkupRenderFragment(), isCascading);
         }
 
         /// <summary>
