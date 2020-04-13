@@ -27,6 +27,21 @@ namespace Bunit
         /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add(string key, object value)
         {
+            var propertiesWithParameterAttributeAndCaptureUnmatchedValuesEqualsTrue = typeof(TComponent).GetProperties()
+                .Select(propertyInfo => propertyInfo.GetCustomAttribute<ParameterAttribute>())
+                .Where(attribute => attribute is { } && attribute.CaptureUnmatchedValues)
+                .ToList();
+
+            if (!propertiesWithParameterAttributeAndCaptureUnmatchedValuesEqualsTrue.Any())
+            {
+                throw new ArgumentException($"There is no public parameter with the attribute [Parameter(CaptureUnmatchedValues = true)] defined on the component '{typeof(TComponent)}'.");
+            }
+
+            if (propertiesWithParameterAttributeAndCaptureUnmatchedValuesEqualsTrue.Count > 1)
+            {
+                throw new ArgumentException($"There are multiple public parameters with the attribute [Parameter(CaptureUnmatchedValues = true)] defined on the component '{typeof(TComponent)}'.");
+            }
+
             return AddParameterToList(key, value, false);
         }
 
@@ -37,6 +52,21 @@ namespace Bunit
         /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add(object value)
         {
+            var propertiesWithCascadingParameterAttributeAndWithoutAName = typeof(TComponent).GetProperties()
+                .Select(propertyInfo => propertyInfo.GetCustomAttribute<CascadingParameterAttribute>())
+                .Where(attribute => attribute is { } && attribute.Name is null)
+                .ToList();
+
+            if (!propertiesWithCascadingParameterAttributeAndWithoutAName.Any())
+            {
+                throw new ArgumentException($"There is no public parameter with the attribute [CascadingParameter()] defined on the component '{typeof(TComponent)}'.");
+            }
+
+            if (propertiesWithCascadingParameterAttributeAndWithoutAName.Count > 1)
+            {
+                throw new ArgumentException($"There are multiple public parameters with the attribute [CascadingParameter()] defined on the component '{typeof(TComponent)}'.");
+            }
+
             return AddParameterToList(null, value, true);
         }
 
