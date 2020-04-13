@@ -20,6 +20,16 @@ namespace Bunit
         private readonly List<ComponentParameter> _componentParameters = new List<ComponentParameter>();
 
         /// <summary>
+        /// Add an unnamed cascading value for a component under test.
+        /// </summary>
+        /// <param name="value">The value to set for an unnamed cascading parameter</param>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
+        public ComponentParameterBuilder<TComponent> Add(object value)
+        {
+            return AddParameterToList(null, value, true);
+        }
+
+        /// <summary>
         /// Add a strongly typed parameter with a value for a component under test.
         /// </summary>
         /// <typeparam name="TValue">The generic value type</typeparam>
@@ -287,10 +297,6 @@ namespace Bunit
 
         private ComponentParameterBuilder<TComponent> AddParameterToList(string? name, object? value, bool isCascading)
         {
-            if (name == null)
-            {
-                int x = 9;
-            }
             if (_componentParameters.All(cp => cp.Name != name))
             {
                 _componentParameters.Add((name, value, isCascading));

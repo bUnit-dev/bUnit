@@ -30,6 +30,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
+            parameter.IsCascadingValue.ShouldBeTrue();
             parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.NamedCascadingValue));
             parameter.Value.ShouldBe(value);
         }
@@ -48,6 +49,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
+            parameter.IsCascadingValue.ShouldBeFalse();
             parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.RegularParam));
             parameter.Value.ShouldBe(value);
         }
@@ -66,6 +68,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
+            parameter.IsCascadingValue.ShouldBeFalse();
             parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
             parameter.Value.ShouldBeOfType<RenderFragment>();
         }
@@ -81,6 +84,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
+            parameter.IsCascadingValue.ShouldBeFalse();
             parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.ItemTemplate));
             parameter.Value.ShouldBeOfType<RenderFragment<string>>();
         }
@@ -96,6 +100,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
+            parameter.IsCascadingValue.ShouldBeFalse();
             parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.ItemTemplate));
             parameter.Value.ShouldBeOfType<RenderFragment<string>>();
         }
@@ -115,6 +120,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
+            parameter.IsCascadingValue.ShouldBeFalse();
             parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.NonGenericCallback));
             parameter.Value.ShouldNotBeNull();
         }
@@ -134,6 +140,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var parameter = result[0];
+            parameter.IsCascadingValue.ShouldBeFalse();
             parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.GenericCallback));
             parameter.Value.ShouldNotBeNull();
         }
@@ -149,10 +156,12 @@ namespace Bunit
             result.Count.ShouldBe(2);
 
             var first = result[0];
+            first.IsCascadingValue.ShouldBeTrue();
             first.Name.ShouldBe(nameof(AllTypesOfParams<string>.NamedCascadingValue));
             first.Value.ShouldBe(42);
 
             var second = result[1];
+            second.IsCascadingValue.ShouldBeFalse();
             second.Name.ShouldBe(nameof(AllTypesOfParams<string>.RegularParam));
             second.Value.ShouldBe("bar");
         }
@@ -181,10 +190,12 @@ namespace Bunit
             result.Count.ShouldBe(2);
 
             var first = result[0];
+            first.IsCascadingValue.ShouldBeFalse();
             first.Name.ShouldBe(nameof(TwoComponentWrapper.First));
             first.Value.ShouldBeOfType<RenderFragment>();
 
             var second = result[1];
+            second.IsCascadingValue.ShouldBeFalse();
             second.Name.ShouldBe(nameof(TwoComponentWrapper.Second));
             second.Value.ShouldBeOfType<RenderFragment>();
         }
@@ -208,6 +219,7 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var first = result[0];
+            first.IsCascadingValue.ShouldBeFalse();
             first.Name.ShouldBe(nameof(Wrapper.ChildContent));
             first.Value.ShouldBeOfType<RenderFragment>();
         }
@@ -226,8 +238,28 @@ namespace Bunit
             result.Count.ShouldBe(1);
 
             var first = result[0];
+            first.IsCascadingValue.ShouldBeFalse();
             first.Name.ShouldBe(nameof(Wrapper.ChildContent));
             first.Value.ShouldBeOfType<RenderFragment>();
+        }
+
+        [Fact(DisplayName = "Add unnamed CascadingParameter and Build")]
+        public void Test012()
+        {
+            // Arrange
+            const int value = 42;
+
+            // Arrange
+            _sut.Add(value);
+            var result = _sut.Build();
+
+            // Assert
+            result.Count.ShouldBe(1);
+
+            var parameter = result[0];
+            parameter.IsCascadingValue.ShouldBeTrue();
+            parameter.Name.ShouldBeNull();
+            parameter.Value.ShouldBe(value);
         }
 
         [Fact(DisplayName = "Add duplicate name should throw Exception")]
