@@ -11,21 +11,21 @@ using EC = Microsoft.AspNetCore.Components.EventCallback;
 namespace Bunit
 {
     /// <summary>
-    /// A builder which makes it possible to add typed ComponentParameters.
+    /// A builder to set a value for strongly typed ComponentParameters.
     /// </summary>
-    /// <typeparam name="TComponent">The type of component to render</typeparam>
+    /// <typeparam name="TComponent">The type of component under test to add the parameters</typeparam>
     public sealed class ComponentParameterBuilder<TComponent> where TComponent : class, IComponent
     {
         private const string ParameterNameChildContent = "ChildContent";
         private readonly List<ComponentParameter> _componentParameters = new List<ComponentParameter>();
 
         /// <summary>
-        /// Add a property selector with a value to this builder.
+        /// Add a strongly typed parameter with a value for a component under test.
         /// </summary>
-        /// <typeparam name="TValue">The generic Value type</typeparam>
-        /// <param name="parameterSelector">The parameter selector</param>
+        /// <typeparam name="TValue">The generic value type</typeparam>
+        /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
         /// <param name="value">The value, which cannot be null in case of cascading parameter</param>
-        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, TValue>> parameterSelector, [AllowNull] TValue value)
         {
             if (parameterSelector is null)
@@ -38,11 +38,11 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a property selector with a string value to this builder.
+        /// Add a strongly typed <see cref="RenderFragment" /> parameter with a html markup value for a component under test.
         /// </summary>
-        /// <param name="parameterSelector">The parameter selector</param>
-        /// <param name="markup"/> as rendered output and passes it to the parameter specified in <paramref name="parameterSelector"/>.
-        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
+        /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
+        /// <param name="markup">Markup to render as output</param>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add(Expression<Func<TComponent, RenderFragment?>> parameterSelector, string markup)
         {
             if (parameterSelector is null)
@@ -60,12 +60,12 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a property selector with a value to this builder.
+        /// Add a strongly typed <see cref="RenderFragment{TValue}" /> parameter with a template for a component under test.
         /// </summary>
-        /// <typeparam name="TValue">The value used to build the content.</typeparam>
-        /// <param name="parameterSelector">The parameter selector</param>
-        /// <param name="template"><see cref="Microsoft.AspNetCore.Components.RenderFragment{TValue}" /> to pass to the parameter.</param>
-        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
+        /// <typeparam name="TValue">The generic value type</typeparam>
+        /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
+        /// <param name="template"><see cref="RenderFragment{TValue}" /> to pass to the parameter</param>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, RenderFragment<TValue>?>> parameterSelector, RenderFragment<TValue> template)
         {
             if (parameterSelector is null)
@@ -83,12 +83,12 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a property selector with a value to this builder.
+        /// Add a strongly typed <see cref="RenderFragment{TValue}" /> parameter with a markupFactory for a component under test.
         /// </summary>
-        /// <typeparam name="TValue">The value used to build the content.</typeparam>
-        /// <param name="parameterSelector">The parameter selector</param>
+        /// <typeparam name="TValue">The generic value type</typeparam>
+        /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
         /// <param name="markupFactory">A markup factory that takes a <typeparamref name="TValue"/> as input and returns markup/HTML.</param>
-        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, RenderFragment<TValue>?>> parameterSelector, Func<TValue, string> markupFactory)
         {
             if (parameterSelector is null)
@@ -105,11 +105,11 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a non generic <see cref="EventCallback"/> parameter with a value for this builder.
+        /// Add a strongly typed <see cref="EventCallback" /> parameter with a callback for a component under test.
         /// </summary>
-        /// <param name="parameterSelector">The parameter selector</param>
-        /// <param name="callback">The event callback.</param>
-        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
+        /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
+        /// <param name="callback">A callback that returns a <see cref="Task"/>.</param>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add(Expression<Func<TComponent, EC>> parameterSelector, Func<Task> callback)
         {
             if (parameterSelector is null)
@@ -126,11 +126,11 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a generic <see cref="EventCallback"/> parameter with a value for this builder.
+        /// Add a strongly typed <see cref="EventCallback{TValue}" /> parameter with a callback for a component under test.
         /// </summary>
-        /// <param name="parameterSelector">The parameter selector</param>
-        /// <param name="callback">The event callback.</param>
-        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
+        /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
+        /// <param name="callback">A callback that takes a <typeparamref name="TValue"/> and returns a <see cref="Task"/>.</param>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>>> parameterSelector, Func<TValue, Task> callback)
         {
             if (parameterSelector is null)
@@ -148,11 +148,11 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a RenderFragment parameter using a child component builder.
+        /// Add a strongly typed <see cref="RenderFragment" /> parameter with a <see cref="ComponentParameterBuilder{TChildComponent}"/> for a component under test.
         /// </summary>
-        /// <param name="parameterSelector">The parameter selector</param>
+        /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
         /// <param name="childBuilderAction">The builder action for the child component.</param>
-        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, Action<ComponentParameterBuilder<TChildComponent>> childBuilderAction) where TChildComponent : class, IComponent
         {
             if (parameterSelector is null)
@@ -170,15 +170,15 @@ namespace Bunit
             var childComponentParameterBuilder = new ComponentParameterBuilder<TChildComponent>();
             childBuilderAction(childComponentParameterBuilder);
 
-            var childFragment = childComponentParameterBuilder.Build().ToComponentRenderFragment<TChildComponent>();
+            var childFragment = childComponentParameterBuilder.Build().ToList().ToComponentRenderFragment<TChildComponent>();
             return AddParameterToList(name, childFragment, isCascading);
         }
 
         /// <summary>
-        /// Add a child component builder for a ChildContent parameter.
+        /// Add a <see cref="ComponentParameterBuilder{TChildComponent}"/> to build a ChildContent parameter.
         /// </summary>
         /// <param name="childBuilderAction">The builder action for the child component.</param>
-        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> AddChildContent<TChildComponent>(Action<ComponentParameterBuilder<TChildComponent>> childBuilderAction) where TChildComponent : class, IComponent
         {
             if (childBuilderAction is null)
@@ -191,15 +191,15 @@ namespace Bunit
             var childComponentParameterBuilder = new ComponentParameterBuilder<TChildComponent>();
             childBuilderAction(childComponentParameterBuilder);
 
-            var childFragment = childComponentParameterBuilder.Build().ToComponentRenderFragment<TChildComponent>();
+            var childFragment = childComponentParameterBuilder.Build().ToList().ToComponentRenderFragment<TChildComponent>();
             return AddParameterToList(name, childFragment, isCascading);
         }
 
         /// <summary>
-        /// Add a child component builder markup for a ChildContent parameter.
+        /// Add a child component markup for a ChildContent parameter.
         /// </summary>
-        /// <param name="markup"/> as rendered output and passes it to the ChildContent parameter./>.
-        /// <returns>A <see cref="ComponentParameterBuilder&lt;TComponent&gt;"/> which can be chained.</returns>
+        /// <param name="markup">Markup to render as output for the ChildContent parameter</param>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> AddChildContent(string markup)
         {
             if (markup is null)
@@ -212,7 +212,7 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Create a <see cref="ComponentParameter"/> list.
+        /// Create a <see cref="IReadOnlyList{ComponentParameter}"/>.
         /// </summary>
         /// <returns>A ISet of <see cref="ComponentParameter"/></returns>
         public IReadOnlyList<ComponentParameter> Build()
@@ -287,6 +287,10 @@ namespace Bunit
 
         private ComponentParameterBuilder<TComponent> AddParameterToList(string? name, object? value, bool isCascading)
         {
+            if (name == null)
+            {
+                int x = 9;
+            }
             if (_componentParameters.All(cp => cp.Name != name))
             {
                 _componentParameters.Add((name, value, isCascading));
