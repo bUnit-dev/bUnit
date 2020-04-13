@@ -20,6 +20,17 @@ namespace Bunit
         private readonly List<ComponentParameter> _componentParameters = new List<ComponentParameter>();
 
         /// <summary>
+        /// Add an unnamed attribute value for a component under test.
+        /// </summary>
+        /// <param name="key">The value to set for an unnamed cascading parameter</param>
+        /// <param name="value">The value to set for an unnamed cascading parameter</param>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
+        public ComponentParameterBuilder<TComponent> Add(string key, object value)
+        {
+            return AddParameterToList(key, value, false);
+        }
+
+        /// <summary>
         /// Add an unnamed cascading value for a component under test.
         /// </summary>
         /// <param name="value">The value to set for an unnamed cascading parameter</param>

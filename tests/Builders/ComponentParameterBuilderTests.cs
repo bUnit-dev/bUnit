@@ -262,6 +262,26 @@ namespace Bunit
             parameter.Value.ShouldBe(value);
         }
 
+        [Fact(DisplayName = "Add unnamed Attribute and Build")]
+        public void Test013()
+        {
+            // Arrange
+            const string key = "some-unmatched-attribute";
+            const int value = 42;
+
+            // Arrange
+            _sut.Add(key, value);
+            var result = _sut.Build();
+
+            // Assert
+            result.Count.ShouldBe(1);
+
+            var parameter = result[0];
+            parameter.IsCascadingValue.ShouldBeFalse();
+            parameter.Name.ShouldBe(key);
+            parameter.Value.ShouldBe(value);
+        }
+
         [Fact(DisplayName = "Add duplicate name should throw Exception")]
         public void Test100()
         {
