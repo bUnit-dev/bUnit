@@ -54,16 +54,16 @@ namespace Bunit
             return result;
         }
 
-        // Stef : Example to understand the functionality
-        public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterBuilder<TComponent>> action) where TComponent : class, IComponent
+        /// <inheritdoc/>
+        public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterBuilder<TComponent>> componentParameterBuilderAction) where TComponent : class, IComponent
         {
-            if (action == null)
+            if (componentParameterBuilderAction is null)
             {
-                throw new ArgumentNullException(nameof(action));
+                throw new ArgumentNullException(nameof(componentParameterBuilderAction));
             }
 
             var builder = new ComponentParameterBuilder<TComponent>();
-            action(builder);
+            componentParameterBuilderAction(builder);
 
             return RenderComponent<TComponent>(builder.Build().ToArray());
         }
