@@ -109,7 +109,7 @@ namespace Bunit
             parameter.Value.ShouldBeOfType<RenderFragment<string>>();
         }
 
-        [Fact(DisplayName = "Add with a parameterSelector for a NonGenericEventCallback and a callback as value and Build should return the correct ComponentParameters")]
+        [Fact(DisplayName = "Add with a parameterSelector for a NonGenericEventCallback and a async-callback as value and Build should return the correct ComponentParameters")]
         public void Test006()
         {
             // Arrange
@@ -130,8 +130,27 @@ namespace Bunit
             parameter.Value.ShouldNotBeNull();
         }
 
-        [Fact(DisplayName = "Add with a parameterSelector for a GenericEventCallback and a callback as value and Build should return the correct ComponentParameters")]
+        [Fact(DisplayName = "Add with a parameterSelector for a NonGenericEventCallback and a callback as value and Build should return the correct ComponentParameters")]
         public void Test007()
+        {
+            // Arrange
+            var sut = CreateSut();
+
+            // Act
+            sut.Add(c => c.NonGenericCallback, () => throw new Exception("NonGenericCallback"));
+            var result = sut.Build();
+
+            // Assert
+            result.Count.ShouldBe(1);
+
+            var parameter = result[0];
+            parameter.IsCascadingValue.ShouldBeFalse();
+            parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.NonGenericCallback));
+            parameter.Value.ShouldNotBeNull();
+        }
+
+        [Fact(DisplayName = "Add with a parameterSelector for a GenericEventCallback and a async-callback as value and Build should return the correct ComponentParameters")]
+        public void Test008()
         {
             // Arrange
             var sut = CreateSut();
@@ -151,8 +170,27 @@ namespace Bunit
             parameter.Value.ShouldNotBeNull();
         }
 
+        [Fact(DisplayName = "Add with a parameterSelector for a GenericEventCallback and a callback as value and Build should return the correct ComponentParameters")]
+        public void Test009()
+        {
+            // Arrange
+            var sut = CreateSut();
+
+            // Act
+            sut.Add(c => c.GenericCallback, args => throw new Exception("GenericCallback"));
+            var result = sut.Build();
+
+            // Assert
+            result.Count.ShouldBe(1);
+
+            var parameter = result[0];
+            parameter.IsCascadingValue.ShouldBeFalse();
+            parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.GenericCallback));
+            parameter.Value.ShouldNotBeNull();
+        }
+
         [Fact(DisplayName = "Add with multiple mixed parameterSelectors and valid values and Build should return the correct ComponentParameters")]
-        public void Test008()
+        public void Test010()
         {
             // Arrange
             var sut = CreateSut();
@@ -176,7 +214,7 @@ namespace Bunit
         }
 
         [Fact(DisplayName = "Add with a parameterSelectors for multiple RenderFragments and childBuilders as values and Build should return the correct ComponentParameters")]
-        public void Test009()
+        public void Test011()
         {
             // Arrange
             var sut = CreateSut<TwoComponentWrapper>();
@@ -210,7 +248,7 @@ namespace Bunit
         }
 
         [Fact(DisplayName = "AddChildContent with a childBuilders and Build should return the correct ComponentParameters")]
-        public void Test010()
+        public void Test012()
         {
             // Arrange
             var sut = CreateSut<Wrapper>();
@@ -234,7 +272,7 @@ namespace Bunit
         }
 
         [Fact(DisplayName = "AddChildContent with a string markup and Build should return the correct ComponentParameters")]
-        public void Test011()
+        public void Test013()
         {
             // Arrange
             var sut = CreateSut<Wrapper>();
@@ -253,7 +291,7 @@ namespace Bunit
         }
 
         [Fact(DisplayName = "Add unnamed CascadingParameter with a value and Build should return the correct ComponentParameters")]
-        public void Test012()
+        public void Test014()
         {
             // Arrange
             var sut = CreateSut();
@@ -273,7 +311,7 @@ namespace Bunit
         }
 
         [Fact(DisplayName = "AddUnmatched with a key and value and Build should return the correct ComponentParameters")]
-        public void Test013()
+        public void Test015()
         {
             // Arrange
             var sut = CreateSut();

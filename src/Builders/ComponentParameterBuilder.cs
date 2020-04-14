@@ -160,9 +160,30 @@ namespace Bunit
         /// Add a strongly typed <see cref="EventCallback" /> parameter with a callback for the component under test.
         /// </summary>
         /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
-        /// <param name="callback">A callback that returns a <see cref="Task"/>.</param>
+        /// <param name="callback">The event callback that returns a <see cref="Task"/>.</param>
         /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add(Expression<Func<TComponent, EC>> parameterSelector, Func<Task> callback)
+        {
+            if (parameterSelector is null)
+            {
+                throw new ArgumentNullException(nameof(parameterSelector));
+            }
+
+            if (callback is null)
+            {
+                throw new ArgumentNullException(nameof(callback));
+            }
+
+            return Add(parameterSelector, EC.Factory.Create(this, callback));
+        }
+
+        /// <summary>
+        /// Add a strongly typed <see cref="EventCallback" /> parameter with a action for the component under test.
+        /// </summary>
+        /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
+        /// <param name="callback">The event callback.</param>
+        /// <returns>The <see cref="ComponentParameter"/>.</returns>
+        public ComponentParameterBuilder<TComponent> Add(Expression<Func<TComponent, EC>> parameterSelector, Action callback)
         {
             if (parameterSelector is null)
             {
@@ -184,6 +205,28 @@ namespace Bunit
         /// <param name="callback">A callback that takes a <typeparamref name="TValue"/> and returns a <see cref="Task"/>.</param>
         /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>>> parameterSelector, Func<TValue, Task> callback)
+        {
+            if (parameterSelector is null)
+            {
+                throw new ArgumentNullException(nameof(parameterSelector));
+            }
+
+            if (callback is null)
+            {
+                throw new ArgumentNullException(nameof(callback));
+            }
+
+            var (name, isCascading) = GetDetailsFromExpression(parameterSelector);
+            return AddParameterToList(name, EC.Factory.Create(this, callback), isCascading);
+        }
+
+        /// <summary>
+        /// Add a strongly typed <see cref="EventCallback{TValue}" /> parameter with a callback for the component under test.
+        /// </summary>
+        /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
+        /// <param name="callback">A callback that takes a <typeparamref name="TValue"/>.</param>
+        /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
+        public ComponentParameterBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>>> parameterSelector, Action<TValue> callback)
         {
             if (parameterSelector is null)
             {
