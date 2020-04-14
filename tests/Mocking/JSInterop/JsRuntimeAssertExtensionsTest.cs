@@ -5,7 +5,7 @@ using AngleSharp.Dom;
 using Bunit.Diffing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Moq;
+using Telerik.JustMock;
 using Shouldly;
 using Xunit;
 using Xunit.Sdk;
@@ -110,7 +110,7 @@ namespace Bunit.Mocking.JSInterop
         public void Test201()
         {
             var obj = new object();
-            Should.Throw<IsTypeException>(() => obj.ShouldBeElementReferenceTo(Mock.Of<IElement>()));
+            Should.Throw<IsTypeException>(() => obj.ShouldBeElementReferenceTo(Mock.Create<IElement>()));
         }
 
         [Fact(DisplayName = "ShouldBeElementReferenceTo throws if element reference does not point to the provided element")]

@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using Moq;
+using Telerik.JustMock;
 using Bunit.SampleApp.Data;
 using Bunit.SampleApp.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Bunit.Mocking.JSInterop;
+using Telerik.JustMock.Helpers;
 
 namespace Bunit.SampleApp.CodeOnlyTests.Pages
 {
@@ -28,9 +29,9 @@ namespace Bunit.SampleApp.CodeOnlyTests.Pages
 
             // setup ITodoService
             var getTask = new TaskCompletionSource<IReadOnlyList<Todo>>();
-            var todoSrv = new Mock<ITodoService>();
-            todoSrv.Setup(x => x.GetAll()).Returns(getTask.Task);
-            Services.AddSingleton(todoSrv.Object);
+            var todoSrv = Mock.Create<ITodoService>();
+            todoSrv.Arrange(x => x.GetAll()).Returns(getTask.Task);
+            Services.AddSingleton(todoSrv);
 
             // act
             var page = RenderComponent<Todos>();
@@ -49,32 +50,33 @@ namespace Bunit.SampleApp.CodeOnlyTests.Pages
         {
             // arrange
             var todos = new[] { new Todo { Id = 1, Text = "First" } };
-            var todoSrv = new Mock<ITodoService>();
-            todoSrv.Setup(x => x.GetAll()).Returns(Task.FromResult<IReadOnlyList<Todo>>(todos));
-            Services.AddSingleton(todoSrv.Object);
+            var todoSrv = Mock.Create<ITodoService>();
+            todoSrv.Arrange(x => x.GetAll()).Returns(Task.FromResult<IReadOnlyList<Todo>>(todos));
+            Services.AddSingleton(todoSrv);
 
             // act
             var page = RenderComponent<Todos>();
             page.Find("#todo-1").Click();
 
             // assert
-            todoSrv.Verify(srv => srv.Complete(todos[0].Id), Times.Once);
+            todoSrv.Assert(srv => srv.Complete(todos[0].Id), Occurs.Once());
         }
 
         [Fact(DisplayName = "When a new todo is added, the todo service is invoked")]
         public void Test003()
         {
             // arrange
-            var todoSrv = new Mock<ITodoService>();
-            Services.AddSingleton(todoSrv.Object);
+            var todoSrv = Mock.Create<ITodoService>();
+            Services.AddSingleton(todoSrv);
             var page = RenderComponent<Todos>();
 
             // act
             page.Find("input").Change("TODO");
             page.Find("form").Submit();
 
+
             // assert
-            todoSrv.Verify(srv => srv.Add(It.IsAny<Todo>()), Times.Once);
+            todoSrv.Assert(srv => srv.Add(Arg.IsAny<Todo>()), Occurs.Once());
         }
     }
 }

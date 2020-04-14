@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AngleSharp.Diffing.Core;
-using Moq;
+using Telerik.JustMock;
 using Shouldly;
 using Xunit;
 using Xunit.Sdk;
@@ -49,7 +49,7 @@ namespace Bunit
         [Fact(DisplayName = "ShouldHaveSingleChange returns the single diff in input when there is only one")]
         public void Test003()
         {
-            var input = new IDiff[] { Mock.Of<IDiff>() };
+            var input = new IDiff[] { Mock.Create<IDiff>() };
 
             var output = input.ShouldHaveSingleChange();
 
@@ -63,8 +63,8 @@ namespace Bunit
             {
                 new IDiff[]
                 {
-                    Mock.Of<IDiff>(),
-                    Mock.Of<IDiff>(),
+                    Mock.Create<IDiff>(),
+                    Mock.Create<IDiff>(),
                 }
             };
         }

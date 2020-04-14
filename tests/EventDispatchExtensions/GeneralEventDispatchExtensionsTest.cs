@@ -3,9 +3,10 @@ using System.Reflection;
 using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Dom;
-using Moq;
+using Telerik.JustMock;
 using Shouldly;
 using Xunit;
+using Telerik.JustMock.Helpers;
 
 namespace Bunit
 {
@@ -35,25 +36,25 @@ namespace Bunit
         [Fact(DisplayName = "TriggerEventAsync throws if element does not contain an attribute with the blazor event-name")]
         public void Test002()
         {
-            var elmMock = new Mock<IElement>();
-            elmMock.Setup(x => x.GetAttribute(It.IsAny<string>())).Returns(() => null!);
+            var elmMock = Mock.Create<IElement>();
+            elmMock.Arrange(x => x.GetAttribute(Arg.IsAny<string>())).Returns(() => null!);
 
-            Should.Throw<MissingEventHandlerException>(() => elmMock.Object.Click());
+            Should.Throw<MissingEventHandlerException>(() => elmMock.Click());
         }
 
         [Fact(DisplayName = "TriggerEventAsync throws if element was not rendered through blazor (has a TestRendere in its context)")]
         public void Test003()
         {
-            var elmMock = new Mock<IElement>();
-            var docMock = new Mock<IDocument>();
-            var ctxMock = new Mock<IBrowsingContext>();
+            var elmMock = Mock.Create<IElement>();
+            var docMock = Mock.Create<IDocument>();
+            var ctxMock = Mock.Create<IBrowsingContext>();
 
-            elmMock.Setup(x => x.GetAttribute(It.IsAny<string>())).Returns("1");
-            elmMock.SetupGet(x => x.Owner).Returns(docMock.Object);
-            docMock.SetupGet(x => x.Context).Returns(ctxMock.Object);
-            ctxMock.Setup(x => x.GetService<TestRenderer>()).Returns(() => null!);
+            elmMock.Arrange(x => x.GetAttribute(Arg.IsAny<string>())).Returns("1");
+            elmMock.Arrange(x => x.Owner).Returns(docMock);
+            docMock.Arrange(x => x.Context).Returns(ctxMock);
+            ctxMock.Arrange(x => x.GetService<TestRenderer>()).Returns(() => null!);
 
-            Should.Throw<InvalidOperationException>(() => elmMock.Object.TriggerEventAsync("click", EventArgs.Empty));
+            Should.Throw<InvalidOperationException>(() => elmMock.TriggerEventAsync("click", EventArgs.Empty));
         }
 
     }

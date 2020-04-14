@@ -413,7 +413,7 @@ It is not uncommon to have components use Blazor's JSInterop functionality to ca
 
 To make it easy to mock calls to JavaScript, the library comes with a `IJsRuntime` mocking helper, that allows you to specify return how JSInterop calls should be handled, and to verify that they have happened.
 
-If you have more complex mocking needs, you could look to frameworks like [Moq](https://github.com/Moq).
+If you have more complex mocking needs, you could look to frameworks like [JustMock Lite](https://github.com/telerik/JustMockLite).
 
 To help us test the Mock JSRuntime, we have the [WikiSearch.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Components/WikiSearch.razor) component, which looks like this:
 

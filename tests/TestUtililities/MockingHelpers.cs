@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Moq;
+using Telerik.JustMock;
 
 namespace Bunit.TestUtililities
 {
@@ -12,7 +12,7 @@ namespace Bunit.TestUtililities
     {
         private static readonly MethodInfo MockOfInfo = typeof(Mock)
             .GetMethods()
-            .Where(x => x.Name == nameof(Mock.Of))
+            .Where(x => x.Name == nameof(Mock.Create))
             .First(x => x.GetParameters().Length == 0);
 
         private static readonly Type DelegateType = typeof(MulticastDelegate);
