@@ -17,6 +17,7 @@ namespace Bunit
     public sealed class ComponentParameterBuilder<TComponent> where TComponent : class, IComponent
     {
         private const string ParameterNameChildContent = "ChildContent";
+        private static readonly PropertyInfo[] ComponentProperties = typeof(TComponent).GetProperties();
         private readonly List<ComponentParameter> _componentParameters = new List<ComponentParameter>();
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace Bunit
         /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add(string key, object value)
         {
-            var propertiesWithParameterAttributeAndCaptureUnmatchedValuesEqualsTrue = typeof(TComponent).GetProperties()
+            var propertiesWithParameterAttributeAndCaptureUnmatchedValuesEqualsTrue = ComponentProperties
                 .Select(propertyInfo => propertyInfo.GetCustomAttribute<ParameterAttribute>())
                 .Where(attribute => attribute is { } && attribute.CaptureUnmatchedValues)
                 .ToList();
@@ -52,7 +53,7 @@ namespace Bunit
         /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
         public ComponentParameterBuilder<TComponent> Add(object value)
         {
-            var propertiesWithCascadingParameterAttributeAndWithoutAName = typeof(TComponent).GetProperties()
+            var propertiesWithCascadingParameterAttributeAndWithoutAName = ComponentProperties
                 .Select(propertyInfo => propertyInfo.GetCustomAttribute<CascadingParameterAttribute>())
                 .Where(attribute => attribute is { } && attribute.Name is null)
                 .ToList();
