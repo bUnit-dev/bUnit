@@ -21,12 +21,12 @@ namespace Bunit
         private readonly List<ComponentParameter> _componentParameters = new List<ComponentParameter>();
 
         /// <summary>
-        /// Add an unnamed attribute value for a component under test.
+        /// Adds an unmatched attribute to the component under test.
         /// </summary>
         /// <param name="key">The value to set for an unnamed cascading parameter</param>
         /// <param name="value">The value to set for an unnamed cascading parameter</param>
         /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
-        public ComponentParameterBuilder<TComponent> Add(string key, object value)
+        public ComponentParameterBuilder<TComponent> AddUnmatched(string key, object value)
         {
             var propertiesWithParameterAttributeAndCaptureUnmatchedValuesEqualsTrue = ComponentProperties
                 .Select(propertyInfo => propertyInfo.GetCustomAttribute<ParameterAttribute>())
@@ -47,7 +47,7 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add an unnamed cascading value for a component under test.
+        /// Add an unnamed cascading value for the component under test.
         /// </summary>
         /// <param name="value">The value to set for an unnamed cascading parameter</param>
         /// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
@@ -72,7 +72,7 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a strongly typed parameter with a value for a component under test.
+        /// Add a strongly typed parameter with a value for the component under test.
         /// </summary>
         /// <typeparam name="TValue">The generic value type</typeparam>
         /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
@@ -90,7 +90,7 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a strongly typed <see cref="RenderFragment" /> parameter with a html markup value for a component under test.
+        /// Add a strongly typed <see cref="RenderFragment" /> parameter with a html markup value for the component under test.
         /// </summary>
         /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
         /// <param name="markup">Markup to render as output</param>
@@ -112,7 +112,7 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a strongly typed <see cref="RenderFragment{TValue}" /> parameter with a template for a component under test.
+        /// Add a strongly typed <see cref="RenderFragment{TValue}" /> parameter with a template for the component under test.
         /// </summary>
         /// <typeparam name="TValue">The generic value type</typeparam>
         /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
@@ -135,7 +135,7 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a strongly typed <see cref="RenderFragment{TValue}" /> parameter with a markupFactory for a component under test.
+        /// Add a strongly typed <see cref="RenderFragment{TValue}" /> parameter with a markupFactory for the component under test.
         /// </summary>
         /// <typeparam name="TValue">The generic value type</typeparam>
         /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
@@ -157,7 +157,7 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a strongly typed <see cref="EventCallback" /> parameter with a callback for a component under test.
+        /// Add a strongly typed <see cref="EventCallback" /> parameter with a callback for the component under test.
         /// </summary>
         /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
         /// <param name="callback">A callback that returns a <see cref="Task"/>.</param>
@@ -178,7 +178,7 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a strongly typed <see cref="EventCallback{TValue}" /> parameter with a callback for a component under test.
+        /// Add a strongly typed <see cref="EventCallback{TValue}" /> parameter with a callback for the component under test.
         /// </summary>
         /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
         /// <param name="callback">A callback that takes a <typeparamref name="TValue"/> and returns a <see cref="Task"/>.</param>
@@ -200,7 +200,7 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Add a strongly typed <see cref="RenderFragment" /> parameter with a <see cref="ComponentParameterBuilder{TChildComponent}"/> for a component under test.
+        /// Add a strongly typed <see cref="RenderFragment" /> parameter with a <see cref="ComponentParameterBuilder{TChildComponent}"/> for the component under test.
         /// </summary>
         /// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
         /// <param name="childBuilderAction">The builder action for the child component.</param>

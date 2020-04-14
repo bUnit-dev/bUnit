@@ -16,7 +16,7 @@ namespace Bunit
             _sut = new ComponentParameterBuilder<AllTypesOfParams<string>>();
         }
 
-        [Fact(DisplayName = "Add CascadingParameter (nullable integer) and Build")]
+        [Fact(DisplayName = "Add with a parameterSelector for a CascadingParameter and a nullable integer as value and Build should return the correct ComponentParameters")]
         public void Test001()
         {
             // Arrange
@@ -35,7 +35,7 @@ namespace Bunit
             parameter.Value.ShouldBe(value);
         }
 
-        [Theory(DisplayName = "Add Parameter (string) and Build")]
+        [Fact(DisplayName = "Add with a parameterSelector for a Parameter and a string as value and Build should return the correct ComponentParameters")]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("foo")]
@@ -54,7 +54,7 @@ namespace Bunit
             parameter.Value.ShouldBe(value);
         }
 
-        [Fact(DisplayName = "Add Parameter (RenderFragment) and Build")]
+        [Fact(DisplayName = "Add with a parameterSelector for a RenderFragment and a markup string as value and Build should return the correct ComponentParameters")]
         public void Test003()
         {
             // Arrange
@@ -73,7 +73,7 @@ namespace Bunit
             parameter.Value.ShouldBeOfType<RenderFragment>();
         }
 
-        [Fact(DisplayName = "Add Parameter (RenderFragment<TValue>) and Build")]
+        [Fact(DisplayName = "Add with a parameterSelector for a RenderFragment<TValue> and a markupFactory as value and Build should return the correct ComponentParameters")]
         public void Test004()
         {
             // Arrange and Act
@@ -89,7 +89,7 @@ namespace Bunit
             parameter.Value.ShouldBeOfType<RenderFragment<string>>();
         }
 
-        [Fact(DisplayName = "Add Parameter (Template) and Build")]
+        [Fact(DisplayName = "Add with a parameterSelector for a template (RenderFragment<TValue>) and a template as value and Build should return the correct ComponentParameters")]
         public void Test005()
         {
             // Arrange and Act
@@ -105,7 +105,7 @@ namespace Bunit
             parameter.Value.ShouldBeOfType<RenderFragment<string>>();
         }
 
-        [Fact(DisplayName = "Add Parameter (NonGenericCallback) and Build")]
+        [Fact(DisplayName = "Add with a parameterSelector for a NonGenericEventCallback and a callback as value and Build should return the correct ComponentParameters")]
         public void Test006()
         {
             // Arrange
@@ -125,7 +125,7 @@ namespace Bunit
             parameter.Value.ShouldNotBeNull();
         }
 
-        [Fact(DisplayName = "Add Parameter (GenericCallback) and Build")]
+        [Fact(DisplayName = "Add with a parameterSelector for a GenericEventCallback and a callback as value and Build should return the correct ComponentParameters")]
         public void Test007()
         {
             // Arrange
@@ -145,7 +145,7 @@ namespace Bunit
             parameter.Value.ShouldNotBeNull();
         }
 
-        [Fact(DisplayName = "Add multiple and Build")]
+        [Fact(DisplayName = "Add with multiple mixed parameterSelectors and valid values and Build should return the correct ComponentParameters")]
         public void Test008()
         {
             // Arrange and Act
@@ -166,7 +166,7 @@ namespace Bunit
             second.Value.ShouldBe("bar");
         }
 
-        [Fact(DisplayName = "Add multiple RenderFragments using ChildBuilders and Build")]
+        [Fact(DisplayName = "Add with a parameterSelectors for multiple RenderFragments and childBuilders as values and Build should return the correct ComponentParameters")]
         public void Test009()
         {
             // Arrange
@@ -200,7 +200,7 @@ namespace Bunit
             second.Value.ShouldBeOfType<RenderFragment>();
         }
 
-        [Fact(DisplayName = "Add ChildContent with Builder and Build")]
+        [Fact(DisplayName = "AddChildContent with a childBuilders and Build should return the correct ComponentParameters")]
         public void Test010()
         {
             // Arrange
@@ -224,7 +224,7 @@ namespace Bunit
             first.Value.ShouldBeOfType<RenderFragment>();
         }
 
-        [Fact(DisplayName = "Add ChildContent with markup and Build")]
+        [Fact(DisplayName = "AddChildContent with a string markup and Build should return the correct ComponentParameters")]
         public void Test011()
         {
             // Arrange
@@ -243,7 +243,7 @@ namespace Bunit
             first.Value.ShouldBeOfType<RenderFragment>();
         }
 
-        [Fact(DisplayName = "Add unnamed CascadingParameter and Build")]
+        [Fact(DisplayName = "Add unnamed CascadingParameter with a value and Build should return the correct ComponentParameters")]
         public void Test012()
         {
             // Arrange
@@ -262,7 +262,7 @@ namespace Bunit
             parameter.Value.ShouldBe(value);
         }
 
-        [Fact(DisplayName = "Add unnamed Attribute and Build")]
+        [Fact(DisplayName = "AddUnmatched with a key and value and Build should return the correct ComponentParameters")]
         public void Test013()
         {
             // Arrange
@@ -270,7 +270,7 @@ namespace Bunit
             const int value = 42;
 
             // Arrange
-            _sut.Add(key, value);
+            _sut.AddUnmatched(key, value);
             var result = _sut.Build();
 
             // Assert
