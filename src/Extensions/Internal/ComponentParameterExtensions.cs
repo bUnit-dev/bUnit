@@ -8,7 +8,7 @@ namespace Bunit
     /// <summary>
     /// Helpful extensions for working with <see cref="ComponentParameter"/> and collections of these.
     /// </summary>
-    internal static class ComponentParamenterExtensions
+    internal static class ComponentParameterExtensions
     {
         /// <summary>
         /// Creates a <see cref="RenderFragment"/> that will render a component of <typeparamref name="TComponent"/> type,
