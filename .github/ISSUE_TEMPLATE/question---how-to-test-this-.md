@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**NOTE:** _Remove any parts of the template you do not need and replace the default text in each section with your own._
+**NOTE:** _Remove any parts of the template you do not need and replace the default text in each section with your own, including this._
 
 **Description of testing scenario:**
 - _A clear and concise description of the testing scenario you want help with._
