@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**NOTE:** _Remove any parts of the template you do not need and replace the default text in each section with your own._
+**NOTE:** _Remove any parts of the template you do not need and replace the default text in each section with your own, including this._
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
