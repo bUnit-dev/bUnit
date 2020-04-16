@@ -8,9 +8,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AngleSharp" Version="0.13.0" />
-		<PackageReference Include="AngleSharp.Css" Version="0.13.0" />
-		<PackageReference Include="AngleSharp.Diffing" Version="0.13.3-alpha-44" />
+		<PackageReference Include="AngleSharp" Version="0.14.0" />
+		<PackageReference Include="AngleSharp.Css" Version="0.14.0" />
+		<PackageReference Include="AngleSharp.Diffing" Version="0.14.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
 		<PackageReference Include="Moq" Version="4.13.1" />
 		<PackageReference Include="Shouldly" Version="4.0.0-beta0002" />
@@ -19,7 +19,10 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="1.2.0" />
+		<PackageReference Include="coverlet.collector" Version="1.2.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
