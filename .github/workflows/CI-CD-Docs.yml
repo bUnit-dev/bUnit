@@ -27,7 +27,7 @@ jobs:
           files: '["docs/*.md", "docs/**/*.md", "*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.101'      
+          dotnet-version: '3.1.201'
       - name: Building library and docs
         run: |
           dotnet build src/bunit.csproj

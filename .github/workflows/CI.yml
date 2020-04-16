@@ -28,11 +28,11 @@ jobs:
           files: '["*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.101'      
+          dotnet-version: '3.1.201' 
       - name: Building and verifying library
         run: |
-          dotnet build -c Release
-          dotnet test -c Release /nowarn:CS1591
+          dotnet build src -c Release
+          dotnet test src -c Release /nowarn:CS1591
           dotnet build sample -c Release
           dotnet test sample -c Release
       - name: Creating library package
