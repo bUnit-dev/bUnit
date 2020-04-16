@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Components.RenderTree;
 namespace Bunit.Rendering.RenderEvents
 {
 	/// <summary>
-	/// Represents a render event from a <see cref="TestRenderer"/>.
+	/// Represents a render event from a <see cref="ITestRenderer"/>.
 	/// </summary>
 	public sealed class RenderEvent
 	{
-		private readonly TestRenderer _renderer;
+		private readonly ITestRenderer _renderer;
 		private readonly RenderBatch _renderBatch;
 
 		/// <summary>
@@ -19,7 +19,7 @@ namespace Bunit.Rendering.RenderEvents
 		/// <summary>
 		/// Creates an instance of the <see cref="RenderEvent"/> type.
 		/// </summary>
-		public RenderEvent(in RenderBatch renderBatch, TestRenderer renderer)
+		public RenderEvent(in RenderBatch renderBatch, ITestRenderer renderer)
 		{
 			_renderBatch = renderBatch;
 			_renderer = renderer;

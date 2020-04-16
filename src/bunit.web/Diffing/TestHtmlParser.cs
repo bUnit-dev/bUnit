@@ -37,7 +37,7 @@ namespace Bunit.Diffing
         /// with the <paramref name="testRenderer"/> registered.
         /// </summary>
         /// <param name="testRenderer"></param>
-        public TestHtmlParser(TestRenderer testRenderer)
+        public TestHtmlParser(ITestRenderer testRenderer)
         {
             var config = Configuration.Default
                 .WithCss()

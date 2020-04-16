@@ -12,7 +12,7 @@ namespace Bunit
 		/// <summary>
 		/// Gets the renderer used by the test context.
 		/// </summary>
-		TestRenderer Renderer { get; }
+		ITestRenderer Renderer { get; }
 
 		/// <summary>
 		/// Gets the service collection and service provider that is used when a 

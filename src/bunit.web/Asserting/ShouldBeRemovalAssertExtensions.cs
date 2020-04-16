@@ -47,7 +47,7 @@ namespace Bunit
 		/// <summary>
 		/// Verifies that the <paramref name="actualChange"/> <see cref="IDiff"/> is an removal,
 		/// i.e. that one or more nodes have been removed, and verifies that the removed nodes are equal
-		/// to the rendered markup from the <paramref name="expectedChange"/> <see cref="IRenderedFragmentCore"/>.
+		/// to the rendered markup from the <paramref name="expectedChange"/> <see cref="IRenderedFragmentBase"/>.
 		/// </summary>
 		/// <param name="actualChange">The change to verify</param>
 		/// <param name="expectedChange">The expected removal to verify against</param>

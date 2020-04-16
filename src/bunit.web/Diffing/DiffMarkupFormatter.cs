@@ -57,7 +57,7 @@ namespace Bunit.Diffing
 			Indentation = "  "
 		};
 
-		public new static readonly DiffMarkupFormatter Instance = new DiffMarkupFormatter();
+		public static readonly DiffMarkupFormatter Instance = new DiffMarkupFormatter();
 
 		/// <summary>
         /// Creates the string representation of the attribute.

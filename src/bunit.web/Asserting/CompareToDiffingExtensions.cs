@@ -14,7 +14,7 @@ namespace Bunit
     public static class CompareToExtensions
     {
         /// <summary>
-        /// Compare the rendered markup in the <paramref name="actual"/> <see cref="IRenderedFragmentCore"/>
+        /// Compare the rendered markup in the <paramref name="actual"/> <see cref="IRenderedFragmentBase"/>
         /// with that in the <paramref name="expected"/> markup string.
         /// </summary>
         /// <param name="actual">Source of rendered markup to check.</param>
@@ -32,8 +32,8 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Compare the rendered markup in the <paramref name="actual"/> <see cref = "IRenderedFragmentCore" /> to
-        /// the rendered markup in the <paramref name="expected"/> <see cref = "IRenderedFragmentCore" />
+        /// Compare the rendered markup in the <paramref name="actual"/> <see cref = "IRenderedFragmentBase" /> to
+        /// the rendered markup in the <paramref name="expected"/> <see cref = "IRenderedFragmentBase" />
         /// </summary>
         /// <param name="actual">Source of rendered markup to check.</param>
         /// <param name="expected">Source of rendered markup to compare with.</param>

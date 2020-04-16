@@ -23,7 +23,7 @@ namespace Bunit
 		public TestContext()
 		{
 			Services.AddSingleton<IJSRuntime>(new PlaceholderJsRuntime());
-			Services.AddSingleton<TestHtmlParser>(srv => new TestHtmlParser(srv.GetRequiredService<TestRenderer>()));
+			Services.AddSingleton<TestHtmlParser>(srv => new TestHtmlParser(srv.GetRequiredService<ITestRenderer>()));
 		}
 
 		/// <summary>

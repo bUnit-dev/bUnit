@@ -45,7 +45,7 @@ namespace Bunit
 		/// <summary>
 		/// Verifies that the <paramref name="actualChange"/> <see cref="IDiff"/> is an addition,
 		/// i.e. that one or more nodes have been added, and verifies that the additions are equal
-		/// to the rendered markup from the <paramref name="expectedChange"/> <see cref="IRenderedFragmentCore"/>.
+		/// to the rendered markup from the <paramref name="expectedChange"/> <see cref="IRenderedFragmentBase"/>.
 		/// </summary>
 		/// <param name="actualChange">The change to verify</param>
 		/// <param name="expectedChange">The expected additions to verify against</param>

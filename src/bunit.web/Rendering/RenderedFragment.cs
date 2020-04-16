@@ -5,14 +5,12 @@ using AngleSharp.Dom;
 using Bunit.Diffing;
 using Bunit.Rendering;
 using Bunit.Rendering.RenderEvents;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
 {
 	/// <summary>
-	/// Represents an abstract <see cref="IRenderedFragmentCore"/> with base functionality.
+	/// Represents an abstract <see cref="IRenderedFragment"/> with base functionality.
 	/// </summary>
 	public class RenderedFragment : IRenderedFragment
 	{
@@ -26,9 +24,9 @@ namespace Bunit
 		private TestHtmlParser HtmlParser { get; }
 
 		/// <summary>
-		/// Gets the renderer used to render the <see cref="IRenderedFragmentCore"/>.
+		/// Gets the renderer used to render the <see cref="IRenderedFragmentBase"/>.
 		/// </summary>
-		protected TestRenderer Renderer { get; }
+		protected ITestRenderer Renderer { get; }
 
 		/// <summary>
 		/// Gets the first rendered markup.
@@ -76,7 +74,7 @@ namespace Bunit
 
 			Services = services;
 			HtmlParser = services.GetRequiredService<TestHtmlParser>();
-			Renderer = services.GetRequiredService<TestRenderer>();
+			Renderer = services.GetRequiredService<ITestRenderer>();
 			ComponentId = componentId;
 			RenderEvents = new RenderEventFilter(Renderer.RenderEvents, RenderFilter);
 			_renderEventSubscriber = new ConcurrentRenderEventSubscriber(Renderer.RenderEvents, ComponentRendered);

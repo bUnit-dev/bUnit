@@ -31,7 +31,7 @@ namespace Bunit
             return $"{BLAZOR_ATTR_PREFIX}{attributeName}";
         }
 
-        public static string GetHtml(TestRenderer renderer, int componentId)
+        public static string GetHtml(ITestRenderer renderer, int componentId)
         {
             var frames = renderer.GetCurrentRenderTreeFrames(componentId);
             var context = new HtmlRenderingContext(renderer);
@@ -242,9 +242,9 @@ namespace Bunit
 
         private class HtmlRenderingContext
         {
-            public TestRenderer Renderer { get; }
+            public ITestRenderer Renderer { get; }
 
-            public HtmlRenderingContext(TestRenderer renderer)
+            public HtmlRenderingContext(ITestRenderer renderer)
             {
                 Renderer = renderer;
             }

@@ -30,7 +30,7 @@ namespace Bunit
 
 		public TestServiceProvider Services => ActiveTest?.Services ?? throw new InvalidOperationException("No active Razor test.");
 
-		public TestRenderer Renderer => ActiveTest?.Renderer ?? throw new InvalidOperationException("No active Razor test.");
+		public ITestRenderer Renderer => ActiveTest?.Renderer ?? throw new InvalidOperationException("No active Razor test.");
 
 		public IObservable<RenderEvent> RenderEvents => ActiveTest?.RenderEvents ?? throw new InvalidOperationException("No active Razor test.");
 

@@ -5,7 +5,7 @@ namespace Bunit.Rendering.RenderEvents
 {
 	/// <summary>
 	/// Represents a subscriber to <see cref="RenderEvent"/>s, published by
-	/// the <see cref="TestRenderer"/>.
+	/// the <see cref="ITestRenderer"/>.
 	/// </summary>
 	public class ConcurrentRenderEventSubscriber : IObserver<RenderEvent>
 	{
@@ -22,13 +22,13 @@ namespace Bunit.Rendering.RenderEvents
 		public int RenderCount => Volatile.Read(ref _renderCount);
 
 		/// <summary>
-		/// Gets whether the <see cref="TestRenderer"/> is disposed an no more
+		/// Gets whether the <see cref="ITestRenderer"/> is disposed an no more
 		/// renders will happen.
 		/// </summary>
 		public bool IsCompleted => Volatile.Read(ref _isCompleted);
 
 		/// <summary>
-		/// Gets the latests <see cref="RenderEvent"/> received by the <see cref="TestRenderer"/>.
+		/// Gets the latests <see cref="RenderEvent"/> received by the <see cref="ITestRenderer"/>.
 		/// </summary>
 		public RenderEvent? LatestRenderEvent => Volatile.Read(ref _latestRenderEvent);
 

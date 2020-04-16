@@ -33,9 +33,9 @@ namespace Bunit
 
             var eventHandlerId = ulong.Parse(eventHandlerIdString, CultureInfo.InvariantCulture);
 
-            var renderer = element.Owner.Context.GetService<TestRenderer>();
+            var renderer = element.Owner.Context.GetService<ITestRenderer>();
             if (renderer is null)
-                throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(TestRenderer)}'.");
+                throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(ITestRenderer)}'.");
 
             return renderer.DispatchEventAsync(eventHandlerId, new EventFieldInfo() { FieldValue = eventName }, eventArgs);
         }

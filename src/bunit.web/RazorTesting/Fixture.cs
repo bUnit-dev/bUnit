@@ -36,7 +36,7 @@ namespace Bunit.RazorTesting
 		/// 
 		/// The HTML/component is only rendered the first this method is called.
 		/// </summary>
-		/// <returns>A <see cref="IRenderedFragmentCore"/></returns>
+		/// <returns>A <see cref="IRenderedFragmentBase"/></returns>
 		public IRenderedFragment GetComponentUnderTest() => GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory);
 
 		/// <summary>
@@ -46,7 +46,7 @@ namespace Bunit.RazorTesting
 		/// The HTML/component is only rendered the first this method is called.
 		/// </summary>
 		/// <typeparam name="TComponent">The type of component to render</typeparam>
-		/// <returns>A <see cref="IRenderedComponentCore{TComponent}"/></returns>
+		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/></returns>
 		public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
 		{
 			var result = GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory<TComponent>);
@@ -63,7 +63,7 @@ namespace Bunit.RazorTesting
 		/// The HTML/component is only rendered the first this method is called.
 		/// </summary>
 		/// <param name="id">The id of the fragment where the HTML/component is defined in Razor syntax.</param>
-		/// <returns>A <see cref="IRenderedFragmentCore"/></returns>
+		/// <returns>A <see cref="IRenderedFragmentBase"/></returns>
 		public IRenderedFragment GetFragment(string? id = null)
 		{
 			var key = id ?? SelectFirstFragment().Id;
@@ -82,7 +82,7 @@ namespace Bunit.RazorTesting
 		/// </summary>
 		/// <typeparam name="TComponent">The type of component to render</typeparam>
 		/// <param name="id">The id of the fragment where the component is defined in Razor syntax.</param>
-		/// <returns>A <see cref="IRenderedComponentCore{TComponent}"/></returns>
+		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/></returns>
 		public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : IComponent
 		{
 			var key = id ?? SelectFirstFragment().Id;
@@ -150,7 +150,7 @@ namespace Bunit.RazorTesting
 					$"That cannot be cast to an object of type IRenderedComponent<{typeof(TComponent).Name}>.");
 			}
 
-			if (target is IRenderedFragmentCore)
+			if (target is IRenderedFragmentBase)
 			{
 				throw new InvalidOperationException($"It is not possible to call the generic version of {sourceMethod} after " +
 					$"the non-generic version has been called on the same test context. Change all calls to the same generic version and try again.");
@@ -165,7 +165,7 @@ namespace Bunit.RazorTesting
 		protected override Task Run()
 		{
 			Services.AddSingleton<IJSRuntime>(new PlaceholderJsRuntime());
-			Services.AddSingleton<TestHtmlParser>(srv => new TestHtmlParser(srv.GetRequiredService<TestRenderer>()));
+			Services.AddSingleton<TestHtmlParser>(srv => new TestHtmlParser(srv.GetRequiredService<ITestRenderer>()));
 			return base.Run(this);
 		}
 	}

@@ -14,7 +14,7 @@ namespace Bunit.Rendering
 	/// <summary>
 	/// Generalized Blazor renderer for testing purposes.
 	/// </summary>
-	public class TestRenderer : Renderer
+	public class TestRenderer : Renderer, ITestRenderer
 	{
 		private const string LOGGER_CATEGORY = nameof(Bunit) + "." + nameof(TestRenderer);
 		private static readonly Type CascadingValueType = typeof(CascadingValue<>);

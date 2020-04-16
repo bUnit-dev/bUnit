@@ -12,15 +12,15 @@ namespace Bunit
 	/// </summary>
 	public class TestContextBase : ITestContext, IDisposable
 	{
-		private TestRenderer? _testRenderer;
+		private ITestRenderer? _testRenderer;
 
 		/// <inheritdoc/>
-		public TestRenderer Renderer
+		public ITestRenderer Renderer
 		{
 			get
 			{
 				if (_testRenderer is null)
-					_testRenderer = Services.GetRequiredService<TestRenderer>();
+					_testRenderer = Services.GetRequiredService<ITestRenderer>();
 				return _testRenderer;
 			}
 		}
@@ -36,7 +36,7 @@ namespace Bunit
 		/// </summary>
 		public TestContextBase()
 		{
-			Services.AddSingleton<TestRenderer>(srv => new TestRenderer(srv, srv.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance));
+			Services.AddSingleton<ITestRenderer>(srv => new TestRenderer(srv, srv.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance));
 		}
 
 		#region IDisposable Support

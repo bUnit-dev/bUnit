@@ -6,7 +6,7 @@ namespace Bunit
 	/// <summary>
 	/// Represents a rendered fragment.
 	/// </summary>
-	public interface IRenderedFragmentCore
+	public interface IRenderedFragmentBase
 	{
 		/// <summary>
 		/// Gets the id of the rendered component or fragment.
@@ -15,7 +15,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Gets an <see cref="IObservable{RenderEvent}"/> which will provide subscribers with <see cref="RenderEvent"/>s 
-		/// whenever the <see cref="IRenderedFragmentCore"/> is rendered.
+		/// whenever the <see cref="IRenderedFragmentBase"/> is rendered.
 		/// </summary>
 		IObservable<RenderEvent> RenderEvents { get; }
 

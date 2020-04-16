@@ -13,7 +13,7 @@ namespace Bunit
     {
 
         /// <summary>
-        /// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragmentCore"/> matches
+        /// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragmentBase"/> matches
         /// the <paramref name="expected"/> markup, using the <see cref="HtmlComparer"/> type.
         /// </summary>
         /// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -32,8 +32,8 @@ namespace Bunit
         }
 
         /// <summary>
-        /// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragmentCore"/> matches
-        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentCore"/>, using the <see cref="HtmlComparer"/> type.
+        /// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragmentBase"/> matches
+        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentBase"/>, using the <see cref="HtmlComparer"/> type.
         /// </summary>
         /// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
         /// <param name="actual">The rendered fragment to verify.</param>
@@ -49,7 +49,7 @@ namespace Bunit
 
         /// <summary>
         /// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> matches
-        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentCore"/>, using the <see cref="HtmlComparer"/> 
+        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentBase"/>, using the <see cref="HtmlComparer"/> 
         /// type.
         /// </summary>
         /// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -66,7 +66,7 @@ namespace Bunit
 
         /// <summary>
         /// Verifies that the <paramref name="actual"/> <see cref="INode"/> matches
-        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentCore"/>, using the <see cref="HtmlComparer"/> 
+        /// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentBase"/>, using the <see cref="HtmlComparer"/> 
         /// type.
         /// </summary>
         /// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
