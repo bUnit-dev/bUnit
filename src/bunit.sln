@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.tests", "bunit.we
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.nunit", "bunit.nunit\bunit.nunit.csproj", "{397ADFEE-F0FA-4800-B00E-24C6B3C433A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.core.tests", "bunit.core.tests\bunit.core.tests.csproj", "{97EB6F7C-DC27-4758-9753-5F754365D45C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{397ADFEE-F0FA-4800-B00E-24C6B3C433A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{397ADFEE-F0FA-4800-B00E-24C6B3C433A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{397ADFEE-F0FA-4800-B00E-24C6B3C433A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97EB6F7C-DC27-4758-9753-5F754365D45C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97EB6F7C-DC27-4758-9753-5F754365D45C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97EB6F7C-DC27-4758-9753-5F754365D45C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97EB6F7C-DC27-4758-9753-5F754365D45C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
