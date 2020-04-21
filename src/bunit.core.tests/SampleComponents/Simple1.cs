@@ -19,7 +19,7 @@ namespace Bunit.SampleComponents
 			builder.AddAttribute(1, "id", "header");
 			builder.AddAttribute(2, "attr", AttrValue);
 			builder.AddContent(3, Header);
-			builder.CloseElement();
+			builder.CloseElement();			
 		}
 	}
 }

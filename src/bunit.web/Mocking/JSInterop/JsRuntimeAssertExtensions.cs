@@ -3,8 +3,6 @@ using Bunit.Asserting;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using Xunit;
-using Xunit.Sdk;
 
 namespace Bunit.Mocking.JSInterop
 {

@@ -27,7 +27,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />		
-		<!--<ProjectReference Include="..\bunit.xunit\bunit.xunit.csproj" />-->
 	</ItemGroup>
 
 </Project>

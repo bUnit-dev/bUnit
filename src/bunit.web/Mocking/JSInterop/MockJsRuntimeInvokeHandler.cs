@@ -1,17 +1,16 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.JSInterop;
 using System.Threading;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using Xunit.Sdk;
 
 namespace Bunit.Mocking.JSInterop
 {
-    /// <summary>
-    /// Represents an invoke handler for a mock of a <see cref="IJSRuntime"/>.
-    /// </summary>
-    public class MockJsRuntimeInvokeHandler
+	/// <summary>
+	/// Represents an invoke handler for a mock of a <see cref="IJSRuntime"/>.
+	/// </summary>
+	public class MockJsRuntimeInvokeHandler
     {
         private readonly Dictionary<string, List<JsRuntimeInvocation>> _invocations = new Dictionary<string, List<JsRuntimeInvocation>>();
         private readonly Dictionary<string, List<object>> _plannedInvocations = new Dictionary<string, List<object>>();

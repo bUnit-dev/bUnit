@@ -1,16 +1,13 @@
-﻿using Bunit.Mocking.JSInterop;
-using Bunit.SampleComponents;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System;
 using System.Collections;
 using System.Linq;
 using Xunit;
-using Xunit.Sdk;
 
 namespace Bunit
 {
-    public class TestServiceProviderTest : ComponentTestFixture
+    public class TestServiceProviderTest
     {
         class DummyService { }
         class AnotherDummyService { }
@@ -122,22 +119,6 @@ namespace Bunit
             var actual = sut.GetService<DummyService>();
 
             actual.ShouldBe(expected);
-        }
-
-        [Fact(DisplayName = "The test service provider should register a placeholder IJSRuntime " +
-            "which throws exceptions")]
-        public void Test021()
-        {
-            var ex = Assert.Throws<AggregateException>(() => RenderComponent<SimpleWithJsRuntimeDep>());
-            ex.InnerException.ShouldBeOfType<MissingMockJsRuntimeException>();
-        }
-
-        [Fact(DisplayName = "The placeholder IJSRuntime is overriden by a supplied mock and does not throw")]
-        public void Test022()
-        {
-            Services.AddMockJsRuntime();
-
-            RenderComponent<SimpleWithJsRuntimeDep>();
         }
     }
 }

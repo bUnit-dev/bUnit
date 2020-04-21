@@ -2,7 +2,6 @@ using System;
 using AngleSharp.Dom;
 using Bunit.Diffing;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit.Sdk;
 
 namespace Bunit
 {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 namespace Bunit
 {
 	/// <summary>
-	/// Represents a component that can be added inside a <see cref="Fixture"/>, whose content
+	/// Represents a component that can be added inside a fixture, whose content
 	/// can be accessed in Razor-based test.
 	/// </summary>
 	public class Fragment : FragmentBase

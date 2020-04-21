@@ -110,10 +110,9 @@ namespace Bunit.Rendering
 		}
 
 		/// <inheritdoc/>
-		public void InvokeAsync(Action callback)
+		public Task InvokeAsync(Action callback)
 		{
-			Dispatcher.InvokeAsync(callback).Wait();
-			AssertNoUnhandledExceptions();
+			return Dispatcher.InvokeAsync(callback);			
 		}
 
 		private async Task<int> RenderFragmentInsideWrapper(RenderFragment renderFragment)

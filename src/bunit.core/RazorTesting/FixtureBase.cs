@@ -37,7 +37,7 @@ namespace Bunit
 		/// executed (if provided).
 		/// 
 		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
-		/// defined in the <see cref="FixtureBase"/>.
+		/// defined in the fixture.
 		/// </summary>
 		[Parameter] public Action<TFixture>? Test { private get; set; }
 
@@ -46,7 +46,7 @@ namespace Bunit
 		/// executed (if provided).
 		/// 
 		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
-		/// defined in the <see cref="FixtureBase"/>.
+		/// defined in the fixture.
 		/// </summary>
 		[Parameter] public Func<TFixture, Task>? TestAsync { private get; set; }
 
@@ -56,7 +56,7 @@ namespace Bunit
 		/// executed (if provided).
 		/// 
 		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
-		/// defined in the <see cref="FixtureBase"/>.
+		/// defined in the fixture.
 		/// </summary>
 		[Parameter] public IReadOnlyCollection<Action<TFixture>>? Tests { private get; set; }
 
@@ -66,7 +66,7 @@ namespace Bunit
 		/// executed (if provided).
 		/// 
 		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
-		/// defined in the <see cref="FixtureBase"/>.
+		/// defined in the fixture.
 		/// </summary>
 		[Parameter] public IReadOnlyCollection<Func<TFixture, Task>>? TestsAsync { private get; set; }
 

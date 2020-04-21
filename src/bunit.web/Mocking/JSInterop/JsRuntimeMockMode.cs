@@ -1,12 +1,11 @@
-﻿using Microsoft.JSInterop;
-using Xunit.Sdk;
+using Microsoft.JSInterop;
 
 namespace Bunit.Mocking.JSInterop
 {
-    /// <summary>
-    /// The execution mode of the <see cref="MockJsRuntimeExtensions"/>.
-    /// </summary>
-    public enum JsRuntimeMockMode
+	/// <summary>
+	/// The execution mode of the <see cref="MockJsRuntimeExtensions"/>.
+	/// </summary>
+	public enum JsRuntimeMockMode
     {
         /// <summary>
         /// <see cref="JsRuntimeMockMode.Loose"/> configures the <see cref="MockJsRuntimeExtensions"/> to return default TValue 

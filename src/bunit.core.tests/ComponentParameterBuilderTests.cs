@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Bunit.Rendering;
 using Bunit.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
@@ -7,7 +8,7 @@ using Xunit;
 
 namespace Bunit
 {
-    public class ComponentParameterBuilderTests
+	public class ComponentParameterBuilderTests
     {
         [Fact(DisplayName = "Add with a parameterSelector for a CascadingParameter and a nullable integer as value and Build should return the correct ComponentParameters")]
         public void Test001()

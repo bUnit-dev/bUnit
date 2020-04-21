@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using System.Diagnostics;
+using System.Threading;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
@@ -31,8 +33,8 @@ namespace Bunit.Extensions.Xunit
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             if (!IsEnabled(logLevel)) return;
-            if (formatter is null) return;
-            _output.WriteLine($"{logLevel} | {_name} | {eventId.Id}:{eventId.Name} | {formatter(state, exception)}");
+            if (formatter is null) return;		
+            _output.WriteLine($"{logLevel} | {Thread.GetCurrentProcessorId()} - {Thread.CurrentThread.ManagedThreadId} | {_name} | {eventId.Id}:{eventId.Name} | {formatter(state, exception)}");
         }
     }
 }

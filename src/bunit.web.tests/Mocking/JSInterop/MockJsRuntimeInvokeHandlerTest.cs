@@ -9,7 +9,7 @@ using Xunit.Sdk;
 
 namespace Bunit.Mocking.JSInterop
 {
-    public class MockJsRuntimeInvokeHandlerTest
+	public class MockJsRuntimeInvokeHandlerTest
     {
         [Fact(DisplayName = "Mock returns default value in loose mode without invocation setup")]
         public async Task Test001()

@@ -29,7 +29,8 @@ namespace Bunit.Rendering
 		/// asserts no errors happened during dispatch
 		/// </summary>
 		/// <param name="callback"></param>
-		void InvokeAsync(Action callback);
+		/// <returns>A task that completes when the action finishes its invocation.</returns>
+		Task InvokeAsync(Action callback);
 
 		/// <summary>
 		/// Instantiates and renders the component of type <typeparamref name="TComponent"/>.

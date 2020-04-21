@@ -5,8 +5,6 @@ using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Bunit.Asserting;
 using Bunit.Diffing;
-using Xunit;
-using Xunit.Sdk;
 
 namespace Bunit
 {

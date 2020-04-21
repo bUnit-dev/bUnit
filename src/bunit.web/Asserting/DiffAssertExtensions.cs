@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using AngleSharp.Diffing.Core;
 using Bunit.Asserting;
-using Xunit;
 
 namespace Bunit
 {
