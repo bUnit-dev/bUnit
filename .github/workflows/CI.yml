@@ -32,9 +32,7 @@ jobs:
       - name: Building and verifying library
         run: |
           dotnet build src -c Release
-          dotnet test src -c Release /nowarn:CS1591
-          dotnet build sample -c Release
-          dotnet test sample -c Release
+          dotnet test src -c Release /nowarn:CS1591          
       - name: Creating library package
         run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
       - name: Buidling template package
