@@ -75,17 +75,6 @@
     }
 }
 
-@code {
-    [Fact(DisplayName = "When running c# only test in razor file, all razor test context specific methods throws")]
-    public void MyTestMethod()
-    {
-        Should.Throw<InvalidOperationException>(() => GetComponentUnderTest());
-        Should.Throw<InvalidOperationException>(() => GetComponentUnderTest<IComponent>());
-        Should.Throw<InvalidOperationException>(() => GetFragment());
-        Should.Throw<InvalidOperationException>(() => GetFragment<IComponent>());
-    }
-}
-
 <SnapshotTest Description="Snapshot tests should have own context" Setup="s => s.Services.AddSingleton<ITestDep>(new Dep3())">
     <TestInput><SimpleWithDeps /></TestInput>
     <ExpectedOutput><p>@nameof(Dep3)</p></ExpectedOutput>

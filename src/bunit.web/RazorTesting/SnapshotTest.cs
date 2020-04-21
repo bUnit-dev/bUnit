@@ -62,7 +62,7 @@ namespace Bunit
 			var diffs = inputNodes.CompareTo(expectedNodes);
 
 			if (diffs.Count > 0)
-				throw new HtmlEqualException(diffs, expectedNodes, inputNodes, Description);
+				throw new HtmlEqualException(diffs, expectedNodes, inputNodes, Description ?? "Snapshot test failed.");
 		}
 
 		/// <inheritdoc/>

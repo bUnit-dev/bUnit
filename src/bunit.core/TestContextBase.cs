@@ -26,8 +26,7 @@ namespace Bunit
 		}
 
 		/// <inheritdoc/>
-		public virtual TestServiceProvider Services { get; } = new TestServiceProvider();
-
+		public virtual TestServiceProvider Services { get; }
 		/// <inheritdoc/>
 		public IObservable<RenderEvent> RenderEvents => Renderer.RenderEvents;
 
@@ -36,6 +35,7 @@ namespace Bunit
 		/// </summary>
 		public TestContextBase()
 		{
+			Services = new TestServiceProvider();
 			Services.AddSingleton<ITestRenderer>(srv => new TestRenderer(srv, srv.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance));
 		}
 

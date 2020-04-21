@@ -25,6 +25,11 @@ namespace Bunit.RazorTesting
 		[Parameter] public string? Skip { get; set; }
 
 		/// <summary>
+		/// Gets or sets the timeout of the test, in milliseconds; if zero or negative, means the test case has no timeout.
+		/// </summary>
+		[Parameter] public int Timeout { get; set; } = 0;
+
+		/// <summary>
 		/// Run the test logic of the <see cref="RazorTest"/>.
 		/// </summary>
 		/// <exception cref="InvalidOperationException">Thrown when called and <see cref="IsRunning"/> is true.</exception>

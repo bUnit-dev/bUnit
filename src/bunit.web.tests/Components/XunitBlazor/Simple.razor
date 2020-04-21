@@ -1,30 +1,29 @@
-@inherits XunitTestComponentBase<Simple>
+@inherits TestComponentBase
 
-<Fixture Test="x => { }" Description="My First Test">
+<Fixture Test="x => { }" Description="My First Fixture Test">
 	<ComponentUnderTest>
 		<Simple1>ASDF</Simple1>
 	</ComponentUnderTest>
 </Fixture>
 
-<Fixture Test="x => { }" Description="My second Test">
+<Fixture Test="x => { }" Description="My Second Fixture Test">
 	<ComponentUnderTest>
 		<Simple1>ASDF</Simple1>
 	</ComponentUnderTest>
 </Fixture>
 
 <SnapshotTest>
-	<TestInput><Simple1></Simple1></TestInput>
-	<ExpectedOutput><h1>asdf</h1></ExpectedOutput>
+	<TestInput><Simple1/></TestInput>
+	<ExpectedOutput><Simple1 /></ExpectedOutput>
 </SnapshotTest>
 
-<Fixture Test="x => { }" Description="My Second Test" Skip="NOT NOW">
+<Fixture Test="x => { }" Description="My Third Fixture Test" Skip="NOT NOW">
 	<ComponentUnderTest>
 		<Simple1>ASDF</Simple1>
 	</ComponentUnderTest>
 </Fixture>
 
-
-<SnapshotTest Description="ASDF" Skip="wwwbb">
+<SnapshotTest Description="Second snapshot test" Skip="wwwbb">
 	<TestInput><Simple1></Simple1></TestInput>
-	<ExpectedOutput><h1>asdf</h1></ExpectedOutput>
+	<ExpectedOutput><h1>a</h1></ExpectedOutput>
 </SnapshotTest>

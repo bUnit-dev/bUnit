@@ -5,7 +5,7 @@
 		<Wrapper>
 			@if (shouldRenderTracker)
 			{
-				<LifeCycleTracker Number="renderTrigger" /> @*@ref="tracker" />*@
+				<LifeCycleTracker Number="renderTrigger" />
 			}
 		</Wrapper>
 	</ComponentUnderTest> 
@@ -13,12 +13,11 @@
 @code {
 	bool shouldRenderTracker = true;
 	int renderTrigger = 0;
-	//LifeCycleTracker tracker = default!; // set during initial render by framework - should not be null!
 
 	void Test(Fixture fixture)
 	{
-		var cut = GetComponentUnderTest<Wrapper>();
-		var callLog = cut.FindComponent<LifeCycleTracker>().Instance.CallLog;// tracker.CallLog;
+		var cut = fixture.GetComponentUnderTest<Wrapper>();
+		var callLog = cut.FindComponent<LifeCycleTracker>().Instance.CallLog;
 
 		// assert first render called expected methods
 		callLog["SetParametersAsync"].ShouldBe(1);
