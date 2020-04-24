@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Bunit.RazorTesting;
+
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Bunit.SampleComponents
@@ -14,7 +17,10 @@ namespace Bunit.SampleComponents
 		{
 			builder.OpenComponent<Fixture>(0);
 			builder.AddAttribute(1, nameof(Fixture.Description), "Fixture name");
+			//builder.AddAttribute(2, nameof(Fixture.ChildContent), (RenderFragment)Content);
 			builder.CloseComponent();
 		}
+
+		private void Content(RenderTreeBuilder builder) { }
 	}
 }

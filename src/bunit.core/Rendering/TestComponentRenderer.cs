@@ -54,8 +54,11 @@ namespace Bunit.Rendering
 		private async Task<int> RenderComponent(Type componentType)
 		{
 			var component = InstantiateComponent(componentType);
+			AssertNoUnhandledExceptions();
 			var componentId = AssignRootComponentId(component);
+			AssertNoUnhandledExceptions();
 			await RenderRootComponentAsync(componentId).ConfigureAwait(false);
+			AssertNoUnhandledExceptions();
 			return componentId;
 		}
 

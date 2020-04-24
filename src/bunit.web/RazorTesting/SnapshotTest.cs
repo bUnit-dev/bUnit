@@ -1,9 +1,11 @@
 using System;
 using System.Threading.Tasks;
+
 using Bunit.Diffing;
 using Bunit.Mocking.JSInterop;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
@@ -42,6 +44,7 @@ namespace Bunit
 		/// <inheritdoc/>
 		protected override async Task Run()
 		{
+			Validate();
 			Services.AddSingleton<IJSRuntime>(new PlaceholderJsRuntime());
 
 			if (Setup is { })
@@ -70,18 +73,19 @@ namespace Bunit
 		{
 			Setup = parameters.GetValueOrDefault<Action<SnapshotTest>>(nameof(Setup));
 			SetupAsync = parameters.GetValueOrDefault<Func<SnapshotTest, Task>>(nameof(SetupAsync));
-
-			if (parameters.TryGetValue<RenderFragment>(nameof(TestInput), out var input))
-				TestInput = input;
-			else
-				throw new InvalidOperationException($"No {nameof(TestInput)} specified in the {nameof(SnapshotTest)} component.");
-
-			if (parameters.TryGetValue<RenderFragment>(nameof(ExpectedOutput), out var output))
-				ExpectedOutput = output;
-			else
-				throw new InvalidOperationException($"No {nameof(ExpectedOutput)} specified in the {nameof(SnapshotTest)} component.");
-
+			TestInput = parameters.GetValueOrDefault<RenderFragment>(nameof(TestInput));
+			ExpectedOutput = parameters.GetValueOrDefault<RenderFragment>(nameof(ExpectedOutput));
 			return base.SetParametersAsync(parameters);
+		}
+
+		/// <inheritdoc/>
+		public override void Validate()
+		{
+			base.Validate();
+			if (TestInput is null)
+				throw new ArgumentException($"No {nameof(TestInput)} specified in the {nameof(SnapshotTest)} component.");
+			if (ExpectedOutput is null)
+				throw new ArgumentException($"No {nameof(ExpectedOutput)} specified in the {nameof(SnapshotTest)} component.");
 		}
 	}
 }

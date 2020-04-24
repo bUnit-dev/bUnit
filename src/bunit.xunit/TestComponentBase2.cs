@@ -19,7 +19,7 @@ namespace Bunit
 	/// <summary>
 	/// Base test class/test runner, that runs Fixtures defined in razor files.
 	/// </summary>
-	public abstract class TestComponentBase2
+	public abstract class TestComponentBase2 : IComponent
 	{
 		/// <summary>
 		/// Renders the component to the supplied <see cref="RenderTreeBuilder"/>.
@@ -32,6 +32,10 @@ namespace Bunit
 		/// in the file and runs their associated tests.
 		/// </summary>
 		[RazorTestAttribute]
-		public async Task Test() { }
+		public void RazorTests() { }
+
+		void IComponent.Attach(RenderHandle renderHandle) => renderHandle.Render(BuildRenderTree);
+
+		Task IComponent.SetParametersAsync(ParameterView parameters) => Task.CompletedTask;
 	}
 }

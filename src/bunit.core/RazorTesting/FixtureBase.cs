@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Bunit.RazorTesting;
 using Bunit.Rendering;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -73,11 +75,7 @@ namespace Bunit
 		/// <inheritdoc/>
 		public override Task SetParametersAsync(ParameterView parameters)
 		{
-			if (parameters.TryGetValue<RenderFragment>(nameof(ChildContent), out RenderFragment childContent))
-				ChildContent = childContent;
-			else
-				throw new InvalidOperationException($"No {nameof(ChildContent)} specified in the {GetType().Name} component.");
-
+			ChildContent = parameters.GetValueOrDefault<RenderFragment>(nameof(ChildContent));
 			Setup = parameters.GetValueOrDefault<Action<TFixture>>(nameof(Setup));
 			SetupAsync = parameters.GetValueOrDefault<Func<TFixture, Task>>(nameof(SetupAsync));
 			Test = parameters.GetValueOrDefault<Action<TFixture>>(nameof(Test));
@@ -89,8 +87,17 @@ namespace Bunit
 		}
 
 		/// <inheritdoc/>
+		public override void Validate()
+		{
+			base.Validate();
+			if (ChildContent is null)
+				throw new ArgumentException($"No {nameof(ChildContent)} specified in the {GetType().Name} component.");
+		}
+
+		/// <inheritdoc/>
 		protected virtual async Task Run(TFixture self)
 		{
+			Validate();
 			if (Setup is { })
 				TryRun(Setup, self);
 

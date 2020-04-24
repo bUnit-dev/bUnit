@@ -6,14 +6,8 @@
 	</ComponentUnderTest>
 </Fixture>
 
-<Fixture Test="x => { }" Description="My Second Fixture Test">
-	<ComponentUnderTest>
-		<Simple1>ASDF</Simple1>
-	</ComponentUnderTest>
-</Fixture>
-
 <SnapshotTest>
-	<TestInput><Simple1/></TestInput>
+	<TestInput><Simple1 /></TestInput>
 	<ExpectedOutput><Simple1 /></ExpectedOutput>
 </SnapshotTest>
 
@@ -27,3 +21,13 @@
 	<TestInput><Simple1></Simple1></TestInput>
 	<ExpectedOutput><h1>a</h1></ExpectedOutput>
 </SnapshotTest>
+
+<Fixture Test="x => { }" Description="My Second Fixture Test ...">
+	<ComponentUnderTest>
+		<Simple1>ASDF</Simple1>
+	</ComponentUnderTest>
+</Fixture>
+
+<Fixture>
+	<ComponentUnderTest>hello</ComponentUnderTest>
+</Fixture>

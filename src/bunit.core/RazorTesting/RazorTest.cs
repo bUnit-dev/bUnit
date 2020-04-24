@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit.RazorTesting
@@ -61,6 +62,12 @@ namespace Bunit.RazorTesting
 			Description = parameters.GetValueOrDefault<string>(nameof(Description));
 			return Task.CompletedTask;
 		}
+
+		/// <summary>
+		/// Validates the test and throws an exception if the test does not have received all
+		/// input it needs to run.
+		/// </summary>
+		public virtual void Validate() { }
 
 		/// <inheritdoc/>
 		void IComponent.Attach(RenderHandle renderHandle) { }
