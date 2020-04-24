@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Bunit.Diffing;
 using Bunit.Mocking.JSInterop;
+using Bunit.RazorTesting;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 
-namespace Bunit.RazorTesting
+namespace Bunit
 {
 	/// <inheritdoc/>
 	public class Fixture : FixtureBase<Fixture>
