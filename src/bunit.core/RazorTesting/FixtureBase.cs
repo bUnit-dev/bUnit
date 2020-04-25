@@ -80,8 +80,8 @@ namespace Bunit
 			SetupAsync = parameters.GetValueOrDefault<Func<TFixture, Task>>(nameof(SetupAsync));
 			Test = parameters.GetValueOrDefault<Action<TFixture>>(nameof(Test));
 			TestAsync = parameters.GetValueOrDefault<Func<TFixture, Task>>(nameof(TestAsync));
-			Tests = parameters.GetValueOrDefault<IReadOnlyCollection<Action<TFixture>>>(nameof(Tests));
-			TestsAsync = parameters.GetValueOrDefault<IReadOnlyCollection<Func<TFixture, Task>>>(nameof(TestsAsync));
+			Tests = parameters.GetValueOrDefault<IReadOnlyCollection<Action<TFixture>>>(nameof(Tests), Array.Empty<Action<TFixture>>());
+			TestsAsync = parameters.GetValueOrDefault<IReadOnlyCollection<Func<TFixture, Task>>>(nameof(TestsAsync), Array.Empty<Func<TFixture, Task>>());
 
 			return base.SetParametersAsync(parameters);
 		}
@@ -92,6 +92,8 @@ namespace Bunit
 			base.Validate();
 			if (ChildContent is null)
 				throw new ArgumentException($"No {nameof(ChildContent)} specified in the {GetType().Name} component.");
+			if (Test is null && TestAsync is null && Tests?.Count == 0 && TestsAsync?.Count == 0)
+				throw new ArgumentException($"No test/assertions provided to the {GetType().Name} component.");
 		}
 
 		/// <inheritdoc/>

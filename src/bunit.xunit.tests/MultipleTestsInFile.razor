@@ -1,4 +1,4 @@
-@inherits TestComponentBase2
+@inherits TestComponentBase
 
 <Fixture Test="x => { }" Description="My First Fixture Test">
 	<ComponentUnderTest>
@@ -6,7 +6,7 @@
 	</ComponentUnderTest>
 </Fixture>
 
-<SnapshotTest>
+<SnapshotTest Skip="BECAUSE I SAID SO!!">
 	<TestInput><Simple1 /></TestInput>
 	<ExpectedOutput><Simple1 /></ExpectedOutput>
 </SnapshotTest>
@@ -28,6 +28,6 @@
 	</ComponentUnderTest>
 </Fixture>
 
-<Fixture>
+<Fixture Description="Should time out" TestAsync="(x) => Task.Delay(200)" Timeout="100">
 	<ComponentUnderTest>hello</ComponentUnderTest>
 </Fixture>

@@ -60,6 +60,7 @@ namespace Bunit.RazorTesting
 		{
 			Skip = parameters.GetValueOrDefault<string>(nameof(Skip));
 			Description = parameters.GetValueOrDefault<string>(nameof(Description));
+			Timeout = parameters.GetValueOrDefault<int>(nameof(Timeout));
 			return Task.CompletedTask;
 		}
 

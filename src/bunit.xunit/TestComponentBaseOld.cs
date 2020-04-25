@@ -12,15 +12,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
-using Xunit.Sdk;
 
 namespace Bunit
 {
 	/// <summary>
 	/// Base test class/test runner, that runs Fixtures defined in razor files.
 	/// </summary>
-	public abstract class TestComponentBase2 : IComponent
+	public abstract class TestComponentBaseOld
 	{
+		private readonly TestComponentRenderer RazorRenderer = new TestComponentRenderer();
+
 		/// <summary>
 		/// Renders the component to the supplied <see cref="RenderTreeBuilder"/>.
 		/// </summary>
@@ -31,11 +32,17 @@ namespace Bunit
 		/// Called by the XUnit test runner. Finds all Fixture components
 		/// in the file and runs their associated tests.
 		/// </summary>
-		[RazorTest]
-		public void RazorTests() { }
+		[Fact(DisplayName = "Razor test runner")]
+		public async Task RazorTest()
+		{
+			IReadOnlyList<RazorTest> tests = await RazorRenderer
+				.RenderAndGetTestComponents<RazorTest>(BuildRenderTree)
+				.ConfigureAwait(false);
 
-		void IComponent.Attach(RenderHandle renderHandle) => renderHandle.Render(BuildRenderTree);
-
-		Task IComponent.SetParametersAsync(ParameterView parameters) => Task.CompletedTask;
+			foreach (var test in tests.Where(x => x.Skip is null))
+			{
+				await test.RunTest().ConfigureAwait(false);
+			}
+		}
 	}
 }
