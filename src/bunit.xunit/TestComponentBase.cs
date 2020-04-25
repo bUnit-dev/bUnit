@@ -20,8 +20,7 @@ namespace Bunit
 	/// </summary>
 	public abstract class TestComponentBase
 	{
-		private static readonly ServiceProvider ServiceProvider = new ServiceCollection().BuildServiceProvider();
-		private readonly TestComponentRenderer RazorRenderer = new TestComponentRenderer(ServiceProvider, NullLoggerFactory.Instance);
+		private readonly TestComponentRenderer RazorRenderer = new TestComponentRenderer();
 
 		/// <summary>
 		/// Renders the component to the supplied <see cref="RenderTreeBuilder"/>.

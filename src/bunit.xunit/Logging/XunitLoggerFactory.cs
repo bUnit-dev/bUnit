@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 
-namespace Bunit.Extensions.Xunit
+namespace Bunit.Logging
 {
     /// <summary>
     /// Represents a xUnit logger factory

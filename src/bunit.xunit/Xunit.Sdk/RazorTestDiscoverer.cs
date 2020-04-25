@@ -19,8 +19,7 @@ namespace Xunit.Sdk
 	/// </summary>
 	public class RazorTestDiscoverer : IXunitTestCaseDiscoverer
 	{
-		private static readonly ServiceProvider ServiceProvider = new ServiceCollection().BuildServiceProvider();
-		private readonly TestComponentRenderer RazorRenderer = new TestComponentRenderer(ServiceProvider, NullLoggerFactory.Instance);
+		private readonly TestComponentRenderer RazorRenderer = new TestComponentRenderer();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TheoryDiscoverer"/> class.

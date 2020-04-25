@@ -112,16 +112,17 @@ namespace Bunit.Rendering
 		/// <inheritdoc/>
 		public Task InvokeAsync(Action callback)
 		{
-			return Dispatcher.InvokeAsync(callback);			
+			return Dispatcher.InvokeAsync(callback);
 		}
 
 		private async Task<int> RenderFragmentInsideWrapper(RenderFragment renderFragment)
 		{
 			var wrapper = new WrapperComponent();
+
 			var wrapperId = AssignRootComponentId(wrapper);
+			AssertNoUnhandledExceptions();
 
 			await Dispatcher.InvokeAsync(() => wrapper.Render(renderFragment)).ConfigureAwait(false);
-
 			AssertNoUnhandledExceptions();
 
 			return wrapperId;

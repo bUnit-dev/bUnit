@@ -31,7 +31,7 @@ namespace Bunit
 		/// Called by the XUnit test runner. Finds all Fixture components
 		/// in the file and runs their associated tests.
 		/// </summary>
-		[RazorTestAttribute]
+		[RazorTest]
 		public void RazorTests() { }
 
 		void IComponent.Attach(RenderHandle renderHandle) => renderHandle.Render(BuildRenderTree);

@@ -9,9 +9,10 @@
     </Fragment>
 </Fixture>
 @code {
-	private ITestOutputHelper _output;
 
-	public CorrectImplicitRazorTestContextAvailable(ITestOutputHelper output)
+	private Xunit.Abstractions.ITestOutputHelper _output;
+
+	public CorrectImplicitRazorTestContextAvailable(Xunit.Abstractions.ITestOutputHelper output)
 	{
 		_output = output;
 	}

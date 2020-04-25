@@ -1,4 +1,3 @@
-using Bunit.Extensions;
 using Bunit.Rendering;
 using Bunit.Rendering.RenderEvents;
 using Bunit.SampleComponents;

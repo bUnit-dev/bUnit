@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Bunit.RazorTesting;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Bunit.Rendering
 {
@@ -16,10 +18,16 @@ namespace Bunit.Rendering
 	/// </summary>
 	public class TestComponentRenderer : Renderer
 	{
+		private static readonly ServiceProvider ServiceProvider = new ServiceCollection().BuildServiceProvider();
 		private Exception? _unhandledException;
 
 		/// <inheritdoc/>
 		public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
+
+		/// <summary>
+		/// Creates an instance of the <see cref="TestComponentRenderer"/>.
+		/// </summary>
+		public TestComponentRenderer() : this(ServiceProvider, NullLoggerFactory.Instance) { }
 
 		/// <summary>
 		/// Creates an instance of the <see cref="TestComponentRenderer"/>.
@@ -57,18 +65,21 @@ namespace Bunit.Rendering
 			AssertNoUnhandledExceptions();
 			var componentId = AssignRootComponentId(component);
 			AssertNoUnhandledExceptions();
+
 			await RenderRootComponentAsync(componentId).ConfigureAwait(false);
 			AssertNoUnhandledExceptions();
+
 			return componentId;
 		}
 
 		private async Task<int> RenderFragmentInsideWrapper(RenderFragment renderFragment)
 		{
 			var wrapper = new WrapperComponent();
+
 			var wrapperId = AssignRootComponentId(wrapper);
+			AssertNoUnhandledExceptions();
 
 			await Dispatcher.InvokeAsync(() => wrapper.Render(renderFragment)).ConfigureAwait(false);
-
 			AssertNoUnhandledExceptions();
 
 			return wrapperId;
