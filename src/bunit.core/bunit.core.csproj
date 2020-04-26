@@ -8,8 +8,25 @@
 		<AssemblyName>Bunit.Core</AssemblyName>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<PackageId>bunit.core</PackageId>
+		<Title>bUnit.core</Title>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/egil/bunit</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryBranch>#{BRANCH}#</RepositoryBranch>
+		<RepositoryCommit>#{COMMIT}#</RepositoryCommit>
+		<PackageProjectUrl>https://bunit.egilhansen.com</PackageProjectUrl>
+		<PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
+		<Authors>Egil Hansen</Authors>
+		<Company>Egil Hansen</Company>
+		<Product>bUnit</Product>
+		<Description>
+			bUnit.core is the base library that provides support for testing Blazor components. You need to install bUnit.web as well to test web-based Blazor components.
+		</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.*" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.*" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.*" />

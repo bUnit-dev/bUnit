@@ -17,7 +17,9 @@ namespace Xunit.Sdk
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		[Obsolete("Called by the deserializer; should only be called by deriving classes for de-serialization purposes")]
+		#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 		public RazorTestCase() { }
+		#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
 		public RazorTestCase(RazorTest test, int testIndex, ITestMethod testMethod)
 		{
@@ -45,7 +47,7 @@ namespace Xunit.Sdk
 		public string? SkipReason { get; private set; }
 
 		/// <summary>
-		/// Gets the index of the
+		/// Gets the index of the <see cref="RazorTest"/> in the test component.
 		/// </summary>
 		public int TestIndex { get; private set; }
 
@@ -121,7 +123,6 @@ namespace Xunit.Sdk
 
 				Write(stream, assemblyName);
 				Write(stream, testMethod.TestClass.Class.Name);
-				Write(stream, DisplayName);
 				Write(stream, TestIndex.ToString());
 
 				stream.Position = 0;
@@ -143,9 +144,6 @@ namespace Xunit.Sdk
 				stream.WriteByte(0);
 			}
 
-			/// <summary>Converts an array of bytes to its hexadecimal value as a string.</summary>
-			/// <param name="bytes">The bytes.</param>
-			/// <returns>A string containing the hexadecimal representation of the provided bytes.</returns>
 			static string BytesToHexString(byte[] bytes)
 			{
 				var chars = new char[bytes.Length * 2];
@@ -158,9 +156,6 @@ namespace Xunit.Sdk
 				return new string(chars);
 			}
 
-			/// <summary>Gets a hexadecimal digit character from the 4-bit value.</summary>
-			/// <param name="b">A value in the range [0, 15].</param>
-			/// <returns>A character in the range ['0','9'] or ['a','f'].</returns>
 			static char NibbleToHexChar(int b)
 			{
 				Debug.Assert(b < 16);
