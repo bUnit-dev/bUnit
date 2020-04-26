@@ -11,7 +11,7 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestCase : LongLivedMarshalByRefObject, IXunitTestCase, ITestCase, ITest, IXunitSerializable
+	public class RazorTestCase : LongLivedMarshalByRefObject, IXunitTestCase, ITestCase, ITest, IXunitSerializable
 	{
 		private string? _uniqueId;
 
