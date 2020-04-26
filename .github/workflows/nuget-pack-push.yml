@@ -36,9 +36,10 @@ jobs:
           dotnet test src -c Release /nowarn:CS1591
       - name: Creating library package
         run: |
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
+          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
           dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
           dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
       - name: Buidling template package
         run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE}/template -p:version=$VERSION -p:PackageVersion=$VERSION
       - name: Verifying template
