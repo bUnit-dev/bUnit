@@ -1,212 +1,56 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
-using Bunit;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestInvoker
+	internal class RazorTestInvoker : XunitTestInvoker
 	{
-		private RazorTestCase TestCase { get; }
-		private IMessageSink DiagnosticMessageSink { get; }
-		private IMessageBus MessageBus { get; }
-		private object[] ConstructorArguments { get; }
-		private ExceptionAggregator Aggregator { get; }
-		private CancellationTokenSource CancellationTokenSource { get; }
-		private ExecutionTimer Timer { get; } = new ExecutionTimer();
+		private readonly Func<ITestOutputHelper> _testOutputHelperFactory;
 
-		public RazorTestInvoker(RazorTestCase testCase, IMessageSink diagnosticMessageSink, IMessageBus messageBus, object[] constructorArguments, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
+		public RazorTestInvoker(Func<ITestOutputHelper> testOutputHelperFactory, ITest test, IMessageBus messageBus, Type testClass, object[] constructorArguments, MethodInfo testMethod, object[] testMethodArguments, IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
+			: base(test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments, beforeAfterAttributes, aggregator, cancellationTokenSource)
 		{
-			TestCase = testCase;
-			DiagnosticMessageSink = diagnosticMessageSink;
-			MessageBus = messageBus;
-			ConstructorArguments = constructorArguments;
-			Aggregator = aggregator;
-			CancellationTokenSource = cancellationTokenSource;
+			_testOutputHelperFactory = testOutputHelperFactory;
 		}
 
-		public async Task<RunSummary> RunTestCaseAsync()
+		protected override object CreateTestClass()
 		{
-			RunSummary summary = new RunSummary();
+			if (!(Test is RazorTest razorTest))
+				throw new InvalidOperationException($"The type of {nameof(Test)} is not a {nameof(RazorTest)}. Cannot continue. #1");
 
-			if (!MessageBus.QueueMessage(new TestCaseStarting(TestCase)))
-			{
-				CancellationTokenSource.Cancel();
-				return summary;
-			}
+			using var razorRenderer = new TestComponentRenderer();
+			var tests = razorRenderer.GetRazorTestsFromComponent(TestClass).GetAwaiter().GetResult();
 
-			try
-			{
-				var result = await RunTestAsync();
-				summary.Aggregate(result);
-			}
-			finally
-			{
-				if (!MessageBus.QueueMessage(new TestCaseFinished(TestCase, summary.Time, summary.Total, summary.Failed, summary.Skipped)))
-					CancellationTokenSource.Cancel();
-			}
+			if (tests.Count <= razorTest.TestIndex)
+				throw new InvalidOperationException($"The razor test '{Test.DisplayName}' was not found in the test component '{TestClass.FullName}'. ");
 
-			return summary;
+			var test = tests[razorTest.TestIndex];
+
+			// TODO: ensure that test has not been replaced somehow.
+
+			return test;
 		}
 
-		private async Task<RunSummary> RunTestAsync()
+		protected override object CallTestMethod(object testClassInstance)
 		{
-			var runSummary = new RunSummary { Total = 1 };
-
-			if (!MessageBus.QueueMessage(new TestStarting(TestCase)))
+			if (testClassInstance is RazorTestBase test)
 			{
-				CancellationTokenSource.Cancel();
-				return runSummary;
+				RegisterXunitHelpersInTest(test);
+				return test.RunTest();
 			}
-
-			if (!string.IsNullOrEmpty(TestCase.SkipReason))
-			{
-				runSummary.Skipped++;
-
-				if (!MessageBus.QueueMessage(new TestSkipped(TestCase, TestCase.SkipReason)))
-					CancellationTokenSource.Cancel();
-
-				return runSummary;
-			}
-
-			var output = await Aggregator.RunAsync(PrepareRazorTestRun);
-			runSummary.Time = Timer.Total;
-
-			var exception = Aggregator.ToException();
-
-			TestResultMessage testResult;
-			if (exception is null)
-				testResult = new TestPassed(TestCase, runSummary.Time, output);
 			else
-			{
-				testResult = new TestFailed(TestCase, runSummary.Time, output, exception);
-				runSummary.Failed++;
-			}
-
-			if (!MessageBus.QueueMessage(testResult))
-				CancellationTokenSource.Cancel();
-
-			if (!MessageBus.QueueMessage(new TestFinished(TestCase, runSummary.Time, output)))
-				CancellationTokenSource.Cancel();
-
-			return runSummary;
+				throw new InvalidOperationException($"The type of {nameof(testClassInstance)} is not an {typeof(Bunit.RazorTesting.RazorTestBase).FullName}. Cannot continue. #2");
 		}
 
-		private async Task<string> PrepareRazorTestRun()
+		private void RegisterXunitHelpersInTest(RazorTestBase test)
 		{
-			var testOutputHelper = GetOrCreateTestOutputHelper();
-
-			testOutputHelper.Initialize(MessageBus, TestCase);
-
-			await RazorTestExecutionAsync(testOutputHelper);
-
-			var output = testOutputHelper.Output;
-			testOutputHelper.Uninitialize();
-
-			return output;
-
-			TestOutputHelper GetOrCreateTestOutputHelper()
-			{
-				TestOutputHelper? testOutputHelper = null;
-				foreach (object obj in ConstructorArguments)
-				{
-					testOutputHelper = obj as TestOutputHelper;
-					if (testOutputHelper != null)
-						break;
-				}
-
-				if (testOutputHelper is null)
-					testOutputHelper = new TestOutputHelper();
-
-				return testOutputHelper;
-			}
-		}
-
-		private async Task RazorTestExecutionAsync(TestOutputHelper testOutputHelper)
-		{
-			var test = CreateRazorTestComponent();
-
-			if (test is null || CancellationTokenSource.IsCancellationRequested)
-			{
-				return;
-			}
-
-			try
-			{
-				Timer.Aggregate(() => test.Services.TryAddSingleton<ITestOutputHelper>(testOutputHelper));
-				await InvokeRazorTest(test);
-			}
-			finally
-			{
-				DisposeRazorTestComponent(test);
-			}
-		}
-
-		private Task InvokeRazorTest(RazorTest test)
-		{
-			return test.Timeout > 0
-				? InvokeRazorTestWithTimeout(test)
-				: Timer.AggregateAsync(test.RunTest);
-		}
-
-		private async Task InvokeRazorTestWithTimeout(RazorTest test)
-		{
-			var baseTask = Timer.AggregateAsync(test.RunTest);
-			var resultTask = await Task.WhenAny(baseTask, Task.Delay(test.Timeout, CancellationTokenSource.Token));
-
-			if (resultTask != baseTask)
-				throw new TestTimeoutException(test.Timeout);
-		}
-
-		private RazorTest? CreateRazorTestComponent()
-		{
-			if (!MessageBus.QueueMessage(new TestClassConstructionStarting(TestCase)))
-			{
-				CancellationTokenSource.Cancel();
-				return null;
-			}
-
-			try
-			{
-				RazorTest? test = null;
-
-				Timer.Aggregate(async () =>
-				{
-					using var razorRenderer = new TestComponentRenderer();
-					var tests = await razorRenderer.GetRazorTestsFromComponent(TestCase.TestMethod.GetTestComponentType());
-					// TODO: handle case where test index doesn't match, verify other parts of test perhaps?
-					test = tests[TestCase.TestIndex];
-				});
-
-				return test;
-			}
-			finally
-			{
-				if (!MessageBus.QueueMessage(new TestClassConstructionFinished(TestCase)))
-					CancellationTokenSource.Cancel();
-			}
-		}
-
-		private void DisposeRazorTestComponent(RazorTest test)
-		{
-			if (!MessageBus.QueueMessage(new TestClassDisposeStarting(TestCase)))
-			{
-				CancellationTokenSource.Cancel();
-				return;
-			}
-
-			try
-			{
-				Timer.Aggregate(test.Dispose);
-			}
-			finally
-			{
-				if (!MessageBus.QueueMessage(new TestClassDisposeFinished(TestCase)))
-					CancellationTokenSource.Cancel();
-			}
+			test.Services.AddSingleton<ITestOutputHelper>(_ => _testOutputHelperFactory());
 		}
 	}
 }

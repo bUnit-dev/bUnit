@@ -1,17 +1,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	public class RazorTestCaseRunner : XunitTestCaseRunner
+	internal class RazorTestCaseRunner : XunitTestCaseRunner
 	{
-		public RazorTestCaseRunner(RazorTestCase testCase, string displayName, string skipReason, object[] constructorArguments, object[] testMethodArguments, IMessageBus messageBus, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
+		private readonly RazorTestCase _razorTestCase;
+
+		public RazorTestCaseRunner(RazorTestCase testCase, string displayName, string? skipReason, object[] constructorArguments, object[] testMethodArguments, IMessageBus messageBus, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
 			: base(testCase, displayName, skipReason, constructorArguments, testMethodArguments, messageBus, aggregator, cancellationTokenSource)
 		{
+			_razorTestCase = testCase;
 		}
+
+		protected override ITest CreateTest(IXunitTestCase testCase, string displayName)
+		{
+			var test = new RazorTest(_razorTestCase, displayName);
+			return test;
+		}
+
+		protected override XunitTestRunner CreateTestRunner(ITest test, IMessageBus messageBus, Type testClass, object[] constructorArguments, MethodInfo testMethod, object[] testMethodArguments, string skipReason, IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
+			=> new RazorTestRunner(test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments, skipReason, beforeAfterAttributes, new ExceptionAggregator(aggregator), cancellationTokenSource);
 	}
 }

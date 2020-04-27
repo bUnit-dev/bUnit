@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -63,6 +64,15 @@ namespace Bunit.RazorTesting
 			var testCases = discoverer.Discover(_options, testMethod, _attribute);
 
 			testCases.ShouldBeEmpty();
+		}
+
+		[Fact(DisplayName = "Can find source information about tests")]
+		public void Test004()
+		{
+			var discoverer = new RazorTestDiscoverer(_messageBus);
+			var testMethod = Mocks.TestMethod(typeof(RazorTestComponentForDiscovery), nameof(RazorTestComponentForDiscovery.RazorTests));
+
+
 		}
 
 		// TODO: When rendering of test component fails an ExecutionErrorTestCase is returned

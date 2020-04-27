@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
@@ -31,8 +32,7 @@ namespace Bunit
 		/// Called by the XUnit test runner. Finds all Fixture components
 		/// in the file and runs their associated tests.
 		/// </summary>
-		[RazorTest]
-		public void RazorTests() { }
+		[RazorTest] public virtual void RazorTests() { }
 
 		void IComponent.Attach(RenderHandle renderHandle) => renderHandle.Render(BuildRenderTree);
 

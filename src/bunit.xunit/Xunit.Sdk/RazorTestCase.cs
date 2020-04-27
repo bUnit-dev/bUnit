@@ -11,24 +11,25 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	public class RazorTestCase : LongLivedMarshalByRefObject, IXunitTestCase, ITestCase, ITest, IXunitSerializable
+	internal class RazorTestCase : LongLivedMarshalByRefObject, IXunitTestCase, ITestCase, IXunitSerializable
 	{
 		private string? _uniqueId;
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		[Obsolete("Called by the deserializer; should only be called by deriving classes for de-serialization purposes")]
-		#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 		public RazorTestCase() { }
-		#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-		public RazorTestCase(RazorTest test, int testIndex, ITestMethod testMethod)
+		public RazorTestCase(string displayName, int timeout, string? skipReason, int testIndex, ITestMethod testMethod, ISourceInformation? sourceInformation = null)
 		{
 			TestMethod = testMethod;
 			Method = testMethod.Method;
-			DisplayName = test.Description ?? $"{test.GetType().Name} #{testIndex + 1}";
-			Timeout = test.Timeout;
-			SkipReason = test.Skip;
+			DisplayName = displayName;
+			Timeout = timeout;
+			SkipReason = skipReason;
 			TestIndex = testIndex;
+			SourceInformation = sourceInformation; 
 		}
 
 		/// <inheritdoc/>
@@ -75,13 +76,12 @@ namespace Xunit.Sdk
 		}
 
 		/// <inheritdoc/>
-		public ITestCase TestCase => this;
-
-		/// <inheritdoc/>
 		public Task<RunSummary> RunAsync(IMessageSink diagnosticMessageSink, IMessageBus messageBus, object[] constructorArguments, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
 		{
-			var razorTestInvoker = new RazorTestInvoker(this, diagnosticMessageSink, messageBus, constructorArguments, aggregator, cancellationTokenSource);
-			return razorTestInvoker.RunTestCaseAsync();
+			//var razorTestInvoker = new RazorTestInvoker(this, diagnosticMessageSink, messageBus, constructorArguments, aggregator, cancellationTokenSource);
+			//return razorTestInvoker.RunTestCaseAsync();
+			var runner = new RazorTestCaseRunner(this, DisplayName, SkipReason, constructorArguments, TestMethodArguments, messageBus, aggregator, cancellationTokenSource);
+			return runner.RunAsync();
 		}
 
 		/// <inheritdoc/>
