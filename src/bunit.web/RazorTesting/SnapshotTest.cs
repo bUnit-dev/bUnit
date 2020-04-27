@@ -17,7 +17,7 @@ namespace Bunit
 	/// Snapshot tests takes two child inputs, a TestInput section and a ExpectedOutput section.
 	/// It then compares the result of rendering both using semantic HTML comparison.
 	/// </summary>
-	public class SnapshotTest : RazorTest
+	public class SnapshotTest : RazorTestBase
 	{
 		/// <summary>
 		/// Sets the setup action to perform before the <see cref="TestInput"/> and <see cref="ExpectedOutput"/>

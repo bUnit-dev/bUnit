@@ -8,7 +8,7 @@ namespace Bunit.RazorTesting
 	/// <summary>
 	/// Represents a component used to define tests in Razor files.
 	/// </summary>
-	public abstract class RazorTest : TestContextBase, ITestContext, IComponent
+	public abstract class RazorTestBase : TestContextBase, ITestContext, IComponent
 	{
 		/// <summary>
 		/// Gets whether the tests is running or not.
@@ -31,14 +31,14 @@ namespace Bunit.RazorTesting
 		[Parameter] public int Timeout { get; set; } = 0;
 
 		/// <summary>
-		/// Run the test logic of the <see cref="RazorTest"/>.
+		/// Run the test logic of the <see cref="RazorTestBase"/>.
 		/// </summary>
 		/// <exception cref="InvalidOperationException">Thrown when called and <see cref="IsRunning"/> is true.</exception>
 		/// <returns></returns>
 		public async Task RunTest()
 		{
 			if (IsRunning)
-				throw new InvalidOperationException("The fixture test is already running.");
+				throw new InvalidOperationException("The razor test is already running.");
 
 			IsRunning = true;
 
@@ -51,9 +51,6 @@ namespace Bunit.RazorTesting
 				IsRunning = false;
 			}
 		}
-
-		/// <inheritdoc/>
-		public override string ToString() => $"{Description ?? "[no description]"}";
 
 		/// <inheritdoc/>
 		public virtual Task SetParametersAsync(ParameterView parameters)

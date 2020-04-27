@@ -15,7 +15,7 @@ namespace Bunit
 	/// define the <see cref="ComponentUnderTest"/> and any <see cref="Fragment"/>'s
 	/// you might need during testing, and assert against them in the Test methods.
 	/// </summary>
-	public abstract class FixtureBase<TFixture> : RazorTest
+	public abstract class FixtureBase<TFixture> : RazorTestBase
 	{
 		/// <summary>
 		/// Gets or sets the child content of the fragment.
