@@ -24,11 +24,12 @@
 			bUnit.xunit is an xUnit extension for bUnit, that provides a way for xUnit to run bUnit's razor-based tests, as well as other helpful extensions to make the testing experience better if you use xUnit for writing your tests.
 		</Description>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.*" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.*" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
+		<PackageReference Include="System.Reflection.Metadata" Version="1.8.0" />
 		<PackageReference Include="xunit.assert" Version="2.4.*" />
 		<PackageReference Include="xunit.extensibility.core" Version="2.4.*" />
 		<PackageReference Include="xunit.extensibility.execution" Version="2.4.*" />
@@ -37,5 +38,5 @@
 	<ItemGroup>
 		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />
 	</ItemGroup>
-
+	
 </Project>

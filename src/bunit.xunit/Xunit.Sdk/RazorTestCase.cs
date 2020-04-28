@@ -17,9 +17,9 @@ namespace Xunit.Sdk
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		[Obsolete("Called by the deserializer; should only be called by deriving classes for de-serialization purposes")]
-        #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 		public RazorTestCase() { }
-        #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
 		public RazorTestCase(string displayName, int timeout, string? skipReason, int testIndex, ITestMethod testMethod, ISourceInformation? sourceInformation = null)
 		{
@@ -29,7 +29,7 @@ namespace Xunit.Sdk
 			Timeout = timeout;
 			SkipReason = skipReason;
 			TestIndex = testIndex;
-			SourceInformation = sourceInformation; 
+			SourceInformation = sourceInformation;
 		}
 
 		/// <inheritdoc/>
@@ -78,8 +78,6 @@ namespace Xunit.Sdk
 		/// <inheritdoc/>
 		public Task<RunSummary> RunAsync(IMessageSink diagnosticMessageSink, IMessageBus messageBus, object[] constructorArguments, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
 		{
-			//var razorTestInvoker = new RazorTestInvoker(this, diagnosticMessageSink, messageBus, constructorArguments, aggregator, cancellationTokenSource);
-			//return razorTestInvoker.RunTestCaseAsync();
 			var runner = new RazorTestCaseRunner(this, DisplayName, SkipReason, constructorArguments, TestMethodArguments, messageBus, aggregator, cancellationTokenSource);
 			return runner.RunAsync();
 		}

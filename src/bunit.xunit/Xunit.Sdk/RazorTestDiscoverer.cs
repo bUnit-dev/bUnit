@@ -43,8 +43,7 @@ namespace Xunit.Sdk
 			{
 				var test = tests[i];
 
-
-
+				// TODO: Find ISourceInformation for test and provide to RazorTestCase
 				result[i] = new RazorTestCase(GetDisplayName(test, i), test.Timeout, test.Skip, i, testMethod);
 			}
 
@@ -52,5 +51,6 @@ namespace Xunit.Sdk
 		}
 
 		private string GetDisplayName(RazorTestBase test, int index) => test.Description ?? $"{test.GetType().Name} #{index + 1}";
+
 	}
 }

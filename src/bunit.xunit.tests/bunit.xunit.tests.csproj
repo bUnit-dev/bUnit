@@ -8,6 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="System.Reflection.Metadata" Version="1.8.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0" />
 		<PackageReference Include="Moq" Version="4.14.0" />
 		<PackageReference Include="Shouldly" Version="4.0.0-beta0002" />
