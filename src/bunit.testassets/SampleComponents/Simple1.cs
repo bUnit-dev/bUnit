@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace Bunit.SampleComponents
+namespace Bunit.TestAssets.SampleComponents
 {
 	public class Simple1 : ComponentBase
 	{
@@ -19,7 +19,7 @@ namespace Bunit.SampleComponents
 			builder.AddAttribute(1, "id", "header");
 			builder.AddAttribute(2, "attr", AttrValue);
 			builder.AddContent(3, Header);
-			builder.CloseElement();			
+			builder.CloseElement();
 		}
 	}
 }

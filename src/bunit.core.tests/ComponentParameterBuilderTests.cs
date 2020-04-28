@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Bunit.Rendering;
-using Bunit.SampleComponents;
+using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
 using Xunit;

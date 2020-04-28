@@ -1,6 +1,6 @@
 using Bunit.Rendering;
 using Bunit.Rendering.RenderEvents;
-using Bunit.SampleComponents;
+using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Shouldly;

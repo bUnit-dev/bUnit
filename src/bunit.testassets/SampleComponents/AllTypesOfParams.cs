@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace Bunit.SampleComponents
+namespace Bunit.TestAssets.SampleComponents
 {
 	public class AllTypesOfParams<TItem> : ComponentBase
 	{

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace Bunit.SampleComponents
+namespace Bunit.TestAssets.SampleComponents
 {
 	public class TwoComponentWrapper : ComponentBase
 	{

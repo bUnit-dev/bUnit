@@ -1,10 +1,10 @@
-﻿using Bunit.SampleComponents;
+﻿using Bunit.TestAssets.SampleComponents;
 using Shouldly;
 using Xunit;
 
 namespace Bunit
 {
-    public class RefreshableQueryCollectionTest : ComponentTestFixture
+	public class RefreshableQueryCollectionTest : ComponentTestFixture
     {
         [Fact(DisplayName = "When the query returns no elements, the collection is empty")]
         public void Test001()
