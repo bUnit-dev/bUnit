@@ -26,13 +26,20 @@ namespace Xunit.Sdk
 			}
 			catch (Exception ex)
 			{
-				return new[] { new ExecutionErrorTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), discoveryOptions.MethodDisplayOptionsOrDefault(), testMethod, $"Exception thrown during razor test discovery on '{testMethod.TestClass.Class.Name}'.{Environment.NewLine}{ex.Message}") };
+				return new[] {
+					new ExecutionErrorTestCase(
+						DiagnosticMessageSink,
+						discoveryOptions.MethodDisplayOrDefault(),
+						discoveryOptions.MethodDisplayOptionsOrDefault(),
+						testMethod,
+						$"Exception thrown during razor test discovery on '{testMethod.TestClass.Class.Name}'.{Environment.NewLine}{ex.Message}")
+				};
 			}
 		}
 
 		private IEnumerable<IXunitTestCase> DiscoverRazorTests(Type razorTestComponentType, ITestMethod testMethod)
 		{
-			using var razorRenderer = new TestComponentRenderer();			
+			using var razorRenderer = new TestComponentRenderer();
 			var tests = razorRenderer.GetRazorTestsFromComponent(razorTestComponentType).GetAwaiter().GetResult();
 
 			var result = tests.Count == 0
