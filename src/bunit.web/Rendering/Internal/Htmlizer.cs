@@ -222,15 +222,16 @@ namespace Bunit
 
                 switch (frame.AttributeValue)
                 {
+                    case bool flag when flag && frame.AttributeName.StartsWith(BLAZOR_INTERNAL_ATTR_PREFIX, StringComparison.Ordinal):
+                        // NOTE: This was added to make it more obvious
+                        // that this is a generated/special blazor attribute
+                        //	for internal usage                    
+                        result.Add(" ");
+                        result.Add(BLAZOR_ATTR_PREFIX);
+                        result.Add(frame.AttributeName);
+                        break;                    
                     case bool flag when flag:
                         result.Add(" ");
-                        if (frame.AttributeName.StartsWith(BLAZOR_INTERNAL_ATTR_PREFIX, StringComparison.Ordinal))
-                        {
-                            // NOTE: this was added to make it more obvious
-                            //       that this is a generated/special blazor attribute
-                            //		 for internal usage
-                            result.Add(BLAZOR_ATTR_PREFIX);
-                        }
                         result.Add(frame.AttributeName);
                         break;
                     case string value:
