@@ -231,7 +231,7 @@ namespace Bunit
                             //		 for internal usage
                             result.Add(BLAZOR_ATTR_PREFIX);
                         }
-						result.Add(frame.AttributeName);
+                        result.Add(frame.AttributeName);
                         break;
                     case string value:
                         result.Add(" ");
