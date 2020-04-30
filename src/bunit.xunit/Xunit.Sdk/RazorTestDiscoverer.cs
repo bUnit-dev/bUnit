@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using Bunit;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestDiscoverer : IXunitTestCaseDiscoverer
+	internal class RazorTestDiscoverer : IXunitTestCaseDiscoverer, IDisposable
 	{
+		private readonly RazorTestSourceInformationProvider _sourceInfoDiscoverer;
+
 		private IMessageSink DiagnosticMessageSink { get; }
 
 		public RazorTestDiscoverer(IMessageSink diagnosticMessageSink)
 		{
 			DiagnosticMessageSink = diagnosticMessageSink;
+			_sourceInfoDiscoverer = new RazorTestSourceInformationProvider(diagnosticMessageSink);
 		}
 
 		/// <inheritdoc/>
@@ -37,27 +41,33 @@ namespace Xunit.Sdk
 			}
 		}
 
-		private IEnumerable<IXunitTestCase> DiscoverRazorTests(Type razorTestComponentType, ITestMethod testMethod)
+		private IEnumerable<IXunitTestCase> DiscoverRazorTests(Type testComponent, ITestMethod testMethod)
 		{
+			DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"{nameof(DiscoverRazorTests)}: Discovering in {testComponent.FullName}."));
+
 			using var razorRenderer = new TestComponentRenderer();
-			var tests = razorRenderer.GetRazorTestsFromComponent(razorTestComponentType).GetAwaiter().GetResult();
+			var tests = razorRenderer.GetRazorTestsFromComponent(testComponent).GetAwaiter().GetResult();
 
 			var result = tests.Count == 0
 				? Array.Empty<IXunitTestCase>()
 				: new IXunitTestCase[tests.Count];
 
-			for (int i = 0; i < tests.Count; i++)
+			for (int index = 0; index < tests.Count; index++)
 			{
-				var test = tests[i];
-
-				// TODO: Find ISourceInformation for test and provide to RazorTestCase
-				result[i] = new RazorTestCase(GetDisplayName(test, i), test.Timeout, test.Skip, i, testMethod);
+				var test = tests[index];
+				var testNumber = index + 1;
+				var sourceInfo = _sourceInfoDiscoverer.GetSourceInformation(testComponent, test, testNumber);
+				result[index] = new RazorTestCase(GetDisplayName(test, testNumber), test.Timeout, test.Skip, testNumber, testMethod, sourceInfo);
 			}
 
 			return result;
 		}
 
-		private string GetDisplayName(RazorTestBase test, int index) => test.Description ?? $"{test.GetType().Name} #{index + 1}";
+		private string GetDisplayName(RazorTestBase test, int testNumber) => test.Description ?? $"{test.GetType().Name} #{testNumber}";
 
+		public void Dispose()
+		{
+			_sourceInfoDiscoverer?.Dispose();
+		}
 	}
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -34,7 +35,7 @@ namespace Bunit.RazorTesting
 		public void Test001()
 		{
 			var discoverer = new RazorTestDiscoverer(_messageBus);
-			var testMethod = Mocks.TestMethod(typeof(OneFixtureComponent), nameof(OneFixtureComponent.RazorTests));
+			var testMethod = Mocks.TestMethod(typeof(OneFixtureComponent), nameof(TestComponentBase.RazorTests));
 
 			var testCases = discoverer.Discover(_options, testMethod, _attribute);
 
@@ -45,7 +46,7 @@ namespace Bunit.RazorTesting
 		public void Test002()
 		{
 			var discoverer = new RazorTestDiscoverer(_messageBus);
-			var testMethod = Mocks.TestMethod(typeof(TwoFixtureComponent), nameof(TwoFixtureComponent.RazorTests));
+			var testMethod = Mocks.TestMethod(typeof(TwoFixtureComponent), nameof(TestComponentBase.RazorTests));
 
 			var testCases = discoverer.Discover(_options, testMethod, _attribute);
 
@@ -59,23 +60,12 @@ namespace Bunit.RazorTesting
 		public void Test003()
 		{
 			var discoverer = new RazorTestDiscoverer(_messageBus);
-			var testMethod = Mocks.TestMethod(typeof(ZeroFixtureComponent), nameof(ZeroFixtureComponent.RazorTests));
+			var testMethod = Mocks.TestMethod(typeof(ZeroFixtureComponent), nameof(TestComponentBase.RazorTests));
 
 			var testCases = discoverer.Discover(_options, testMethod, _attribute);
 
 			testCases.ShouldBeEmpty();
 		}
-
-		//[Fact(DisplayName = "Can find source information about tests")]
-		//public void Test004()
-		//{
-		//	var discoverer = new RazorTestDiscoverer(_messageBus);
-		//	var testMethod = Mocks.TestMethod(typeof(RazorTestComponentForDiscovery), nameof(RazorTestComponentForDiscovery.RazorTests));
-
-		//	var testCases = discoverer.Discover(_options, testMethod, _attribute);
-
-		//	testCases.Single().SourceInformation.ShouldNotBeNull();
-		//}
 
 		// TODO: When rendering of test component fails an ExecutionErrorTestCase is returned
 	}

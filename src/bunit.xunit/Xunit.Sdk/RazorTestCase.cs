@@ -21,14 +21,14 @@ namespace Xunit.Sdk
 		public RazorTestCase() { }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-		public RazorTestCase(string displayName, int timeout, string? skipReason, int testIndex, ITestMethod testMethod, ISourceInformation? sourceInformation = null)
+		public RazorTestCase(string displayName, int timeout, string? skipReason, int testNumber, ITestMethod testMethod, ISourceInformation? sourceInformation = null)
 		{
 			TestMethod = testMethod;
 			Method = testMethod.Method;
 			DisplayName = displayName;
 			Timeout = timeout;
 			SkipReason = skipReason;
-			TestIndex = testIndex;
+			TestNumber = testNumber;
 			SourceInformation = sourceInformation;
 		}
 
@@ -50,7 +50,7 @@ namespace Xunit.Sdk
 		/// <summary>
 		/// Gets the index of the <see cref="RazorTest"/> in the test component.
 		/// </summary>
-		public int TestIndex { get; private set; }
+		public int TestNumber { get; private set; }
 
 		/// <inheritdoc/>
 		public ISourceInformation? SourceInformation { get; set; }
@@ -89,7 +89,7 @@ namespace Xunit.Sdk
 			data.AddValue(nameof(Timeout), Timeout);
 			data.AddValue(nameof(DisplayName), DisplayName);
 			data.AddValue(nameof(SkipReason), SkipReason);
-			data.AddValue(nameof(TestIndex), TestIndex);
+			data.AddValue(nameof(TestNumber), TestNumber);
 		}
 
 		/// <inheritdoc/>
@@ -100,7 +100,7 @@ namespace Xunit.Sdk
 			Timeout = data.GetValue<int>(nameof(Timeout));
 			DisplayName = data.GetValue<string>(nameof(DisplayName));
 			SkipReason = data.GetValue<string?>(nameof(SkipReason));
-			TestIndex = data.GetValue<int>(nameof(TestIndex));
+			TestNumber = data.GetValue<int>(nameof(TestNumber));
 		}
 
 		/// <summary>
@@ -121,7 +121,7 @@ namespace Xunit.Sdk
 
 				Write(stream, assemblyName);
 				Write(stream, testMethod.TestClass.Class.Name);
-				Write(stream, TestIndex.ToString());
+				Write(stream, TestNumber.ToString());
 
 				stream.Position = 0;
 

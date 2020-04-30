@@ -27,10 +27,10 @@ namespace Xunit.Sdk
 			using var razorRenderer = new TestComponentRenderer();
 			var tests = razorRenderer.GetRazorTestsFromComponent(TestClass).GetAwaiter().GetResult();
 
-			if (tests.Count <= razorTest.TestIndex)
+			if (tests.Count < razorTest.TestNumber)
 				throw new InvalidOperationException($"The razor test '{Test.DisplayName}' was not found in the test component '{TestClass.FullName}'. ");
 
-			var test = tests[razorTest.TestIndex];
+			var test = tests[razorTest.TestNumber - 1];
 
 			// TODO: ensure that test has not been replaced somehow.
 

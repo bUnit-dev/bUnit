@@ -128,8 +128,8 @@ namespace Bunit
 		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment) where TComponent : IComponent
 		{
 			var renderId = Renderer.RenderFragment(fragment).GetAwaiter().GetResult();
-			var compInfo = Renderer.FindComponent<TComponent>(renderId);
-			return new RenderedComponent<TComponent>(Services, compInfo.ComponentId, compInfo.Component);
+			var (componentId, component) = Renderer.FindComponent<TComponent>(renderId);
+			return new RenderedComponent<TComponent>(Services, componentId, component);
 		}
 
 		private IRenderedFragment Factory(RenderFragment fragment)
