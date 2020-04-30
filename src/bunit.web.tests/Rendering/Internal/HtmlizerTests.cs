@@ -26,7 +26,11 @@ namespace Bunit.Rendering.Internal
 
 			//Assert
 			component.MarkupMatches("<button type=\"button\">Click me!</button>");
-			void OnClickCallback(MouseEventArgs e) => Assert.NotNull(e);
+			void OnClickCallback(MouseEventArgs e)
+			{
+				// NOTE: This line is only for the completeness of the EventCallback
+				Assert.NotNull(e);
+			}
 		}
 
 		private class Test001Component : ComponentBase
