@@ -7,20 +7,27 @@ namespace Bunit.Rendering.Internal
 
 	public class HtmlizerTests : ComponentTestFixture
 	{
+		public static TheoryData GetOnClickData()
+		{
+			return new TheoryData<bool, bool>
+			{
+				{ false, true },
+				{ true, false },
+				{ true, true }
+			};
+		}
+
 		[Theory(DisplayName =
 			"The component is rendered without internal Blazor attributes, " +
 			"regardless of the PreventDefault and StopPropagation settings.")]
-		[InlineData(false, false)]
-		[InlineData(false, true)]
-		[InlineData(true, false)]
-		[InlineData(true, true)]
+		[MemberData(nameof(GetOnClickData))]
 		public void Test001(bool stopPropagation, bool preventDefault)
 		{
 			//Arrange
-			var component = RenderComponent<Test001Component>(
-				EventCallback<MouseEventArgs>(nameof(Test001Component.OnClick), OnClickCallback),
-				Parameter(nameof(Test001Component.OnClickStopPropagation), stopPropagation),
-				Parameter(nameof(Test001Component.OnClickPreventDefault), preventDefault));
+			var component = RenderComponent<Htmlizer01Component>(
+				EventCallback<MouseEventArgs>(nameof(Htmlizer01Component.OnClick), OnClickCallback),
+				Parameter(nameof(Htmlizer01Component.OnClickStopPropagation), stopPropagation),
+				Parameter(nameof(Htmlizer01Component.OnClickPreventDefault), preventDefault));
 
 			//Act
 
@@ -33,16 +40,40 @@ namespace Bunit.Rendering.Internal
 			}
 		}
 
-		private class Test001Component : ComponentBase
+		[Theory(DisplayName = "The component contains correctly prefixed internal attributes.")]
+		[MemberData(nameof(GetOnClickData))]
+		public void Test002(bool stopPropagation, bool preventDefault)
+		{
+			//Arrange
+			var component = RenderComponent<Htmlizer01Component>(
+				EventCallback<MouseEventArgs>(nameof(Htmlizer01Component.OnClick), OnClickCallback),
+				Parameter(nameof(Htmlizer01Component.OnClickStopPropagation), stopPropagation),
+				Parameter(nameof(Htmlizer01Component.OnClickPreventDefault), preventDefault));
+
+			//Act
+			var button = component.Find("button");
+
+			//Assert
+			Assert.Equal(stopPropagation, button.HasAttribute("blazor:__internal_stopPropagation_onclick"));
+			Assert.Equal(preventDefault, button.HasAttribute("blazor:__internal_preventDefault_onclick"));
+
+			void OnClickCallback(MouseEventArgs e)
+			{
+				// NOTE: This line is only for the completeness of the EventCallback
+				Assert.NotNull(e);
+			}
+		}
+
+		private class Htmlizer01Component : ComponentBase
 		{
 			[Parameter]
 			public EventCallback<MouseEventArgs> OnClick { get; set; }
 
 			[Parameter]
-			public bool OnClickStopPropagation { get; set; }
+			public bool OnClickPreventDefault { get; set; }
 
 			[Parameter]
-			public bool OnClickPreventDefault { get; set; }
+			public bool OnClickStopPropagation { get; set; }
 
 			/// <inheritdoc />
 			protected override void BuildRenderTree(RenderTreeBuilder builder)
