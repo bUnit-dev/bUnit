@@ -20,9 +20,9 @@ namespace Bunit
             "area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"
         };
 
-		private const string BLAZOR_INTERNAL_ATTR_PREFIX = "__internal_";
+        private const string BLAZOR_INTERNAL_ATTR_PREFIX = "__internal_";
 
-		public const string BLAZOR_ATTR_PREFIX = "blazor:";
+        public const string BLAZOR_ATTR_PREFIX = "blazor:";
         public const string ELEMENT_REFERENCE_ATTR_NAME = BLAZOR_ATTR_PREFIX + "elementreference";
 
         public static bool IsBlazorAttribute(string attributeName)
