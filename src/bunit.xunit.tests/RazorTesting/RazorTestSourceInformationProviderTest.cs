@@ -25,12 +25,12 @@ namespace Bunit.RazorTesting
 			return tests[testIndex - 1];
 		}
 
+		// Ignored because file doesnt seem to be compile on Linux [InlineData(typeof(MixedCaseComponent), 1, 2)]
 		[Theory(DisplayName = "Can find source info")]
 		[InlineData(typeof(ComponentWithoutMethods), 1, 2)]
 		[InlineData(typeof(ComponentWithMethod), 1, 2)]
 		[InlineData(typeof(ComponentWithTwoTests), 1, 3)]
 		[InlineData(typeof(ComponentWithTwoTests), 2, 8)]
-		[InlineData(typeof(MixedCaseComponent), 1, 2)]
 		[InlineData(typeof(TestCasesWithWeirdLineBreaks), 1, 2)]
 		[InlineData(typeof(TestCasesWithWeirdLineBreaks), 2, 7)]
 		public async Task Test001(Type target, int testNumber, int expectedLineNumber)
