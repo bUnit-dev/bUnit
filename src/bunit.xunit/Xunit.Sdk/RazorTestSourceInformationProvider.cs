@@ -19,9 +19,12 @@ namespace Xunit.Sdk
 			var razorTestBaseType = typeof(RazorTestBase);
 			foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
 			{
+				if (!a.FullName.StartsWith("Bunit"))
+					continue;
+
 				foreach (Type t in a.ExportedTypes)
 				{
-					if (razorTestBaseType.IsAssignableFrom(t))
+					if (razorTestBaseType.IsAssignableFrom(t) && !t.IsAbstract)
 						yield return t;
 				}
 			}
@@ -102,7 +105,7 @@ namespace Xunit.Sdk
 
 		private bool TryGetRazorFileFromGeneratedFile(string file, [NotNullWhen(true)]out string? result)
 		{
-			// Pattern for first line in generated files: #pragma checksum "C:\Users\egh\Source\bunit\src\bunit.xunit.tests\SampleComponents\ComponentWithTwoTests.razor" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "b0aa9328840c75d34f073c3300621046639ea9c7"
+			// Pattern for first line in generated files: #pragma checksum "C:\...\bunit\src\bunit.xunit.tests\SampleComponents\ComponentWithTwoTests.razor" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "b0aa9328840c75d34f073c3300621046639ea9c7"
 			const string GENERATED_FILE_REF_PREFIX = "#pragma checksum \"";
 
 			result = null;
@@ -119,6 +122,39 @@ namespace Xunit.Sdk
 
 		private int? FindLineNumber(string razorFile, RazorTestBase test, int testNumber)
 		{
+			var testCasesSeen = 0;
+			var lineNumber = 0;
+			var lastTestCaseName = string.Empty;
+			var testCaseName = test.GetType().Name;
+			foreach (var line in File.ReadLines(razorFile))
+			{
+				lineNumber++;
+
+				if (!line.StartsWith($"<"))
+					continue;
+
+				for (int i = 0; i < RazorTestTypes.Length; i++)
+				{
+					if (line.StartsWith($"<{RazorTestTypes[i].Name}", StringComparison.Ordinal))
+					{
+						char? nextChar = null;
+						if(line.Length > RazorTestTypes[i].Name.Length + 1)
+							nextChar = line[RazorTestTypes[i].Name.Length + 1];
+							
+						if (nextChar is null || nextChar == ' ' || nextChar == '>' || nextChar == '\n' || nextChar == '\r')
+						{
+							testCasesSeen++;
+							lastTestCaseName = RazorTestTypes[i].Name;
+							break;
+						}
+					}
+				}
+
+				if (testNumber == testCasesSeen && lastTestCaseName.Equals(testCaseName, StringComparison.Ordinal))
+					return lineNumber;
+				else if (testNumber < testCasesSeen)
+					break;
+			}
 			return null;
 		}
 

@@ -22,15 +22,17 @@ namespace Bunit.RazorTesting
 		private async Task<RazorTestBase> GetTest(Type testComponent, int testIndex)
 		{
 			var tests = await _renderer.GetRazorTestsFromComponent(testComponent);
-			return tests[testIndex];
+			return tests[testIndex - 1];
 		}
 
-		[Theory(DisplayName = "Can find source info in test component with one or more tests")]
-		[InlineData(typeof(ComponentWithoutMethods), 0, 2)]
-		[InlineData(typeof(ComponentWithMethod), 0, 2)]
-		[InlineData(typeof(ComponentWithTwoTests), 0, 3)]
-		[InlineData(typeof(ComponentWithTwoTests), 1, 8)]
-		[InlineData(typeof(MixedCaseComponent), 0, 1)]
+		[Theory(DisplayName = "Can find source info")]
+		[InlineData(typeof(ComponentWithoutMethods), 1, 2)]
+		[InlineData(typeof(ComponentWithMethod), 1, 2)]
+		[InlineData(typeof(ComponentWithTwoTests), 1, 3)]
+		[InlineData(typeof(ComponentWithTwoTests), 2, 8)]
+		[InlineData(typeof(MixedCaseComponent), 1, 2)]
+		[InlineData(typeof(TestCasesWithWeirdLineBreaks), 1, 2)]
+		[InlineData(typeof(TestCasesWithWeirdLineBreaks), 2, 7)]
 		public async Task Test001(Type target, int testNumber, int expectedLineNumber)
 		{
 			var sut = new RazorTestSourceInformationProvider(_messageBus);
@@ -39,7 +41,7 @@ namespace Bunit.RazorTesting
 
 			sourceInfo.ShouldNotBeNull();
 			sourceInfo?.FileName.ShouldEndWith($"SampleComponents{Path.DirectorySeparatorChar}{target.Name}.razor", Case.Insensitive);
-			//sourceInfo?.LineNumber.ShouldBe(expectedLineNumber);
+			sourceInfo?.LineNumber.ShouldBe(expectedLineNumber);
 		}
 
 		void IDisposable.Dispose() => _renderer.Dispose();
