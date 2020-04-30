@@ -20,7 +20,9 @@ namespace Bunit
             "area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"
         };
 
-        public const string BLAZOR_ATTR_PREFIX = "blazor:";
+        private const string BLAZOR_INTERNAL_ATTR_PREFIX = "__internal_";
+
+		public const string BLAZOR_ATTR_PREFIX = "blazor:";
         public const string ELEMENT_REFERENCE_ATTR_NAME = BLAZOR_ATTR_PREFIX + "elementreference";
 
         public static bool IsBlazorAttribute(string attributeName)
@@ -222,7 +224,14 @@ namespace Bunit
                 {
                     case bool flag when flag:
                         result.Add(" ");
-                        result.Add(frame.AttributeName);
+                        if (frame.AttributeName.StartsWith(BLAZOR_INTERNAL_ATTR_PREFIX, StringComparison.Ordinal))
+                        {
+							// NOTE: this was added to make it more obvious
+							//       that this is a generated/special blazor attribute
+							//		 for internal usage
+	                        result.Add(BLAZOR_ATTR_PREFIX);
+                        }
+						result.Add(frame.AttributeName);
                         break;
                     case string value:
                         result.Add(" ");
