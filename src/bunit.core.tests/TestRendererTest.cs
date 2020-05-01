@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bunit.Rendering;
 using Bunit.Rendering.RenderEvents;
-using Bunit.SampleComponents;
+using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Bunit.SampleComponents;
+using Bunit.TestAssets.SampleComponents;
 using Bunit.TestUtililities;
 using Shouldly;
 using Xunit;
 
 namespace Bunit
 {
-    public class CompareToDiffingExtensionsTest : ComponentTestFixture
+	public class CompareToDiffingExtensionsTest : ComponentTestFixture
     {
         /// <summary>
         /// Returns an array of arrays containing:

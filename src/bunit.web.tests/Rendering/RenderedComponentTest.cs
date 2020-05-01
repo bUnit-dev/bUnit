@@ -1,10 +1,10 @@
-﻿using Bunit.SampleComponents;
+﻿using Bunit.TestAssets.SampleComponents;
 using Shouldly;
 using Xunit;
 
 namespace Bunit
 {
-    public class RenderedComponentTest : ComponentTestFixture
+	public class RenderedComponentTest : ComponentTestFixture
     {
         [Fact(DisplayName = "Nodes should return the same instance " +
                             "when a render has not resulted in any changes")]

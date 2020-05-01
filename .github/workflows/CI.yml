@@ -21,7 +21,7 @@ jobs:
           echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
           echo "::set-env name=COMMIT::$GITHUB_SHA"
       - run: echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
-      - uses: actions/checkout@v1   
+      - uses: actions/checkout@v2   
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
@@ -31,15 +31,20 @@ jobs:
           dotnet-version: '3.1.201' 
       - name: Building and verifying library
         run: |
-          dotnet build src -c Release
-          dotnet test src -c Release /nowarn:CS1591          
+          dotnet restore 
+          dotnet build src -c Release --no-restore
+          dotnet test src -c Release --no-restore --verbosity normal /nowarn:CS1591          
       - name: Creating library package
-        run: dotnet pack src/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
-      - name: Buidling template package
-        run: dotnet pack templates/bunit-project/ -c Release -o ${GITHUB_WORKSPACE}/templates -p:version=$VERSION -p:PackageVersion=$VERSION
-      - name: Verifying template
         run: |
-          dotnet new --install ${GITHUB_WORKSPACE}/templates/bunit.template.$VERSION.nupkg
-          dotnet new bunit -o ${GITHUB_WORKSPACE}/Test
-          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/lib
-          dotnet test ${GITHUB_WORKSPACE}/Test
+          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
+          dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
+          dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591          
+#      - name: Buidling template package
+#        run: dotnet pack templates/bunit-project/ -c Release -o ${GITHUB_WORKSPACE}/templates -p:version=$VERSION -p:PackageVersion=$VERSION
+#      - name: Verifying template
+#        run: |
+#          dotnet new --install ${GITHUB_WORKSPACE}/templates/bunit.template.$VERSION.nupkg
+#          dotnet new bunit -o ${GITHUB_WORKSPACE}/Test
+#          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/lib
+#          dotnet test ${GITHUB_WORKSPACE}/Test

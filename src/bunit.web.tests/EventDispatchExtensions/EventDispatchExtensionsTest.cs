@@ -4,13 +4,13 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
-using Bunit.SampleComponents;
 using Shouldly;
 using System.Diagnostics.CodeAnalysis;
+using Bunit.TestAssets.SampleComponents;
 
 namespace Bunit
 {
-    public abstract class EventDispatchExtensionsTest<TEventArgs> : ComponentTestFixture
+	public abstract class EventDispatchExtensionsTest<TEventArgs> : ComponentTestFixture
         where TEventArgs : EventArgs, new()
     {
         protected static readonly Type EventArgsType = typeof(TEventArgs);

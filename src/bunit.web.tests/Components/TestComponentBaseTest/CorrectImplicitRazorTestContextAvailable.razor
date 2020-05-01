@@ -9,20 +9,13 @@
     </Fragment>
 </Fixture>
 @code {
-	private ITestOutputHelper _output;
-
-	public CorrectImplicitRazorTestContextAvailable(ITestOutputHelper output)
-	{
-		_output = output;
-	}
-
 	class Dep1 : ITestDep { public string Name => nameof(Dep1); }
 	ITestDep dep1Expected = new Dep1();
 
 	void Setup1(Fixture fixture)
 	{
 		fixture.Services.AddSingleton<ITestDep>(dep1Expected);
-		fixture.Services.AddXunitLogger(_output);
+		fixture.Services.AddXunitLogger();
 	}
 
 	void Test1(Fixture f)

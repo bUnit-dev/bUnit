@@ -27,6 +27,7 @@ namespace Bunit
 
 		/// <inheritdoc/>
 		public virtual TestServiceProvider Services { get; }
+
 		/// <inheritdoc/>
 		public IObservable<RenderEvent> RenderEvents => Renderer.RenderEvents;
 

@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Bunit.Diffing;
 using Bunit.Mocking.JSInterop;
+using Bunit.RazorTesting;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 
-namespace Bunit.RazorTesting
+namespace Bunit
 {
 	/// <inheritdoc/>
 	public class Fixture : FixtureBase<Fixture>
@@ -127,8 +128,8 @@ namespace Bunit.RazorTesting
 		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment) where TComponent : IComponent
 		{
 			var renderId = Renderer.RenderFragment(fragment).GetAwaiter().GetResult();
-			var compInfo = Renderer.FindComponent<TComponent>(renderId);
-			return new RenderedComponent<TComponent>(Services, compInfo.ComponentId, compInfo.Component);
+			var (componentId, component) = Renderer.FindComponent<TComponent>(renderId);
+			return new RenderedComponent<TComponent>(Services, componentId, component);
 		}
 
 		private IRenderedFragment Factory(RenderFragment fragment)

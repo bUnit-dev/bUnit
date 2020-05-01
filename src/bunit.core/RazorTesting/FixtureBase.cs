@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Bunit.RazorTesting;
 using Bunit.Rendering;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +15,7 @@ namespace Bunit
 	/// define the <see cref="ComponentUnderTest"/> and any <see cref="Fragment"/>'s
 	/// you might need during testing, and assert against them in the Test methods.
 	/// </summary>
-	public abstract class FixtureBase<TFixture> : RazorTest
+	public abstract class FixtureBase<TFixture> : RazorTestBase
 	{
 		/// <summary>
 		/// Gets or sets the child content of the fragment.
@@ -73,24 +75,31 @@ namespace Bunit
 		/// <inheritdoc/>
 		public override Task SetParametersAsync(ParameterView parameters)
 		{
-			if (parameters.TryGetValue<RenderFragment>(nameof(ChildContent), out RenderFragment childContent))
-				ChildContent = childContent;
-			else
-				throw new InvalidOperationException($"No {nameof(ChildContent)} specified in the {GetType().Name} component.");
-
+			ChildContent = parameters.GetValueOrDefault<RenderFragment>(nameof(ChildContent));
 			Setup = parameters.GetValueOrDefault<Action<TFixture>>(nameof(Setup));
 			SetupAsync = parameters.GetValueOrDefault<Func<TFixture, Task>>(nameof(SetupAsync));
 			Test = parameters.GetValueOrDefault<Action<TFixture>>(nameof(Test));
 			TestAsync = parameters.GetValueOrDefault<Func<TFixture, Task>>(nameof(TestAsync));
-			Tests = parameters.GetValueOrDefault<IReadOnlyCollection<Action<TFixture>>>(nameof(Tests));
-			TestsAsync = parameters.GetValueOrDefault<IReadOnlyCollection<Func<TFixture, Task>>>(nameof(TestsAsync));
+			Tests = parameters.GetValueOrDefault<IReadOnlyCollection<Action<TFixture>>>(nameof(Tests), Array.Empty<Action<TFixture>>());
+			TestsAsync = parameters.GetValueOrDefault<IReadOnlyCollection<Func<TFixture, Task>>>(nameof(TestsAsync), Array.Empty<Func<TFixture, Task>>());
 
 			return base.SetParametersAsync(parameters);
 		}
 
 		/// <inheritdoc/>
+		public override void Validate()
+		{
+			base.Validate();
+			if (ChildContent is null)
+				throw new ArgumentException($"No {nameof(ChildContent)} specified in the {GetType().Name} component.");
+			if (Test is null && TestAsync is null && Tests?.Count == 0 && TestsAsync?.Count == 0)
+				throw new ArgumentException($"No test/assertions provided to the {GetType().Name} component.");
+		}
+
+		/// <inheritdoc/>
 		protected virtual async Task Run(TFixture self)
 		{
+			Validate();
 			if (Setup is { })
 				TryRun(Setup, self);
 
