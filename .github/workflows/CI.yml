@@ -31,7 +31,7 @@ jobs:
           dotnet-version: '3.1.201' 
       - name: Building and verifying library
         run: |
-          dotnet restore 
+          dotnet restore src
           dotnet build src -c Release --no-restore
           dotnet test src -c Release --no-restore --verbosity normal /nowarn:CS1591          
       - name: Creating library package
