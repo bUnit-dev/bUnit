@@ -21,7 +21,6 @@ namespace Bunit
         };
 
         private const string BLAZOR_INTERNAL_ATTR_PREFIX = "__internal_";
-
         public const string BLAZOR_ATTR_PREFIX = "blazor:";
         public const string ELEMENT_REFERENCE_ATTR_NAME = BLAZOR_ATTR_PREFIX + "elementreference";
 
@@ -216,7 +215,13 @@ namespace Bunit
                     //       to the following to make it more obvious
                     //       that this is a generated/special blazor attribute
                     //       used for tracking event handler id's
-                    result.Add($" {BLAZOR_ATTR_PREFIX}{frame.AttributeName}=\"{frame.AttributeEventHandlerId}\"");
+                    result.Add(" ");
+					result.Add(BLAZOR_ATTR_PREFIX);					
+                    result.Add(frame.AttributeName);
+                    result.Add("=");
+                    result.Add("\"");
+                    result.Add(frame.AttributeEventHandlerId);
+                    result.Add("\"");				
                     continue;
                 }
 
@@ -224,8 +229,8 @@ namespace Bunit
                 {
                     case bool flag when flag && frame.AttributeName.StartsWith(BLAZOR_INTERNAL_ATTR_PREFIX, StringComparison.Ordinal):
                         // NOTE: This was added to make it more obvious
-                        // that this is a generated/special blazor attribute
-                        //	for internal usage                    
+                        //       that this is a generated/special blazor attribute
+                        //	     for internal usage                    
                         result.Add(" ");
                         result.Add(BLAZOR_ATTR_PREFIX);
                         result.Add(frame.AttributeName);
