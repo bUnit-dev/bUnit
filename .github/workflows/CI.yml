@@ -21,7 +21,7 @@ jobs:
           echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
           echo "::set-env name=COMMIT::$GITHUB_SHA"
       - run: echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
-      - uses: actions/checkout@v1   
+      - uses: actions/checkout@v2   
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
