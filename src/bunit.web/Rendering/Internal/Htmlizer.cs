@@ -220,7 +220,7 @@ namespace Bunit
                     result.Add(frame.AttributeName);
                     result.Add("=");
                     result.Add("\"");
-                    result.Add(HtmlEncoder.Encode(frame.AttributeEventHandlerId));
+                    result.Add(frame.AttributeEventHandlerId.ToString());
                     result.Add("\"");				
                     continue;
                 }
