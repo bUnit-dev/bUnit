@@ -45,7 +45,10 @@ namespace Bunit
 			get
 			{
 				if (_latestRenderMarkup is null)
+				{
+					// TODO: Htmlizer can throw... should we handle that here?
 					_latestRenderMarkup = Htmlizer.GetHtml(Renderer, ComponentId);
+				}
 				return _latestRenderMarkup;
 			}
 		}

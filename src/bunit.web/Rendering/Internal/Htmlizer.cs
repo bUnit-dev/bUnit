@@ -10,6 +10,10 @@ using System.Text.Encodings.Web;
 
 namespace Bunit
 {
+	/// <summary>
+	/// This file is based on
+	/// https://source.dot.net/#Microsoft.AspNetCore.Mvc.ViewFeatures/RazorComponents/HtmlRenderer.cs
+	/// </summary>
 	[SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
     internal class Htmlizer
     {

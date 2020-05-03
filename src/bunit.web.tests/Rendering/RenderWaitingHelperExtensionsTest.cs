@@ -152,11 +152,12 @@ namespace Bunit.Rendering
 			expected.InnerException.ShouldBeOfType<InvalidOperationException>()
 				.Message.ShouldBe(expectedInnerMessage);
 		}
-
+		
 		[Fact(DisplayName = "WaitForState can wait for multiple renders and changes to occur")]
 		public void Test100()
 		{
 			_testOutput.WriteLine($"INIT TEST100: {Thread.GetCurrentProcessorId()} - {Thread.CurrentThread.ManagedThreadId}");
+
 			// Initial state is stopped
 			var cut = RenderComponent<TwoRendersTwoChanges>();
 			var stateElement = cut.Find("#state");
@@ -170,8 +171,10 @@ namespace Bunit.Rendering
 			// This click causes two renders, thus something is needed to await here.
 			cut.Find("#tock").Click();
 			_testOutput.WriteLine($"BEFORE WAIT FOR STATE TEST100: {Thread.GetCurrentProcessorId()} - {Thread.CurrentThread.ManagedThreadId}");
+
 			cut.WaitForState(() => cut.Find("#state").TextContent == "Stopped");
 			_testOutput.WriteLine($"AFTER WAIT FOR STATE TEST100: {Thread.GetCurrentProcessorId()} - {Thread.CurrentThread.ManagedThreadId}");
+
 			cut.Find("#state").TextContent.ShouldBe("Stopped");
 			_testOutput.WriteLine($"END TEST100: {Thread.GetCurrentProcessorId()} - {Thread.CurrentThread.ManagedThreadId}");
 		}

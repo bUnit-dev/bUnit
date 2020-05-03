@@ -84,17 +84,17 @@ namespace Bunit.Rendering
 		}
 
 		/// <inheritdoc/>
-		public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
+		public new async Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
 		{
 			if (fieldInfo is null)
 				throw new ArgumentNullException(nameof(fieldInfo));
 			_logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Starting trigger of '{fieldInfo.FieldValue}'");
 
-			var task = Dispatcher.InvokeAsync(() =>
+			await Dispatcher.InvokeAsync(async () =>
 			{
 				try
 				{
-					return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
+					await base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
 				}
 				catch (Exception e)
 				{
@@ -106,7 +106,6 @@ namespace Bunit.Rendering
 			AssertNoUnhandledExceptions();
 
 			_logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Finished trigger of '{fieldInfo.FieldValue}'");
-			return task;
 		}
 
 		/// <inheritdoc/>
