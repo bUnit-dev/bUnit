@@ -38,7 +38,7 @@ namespace Bunit.Rendering
 		/// <typeparam name="TComponent">Type of component to render.</typeparam>
 		/// <param name="parameters">Parameters to pass to the component during first render.</param>
 		/// <returns>The component and its assigned id.</returns>
-		Task<(int ComponentId, TComponent Component)> RenderComponent<TComponent>(IEnumerable<ComponentParameter> parameters) where TComponent : IComponent;
+		(int ComponentId, TComponent Component) RenderComponent<TComponent>(IEnumerable<ComponentParameter> parameters) where TComponent : IComponent;
 
 		/// <summary>
 		/// Renders the provided <paramref name="renderFragment"/> inside a wrapper and returns
@@ -46,7 +46,7 @@ namespace Bunit.Rendering
 		/// </summary>
 		/// <param name="renderFragment"><see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
 		/// <returns>The id of the wrapper component which the <paramref name="renderFragment"/> is rendered inside.</returns>
-		Task<int> RenderFragment(RenderFragment renderFragment);
+		int RenderFragment(RenderFragment renderFragment);
 
 		/// <summary>
 		/// Notifies the renderer that an event has occurred.

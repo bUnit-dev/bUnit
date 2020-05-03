@@ -25,7 +25,7 @@ namespace Xunit.Sdk
 				throw new InvalidOperationException($"The type of {nameof(Test)} is not a {nameof(RazorTest)}. Cannot continue. #1");
 
 			using var razorRenderer = new TestComponentRenderer();
-			var tests = razorRenderer.GetRazorTestsFromComponent(TestClass).GetAwaiter().GetResult();
+			var tests = razorRenderer.GetRazorTestsFromComponent(TestClass);
 
 			if (tests.Count < razorTest.TestNumber)
 				throw new InvalidOperationException($"The razor test '{Test.DisplayName}' was not found in the test component '{TestClass.FullName}'. ");

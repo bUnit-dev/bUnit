@@ -24,7 +24,7 @@ namespace Bunit
 			var res = new ConcurrentRenderEventSubscriber(sut.RenderEvents);
 
 			// act
-			var cut = await sut.RenderComponent<Simple1>(Array.Empty<ComponentParameter>());
+			var cut = sut.RenderComponent<Simple1>(Array.Empty<ComponentParameter>());
 
 			// assert
 			res.RenderCount.ShouldBe(1);

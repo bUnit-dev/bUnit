@@ -41,7 +41,8 @@ namespace Bunit
             var frames = renderer.GetCurrentRenderTreeFrames(componentId);
             var context = new HtmlRenderingContext(renderer);
             var newPosition = RenderFrames(context, frames, 0, frames.Count);
-            Debug.Assert(newPosition == frames.Count);
+			// Can be false in certain circumstances. Perhaps because component has been disposed?
+			Debug.Assert(newPosition == frames.Count); 
             return string.Join(string.Empty, context.Result);
         }
 

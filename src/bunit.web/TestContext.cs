@@ -34,7 +34,7 @@ namespace Bunit
 		/// <returns>The rendered <typeparamref name="TComponent"/></returns>
 		public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
 		{
-			var renderResult = Renderer.RenderComponent<TComponent>(parameters).GetAwaiter().GetResult();
+			var renderResult = Renderer.RenderComponent<TComponent>(parameters);
 			return new RenderedComponent<TComponent>(Services, renderResult.ComponentId, renderResult.Component);
 		}
 
@@ -55,7 +55,7 @@ namespace Bunit
 			var builder = new ComponentParameterBuilder<TComponent>();
 			componentParameterBuilderAction(builder);
 
-			var renderResult = Renderer.RenderComponent<TComponent>(builder.Build()).GetAwaiter().GetResult();
+			var renderResult = Renderer.RenderComponent<TComponent>(builder.Build());
 			return new RenderedComponent<TComponent>(Services, renderResult.ComponentId, renderResult.Component);
 		}
 	}

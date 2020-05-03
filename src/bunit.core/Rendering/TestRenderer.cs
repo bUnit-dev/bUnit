@@ -14,7 +14,7 @@ namespace Bunit.Rendering
 	/// <summary>
 	/// Generalized Blazor renderer for testing purposes.
 	/// </summary>
-	public class TestRenderer : Renderer, ITestRenderer
+	public partial class TestRenderer : Renderer, ITestRenderer
 	{
 		private const string LOGGER_CATEGORY = nameof(Bunit) + "." + nameof(TestRenderer);
 		private static readonly Type CascadingValueType = typeof(CascadingValue<>);
@@ -39,16 +39,16 @@ namespace Bunit.Rendering
 		}
 
 		/// <inheritdoc/>
-		public async Task<(int ComponentId, TComponent Component)> RenderComponent<TComponent>(IEnumerable<ComponentParameter> parameters) where TComponent : IComponent
+		public (int ComponentId, TComponent Component) RenderComponent<TComponent>(IEnumerable<ComponentParameter> parameters) where TComponent : IComponent
 		{
 			var componentType = typeof(TComponent);
 			var renderFragment = parameters.ToComponentRenderFragment<TComponent>();
-			var wrapperId = await RenderFragmentInsideWrapper(renderFragment).ConfigureAwait(false);
+			var wrapperId = RenderFragmentInsideWrapper(renderFragment);
 			return FindComponent<TComponent>(wrapperId);
 		}
 
 		/// <inheritdoc/>
-		public Task<int> RenderFragment(RenderFragment renderFragment)
+		public int RenderFragment(RenderFragment renderFragment)
 		{
 			return RenderFragmentInsideWrapper(renderFragment);
 		}
@@ -84,28 +84,20 @@ namespace Bunit.Rendering
 		}
 
 		/// <inheritdoc/>
-		public new async Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
+		public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
 		{
 			if (fieldInfo is null)
 				throw new ArgumentNullException(nameof(fieldInfo));
+
 			_logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Starting trigger of '{fieldInfo.FieldValue}'");
 
-			await Dispatcher.InvokeAsync(async () =>
-			{
-				try
-				{
-					await base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
-				}
-				catch (Exception e)
-				{
-					_unhandledException = e;
-					throw;
-				}
-			});
+			var result = Dispatcher.InvokeAsync(() => base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs));
 
 			AssertNoUnhandledExceptions();
 
 			_logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Finished trigger of '{fieldInfo.FieldValue}'");
+
+			return result;
 		}
 
 		/// <inheritdoc/>
@@ -114,14 +106,14 @@ namespace Bunit.Rendering
 			return Dispatcher.InvokeAsync(callback);
 		}
 
-		private async Task<int> RenderFragmentInsideWrapper(RenderFragment renderFragment)
+		private int RenderFragmentInsideWrapper(RenderFragment renderFragment)
 		{
-			var wrapper = new WrapperComponent();
+			var wrapper = new WrapperComponent(renderFragment);
 
 			var wrapperId = AssignRootComponentId(wrapper);
 			AssertNoUnhandledExceptions();
 
-			await Dispatcher.InvokeAsync(() => wrapper.Render(renderFragment)).ConfigureAwait(false);
+			Dispatcher.InvokeAsync(wrapper.Render).Wait();
 			AssertNoUnhandledExceptions();
 
 			return wrapperId;
@@ -151,8 +143,9 @@ namespace Bunit.Rendering
 		{
 			if (_unhandledException is { } unhandled)
 			{
-				_logger.LogError(new EventId(3, nameof(AssertNoUnhandledExceptions)), $"An unhandled exception happened during rendering: {unhandled.Message}");
 				_unhandledException = null;
+				var evt = new EventId(3, nameof(AssertNoUnhandledExceptions));
+				_logger.LogError(evt, unhandled, $"An unhandled exception happened during rendering: {unhandled.Message}{Environment.NewLine}{unhandled.StackTrace}");
 				ExceptionDispatchInfo.Capture(unhandled).Throw();
 			}
 		}
@@ -197,23 +190,6 @@ namespace Bunit.Rendering
 				}
 			}
 			return result;
-		}
-
-		/// <summary>
-		/// Wrapper class that provides access to a <see cref="RenderHandle"/>.
-		/// </summary>
-		private class WrapperComponent : IComponent
-		{
-			private RenderHandle _renderHandle;
-
-			public void Attach(RenderHandle renderHandle) => _renderHandle = renderHandle;
-
-			public Task SetParametersAsync(ParameterView parameters) => throw new InvalidOperationException($"WrapperComponent shouldn't receive any parameters");
-
-			public void Render(RenderFragment renderFragment)
-			{
-				_renderHandle.Render(renderFragment);
-			}
 		}
 	}
 }

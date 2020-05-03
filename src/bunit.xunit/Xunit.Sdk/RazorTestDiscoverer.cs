@@ -46,7 +46,7 @@ namespace Xunit.Sdk
 			DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"{nameof(DiscoverRazorTests)}: Discovering in {testComponent.FullName}."));
 
 			using var razorRenderer = new TestComponentRenderer();
-			var tests = razorRenderer.GetRazorTestsFromComponent(testComponent).GetAwaiter().GetResult();
+			var tests = razorRenderer.GetRazorTestsFromComponent(testComponent);
 
 			var result = tests.Count == 0
 				? Array.Empty<IXunitTestCase>()

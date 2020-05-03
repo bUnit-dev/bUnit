@@ -19,9 +19,9 @@ namespace Bunit.RazorTesting
 		private readonly TestComponentRenderer _renderer = new TestComponentRenderer();
 		private readonly IMessageSink _messageBus = Mock.Of<IMessageSink>();
 
-		private async Task<RazorTestBase> GetTest(Type testComponent, int testIndex)
+		private RazorTestBase GetTest(Type testComponent, int testIndex)
 		{
-			var tests = await _renderer.GetRazorTestsFromComponent(testComponent);
+			var tests = _renderer.GetRazorTestsFromComponent(testComponent);
 			return tests[testIndex - 1];
 		}
 
@@ -33,11 +33,11 @@ namespace Bunit.RazorTesting
 		[InlineData(typeof(ComponentWithTwoTests), 2, 8)]
 		[InlineData(typeof(TestCasesWithWeirdLineBreaks), 1, 2)]
 		[InlineData(typeof(TestCasesWithWeirdLineBreaks), 2, 7)]
-		public async Task Test001(Type target, int testNumber, int expectedLineNumber)
+		public void Test001(Type target, int testNumber, int expectedLineNumber)
 		{
 			var sut = new RazorTestSourceInformationProvider(_messageBus);
 
-			var sourceInfo = sut.GetSourceInformation(target, await GetTest(target, testNumber), testNumber);
+			var sourceInfo = sut.GetSourceInformation(target, GetTest(target, testNumber), testNumber);
 
 			sourceInfo.ShouldNotBeNull();
 			sourceInfo?.FileName.ShouldEndWith($"SampleComponents{Path.DirectorySeparatorChar}{target.Name}.razor", Case.Insensitive);

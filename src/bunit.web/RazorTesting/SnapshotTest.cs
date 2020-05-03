@@ -52,10 +52,10 @@ namespace Bunit
 			if (SetupAsync is { })
 				await TryRunAsync(SetupAsync, this).ConfigureAwait(false);
 
-			var testRenderId = await Renderer.RenderFragment(TestInput).ConfigureAwait(false);
-			var expectedRenderId = await Renderer.RenderFragment(ExpectedOutput).ConfigureAwait(false);
-
+			var testRenderId = Renderer.RenderFragment(TestInput);
 			var inputHtml = Htmlizer.GetHtml(Renderer, testRenderId);
+
+			var expectedRenderId = Renderer.RenderFragment(ExpectedOutput);
 			var expectedHtml = Htmlizer.GetHtml(Renderer, expectedRenderId);
 
 			var parser = new TestHtmlParser();

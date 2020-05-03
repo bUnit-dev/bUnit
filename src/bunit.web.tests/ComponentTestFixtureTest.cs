@@ -36,8 +36,8 @@ namespace Bunit
             Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(null)).Message.ShouldBe("NonGenericCallback");
             Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
 			
-            new RenderedFragment(Services, Renderer.RenderFragment(instance.ChildContent!).GetAwaiter().GetResult()).Markup.ShouldBe(nameof(ChildContent));
-            new RenderedFragment(Services, Renderer.RenderFragment(instance.OtherContent!).GetAwaiter().GetResult()).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
+            new RenderedFragment(Services, Renderer.RenderFragment(instance.ChildContent!)).Markup.ShouldBe(nameof(ChildContent));
+            new RenderedFragment(Services, Renderer.RenderFragment(instance.OtherContent!)).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
             Should.Throw<Exception>(() => instance.ItemTemplate!("")(null)).Message.ShouldBe("ItemTemplate");
         }
 
@@ -75,8 +75,8 @@ namespace Bunit
             instance.RegularParam.ShouldBe("some value");
             Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(null)).Message.ShouldBe("NonGenericCallback");
             Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
-            new RenderedFragment(Services, Renderer.RenderFragment(instance.ChildContent!).GetAwaiter().GetResult()).Markup.ShouldBe(nameof(ChildContent));
-            new RenderedFragment(Services, Renderer.RenderFragment(instance.OtherContent!).GetAwaiter().GetResult()).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
+            new RenderedFragment(Services, Renderer.RenderFragment(instance.ChildContent!)).Markup.ShouldBe(nameof(ChildContent));
+            new RenderedFragment(Services, Renderer.RenderFragment(instance.OtherContent!)).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
             Should.Throw<Exception>(() => instance.ItemTemplate!("")(null)).Message.ShouldBe("ItemTemplate");
         }
 

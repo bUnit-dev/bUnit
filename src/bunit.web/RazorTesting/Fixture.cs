@@ -25,7 +25,7 @@ namespace Bunit
 			{
 				if (_testData is null)
 				{
-					var id = Renderer.RenderFragment(ChildContent).GetAwaiter().GetResult();
+					var id = Renderer.RenderFragment(ChildContent);
 					_testData = Renderer.FindComponents<FragmentBase>(id).Select(x => x.Component).ToArray();
 				}
 				return _testData;
@@ -127,14 +127,14 @@ namespace Bunit
 
 		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment) where TComponent : IComponent
 		{
-			var renderId = Renderer.RenderFragment(fragment).GetAwaiter().GetResult();
+			var renderId = Renderer.RenderFragment(fragment);
 			var (componentId, component) = Renderer.FindComponent<TComponent>(renderId);
 			return new RenderedComponent<TComponent>(Services, componentId, component);
 		}
 
 		private IRenderedFragment Factory(RenderFragment fragment)
 		{
-			var renderId = Renderer.RenderFragment(fragment).GetAwaiter().GetResult();
+			var renderId = Renderer.RenderFragment(fragment);
 			return new RenderedFragment(Services, renderId);
 		}
 
