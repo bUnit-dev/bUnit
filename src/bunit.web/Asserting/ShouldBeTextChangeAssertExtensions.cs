@@ -39,7 +39,7 @@ namespace Bunit
 
 			var actual = actualChange as NodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 
-			var parser = actual.Control.Node.Owner.Context.GetService<TestHtmlParser>();
+			var parser = actual.Control.Node.Owner.Context.GetService<HtmlParser>();
 			var expected = parser.Parse(expectedChange);
 
 			ShouldBeTextChange(actualChange, expected, userMessage);

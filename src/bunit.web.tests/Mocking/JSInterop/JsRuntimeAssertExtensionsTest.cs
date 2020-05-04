@@ -117,7 +117,7 @@ namespace Bunit.Mocking.JSInterop
         [Fact(DisplayName = "ShouldBeElementReferenceTo throws if element reference does not point to the provided element")]
         public void Test202()
         {
-            using var htmlParser = new TestHtmlParser();
+            using var htmlParser = new HtmlParser();
             var elmRef = new ElementReference(Guid.NewGuid().ToString());
             var elm = (IElement)htmlParser.Parse($"<p {Htmlizer.ELEMENT_REFERENCE_ATTR_NAME}=\"ASDF\" />").First();
 

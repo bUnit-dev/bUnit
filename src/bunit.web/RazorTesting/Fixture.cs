@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bunit.Diffing;
+using Bunit.Extensions;
 using Bunit.Mocking.JSInterop;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
@@ -165,8 +166,7 @@ namespace Bunit
 		/// <inheritdoc/>
 		protected override Task Run()
 		{
-			Services.AddSingleton<IJSRuntime>(new PlaceholderJsRuntime());
-			Services.AddSingleton<TestHtmlParser>(srv => new TestHtmlParser(srv.GetRequiredService<ITestRenderer>()));
+			Services.AddDefaultTestContextServices();
 			return base.Run(this);
 		}
 	}

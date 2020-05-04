@@ -25,7 +25,7 @@ namespace Bunit
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
-			var htmlParser = actual.Services.GetRequiredService<TestHtmlParser>();
+			var htmlParser = actual.Services.GetRequiredService<HtmlParser>();
             var expectedNodes = htmlParser.Parse(expected);
 
             return actual.Nodes.CompareTo(expectedNodes);

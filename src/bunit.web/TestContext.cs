@@ -1,5 +1,6 @@
 using AngleSharp.Dom;
 using Bunit.Diffing;
+using Bunit.Extensions;
 using Bunit.Mocking.JSInterop;
 using Bunit.Rendering;
 using Bunit.Rendering.RenderEvents;
@@ -22,8 +23,7 @@ namespace Bunit
 		/// </summary>
 		public TestContext()
 		{
-			Services.AddSingleton<IJSRuntime>(new PlaceholderJsRuntime());
-			Services.AddSingleton<TestHtmlParser>(srv => new TestHtmlParser(srv.GetRequiredService<ITestRenderer>()));
+			Services.AddDefaultTestContextServices();
 		}
 
 		/// <summary>

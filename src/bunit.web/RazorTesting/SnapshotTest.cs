@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 
 using Bunit.Diffing;
+using Bunit.Extensions;
 using Bunit.Mocking.JSInterop;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
@@ -45,7 +46,8 @@ namespace Bunit
 		protected override async Task Run()
 		{
 			Validate();
-			Services.AddSingleton<IJSRuntime>(new PlaceholderJsRuntime());
+
+			Services.AddDefaultTestContextServices();
 
 			if (Setup is { })
 				TryRun(Setup, this);
@@ -58,7 +60,7 @@ namespace Bunit
 			var expectedRenderId = Renderer.RenderFragment(ExpectedOutput);
 			var expectedHtml = Htmlizer.GetHtml(Renderer, expectedRenderId);
 
-			var parser = new TestHtmlParser();
+			var parser = new HtmlParser();
 			var inputNodes = parser.Parse(inputHtml);
 			var expectedNodes = parser.Parse(expectedHtml);
 

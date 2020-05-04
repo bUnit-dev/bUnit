@@ -10,7 +10,7 @@ namespace Bunit.Diffing
 	/// A AngleSharp based HTML Parse that can parse markup strings
 	/// into a <see cref="INodeList"/>.
 	/// </summary>
-	public sealed class TestHtmlParser : IDisposable
+	public sealed class HtmlParser : IDisposable
     {
         private readonly IBrowsingContext _context;
         private readonly IHtmlParser _htmlParser;
@@ -20,7 +20,7 @@ namespace Bunit.Diffing
         /// Creates an instance of the parser with a AngleSharp context 
         /// without a <see cref="TestRenderer"/> registered.
         /// </summary>
-        public TestHtmlParser()
+        public HtmlParser()
         {
             var config = Configuration.Default
                 .WithCss()
@@ -36,13 +36,12 @@ namespace Bunit.Diffing
         /// Creates an instance of the parser with a AngleSharp context 
         /// with the <paramref name="testRenderer"/> registered.
         /// </summary>
-        /// <param name="testRenderer"></param>
-        public TestHtmlParser(ITestRenderer testRenderer)
+        public HtmlParser(ITestRenderer testRenderer, HtmlComparer htmlComparer)
         {
             var config = Configuration.Default
                 .WithCss()
                 .With(testRenderer)
-                .With(new HtmlComparer())
+                .With(htmlComparer)
                 .With(this);
 
             _context = BrowsingContext.New(config);

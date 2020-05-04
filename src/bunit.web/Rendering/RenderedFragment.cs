@@ -21,7 +21,7 @@ namespace Bunit
 		private INodeList? _latestRenderNodes;
 		private INodeList? _snapshotNodes;
 
-		private TestHtmlParser HtmlParser { get; }
+		private HtmlParser HtmlParser { get; }
 
 		/// <summary>
 		/// Gets the renderer used to render the <see cref="IRenderedFragmentBase"/>.
@@ -76,7 +76,7 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(services));
 
 			Services = services;
-			HtmlParser = services.GetRequiredService<TestHtmlParser>();
+			HtmlParser = services.GetRequiredService<HtmlParser>();
 			Renderer = services.GetRequiredService<ITestRenderer>();
 			ComponentId = componentId;
 			RenderEvents = new RenderEventFilter(Renderer.RenderEvents, RenderFilter);

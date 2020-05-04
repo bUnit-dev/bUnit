@@ -35,7 +35,7 @@ namespace Bunit
 			}
 			else
 			{
-				using var newParser = new TestHtmlParser();
+				using var newParser = new HtmlParser();
 				expected = newParser.Parse(expectedChange);
 			}
 

@@ -24,7 +24,7 @@ namespace Bunit
             if (actual is null) throw new ArgumentNullException(nameof(actual));
             if (expected is null) throw new ArgumentNullException(nameof(expected));
 
-			var htmlParser = actual.Services.GetRequiredService<TestHtmlParser>();
+			var htmlParser = actual.Services.GetRequiredService<HtmlParser>();
             var expectedNodes = htmlParser.Parse(expected);
 
             actual.Nodes.MarkupMatches(expectedNodes, userMessage);
@@ -100,7 +100,7 @@ namespace Bunit
             }
             else
             {
-                using var newParser = new TestHtmlParser();
+                using var newParser = new HtmlParser();
                 expectedNodes = newParser.Parse(expected);
             }
             MarkupMatches(actual, expectedNodes, userMessage);
@@ -126,7 +126,7 @@ namespace Bunit
             }
             else
             {
-                using var newParser = new TestHtmlParser();
+                using var newParser = new HtmlParser();
                 expectedNodes = newParser.Parse(expected);
             }
             MarkupMatches(actual, expectedNodes, userMessage);

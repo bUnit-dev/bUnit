@@ -26,9 +26,10 @@ namespace Bunit
         {
             if (element is null) throw new ArgumentNullException(nameof(element));
 
-            var eventHandlerIdString = element.GetAttribute(Htmlizer.ToBlazorAttribute(eventName));
+			var blazorEventAttr = Htmlizer.ToBlazorAttribute(eventName);
+            var eventHandlerIdString = element.GetAttribute(blazorEventAttr);
 
-            if (string.IsNullOrEmpty(eventHandlerIdString))
+            if (string.IsNullOrEmpty(eventHandlerIdString))				
                 throw new MissingEventHandlerException(element, eventName);
 
             var eventHandlerId = ulong.Parse(eventHandlerIdString, CultureInfo.InvariantCulture);
