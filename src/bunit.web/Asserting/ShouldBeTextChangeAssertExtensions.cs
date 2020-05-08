@@ -21,7 +21,7 @@ namespace Bunit
 		/// <param name="diffs">The list of diffs to verify against.</param>
 		/// <param name="expectedChange">The expected text change.</param>
 		/// <param name="userMessage">A custom error message to show if the verification fails.</param>
-		public static void ShouldHaveSingleTextChange(this IReadOnlyList<IDiff> diffs, string expectedChange, string? userMessage = null)
+		public static void ShouldHaveSingleTextChange(this IEnumerable<IDiff> diffs, string expectedChange, string? userMessage = null)
 		{
 			DiffAssertExtensions.ShouldHaveSingleChange(diffs).ShouldBeTextChange(expectedChange, userMessage);
 		}

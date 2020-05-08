@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using AngleSharp.Diffing.Core;
 
 using Bunit.Asserting;
@@ -18,14 +18,14 @@ namespace Bunit
 		/// </summary>
 		/// <param name="diffs">The collection to be inspected</param>
 		/// <returns>The expected single <see cref="IDiff"/> in the collection.</returns>
-		public static IDiff ShouldHaveSingleChange(this IReadOnlyList<IDiff> diffs)
+		public static IDiff ShouldHaveSingleChange(this IEnumerable<IDiff> diffs)
 		{
 			if (diffs is null)
 				throw new ArgumentNullException(nameof(diffs));
-			if (diffs.Count != 1)
-				throw new ActualExpectedAssertException(diffs.Count.ToString(), "1", "Actual changes", "Expected changes", "There were more than one change");
+			if (diffs.Count() != 1)
+				throw new ActualExpectedAssertException(diffs.Count().ToString(), "1", "Actual changes", "Expected changes", "There were more than one change");
 
-			return diffs[0];
+			return diffs.First();
 		}
 
 		/// <summary>
@@ -35,19 +35,20 @@ namespace Bunit
 		/// <param name="diffs">The collection to be inspected</param>
 		/// <param name="diffInspectors">The <see cref="IDiff"/> inspectors, which inspect each <see cref="IDiff"/> in turn. 
 		/// The total number of <see cref="IDiff"/> inspectors must exactly match the number of <see cref="IDiff"/>s in the collection</param>
-		public static void ShouldHaveChanges(this IReadOnlyList<IDiff> diffs, params Action<IDiff>[] diffInspectors)
+		public static void ShouldHaveChanges(this IEnumerable<IDiff> diffs, params Action<IDiff>[] diffInspectors)
 		{
 			if (diffs is null)
 				throw new ArgumentNullException(nameof(diffs));
 
-			if (diffs.Count != diffInspectors.Length)
-				throw new ActualExpectedAssertException(diffs.Count.ToString(), diffInspectors.Length.ToString(), "Actual changes", "Expected changes", "The actual number of changes does not match the expected.");
+			if (diffs.Count() != diffInspectors.Length)
+				throw new ActualExpectedAssertException(diffs.Count().ToString(), diffInspectors.Length.ToString(), "Actual changes", "Expected changes", "The actual number of changes does not match the expected.");
 
-			for (int i = 0; i < diffInspectors.Length; i++)
+			int index = 0;
+			foreach (var diff in diffs)
 			{
-				diffInspectors[i](diffs[i]);
+				diffInspectors[index](diff);
+				index++;
 			}
 		}
-
 	}
 }
