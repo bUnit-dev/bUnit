@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Bunit.RazorTesting;
-using Bunit.Rendering;
 
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
 {

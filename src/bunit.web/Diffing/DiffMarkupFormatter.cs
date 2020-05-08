@@ -1,7 +1,9 @@
 using System;
+
 using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html;
+
 using Bunit.Rendering;
 
 namespace Bunit.Diffing

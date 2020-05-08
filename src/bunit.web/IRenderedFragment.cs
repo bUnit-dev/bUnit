@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 
@@ -14,6 +15,11 @@ namespace Bunit
 		/// Gets the HTML markup from the rendered fragment/component.
 		/// </summary>
 		string Markup { get; }
+
+		/// <summary>
+		/// An event that is raised after the markup of the <see cref="IRenderedFragmentBase"/> is updated.
+		/// </summary>
+		event Action OnMarkupUpdated;
 
 		/// <summary>
 		/// Gets the AngleSharp <see cref="INodeList"/> based

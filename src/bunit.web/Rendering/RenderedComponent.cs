@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Bunit.Rendering;
+
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit
+namespace Bunit.Rendering
 {
 	/// <inheritdoc/>
 	internal class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent> where TComponent : IComponent

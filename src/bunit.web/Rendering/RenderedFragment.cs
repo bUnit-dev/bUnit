@@ -1,25 +1,31 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Bunit.Diffing;
-using Bunit.Rendering;
-using Bunit.Rendering.RenderEvents;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Bunit
+using Bunit.Diffing;
+using Bunit.Extensions;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
+namespace Bunit.Rendering
 {
 	/// <summary>
 	/// Represents an abstract <see cref="IRenderedFragment"/> with base functionality.
 	/// </summary>
-	public class RenderedFragment : IRenderedFragment
+	public class RenderedFragment : IRenderedFragment, IRenderEventHandler
 	{
-		private readonly ConcurrentRenderEventSubscriber _renderEventSubscriber;
+		private readonly object _lock = new object();
+		private readonly ILogger<RenderedFragment> _logger;
 		private string? _snapshotMarkup;
-		private string? _latestRenderMarkup;
 		private INodeList? _firstRenderNodes;
 		private INodeList? _latestRenderNodes;
 		private INodeList? _snapshotNodes;
+		private string _markup;
 
 		private HtmlParser HtmlParser { get; }
 
@@ -44,12 +50,12 @@ namespace Bunit
 		{
 			get
 			{
-				if (_latestRenderMarkup is null)
+				// The lock ensures that we cannot read the _markup and _latestRenderNodes
+				// field while it is being updated
+				lock (_lock)
 				{
-					// TODO: Htmlizer can throw... should we handle that here?
-					_latestRenderMarkup = Htmlizer.GetHtml(Renderer, ComponentId);
+					return Volatile.Read(ref _markup);
 				}
-				return _latestRenderMarkup;
 			}
 		}
 
@@ -58,14 +64,28 @@ namespace Bunit
 		{
 			get
 			{
-				if (_latestRenderNodes is null)
-					_latestRenderNodes = HtmlParser.Parse(Markup);
-				return _latestRenderNodes;
+				// The lock ensures that latest nodes is always based on the latest rendered markup.
+				lock (_lock)
+				{
+					var result = Volatile.Read(ref _latestRenderNodes);
+					if (result is null)
+					{
+						result = HtmlParser.Parse(Markup);
+						Volatile.Write(ref _latestRenderNodes, result);
+					}
+					return result;
+				}
 			}
 		}
 
 		/// <inheritdoc/>
-		public IObservable<RenderEvent> RenderEvents { get; }
+		public event Action? OnMarkupUpdated;
+
+		/// <inheritdoc/>
+		public event Action? OnAfterRender;
+
+		/// <inheritdoc/>
+		public int RenderCount { get; private set; }
 
 		/// <summary>
 		/// Creates an instance of the <see cref="RenderedFragment"/> class.
@@ -75,13 +95,15 @@ namespace Bunit
 			if (services is null)
 				throw new ArgumentNullException(nameof(services));
 
-			Services = services;
+			_logger = services.CreateLogger<RenderedFragment>();
 			HtmlParser = services.GetRequiredService<HtmlParser>();
 			Renderer = services.GetRequiredService<ITestRenderer>();
+			Services = services;
 			ComponentId = componentId;
-			RenderEvents = new RenderEventFilter(Renderer.RenderEvents, RenderFilter);
-			_renderEventSubscriber = new ConcurrentRenderEventSubscriber(Renderer.RenderEvents, ComponentRendered);
-			FirstRenderMarkup = Markup;
+			_markup = RetrieveLatestMarkupFromRenderer();
+			FirstRenderMarkup = _markup;
+			Renderer.AddRenderEventHandler(this);
+			RenderCount = 1;
 		}
 
 		/// <inheritdoc/>
@@ -111,21 +133,52 @@ namespace Bunit
 			return Nodes.CompareTo(_firstRenderNodes);
 		}
 
-		private bool RenderFilter(RenderEvent renderEvent)
-			=> renderEvent.DidComponentRender(this.ComponentId);
+		private string RetrieveLatestMarkupFromRenderer() => Htmlizer.GetHtml(Renderer, ComponentId);
 
-		private void ComponentRendered(RenderEvent renderEvent)
+		Task IRenderEventHandler.Handle(RenderEvent renderEvent)
 		{
-			if (renderEvent.HasChangesTo(this.ComponentId))
+			HandleComponentRender(renderEvent);
+			return Task.CompletedTask;
+		}
+
+		private void HandleComponentRender(RenderEvent renderEvent)
+		{
+			if (renderEvent.DidComponentRender(ComponentId))
 			{
-				ResetLatestRenderCache();
+				_logger.LogDebug(new EventId(1, nameof(HandleComponentRender)), $"Received a new render where component {ComponentId} did render.");
+
+				RenderCount++;
+
+				// First notify derived types, e.g. queried AngleSharp collections or elements
+				// that the markup has changed and they should rerun their queries.
+				HandleChangesToMarkup(renderEvent);
+
+				// Then it is safe to tell anybody waiting on updates or changes to the rendered fragment
+				// that they can redo their assertions or continue processing.
+				OnAfterRender?.Invoke();
 			}
 		}
 
-		private void ResetLatestRenderCache()
+		private void HandleChangesToMarkup(RenderEvent renderEvent)
 		{
-			_latestRenderMarkup = null;
-			_latestRenderNodes = null;
+			if (renderEvent.HasMarkupChanges(ComponentId))
+			{
+				_logger.LogDebug(new EventId(1, nameof(HandleChangesToMarkup)), $"Received a new render where the markup of component {ComponentId} changed.");
+
+				// The lock ensures that latest nodes is always based on the latest rendered markup.
+				lock (_lock)
+				{
+					Volatile.Write(ref _latestRenderNodes, null);
+					Volatile.Write(ref _markup, RetrieveLatestMarkupFromRenderer());
+				}
+
+				OnMarkupUpdated?.Invoke();
+			}
+			else if (renderEvent.DidComponentDispose(ComponentId))
+			{
+				_logger.LogDebug(new EventId(1, nameof(HandleChangesToMarkup)), $"Received a new render where the component {ComponentId} was disposed.");
+				Renderer.RemoveRenderEventHandler(this);
+			}
 		}
 	}
 }

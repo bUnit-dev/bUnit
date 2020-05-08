@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
+
 using Bunit.RazorTesting;
+
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -9,12 +11,12 @@ namespace Bunit
 	/// where a component under test can be defined as the child content.
 	/// </summary>
 	public class ComponentUnderTest : FragmentBase
-    {
-        /// <inheritdoc />
-        public override Task SetParametersAsync(ParameterView parameters)
-        {
-            var result = base.SetParametersAsync(parameters);
-            return result;
-        }
-    }
+	{
+		/// <inheritdoc />
+		public override Task SetParametersAsync(ParameterView parameters)
+		{
+			var result = base.SetParametersAsync(parameters);
+			return result;
+		}
+	}
 }

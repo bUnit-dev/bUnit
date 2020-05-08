@@ -1,5 +1,4 @@
 using System;
-using Bunit.Rendering.RenderEvents;
 
 namespace Bunit
 {
@@ -14,10 +13,14 @@ namespace Bunit
 		int ComponentId { get; }
 
 		/// <summary>
-		/// Gets an <see cref="IObservable{RenderEvent}"/> which will provide subscribers with <see cref="RenderEvent"/>s 
-		/// whenever the <see cref="IRenderedFragmentBase"/> is rendered.
+		/// Gets the total number times the fragment has been through its render life-cycle.
 		/// </summary>
-		IObservable<RenderEvent> RenderEvents { get; }
+		int RenderCount { get; }
+
+		/// <summary>
+		/// Adds or removes an event handler that will be triggered after each render of this <see cref="IRenderedFragmentBase"/>.
+		/// </summary>
+		event Action OnAfterRender;
 
 		/// <summary>
 		/// Gets the <see cref="IServiceProvider"/> used when rendering the component.

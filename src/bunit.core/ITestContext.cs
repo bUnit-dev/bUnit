@@ -1,6 +1,6 @@
 using System;
+
 using Bunit.Rendering;
-using Bunit.Rendering.RenderEvents;
 
 namespace Bunit
 {
@@ -19,11 +19,5 @@ namespace Bunit
 		/// component is rendered by the test context.
 		/// </summary>
 		TestServiceProvider Services { get; }
-
-		/// <summary>
-		/// Gets an <see cref="IObservable{RenderEvent}"/> which will provide subscribers with <see cref="RenderEvent"/>s from the
-		/// related to this <see cref="ITestContext"/>.
-		/// </summary>
-		IObservable<RenderEvent> RenderEvents { get; }
 	}
 }

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Xunit.Abstractions;
 
 namespace Xunit.Sdk
@@ -31,7 +30,7 @@ namespace Xunit.Sdk
 			var invoker = new RazorTestInvoker(CreateTestOutputHelper, Test, MessageBus, TestClass, ConstructorArguments, TestMethod, TestMethodArguments, BeforeAfterAttributes, aggregator, CancellationTokenSource);
 			return invoker.RunAsync();
 		}
-		
+
 		private string GetTestOutput()
 		{
 			string result = string.Empty;

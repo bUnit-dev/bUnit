@@ -4,8 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+
 using Bunit.RazorTesting;
+
 using ReflectionHelpers;
+
 using Xunit.Abstractions;
 
 namespace Xunit.Sdk
@@ -138,9 +141,9 @@ namespace Xunit.Sdk
 					if (line.StartsWith($"<{RazorTestTypes[i].Name}", StringComparison.Ordinal))
 					{
 						char? nextChar = null;
-						if(line.Length > RazorTestTypes[i].Name.Length + 1)
+						if (line.Length > RazorTestTypes[i].Name.Length + 1)
 							nextChar = line[RazorTestTypes[i].Name.Length + 1];
-							
+
 						if (nextChar is null || nextChar == ' ' || nextChar == '>' || nextChar == '\n' || nextChar == '\r')
 						{
 							testCasesSeen++;

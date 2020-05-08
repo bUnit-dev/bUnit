@@ -1,42 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Threading.Tasks;
+
+using Bunit.Extensions;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Runtime.ExceptionServices;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.Logging.Abstractions;
-using Bunit.Rendering.RenderEvents;
 
 namespace Bunit.Rendering
 {
 	/// <summary>
 	/// Generalized Blazor renderer for testing purposes.
 	/// </summary>
-	public partial class TestRenderer : Renderer, ITestRenderer
+	public class TestRenderer : Renderer, ITestRenderer, IRenderEventProducer
 	{
-		private const string LOGGER_CATEGORY = nameof(Bunit) + "." + nameof(TestRenderer);
 		private static readonly Type CascadingValueType = typeof(CascadingValue<>);
-		private readonly RenderEventPublisher _renderEventPublisher;
 		private readonly ILogger _logger;
 		private Exception? _unhandledException;
+		private List<IRenderEventHandler> _renderEventHandlers = new List<IRenderEventHandler>();
 
 		/// <inheritdoc/>
 		public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
 
-		/// <inheritdoc/>
-		public IObservable<RenderEvent> RenderEvents { get; }
-
 		/// <summary>
 		/// Creates an instance of the <see cref="TestRenderer"/> class.
 		/// </summary>
-		public TestRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory) : base(serviceProvider, loggerFactory)
+		public TestRenderer(IServiceProvider services, ILoggerFactory loggerFactory) : base(services, loggerFactory)
 		{
-			_renderEventPublisher = new RenderEventPublisher();
-			_logger = loggerFactory?.CreateLogger(LOGGER_CATEGORY) ?? NullLogger.Instance;
-			RenderEvents = _renderEventPublisher;
+			_logger = loggerFactory.CreateLogger<TestRenderer>();
 		}
+
+		/// <summary>
+		/// Adds a <see cref="IRenderEventHandler"/> to this renderer,
+		/// which will be triggered when the renderer has finished rendering
+		/// a render cycle.
+		/// </summary>
+		/// <param name="handler">The handler to add.</param>
+		public void AddRenderEventHandler(IRenderEventHandler handler) => _renderEventHandlers.Add(handler);
+
+		/// <summary>
+		/// Removes a <see cref="IRenderEventHandler"/> from this renderer.
+		/// </summary>
+		/// <param name="handler">The handler to remove.</param>
+		public void RemoveRenderEventHandler(IRenderEventHandler handler) => _renderEventHandlers.Remove(handler);
 
 		/// <inheritdoc/>
 		public (int ComponentId, TComponent Component) RenderComponent<TComponent>(IEnumerable<ComponentParameter> parameters) where TComponent : IComponent
@@ -72,15 +81,7 @@ namespace Bunit.Rendering
 		/// <inheritdoc/>
 		public new ArrayRange<RenderTreeFrame> GetCurrentRenderTreeFrames(int componentId)
 		{
-			try
-			{
-				return base.GetCurrentRenderTreeFrames(componentId);
-			}
-			catch (ArgumentException ex) when (ex.Message.Equals($"The renderer does not have a component with ID {componentId}.", StringComparison.Ordinal))
-			{
-				_logger.LogDebug(new EventId(2, nameof(GetCurrentRenderTreeFrames)), $"{ex.Message}");
-			}
-			return new ArrayRange<RenderTreeFrame>(Array.Empty<RenderTreeFrame>(), 0);
+			return base.GetCurrentRenderTreeFrames(componentId);
 		}
 
 		/// <inheritdoc/>
@@ -89,13 +90,27 @@ namespace Bunit.Rendering
 			if (fieldInfo is null)
 				throw new ArgumentNullException(nameof(fieldInfo));
 
-			_logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Starting trigger of '{fieldInfo.FieldValue}'");
+			_logger.LogDebug(new EventId(10, nameof(DispatchEventAsync)), $"Starting trigger of '{fieldInfo.FieldValue}'");
 
 			var result = Dispatcher.InvokeAsync(() => base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs));
 
 			AssertNoUnhandledExceptions();
 
-			_logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"Finished trigger of '{fieldInfo.FieldValue}'");
+			if (result.IsCompletedSuccessfully)
+			{
+				_logger.LogDebug(new EventId(11, nameof(DispatchEventAsync)), $"Finished trigger synchronously for '{fieldInfo.FieldValue}'");
+			}
+			else
+			{
+				_logger.LogDebug(new EventId(13, nameof(DispatchEventAsync)), $"Event handler for '{fieldInfo.FieldValue}' returned an incomplete task with status {result.Status}");
+				result = result.ContinueWith(x =>
+				{
+					if (x.IsCompletedSuccessfully)
+					{
+						_logger.LogDebug(new EventId(12, nameof(DispatchEventAsync)), $"Finished trigger asynchronously for '{fieldInfo.FieldValue}'");
+					}
+				}, TaskContinuationOptions.OnlyOnRanToCompletion);
+			}
 
 			return result;
 		}
@@ -120,23 +135,28 @@ namespace Bunit.Rendering
 		}
 
 		/// <inheritdoc/>
-		protected override void HandleException(Exception exception)
-			=> _unhandledException = exception;
+		protected override void HandleException(Exception exception) => _unhandledException = exception;
 
 		/// <inheritdoc/>
 		protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 		{
 			_logger.LogDebug(new EventId(0, nameof(UpdateDisplayAsync)), $"New render batch with ReferenceFrames = {renderBatch.ReferenceFrames.Count}, UpdatedComponents = {renderBatch.UpdatedComponents.Count}, DisposedComponentIDs = {renderBatch.DisposedComponentIDs.Count}, DisposedEventHandlerIDs = {renderBatch.DisposedEventHandlerIDs.Count}");
-			var renderEvent = new RenderEvent(in renderBatch, this);
-			_renderEventPublisher.OnRender(renderEvent);
-			return Task.CompletedTask;
+
+			return _renderEventHandlers.Count == 0
+				? Task.CompletedTask
+				: PublishRenderEvent(in renderBatch);
 		}
 
-		/// <inheritdoc/>
-		protected override void Dispose(bool disposing)
+		private Task PublishRenderEvent(in RenderBatch renderBatch)
 		{
-			_renderEventPublisher.OnCompleted();
-			base.Dispose(disposing);
+			var renderEvent = new RenderEvent(in renderBatch, this);
+
+			return _renderEventHandlers.Count switch
+			{
+				0 => Task.CompletedTask,
+				1 => _renderEventHandlers[0].Handle(renderEvent),
+				_ => Task.WhenAll(_renderEventHandlers.Select(x => x.Handle(renderEvent)))
+			};
 		}
 
 		private void AssertNoUnhandledExceptions()

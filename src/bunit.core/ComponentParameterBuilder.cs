@@ -5,10 +5,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
+
 using EC = Microsoft.AspNetCore.Components.EventCallback;
 
-namespace Bunit.Rendering
+namespace Bunit
 {
 	/// <summary>
 	/// A builder to set a value for strongly typed ComponentParameters.

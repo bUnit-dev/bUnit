@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Bunit.RazorTesting;
+
 using Xunit.Abstractions;
 
 namespace Xunit.Sdk

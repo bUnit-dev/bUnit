@@ -1,35 +1,36 @@
 ﻿using System;
 using System.Linq;
+
 using AngleSharp.Dom;
 
 namespace Bunit
 {
-    /// <summary>
-    /// Represents an exception that is thrown when triggering an event handler failed because it wasn't available on the targeted <see cref="IElement"/>.
-    /// </summary>
-    internal class MissingEventHandlerException : Exception
-    {
-        public MissingEventHandlerException(IElement element, string missingEventName) : base(CreateErrorMessage(element, missingEventName))
-        {
-        }
+	/// <summary>
+	/// Represents an exception that is thrown when triggering an event handler failed because it wasn't available on the targeted <see cref="IElement"/>.
+	/// </summary>
+	internal class MissingEventHandlerException : Exception
+	{
+		public MissingEventHandlerException(IElement element, string missingEventName) : base(CreateErrorMessage(element, missingEventName))
+		{
+		}
 
-        private static string CreateErrorMessage(IElement element, string missingEventName)
-        {
-            var result = $"The element does not have an event handler for the event '{missingEventName}'";
-            var eventHandlers = element.Attributes?
-                .Where(x => x.Name.StartsWith(Htmlizer.BLAZOR_ATTR_PREFIX, StringComparison.Ordinal) && !x.Name.StartsWith(Htmlizer.ELEMENT_REFERENCE_ATTR_NAME, StringComparison.Ordinal))
-                .Select(x => $"'{x.Name.Remove(0, Htmlizer.BLAZOR_ATTR_PREFIX.Length)}'")
-                .ToArray() ?? Array.Empty<string>();
+		private static string CreateErrorMessage(IElement element, string missingEventName)
+		{
+			var result = $"The element does not have an event handler for the event '{missingEventName}'";
+			var eventHandlers = element.Attributes?
+				.Where(x => x.Name.StartsWith(Htmlizer.BLAZOR_ATTR_PREFIX, StringComparison.Ordinal) && !x.Name.StartsWith(Htmlizer.ELEMENT_REFERENCE_ATTR_NAME, StringComparison.Ordinal))
+				.Select(x => $"'{x.Name.Remove(0, Htmlizer.BLAZOR_ATTR_PREFIX.Length)}'")
+				.ToArray() ?? Array.Empty<string>();
 
-            var suggestAlternatives = ", nor any other events.";
+			var suggestAlternatives = ", nor any other events.";
 
-            if (eventHandlers.Length > 1)
-                suggestAlternatives = $". It does however have event handlers for these events, {string.Join(", ", eventHandlers)}.";
-            if (eventHandlers.Length == 1)
-                suggestAlternatives = $". It does however have an event handler for the {eventHandlers[0]} event.";
+			if (eventHandlers.Length > 1)
+				suggestAlternatives = $". It does however have event handlers for these events, {string.Join(", ", eventHandlers)}.";
+			if (eventHandlers.Length == 1)
+				suggestAlternatives = $". It does however have an event handler for the {eventHandlers[0]} event.";
 
-            return $"{result}{suggestAlternatives}";
-        }
+			return $"{result}{suggestAlternatives}";
+		}
 
-    }
+	}
 }

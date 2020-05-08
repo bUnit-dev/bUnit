@@ -3,6 +3,7 @@ namespace Bunit.Rendering.Internal
 	using Microsoft.AspNetCore.Components;
 	using Microsoft.AspNetCore.Components.Rendering;
 	using Microsoft.AspNetCore.Components.Web;
+
 	using Xunit;
 
 	public class HtmlizerTests : ComponentTestFixture

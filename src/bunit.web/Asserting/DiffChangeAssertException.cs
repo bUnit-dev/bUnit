@@ -1,5 +1,7 @@
 using System;
+
 using AngleSharp.Diffing.Core;
+
 using Bunit.Asserting;
 
 namespace Bunit

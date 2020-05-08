@@ -1,4 +1,4 @@
-﻿@using System.Threading.Tasks
+@using System.Threading.Tasks
 
 <div>
     <span id="state">@state</span>
@@ -8,31 +8,31 @@
 
 @code
 {
-    bool tockEnabled = false;
-    TaskCompletionSource<object?>? _tcs;
-    string state = "Stopped";
+	public bool tockEnabled = false;
+	public TaskCompletionSource<object?>? _tcs;
+	public string state = "Stopped";
 
-    Task Tick(MouseEventArgs e)
-    {
-        if (_tcs is null)
-        {
-            _tcs = new TaskCompletionSource<object?>();
+	public Task Tick(MouseEventArgs e)
+	{
+		if (_tcs is null)
+		{
+			_tcs = new TaskCompletionSource<object?>();
 
-            state = "Started";
-            tockEnabled = true;
-            return _tcs.Task.ContinueWith((task) =>
-            {
-                state = "Stopped";
-                _tcs = null;
-            });
-        }
+			state = "Started";
+			tockEnabled = true;
+			return _tcs.Task.ContinueWith((task) =>
+			{
+				state = "Stopped";
+				_tcs = null;
+			});
+		}
 
-        return Task.CompletedTask;
-    }
+		return Task.CompletedTask;
+	}
 
-    void Tock(MouseEventArgs e)
-    {
-        tockEnabled = false;
-        _tcs?.TrySetResult(null);
-    }
+	public void Tock(MouseEventArgs e)
+	{
+		tockEnabled = false;
+		_tcs?.TrySetResult(null);
+	}
 }

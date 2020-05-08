@@ -1,7 +1,8 @@
 using System;
-using System.Diagnostics;
 using System.Threading;
+
 using Microsoft.Extensions.Logging;
+
 using Xunit.Abstractions;
 
 namespace Bunit.Logging
@@ -36,7 +37,16 @@ namespace Bunit.Logging
 				return;
 			if (formatter is null)
 				return;
-			_output.WriteLine($"{logLevel} | {Thread.GetCurrentProcessorId()} - {Thread.CurrentThread.ManagedThreadId} | {_name} | {eventId.Id}:{eventId.Name} | {formatter(state, exception)}");
+
+			try
+			{
+				_output.WriteLine($"{logLevel} | {Thread.GetCurrentProcessorId()} - {Thread.CurrentThread.ManagedThreadId} | {DateTime.UtcNow.ToString("o")} | {_name} | {eventId.Id}:{eventId.Name} | {formatter(state, exception)}");
+			}
+			catch
+			{
+				// This can throw an System.InvalidOperationException: There is no currently active test.
+				// However, since there is nothing to do about it, we simply ignore it and continue.
+			}
 		}
 	}
 }
