@@ -14,22 +14,6 @@ namespace Bunit
 	public static class ComponentParameterExtensions
 	{
 		/// <summary>
-		/// Converts a collection of <see cref="ComponentParameter"/> into a <see cref="ParameterValue"/>.
-		/// </summary>
-		/// <param name="parameters">Collection to convert.</param>
-		/// <returns>The <see cref="ParameterValue"/>.</returns>
-		public static ParameterView ToParameterView(this IEnumerable<ComponentParameter> parameters)
-		{
-			if (parameters.Any())
-			{
-				var p = parameters.Where(x => !x.IsCascadingValue).ToDictionary(x => x.Name, x => x.Value);
-				return ParameterView.FromDictionary(p);
-			}
-			else
-				return ParameterView.Empty;
-		}
-
-		/// <summary>
 		/// Creates a <see cref="RenderFragment"/> that will render a component of <typeparamref name="TComponent"/> type,
 		/// with the provided <paramref name="parameters"/>. If one or more of the <paramref name="parameters"/> include
 		/// a cascading values, the <typeparamref name="TComponent"/> will be wrapped in <see cref="Microsoft.AspNetCore.Components.CascadingValue{TValue}"/> 

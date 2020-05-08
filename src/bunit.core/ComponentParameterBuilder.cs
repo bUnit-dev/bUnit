@@ -16,7 +16,7 @@ namespace Bunit
 	/// A builder to set a value for strongly typed ComponentParameters.
 	/// </summary>
 	/// <typeparam name="TComponent">The type of component under test to add the parameters</typeparam>
-	public sealed class ComponentParameterBuilder<TComponent> where TComponent : class, IComponent
+	public sealed class ComponentParameterBuilder<TComponent> where TComponent : IComponent
 	{
 		private const string ParameterNameChildContent = "ChildContent";
 		private static readonly PropertyInfo[] ComponentProperties = typeof(TComponent).GetProperties();
@@ -210,42 +210,52 @@ namespace Bunit
 		/// Add a strongly typed <see cref="RenderFragment" /> parameter with a <see cref="ComponentParameterBuilder{TChildComponent}"/> for the component under test.
 		/// </summary>
 		/// <param name="parameterSelector">The parameter selector which defines the parameter to add</param>
-		/// <param name="childBuilderAction">The builder action for the child component.</param>
+		/// <param name="childParameterBuilder">An optional builder action for the child component.</param>
 		/// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
-		public ComponentParameterBuilder<TComponent> Add<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, Action<ComponentParameterBuilder<TChildComponent>> childBuilderAction) where TChildComponent : class, IComponent
+		public ComponentParameterBuilder<TComponent> Add<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, Action<ComponentParameterBuilder<TChildComponent>>? childParameterBuilder = null) where TChildComponent : class, IComponent
 		{
-			if (parameterSelector is null)
-				throw new ArgumentNullException(nameof(parameterSelector));
-
-			if (childBuilderAction is null)
-				throw new ArgumentNullException(nameof(childBuilderAction));
-
 			var (name, isCascading) = GetDetailsFromExpression(parameterSelector);
 
-			var childComponentParameterBuilder = new ComponentParameterBuilder<TChildComponent>();
-			childBuilderAction(childComponentParameterBuilder);
+			RenderFragment childContentFragment;
 
-			var childFragment = childComponentParameterBuilder.Build().ToComponentRenderFragment<TChildComponent>();
-			return AddParameterToList(name, childFragment, isCascading);
+			if (childParameterBuilder is { })
+			{
+				var build = new ComponentParameterBuilder<TChildComponent>();
+				childParameterBuilder?.Invoke(build);
+				childContentFragment = build.Build().ToComponentRenderFragment<TChildComponent>();
+			}
+			else
+			{
+				childContentFragment = Array.Empty<ComponentParameter>().ToComponentRenderFragment<TChildComponent>();
+			}
+
+			return AddParameterToList(name, childContentFragment, isCascading);
 		}
 
 		/// <summary>
 		/// Add a <see cref="ComponentParameterBuilder{TChildComponent}"/> to build a ChildContent parameter.
 		/// </summary>
-		/// <param name="childBuilderAction">The builder action for the child component.</param>
+		/// <param name="childParameterBuilder">An optional builder action for the child component.</param>
 		/// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
-		public ComponentParameterBuilder<TComponent> AddChildContent<TChildComponent>(Action<ComponentParameterBuilder<TChildComponent>> childBuilderAction) where TChildComponent : class, IComponent
+		public ComponentParameterBuilder<TComponent> AddChildContent<TChildComponent>(Action<ComponentParameterBuilder<TChildComponent>>? childParameterBuilder = null) where TChildComponent : class, IComponent
 		{
-			if (childBuilderAction is null)
-				throw new ArgumentNullException(nameof(childBuilderAction));
-
 			var (name, isCascading) = GetChildContentParameterDetails();
 
-			var childComponentParameterBuilder = new ComponentParameterBuilder<TChildComponent>();
-			childBuilderAction(childComponentParameterBuilder);
 
-			var childFragment = childComponentParameterBuilder.Build().ToList().ToComponentRenderFragment<TChildComponent>();
-			return AddParameterToList(name, childFragment, isCascading);
+			RenderFragment childContentFragment;
+
+			if (childParameterBuilder is { })
+			{
+				var builder = new ComponentParameterBuilder<TChildComponent>();
+				childParameterBuilder?.Invoke(builder);
+				childContentFragment = builder.Build().ToComponentRenderFragment<TChildComponent>();
+			}
+			else
+			{
+				childContentFragment = Array.Empty<ComponentParameter>().ToComponentRenderFragment<TChildComponent>();
+			}
+
+			return AddParameterToList(name, childContentFragment, isCascading);
 		}
 
 		/// <summary>
@@ -266,7 +276,7 @@ namespace Bunit
 		/// Create a <see cref="IReadOnlyList{ComponentParameter}"/>.
 		/// </summary>
 		/// <returns>A list of <see cref="ComponentParameter"/></returns>
-		public IList<ComponentParameter> Build()
+		public IReadOnlyList<ComponentParameter> Build()
 		{
 			return _componentParameters;
 		}
@@ -312,13 +322,15 @@ namespace Bunit
 			{
 				if (!string.IsNullOrEmpty(cascadingParameterAttribute.Name))
 				{
-					// The CascadingParameterAttribute is defined and has a valid name, get the defined name from this attribute and indicate that it's a cascading property
+					// The CascadingParameterAttribute is defined and has a valid name, get the defined
+					// name from this attribute and indicate that it's a cascading property
 					name = cascadingParameterAttribute.Name;
 					isCascading = true;
 					return true;
 				}
 
-				// The CascadingParameterAttribute is defined, get the name from the property and indicate that it's a cascading property
+				// The CascadingParameterAttribute is defined, get the name from the property
+				// and indicate that it's a cascading property
 				name = propertyInfo.Name;
 				isCascading = true;
 				return true;
@@ -332,14 +344,12 @@ namespace Bunit
 
 		private ComponentParameterBuilder<TComponent> AddParameterToList(string? name, object? value, bool isCascading)
 		{
-			if (_componentParameters.All(cp => cp.Name != name))
-			{
-				_componentParameters.Add((name, value, isCascading));
+			if (_componentParameters.Any(cp => cp.Name == name))
+				throw new ArgumentException($"A parameter with the name '{name}' has already been added to the {typeof(TComponent).Name}.");
 
-				return this;
-			}
+			_componentParameters.Add(new ComponentParameter(name, value, isCascading));
 
-			throw new ArgumentException($"A parameter with the name '{name}' has already been added to the {nameof(ComponentParameterBuilder<TComponent>)}.");
+			return this;
 		}
 	}
 }

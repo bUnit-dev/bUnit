@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Bunit.EventDispatchExtensions
 {
-	public class EventBubblingTest : ComponentTestFixture
+	public class EventBubblingTest : TestContext
 	{
 		[Fact(DisplayName = "When clicking on an element with an event handler, " +
 							"event handlers higher up the DOM tree is also triggered", Skip = "fix with #119")]

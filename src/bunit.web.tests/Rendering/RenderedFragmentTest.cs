@@ -11,7 +11,8 @@ using Xunit.Abstractions;
 
 namespace Bunit
 {
-	public class RenderedFragmentTest : ComponentTestFixture
+
+	public class RenderedFragmentTest : TestContext
 	{
 		public RenderedFragmentTest(ITestOutputHelper output)
 		{
@@ -28,7 +29,7 @@ namespace Bunit
 		[Fact(DisplayName = "Find returns expected element that matches the css selector")]
 		public void Test002()
 		{
-			var cut = RenderComponent<Wrapper>(ChildContent("<div>"));
+			var cut = RenderComponent<Wrapper>(x => x.AddChildContent("<div>"));
 			var result = cut.Find("div");
 			result.ShouldNotBeNull();
 		}
@@ -49,12 +50,11 @@ namespace Bunit
 							"when a nested component has caused the DOM tree to change")]
 		public void Test007()
 		{
-			var cut = RenderComponent<Wrapper>(
-				ChildContent<CascadingValue<string>>(
-					("Value", "FOO"),
-					ChildContent<ClickCounter>()
-				)
+			var cut = RenderComponent<CascadingValue<string>>(builder => builder
+				.Add(p => p.Value, "FOO")
+				.AddChildContent<ClickCounter>()
 			);
+
 			var initialNodes = cut.Nodes;
 
 			cut.Find("button").Click();
@@ -93,11 +93,12 @@ namespace Bunit
 		[Fact(DisplayName = "FindComponent returns first component of requested type using a depth first search")]
 		public void Test100()
 		{
-			var wrapper = RenderComponent<TwoComponentWrapper>(
-				RenderFragment<Wrapper>(nameof(TwoComponentWrapper.First),
-					ChildContent<Simple1>((nameof(Simple1.Header), "First")
-				)),
-				RenderFragment<Simple1>(nameof(TwoComponentWrapper.Second), (nameof(Simple1.Header), "Second"))
+			var wrapper = RenderComponent<TwoComponentWrapper>(builder => builder
+				.Add<Wrapper>(p => p.First, wrapper => wrapper
+					.AddChildContent<Simple1>(simple1 => simple1
+						.Add(p => p.Header, "First")))
+				.Add<Simple1>(p => p.Second, simple1 => simple1
+					.Add(p => p.Header, "Second"))
 			);
 
 			var cut = wrapper.FindComponent<Simple1>();
@@ -116,12 +117,14 @@ namespace Bunit
 		[Fact(DisplayName = "GetComponents returns all components of requested type using a depth first order")]
 		public void Test103()
 		{
-			var wrapper = RenderComponent<TwoComponentWrapper>(
-				RenderFragment<Wrapper>(nameof(TwoComponentWrapper.First),
-					ChildContent<Simple1>((nameof(Simple1.Header), "First")
-				)),
-				RenderFragment<Simple1>(nameof(TwoComponentWrapper.Second), (nameof(Simple1.Header), "Second"))
+			var wrapper = RenderComponent<TwoComponentWrapper>(builder => builder
+				.Add<Wrapper>(p => p.First, wrapper => wrapper
+					.AddChildContent<Simple1>(simple1 => simple1
+						.Add(p => p.Header, "First")))
+				.Add<Simple1>(p => p.Second, simple1 => simple1
+					.Add(p => p.Header, "Second"))
 			);
+
 			var cuts = wrapper.FindComponents<Simple1>();
 
 			cuts.Count.ShouldBe(2);
@@ -129,34 +132,32 @@ namespace Bunit
 			cuts[1].Instance.Header.ShouldBe("Second");
 		}
 
-		//[Fact(DisplayName = "Render events for non-rendered sub components are not emitted")]
-		//public void Test010()
-		//{
-		//    var renderSub = new ConcurrentRenderEventSubscriber(RenderEvents);
-		//    var wrapper = RenderComponent<TwoComponentWrapper>(
-		//        RenderFragment<Simple1>(nameof(TwoComponentWrapper.First)),
-		//        RenderFragment<Simple1>(nameof(TwoComponentWrapper.Second))
-		//    );
-		//    var cuts = wrapper.FindComponents<Simple1>();
-		//    var wrapperSub = new ConcurrentRenderEventSubscriber(wrapper.RenderEvents);
-		//    var cutSub1 = new ConcurrentRenderEventSubscriber(cuts[0].RenderEvents);
-		//    var cutSub2 = new ConcurrentRenderEventSubscriber(cuts[1].RenderEvents);
+		[Fact(DisplayName = "Render events for non-rendered sub components are not emitted")]
+		public void Test010()
+		{
+			var wrapper = RenderComponent<TwoComponentWrapper>(parameters => parameters
+				.Add<Simple1>(p => p.First)
+				.Add<Simple1>(p => p.Second)
+			);
+			var cuts = wrapper.FindComponents<Simple1>();
+			var first = cuts[0];
+			var second = cuts[1];
 
-		//    renderSub.RenderCount.ShouldBe(1);
+			wrapper.RenderCount.ShouldBe(1);
+			first.RenderCount.ShouldBe(1);
+			second.RenderCount.ShouldBe(1);
 
-		//    cuts[0].Render();
+			first.Render();
 
-		//    renderSub.RenderCount.ShouldBe(2);
-		//    wrapperSub.RenderCount.ShouldBe(1);
-		//    cutSub1.RenderCount.ShouldBe(1);
-		//    cutSub2.RenderCount.ShouldBe(0);
+			wrapper.RenderCount.ShouldBe(2);
+			first.RenderCount.ShouldBe(2);
+			second.RenderCount.ShouldBe(1);
 
-		//    cuts[1].Render();
+			second.Render();
 
-		//    renderSub.RenderCount.ShouldBe(3);
-		//    wrapperSub.RenderCount.ShouldBe(2);
-		//    cutSub1.RenderCount.ShouldBe(1);
-		//    cutSub2.RenderCount.ShouldBe(1);
-		//}
+			wrapper.RenderCount.ShouldBe(3);
+			first.RenderCount.ShouldBe(2);
+			second.RenderCount.ShouldBe(2);
+		}	
 	}
 }

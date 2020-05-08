@@ -12,6 +12,7 @@ using Xunit;
 namespace Bunit
 {
 	[SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>")]
+	[Obsolete("To be removed when ComponentTestFixture is removed")]
 	public class ComponentTestFixtureTest : ComponentTestFixture
 	{
 		[Fact(DisplayName = "All types of parameters are correctly assigned to component on render")]

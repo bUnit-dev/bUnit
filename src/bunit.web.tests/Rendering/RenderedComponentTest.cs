@@ -1,4 +1,4 @@
-﻿using Bunit.TestAssets.SampleComponents;
+using Bunit.TestAssets.SampleComponents;
 
 using Shouldly;
 
@@ -6,44 +6,38 @@ using Xunit;
 
 namespace Bunit
 {
-	public class RenderedComponentTest : ComponentTestFixture
+	public class RenderedComponentTest : TestContext
 	{
-		[Fact(DisplayName = "Nodes should return the same instance " +
-							"when a render has not resulted in any changes")]
+		[Fact(DisplayName = "Call to Render() results in a render of component")]
 		public void Test003()
 		{
-			var cut = RenderComponent<Wrapper>(ChildContent("<div>"));
-			var initialNodes = cut.Nodes;
+			var cut = RenderComponent<Wrapper>(parameters => parameters.AddChildContent("<div>"));
+			var initialRenderCount = cut.RenderCount;
 
 			cut.Render();
-			cut.SetParametersAndRender(ChildContent("<div>"));
 
-			Assert.Same(initialNodes, cut.Nodes);
+			cut.RenderCount.ShouldBe(initialRenderCount + 1);
 		}
 
-		[Fact(DisplayName = "Nodes should return new instance " +
-							"when a SetParametersAndRender has caused changes to DOM tree")]
+		[Fact(DisplayName = "Call to SetParametersAndRender(builder) provides the parameters to component")]
 		public void Test004()
 		{
-			var cut = RenderComponent<Wrapper>(ChildContent("<div>"));
-			var initialNodes = cut.Nodes;
+			var cut = RenderComponent<Wrapper>(parameters => parameters.AddChildContent("<div>"));
 
-			cut.SetParametersAndRender(ChildContent("<p>"));
+			cut.SetParametersAndRender(parameters => parameters.AddChildContent("<p>"));
 
-			Assert.NotSame(initialNodes, cut.Nodes);
 			cut.Find("p").ShouldNotBeNull();
 		}
 
-		[Fact(DisplayName = "Nodes should return new instance " +
-							"when a Render has caused changes to DOM tree")]
-		public void Test005()
+
+		[Fact(DisplayName = "Call to SetParametersAndRender(params) provides the parameters to component")]
+		public void Test0041()
 		{
-			var cut = RenderComponent<RenderCounter>();
-			var initialNodes = cut.Nodes;
+			var cut = RenderComponent<Wrapper>(parameters => parameters.AddChildContent("<div>"));
 
-			cut.Render();
+			cut.SetParametersAndRender(ComponentParameterFactory.ChildContent("<p>"));
 
-			Assert.NotSame(initialNodes, cut.Nodes);
+			cut.Find("p").ShouldNotBeNull();
 		}
 	}
 }

@@ -13,7 +13,7 @@ using Shouldly;
 
 namespace Bunit
 {
-	public abstract class EventDispatchExtensionsTest<TEventArgs> : ComponentTestFixture
+	public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 		where TEventArgs : EventArgs, new()
 	{
 		protected static readonly Type EventArgsType = typeof(TEventArgs);

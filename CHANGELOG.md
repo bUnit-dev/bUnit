@@ -4,12 +4,15 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ## [Unreleased]
 ### Changed
 - Better error description from `MarkupMatches` when two sets of markup are different.
+- Render notification and markup notification
 
 ### Fixed
 - `cut.FindComponent<xxx>()` doesnt return the component in cut. It now searches and finds the first child component.
 
 ### Removed
 - The generic collection assertion methods `ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T, int>[] elementInspectors)` and `ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T>[] elementInspectors)` have been removed from the library.
+- WaitForRender 
+- WaitFor methods on TestContext
 
 ## [1.0.0-beta-6] - 2020-03-01
 This release includes a **name change from Blazor Components Testing Library to bUnit**. It also brings along two extra helper methods for working with asynchronously rendering components during testing, and a bunch of internal optimizations and tweaks to the code.

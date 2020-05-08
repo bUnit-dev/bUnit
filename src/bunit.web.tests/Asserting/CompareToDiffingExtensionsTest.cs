@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Bunit
 {
-	public class CompareToDiffingExtensionsTest : ComponentTestFixture
+	public class CompareToDiffingExtensionsTest : TestContext
 	{
 		/// <summary>
 		/// Returns an array of arrays containing:

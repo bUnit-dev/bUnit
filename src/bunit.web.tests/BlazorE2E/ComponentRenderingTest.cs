@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Components;
 using Shouldly;
 
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Bunit.BlazorE2E
 {
@@ -22,7 +21,7 @@ namespace Bunit.BlazorE2E
 	/// <see cref="TextContext" />.
 	/// https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs
 	/// </summary>
-	public class ComponentRenderingTest : ComponentTestFixture
+	public class ComponentRenderingTest : TestContext
 	{
 		[Fact]
 		public void CanRenderTextOnlyComponent()
