@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -55,16 +55,35 @@ namespace Bunit.Mocking.JSInterop
 			exception.Invocation.Arguments.ShouldBe(args);
 		}
 
-		[Fact(DisplayName = "Invocations receives before a planned invocation " +
-							"has result set receives the same result")]
+		[Fact(DisplayName = "All invocations received AFTER a planned invocation " +
+							"has a result set, receives the same result")]
+		public async Task Test005x()
+		{
+			var identifier = "func";
+			var expectedResult = Guid.NewGuid();
+			var sut = new MockJsRuntimeInvokeHandler(JsRuntimeMockMode.Strict);
+			var jsRuntime = sut.ToJsRuntime();
+			var plannedInvoke = sut.Setup<Guid>(identifier);
+
+			plannedInvoke.SetResult(expectedResult);
+
+			var i1 = jsRuntime.InvokeAsync<Guid>(identifier);
+			var i2 = jsRuntime.InvokeAsync<Guid>(identifier);
+
+			(await i1).ShouldBe(expectedResult);
+			(await i2).ShouldBe(expectedResult);
+		}
+
+		[Fact(DisplayName = "All invocations received BEFORE a planned invocation " +
+							"has a result set, receives the same result")]
 		public async Task Test005()
 		{
 			var identifier = "func";
 			var expectedResult = Guid.NewGuid();
 			var sut = new MockJsRuntimeInvokeHandler(JsRuntimeMockMode.Strict);
+			var jsRuntime = sut.ToJsRuntime();
 			var plannedInvoke = sut.Setup<Guid>(identifier);
 
-			var jsRuntime = sut.ToJsRuntime();
 			var i1 = jsRuntime.InvokeAsync<Guid>(identifier);
 			var i2 = jsRuntime.InvokeAsync<Guid>(identifier);
 
@@ -74,10 +93,8 @@ namespace Bunit.Mocking.JSInterop
 			(await i2).ShouldBe(expectedResult);
 		}
 
-		[Fact(DisplayName = "Invocations receives after a planned invocation " +
-							"has result set does not receive the same result as " +
-							"the invocations before the result was set the first time")]
-		public async Task Test006()
+		[Fact(DisplayName = "Invocations receive the latest result set in a planned invocation")]
+		public async Task Test006x()
 		{
 			var identifier = "func";
 			var sut = new MockJsRuntimeInvokeHandler(JsRuntimeMockMode.Strict);
@@ -85,18 +102,18 @@ namespace Bunit.Mocking.JSInterop
 			var jsRuntime = sut.ToJsRuntime();
 
 			var expectedResult1 = Guid.NewGuid();
-			var i1 = jsRuntime.InvokeAsync<Guid>(identifier);
 			plannedInvoke.SetResult(expectedResult1);
+			var i1 = jsRuntime.InvokeAsync<Guid>(identifier);
 
 			var expectedResult2 = Guid.NewGuid();
-			var i2 = jsRuntime.InvokeAsync<Guid>(identifier);
 			plannedInvoke.SetResult(expectedResult2);
+			var i2 = jsRuntime.InvokeAsync<Guid>(identifier);
 
 			(await i1).ShouldBe(expectedResult1);
 			(await i2).ShouldBe(expectedResult2);
 		}
 
-		[Fact(DisplayName = "A planned invocation can be cancelled for any waiting received invocations.")]
+		[Fact(DisplayName = "A planned invocation can be canceled for any waiting received invocations")]
 		public void Test007()
 		{
 			var identifier = "func";
@@ -109,7 +126,7 @@ namespace Bunit.Mocking.JSInterop
 			invocation.IsCanceled.ShouldBeTrue();
 		}
 
-		[Fact(DisplayName = "A planned invocation can throw an exception for any waiting received invocations.")]
+		[Fact(DisplayName = "A planned invocation can throw an exception for any waiting received invocations")]
 		public async Task Test008()
 		{
 			var identifier = "func";
