@@ -67,13 +67,9 @@ namespace Bunit.Rendering
 				// The lock ensures that latest nodes is always based on the latest rendered markup.
 				lock (_lock)
 				{
-					var result = Volatile.Read(ref _latestRenderNodes);
-					if (result is null)
-					{
-						result = HtmlParser.Parse(Markup);
-						Volatile.Write(ref _latestRenderNodes, result);
-					}
-					return result;
+					if (_latestRenderNodes is null)
+						_latestRenderNodes = HtmlParser.Parse(Markup);
+					return _latestRenderNodes;
 				}
 			}
 		}
@@ -168,8 +164,8 @@ namespace Bunit.Rendering
 				// The lock ensures that latest nodes is always based on the latest rendered markup.
 				lock (_lock)
 				{
-					Volatile.Write(ref _latestRenderNodes, null);
-					Volatile.Write(ref _markup, RetrieveLatestMarkupFromRenderer());
+					_latestRenderNodes = null;
+					_markup = RetrieveLatestMarkupFromRenderer();
 				}
 
 				OnMarkupUpdated?.Invoke();
