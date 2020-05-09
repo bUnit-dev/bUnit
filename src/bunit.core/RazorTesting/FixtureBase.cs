@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Bunit.RazorTesting;
-
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit
+namespace Bunit.RazorTesting
 {
 	/// <summary>
 	/// Represents a single fixture in a Razor based test. Used to
