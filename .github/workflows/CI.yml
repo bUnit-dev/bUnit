@@ -30,7 +30,6 @@ jobs:
           dotnet build src/bunit.core/ -c Release --no-restore -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
           dotnet build src/bunit.web/ -c Release --no-restore -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
           dotnet build src/bunit.xunit/ -c Release --no-restore -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet build src/bunit/ -c Release --no-restore -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
           dotnet build src/bunit.testassets/ -c Release --no-restore
           dotnet test src -c Release --no-restore --verbosity normal /nowarn:CS1591          
       - name: Creating library package
