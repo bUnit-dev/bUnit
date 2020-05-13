@@ -214,6 +214,9 @@ namespace Bunit
 		/// <returns>A <see cref="ComponentParameterBuilder{TComponent}"/> which can be chained</returns>
 		public ComponentParameterBuilder<TComponent> Add<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, Action<ComponentParameterBuilder<TChildComponent>>? childParameterBuilder = null) where TChildComponent : class, IComponent
 		{
+			if (parameterSelector is null)
+				throw new ArgumentNullException(nameof(parameterSelector));
+
 			var (name, isCascading) = GetDetailsFromExpression(parameterSelector);
 
 			RenderFragment childContentFragment;

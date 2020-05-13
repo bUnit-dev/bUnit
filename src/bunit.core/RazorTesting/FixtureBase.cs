@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
@@ -22,13 +23,13 @@ namespace Bunit.RazorTesting
 		/// Gets or sets the setup action to perform before the <see cref="Test"/> action,
 		/// <see cref="TestAsync"/> action and <see cref="Tests"/> and <see cref="TestsAsync"/> actions are invoked.
 		/// </summary>
-		[Parameter] public Action<TFixture>? Setup { private get; set; }
+		[Parameter] public Action<TFixture>? Setup { get; set; }
 
 		/// <summary>
 		/// Gets or sets the asynchronous setup action to perform before the <see cref="Test"/> action,
 		/// <see cref="TestAsync"/> action and <see cref="Tests"/> and <see cref="TestsAsync"/> actions are invoked.
 		/// </summary>
-		[Parameter] public Func<TFixture, Task>? SetupAsync { private get; set; }
+		[Parameter] public Func<TFixture, Task>? SetupAsync { get; set; }
 
 		/// <summary>
 		/// Gets or sets the first test action to invoke, after the <see cref="Setup"/> action has
@@ -37,7 +38,7 @@ namespace Bunit.RazorTesting
 		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
 		/// defined in the fixture.
 		/// </summary>
-		[Parameter] public Action<TFixture>? Test { private get; set; }
+		[Parameter] public Action<TFixture>? Test { get; set; }
 
 		/// <summary>
 		/// Gets or sets the first test action to invoke, after the <see cref="SetupAsync"/> action has
@@ -46,7 +47,7 @@ namespace Bunit.RazorTesting
 		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
 		/// defined in the fixture.
 		/// </summary>
-		[Parameter] public Func<TFixture, Task>? TestAsync { private get; set; }
+		[Parameter] public Func<TFixture, Task>? TestAsync { get; set; }
 
 		/// <summary>
 		/// Gets or sets the test actions to invoke, one at the time, in the order they are placed 
@@ -56,7 +57,7 @@ namespace Bunit.RazorTesting
 		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
 		/// defined in the fixture.
 		/// </summary>
-		[Parameter] public IReadOnlyCollection<Action<TFixture>>? Tests { private get; set; }
+		[Parameter] public IReadOnlyCollection<Action<TFixture>>? Tests { get; set; }
 
 		/// <summary>
 		/// Gets or sets the test actions to invoke, one at the time, in the order they are placed 
@@ -66,7 +67,8 @@ namespace Bunit.RazorTesting
 		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
 		/// defined in the fixture.
 		/// </summary>
-		[Parameter] public IReadOnlyCollection<Func<TFixture, Task>>? TestsAsync { private get; set; }
+		[Parameter]
+		public IReadOnlyCollection<Func<TFixture, Task>>? TestsAsync { get; set; }
 
 		/// <inheritdoc/>
 		public override Task SetParametersAsync(ParameterView parameters)

@@ -47,10 +47,10 @@ namespace Bunit.Extensions.WaitForHelpers
 		/// </summary>
 		protected WaitForHelper(IRenderedFragmentBase renderedFragment, Func<bool> completeChecker, TimeSpan? timeout = null)
 		{
+			_renderedFragment = renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment));
+			_completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
 			_logger = renderedFragment.Services.CreateLogger<WaitForHelper>();
 			_completionSouce = new TaskCompletionSource<object?>();
-			_renderedFragment = renderedFragment;
-			_completeChecker = completeChecker;
 			_timer = new Timer(OnTimeout, this, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
 
 			_renderedFragment.OnAfterRender += OnAfterRender;

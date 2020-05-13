@@ -22,7 +22,7 @@ namespace Bunit.Rendering
 		public async Task Test001()
 		{
 			// Arrange
-			var sut = new TestRenderer(ServiceProvider, NullLoggerFactory.Instance);
+			using var sut = new TestRenderer(ServiceProvider, NullLoggerFactory.Instance);
 			var handler = new MockRenderEventHandler(completeHandleTaskSynchronously: true);
 			sut.AddRenderEventHandler(handler);
 
@@ -42,7 +42,7 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "Multiple handlers can be added to the Renderer")]
 		public void Test002()
 		{
-			var sut = new TestRenderer(ServiceProvider, NullLoggerFactory.Instance);
+			using var sut = new TestRenderer(ServiceProvider, NullLoggerFactory.Instance);
 			var handler1 = new MockRenderEventHandler(completeHandleTaskSynchronously: true);
 			var handler2 = new MockRenderEventHandler(completeHandleTaskSynchronously: true);
 
@@ -57,7 +57,7 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "Handler is not invoked if removed from Renderer")]
 		public void Test003()
 		{
-			var sut = new TestRenderer(ServiceProvider, NullLoggerFactory.Instance);
+			using var sut = new TestRenderer(ServiceProvider, NullLoggerFactory.Instance);
 			var handler1 = new MockRenderEventHandler(completeHandleTaskSynchronously: true);
 			var handler2 = new MockRenderEventHandler(completeHandleTaskSynchronously: true);
 			sut.AddRenderEventHandler(handler1);

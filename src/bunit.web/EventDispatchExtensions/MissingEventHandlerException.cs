@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 using AngleSharp.Dom;
@@ -8,8 +8,11 @@ namespace Bunit
 	/// <summary>
 	/// Represents an exception that is thrown when triggering an event handler failed because it wasn't available on the targeted <see cref="IElement"/>.
 	/// </summary>
-	internal class MissingEventHandlerException : Exception
+	public class MissingEventHandlerException : Exception
 	{
+		/// <summary>
+		/// Creates an instance of the <see cref="MissingEventHandlerException"/> type.
+		/// </summary>
 		public MissingEventHandlerException(IElement element, string missingEventName) : base(CreateErrorMessage(element, missingEventName))
 		{
 		}

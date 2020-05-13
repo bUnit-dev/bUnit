@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading;
 
 using Microsoft.Extensions.Logging;
@@ -40,7 +41,7 @@ namespace Bunit.Logging
 
 			try
 			{
-				_output.WriteLine($"{logLevel} | {Thread.GetCurrentProcessorId()} - {Thread.CurrentThread.ManagedThreadId} | {DateTime.UtcNow.ToString("o")} | {_name} | {eventId.Id}:{eventId.Name} | {formatter(state, exception)}");
+				_output.WriteLine($"{logLevel} | {Thread.GetCurrentProcessorId()} - {Thread.CurrentThread.ManagedThreadId} | {DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture)} | {_name} | {eventId.Id}:{eventId.Name} | {formatter(state, exception)}");
 			}
 			catch
 			{

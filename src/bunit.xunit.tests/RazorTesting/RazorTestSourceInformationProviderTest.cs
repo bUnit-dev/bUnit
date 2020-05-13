@@ -14,7 +14,7 @@ using Xunit.Sdk;
 
 namespace Bunit.RazorTesting
 {
-	public class RazorTestSourceInformationProviderTest : IDisposable
+	public sealed class RazorTestSourceInformationProviderTest : IDisposable
 	{
 		private readonly TestComponentRenderer _renderer = new TestComponentRenderer();
 		private readonly IMessageSink _messageBus = Mock.Of<IMessageSink>();
@@ -35,7 +35,7 @@ namespace Bunit.RazorTesting
 		[InlineData(typeof(TestCasesWithWeirdLineBreaks), 2, 7)]
 		public void Test001(Type target, int testNumber, int expectedLineNumber)
 		{
-			var sut = new RazorTestSourceInformationProvider(_messageBus);
+			using var sut = new RazorTestSourceInformationProvider(_messageBus);
 
 			var sourceInfo = sut.GetSourceInformation(target, GetTest(target, testNumber), testNumber);
 
@@ -44,6 +44,6 @@ namespace Bunit.RazorTesting
 			sourceInfo?.LineNumber.ShouldBe(expectedLineNumber);
 		}
 
-		void IDisposable.Dispose() => _renderer.Dispose();
+		public void Dispose() => _renderer.Dispose();
 	}
 }

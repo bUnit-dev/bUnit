@@ -15,7 +15,6 @@ namespace Bunit.RazorTesting
 	public class RazorTestDiscovererTest
 	{
 		private readonly ExceptionAggregator _aggregator;
-		private readonly CancellationTokenSource _cancellationTokenSource;
 		private readonly IMessageSink _messageBus;
 		private readonly ITestFrameworkDiscoveryOptions _options;
 		private readonly IReflectionAttributeInfo _attribute;
@@ -23,7 +22,6 @@ namespace Bunit.RazorTesting
 		public RazorTestDiscovererTest()
 		{
 			_aggregator = new ExceptionAggregator();
-			_cancellationTokenSource = new CancellationTokenSource();
 			_options = TestFrameworkOptions.ForDiscovery();
 			_messageBus = Mock.Of<IMessageSink>();
 			_attribute = Mock.Of<IReflectionAttributeInfo>();

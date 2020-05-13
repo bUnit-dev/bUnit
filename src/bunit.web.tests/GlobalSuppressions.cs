@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
 [assembly: SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>")]
@@ -7,3 +7,4 @@
 [assembly: SuppressMessage("Usage", "CA2234:Pass system uri objects instead of strings", Justification = "<Pending>")]
 [assembly: SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
 [assembly: SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
+[assembly: SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes")]

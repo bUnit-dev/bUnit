@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text.Encodings.Web;
 
 using Bunit.Rendering;
@@ -224,7 +225,7 @@ namespace Bunit
 					result.Add(frame.AttributeName);
 					result.Add("=");
 					result.Add("\"");
-					result.Add(frame.AttributeEventHandlerId.ToString());
+					result.Add(frame.AttributeEventHandlerId.ToString(CultureInfo.InvariantCulture));
 					result.Add("\"");
 					continue;
 				}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using AngleSharp.Diffing.Core;
 
@@ -23,7 +24,7 @@ namespace Bunit
 			if (diffs is null)
 				throw new ArgumentNullException(nameof(diffs));
 			if (diffs.Count() != 1)
-				throw new ActualExpectedAssertException(diffs.Count().ToString(), "1", "Actual changes", "Expected changes", "There were more than one change");
+				throw new ActualExpectedAssertException(diffs.Count().ToString(CultureInfo.InvariantCulture), "1", "Actual changes", "Expected changes", "There were more than one change");
 
 			return diffs.First();
 		}
@@ -41,7 +42,7 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(diffs));
 
 			if (diffs.Count() != diffInspectors.Length)
-				throw new ActualExpectedAssertException(diffs.Count().ToString(), diffInspectors.Length.ToString(), "Actual changes", "Expected changes", "The actual number of changes does not match the expected.");
+				throw new ActualExpectedAssertException(diffs.Count().ToString(CultureInfo.InvariantCulture), diffInspectors.Length.ToString(CultureInfo.InvariantCulture), "Actual changes", "Expected changes", "The actual number of changes does not match the expected.");
 
 			int index = 0;
 			foreach (var diff in diffs)

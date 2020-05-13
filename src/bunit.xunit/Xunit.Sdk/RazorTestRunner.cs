@@ -20,7 +20,7 @@ namespace Xunit.Sdk
 
 		protected override async Task<Tuple<decimal, string>> InvokeTestAsync(ExceptionAggregator aggregator)
 		{
-			var executionTime = await InvokeTestMethodAsync(aggregator);
+			var executionTime = await InvokeTestMethodAsync(aggregator).ConfigureAwait(false);
 			var output = GetTestOutput();
 			return Tuple.Create(executionTime, output);
 		}

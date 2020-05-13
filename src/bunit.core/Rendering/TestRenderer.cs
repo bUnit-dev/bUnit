@@ -17,10 +17,9 @@ namespace Bunit.Rendering
 	/// </summary>
 	public class TestRenderer : Renderer, ITestRenderer, IRenderEventProducer
 	{
-		private static readonly Type CascadingValueType = typeof(CascadingValue<>);
 		private readonly ILogger _logger;
+		private readonly List<IRenderEventHandler> _renderEventHandlers = new List<IRenderEventHandler>();
 		private Exception? _unhandledException;
-		private List<IRenderEventHandler> _renderEventHandlers = new List<IRenderEventHandler>();
 
 		/// <inheritdoc/>
 		public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
@@ -109,7 +108,7 @@ namespace Bunit.Rendering
 					{
 						_logger.LogDebug(new EventId(12, nameof(DispatchEventAsync)), $"Finished trigger asynchronously for '{fieldInfo.FieldValue}'");
 					}
-				}, TaskContinuationOptions.OnlyOnRanToCompletion);
+				}, TaskScheduler.Default);
 			}
 
 			return result;

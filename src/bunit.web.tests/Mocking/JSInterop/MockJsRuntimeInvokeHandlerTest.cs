@@ -31,7 +31,7 @@ namespace Bunit.Mocking.JSInterop
 			using var cts = new CancellationTokenSource();
 			var sut = new MockJsRuntimeInvokeHandler(JsRuntimeMockMode.Loose);
 
-			sut.ToJsRuntime().InvokeAsync<object>(identifier, cts.Token, args);
+			var _ = sut.ToJsRuntime().InvokeAsync<object>(identifier, cts.Token, args);
 
 			var invocation = sut.Invocations[identifier].Single();
 			invocation.Identifier.ShouldBe(identifier);
@@ -50,7 +50,7 @@ namespace Bunit.Mocking.JSInterop
 			exception.Invocation.Identifier.ShouldBe(identifier);
 			exception.Invocation.Arguments.ShouldBe(args);
 
-			exception = Should.Throw<UnplannedJsInvocationException>(() => sut.ToJsRuntime().InvokeAsync<object>(identifier, args));
+			exception = Should.Throw<UnplannedJsInvocationException>(() => { var _ = sut.ToJsRuntime().InvokeAsync<object>(identifier, args); });
 			exception.Invocation.Identifier.ShouldBe(identifier);
 			exception.Invocation.Arguments.ShouldBe(args);
 		}
@@ -164,11 +164,9 @@ namespace Bunit.Mocking.JSInterop
 			var sut = new MockJsRuntimeInvokeHandler(JsRuntimeMockMode.Strict);
 			var planned = sut.Setup<object>("foo", "bar", 42);
 
-			sut.ToJsRuntime().InvokeAsync<object>("foo", "bar", 42);
+			var _ = sut.ToJsRuntime().InvokeAsync<object>("foo", "bar", 42);
 
-			Should.Throw<UnplannedJsInvocationException>(
-				() => sut.ToJsRuntime().InvokeAsync<object>("foo", "bar", 41)
-			);
+			Should.Throw<UnplannedJsInvocationException>(() => { var _ = sut.ToJsRuntime().InvokeAsync<object>("foo", "bar", 41); });
 
 			planned.Invocations.Count.ShouldBe(1);
 			var invocation = planned.Invocations[0];
@@ -183,11 +181,9 @@ namespace Bunit.Mocking.JSInterop
 			var sut = new MockJsRuntimeInvokeHandler(JsRuntimeMockMode.Strict);
 			var planned = sut.Setup<object>("foo", args => args.Count == 1);
 
-			sut.ToJsRuntime().InvokeAsync<object>("foo", 42);
+			var _ = sut.ToJsRuntime().InvokeAsync<object>("foo", 42);
 
-			Should.Throw<UnplannedJsInvocationException>(
-				() => sut.ToJsRuntime().InvokeAsync<object>("foo", "bar", 42)
-			);
+			Should.Throw<UnplannedJsInvocationException>(() => { var _ = sut.ToJsRuntime().InvokeAsync<object>("foo", "bar", 42); });
 
 			planned.Invocations.Count.ShouldBe(1);
 			var invocation = planned.Invocations[0];
@@ -217,7 +213,7 @@ namespace Bunit.Mocking.JSInterop
 			var sut = new MockJsRuntimeInvokeHandler(JsRuntimeMockMode.Strict);
 			var planned = sut.SetupVoid("foo", "bar", 42);
 
-			var i1 = sut.ToJsRuntime().InvokeVoidAsync("foo", "bar", 42);
+			var _ = sut.ToJsRuntime().InvokeVoidAsync("foo", "bar", 42);
 
 			await Should.ThrowAsync<UnplannedJsInvocationException>(
 				sut.ToJsRuntime().InvokeVoidAsync("foo", "bar", 41).AsTask()

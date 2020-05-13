@@ -20,23 +20,23 @@ namespace Bunit
 		/// Sets the setup action to perform before the <see cref="TestInput"/> and <see cref="ExpectedOutput"/>
 		/// is rendered and compared.
 		/// </summary>
-		[Parameter] public Action<SnapshotTest>? Setup { private get; set; }
+		[Parameter] public Action<SnapshotTest>? Setup { get; set; }
 
 		/// <summary>
 		/// Sets the setup action to perform before the <see cref="TestInput"/> and <see cref="ExpectedOutput"/>
 		/// is rendered and compared.
 		/// </summary>
-		[Parameter] public Func<SnapshotTest, Task>? SetupAsync { private get; set; }
+		[Parameter] public Func<SnapshotTest, Task>? SetupAsync { get; set; }
 
 		/// <summary>
 		/// Gets or sets the input to the snapshot test.
 		/// </summary>
-		[Parameter] public RenderFragment TestInput { private get; set; } = default!;
+		[Parameter] public RenderFragment TestInput { get; set; } = default!;
 
 		/// <summary>
 		/// Gets or sets the expected output of the snapshot test.
 		/// </summary>
-		[Parameter] public RenderFragment ExpectedOutput { private get; set; } = default!;
+		[Parameter] public RenderFragment ExpectedOutput { get; set; } = default!;
 
 		/// <inheritdoc/>
 		protected override async Task Run()
@@ -56,7 +56,12 @@ namespace Bunit
 			var expectedRenderId = Renderer.RenderFragment(ExpectedOutput);
 			var expectedHtml = Htmlizer.GetHtml(Renderer, expectedRenderId);
 
-			var parser = new HtmlParser();
+			VerifySnapshot(inputHtml, expectedHtml);
+		}
+
+		private void VerifySnapshot(string inputHtml, string expectedHtml)
+		{
+			using var parser = new HtmlParser();
 			var inputNodes = parser.Parse(inputHtml);
 			var expectedNodes = parser.Parse(expectedHtml);
 

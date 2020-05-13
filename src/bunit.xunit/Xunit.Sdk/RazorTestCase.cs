@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -121,7 +122,7 @@ namespace Xunit.Sdk
 
 				Write(stream, assemblyName);
 				Write(stream, testMethod.TestClass.Class.Name);
-				Write(stream, TestNumber.ToString());
+				Write(stream, TestNumber.ToString(CultureInfo.InvariantCulture));
 
 				stream.Position = 0;
 

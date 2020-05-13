@@ -80,6 +80,8 @@ namespace Bunit.RazorTesting
 		/// </summary>
 		protected void TryRun<T>(Action<T> action, T input)
 		{
+			if (action is null)
+				throw new ArgumentNullException(nameof(action));
 			try
 			{
 				action(input);
@@ -95,6 +97,8 @@ namespace Bunit.RazorTesting
 		/// </summary>
 		protected async Task TryRunAsync<T>(Func<T, Task> action, T input)
 		{
+			if (action is null)
+				throw new ArgumentNullException(nameof(action));
 			try
 			{
 				await action(input).ConfigureAwait(false);

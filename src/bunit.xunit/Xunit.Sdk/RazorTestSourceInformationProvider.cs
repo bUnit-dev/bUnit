@@ -22,7 +22,7 @@ namespace Xunit.Sdk
 			var razorTestBaseType = typeof(RazorTestBase);
 			foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
 			{
-				if (!a.FullName.StartsWith("Bunit"))
+				if (!a.FullName.StartsWith("Bunit", StringComparison.Ordinal))
 					continue;
 
 				foreach (Type t in a.ExportedTypes)
@@ -114,7 +114,7 @@ namespace Xunit.Sdk
 			result = null;
 
 			var line = File.ReadLines(file).FirstOrDefault() ?? string.Empty;
-			if (line.StartsWith(GENERATED_FILE_REF_PREFIX))
+			if (line.StartsWith(GENERATED_FILE_REF_PREFIX, StringComparison.Ordinal))
 			{
 				var refFileEndIndex = line.IndexOf('"', GENERATED_FILE_REF_PREFIX.Length);
 				result = line.Substring(GENERATED_FILE_REF_PREFIX.Length, refFileEndIndex - GENERATED_FILE_REF_PREFIX.Length);
@@ -133,7 +133,7 @@ namespace Xunit.Sdk
 			{
 				lineNumber++;
 
-				if (!line.StartsWith($"<"))
+				if (!line.StartsWith($"<", StringComparison.OrdinalIgnoreCase))
 					continue;
 
 				for (int i = 0; i < RazorTestTypes.Length; i++)

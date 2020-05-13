@@ -37,14 +37,14 @@ namespace Bunit
 			{
 				var diffText = x switch
 				{
-					NodeDiff diff when diff.Target == DiffTarget.Text && diff.Control.Path.Equals(diff.Test.Path)
+					NodeDiff diff when diff.Target == DiffTarget.Text && diff.Control.Path.Equals(diff.Test.Path, StringComparison.Ordinal)
 						=> $"The text in {diff.Control.Path} is different.",
 					NodeDiff diff when diff.Target == DiffTarget.Text
 						=> $"The expected {diff.Control.NodeName()} at {diff.Control.Path} and the actual {diff.Test.NodeName()} at {diff.Test.Path} is different.",
-					NodeDiff diff when diff.Control.Path.Equals(diff.Test.Path)
+					NodeDiff diff when diff.Control.Path.Equals(diff.Test.Path, StringComparison.Ordinal)
 						=> $"The {diff.Control.NodeName()}s at {diff.Control.Path} are different.",
 					NodeDiff diff => $"The expected {diff.Control.NodeName()} at {diff.Control.Path} and the actual {diff.Test.NodeName()} at {diff.Test.Path} are different.",
-					AttrDiff diff when diff.Control.Path.Equals(diff.Test.Path)
+					AttrDiff diff when diff.Control.Path.Equals(diff.Test.Path, StringComparison.Ordinal)
 						=> $"The values of the attributes at {diff.Control.Path} are different.",
 					AttrDiff diff => $"The value of the attribute {diff.Control.Path} and actual attribute {diff.Test.Path} are different.",
 					MissingNodeDiff diff => $"The {diff.Control.NodeName()} at {diff.Control.Path} is missing.",

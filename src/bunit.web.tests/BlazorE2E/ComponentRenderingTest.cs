@@ -605,11 +605,11 @@ namespace Bunit.BlazorE2E
 				// which results in this order: First Third Second Fourth Fifth
 				// Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim())
 
-				Assert.Contains("First", result.TextContent);
-				Assert.Contains("Second", result.TextContent);
-				Assert.Contains("Third", result.TextContent);
-				Assert.Contains("Fourth", result.TextContent);
-				Assert.Contains("Fifth", result.TextContent);
+				Assert.Contains("First", result.TextContent, StringComparison.Ordinal);
+				Assert.Contains("Second", result.TextContent, StringComparison.Ordinal);
+				Assert.Contains("Third", result.TextContent, StringComparison.Ordinal);
+				Assert.Contains("Fourth", result.TextContent, StringComparison.Ordinal);
+				Assert.Contains("Fifth", result.TextContent, StringComparison.Ordinal);
 
 			}, timeout: TimeSpan.FromSeconds(2));
 		}

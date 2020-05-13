@@ -86,7 +86,7 @@ namespace Bunit
 					helper.Invoke(null, helperArgs);
 				});
 
-				spy.RaisedEvent.ShouldBeOfType<TEventArgs>().ShouldBeEquivalentTo(expected); // TODO CHANGED FROM DEEP EQUAL
+				spy.RaisedEvent.ShouldBeOfType<TEventArgs>().ShouldBeEquivalentTo(expected);
 			}
 		}
 

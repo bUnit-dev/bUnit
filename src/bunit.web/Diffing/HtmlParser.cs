@@ -65,6 +65,7 @@ namespace Bunit.Diffing
 		public void Dispose()
 		{
 			_document.Dispose();
+			_context.Dispose();
 		}
 	}
 }
