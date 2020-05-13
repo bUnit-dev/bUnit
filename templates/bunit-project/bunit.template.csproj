@@ -12,11 +12,11 @@
 	<PackageDescription>
     A project template for a testing Blazor/Razor components using the bUnit library.
 
-    bUnit is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
+    bUnit is a testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
 
-    This library's goal is to make it easy to write comprehensive, stable unit tests for Blazor Components/Razor Components. Head to https://bunit.egilhansen.com to learn more.
+    The library's goal is to make it easy to write comprehensive, stable unit tests for Blazor Components/Razor Components. Go to bunit.egilhansen.com to learn more.
   </PackageDescription>	
-    <PackageTags>blazor component testing;blazor test;component test;unit test;integration test;</PackageTags>
+    <PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
 	  <PackageProjectUrl>https://github.com/egil/bunit</PackageProjectUrl>
     <TargetFramework>netstandard2.1</TargetFramework>
     <IncludeContentInPack>true</IncludeContentInPack>

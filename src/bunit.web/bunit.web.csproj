@@ -8,9 +8,9 @@
 		<AssemblyName>Bunit.Web</AssemblyName>
 	</PropertyGroup>
 
-<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
 
 	<PropertyGroup>
 		<PackageId>bunit.web</PackageId>
@@ -18,8 +18,6 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/egil/bunit.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<RepositoryBranch>#{BRANCH}#</RepositoryBranch>
-		<RepositoryCommit>#{COMMIT}#</RepositoryCommit>
 		<PackageProjectUrl>https://bunit.egilhansen.com</PackageProjectUrl>
 		<PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
 		<Authors>Egil Hansen</Authors>
@@ -30,12 +28,13 @@
 
 			You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect the component under test, trigger event handlers, provide cascading values, inject services, mock JavaScript interopt, and perform snapshot testing.
 		</Description>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Deterministic>true</Deterministic>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<PackageReference Include="AngleSharp" Version="0.14.0" />
 		<PackageReference Include="AngleSharp.Css" Version="0.14.0" />
@@ -49,7 +48,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\bunit.core\bunit.core.csproj" />
+		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />
 	</ItemGroup>
 
 </Project>

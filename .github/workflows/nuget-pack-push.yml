@@ -8,18 +8,16 @@ on:
 
 env:
   VERSION: 0.0.0
-  BRANCH: "master"
-  COMMIT: ""
+  BRANCH: ''  
   
 jobs:  
   build:
     name: Build and verify library    
     runs-on: ubuntu-latest  
     steps:
-      - name: Setting environment variables
+      - name: Getting branch name and release version
         run: |          
-          #echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
-          echo "::set-env name=COMMIT::$GITHUB_SHA"
+          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
           echo "::set-env name=VERSION::${GITHUB_REF/refs\/tags\/v/}"      
       - run: echo Version $VERSION - Branch $BRANCH - Commit $COMMIT
       - uses: actions/checkout@v1   
@@ -32,20 +30,21 @@ jobs:
           dotnet-version: '3.1.201'
       - name: Building and verifying library
         run: |
-          dotnet build src -c Release /nowarn:CS1591
-          dotnet test src -c Release /nowarn:CS1591
+          dotnet restore src
+          dotnet build src -c Release --no-restore -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet test src -c Release --no-restore --verbosity normal /nowarn:CS1591          
       - name: Creating library package
         run: |
-          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
-          dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
-          dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION /nowarn:CS1591
+          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
       - name: Buidling template package
-        run: dotnet pack template/ -c Release -o ${GITHUB_WORKSPACE}/template -p:version=$VERSION -p:PackageVersion=$VERSION
+        run: dotnet pack templates/bunit-project/ -c Release -o ${GITHUB_WORKSPACE}/templates -p:version=$VERSION
       - name: Verifying template
         run: |
-          dotnet new --install ${GITHUB_WORKSPACE}/template/bunit.template.$VERSION.nupkg
-          dotnet new bunit -o ${GITHUB_WORKSPACE}/Test
+          dotnet new --install ${GITHUB_WORKSPACE}/templates/bunit.template.$VERSION.nupkg
+          dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/Test
           dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/lib
           dotnet test ${GITHUB_WORKSPACE}/Test
       - name: Push packages to NuGet.org

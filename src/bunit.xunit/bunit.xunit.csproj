@@ -7,9 +7,9 @@
 		<AssemblyName>Bunit.Xunit</AssemblyName>
 	</PropertyGroup>
 
-<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
 
 	<PropertyGroup>
 		<PackageId>bunit.xunit</PackageId>
@@ -17,8 +17,6 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/egil/bunit.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<RepositoryBranch>#{BRANCH}#</RepositoryBranch>
-		<RepositoryCommit>#{COMMIT}#</RepositoryCommit>
 		<PackageProjectUrl>https://bunit.egilhansen.com</PackageProjectUrl>
 		<PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
 		<Authors>Egil Hansen</Authors>
@@ -27,10 +25,11 @@
 		<Description>
 			bUnit.xunit is an xUnit extension for bUnit, that provides a way for xUnit to run bUnit's razor-based tests, as well as other helpful extensions to make the testing experience better if you use xUnit for writing your tests.
 		</Description>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Deterministic>true</Deterministic>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -42,11 +41,10 @@
 		<PackageReference Include="xunit.assert" Version="2.4.*" />
 		<PackageReference Include="xunit.extensibility.core" Version="2.4.*" />
 		<PackageReference Include="xunit.extensibility.execution" Version="2.4.*" />
- 
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />
 	</ItemGroup>
-	
+
 </Project>

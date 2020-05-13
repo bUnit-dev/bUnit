@@ -18,8 +18,6 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/egil/bunit</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<RepositoryBranch>#{BRANCH}#</RepositoryBranch>
-		<RepositoryCommit>#{COMMIT}#</RepositoryCommit>
 		<PackageProjectUrl>https://bunit.egilhansen.com</PackageProjectUrl>
 		<PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
 		<Authors>Egil Hansen</Authors>
@@ -32,6 +30,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Deterministic>true</Deterministic>
 	</PropertyGroup>
 
 	<ItemGroup>
