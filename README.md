@@ -12,7 +12,4 @@ The library's goal is to make it easy to write _comprehensive, stable unit tests
 
 ## Contributors
 
-Shout outs and a big thank you to the contributors to this library. Here they are, in alphabetically:
-
-- [Michael J Conrad (@Siphonophora)](https://github.com/Siphonophora)
-- [Rastislav Novotný (@duracellko)](https://github.com/duracellko)
+Shout outs and a big thank you [to the contributors](https://github.com/egil/bunit/graphs/contributors) to this library, both those that raise issues, provide input to issues, and those who send pull requests. 
