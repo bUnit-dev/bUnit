@@ -7,9 +7,11 @@ using Bunit.Mocking.JSInterop;
 using Bunit.SampleApp.Components;
 using Xunit;
 
+using static Bunit.ComponentParameterFactory;
+
 namespace Bunit.SampleApp.CodeOnlyTests.Components
 {
-    public class FocussingInputTest : ComponentTestFixture
+    public class FocussingInputTest : TestContext
     {
         [Fact(DisplayName = "After first render, the new input field has focus")]
         public void Test001()

@@ -9,9 +9,11 @@ using Xunit;
 using Shouldly;
 using Microsoft.AspNetCore.Components.Web;
 
+using static Bunit.ComponentParameterFactory;
+
 namespace Bunit.SampleApp.CodeOnlyTests.Components
 {
-    public class ThemedButtonTest : ComponentTestFixture
+    public class ThemedButtonTest : TestContext
     {
         [Fact(DisplayName = "When button is clicked, the OnClick event callback is triggered")]
         public void Test001()

@@ -7,9 +7,11 @@ using Bunit.SampleApp.Components;
 using Shouldly;
 using Xunit;
 
+using static Bunit.ComponentParameterFactory;
+
 namespace Bunit.SampleApp.CodeOnlyTests.Components
 {
-    public class PassingChildContentTest : ComponentTestFixture
+    public class PassingChildContentTest : TestContext
     {
         [Fact(DisplayName = "Markup passed to child content is rendered as expected")]
         public void Test001()

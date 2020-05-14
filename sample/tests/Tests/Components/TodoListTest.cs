@@ -12,9 +12,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
+using static Bunit.ComponentParameterFactory;
+
 namespace Bunit.SampleApp.CodeOnlyTests
 {
-    public class TodoListTest : ComponentTestFixture
+    public class TodoListTest : TestContext
     {
         private string GetExpectedHtml(string label = "Task description", string itemsHtml = "") =>
             $@"<form>

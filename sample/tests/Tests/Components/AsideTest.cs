@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Bunit.SampleApp.Components;
 using Xunit;
 
+using static Bunit.ComponentParameterFactory;
+
 namespace Bunit.SampleApp.CodeOnlyTests.Components
 {
-    public class AsideTest : ComponentTestFixture
+    public class AsideTest : TestContext
     {
         [Fact(DisplayName = "Aside should render header and additional parameters correctly")]
         public void Test001()

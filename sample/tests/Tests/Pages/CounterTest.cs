@@ -8,9 +8,11 @@ using Bunit.SampleApp.Pages;
 using Shouldly;
 using Xunit;
 
+using static Bunit.ComponentParameterFactory;
+
 namespace Bunit.SampleApp.CodeOnlyTests
 {
-    public class CounterTest : ComponentTestFixture
+    public class CounterTest : TestContext
     {
         [Fact]
         public void InitialHtmlIsCorrect()

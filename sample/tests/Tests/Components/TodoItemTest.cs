@@ -9,9 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
+using static Bunit.ComponentParameterFactory;
+
 namespace Bunit.SampleApp.CodeOnlyTests
 {
-    public class TodoItemTest : ComponentTestFixture
+    public class TodoItemTest : TestContext
     {
         [Fact(DisplayName = "When no Todo is passed to item an exception is thrown")]
         public void Test001()

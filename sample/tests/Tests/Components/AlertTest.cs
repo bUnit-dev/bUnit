@@ -6,9 +6,11 @@ using Bunit.SampleApp.Data;
 using Microsoft.AspNetCore.Authentication;
 using Xunit;
 
+using static Bunit.ComponentParameterFactory;
+
 namespace Bunit.SampleApp.Tests.Components
 {
-    public class AlertTest2 : ComponentTestFixture
+    public class AlertTest2 : TestContext
     {
         MockJsRuntimeInvokeHandler MockJsRuntime { get; }
 
@@ -172,14 +174,14 @@ namespace Bunit.SampleApp.Tests.Components
             Assert.NotNull(dismissingEvent);
 
             // Act
-            WaitForNextRender(() =>
-            {
-                plannedInvocation.SetResult(default!);
-            });
+            plannedInvocation.SetResult(default!);
 
             // Assert
-            cut.MarkupMatches(string.Empty);
-            Assert.NotNull(dismissedAlert);
+            cut.WaitForAssertion(() =>
+            {
+                cut.MarkupMatches(string.Empty);
+                Assert.NotNull(dismissedAlert);
+            });
         }
 
         [Fact(DisplayName = "When dismiss button is clicked, " +
@@ -198,13 +200,10 @@ namespace Bunit.SampleApp.Tests.Components
             Assert.DoesNotContain("show", cut.Find(".alert").ClassList);
 
             // Act - complete 
-            WaitForNextRender(() =>
-            {
-                plannedInvocation.SetResult(default!);
-            });
+            plannedInvocation.SetResult(default!);
 
             // Assert that all markup is gone            
-            cut.MarkupMatches(string.Empty);
+            cut.WaitForAssertion(() => cut.MarkupMatches(string.Empty));
         }
 
         [Fact(DisplayName = "Alert can be dismissed via Dismiss() method")]

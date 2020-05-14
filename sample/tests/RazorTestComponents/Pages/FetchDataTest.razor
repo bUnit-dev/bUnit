@@ -1,18 +1,5 @@
 ﻿@inherits TestComponentBase
 
-<Fixture Setup="Setup" Tests="new Action[]{ InitialLoadingHtmlRendersCorrectly, AfterDataLoadsItIsDisplayedInAForecastTable }">
-    <ComponentUnderTest>
-        <FetchData />
-    </ComponentUnderTest>
-    <Fragment Id="InitialRender">
-        <h1>Weather forecast</h1>
-        <p>This component demonstrates fetching data from a service.</p>
-        <p><em>Loading...</em></p>
-    </Fragment>
-    <Fragment Id="ForecastDataTableRender">
-        <ForecastDataTable Forecasts="forecasts" />
-    </Fragment>
-</Fixture>
 @code {
     private WeatherForecast[] forecasts = new[]
     {
@@ -21,33 +8,60 @@
 
     private MockForecastService forecastService = new MockForecastService();
 
-    void Setup()
+    void Setup(Fixture fixture)
     {
-        Services.AddSingleton<IWeatherForecastService>(forecastService);
-    }
-
-    void InitialLoadingHtmlRendersCorrectly()
-    {
-        // act
-        var cut = GetComponentUnderTest<FetchData>();
-
-        // assert
-        cut.MarkupMatches(GetFragment("InitialRender"));
-    }
-
-    void AfterDataLoadsItIsDisplayedInAForecastTable()
-    {
-        // arrange
-        var expectedAddition = GetFragment("ForecastDataTableRender");
-        var cut = RenderComponent<FetchData>();
-
-        // act
-        WaitForNextRender(() => forecastService.Task.SetResult(forecasts));
-
-        // assert
-        cut.GetChangesSinceFirstRender().ShouldHaveChanges(
-            diff => diff.ShouldBeRemoval("<p><em>Loading...</em></p>"),
-            diff => diff.ShouldBeAddition(expectedAddition)
-        );
+        fixture.Services.AddSingleton<IWeatherForecastService>(forecastService);
     }
 }
+
+<Fixture Setup="Setup" Test="InitialLoadingHtmlRendersCorrectly">
+    <ComponentUnderTest>
+        <FetchData />
+    </ComponentUnderTest>
+    <Fragment Id="InitialRender">
+        <h1>Weather forecast</h1>
+        <p>This component demonstrates fetching data from a service.</p>
+        <p><em>Loading...</em></p>
+    </Fragment>
+    @code {
+        void InitialLoadingHtmlRendersCorrectly(Fixture fixture)
+        {
+            // act
+            var cut = fixture.GetComponentUnderTest<FetchData>();
+
+            // assert
+            cut.MarkupMatches(fixture.GetFragment("InitialRender"));
+        }
+    }
+</Fixture>
+
+<Fixture Setup="Setup" Test="AfterDataLoadsItIsDisplayedInAForecastTable">
+    <ComponentUnderTest>
+        <FetchData />
+    </ComponentUnderTest>
+
+    <Fragment Id="ForecastDataTableRender">
+        <ForecastDataTable Forecasts="forecasts" />
+    </Fragment>
+
+    @code {
+        void AfterDataLoadsItIsDisplayedInAForecastTable(Fixture fixture)
+        {
+            // arrange
+            var cut = fixture.GetComponentUnderTest<FetchData>();
+            var expectedAddition = fixture.GetFragment("ForecastDataTableRender");
+
+            // act
+            forecastService.Task.SetResult(forecasts);
+
+            // assert
+            cut.WaitForAssertion(() =>
+            {
+                cut.GetChangesSinceFirstRender().ShouldHaveChanges(
+                    diff => diff.ShouldBeRemoval("<p><em>Loading...</em></p>"),
+                    diff => diff.ShouldBeAddition(expectedAddition)
+                );
+            });
+        }
+    }
+</Fixture>

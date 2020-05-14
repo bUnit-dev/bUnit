@@ -10,9 +10,9 @@
 @code {
     string cssClass = "BUTTON";
 
-    void ThemedButtonUsesClassPassedByCascadingValue()
+    void ThemedButtonUsesClassPassedByCascadingValue(Fixture fixture)
     {
-        var cut = GetComponentUnderTest();
+        var cut = fixture.GetComponentUnderTest();
 
         cut.Find("button").ClassList.ShouldContain(cssClass);
     }
@@ -30,9 +30,9 @@
     </ComponentUnderTest>
 </Fixture>
 @code {
-    void ThemedButtonUsesNamedCascadingValue()
+    void ThemedButtonUsesNamedCascadingValue(Fixture fixture)
     {
-        var cut = GetComponentUnderTest();
+        var cut = fixture.GetComponentUnderTest();
 
         var elm = cut.Find("div");
         elm.ClassList.ShouldContain("FOO");
