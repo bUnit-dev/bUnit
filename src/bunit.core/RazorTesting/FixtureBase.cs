@@ -72,9 +72,9 @@ namespace Bunit.RazorTesting
 			TestAsync = parameters.GetValueOrDefault<Func<TFixture, Task>>(nameof(TestAsync));
 
 #pragma warning disable CS0618 // Type or member is obsolete
-			if (parameters.TryGetValue<IReadOnlyCollection<Action<TFixture>>>("Tests", out var tests))
+			if (parameters.TryGetValue<IReadOnlyCollection<Action<TFixture>>>(nameof(Tests), out var tests))
 				Tests = tests;
-			if (parameters.TryGetValue<IReadOnlyCollection<Func<TFixture, Task>>>("TestsAsync", out var asyncTests))
+			if (parameters.TryGetValue<IReadOnlyCollection<Func<TFixture, Task>>>(nameof(TestsAsync), out var asyncTests))
 				TestsAsync = asyncTests;
 #pragma warning restore CS0618 // Type or member is obsolete
 
@@ -86,16 +86,16 @@ namespace Bunit.RazorTesting
 		{
 			base.Validate();
 			if (ChildContent is null)
-				throw new ArgumentException($"No {nameof(ChildContent)} specified in the {GetType().Name} component.");
+				throw new ArgumentException($"No '{nameof(ChildContent)}' specified in the {GetType().Name} component.");
 			if (Test is null && TestAsync is null)
-				throw new ArgumentException($"No test/assertions provided to the {GetType().Name} component.");
+				throw new ArgumentException($"No test action provided via the '{nameof(Test)}' or '{nameof(TestAsync)}' parameters to the {GetType().Name} component.");
 			if (Test is { } && TestAsync is { })
-				throw new ArgumentException($"Only a single test method can be provided to the {GetType().Name} component at the time.");
+				throw new ArgumentException($"Only one of the '{nameof(Test)}' or '{nameof(TestAsync)}' actions can be provided to the {GetType().Name} component at the same time.");
 #pragma warning disable CS0618 // Type or member is obsolete
 			if (Tests is { })
-				throw new ArgumentException($"The user of the Tests parameter has been obsoleted, and any methods assigned to it will not longer be invoked.");
+				throw new ArgumentException($"The use of the '{nameof(Tests)}' parameter has been obsoleted, and any methods assigned to it will not longer be invoked.");
 			if (TestsAsync is { })
-				throw new ArgumentException($"The user of the TestsAsync parameter has been obsoleted, and any methods assigned to it will not longer be invoked.");
+				throw new ArgumentException($"The use of the '{nameof(TestsAsync)}' parameter has been obsoleted, and any methods assigned to it will not longer be invoked.");
 #pragma warning restore CS0618 // Type or member is obsolete
 		}
 

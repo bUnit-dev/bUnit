@@ -55,9 +55,21 @@ namespace Bunit.Extensions.WaitForHelpers
 
 			_renderedFragment.OnAfterRender += OnAfterRender;
 			OnAfterRender();
+			StartTimer(timeout);
+		}
 
-			if (!_isDisposed)
+		private void StartTimer(TimeSpan? timeout)
+		{
+			if (_isDisposed)
+				return;
+
+			lock (_completionSouce)
+			{
+				if (_isDisposed)
+					return;
+
 				_timer.Change(GetRuntimeTimeout(timeout), Timeout.InfiniteTimeSpan);
+			}
 		}
 
 		private void OnAfterRender()
@@ -123,11 +135,17 @@ namespace Bunit.Extensions.WaitForHelpers
 			if (_isDisposed)
 				return;
 
-			_isDisposed = true;
-			_renderedFragment.OnAfterRender -= OnAfterRender;
-			_timer.Dispose();
-			_completionSouce.TrySetCanceled();
-			_logger.LogDebug(new EventId(6, nameof(Dispose)), $"The state wait helper for component {_renderedFragment.ComponentId} disposed");
+			lock (_completionSouce)
+			{
+				if (_isDisposed)
+					return;
+
+				_isDisposed = true;
+				_renderedFragment.OnAfterRender -= OnAfterRender;
+				_timer.Dispose();
+				_completionSouce.TrySetCanceled();
+				_logger.LogDebug(new EventId(6, nameof(Dispose)), $"The state wait helper for component {_renderedFragment.ComponentId} disposed");
+			}
 		}
 
 		private static TimeSpan GetRuntimeTimeout(TimeSpan? timeout)
