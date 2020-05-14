@@ -1,0 +1,18 @@
+@inherits TestComponentBase
+<Fixture Test="SyncTest">
+	<ComponentUnderTest />
+</Fixture>
+
+@code {
+	public void SyncTest(Fixture f) { }
+}
+
+<Fixture TestAsync="AsyncTest">
+	<ComponentUnderTest />
+</Fixture>
+
+@code {
+	public Task AsyncTest(Fixture f) { return Task.CompletedTask; }
+}
+
+

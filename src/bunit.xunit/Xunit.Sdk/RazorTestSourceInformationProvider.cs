@@ -89,6 +89,16 @@ namespace Xunit.Sdk
 
 			return razorFile is { };
 		}
+		
+		private SourceFileFinder GetSourceFileFinderForType(Type testComponent)
+		{
+			if (_sourceFileFinder is null || _sourceFileFinder.SearchAssembly != testComponent.Assembly)
+			{
+				_sourceFileFinder?.Dispose();
+				_sourceFileFinder = new SourceFileFinder(testComponent.Assembly);
+			}
+			return _sourceFileFinder;
+		}
 
 		private static bool IsTestComponentFile(Type testComponent, string file)
 		{
@@ -97,7 +107,7 @@ namespace Xunit.Sdk
 				Path.GetFileNameWithoutExtension(file).Equals(testComponent.Name, StringComparison.Ordinal);
 		}
 
-		private bool IsGeneratedTestComponentFile(Type testComponent, string file)
+		private static bool IsGeneratedTestComponentFile(Type testComponent, string file)
 		{
 			const string BLAZOR_GENERATED_FILE_EXTENSION = ".razor.g.cs";
 			const string GENERATED_FILE_EXTENSION = ".g.cs";
@@ -106,7 +116,7 @@ namespace Xunit.Sdk
 				&& IsTestComponentFile(testComponent, file.Substring(0, file.Length - GENERATED_FILE_EXTENSION.Length));
 		}
 
-		private bool TryGetRazorFileFromGeneratedFile(string file, [NotNullWhen(true)]out string? result)
+		private static bool TryGetRazorFileFromGeneratedFile(string file, [NotNullWhen(true)]out string? result)
 		{
 			// Pattern for first line in generated files: #pragma checksum "C:\...\bunit\src\bunit.xunit.tests\SampleComponents\ComponentWithTwoTests.razor" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "b0aa9328840c75d34f073c3300621046639ea9c7"
 			const string GENERATED_FILE_REF_PREFIX = "#pragma checksum \"";
@@ -123,7 +133,7 @@ namespace Xunit.Sdk
 			return result is { };
 		}
 
-		private int? FindLineNumber(string razorFile, RazorTestBase test, int testNumber)
+		private static int? FindLineNumber(string razorFile, RazorTestBase test, int testNumber)
 		{
 			var testCasesSeen = 0;
 			var lineNumber = 0;
@@ -159,16 +169,6 @@ namespace Xunit.Sdk
 					break;
 			}
 			return null;
-		}
-
-		private SourceFileFinder GetSourceFileFinderForType(Type testComponent)
-		{
-			if (_sourceFileFinder is null || _sourceFileFinder.SearchAssembly != testComponent.Assembly)
-			{
-				_sourceFileFinder?.Dispose();
-				_sourceFileFinder = new SourceFileFinder(testComponent.Assembly);
-			}
-			return _sourceFileFinder;
 		}
 	}
 }

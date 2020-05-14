@@ -385,12 +385,12 @@ namespace Bunit
 			Assert.Throws<ArgumentException>(() => sut.Add(c => c.DummyMethod(), 42));
 		}
 
-		private ComponentParameterBuilder<AllTypesOfParams<string>> CreateSut()
+		private static ComponentParameterBuilder<AllTypesOfParams<string>> CreateSut()
 		{
 			return CreateSut<AllTypesOfParams<string>>();
 		}
 
-		private ComponentParameterBuilder<TComponent> CreateSut<TComponent>() where TComponent : class, IComponent
+		private static ComponentParameterBuilder<TComponent> CreateSut<TComponent>() where TComponent : class, IComponent
 		{
 			return new ComponentParameterBuilder<TComponent>();
 		}

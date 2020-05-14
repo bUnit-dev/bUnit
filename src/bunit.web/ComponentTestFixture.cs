@@ -26,7 +26,7 @@ namespace Bunit
 		/// <param name="name">Parameter name.</param>
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
-		protected ComponentParameter EventCallback(string name, Action callback)
+		protected static ComponentParameter EventCallback(string name, Action callback)
 		{
 			return ComponentParameter.CreateParameter(name, new EventCallback(null, callback));
 		}
@@ -38,7 +38,7 @@ namespace Bunit
 		/// <param name="name">Parameter name.</param>
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
-		protected ComponentParameter EventCallback(string name, Action<object> callback)
+		protected static ComponentParameter EventCallback(string name, Action<object> callback)
 		{
 			return ComponentParameter.CreateParameter(name, new EventCallback(null, callback));
 		}
@@ -50,7 +50,7 @@ namespace Bunit
 		/// <param name="name">Parameter name.</param>
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
-		protected ComponentParameter EventCallback(string name, Func<Task> callback)
+		protected static ComponentParameter EventCallback(string name, Func<Task> callback)
 		{
 			return ComponentParameter.CreateParameter(name, new EventCallback(null, callback));
 		}
@@ -62,7 +62,7 @@ namespace Bunit
 		/// <param name="name">Parameter name.</param>
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
-		protected ComponentParameter EventCallback(string name, Func<object, Task> callback)
+		protected static ComponentParameter EventCallback(string name, Func<object, Task> callback)
 		{
 			return ComponentParameter.CreateParameter(name, new EventCallback(null, callback));
 		}
@@ -74,7 +74,7 @@ namespace Bunit
 		/// <param name="name">Parameter name.</param>
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
-		protected ComponentParameter EventCallback<TValue>(string name, Action callback)
+		protected static ComponentParameter EventCallback<TValue>(string name, Action callback)
 		{
 			return ComponentParameter.CreateParameter(name, new EventCallback<TValue>(null, callback));
 		}
@@ -86,7 +86,7 @@ namespace Bunit
 		/// <param name="name">Parameter name.</param>
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
-		protected ComponentParameter EventCallback<TValue>(string name, Action<TValue> callback)
+		protected static ComponentParameter EventCallback<TValue>(string name, Action<TValue> callback)
 		{
 			return ComponentParameter.CreateParameter(name, new EventCallback<TValue>(null, callback));
 		}
@@ -98,7 +98,7 @@ namespace Bunit
 		/// <param name="name">Parameter name.</param>
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
-		protected ComponentParameter EventCallback<TValue>(string name, Func<Task> callback)
+		protected static ComponentParameter EventCallback<TValue>(string name, Func<Task> callback)
 		{
 			return ComponentParameter.CreateParameter(name, new EventCallback<TValue>(null, callback));
 		}
@@ -110,7 +110,7 @@ namespace Bunit
 		/// <param name="name">Parameter name.</param>
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
-		protected ComponentParameter EventCallback<TValue>(string name, Func<TValue, Task> callback)
+		protected static ComponentParameter EventCallback<TValue>(string name, Func<TValue, Task> callback)
 		{
 			return ComponentParameter.CreateParameter(name, new EventCallback<TValue>(null, callback));
 		}

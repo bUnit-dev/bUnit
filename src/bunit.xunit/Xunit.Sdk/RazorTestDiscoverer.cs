@@ -63,11 +63,8 @@ namespace Xunit.Sdk
 			return result;
 		}
 
-		private string GetDisplayName(RazorTestBase test, int testNumber) => test.Description ?? $"{test.GetType().Name} #{testNumber}";
+		private static string GetDisplayName(RazorTestBase test, int testNumber) => test.DisplayName ?? $"{test.GetType().Name} #{testNumber}";
 
-		public void Dispose()
-		{
-			_sourceInfoDiscoverer?.Dispose();
-		}
+		public void Dispose() => _sourceInfoDiscoverer?.Dispose();
 	}
 }

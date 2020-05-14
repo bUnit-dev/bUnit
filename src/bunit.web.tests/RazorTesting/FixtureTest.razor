@@ -1,0 +1,258 @@
+@inherits TestComponentBase
+
+<Fixture Description="Setup, SetupAsync and Test methods are called in the correct order"
+		 Setup="_ => Assert.Equal(0, syncCalledBefore++)"
+		 SetupAsync="_ => { Assert.Equal(1, syncCalledBefore++); return Task.CompletedTask; }"
+		 Test="_ => Assert.Equal(2, syncCalledBefore)">
+	<ComponentUnderTest />
+	@code {
+		int syncCalledBefore = 0;
+	}
+</Fixture>
+
+<Fixture Description="Setup, SetupAsync and TestAsync methods are called in the correct order"
+		 Setup="_ => Assert.Equal(0, asyncCalledBefore++)"
+		 SetupAsync="_ => { Assert.Equal(1, asyncCalledBefore++); return Task.CompletedTask; }"
+		 TestAsync="_ => { Assert.Equal(2, asyncCalledBefore); return Task.CompletedTask; }">
+	<ComponentUnderTest />
+	@code {
+		int asyncCalledBefore = 0;
+	}
+</Fixture>
+
+<Fixture Test="Test001" Description="Life cycle events of components under test execute in expected order">
+	<ComponentUnderTest>
+		<Wrapper>
+			@if (shouldRenderTracker)
+			{
+				<LifeCycleTracker Number="renderTrigger" />
+			}
+		</Wrapper>
+	</ComponentUnderTest>
+
+	@code {
+		bool shouldRenderTracker = true;
+		int renderTrigger = 0;
+
+		void Test001(Fixture fixture)
+		{
+			var cut = fixture.GetComponentUnderTest<Wrapper>();
+			var callLog = cut.FindComponent<LifeCycleTracker>().Instance.CallLog;
+
+			// assert first render called expected methods
+			callLog["SetParametersAsync"].ShouldBe(1);
+			callLog["OnInitialized"].ShouldBe(1);
+			callLog["OnInitializedAsync"].ShouldBe(1);
+			callLog["OnParametersSet"].ShouldBe(1);
+			callLog["OnParametersSetAsync"].ShouldBe(1);
+			callLog["OnAfterRenderFirstRender"].ShouldBe(1);
+			callLog["OnAfterRenderAsyncFirstRender"].ShouldBe(1);
+			callLog["OnAfterRender"].ShouldBe(0);
+			callLog["OnAfterRenderAsync"].ShouldBe(0);
+			callLog["Dispose"].ShouldBe(0);
+
+			renderTrigger = 1;
+			cut.Render();
+
+			// assert second render called expected methods
+			callLog["SetParametersAsync"].ShouldBe(2);
+			callLog["OnInitialized"].ShouldBe(1);
+			callLog["OnInitializedAsync"].ShouldBe(1);
+			callLog["OnParametersSet"].ShouldBe(2);
+			callLog["OnParametersSetAsync"].ShouldBe(2);
+			callLog["OnAfterRenderFirstRender"].ShouldBe(1);
+			callLog["OnAfterRenderAsyncFirstRender"].ShouldBe(1);
+			callLog["OnAfterRender"].ShouldBe(1);
+			callLog["OnAfterRenderAsync"].ShouldBe(1);
+			callLog["Dispose"].ShouldBe(0);
+
+			shouldRenderTracker = false;
+			cut.Render();
+
+			// assert removal of component called dispose method
+			callLog["SetParametersAsync"].ShouldBe(2);
+			callLog["OnInitialized"].ShouldBe(1);
+			callLog["OnInitializedAsync"].ShouldBe(1);
+			callLog["OnParametersSet"].ShouldBe(2);
+			callLog["OnParametersSetAsync"].ShouldBe(2);
+			callLog["OnAfterRenderFirstRender"].ShouldBe(1);
+			callLog["OnAfterRenderAsyncFirstRender"].ShouldBe(1);
+			callLog["OnAfterRender"].ShouldBe(1);
+			callLog["OnAfterRenderAsync"].ShouldBe(1);
+			callLog["Dispose"].ShouldBe(1);
+		}
+	}
+</Fixture>
+
+<Fixture Test="Test002" Description="Blazor ElementReferences are included in rendered markup">
+	<Fragment>
+		<div @ref="refElm" />
+	</Fragment>
+
+	@code {
+		ElementReference refElm;
+
+		void Test002(Fixture fixture)
+		{
+			var cut = fixture.GetFragment();
+
+			var html = cut.Markup;
+
+			html.ShouldContain($"=\"{refElm.Id}\"");
+		}
+	}
+
+</Fixture>
+
+<Fixture Test="CanGetComponentInsideCascadingValue" Description="GetComponentUnderTest can find component inside CascadingValue">
+	<ComponentUnderTest>
+		<CascadingValue Value="true">
+			<ClickCounter />
+		</CascadingValue>
+	</ComponentUnderTest>
+
+	@code {
+		void CanGetComponentInsideCascadingValue(Fixture fixture)
+		{
+			var cut = fixture.GetComponentUnderTest<ClickCounter>();
+			cut.ShouldNotBeNull();
+		}
+	}
+</Fixture>
+
+<Fixture Test="Test004" Description="Calling GetComponentUnderTest multiple times returns same instance">
+	<ComponentUnderTest>
+		<Wrapper>CUT</Wrapper>
+	</ComponentUnderTest>
+	@code {
+		void Test004(Fixture f)
+		{
+			var cut1 = f.GetComponentUnderTest<Wrapper>();
+			var cut2 = f.GetComponentUnderTest<Wrapper>();
+
+			cut1.ShouldBe(cut2);
+		}
+	}
+</Fixture>
+
+<Fixture Test="Test005" Description="Calling GetFragment with same args multiple times returns same instance">
+	<Fragment Id="first">first</Fragment>
+	<Fragment Id="second">second</Fragment>
+	@code{
+		void Test005(Fixture f)
+		{
+			var firstFragmentNoId1 = f.GetFragment();
+			var firstFragmentNoId2 = f.GetFragment();
+			var firstFragmentId1 = f.GetFragment("first");
+			var firstFragmentId2 = f.GetFragment("first");
+
+			firstFragmentNoId1.ShouldBe(firstFragmentNoId2);
+			firstFragmentId1.ShouldBe(firstFragmentId2);
+		}
+	}
+</Fixture>
+
+<Fixture Test="Test006" Description="Getting first fragment with and without id should return the same instance">
+	<Fragment Id="first">first</Fragment>
+	<Fragment Id="second">second</Fragment>
+	@code{
+		void Test006(Fixture f)
+		{
+			var firstFragmentNoId1 = f.GetFragment();
+			var firstFragmentId1 = f.GetFragment("first");
+
+			firstFragmentNoId1.ShouldBe(firstFragmentId1);
+		}
+	}
+</Fixture>
+
+<Fixture Test="Test007" Description="Using the generic GetFragment returns an IRenderedComponent with the component of the generic type">
+	<Fragment><Wrapper /></Fragment>
+	@code{
+		void Test007(Fixture f)
+		{
+			var fragment = f.GetFragment<Wrapper>();
+
+			fragment.ShouldBeAssignableTo<IRenderedComponent<Wrapper>>()
+				.Instance.ShouldNotBeNull();
+		}
+	}
+</Fixture>
+
+<Fixture Test="Test008" Description="Using the generic GetComponentUnderTest returns an IRenderedComponent with the component of the generic type">
+	<ComponentUnderTest><Wrapper /></ComponentUnderTest>
+	@code{
+		void Test008(Fixture f)
+		{
+			var cut = f.GetComponentUnderTest<Wrapper>();
+
+			cut.ShouldBeAssignableTo<IRenderedComponent<Wrapper>>()
+				.Instance.ShouldNotBeNull();
+		}
+	}
+</Fixture>
+
+<Fixture Test="Test009" Description="Using the non-generic GetFragment returns an IRenderedFragment">
+	<Fragment><Wrapper /></Fragment>
+	@code{
+		void Test009(Fixture f)
+		{
+			var fragment = f.GetFragment();
+
+			fragment.ShouldBeAssignableTo<IRenderedFragment>();
+		}
+	}
+
+</Fixture>
+
+<Fixture Test="Test010" Description="Using the non-generic GetComponentUnderTest returns an IRenderedFragment">
+	<ComponentUnderTest><Wrapper /></ComponentUnderTest>
+	@code{
+		void Test010(Fixture f)
+		{
+			var cut = f.GetComponentUnderTest();
+
+			cut.ShouldBeAssignableTo<IRenderedFragment>();
+		}
+	}
+
+</Fixture>
+
+<Fixture Test="Test011" Description="Calling generic get-methods after non-generic throws">
+	<ComponentUnderTest>
+		<Wrapper>CUT</Wrapper>
+	</ComponentUnderTest>
+	<Fragment>
+		<Wrapper>second</Wrapper>
+	</Fragment>
+	@code{
+		void Test011(Fixture f)
+		{
+			f.GetComponentUnderTest();
+
+			// It should not be possible to call the generic GetComponentUnderTest after the non-generic has been called
+			Assert.Throws<InvalidOperationException>(() => f.GetComponentUnderTest<Wrapper>());
+
+			f.GetFragment();
+
+			// It should not be possible to call the generic GetFragment after the non-generic has been called
+			Assert.Throws<InvalidOperationException>(() => f.GetFragment<Wrapper>());
+		}
+	}
+</Fixture>
+
+<Fixture Test="Test012" Description="Calling get-methods with wrong generic type throws">
+	<ComponentUnderTest>
+		<Wrapper></Wrapper>
+	</ComponentUnderTest>
+	<Fragment>
+		<Wrapper></Wrapper>
+	</Fragment>
+	@code{
+		void Test012(Fixture f)
+		{
+			Assert.Throws<ComponentNotFoundException>(() => f.GetComponentUnderTest<Simple1>());
+			Assert.Throws<ComponentNotFoundException>(() => f.GetFragment<Simple1>());
+		}
+	}
+</Fixture>

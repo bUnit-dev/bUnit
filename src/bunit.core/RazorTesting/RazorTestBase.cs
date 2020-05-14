@@ -11,6 +11,11 @@ namespace Bunit.RazorTesting
 	public abstract class RazorTestBase : TestContextBase, ITestContext, IComponent
 	{
 		/// <summary>
+		/// Gets the name of the test, which is displayed by the test runner/explorer.
+		/// </summary>
+		public abstract string? DisplayName { get; }
+
+		/// <summary>
 		/// Gets whether the tests is running or not.
 		/// </summary>
 		public bool IsRunning { get; private set; }
@@ -18,17 +23,17 @@ namespace Bunit.RazorTesting
 		/// <summary>
 		/// A description or name for the test that will be displayed if the test fails.
 		/// </summary>
-		[Parameter] public string? Description { get; set; }
+		[Parameter] public virtual string? Description { get; set; }
 
 		/// <summary>
 		/// Gets or sets a reason for skipping the test. If not set (null), the test will not be skipped.
 		/// </summary>
-		[Parameter] public string? Skip { get; set; }
+		[Parameter] public virtual string? Skip { get; set; }
 
 		/// <summary>
 		/// Gets or sets the timeout of the test, in milliseconds; if zero or negative, means the test case has no timeout.
 		/// </summary>
-		[Parameter] public int Timeout { get; set; } = 0;
+		[Parameter] public virtual int Timeout { get; set; } = 0;
 
 		/// <summary>
 		/// Run the test logic of the <see cref="RazorTestBase"/>.
@@ -78,35 +83,21 @@ namespace Bunit.RazorTesting
 		/// <summary>
 		/// Try to run the <see cref="Action{T}"/>.
 		/// </summary>
-		protected void TryRun<T>(Action<T> action, T input)
+		protected static void TryRun<T>(Action<T> action, T input)
 		{
 			if (action is null)
 				throw new ArgumentNullException(nameof(action));
-			try
-			{
-				action(input);
-			}
-			catch (Exception ex)
-			{
-				throw new RazorTestFailedException(Description ?? $"{action.Method.Name} failed:", ex);
-			}
+			action(input);
 		}
 
 		/// <summary>
 		/// Try to run the <see cref="Func{T, Task}"/>.
 		/// </summary>
-		protected async Task TryRunAsync<T>(Func<T, Task> action, T input)
+		protected static async Task TryRunAsync<T>(Func<T, Task> action, T input)
 		{
 			if (action is null)
 				throw new ArgumentNullException(nameof(action));
-			try
-			{
-				await action(input).ConfigureAwait(false);
-			}
-			catch (Exception ex)
-			{
-				throw new RazorTestFailedException(Description ?? $"{action.Method.Name} failed:", ex);
-			}
+			await action(input).ConfigureAwait(false);
 		}
 	}
 }

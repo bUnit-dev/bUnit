@@ -180,35 +180,39 @@ namespace Bunit.Rendering
 				{
 					if (frame.Component is TComponent component)
 						return (frame.ComponentId, component);
+
 					var result = GetComponent<TComponent>(frame.ComponentId);
-					if (result != null)
+					if (result is { })
 						return result;
 				}
 			}
 
-			throw new ComponentNotFoundException(typeof(TComponent));
+			return null;
 		}
 
 		private IReadOnlyList<(int ComponentId, TComponent Component)> GetComponents<TComponent>(int rootComponentId)
 		{
-			var ownFrames = GetCurrentRenderTreeFrames(rootComponentId);
-
-			if (ownFrames.Count == 0)
-				return Array.Empty<(int Id, TComponent Component)>();
-
 			var result = new List<(int ComponentId, TComponent Component)>();
 
-			for (var i = 0; i < ownFrames.Count; i++)
+			GetComponentsInternal(rootComponentId, result);
+
+			return result;
+
+			void GetComponentsInternal(int rootComponentId, List<(int ComponentId, TComponent Component)> result)
 			{
-				ref var frame = ref ownFrames.Array[i];
-				if (frame.FrameType == RenderTreeFrameType.Component)
+				var ownFrames = GetCurrentRenderTreeFrames(rootComponentId);
+				for (var i = 0; i < ownFrames.Count; i++)
 				{
-					if (frame.Component is TComponent component)
-						result.Add((frame.ComponentId, component));
-					result.AddRange(GetComponents<TComponent>(frame.ComponentId));
+					ref var frame = ref ownFrames.Array[i];
+					if (frame.FrameType == RenderTreeFrameType.Component)
+					{
+						if (frame.Component is TComponent component)
+							result.Add((frame.ComponentId, component));
+
+						GetComponentsInternal(frame.ComponentId, result);
+					}
 				}
 			}
-			return result;
 		}
 	}
 }

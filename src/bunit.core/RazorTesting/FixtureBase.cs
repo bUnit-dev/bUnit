@@ -14,59 +14,51 @@ namespace Bunit.RazorTesting
 	/// </summary>
 	public abstract class FixtureBase<TFixture> : RazorTestBase
 	{
+		/// <inheritdoc/>
+		public override string? DisplayName => Description ?? Test?.Method.Name ?? TestAsync?.Method.Name;
+
 		/// <summary>
 		/// Gets or sets the child content of the fragment.
 		/// </summary>
 		[Parameter] public RenderFragment ChildContent { get; set; } = default!;
 
 		/// <summary>
-		/// Gets or sets the setup action to perform before the <see cref="Test"/> action,
-		/// <see cref="TestAsync"/> action and <see cref="Tests"/> and <see cref="TestsAsync"/> actions are invoked.
+		/// Gets or sets the setup action to perform before the <see cref="Test"/> action or
+		/// <see cref="TestAsync"/> action are invoked.
 		/// </summary>
 		[Parameter] public Action<TFixture>? Setup { get; set; }
 
 		/// <summary>
-		/// Gets or sets the asynchronous setup action to perform before the <see cref="Test"/> action,
-		/// <see cref="TestAsync"/> action and <see cref="Tests"/> and <see cref="TestsAsync"/> actions are invoked.
+		/// Gets or sets the asynchronous setup action to perform before the <see cref="Test"/> action or
+		/// <see cref="TestAsync"/> action are invoked.
 		/// </summary>
 		[Parameter] public Func<TFixture, Task>? SetupAsync { get; set; }
 
 		/// <summary>
-		/// Gets or sets the first test action to invoke, after the <see cref="Setup"/> action has
-		/// executed (if provided).
-		/// 
-		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
-		/// defined in the fixture.
+		/// Gets or sets the test action to invoke, after the <see cref="Setup"/> and <see cref="SetupAsync"/> actions has
+		/// invoked (if provided).
+		/// If this is set, then <see cref="TestAsync"/> cannot also be set.
 		/// </summary>
 		[Parameter] public Action<TFixture>? Test { get; set; }
 
 		/// <summary>
-		/// Gets or sets the first test action to invoke, after the <see cref="SetupAsync"/> action has
-		/// executed (if provided).
-		/// 
-		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
-		/// defined in the fixture.
+		/// Gets or sets the test action to invoke, after the <see cref="Setup"/> and <see cref="SetupAsync"/> actions has
+		/// invoked (if provided).
+		/// If this is set, then <see cref="Test"/> cannot also be set.
 		/// </summary>
 		[Parameter] public Func<TFixture, Task>? TestAsync { get; set; }
 
 		/// <summary>
-		/// Gets or sets the test actions to invoke, one at the time, in the order they are placed 
-		/// into the collection, after the <see cref="Setup"/> action and the <see cref="Test"/> action has
-		/// executed (if provided).
-		/// 
-		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
-		/// defined in the fixture.
+		/// Obsolete. Methods assigned to this parameter will not be invoked.
 		/// </summary>
-		[Parameter] public IReadOnlyCollection<Action<TFixture>>? Tests { get; set; }
+		[Obsolete("This feature has been removed since it caused confusion about the state of the fixture being passed to the test methods. Methods assigned to this parameter will not be invoked.")]
+		[Parameter]
+		public IReadOnlyCollection<Action<TFixture>>? Tests { get; set; }
 
 		/// <summary>
-		/// Gets or sets the test actions to invoke, one at the time, in the order they are placed 
-		/// into the collection, after the <see cref="SetupAsync"/> action and the <see cref="TestAsync"/> action has
-		/// executed (if provided).
-		/// 
-		/// Use this to assert against the <see cref="ComponentUnderTest"/> and <see cref="Fragment"/>'s
-		/// defined in the fixture.
+		/// Obsolete. Methods assigned to this parameter will not be invoked.
 		/// </summary>
+		[Obsolete("This feature has been removed since it caused confusion about the state of the fixture being passed to the test methods. Methods assigned to this parameter will not be invoked.")]
 		[Parameter]
 		public IReadOnlyCollection<Func<TFixture, Task>>? TestsAsync { get; set; }
 
@@ -78,8 +70,13 @@ namespace Bunit.RazorTesting
 			SetupAsync = parameters.GetValueOrDefault<Func<TFixture, Task>>(nameof(SetupAsync));
 			Test = parameters.GetValueOrDefault<Action<TFixture>>(nameof(Test));
 			TestAsync = parameters.GetValueOrDefault<Func<TFixture, Task>>(nameof(TestAsync));
-			Tests = parameters.GetValueOrDefault<IReadOnlyCollection<Action<TFixture>>>(nameof(Tests), Array.Empty<Action<TFixture>>());
-			TestsAsync = parameters.GetValueOrDefault<IReadOnlyCollection<Func<TFixture, Task>>>(nameof(TestsAsync), Array.Empty<Func<TFixture, Task>>());
+
+#pragma warning disable CS0618 // Type or member is obsolete
+			if (parameters.TryGetValue<IReadOnlyCollection<Action<TFixture>>>("Tests", out var tests))
+				Tests = tests;
+			if (parameters.TryGetValue<IReadOnlyCollection<Func<TFixture, Task>>>("TestsAsync", out var asyncTests))
+				TestsAsync = asyncTests;
+#pragma warning restore CS0618 // Type or member is obsolete
 
 			return base.SetParametersAsync(parameters);
 		}
@@ -90,8 +87,16 @@ namespace Bunit.RazorTesting
 			base.Validate();
 			if (ChildContent is null)
 				throw new ArgumentException($"No {nameof(ChildContent)} specified in the {GetType().Name} component.");
-			if (Test is null && TestAsync is null && Tests?.Count == 0 && TestsAsync?.Count == 0)
+			if (Test is null && TestAsync is null)
 				throw new ArgumentException($"No test/assertions provided to the {GetType().Name} component.");
+			if (Test is { } && TestAsync is { })
+				throw new ArgumentException($"Only a single test method can be provided to the {GetType().Name} component at the time.");
+#pragma warning disable CS0618 // Type or member is obsolete
+			if (Tests is { })
+				throw new ArgumentException($"The user of the Tests parameter has been obsoleted, and any methods assigned to it will not longer be invoked.");
+			if (TestsAsync is { })
+				throw new ArgumentException($"The user of the TestsAsync parameter has been obsoleted, and any methods assigned to it will not longer be invoked.");
+#pragma warning restore CS0618 // Type or member is obsolete
 		}
 
 		/// <inheritdoc/>
@@ -109,12 +114,6 @@ namespace Bunit.RazorTesting
 
 			if (TestAsync is { })
 				await TryRunAsync(TestAsync, self).ConfigureAwait(false);
-
-			foreach (var test in Tests ?? Array.Empty<Action<TFixture>>())
-				TryRun(test, self);
-
-			foreach (var test in TestsAsync ?? Array.Empty<Func<TFixture, Task>>())
-				await TryRunAsync(test, self).ConfigureAwait(false);
 		}
 	}
 }

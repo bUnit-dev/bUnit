@@ -16,6 +16,9 @@ namespace Bunit
 	/// </summary>
 	public class SnapshotTest : RazorTestBase
 	{
+		/// <inheritdoc/>
+		public override string? DisplayName => Description;
+
 		/// <summary>
 		/// Sets the setup action to perform before the <see cref="TestInput"/> and <see cref="ExpectedOutput"/>
 		/// is rendered and compared.

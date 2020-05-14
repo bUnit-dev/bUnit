@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 
 using Bunit.SampleComponents;
@@ -63,6 +64,18 @@ namespace Bunit.RazorTesting
 			testCases.ShouldBeEmpty();
 		}
 
-		// TODO: When rendering of test component fails an ExecutionErrorTestCase is returned
+		[Fact(DisplayName = "If no description is provided, the name of the test method is used")]
+		public void Test004()
+		{
+			var discoverer = new RazorTestDiscoverer(_messageBus);
+			var testMethod = Mocks.TestMethod(typeof(FixturesWithoutDescription), nameof(TestComponentBase.RazorTests));
+
+			var testCases = discoverer.Discover(_options, testMethod, _attribute);
+
+			testCases.ShouldAllBe(
+				x => x.DisplayName.ShouldBe(nameof(FixturesWithoutDescription.SyncTest)),
+				x => x.DisplayName.ShouldBe(nameof(FixturesWithoutDescription.AsyncTest))
+			);
+		}
 	}
 }
