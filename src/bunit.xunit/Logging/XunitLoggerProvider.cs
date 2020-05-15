@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 using Xunit.Abstractions;
 
-namespace Bunit.Logging
+namespace Bunit.Xunit.Logging
 {
 	/// <summary>
 	/// Represents an <see cref="ILoggerProvider"/> for logging to <see cref="XunitLogger"/>.

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 using Xunit.Abstractions;
 
-namespace Bunit.Logging
+namespace Bunit.Xunit.Logging
 {
 	/// <summary>
 	/// Represents a <see cref="ILogger"/> that will write logs to the provided <see cref="ITestOutputHelper"/>.

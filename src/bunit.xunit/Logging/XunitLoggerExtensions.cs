@@ -1,5 +1,4 @@
-using Bunit.Logging;
-
+using Bunit.Xunit.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
