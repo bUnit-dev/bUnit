@@ -9,7 +9,7 @@ on:
       - '.github/**'
 
 env:
-  VERSION: '1.0.0-beta-6'
+  VERSION: '1.0.0-beta-7'
   BRANCH: 'master'
   COMMIT: ''
   DOCFX_SOURCE_BRANCH_NAME: 'master'
@@ -27,11 +27,14 @@ jobs:
           files: '["docs/*.md", "docs/**/*.md", "*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.201'
+          dotnet-version: '3.1.202'
       - name: Building library and docs
         run: |
-          dotnet build src/bunit.csproj
-          dotnet build docs/docs.csproj
+          dotnet restore
+          dotnet build src/bunit.core --no-restore -p:version=$VERSION
+          dotnet build src/bunit.web --no-restore -p:version=$VERSION
+          dotnet build src/bunit.xunit --no-restore -p:version=$VERSION
+          dotnet build docs/docs.csproj --no-restore
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
