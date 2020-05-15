@@ -18,13 +18,12 @@ namespace Bunit.Rendering
 		/// </summary>
 		Dispatcher Dispatcher { get; }
 
-		/// <summary>
-		/// Dispatches an callback in the context of the renderer synchronously and 
-		/// asserts no errors happened during dispatch
-		/// </summary>
-		/// <param name="callback"></param>
-		/// <returns>A task that completes when the action finishes its invocation.</returns>
-		Task InvokeAsync(Action callback);
+		///// <summary>
+		///// Invokes the given <paramref name="callback"/> in the context of this <see cref="ITestRenderer"/>.
+		///// </summary>
+		///// <param name="callback"></param>
+		///// <returns>A <see cref="Task"/> that will be completed when the action has finished executing.</returns>
+		//Task InvokeAsync(Action callback);
 
 		/// <summary>
 		/// Instantiates and renders the component of type <typeparamref name="TComponent"/>.

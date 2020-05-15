@@ -33,7 +33,7 @@ namespace Bunit.Rendering
 			handler.ReceivedEvents.Count.ShouldBe(1);
 
 			// Act #2
-			await sut.InvokeAsync(() => cut.Component.SetParametersAsync(ParameterView.Empty));
+			await sut.Dispatcher.InvokeAsync(() => cut.Component.SetParametersAsync(ParameterView.Empty));
 
 			// Assert #2
 			handler.ReceivedEvents.Count.ShouldBe(2);

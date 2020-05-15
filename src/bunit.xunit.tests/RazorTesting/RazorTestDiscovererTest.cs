@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 
 using Bunit.SampleComponents;
@@ -76,6 +77,19 @@ namespace Bunit.RazorTesting
 				x => x.DisplayName.ShouldBe(nameof(FixturesWithoutDescription.SyncTest)),
 				x => x.DisplayName.ShouldBe(nameof(FixturesWithoutDescription.AsyncTest))
 			);
+		}
+
+		[Fact(DisplayName = "Timeout is set correctly in test case")]
+		public void Test005()
+		{
+			var discoverer = new RazorTestDiscoverer(_messageBus);
+			var testMethod = Mocks.TestMethod(typeof(TimeoutRazorComponent), nameof(TestComponentBase.RazorTests));
+
+			var testCases = discoverer.Discover(_options, testMethod, _attribute);
+
+			var actualTimeout = testCases.Single().Timeout;
+
+			TimeSpan.FromMilliseconds(actualTimeout).ShouldBe(TimeoutRazorComponent.TIMEOUT);
 		}
 	}
 }

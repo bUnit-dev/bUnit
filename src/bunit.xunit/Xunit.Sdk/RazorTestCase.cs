@@ -22,12 +22,14 @@ namespace Xunit.Sdk
 		public RazorTestCase() { }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-		public RazorTestCase(string displayName, int timeout, string? skipReason, int testNumber, ITestMethod testMethod, ISourceInformation? sourceInformation = null)
+		public RazorTestCase(string displayName, TimeSpan? timeout, string? skipReason, int testNumber, ITestMethod testMethod, ISourceInformation? sourceInformation = null)
 		{
 			TestMethod = testMethod;
 			Method = testMethod.Method;
 			DisplayName = displayName;
-			Timeout = timeout;
+			Timeout = timeout is null
+				? 0
+				: Convert.ToInt32(timeout?.TotalMilliseconds, CultureInfo.InvariantCulture);
 			SkipReason = skipReason;
 			TestNumber = testNumber;
 			SourceInformation = sourceInformation;

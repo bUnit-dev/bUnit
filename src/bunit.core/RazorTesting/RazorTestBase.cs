@@ -33,7 +33,7 @@ namespace Bunit.RazorTesting
 		/// <summary>
 		/// Gets or sets the timeout of the test, in milliseconds; if zero or negative, means the test case has no timeout.
 		/// </summary>
-		[Parameter] public virtual int Timeout { get; set; } = 0;
+		[Parameter] public virtual TimeSpan? Timeout { get; set; }
 
 		/// <summary>
 		/// Run the test logic of the <see cref="RazorTestBase"/>.
@@ -62,7 +62,7 @@ namespace Bunit.RazorTesting
 		{
 			Skip = parameters.GetValueOrDefault<string>(nameof(Skip));
 			Description = parameters.GetValueOrDefault<string>(nameof(Description));
-			Timeout = parameters.GetValueOrDefault<int>(nameof(Timeout));
+			Timeout = parameters.GetValueOrDefault<TimeSpan>(nameof(Timeout));
 			return Task.CompletedTask;
 		}
 

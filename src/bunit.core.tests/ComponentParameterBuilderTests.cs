@@ -386,13 +386,9 @@ namespace Bunit
 		}
 
 		private static ComponentParameterBuilder<AllTypesOfParams<string>> CreateSut()
-		{
-			return CreateSut<AllTypesOfParams<string>>();
-		}
+			=> CreateSut<AllTypesOfParams<string>>();
 
-		private static ComponentParameterBuilder<TComponent> CreateSut<TComponent>() where TComponent : class, IComponent
-		{
-			return new ComponentParameterBuilder<TComponent>();
-		}
+		private static ComponentParameterBuilder<TComponent> CreateSut<TComponent>() where TComponent : IComponent
+			=> new ComponentParameterBuilder<TComponent>();
 	}
 }

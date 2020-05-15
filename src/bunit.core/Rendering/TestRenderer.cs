@@ -114,12 +114,6 @@ namespace Bunit.Rendering
 			return result;
 		}
 
-		/// <inheritdoc/>
-		public Task InvokeAsync(Action callback)
-		{
-			return Dispatcher.InvokeAsync(callback);
-		}
-
 		private int RenderFragmentInsideWrapper(RenderFragment renderFragment)
 		{
 			var wrapper = new WrapperComponent(renderFragment);

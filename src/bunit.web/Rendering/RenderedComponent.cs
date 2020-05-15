@@ -22,7 +22,7 @@ namespace Bunit.Rendering
 		/// <inheritdoc/>
 		public void SetParametersAndRender(ParameterView parameters)
 		{
-			Renderer.InvokeAsync(() =>
+			InvokeAsync(() =>
 			{
 				Instance.SetParametersAsync(parameters);
 			});
