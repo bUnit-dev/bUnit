@@ -12,7 +12,7 @@ namespace Bunit.Mocking.JSInterop
 	public class MissingMockJsRuntimeException : Exception
 	{
 		/// <summary>
-		/// Identifer string used in the JSInvoke method.
+		/// Identifier string used in the JSInvoke method.
 		/// </summary>
 		public string Identifier { get; }
 

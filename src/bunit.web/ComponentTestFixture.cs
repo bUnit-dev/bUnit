@@ -27,9 +27,7 @@ namespace Bunit
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter EventCallback(string name, Action callback)
-		{
-			return ComponentParameter.CreateParameter(name, new EventCallback(null, callback));
-		}
+			=> ComponentParameterFactory.EventCallback(name, callback);
 
 		/// <summary>
 		/// Creates a <see cref="ComponentParameter"/> with an <see cref="Microsoft.AspNetCore.Components.EventCallback"/> as parameter value for this <see cref="TestContext"/> and
@@ -39,9 +37,7 @@ namespace Bunit
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter EventCallback(string name, Action<object> callback)
-		{
-			return ComponentParameter.CreateParameter(name, new EventCallback(null, callback));
-		}
+			=> ComponentParameterFactory.EventCallback(name, callback);
 
 		/// <summary>
 		/// Creates a <see cref="ComponentParameter"/> with an <see cref="Microsoft.AspNetCore.Components.EventCallback"/> as parameter value for this <see cref="TestContext"/> and
@@ -51,9 +47,7 @@ namespace Bunit
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter EventCallback(string name, Func<Task> callback)
-		{
-			return ComponentParameter.CreateParameter(name, new EventCallback(null, callback));
-		}
+			=> ComponentParameterFactory.EventCallback(name, callback);
 
 		/// <summary>
 		/// Creates a <see cref="ComponentParameter"/> with an <see cref="Microsoft.AspNetCore.Components.EventCallback"/> as parameter value for this <see cref="TestContext"/> and
@@ -63,9 +57,7 @@ namespace Bunit
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter EventCallback(string name, Func<object, Task> callback)
-		{
-			return ComponentParameter.CreateParameter(name, new EventCallback(null, callback));
-		}
+			=> ComponentParameterFactory.EventCallback(name, callback);
 
 		/// <summary>
 		/// Creates a <see cref="ComponentParameter"/> with an <see cref="Microsoft.AspNetCore.Components.EventCallback"/> as parameter value for this <see cref="TestContext"/> and
@@ -75,9 +67,7 @@ namespace Bunit
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter EventCallback<TValue>(string name, Action callback)
-		{
-			return ComponentParameter.CreateParameter(name, new EventCallback<TValue>(null, callback));
-		}
+			=> ComponentParameterFactory.EventCallback<TValue>(name, callback);
 
 		/// <summary>
 		/// Creates a <see cref="ComponentParameter"/> with an <see cref="Microsoft.AspNetCore.Components.EventCallback"/> as parameter value for this <see cref="TestContext"/> and
@@ -87,9 +77,7 @@ namespace Bunit
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter EventCallback<TValue>(string name, Action<TValue> callback)
-		{
-			return ComponentParameter.CreateParameter(name, new EventCallback<TValue>(null, callback));
-		}
+			=> ComponentParameterFactory.EventCallback<TValue>(name, callback);
 
 		/// <summary>
 		/// Creates a <see cref="ComponentParameter"/> with an <see cref="Microsoft.AspNetCore.Components.EventCallback"/> as parameter value for this <see cref="TestContext"/> and
@@ -99,9 +87,7 @@ namespace Bunit
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter EventCallback<TValue>(string name, Func<Task> callback)
-		{
-			return ComponentParameter.CreateParameter(name, new EventCallback<TValue>(null, callback));
-		}
+			=> ComponentParameterFactory.EventCallback<TValue>(name, callback);
 
 		/// <summary>
 		/// Creates a <see cref="ComponentParameter"/> with an <see cref="Microsoft.AspNetCore.Components.EventCallback"/> as parameter value for this <see cref="TestContext"/> and
@@ -111,9 +97,7 @@ namespace Bunit
 		/// <param name="callback">The event callback.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter EventCallback<TValue>(string name, Func<TValue, Task> callback)
-		{
-			return ComponentParameter.CreateParameter(name, new EventCallback<TValue>(null, callback));
-		}
+			=> ComponentParameterFactory.EventCallback<TValue>(name, callback);
 
 		/// <summary>
 		/// Creates a component parameter which can be passed to a test contexts render methods.
@@ -122,9 +106,7 @@ namespace Bunit
 		/// <param name="value">Value or null of the parameter</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter Parameter(string name, object? value)
-		{
-			return ComponentParameter.CreateParameter(name, value);
-		}
+			=> ComponentParameterFactory.Parameter(name, value);
 
 		/// <summary>
 		/// Creates a cascading value which can be passed to a test contexts render methods.
@@ -133,9 +115,8 @@ namespace Bunit
 		/// <param name="value">Value of the parameter</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter CascadingValue(string name, object value)
-		{
-			return ComponentParameter.CreateCascadingValue(name, value);
-		}
+			=> ComponentParameterFactory.CascadingValue(name, value);
+
 
 		/// <summary>
 		/// Creates a cascading value which can be passed to a test contexts render methods.
@@ -143,9 +124,7 @@ namespace Bunit
 		/// <param name="value">Value of the parameter</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter CascadingValue(object value)
-		{
-			return ComponentParameter.CreateCascadingValue(null, value);
-		}
+			=> ComponentParameterFactory.CascadingValue(value);
 
 		/// <summary>
 		/// Creates a ChildContent <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> with the provided 
@@ -154,9 +133,7 @@ namespace Bunit
 		/// <param name="markup">Markup to pass to the child content parameter</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter ChildContent(string markup)
-		{
-			return RenderFragment(nameof(ChildContent), markup);
-		}
+			=> ComponentParameterFactory.ChildContent(markup);
 
 		/// <summary>
 		/// Creates a ChildContent <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> which will render a <typeparamref name="TComponent"/> component
@@ -166,9 +143,7 @@ namespace Bunit
 		/// <param name="parameters">Parameters to pass to the <typeparamref name="TComponent"/>.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter ChildContent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
-		{
-			return RenderFragment<TComponent>(nameof(ChildContent), parameters);
-		}
+			=> ComponentParameterFactory.ChildContent<TComponent>(parameters);
 
 		/// <summary>
 		/// Creates a <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> with the provided 
@@ -178,9 +153,8 @@ namespace Bunit
 		/// <param name="markup">Markup to pass to the render fragment parameter</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter RenderFragment(string name, string markup)
-		{
-			return ComponentParameter.CreateParameter(name, markup.ToMarkupRenderFragment());
-		}
+			=> ComponentParameterFactory.RenderFragment(name, markup);
+
 
 		/// <summary>
 		/// Creates a <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> which will render a <typeparamref name="TComponent"/> component
@@ -191,9 +165,7 @@ namespace Bunit
 		/// <param name="parameters">Parameters to pass to the <typeparamref name="TComponent"/>.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter RenderFragment<TComponent>(string name, params ComponentParameter[] parameters) where TComponent : class, IComponent
-		{
-			return ComponentParameter.CreateParameter(name, parameters.ToComponentRenderFragment<TComponent>());
-		}
+			=> ComponentParameterFactory.RenderFragment<TComponent>(name, parameters);
 
 		/// <summary>
 		/// Creates a template component parameter which will pass the <paramref name="template"/> <see cref="Microsoft.AspNetCore.Components.RenderFragment{TValue}" />
@@ -204,9 +176,7 @@ namespace Bunit
 		/// <param name="template"><see cref="Microsoft.AspNetCore.Components.RenderFragment{TValue}" /> to pass to the parameter.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter Template<TValue>(string name, RenderFragment<TValue> template)
-		{
-			return ComponentParameter.CreateParameter(name, template);
-		}
+			=> ComponentParameterFactory.Template<TValue>(name, template);
 
 		/// <summary>
 		/// Creates a template component parameter which will pass the a <see cref="Microsoft.AspNetCore.Components.RenderFragment{TValue}" />
@@ -218,8 +188,6 @@ namespace Bunit
 		/// <param name="markupFactory">A markup factory that takes a <typeparamref name="TValue"/> as input and returns markup/HTML.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		protected static ComponentParameter Template<TValue>(string name, Func<TValue, string> markupFactory)
-		{
-			return Template<TValue>(name, value => (RenderTreeBuilder builder) => builder.AddMarkupContent(0, markupFactory(value)));
-		}
+			=> ComponentParameterFactory.Template<TValue>(name, markupFactory);
 	}
 }
