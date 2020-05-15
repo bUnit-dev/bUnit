@@ -113,13 +113,13 @@ One of the pain points of writing Razor based tests in `.razor` files was that t
 
 This has changed with the _bUnit.xUnit_ library, that now includes a way for it to discover individual razor tests, currently either a `<Fixture>` or `<SnapshotTest>` inside test components defined in `.razor` files. It also enables you to navigate to the test by double clicking on it in the Test Explorer, and you can run each test individually, and see error reports individually.
 
-**Note:** You still have to wait for the Blazor compiler to translate the `.razor` files into `.cs` files, before the tests show up in the Test Explorer.
+**WARNING:** You still have to wait for the Blazor compiler to translate the `.razor` files into `.cs` files, before the tests show up in the Test Explorer, and the this can trip up the Test Explorer. So while this feature is a big improvement to razor based testing, it is still not perfect, and more works need to be done to refine it.
 
 ### Strongly typed component parameters
 If you prefer writing your tests in C# only, you will be happy to know that there is now a new strongly typed way to pass parameters to components, using a builder. E.g., to render a `ContactInfo` component:
 
 ```c#
-var cut = RenderComponent<ContactInfo>(builder => builder
+var cut = RenderComponent<ContactInfo>(parameters => parameters
     .Add(p => p.Name, "Egil Hansen")
     .Add(p => p.Country, "Iceland")
 );
