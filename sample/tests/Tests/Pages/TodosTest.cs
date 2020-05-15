@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Moq;
-using Bunit.SampleApp.Data;
-using Bunit.SampleApp.Pages;
+using SampleApp.Data;
+using SampleApp.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Bunit.Mocking.JSInterop;
+using Bunit;
 
-namespace Bunit.SampleApp.CodeOnlyTests.Pages
+namespace SampleApp.CodeOnlyTests.Pages
 {
     public class TodosTest : TestContext
     {

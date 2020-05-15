@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Bunit.SampleApp.Components;
+using SampleApp.Components;
 using Xunit;
 using Shouldly;
 using Microsoft.AspNetCore.Components.Web;
-
+using Bunit;
 using static Bunit.ComponentParameterFactory;
 
-namespace Bunit.SampleApp.CodeOnlyTests.Components
+namespace SampleApp.CodeOnlyTests.Components
 {
     public class ThemedButtonTest : TestContext
     {

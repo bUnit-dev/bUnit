@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bunit.SampleApp.Components;
+using SampleApp.Components;
 using Bunit.Mocking.JSInterop;
 using Shouldly;
 using Xunit;
-
+using Bunit;
 using static Bunit.ComponentParameterFactory;
 
-namespace Bunit.SampleApp.CodeOnlyTests.Components
+namespace SampleApp.CodeOnlyTests.Components
 {
     public class WikiSearchTest : TestContext
     {

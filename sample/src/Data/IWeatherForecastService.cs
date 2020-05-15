@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Bunit.SampleApp.Data
+namespace SampleApp.Data
 {
     public interface IWeatherForecastService
     {

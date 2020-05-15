@@ -1,14 +1,15 @@
 using System;
 using System.Threading.Tasks;
 using Bunit.Mocking.JSInterop;
-using Bunit.SampleApp.Components;
-using Bunit.SampleApp.Data;
+using SampleApp.Components;
+using SampleApp.Data;
 using Microsoft.AspNetCore.Authentication;
 using Xunit;
+using Bunit;
 
 using static Bunit.ComponentParameterFactory;
 
-namespace Bunit.SampleApp.Tests.Components
+namespace SampleApp.Tests.Components
 {
     public class AlertTest2 : TestContext
     {

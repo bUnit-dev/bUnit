@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Bunit.SampleApp.Data;
-using Bunit.SampleApp.Components;
+using SampleApp.Data;
+using SampleApp.Components;
 using Xunit;
-using Bunit.SampleApp.Pages;
+using SampleApp.Pages;
 using Shouldly;
 using Microsoft.Extensions.DependencyInjection;
+using Bunit;
 
-namespace Bunit.SampleApp.CodeOnlyTests
+namespace SampleApp.CodeOnlyTests
 {
     public class FetchDataTest : TestContext
     {

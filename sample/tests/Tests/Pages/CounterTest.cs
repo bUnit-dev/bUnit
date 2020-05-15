@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Diffing.Core;
-using Bunit.SampleApp.Pages;
+using SampleApp.Pages;
 using Shouldly;
 using Xunit;
+using Bunit;
 
 using static Bunit.ComponentParameterFactory;
 
-namespace Bunit.SampleApp.CodeOnlyTests
+namespace SampleApp.CodeOnlyTests
 {
     public class CounterTest : TestContext
     {
