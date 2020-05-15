@@ -22,17 +22,5 @@ namespace Bunit.Extensions
 			var loggerFactory = services.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance;
 			return loggerFactory.CreateLogger<TCategoryName>();
 		}
-
-		/// <summary>
-		/// Creates a logger from the <see cref="ILoggerFactory"/> registered in the <see cref="IServiceProvider"/>.
-		/// </summary>
-		/// <param name="services">The service to get the <see cref="ILoggerFactory"/> from.</param>
-		/// <param name="categoryName">The category for the logger.</param>
-		/// <returns>The <see cref="ILogger"/></returns>
-		public static ILogger CreateLogger(this IServiceProvider services, string categoryName)
-		{
-			var loggerFactory = services.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance;
-			return loggerFactory.CreateLogger(categoryName);
-		}
 	}
 }

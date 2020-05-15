@@ -90,7 +90,7 @@ namespace Bunit
 			cut.Instance.Counter.ShouldBe(1);
 		}
 
-		[Fact(DisplayName = "FindComponent returns first component of requested type using a depth first search")]
+		[Fact(DisplayName = "FindComponent<TComponent> returns component from first branch of tree in first depth first search")]
 		public void Test100()
 		{
 			var wrapper = RenderComponent<TwoComponentWrapper>(builder => builder
@@ -104,6 +104,20 @@ namespace Bunit
 			var cut = wrapper.FindComponent<Simple1>();
 
 			cut.Instance.Header.ShouldBe("First");
+		}
+
+		[Fact(DisplayName = "FindComponent<TComponent> finds components when first tree branch is empty")]
+		public void Test101()
+		{
+			var wrapper = RenderComponent<TwoComponentWrapper>(builder => builder
+				.Add<Wrapper>(p => p.First)
+				.Add<Simple1>(p => p.Second, simple1 => simple1
+					.Add(p => p.Header, "Second"))
+			);
+
+			var cut = wrapper.FindComponent<Simple1>();
+
+			cut.Instance.Header.ShouldBe("Second");
 		}
 
 		[Fact(DisplayName = "GetComponent throws when component of requested type is not in the render tree")]
@@ -158,6 +172,6 @@ namespace Bunit
 			wrapper.RenderCount.ShouldBe(3);
 			first.RenderCount.ShouldBe(2);
 			second.RenderCount.ShouldBe(2);
-		}	
+		}
 	}
 }

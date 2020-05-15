@@ -81,16 +81,18 @@ namespace Bunit.RazorTesting
 			return base.SetParametersAsync(parameters);
 		}
 
+
 		/// <inheritdoc/>
+		[SuppressMessage("Usage", "CA2208:Instantiate argument exceptions correctly", Justification = "Validating component parameters")]
 		public override void Validate()
 		{
 			base.Validate();
 			if (ChildContent is null)
-				throw new ArgumentException($"No '{nameof(ChildContent)}' specified in the {GetType().Name} component.");
+				throw new ArgumentException($"No '{nameof(ChildContent)}' specified in the {GetType().Name} component.", nameof(ChildContent));
 			if (Test is null && TestAsync is null)
-				throw new ArgumentException($"No test action provided via the '{nameof(Test)}' or '{nameof(TestAsync)}' parameters to the {GetType().Name} component.");
+				throw new ArgumentException($"No test action provided via the '{nameof(Test)}' or '{nameof(TestAsync)}' parameters to the {GetType().Name} component.", nameof(Test));
 			if (Test is { } && TestAsync is { })
-				throw new ArgumentException($"Only one of the '{nameof(Test)}' or '{nameof(TestAsync)}' actions can be provided to the {GetType().Name} component at the same time.");
+				throw new ArgumentException($"Only one of the '{nameof(Test)}' or '{nameof(TestAsync)}' actions can be provided to the {GetType().Name} component at the same time.", nameof(Test));
 #pragma warning disable CS0618 // Type or member is obsolete
 			if (Tests is { })
 				throw new ArgumentException($"The use of the '{nameof(Tests)}' parameter has been obsoleted, and any methods assigned to it will not longer be invoked.");

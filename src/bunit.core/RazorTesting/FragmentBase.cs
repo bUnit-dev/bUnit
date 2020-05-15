@@ -24,6 +24,7 @@ namespace Bunit.RazorTesting
 			parameters.SetParameterProperties(this);
 			if (ChildContent is null)
 				throw new InvalidOperationException($"No {nameof(ChildContent)} specified in test component.");
+
 			return Task.CompletedTask;
 		}
 	}

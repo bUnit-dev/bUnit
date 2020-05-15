@@ -1,16 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-
-using Bunit.Rendering;
-
 using Shouldly;
-
 using Xunit;
 
-namespace Bunit
+namespace Bunit.Rendering
 {
 	public class ComponentParameterTest
-	{
+    {
 		public static IEnumerable<object[]> GetEqualsTestData()
 		{
 			var name = "foo";
@@ -69,5 +65,5 @@ namespace Bunit
 		{
 			left.GetHashCode().Equals(right.GetHashCode()).ShouldBe(expectedResult);
 		}
-	}
+    }
 }

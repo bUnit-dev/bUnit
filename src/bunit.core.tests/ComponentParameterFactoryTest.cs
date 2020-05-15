@@ -1,22 +1,20 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
-
+using System.Collections.Generic;
 using Bunit.Mocking.JSInterop;
 using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
-
 using Shouldly;
 
 using Xunit;
 
+using static Bunit.ComponentParameterFactory;
+
 namespace Bunit
 {
-	[SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>")]
-	[Obsolete("To be removed when ComponentTestFixture is removed")]
-	public class ComponentTestFixtureTest : ComponentTestFixture
+	public class ComponentParameterFactoryTest : TestContext
 	{
 		[Fact(DisplayName = "All types of parameters are correctly assigned to component on render")]
-		public void Test001()
+		public void Test005()
 		{
 			Services.AddMockJsRuntime();
 
@@ -83,18 +81,6 @@ namespace Bunit
 			new RenderedFragment(Services, Renderer.RenderFragment(instance.ChildContent!)).Markup.ShouldBe(nameof(ChildContent));
 			new RenderedFragment(Services, Renderer.RenderFragment(instance.OtherContent!)).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
 			Should.Throw<Exception>(() => instance.ItemTemplate!("")(null)).Message.ShouldBe("ItemTemplate");
-		}
-
-		[Fact(DisplayName = "Trying to set CascadingValue during SetParametersAndRender throws")]
-		public void Test003()
-		{
-			// arrange
-			Services.AddMockJsRuntime();
-			var cut = RenderComponent<AllTypesOfParams<string>>();
-
-			// assert
-			Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(CascadingValue(42)));
-			Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(CascadingValue(nameof(AllTypesOfParams<string>.NamedCascadingValue), 1337)));
 		}
 
 		[Fact(DisplayName = "Template(name, markupFactory) helper correctly renders markup template")]

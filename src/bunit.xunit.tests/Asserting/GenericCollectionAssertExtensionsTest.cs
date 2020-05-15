@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Shouldly;
 
@@ -7,7 +7,7 @@ using Xunit.Sdk;
 
 namespace Bunit
 {
-	public class GenericCollectionAssertExtensionsTest
+	public class CollectionAssertExtensionsTest
 	{
 		[Fact(DisplayName = "ShouldAllBe for Action<T> throws CollectionException when " +
 							"the number of element inspectors does not match the " +

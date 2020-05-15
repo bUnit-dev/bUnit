@@ -13,10 +13,6 @@ namespace Bunit
 	public class ComponentUnderTest : FragmentBase
 	{
 		/// <inheritdoc />
-		public override Task SetParametersAsync(ParameterView parameters)
-		{
-			var result = base.SetParametersAsync(parameters);
-			return result;
-		}
+		public override Task SetParametersAsync(ParameterView parameters) => base.SetParametersAsync(parameters);
 	}
 }

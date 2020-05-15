@@ -1,3 +1,5 @@
+using System;
+using Bunit.TestAssets.BlazorE2E;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
@@ -29,8 +31,31 @@ namespace Bunit.Rendering.Internal
 			button.HasAttribute(Htmlizer.ToBlazorAttribute("__internal_preventDefault_onclick")).ShouldBe(preventDefault);
 		}
 
+		[Fact(DisplayName = "Blazor ElementReferences are included in rendered markup")]
+		public void Test001()
+		{
+			var cut = RenderComponent<Htmlizer01Component>();
+
+			var elmRefValue = cut.Find("button").GetAttribute("blazor:elementreference");
+
+			elmRefValue.ShouldBe(cut.Instance.ButtomElmRef.Id);
+		}
+
+		[Fact(DisplayName = "Blazor ElementReferences start in markup on rerenders")]
+		public void Test003()
+		{
+			var cut = RenderComponent<Htmlizer01Component>();
+			cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
+
+			cut.SetParametersAndRender(parameters => parameters.Add(p => p.OnClick, (MouseEventArgs e) => { }));
+
+			cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
+		}
+
 		private class Htmlizer01Component : ComponentBase
 		{
+			public ElementReference ButtomElmRef { get; set; }
+
 			[Parameter]
 			public EventCallback<MouseEventArgs> OnClick { get; set; }
 
@@ -54,7 +79,9 @@ namespace Bunit.Rendering.Internal
 					builder.AddEventPreventDefaultAttribute(4, "onclick", OnClickPreventDefault);
 				}
 
-				builder.AddContent(5, "Click me!");
+				builder.AddElementReferenceCapture(6, elmRef => ButtomElmRef = elmRef);
+
+				builder.AddContent(6, "Click me!");
 
 				builder.CloseElement();
 			}

@@ -36,7 +36,7 @@ namespace Bunit.Extensions.WaitForHelpers
 			);
 		}
 
-		[Fact(DisplayName = "WaitForAssertion throws exception after timeout")]
+		[Fact(DisplayName = "WaitForAssertion throws assertion exception after timeout")]
 		public void Test011()
 		{
 			var cut = RenderComponent<Simple1>();
