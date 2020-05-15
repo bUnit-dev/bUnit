@@ -1,18 +1,182 @@
 # Changelog
 All notable changes to **bUnit** will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0-beta-7] - 2020-05-15
+
+There are three big changes in bUnit in this release, as well as a whole host of small new features, improvements to the API, and bug fixes. The three big changes are: 
+
+1. A splitting of the library
+2. Discovery of razor base tests, and 
+3. A strongly typed way to pass parameters to a component under test.
+
+There are also some breaking changes, which we will cover first.
+
+**NOTE:** The documentation is next on the TODO list, so please bear with me while I update it to reflect all the recent changes.
+
+### Breaking changes
+
+Due to the big restructuring of the library, there are some breaking changes, hopefully for the better.
+
+#### Razor test changes
+
+Previously, the `Test` and `Setup` methods on `<Fixture>` and `<SnapshotTest>` did not have any arguments, and the test context they represented when running, was implicitly available in the scope. This has changed with this release, such that all `Test` and `Setup` methods now receive the text context as an argument, and that should be used to call e.g. `GetComponentUnderTest()` on.
+
+For example, if you have a razor based test that looks like this currently:
+
+```c#
+<Fixture Test="Test001" Setup="TestSetup">
+    <ComponentUnderTest><Counter /></ComponentUnderTest>
+    <Fragment>...</Fragment>
+</Fixture>
+@code {
+    void TestSetup() => Services.AddMockJsRuntime();
+
+    void Test001()
+    {     
+        var cut = GetComponentUnderTest<Counter>();
+        var fragment = GetFragment();
+    }
+}
+```
+
+You have to change it to this:
+
+```c#
+<Fixture Test="Test001" Setup="TestSetup">
+    <ComponentUnderTest><Counter /></ComponentUnderTest>
+</Fixture>
+@code {
+    // Add a Fixture fixture argument to the setup method and use
+    // the services collection inside the fixture to register dependencies
+    void TestSetup(Fixture fixture) => fixture.Services.AddMockJsRuntime();
+
+    // Add a Fixture fixture argument to the test method
+    void Test001(Fixture fixture) 
+    {
+        // Use the fixture instance to get the component under test
+        var cut = fixture.GetComponentUnderTest<Counter>();
+        var fragment = fixture.GetFragment();
+    }
+}
+```
+
+It is a little more typing, but it is also a lot more obvious what is going on, e.g. where the component under test or fragment is coming from.
+
+In addition to this, the `Tests` and `TestsAsync` methods on `<Fixture>` have been deprecated in this release and throws a runtime exception if used. They were not very used and caused confusion about the state of the components under test between the method calls. Now you can only specify either a `Test` or `TestAsync` method per `<Fixture>`.
+
+#### WaitForRender removed
+The `WaitForRender` method has been removed entirely from the library. Since it would only wait for one render, it had a very specific use case, where as the more general `WaitForAssertion` or `WaitForState` will wait for any number of renders, until the assertion passes, or the state predicate returns true. These make them much better suited to create stable tests.
+
+With `WaitForRender`, you would pass in an action that would cause a render before attempting your assertion, e.g.:
+
+```c#
+cut.WaitForRender(() => mockForecastService.Task.SetResult(forecasts));
+
+Assert.Equal("...", cut.Markup);
+```
+
+This can now be changed to first call the action that will trigger the render, and then wait for an assertio to pass, using `WaitForAssertion`:
+
+```c#
+mockForecastService.Task.SetResult(forecasts);
+
+cut.WaitForAssertion(() => Assert.Equal("...", cut.Markup));
+```
+
+The two "wait for" methods are also only available through a rendered fragment or rendered component now. 
+
+#### ComponentTestFixture deprecated
+
+Previously, the recommended method for creating xUnit component test classes was to inherit from `ComponentTestFixture`. Due to the restructuring of the library, this type is now just a `TestContext` with static component parameters factory methods, so it does not add much value anymore. 
+
+The component parameter factory methods are now also available in the more general purpose `ComponentParameterFactory` type, which can be imported into all test classes, not just xUnit ones, using the `import static Bunit.ComponentParameterFactory` method, and then you can change your existing xUnit test classes to inherit from `TestContext` instead of `ComponentTestFixture` to keep the current functionality for xUnit test classes.
+
+That covers the most important breaking changes. Now lets look at the other big changes.
+
+### Splitting the library
+In this release sees bUnit refactored and split up into three different sub libraries. The reasons for doing this are:
+
+- To make it possible to extract the direct dependency on xUnit and easily add support for NUnit or MSTest
+- To make it easier to maintain distinct parts of the library going forward
+- To enable future support for other non-web variants of Blazor, e.g. the Blazor Mobile Bindings.
+
+The three parts of the library is now:
+
+- **bUnit.core**: The core library only contains code related to the general Blazor component model, i.e. it is not specific to the web version of Blazor.
+- **bUnit.web**: The web library, which has a dependency on core, provides all the specific types for rendering and testing Blazor web components.
+- **bUnit.xUnit**: The xUnit library, which has a dependency on core, has xUnit specific extensions to bUnit, that enable logging to the test output through the `ILogger` interface in .net core, and an extension to xUnit's test runners, that enable it to discover and run razor based tests defined in `.razor` files.
+
+To keep things compatible with previous releases, an additional package is available, **bUnit**, which includes all of three libraries. That means existing users should be able to keep their single `<PackageReference Include="bunit">` in their projects.
+
+### Discovery of Razor based tests
+One of the pain points of writing Razor based tests in `.razor` files was that the individual tests was not correctly discovered. That meant that if had multiple tests in a file, you would not see them in Visual Studios Test Explorer individually, you could not run them individually, and error was not reported individually.
+
+This has changed with the _bUnit.xUnit_ library, that now includes a way for it to discover individual razor tests, currently either a `<Fixture>` or `<SnapshotTest>` inside test components defined in `.razor` files. It also enables you to navigate to the test by double clicking on it in the Test Explorer, and you can run each test individually, and see error reports individually.
+
+**Note:** You still have to wait for the Blazor compiler to translate the `.razor` files into `.cs` files, before the tests show up in the Test Explorer.
+
+### Strongly typed component parameters
+If you prefer writing your tests in C# only, you will be happy to know that there is now a new strongly typed way to pass parameters to components, using a builder. E.g., to render a `ContactInfo` component:
+
+```c#
+var cut = RenderComponent<ContactInfo>(builder => builder
+    .Add(p => p.Name, "Egil Hansen")
+    .Add(p => p.Country, "Iceland")
+);
+```
+
+There are a bunch of different `Add` methods available on the builder, that allows you to easily pass in a `EventCallback`, `ChildContent`, or `RenderFragment`.
+
+The old way using the component parameter factory methods are still available if you prefer that syntax.
+
+### NuGet downloads
+The latest version of the library is available on NuGet in various incarnations:
+
+| Name | Type | NuGet Download Link |
+| ----- | ----- | ---- |
+| bUnit | Library, includes core, web, and xUnit | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) | 
+| bUnit.core | Library, only core | [![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.core/) | 
+| bUnit.web | Library, web and core | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) | 
+| bUnit.xUnit |Library, xUnit and core | [![Nuget](https://img.shields.io/nuget/dt/bunit.xunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.xunit/) | 
+| bUnit.template | Template, which currently creates an xUnit based bUnit test projects only | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) | 
+
+### Contributions
+Thanks to [Martin Stühmer (@samtrion)](https://github.com/samtrion) and [Stef Heyenrath (@StefH)](https://github.com/StefH) for their code contributions in this release. 
+Also a big thank to all you who have contributed by raising issues, participated in issues by helping answer questions and providing input on design and technical issues.
+
+### Added
+- A new event, `OnAfterRender`, has been added to `IRenderedFragmentBase`, which `IRenderedFragment` inherits from. Subscribers will be invoked each time the rendered fragment is re-rendered. Related issue [#118](https://github.com/egil/bunit/issues/118).
+- A new property, `RenderCount`, has been added to `IRenderedFragmentBase`, which `IRenderedFragment` inherits from. Its represents the number of times a rendered fragment has been rendered. Related issue [#118](https://github.com/egil/bunit/issues/118).
+- A new event, `OnMarkupUpdated`, has been added to `IRenderedFragmentBase`. Subscribers will be notifid each time the rendered fragments markup has been regenerated. Related issue [#118](https://github.com/egil/bunit/issues/118).
+-  Due to the [concurrency bug discovered](https://github.com/egil/bunit/issues/108), the entire render notification and markup notification system has been changed. 
+- A new overload `RenderComponent()` and `SetParameterAndRender()`, which takes a `Action<ComponentParameterBuilder<TComponent>>` as input. That allows you to pass parameters to a component under test in a strongly typed way. Thanks to [@StefH](https://github.com/StefH) for the work on this. Related issues: [#79](https://github.com/egil/bunit/issues/79) and [#36](https://github.com/egil/bunit/issues/36).
+- The two razor test types, `<Fixture>` and `<SnapshotTest>`, can now be **skipped**. by setting the `Skip="some reason for skipping"` parameter. Note, this requires support from the test runner, which current only includes bUnit.xUnit. Related issue: [#77](https://github.com/egil/bunit/issues/77).
+- The two razor test types, `<Fixture>` and `<SnapshotTest>`, can now have a **timeout** specified, by setting the `Timeout="TimeSpan.FromSeconds(2)"` parameter. Note, this requires support from the test runner, which current only includes bUnit.xUnit.
+- An `InvokeAsync` method has been added to the `IRenderedFragmentBase` type, which allows invoking of an action in the context of the associated renderer. Related issue: [#82](https://github.com/egil/bunit/issues/82).
+
 ### Changed
 - Better error description from `MarkupMatches` when two sets of markup are different.
-- Render notification and markup notification
+- The `JsRuntimePlannedInvocation` can now has its response to an invocation set both before and after an invocation is received. It can also have a new response set at any time, which will be used for new invocations. Related issue: [#78](https://github.com/egil/bunit/issues/78).
+- The `IDiff` assertion helpers like `ShouldHaveChanges` now takes an `IEnumerable<IDiff>` as input to make it easier to call in scenarios where only an enumerable is available. Related issue: [#87](https://github.com/egil/bunit/issues/87). 
+- `TextContext` now registers all its test dependencies as services in the `Services` collection. This now includes the `HtmlParser` and `HtmlComparer`. Related issue: [#114](https://github.com/egil/bunit/issues/114).
 
-### Fixed
-- `cut.FindComponent<xxx>()` doesnt return the component in cut. It now searches and finds the first child component.
+### Deprecated
+- The `ComponentTestFixture` has been deprecated in this release, since it just inherits from `TestContex` and surface the component parameter factory methods. Going forward, users are encouraged to instead inherit directly from `TestContext` in their xUnit tests classes, and add a `import static Bunit.ComponentParameterFactory` to your test classes, to continue to use the component parameter factory methods. Related issue: [#108](https://github.com/egil/bunit/issues/108).
 
 ### Removed
+- `<Fixture>` tests no longer supports splitting the test method/assertion step into multiple methods through the `Tests` and `TestsAsync` parameters.
+- `WaitForRender` has been removed entirely from the library, as the more general purpose `WaitForAssertion` or `WaitForState` covers its use case.
+- `WaitForAssertion` or `WaitForState` is no longer available on `ITestContext` types. They are _still_ available on rendered components and rendered fragments.
+- `CreateNodes` method has been removed from `ITextContext`. The ability to convert a markup string to a `INodeList` is available through the `HtmlParser` type registered in `ITextContext.Services` service provider.
+- `RenderEvents` has been removed from `IRenderedFragment`, and replaced by the `OnMarkupUpdated` and `OnAfterRender` events. Related issue [#118](https://github.com/egil/bunit/issues/118).
 - The generic collection assertion methods `ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T, int>[] elementInspectors)` and `ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T>[] elementInspectors)` have been removed from the library.
-- WaitForRender 
-- WaitFor methods on TestContext
+
+### Fixed
+- A concurrency issue would surface when a component under test caused asynchronous renders that was awaited using the `WaitForRender`, `WaitForState`, or `WaitForAssertion` methods. Related issue [#118](https://github.com/egil/bunit/issues/118).
+- `MarkupMatches` and the related semantic markup diffing, didn't correctly ignore the `__internal_stopPropagation_` and `__internal_preventDefault_` added by Blazor to the rendered markup, when users use the `:stopPropagation` and `:preventDefault` modifiers. Thanks to [@samtrion](https://github.com/samtrion) for reporting and solving this. Related issue: [#111](https://github.com/egil/bunit/issues/111).
+- `cut.FindComponent<TComponent>()` didn't return the component inside the component under test. It now searches and finds the first child component of the specified type.
+
+---
 
 ## [1.0.0-beta-6] - 2020-03-01
 This release includes a **name change from Blazor Components Testing Library to bUnit**. It also brings along two extra helper methods for working with asynchronously rendering components during testing, and a bunch of internal optimizations and tweaks to the code.
