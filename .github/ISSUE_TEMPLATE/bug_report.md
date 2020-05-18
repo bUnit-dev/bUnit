@@ -7,10 +7,10 @@ assignees: ''
 
 ---
 
-**NOTE:** _Remove any parts of the template you do not need and replace the default text in each section with your own._
+**NOTE:** _Remove any parts of the template you do not need and replace the default text in each section with your own, including this._
 
 **Describe the bug or question**
-A clear and concise description of what the bug or question is.
+_A clear and concise description of what the bug or question is._
 
 **Example:**
 Testing this component:

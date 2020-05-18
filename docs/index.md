@@ -1,8 +1,9 @@
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/egil/bunit/CI?logo=github&style=flat-square)](https://github.com/egil/bunit/actions?query=workflow%3ACI)
+[![GitHub stars](https://img.shields.io/github/stars/egil/bunit?style=flat-square)](https://github.com/egil/bunit)
 [![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
 [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
-[![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github)](https://github.com/egil/bunit/issues)
 [![Gitter](https://img.shields.io/gitter/room/egil/bunit?logo=gitter&style=flat-square)](https://gitter.im/egil/bunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/egil/bunit/CI?logo=github&style=flat-square)](https://github.com/egil/bunit/actions?query=workflow%3ACI)
+[![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github)](https://github.com/egil/bunit/issues)
 
 # bUnit - a testing library for Blazor Components
 
@@ -10,11 +11,11 @@
 
 This library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. To see how, go to the [Documentation pages](/docs).
 
+To browse the source code and provide feedback, head to https://github.com/egil/bunit/.
+
 ### Contributors
 
 Shout outs and a big thank you to the contributors to this library. Here they are, in alphabetically:
 
 - [Michael J Conrad (@Siphonophora)](https://github.com/Siphonophora)
 - [Rastislav Novotný (@duracellko)](https://github.com/duracellko)
-
-Version: #{VERSION}#
