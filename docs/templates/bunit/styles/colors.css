@@ -1,0 +1,35 @@
+.navbar-nav-svg {
+  color: #fff;
+}
+
+@media(prefers-color-scheme: no-preference), (prefers-color-scheme: dark) {
+  .navbar-dark.bg-dark {
+    background-color: rgb(58, 58, 58) !important;
+  }
+
+  .sidebar {
+    border-right-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .sidebar a {    
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .sidebar .level-2 .nav-link {
+    color: rgba(255, 255, 255, 0.65);
+  }
+}
+
+@media(prefers-color-scheme: light) {
+  .sidebar {
+    border-right-color: rgba(0,0,0,.1);
+  }
+
+  .sidebar a {    
+    color: rgba(0,0,0,.85);
+  }
+
+  .sidebar .level-2 .nav-link {
+    color: rgba(0,0,0,.65);
+  }
+}

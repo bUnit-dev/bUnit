@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>{{#title}}{{title}}{{/title}}{{^title}}{{>partials/title}}{{/title}} {{#_appTitle}}| {{_appTitle}} {{/_appTitle}}</title>
-  <meta name="viewport" content="width=device-width">
   <meta name="title" content="{{#title}}{{title}}{{/title}}{{^title}}{{>partials/title}}{{/title}} {{#_appTitle}}| {{_appTitle}} {{/_appTitle}}">
   <meta name="generator" content="docfx {{_docfxVersion}}">
   {{#_description}}<meta name="description" content="{{_description}}">{{/_description}}
-  <!--<link rel="shortcut icon" href="{{_rel}}{{{_appFaviconPath}}}{{^_appFaviconPath}}favicon.ico{{/_appFaviconPath}}">-->
+<!--  
+  <link rel="shortcut icon" href="{{_rel}}{{{_appFaviconPath}}}{{^_appFaviconPath}}favicon.ico{{/_appFaviconPath}}">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -16,6 +17,23 @@
   <link rel="stylesheet" href="{{_rel}}styles/docfx.vendor.css">
   <link rel="stylesheet" href="{{_rel}}styles/docfx.css">
   <link rel="stylesheet" href="{{_rel}}styles/main.css">
+-->
+  <script>
+    // If `prefers-color-scheme` is not supported, fall back to light mode.
+    // In this case, light.css will be downloaded with `highest` priority.
+    if (window.matchMedia('(prefers-color-scheme: dark)').media === 'not all') {
+      document.documentElement.style.display = 'none';
+      document.head.insertAdjacentHTML(
+          'beforeend',
+          '<link rel="stylesheet" href="{{_rel}}styles/bootstrap-darkly.min.css" onload="document.documentElement.style.display = \'\'">'
+      );
+    }
+  </script>
+  <link rel="stylesheet" href="{{_rel}}styles/bootstrap-darkly.min.css" media="(prefers-color-scheme: no-preference), (prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="{{_rel}}styles/bootstrap.min.css" media="(prefers-color-scheme: light)">
+  <link rel="stylesheet" href="{{_rel}}styles/main.css">
+  <link rel="stylesheet" href="{{_rel}}styles/colors.css">
+
   <meta property="docfx:navrel" content="{{_navRel}}">
   <meta property="docfx:tocrel" content="{{_tocRel}}">
   {{#_noindex}}<meta name="searchOption" content="noindex">{{/_noindex}}

@@ -3,14 +3,21 @@
     {
       "src": [
         {
-          "files": [ "bunit.csproj" ],
+          "files": [
+            "bunit.core/bunit.core.csproj",
+            "bunit.web/bunit.web.csproj",
+            "bunit.xunit/bunit.xunit.csproj"
+          ],
           "exclude": [ "**/bin/**", "**/obj/**" ],
           "src": "../src"
         }
       ],
       "dest": "api",
       "disableGitFeatures": false,
-      "disableDefaultFilter": false
+      "disableDefaultFilter": false,
+      "properties": {
+        "TargetFramework": "netstandard2.1"
+      }
     }
   ],
   "build": {
@@ -57,21 +64,22 @@
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
-      "default",
+      "statictoc",
       "templates/bunit"
     ],
     "globalMetadata": {
       "_appName": "bUnit",
       "_appTitle": "bUnit",
       "_description": "bUnit is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.",
-      "_enableSearch": true,
-      "_appLogoPath": "/images/blazor-logo.png"
+      "_enableSearch": false,
+      "_appLogoPath": "/images/blazor-logo.png",
+      "_disableBreadcrumb": true,
+      "_disableToc": false
     },
     "postProcessors": [],
     "markdownEngineName": "markdig",
     "noLangKeyword": false,
     "keepFileLink": false,
-    "cleanupCacheHistory": false,
-    "disableGitFeatures": false
+    "cleanupCacheHistory": false
   }
 }

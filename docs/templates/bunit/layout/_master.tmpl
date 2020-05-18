@@ -1,0 +1,44 @@
+{{!Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See LICENSE file in the project root for full license information.}}
+{{!include(/^styles/.*/)}}
+{{!include(/^fonts/.*/)}}
+{{!include(favicon.ico)}}
+{{!include(logo.svg)}}
+{{!include(search-stopwords.json)}}
+<!doctype html>
+<html lang="en">
+  {{>partials/head}}
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <a class="skippy sr-only sr-only-focusable" href="#content">
+      <span class="skippy-text">Skip to main content</span>
+    </a>
+    <header class="navbar navbar-expand navbar-dark bg-dark flex-column flex-md-row">
+      {{^_disableNavbar}}
+      {{>partials/navbar}}
+      {{/_disableNavbar}}
+      {{^_disableBreadcrumb}}
+      {{>partials/breadcrumb}}
+      {{/_disableBreadcrumb}}
+    </header>
+    <div class="container-fluid">
+      <div class="row flex-xl-nowrap">
+        <div class="col-md-3 col-xl-2 sidebar order-1 pt-md-3">        
+          {{^_disableToc}}
+            {{>partials/toc}}
+          {{/_disableToc}}
+        </div>
+        <nav class="d-none d-xl-block col-xl-2 toc order-3 pt-xl-3" aria-label="Secondary navigation">
+          {{^_disableAffix}}
+          {{>partials/affix}}
+          {{/_disableAffix}}
+        </nav>
+        <main class="col-md-9 col-xl-8 py-md-3 pl-md-5 content order-2" role="main">
+          {{!body}}
+          {{^_disableFooter}}
+          {{>partials/footer}}
+          {{/_disableFooter}}
+        </main>
+      </div>
+    </div>
+    {{>partials/scripts}}
+  </body>
+</html>
