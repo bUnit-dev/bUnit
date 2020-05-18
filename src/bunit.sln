@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".items", ".items", "{A5D7B6
 		.editorconfig = .editorconfig
 		..\CHANGELOG.md = ..\CHANGELOG.md
 		Directory.Build.props = Directory.Build.props
+		..\global.json = ..\global.json
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
