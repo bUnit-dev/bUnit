@@ -34,7 +34,10 @@ namespace Bunit.RazorTesting
 
 			void Setup(FixtureComponent fixture) => callLog.Add(nameof(Setup));
 			Task SetupAsync(FixtureComponent fixture)
-			{ callLog.Add(nameof(SetupAsync)); return Task.CompletedTask; }
+			{
+				callLog.Add(nameof(SetupAsync));
+				return Task.CompletedTask;
+			}
 			void Test(FixtureComponent fixture) => callLog.Add(nameof(Test));
 		}
 
@@ -57,9 +60,15 @@ namespace Bunit.RazorTesting
 
 			void Setup(FixtureComponent fixture) => callLog.Add(nameof(Setup));
 			Task SetupAsync(FixtureComponent fixture)
-			{ callLog.Add(nameof(SetupAsync)); return Task.CompletedTask; }
+			{
+				callLog.Add(nameof(SetupAsync));
+				return Task.CompletedTask;
+			}
 			Task TestAsync(FixtureComponent fixture)
-			{ callLog.Add(nameof(TestAsync)); return Task.CompletedTask; }
+			{
+				callLog.Add(nameof(TestAsync));
+				return Task.CompletedTask;
+			}
 		}
 
 		[Fact(DisplayName = "Run fails when no ChildContent is provided")]
