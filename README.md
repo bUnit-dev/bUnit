@@ -19,7 +19,9 @@
 
 The library builds on top of existing unit testing frameworks such as xUnit, which runs the Blazor components tests, just as any normal unit test.
 
-The library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. **Go to [bUnit.egilhansen.com](https://bunit.egilhansen.com) to learn more.**
+The library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. 
+
+**Go to [bUnit.egilhansen.com](https://bunit.egilhansen.com) to learn more.**
 
 ## Milestones to v1.0.0
 
