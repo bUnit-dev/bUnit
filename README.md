@@ -6,10 +6,32 @@
 
 # bUnit - a testing library for Blazor components
 
-**bUnit** is a testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock `IJsRuntime`, and perform snapshot testing.
+**bUnit** is a testing library for Blazor Components. You can:
 
-The library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. Go to [bunit.egilhansen.com](https://bunit.egilhansen.com) to learn more.
+- Setup and define components under tests in C# or Razor syntax
+- Verify outcome using semantic HTML diffing/comparison logic
+- Interact with and inspect components
+- Trigger event handlers
+- Provide cascading values
+- Inject services
+- Mock `IJsRuntime`
+- Perform snapshot testing
+
+The library builds on top of existing unit testing frameworks such as xUnit, which runs the Blazor components tests, just as any normal unit test.
+
+The library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. **Go to [bUnit.egilhansen.com](https://bunit.egilhansen.com) to learn more.**
+
+## Milestones to v1.0.0
+
+These are the current goals that should be reached before v1.0.0 is ready:
+
+- **Stabilize the APIs**, such that they work equally well with both xUnit, Nunit, and MSTest as the underlying test framework. The general goals is to make it easy and obvious for developers to create the tests they needed, and fall into the pit of success.
+- **Get the Razor-based testing to stable**, e.g. make the discovery and running of tests defined in .razor files stable and efficient. This includes adding support for Nunit and MSTest as test runners.
+- **Improve the documentation**. Currently there are a list of "How to" guides planned in the [Update Docs](https://github.com/egil/bunit/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22updated+docs%22) milestone.
+- **Join the .NET Foundation.**. This project is too large for one person to be the owner and be the sole maintainer of, so the plan is to apply for membership as soon as possible, most likely close to or after v1.0.0 ships, and get the needed support and guidance to ensure the project long term.
+
+In the post v1.0.0 to v1.0.x time frame, focus will be on improving performance. Especially the spin-up time of about one second would be nice to get reduced.
 
 ## Contributors
 
-Shout outs and a big thank you [to the contributors](https://github.com/egil/bunit/graphs/contributors) to this library, both those that raise issues, provide input to issues, and those who send pull requests. 
+Shout outs and a big thank you [to all the contributors](https://github.com/egil/bunit/graphs/contributors) to the library, both those that raise issues, provide input to issues, and those who send pull requests. 
