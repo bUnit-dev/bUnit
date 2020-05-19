@@ -1,45 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <PackageType>Template</PackageType>
-    <PackageId>bunit.template</PackageId>
-    <Title>bUnit Template Projects</Title>
-    <Authors>Egil Hansen</Authors>
-    <Company>Egil Hansen</Company>
-	  <Copyright>Egil Hansen</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<Description>A project template for a testing Blazor/Razor components using the bUnit library.</Description>
-	<PackageDescription>
+	<PropertyGroup>
+		<PackageType>Template</PackageType>
+		<PackageId>bunit.template</PackageId>
+		<Title>bUnit Template Projects</Title>
+		<Authors>Egil Hansen</Authors>
+		<Company>Egil Hansen</Company>
+		<Copyright>Egil Hansen</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Description>A project template for a testing Blazor/Razor components using the bUnit library.</Description>
+		<PackageDescription>
     A project template for a testing Blazor/Razor components using the bUnit library.
 
     bUnit is a testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
 
     The library's goal is to make it easy to write comprehensive, stable unit tests for Blazor Components/Razor Components. Go to bunit.egilhansen.com to learn more.
-  </PackageDescription>
-    <PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
-	  <PackageProjectUrl>https://github.com/egil/bunit</PackageProjectUrl>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <IncludeContentInPack>true</IncludeContentInPack>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <ContentTargetFolders>content</ContentTargetFolders>
-    <AssemblyName>Bunit.Template</AssemblyName>
-    <RootNamespace>Bunit</RootNamespace>
-  </PropertyGroup>
+		</PackageDescription>
+		<PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
+		<PackageProjectUrl>https://github.com/egil/bunit</PackageProjectUrl>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<IncludeContentInPack>true</IncludeContentInPack>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<ContentTargetFolders>content</ContentTargetFolders>
+		<AssemblyName>Bunit.Template</AssemblyName>
+		<RootNamespace>Bunit</RootNamespace>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<RepositoryUrl>https://github.com/egil/bunit</RepositoryUrl>
+		<Deterministic>true</Deterministic>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Nerdbank.GitVersioning" Version="3.1.91">
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		  <PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="template\**\*" Exclude="template\**\bin\**;template\**\obj\**;template\**\.vs\**" />
-    <Compile Remove="**\*" />
-    <Compile Remove="template\obj\**" />
-    <Content Remove="template\obj\**" />
-    <EmbeddedResource Remove="template\obj\**" />
-    <None Remove="template\obj\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="template\**\*" Exclude="template\**\bin\**;template\**\obj\**;template\**\.vs\**" />
+		<Compile Remove="**\*" />
+		<Compile Remove="template\obj\**" />
+		<Content Remove="template\obj\**" />
+		<EmbeddedResource Remove="template\obj\**" />
+		<None Remove="template\obj\**" />
+	</ItemGroup>
 
 </Project>
