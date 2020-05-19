@@ -6,9 +6,9 @@ There are three different ways of doing this in the library:
 
 1. **C# based tests**  
    With C# based tests, you write all your testing logic in C# files, i.e. like regular unit tests.
-2. **Razor based tests _(EXPERIMENTAL FEATURE)_**  
+2. **Razor based tests**  
    With Razor based tests, you write tests in `.razor` files, which allows you to declare, in Razor syntax, the component under test and other markup fragments you need. You still write your assertions via C# in the .razor file, inside `@code {...}` blocks.
-3. **Snapshot tests _(EXPERIMENTAL FEATURE)_**  
+3. **Snapshot tests**  
    Snapshot tests are written in `.razor` files. A test contains a definition of an input markup/component and the expected output markup. The library will then automatically perform an semantic HTML comparison. Very little C# is needed in this, usually only to configure services.
 
 In _Snapshot testing_, the rendering and verification is automatic.
@@ -16,7 +16,6 @@ In _Snapshot testing_, the rendering and verification is automatic.
 For _C# based tests_ and _Razor based tests_, we have the following concepts to help us render our components and markup fragments:
 
 - `ITestContext` for rendering using the RenderComponent method. The test context also allows you to configure services that should be available during rendering of components.
-- `IRazorTestContext` extends `ITestContext` with methods for getting the declared components under test and any (markup) fragments in Razor based tests.
 
 And the following concepts to help us access the rendered markup and component:
 
@@ -26,8 +25,4 @@ And the following concepts to help us access the rendered markup and component:
 
 - `IRenderedComponent<TComponent>` extends `IRenderedFragment` with methods for rendering a component again with new parameters if needed, and a property for accessing the instance of the component.
 
-The diagram below shows the four interfaces, their relationships to each other, and available methods.
-
-![Test context and rendered fragment/component diagram](/images/test-context-rendered-fragment-diagram.png)
-
-This is the basics of how components and markup is rendered and afterword's accessed for verification and further inspection.
+This is the basics of how components and markup is rendered and accessed for verification and further inspection.

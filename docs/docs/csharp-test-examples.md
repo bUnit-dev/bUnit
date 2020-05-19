@@ -4,19 +4,6 @@ In the following examples, the terminology **component under test** (abbreviated
 
 All examples can be found in the [Tests](https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/Tests) folder in the [Sample project](https://github.com/egil/razor-components-testing-library/tree/master/sample/).
 
-**Content:**
-
-1. [Testing components without parameters](#testing-components-without-parameters)
-2. [Testing components with parameters](#testing-components-with-parameters)  
-   2.1. [Passing new parameters to an already rendered component](#passing-new-parameters-to-an-already-rendered-component)
-3. [Testing components with child content](#testing-components-with-child-content)
-4. [Testing components with EventCallback parameters](#testing-components-with-eventcallback-parameters)
-5. [Testing components with cascading-value parameters](#testing-components-with-cascading-value-parameters)
-6. [Testing components that use on IJsRuntime](#testing-components-that-use-on-ijsruntime)  
-   7.1 [Verifying element references passed to InvokeAsync](#verifying-element-references-passed-to-invokeasync)
-7. [Testing components with injected dependencies](#testing-components-with-injected-dependencies)
-8. [Dispatching @on-events from tests](#dispatching-on-events-during-testing)
-
 ## Testing components without parameters
 
 The following unit-tests verifies that the [Counter.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Pages/Counter.razor) component behaves correctly. Here is the source for the Counter component:

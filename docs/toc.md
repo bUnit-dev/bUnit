@@ -1,3 +1,5 @@
-# [Getting Started](/docs/getting-started.html)
+# [Home](/)
 # [Documentation](/docs)
 # [API References](/api)
+# [bUnit on GitHub](https://github.com/egil/bunit)
+# [bUnit's Gitter chat](https://gitter.im/egil/bunit)

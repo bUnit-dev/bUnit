@@ -1,18 +1,32 @@
-# Creating a new test project
+# Creating a new bUnit with xUnit test project
 
 To create a project for testing you Blazor components, first install the [bUnit Project Template](https://www.nuget.org/packages/bunit.template/) from NuGet, using this command:
 
-```
-dotnet new --install bunit.template::1.0.0-beta-6
+```bash
+dotnet new --install Razor.Components.Testing.Library.Template::#{VERSION}#
 ```
 
 Then to create a new project, use the following command:
 
-```
-dotnet new bunit -o <NAME OF PROJECT>
+```bash
+dotnet new razortest -o <NAME OF TEST PROJECT>
 ```
 
 where `-o <NAME OF PROJECT>` is used to name the test project.
+
+**Optional CLI steps**
+
+Link the test project to your solution
+
+```bash
+dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
+```
+
+Add a reference your components to be tested in your test project.
+
+```bash
+dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.csproj
+```
 
 ## Creating a new Blazor test project manually
 
@@ -27,9 +41,7 @@ If you do not want to use the Blazor test project template, you can create an em
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.0" />
-    <PackageReference Include="bunit" Version="1.0.0-beta-6" />
+    <PackageReference Include="bunit" Version="#{VERSION}#" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">

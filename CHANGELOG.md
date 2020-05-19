@@ -1,12 +1,13 @@
 # Changelog
+
 All notable changes to **bUnit** will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0-beta-7] - 2020-05-15
+## [1.0.0-beta-7] - 2020-05-19
 
-There are three big changes in bUnit in this release, as well as a whole host of small new features, improvements to the API, and bug fixes. The three big changes are: 
+There are three big changes in bUnit in this release, as well as a whole host of small new features, improvements to the API, and bug fixes. The three big changes are:
 
 1. A splitting of the library
-2. Discovery of razor base tests, and 
+2. Discovery of razor base tests, and
 3. A strongly typed way to pass parameters to a component under test.
 
 There are also some breaking changes, which we will cover first.
@@ -32,7 +33,7 @@ For example, if you have a razor based test that looks like this currently:
     void TestSetup() => Services.AddMockJsRuntime();
 
     void Test001()
-    {     
+    {
         var cut = GetComponentUnderTest<Counter>();
         var fragment = GetFragment();
     }
@@ -65,6 +66,7 @@ It is a little more typing, but it is also a lot more obvious what is going on, 
 In addition to this, the `Tests` and `TestsAsync` methods on `<Fixture>` have been deprecated in this release and throws a runtime exception if used. They were not very used and caused confusion about the state of the components under test between the method calls. Now you can only specify either a `Test` or `TestAsync` method per `<Fixture>`.
 
 #### WaitForRender removed
+
 The `WaitForRender` method has been removed entirely from the library. Since it would only wait for one render, it had a very specific use case, where as the more general `WaitForAssertion` or `WaitForState` will wait for any number of renders, until the assertion passes, or the state predicate returns true. These make them much better suited to create stable tests.
 
 With `WaitForRender`, you would pass in an action that would cause a render before attempting your assertion, e.g.:
@@ -75,7 +77,7 @@ cut.WaitForRender(() => mockForecastService.Task.SetResult(forecasts));
 Assert.Equal("...", cut.Markup);
 ```
 
-This can now be changed to first call the action that will trigger the render, and then wait for an assertio to pass, using `WaitForAssertion`:
+This can now be changed to first call the action that will trigger the render, and then wait for an assertion to pass, using `WaitForAssertion`:
 
 ```c#
 mockForecastService.Task.SetResult(forecasts);
@@ -83,7 +85,7 @@ mockForecastService.Task.SetResult(forecasts);
 cut.WaitForAssertion(() => Assert.Equal("...", cut.Markup));
 ```
 
-The two "wait for" methods are also only available through a rendered fragment or rendered component now. 
+The two "wait for" methods are also only available through a rendered fragment or rendered component now.
 
 #### ComponentTestFixture deprecated
 
@@ -93,7 +95,8 @@ The component parameter factory methods are now also available in the more gener
 
 That covers the most important breaking changes. Now lets look at the other big changes.
 
-### Splitting the library
+### Splitting up the library
+
 In this release sees bUnit refactored and split up into three different sub libraries. The reasons for doing this are:
 
 - To make it possible to extract the direct dependency on xUnit and easily add support for NUnit or MSTest
@@ -109,6 +112,7 @@ The three parts of the library is now:
 To keep things compatible with previous releases, an additional package is available, **bUnit**, which includes all of three libraries. That means existing users should be able to keep their single `<PackageReference Include="bunit">` in their projects.
 
 ### Discovery of Razor based tests
+
 One of the pain points of writing Razor based tests in `.razor` files was that the individual tests was not correctly discovered. That meant that if had multiple tests in a file, you would not see them in Visual Studios Test Explorer individually, you could not run them individually, and error was not reported individually.
 
 This has changed with the _bUnit.xUnit_ library, that now includes a way for it to discover individual razor tests, currently either a `<Fixture>` or `<SnapshotTest>` inside test components defined in `.razor` files. It also enables you to navigate to the test by double clicking on it in the Test Explorer, and you can run each test individually, and see error reports individually.
@@ -116,6 +120,7 @@ This has changed with the _bUnit.xUnit_ library, that now includes a way for it 
 **WARNING:** You still have to wait for the Blazor compiler to translate the `.razor` files into `.cs` files, before the tests show up in the Test Explorer, and the this can trip up the Test Explorer. So while this feature is a big improvement to razor based testing, it is still not perfect, and more works need to be done to refine it.
 
 ### Strongly typed component parameters
+
 If you prefer writing your tests in C# only, you will be happy to know that there is now a new strongly typed way to pass parameters to components, using a builder. E.g., to render a `ContactInfo` component:
 
 ```c#
@@ -129,6 +134,8 @@ There are a bunch of different `Add` methods available on the builder, that allo
 
 The old way using the component parameter factory methods are still available if you prefer that syntax.
 
+NOTE: The parameter builder API is experimental at this point, and will likely change.
+
 ### NuGet downloads
 The latest version of the library is available on NuGet in various incarnations:
 
@@ -141,8 +148,9 @@ The latest version of the library is available on NuGet in various incarnations:
 | bUnit.template | Template, which currently creates an xUnit based bUnit test projects only | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) | 
 
 ### Contributions
-Thanks to [Martin Stühmer (@samtrion)](https://github.com/samtrion) and [Stef Heyenrath (@StefH)](https://github.com/StefH) for their code contributions in this release. 
-Also a big thank to all you who have contributed by raising issues, participated in issues by helping answer questions and providing input on design and technical issues.
+Thanks to [Martin Stühmer (@samtrion)](https://github.com/samtrion) and [Stef Heyenrath (@StefH)](https://github.com/StefH) for their code contributions in this release, and to [Brad Wilson (@bradwilson)](https://github.com/bradwilson) for his help with enabling xUnit to discover and run Razor based tests.
+
+Also a big thank to all you who have contributed by raising issues, participated in issues by helping answer questions and providing input on design and technical issues. 
 
 ### Added
 - A new event, `OnAfterRender`, has been added to `IRenderedFragmentBase`, which `IRenderedFragment` inherits from. Subscribers will be invoked each time the rendered fragment is re-rendered. Related issue [#118](https://github.com/egil/bunit/issues/118).
@@ -153,6 +161,8 @@ Also a big thank to all you who have contributed by raising issues, participated
 - The two razor test types, `<Fixture>` and `<SnapshotTest>`, can now be **skipped**. by setting the `Skip="some reason for skipping"` parameter. Note, this requires support from the test runner, which current only includes bUnit.xUnit. Related issue: [#77](https://github.com/egil/bunit/issues/77).
 - The two razor test types, `<Fixture>` and `<SnapshotTest>`, can now have a **timeout** specified, by setting the `Timeout="TimeSpan.FromSeconds(2)"` parameter. Note, this requires support from the test runner, which current only includes bUnit.xUnit.
 - An `InvokeAsync` method has been added to the `IRenderedFragmentBase` type, which allows invoking of an action in the context of the associated renderer. Related issue: [#82](https://github.com/egil/bunit/issues/82).
+- Enabled the "navigate to test" in Test Explorer. Related issue: [#106](https://github.com/egil/bunit/issues/106).
+- Enabled xUnit to discover and run Razor-based tests. Thanks to [Brad Wilson (@bradwilson)](https://github.com/bradwilson) for his help with this. Related issue: [#4](https://github.com/egil/bunit/issues/4).
 
 ### Changed
 - Better error description from `MarkupMatches` when two sets of markup are different.

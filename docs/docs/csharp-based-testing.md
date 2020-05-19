@@ -2,30 +2,12 @@
 
 This pages documents how to do Blazor/Razor component testing using just C#.
 
-Before you get started, make sure you have read the [Getting started](/docs/getting-started.html) page and in particular the [Basics of Blazor component testing](/docs/basics-of-blazor-component-testing.html) section. It wont take long, and it will ensure you get a good start at component testing.
-
-> **NOTE:** You are currently required to write your tests using the xUnit framework. If popular demand requires it, this library can be made test framework independent in the future.
-
-> **TIP:** Working with and asserting against the rendered component and its output is covered on the [Working with rendered components and fragments](/docs/working-with-rendered-components-and-fragments.html) page.
-
-**Content:**
-
-- [Creating an new test class](#creating-an-new-test-class)
-- [Executing test cases](#executing-test-cases)
-- [Rendering components during tests](#rendering-components-during-tests)
-- [Passing parameters and services to components during render](#passing-parameters-to-components-during-render)
-- [Registering and injecting services into components during render](#registering-and-injecting-services-into-components-during-render)
-
-**Further reading:**
-
-- [Working with rendered components and fragments](/docs/working-with-rendered-components-and-fragments.html)
-- [Semantic HTML markup comparison](/docs/semantic-html-markup-comparison.html)
-- [Mocking JsRuntime](/docs/mocking-jsruntime.html)
-- [C# test examples](/docs/csharp-test-examples.html)
-
 ## Creating an new test class
 
-All test classes are expected to inherit from `ComponentTestFixture`, which implements the `ITestContext` interface. The example below includes the needed using statements as well:
+When using xUnit as the general test framework
+All test classes are expected to inherit from `TestContext`, which implements the `ITestContext` interface. It is also recommended to include the `ComponentParameterFactory` through `using static`, to have easy access to component parameter factory methods.
+
+The example below includes the needed using statements as well:
 
 ```csharp
 using System;
@@ -33,8 +15,9 @@ using Bunit;
 using Bunit.Mocking.JSInterop;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
+using static Bunit.ComponentParameterFactory;
 
-public class MyComponentTest : ComponentTestFixture
+public class MyComponentTest : TestContext
 {
   [Fact]
   public void MyFirstTest()
@@ -44,7 +27,7 @@ public class MyComponentTest : ComponentTestFixture
 }
 ```
 
-The `ComponentTestFixture` contains all the logic for rendering components and correctly dispose of renderers, components, and HTML parsers after each test.
+The `TestContext` contains all the logic for rendering components and correctly dispose of renderers, components, and HTML parsers after each test.
 
 ## Executing test cases
 
@@ -55,7 +38,7 @@ Since Blazor component tests are just regular xUnit test/facts, you execute them
 To render a component, we use the `RenderComponent<TComponent>(params ComponentParameter[] parameters)` method. It will take the component (`TComponent`) through its usual life-cycle from `OnInitialized` to `OnAfterRender`. For example:
 
 ```csharp
-public class ComponentTest : ComponentTestFixture // implements the ITestContext interface
+public class ComponentTest : TestContext
 {
   [Fact]
   public void Test1()
@@ -71,7 +54,7 @@ The `RenderComponent<TComponent>(params ComponentParameter[] parameters) : IRend
 
 - `TComponent` is the type of component you want to render.
 - `ComponentParameter[] parameters` represents parameters that will be passed to the component during render.
-- `IRenderedComponent<TComponent>` is the representation of the rendered component. Working with the rendered component and its output is covered on the [Working with rendered components and fragments](/docs/working-with-rendered-components-and-fragments.html) page.
+- `IRenderedComponent<TComponent>` is the representation of the rendered component.
 
 ### Passing parameters to components during render
 
@@ -82,7 +65,7 @@ There are four types of parameters you can pass to a component being rendered th
 - Child content, render fragments, or templates (of type `RenderFragment` and `RenderFragment<T>`).
 - All other normal parameters, including unmatched parameters.
 
-In addition to parameters, services can also be registered in the `ITestContext` and injected during component render.
+In addition to parameters, services can also be registered in the `TestContext` and injected during component render.
 
 To show how, let us look at a few examples that correctly pass parameters and services to the following `AllTypesOfParams<TItem>` component:
 
@@ -150,7 +133,7 @@ var cut = RenderComponent<AllTypesOfParams<string>>(
 - **Child content** and general **Render fragments** is passed to a component using the `ChildContent` or `RenderFragment` helper methods. The `ChildContent` and `RenderFragment` methods has two overloads, one that takes a (markup) string and a generic version, e.g. for child content, `ChildContent<TComponent>(params ComponentParameter[] parameters)`, which will generate the necessary render fragment to render a component as the child content. Note that the methods takes the same input arguments as the `RenderComponent` method, which means it too can be passed all the types of parameters shown in the example above.
 - **Templates** render fragments can be passed via the `Template<TValue>` method, which takes the name of the parameter and a `RenderFragment<TValue>` as input. Unfortunately, you will have to turn to the `RenderTreeBuilder` API to create templates at the moment.
 
-_**TIP:**_ Use the `nameof(Component.Parameter)` method to get parameter names in a refactor-safe way. For example, if we have a component `MyComponent` with a parameter named `RegularParam`, then use this when rendering:
+> _**TIP:**_ Use the `nameof(Component.Parameter)` method to get parameter names in a refactor-safe way. For example, if we have a component `MyComponent` with a parameter named `RegularParam`, then use this when rendering:
 
 ```csharp
 var cut = RenderComponent<MyComponent>(
@@ -162,14 +145,14 @@ var cut = RenderComponent<MyComponent>(
 
 When testing components that require services to be injected into them, i.e. `@inject IJsRuntime jsRuntime`, you must register the services or a mock thereof before you render your component.
 
-This is done via the `ITestContext.Services` property. Once a component has been rendered, no more services can be added to the service collection.
+This is done via the `Services` property available on the `TestContext`. Once a component has been rendered, no more services can be added to the service collection.
 
 If for example we want to render the with a dependency on an `IMyService`, we first have to call one of the `AddSingleton` methods on the service collection and register it. All the normal `AddSingleton` `ServiceCollection` overloads are available.
 
 In the case if a `IJsRuntime` dependency, we can however use the built-in [Mocking JsRuntime](/docs/mocking-jsruntime.html). For example:
 
 ```csharp
-public class ComponentTest : ComponentTestFixture // implements the ITestContext interface
+public class ComponentTest : TestContext // implements the ITestContext interface
 {
   [Fact]
   public void Test1()
@@ -188,3 +171,9 @@ public class ComponentTest : ComponentTestFixture // implements the ITestContext
 ```
 
 See the page [Mocking JsRuntime](/docs/mocking-jsruntime.html) for more details mock.
+
+**Further reading:**
+
+- [Semantic HTML markup comparison](/docs/semantic-html-markup-comparison.html)
+- [Mocking JsRuntime](/docs/mocking-jsruntime.html)
+- [C# test examples](/docs/csharp-test-examples.html)
