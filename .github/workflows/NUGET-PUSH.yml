@@ -1,4 +1,4 @@
-name: RELEASE
+name: NUGET-PUSH
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
       - '.github/.force-nuget-push'
 
 env:
-  VERSION: 0.0.0
-  BRANCH: ''  
+  VERSION: ''
+  BRANCH: 'master'  
 
 jobs:  
   build:
@@ -23,9 +23,7 @@ jobs:
         with:
           setAllVars: true
       - name: Setting VERSION and BRANCH env
-        run: |
-          echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
-          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+        run: echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
