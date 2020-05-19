@@ -56,3 +56,7 @@ jobs:
           dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/Test
           dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/lib
           dotnet test ${GITHUB_WORKSPACE}/Test
+      - name: Push packages to GitHub Packages
+        run: | 
+          dotnet nuget push ${GITHUB_WORKSPACE}/lib/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/egil/index.json --skip-duplicate
+          dotnet nuget push ${GITHUB_WORKSPACE}/template/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/egil/index.json --skip-duplicate
