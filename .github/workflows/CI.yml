@@ -30,6 +30,9 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.202' 
+          source-url: https://nuget.pkg.github.com/bjorhn/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}          
       - name: Building library
         run: |
           dotnet restore src
@@ -58,5 +61,5 @@ jobs:
           dotnet test ${GITHUB_WORKSPACE}/Test
       - name: Push packages to GitHub Packages
         run: | 
-          dotnet nuget push ${GITHUB_WORKSPACE}/lib/*.nupkg -k ${{ secrets.GH_PACKAGES_KEY }} -s https://nuget.pkg.github.com/egil/index.json --skip-duplicate
-          dotnet nuget push ${GITHUB_WORKSPACE}/template/*.nupkg -k ${{ secrets.GH_PACKAGES_KEY }} -s https://nuget.pkg.github.com/egil/index.json --skip-duplicate
+          dotnet nuget push ${GITHUB_WORKSPACE}/lib/*.nupkg --skip-duplicate
+          dotnet nuget push ${GITHUB_WORKSPACE}/template/*.nupkg --skip-duplicate
