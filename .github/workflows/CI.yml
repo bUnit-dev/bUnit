@@ -60,5 +60,4 @@ jobs:
           dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/packages
           dotnet test ${GITHUB_WORKSPACE}/Test
       - name: Push packages to GitHub Packages
-        run: | 
-          dotnet nuget push '${GITHUB_WORKSPACE}/packages/*.nupkg' --skip-duplicate
+        run: dotnet nuget push '${GITHUB_WORKSPACE}/packages/*.nupkg' --skip-duplicate
