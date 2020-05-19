@@ -1,8 +1,8 @@
 ﻿using Shouldly;
 using AngleSharp.Dom;
 using Bunit.Mocking.JSInterop;
-using Bunit.SampleApp.Components;
-using Bunit.SampleApp.Data;
+using SampleApp.Components;
+using SampleApp.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -11,10 +11,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Bunit;
+using static Bunit.ComponentParameterFactory;
 
-namespace Bunit.SampleApp.CodeOnlyTests
+namespace SampleApp.CodeOnlyTests
 {
-    public class TodoListTest : ComponentTestFixture
+    public class TodoListTest : TestContext
     {
         private string GetExpectedHtml(string label = "Task description", string itemsHtml = "") =>
             $@"<form>

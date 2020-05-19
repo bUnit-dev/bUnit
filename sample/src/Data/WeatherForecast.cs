@@ -1,6 +1,6 @@
 using System;
 
-namespace Bunit.SampleApp.Data
+namespace SampleApp.Data
 {
     public class WeatherForecast
     {

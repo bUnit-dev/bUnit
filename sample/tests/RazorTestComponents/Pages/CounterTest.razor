@@ -1,35 +1,43 @@
 ﻿@inherits TestComponentBase
 
-<Fixture Tests="new Action[]{ InitialHtmlIsCorrect, AfterBtnClickCounterIsIncremented }">
+<Fixture Test="InitialHtmlIsCorrect">
     <ComponentUnderTest><Counter /></ComponentUnderTest>
     <Fragment>
         <h1>Counter</h1>
         <p>Current count: 0</p>
         <button class="btn btn-primary">Click me</button>
     </Fragment>
+
+    @code {
+        void InitialHtmlIsCorrect(Fixture fixture)
+        {
+            // act
+            var cut = fixture.GetComponentUnderTest<Counter>();
+
+            // assert
+            cut.MarkupMatches(fixture.GetFragment());
+        }
+    }
 </Fixture>
-@code {
-    void InitialHtmlIsCorrect()
-    {
-        // act
-        var cut = GetComponentUnderTest<Counter>();
 
-        // assert
-        cut.MarkupMatches(GetFragment());
+
+<Fixture Test="AfterBtnClickCounterIsIncremented">
+    <ComponentUnderTest><Counter /></ComponentUnderTest>
+
+    @code {
+        void AfterBtnClickCounterIsIncremented(Fixture fixture)
+        {
+            // arrange
+            var cut = fixture.GetComponentUnderTest<Counter>();
+
+            // act
+            cut.Find("button").Click(); // first click
+            cut.Find("button").Click(); // 2nd click
+            cut.Find("button").Click(); // 3rd click
+
+            // assert
+            cut.GetChangesSinceFirstRender().ShouldHaveSingleTextChange("Current count: 3");
+        }
     }
 
-    void AfterBtnClickCounterIsIncremented()
-    {
-        // arrange
-        var cut = GetComponentUnderTest<Counter>();
-
-        // act
-        cut.Find("button").Click(); // first click
-        cut.Find("button").Click(); // 2nd click
-        cut.Find("button").Click(); // 3rd click
-
-        // assert
-        cut.GetChangesSinceFirstRender().ShouldHaveSingleTextChange("Current count: 3");
-    }
-}
-
+</Fixture>

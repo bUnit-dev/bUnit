@@ -2,19 +2,20 @@
 
 <Fixture Test="Test">
     <ComponentUnderTest>
-        <NoArgs/>
+        <NoArgs />
         <CascadingValue Value="theme">
             <ThemedButton><NoArgs /></ThemedButton>
         </CascadingValue>
     </ComponentUnderTest>
+
+    @code {
+        private ThemeInfo theme = new ThemeInfo { Value = "btn btn-secondary" };
+
+        void Test(Fixture fixture)
+        {
+            var cut = fixture.GetComponentUnderTest<ThemedButton>();
+            cut.Find("button").ClassList.ShouldContain("btn");
+        }
+    }
 </Fixture>
 
-@code {
-    private ThemeInfo theme = new ThemeInfo { Value = "btn btn-secondary" };
-
-    void Test()
-    {
-        var cut = GetComponentUnderTest<ThemedButton>();
-        cut.Find("button").ClassList.ShouldContain("btn");
-    }
-}

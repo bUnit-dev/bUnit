@@ -1,0 +1,24 @@
+<div>
+    <p>Fragment will be toggled below</p>
+
+    @if (showFragment)
+    {
+        @ExampleFragment
+    }
+
+    <button @onclick=@(_ => showFragment = !showFragment)>Toggle</button>
+    <p>The end</p>
+</div>
+
+@code {
+    bool showFragment;
+
+    static RenderFragment ExampleFragment = builder =>
+    {
+        builder.OpenElement(100, "p");
+        builder.AddAttribute(101, "name", "fragment-element");
+        builder.AddAttribute(102, "style", "color: red");
+        builder.AddContent(103, "This is from the fragment");
+        builder.CloseElement();
+    };
+}

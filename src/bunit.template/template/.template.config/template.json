@@ -1,0 +1,92 @@
+﻿{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Egil Hansen",
+  "classifications": [
+    "Test",
+    "bUnit",
+    "Blazor"
+  ],
+  "name": "bUnit Test Project",
+  "description": "A project for a testing Blazor/Razor components using the bUnit library.",
+  "generatorVersions": "[1.0.0.0-*)",
+  "identity": "BunitProject",
+  "groupIdentity": "Bunit",
+  "shortName": "bunit",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "Company.BlazorTests1",
+  "defaultName": "BlazorTestProject1",
+  "preferNameDirectory": true,
+  "symbols": {
+    "HostIdentifier": {
+      "type": "bind",
+      "binding": "HostIdentifier"
+    },
+    "skipRestore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "If specified, skips the automatic restore of the project on create.",
+      "defaultValue": "false"
+    }
+  },
+  "primaryOutputs": [
+    { "path": "Company.BlazorTests1.csproj" }
+  ],
+  "postActions": [
+    {
+      "condition": "(!skipRestore)",
+      "description": "Restore NuGet packages required by this project.",
+      "manualInstructions": [ { "text": "Run 'dotnet restore'" } ],
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true
+    }
+    //},
+    //{
+    //  "description": "Adding latests bUnit.Core reference",
+    //  "actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
+    //  "continueOnError": true,
+    //  "manualInstructions": [
+    //    {
+    //      "text": "Manually add the 'bunit.core' reference to your project file"
+    //    }
+    //  ],
+    //  "args": {
+    //    "referenceType": "package",
+    //    "reference": "bunit.core",
+    //    "projectFileExtensions": ".csproj"
+    //  }
+    //},
+    //{
+    //  "description": "Adding latests bUnit.Web reference",
+    //  "actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
+    //  "continueOnError": true,
+    //  "manualInstructions": [
+    //    {
+    //      "text": "Manually add the 'bunit.web' reference to your project file"
+    //    }
+    //  ],
+    //  "args": {
+    //    "referenceType": "package",
+    //    "reference": "bunit.web",
+    //    "projectFileExtensions": ".csproj"
+    //  }
+    //},
+    //{
+    //  "description": "Adding latests bUnit.xUnit reference",
+    //  "actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
+    //  "continueOnError": true,
+    //  "manualInstructions": [
+    //    {
+    //      "text": "Manually add the 'bunit.xunit' reference to your project file"
+    //    }
+    //  ],
+    //  "args": {
+    //    "referenceType": "package",
+    //    "reference": "bunit.xunit",
+    //    "projectFileExtensions": ".csproj"
+    //  }
+    //}
+  ]
+}

@@ -1,4 +1,4 @@
-﻿namespace Bunit.SampleApp.Data
+﻿namespace SampleApp.Data
 {
     public class Todo
     {

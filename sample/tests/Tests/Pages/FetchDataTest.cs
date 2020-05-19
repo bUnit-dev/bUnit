@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Bunit.SampleApp.Data;
-using Bunit.SampleApp.Components;
+using SampleApp.Data;
+using SampleApp.Components;
 using Xunit;
-using Bunit.SampleApp.Pages;
+using SampleApp.Pages;
 using Shouldly;
 using Microsoft.Extensions.DependencyInjection;
+using Bunit;
 
-namespace Bunit.SampleApp.CodeOnlyTests
+namespace SampleApp.CodeOnlyTests
 {
-    public class FetchDataTest : ComponentTestFixture
+    public class FetchDataTest : TestContext
     {
         [Fact(DisplayName = "Fetch data component renders expected initial markup")]
         public void Test001()
@@ -41,7 +42,7 @@ namespace Bunit.SampleApp.CodeOnlyTests
             var cut = RenderComponent<FetchData>();
 
             // Act - pass the test forecasts to the component via the mock services
-            WaitForNextRender(() => mockForecastService.Task.SetResult(forecasts));
+            mockForecastService.Task.SetResult(forecasts);
 
             // Assert
             // Render an new instance of the ForecastDataTable, passing in the test data

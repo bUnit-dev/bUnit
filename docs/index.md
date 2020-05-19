@@ -1,21 +1,64 @@
-[![GitHub stars](https://img.shields.io/github/stars/egil/bunit?style=flat-square)](https://github.com/egil/bunit)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/egil/bunit/CI?logo=github&style=flat-square)](https://github.com/egil/bunit/actions?query=workflow%3ACI)
 [![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
 [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
-[![Gitter](https://img.shields.io/gitter/room/egil/bunit?logo=gitter&style=flat-square)](https://gitter.im/egil/bunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/egil/bunit/CI?logo=github&style=flat-square)](https://github.com/egil/bunit/actions?query=workflow%3ACI)
 [![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github)](https://github.com/egil/bunit/issues)
+[![Gitter](https://img.shields.io/gitter/room/egil/bunit?logo=gitter&style=flat-square)](https://gitter.im/egil/bunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-# bUnit - a testing library for Blazor Components
+# bUnit - a testing library for Blazor components
 
-**bUnit**, previously known as **Blazor Components Testing Library**, is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax, and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.
+**bUnit** is a testing library for Blazor Components. You can:
 
-This library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. To see how, go to the [Documentation pages](/docs).
+- Setup and define components under tests in C# or Razor syntax
+- Verify outcome using semantic HTML diffing/comparison logic
+- Interact with and inspect components
+- Trigger event handlers
+- Provide cascading values
+- Inject services
+- Mock `IJsRuntime`
+- Perform snapshot testing
 
-To browse the source code and provide feedback, head to https://github.com/egil/bunit/.
+The library builds on top of existing unit testing frameworks such as xUnit, which runs the Blazor components tests, just as any normal unit test. 
 
-### Contributors
+The library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. 
 
-Shout outs and a big thank you to the contributors to this library. Here they are, in alphabetically:
+For example, to test the [`Counter.razor`](https://github.com/egil/bunit/blob/master/sample/src/Pages/Counter.razor) component that is part of the Blazor "file-new-project" project, you can do the following, using bUnit and xUnit:
 
-- [Michael J Conrad (@Siphonophora)](https://github.com/Siphonophora)
-- [Rastislav Novotný (@duracellko)](https://github.com/duracellko)
+```csharp
+[Fact]
+public void CounterShouldIncrementWhenClicked()
+{
+  // Arrange: render the Counter.razor component
+  var cut = RenderComponent<Counter>();
+  
+  // Act: find and click the <button> element to increment
+  // the counter in the <p> element
+  cut.Find("button").Click();
+
+  // Assert: first find the <p> element, then verify its content
+  cut.Find("p").MarkupMatches("<p>Current count: 1</p>");  
+}
+```
+
+**Go to [Documentation](/docs) to learn more.**
+
+## Milestones to v1.0.0
+
+These are the current goals that should be reached before v1.0.0 is ready:
+
+- **Stabilize the APIs**, such that they work equally well with both xUnit, Nunit, and MSTest as the underlying test framework. The general goals is to make it easy and obvious for developers to create the tests they needed, and fall into the pit of success.
+- **Get the Razor-based testing to stable**, e.g. make the discovery and running of tests defined in .razor files stable and efficient. This includes adding support for Nunit and MSTest as test runners.
+- **Improve the documentation**. Currently there are a list of "How to" guides planned in the [Update Docs](https://github.com/egil/bunit/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22updated+docs%22) milestone.
+- **Join the .NET Foundation.**. This project is too large for one person to be the owner and be the sole maintainer of, so the plan is to apply for membership as soon as possible, most likely close to or after v1.0.0 ships, and get the needed support and guidance to ensure the project long term.
+
+In the post v1.0.0 to v1.0.x time frame, focus will be on improving performance. Especially the spin-up time of about one second would be nice to get reduced.
+
+## Contributors
+
+Shout outs and a big thank you [to all the contributors](https://github.com/egil/bunit/graphs/contributors) to the library, both those that raise issues, provide input to issues, and those who send pull requests. 
+
+**Want to help out? You can help in a number of ways:**
+
+- Provide feedback and input through [issues](https://github.com/egil/bunit/issues), [Twitter](https://twitter.com/egilhansen) or [bUnit Gitter chat room](https://gitter.im/egil/bunit).
+- Help build the library, just pick an issue and submit pull-requests.
+- Help write documentation.
+- Create blog posts, presentations or video tutorials. If you do, I will be happy to showcase them in the related section on this site.

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Bunit.SampleApp.Data
+namespace SampleApp.Data
 {
     public class WeatherForecastService : IWeatherForecastService
     {

@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bunit.SampleApp.Components;
+using SampleApp.Components;
 using Bunit.Mocking.JSInterop;
 using Shouldly;
 using Xunit;
+using Bunit;
+using static Bunit.ComponentParameterFactory;
 
-namespace Bunit.SampleApp.CodeOnlyTests.Components
+namespace SampleApp.CodeOnlyTests.Components
 {
-    public class WikiSearchTest : ComponentTestFixture
+    public class WikiSearchTest : TestContext
     {
         [Fact(DisplayName = "WikiSearch renders an empty PRE element initially")]
         public void Test001()
@@ -52,11 +54,11 @@ namespace Bunit.SampleApp.CodeOnlyTests.Components
             // Use the WaitForNextRender to block until the component has finished re-rendered.
             // The plannedInvocation.SetResult will return the result to the component is waiting 
             // for in its OnAfterRender from the await jsRuntime.InvokeAsync<string>("queryWiki", "blazor") call.
-            WaitForNextRender(() => plannedInvocation.SetResult(expectedSearchResult));
+            plannedInvocation.SetResult(expectedSearchResult);
 
             // Assert
             // Verify that the result was received and correct placed in the paragraph element.
-            cut.Find("pre").InnerHtml.Trim().ShouldBe(expectedSearchResult);
+            cut.WaitForAssertion(() => cut.Find("pre").InnerHtml.Trim().ShouldBe(expectedSearchResult));
         }
     }
 }

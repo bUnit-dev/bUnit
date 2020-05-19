@@ -1,0 +1,11 @@
+<header @onclick="(evt) => HeaderClickCount++">
+	<h1>
+		<span @onclick="(evt) => SpanClickCount++">CLICK ME</span>
+	</h1>
+	<button>CLICK ME</button>
+</header>
+@code
+{
+	public int SpanClickCount { get; set; } = 0;
+	public int HeaderClickCount { get; set; } = 0;
+}

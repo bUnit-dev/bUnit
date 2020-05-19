@@ -1,0 +1,51 @@
+﻿@inherits TestComponentBase
+@*
+    This is a special Blazor component, which contains razor tests.
+
+    These tests are written in a mix of C# and Razor syntax.
+
+    The first test is a snapshot test, that will automatically perform a semantic
+    comparison of the rendered output of TestInput with that of ExpectedOutput.
+
+    The second is a Fixture test, where you can declare the component under test
+    and additional fragments that can be used in the "act" and "assertion" phases
+    of the test, which runs in the related test method(s).
+
+    Learn more at https://bunit.egilhansen.com/docs/
+*@
+
+<SnapshotTest Description="Counter starts at zero">
+    <TestInput>
+        <Counter />
+    </TestInput>
+    <ExpectedOutput>
+        <h1>Counter</h1>
+        <p>Current count: 0</p>
+        <button class="btn btn-primary">Click me</button>
+    </ExpectedOutput>
+</SnapshotTest>
+
+<Fixture Description="Clicking button increments counter" Test="Test">
+    <ComponentUnderTest>
+        <Counter></Counter>
+    </ComponentUnderTest>
+    <Fragment>
+        <p>Current count: 1</p>
+    </Fragment>
+</Fixture>
+
+@code
+{
+    public void Test(Fixture fixture)
+    {
+        // Arrange
+        var cut = fixture.GetComponentUnderTest<Counter>();
+
+        // Act - click button to increment counter
+        cut.Find("button").Click();
+
+        // Assert that the counter was incremented
+        var expected = fixture.GetFragment();
+        cut.Find("p").MarkupMatches(expected);
+    }
+}

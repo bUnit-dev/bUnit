@@ -1,8 +1,13 @@
 ﻿@inherits TestComponentBase
 
-<Fixture Tests="new Action[]{ TheComponentRendersExpectedOutput, WhenItemIsClickedOnCompleteEventIsRaised }">
+@code
+{
+    Todo todo = new Todo { Id = 42, Text = "Hello world" };
+}
+
+<Fixture Test="TheComponentRendersExpectedOutput">
     <ComponentUnderTest>
-        <TodoItem Todo="todo" OnCompleted="id => clickedTodoId = id"></TodoItem>
+        <TodoItem Todo="todo"></TodoItem>
     </ComponentUnderTest>
     <Fragment>
         <li id="todo-@todo.Id" class="list-group-item list-group-item-action">
@@ -10,27 +15,36 @@
             <span class="float-right text-danger">(click to complete)</span>
         </li>
     </Fragment>
+    @code
+    {
+        void TheComponentRendersExpectedOutput(Fixture fixture)
+        {
+            // act
+            var cut = fixture.GetComponentUnderTest();
+            var expected = fixture.GetFragment();
+
+            // assert
+            cut.MarkupMatches(expected);
+        }
+    }
 </Fixture>
-@code {
-    Todo todo = new Todo { Id = 42, Text = "Hello world" };
-    int clickedTodoId = 0;
 
-    void TheComponentRendersExpectedOutput()
+<Fixture Test="WhenItemIsClickedOnCompleteEventIsRaised">
+    <ComponentUnderTest>
+        <TodoItem Todo="todo" OnCompleted="id => clickedTodoId = id"></TodoItem>
+    </ComponentUnderTest>
+
+    @code
     {
-        // act
-        var cut = GetComponentUnderTest();
-        var expected = GetFragment();
+        int clickedTodoId = 0;
 
-        // assert
-        cut.MarkupMatches(expected);
+        void WhenItemIsClickedOnCompleteEventIsRaised(Fixture fixture)
+        {
+            var cut = fixture.GetComponentUnderTest();
+
+            cut.Find("li").Click();
+
+            Assert.Equal(todo.Id, clickedTodoId);
+        }
     }
-
-    void WhenItemIsClickedOnCompleteEventIsRaised()
-    {
-        var cut = GetComponentUnderTest();
-
-        cut.Find("li").Click();
-
-        Assert.Equal(todo.Id, clickedTodoId);
-    }
-}
+</Fixture>

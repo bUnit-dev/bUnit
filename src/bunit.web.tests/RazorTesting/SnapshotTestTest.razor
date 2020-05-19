@@ -1,0 +1,18 @@
+@inherits TestComponentBase
+
+@code {
+	class Dep1 : ITestDep { public string Name { get; } = "FOO"; }
+	class Dep2 : IAsyncTestDep { public Task<string> GetData() => Task.FromResult("BAR"); }
+}
+
+<SnapshotTest Setup="x => x.Services.AddSingleton<ITestDep, Dep1>()"
+			  SetupAsync="x => { x.Services.AddSingleton<IAsyncTestDep, Dep2>(); return Task.CompletedTask; }">
+	<TestInput>
+		<SimpleWithDeps></SimpleWithDeps>
+		<SimpleWithAyncDeps></SimpleWithAyncDeps>
+	</TestInput>
+	<ExpectedOutput>
+		<p>FOO</p>
+		<p>BAR</p>
+	</ExpectedOutput> 
+</SnapshotTest>

@@ -9,17 +9,17 @@
     <Fragment><h1>Foo bar button</h1></Fragment>
 </Fixture>
 @code {
-    void MarkupPassedViaChildContent()
+    void MarkupPassedViaChildContent(Fixture fixture)
     {
-        var expectedChildContent = GetFragment();
+        var expectedChildContent = fixture.GetFragment();
 
-        var cut = GetComponentUnderTest();
+        var cut = fixture.GetComponentUnderTest();
 
         cut.Find("button").ChildNodes.MarkupMatches(expectedChildContent);
     }
 }
 
-<Fixture>
+<Fixture Test="ComponentsPassedViaChildContent">
     <ComponentUnderTest>
         <ThemedElement>
             <ThemedButton id="btn">@btnContent</ThemedButton>
@@ -28,10 +28,10 @@
 </Fixture>
 @code {
     string btnContent = "BUTTTOOOON";
-    void ComponentsPassedViaChildContent()
+    void ComponentsPassedViaChildContent(Fixture fixture)
     {
-        var cut = GetComponentUnderTest();
+        var cut = fixture.GetComponentUnderTest();
 
-        cut.Find("#btn").TextContent.ShouldBe(btnContent);
+        cut.Find("#btn").TextContent.Trim().ShouldBe(btnContent);
     }
 }

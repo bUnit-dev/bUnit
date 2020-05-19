@@ -6,13 +6,6 @@ On this page we will go through how the comparison works, and what options you h
 
 > **NOTE:** The semantic HTML comparison is available in all three test types, but is always used in the Snapshot test type.
 
-**Content:**
-
-- [Why semantic comparison is needed for stable tests](#why-semantic-comparison-is-needed-for-stable-tests)
-- [Customizing the comparison process](#customizing-the-comparison-process)
-- [Verifying output from components](#verifying-output-from-components)
-- [Different ways of getting the differences](#different-ways-of-getting-the-differences)
-
 ## Why semantic comparison is needed for stable tests
 
 Just performing string comparison of two strings containing HTML markup can break quite easily, _even_ if the two markup strings are semantically equivalent. Some changes that can cause a regular string comparison to fail are:

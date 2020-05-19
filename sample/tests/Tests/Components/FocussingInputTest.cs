@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bunit.Mocking.JSInterop;
-using Bunit.SampleApp.Components;
+using SampleApp.Components;
 using Xunit;
+using Bunit;
+using static Bunit.ComponentParameterFactory;
 
-namespace Bunit.SampleApp.CodeOnlyTests.Components
+namespace SampleApp.CodeOnlyTests.Components
 {
-    public class FocussingInputTest : ComponentTestFixture
+    public class FocussingInputTest : TestContext
     {
         [Fact(DisplayName = "After first render, the new input field has focus")]
         public void Test001()

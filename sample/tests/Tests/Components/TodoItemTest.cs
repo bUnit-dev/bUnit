@@ -1,5 +1,5 @@
-﻿using Bunit.SampleApp.Components;
-using Bunit.SampleApp.Data;
+﻿using SampleApp.Components;
+using SampleApp.Data;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
 using System;
@@ -8,10 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Bunit;
+using static Bunit.ComponentParameterFactory;
 
-namespace Bunit.SampleApp.CodeOnlyTests
+namespace SampleApp.CodeOnlyTests
 {
-    public class TodoItemTest : ComponentTestFixture
+    public class TodoItemTest : TestContext
     {
         [Fact(DisplayName = "When no Todo is passed to item an exception is thrown")]
         public void Test001()

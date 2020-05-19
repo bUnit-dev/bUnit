@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bunit.SampleApp.Data
+namespace SampleApp.Data
 {
     public class TodoService : ITodoService
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Bunit.SampleApp.Data;
+using SampleApp.Data;
 
-namespace Bunit.SampleApp
+namespace SampleApp
 {
     internal class MockForecastService : IWeatherForecastService
     {

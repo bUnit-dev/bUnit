@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Diffing.Core;
-using Bunit.SampleApp.Pages;
+using SampleApp.Pages;
 using Shouldly;
 using Xunit;
+using Bunit;
 
-namespace Bunit.SampleApp.CodeOnlyTests
+using static Bunit.ComponentParameterFactory;
+
+namespace SampleApp.CodeOnlyTests
 {
-    public class CounterTest : ComponentTestFixture
+    public class CounterTest : TestContext
     {
         [Fact]
         public void InitialHtmlIsCorrect()
