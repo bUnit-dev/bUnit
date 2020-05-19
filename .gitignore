@@ -331,3 +331,5 @@ ASALocalRun/
 .mfractor/
 *.playlist
 bunit.docs/log.txt
+
+.store

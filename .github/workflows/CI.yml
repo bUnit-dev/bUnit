@@ -6,7 +6,7 @@ on:
     - 'docs/**'
 
 env:
-  VERSION: 1337.0.0
+  VERSION: ''
   BRANCH: ''
   
 jobs:  
@@ -17,6 +17,12 @@ jobs:
       - name: Getting branch name
         run: echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
       - uses: actions/checkout@v2   
+        with:
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+      - uses: dotnet/nbgv@master
+        with:
+          setAllVars: true
+      - run: echo "NBGV_SemVer2 $NBGV_SemVer2"          
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
@@ -27,9 +33,9 @@ jobs:
       - name: Building library
         run: |
           dotnet restore src
-          dotnet build src/bunit.core/ -c Release --no-restore -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet build src/bunit.web/ -c Release --no-restore -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet build src/bunit.xunit/ -c Release --no-restore -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet build src/bunit.core/ -c Release --no-restore -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet build src/bunit.web/ -c Release --no-restore -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet build src/bunit.xunit/ -c Release --no-restore -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
           dotnet build src/bunit.testassets/ -c Release --no-restore
       - name: Running unit tests
         run: |
@@ -38,12 +44,12 @@ jobs:
           dotnet test src/bunit.xunit.tests/ -c Release --no-restore --verbosity normal /nowarn:CS1591
       - name: Creating library package
         run: |
-          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
           dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
           dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
           dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/lib -p:version=$VERSION -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
       - name: Buidling template package
-        run: dotnet pack templates/bunit-project/ -c Release -o ${GITHUB_WORKSPACE}/templates -p:version=$VERSION
+        run: dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/templates -p:version=$VERSION
       - name: Verifying template
         run: |
           dotnet new --install ${GITHUB_WORKSPACE}/templates/bunit.template.$VERSION.nupkg

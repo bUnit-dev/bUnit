@@ -57,4 +57,4 @@ jobs:
       - name: Push packages to NuGet.org
         run: | 
           dotnet nuget push ${GITHUB_WORKSPACE}/lib/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
-          dotnet nuget push ${GITHUB_WORKSPACE}/template/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate       
+          dotnet nuget push ${GITHUB_WORKSPACE}/template/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
