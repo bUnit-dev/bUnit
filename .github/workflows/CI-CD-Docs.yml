@@ -18,9 +18,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2   
         with:
-          persist-credentials: false      
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+      - uses: dotnet/nbgv@master
+        with:
+          setAllVars: true
+      - name: Setting VERSION and BRANCH env
+        run: |
+          echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
+          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
@@ -30,11 +37,11 @@ jobs:
           dotnet-version: '3.1.202'
       - name: Building library and docs
         run: |
-          dotnet restore
-          dotnet build src/bunit.core --no-restore -p:version=$VERSION
-          dotnet build src/bunit.web --no-restore -p:version=$VERSION
-          dotnet build src/bunit.xunit --no-restore -p:version=$VERSION
-          dotnet build docs/docs.csproj --no-restore
+          dotnet restore src
+          dotnet build src/bunit.core/ --no-restore -p:version=$VERSION
+          dotnet build src/bunit.web/ --no-restore -p:version=$VERSION
+          dotnet build src/bunit.xunit/ --no-restore -p:version=$VERSION
+          dotnet build docs/docs.csproj
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
