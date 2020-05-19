@@ -172,8 +172,8 @@ public class ComponentTest : TestContext // implements the ITestContext interfac
 
 See the page [Mocking JsRuntime](/docs/mocking-jsruntime.html) for more details mock.
 
-**Further reading:**
+## Further reading:
 
 - [Semantic HTML markup comparison](/docs/semantic-html-markup-comparison.html)
 - [Mocking JsRuntime](/docs/mocking-jsruntime.html)
-- [C# test examples](/docs/csharp-test-examples.html)
+- [C# test examples in the sample project](https://github.com/egil/bunit/tree/master/sample/tests/Tests)

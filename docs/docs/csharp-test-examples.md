@@ -1,5 +1,7 @@
 # C# test examples
 
+> **WARNING:** These examples are somewhat outdated. Some content in here might still apply:
+
 In the following examples, the terminology **component under test** (abbreviated CUT) is used to mean the component that is the target of the test. The examples below use the `Shouldly` assertion library as well. If you prefer not to use that just replace the assertions with the ones from your own favorite assertion library.
 
 All examples can be found in the [Tests](https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/Tests) folder in the [Sample project](https://github.com/egil/razor-components-testing-library/tree/master/sample/).

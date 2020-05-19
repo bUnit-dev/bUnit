@@ -4,22 +4,6 @@ The library has basic support for snapshot testing, declared via Razor syntax in
 
 Notable features that are missing at the moment is the ability to auto-generate the expected output and to trigger updates of expected output.
 
-> **NOTE:** This feature is _EXPERIMENTAL_ and syntax and API will likely changed. Here are a few limitations to be aware of at the moment:
->
-> - The xUnit test runner can detect and execute tests in Razor test components, but is not able to distinguish the individual `<SnapshotTest>`'s from each other. They are all executed together, one at the time. The solution is planned, see the [related issue](https://github.com/egil/razor-components-testing-library/issues/4) for details.
-> - Go to the [Contribute](/docs/Contribute.html) page for info on how to provide feedback and suggestions.
-
-**Content:**
-
-- [Creating new snapshot test component](#creating-new-snapshot-test-component)
-- [Defining snapshot test cases](#defining-snapshot-test-cases)
-- [Executing test cases](#executing-test-cases)
-- [Examples](#examples)
-
-**Further reading:**
-
-- [Semantic HTML markup comparison](/docs/Semantic-HTML-markup-comparison.html)
-
 ## Creating new snapshot test component
 
 To create Razor-based snapshot tests, we need to create snapshot Razor test components.
@@ -48,6 +32,8 @@ All you need to define a snapshot test case is the `<SnapshotTest>` component ad
 
 ```cshtml
 <SnapshotTest Description="Helpful description of the test case - displayed if test fails"
+              Timeout="1000"
+              Skip="Reason to skip the test"
               Setup="() => Services.AddMockJsRuntime()"
               SetupAsync="() => Task.CompletedTask">
     <TestInput><!-- Declare your test input here, e.g. one or more components --></TestInput>
@@ -62,22 +48,21 @@ You can add as many `<SnapshotTest>` components to a test component as you want.
 3. Render the child content of the `<ExpectedOutput>` component and capture its output.
 4. Verify that the two outputs are equal. If they are not, the test will fail with an `HtmlEqualException`.
 
+If the `Timeout` parameter is specified, the test will timeout after the specified time, in milliseconds, and if `Skip` parameter is specified, the test is skipped and the reason is printed in the test output.
+
 ## Executing test cases
 
 Since Snapshot tests use xUnit under the hood as a test runner, you execute your tests them in exactly the same way as you would normal xUnit unit tests, i.e. by running `dotnet test` from the console or running the tests through the Test Explorer in Visual Studio.
 
-Do note the current limitations mentioned at the top of the page.
-
 ## Examples
 
-The following example shows how to test the the [TodoList.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Pages/TodoList.razor) component:
+The following example shows how to test the the [TodoList.razor](https://github.com/egil/bunit/blob/master/sample/src/Components/TodoList.razor) component:
 
 ```cshtml
 @inherits TestComponentBase
 
 <SnapshotTest Description="A todolist with one todo added should render correctly"
-              Setup="() => Services.AddMockJsRuntime()"
-              SetupAsync="() => Task.CompletedTask">
+              Setup="() => Services.AddMockJsRuntime()">
     <TestInput>
         <TodoList Label="My label" Items=@(new Todo[]{ new Todo{ Id=42, Text="Check out this new thing called Blazor" } })>
             <ItemsTemplate Context="todo">
@@ -103,3 +88,9 @@ The following example shows how to test the the [TodoList.razor](https://github.
     </ExpectedOutput>
 </SnapshotTest>
 ```
+
+## Further reading:
+
+- [Semantic HTML markup comparison](/docs/semantic-html-markup-comparison.html)
+- [Mocking JsRuntime](/docs/mocking-jsruntime.html)
+- [Snapshot test examples in the sample project](https://github.com/egil/bunit/tree/master/sample/tests/SnapshotTests)
