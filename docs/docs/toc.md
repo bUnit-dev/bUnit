@@ -2,6 +2,7 @@
 ## [Creating a new bUnit and xUnit test project](creating-a-new-bunit-xunit-project.md)
 ## [Creating a new bUnit and NUnit test project](creating-a-new-bunit-nunit-project.md)
 ## [Creating a new bUnit and MSTest test project](creating-a-new-bunit-mstest-project.md)
+## [Miscellaneous bUnit testing tips](/docs/misc-test-tips.md)
 ## [Basics of Blazor component testing](basics-of-blazor-component-testing.md)
 # [C# based testing](csharp-based-testing.md)
 # [Razor based testing](razor-based-testing.md)
