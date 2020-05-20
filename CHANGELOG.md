@@ -2,6 +2,30 @@
 
 All notable changes to **bUnit** will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased beta-8]
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+
+### Added
+List of new features.
+
+### Changed
+List of changes in existing functionality.
+
+- `TestContextBase.Dispose` made virtual to allow inheritor's to override it. By @SimonCropp in [#137](https://github.com/egil/bunit/pull/137).
+
+### Deprecated
+List of soon-to-be removed features.
+
+### Removed
+List of now removed features.
+
+### Fixed
+List of any bug fixes.
+
+### Security
+List of fixed security vulnerabilities.
+
 ## [1.0.0-beta-7] - 2020-05-19
 
 There are three big changes in bUnit in this release, as well as a whole host of small new features, improvements to the API, and bug fixes. The three big changes are:
