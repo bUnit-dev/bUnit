@@ -45,7 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{785D
 		..\.github\workflows\nuget-pack-push.yml = ..\.github\workflows\nuget-pack-push.yml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.template", "..\templates\bunit-project\bunit.template.csproj", "{67937C33-0609-4B37-AA36-5441B701C74B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.template", "bunit.template\bunit.template.csproj", "{56F7777C-38B1-4183-98A1-3D8D207A19BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,8 +87,8 @@ Global
 		{797E5586-8F42-4EC6-A70A-F99BAC747AE7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C0FEE71-208C-4CAD-B37B-C762D9D30A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C0FEE71-208C-4CAD-B37B-C762D9D30A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67937C33-0609-4B37-AA36-5441B701C74B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67937C33-0609-4B37-AA36-5441B701C74B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56F7777C-38B1-4183-98A1-3D8D207A19BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56F7777C-38B1-4183-98A1-3D8D207A19BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

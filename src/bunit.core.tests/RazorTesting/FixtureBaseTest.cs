@@ -32,13 +32,13 @@ namespace Bunit.RazorTesting
 			callLog[1].ShouldBe(nameof(SetupAsync));
 			callLog[2].ShouldBe(nameof(Test));
 
-			void Setup(FixtureComponent fixture) => callLog.Add(nameof(Setup));
+			void Setup(FixtureComponent fixture) => callLog?.Add(nameof(Setup));
 			Task SetupAsync(FixtureComponent fixture)
 			{
-				callLog.Add(nameof(SetupAsync));
+				callLog?.Add(nameof(SetupAsync));
 				return Task.CompletedTask;
 			}
-			void Test(FixtureComponent fixture) => callLog.Add(nameof(Test));
+			void Test(FixtureComponent fixture) => callLog?.Add(nameof(Test));
 		}
 
 		[Fact(DisplayName = "Setup, SetupAsync and TestAsync methods are called in the correct order")]
@@ -58,15 +58,15 @@ namespace Bunit.RazorTesting
 			callLog[1].ShouldBe(nameof(SetupAsync));
 			callLog[2].ShouldBe(nameof(TestAsync));
 
-			void Setup(FixtureComponent fixture) => callLog.Add(nameof(Setup));
+			void Setup(FixtureComponent fixture) => callLog?.Add(nameof(Setup));
 			Task SetupAsync(FixtureComponent fixture)
 			{
-				callLog.Add(nameof(SetupAsync));
+				callLog?.Add(nameof(SetupAsync));
 				return Task.CompletedTask;
 			}
 			Task TestAsync(FixtureComponent fixture)
 			{
-				callLog.Add(nameof(TestAsync));
+				callLog?.Add(nameof(TestAsync));
 				return Task.CompletedTask;
 			}
 		}
