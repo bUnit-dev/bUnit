@@ -25,3 +25,16 @@
 .sideaffix {
   margin-top: 0;
 }
+
+.tabGroup {
+  margin-bottom: 1rem;
+}
+
+.tabGroup section pre:only-child {
+  border: none;
+  margin-top: -16px !important;
+}
+
+pre code {
+  white-space: pre;
+}

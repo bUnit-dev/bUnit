@@ -6,11 +6,7 @@ The sections below takes you through each of the steps you need to get started:
 
 ## Creating a test project
 
-First you need a test project to store your component tests inside. Depending on what general purpose unit testing framework you prefer, you have a few options:
-
-- [Creating a new bUnit and xUnit test project](/docs/creating-a-new-bunit-xunit-project.html)
-- [Creating a new bUnit and NUnit test project](/docs/creating-a-new-bunit-nunit-project.html)
-- [Creating a new bUnit and MSTest test project](/docs/creating-a-new-bunit-mstest-project.html)
+First you need a test project to store your component tests inside. This is covered on the <xref:create-test-project> page.
 
 ## The basics of testing Blazor components
 
