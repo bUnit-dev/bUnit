@@ -76,9 +76,21 @@ dotnet add package bunit.web --version #{VERSION}#
 
 **3. Change project type to `Microsoft.NET.Sdk.Razor`**
 
-Change the first line in project type in the test project's `.csproj` file to:
+Changing the project type to `Microsoft.NET.Sdk.Razor` is done by changing first section of the test project's `.csproj` file to look like this:
 
-`<Project Sdk="Microsoft.NET.Sdk.Razor">`
+```xml
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RazorLangVersion>3.0</RazorLangVersion>
+  </PropertyGroup>
+
+...
+
+</Project>
+```
+
 
 **4. Add the test project to your solution**
 
