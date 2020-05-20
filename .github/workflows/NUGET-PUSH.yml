@@ -23,21 +23,21 @@ jobs:
         with:
           setAllVars: true
       - name: Setting VERSION and BRANCH env
-        run: echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
+        run: echo "::set-env name=VERSION::$NBGV_SimpleVersion$NBGV_PrereleaseVersion"
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
           files: '["*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.202' 
+          dotnet-version: '3.1.202'  
       - name: Building library
         run: |
           dotnet restore src
-          dotnet build src/bunit.core/ -c Release --no-restore -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet build src/bunit.web/ -c Release --no-restore -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet build src/bunit.xunit/ -c Release --no-restore -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet build src/bunit.testassets/ -c Release --no-restore
+          dotnet build src/bunit.core/ -c Release --no-restore -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet build src/bunit.web/ -c Release --no-restore -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet build src/bunit.xunit/ -c Release --no-restore -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet build src/bunit.testassets/ -c Release --no-restore 
       - name: Running unit tests
         run: |
           dotnet test src/bunit.core.tests/ -c Release --no-restore --verbosity normal /nowarn:CS1591
@@ -45,10 +45,10 @@ jobs:
           dotnet test src/bunit.xunit.tests/ -c Release --no-restore --verbosity normal /nowarn:CS1591
       - name: Creating library package
         run: |
-          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
       - name: Buidling template package
         run: dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages
       - name: Verifying template
