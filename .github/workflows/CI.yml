@@ -7,8 +7,6 @@ on:
     paths:
       - 'sample/**'
       - 'src/**'
-    paths-ignore:
-      - 'docs/**'
 
 env:
   VERSION: ''
