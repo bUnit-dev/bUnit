@@ -54,22 +54,22 @@ To add bUnit to your test project, first change to the newly created test projec
 
 ```bash
 cd <NAME OF PROJECT>
-dotnet add package bunit.web --version 1.0.0-beta-7#{VERSION}
-dotnet add package bunit.xunit --version 1.0.0-beta-7#{VERSION}#
+dotnet add package bunit.web --version #{VERSION}#
+dotnet add package bunit.xunit --version #{VERSION}#
 ```
 
 # [NUnit](#tab/nunit)
 
 ```bash
 cd <NAME OF PROJECT>
-dotnet add package bunit.web --version 1.0.0-beta-7#{VERSION}#
+dotnet add package bunit.web --version #{VERSION}#
 ```
 
 # [MSTest](#tab/mstest)
 
 ```bash
 cd <NAME OF PROJECT>
-dotnet add package bunit.web --version 1.0.0-beta-7#{VERSION}#
+dotnet add package bunit.web --version #{VERSION}#
 ```
 
 ***
