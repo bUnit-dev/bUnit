@@ -1,3 +1,8 @@
+---
+uid: getting-started
+title: Getting started with bUnit
+---
+
 # Getting started with bUnit
 
 To get started writing tests for your Blazor components, you first need to set up a test project. Then you can start writing your tests, using either C# or Razor syntax.

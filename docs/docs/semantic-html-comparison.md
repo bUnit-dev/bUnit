@@ -1,3 +1,8 @@
+---
+uid: semantic-html-comparison
+title: Semantic HTML markup comparison
+---
+
 # Semantic HTML markup comparison
 
 This library includes comparison and assert helpers that uses the [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library to perform semantic HTML comparison.

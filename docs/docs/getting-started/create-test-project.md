@@ -15,7 +15,7 @@ To create a project for testing you Blazor components that uses either of three 
 
 1. Create a new xUnit/NUnit/MSTest testing project
 2. Add bUnit to the test project
-3. Change project type to `Microsoft.NET.Sdk.Razor`
+3. Configure project settings
 4. Add the test project to your solution
 
 These steps look like this from the `dotnet` CLI:
@@ -74,9 +74,11 @@ dotnet add package bunit.web --version #{VERSION}#
 
 ***
 
-**3. Change project type to `Microsoft.NET.Sdk.Razor`**
+**3. Configure project settings**
 
-Changing the project type to `Microsoft.NET.Sdk.Razor` is done by changing first section of the test project's `.csproj` file to look like this:
+Then you need to change a few project settings, in particular we need to change the project's SDK to `Microsoft.NET.Sdk.Razor`, remember to set `RazorLangVersion` to `3.0`,  and set the `<TargetFramework>` to `netcoreapp3.1`, since bUnit builds on `.netstandard 2.1`.
+
+To do so, change the first part of the test project's `.csproj` file to look like this.:
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk.Razor">
@@ -86,11 +88,10 @@ Changing the project type to `Microsoft.NET.Sdk.Razor` is done by changing first
     <RazorLangVersion>3.0</RazorLangVersion>
   </PropertyGroup>
 
-...
+  ...
 
 </Project>
 ```
-
 
 **4. Add the test project to your solution**
 
@@ -224,4 +225,5 @@ dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.c
 
 ## Further reading
 
-- [Miscellaneous bUnit testing tips](/docs/misc-test-tips.html)
+- <xref:writing-first-csharp-test>
+- <xref:misc-test-tips>

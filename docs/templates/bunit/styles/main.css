@@ -30,11 +30,48 @@
   margin-bottom: 1rem;
 }
 
-.tabGroup section pre:only-child {
+.tabGroup section[role="tabpanel"] {
   border: none;
-  margin-top: -16px !important;
+}
+
+.tabGroup section pre:first-child {
+  margin-top: -15px !important;
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: -15px !important;
+}
+
+.tabGroup .alert {
+  margin-left: -16px;
+  margin-right: -16px;
+  margin-bottom: 0;
+  margin-top: 28px !important;
+}
+
+pre {
+  border-radius: 0px;
 }
 
 pre code {
   white-space: pre;
+}
+
+code[name] {
+  display: inline-block;
+  position: relative;
+  padding-top: 20px;
+}
+
+code[name]:before {
+  content: attr(name);
+  position: absolute;
+  top: 0;
+  font-style: italic;
+  z-index: 100;
+  color: grey;
+}
+
+.alert-info code {
+  background-color: inherit;
+  color: #131ed2;
 }

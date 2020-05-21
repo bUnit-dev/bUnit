@@ -1,3 +1,8 @@
+---
+uid: home
+title: bUnit - a testing library for Blazor components
+---
+
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/egil/bunit/CI?logo=github&style=flat-square)](https://github.com/egil/bunit/actions?query=workflow%3ACI)
 [![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
 [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
@@ -39,7 +44,7 @@ public void CounterShouldIncrementWhenClicked()
 }
 ```
 
-**Go to [Documentation](/docs) to learn more.**
+**Go to [Documentation](xref:getting-started) to learn more.**
 
 ### NuGet downloads
 
