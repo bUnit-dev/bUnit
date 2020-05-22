@@ -6,7 +6,7 @@
 ## [SnapshotTest options](xref:snapshot-options)
 
 # [Providing input](xref:passing-parameters-to-components)
-## [Pass parameters and cascading values](xref:passing-parameters-to-components)
+## [Parameters and cascading values](xref:passing-parameters-to-components)
 ## [Inject services](xref:inject-services-into-components)
 ## [Trigger event handlers](xref:trigger-event-handlers)
 ## [Trigger renders](xref:trigger-renders)
@@ -24,6 +24,6 @@
 ## [Mocking localization](xref:mocking-localizer)
 ## [Mocking NavigationManager](xref:mocking-navigation-manager)
 
-# [Miscellaneous bUnit testing tips](xref:misc-test-tips)
+# [Miscellaneous testing tips](xref:misc-test-tips)
 # [Tutorials and Presentations](tutorials-and-presentations.md)
 # [Contribute](contribute.md)
