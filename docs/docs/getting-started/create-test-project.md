@@ -22,7 +22,7 @@ These steps look like this from the `dotnet` CLI:
 
 **1. Create a new test project**
 
-Use the following command:
+Use the following command (click on the tab that for the test framework you would like to use):
 
 # [xUnit](#tab/xunit)
 

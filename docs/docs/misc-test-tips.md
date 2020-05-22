@@ -37,6 +37,10 @@ A neat trick, which will limit the `import` statements needed in your test proje
 </PropertyGroup>
 ```
 
+## Capture logs from ILogger in test output
+
+TODO: Document XunitLogger and XunitLoggerFactory
+
 ## Make copy/paste of HTML easier
 
 When writing C# based tests, you sometime want to copy/paste some HTML into C# strings from e.g. a Razor file. This is tedious to do manually as you have to escape the quotes and other special characters. The extension, [SmartPaster2019](https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster2013), allows us to copy strings where any character that needs to be escaped will be automatically.

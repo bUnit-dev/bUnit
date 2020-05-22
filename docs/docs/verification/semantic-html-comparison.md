@@ -1,6 +1,6 @@
 ---
 uid: semantic-html-comparison
-title: Semantic HTML markup comparison
+title: Customizing the semantic HTML comparison
 ---
 
 # Semantic HTML markup comparison
@@ -9,7 +9,7 @@ This library includes comparison and assert helpers that uses the [AngleSharp Di
 
 On this page we will go through how the comparison works, and what options you have to affect the comparison process.
 
-> **NOTE:** The semantic HTML comparison is available in all three test types, but is always used in the Snapshot test type.
+> **NOTE:** The semantic HTML comparison is available in both C# and Razor tests with the <xref:Bunit.Fixture> component, and is always used in Razor tests with the <xref:Bunit.SnapshotTest> component.
 
 ## Why semantic comparison is needed for stable tests
 
