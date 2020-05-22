@@ -15,7 +15,7 @@ Rendering a component happens through bUnit's <xref:Bunit.TestContext>, and the 
 
 Lets see a simple example, where we test the following `<HelloWorld>` component:
 
-[!code-cshtml[HelloWorld.razor](../../samples/components/HelloWorld.razor)]
+[!code-html[HelloWorld.razor](../../samples/components/HelloWorld.razor)]
 
 # [xUnit](#tab/xunit)
 

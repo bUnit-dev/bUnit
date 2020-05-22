@@ -5,14 +5,14 @@
 ## [Fixture test options](xref:fixture-options)
 ## [SnapshotTest options](xref:snapshot-options)
 
-# [Providing input](xref:passing-parameters-to-components)
+# [Providing input](xref:providing-input)
 ## [Parameters and cascading values](xref:passing-parameters-to-components)
 ## [Inject services](xref:inject-services-into-components)
 ## [Trigger event handlers](xref:trigger-event-handlers)
 ## [Trigger renders](xref:trigger-renders)
 ## [Configure 3rd party libraries](xref:configure-3rd-party-libs)
 
-# [Verifying output](xref:verify-markup)
+# [Verifying output](xref:verifying-output)
 ## [Verify markup](xref:verify-markup)
 ## [Verify component state](xref:verify-component-state)
 ## [Semantic HTML markup comparison](xref:semantic-html-comparison)

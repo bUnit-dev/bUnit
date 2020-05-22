@@ -1,4 +1,4 @@
-﻿---
+---
 uid: writing-razor-tests
 title: Writing tests in Razor syntax for Blazor components
 ---
@@ -29,7 +29,7 @@ A Blazor test component is conceptually very similar to a regular test class in 
 
 Besides that, Blazor test components has to inherit from  <xref:Bunit.TestComponentBase>, e.g.:
 
-[!code-html[HelloWorldTest.razor](../../samples/tests/razor/HelloWorldTest.razor#L1)]
+[!code-html[](../../samples/tests/razor/HelloWorldTest.razor#L1)]
 
 The following two sections will show how to create tests using bUnit's <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
 

@@ -26,29 +26,22 @@ The library builds on top of existing unit testing frameworks such as xUnit, whi
 
 The library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. 
 
-For example, to test the [`Counter.razor`](https://github.com/egil/bunit/blob/master/sample/src/Pages/Counter.razor) component that is part of the Blazor "file-new-project" project, you can do the following, using bUnit and xUnit:
-
-```csharp
-[Fact]
-public void CounterShouldIncrementWhenClicked()
-{
-  // Arrange: render the Counter.razor component
-  var cut = RenderComponent<Counter>();
-  
-  // Act: find and click the <button> element to increment
-  // the counter in the <p> element
-  cut.Find("button").Click();
-
-  // Assert: first find the <p> element, then verify its content
-  cut.Find("p").MarkupMatches("<p>Current count: 1</p>");  
-}
-```
-
 **Go to [Documentation](xref:getting-started) to learn more.**
 
 > [!NOTE]
 > The documentation is currently being rewritten to reflect the recent changes. Please excuse the mess.
 
+### Simple example
+
+For example, to test the `<Counter>` component listed below:
+
+[!code-html[Counter.razor](./samples/components/Counter.razor)]
+
+You can do the following, using bUnit and xUnit:
+
+[!code-csharp[CounterTest.cs](./samples/tests/xunit/CounterTest.cs#L8-L20)]
+
+**Go to [Documentation](xref:getting-started) to learn more.**
 
 ### NuGet downloads
 
