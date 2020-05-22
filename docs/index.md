@@ -46,6 +46,10 @@ public void CounterShouldIncrementWhenClicked()
 
 **Go to [Documentation](xref:getting-started) to learn more.**
 
+> [!NOTE]
+> The documentation is currently being rewritten to reflect the recent changes. Please excuse the mess.
+
+
 ### NuGet downloads
 
 bUnit is available on NuGet in various incarnations. If you are using xUnit as your general purpose testing framework, you can use `bunit`, which includes everything in one package. If you want to use NUnit or MStest, then pick `bunit.core` and `bunit.web`:
