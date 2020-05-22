@@ -15,6 +15,23 @@
         color: #fff;
     }
 
+.sidetoc {
+    top: 142px;
+}
+
+#toc {
+    margin: 0;
+}
+
+    #toc .nav > li > .expand-stub {
+        display: none;
+    }
+
+.nav.level2 {
+    display: block !important;
+    margin-left: 0;
+}
+
 .body-content {
     font-size: 1.4rem;
 }
@@ -69,13 +86,18 @@ code[name] {
         top: 0;
         right: 0;
         font-style: italic;
-        z-index: 0;
         text-align: right;
         color: #c5c5c5;
-        background: white;
+        background: rgba(255,255,255, 0.7);
         border-radius: 4px;
         padding: 0 6px;
     }
+
+@media (max-width: 900px) {
+    code[name] {
+        padding-top: 1.5em;
+    }
+}
 
 .alert-info code {
     background-color: inherit;
