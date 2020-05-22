@@ -225,5 +225,6 @@ dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.c
 
 ## Further reading
 
-- <xref:writing-first-csharp-test>
-- <xref:misc-test-tips>
+Now you are ready to write some times. To learn how, continue reading the <xref:writing-csharp-tests> and <xref:writing-razor-tests> pages.
+
+For addition tips and tricks that will make writing tests easier, see the <xref:misc-test-tips> page.
