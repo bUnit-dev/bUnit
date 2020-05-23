@@ -1,8 +1,8 @@
-﻿---
+---
 uid: inject-services-into-components
-title: How to inject services into components under test
+title: Injecting Services into Components Under Test
 ---
 
-# Injecting services into components under test
+# Injecting Services into Components Under Test
 
 TODO!

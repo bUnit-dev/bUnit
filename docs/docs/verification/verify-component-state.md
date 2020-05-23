@@ -1,9 +1,9 @@
-﻿---
+---
 uid: verify-component-state
-title: How to verify the state of a component under test
+title: Verifying the State of a Component Under Test
 ---
 
-# Verifying the state of a component under test
+# Verifying the State of a Component Under Test
 
 Describe IRenderedComponent interface
 

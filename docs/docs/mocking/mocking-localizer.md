@@ -1,6 +1,6 @@
-﻿---
+---
 uid: mocking-localizer
-title: Mocking localization via IStringLocalizer
+title: Mocking Localization via IStringLocalizer
 ---
 
-# Mocking localization via `IStringLocalizer`
+# Mocking Localization via `IStringLocalizer`

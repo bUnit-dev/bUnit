@@ -1,13 +1,13 @@
 ---
 uid: misc-test-tips
-title: Miscellaneous bUnit testing tips
+title: Miscellaneous bUnit Testing Tips
 ---
 
-# Miscellaneous bUnit testing tips
+# Miscellaneous bUnit Testing Tips
 
 Here is a few testing tips and tricks that have proven useful to us.
 
-## Projects structure and tips and tricks
+## Projects Structure and Tips and Tricks
 
 The recommended solution/project structure for a test and production code project set-up is:
 
@@ -27,7 +27,7 @@ test
   | SubComponent1Test.cs
 ```
 
-## Use same root namespace and folder structure in both test- and production project
+## Use same Root Namespace and Folder Structure
 
 A neat trick, which will limit the `import` statements needed in your test project, is to set the root namespace to the same as that of the production code project, _AND_ use the same folder structure as shown above. Following the example above, the `MyComponentLibTests.csproj` file should contain:
 
@@ -37,7 +37,7 @@ A neat trick, which will limit the `import` statements needed in your test proje
 </PropertyGroup>
 ```
 
-## Capture logs from ILogger in test output
+## Capture Logs from ILogger in Test Output
 
 TODO: Document XunitLogger and XunitLoggerFactory
 

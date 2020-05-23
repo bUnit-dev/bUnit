@@ -3,7 +3,7 @@ uid: home
 title: bUnit - a testing library for Blazor components
 ---
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/egil/bunit/CI?logo=github&style=flat-square)](https://github.com/egil/bunit/actions?query=workflow%3ACI)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/egil/bunit/RELEASE?logo=github&style=flat-square)](https://github.com/egil/bunit/actions?query=workflow%3ARELEASE)
 [![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
 [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
 [![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github)](https://github.com/egil/bunit/issues)
@@ -26,12 +26,12 @@ The library builds on top of existing unit testing frameworks such as xUnit, whi
 
 The library's goal is to make it easy to write _comprehensive, stable unit tests_ for Blazor Components/Razor Components. 
 
-**Go to [Documentation](xref:getting-started) to learn more.**
+**Go to the [Documentation](xref:getting-started) pages to learn more.**
 
 > [!NOTE]
 > The documentation is currently being rewritten to reflect the recent changes. Please excuse the mess.
 
-### Simple example
+### Test example 
 
 For example, to test the `<Counter>` component listed below:
 
@@ -40,8 +40,6 @@ For example, to test the `<Counter>` component listed below:
 You can do the following, using bUnit and xUnit:
 
 [!code-csharp[CounterTest.cs](./samples/tests/xunit/CounterTest.cs#L8-L20)]
-
-**Go to [Documentation](xref:getting-started) to learn more.**
 
 ### NuGet downloads
 

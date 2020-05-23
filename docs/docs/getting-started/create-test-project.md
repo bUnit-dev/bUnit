@@ -1,15 +1,15 @@
 ---
 uid: create-test-project
-title: Creating a new bUnit test project
+title: Creating a new bUnit Test Project
 ---
 
-# Creating a new bUnit test project
+# Creating a new bUnit Test Project
 
 Before you can write any tests, you need a place to put them - a test project. bUnit is not a unit test runner, so you need a general purpose test framework, like xUnit, NUnit, or MSTest, in addition to bUnit, to run your tests, and write your assertions. 
 
 If you prefer xUnit, you can use the bUnit project template approached described in the [Create a test project with bUnit template](#create-a-test-project-with-bunit-template) section further down the page. If you want to use another general purpose testing framework, read the following section.
 
-## Create a test project manually
+## Create a Test Project Manually
 
 To create a project for testing you Blazor components that uses either of three general purpose test frameworks, you need to go through these steps:
 
@@ -183,7 +183,7 @@ The end result should be a test project with a `.csproj` that looks like this (o
 
 ***
 
-## Create a test project with bUnit template
+## Create a Test Project with bUnit Template
 
 If you want to skip a few steps in the guide above, you can use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/). The bUNit project template is only available for using with xUnit as the general purpose testing framework, but that will change in the future.
 
@@ -223,7 +223,7 @@ dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
 dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.csproj
 ```
 
-## Further reading
+## Further Reading
 
 Now you are ready to write some times. To learn how, continue reading the <xref:writing-csharp-tests> and <xref:writing-razor-tests> pages.
 

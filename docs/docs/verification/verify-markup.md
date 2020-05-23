@@ -1,9 +1,9 @@
-﻿---
+---
 uid: verify-markup
-title: How to verify the rendered markup from a component under test
+title: Verifying the Rendered Markup from a Component Under Test
 ---
 
-# Verifying the rendered markup from a component under test
+# Verifying the Rendered Markup from a Component Under Test
 
 Describe how markup is available.
 
@@ -11,20 +11,21 @@ List properties in renderedfragment for accessing rendered markup.
 
 Mention AngleSharp and the complete DOM api.
 
-## Finding DOM nodes
+## Finding DOM Nodes
 
-### Refreshable find queries
+### Refreshable Find Queries
 
-## Useful DOM properties and methods for asserting 
+## Useful DOM Properties and Methods for Asserting 
 
-## Diffing DOM nodes
+## Diffing DOM Nodes
 
 - Since first render
 - since snapshot
 - Assertion helpers for List of IDiff
 
-## MarkupMatches
+## Semantic Comparison of Markup
 
+- MarkupMatches
 - Make case for semantic comparison
 - Show use cases
 

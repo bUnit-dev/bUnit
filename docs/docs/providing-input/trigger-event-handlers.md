@@ -1,8 +1,8 @@
-﻿---
+---
 uid: trigger-event-handlers
-title: Triggering event handlers in components
+title: Triggering Event Handlers in Components
 ---
 
-# Triggering event handlers in components
+# Triggering Event Handlers in Components
 
 TODO!

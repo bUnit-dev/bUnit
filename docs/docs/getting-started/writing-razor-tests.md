@@ -1,21 +1,21 @@
 ---
 uid: writing-razor-tests
-title: Writing tests in Razor syntax for Blazor components
+title: Writing Tests in Razor Syntax for Blazor Components
 ---
 
-# Writing tests in Razor syntax for Blazor components
+# Writing Tests in Razor Syntax for Blazor Components
 
 > [!WARNING]
 > Razor tests are currently only compatible with using xUnit as the general purpose testing framework.
 
 A test for a Blazor component can be written in a Blazor component, using a mix of Razor and C# syntax. The advantage of this is the familiarity in declaring the component under test, and other HTML or Razor fragments that will be used in the test, in Razor and HTML markup. This is especially useful when testing components that takes a lot of parameters and child content as input.
 
-> [!TIP]
+> [!INFO]
 > Tests declared inside Blazor test components can be discovered and invoked individually, and will show up in e.g. Visual Studio's Test Explorer. 
 > 
 > However, they will _not_ show up before the Blazor test component has been compiled into C# by the Blazor compiler, and if there are compile-errors from the Blazor compiler, they might appear to come and go in the Test Explorer.
 
-## Create a test specific `_Imports.razor` file
+## Create a Test Specific `_Imports.razor` File
 
 Razor tests are written in Blazor test components. To make our life's a little easier, let's first set up a `_Imports.razor` file, with the using statements we are going to be using throughout our tests. Simply add the following `_Imports.razor` to the root folder where you will be placing your Blazor test components:
 
@@ -23,7 +23,7 @@ Razor tests are written in Blazor test components. To make our life's a little e
 
 With that created, we are ready to create our first Razor test.
 
-## Creating a Blazor test component
+## Creating a Blazor Test Component
 
 A Blazor test component is conceptually very similar to a regular test class in e.g. xUnit or NUnit. You can define multiple tests inside a single test component, but those has to based on the special bUnit test components, currently either <xref:Bunit.Fixture> or <xref:Bunit.SnapshotTest>. 
 
@@ -33,7 +33,7 @@ Besides that, Blazor test components has to inherit from  <xref:Bunit.TestCompon
 
 The following two sections will show how to create tests using bUnit's <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
 
-### Creating a test using the `<Fixture>` component
+### Creating a Test using the `<Fixture>` Component
 
 Lets see a simple example, where we test the following `<HelloWorld>` component using the bUnit <xref:Bunit.Fixture> component:
 
@@ -59,7 +59,7 @@ Let's break down what is going on in this test:
 > [!TIP]
 > In bUnit tests, we like to use the abbreviation `CUT`, short for "component under test", to indicate the component that is being tested. This is inspired by the common testing abbreviation `SUT`, short for "system under test".
 
-### Creating a test using the `<SnapshotTest>` component
+### Creating a Test using the `<SnapshotTest>` Component
 
 In snapshot testing, you declare your input (e.g. one or more component under test) and the expected output, and the library will automatically tell you if they do not match. With bUnit, this comparison is done using a smart built-in semantic HTML comparison logic.
 
@@ -82,7 +82,7 @@ When the test runs, the <xref:Bunit.SnapshotTest> component will automatically c
 > [!TIP]
 > Learn more about how the semantic HTML/markup comparison in bUnit work, and how to customize it on the <xref:semantic-html-comparison> page.
 
-### Passing parameters to components under test
+### Passing Parameters to Components Under Test
 
 Since we are declaring our component under test in Razor syntax, passing parameters to the component under test is exactly the same as passing parameters in normal Blazor components. This is the same for tests created with both the <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
 
@@ -92,7 +92,7 @@ In this example, we are passing both attribute parameters and child content to t
 
 Injecting services into the components under test is covered on the <xref:inject-services-into-components> page.
 
-## Further reading
+## Further Reading
 
 Now that we've covered the basics of writing tests using Razor syntax, you can continue digging deeper, e.g. by looking at:
 

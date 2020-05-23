@@ -1,5 +1,5 @@
 # [Home](xref:home)
 # [Documentation](xref:getting-started)
-# [API References](/api/Bunit.html)
+# [API References](xref:Bunit)
 # [bUnit on GitHub](https://github.com/egil/bunit)
 # [bUnit's Gitter chat](https://gitter.im/egil/bunit)

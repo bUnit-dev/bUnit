@@ -1,9 +1,9 @@
-﻿---
+---
 uid: configure-3rd-party-libs
-title: How to test components that use 3rd party libraries
+title: Configure 3rd Party Libraries for Testing
 ---
 
-# How to test components that use 3rd party libraries
+# Configure 3rd Party Libraries for Testing
 
 General introduction about what is usually required: Mimic setup guide from lib in test.
 

@@ -1,32 +1,32 @@
-﻿---
+---
 uid: passing-parameters-to-components
-title: How to pass parameters to a component under test
+title: Passing Parameters to a Component Under Test
 ---
 
-# Passing parameters to a component under test
+# Passing Parameters to a Component Under Test
 
 Describe factory methods and builder.
 
 Highlight blazor test components only need this for re-renders through SetParametersAndRender, which alternatively can be done by just mutating a field captured by a parameter.
 
-## Component specific parameters
+## Component Specific Parameters
 
 Show same cases for factory and builder using tabs.
 
 ### EventCallback
 
-### Child content
+### ChildContent
 
 ### RenderFragment
 
 ### Templates
 
-### Unmatched parameters
+### Unmatched Parameters
 
-## Cascading value parameters
+## Cascading Value Parameters
 
-## How to render component inside other components
+## Render Component Test inside other Components
 
-## Further reading
+## Further Reading
 
 - <xref:inject-services-into-components>

@@ -1,8 +1,8 @@
-﻿---
+---
 uid: snapshot-options
-title: SnapshotTest options
+title: SnapshotTest Options in Razor Tests
 ---
 
-# `<SnapshotTest>` options
+# `<SnapshotTest>` Options in Razor Tests
 
 TODO!

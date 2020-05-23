@@ -1,8 +1,8 @@
-﻿---
+---
 uid: providing-input
-title: Providing input to a component under test
+title: Providing Input to a Component Under Test
 ---
 
-# Providing input to a component under test
+# Providing Input to a Component Under Test
 
 providing a toc with descriptions of each topic

@@ -1,9 +1,9 @@
 ---
 uid: writing-csharp-tests
-title: Writing tests in C# for Blazor components
+title: Writing Tests in C# for Blazor Components
 ---
 
-# Writing tests in C# for Blazor components
+# Writing Tests in C# for Blazor Components
 
 Testing Blazor components is a different from testing regular C# classes: Blazor components are *rendered*, they have the *Blazor component life-cycle*, during which we can *provide input* to them and where they *produce output*.
 
@@ -11,7 +11,7 @@ Testing Blazor components is a different from testing regular C# classes: Blazor
 
 Rendering a component happens through bUnit's <xref:Bunit.TestContext>, and the result of the rendering, a <xref:Bunit.IRenderedComponent`1>, provides access to the component instance, and the markup produced by the component.
 
-## Creating a basic test
+## Creating a Basic Test
 
 Lets see a simple example, where we test the following `<HelloWorld>` component:
 
@@ -50,7 +50,7 @@ In this test, we do the following:
 > [!TIP]
 > In bUnit tests, we like to use the abbreviation `CUT`, short for "component under test", to indicate the component that is being tested. This is inspired by the common testing abbreviation `SUT`, short for "system under test".
 
-## Remove boilerplate code from tests
+## Remove Boilerplate Code from Tests
 
 We can remove some boilerplate code from each test by making the <xref:Bunit.TestContext> implicitly available to the test class, so we do not have to have `using var ctx = new Bunit.TestContext();` in every test. This can be done like this:
 
@@ -82,7 +82,7 @@ Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.Com
 
 ***
 
-## Further reading
+## Further Reading
 
 With the basics out of the way, we will next look at how to pass parameters and inject services into our components under test, and after that, cover in more details the various ways we can verify the outcome of a rendering.
 

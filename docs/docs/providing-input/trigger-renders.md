@@ -1,8 +1,8 @@
-﻿---
+---
 uid: trigger-renders
-title: Triggering a render life-cycle on a component
+title: Triggering a Render Life-Cycle on a Component
 ---
 
-# Triggering a render life-cycle on a component
+# Triggering a Render Life-Cycle on a Component
 
 Describe how to trigger an explicit render life-cycle through the IRenderedComponent Render, SetParametersAndRender, and InvokeAsync methods.

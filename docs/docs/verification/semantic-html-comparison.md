@@ -1,6 +1,6 @@
 ---
 uid: semantic-html-comparison
-title: Customizing the semantic HTML comparison
+title: Customizing the Semantic HTML Comparison
 ---
 
 # Semantic HTML markup comparison
@@ -24,7 +24,7 @@ Just performing string comparison of two strings containing HTML markup can brea
 
 The [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library handles all those cases, so your tests are more stable.
 
-## Customizing the comparison process
+## Customizing the Semantic HTML Comparison
 
 The [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library also allows us to customize the comparison process, by added special attributes to the _"control" markup_, i.e. the expected markup we want to use in verification.
 
@@ -92,7 +92,7 @@ There are the customization options you have available to you:
 
   **NOTE:** The attribute modifiers `:ignoreCase` and `:regex` can be combined, for example as: `attr:ignoreCase:regex="FOO-\d{4}"`
 
-## Verifying output from components
+## Verifying Output from Components
 
 To verify the rendered output of a component (i.e. in the from of a `IRenderedFragment`), we have the various `MarkupMatches()` methods we can use.
 

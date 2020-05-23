@@ -1,9 +1,9 @@
 ---
 uid: mocking-ijsruntime
-title: Mocking Blazor's IJSRuntime
+title: Mocking Blazor's IJsRuntime
 ---
 
-# Mocking Blazor's `IJSRuntime`
+# Mocking Blazor's `IJsRuntime`
 
 This page is on the todo list.
 

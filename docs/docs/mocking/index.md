@@ -1,9 +1,9 @@
-﻿---
+---
 uid: mocking
-title: Mocking component dependencies
+title: Mocking Component Dependencies
 ---
 
-# Mocking component dependencies
+# Mocking Component Dependencies
 
 intro
 

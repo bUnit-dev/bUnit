@@ -1,8 +1,8 @@
-﻿---
+---
 uid: verifying-output
-title: Verifying output from a component under test
+title: Verifying Output from a Component Under Test
 ---
 
-# Verifying output from a component under test
+# Verifying Output from a Component Under Test
 
 providing a toc with descriptions of each topic
