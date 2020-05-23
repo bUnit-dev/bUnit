@@ -5,9 +5,9 @@ title: Creating a new bUnit Test Project
 
 # Creating a new bUnit Test Project
 
-Before you can write any tests, you need a place to put them - a test project. bUnit is not a unit test runner, so you need a general purpose test framework, like xUnit, NUnit, or MSTest, in addition to bUnit, to run your tests, and write your assertions. 
+Before you can write any tests, you need a place to put them - a test project. bUnit is not a unit test runner, so you need a general-purpose test framework, like xUnit, NUnit, or MSTest, in addition to bUnit, to run your tests, and write your assertions. 
 
-If you prefer xUnit, you can use the bUnit project template approached described in the [Create a test project with bUnit template](#create-a-test-project-with-bunit-template) section further down the page. If you want to use another general purpose testing framework, read the following section.
+If you prefer xUnit, you can use the bUnit project template approached described in the [Create a test project with bUnit template](#create-a-test-project-with-bunit-template) section further down the page. If you want to use another general-purpose testing framework, read the following section.
 
 ## Create a Test Project Manually
 
@@ -22,7 +22,7 @@ These steps look like this from the `dotnet` CLI:
 
 **1. Create a new test project**
 
-Use the following command (click on the tab that for the test framework you would like to use):
+Use the following command (_click on the tab that for the test framework you would like to use_):
 
 # [xUnit](#tab/xunit)
 
@@ -78,7 +78,7 @@ dotnet add package bunit.web --version #{VERSION}#
 
 Then you need to change a few project settings, in particular we need to change the project's SDK to `Microsoft.NET.Sdk.Razor`, remember to set `RazorLangVersion` to `3.0`,  and set the `<TargetFramework>` to `netcoreapp3.1`, since bUnit builds on `.netstandard 2.1`.
 
-To do so, change the first part of the test project's `.csproj` file to look like this.:
+To do so, change the first part of the test projects `.csproj` file to look like this.:
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk.Razor">
@@ -102,7 +102,7 @@ dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
 dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.csproj
 ```
 
-The end result should be a test project with a `.csproj` that looks like this (other packages than bUnit might have different version numbers):
+The result should be a test project with a `.csproj` that looks like this (other packages than bUnit might have different version numbers):
 
 
 # [xUnit](#tab/xunit)
@@ -185,7 +185,7 @@ The end result should be a test project with a `.csproj` that looks like this (o
 
 ## Create a Test Project with bUnit Template
 
-If you want to skip a few steps in the guide above, you can use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/). The bUNit project template is only available for using with xUnit as the general purpose testing framework, but that will change in the future.
+If you want to skip a few steps in the guide above, you can use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/). The bUnit project template is only available for using with xUnit as the general-purpose testing framework, but that will change in the future.
 
 The steps are as follows:
 
@@ -225,6 +225,6 @@ dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.c
 
 ## Further Reading
 
-Now you are ready to write some times. To learn how, continue reading the <xref:writing-csharp-tests> and <xref:writing-razor-tests> pages.
+Now you are ready to write some tests. To learn how, continue reading the <xref:writing-csharp-tests> and <xref:writing-razor-tests> pages.
 
 For addition tips and tricks that will make writing tests easier, see the <xref:misc-test-tips> page.
