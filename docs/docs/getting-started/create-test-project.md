@@ -26,19 +26,19 @@ Use the following command (_click on the tab that for the test framework you wou
 
 # [xUnit](#tab/xunit)
 
-```bash
+```dotnetcli
 dotnet new xunit -o <NAME OF TEST PROJECT>
 ```
 
 # [NUnit](#tab/nunit)
 
-```bash
+```dotnetcli
 dotnet new nunit -o <NAME OF TEST PROJECT>
 ```
 
 # [MSTest](#tab/mstest)
 
-```bash
+```dotnetcli
 dotnet new mstest -o <NAME OF TEST PROJECT>
 ```
 
@@ -52,7 +52,7 @@ To add bUnit to your test project, first change to the newly created test projec
 
 # [xUnit](#tab/xunit)
 
-```bash
+```dotnetcli
 cd <NAME OF PROJECT>
 dotnet add package bunit.web --version #{VERSION}#
 dotnet add package bunit.xunit --version #{VERSION}#
@@ -60,14 +60,14 @@ dotnet add package bunit.xunit --version #{VERSION}#
 
 # [NUnit](#tab/nunit)
 
-```bash
+```dotnetcli
 cd <NAME OF PROJECT>
 dotnet add package bunit.web --version #{VERSION}#
 ```
 
 # [MSTest](#tab/mstest)
 
-```bash
+```dotnetcli
 cd <NAME OF PROJECT>
 dotnet add package bunit.web --version #{VERSION}#
 ```
@@ -97,7 +97,7 @@ To do so, change the first part of the test projects `.csproj` file to look like
 
 Then you need to add your test project to your solution (`.sln`) and add a reference between your test project and component project:
 
-```bash
+```dotnetcli
 dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
 dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.csproj
 ```
@@ -200,7 +200,7 @@ These steps look like this from the `dotnet` CLI:
 
 Install the template from NuGet using this command:
 
-```bash
+```dotnetcli
 dotnet new --install bunit.template::#{VERSION}#
 ```
 
@@ -208,7 +208,7 @@ dotnet new --install bunit.template::#{VERSION}#
 
 Use the following command to create a bUnit with xUnit test project:
 
-```bash
+```dotnetcli
 dotnet new bunit -o <NAME OF TEST PROJECT>
 ```
 
@@ -218,7 +218,7 @@ where `-o <NAME OF PROJECT>` is used to name the test project.
 
 Then you need to add your test project to your solution (`.sln`) and add a reference between your test project and component project:
 
-```bash
+```dotnetcli
 dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
 dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.csproj
 ```
