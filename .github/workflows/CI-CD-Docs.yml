@@ -42,6 +42,7 @@ jobs:
           dotnet build src/bunit.web/ --no-restore -p:version=$VERSION
           dotnet build src/bunit.xunit/ --no-restore -p:version=$VERSION
           dotnet build docs/docs.csproj
+          dotnet build docs/docs.csproj
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
