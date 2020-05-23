@@ -42,7 +42,7 @@ In this test, we do the following:
 
 1. New up the disposable <xref:Bunit.TestContext>, and assign it using the `using var` syntax, to avoid unnecessary indention.
 2. Render the `<HelloWorld>` component using <xref:Bunit.TestContext>, which we do through the <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> method. We will cover passing parameters to components elsewhere.
-3. Verify the rendered markup from the `<HelloWorld>` component using the <xref:Bunit.MarkupMatchesAssertExtensions.MarkupMatches> method, which performs a semantic comparison of the expected markup with the rendered markup.
+3. Verify the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method, which performs a semantic comparison of the expected markup with the rendered markup.
 
 > [!TIP]
 > Learn more about how the semantic HTML/markup comparison in bUnit work, and how to customize it on the <xref:semantic-html-comparison> page.

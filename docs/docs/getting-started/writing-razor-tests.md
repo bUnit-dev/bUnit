@@ -51,7 +51,7 @@ Let's break down what is going on in this test:
 - The <xref:Bunit.Fixture> component's `Test` parameter takes a method, which is called when the test runs, and is passed the <xref:Bunit.Fixture> component.
 - In the test method, we:
   - Use the <xref:Bunit.Fixture.GetComponentUnderTest``1> to get the `HelloWorld` declared in the <xref:Bunit.Fixture>.
-  - Verify the rendered markup from the `HelloWorld` component using the <xref:Bunit.MarkupMatchesAssertExtensions.MarkupMatches> method, which performs a semantic comparison of the expected markup with the rendered markup.
+  - Verify the rendered markup from the `HelloWorld` component using the `MarkupMatches` method, which performs a semantic comparison of the expected markup with the rendered markup.
 
 > [!TIP]
 > Learn more about how the semantic HTML/markup comparison in bUnit work, and how to customize it on the <xref:semantic-html-comparison> page.
