@@ -10,7 +10,7 @@ namespace Docs.Components.Xunit
     {
       // Arrange
       using var ctx = new TestContext();
-      
+
       // Act
       var cut = ctx.RenderComponent<HelloWorld>();
 

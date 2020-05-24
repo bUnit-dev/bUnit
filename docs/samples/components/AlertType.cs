@@ -1,9 +1,9 @@
 namespace Docs.Components
 {
-    public enum AlertType
-    {
-        Info,
-        Warning,
-        Error
-    }
+  public enum AlertType
+  {
+    Info,
+    Warning,
+    Error
+  }
 }

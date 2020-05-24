@@ -11,16 +11,16 @@
     }
 </ul>
 @code {
-    [CascadingParameter(Name = "Theme")]
-    public string ThemeClass { get; set; } = string.Empty;
+  [CascadingParameter(Name = "Theme")]
+  public string ThemeClass { get; set; } = string.Empty;
 
-    private string newTaskValue = string.Empty;
+  private string newTaskValue = string.Empty;
 
-    private void HandleTaskAdded()
-    {
-        if (!string.IsNullOrWhiteSpace(newTaskValue))
-            Tasks.Add(newTaskValue);
+  private void HandleTaskAdded()
+  {
+    if (!string.IsNullOrWhiteSpace(newTaskValue))
+      Tasks.Add(newTaskValue);
 
-        newTaskValue = string.Empty;
-    }
+    newTaskValue = string.Empty;
+  }
 }
