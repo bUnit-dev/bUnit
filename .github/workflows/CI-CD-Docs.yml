@@ -37,15 +37,7 @@ jobs:
           dotnet build src/bunit.web/ --no-restore -p:version=$VERSION
           dotnet build src/bunit.xunit/ --no-restore -p:version=$VERSION
           dotnet build docs/
-          dotnet build docs/
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v2
-        with:
-          git_user_signingkey: true
-          git_commit_gpgsign: true
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE }}          
+          dotnet build docs/          
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
