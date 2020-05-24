@@ -29,7 +29,8 @@ The library's goal is to make it easy to write _comprehensive, stable unit tests
 **Go to the [Documentation](xref:getting-started) pages to learn more.**
 
 > [!NOTE]
-> The documentation is currently being rewritten to reflect the recent changes. Please excuse the mess.
+> The documentation is currently being rewritten to reflect the recent changes. 
+> Please excuse the mess.
 
 ### Test example 
 
