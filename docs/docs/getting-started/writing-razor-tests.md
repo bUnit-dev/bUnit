@@ -96,8 +96,8 @@ Injecting services into the components under test is covered on the <xref:inject
 
 Now that we have covered the basics of writing tests using Razor syntax, you can continue digging deeper, e.g. by looking at:
 
-- <xref:fixture-options>
-- <xref:snapshot-options>
+- <xref:fixture-details>
+- <xref:snapshottest-details>
 - <xref:inject-services-into-components>
 - <xref:verify-markup>
 - <xref:verify-component-state>

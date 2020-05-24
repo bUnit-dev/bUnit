@@ -2,8 +2,8 @@
 ## [Create a Test Project](xref:create-test-project)
 ## [Writing Tests in C#](xref:writing-csharp-tests)
 ## [Writing Tests in Razor Syntax](xref:writing-razor-tests)
-## [Razor Fixture Options](xref:fixture-options)
-## [Razor SnapshotTest Options](xref:snapshot-options)
+## [Fixture Test Details](xref:fixture-details)
+## [SnapshotTest Details](xref:snapshottest-details)
 
 # [Providing Input](xref:providing-input)
 ## [Parameters and Cascading Values](xref:passing-parameters-to-components)

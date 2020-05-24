@@ -1,16 +1,18 @@
 ---
-uid: fixture-options
-title: Fixture options in Razor Tests
+uid: fixture-details
+title: Fixture Test Details
 ---
 
-# `<Fixture>` options in Razor Tests
+# `<Fixture>` Test Details
 
 bUnit's <xref:Bunit.Fixture> component provides different parameters you can set on it, that changes the behavior of the test. It also allows you to both set up a component under test, and additional fragments, that can be used in the test.
 
+> [!WARNING]
+> Razor tests, where <xref:Bunit.Fixture> components are used, are currently only compatible with using xUnit as the general purpose testing framework.
 
 ## Parameters
 
-All the parameters the `<Fixture>` support is shown in the listing below:
+All the parameters the <xref:Bunit.Fixture> component support is shown in the listing below:
 
 [!code-html[](../../samples/tests/razor/AllFixtureParameters.razor)]
 
@@ -39,7 +41,7 @@ The other parameters affect how the test runs, and how it is displayed in e.g. V
 1. **<xref:Bunit.RazorTesting.RazorTestBase.Description>:**   
    If a description is provided, it will be displayed by the test runner when the test runs, and in Visual Studio's Test Explorer. If no description is provided, the name of the provided test method is used.
 2. **<xref:Bunit.RazorTesting.RazorTestBase.Skip>:**  
-   If the skip parameter is provided, the test is skipped and the text entered in the skip parameter is passed to the test runner as the reason to skip the test.
+   If the skip parameter is provided, the test is skipped, and the text entered in the skip parameter is passed to the test runner as the reason to skip the test.
 3. **<xref:Bunit.RazorTesting.RazorTestBase.Timeout>:**  
    If provided, the test runner will terminate the test after the specified amount of time, if it has not completed already.
 
