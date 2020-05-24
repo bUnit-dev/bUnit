@@ -105,4 +105,6 @@ Let's look at whats going on in this test:
 4. The second `<Fragment Id="expected tasks">` does have an `Id` to make it possible to get it, through a call to the `GetFragment("expected tasks")` method.
 5. The test uses the generic version of `GetComponentUnderTest<SimpleTodo>()`, which gives us access to the instance of `SimpleTodo`, and allows us to inspect its properties, e.g. `ThemeClass`.
 
-We will cover the details of the "act" and "assertion" step in the <xref:interaction> and <xref:verification> pages. Learn more about injecting services into components under test on the <xref:inject-services-into-components> page.
+We will cover the details of the "act" and "assertion" step in the <xref:interaction> and <xref:verification> pages. 
+
+Learn more about injecting services into components under test on the <xref:inject-services-into-components> page.

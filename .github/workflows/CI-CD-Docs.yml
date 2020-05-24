@@ -42,7 +42,7 @@ jobs:
           dotnet build src/bunit.web/ --no-restore -p:version=$VERSION
           dotnet build src/bunit.xunit/ --no-restore -p:version=$VERSION
           dotnet build docs/
-        name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
