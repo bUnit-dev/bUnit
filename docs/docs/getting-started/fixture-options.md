@@ -27,7 +27,10 @@ Let us start by looking at the parameters that takes a method as input first. Th
   
 In the example above, the setup and test methods are declared in a `@code { }` block nested inside the <xref:Bunit.Fixture> component. This visually groups the methods nicely to the <xref:Bunit.Fixture> component, but it's not a requirement. 
 
-You can have the methods anywhere inside the test component you want, which can be useful, if you for example have a common setup method that multiple Razor tests in the same test component shares. The methods can also be declared in the parameter directly, e.g.: `<Fixture Setup="f => f.Services.AddMockJsRuntime" ...>`.
+You can have the methods anywhere inside the test component you want, which can be useful, if you for example have a common setup method that multiple Razor tests in the same test component shares. The methods can also be declared in the parameter directly, e.g.: `<Fixture Setup="f => f.Services.AddMockJsRuntime()" ...>`.
+
+> [!TIP]
+> Learn more about mocking and `AddMockJsRuntime()` on the <xref:mocking-ijsruntime> page.
 
 **Other parameters**
 
@@ -80,10 +83,26 @@ The generic versions of <xref:Bunit.Fixture.GetComponentUnderTest``1> and <xref:
 
 ## Example
 
-TODO:
+Let's look at a complete example, where we have a simple task list component, `<SimpleTodo>`, listed below, that have a service injected, receive a cascading value, and changes between renders:
 
-1. Create a basic component that takes a cascading value, a service, and maybe some child content, and it should have a initial rendered output and something after e.g. a click event.
-2. Add a setup method that registers the service
-3. Add two fragments, one to verify the inital rendered output and one for the output after click.
-4. Show how GetCompnentUnderTest returns not the cascading value
-5. Show how get fragment is used with and without id, and returns fragments without
+[!code-html[SimpleTodo.razor](../../samples/components/SimpleTodo.razor)]
+
+In the test, we want to verify that:
+
+- The `<form>` resets itself correctly after a task has been added
+- That the task was added correctly to the task list
+- That the "Theme" cascading value was correctly assigned to the task list
+
+The test looks like this:
+
+[!code-html[SimpleTodoTest.razor](../../samples/tests/razor/SimpleTodoTest.razor?highlight=4,5,8-10,13,20,29,30,35-37,44)]
+
+Let's look at whats going on in this test:
+
+1. The fixture has both a setup and test method specified. The setup methods is used to register an empty list of tasks, that the `<SimpleTodo>` component requires.
+2. The `<SimpleTodo>` component is wrapped in a `<CascadingValue>` component that passes down the "Theme" cascading value.
+3. The first `<Fragment>` does not have an `Id`, since the `GetFragment()` method will pick the first fragment, if no `id` is provided to it.
+4. The second `<Fragment Id="expected tasks">` does have an `Id` to make it possible to get it, through a call to the `GetFragment("expected tasks")` method.
+5. The test uses the generic version of `GetComponentUnderTest<SimpleTodo>()`, which gives us access to the instance of `SimpleTodo`, and allows us to inspect its properties, e.g. `ThemeClass`.
+
+We will cover the details of the "act" and "assertion" step in the <xref:interaction> and <xref:verification> pages. Learn more about injecting services into components under test on the <xref:inject-services-into-components> page.

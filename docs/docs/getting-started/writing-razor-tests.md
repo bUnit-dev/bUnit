@@ -10,7 +10,7 @@ title: Writing Tests in Razor Syntax for Blazor Components
 
 A test for a Blazor component can be written in a Blazor component, using a mix of Razor and C# syntax. The advantage of this is the familiarity in declaring the component under test, and other HTML or Razor fragments that will be used in the test, _in Razor and HTML markup_. This is especially useful when testing components that takes a lot of parameters and child content as input.
 
-> [!INFO]
+> [!NOTE]
 > Tests declared inside Blazor test components can be discovered and invoked individually, and will show up in e.g. Visual Studio's Test Explorer. 
 > 
 > However, they will _not_ show up before the Blazor test component has been compiled into C# by the Blazor compiler, and if there are compile-errors from the Blazor compiler, they might appear to come and go in the Test Explorer.

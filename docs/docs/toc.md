@@ -8,11 +8,13 @@
 # [Providing Input](xref:providing-input)
 ## [Parameters and Cascading Values](xref:passing-parameters-to-components)
 ## [Inject Services](xref:inject-services-into-components)
-## [Trigger Event Handlers](xref:trigger-event-handlers)
-## [Trigger Renders](xref:trigger-renders)
 ## [Configure 3rd Party Libraries](xref:configure-3rd-party-libs)
 
-# [Verifying output](xref:verifying-output)
+# [Interaction](xref:interaction)
+## [Trigger Event Handlers](xref:trigger-event-handlers)
+## [Trigger Renders](xref:trigger-renders)
+
+# [Verifying output](xref:verification)
 ## [Verify Markup](xref:verify-markup)
 ## [Verify Component State](xref:verify-component-state)
 ## [Semantic HTML Markup Comparison](xref:semantic-html-comparison)

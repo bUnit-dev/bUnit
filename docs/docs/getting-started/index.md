@@ -18,7 +18,7 @@ These three pages will teach you *the basics*:
 After reading those, these topics will take you to the *next level*:
 
 1. **[Providing different types of input](xref:providing-input)** to a component under test, e.g. passing parameters or injecting services.
-2. **[Verifying output in various ways](xref:verifying-output)** from a component under test, e.g. inspecting the rendered markup.
+2. **[Verifying output in various ways](xref:verification)** from a component under test, e.g. inspecting the rendered markup.
 3. **[Mocking dependencies](xref:mocking)** a component under test has, e.g. the `IJsRuntime` or `HttpClient`.
 
 ## Examples

@@ -1,5 +1,5 @@
 ---
-uid: verifying-output
+uid: verification
 title: Verifying Output from a Component Under Test
 ---
 
