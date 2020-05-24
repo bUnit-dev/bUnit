@@ -9,10 +9,7 @@ on:
       - '.github/**'
 
 env:
-  VERSION: '1.0.0-beta-7'
-  BRANCH: 'master'
-  COMMIT: ''
-  DOCFX_SOURCE_BRANCH_NAME: 'master'
+  VERSION: ''
 
 jobs:
   build:
@@ -24,10 +21,8 @@ jobs:
       - uses: dotnet/nbgv@master
         with:
           setAllVars: true
-      - name: Setting VERSION and BRANCH env
-        run: |
-          echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
-          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+      - name: Setting VERSION
+        run: echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
@@ -43,18 +38,19 @@ jobs:
           dotnet build src/bunit.xunit/ --no-restore -p:version=$VERSION
           dotnet build docs/
           dotnet build docs/
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v2
+        with:
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}          
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
-          build_dir: docs/_site
+          build_dir: docs/_site 
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
-#      - name: Deploy
-#        uses: JamesIves/github-pages-deploy-action@releases/v3
-#        with:
-#          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          BRANCH: gh-pages # The branch the action should deploy to.
-#          FOLDER: docs/_site # The folder the action should deploy.
-#          CLEAN: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
