@@ -99,7 +99,7 @@ The test looks like this:
 
 [!code-html[SimpleTodoTest.razor](../../samples/tests/razor/SimpleTodoTest.razor?highlight=4,5,8-10,13,20,29,30,35-37,44)]
 
-Let's look at whats going on in this test:
+Let's look at what's going on in this test:
 
 1. The fixture has both a setup and test method specified. The setup methods is used to register an empty list of tasks, that the `<SimpleTodo>` component requires.
 2. The `<SimpleTodo>` component is wrapped in a `<CascadingValue>` component that passes down the "Theme" cascading value.

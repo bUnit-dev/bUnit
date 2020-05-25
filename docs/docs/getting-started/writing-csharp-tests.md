@@ -7,13 +7,13 @@ title: Writing Tests in C# for Blazor Components
 
 Testing Blazor components is a different from testing regular C# classes: Blazor components are *rendered*, they have the *Blazor component life cycle*, during which we can *provide input* to them and where they *produce output*.
 
-**bUnit** enables you to render the component you want to test, pass in parameters to it, inject services into it, and access the rendered component instance and the markup it has produced.
+Use **bUnit** to render the component you want to test, pass in parameters to it, inject services into it, and access the rendered component instance and the markup it has produced.
 
 Rendering a component happens through bUnit's <xref:Bunit.TestContext>, and the result of the rendering, a <xref:Bunit.IRenderedComponent`1>, provides access to the component instance, and the markup produced by the component.
 
 ## Creating a Basic Test
 
-Let us see a simple example, where we test the following `<HelloWorld>` component:
+This is a simple example, that tests the following `<HelloWorld>` component:
 
 [!code-html[HelloWorld.razor](../../samples/components/HelloWorld.razor)]
 
@@ -38,7 +38,7 @@ Let us see a simple example, where we test the following `<HelloWorld>` componen
 
 ***
 
-In this test, we do the following:
+The following happens in the test above:
 
 1. New up the disposable <xref:Bunit.TestContext>, and assign it using the `using var` syntax, to avoid unnecessary indention.
 2. Render the `<HelloWorld>` component using <xref:Bunit.TestContext>, which we do through the <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> method. We will cover passing parameters to components elsewhere.
