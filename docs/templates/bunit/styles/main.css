@@ -99,7 +99,8 @@ code[name] {
     }
 }
 
-.alert-info code {
+.alert-info code,
+.alert-info a.xref {
     background-color: inherit;
     color: #131ed2;
 }
