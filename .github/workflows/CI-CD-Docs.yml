@@ -38,10 +38,10 @@ jobs:
           dotnet build src/bunit.xunit/ --no-restore -p:version=$VERSION
       - name: Verfiy docs samples
         run: |
-          dotnet test docs/samples/tests/mstest --no-restore
-          dotnet test docs/samples/tests/nunit --no-restore
-          dotnet test docs/samples/tests/razor --no-restore
-          dotnet test docs/samples/tests/xunit --no-restore
+          dotnet test docs/samples/tests/mstest
+          dotnet test docs/samples/tests/nunit
+          dotnet test docs/samples/tests/razor
+          dotnet test docs/samples/tests/xunit
       - name: Building docs
         run: |    
           dotnet build docs/site/

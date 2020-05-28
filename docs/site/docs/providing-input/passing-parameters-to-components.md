@@ -20,7 +20,7 @@ There are two methods in bUnit that allows passing parameters:
 - `RenderComponent` on the test context
 - `SetParametersAndRender` on a rendered component
 
-In the following sub sections we will show both C# and Razor-based test code and Razor based test  style, just click between them using the tabs.
+In the following sub sections we will show both C# and Razor-based test code, just click between them using the tabs.
 
 > [!TIP]
 > In all examples below, the <xref:Bunit.ComponentParameterFactory> is imported into the test class using `using static Bunit.ComponentParameterFactory;`. This results in a lot less boilerplate code, which improves test readability. 
@@ -54,6 +54,20 @@ cover both _non_ Blazor types parameters, e.g. `int` and `List<string>`, and the
 Let's look at an example of passing parameter that takes types which or _not_ special to Blazor, i.e.:
 
 [!code-csharp[AllKindsOfParams.razor](../../../samples/components/AllKindsOfParams.razor#L3-L7)]
+
+# [C# test code](#tab/xunit)
+
+```dotnetcli
+dotnet new xunit -o <NAME OF TEST PROJECT>
+```
+
+# [Razor test code](#tab/nunit)
+
+```dotnetcli
+dotnet new nunit -o <NAME OF TEST PROJECT>
+```
+
+***
 
 Using either C# tuples, a factory method or the parameter builder, this can be done like this:
 
