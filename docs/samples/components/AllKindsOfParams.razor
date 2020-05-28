@@ -5,4 +5,10 @@
 
   [Parameter]
   public List<string> Lines { get; set; }
+
+  [Parameter]
+  public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+  [Parameter]
+  public EventCallback OnSomething { get; set; }
 }

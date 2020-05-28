@@ -30,19 +30,27 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.202'
-      - name: Building library and docs
+      - name: Building library
         run: |
           dotnet restore src
           dotnet build src/bunit.core/ --no-restore -p:version=$VERSION
           dotnet build src/bunit.web/ --no-restore -p:version=$VERSION
           dotnet build src/bunit.xunit/ --no-restore -p:version=$VERSION
-          dotnet build docs/
-          dotnet build docs/          
+      - name: Verfiy docs samples
+        run: |
+          dotnet test docs/sample/tests/mstest --no-restore
+          dotnet test docs/sample/tests/nunit --no-restore
+          dotnet test docs/sample/tests/razor --no-restore
+          dotnet test docs/sample/tests/xunit --no-restore
+      - name: Building docs
+        run: |    
+          dotnet build docs/site/
+          dotnet build docs/site/          
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
-          build_dir: docs/_site 
+          build_dir: docs/site/_site 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

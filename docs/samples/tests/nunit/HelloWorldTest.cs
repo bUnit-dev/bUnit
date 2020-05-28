@@ -1,7 +1,7 @@
 using Bunit;
 using NUnit.Framework;
 
-namespace Docs.Components.NUnit
+namespace Bunit.Docs.Samples
 {
   public class HelloWorldTest
   {

@@ -15,22 +15,22 @@ Rendering a component happens through bUnit's <xref:Bunit.TestContext>, and the 
 
 This is a simple example, that tests the following `<HelloWorld>` component:
 
-[!code-html[HelloWorld.razor](../../samples/components/HelloWorld.razor)]
+[!code-html[HelloWorld.razor](../../../samples/components/HelloWorld.razor)]
 
 # [xUnit](#tab/xunit)
 
-[!code-csharp[HelloWorldTest.cs](../../samples/tests/xunit/HelloWorldTest.cs)]
+[!code-csharp[HelloWorldTest.cs](../../../samples/tests/xunit/HelloWorldTest.cs)]
 
 # [NUnit](#tab/nunit)
 
-[!code-csharp[HelloWorldTest.cs](../../samples/tests/nunit/HelloWorldTest.cs)]
+[!code-csharp[HelloWorldTest.cs](../../../samples/tests/nunit/HelloWorldTest.cs)]
 
 > [!NOTE]
 > `TestContext` is an ambiguous reference between `TestContext` and `NUnit.Framework.TestContext`, so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.: `using BunitTestContext = Bunit.TestContext;` 
 
 # [MSTest](#tab/mstest)
 
-[!code-csharp[HelloWorldTest.cs](../../samples/tests/mstest/HelloWorldTest.cs)]
+[!code-csharp[HelloWorldTest.cs](../../../samples/tests/mstest/HelloWorldTest.cs)]
 
 > [!NOTE]
 > `TestContext` is an ambiguous reference between `TestContext` and `Microsoft.VisualStudio.TestTools.UnitTesting.TestContext`, so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.:   
@@ -56,15 +56,15 @@ We can remove some boilerplate code from each test by making the <xref:Bunit.Tes
 
 # [xUnit](#tab/xunit)
 
-[!code-csharp[HelloWorldImplicitContextTest.cs](../../samples/tests/xunit/HelloWorldImplicitContextTest.cs)]
+[!code-csharp[HelloWorldImplicitContextTest.cs](../../../samples/tests/xunit/HelloWorldImplicitContextTest.cs)]
 
 Since xUnit instantiates test classes for each execution of test methods inside them and disposes them after each test method has run, we simply inherit from <xref:Bunit.TestContext>, and methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> can now be called directly from each test, as seen in the listing above. 
 
 # [NUnit](#tab/nunit)
 
-[!code-csharp[HelloWorldImplicitContextTest.cs](../../samples/tests/nunit/HelloWorldImplicitContextTest.cs)]
+[!code-csharp[HelloWorldImplicitContextTest.cs](../../../samples/tests/nunit/HelloWorldImplicitContextTest.cs)]
 
-[!code-csharp[BunitTestContext.cs](../../samples/tests/nunit/BunitTestContext.cs)]
+[!code-csharp[BunitTestContext.cs](../../../samples/tests/nunit/BunitTestContext.cs)]
 
 Since NUnit instantiates the test class is once, we cannot simply inherit directly from <xref:Bunit.TestContext>, as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, which is listed above, and use that to hook into NUnit's `[SetUp]` and `[TearDown]` methods, which runs before and after each test.
 
@@ -72,9 +72,9 @@ Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.Com
 
 # [MSTest](#tab/mstest)
 
-[!code-csharp[HelloWorldImplicitContextTest.cs](../../samples/tests/mstest/HelloWorldImplicitContextTest.cs)]
+[!code-csharp[HelloWorldImplicitContextTest.cs](../../../samples/tests/mstest/HelloWorldImplicitContextTest.cs)]
 
-[!code-csharp[BunitTestContext.cs](../../samples/tests/mstest/BunitTestContext.cs)]
+[!code-csharp[BunitTestContext.cs](../../../samples/tests/mstest/BunitTestContext.cs)]
 
 Since MSTest instantiates the test class is once, we cannot simply inherit directly from <xref:Bunit.TestContext>, as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, which is listed above, and use that to hook into MSTest's `[TestInitialize]` and `[TestCleanup]` methods, which runs before and after each test.
 

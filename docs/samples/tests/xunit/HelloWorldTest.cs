@@ -1,7 +1,7 @@
 using Xunit;
 using Bunit;
 
-namespace Docs.Components.Xunit
+namespace Bunit.Docs.Samples
 {
   public class HelloWorldTest
   {

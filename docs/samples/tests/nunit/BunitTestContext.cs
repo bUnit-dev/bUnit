@@ -4,7 +4,7 @@ using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using NUnit.Framework;
 
-namespace Docs.Components.NUnit
+namespace Bunit.Docs.Samples
 {
   public abstract class BunitTestContext : ITestContext, IDisposable
   {

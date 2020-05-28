@@ -1,16 +1,16 @@
 using Xunit;
 using Bunit;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Components.Web;
 
 using static Bunit.ComponentParameterFactory;
 
-namespace Docs.Components.Xunit
+namespace Bunit.Docs.Samples
 {
-
   public class AllKindsOfParamsTest
   {
     [Fact]
-    public void RegularParametersLooselyTyped()
+    public void NonBlazorParamTypes()
     {
       using var ctx = new TestContext();
 
@@ -40,11 +40,27 @@ namespace Docs.Components.Xunit
     }
 
     [Fact]
-    public void RegularParameters2()
+    public void EventCallbackTypes()
     {
       using var ctx = new TestContext();
 
+      // Using factory method with hardcoded name
+      var cut1 = ctx.RenderComponent<AllKindsOfParams>(
+        EventCallback("OnClick", (MouseEventArgs args) => { /* handle callback */ }),
+        EventCallback("OnSomething", () => { /* handle callback */ })
+      );
 
+      // Using factory method refactor safe name
+      var cut2 = ctx.RenderComponent<AllKindsOfParams>(
+        EventCallback(nameof(AllKindsOfParams.OnClick), (MouseEventArgs args) => { /* handle callback */ }),
+        EventCallback(nameof(AllKindsOfParams.OnSomething), () => { /* handle callback */ })
+      );
+
+      // Using parameter builder
+      var cut3 = ctx.RenderComponent<AllKindsOfParams>(parameters => parameters
+        .Add(p => p.OnClick, args => { /* handle callback */ })
+        .Add(p => p.OnSomething, () => { /* handle callback */ })
+      );
     }
   }
 }

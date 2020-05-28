@@ -19,7 +19,7 @@ A test for a Blazor component can be written in a Blazor component, using a mix 
 
 Razor tests are written in Blazor test components. To make our life's a little easier, let us first set up a `_Imports.razor` file, with the using statements we are going to be using throughout our tests. Simply add the following `_Imports.razor` to the root folder where you will be placing your Blazor test components:
 
-[!code-html[_Imports.razor](../../samples/tests/razor/_Imports.razor#L3-)]
+[!code-html[_Imports.razor](../../../samples/tests/razor/_Imports.razor#L3-)]
 
 With that created, we are ready to create our first Razor test.
 
@@ -29,7 +29,7 @@ A Blazor test component is conceptually very similar to a regular test class in 
 
 Besides that, Blazor test components has to inherit from  <xref:Bunit.TestComponentBase>, e.g.:
 
-[!code-html[](../../samples/tests/razor/HelloWorldTest.razor#L1)]
+[!code-html[](../../../samples/tests/razor/HelloWorldTest.razor#L1)]
 
 The following two sections will show how to create tests using bUnit's <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
 
@@ -37,11 +37,11 @@ The following two sections will show how to create tests using bUnit's <xref:Bun
 
 Let's see a simple example, where we test the following `<HelloWorld>` component using the bUnit <xref:Bunit.Fixture> component:
 
-[!code-html[HelloWorld.razor](../../samples/components/HelloWorld.razor)]
+[!code-html[HelloWorld.razor](../../../samples/components/HelloWorld.razor)]
 
 Here is the Razor code that tests the `<HelloWorld>` component:
 
-[!code-html[HelloWorldTest.razor](../../samples/tests/razor/HelloWorldTest.razor#L1-L19)]
+[!code-html[HelloWorldTest.razor](../../../samples/tests/razor/HelloWorldTest.razor#L1-L19)]
 
 Let's break down what is going on in this test:
 
@@ -65,11 +65,11 @@ In snapshot testing, you declare your input (e.g. one or more component under te
 
 Let's see a simple example, where we test the following `<HelloWorld>` component using the bUnit <xref:Bunit.SnapshotTest> component:
 
-[!code-html[HelloWorld.razor](../../samples/components/HelloWorld.razor)]
+[!code-html[HelloWorld.razor](../../../samples/components/HelloWorld.razor)]
 
 Here is the Razor code that tests the `<HelloWorld>` component:
 
-[!code-html[HelloWorldTest.razor](../../samples/tests/razor/HelloWorldTest.razor#L21-L28)]
+[!code-html[HelloWorldTest.razor](../../../samples/tests/razor/HelloWorldTest.razor#L21-L28)]
 
 Let's break down what is going on in this test with the <xref:Bunit.SnapshotTest> component:
 
@@ -88,7 +88,7 @@ Since we are declaring our component under test in Razor syntax, passing paramet
 
 In this example, we are passing both attribute parameters and child content to the component under test, in this case, a basic `<Alert>` component:
 
-[!code-html[HelloWorldTest.razor](../../samples/tests/razor/PassingParametersToComponents.razor#L3-L18)]
+[!code-html[HelloWorldTest.razor](../../../samples/tests/razor/PassingParametersToComponents.razor#L3-L18)]
 
 Injecting services into the components under test is covered on the <xref:inject-services-into-components> page.
 

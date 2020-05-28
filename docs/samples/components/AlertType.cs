@@ -1,4 +1,4 @@
-namespace Docs.Components
+namespace Bunit.Docs.Samples
 {
   public enum AlertType
   {

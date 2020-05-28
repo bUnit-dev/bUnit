@@ -1,7 +1,7 @@
 using Bunit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Docs.Components.MSTest
+namespace Bunit.Docs.Samples
 {
   [TestClass]
   public class HelloHelloWorldImplicitContextTest : BunitTestContext

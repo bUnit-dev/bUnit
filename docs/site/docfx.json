@@ -9,7 +9,7 @@
             "bunit.xunit/bunit.xunit.csproj"
           ],
           "exclude": [ "**/bin/**", "**/obj/**" ],
-          "src": "../src"
+          "src": "../../src"
         }
       ],
       "dest": "api",

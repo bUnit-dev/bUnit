@@ -13,7 +13,7 @@
     <Content Include="samples\tests\razor\FixtureWithCutAndFragments.html" />
   </ItemGroup>
 
-  <ItemGroup>    
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.4" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -26,9 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\bunit.core\bunit.core.csproj" />
-    <ProjectReference Include="..\src\bunit.web\bunit.web.csproj" />
-    <ProjectReference Include="..\src\bunit.xunit\bunit.xunit.csproj" />
+    <ProjectReference Include="../../src/bunit.core/bunit.core.csproj" />
+    <ProjectReference Include="../../src/bunit.web/bunit.web.csproj" />
+    <ProjectReference Include="../../src/bunit.xunit/bunit.xunit.csproj" />
   </ItemGroup>
 
 </Project>
