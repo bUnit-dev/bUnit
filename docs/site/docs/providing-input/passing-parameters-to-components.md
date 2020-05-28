@@ -9,13 +9,13 @@ bUnit comes with a bunch of ways to pass parameters to a component under test.
 
 In Razor-based tests, those written in `.razor` files, passing parameters is exactly the same as in your normal Blazor pages and components.
 
-For C#-based test code, you can:
+For C#-based test code, help is needed. This comes as:
 
-- use loosely typed factory methods
-- use a simple tuple-based syntax, i.e. `(name, value)`
-- use a strongly typed builder (still experimental)
+- Loosely typed factory methods
+- Simple tuple-based syntax, i.e. `(name, value)`
+- Strongly typed builder (still experimental)
 
-There are two methods in bUnit that allows passing parameters:
+There are two methods in bUnit that allows passing parameters in C#-based test code:
 
 - `RenderComponent` on the test context
 - `SetParametersAndRender` on a rendered component
@@ -26,15 +26,15 @@ In the following sub sections we will show both C# and Razor-based test code, ju
 > In all examples below, the <xref:Bunit.ComponentParameterFactory> is imported into the test class using `using static Bunit.ComponentParameterFactory;`. This results in a lot less boilerplate code, which improves test readability. 
 > 
 > With `using static` import, we can use the factory methods like this:
-> 
+>   
 > ```csharp
 > using static Bunit.ComponentParameterFactory;
 > ...
 > var componentParameter = Parameter("paramName", someValue);
 > ```
-> 
+>   
 > With a regular `using` import, we have to prefix the static factory methods like this:
-> 
+>   
 > ```csharp
 > using Bunit.ComponentParameterFactory;
 > ...
@@ -55,21 +55,9 @@ Let's look at an example of passing parameter that takes types which or _not_ sp
 
 [!code-csharp[AllKindsOfParams.razor](../../../samples/components/AllKindsOfParams.razor#L3-L7)]
 
-# [C# test code](#tab/xunit)
+Using either C# or Razor test code, this can be done like this:
 
-```dotnetcli
-dotnet new xunit -o <NAME OF TEST PROJECT>
-```
-
-# [Razor test code](#tab/nunit)
-
-```dotnetcli
-dotnet new nunit -o <NAME OF TEST PROJECT>
-```
-
-***
-
-Using either C# tuples, a factory method or the parameter builder, this can be done like this:
+# [C# test code](#tab/csharp)
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L17-L39)]
 
@@ -80,20 +68,38 @@ All of these examples does the same thing, here is what is going on:
 3. The third example uses the <xref:Bunit.ComponentParameterFactory.Parameter(System.String,System.Object)> factory method.
 4. The last example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type for the value. This makes the builders methods strongly typed and refactor safe.
 
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L3-L8)]
+
+This is just regular Blazor parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests.
+
+***
+
 ### EventCallback Parameters
 
 This example will pass parameters to the follow two `EventCallback` parameters:
 
 [!code-csharp[AllKindsOfParams.razor](../../../samples/components/AllKindsOfParams.razor#L9-L13)]
 
-Using either one of the `EventCallback` factory methods or the parameter builder `Add` method, this can be done like this:
+Using either C# or Razor test code, this can be done like this:
 
-[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L48-L64)]
+# [C# test code](#tab/csharp)
+
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L48-L63)]
 
 All of these examples does the same thing, here is what is going on:
 
 1. The first and second example uses the  `EventCallback` factory method in <xref:Bunit.ComponentParameterFactory> (there are many overloads that take different kinds of `Action` and `Func` delegates), to pass a lambda as the event callback to the specified parameter.
 2. The last example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type of callback method. This makes the builders methods strongly typed and refactor safe.
+
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L10-L16)]
+
+This is just regular Blazor parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests.
+
+***
 
 ### ChildContent Parameters
 

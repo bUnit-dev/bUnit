@@ -1,0 +1,16 @@
+@inherits TestComponentBase
+
+<Fixture Test="f => {}">
+  <ComponentUnderTest>
+    <AllKindsOfParams Numbers="42" Lines=@(new List<string> { "Hello", "World" })>
+    </AllKindsOfParams>
+  </ComponentUnderTest>
+</Fixture>
+
+<Fixture Test="f => {}">
+  <ComponentUnderTest>
+    <AllKindsOfParams OnClick=@(args => { /* handle callback */ }) 
+                      OnSomething=@(() => { /* handle callback */ })>
+    </AllKindsOfParams>
+  </ComponentUnderTest>
+</Fixture>
