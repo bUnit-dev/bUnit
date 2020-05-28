@@ -7,7 +7,7 @@ title: Passing Parameters to a Component Under Test
 
 bUnit comes with a bunch of ways to pass parameters to a component under test. 
 
-In Razor-based tests, those written in `.razor` files, passing parameters is exactly the same as in your normal Blazor pages and components, i.e. through the normal Razor syntax, so this parameter passing style will not be covered here. Instead, this page will cover passing parameters in C# code.
+In Razor-based tests, those written in `.razor` files, passing parameters is exactly the same as in your normal Blazor pages and components.
 
 For C#-based test code, you can:
 
@@ -20,7 +20,7 @@ There are two methods in bUnit that allows passing parameters:
 - `RenderComponent` on the test context
 - `SetParametersAndRender` on a rendered component
 
-In the following sub sections we will show each style, just click between them using the tabs.
+In the following sub sections we will show both C# and Razor-based test code and Razor based test  style, just click between them using the tabs.
 
 > [!TIP]
 > In all examples below, the <xref:Bunit.ComponentParameterFactory> is imported into the test class using `using static Bunit.ComponentParameterFactory;`. This results in a lot less boilerplate code, which improves test readability. 
