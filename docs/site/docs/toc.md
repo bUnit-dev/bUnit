@@ -13,11 +13,13 @@
 # [Interaction](xref:interaction)
 ## [Trigger Event Handlers](xref:trigger-event-handlers)
 ## [Trigger Renders](xref:trigger-renders)
+## [Awaiting an Asynchronous State Change](xref:awaiting-async-state)
 
 # [Verifying output](xref:verification)
 ## [Verify Markup](xref:verify-markup)
 ## [Verify Component State](xref:verify-component-state)
 ## [Semantic HTML Markup Comparison](xref:semantic-html-comparison)
+## [Asynchronous Assertion of Changes](xref:async-assertion)
 
 # [Mocking](xref:mocking)
 ## [Mocking Authorization](xref:mocking-auth)

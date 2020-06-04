@@ -1,11 +1,11 @@
 ---
 uid: passing-parameters-to-components
-title: Passing Parameters to a Component Under Test
+title: Passing Parameters to Components
 ---
 
-# Passing Parameters to a Component Under Test
+# Passing Parameters to Components
 
-bUnit comes with a bunch of ways to pass parameters to a component under test. 
+bUnit comes with a bunch of ways to pass parameters to components. 
 
 In Razor-based tests, those written in `.razor` files, passing parameters is exactly the same as in your normal Blazor pages and components.
 
@@ -86,11 +86,11 @@ Using either C# or Razor test code, this can be done like this:
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L48-L63)]
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L47-L63)]
 
 All of these examples does the same thing, here is what is going on:
 
-1. The first and second example uses the  `EventCallback` factory method in <xref:Bunit.ComponentParameterFactory> (there are many overloads that take different kinds of `Action` and `Func` delegates), to pass a lambda as the event callback to the specified parameter.
+1. The first and second example uses the `EventCallback` factory method in <xref:Bunit.ComponentParameterFactory> (there are many overloads that take different kinds of `Action` and `Func` delegates), to pass a lambda as the event callback to the specified parameter.
 2. The last example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type of callback method. This makes the builders methods strongly typed and refactor safe.
 
 # [Razor test code](#tab/razor)
@@ -102,6 +102,81 @@ This is just regular Blazor parameter passing, which is the same for both `Fixtu
 ***
 
 ### ChildContent Parameters
+
+The `ChildContent` parameter in Blazor is represented by a `RenderFragment`. In Blazor, this can be both contain regular HTML markup, it can be Razor markup, e.g. other component declarations, or a mix of the two. If it is another component, then that component can also receive child content, and so on and so forth.
+
+The following subsections has different examples of child content being passed to the following component:
+
+[!code-csharp[AllKindsOfParams.razor](../../../samples/components/AllKindsOfParams.razor#L15-L16)]
+
+#### Passing HTML to the ChildContent Parameter
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L71-L79)]
+
+All of these examples does the same thing, here is what is going on:
+
+1. The first example uses the `ChildContent` factory method in <xref:Bunit.ComponentParameterFactory>, to pass a HTML markup string as the input to the `ChildContent` parameter.
+2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `AddChildContent` method to pass a HTML markup string as the input to the `ChildContent` parameter.
+
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L18-L24)]
+
+This is just regular Blazor child content parameter passing, e.g. as child content to the component under test, which is the same for both `Fixture` and `SnapshotTest` razor tests.
+
+***
+
+#### Passing a Component to the ChildContent Parameter
+
+To pass a component, e.g. the classic `<Counter>` component, which does not take any parameters, to a component under test, do the following:
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L87-L95)]
+
+All of these examples does the same thing, here is what is going on:
+
+1. The first example uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test.
+2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test.
+
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L26-L32)]
+
+This is just regular Blazor child content parameter passing, where the `<Counter />` component is declared inside the component under test.  This is the same for both `Fixture` and `SnapshotTest` razor tests.
+
+***
+
+#### Passing a Component with Parameters to the ChildContent Parameter
+
+To pass a component with parameters to a component under test, e.g. the `<Alert>` component with the following parameters,, e.g. the classic `<Counter>` component, do the following:
+
+[!code-csharp[Alert.razor](../../../samples/components/Alert.razor#L2-L4)]
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L103-L119)]
+
+All of these examples does the same thing, here is what is going on:
+
+1. The first example uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test. `ChildContent<TChildComponent>` factory method can take zero or more component parameters as input itself, which will be passed to the `TChildComponent` component, in this case, the `<Alert>` component.
+2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test. The `AddChildContent<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, in this case, the `<Alert>` component.
+
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L34-L42)]
+
+This is just regular Blazor child content parameter passing, where the `<Alert>` component is declared inside the component under test, and any parameters is passed to it like normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
+
+***
+
+#### Passing a mix of Razor and HTML to ChildContent Parameter
+
+It is currently only possible to pass a mix of HTML markup and Razor markup to a ChildContent parameter using Razor based tests. This is illustrated in the example below:
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L44-L53)]
 
 ### RenderFragment Parameters
 

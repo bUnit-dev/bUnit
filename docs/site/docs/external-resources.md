@@ -11,7 +11,13 @@ Here is a list of some of the content out on the web that covers bUnit. If you p
 - **[Testing Blazor Components - session from .NET Conf - Focus on Blazor](https://youtu.be/5d-uIxx1cUE)**  
   Content is based on beta-5.1 of bUnit.
 
-### Twitch/Live coding
+### PodCasts/Twitch/YouTube/Live coding
+
+- **[.NET Rocks! - Testing Blazor Apps with Egil Hansen](https://www.dotnetrocks.com/?show=1690)**  
+  Content is based on beta-7 of bUnit.  
+
+- **[CSharpFritz's Twitch Show: Egil Hansen joins us for Blazor Testing and Component Design](https://youtu.be/wY1CyyJ4Hzs?t=292)**  
+  Content is based on beta-6 of bUnit.  
 
 - **[Blazor StateHasChanged: Blazor Component Unit Testing with Egil Hansen](https://www.youtube.com/watch?v=x-zzcwHdZOk&t=211)**   
   Content is based on beta-5.1 of bUnit.

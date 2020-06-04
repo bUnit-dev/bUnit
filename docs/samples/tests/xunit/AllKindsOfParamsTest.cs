@@ -62,5 +62,61 @@ namespace Bunit.Docs.Samples
         .Add(p => p.OnSomething, () => { /* handle callback */ })
       );
     }
+
+    [Fact]
+    public void HtmlAsChildContent()
+    {
+      using var ctx = new TestContext();
+
+      // Using factory method
+      var cut1 = ctx.RenderComponent<AllKindsOfParams>(
+        ChildContent("<h1>Hello World</h1>")
+      );
+
+      // Using parameter builder
+      var cut2 = ctx.RenderComponent<AllKindsOfParams>(parameters => parameters
+        .AddChildContent("<h1>Hello World</h1>")
+      );
+    }
+
+    [Fact]
+    public void ComponentAsChildContent()
+    {
+      using var ctx = new TestContext();
+
+      // Using factory method
+      var cut1 = ctx.RenderComponent<AllKindsOfParams>(
+        ChildContent<Counter>()
+      );
+
+      // Using parameter builder
+      var cut2 = ctx.RenderComponent<AllKindsOfParams>(parameters => parameters
+        .AddChildContent<Counter>()
+      );
+    }
+
+    [Fact]
+    public void ComponentWithParamsAsChildContent()
+    {
+      using var ctx = new TestContext();
+
+      // Using factory method
+      var cut1 = ctx.RenderComponent<AllKindsOfParams>(
+        ChildContent<Alert>(
+          ("Heading", "Alert heading"),
+          ("Type", AlertType.Warning),
+          ChildContent("<p>Hello World</p>")
+        )
+      );
+
+      // Using parameter builder
+      var cut2 = ctx.RenderComponent<AllKindsOfParams>(parameters => parameters
+        .AddChildContent<Alert>(alertParameters => alertParameters
+          .Add(p => p.Heading, "Alert heading")
+          .Add(p => p.Type, AlertType.Warning)
+          .AddChildContent("<p>Hello World</p>")
+        )
+      );
+    }
   }
 }
