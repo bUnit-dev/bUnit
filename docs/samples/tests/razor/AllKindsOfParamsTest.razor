@@ -2,52 +2,95 @@
 
 <Fixture Test="f => {}">
   <ComponentUnderTest>
-    <AllKindsOfParams Numbers="42" Lines=@(new List<string> { "Hello", "World" })>
-    </AllKindsOfParams>
+    <NonBlazorTypesParams Numbers="42" Lines=@(new List<string> { "Hello", "World" }) />
   </ComponentUnderTest>
 </Fixture>
 
 <Fixture Test="f => {}">
   <ComponentUnderTest>
-    <AllKindsOfParams OnClick=@(args => { /* handle callback */ }) 
-                      OnSomething=@(() => { /* handle callback */ })>
-    </AllKindsOfParams>
+    <EventCallbackParams OnClick=@(args => { /* handle callback */ }) 
+                         OnSomething=@(() => { /* handle callback */ }) />
   </ComponentUnderTest>
 </Fixture>
 
 <Fixture Test="f => {}">
   <ComponentUnderTest>
-    <AllKindsOfParams>
+    <ChildContentParams>
       <h1>Hello World</h1>
-    </AllKindsOfParams>
+    </ChildContentParams>
   </ComponentUnderTest>
 </Fixture>
 
 <Fixture Test="f => {}">
   <ComponentUnderTest>
-    <AllKindsOfParams>
+    <ChildContentParams>
       <Counter />
-    </AllKindsOfParams>
+    </ChildContentParams>
   </ComponentUnderTest>
 </Fixture>
 
 <Fixture Test="f => {}">
   <ComponentUnderTest>
-    <AllKindsOfParams>
+    <ChildContentParams>
       <Alert Heading="Alert heading" Type="AlertType.Warning">
         <p>Hello World</p>
       </Alert>
-    </AllKindsOfParams>
+    </ChildContentParams>
   </ComponentUnderTest>
 </Fixture>
 
 <Fixture Test="f => {}">
   <ComponentUnderTest>
-    <AllKindsOfParams>
+    <ChildContentParams>
       <h1>Below you will find a most interesting alert!</h1>
       <Alert Heading="Alert heading" Type="AlertType.Warning">
         <p>Hello World</p>
       </Alert>
-    </AllKindsOfParams>
+    </ChildContentParams>
+  </ComponentUnderTest>
+</Fixture>
+
+<Fixture Test="f => {}">
+  <ComponentUnderTest>
+    <RenderFragmentParams>
+      <Content>
+        <h1>Hello World</h1>
+      </Content>
+    </RenderFragmentParams>
+  </ComponentUnderTest>
+</Fixture>
+
+<Fixture Test="f => {}">
+  <ComponentUnderTest>
+    <RenderFragmentParams>
+      <Content>
+        <Counter />
+      </Content>
+    </RenderFragmentParams>
+  </ComponentUnderTest>
+</Fixture>
+
+<Fixture Test="f => {}">
+  <ComponentUnderTest>
+    <RenderFragmentParams>
+      <Content>
+        <Alert Heading="Alert heading" Type="AlertType.Warning">
+          <p>Hello World</p>
+        </Alert>
+      </Content>
+    </RenderFragmentParams>
+  </ComponentUnderTest>
+</Fixture>
+
+<Fixture Test="f => {}">
+  <ComponentUnderTest>
+    <RenderFragmentParams>
+      <Content>
+        <h1>Below you will find a most interesting alert!</h1>
+        <Alert Heading="Alert heading" Type="AlertType.Warning">
+          <p>Hello World</p>
+        </Alert>
+      </Content>
+    </RenderFragmentParams>
   </ComponentUnderTest>
 </Fixture>
