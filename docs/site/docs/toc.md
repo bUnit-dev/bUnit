@@ -18,7 +18,7 @@
 # [Verifying output](xref:verification)
 ## [Verify Markup](xref:verify-markup)
 ## [Verify Component State](xref:verify-component-state)
-## [Semantic HTML Markup Comparison](xref:semantic-html-comparison)
+## [Customizing Semantic Comparison](xref:semantic-html-comparison)
 ## [Asynchronous Assertion of Changes](xref:async-assertion)
 
 # [Mocking](xref:mocking)

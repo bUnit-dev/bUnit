@@ -1,6 +1,6 @@
 @inherits TestComponentBase
 
-<Fixture Test="Test1">
+<Fixture Test="InitialHtmlIsCorrect">
   <ComponentUnderTest>
     <Heading />
   </ComponentUnderTest>
@@ -11,8 +11,9 @@
     </h3>    
   </Fragment>
 
-  @code {
-    void Test1(Fixture fixture)
+  @code 
+  {
+    void InitialHtmlIsCorrect(Fixture fixture)
     {
       // Arrange - Gets the Heading component
       var cut = fixture.GetComponentUnderTest<Heading>();

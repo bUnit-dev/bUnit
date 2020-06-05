@@ -109,8 +109,8 @@ If we want to verify the markup is rendered correctly, and for example use RegEx
 
 In a Razor based test, using the `<Fixture>` test type, the example looks like this:
 
-[!code-html[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor.cs#L3-L29)]
+[!code-html[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L3-L30)]
 
 In a Razor based test, using the `<SnapshotTest>` test type, the example looks like this:
 
-[!code-html[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor.cs#L31-L41)]
+[!code-html[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L32-L42)]
