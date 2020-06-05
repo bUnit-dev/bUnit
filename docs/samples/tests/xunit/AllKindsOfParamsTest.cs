@@ -275,10 +275,76 @@ namespace Bunit.Docs.Samples
       var cut1 = ctx.RenderComponent<UnmatchedParams>(
         ("some-unknown-param", "a value")
       );
-      
+
       // Using parameter builder
       var cut2 = ctx.RenderComponent<UnmatchedParams>(parameters => parameters
         .AddUnmatched("some-unknown-param", "a value")
+      );
+    }
+
+    [Fact]
+    public void UnnamedCascadingParamsTest()
+    {
+      using var ctx = new TestContext();
+      var isDarkTheme = true;
+
+      // Using factory method
+      var cut1 = ctx.RenderComponent<CascadingParams>(
+        CascadingValue(isDarkTheme)
+      );
+
+      // Using parameter builder
+      var cut2 = ctx.RenderComponent<CascadingParams>(parameters => parameters
+        .Add(isDarkTheme)
+      );
+
+      // Using parameter builder and selecting unnamed cascading parameter
+      var cut3 = ctx.RenderComponent<CascadingParams>(parameters => parameters
+        .Add(p => p.IsDarkTheme, isDarkTheme)
+      );
+    }
+
+    [Fact]
+    public void NamedCascadingParamsTest()
+    {
+      using var ctx = new TestContext();
+
+      // Using factory method
+      var cut1 = ctx.RenderComponent<CascadingParams>(
+        CascadingValue("LoggedInUser", "Egil Hansen")
+      );
+
+      // Using parameter builder
+      var cut2 = ctx.RenderComponent<CascadingParams>(parameters => parameters
+        .Add(p => p.UserName, "Egil Hansen")
+      );
+    }
+
+    [Fact]
+    public void UnnamedAndNamedCascadingParamsTest()
+    {
+      using var ctx = new TestContext();
+      var isDarkTheme = true;
+
+      // Using factory method
+      var cut1 = ctx.RenderComponent<CascadingParams>(
+        CascadingValue(isDarkTheme),
+        CascadingValue("LoggedInUser", "Egil Hansen"),
+        CascadingValue("LoggedInEmail", "egil@example.com")
+      );
+
+      // Using parameter builder
+      var cut2 = ctx.RenderComponent<CascadingParams>(parameters => parameters
+        .Add(isDarkTheme)
+        .Add(p => p.UserName, "Egil Hansen")
+        .Add(p => p.Email, "egil@example.com")
+      );
+
+      // Using parameter builder and selecting unnamed cascading parameter
+      var cut3 = ctx.RenderComponent<CascadingParams>(parameters => parameters
+        .Add(p => p.IsDarkTheme, isDarkTheme)
+        .Add(p => p.UserName, "Egil Hansen")
+        .Add(p => p.Email, "egil@example.com")
       );
     }
   }

@@ -343,7 +343,6 @@ In the follow examples, we will pass a unmatched parameter to the following comp
 
 [!code-csharp[UnmatchedParams](../../../samples/components/UnmatchedParams.cs#L10-L14)]
 
-
 # [C# test code](#tab/csharp)
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L272-L282)]
@@ -358,7 +357,78 @@ This is just regular Blazor parameter passing, which is the same for both `Fixtu
 
 ***
 
-## Cascading Value Parameters
+## Cascading Parameters and Cascading Values
+
+Cascading parameters are properties with the `[CascadingParameter]` attribute. There are two variants, **named** and **unnamed** cascading parameters. In Blazor, the `<CascadingValue>` component is used to provide values to cascading parameters, which we also do in Razor based tests. However, in C# based tests, we need to do it a little differently.
+
+The following examples will pass cascading values to the `<CascadingParams>` component listed below:
+
+[!code-csharp[CascadingParams.razor](../../../samples/components/CascadingParams.razor)]
+
+### Passing Unnamed Cascading Values
+
+To pass the unnamed `IsDarkTheme` cascading parameter to the `<CascadingParams>` component, do the following:
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L288-L304)]
+
+These examples do the same thing, i.e. pass in variable `isDarkTheme` to the cascading parameter `IsDarkTheme`.
+
+1. The first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the unnamed parameter value.
+2. The second example uses the `Add` method on the <xref:Bunit.ComponentParameterBuilder`1> to pass the unnamed parameter value.
+3. The last example uses the `Add` method on the <xref:Bunit.ComponentParameterBuilder`1> with the parameter selector to explicitly select the desired cascading parameter and pass the unnamed parameter value that way.
+
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L126-L132)]
+
+This is just regular Blazor cascading value parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests. In this case, the `<CascadingValue>` component is used to pass the unnamed parameter value.
+
+***
+
+### Passing Named Cascading Values
+
+To pass a named cascading parameter to the `<CascadingParams>` component, do the following:
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L310-L320)]
+
+These examples do the same thing, i.e. pass in value `Egil Hansen` to the cascading parameter with the name `LoggedInUser`. Note that the name of the parameter is not the same as the property of the parameter, e.g. `LoggedInUser` vs. `UserName`.
+
+1. The first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the named parameter value, specifying the cascading parameters name and a value (not the property name).
+2. The second example uses the `Add` method on the <xref:Bunit.ComponentParameterBuilder`1> with the parameter selector to select the cascading parameter property and pass the parameter value that way. 
+
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L134-L140)]
+
+This is just regular Blazor cascading value parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests. In this case, the `<CascadingValue>` component is used to pass a named parameter value, since both the `Name` and `Value` parameters are specified.
+
+***
+
+### Passing Multiple, Named and Unnamed, Cascading Values
+
+To pass all cascading parameter to the `<CascadingParams>` component, do the following:
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L326-L348)]
+
+These examples do the same thing, i.e. pass both the unnamed `IsDarkTheme` cascading parameter, and the two named cascading parameters (`LoggedInUser`, `LoggedInEmail`).
+
+1. The first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the unnamed and named parameter values.
+2. The second example uses the `Add` method on the <xref:Bunit.ComponentParameterBuilder`1> without a parameter to pass the unnamed parameter value, and `Add` method with the parameter selector to select each of the named parameters to pass the named parameter values.
+3. The last example uses the `Add` method on the <xref:Bunit.ComponentParameterBuilder`1> with the parameter selector to select both the named and unnamed cascading parameters and pass values to them that way.
+
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L142-L152)]
+
+This is just regular Blazor cascading value parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests. In this case, multiple `<CascadingValue>` components is used to pass the unnamed and named cascading parameter values to the component.
+
+***
 
 ## Render Component Test inside other Components
 

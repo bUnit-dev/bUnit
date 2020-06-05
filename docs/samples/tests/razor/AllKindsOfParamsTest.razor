@@ -122,3 +122,31 @@
     <UnmatchedParams some-unknown-param="a value" />
   </ComponentUnderTest>
 </Fixture>
+
+<Fixture Test="f => {}">
+  <ComponentUnderTest>
+    <CascadingValue Value="true"> @* isDarkMode *@
+      <CascadingParams />
+    </CascadingValue>
+  </ComponentUnderTest>
+</Fixture>
+
+<Fixture Test="f => {}">
+  <ComponentUnderTest>
+    <CascadingValue Name="LoggedInUser" Value=@("Egil Hansen")>
+      <CascadingParams />
+    </CascadingValue>
+  </ComponentUnderTest>
+</Fixture>
+
+<Fixture Test="f => {}">
+  <ComponentUnderTest>
+    <CascadingValue Value="true"> @* isDarkMode *@
+      <CascadingValue Name="LoggedInUser" Value=@("Egil Hansen")>
+        <CascadingValue Name="LoggedInEmail" Value=@("egil@example.com")>
+          <CascadingParams />
+        </CascadingValue>
+      </CascadingValue>
+    </CascadingValue>
+  </ComponentUnderTest>
+</Fixture>
