@@ -3,13 +3,14 @@ uid: semantic-html-comparison
 title: Customizing the Semantic HTML Comparison
 ---
 
-# Semantic HTML markup comparison
+# Customizing the Semantic HTML Comparison
 
 This library includes comparison and assert helpers that uses the [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library to perform semantic HTML comparison.
 
 On this page we will go through how the comparison works, and what options you have to affect the comparison process.
 
-> **NOTE:** The semantic HTML comparison is available in both C# and Razor tests with the <xref:Bunit.Fixture> component, and is always used in Razor tests with the <xref:Bunit.SnapshotTest> component.
+> [!NOTE]
+> The semantic HTML comparison is available in both C# and Razor tests with the <xref:Bunit.Fixture> component, and is always used in Razor tests with the <xref:Bunit.SnapshotTest> component.
 
 ## Why semantic comparison is needed for stable tests
 
@@ -24,7 +25,7 @@ Just performing string comparison of two strings containing HTML markup can brea
 
 The [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library handles all those cases, so your tests are more stable.
 
-## Customizing the Semantic HTML Comparison
+## Customizing Options
 
 The [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library also allows us to customize the comparison process, by added special attributes to the _"control" markup_, i.e. the expected markup we want to use in verification.
 
@@ -58,7 +59,8 @@ There are the customization options you have available to you:
   </header>
   ```
 
-  **NOTE:** The default for `<pre>` and `<script>` elements is the `Preserve` option. To change that, use the `diff:whitespace` attribute, for example:
+  > [!NOTE]
+  > The default for `<pre>` and `<script>` elements is the `Preserve` option. To change that, use the `diff:whitespace` attribute, for example:
 
   ```html
   <pre diff:whitespace="RemoveWhitespaceNodes">...</pre>
@@ -90,96 +92,25 @@ There are the customization options you have available to you:
   <h1 title:regex="Heading-\d{4}">...</h1>
   ```
 
-  **NOTE:** The attribute modifiers `:ignoreCase` and `:regex` can be combined, for example as: `attr:ignoreCase:regex="FOO-\d{4}"`
+  > [!NOTE] 
+  > The attribute modifiers `:ignoreCase` and `:regex` can be combined, for example as: `attr:ignoreCase:regex="FOO-\d{4}"`
 
-## Verifying Output from Components
+## Examples
 
-To verify the rendered output of a component (i.e. in the from of a `IRenderedFragment`), we have the various `MarkupMatches()` methods we can use.
+To verify the rendered output of a component, we have the `MarkupMatches()` methods we can use.
 
 If for example we have a component, `<Heading>`, that renders the following markup:
 
-```html
-<h3 id="heading-1337" required>
-  Heading text
-  <small class="text-muted mark">Secondary text</small>
-</h3>
-```
+[!code-html[Heading.razor](../../../samples/components/Heading.razor)]
 
 If we want to verify the markup is rendered correctly, and for example use RegEx to verify the `id` attribute (it might be generated) and ignore the `<small>` element, we can do it like this in C# based tests:
 
-```csharp
-[Fact]
-public void InitialHtmlIsCorrect()
-{
-    // Arrange - renders the Heading component
-    var cut = RenderComponent<Heading>();
+[!code-csharp[SemanticHtmlTest.cs](../../../samples/tests/xunit/SemanticHtmlTest.cs#L16-L29)]
 
-    // Assert
-    // Here we specify expected HTML from CUT.
-    var expectedHtml = @"<h3 id:regex=""heading-\d{4}"" required>
-                            Heading text
-                            <small diff:ignore></small>
-                         </h3>";
+In a Razor based test, using the `<Fixture>` test type, the example looks like this:
 
-    // Here we use the HTML diffing library to assert that the rendered HTML
-    // from CUT is semantically the same as the expected HTML string above.
-    cut.MarkupMatches(expectedHtml);
-}
-```
+[!code-html[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor.cs#L3-L29)]
 
-In a Razor based test, the example looks like this:
+In a Razor based test, using the `<SnapshotTest>` test type, the example looks like this:
 
-```cshtml
-<Fixture Test="Test1">
-  <ComponentUnderTest>
-    <Heading />
-  </ComponentUnderTest>
-</Fixture>
-@code {
-  void Test1(IRazorTestContext context)
-  {
-    // Arrange - Gets the Heading component
-    var cut = context.GetComponentUnderTest<Heading>();
-
-    // Assert
-    // Here we specify expected HTML from CUT.
-    var expectedHtml = @"<h3 id:regex=""heading-\d{4}"" required>
-                            Heading text
-                            <small diff:ignore></small>
-                         </h3>";
-
-    // Here we use the HTML diffing library to assert that the rendered HTML
-    // from CUT is semantically the same as the expected HTML string above.
-    cut.MarkupMatches(expectedHtml);
-  }
-}
-```
-
-In a Snapshot test, the example looks like this:
-
-```html
-<SnapshotTest Description="Helpful description of the test case">
-  <TestInput>
-    <Heading />
-  </TestInput>
-  <ExpectedOutput>
-    <h3 id:regex="heading-\d{4}" required>
-      Heading text
-      <small diff:ignore></small>
-    </h3>
-  </ExpectedOutput>
-</SnapshotTest>
-```
-
-## Different ways of getting the differences
-
-This section is coming soon. For now, see examples on the [C# test examples](/docs/CSharp-test-examples.html) page where the methods are demonstrated. Look for examples using these methods:
-
-- `CompareTo`
-- `MarkupMatches`
-- `GetChangesSinceFirstRender`
-- `SaveSnapshot` and `GetChangesSinceSnapshot`
-- `ShouldHaveSingleTextChange`
-- `ShouldHaveSingleChange`
-- `ShouldBeAddition`
-- `ShouldBeRemoval`
+[!code-html[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor.cs#L31-L41)]
