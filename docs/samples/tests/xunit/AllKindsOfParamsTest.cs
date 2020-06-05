@@ -213,5 +213,73 @@ namespace Bunit.Docs.Samples
         }))
       );
     }
+
+    [Fact]
+    public void HtmlTemplateParams()
+    {
+      using var ctx = new TestContext();
+
+      // Using factory method
+      var cut1 = ctx.RenderComponent<TemplateParams<string>>(
+        ("Items", new string[] { "Foo", "Bar", "Baz" }),
+        Template<string>("Template", item => $"<span>{item}</span>")
+      );
+
+      // Using parameter builder
+      var cut2 = ctx.RenderComponent<TemplateParams<string>>(parameters => parameters
+        .Add(p => p.Items, new[] { "Foo", "Bar", "Baz" })
+        .Add(p => p.Template, item => $"<span>{item}</span>")
+      );
+    }
+
+    [Fact]
+    public void HtmlAndComponentTemplateParams()
+    {
+      using var ctx = new TestContext();
+
+      // Using factory method
+      var cut1 = ctx.RenderComponent<TemplateParams<string>>(
+        ("Items", new string[] { "Foo", "Bar", "Baz" }),
+        Template<string>("Template", item => builder =>
+        {
+          builder.OpenElement(1, "div");
+          builder.AddAttribute(2, "class", "item");
+          builder.OpenComponent<Item>(3);
+          builder.AddAttribute(4, "Value", item);
+          builder.CloseComponent();
+          builder.CloseElement();
+        })
+      );
+
+      // Using parameter builder
+      var cut2 = ctx.RenderComponent<TemplateParams<string>>(parameters => parameters
+        .Add(p => p.Items, new[] { "Foo", "Bar", "Baz" })
+        .Add(p => p.Template, item => builder =>
+        {
+          builder.OpenElement(1, "div");
+          builder.AddAttribute(2, "class", "item");
+          builder.OpenComponent<Item>(3);
+          builder.AddAttribute(4, "Value", item);
+          builder.CloseComponent();
+          builder.CloseElement();
+        })
+      );
+    }
+
+    [Fact]
+    public void UnmatchedParamsTest()
+    {
+      using var ctx = new TestContext();
+
+      // Using factory method
+      var cut1 = ctx.RenderComponent<UnmatchedParams>(
+        ("some-unknown-param", "a value")
+      );
+      
+      // Using parameter builder
+      var cut2 = ctx.RenderComponent<UnmatchedParams>(parameters => parameters
+        .AddUnmatched("some-unknown-param", "a value")
+      );
+    }
   }
 }

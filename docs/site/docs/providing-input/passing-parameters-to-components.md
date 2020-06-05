@@ -88,7 +88,7 @@ Using either C# or Razor test code, this can be done like this:
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L46-L64)]
 
-All of these examples o the same thing, here is what is going on:
+These examples o the same thing, here is what is going on:
 
 1. The first and second example uses the `EventCallback` factory method in <xref:Bunit.ComponentParameterFactory> (there are many overloads that take different kinds of `Action` and `Func` delegates), to pass a lambda as the event callback to the specified parameter.
 2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type of callback method. This makes the builders methods strongly typed and refactor safe.
@@ -115,7 +115,7 @@ The following subsections has different examples of child content being passed t
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L70-L80)]
 
-All of these examples do the same thing, here is what is going on:
+These examples do the same thing, here is what is going on:
 
 1. The first example uses the `ChildContent` factory method in <xref:Bunit.ComponentParameterFactory>, to pass a HTML markup string as the input to the `ChildContent` parameter.
 2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `AddChildContent` method to pass a HTML markup string as the input to the `ChildContent` parameter.
@@ -136,7 +136,7 @@ To pass a component, e.g. the classic `<Counter>` component, that does not take 
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L86-L96)]
 
-All of these examples do the same thing, here is what is going on:
+These examples do the same thing, here is what is going on:
 
 1. The first example uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
 2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
@@ -159,7 +159,7 @@ To pass a component with parameters to a component under test, e.g. the `<Alert>
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L102-L120)]
 
-All of these examples do the same thing, here is what is going on:
+These examples do the same thing, here is what is going on:
 
 1. The first example uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test. `ChildContent<TChildComponent>` factory method can take zero or more component parameters as input itself, which will be passed to the `TChildComponent` component, in this case, the `<Alert>` component.
 2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test. The `AddChildContent<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, in this case, the `<Alert>` component.
@@ -206,7 +206,7 @@ The following subsections has different examples of content being passed to the 
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L145-L155)]
 
-All of these examples do the same thing, here is what is going on:
+These examples do the same thing, here is what is going on:
 
 1. The first example uses the `RenderFragment` factory method in <xref:Bunit.ComponentParameterFactory>, to pass a HTML markup string as the input to the `RenderFragment` parameter.
 2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `Add` method to pass a HTML markup string as the input to the `RenderFragment` parameter.
@@ -227,7 +227,7 @@ To pass a component, e.g. the classic `<Counter>` component, which does not take
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L161-L171)]
 
-All of these examples do the same thing, here is what is going on:
+These examples do the same thing, here is what is going on:
 
 1. The first example uses the `Add<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter.
 2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter.
@@ -250,7 +250,7 @@ To pass a component with parameters to a `RenderFragment` parameter, e.g. the `<
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L177-L195)]
 
-All of these examples do the same thing, here is what is going on:
+These examples do the same thing, here is what is going on:
 
 1. The first example uses the `RenderFragment<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the  `RenderFragment` parameter. `RenderFragment<TChildComponent>` factory method takes the name of the parameter and zero or more component parameters as input, which will be passed to the `TChildComponent` component, in this case, the `<Alert>` component.
 2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter. The `Add<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, in this case, the `<Alert>` component.
@@ -283,7 +283,80 @@ This is just regular Blazor `RenderFragment` parameter passing, where regular HT
 
 ### Templates Parameters
 
+Template parameters are closely related to `RenderFragment` parameters described in the previous section. The difference is that a template parameter is of type `RenderFragment<TValue>`. Like with regular `RenderFragment`, a `RenderFragment<TValue>` template parameter can be regular HTML markup, it can be Razor markup, e.g. other component declarations, or a mix of the two. If it is another component, then that component can also receive child content, and so forth.
+
+The following examples renders this template component, which has a `RenderFragment<TValue>` template parameter:
+
+[!code-csharp[TemplateParams.razor](../../../samples/components/TemplateParams.razor)]
+
+#### Passing a HTML based templates
+
+To pass a template into a `RenderFragment<TValue>` parameter, that just consists of regular HTML markup, do the following:
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L220-L232)]
+
+These examples do the same thing, i.e. pass a HTML markup template into the component under test. This is done with the help of a `Func<TValue, string>` delegate, that takes whatever the template value is as input, and returns a (markup) string. The delegate is automatically turned into a `RenderFragment<TValue>` type and pass to the template parameter.
+
+1. The first example passes data to the `Items` parameter, and then it uses the `Template<TValue>` factory method in <xref:Bunit.ComponentParameterFactory>, that takes the name of the `RenderFragment<TValue>` template parameter, and the `Func<TValue, string>` delegate as input.
+2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `Add` method to first add the data to `Items` parameter and then a `Func<TValue, string>` delegate.
+
+The delegate creates a simple markup string in both examples.
+
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L98-L109)]
+
+This is just regular Blazor `RenderFragment<TValue>` parameter passing, in this case, to the `Template` parameter. This is the same for both `Fixture` and `SnapshotTest` razor tests.
+
+***
+
+#### Passing HTML and Components based templates
+
+To pass a template into a `RenderFragment<TValue>` parameter, which consists of both regular HTML markup and components, in this case, the `<Item>` component listed below, do the following:
+
+[!code-csharp[Item.razor](../../../samples/components/Item.razor)]
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L238-L266)]
+
+These examples do the same thing, i.e. create a template which consist of a `<div>` element which wraps the `<Item>` component listed above. In both cases, must construct the `RenderFragemnt<TValue>` type manually. Here is what is going on:
+
+1. The first example passes data to the `Items` parameter, and then it uses the `Template<TValue>` factory method in <xref:Bunit.ComponentParameterFactory>, which takes the name of the `RenderFragment<TValue>` template parameter and a `RenderFragment<TValue>` type as input. 
+2. The second example uses the <xref:Bunit.ComponentParameterBuilder`1>'s `Add` method to first add the data to `Items` parameter and then a `RenderFragment<TValue>` type as input. 
+
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L108-L118)]
+
+This is just regular Blazor `RenderFragment<TValue>` parameter passing, in this case, to the `Template` parameter. This is the same for both `Fixture` and `SnapshotTest` razor tests.
+
+***
+
 ### Unmatched Parameters
+
+An unmatched parameter is a parameter passed to a component under test, which does not have an explicit `[Parameter]` parameter, but instead is captured by a `[Parameter(CaptureUnmatchedValues = true)]` parameter.
+
+In the follow examples, we will pass a unmatched parameter to the following component:
+
+[!code-csharp[UnmatchedParams](../../../samples/components/UnmatchedParams.cs#L10-L14)]
+
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L272-L282)]
+
+These examples do the same thing, i.e. pass in the parameter `some-unknown-param` with the value `a value` to the component under test.
+
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L120-L124)]
+
+This is just regular Blazor parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests. In this case, the parameter `some-unknown-param` with the value `a value` is passed to the component under test.
+
+***
 
 ## Cascading Value Parameters
 
