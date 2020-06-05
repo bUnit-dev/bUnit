@@ -118,3 +118,7 @@ a.xref[href*="/api/"] {
         background-color: inherit;
         text-decoration: underline;
     }
+
+footer small {
+  font-size: 0.9rem;
+}

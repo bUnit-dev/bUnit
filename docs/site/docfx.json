@@ -71,7 +71,7 @@
       "_enableSearch": true,
       "_appLogoPath": "/images/blazor-logo.png",
       "_disableBreadcrumb": true,
-      "_disableFooter": true
+      "_disableFooter": false
     },
     "postProcessors": [],
     "markdownEngineName": "markdig",
