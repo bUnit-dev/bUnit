@@ -7,7 +7,7 @@
       <span class="pull-right">
         <a href="#top">Back to top</a>
       </span>
-      <small>Documentation updated #{NBGV_GitCommitDate}# in commit #{NBGV_GitCommitIdShort}#</small>.
+      <small>Documentation updated on #{NBGV_GitCommitDate}# in commit #{NBGV_GitCommitIdShort}#</small>.
     </div>
   </div>
 </footer>
