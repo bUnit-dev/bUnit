@@ -8,9 +8,6 @@ on:
       - '!docs/**'
       - '!.github/**'
 
-env:
-  VERSION: ''
-
 jobs:
   build:
     runs-on: windows-latest
@@ -22,7 +19,7 @@ jobs:
         with:
           setAllVars: true
       - name: Setting VERSION
-        run: echo ::set-env name=VERSION::$(echo $NBGV_NuGetPackageVersion)
+        run: echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
