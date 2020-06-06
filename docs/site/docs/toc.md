@@ -7,7 +7,7 @@
 
 # [Providing Input](xref:providing-input)
 ## [Parameters and Cascading Values](xref:passing-parameters-to-components)
-## [Inject Services](xref:inject-services-into-components)
+## [Inject Services into Components](xref:inject-services-into-components)
 ## [Configure 3rd Party Libraries](xref:configure-3rd-party-libs)
 
 # [Interaction](xref:interaction)

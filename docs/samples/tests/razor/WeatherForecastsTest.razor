@@ -1,0 +1,24 @@
+@inherits TestComponentBase
+
+<Fixture Setup="RegisterWeatherForecastServices" 
+         Test="VerifyServiceInjectedCorrectly">
+  <ComponentUnderTest>
+    <WeatherForecasts />
+  </ComponentUnderTest>
+  @code
+  {
+    void RegisterWeatherForecastServices(Fixture fixture)
+    {
+      fixture.Services.AddSingleton<IWeatherForecastService>(new WeatherForecastService());
+    }
+
+    void VerifyServiceInjectedCorrectly(Fixture fixture)
+    {
+      // Act - get component under test
+      var cut = fixture.GetComponentUnderTest<WeatherForecasts>();
+
+      // Assert 
+      Assert.NotNull(cut.Instance.Forecasts);
+    }
+  }
+</Fixture>
