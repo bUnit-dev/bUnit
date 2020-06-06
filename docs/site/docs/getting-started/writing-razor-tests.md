@@ -69,7 +69,7 @@ Let's see a simple example, where we test the following `<HelloWorld>` component
 
 Here is the Razor code that tests the `<HelloWorld>` component:
 
-[!code-html[HelloWorldTest.razor](../../../samples/tests/razor/HelloWorldTest.razor#L21-L28)]
+[!code-html[HelloWorldTest.razor](../../../samples/tests/razor/HelloWorldTest.razor?range=1-2,21-28)]
 
 Let's break down what is going on in this test with the <xref:Bunit.SnapshotTest> component:
 
@@ -88,7 +88,7 @@ Since we are declaring our component under test in Razor syntax, passing paramet
 
 In this example, we are passing both attribute parameters and child content to the component under test, in this case, a basic `<Alert>` component:
 
-[!code-html[HelloWorldTest.razor](../../../samples/tests/razor/PassingParametersToComponents.razor#L3-L18)]
+[!code-html[](../../../samples/tests/razor/PassingParametersToComponents.razor)]
 
 Injecting services into the components under test is covered on the <xref:inject-services-into-components> page.
 
