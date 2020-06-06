@@ -54,22 +54,22 @@ To add bUnit to the test project, change to the newly created test projects fold
 
 ```dotnetcli
 cd <NAME OF PROJECT>
-dotnet add package bunit.web --version #{VERSION}#
-dotnet add package bunit.xunit --version #{VERSION}#
+dotnet add package bunit.web --version #{NBGV_NuGetPackageVersion}#
+dotnet add package bunit.xunit --version #{NBGV_NuGetPackageVersion}#
 ```
 
 # [NUnit](#tab/nunit)
 
 ```dotnetcli
 cd <NAME OF PROJECT>
-dotnet add package bunit.web --version #{VERSION}#
+dotnet add package bunit.web --version #{NBGV_NuGetPackageVersion}#
 ```
 
 # [MSTest](#tab/mstest)
 
 ```dotnetcli
 cd <NAME OF PROJECT>
-dotnet add package bunit.web --version #{VERSION}#
+dotnet add package bunit.web --version #{NBGV_NuGetPackageVersion}#
 ```
 
 ***
@@ -119,8 +119,8 @@ The result should be a test project with a `.csproj` that looks like this (other
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bunit.web" Version="#{VERSION}#" />
-    <PackageReference Include="bunit.xunit" Version="#{VERSION}#" />
+    <PackageReference Include="bunit.web" Version="#{NBGV_NuGetPackageVersion}#" />
+    <PackageReference Include="bunit.xunit" Version="#{NBGV_NuGetPackageVersion}#" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
@@ -143,7 +143,7 @@ The result should be a test project with a `.csproj` that looks like this (other
   </PropertyGroup>
 
   <ItemGroup>    
-    <PackageReference Include="bunit.web" Version="#{VERSION}#" />
+    <PackageReference Include="bunit.web" Version="#{NBGV_NuGetPackageVersion}#" />
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
       <PrivateAssets>all</PrivateAssets>
@@ -170,7 +170,7 @@ The result should be a test project with a `.csproj` that looks like this (other
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bunit.web" Version="#{VERSION}#" />
+    <PackageReference Include="bunit.web" Version="#{NBGV_NuGetPackageVersion}#" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
@@ -203,7 +203,7 @@ These steps look like this from the `dotnet` CLI:
 Install the template from NuGet using this command:
 
 ```dotnetcli
-dotnet new --install bunit.template::#{VERSION}#
+dotnet new --install bunit.template::#{NBGV_NuGetPackageVersion}#
 ```
 
 **2. Create a new test project**
