@@ -87,7 +87,7 @@ Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.Com
 With the basics out of the way, we will next look at how to pass parameters and inject services into our components under test, and after that, cover in more details the various ways we can verify the outcome of a rendering.
 
 - <xref:passing-parameters-to-components>
-- <xref:inject-services-into-components>
+- <xref:inject-services>
 - <xref:verify-markup>
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>

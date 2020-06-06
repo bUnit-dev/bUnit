@@ -452,4 +452,4 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 ## Further Reading
 
-- <xref:inject-services-into-components>
+- <xref:inject-services>

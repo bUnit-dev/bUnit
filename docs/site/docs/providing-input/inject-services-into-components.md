@@ -1,5 +1,5 @@
 ---
-uid: inject-services-into-components
+uid: inject-services
 title: Injecting Services into Components Under Test
 ---
 

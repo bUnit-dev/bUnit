@@ -109,4 +109,4 @@ Let's look at what's going on in this test:
 
 We will cover the details of the "act" and "assertion" step in the <xref:interaction> and <xref:verification> pages. 
 
-Learn more about injecting services into components under test on the <xref:inject-services-into-components> page.
+Learn more about injecting services into components under test on the <xref:inject-services> page.

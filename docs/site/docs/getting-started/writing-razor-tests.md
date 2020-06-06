@@ -90,7 +90,7 @@ In this example, we are passing both attribute parameters and child content to t
 
 [!code-html[](../../../samples/tests/razor/PassingParametersToComponents.razor)]
 
-Injecting services into the components under test is covered on the <xref:inject-services-into-components> page.
+Injecting services into the components under test is covered on the <xref:inject-services> page.
 
 ## Further Reading
 
@@ -98,7 +98,7 @@ Now that we have covered the basics of writing tests using Razor syntax, you can
 
 - <xref:fixture-details>
 - <xref:snapshottest-details>
-- <xref:inject-services-into-components>
+- <xref:inject-services>
 - <xref:verify-markup>
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
