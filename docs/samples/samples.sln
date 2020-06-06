@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.docs.samples", "components\bunit.docs.samples.csproj", "{60E2C52E-0DF6-445A-9568-ABA05CB2E6AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.samples", "components\bunit.docs.samples.csproj", "{60E2C52E-0DF6-445A-9568-ABA05CB2E6AF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FC897929-3A4D-4276-9AF4-C77B0FAF221E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.docs.mstest.samples", "tests\mstest\bunit.docs.mstest.samples.csproj", "{C2060A20-8C56-4678-B65C-DCF52D70223D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.mstest.samples", "tests\mstest\bunit.docs.mstest.samples.csproj", "{C2060A20-8C56-4678-B65C-DCF52D70223D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.docs.nunit.samples", "tests\nunit\bunit.docs.nunit.samples.csproj", "{0BC8DBEB-500A-4DB2-9123-7617D24E5053}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.nunit.samples", "tests\nunit\bunit.docs.nunit.samples.csproj", "{0BC8DBEB-500A-4DB2-9123-7617D24E5053}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.docs.xunit.razor.samples", "tests\razor\bunit.docs.xunit.razor.samples.csproj", "{30518354-6437-4474-8198-870AA8B07A2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.razor.samples", "tests\razor\bunit.docs.razor.samples.csproj", "{30518354-6437-4474-8198-870AA8B07A2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.docs.xunit.samples", "tests\xunit\bunit.docs.xunit.samples.csproj", "{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.xunit.samples", "tests\xunit\bunit.docs.xunit.samples.csproj", "{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,9 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{60E2C52E-0DF6-445A-9568-ABA05CB2E6AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -89,10 +86,16 @@ Global
 		{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C2060A20-8C56-4678-B65C-DCF52D70223D} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
 		{0BC8DBEB-500A-4DB2-9123-7617D24E5053} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
 		{30518354-6437-4474-8198-870AA8B07A2D} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
 		{3B8B3B0E-CA33-4C76-901D-219F5FF848B3} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4CDEB3A4-44B9-4715-9082-28DA841514DB}
 	EndGlobalSection
 EndGlobal

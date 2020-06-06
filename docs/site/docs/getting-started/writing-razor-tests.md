@@ -19,7 +19,7 @@ A test for a Blazor component can be written in a Blazor component, using a mix 
 
 Razor tests are written in Blazor test components. To make our life's a little easier, let us first set up a `_Imports.razor` file, with the using statements we are going to be using throughout our tests. Simply add the following `_Imports.razor` to the root folder where you will be placing your Blazor test components:
 
-[!code-html[_Imports.razor](../../../samples/tests/razor/_Imports.razor#L3-)]
+[!code-html[_Imports.razor](../../../samples/tests/razor/_Imports.razor#L4-)]
 
 With that created, we are ready to create our first Razor test.
 

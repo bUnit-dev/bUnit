@@ -11,7 +11,7 @@ To use bUnit with xUnit, the easiest approached is using the bUnit project templ
 
 ## Create a Test Project Manually
 
-To create a project for testing you Blazor components that uses either of three general purpose test frameworks, go through these steps:
+This section will take you through the steps listed below to manually create a project for testing Blazor components, that uses either of three general purpose test frameworks. Read the rest of the section to get the all the details. Skip any steps you have already previously completed, e.g. if you already have a test project.
 
 1. Create a new xUnit/NUnit/MSTest testing project
 2. Add bUnit to the test project
