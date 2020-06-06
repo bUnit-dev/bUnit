@@ -6,10 +6,10 @@ on:
       - master
     paths-ignore:
       - '!docs/**'
-      - '.github/**'
+      - '!.github/**'
 
 env:
-  VERSION: ''
+  VERSION: '1.0.0-beta-7'
 
 jobs:
   build:
@@ -22,11 +22,11 @@ jobs:
         with:
           setAllVars: true
       - name: Setting VERSION
-        run: echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
+        run: echo "::set-env name=VERSION::NBGV_NuGetPackageVersion"
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["docs/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.202'
