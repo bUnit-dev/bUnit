@@ -430,7 +430,25 @@ This is just regular Blazor cascading value parameter passing, which is the same
 
 ***
 
-## Render Component Test inside other Components
+## Render a Component Under Test Inside Other Components
+
+It is possible to nest a component under tests inside other components, if that is needed to test it. For example, to nest the `<HelloWorld>` component inside the `<Wrapper>` component, do the following:
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[](../../../samples/tests/xunit/NestedComponentTest.cs#L16-L28)]
+
+These examples do the same thing, i.e. rendering the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()`, which returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance.
+
+# [Razor test code](#tab/razor)
+
+[!code-html[](../../../samples/tests/razor/NestedComponentTest.razor#L3-)]
+
+This is just regular Blazor child content parameter passing, where one component is rendered inside another, i.e. the `<HelloWorld>` component inside the `<Wrapper>` component. 
+
+The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()` method specifies the `<HelloWorld>` component as its target instead of the outer `<Wrapper>` component. This returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance.
+
+***
 
 ## Further Reading
 
