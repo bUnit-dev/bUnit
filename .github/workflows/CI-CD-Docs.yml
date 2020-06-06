@@ -26,7 +26,7 @@ jobs:
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["docs/*.md", "docs/**/*.md", "docs/templates/bunit/partials/*.partial", "*.csproj", "**/*.csproj"]'
+          files: '["docs/*.md", "docs/**/*.md", "docs/templates/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.202'
