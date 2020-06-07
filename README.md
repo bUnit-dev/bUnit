@@ -33,7 +33,7 @@ bUnit is available on NuGet in various incarnations. If you are using xUnit as y
 | bUnit.xUnit |Library, xUnit and core | [![Nuget](https://img.shields.io/nuget/dt/bunit.xunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.xunit/) | 
 | bUnit.template | Template, which currently creates an xUnit based bUnit test projects only | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) | 
 
-To get started, head to the documentation on [bUnit.egilhansen.com/docs](https://bunit.egilhansen.com/docs) to learn more.
+To get started, head to the [getting started documentation](https://bunit.egilhansen.com/docs/getting-started) to learn more.
 
 ## Milestones to v1.0.0
 
