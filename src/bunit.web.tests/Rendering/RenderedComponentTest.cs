@@ -47,7 +47,7 @@ namespace Bunit
 		public void Test003()
 		{
 			// arrange
-			Services.AddMockJsRuntime();
+			Services.AddMockJSRuntime();
 			var cut = RenderComponent<AllTypesOfParams<string>>();
 
 			// assert

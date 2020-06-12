@@ -17,7 +17,7 @@ namespace Bunit.Extensions
 		/// </summary>
 		public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services)
 		{
-			services.AddSingleton<IJSRuntime>(new PlaceholderJsRuntime());
+			services.AddSingleton<IJSRuntime>(new PlaceholderJSRuntime());
 			services.AddSingleton<HtmlComparer>(srv => new HtmlComparer());
 			services.AddSingleton<HtmlParser>(srv => new HtmlParser(
 					srv.GetRequiredService<ITestRenderer>(),
