@@ -13,11 +13,11 @@ namespace SampleApp.Tests.Components
 {
     public class AlertTest2 : TestContext
     {
-        MockJsRuntimeInvokeHandler MockJsRuntime { get; }
+        MockJSRuntimeInvokeHandler MockJSRuntime { get; }
 
         public AlertTest2()
         {
-            MockJsRuntime = Services.AddMockJsRuntime();
+            MockJSRuntime = Services.AddMockJSRuntime();
         }
 
         [Fact(DisplayName = "Given no parameters, " +
@@ -156,8 +156,8 @@ namespace SampleApp.Tests.Components
         public void Test()
         {
             // Arrange
-            var mockJsRuntime = Services.AddMockJsRuntime();
-            var plannedInvocation = mockJsRuntime.Setup<object>("window.transitionFinished");
+            var mockJSRuntime = Services.AddMockJSRuntime();
+            var plannedInvocation = mockJSRuntime.Setup<object>("window.transitionFinished");
 
             DismissingEventArgs? dismissingEvent = default;
             Alert? dismissedAlert = default;
@@ -191,7 +191,7 @@ namespace SampleApp.Tests.Components
         public void Test007()
         {
             // Arrange            
-            var plannedInvocation = MockJsRuntime.Setup<object>("window.transitionFinished");
+            var plannedInvocation = MockJSRuntime.Setup<object>("window.transitionFinished");
             var cut = RenderComponent<Alert>();
 
             // Act - click the button

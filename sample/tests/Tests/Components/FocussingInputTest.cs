@@ -16,8 +16,8 @@ namespace SampleApp.CodeOnlyTests.Components
         [Fact(DisplayName = "After first render, the new input field has focus")]
         public void Test001()
         {
-            // Arrange - add the IJsRuntime mock
-            var jsRtMock = Services.AddMockJsRuntime();
+            // Arrange - add the IJSRuntime mock
+            var jsRtMock = Services.AddMockJSRuntime();
 
             // Act - render the FocussingInput component, causing
             // the OnAfterRender(firstRender: true) to be called

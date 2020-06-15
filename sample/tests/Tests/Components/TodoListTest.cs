@@ -34,7 +34,7 @@ namespace SampleApp.CodeOnlyTests
         public void Test001()
         {
             // arrange
-            Services.AddMockJsRuntime();
+            Services.AddMockJSRuntime();
 
             // act
             var cut = RenderComponent<TodoList>();
@@ -47,7 +47,7 @@ namespace SampleApp.CodeOnlyTests
         public void Test002()
         {
             // arrange
-            Services.AddMockJsRuntime();
+            Services.AddMockJSRuntime();
             var label = "hello world";
 
             // act
@@ -61,7 +61,7 @@ namespace SampleApp.CodeOnlyTests
         public void Test003()
         {
             // arrange
-            Services.AddMockJsRuntime();
+            Services.AddMockJSRuntime();
             RenderFragment<Todo> itemTemplate = todo => builder => builder.AddMarkupContent(0, $"<li>{todo.Id}</li>");
             var items = new[] { new Todo { Id = 42 }, new Todo { Id = 1337 } };
 
@@ -80,7 +80,7 @@ namespace SampleApp.CodeOnlyTests
         public void Test004()
         {
             // arrange
-            var jsRtMock = Services.AddMockJsRuntime();
+            var jsRtMock = Services.AddMockJSRuntime();
 
             // act
             var cut = RenderComponent<TodoList>();
@@ -95,7 +95,7 @@ namespace SampleApp.CodeOnlyTests
         public void Test0041()
         {
             // arrange
-            var jsRtMock = Services.AddMockJsRuntime();
+            var jsRtMock = Services.AddMockJSRuntime();
 
             // act 
             var cut = RenderComponent<TodoList>(); // first render
@@ -110,7 +110,7 @@ namespace SampleApp.CodeOnlyTests
                             "the OnAddingTodo is raised with a new Todo containing the entered text")]
         public void Test005()
         {
-            var jsRtMock = Services.AddMockJsRuntime();
+            var jsRtMock = Services.AddMockJSRuntime();
             var taskValue = "HELLO WORLD TASK";
             var createdTask = default(Todo);
             var cut = RenderComponent<TodoList>(
@@ -127,7 +127,7 @@ namespace SampleApp.CodeOnlyTests
         [Fact(DisplayName = "When add task form is submitted with no text OnAddingTodo is not called")]
         public void Test006()
         {
-            var jsRtMock = Services.AddMockJsRuntime();
+            var jsRtMock = Services.AddMockJSRuntime();
             var createdTask = default(Todo);
             var cut = RenderComponent<TodoList>(
                 EventCallback<Todo>(nameof(TodoList.OnAddingTodo), task => createdTask = task)

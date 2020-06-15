@@ -18,7 +18,7 @@ namespace SampleApp.CodeOnlyTests.Pages
     {
         public TodosTest()
         {
-            Services.AddMockJsRuntime();
+            Services.AddMockJSRuntime();
         }
 
         [Fact(DisplayName = "Renders Todos provided by todo service")]
