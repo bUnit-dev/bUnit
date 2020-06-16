@@ -1,12 +1,13 @@
-name: CI
+name: DEV-GPR-PUSH
 
 on:
   push:
     branches:
       - dev
     paths:
-      - 'sample/**'
-      - 'src/**'
+      - 'src/bunit.core/**'
+      - 'src/bunit.web/**'
+      - 'src/bunit.xunit/**'
 
 env:
   VERSION: ''
@@ -60,3 +61,12 @@ jobs:
           dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/Test
           dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/packages
           dotnet test ${GITHUB_WORKSPACE}/Test
+      - name: Push packages to GitHub Package Registry
+        run: |
+           for f in ${GITHUB_WORKSPACE}/packages/*.nupkg
+           do
+             curl -vX PUT -u "egil:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/egil/
+           done
+        shell: bash          
+#      - name: Push packages to GitHub Package Registry
+#        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' --skip-duplicate
