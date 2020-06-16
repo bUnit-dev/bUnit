@@ -3,20 +3,14 @@ name: Build and Deploy Docs
 on:
   push:
     branches: 
-      - master
+      - main
     paths-ignore:
       - '!docs/**'
-      - '.github/**'
-
-env:
-  VERSION: '1.0.0-beta-7'
-  BRANCH: 'master'
-  COMMIT: ''
-  DOCFX_SOURCE_BRANCH_NAME: 'master'
+      - '!.github/**'
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2   
         with:
@@ -24,28 +18,36 @@ jobs:
       - uses: dotnet/nbgv@master
         with:
           setAllVars: true
-      - name: Setting VERSION and BRANCH env
-        run: |
-          echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
-          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+      - name: Setting VERSION
+        run: echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["docs/*.md", "docs/**/*.md", "*.csproj", "**/*.csproj"]'
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.202'
-      - name: Building library and docs
+      - name: Building library
         run: |
           dotnet restore src
           dotnet build src/bunit.core/ --no-restore -p:version=$VERSION
           dotnet build src/bunit.web/ --no-restore -p:version=$VERSION
           dotnet build src/bunit.xunit/ --no-restore -p:version=$VERSION
-          dotnet build docs/docs.csproj
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+      - name: Verfiy docs samples
+        run: |
+          dotnet test docs/samples/tests/mstest
+          dotnet test docs/samples/tests/nunit
+          dotnet test docs/samples/tests/razor
+          dotnet test docs/samples/tests/xunit
+      - name: Building docs
+        run: |    
+          dotnet build docs/site/
+          dotnet build docs/site/          
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
         with:
-          ACCESS_TOKEN: ${{ secrets.GH_DOCS }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: docs/_site # The folder the action should deploy.
-          CLEAN: true
+          target_branch: gh-pages
+          build_dir: docs/site/_site 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

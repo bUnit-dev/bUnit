@@ -1,0 +1,20 @@
+@inherits TestComponentBase
+
+<Fixture Test="fixture => { }">
+  <ComponentUnderTest>
+    <Alert Type="AlertType.Warning" Heading="TDD takes practise">
+      Before you really get the benefit of TDD, you need to practice...
+    </Alert>
+  </ComponentUnderTest>
+</Fixture>
+
+<SnapshotTest>
+  <TestInput>
+    <Alert Type="AlertType.Warning" Heading="TDD takes practise">
+      Before you really get the benefit of TDD, you need to practice...
+    </Alert>
+  </TestInput>
+  <ExpectedOutput>
+    <div diff:ignore>...</div>  
+  </ExpectedOutput> 
+</SnapshotTest>

@@ -1,0 +1,52 @@
+@inherits TestComponentBase
+
+<Fixture Setup="RegisterTasksService"
+         Test="WhenTaskIsAddedInputGetsReset"
+         Description="When a task is added, then the input field gets reset">
+
+    <ComponentUnderTest>
+        <CascadingValue Name="Theme" Value=@("dark-theme")>
+            <SimpleTodo></SimpleTodo>
+        </CascadingValue>
+    </ComponentUnderTest>
+
+    <Fragment>
+        <form>
+            <input placeholder="Add todo here . . ." type="text" value="" />
+            <button type="submit">Add task</button>
+        </form>
+    </Fragment>
+
+    <Fragment Id="expected tasks">
+        <ul class="dark-theme" id="tasks">
+            <li>FOO BAR BAZ</li>
+        </ul>
+    </Fragment>
+
+    @code
+    {
+        void RegisterTasksService(Fixture fixture)
+            => fixture.Services.AddSingleton(new List<string>());
+
+        void WhenTaskIsAddedInputGetsReset(Fixture fixture)
+        {
+            // Arrange - get the component under test and fragments
+            IRenderedComponent<SimpleTodo> cut = fixture.GetComponentUnderTest<SimpleTodo>();
+            IRenderedFragment expectedFormAfterClick = fixture.GetFragment();
+            IRenderedFragment expectedTasks = fixture.GetFragment("expected tasks");
+
+            // Act - change the value of the input element and click the submit button
+            cut.Find("input").Change("FOO BAR BAZ");
+            cut.Find("button").Click();
+
+            // Assert - verify that tasks had the correct theme applied
+            //          and the task added.
+            IElement actualTasks = cut.Find("#tasks");
+            actualTasks.MarkupMatches(expectedTasks);
+
+            // Assert - verify that the input form was reset after task was added
+            IElement actualForm = cut.Find("form");
+            actualForm.MarkupMatches(expectedFormAfterClick);
+        }
+    }
+</Fixture>

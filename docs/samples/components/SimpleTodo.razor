@@ -1,0 +1,26 @@
+@inject List<string> Tasks
+
+<form>
+    <input @bind-value=@newTaskValue placeholder="Add todo here . . ." type="text" />
+    <button type="submit" @onclick=@HandleTaskAdded>Add task</button>
+</form>
+<ul id="tasks" class=@ThemeClass>
+    @foreach (var task in Tasks)
+    {
+        <li>@task</li>
+    }
+</ul>
+@code {
+  [CascadingParameter(Name = "Theme")]
+  public string ThemeClass { get; set; } = string.Empty;
+
+  private string newTaskValue = string.Empty;
+
+  private void HandleTaskAdded()
+  {
+    if (!string.IsNullOrWhiteSpace(newTaskValue))
+      Tasks.Add(newTaskValue);
+
+    newTaskValue = string.Empty;
+  }
+}

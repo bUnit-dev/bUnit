@@ -1,0 +1,17 @@
+@inherits TestComponentBase
+
+<Fixture Test="HelloWorldTest">
+  <ComponentUnderTest>
+    <Wrapper>
+      <HelloWorld />
+    </Wrapper>
+  </ComponentUnderTest>
+
+  @code
+  {
+    void HelloWorldTest(Fixture fixture)
+    {
+      var cut = fixture.GetComponentUnderTest<HelloWorld>();
+    }
+  }
+</Fixture>

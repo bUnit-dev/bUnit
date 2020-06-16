@@ -1,0 +1,25 @@
+@inherits TestComponentBase
+
+<Fixture Test="ClickingButtonWorks">
+  <ComponentUnderTest>
+    <ClickMe />
+  </ComponentUnderTest>
+
+  @code
+  {
+    void ClickingButtonWorks(Fixture fixture)
+    {
+      // Arrange
+      var cut = fixture.GetComponentUnderTest<ClickMe>();
+      var buttonElement = cut.Find("button");
+
+      // Act
+      buttonElement.Click();
+      buttonElement.Click(detail: 3, ctrlKey: true);
+      buttonElement.Click(new MouseEventArgs());
+      
+      // Assert
+      // ...
+    }
+  }
+</Fixture>
