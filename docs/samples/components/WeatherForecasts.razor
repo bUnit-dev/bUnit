@@ -1,0 +1,24 @@
+@inject IWeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (Forecasts is null)
+{
+  <p><em>Loading...</em></p>
+}
+else
+{
+  <WeatherForecastTabel Forecasts=@Forecasts />
+}
+
+@code 
+{
+  public WeatherForecast[] Forecasts { get; private set; }
+
+  protected override async Task OnInitializedAsync()
+  {
+    Forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+  }
+}

@@ -1,0 +1,33 @@
+# [Getting Started](xref:getting-started)
+## [Create a Test Project](xref:create-test-project)
+## [Writing Tests in C#](xref:writing-csharp-tests)
+## [Writing Tests in Razor Syntax](xref:writing-razor-tests)
+## [Fixture Test Details](xref:fixture-details)
+## [SnapshotTest Details](xref:snapshottest-details)
+
+# [Providing Input](xref:providing-input)
+## [Parameters and Cascading Values](xref:passing-parameters-to-components)
+## [Inject Services into Components](xref:inject-services)
+## [Configure 3rd Party Libraries](xref:configure-3rd-party-libs)
+
+# [Interaction](xref:interaction)
+## [Trigger Event Handlers](xref:trigger-event-handlers)
+## [Trigger Renders](xref:trigger-renders)
+## [Awaiting an Asynchronous State Change](xref:awaiting-async-state)
+
+# [Verifying output](xref:verification)
+## [Verify Markup](xref:verify-markup)
+## [Verify Component State](xref:verify-component-state)
+## [Customizing Semantic Comparison](xref:semantic-html-comparison)
+## [Asynchronous Assertion of Changes](xref:async-assertion)
+
+# [Mocking](xref:mocking)
+## [Mocking Authorization](xref:mocking-auth)
+## [Mocking HttpClient](xref:mocking-httpclient)
+## [Mocking IJsRuntime](xref:mocking-ijsruntime)
+## [Mocking Localization](xref:mocking-localizer)
+## [Mocking NavigationManager](xref:mocking-navigation-manager)
+
+# [Miscellaneous testing tips](xref:misc-test-tips)
+# [External Resources](xref:external-resources)
+# [Contribute](contribute.md)

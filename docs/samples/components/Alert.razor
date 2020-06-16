@@ -1,0 +1,17 @@
+@code {
+  [Parameter] public string Heading { get; set; }
+  [Parameter] public AlertType Type { get; set; }
+  [Parameter] public RenderFragment ChildContent { get; set; }
+}
+<div role="alert" class="alert alert-@(Type.ToString().ToLower()) alert-dismissible fade show">
+  @if (!string.IsNullOrWhiteSpace(Heading))
+  {
+    <h4 class="alert-heading">@Heading</h4>
+  }
+  <div class="alert-content">
+    @ChildContent
+  </div>
+  <button type="button" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
