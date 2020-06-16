@@ -9,6 +9,43 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 List of new features.
 
+#### Authorization Fakes
+Added authentication/authorization fake services to make it easy to test Blazor components that use authorization either through code or the AuthorizeView component.
+You just need to call the AddAuthorization method on your TestContext.Services collection.
+
+First define your component that uses AuthorizeView to render differently based on the user's authorization state:
+```
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+<CascadingAuthenticationState>
+	<AuthorizeView>
+		<Authorized>
+			Authorized!
+		</Authorized>
+		<NotAuthorized>
+			Not authorized?
+		</NotAuthorized>
+	</AuthorizeView>
+</CascadingAuthenticationState>
+```
+Then define your test method to specify the authorization state with a user name, and run your test.
+```c#
+		[Fact(DisplayName = "AuthorizeView with authenticated and authorized user")]
+		public void Test002()
+		{
+			// arrange
+			using var ctx = new TestContext();
+			ctx.Services.AddAuthorization("TestUser", true);
+
+			// act
+			var cut = ctx.RenderComponent<SimpleAuthView>();
+
+			// assert
+			cut.MarkupMatches("Authorized!");
+		}
+```
+
 ### Changed
 List of changes in existing functionality.
 

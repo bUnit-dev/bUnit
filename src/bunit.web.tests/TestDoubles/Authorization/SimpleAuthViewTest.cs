@@ -63,7 +63,7 @@ namespace Bunit.TestDoubles.Authorization
 			// act
 			var authProvider = (FakeAuthenticationStateProvider)ctx.Services.GetRequiredService<AuthenticationStateProvider>();
 			var newState = FakeAuthenticationStateProvider.CreateAuthenticationState("TestUser004");
-			authProvider?.TriggerAuthenticationStateChanged(newState);
+			authProvider.TriggerAuthenticationStateChanged(newState);
 
 			var authService = (FakeAuthorizationService)ctx.Services.GetRequiredService<IAuthorizationService>();
 			authService.NextResult = AuthorizationResult.Success();
