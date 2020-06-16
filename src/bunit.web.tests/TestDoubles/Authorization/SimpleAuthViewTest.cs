@@ -73,5 +73,19 @@ namespace Bunit.TestDoubles.Authorization
 			// assert
 			cut.MarkupMatches("Authorized!");
 		}
+
+		[Fact(DisplayName = "AuthorizeView rendering without authorization services registered")]
+		public void Test005()
+		{
+			// arrange
+			using var ctx = new TestContext();
+
+			// act
+			var ex = Assert.Throws<MissingFakeAuthorizationException>(() => ctx.RenderComponent<SimpleAuthView>());
+
+			// assert
+			Assert.Equal("AuthenticationStateProvider", ex.ServiceName);
+			Assert.Equal("https://bunit.egilhansen.com/docs/mocking/mocking-auth.html", ex.HelpLink);
+		}
 	}
 }
