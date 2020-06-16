@@ -56,7 +56,7 @@ Since Snapshot tests use xUnit under the hood as a test runner, you execute your
 
 ## Examples
 
-The following example shows how to test the the [TodoList.razor](https://github.com/egil/bunit/blob/master/sample/src/Components/TodoList.razor) component:
+The following example shows how to test the the [TodoList.razor](https://github.com/egil/bunit/blob/main/sample/src/Components/TodoList.razor) component:
 
 ```cshtml
 @inherits TestComponentBase
@@ -93,4 +93,4 @@ The following example shows how to test the the [TodoList.razor](https://github.
 
 - [Semantic HTML markup comparison](/docs/semantic-html-markup-comparison.html)
 - [Mocking JsRuntime](/docs/mocking-jsruntime.html)
-- [Snapshot test examples in the sample project](https://github.com/egil/bunit/tree/master/sample/tests/SnapshotTests)
+- [Snapshot test examples in the sample project](https://github.com/egil/bunit/tree/main/sample/tests/SnapshotTests)

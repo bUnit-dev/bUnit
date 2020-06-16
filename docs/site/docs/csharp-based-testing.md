@@ -176,4 +176,4 @@ See the page [Mocking JsRuntime](/docs/mocking-jsruntime.html) for more details 
 
 - [Semantic HTML markup comparison](/docs/semantic-html-markup-comparison.html)
 - [Mocking JsRuntime](/docs/mocking-jsruntime.html)
-- [C# test examples in the sample project](https://github.com/egil/bunit/tree/master/sample/tests/Tests)
+- [C# test examples in the sample project](https://github.com/egil/bunit/tree/main/sample/tests/Tests)

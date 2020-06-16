@@ -349,10 +349,10 @@ The latest version of the library is availble on NuGet:
 
 - **Added logging to TestRenderer.** To make it easier to understand the rendering life-cycle during a test, the `TestRenderer` will now log when ever it dispatches an event or renders a component (the log statements can be access by capturing debug logs in the test results, as mentioned above).
 
-- **Added some of the Blazor frameworks end-2-end tests.** To get better test coverage of the many rendering scenarios supported by Blazor, the [ComponentRenderingTest.cs](https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs) tests from the Blazor frameworks test suite has been converted from a Selenium to a bUnit. The testing style is very similar, so few changes was necessary to port the tests. The two test classes are here, if you want to compare:
+- **Added some of the Blazor frameworks end-2-end tests.** To get better test coverage of the many rendering scenarios supported by Blazor, the [ComponentRenderingTest.cs](https://github.com/dotnet/aspnetcore/blob/main/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs) tests from the Blazor frameworks test suite has been converted from a Selenium to a bUnit. The testing style is very similar, so few changes was necessary to port the tests. The two test classes are here, if you want to compare:
 
-  -  [bUnit's ComponentRenderingTest.cs](/master/tests/BlazorE2E/ComponentRenderingTest.cs)
-  -  [Blazor's ComponentRenderingTest.cs](https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs)
+  -  [bUnit's ComponentRenderingTest.cs](/main/tests/BlazorE2E/ComponentRenderingTest.cs)
+  -  [Blazor's ComponentRenderingTest.cs](https://github.com/dotnet/aspnetcore/blob/main/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs)
 
 ### Changed
 - **Namespaces is now `Bunit`**  

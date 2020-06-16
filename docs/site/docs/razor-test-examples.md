@@ -4,11 +4,11 @@
 
 In the following examples, the terminology **component under test** (abbreviated CUT) is used to mean the component that is the target of the test. The examples below use the `Shouldly` assertion library as well. If you prefer not to use that just replace the assertions with the ones from your own favorite assertion library.
 
-All examples can be found in the [Tests](https://github.com/egil/bunit/tree/master/sample/tests/Tests) folder in the [Sample project](https://github.com/egil/bunit/tree/master/sample/).
+All examples can be found in the [Tests](https://github.com/egil/bunit/tree/main/sample/tests/Tests) folder in the [Sample project](https://github.com/egil/bunit/tree/main/sample/).
 
 ## Examples
 
-Here is a few examples that demonstrate how Razor test components can be used. More can be found in the [sample/tests/RazorComponentTests](https://github.com/egil/bunit/tree/master/sample/tests/RazorComponentTests) samples folder.
+Here is a few examples that demonstrate how Razor test components can be used. More can be found in the [sample/tests/RazorComponentTests](https://github.com/egil/bunit/tree/main/sample/tests/RazorComponentTests) samples folder.
 
 ```cshtml
 <Fixture Test="ThemedButtonUsesNamedCascadingValue">
@@ -32,7 +32,7 @@ Here is a few examples that demonstrate how Razor test components can be used. M
 }
 ```
 
-This example shows how [ThemedElement.razor](https://github.com/egil/bunit/tree/master/sample/src/Components/ThemedElement.razor) can be tested with cascading values.
+This example shows how [ThemedElement.razor](https://github.com/egil/bunit/tree/main/sample/src/Components/ThemedElement.razor) can be tested with cascading values.
 
 ```cshtml
 <Fixture Test=MarkupPassedViaChildContent>
@@ -55,9 +55,9 @@ This example shows how [ThemedElement.razor](https://github.com/egil/bunit/tree/
 }
 ```
 
-This example shows how [ThemedButton.razor](https://github.com/egil/bunit/tree/master/sample/src/Components/ThemedButton.razor) can be tested with with child content, and how a `<Fragment>` can be used to specify the expected output.
+This example shows how [ThemedButton.razor](https://github.com/egil/bunit/tree/main/sample/src/Components/ThemedButton.razor) can be tested with with child content, and how a `<Fragment>` can be used to specify the expected output.
 
-Lets look at a more complex example, a test of the [TodoList.razor](https://github.com/egil/bunit/tree/master/sample/src/Pages/TodoList.razor) component:
+Lets look at a more complex example, a test of the [TodoList.razor](https://github.com/egil/bunit/tree/main/sample/src/Pages/TodoList.razor) component:
 
 ```cshtml
 <Fixture Setup="() => Services.AddMockJsRuntime()"

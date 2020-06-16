@@ -3,13 +3,13 @@ name: NUGET-PUSH
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - '.github/.force-nuget-push'
 
 env:
   VERSION: ''
-  BRANCH: 'master'  
+  BRANCH: 'main'  
 
 jobs:  
   build:

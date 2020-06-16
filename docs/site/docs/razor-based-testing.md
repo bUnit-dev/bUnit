@@ -125,4 +125,4 @@ Since Blazor test component use xUnit under the hood as a test runner, you execu
 
 - [Semantic HTML markup comparison](/docs/semantic-html-markup-comparison.html)
 - [Mocking JsRuntime](/docs/mocking-jsruntime.html)
-- [Razor based test examples in the sample project](https://github.com/egil/bunit/tree/master/sample/tests/RazorTestComponents)
+- [Razor based test examples in the sample project](https://github.com/egil/bunit/tree/main/sample/tests/RazorTestComponents)

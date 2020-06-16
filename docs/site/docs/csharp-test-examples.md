@@ -4,11 +4,11 @@
 
 In the following examples, the terminology **component under test** (abbreviated CUT) is used to mean the component that is the target of the test. The examples below use the `Shouldly` assertion library as well. If you prefer not to use that just replace the assertions with the ones from your own favorite assertion library.
 
-All examples can be found in the [Tests](https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/Tests) folder in the [Sample project](https://github.com/egil/razor-components-testing-library/tree/master/sample/).
+All examples can be found in the [Tests](https://github.com/egil/razor-components-testing-library/tree/main/sample/tests/Tests) folder in the [Sample project](https://github.com/egil/razor-components-testing-library/tree/main/sample/).
 
 ## Testing components without parameters
 
-The following unit-tests verifies that the [Counter.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Pages/Counter.razor) component behaves correctly. Here is the source for the Counter component:
+The following unit-tests verifies that the [Counter.razor](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Pages/Counter.razor) component behaves correctly. Here is the source for the Counter component:
 
 ```razor
 @page "/counter"
@@ -31,7 +31,7 @@ The following unit-tests verifies that the [Counter.razor](https://github.com/eg
 }
 ```
 
-The [CounterTest.cs](https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/Tests/Pages/CounterTest.cs) looks like this:
+The [CounterTest.cs](https://github.com/egil/razor-components-testing-library/tree/main/sample/tests/Tests/Pages/CounterTest.cs) looks like this:
 
 ```csharp
 public class CounterTest : ComponentTestFixture
@@ -113,7 +113,7 @@ A few things worth noting about the tests above:
 
 In the following tests we will pass regular parameters to a component under test, e.g. `[Parameter] public SomeType PropName { get; set; }` style properties, where `SomeType` **is not** a `RenderFragment` or a `EventCallback` type.
 
-The component under test will be the [Aside.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Components/Aside.razor) component, which looks like this:
+The component under test will be the [Aside.razor](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Components/Aside.razor) component, which looks like this:
 
 ```cshtml
 <aside @attributes="Attributes">
@@ -133,7 +133,7 @@ The component under test will be the [Aside.razor](https://github.com/egil/razor
 }
 ```
 
-The [AsideTest.cs](https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/Tests/Components/AsideTest.cs) looks like this:
+The [AsideTest.cs](https://github.com/egil/razor-components-testing-library/tree/main/sample/tests/Tests/Components/AsideTest.cs) looks like this:
 
 ```csharp
 public class AsideTest : ComponentTestFixture
@@ -214,7 +214,7 @@ Some notes on `Test002` above:
 
 ## Testing components with child content
 
-The [Aside.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Components/Aside.razor) component listed in the previous section also has a `ChildContent` parameter, so lets add a few tests that passes markup and components to it through that.
+The [Aside.razor](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Components/Aside.razor) component listed in the previous section also has a `ChildContent` parameter, so lets add a few tests that passes markup and components to it through that.
 
 ```csharp
 public class AsideTest : ComponentTestFixture
@@ -283,7 +283,7 @@ public class AsideTest : ComponentTestFixture
 
 ## Testing components with `EventCallback` parameters
 
-To show how to pass an `EventCallback` to a component under test, we will use the [ThemedButton.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Components/ThemedButton.razor), which looks like this:
+To show how to pass an `EventCallback` to a component under test, we will use the [ThemedButton.razor](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Components/ThemedButton.razor), which looks like this:
 
 ```cshtml
 <button @onclick="HandleOnClick"
@@ -305,7 +305,7 @@ To show how to pass an `EventCallback` to a component under test, we will use th
 }
 ```
 
-The relevant part of [ThemedButtonTest.cs](https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/Tests/Components/ThemedButtonTest.cs) looks like this:
+The relevant part of [ThemedButtonTest.cs](https://github.com/egil/razor-components-testing-library/tree/main/sample/tests/Tests/Components/ThemedButtonTest.cs) looks like this:
 
 ```csharp
 public class ThemedButtonTest : ComponentTestFixture
@@ -336,7 +336,7 @@ public class ThemedButtonTest : ComponentTestFixture
 
 ## Testing components with cascading-value parameters
 
-If a component under test accepts cascading values, like [ThemedButton.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Components/ThemedButton.razor) listed above, we can pass one or more cascading values to it like so:
+If a component under test accepts cascading values, like [ThemedButton.razor](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Components/ThemedButton.razor) listed above, we can pass one or more cascading values to it like so:
 
 ```csharp
 public class ThemedButtonTest : ComponentTestFixture
@@ -404,7 +404,7 @@ To make it easy to mock calls to JavaScript, the library comes with a `IJsRuntim
 
 If you have more complex mocking needs, you could look to frameworks like [Moq](https://github.com/Moq) or [JustMock Lite](https://github.com/telerik/JustMockLite), which both work nicely with bUnit.
 
-To help us test the Mock JSRuntime, we have the [WikiSearch.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Components/WikiSearch.razor) component, which looks like this:
+To help us test the Mock JSRuntime, we have the [WikiSearch.razor](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Components/WikiSearch.razor) component, which looks like this:
 
 ```cshtml
 @inject IJSRuntime jsRuntime
@@ -432,7 +432,7 @@ To help us test the Mock JSRuntime, we have the [WikiSearch.razor](https://githu
 }
 ```
 
-The [WikiSearchTest.cs](https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/Tests/Components/WikiSearchTest.cs) looks like this:
+The [WikiSearchTest.cs](https://github.com/egil/razor-components-testing-library/tree/main/sample/tests/Tests/Components/WikiSearchTest.cs) looks like this:
 
 ```csharp
 public class WikiSearchTest : ComponentTestFixture
@@ -499,7 +499,7 @@ public class WikiSearchTest : ComponentTestFixture
 
 If you want to verify that a element reference (`ElementReference`) passed to a IJsRuntime.InvokeAsync call is references the expected DOM element, you can do so with the `ShouldBeElementReferenceTo()` assert helper.
 
-For example, consider the [FocussingInput.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Components/FocussingInput.razor) component, which looks like this:
+For example, consider the [FocussingInput.razor](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Components/FocussingInput.razor) component, which looks like this:
 
 ```cshtml
 @inject IJSRuntime jsRuntime
@@ -522,7 +522,7 @@ For example, consider the [FocussingInput.razor](https://github.com/egil/razor-c
 }
 ```
 
-The the [FocussingInputTest.cs](https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/Tests/Components/FocussingInputTest.cs) looks like this:
+The the [FocussingInputTest.cs](https://github.com/egil/razor-components-testing-library/tree/main/sample/tests/Tests/Components/FocussingInputTest.cs) looks like this:
 
 ```csharp
 public class FocussingInputTest : ComponentTestFixture
@@ -552,15 +552,15 @@ The last line verifies that there was a single argument to the invocation, and v
 
 ## Testing components with injected dependencies
 
-The demonstrate service injection, lets refactor the [FetchData.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Pages/FetchData.razor) component that comes with the default Razor app template, to make it more testable:
+The demonstrate service injection, lets refactor the [FetchData.razor](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Pages/FetchData.razor) component that comes with the default Razor app template, to make it more testable:
 
-- Extract an interface from [WeatherForecastService](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Data/WeatherForecastService.cs), name it [IWeatherForecastService](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Data/IWeatherForecastService.cs), and have `FetchData` take a dependency on it.
+- Extract an interface from [WeatherForecastService](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Data/WeatherForecastService.cs), name it [IWeatherForecastService](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Data/IWeatherForecastService.cs), and have `FetchData` take a dependency on it.
 
-- Extract the `<table>` inside the `else` branch in the [FetchData.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Pages/FetchData.razor) component into its own component. Lets name it [ForecastDataTable](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Pages/FetchData.razor).
+- Extract the `<table>` inside the `else` branch in the [FetchData.razor](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Pages/FetchData.razor) component into its own component. Lets name it [ForecastDataTable](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Pages/FetchData.razor).
 
-- In the [FetchData.razor](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Pages/FetchData.razor), pass the variable `forecasts` to the [ForecastDataTable](https://github.com/egil/razor-components-testing-library/tree/master/sample/src/Pages/FetchData.razor) component.
+- In the [FetchData.razor](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Pages/FetchData.razor), pass the variable `forecasts` to the [ForecastDataTable](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Pages/FetchData.razor) component.
 
-Now we just need a [MockForecastService.cs](https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/MockForecastService.cs). It looks like this:
+Now we just need a [MockForecastService.cs](https://github.com/egil/razor-components-testing-library/tree/main/sample/tests/MockForecastService.cs). It looks like this:
 
 ```csharp
 internal class MockForecastService : IWeatherForecastService
@@ -570,7 +570,7 @@ internal class MockForecastService : IWeatherForecastService
 }
 ```
 
-With the mock in place, we can write the [FetchDataTest.cs](https://github.com/egil/razor-components-testing-library/tree/master/sample/tests/Tests/Pages/FetchDataTest.cs), which looks like this:
+With the mock in place, we can write the [FetchDataTest.cs](https://github.com/egil/razor-components-testing-library/tree/main/sample/tests/Tests/Pages/FetchDataTest.cs), which looks like this:
 
 ```csharp
 public class FetchDataTest : ComponentTestFixture
