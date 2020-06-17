@@ -17,7 +17,7 @@ namespace Bunit.TestDoubles.Authorization
 			: base($"This test requires {serviceName} to be supplied, because the component under test uses authentication/authorization during the test. You can fix this by calling TestContext.Services.AddAuthorization with appropriate values. More information can be found in the documentation.")
 		{
 			ServiceName = serviceName;
-			HelpLink = "https://bunit.egilhansen.com/docs/mocking/mocking-auth.html";
+			HelpLink = "https://bunit.egilhansen.com/docs/test-doubles/faking-auth.html";
 		}
 
 		/// <summary>
