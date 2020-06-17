@@ -18,7 +18,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Gets or sets the set of roles this user is authorized for.
 		/// </summary>
-		public IList<string>? Roles { get; set; }
+		public IEnumerable<string>? Roles { get; set; }
 
 		/// <summary>
 		/// Default non-authenticated principal returns false for IsInRole check.
