@@ -11,7 +11,7 @@ List of new features.
 
 #### Authorization Fakes
 Added authentication/authorization fake services to make it easy to test Blazor components that use authorization either through code or the AuthorizeView component.
-You just need to call the AddAuthorization method on your TestContext.Services collection.
+You just need to call the AddTestAuthorization method on your TestContext.Services collection.
 
 First define your component that uses AuthorizeView to render differently based on the user's authorization state:
 ```
@@ -36,7 +36,7 @@ Then define your test method to specify the authorization state with a user name
 		{
 			// arrange
 			using var ctx = new TestContext();
-			ctx.Services.AddAuthorization("TestUser", true);
+			ctx.Services.AddTestAuthorization("TestUser", AuthorizationState.Authorized);
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthView>();

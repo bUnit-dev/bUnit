@@ -28,7 +28,7 @@ You can use AuthorizeView in a component to show different content based on the 
 
 To easily test this type of component, bUnit has some test services that help. You will need to add these services to your test context before you render and run your tests.
 
-The following code tests the component with an unauthenticated user. To setup an authenticated user, just call AddAuthorization with no parameters.
+The following code tests the component with an unauthenticated user. To setup an authenticated user, just call AddTestAuthorization with no parameters.
 
 ```c#
 [Fact(DisplayName = "AuthorizeView with unauthenticated user")]
@@ -36,7 +36,7 @@ public void Test001()
 {
 	// arrange
 	using var ctx = new TestContext();
-	ctx.Services.AddAuthorization();
+	ctx.Services.AddTestAuthorization();
 
 	// act
 	var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -46,7 +46,7 @@ public void Test001()
 }
 ```
 
-Now we can test with an authenticated and authorized user by calling AddAuthorization with a user name and authorization flag.
+Now we can test with an authenticated and authorized user by calling AddTestAuthorization with a user name and authorization flag.
 
 ```c#
 [Fact(DisplayName = "AuthorizeView with authenticated and authorized user")]
@@ -54,7 +54,7 @@ public void Test002()
 {
 	// arrange
 	using var ctx = new TestContext();
-	ctx.Services.AddAuthorization("TestUser", true);
+	ctx.Services.AddTestAuthorization("TestUser", AuthorizationState.Authorized);
 
 	// act
 	var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -72,7 +72,7 @@ public void Test003()
 {
 	// arrange
 	using var ctx = new TestContext();
-	ctx.Services.AddAuthorization("TestUser", false);
+	ctx.Services.AddTestAuthorization("TestUser", AuthorizationState.Unauthorized);
 
 	// act
 	var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -119,7 +119,7 @@ public void Test004()
 {
 	// arrange
 	using var ctx = new TestContext();
-	ctx.Services.AddAuthorization("TestUserName", true);
+	ctx.Services.AddTestAuthorization("TestUserName", AuthorizationState.Authorized);
 
 	// act
 	var cut = ctx.RenderComponent<TestComponent>();
