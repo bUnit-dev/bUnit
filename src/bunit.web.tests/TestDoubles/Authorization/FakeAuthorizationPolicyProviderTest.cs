@@ -13,7 +13,7 @@ namespace Bunit.TestDoubles.Authorization
 			var provider = new FakeAuthorizationPolicyProvider();
 
 			// act
-			var policy = await provider.GetDefaultPolicyAsync().ConfigureAwait(false);
+			var policy = await provider.GetDefaultPolicyAsync();
 
 			// assert
 			Assert.NotNull(policy);
