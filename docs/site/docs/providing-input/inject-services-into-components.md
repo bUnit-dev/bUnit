@@ -48,4 +48,4 @@ In the following example shows how to do this with `<SnapshotTest>` tests:
 
 ## Further Reading
 
-A closely related topic is mocking. To learn more about mocking in bUnit, go to the <xref:mocking> page.
+A closely related topic is mocking. To learn more about mocking in bUnit, go to the <xref:test-doubles> page.

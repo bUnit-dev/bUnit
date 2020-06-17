@@ -17,7 +17,7 @@ The *next level* topics are:
 
 1. **[Providing different types of input](xref:providing-input)** to a component under test in C# based tests, e.g. passing parameters or injecting services.
 2. **[Verifying output in various ways](xref:verification)** from a component under test, e.g. inspecting the rendered markup.
-3. **[Mocking dependencies](xref:mocking)** a component under test has, e.g. the `IJsRuntime` or `HttpClient`.
+3. **[Mocking dependencies](xref:test-doubles)** a component under test has, e.g. the `IJsRuntime` or `HttpClient`.
 
 ## Getting Help
 
