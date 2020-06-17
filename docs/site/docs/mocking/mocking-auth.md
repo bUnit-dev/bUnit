@@ -1,5 +1,5 @@
 ---
-uid: mocking-auth
+uid: faking-auth
 title: Faking Blazor's Authorization
 ---
 
