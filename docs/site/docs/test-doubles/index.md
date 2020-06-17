@@ -1,6 +1,6 @@
 ---
-uid: mocking
-title: Mocking Component Dependencies
+uid: test-doubles
+title: Mocking and Faking Component Dependencies
 ---
 
 # Mocking Component Dependencies
