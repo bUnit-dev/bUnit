@@ -1,6 +1,6 @@
 ---
 uid: faking-auth
-title: Faking Blazor's Authorization
+title: Faking Blazor's Authentication and Authorization
 ---
 
 # Faking Blazor's Authentication and Authorization
