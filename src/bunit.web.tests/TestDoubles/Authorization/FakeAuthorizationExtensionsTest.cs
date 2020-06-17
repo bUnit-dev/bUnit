@@ -20,7 +20,7 @@ namespace Bunit.TestDoubles.Authorization
 				new FakePrincipal { Identity = new FakeIdentity { Name = "DarthPedro" }, Roles = roles });
 
 			// act
-			sp.AddAuthorization("DarthPedro", true, roles);
+			sp.AddAuthorization("DarthPedro", AuthorizationState.Authorized, roles);
 
 			var authProvider = sp.GetRequiredService<AuthenticationStateProvider>();
 			var authState = await authProvider.GetAuthenticationStateAsync();
@@ -45,7 +45,7 @@ namespace Bunit.TestDoubles.Authorization
 				new FakePrincipal { Identity = new FakeIdentity { Name = "DarthPedro" } });
 
 			// act
-			sp.AddAuthorization("DarthPedro", false);
+			sp.AddAuthorization("DarthPedro", AuthorizationState.Unauthorized);
 
 			var authProvider = sp.GetRequiredService<AuthenticationStateProvider>();
 			var authState = await authProvider.GetAuthenticationStateAsync();

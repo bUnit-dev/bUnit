@@ -13,11 +13,15 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Adds the appropriate auth services to the <see cref="TestServiceProvider"/> to enable an authenticated user.
 		/// </summary>
-		public static void AddAuthorization(this TestServiceProvider serviceProvider, string userName, bool isAuthorized = true, IList<string>? roles = null)
+		public static void AddAuthorization(
+			this TestServiceProvider serviceProvider,
+			string userName,
+			AuthorizationState authorizationState = AuthorizationState.Authorized,
+			IList<string>? roles = null)
 		{
 			var authService = new FakeAuthorizationService()
 			{
-				NextResult = isAuthorized ? AuthorizationResult.Success() : AuthorizationResult.Failed(),
+				NextResult = (authorizationState == AuthorizationState.Authorized) ? AuthorizationResult.Success() : AuthorizationResult.Failed(),
 			};
 
 			serviceProvider.AddSingleton<IAuthorizationService>(authService);

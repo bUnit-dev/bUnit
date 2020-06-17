@@ -26,7 +26,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			ctx.Services.AddAuthorization("TestUser", true);
+			ctx.Services.AddAuthorization("TestUser", AuthorizationState.Authorized);
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -40,7 +40,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			ctx.Services.AddAuthorization("TestUser", false);
+			ctx.Services.AddAuthorization("TestUser", AuthorizationState.Unauthorized);
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthView>();
