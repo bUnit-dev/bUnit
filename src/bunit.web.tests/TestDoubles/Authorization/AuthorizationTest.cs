@@ -49,7 +49,7 @@ namespace Bunit.TestDoubles.Authorization
 			cut.MarkupMatches("Not authorized?");
 		}
 
-		[Fact(DisplayName = "AuthorizeView switch from unauthenticated to authenticated.")]
+		[Fact(DisplayName = "AuthorizeView switch from unauthorized to authorized.")]
 		public void Test004()
 		{
 			// arrange
@@ -62,7 +62,7 @@ namespace Bunit.TestDoubles.Authorization
 			cut.MarkupMatches("Not authorized?");
 
 			// act
-			authProvider.SetAuthenticated("TestUser004");
+			ctx.Services.UpdateTestAuthorizationState("TestUser004", AuthorizationState.Authorized);
 
 			cut.Render();
 
@@ -70,8 +70,29 @@ namespace Bunit.TestDoubles.Authorization
 			cut.MarkupMatches("Authorized!");
 		}
 
-		[Fact(DisplayName = "AuthorizeView rendering without authorization services registered")]
+		[Fact(DisplayName = "AuthorizeView switch from authorized to unauthorized.")]
 		public void Test005()
+		{
+			// arrange
+			using var ctx = new TestContext();
+			ctx.Services.AddTestAuthorization("TestUser005", AuthorizationState.Authorized);
+			var authProvider = ctx.Services.GetRequiredService<AuthenticationStateProvider>();
+
+			// start off unauthenticated.
+			var cut = ctx.RenderComponent<SimpleAuthView>();
+			cut.MarkupMatches("Authorized!");
+
+			// act
+			ctx.Services.UpdateTestAuthorizationState();
+
+			cut.Render();
+
+			// assert
+			cut.MarkupMatches("Not authorized?");
+		}
+
+		[Fact(DisplayName = "AuthorizeView rendering without authorization services registered")]
+		public void Test006()
 		{
 			// arrange
 			using var ctx = new TestContext();

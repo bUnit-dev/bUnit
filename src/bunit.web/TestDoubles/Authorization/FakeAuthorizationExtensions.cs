@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -46,25 +45,40 @@ namespace Bunit.TestDoubles.Authorization
 		}
 
 		/// <summary>
-		/// Sets an authenticated user in the <see cref="AuthenticationStateProvider"/>.
+		/// Updates the auth services to change from an unauthenticated to authenticated user.
 		/// </summary>
-		public static void SetAuthenticated(this AuthenticationStateProvider authProvider, string userName, IList<string>? roles = null)
+		public static void UpdateTestAuthorizationState(
+			this TestServiceProvider serviceProvider,
+			string userName,
+			AuthorizationState authorizationState = AuthorizationState.Authorized,
+			IList<string>? roles = null)
 		{
-			_ = authProvider ?? throw new ArgumentNullException(nameof(authProvider));
+			var authProvider = serviceProvider.GetRequiredService<AuthenticationStateProvider>();
 			var testProvider = (FakeAuthenticationStateProvider)authProvider;
 
 			testProvider.TriggerAuthenticationStateChanged(userName, roles);
+
+
+			var authService = serviceProvider.GetRequiredService<IAuthorizationService>();
+			var testService = (FakeAuthorizationService)authService;
+
+			testService.CurrentState = authorizationState;
 		}
 
 		/// <summary>
-		/// Sets the authorization state for the user in the <see cref="IAuthorizationService"/>.
+		/// Updates the auth services to change from an authenticated to unauthenticated user.
 		/// </summary>
-		public static void SetAuthorizationState(this IAuthorizationService authService, AuthorizationState state)
+		public static void UpdateTestAuthorizationState(this TestServiceProvider serviceProvider)
 		{
-			_ = authService ?? throw new ArgumentNullException(nameof(authService));
+			var authProvider = serviceProvider.GetRequiredService<AuthenticationStateProvider>();
+			var testProvider = (FakeAuthenticationStateProvider)authProvider;
+
+			testProvider.TriggerAuthenticationStateChanged();
+
+			var authService = serviceProvider.GetRequiredService<IAuthorizationService>();
 			var testService = (FakeAuthorizationService)authService;
 
-			testService.CurrentState = state;
+			testService.CurrentState = AuthorizationState.Unauthorized;
 		}
 	}
 }

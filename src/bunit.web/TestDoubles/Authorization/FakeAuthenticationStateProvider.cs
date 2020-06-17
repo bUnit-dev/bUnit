@@ -44,13 +44,22 @@ namespace Bunit.TestDoubles.Authorization
 		}
 
 		/// <summary>
-		/// Overridden method to change the authenticaiton state.
+		/// Method to change the authenticaiton state and authenticated user.
 		/// </summary>
 		/// <param name="userName">Identity's user name.</param>
 		/// <param name="roles">Roles that this user principal has.</param>
 		public void TriggerAuthenticationStateChanged(string userName, IList<string>? roles = null)
 		{
 			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateAuthenticationState(userName, roles);
+			NotifyAuthenticationStateChanged(CurrentAuthStateTask);
+		}
+
+		/// <summary>
+		/// Method to change the authenticaiton state to unauthenticated.
+		/// </summary>
+		public void TriggerAuthenticationStateChanged()
+		{
+			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateUnauthenticationState();
 			NotifyAuthenticationStateChanged(CurrentAuthStateTask);
 		}
 
