@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 namespace Bunit.TestDoubles.Authorization
 {
 	/// <summary>
-	/// Test class that provides an implementation of AuthenticationStateProvider that allows
+	/// Represents a fake implementation of AuthenticationStateProvider for testing purposes that allows
 	/// user to test components that use authentication and authorization.
 	/// </summary>
 	public class FakeAuthenticationStateProvider : AuthenticationStateProvider
