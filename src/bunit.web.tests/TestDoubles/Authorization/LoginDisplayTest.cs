@@ -8,7 +8,6 @@ namespace Bunit.TestDoubles.Authorization
 {
 	public class LoginDisplayTest
 	{
-		private readonly Mock<NavigationManager> navManager = new Mock<NavigationManager>();
 
 		[Fact(DisplayName = "Login AuthorizeView with unauthenticated user")]
 		public void Test001()
