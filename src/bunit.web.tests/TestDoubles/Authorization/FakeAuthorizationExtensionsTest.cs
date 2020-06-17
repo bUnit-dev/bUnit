@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -16,8 +15,6 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			using var sp = new TestServiceProvider();
 			var roles = new List<string> { "User" };
-			var principal = new ClaimsPrincipal(
-				new FakePrincipal { Identity = new FakeIdentity { Name = "DarthPedro" }, Roles = roles });
 
 			// act
 			sp.AddTestAuthorization("DarthPedro", AuthorizationState.Authorized, roles);
@@ -26,7 +23,8 @@ namespace Bunit.TestDoubles.Authorization
 			var authState = await authProvider.GetAuthenticationStateAsync();
 
 			var authService = sp.GetRequiredService<IAuthorizationService>();
-			var authResult = await authService.AuthorizeAsync(principal, "testResource", "testPolicy");
+			var authResult = await authService.AuthorizeAsync(
+				FakePrincipal.CreatePrincipal("DarthPedro", roles), "testResource", "testPolicy");
 
 			// assert
 			Assert.NotNull(authState.User);
@@ -41,8 +39,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var sp = new TestServiceProvider();
-			var principal = new ClaimsPrincipal(
-				new FakePrincipal { Identity = new FakeIdentity { Name = "DarthPedro" } });
+			var principal = FakePrincipal.CreatePrincipal("DarthPedro");
 
 			// act
 			sp.AddTestAuthorization("DarthPedro", AuthorizationState.Unauthorized);
@@ -66,8 +63,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var sp = new TestServiceProvider();
-			var principal = new ClaimsPrincipal(
-				new FakePrincipal { Identity = new FakeIdentity { Name = "DarthPedro" } });
+			var principal = FakePrincipal.CreatePrincipal("DarthPedro");
 
 			// act
 			sp.AddTestAuthorization();
