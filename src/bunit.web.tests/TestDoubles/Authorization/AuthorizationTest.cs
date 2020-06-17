@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -102,7 +102,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// assert
 			Assert.Equal("AuthenticationStateProvider", ex.ServiceName);
-			Assert.Equal("https://bunit.egilhansen.com/docs/mocking/mocking-auth.html", ex.HelpLink);
+			Assert.Equal("https://bunit.egilhansen.com/docs/test-doubles/faking-auth.html", ex.HelpLink);
 		}
 	}
 }
