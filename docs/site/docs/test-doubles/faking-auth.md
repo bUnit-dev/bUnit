@@ -3,7 +3,7 @@ uid: faking-auth
 title: Faking Blazor's Authorization
 ---
 
-# Mocking Blazor's Authorization
+# Faking Blazor's Authentication and Authorization
 
 https://github.com/egil/bunit/issues/135
 
