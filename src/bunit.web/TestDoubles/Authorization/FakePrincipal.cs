@@ -26,12 +26,12 @@ namespace Bunit.TestDoubles.Authorization
 		/// <returns>Returns that this principal is not in any role.</returns>
 		public bool IsInRole(string role)
 		{
-			if (this.Roles == null)
+			if (Roles == null)
 			{
 				return false;
 			}
 
-			return this.Roles.Any(p => p == role);
+			return Roles.Any(p => p == role);
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Gets the test authentication type.
 		/// </summary>
-		public string AuthenticationType => "Test";
+		public string AuthenticationType { get; set; } = "Test";
 
 		/// <summary>
 		/// Gets whether the identity is set to authenticated.

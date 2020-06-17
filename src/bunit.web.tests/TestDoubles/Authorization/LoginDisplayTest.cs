@@ -1,7 +1,4 @@
 using System;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using Xunit;
 
 namespace Bunit.TestDoubles.Authorization

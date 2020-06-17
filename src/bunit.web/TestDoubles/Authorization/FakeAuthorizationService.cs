@@ -34,11 +34,11 @@ namespace Bunit.TestDoubles.Authorization
 		/// <returns>Result of authorize request.</returns>
 		public Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)
 		{
-			this.AuthorizeCalls.Add((user, resource, requirements));
+			AuthorizeCalls.Add((user, resource, requirements));
 
 			// The FakeAuthorizationService doesn't apply any authorization requirements.
 			// It just returns whatever the user specified in the NextResult property.
-			return Task.FromResult(this.NextResult);
+			return Task.FromResult(NextResult);
 		}
 
 		/// <summary>
@@ -55,7 +55,7 @@ namespace Bunit.TestDoubles.Authorization
 				new TestPolicyRequirement { PolicyName = policyName }
 			};
 
-			return this.AuthorizeAsync(user, resource, requirements);
+			return AuthorizeAsync(user, resource, requirements);
 		}
 	}
 }

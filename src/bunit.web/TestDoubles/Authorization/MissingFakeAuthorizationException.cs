@@ -16,8 +16,8 @@ namespace Bunit.TestDoubles.Authorization
 		public MissingFakeAuthorizationException(string serviceName)
 			: base($"This test requires {serviceName} to be supplied, because the component under test uses authentication/authorization during the test. You can fix this by calling TestContext.Services.AddAuthorization with appropriate values. More information can be found in the documentation.")
 		{
-			this.ServiceName = serviceName;
-			this.HelpLink = "https://bunit.egilhansen.com/docs/mocking/mocking-auth.html";
+			ServiceName = serviceName;
+			HelpLink = "https://bunit.egilhansen.com/docs/mocking/mocking-auth.html";
 		}
 
 		/// <summary>

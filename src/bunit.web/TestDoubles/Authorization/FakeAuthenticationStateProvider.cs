@@ -18,7 +18,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="roles">Roles that this user principal has.</param>
 		public FakeAuthenticationStateProvider(string username, IList<string>? roles = null)
 		{
-			this.CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateAuthenticationState(username, roles);
+			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateAuthenticationState(username, roles);
 		}
 
 		/// <summary>
@@ -26,7 +26,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// </summary>
 		public FakeAuthenticationStateProvider()
 		{
-			this.CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateUnauthenticationState();
+			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateUnauthenticationState();
 		}
 
 		/// <summary>
@@ -40,7 +40,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <returns>Current authentication state.</returns>
 		public override Task<AuthenticationState> GetAuthenticationStateAsync()
 		{
-			return this.CurrentAuthStateTask;
+			return CurrentAuthStateTask;
 		}
 
 		/// <summary>
@@ -49,8 +49,8 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="authState">New authentication state.</param>
 		public void TriggerAuthenticationStateChanged(Task<AuthenticationState> authState)
 		{
-			this.CurrentAuthStateTask = authState;
-			this.NotifyAuthenticationStateChanged(authState);
+			CurrentAuthStateTask = authState;
+			NotifyAuthenticationStateChanged(authState);
 		}
 
 		/// <summary>
