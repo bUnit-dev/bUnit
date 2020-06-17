@@ -43,7 +43,6 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			using var ctx = new TestContext();
 			ctx.Services.AddAuthorization("TestUser", false);
-			ctx.Services.AddSingleton<NavigationManager>(this.navManager.Object);
 
 			// act
 			var cut = ctx.RenderComponent<LoginDisplay>();
