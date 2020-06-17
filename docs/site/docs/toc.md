@@ -21,7 +21,7 @@
 ## [Customizing Semantic Comparison](xref:semantic-html-comparison)
 ## [Asynchronous Assertion of Changes](xref:async-assertion)
 
-# [Mocking](xref:mocking)
+# [Test Doubles](xref:test-doubles)
 ## [Mocking Authorization](xref:mocking-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
 ## [Mocking IJsRuntime](xref:mocking-ijsruntime)
