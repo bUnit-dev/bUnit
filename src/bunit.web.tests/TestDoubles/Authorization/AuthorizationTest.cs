@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Bunit.TestDoubles.Authorization
 {
-	public class SimpleAuthViewTest
+	public class AuthorizationTest
 	{
 		[Fact(DisplayName = "AuthorizeView with unauthenticated user")]
 		public void Test001()
