@@ -16,11 +16,10 @@ namespace Bunit.TestDoubles.Authorization
 			var service = new FakeAuthorizationService();
 
 			// act
-			var result = service.NextResult;
+			var result = service.CurrentState;
 
 			// assert
-			Assert.NotNull(result);
-			Assert.True(result.Succeeded);
+			Assert.Equal(AuthorizationState.Authorized, result);
 		}
 
 		[Fact(DisplayName = "Get AuthorizeAsync with an authorized result.")]
@@ -29,7 +28,7 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			var service = new FakeAuthorizationService
 			{
-				NextResult = AuthorizationResult.Failed()
+				CurrentState = AuthorizationState.Unauthorized
 			};
 
 			var user = new ClaimsPrincipal(new FakeIdentity { Name = "DarthPedro" });
@@ -65,7 +64,7 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			var service = new FakeAuthorizationService
 			{
-				NextResult = AuthorizationResult.Failed()
+				CurrentState = AuthorizationState.Unauthorized
 			};
 
 			var user = new ClaimsPrincipal(new FakeIdentity { Name = "DarthPedro" });

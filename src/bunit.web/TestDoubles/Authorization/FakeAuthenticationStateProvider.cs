@@ -14,11 +14,11 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Constructor to initialize this state provider with an initial AuthenticationState.
 		/// </summary>
-		/// <param name="username">Identity's user name.</param>
+		/// <param name="userName">Identity's user name.</param>
 		/// <param name="roles">Roles that this user principal has.</param>
-		public FakeAuthenticationStateProvider(string username, IList<string>? roles = null)
+		public FakeAuthenticationStateProvider(string userName, IList<string>? roles = null)
 		{
-			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateAuthenticationState(username, roles);
+			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateAuthenticationState(userName, roles);
 		}
 
 		/// <summary>
@@ -46,11 +46,12 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Overridden method to change the authenticaiton state.
 		/// </summary>
-		/// <param name="authState">New authentication state.</param>
-		public void TriggerAuthenticationStateChanged(Task<AuthenticationState> authState)
+		/// <param name="userName">Identity's user name.</param>
+		/// <param name="roles">Roles that this user principal has.</param>
+		public void TriggerAuthenticationStateChanged(string userName, IList<string>? roles = null)
 		{
-			CurrentAuthStateTask = authState;
-			NotifyAuthenticationStateChanged(authState);
+			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateAuthenticationState(userName, roles);
+			NotifyAuthenticationStateChanged(CurrentAuthStateTask);
 		}
 
 		/// <summary>

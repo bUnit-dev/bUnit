@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -21,7 +22,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			var authService = new FakeAuthorizationService()
 			{
-				NextResult = (authorizationState == AuthorizationState.Authorized) ? AuthorizationResult.Success() : AuthorizationResult.Failed(),
+				CurrentState = authorizationState
 			};
 
 			serviceProvider.AddSingleton<IAuthorizationService>(authService);
@@ -36,12 +37,34 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			var authService = new FakeAuthorizationService()
 			{
-				NextResult = AuthorizationResult.Failed()
+				CurrentState = AuthorizationState.Unauthorized
 			};
 
 			serviceProvider.AddSingleton<IAuthorizationService>(authService);
 			serviceProvider.AddSingleton<IAuthorizationPolicyProvider>(new FakeAuthorizationPolicyProvider());
 			serviceProvider.AddSingleton<AuthenticationStateProvider>(new FakeAuthenticationStateProvider());
+		}
+
+		/// <summary>
+		/// Sets an authenticated user in the <see cref="AuthenticationStateProvider"/>.
+		/// </summary>
+		public static void SetAuthenticated(this AuthenticationStateProvider authProvider, string userName, IList<string>? roles = null)
+		{
+			_ = authProvider ?? throw new ArgumentNullException(nameof(authProvider));
+			var testProvider = (FakeAuthenticationStateProvider)authProvider;
+
+			testProvider.TriggerAuthenticationStateChanged(userName, roles);
+		}
+
+		/// <summary>
+		/// Sets the authorization state for the user in the <see cref="IAuthorizationService"/>.
+		/// </summary>
+		public static void SetAuthorizationState(this IAuthorizationService authService, AuthorizationState state)
+		{
+			_ = authService ?? throw new ArgumentNullException(nameof(authService));
+			var testService = (FakeAuthorizationService)authService;
+
+			testService.CurrentState = state;
 		}
 	}
 }

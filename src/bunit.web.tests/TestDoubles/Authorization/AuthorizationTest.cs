@@ -55,18 +55,14 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			using var ctx = new TestContext();
 			ctx.Services.AddTestAuthorization();
+			var authProvider = ctx.Services.GetRequiredService<AuthenticationStateProvider>();
 
 			// start off unauthenticated.
 			var cut = ctx.RenderComponent<SimpleAuthView>();
 			cut.MarkupMatches("Not authorized?");
 
 			// act
-			var authProvider = (FakeAuthenticationStateProvider)ctx.Services.GetRequiredService<AuthenticationStateProvider>();
-			var newState = FakeAuthenticationStateProvider.CreateAuthenticationState("TestUser004");
-			authProvider.TriggerAuthenticationStateChanged(newState);
-
-			var authService = (FakeAuthorizationService)ctx.Services.GetRequiredService<IAuthorizationService>();
-			authService.NextResult = AuthorizationResult.Success();
+			authProvider.SetAuthenticated("TestUser004");
 
 			cut.Render();
 
