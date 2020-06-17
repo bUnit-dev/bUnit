@@ -31,55 +31,55 @@ To easily test this type of component, bUnit has some test services that help. Y
 The following code tests the component with an unauthenticated user. To setup an authenticated user, just call AddAuthorization with no parameters.
 
 ```c#
-	[Fact(DisplayName = "AuthorizeView with unauthenticated user")]
-	public void Test001()
-	{
-		// arrange
-		using var ctx = new TestContext();
-		ctx.Services.AddAuthorization();
+[Fact(DisplayName = "AuthorizeView with unauthenticated user")]
+public void Test001()
+{
+	// arrange
+	using var ctx = new TestContext();
+	ctx.Services.AddAuthorization();
 
-		// act
-		var cut = ctx.RenderComponent<SimpleAuthView>();
+	// act
+	var cut = ctx.RenderComponent<SimpleAuthView>();
 
-		// assert
-		cut.MarkupMatches("Not authorized?");
-	}
+	// assert
+	cut.MarkupMatches("Not authorized?");
+}
 ```
 
 Now we can test with an authenticated and authorized user by calling AddAuthorization with a user name and authorization flag.
 
 ```c#
-	[Fact(DisplayName = "AuthorizeView with authenticated and authorized user")]
-	public void Test002()
-	{
-		// arrange
-		using var ctx = new TestContext();
-		ctx.Services.AddAuthorization("TestUser", true);
+[Fact(DisplayName = "AuthorizeView with authenticated and authorized user")]
+public void Test002()
+{
+	// arrange
+	using var ctx = new TestContext();
+	ctx.Services.AddAuthorization("TestUser", true);
 
-		// act
-		var cut = ctx.RenderComponent<SimpleAuthView>();
+	// act
+	var cut = ctx.RenderComponent<SimpleAuthView>();
 
-		// assert
-		cut.MarkupMatches("Authorized!");
-	}
+	// assert
+	cut.MarkupMatches("Authorized!");
+}
 ```
 
 Finally we can test with an authenticated and unauthorized user in the code below.
 
 ```c#
-	[Fact(DisplayName = "AuthorizeView with authenticated but unauthorized user")]
-	public void Test003()
-	{
-		// arrange
-		using var ctx = new TestContext();
-		ctx.Services.AddAuthorization("TestUser", false);
+[Fact(DisplayName = "AuthorizeView with authenticated but unauthorized user")]
+public void Test003()
+{
+	// arrange
+	using var ctx = new TestContext();
+	ctx.Services.AddAuthorization("TestUser", false);
 
-		// act
-		var cut = ctx.RenderComponent<SimpleAuthView>();
+	// act
+	var cut = ctx.RenderComponent<SimpleAuthView>();
 
-		// assert
-		cut.MarkupMatches("Not authorized?");
-	}
+	// assert
+	cut.MarkupMatches("Not authorized?");
+}
 ```
 
 In addition to using these services with AuthorizeView, you can also inject the services into your component and call them in your C# code. 
@@ -114,19 +114,19 @@ In addition to using these services with AuthorizeView, you can also inject the 
 Then you can write a similar test as the ones above.
 
 ```c#
-	[Fact(DisplayName = "Use AuthenticationStateProvider service with authenticated and authorized user")]
-	public void Test004()
-	{
-		// arrange
-		using var ctx = new TestContext();
-		ctx.Services.AddAuthorization("TestUserName", true);
+[Fact(DisplayName = "Use AuthenticationStateProvider service with authenticated and authorized user")]
+public void Test004()
+{
+	// arrange
+	using var ctx = new TestContext();
+	ctx.Services.AddAuthorization("TestUserName", true);
 
-		// act
-		var cut = ctx.RenderComponent<TestComponent>();
+	// act
+	var cut = ctx.RenderComponent<TestComponent>();
 
-		// assert
-		Assert.Contains("<p>User: TestUserName</p>", cut.Markup, StringComparison.InvariantCulture);
-	}
+	// assert
+	Assert.Contains("<p>User: TestUserName</p>", cut.Markup, StringComparison.InvariantCulture);
+}
 ```
 
 That is all you need to support authorization and authentication testing in bUnit.

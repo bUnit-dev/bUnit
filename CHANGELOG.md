@@ -31,19 +31,19 @@ First, define your component that uses AuthorizeView to render differently based
 ```
 Then, define your test method to specify the authorization state with a user name, and run your test.
 ```c#
-	[Fact(DisplayName = "AuthorizeView with authenticated and authorized user")]
-	public void Test002()
-	{
-		// arrange
-		using var ctx = new TestContext();
-		ctx.Services.AddAuthorization("TestUser", true);
+[Fact(DisplayName = "AuthorizeView with authenticated and authorized user")]
+public void Test002()
+{
+	// arrange
+	using var ctx = new TestContext();
+	ctx.Services.AddAuthorization("TestUser", true);
 
-		// act
-		var cut = ctx.RenderComponent<SimpleAuthView>();
+	// act
+	var cut = ctx.RenderComponent<SimpleAuthView>();
 
-		// assert
-		cut.MarkupMatches("Authorized!");
-	}
+	// assert
+	cut.MarkupMatches("Authorized!");
+}
 ```
 
 ### Changed
