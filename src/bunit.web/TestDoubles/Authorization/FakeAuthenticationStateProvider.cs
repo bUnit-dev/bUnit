@@ -17,7 +17,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// </summary>
 		/// <param name="userName">Identity's user name.</param>
 		/// <param name="roles">Roles that this user principal has.</param>
-		public FakeAuthenticationStateProvider(string userName, IList<string>? roles = null)
+		public FakeAuthenticationStateProvider(string userName, IEnumerable<string>? roles = null)
 		{
 			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateAuthenticationState(userName, roles);
 		}

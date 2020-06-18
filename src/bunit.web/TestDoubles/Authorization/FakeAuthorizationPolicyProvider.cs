@@ -9,7 +9,7 @@ namespace Bunit.TestDoubles.Authorization
 	/// </summary>
 	public class FakeAuthorizationPolicyProvider : IAuthorizationPolicyProvider
 	{
-		private readonly AuthorizationOptions options = new AuthorizationOptions();
+		private readonly AuthorizationOptions _options = new AuthorizationOptions();
 
 		/// <summary>
 		/// Gets or sets the policy scheme name (if user wants to set it). Defaults to TestScheme.
@@ -21,14 +21,14 @@ namespace Bunit.TestDoubles.Authorization
 		/// </summary>
 		/// <returns>Default policy.</returns>
 		public Task<AuthorizationPolicy> GetDefaultPolicyAsync()
-			=> Task.FromResult(options.DefaultPolicy);
+			=> Task.FromResult(_options.DefaultPolicy);
 
 		/// <summary>
 		/// Gets the fallback authorization policy.
 		/// </summary>
 		/// <returns>Fallback policy.</returns>
 		public Task<AuthorizationPolicy> GetFallbackPolicyAsync()
-			=> Task.FromResult(options.FallbackPolicy);
+			=> Task.FromResult(_options.FallbackPolicy);
 
 		/// <summary>
 		/// Get the current policy, which in this implementation just returns a test policy.

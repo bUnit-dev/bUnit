@@ -12,7 +12,7 @@ namespace Bunit.TestDoubles.Authorization
 	/// </summary>
 	public class FakeAuthorizationService : IAuthorizationService
 	{
-		private AuthorizationState currentState = AuthorizationState.Authorized;
+		private AuthorizationState _currentState = AuthorizationState.Authorized;
 
 		/// <summary>
 		/// Constructor that intializes the authorization state of the service. 
@@ -20,7 +20,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="state"></param>
 		public FakeAuthorizationService(AuthorizationState state = AuthorizationState.Authorized)
 		{
-			currentState = state;
+			_currentState = state;
 		}
 
 		/// <summary>
@@ -35,11 +35,11 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="state">New state to set.</param>
 		public void SetAuthorizationState(AuthorizationState state)
 		{
-			currentState = state;
+			_currentState = state;
 		}
 
 		/// <summary>
-		/// Authorizes the Principal user based solely on the valuy of the NextResult property.
+		/// Authorizes the Principal user based solely on the current authorization state.
 		/// </summary>
 		/// <param name="user">Principal user to authorize.</param>
 		/// <param name="resource">Resource being authorized.</param>
@@ -50,13 +50,13 @@ namespace Bunit.TestDoubles.Authorization
 			AuthorizeCalls.Add((user, resource, requirements));
 
 			// The FakeAuthorizationService doesn't apply any authorization requirements.
-			// It just returns whatever the user specified in the NextResult property.
-			var result = (currentState == AuthorizationState.Authorized) ? AuthorizationResult.Success() : AuthorizationResult.Failed();
+			// It just returns an AuthorizationResult based on the current authorization state.
+			var result = (_currentState == AuthorizationState.Authorized) ? AuthorizationResult.Success() : AuthorizationResult.Failed();
 			return Task.FromResult(result);
 		}
 
 		/// <summary>
-		/// Authorizes the Principal user based solely on the valuy of the NextResult property.
+		/// Authorizes the Principal user based solely on the current authorization state.
 		/// </summary>
 		/// <param name="user">Principal user to authorize.</param>
 		/// <param name="resource">Resource being authorized.</param>
