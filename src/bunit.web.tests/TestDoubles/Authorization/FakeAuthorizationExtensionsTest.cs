@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Bunit.TestDoubles.Authorization
@@ -14,13 +13,13 @@ namespace Bunit.TestDoubles.Authorization
 			var roles = new List<string> { "User" };
 
 			// act
-			var authAdaptor = sp.AddTestAuthorization();
-			authAdaptor.Authenticate("DarthPedro", AuthorizationState.Authorized, roles);
+			var authContext = sp.AddTestAuthorization();
+			authContext.Authenticate("DarthPedro", AuthorizationState.Authorized, roles);
 
 			// assert
-			Assert.True(authAdaptor.IsAuthenticated);
-			Assert.Equal(AuthorizationState.Authorized, authAdaptor.Authorization);
-			Assert.Equal(roles, authAdaptor.Roles);
+			Assert.True(authContext.IsAuthenticated);
+			Assert.Equal(AuthorizationState.Authorized, authContext.Authorization);
+			Assert.Equal(roles, authContext.Roles);
 		}
 
 		[Fact(DisplayName = "Register Authorization services with authenticated but unauthorized user.")]
@@ -28,16 +27,16 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var sp = new TestServiceProvider();
-			var principal = FakePrincipal.CreatePrincipal("DarthPedro");
+			var principal = TestAuthorizationContext.CreatePrincipal("DarthPedro");
 
 			// act
-			var authAdaptor = sp.AddTestAuthorization();
-			authAdaptor.Authenticate("DarthPedro", AuthorizationState.Unauthorized);
+			var authContext = sp.AddTestAuthorization();
+			authContext.Authenticate("DarthPedro", AuthorizationState.Unauthorized);
 
 			// assert
-			Assert.True(authAdaptor.IsAuthenticated);
-			Assert.Equal(AuthorizationState.Unauthorized, authAdaptor.Authorization);
-			Assert.Null(authAdaptor.Roles);
+			Assert.True(authContext.IsAuthenticated);
+			Assert.Equal(AuthorizationState.Unauthorized, authContext.Authorization);
+			Assert.Null(authContext.Roles);
 		}
 
 		[Fact(DisplayName = "Register Authorization services with unauthenticated user.")]
@@ -45,15 +44,15 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var sp = new TestServiceProvider();
-			var principal = FakePrincipal.CreatePrincipal("DarthPedro");
+			var principal = TestAuthorizationContext.CreatePrincipal("DarthPedro");
 
 			// act
-			var authAdaptor = sp.AddTestAuthorization();
+			var authContext = sp.AddTestAuthorization();
 
 			// assert
-			Assert.False(authAdaptor.IsAuthenticated);
-			Assert.Equal(AuthorizationState.Unauthorized, authAdaptor.Authorization);
-			Assert.Null(authAdaptor.Roles);
+			Assert.False(authContext.IsAuthenticated);
+			Assert.Equal(AuthorizationState.Unauthorized, authContext.Authorization);
+			Assert.Null(authContext.Roles);
 		}
 	}
 }

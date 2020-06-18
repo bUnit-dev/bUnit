@@ -10,9 +10,9 @@ namespace Bunit.TestDoubles.Authorization
 		/// Adds the appropriate auth services to the <see cref="TestServiceProvider"/> to enable
 		/// an authenticated user.
 		/// </summary>
-		public static AuthorizationAdaptor AddTestAuthorization(this TestServiceProvider serviceProvider)
+		public static TestAuthorizationContext AddTestAuthorization(this TestServiceProvider serviceProvider)
 		{
-			var adaptor = new AuthorizationAdaptor();
+			var adaptor = new TestAuthorizationContext();
 			adaptor.Unauthenticate();
 			adaptor.RegisterAuthorizationServices(serviceProvider);
 

@@ -24,8 +24,8 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authAdaptor = ctx.Services.AddTestAuthorization();
-			authAdaptor.Authenticate("TestUser", AuthorizationState.Authorized);
+			var authContext = ctx.Services.AddTestAuthorization();
+			authContext.Authenticate("TestUser", AuthorizationState.Authorized);
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -39,8 +39,8 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authAdaptor = ctx.Services.AddTestAuthorization();
-			authAdaptor.Authenticate("TestUser", AuthorizationState.Unauthorized);
+			var authContext = ctx.Services.AddTestAuthorization();
+			authContext.Authenticate("TestUser", AuthorizationState.Unauthorized);
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -54,14 +54,14 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authAdaptor = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.Services.AddTestAuthorization();
 
 			// start off unauthenticated.
 			var cut = ctx.RenderComponent<SimpleAuthView>();
 			cut.MarkupMatches("Not authorized?");
 
 			// act
-			authAdaptor.Authenticate("TestUser004", AuthorizationState.Authorized);
+			authContext.Authenticate("TestUser004", AuthorizationState.Authorized);
 
 			cut.Render();
 
@@ -74,15 +74,15 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authAdaptor = ctx.Services.AddTestAuthorization();
-			authAdaptor.Authenticate("TestUser005", AuthorizationState.Authorized);
+			var authContext = ctx.Services.AddTestAuthorization();
+			authContext.Authenticate("TestUser005", AuthorizationState.Authorized);
 
 			// start off unauthenticated.
 			var cut = ctx.RenderComponent<SimpleAuthView>();
 			cut.MarkupMatches("Authorized!");
 
 			// act
-			authAdaptor.Unauthenticate();
+			authContext.Unauthenticate();
 
 			cut.Render();
 

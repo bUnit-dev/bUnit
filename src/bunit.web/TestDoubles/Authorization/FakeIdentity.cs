@@ -5,7 +5,7 @@ namespace Bunit.TestDoubles.Authorization
 	/// <summary>
 	/// Identity class to use in tests where you specify a user identity.
 	/// </summary>
-	class FakeIdentity : IIdentity
+	internal class FakeIdentity : IIdentity
 	{
 		/// <summary>
 		/// Gets the test authentication type.

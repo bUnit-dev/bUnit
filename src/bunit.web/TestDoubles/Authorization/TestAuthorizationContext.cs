@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +10,7 @@ namespace Bunit.TestDoubles.Authorization
 	/// Root authorization service that manages different authentication/authorization state
 	/// in the system.
 	/// </summary>
-	public class AuthorizationAdaptor
+	public class TestAuthorizationContext
 	{
 		private readonly FakeAuthorizationService authService = new FakeAuthorizationService();
 		private readonly FakeAuthorizationPolicyProvider policyProvider = new FakeAuthorizationPolicyProvider();
@@ -47,7 +48,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="userName">User name for the principal identity.</param>
 		/// <param name="state">Authorization state.</param>
 		/// <param name="roles">Roles for the claims principal.</param>
-		public void Authenticate(string userName, AuthorizationState state, IEnumerable<string>? roles = null)
+		public void Authenticate(string userName, AuthorizationState state = AuthorizationState.Authorized, IEnumerable<string>? roles = null)
 		{
 			IsAuthenticated = true;
 			Roles = roles;
@@ -68,6 +69,19 @@ namespace Bunit.TestDoubles.Authorization
 
 			Authorization = AuthorizationState.Unauthorized;
 			authService.SetAuthorizationState(AuthorizationState.Unauthorized);
+		}
+
+		/// <summary>
+		/// Factory method to create a ClaimsPrincipal from a FakePrincipal and its data.
+		/// </summary>
+		/// <param name="userName">User name for principal identity.</param>
+		/// <param name="roles">Roles for the user.</param>
+		/// <returns>ClaimsPrincipal created from this data.</returns>
+		public static ClaimsPrincipal CreatePrincipal(string userName, IList<string>? roles = null)
+		{
+			var principal = new ClaimsPrincipal(
+				new FakePrincipal { Identity = new FakeIdentity { Name = userName }, Roles = roles });
+			return principal;
 		}
 	}
 }

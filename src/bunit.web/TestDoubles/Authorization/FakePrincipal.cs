@@ -8,7 +8,7 @@ namespace Bunit.TestDoubles.Authorization
 	/// <summary>
 	/// A fake Principal implementation that represents an authenticated user.
 	/// </summary>
-	public class FakePrincipal : IPrincipal
+	internal class FakePrincipal : IPrincipal
 	{
 		/// <summary>
 		/// Gets or sets the identity for this authenticated principal.
@@ -33,19 +33,6 @@ namespace Bunit.TestDoubles.Authorization
 			}
 
 			return Roles.Any(p => p == role);
-		}
-
-		/// <summary>
-		/// Factory method to create a ClaimsPrincipal from a FakePrincipal and its data.
-		/// </summary>
-		/// <param name="userName">User name for principal identity.</param>
-		/// <param name="roles">Roles for the user.</param>
-		/// <returns>ClaimsPrincipal created from this data.</returns>
-		public static ClaimsPrincipal CreatePrincipal(string userName, IList<string>? roles = null)
-		{
-			var principal = new ClaimsPrincipal(
-				new FakePrincipal { Identity = new FakeIdentity { Name = userName }, Roles = roles });
-			return principal;
 		}
 	}
 }
