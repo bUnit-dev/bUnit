@@ -12,19 +12,16 @@ namespace Bunit.TestDoubles.Authorization
 	/// </summary>
 	public class FakeAuthorizationService : IAuthorizationService
 	{
+		private AuthorizationState currentState = AuthorizationState.Authorized;
+
 		/// <summary>
 		/// Constructor that intializes the authorization state of the service. 
 		/// </summary>
 		/// <param name="state"></param>
 		public FakeAuthorizationService(AuthorizationState state = AuthorizationState.Authorized)
 		{
-			CurrentState = state;
+			currentState = state;
 		}
-
-		/// <summary>
-		/// Gets or sets the current authorization state for this service.
-		/// </summary>
-		public AuthorizationState CurrentState { get; private set; } = AuthorizationState.Authorized;
 
 		/// <summary>
 		/// Gets a list of the AuthorizeAsync calls that were made to this service.
@@ -38,7 +35,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="state">New state to set.</param>
 		public void SetAuthorizationState(AuthorizationState state)
 		{
-			CurrentState = state;
+			currentState = state;
 		}
 
 		/// <summary>
@@ -54,7 +51,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// The FakeAuthorizationService doesn't apply any authorization requirements.
 			// It just returns whatever the user specified in the NextResult property.
-			var result = (CurrentState == AuthorizationState.Authorized) ? AuthorizationResult.Success() : AuthorizationResult.Failed();
+			var result = (currentState == AuthorizationState.Authorized) ? AuthorizationResult.Success() : AuthorizationResult.Failed();
 			return Task.FromResult(result);
 		}
 

@@ -9,19 +9,6 @@ namespace Bunit.TestDoubles.Authorization
 {
 	public class FakeAuthorizationServiceTest
 	{
-		[Fact(DisplayName = "Get default authorization result from AuthorizationService.")]
-		public void Test001()
-		{
-			// arrange
-			var service = new FakeAuthorizationService();
-
-			// act
-			var result = service.CurrentState;
-
-			// assert
-			Assert.Equal(AuthorizationState.Authorized, result);
-		}
-
 		[Fact(DisplayName = "Get AuthorizeAsync with an authorized result.")]
 		public async Task Test002()
 		{
