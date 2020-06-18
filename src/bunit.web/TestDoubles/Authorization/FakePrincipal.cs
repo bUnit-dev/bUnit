@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Security.Principal;
 
 namespace Bunit.TestDoubles.Authorization
@@ -18,7 +18,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Gets or sets the set of roles this user is authorized for.
 		/// </summary>
-		public IEnumerable<string>? Roles { get; set; }
+		public IEnumerable<string> Roles { get; set; } = Array.Empty<string>();
 
 		/// <summary>
 		/// Default non-authenticated principal returns false for IsInRole check.
@@ -27,11 +27,6 @@ namespace Bunit.TestDoubles.Authorization
 		/// <returns>Returns that this principal is not in any role.</returns>
 		public bool IsInRole(string role)
 		{
-			if (Roles == null)
-			{
-				return false;
-			}
-
 			return Roles.Any(p => p == role);
 		}
 	}

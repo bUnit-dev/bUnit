@@ -36,7 +36,7 @@ namespace Bunit.TestDoubles.Authorization
 			// assert
 			Assert.True(authContext.IsAuthenticated);
 			Assert.Equal(AuthorizationState.Unauthorized, authContext.Authorization);
-			Assert.Null(authContext.Roles);
+			Assert.Empty(authContext.Roles);
 		}
 
 		[Fact(DisplayName = "Register Authorization services with unauthenticated user.")]
@@ -52,7 +52,7 @@ namespace Bunit.TestDoubles.Authorization
 			// assert
 			Assert.False(authContext.IsAuthenticated);
 			Assert.Equal(AuthorizationState.Unauthorized, authContext.Authorization);
-			Assert.Null(authContext.Roles);
+			Assert.Empty(authContext.Roles);
 		}
 	}
 }

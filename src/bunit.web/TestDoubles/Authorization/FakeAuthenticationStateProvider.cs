@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -72,7 +73,7 @@ namespace Bunit.TestDoubles.Authorization
 		public static Task<AuthenticationState> CreateAuthenticationState(string username, IEnumerable<string>? roles = null)
 		{
 			var identity = new FakeIdentity { Name = username };
-			var testPrincipal = new FakePrincipal { Identity = identity, Roles = roles };
+			var testPrincipal = new FakePrincipal { Identity = identity, Roles = roles ?? Array.Empty<string>() };
 			var principal = new ClaimsPrincipal(testPrincipal);
 
 			return Task.FromResult(new AuthenticationState(principal));

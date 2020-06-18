@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +30,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Gets the set of roles for the current user.
 		/// </summary>
-		public IEnumerable<string>? Roles { get; private set; } = null;
+		public IEnumerable<string> Roles { get; private set; } = Array.Empty<string>();
 
 		/// <summary>
 		/// Registers authorization services with the specified service provider.
@@ -51,7 +52,7 @@ namespace Bunit.TestDoubles.Authorization
 		public void Authenticate(string userName, AuthorizationState state = AuthorizationState.Authorized, IEnumerable<string>? roles = null)
 		{
 			IsAuthenticated = true;
-			Roles = roles;
+			Roles = roles ?? Array.Empty<string>();
 			authProvider.TriggerAuthenticationStateChanged(userName, roles);
 
 			Authorization = state;
@@ -64,7 +65,7 @@ namespace Bunit.TestDoubles.Authorization
 		public void Unauthenticate()
 		{
 			IsAuthenticated = false;
-			Roles = null;
+			Roles = Array.Empty<string>();
 			authProvider.TriggerAuthenticationStateChanged();
 
 			Authorization = AuthorizationState.Unauthorized;
@@ -77,10 +78,11 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="userName">User name for principal identity.</param>
 		/// <param name="roles">Roles for the user.</param>
 		/// <returns>ClaimsPrincipal created from this data.</returns>
-		public static ClaimsPrincipal CreatePrincipal(string userName, IList<string>? roles = null)
+		public static ClaimsPrincipal CreatePrincipal(string userName, IEnumerable<string>? roles = null)
 		{
+			var r = roles ?? Array.Empty<string>();
 			var principal = new ClaimsPrincipal(
-				new FakePrincipal { Identity = new FakeIdentity { Name = userName }, Roles = roles });
+				new FakePrincipal { Identity = new FakeIdentity { Name = userName }, Roles = r });
 			return principal;
 		}
 	}

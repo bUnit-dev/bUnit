@@ -35,7 +35,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			var identity = new FakeIdentity { Name = "TestUser" };
-			var principal = new FakePrincipal { Identity = identity, Roles = null };
+			var principal = new FakePrincipal { Identity = identity };
 
 			// act
 			principal.IsInRole("User").ShouldBeFalse();
