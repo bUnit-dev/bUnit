@@ -26,7 +26,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Gets a list of the AuthorizeAsync calls that were made to this service.
 		/// </summary>
-		public List<(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)> AuthorizeCalls { get; }
+		public IList<(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)> AuthorizeCalls { get; }
 			= new List<(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)>();
 
 		/// <summary>
