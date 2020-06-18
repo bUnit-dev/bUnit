@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using Bunit.Extensions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Bunit.TestDoubles.Authorization
@@ -10,11 +12,16 @@ namespace Bunit.TestDoubles.Authorization
 	public class FakeAuthorizationPolicyProvider : IAuthorizationPolicyProvider
 	{
 		private readonly AuthorizationOptions _options = new AuthorizationOptions();
+		private string _policySchemeName = "TestScheme";
 
 		/// <summary>
 		/// Gets or sets the policy scheme name (if user wants to set it). Defaults to TestScheme.
 		/// </summary>
-		public string PolicySchemeName { get; set; } = "TestScheme";
+		public string PolicySchemeName
+		{
+			get => _policySchemeName;
+			set => _policySchemeName = value.VerifyRequiredValue();
+		}
 
 		/// <summary>
 		/// Gets the default authorization policy.
