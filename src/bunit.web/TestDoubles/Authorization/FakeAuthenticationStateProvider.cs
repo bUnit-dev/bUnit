@@ -48,7 +48,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// </summary>
 		/// <param name="userName">Identity's user name.</param>
 		/// <param name="roles">Roles that this user principal has.</param>
-		public void TriggerAuthenticationStateChanged(string userName, IList<string>? roles = null)
+		public void TriggerAuthenticationStateChanged(string userName, IEnumerable<string>? roles = null)
 		{
 			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateAuthenticationState(userName, roles);
 			NotifyAuthenticationStateChanged(CurrentAuthStateTask);
@@ -69,7 +69,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="username">Identity's user name.</param>
 		/// <param name="roles">Roles that this user principal has.</param>
 		/// <returns>Instance of AuthenticationState with user principal.</returns>
-		public static Task<AuthenticationState> CreateAuthenticationState(string username, IList<string>? roles = null)
+		public static Task<AuthenticationState> CreateAuthenticationState(string username, IEnumerable<string>? roles = null)
 		{
 			var identity = new FakeIdentity { Name = username };
 			var testPrincipal = new FakePrincipal { Identity = identity, Roles = roles };

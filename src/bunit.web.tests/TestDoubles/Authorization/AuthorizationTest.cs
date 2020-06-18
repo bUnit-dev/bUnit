@@ -1,6 +1,4 @@
 using Bunit.TestAssets.SampleComponents;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace Bunit.TestDoubles.Authorization
@@ -26,7 +24,8 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			ctx.Services.AddTestAuthorization("TestUser", AuthorizationState.Authorized);
+			var authAdaptor = ctx.Services.AddTestAuthorization();
+			authAdaptor.Authenticate("TestUser", AuthorizationState.Authorized);
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -40,7 +39,8 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			ctx.Services.AddTestAuthorization("TestUser", AuthorizationState.Unauthorized);
+			var authAdaptor = ctx.Services.AddTestAuthorization();
+			authAdaptor.Authenticate("TestUser", AuthorizationState.Unauthorized);
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -54,15 +54,14 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			ctx.Services.AddTestAuthorization();
-			var authProvider = ctx.Services.GetRequiredService<AuthenticationStateProvider>();
+			var authAdaptor = ctx.Services.AddTestAuthorization();
 
 			// start off unauthenticated.
 			var cut = ctx.RenderComponent<SimpleAuthView>();
 			cut.MarkupMatches("Not authorized?");
 
 			// act
-			ctx.Services.UpdateTestAuthorizationState("TestUser004", AuthorizationState.Authorized);
+			authAdaptor.Authenticate("TestUser004", AuthorizationState.Authorized);
 
 			cut.Render();
 
@@ -75,15 +74,15 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			ctx.Services.AddTestAuthorization("TestUser005", AuthorizationState.Authorized);
-			var authProvider = ctx.Services.GetRequiredService<AuthenticationStateProvider>();
+			var authAdaptor = ctx.Services.AddTestAuthorization();
+			authAdaptor.Authenticate("TestUser005", AuthorizationState.Authorized);
 
 			// start off unauthenticated.
 			var cut = ctx.RenderComponent<SimpleAuthView>();
 			cut.MarkupMatches("Authorized!");
 
 			// act
-			ctx.Services.UpdateTestAuthorizationState();
+			authAdaptor.Unauthenticate();
 
 			cut.Render();
 
