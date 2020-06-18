@@ -26,11 +26,7 @@ namespace Bunit.TestDoubles.Authorization
 		public async Task Test002()
 		{
 			// arrange
-			var service = new FakeAuthorizationService
-			{
-				CurrentState = AuthorizationState.Unauthorized
-			};
-
+			var service = new FakeAuthorizationService(AuthorizationState.Unauthorized);
 			var user = new ClaimsPrincipal(new FakeIdentity { Name = "DarthPedro" });
 			var requirements = new List<IAuthorizationRequirement>();
 
@@ -62,11 +58,7 @@ namespace Bunit.TestDoubles.Authorization
 		public async Task Test004()
 		{
 			// arrange
-			var service = new FakeAuthorizationService
-			{
-				CurrentState = AuthorizationState.Unauthorized
-			};
-
+			var service = new FakeAuthorizationService(AuthorizationState.Unauthorized);
 			var user = new ClaimsPrincipal(new FakeIdentity { Name = "DarthPedro" });
 
 			// act

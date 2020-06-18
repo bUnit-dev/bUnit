@@ -19,10 +19,7 @@ namespace Bunit.TestDoubles.Authorization
 			AuthorizationState authorizationState = AuthorizationState.Authorized,
 			IList<string>? roles = null)
 		{
-			var authService = new FakeAuthorizationService()
-			{
-				CurrentState = authorizationState
-			};
+			var authService = new FakeAuthorizationService(authorizationState);
 
 			serviceProvider.AddSingleton<IAuthorizationService>(authService);
 			serviceProvider.AddSingleton<IAuthorizationPolicyProvider>(new FakeAuthorizationPolicyProvider());
@@ -34,10 +31,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// </summary>
 		public static void AddTestAuthorization(this TestServiceProvider serviceProvider)
 		{
-			var authService = new FakeAuthorizationService()
-			{
-				CurrentState = AuthorizationState.Unauthorized
-			};
+			var authService = new FakeAuthorizationService(AuthorizationState.Unauthorized);
 
 			serviceProvider.AddSingleton<IAuthorizationService>(authService);
 			serviceProvider.AddSingleton<IAuthorizationPolicyProvider>(new FakeAuthorizationPolicyProvider());
@@ -62,7 +56,7 @@ namespace Bunit.TestDoubles.Authorization
 			var authService = serviceProvider.GetRequiredService<IAuthorizationService>();
 			var testService = (FakeAuthorizationService)authService;
 
-			testService.CurrentState = authorizationState;
+			testService.SetAuthorizationState(authorizationState);
 		}
 
 		/// <summary>
@@ -78,7 +72,7 @@ namespace Bunit.TestDoubles.Authorization
 			var authService = serviceProvider.GetRequiredService<IAuthorizationService>();
 			var testService = (FakeAuthorizationService)authService;
 
-			testService.CurrentState = AuthorizationState.Unauthorized;
+			testService.SetAuthorizationState(AuthorizationState.Unauthorized);
 		}
 	}
 }
