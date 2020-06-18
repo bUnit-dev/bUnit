@@ -12,6 +12,11 @@ namespace Bunit.TestDoubles.Authorization
 		private readonly AuthorizationOptions options = new AuthorizationOptions();
 
 		/// <summary>
+		/// Gets or sets the policy scheme name (if user wants to set it). Defaults to TestScheme.
+		/// </summary>
+		public string PolicySchemeName { get; set; } = "TestScheme";
+
+		/// <summary>
 		/// Gets the default authorization policy.
 		/// </summary>
 		/// <returns>Default policy.</returns>
@@ -35,7 +40,7 @@ namespace Bunit.TestDoubles.Authorization
 			{
 					new TestPolicyRequirement { PolicyName = policyName }
 			},
-			new[] { $"TestScheme:{policyName}" }));
+			new[] { $"{this.PolicySchemeName}:{policyName}" }));
 	}
 
 	/// <summary>
