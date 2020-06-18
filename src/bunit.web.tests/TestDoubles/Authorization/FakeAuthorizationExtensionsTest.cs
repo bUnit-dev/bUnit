@@ -14,7 +14,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// act
 			var authContext = sp.AddTestAuthorization();
-			authContext.Authenticate("DarthPedro", AuthorizationState.Authorized, roles);
+			authContext.SetAuthorized("DarthPedro", AuthorizationState.Authorized, roles);
 
 			// assert
 			Assert.True(authContext.IsAuthenticated);
@@ -31,7 +31,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// act
 			var authContext = sp.AddTestAuthorization();
-			authContext.Authenticate("DarthPedro", AuthorizationState.Unauthorized);
+			authContext.SetAuthorized("DarthPedro", AuthorizationState.Unauthorized);
 
 			// assert
 			Assert.True(authContext.IsAuthenticated);

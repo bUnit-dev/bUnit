@@ -49,7 +49,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="userName">User name for the principal identity.</param>
 		/// <param name="state">Authorization state.</param>
 		/// <param name="roles">Roles for the claims principal.</param>
-		public void Authenticate(string userName, AuthorizationState state = AuthorizationState.Authorized, IEnumerable<string>? roles = null)
+		public void SetAuthorized(string userName, AuthorizationState state = AuthorizationState.Authorized, IEnumerable<string>? roles = null)
 		{
 			IsAuthenticated = true;
 			Roles = roles ?? Array.Empty<string>();
@@ -60,9 +60,9 @@ namespace Bunit.TestDoubles.Authorization
 		}
 
 		/// <summary>
-		/// Puts the authorization services into an unauthenticated state.
+		/// Puts the authorization services into an unauthenticated and unauthorized state.
 		/// </summary>
-		public void Unauthenticate()
+		public void SetNotAuthorized()
 		{
 			IsAuthenticated = false;
 			Roles = Array.Empty<string>();

@@ -25,7 +25,7 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			using var ctx = new TestContext();
 			var authContext = ctx.Services.AddTestAuthorization();
-			authContext.Authenticate("TestUser", AuthorizationState.Authorized);
+			authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -40,7 +40,7 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			using var ctx = new TestContext();
 			var authContext = ctx.Services.AddTestAuthorization();
-			authContext.Authenticate("TestUser", AuthorizationState.Unauthorized);
+			authContext.SetAuthorized("TestUser", AuthorizationState.Unauthorized);
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -61,7 +61,7 @@ namespace Bunit.TestDoubles.Authorization
 			cut.MarkupMatches("Not authorized?");
 
 			// act
-			authContext.Authenticate("TestUser004", AuthorizationState.Authorized);
+			authContext.SetAuthorized("TestUser004", AuthorizationState.Authorized);
 
 			cut.Render();
 
@@ -75,14 +75,14 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			using var ctx = new TestContext();
 			var authContext = ctx.Services.AddTestAuthorization();
-			authContext.Authenticate("TestUser005", AuthorizationState.Authorized);
+			authContext.SetAuthorized("TestUser005", AuthorizationState.Authorized);
 
 			// start off unauthenticated.
 			var cut = ctx.RenderComponent<SimpleAuthView>();
 			cut.MarkupMatches("Authorized!");
 
 			// act
-			authContext.Unauthenticate();
+			authContext.SetNotAuthorized();
 
 			cut.Render();
 

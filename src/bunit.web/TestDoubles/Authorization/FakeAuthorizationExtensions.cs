@@ -13,7 +13,7 @@ namespace Bunit.TestDoubles.Authorization
 		public static TestAuthorizationContext AddTestAuthorization(this TestServiceProvider serviceProvider)
 		{
 			var adaptor = new TestAuthorizationContext();
-			adaptor.Unauthenticate();
+			adaptor.SetNotAuthorized();
 			adaptor.RegisterAuthorizationServices(serviceProvider);
 
 			return adaptor;
