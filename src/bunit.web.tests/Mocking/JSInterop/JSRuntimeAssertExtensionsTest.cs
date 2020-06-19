@@ -6,7 +6,7 @@ using AngleSharp.Dom;
 
 using Bunit.Asserting;
 using Bunit.Diffing;
-
+using Bunit.TestDoubles.JSInterop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

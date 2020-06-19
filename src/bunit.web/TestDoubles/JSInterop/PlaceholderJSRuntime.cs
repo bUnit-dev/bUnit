@@ -1,9 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.JSInterop;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
 	/// This JSRuntime is used to provide users with helpful exceptions if they fail to provide a mock when required. 

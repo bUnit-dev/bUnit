@@ -1,7 +1,6 @@
 using Bunit.Diffing;
-using Bunit.Mocking.JSInterop;
 using Bunit.Rendering;
-
+using Bunit.TestDoubles.JSInterop;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 

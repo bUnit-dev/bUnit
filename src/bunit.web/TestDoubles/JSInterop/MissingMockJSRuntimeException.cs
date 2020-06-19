@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
 	/// Exception use to indicate that a MockJSRuntime is required by a test

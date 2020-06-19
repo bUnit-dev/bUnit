@@ -7,7 +7,7 @@ using Bunit.Asserting;
 
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
 	/// Assert extensions for JSRuntimeMock
@@ -38,7 +38,7 @@ namespace Bunit.Mocking.JSInterop
 		/// <param name="userMessage">A custom user message to display if the assertion fails.</param>
 		/// <returns>The <see cref="JSRuntimeInvocation"/>.</returns>
 		public static JSRuntimeInvocation VerifyInvoke(this MockJSRuntimeInvokeHandler handler, string identifier, string? userMessage = null)
-			=> VerifyInvoke(handler, identifier, 1, userMessage)[0];
+			=> handler.VerifyInvoke(identifier, 1, userMessage)[0];
 
 		/// <summary>
 		/// Verifies that the <paramref name="identifier"/> has been invoked <paramref name="calledTimes"/> times.

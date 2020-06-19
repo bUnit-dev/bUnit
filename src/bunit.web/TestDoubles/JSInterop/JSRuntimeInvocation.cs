@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
 	/// Represents an invocation of JavaScript via the JSRuntime Mock
@@ -53,7 +53,7 @@ namespace Bunit.Mocking.JSInterop
 			hash.Add(Identifier);
 			hash.Add(CancellationToken);
 
-			for (int i = 0; i < Arguments.Count; i++)
+			for (var i = 0; i < Arguments.Count; i++)
 			{
 				hash.Add(Arguments[i]);
 			}
@@ -72,7 +72,7 @@ namespace Bunit.Mocking.JSInterop
 			if (left.Count != right.Count)
 				return false;
 
-			for (int i = 0; i < left.Count; i++)
+			for (var i = 0; i < left.Count; i++)
 			{
 				if (!left[i].Equals(right[i]))
 					return false;

@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
 	/// The execution mode of the <see cref="MockJSRuntimeExtensions"/>.
@@ -8,12 +8,12 @@ namespace Bunit.Mocking.JSInterop
 	public enum JSRuntimeMockMode
 	{
 		/// <summary>
-		/// <see cref="JSRuntimeMockMode.Loose"/> configures the <see cref="MockJSRuntimeExtensions"/> to return default TValue 
+		/// <see cref="Loose"/> configures the <see cref="MockJSRuntimeExtensions"/> to return default TValue 
 		/// for <see cref="IJSRuntime.InvokeAsync{TValue}(string, object[])"/> calls to the mock.
 		/// </summary>
 		Loose = 0,
 		/// <summary>
-		/// <see cref="JSRuntimeMockMode.Strict"/> configures the <see cref="MockJSRuntimeExtensions"/> to throw an
+		/// <see cref="Strict"/> configures the <see cref="MockJSRuntimeExtensions"/> to throw an
 		/// <see cref="UnplannedJSInvocationException"/> exception when a call to 
 		/// for <see cref="IJSRuntime.InvokeAsync{TValue}(string, object[])"/> has not been 
 		/// setup in the mock.

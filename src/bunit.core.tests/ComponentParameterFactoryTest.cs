@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Bunit.Mocking.JSInterop;
 using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
+using Bunit.TestDoubles.JSInterop;
 using Shouldly;
 
 using Xunit;

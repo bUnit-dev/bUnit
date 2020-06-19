@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.JSInterop;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
 	/// Represents an invoke handler for a mock of a <see cref="IJSRuntime"/>.
@@ -71,7 +70,7 @@ namespace Bunit.Mocking.JSInterop
 		/// <returns>A <see cref="JSRuntimePlannedInvocation{TResult}"/>.</returns>
 		public JSRuntimePlannedInvocation<TResult> Setup<TResult>(string identifier, params object[] arguments)
 		{
-			return Setup<TResult>(identifier, args => Enumerable.SequenceEqual(args, arguments));
+			return Setup<TResult>(identifier, args => args.SequenceEqual(arguments));
 		}
 
 		/// <summary>
@@ -99,7 +98,7 @@ namespace Bunit.Mocking.JSInterop
 		/// <returns>A <see cref="JSRuntimePlannedInvocation"/>.</returns>
 		public JSRuntimePlannedInvocation SetupVoid(string identifier, params object[] arguments)
 		{
-			return SetupVoid(identifier, args => Enumerable.SequenceEqual(args, arguments));
+			return SetupVoid(identifier, args => args.SequenceEqual(arguments));
 		}
 
 		private void AddPlannedInvocation<TResult>(JSRuntimePlannedInvocationBase<TResult> planned)

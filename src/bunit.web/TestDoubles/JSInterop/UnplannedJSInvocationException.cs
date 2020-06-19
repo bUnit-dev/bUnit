@@ -5,7 +5,7 @@ using System.Linq;
 
 using Bunit;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
 	/// Exception use to indicate that an unplanned invocation was
