@@ -2,14 +2,13 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Bunit.TestDoubles.JSInterop;
 using Microsoft.JSInterop;
 
 using Shouldly;
 
 using Xunit;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	public class MockJSRuntimeInvokeHandlerTest
 	{

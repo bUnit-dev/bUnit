@@ -6,7 +6,6 @@ using AngleSharp.Dom;
 
 using Bunit.Asserting;
 using Bunit.Diffing;
-using Bunit.TestDoubles.JSInterop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -16,7 +15,7 @@ using Shouldly;
 
 using Xunit;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	public class JSRuntimeAssertExtensionsTest
 	{
@@ -24,7 +23,7 @@ namespace Bunit.Mocking.JSInterop
 		public void Test001()
 		{
 			MockJSRuntimeInvokeHandler? handler = null;
-			Should.Throw<ArgumentNullException>(() => JSRuntimeAssertExtensions.VerifyNotInvoke(handler!, ""));
+			Should.Throw<ArgumentNullException>(() => (handler!).VerifyNotInvoke(""));
 		}
 
 		[Fact(DisplayName = "VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
@@ -63,8 +62,8 @@ namespace Bunit.Mocking.JSInterop
 		public void Test100()
 		{
 			MockJSRuntimeInvokeHandler? handler = null;
-			Should.Throw<ArgumentNullException>(() => JSRuntimeAssertExtensions.VerifyInvoke(handler!, ""));
-			Should.Throw<ArgumentNullException>(() => JSRuntimeAssertExtensions.VerifyInvoke(handler!, "", 42));
+			Should.Throw<ArgumentNullException>(() => (handler!).VerifyInvoke(""));
+			Should.Throw<ArgumentNullException>(() => (handler!).VerifyInvoke("", 42));
 		}
 
 		[Fact(DisplayName = "VerifyInvoke throws invokeCount is less than 1")]
@@ -108,7 +107,7 @@ namespace Bunit.Mocking.JSInterop
 		{
 			Should.Throw<ArgumentNullException>(() => JSRuntimeAssertExtensions.ShouldBeElementReferenceTo(null!, null!))
 				.ParamName.ShouldBe("actualArgument");
-			Should.Throw<ArgumentNullException>(() => JSRuntimeAssertExtensions.ShouldBeElementReferenceTo(string.Empty, null!))
+			Should.Throw<ArgumentNullException>(() => string.Empty.ShouldBeElementReferenceTo(null!))
 				.ParamName.ShouldBe("expectedTargetElement");
 		}
 

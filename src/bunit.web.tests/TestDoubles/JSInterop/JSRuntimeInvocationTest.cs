@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Bunit.TestDoubles.JSInterop;
 using Shouldly;
 
 using Xunit;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	public class JSRuntimeInvocationTest
 	{
