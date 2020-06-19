@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Bunit.Extensions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Bunit.TestDoubles.Authorization
@@ -20,7 +19,12 @@ namespace Bunit.TestDoubles.Authorization
 		public string PolicySchemeName
 		{
 			get => _policySchemeName;
-			set => _policySchemeName = value ?? throw new ArgumentNullException(nameof(value));
+			set
+			{
+				if (string.IsNullOrEmpty(value))
+					throw new ArgumentNullException(nameof(value));
+				_policySchemeName = value;
+			}
 		}
 
 		/// <summary>

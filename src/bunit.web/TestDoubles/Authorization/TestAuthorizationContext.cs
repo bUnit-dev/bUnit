@@ -33,12 +33,6 @@ namespace Bunit.TestDoubles.Authorization
 		public IEnumerable<string> Roles { get; private set; } = Array.Empty<string>();
 
 		/// <summary>
-		/// Gets a list of the AuthorizeAsync calls that were made to the IAuthorizationService.
-		/// Callers can verify authorization request was made as expected from TestAuthorizationContext.
-		/// </summary>
-		public IReadOnlyList<(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)> AuthorizeCalls => _authService.AuthorizeCalls;		
-
-		/// <summary>
 		/// Registers authorization services with the specified service provider.
 		/// </summary>
 		/// <param name="services">Service provider to use.</param>
