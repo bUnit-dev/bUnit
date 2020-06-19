@@ -69,7 +69,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Finds all components of type <typeparamref name="TComponent"/> in the render tree of 
-		/// this <see cref="IRenderedFragment"/>.
+		/// this <see cref="IRenderedFragment"/>, in depth-first order.
 		/// </summary>
 		/// <typeparam name="TComponent">Type of components to find.</typeparam>
 		/// <returns>The <see cref="IRenderedComponent{T}"/>s</returns>
