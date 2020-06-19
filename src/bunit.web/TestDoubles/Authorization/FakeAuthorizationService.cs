@@ -12,10 +12,11 @@ namespace Bunit.TestDoubles.Authorization
 	/// </summary>
 	public class FakeAuthorizationService : IAuthorizationService
 	{
+		private readonly List<(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)> _authorizeCalls = new List<(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)>();
 		private AuthorizationState _currentState = AuthorizationState.Authorized;
 
 		/// <summary>
-		/// Constructor that intializes the authorization state of the service. 
+		/// Constructor that initializes the authorization state of the service. 
 		/// </summary>
 		/// <param name="state"></param>
 		public FakeAuthorizationService(AuthorizationState state = AuthorizationState.Authorized)
@@ -26,8 +27,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Gets a list of the AuthorizeAsync calls that were made to this service.
 		/// </summary>
-		public IList<(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)> AuthorizeCalls { get; }
-			= new List<(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)>();
+		public IReadOnlyList<(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)> AuthorizeCalls => _authorizeCalls;
 
 		/// <summary>
 		/// Method to explicitly set the authorization state.
@@ -47,7 +47,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <returns>Result of authorize request.</returns>
 		public Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)
 		{
-			AuthorizeCalls.Add((user, resource, requirements));
+			_authorizeCalls.Add((user, resource, requirements));
 
 			// The FakeAuthorizationService doesn't apply any authorization requirements.
 			// It just returns an AuthorizationResult based on the current authorization state.

@@ -20,7 +20,7 @@ namespace Bunit.TestDoubles.Authorization
 		public string PolicySchemeName
 		{
 			get => _policySchemeName;
-			set => _policySchemeName = value.VerifyRequiredValue();
+			set => _policySchemeName = value ?? throw new ArgumentNullException(nameof(value));
 		}
 
 		/// <summary>
@@ -42,12 +42,16 @@ namespace Bunit.TestDoubles.Authorization
 		/// </summary>
 		/// <param name="policyName">Policy name.</param>
 		/// <returns>Test policy for the specified name.</returns>
-		public Task<AuthorizationPolicy> GetPolicyAsync(string policyName) => Task.FromResult(
-			new AuthorizationPolicy(new[]
+		public Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
+		{
+			var authPolicy = new AuthorizationPolicy(new[]
 			{
-					new TestPolicyRequirement { PolicyName = policyName }
+				new TestPolicyRequirement { PolicyName = policyName }
 			},
-			new[] { $"{this.PolicySchemeName}:{policyName}" }));
+			new[] { $"{PolicySchemeName}:{policyName}" });
+
+			return Task.FromResult(authPolicy);
+		}
 	}
 
 	/// <summary>

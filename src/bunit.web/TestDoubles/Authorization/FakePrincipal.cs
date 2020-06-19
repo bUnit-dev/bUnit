@@ -10,6 +10,8 @@ namespace Bunit.TestDoubles.Authorization
 	/// </summary>
 	internal class FakePrincipal : IPrincipal
 	{
+		private IEnumerable<string> _roles = Array.Empty<string>();
+
 		/// <summary>
 		/// Gets or sets the identity for this authenticated principal.
 		/// </summary>
@@ -18,16 +20,17 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Gets or sets the set of roles this user is authorized for.
 		/// </summary>
-		public IEnumerable<string> Roles { get; set; } = Array.Empty<string>();
+		public IEnumerable<string> Roles
+		{
+			get => _roles;
+			set => _roles = value ?? throw new ArgumentNullException(nameof(value));
+		}
 
 		/// <summary>
 		/// Default non-authenticated principal returns false for IsInRole check.
 		/// </summary>
 		/// <param name="role">Role name</param>
 		/// <returns>Returns that this principal is not in any role.</returns>
-		public bool IsInRole(string role)
-		{
-			return Roles.Any(p => p == role);
-		}
+		public bool IsInRole(string role) => Roles.Any(p => p.Equals(role, StringComparison.Ordinal));
 	}
 }

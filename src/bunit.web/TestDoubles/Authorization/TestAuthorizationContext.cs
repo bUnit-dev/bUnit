@@ -36,20 +36,17 @@ namespace Bunit.TestDoubles.Authorization
 		/// Gets a list of the AuthorizeAsync calls that were made to the IAuthorizationService.
 		/// Callers can verify authorization request was made as expected from TestAuthorizationContext.
 		/// </summary>
-		public IEnumerable<(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)> AuthorizeCalls
-		{
-			get => _authService.AuthorizeCalls;
-		}
+		public IReadOnlyList<(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)> AuthorizeCalls => _authService.AuthorizeCalls;		
 
 		/// <summary>
 		/// Registers authorization services with the specified service provider.
 		/// </summary>
-		/// <param name="serviceProvider">Service provider to use.</param>
-		public void RegisterAuthorizationServices(TestServiceProvider serviceProvider)
+		/// <param name="services">Service provider to use.</param>
+		public void RegisterAuthorizationServices(IServiceCollection services)
 		{
-			serviceProvider.AddSingleton<IAuthorizationService>(_authService);
-			serviceProvider.AddSingleton<IAuthorizationPolicyProvider>(_policyProvider);
-			serviceProvider.AddSingleton<AuthenticationStateProvider>(_authProvider);
+			services.AddSingleton<IAuthorizationService>(_authService);
+			services.AddSingleton<IAuthorizationPolicyProvider>(_policyProvider);
+			services.AddSingleton<AuthenticationStateProvider>(_authProvider);
 		}
 
 		/// <summary>
@@ -89,9 +86,13 @@ namespace Bunit.TestDoubles.Authorization
 		/// <returns>ClaimsPrincipal created from this data.</returns>
 		public static ClaimsPrincipal CreatePrincipal(string userName, IEnumerable<string>? roles = null)
 		{
-			var r = roles ?? Array.Empty<string>();
 			var principal = new ClaimsPrincipal(
-				new FakePrincipal { Identity = new FakeIdentity { Name = userName }, Roles = r });
+				new FakePrincipal
+				{
+					Identity = new FakeIdentity { Name = userName },
+					Roles = roles ?? Array.Empty<string>()
+				}
+			);
 			return principal;
 		}
 	}

@@ -12,11 +12,10 @@ namespace Bunit.TestDoubles.Authorization
 		/// </summary>
 		public static TestAuthorizationContext AddTestAuthorization(this TestServiceProvider serviceProvider)
 		{
-			var adaptor = new TestAuthorizationContext();
-			adaptor.SetNotAuthorized();
-			adaptor.RegisterAuthorizationServices(serviceProvider);
-
-			return adaptor;
+			var authCtx = new TestAuthorizationContext();
+			authCtx.SetNotAuthorized();
+			authCtx.RegisterAuthorizationServices(serviceProvider);
+			return authCtx;
 		}
 	}
 }
