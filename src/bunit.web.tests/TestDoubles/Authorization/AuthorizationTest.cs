@@ -63,7 +63,7 @@ namespace Bunit.TestDoubles.Authorization
 			// act
 			authContext.SetAuthorized("TestUser004", AuthorizationState.Authorized);
 
-			//cut.Render();
+			cut.Render();
 
 			// assert
 			cut.WaitForAssertion(() => cut.MarkupMatches("Authorized!"));
