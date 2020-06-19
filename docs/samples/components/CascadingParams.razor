@@ -1,0 +1,11 @@
+@code 
+{
+  [CascadingParameter]
+  public bool IsDarkTheme { get; set; }
+
+  [CascadingParameter(Name = "LoggedInUser")]
+  public string UserName { get; set; }
+    
+  [CascadingParameter(Name = "LoggedInEmail")]
+  public string Email { get; set; }
+}
