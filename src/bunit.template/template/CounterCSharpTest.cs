@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 using Bunit;
-using Bunit.Mocking.JSInterop;
+using Bunit.TestDoubles.JSInterop;
 using static Bunit.ComponentParameterFactory;
 
 namespace Company.BlazorTests1
