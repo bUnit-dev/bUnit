@@ -18,7 +18,12 @@ namespace Bunit.TestDoubles.Authorization
 		public string AuthenticationType
 		{
 			get => _authType;
-			set => _authType = value ?? throw new ArgumentNullException(nameof(value));
+			set
+			{
+				if (string.IsNullOrEmpty(value))
+					throw new ArgumentNullException(nameof(value));
+				_authType = value;
+			}
 		}
 
 		/// <summary>
@@ -32,7 +37,12 @@ namespace Bunit.TestDoubles.Authorization
 		public string Name
 		{
 			get => _name;
-			set => _name = value ?? throw new ArgumentNullException(nameof(value));
+			set
+			{
+				if (string.IsNullOrEmpty(value))
+					throw new ArgumentNullException(nameof(value));
+				_name = value;
+			}
 		}
 	}
 }

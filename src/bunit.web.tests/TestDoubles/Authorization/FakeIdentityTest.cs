@@ -8,8 +8,6 @@ namespace Bunit.TestDoubles.Authorization
 		[Fact(DisplayName = "Identity simple test")]
 		public void Test001()
 		{
-			// arrange
-
 			// act
 			var identity = new FakeIdentity { Name = "TestUser", AuthenticationType = "AnotherTestType" };
 
@@ -19,26 +17,20 @@ namespace Bunit.TestDoubles.Authorization
 			Assert.True(identity.IsAuthenticated);
 		}
 
-		[Fact(DisplayName = "Identity with null/empty Name set")]
-		public void Test002()
+		[Theory(DisplayName = "Identity with null/empty Name set")]
+		[InlineData(null)]
+		[InlineData("")]
+		public void Test002(string name)
 		{
-			// arrange
-
-			// act
-			Assert.Throws<ArgumentNullException>(
-				() => new FakeIdentity { Name = string.Empty, AuthenticationType = "AnotherTestType" } );
-
+			Assert.Throws<ArgumentNullException>(() => new FakeIdentity { Name = name, AuthenticationType = "AnotherTestType" });
 		}
 
-		[Fact(DisplayName = "Identity with null/empty AuthenticationType set")]
-		public void Test003()
+		[Theory(DisplayName = "Identity with null/empty AuthenticationType set")]
+		[InlineData(null)]
+		[InlineData("")]
+		public void Test003(string authType)
 		{
-			// arrange
-
-			// act
-			Assert.Throws<ArgumentNullException>(
-				() => new FakeIdentity { Name = "TestUser", AuthenticationType = string.Empty });
-
+			Assert.Throws<ArgumentNullException>(() => new FakeIdentity { Name = "TestUser", AuthenticationType = authType });
 		}
 	}
 }
