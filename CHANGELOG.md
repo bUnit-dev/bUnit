@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 List of new features.
 
-- Authorization fakes added to make it much easier to test components that use authentication and authorization. By [@DarthPedro](https://github.com/DarthPedro) in #151.
+- Authorization fakes added to make it much easier to test components that use authentication and authorization. By [@DarthPedro](https://github.com/DarthPedro) in [#151](https://github.com/egil/bUnit/pull/151).
 
 #### Authorization Fakes
 Added authentication/authorization fake services to make it easy to test Blazor components that use authorization either through code or the AuthorizeView component.

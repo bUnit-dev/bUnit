@@ -19,7 +19,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="roles">Roles that this user principal has.</param>
 		public FakeAuthenticationStateProvider(string userName, IEnumerable<string>? roles = null)
 		{
-			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateAuthenticationState(userName, roles);
+			CurrentAuthStateTask = CreateAuthenticationState(userName, roles);
 		}
 
 		/// <summary>
@@ -27,7 +27,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// </summary>
 		public FakeAuthenticationStateProvider()
 		{
-			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateUnauthenticationState();
+			CurrentAuthStateTask = CreateUnauthenticationState();
 		}
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace Bunit.TestDoubles.Authorization
 		protected Task<AuthenticationState> CurrentAuthStateTask { get; set; }
 
 		/// <summary>
-		/// Overidden method to get the current authentication state.
+		/// Overridden method to get the current authentication state.
 		/// </summary>
 		/// <returns>Current authentication state.</returns>
 		public override Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -45,27 +45,27 @@ namespace Bunit.TestDoubles.Authorization
 		}
 
 		/// <summary>
-		/// Method to change the authenticaiton state and authenticated user.
+		/// Method to change the authentication state and authenticated user.
 		/// </summary>
 		/// <param name="userName">Identity's user name.</param>
 		/// <param name="roles">Roles that this user principal has.</param>
 		public void TriggerAuthenticationStateChanged(string userName, IEnumerable<string>? roles = null)
 		{
-			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateAuthenticationState(userName, roles);
+			CurrentAuthStateTask = CreateAuthenticationState(userName, roles);
 			NotifyAuthenticationStateChanged(CurrentAuthStateTask);
 		}
 
 		/// <summary>
-		/// Method to change the authenticaiton state to unauthenticated.
+		/// Method to change the authentication state to unauthenticated.
 		/// </summary>
 		public void TriggerAuthenticationStateChanged()
 		{
-			CurrentAuthStateTask = FakeAuthenticationStateProvider.CreateUnauthenticationState();
+			CurrentAuthStateTask = CreateUnauthenticationState();
 			NotifyAuthenticationStateChanged(CurrentAuthStateTask);
 		}
 
 		/// <summary>
-		/// Factory method to create an authenticated state for a username and set of authorization roles.
+		/// Factory method to create an authenticated state for a <paramref name="username"/> and set of authorization roles.
 		/// </summary>
 		/// <param name="username">Identity's user name.</param>
 		/// <param name="roles">Roles that this user principal has.</param>
