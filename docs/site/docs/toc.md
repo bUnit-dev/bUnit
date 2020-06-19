@@ -22,7 +22,7 @@
 ## [Asynchronous Assertion of Changes](xref:async-assertion)
 
 # [Test Doubles](xref:test-doubles)
-## [Mocking Authorization](xref:mocking-auth)
+## [Faking Authorization](xref:faking-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
 ## [Mocking IJsRuntime](xref:mocking-ijsruntime)
 ## [Mocking Localization](xref:mocking-localizer)
