@@ -1,11 +1,11 @@
 @inherits TestComponentBase
 
 @code {
-    MockJsRuntimeInvokeHandler MockJsRuntime { get; set; } = default!;
+    MockJSRuntimeInvokeHandler MockJSRuntime { get; set; } = default!;
 
     void Setup(Fixture fixture)
     {
-        MockJsRuntime = fixture.Services.AddMockJsRuntime();
+        MockJSRuntime = fixture.Services.AddMockJSRuntime();
     }
 }
 
@@ -190,7 +190,7 @@
         void Test007(Fixture fixture)
         {
             // arrange
-            var plannedInvocation = MockJsRuntime.Setup<object>("window.transitionFinished");
+            var plannedInvocation = MockJSRuntime.Setup<object>("window.transitionFinished");
             var cut = fixture.GetComponentUnderTest<Alert>();
 
             // Act

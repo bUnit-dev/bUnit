@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
 	/// Represents a planned invocation of a JavaScript function which returns nothing, with specific arguments.
 	/// </summary>
-	public class JsRuntimePlannedInvocation : JsRuntimePlannedInvocationBase<object>
+	public class JSRuntimePlannedInvocation : JSRuntimePlannedInvocationBase<object>
 	{
-		internal JsRuntimePlannedInvocation(string identifier, Func<IReadOnlyList<object>, bool> matcher) : base(identifier, matcher)
+		internal JSRuntimePlannedInvocation(string identifier, Func<IReadOnlyList<object>, bool> matcher) : base(identifier, matcher)
 		{
 		}
 
@@ -17,7 +17,7 @@ namespace Bunit.Mocking.JSInterop
 		/// </summary>
 		public void SetVoidResult()
 		{
-			base.SetResultBase(default!);
+			SetResultBase(default!);
 		}
 	}
 
@@ -25,9 +25,9 @@ namespace Bunit.Mocking.JSInterop
 	/// Represents a planned invocation of a JavaScript function with specific arguments.
 	/// </summary>
 	/// <typeparam name="TResult"></typeparam>
-	public class JsRuntimePlannedInvocation<TResult> : JsRuntimePlannedInvocationBase<TResult>
+	public class JSRuntimePlannedInvocation<TResult> : JSRuntimePlannedInvocationBase<TResult>
 	{
-		internal JsRuntimePlannedInvocation(string identifier, Func<IReadOnlyList<object>, bool> matcher) : base(identifier, matcher)
+		internal JSRuntimePlannedInvocation(string identifier, Func<IReadOnlyList<object>, bool> matcher) : base(identifier, matcher)
 		{
 		}
 
@@ -35,6 +35,6 @@ namespace Bunit.Mocking.JSInterop
 		/// Sets the <typeparamref name="TResult"/> result that invocations will receive.
 		/// </summary>
 		/// <param name="result"></param>
-		public void SetResult(TResult result) => base.SetResultBase(result);
+		public void SetResult(TResult result) => SetResultBase(result);
 	}
 }

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Bunit.Mocking.JSInterop;
 using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
+using Bunit.TestDoubles.JSInterop;
 using Shouldly;
 
 using Xunit;
@@ -16,7 +16,7 @@ namespace Bunit
 		[Fact(DisplayName = "All types of parameters are correctly assigned to component on render")]
 		public void Test005()
 		{
-			Services.AddMockJsRuntime();
+			Services.AddMockJSRuntime();
 
 			var cut = RenderComponent<AllTypesOfParams<string>>(
 				("some-unmatched-attribute", "unmatched value"),
@@ -48,7 +48,7 @@ namespace Bunit
 		public void Test002()
 		{
 			// arrange
-			Services.AddMockJsRuntime();
+			Services.AddMockJSRuntime();
 			var cut = RenderComponent<AllTypesOfParams<string>>();
 
 			// assert that no parameters have been set initially

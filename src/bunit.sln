@@ -46,7 +46,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{785D
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.template", "bunit.template\bunit.template.csproj", "{58FB9C26-7170-426C-ACE8-A98237710CDB}"
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.template", "bunit.template\bunit.template.csproj", "{56F7777C-38B1-4183-98A1-3D8D207A19BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,8 +91,6 @@ Global
 		{58FB9C26-7170-426C-ACE8-A98237710CDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58FB9C26-7170-426C-ACE8-A98237710CDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58FB9C26-7170-426C-ACE8-A98237710CDB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{56F7777C-38B1-4183-98A1-3D8D207A19BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56F7777C-38B1-4183-98A1-3D8D207A19BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

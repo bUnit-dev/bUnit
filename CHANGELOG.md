@@ -13,6 +13,7 @@ List of new features.
 List of changes in existing functionality.
 
 - `TestContextBase.Dispose` made virtual to allow inheritor's to override it. By [@SimonCropp](https://github.com/SimonCropp) in [#137](https://github.com/egil/bunit/pull/137).
+- Changed naming convention for JSMock feature. All classes and methods containing `Js` (meaning JavaScript) renamed to `JS`. By [yourilima](https://github.com/yourilima) in [#150](https://github.com/egil/bUnit/pull/150)
 
 ### Deprecated
 List of soon-to-be removed features.
