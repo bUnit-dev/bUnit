@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SampleApp.Components;
-using Bunit.Mocking.JSInterop;
+using Bunit.TestDoubles.JSInterop;
 using Shouldly;
 using Xunit;
 using Bunit;

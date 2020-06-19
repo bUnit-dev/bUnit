@@ -1,6 +1,6 @@
 ﻿using Shouldly;
 using AngleSharp.Dom;
-using Bunit.Mocking.JSInterop;
+using Bunit.TestDoubles.JSInterop;
 using SampleApp.Components;
 using SampleApp.Data;
 using Microsoft.AspNetCore.Components;

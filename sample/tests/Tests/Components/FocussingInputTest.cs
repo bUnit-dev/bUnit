@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bunit.Mocking.JSInterop;
+using Bunit.TestDoubles.JSInterop;
 using SampleApp.Components;
 using Xunit;
 using Bunit;

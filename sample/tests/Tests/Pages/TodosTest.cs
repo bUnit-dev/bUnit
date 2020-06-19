@@ -9,7 +9,7 @@ using Moq;
 using SampleApp.Data;
 using SampleApp.Pages;
 using Microsoft.Extensions.DependencyInjection;
-using Bunit.Mocking.JSInterop;
+using Bunit.TestDoubles.JSInterop;
 using Bunit;
 
 namespace SampleApp.CodeOnlyTests.Pages
