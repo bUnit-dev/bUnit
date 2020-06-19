@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Text;
 using System.Text.Encodings.Web;
 
 using Bunit.Rendering;
@@ -16,7 +17,7 @@ namespace Bunit
 	/// https://source.dot.net/#Microsoft.AspNetCore.Mvc.ViewFeatures/RazorComponents/HtmlRenderer.cs
 	/// </summary>
 	[SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
-	internal class Htmlizer
+	internal static class Htmlizer
 	{
 		private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
 
@@ -43,7 +44,7 @@ namespace Bunit
 			var context = new HtmlRenderingContext(renderer);
 			var newPosition = RenderFrames(context, frames, 0, frames.Count);
 			Debug.Assert(newPosition == frames.Count, $"frames.Count = {frames.Count}. newPosition = {newPosition}");
-			return string.Join(string.Empty, context.Result);
+			return context.Result.ToString();
 		}
 
 		private static int RenderFrames(HtmlRenderingContext context, ArrayRange<RenderTreeFrame> frames, int position, int maxElements)
@@ -76,10 +77,10 @@ namespace Bunit
 				case RenderTreeFrameType.Attribute:
 					throw new InvalidOperationException($"Attributes should only be encountered within {nameof(RenderElement)}");
 				case RenderTreeFrameType.Text:
-					context.Result.Add(HtmlEncoder.Encode(frame.TextContent));
+					context.Result.Append(HtmlEncoder.Encode(frame.TextContent));
 					return ++position;
 				case RenderTreeFrameType.Markup:
-					context.Result.Add(frame.MarkupContent);
+					context.Result.Append(frame.MarkupContent);
 					return ++position;
 				case RenderTreeFrameType.Component:
 					return RenderChildComponent(context, frames, position);
@@ -111,8 +112,8 @@ namespace Bunit
 		{
 			ref var frame = ref frames.Array[position];
 			var result = context.Result;
-			result.Add("<");
-			result.Add(frame.ElementName);
+			result.Append("<");
+			result.Append(frame.ElementName);
 			var afterAttributes = RenderAttributes(context, frames, position + 1, frame.ElementSubtreeLength - 1, out var capturedValueAttribute);
 
 			// When we see an <option> as a descendant of a <select>, and the option's "value" attribute matches the
@@ -122,13 +123,13 @@ namespace Bunit
 				&& string.Equals(frame.ElementName, "option", StringComparison.OrdinalIgnoreCase)
 				&& string.Equals(capturedValueAttribute, context.ClosestSelectValueAsString, StringComparison.Ordinal))
 			{
-				result.Add(" selected");
+				result.Append(" selected");
 			}
 
 			var remainingElements = frame.ElementSubtreeLength + position - afterAttributes;
 			if (remainingElements > 0)
 			{
-				result.Add(">");
+				result.Append(">");
 
 				var isSelect = string.Equals(frame.ElementName, "select", StringComparison.OrdinalIgnoreCase);
 				if (isSelect)
@@ -145,9 +146,9 @@ namespace Bunit
 					context.ClosestSelectValueAsString = null;
 				}
 
-				result.Add("</");
-				result.Add(frame.ElementName);
-				result.Add(">");
+				result.Append("</");
+				result.Append(frame.ElementName);
+				result.Append(">");
 				Debug.Assert(afterElement == position + frame.ElementSubtreeLength);
 				return afterElement;
 			}
@@ -155,14 +156,13 @@ namespace Bunit
 			{
 				if (SelfClosingElements.Contains(frame.ElementName))
 				{
-					result.Add(" />");
+					result.Append(" />");
 				}
 				else
 				{
-					result.Add(">");
-					result.Add("</");
-					result.Add(frame.ElementName);
-					result.Add(">");
+					result.Append("></");
+					result.Append(frame.ElementName);
+					result.Append(">");
 				}
 				Debug.Assert(afterAttributes == position + frame.ElementSubtreeLength, $"afterAttributes = {afterAttributes}. position = {position}. frame.ElementSubtreeLength = {frame.ElementSubtreeLength}");
 				return afterAttributes;
@@ -200,7 +200,7 @@ namespace Bunit
 				// Added to write ElementReferenceCaptureId to DOM
 				if (frame.FrameType == RenderTreeFrameType.ElementReferenceCapture)
 				{
-					result.Add($" {ELEMENT_REFERENCE_ATTR_NAME}=\"{frame.ElementReferenceCaptureId}\"");
+					result.Append($" {ELEMENT_REFERENCE_ATTR_NAME}=\"{frame.ElementReferenceCaptureId}\"");
 				}
 
 				if (frame.FrameType != RenderTreeFrameType.Attribute)
@@ -215,18 +215,17 @@ namespace Bunit
 
 				if (frame.AttributeEventHandlerId > 0)
 				{
-					// NOTE: this was changed from  
+					// NOTE: this was changed from
 					//       result.Add($" {frame.AttributeName}=\"{frame.AttributeEventHandlerId}\"");
 					//       to the following to make it more obvious
 					//       that this is a generated/special blazor attribute
 					//       used for tracking event handler id's
-					result.Add(" ");
-					result.Add(BLAZOR_ATTR_PREFIX);
-					result.Add(frame.AttributeName);
-					result.Add("=");
-					result.Add("\"");
-					result.Add(frame.AttributeEventHandlerId.ToString(CultureInfo.InvariantCulture));
-					result.Add("\"");
+					result.Append(" ");
+					result.Append(BLAZOR_ATTR_PREFIX);
+					result.Append(frame.AttributeName);
+					result.Append("=\"");
+					result.Append(frame.AttributeEventHandlerId.ToString(CultureInfo.InvariantCulture));
+					result.Append("\"");
 					continue;
 				}
 
@@ -235,24 +234,21 @@ namespace Bunit
 					case bool flag when flag && frame.AttributeName.StartsWith(BLAZOR_INTERNAL_ATTR_PREFIX, StringComparison.Ordinal):
 						// NOTE: This was added to make it more obvious
 						//       that this is a generated/special blazor attribute
-						//	     for internal usage                    
-						result.Add(" ");
-						result.Add(BLAZOR_ATTR_PREFIX);
-						result.Add(frame.AttributeName);
+						//	     for internal usage
+						result.Append(" ");
+						result.Append(BLAZOR_ATTR_PREFIX);
+						result.Append(frame.AttributeName);
 						break;
 					case bool flag when flag:
-						result.Add(" ");
-						result.Add(frame.AttributeName);
+						result.Append(" ");
+						result.Append(frame.AttributeName);
 						break;
 					case string value:
-						result.Add(" ");
-						result.Add(frame.AttributeName);
-						result.Add("=");
-						result.Add("\"");
-						result.Add(HtmlEncoder.Encode(value));
-						result.Add("\"");
-						break;
-					default:
+						result.Append(" ");
+						result.Append(frame.AttributeName);
+						result.Append("=\"");
+						result.Append(HtmlEncoder.Encode(value));
+						result.Append("\"");
 						break;
 				}
 			}
@@ -269,7 +265,7 @@ namespace Bunit
 				Renderer = renderer;
 			}
 
-			public List<string> Result { get; } = new List<string>();
+			public StringBuilder Result { get; } = new StringBuilder();
 
 			public string? ClosestSelectValueAsString { get; set; }
 		}
