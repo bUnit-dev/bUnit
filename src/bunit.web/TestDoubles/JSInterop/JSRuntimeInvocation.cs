@@ -1,15 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
-	/// Represents an invocation of JavaScript via the JsRuntime Mock
+	/// Represents an invocation of JavaScript via the JSRuntime Mock
 	/// </summary>
 	[SuppressMessage("Design", "CA1068:CancellationToken parameters must come last", Justification = "<Pending>")]
-	public readonly struct JsRuntimeInvocation : IEquatable<JsRuntimeInvocation>
+	public readonly struct JSRuntimeInvocation : IEquatable<JSRuntimeInvocation>
 	{
 		/// <summary>
 		/// Gets the identifier used in the invocation.
@@ -28,9 +28,9 @@ namespace Bunit.Mocking.JSInterop
 
 
 		/// <summary>
-		/// Creates an instance of the <see cref="JsRuntimeInvocation"/>.
+		/// Creates an instance of the <see cref="JSRuntimeInvocation"/>.
 		/// </summary>
-		public JsRuntimeInvocation(string identifier, CancellationToken cancellationToken, object[] args)
+		public JSRuntimeInvocation(string identifier, CancellationToken cancellationToken, object[] args)
 		{
 			Identifier = identifier;
 			CancellationToken = cancellationToken;
@@ -38,13 +38,13 @@ namespace Bunit.Mocking.JSInterop
 		}
 
 		/// <inheritdoc/>
-		public bool Equals(JsRuntimeInvocation other)
+		public bool Equals(JSRuntimeInvocation other)
 			=> Identifier.Equals(other.Identifier, StringComparison.Ordinal)
 			&& CancellationToken == other.CancellationToken
 			&& ArgumentsEqual(Arguments, other.Arguments);
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is JsRuntimeInvocation other && Equals(other);
+		public override bool Equals(object obj) => obj is JSRuntimeInvocation other && Equals(other);
 
 		/// <inheritdoc/>
 		public override int GetHashCode()
@@ -53,7 +53,7 @@ namespace Bunit.Mocking.JSInterop
 			hash.Add(Identifier);
 			hash.Add(CancellationToken);
 
-			for (int i = 0; i < Arguments.Count; i++)
+			for (var i = 0; i < Arguments.Count; i++)
 			{
 				hash.Add(Arguments[i]);
 			}
@@ -62,17 +62,17 @@ namespace Bunit.Mocking.JSInterop
 		}
 
 		/// <inheritdoc/>
-		public static bool operator ==(JsRuntimeInvocation left, JsRuntimeInvocation right) => left.Equals(right);
+		public static bool operator ==(JSRuntimeInvocation left, JSRuntimeInvocation right) => left.Equals(right);
 
 		/// <inheritdoc/>
-		public static bool operator !=(JsRuntimeInvocation left, JsRuntimeInvocation right) => !(left == right);
+		public static bool operator !=(JSRuntimeInvocation left, JSRuntimeInvocation right) => !(left == right);
 
 		private static bool ArgumentsEqual(IReadOnlyList<object> left, IReadOnlyList<object> right)
 		{
 			if (left.Count != right.Count)
 				return false;
 
-			for (int i = 0; i < left.Count; i++)
+			for (var i = 0; i < left.Count; i++)
 			{
 				if (!left[i].Equals(right[i]))
 					return false;

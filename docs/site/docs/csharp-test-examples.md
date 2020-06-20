@@ -396,11 +396,11 @@ public class ThemedButtonTest : ComponentTestFixture
 - `Test002` above uses the `CascadingValue(object value)` helper method to pass an **unnamed** cascading value to the CUT.
 - `Test003` above demonstrates how multiple (named) cascading values can be passed to a component under test.
 
-## Testing components that use on `IJsRuntime`
+## Testing components that use on `IJSRuntime`
 
 It is not uncommon to have components use Blazor's JSInterop functionality to call JavaScript, e.g. after first render.
 
-To make it easy to mock calls to JavaScript, the library comes with a `IJsRuntime` mocking helper, that allows you to specify return how JSInterop calls should be handled, and to verify that they have happened.
+To make it easy to mock calls to JavaScript, the library comes with a `IJSRuntime` mocking helper, that allows you to specify return how JSInterop calls should be handled, and to verify that they have happened.
 
 If you have more complex mocking needs, you could look to frameworks like [Moq](https://github.com/Moq) or [JustMock Lite](https://github.com/telerik/JustMockLite), which both work nicely with bUnit.
 
@@ -441,10 +441,10 @@ public class WikiSearchTest : ComponentTestFixture
     public void Test001()
     {
         // Arrange
-        // Registered the MockJsRuntime in "Loose" mode with the service provider used when rendering components.
-        // JsRuntimeMockMode.Loose is the default. It configures the mock to just return the default
+        // Registered the MockJSRuntime in "Loose" mode with the service provider used when rendering components.
+        // JSRuntimeMockMode.Loose is the default. It configures the mock to just return the default
         // value for whatever is requested in a InvokeAsync call if no call has explicitly been set up.
-        var jsMock = Services.AddMockJsRuntime();
+        var jsMock = Services.AddMockJSRuntime();
 
         // Act - render the WikiSearch component
         var cut = RenderComponent<WikiSearch>();
@@ -460,10 +460,10 @@ public class WikiSearchTest : ComponentTestFixture
     public void Test002()
     {
         // Arrange
-        // Registered the MockJsRuntime in "strict" mode with the service provider used when rendering components.
-        // JsRuntimeMockMode.Strict mode configures the mock to throw an error if it receives an InvokeAsync call
+        // Registered the MockJSRuntime in "strict" mode with the service provider used when rendering components.
+        // JSRuntimeMockMode.Strict mode configures the mock to throw an error if it receives an InvokeAsync call
         // it has not been set up to handle.
-        var jsMock = Services.AddMockJsRuntime(JsRuntimeMockMode.Strict);
+        var jsMock = Services.AddMockJSRuntime(JSRuntimeMockMode.Strict);
 
         // Set up the mock to handle the expected call
         var expectedSearchResult = "SEARCH RESULT";
@@ -486,7 +486,7 @@ public class WikiSearchTest : ComponentTestFixture
 }
 ```
 
-- `Test001` just injects the mock in "Loose" mode. It means it will only returns a `default(TValue)` for calls to `InvokeAsync<TValue>(...)` it receives. This allows us to test components that expects a `IJsRuntime` to be injected, but where the test we want to perform isn't dependent on it providing any specific return value.
+- `Test001` just injects the mock in "Loose" mode. It means it will only returns a `default(TValue)` for calls to `InvokeAsync<TValue>(...)` it receives. This allows us to test components that expects a `IJSRuntime` to be injected, but where the test we want to perform isn't dependent on it providing any specific return value.
 
   In "Loose" mode it is still possible to call `VerifyInvoke(identifier)` and assert against the expected invocation.
 
@@ -497,7 +497,7 @@ public class WikiSearchTest : ComponentTestFixture
 
 ### Verifying element references passed to InvokeAsync
 
-If you want to verify that a element reference (`ElementReference`) passed to a IJsRuntime.InvokeAsync call is references the expected DOM element, you can do so with the `ShouldBeElementReferenceTo()` assert helper.
+If you want to verify that a element reference (`ElementReference`) passed to a IJSRuntime.InvokeAsync call is references the expected DOM element, you can do so with the `ShouldBeElementReferenceTo()` assert helper.
 
 For example, consider the [FocussingInput.razor](https://github.com/egil/razor-components-testing-library/tree/main/sample/src/Components/FocussingInput.razor) component, which looks like this:
 
@@ -530,8 +530,8 @@ public class FocussingInputTest : ComponentTestFixture
     [Fact(DisplayName = "After first render, the new input field has focus")]
     public void Test001()
     {
-        // Arrange - add the IJsRuntime mock
-        var jsRtMock = Services.AddMockJsRuntime();
+        // Arrange - add the IJSRuntime mock
+        var jsRtMock = Services.AddMockJSRuntime();
 
         // Act - render the FocussingInput component, causing
         // the OnAfterRender(firstRender: true) to be called

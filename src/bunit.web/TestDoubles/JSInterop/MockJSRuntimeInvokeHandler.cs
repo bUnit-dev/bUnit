@@ -3,35 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.JSInterop;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
 	/// Represents an invoke handler for a mock of a <see cref="IJSRuntime"/>.
 	/// </summary>
-	public class MockJsRuntimeInvokeHandler
+	public class MockJSRuntimeInvokeHandler
 	{
-		private readonly Dictionary<string, List<JsRuntimeInvocation>> _invocations = new Dictionary<string, List<JsRuntimeInvocation>>();
+		private readonly Dictionary<string, List<JSRuntimeInvocation>> _invocations = new Dictionary<string, List<JSRuntimeInvocation>>();
 		private readonly Dictionary<string, List<object>> _plannedInvocations = new Dictionary<string, List<object>>();
 
 		/// <summary>
-		/// Gets a dictionary of all <see cref="List{JsRuntimeInvocation}"/> this mock has observed.
+		/// Gets a dictionary of all <see cref="List{JSRuntimeInvocation}"/> this mock has observed.
 		/// </summary>
-		public IReadOnlyDictionary<string, List<JsRuntimeInvocation>> Invocations => _invocations;
+		public IReadOnlyDictionary<string, List<JSRuntimeInvocation>> Invocations => _invocations;
 
 		/// <summary>
-		/// Gets whether the mock is running in <see cref="JsRuntimeMockMode.Loose"/> or 
-		/// <see cref="JsRuntimeMockMode.Strict"/>.
+		/// Gets whether the mock is running in <see cref="JSRuntimeMockMode.Loose"/> or 
+		/// <see cref="JSRuntimeMockMode.Strict"/>.
 		/// </summary>
-		public JsRuntimeMockMode Mode { get; }
+		public JSRuntimeMockMode Mode { get; }
 
 		/// <summary>
-		/// Creates a <see cref="MockJsRuntimeInvokeHandler"/>.
+		/// Creates a <see cref="MockJSRuntimeInvokeHandler"/>.
 		/// </summary>
-		/// <param name="mode">The <see cref="JsRuntimeMockMode"/> the handler should use.</param>
-		public MockJsRuntimeInvokeHandler(JsRuntimeMockMode mode = JsRuntimeMockMode.Loose)
+		/// <param name="mode">The <see cref="JSRuntimeMockMode"/> the handler should use.</param>
+		public MockJSRuntimeInvokeHandler(JSRuntimeMockMode mode = JSRuntimeMockMode.Loose)
 		{
 			Mode = mode;
 		}
@@ -40,9 +39,9 @@ namespace Bunit.Mocking.JSInterop
 		/// Gets the mocked <see cref="IJSRuntime"/> instance.
 		/// </summary>
 		/// <returns></returns>
-		public IJSRuntime ToJsRuntime()
+		public IJSRuntime ToJSRuntime()
 		{
-			return new MockJsRuntime(this);
+			return new MockJSRuntime(this);
 		}
 
 		/// <summary>
@@ -52,10 +51,10 @@ namespace Bunit.Mocking.JSInterop
 		/// <typeparam name="TResult">The result type of the invocation</typeparam>
 		/// <param name="identifier">The identifier to setup a response for</param>
 		/// <param name="argumentsMatcher">A matcher that is passed arguments received in invocations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
-		/// <returns>A <see cref="JsRuntimePlannedInvocation{TResult}"/>.</returns>
-		public JsRuntimePlannedInvocation<TResult> Setup<TResult>(string identifier, Func<IReadOnlyList<object>, bool> argumentsMatcher)
+		/// <returns>A <see cref="JSRuntimePlannedInvocation{TResult}"/>.</returns>
+		public JSRuntimePlannedInvocation<TResult> Setup<TResult>(string identifier, Func<IReadOnlyList<object>, bool> argumentsMatcher)
 		{
-			var result = new JsRuntimePlannedInvocation<TResult>(identifier, argumentsMatcher);
+			var result = new JSRuntimePlannedInvocation<TResult>(identifier, argumentsMatcher);
 
 			AddPlannedInvocation(result);
 
@@ -68,10 +67,10 @@ namespace Bunit.Mocking.JSInterop
 		/// <typeparam name="TResult"></typeparam>
 		/// <param name="identifier">The identifier to setup a response for</param>
 		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
-		/// <returns>A <see cref="JsRuntimePlannedInvocation{TResult}"/>.</returns>
-		public JsRuntimePlannedInvocation<TResult> Setup<TResult>(string identifier, params object[] arguments)
+		/// <returns>A <see cref="JSRuntimePlannedInvocation{TResult}"/>.</returns>
+		public JSRuntimePlannedInvocation<TResult> Setup<TResult>(string identifier, params object[] arguments)
 		{
-			return Setup<TResult>(identifier, args => Enumerable.SequenceEqual(args, arguments));
+			return Setup<TResult>(identifier, args => args.SequenceEqual(arguments));
 		}
 
 		/// <summary>
@@ -80,10 +79,10 @@ namespace Bunit.Mocking.JSInterop
 		/// </summary>
 		/// <param name="identifier">The identifier to setup a response for</param>
 		/// <param name="argumentsMatcher">A matcher that is passed arguments received in invocations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
-		/// <returns>A <see cref="JsRuntimePlannedInvocation"/>.</returns>
-		public JsRuntimePlannedInvocation SetupVoid(string identifier, Func<IReadOnlyList<object>, bool> argumentsMatcher)
+		/// <returns>A <see cref="JSRuntimePlannedInvocation"/>.</returns>
+		public JSRuntimePlannedInvocation SetupVoid(string identifier, Func<IReadOnlyList<object>, bool> argumentsMatcher)
 		{
-			var result = new JsRuntimePlannedInvocation(identifier, argumentsMatcher);
+			var result = new JSRuntimePlannedInvocation(identifier, argumentsMatcher);
 
 			AddPlannedInvocation(result);
 
@@ -96,13 +95,13 @@ namespace Bunit.Mocking.JSInterop
 		/// </summary>
 		/// <param name="identifier">The identifier to setup a response for</param>
 		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
-		/// <returns>A <see cref="JsRuntimePlannedInvocation"/>.</returns>
-		public JsRuntimePlannedInvocation SetupVoid(string identifier, params object[] arguments)
+		/// <returns>A <see cref="JSRuntimePlannedInvocation"/>.</returns>
+		public JSRuntimePlannedInvocation SetupVoid(string identifier, params object[] arguments)
 		{
-			return SetupVoid(identifier, args => Enumerable.SequenceEqual(args, arguments));
+			return SetupVoid(identifier, args => args.SequenceEqual(arguments));
 		}
 
-		private void AddPlannedInvocation<TResult>(JsRuntimePlannedInvocationBase<TResult> planned)
+		private void AddPlannedInvocation<TResult>(JSRuntimePlannedInvocationBase<TResult> planned)
 		{
 			if (!_plannedInvocations.ContainsKey(planned.Identifier))
 			{
@@ -111,22 +110,22 @@ namespace Bunit.Mocking.JSInterop
 			_plannedInvocations[planned.Identifier].Add(planned);
 		}
 
-		private void AddInvocation(JsRuntimeInvocation invocation)
+		private void AddInvocation(JSRuntimeInvocation invocation)
 		{
 			if (!_invocations.ContainsKey(invocation.Identifier))
 			{
-				_invocations.Add(invocation.Identifier, new List<JsRuntimeInvocation>());
+				_invocations.Add(invocation.Identifier, new List<JSRuntimeInvocation>());
 			}
 			_invocations[invocation.Identifier].Add(invocation);
 		}
 
-		private class MockJsRuntime : IJSRuntime
+		private class MockJSRuntime : IJSRuntime
 		{
-			private readonly MockJsRuntimeInvokeHandler _handlers;
+			private readonly MockJSRuntimeInvokeHandler _handlers;
 
-			public MockJsRuntime(MockJsRuntimeInvokeHandler mockJsRuntimeInvokeHandler)
+			public MockJSRuntime(MockJSRuntimeInvokeHandler mockJSRuntimeInvokeHandler)
 			{
-				_handlers = mockJsRuntimeInvokeHandler;
+				_handlers = mockJSRuntimeInvokeHandler;
 			}
 
 			public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object[] args)
@@ -134,20 +133,20 @@ namespace Bunit.Mocking.JSInterop
 
 			public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object[] args)
 			{
-				var invocation = new JsRuntimeInvocation(identifier, cancellationToken, args);
+				var invocation = new JSRuntimeInvocation(identifier, cancellationToken, args);
 				_handlers.AddInvocation(invocation);
 
 				return TryHandlePlannedInvocation<TValue>(identifier, invocation)
 					?? new ValueTask<TValue>(default(TValue)!);
 			}
 
-			private ValueTask<TValue>? TryHandlePlannedInvocation<TValue>(string identifier, JsRuntimeInvocation invocation)
+			private ValueTask<TValue>? TryHandlePlannedInvocation<TValue>(string identifier, JSRuntimeInvocation invocation)
 			{
 				ValueTask<TValue>? result = default;
 
 				if (_handlers._plannedInvocations.TryGetValue(identifier, out var plannedInvocations))
 				{
-					var planned = plannedInvocations.OfType<JsRuntimePlannedInvocationBase<TValue>>()
+					var planned = plannedInvocations.OfType<JSRuntimePlannedInvocationBase<TValue>>()
 						.SingleOrDefault(x => x.Matches(invocation));
 
 					if (planned is { })
@@ -157,9 +156,9 @@ namespace Bunit.Mocking.JSInterop
 					}
 				}
 
-				if (result is null && _handlers.Mode == JsRuntimeMockMode.Strict)
+				if (result is null && _handlers.Mode == JSRuntimeMockMode.Strict)
 				{
-					throw new UnplannedJsInvocationException(invocation);
+					throw new UnplannedJSInvocationException(invocation);
 				}
 
 				return result;

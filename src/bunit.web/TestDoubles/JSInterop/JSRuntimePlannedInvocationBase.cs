@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
 	/// Represents a planned invocation of a JavaScript function with specific arguments.
 	/// </summary>
 	/// <typeparam name="TResult"></typeparam>
-	public abstract class JsRuntimePlannedInvocationBase<TResult>
+	public abstract class JSRuntimePlannedInvocationBase<TResult>
 	{
-		private readonly List<JsRuntimeInvocation> _invocations;
+		private readonly List<JSRuntimeInvocation> _invocations;
 
 		private Func<IReadOnlyList<object>, bool> InvocationMatcher { get; }
 
@@ -22,17 +22,17 @@ namespace Bunit.Mocking.JSInterop
 		public string Identifier { get; }
 
 		/// <summary>
-		/// Gets the invocations that this <see cref="JsRuntimePlannedInvocation{TResult}"/> has matched with.
+		/// Gets the invocations that this <see cref="JSRuntimePlannedInvocation{TResult}"/> has matched with.
 		/// </summary>
-		public IReadOnlyList<JsRuntimeInvocation> Invocations => _invocations.AsReadOnly();
+		public IReadOnlyList<JSRuntimeInvocation> Invocations => _invocations.AsReadOnly();
 
 		/// <summary>
-		/// Creates an instance of a <see cref="JsRuntimePlannedInvocationBase{TResult}"/>.
+		/// Creates an instance of a <see cref="JSRuntimePlannedInvocationBase{TResult}"/>.
 		/// </summary>
-		protected JsRuntimePlannedInvocationBase(string identifier, Func<IReadOnlyList<object>, bool> matcher)
+		protected JSRuntimePlannedInvocationBase(string identifier, Func<IReadOnlyList<object>, bool> matcher)
 		{
 			Identifier = identifier;
-			_invocations = new List<JsRuntimeInvocation>();
+			_invocations = new List<JSRuntimeInvocation>();
 			InvocationMatcher = matcher;
 			_completionSource = new TaskCompletionSource<TResult>();
 		}
@@ -73,13 +73,13 @@ namespace Bunit.Mocking.JSInterop
 			_completionSource.SetCanceled();
 		}
 
-		internal Task<TResult> RegisterInvocation(JsRuntimeInvocation invocation)
+		internal Task<TResult> RegisterInvocation(JSRuntimeInvocation invocation)
 		{
 			_invocations.Add(invocation);
 			return _completionSource.Task;
 		}
 
-		internal bool Matches(JsRuntimeInvocation invocation)
+		internal bool Matches(JSRuntimeInvocation invocation)
 		{
 			return Identifier.Equals(invocation.Identifier, StringComparison.Ordinal)
 				&& InvocationMatcher(invocation.Arguments);

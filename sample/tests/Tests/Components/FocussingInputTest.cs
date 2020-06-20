@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bunit.Mocking.JSInterop;
+using Bunit.TestDoubles.JSInterop;
 using SampleApp.Components;
 using Xunit;
 using Bunit;
@@ -16,8 +16,8 @@ namespace SampleApp.CodeOnlyTests.Components
         [Fact(DisplayName = "After first render, the new input field has focus")]
         public void Test001()
         {
-            // Arrange - add the IJsRuntime mock
-            var jsRtMock = Services.AddMockJsRuntime();
+            // Arrange - add the IJSRuntime mock
+            var jsRtMock = Services.AddMockJSRuntime();
 
             // Act - render the FocussingInput component, causing
             // the OnAfterRender(firstRender: true) to be called
