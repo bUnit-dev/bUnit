@@ -1,3 +1,4 @@
+using System;
 using Bunit.TestAssets.SampleComponents;
 using Xunit;
 
@@ -102,6 +103,38 @@ namespace Bunit.TestDoubles.Authorization
 			// assert
 			Assert.Equal("AuthenticationStateProvider", ex.ServiceName);
 			Assert.Equal("https://bunit.egilhansen.com/docs/test-doubles/faking-auth.html", ex.HelpLink);
+		}
+
+		[Fact(DisplayName = "AuthorizeView with set policy with authenticated and authorized user")]
+		public void Test007()
+		{
+			// arrange
+			using var ctx = new TestContext();
+			var authContext = ctx.Services.AddTestAuthorization();
+			authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
+			authContext.SetAuthorizationPolicy("ContentViewer");
+
+			// act
+			var cut = ctx.RenderComponent<SimpleAuthViewWithPolicy>();
+
+			// assert
+			cut.MarkupMatches("Authorized for content viewers.");
+		}
+
+		[Fact(DisplayName = "AuthorizeView without set policy but authenticated and authorized user")]
+		public void Test008()
+		{
+			// arrange
+			using var ctx = new TestContext();
+			var authContext = ctx.Services.AddTestAuthorization();
+			authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
+			authContext.SetAuthorizationPolicy("OtherPolicy");
+
+			// act
+			var cut = ctx.RenderComponent<SimpleAuthViewWithPolicy>();
+
+			// assert
+			Assert.DoesNotContain(cut.Markup, "Authorized for content viewers", StringComparison.InvariantCultureIgnoreCase);
 		}
 	}
 }
