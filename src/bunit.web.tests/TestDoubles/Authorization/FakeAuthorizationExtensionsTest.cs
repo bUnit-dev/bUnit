@@ -10,16 +10,15 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var sp = new TestServiceProvider();
-			var roles = new List<string> { "User" };
 
 			// act
 			var authContext = sp.AddTestAuthorization();
-			authContext.SetAuthorized("DarthPedro", AuthorizationState.Authorized, roles);
+			authContext.SetAuthorized("DarthPedro", AuthorizationState.Authorized, "User");
 
 			// assert
 			Assert.True(authContext.IsAuthenticated);
 			Assert.Equal(AuthorizationState.Authorized, authContext.Authorization);
-			Assert.Equal(roles, authContext.Roles);
+			Assert.Equal(new List<string> { "User" }, authContext.Roles);
 		}
 
 		[Fact(DisplayName = "Register Authorization services with authenticated but unauthorized user.")]

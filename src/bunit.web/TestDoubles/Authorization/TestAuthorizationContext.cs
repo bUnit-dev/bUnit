@@ -49,7 +49,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="userName">User name for the principal identity.</param>
 		/// <param name="state">Authorization state.</param>
 		/// <param name="roles">Roles for the claims principal.</param>
-		public void SetAuthorized(string userName, AuthorizationState state = AuthorizationState.Authorized, IEnumerable<string>? roles = null)
+		public void SetAuthorized(string userName, AuthorizationState state = AuthorizationState.Authorized, params string[] roles)
 		{
 			IsAuthenticated = true;
 			Roles = roles ?? Array.Empty<string>();
