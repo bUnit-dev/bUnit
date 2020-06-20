@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Bunit.TestDoubles.Authorization
 {
-	public class FakeAuthorizationExtensionsTest
+	public class AuthorizationExtensionsTest
 	{
 		[Fact(DisplayName = "Register Authorization services with authenticated and authorized user.")]
 		public void Test001()
@@ -52,6 +52,26 @@ namespace Bunit.TestDoubles.Authorization
 			Assert.False(authContext.IsAuthenticated);
 			Assert.Equal(AuthorizationState.Unauthorized, authContext.Authorization);
 			Assert.Empty(authContext.Roles);
+		}
+
+		[Fact(DisplayName = "Set Authorization policies with authenticated and authorized user.")]
+		public void Test004()
+		{
+			// arrange
+			using var sp = new TestServiceProvider();
+			var authContext = sp.AddTestAuthorization();
+			authContext.SetAuthorized("DarthPedro", AuthorizationState.Authorized, "User");
+
+			// act
+			authContext.SetAuthorizationPolicy("TestPolicy", "Other");
+
+			// assert
+			Assert.True(authContext.IsAuthenticated);
+			Assert.Equal(AuthorizationState.Authorized, authContext.Authorization);
+			Assert.Equal(new List<string> { "User" }, authContext.Roles);
+			Assert.Equal("TestScheme", authContext.PolicySchemeName);
+			Assert.Contains("TestPolicy", authContext.Policies);
+			Assert.Contains("Other", authContext.Policies);
 		}
 	}
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
@@ -12,20 +13,7 @@ namespace Bunit.TestDoubles.Authorization
 	{
 		private readonly AuthorizationOptions _options = new AuthorizationOptions();
 		private string _policySchemeName = "TestScheme";
-
-		/// <summary>
-		/// Gets or sets the policy scheme name (if user wants to set it). Defaults to TestScheme.
-		/// </summary>
-		public string PolicySchemeName
-		{
-			get => _policySchemeName;
-			set
-			{
-				if (string.IsNullOrEmpty(value))
-					throw new ArgumentNullException(nameof(value));
-				_policySchemeName = value;
-			}
-		}
+		private IList<string> _supportedPolicies = new List<string>();
 
 		/// <summary>
 		/// Gets the default authorization policy.
@@ -48,13 +36,32 @@ namespace Bunit.TestDoubles.Authorization
 		/// <returns>Test policy for the specified name.</returns>
 		public Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
 		{
-			var authPolicy = new AuthorizationPolicy(new[]
+			if (_supportedPolicies.Contains(policyName))
 			{
-				new TestPolicyRequirement { PolicyName = policyName }
-			},
-			new[] { $"{PolicySchemeName}:{policyName}" });
+				var authPolicy = new AuthorizationPolicy(new[]
+				{
+					new TestPolicyRequirement { PolicyName = policyName }
+				},
+				new[] { $"{_policySchemeName}:{policyName}" });
 
-			return Task.FromResult(authPolicy);
+				return Task.FromResult(authPolicy);
+			}
+
+			return this.GetDefaultPolicyAsync();
+		}
+
+		/// <summary>
+		/// Sets the currently supported policies for this provider.
+		/// </summary>
+		/// <param name="policySchemeName">Policy scheme name to use.</param>
+		/// <param name="policies">List of policy names supported for current user.</param>
+		public void SetPolicies(string policySchemeName, IEnumerable<string> policies)
+		{
+			if (string.IsNullOrEmpty(policySchemeName))
+				throw new ArgumentNullException(nameof(policySchemeName));
+
+			_policySchemeName = policySchemeName;
+			_supportedPolicies = new List<string>(policies);
 		}
 	}
 

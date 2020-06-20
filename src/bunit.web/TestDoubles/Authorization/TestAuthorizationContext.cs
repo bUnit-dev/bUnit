@@ -33,6 +33,17 @@ namespace Bunit.TestDoubles.Authorization
 		public IEnumerable<string> Roles { get; private set; } = Array.Empty<string>();
 
 		/// <summary>
+		/// Gets the set of auth policies for the current user.
+		/// </summary>
+		public IEnumerable<string> Policies { get; private set; } = Array.Empty<string>();
+
+		/// <summary>
+		/// Gets or sets the policy schemeName. Defaults to TestScheme and usually doesn't
+		/// need to be changed by user.
+		/// </summary>
+		public string PolicySchemeName { get; set; } = "TestScheme";
+
+		/// <summary>
 		/// Registers authorization services with the specified service provider.
 		/// </summary>
 		/// <param name="services">Service provider to use.</param>
@@ -53,10 +64,20 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			IsAuthenticated = true;
 			Roles = roles ?? Array.Empty<string>();
-			_authProvider.TriggerAuthenticationStateChanged(userName, roles);
+			_authProvider.TriggerAuthenticationStateChanged(userName, Roles);
 
 			Authorization = state;
 			_authService.SetAuthorizationState(state);
+		}
+
+		/// <summary>
+		/// Sets the auhtorization policies supported for the current user.
+		/// </summary>
+		/// <param name="policies">Supported authorization policies.</param>
+		public void SetAuthorizationPolicy(params string[] policies)
+		{
+			Policies = policies ?? Array.Empty<string>();
+			_policyProvider.SetPolicies(PolicySchemeName, Policies);
 		}
 
 		/// <summary>
