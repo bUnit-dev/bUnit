@@ -25,7 +25,7 @@ namespace Bunit.Docs.Samples
 			// arrange
 			using var ctx = new TestContext();
 			var authContext = ctx.Services.AddTestAuthorization();
-			authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
+			authContext.SetAuthorized("TestUser");
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -75,7 +75,7 @@ namespace Bunit.Docs.Samples
 			// arrange
 			using var ctx = new TestContext();
 			var authContext = ctx.Services.AddTestAuthorization();
-			authContext.SetAuthorized("TestUser005", AuthorizationState.Authorized);
+			authContext.SetAuthorized("TestUser005");
 
 			// start off unauthenticated.
 			var cut = ctx.RenderComponent<SimpleAuthView>();
