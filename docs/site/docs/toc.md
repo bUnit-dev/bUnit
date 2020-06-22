@@ -13,7 +13,7 @@
 # [Interaction](xref:interaction)
 ## [Trigger Event Handlers](xref:trigger-event-handlers)
 ## [Trigger Renders](xref:trigger-renders)
-## [Awaiting an Asynchronous State Change](xref:awaiting-async-state)
+## [Awaiting an Async State Change](xref:awaiting-async-state)
 
 # [Verifying output](xref:verification)
 ## [Verify Markup](xref:verify-markup)
