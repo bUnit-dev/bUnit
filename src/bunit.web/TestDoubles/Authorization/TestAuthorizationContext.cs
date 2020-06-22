@@ -99,7 +99,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="userName">User name for principal identity.</param>
 		/// <param name="roles">Roles for the user.</param>
 		/// <returns>ClaimsPrincipal created from this data.</returns>
-		public static ClaimsPrincipal CreatePrincipal(string userName, IEnumerable<string>? roles = null)
+		internal static ClaimsPrincipal CreatePrincipal(string userName, IEnumerable<string>? roles = null)
 		{
 			var principal = new ClaimsPrincipal(
 				new FakePrincipal
