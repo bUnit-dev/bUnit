@@ -31,7 +31,7 @@ namespace Bunit.TestDoubles.Authorization
 			var provider = new FakeAuthorizationPolicyProvider();
 
 			// act
-			var policy = await provider.GetFallbackPolicyAsync().ConfigureAwait(false);
+			var policy = await provider.GetFallbackPolicyAsync();
 
 			// assert
 			Assert.Null(policy);
@@ -45,7 +45,7 @@ namespace Bunit.TestDoubles.Authorization
 			provider.SetPolicies("TestScheme", new List<string> { "FooBar" });
 
 			// act
-			var policy = await provider.GetPolicyAsync("FooBar").ConfigureAwait(false);
+			var policy = await provider.GetPolicyAsync("FooBar");
 
 			// assert
 			Assert.NotNull(policy);
@@ -63,7 +63,7 @@ namespace Bunit.TestDoubles.Authorization
 			provider.SetPolicies("TestScheme", new List<string> { "FooBar" });
 
 			// act
-			var policy = await provider.GetPolicyAsync("OtherPolicy").ConfigureAwait(false);
+			var policy = await provider.GetPolicyAsync("OtherPolicy");
 
 			// assert
 			Assert.NotNull(policy);

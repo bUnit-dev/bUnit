@@ -18,7 +18,7 @@ namespace Bunit.TestDoubles.Authorization
 			var requirements = new List<IAuthorizationRequirement>();
 
 			// act
-			var result = await service.AuthorizeAsync(user, "testResource", requirements).ConfigureAwait(false);
+			var result = await service.AuthorizeAsync(user, "testResource", requirements);
 
 			// assert
 			Assert.NotNull(result);
@@ -34,7 +34,7 @@ namespace Bunit.TestDoubles.Authorization
 			var requirements = new List<IAuthorizationRequirement>();
 
 			// act
-			var result = await service.AuthorizeAsync(user, "testResource", requirements).ConfigureAwait(false);
+			var result = await service.AuthorizeAsync(user, "testResource", requirements);
 
 			// assert
 			Assert.NotNull(result);
@@ -49,7 +49,7 @@ namespace Bunit.TestDoubles.Authorization
 			var user = new ClaimsPrincipal(new FakeIdentity { Name = "DarthPedro" });
 
 			// act
-			var result = await service.AuthorizeAsync(user, "testResource", "testPolicy").ConfigureAwait(false);
+			var result = await service.AuthorizeAsync(user, "testResource", "testPolicy");
 
 			// assert
 			Assert.NotNull(result);
