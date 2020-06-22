@@ -23,6 +23,11 @@ namespace Bunit.TestDoubles.Authorization
 		public bool IsAuthenticated { get; private set; } = false;
 
 		/// <summary>
+		/// Gets the authorization context user name.
+		/// </summary>
+		public string UserName { get; private set; } = string.Empty;
+
+		/// <summary>
 		/// Gets the authorization state for the user.
 		/// </summary>
 		public AuthorizationState Authorization { get; private set; } = AuthorizationState.Unauthorized;
@@ -59,31 +64,46 @@ namespace Bunit.TestDoubles.Authorization
 		/// </summary>
 		/// <param name="userName">User name for the principal identity.</param>
 		/// <param name="state">Authorization state.</param>
-		/// <param name="roles">Roles for the claims principal.</param>
-		public void SetAuthorized(string userName, AuthorizationState state = AuthorizationState.Authorized, params string[] roles)
+		public TestAuthorizationContext SetAuthorized(string userName, AuthorizationState state = AuthorizationState.Authorized)
 		{
 			IsAuthenticated = true;
-			Roles = roles ?? Array.Empty<string>();
+			UserName = userName;
 			_authProvider.TriggerAuthenticationStateChanged(userName, Roles);
 
 			Authorization = state;
 			_authService.SetAuthorizationState(state);
+
+			return this;
+		}
+
+		/// <summary>
+		/// Sets the user roles in this context..
+		/// </summary>
+		/// <param name="roles">Roles for the claims principal.</param>
+		public TestAuthorizationContext SetRoles(params string[] roles)
+		{
+			Roles = roles ?? Array.Empty<string>();
+			_authProvider.TriggerAuthenticationStateChanged(UserName, Roles);
+
+			return this;
 		}
 
 		/// <summary>
 		/// Sets the auhtorization policies supported for the current user.
 		/// </summary>
 		/// <param name="policies">Supported authorization policies.</param>
-		public void SetAuthorizationPolicy(params string[] policies)
+		public TestAuthorizationContext SetPolicies(params string[] policies)
 		{
 			Policies = policies ?? Array.Empty<string>();
 			_policyProvider.SetPolicies(PolicySchemeName, Policies);
+
+			return this;
 		}
 
 		/// <summary>
 		/// Puts the authorization services into an unauthenticated and unauthorized state.
 		/// </summary>
-		public void SetNotAuthorized()
+		public TestAuthorizationContext SetNotAuthorized()
 		{
 			IsAuthenticated = false;
 			Roles = Array.Empty<string>();
@@ -91,6 +111,8 @@ namespace Bunit.TestDoubles.Authorization
 
 			Authorization = AuthorizationState.Unauthorized;
 			_authService.SetAuthorizationState(AuthorizationState.Unauthorized);
+
+			return this;
 		}
 
 		/// <summary>

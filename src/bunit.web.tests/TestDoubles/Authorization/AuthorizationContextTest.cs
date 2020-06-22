@@ -13,7 +13,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// act
 			var authContext = sp.AddTestAuthorization();
-			authContext.SetAuthorized("DarthPedro", AuthorizationState.Authorized, "some-role");
+			authContext.SetAuthorized("DarthPedro").SetRoles("some-role");
 
 			// assert
 			Assert.True(authContext.IsAuthenticated);
@@ -26,7 +26,6 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var sp = new TestServiceProvider();
-			var principal = TestAuthorizationContext.CreatePrincipal("DarthPedro");
 
 			// act
 			var authContext = sp.AddTestAuthorization();
@@ -36,6 +35,7 @@ namespace Bunit.TestDoubles.Authorization
 			Assert.True(authContext.IsAuthenticated);
 			Assert.Equal(AuthorizationState.Unauthorized, authContext.Authorization);
 			Assert.Empty(authContext.Roles);
+			Assert.Empty(authContext.Policies);
 		}
 
 		[Fact(DisplayName = "Register Authorization services with unauthenticated user.")]
@@ -52,6 +52,7 @@ namespace Bunit.TestDoubles.Authorization
 			Assert.False(authContext.IsAuthenticated);
 			Assert.Equal(AuthorizationState.Unauthorized, authContext.Authorization);
 			Assert.Empty(authContext.Roles);
+			Assert.Empty(authContext.Policies);
 		}
 
 		[Fact(DisplayName = "Set Authorization policies with authenticated and authorized user.")]
@@ -60,10 +61,10 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			using var sp = new TestServiceProvider();
 			var authContext = sp.AddTestAuthorization();
-			authContext.SetAuthorized("DarthPedro", AuthorizationState.Authorized, "some-role");
+			authContext.SetAuthorized("DarthPedro").SetRoles("some-role");
 
 			// act
-			authContext.SetAuthorizationPolicy("TestPolicy", "Other");
+			authContext.SetPolicies("TestPolicy", "Other");
 
 			// assert
 			Assert.True(authContext.IsAuthenticated);

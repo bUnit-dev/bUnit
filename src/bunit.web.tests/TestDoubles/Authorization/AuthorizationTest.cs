@@ -111,8 +111,7 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			using var ctx = new TestContext();
 			var authContext = ctx.Services.AddTestAuthorization();
-			authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
-			authContext.SetAuthorizationPolicy("ContentViewer");
+			authContext.SetAuthorized("TestUser").SetPolicies("ContentViewer");
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthViewWithPolicy>();
@@ -127,8 +126,7 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			using var ctx = new TestContext();
 			var authContext = ctx.Services.AddTestAuthorization();
-			authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
-			authContext.SetAuthorizationPolicy("OtherPolicy");
+			authContext.SetAuthorized("TestUser").SetPolicies("OtherPolicy");
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthViewWithPolicy>();
