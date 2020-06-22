@@ -35,7 +35,7 @@ The [`SetParametersAndRender(...)`](xref:Bunit.IRenderedComponentBase`1.SetParam
 The highlighted line shows the call to <xref:Bunit.IRenderedComponentBase`1.SetParametersAndRender(System.Action{Bunit.ComponentParameterBuilder{`0}})>, which is also available as <xref:Bunit.IRenderedComponentBase`1.SetParametersAndRender(Bunit.Rendering.ComponentParameter[])> if you prefer that method of passing parameters.
 
 > [!NOTE]
-> Passing parameters to components through the [`SetParametersAndRender(...)`](xref:Bunit.IRenderedComponentBase`1.SetParametersAndRender(Bunit.Rendering.ComponentParameter[])) methods are identical to doing it with the [`RenderComponent<TComponent>(...)`](xref:Bunit.IRenderedComponentBase`1.SetParametersAndRender(Bunit.Rendering.ComponentParameter[])) methods, described in detail on the <xref:passing-parameters-to-components> page.
+> Passing parameters to components through the [`SetParametersAndRender(...)`](xref:Bunit.IRenderedComponentBase`1.SetParametersAndRender(Bunit.Rendering.ComponentParameter[])) methods is identical to doing it with the [`RenderComponent<TComponent>(...)`](xref:Bunit.IRenderedComponentBase`1.SetParametersAndRender(Bunit.Rendering.ComponentParameter[])) methods, described in detail on the <xref:passing-parameters-to-components> page.
 
 ## InvokeAsync
 
