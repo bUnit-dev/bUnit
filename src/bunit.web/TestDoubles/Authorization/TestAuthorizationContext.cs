@@ -89,7 +89,7 @@ namespace Bunit.TestDoubles.Authorization
 		}
 
 		/// <summary>
-		/// Sets the auhtorization policies supported for the current user.
+		/// Sets the authorization policies supported for the current user.
 		/// </summary>
 		/// <param name="policies">Supported authorization policies.</param>
 		public TestAuthorizationContext SetPolicies(params string[] policies)

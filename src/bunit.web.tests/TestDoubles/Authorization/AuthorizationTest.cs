@@ -120,8 +120,22 @@ namespace Bunit.TestDoubles.Authorization
 			cut.MarkupMatches("Authorized for content viewers.");
 		}
 
-		[Fact(DisplayName = "AuthorizeView without set policy but authenticated and authorized user")]
+		[Fact(DisplayName = "AuthorizeView without policy set")]
 		public void Test008()
+		{
+			// arrange
+			using var ctx = new TestContext();
+			var authContext = ctx.Services.AddTestAuthorization();
+			authContext.SetAuthorized("TestUser");
+			// act
+			var cut = ctx.RenderComponent<SimpleAuthViewWithPolicy>();
+
+			// assert
+			cut.MarkupMatches("");
+		}
+
+		[Fact(DisplayName = "AuthorizeView with wrong policy set")]
+		public void Test0081()
 		{
 			// arrange
 			using var ctx = new TestContext();
@@ -132,7 +146,52 @@ namespace Bunit.TestDoubles.Authorization
 			var cut = ctx.RenderComponent<SimpleAuthViewWithPolicy>();
 
 			// assert
-			Assert.DoesNotContain(cut.Markup, "Authorized for content viewers", StringComparison.InvariantCultureIgnoreCase);
+			cut.MarkupMatches("");
+		}
+
+		[Fact(DisplayName = "SimpleAuthViewWithRole with set role")]
+		public void Test009()
+		{
+			// arrange
+			using var ctx = new TestContext();
+			var authContext = ctx.Services.AddTestAuthorization();
+			authContext.SetAuthorized("TestUser").SetRoles("Admin");
+
+			// act
+			var cut = ctx.RenderComponent<SimpleAuthViewWithRole>();
+
+			// assert
+			cut.MarkupMatches("Authorized content for admins.");
+		}
+
+		[Fact(DisplayName = "AuthorizeView without set role")]
+		public void Test010()
+		{
+			// arrange
+			using var ctx = new TestContext();
+			var authContext = ctx.Services.AddTestAuthorization();
+			authContext.SetAuthorized("TestUser");
+
+			// act
+			var cut = ctx.RenderComponent<SimpleAuthViewWithRole>();
+
+			// assert
+			cut.MarkupMatches("");
+		}
+
+		[Fact(DisplayName = "AuthorizeView with wrong role set")]
+		public void Test011()
+		{
+			// arrange
+			using var ctx = new TestContext();
+			var authContext = ctx.Services.AddTestAuthorization();
+			authContext.SetAuthorized("TestUser").SetRoles("NotAdmin");
+
+			// act
+			var cut = ctx.RenderComponent<SimpleAuthViewWithRole>();
+
+			// assert
+			cut.MarkupMatches("");
 		}
 	}
 }
