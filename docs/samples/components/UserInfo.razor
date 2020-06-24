@@ -1,0 +1,34 @@
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@if (isAuthenticated)
+{
+  <h1>Welcome @userName</h1>
+  <CascadingAuthenticationState>
+	  <AuthorizeView>
+		  <Authorized>
+			  <p>State: Authorized</p>
+		  </Authorized>
+		  <NotAuthorized>
+			  <p>State: Not authorized</p>
+		  </NotAuthorized>
+	  </AuthorizeView>
+  </CascadingAuthenticationState>
+}
+@if (!isAuthenticated)
+{
+  <h1>Please log in!</h1>
+}
+
+@code
+{
+  bool isAuthenticated = false;
+  string userName;
+
+  protected override async Task OnParametersSetAsync()
+  {
+    var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    isAuthenticated = state.User.Identity.IsAuthenticated;
+    userName = state.User.Identity.Name;    
+  }
+}
