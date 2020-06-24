@@ -114,10 +114,6 @@ Once you have one or more elements, you verify against them by e.g. inspecting t
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=69&end=71)]
 
-
-
-
-
 #### Refreshable FindAll() Queries
 
 ### Useful DOM Properties and Methods for Asserting 
