@@ -193,5 +193,22 @@ namespace Bunit.TestDoubles.Authorization
 			// assert
 			cut.MarkupMatches("");
 		}
+
+		[Fact(DisplayName = "AuthorizeView in authorizing state")]
+		public void Test012()
+		{
+			// arrange
+			using var ctx = new TestContext();
+			var authContext = ctx.Services.AddTestAuthorization();
+			authContext.SetNotAuthorized();
+
+			// act
+			var cut = ctx.RenderComponent<SimpleAuthView>();
+
+			authContext.SetAuthorizing();
+
+			// assert
+			cut.MarkupMatches("Authorizing...");
+		}
 	}
 }

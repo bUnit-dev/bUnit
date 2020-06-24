@@ -56,6 +56,17 @@ namespace Bunit.TestDoubles.Authorization
 		}
 
 		/// <summary>
+		/// Method to change the authentication state to authorizing state.
+		/// </summary>
+		public void TriggerAuthorizingStateChanged()
+		{
+			// Note: setting null AuthenticationState in this state makes the AuthorizeView render the Authorizing fragment.
+			// Discovered this reading through the AuthorizeViewCore code -- it's undocumented.
+			CurrentAuthStateTask = Task.FromResult<AuthenticationState>(null!);
+			NotifyAuthenticationStateChanged(CurrentAuthStateTask);
+		}
+
+		/// <summary>
 		/// Method to change the authentication state to unauthenticated.
 		/// </summary>
 		public void TriggerAuthenticationStateChanged()

@@ -68,6 +68,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			IsAuthenticated = true;
 			UserName = userName;
+
 			_authProvider.TriggerAuthenticationStateChanged(userName, Roles);
 
 			Authorization = state;
@@ -100,6 +101,20 @@ namespace Bunit.TestDoubles.Authorization
 			Policies = policies ?? Array.Empty<string>();
 			_policyProvider.SetPolicyScheme(PolicySchemeName);
 			_authService.SetPolicies(Policies);
+
+			return this;
+		}
+
+		/// <summary>
+		/// Puts the authorization services into the authorizing state.
+		/// </summary>
+		public TestAuthorizationContext SetAuthorizing()
+		{
+			IsAuthenticated = false;
+			_authProvider.TriggerAuthorizingStateChanged();
+
+			Authorization = AuthorizationState.Unauthorized;
+			_authService.SetAuthorizationState(AuthorizationState.Unauthorized);
 
 			return this;
 		}
