@@ -227,10 +227,27 @@ namespace Bunit.TestDoubles.Authorization
 			var cut = ctx.RenderComponent<SimpleAuthViewWithClaims>();
 
 			// assert
-			cut.MarkupMatches(@"<div>Authorized!</div>
+			cut.MarkupMatches(@$"<div>Authorized!</div>
 								<div>Name: TestUser</div>
 								<div>Email: user@test.com</div>
-								<div>Id: 5d5fa9c1-abf9-4ed6-8fb0-3365382b629c</div>");
+								<div>Id: {userId}</div>");
+		}
+
+
+		[Fact(DisplayName = "AuthorizeView without defined claims")]
+		public void Test014()
+		{
+			// arrange
+			using var ctx = new TestContext();
+			var authContext = ctx.Services.AddTestAuthorization();
+			authContext.SetAuthorized("TestUser");
+
+			// act
+			var cut = ctx.RenderComponent<SimpleAuthViewWithClaims>();
+
+			// assert
+			cut.MarkupMatches(@$"<div>Authorized!</div>
+								<div>Name: TestUser</div>");
 		}
 	}
 }
