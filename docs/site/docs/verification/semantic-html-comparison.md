@@ -101,7 +101,7 @@ To verify the rendered output of a component, we have the `MarkupMatches()` meth
 
 If for example we have a component, `<Heading>`, that renders the following markup:
 
-[!code-html[Heading.razor](../../../samples/components/Heading.razor)]
+[!code-razor[Heading.razor](../../../samples/components/Heading.razor)]
 
 If we want to verify the markup is rendered correctly, and for example use RegEx to verify the `id` attribute (it might be generated) and ignore the `<small>` element, we can do it like this in C# based tests:
 
@@ -109,8 +109,8 @@ If we want to verify the markup is rendered correctly, and for example use RegEx
 
 In a Razor based test, using the `<Fixture>` test type, the example looks like this:
 
-[!code-html[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L3-L30)]
+[!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L3-L30)]
 
 In a Razor based test, using the `<SnapshotTest>` test type, the example looks like this:
 
-[!code-html[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L32-L42)]
+[!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L32-L42)]
