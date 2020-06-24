@@ -42,7 +42,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			var provider = new FakeAuthorizationPolicyProvider();
-			provider.SetPolicies("TestScheme", new List<string> { "FooBar" });
+			provider.SetPolicyScheme("TestScheme");
 
 			// act
 			var policy = await provider.GetPolicyAsync("FooBar");
@@ -60,16 +60,17 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			var provider = new FakeAuthorizationPolicyProvider();
-			provider.SetPolicies("TestScheme", new List<string> { "FooBar" });
+			provider.SetPolicyScheme("TestScheme");
 
 			// act
 			var policy = await provider.GetPolicyAsync("OtherPolicy");
 
 			// assert
 			Assert.NotNull(policy);
-			Assert.Equal(0, policy.AuthenticationSchemes.Count);
+			Assert.Equal(1, policy.AuthenticationSchemes.Count);
+			Assert.Equal("TestScheme:OtherPolicy", policy.AuthenticationSchemes[0]);
 			Assert.Equal(1, policy.Requirements.Count);
-			Assert.IsType<DenyAnonymousAuthorizationRequirement>(policy.Requirements[0]);
+			Assert.IsType<TestPolicyRequirement>(policy.Requirements[0]);
 		}
 
 		[Fact(DisplayName = "Set Policies with empty scheme name.")]
@@ -80,7 +81,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// assert
 			Assert.Throws<ArgumentNullException>(
-				() => provider.SetPolicies(string.Empty, new List<string> { "FooBar" }));
+				() => provider.SetPolicyScheme(string.Empty));
 		}
 	}
 }

@@ -72,6 +72,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			Authorization = state;
 			_authService.SetAuthorizationState(state);
+			_authService.SetRoles(Roles);
 
 			return this;
 		}
@@ -85,6 +86,8 @@ namespace Bunit.TestDoubles.Authorization
 			Roles = roles ?? Array.Empty<string>();
 			_authProvider.TriggerAuthenticationStateChanged(UserName, Roles);
 
+			_authService.SetRoles(Roles);
+
 			return this;
 		}
 
@@ -95,7 +98,8 @@ namespace Bunit.TestDoubles.Authorization
 		public TestAuthorizationContext SetPolicies(params string[] policies)
 		{
 			Policies = policies ?? Array.Empty<string>();
-			_policyProvider.SetPolicies(PolicySchemeName, Policies);
+			_policyProvider.SetPolicyScheme(PolicySchemeName);
+			_authService.SetPolicies(Policies);
 
 			return this;
 		}
@@ -113,24 +117,6 @@ namespace Bunit.TestDoubles.Authorization
 			_authService.SetAuthorizationState(AuthorizationState.Unauthorized);
 
 			return this;
-		}
-
-		/// <summary>
-		/// Factory method to create a ClaimsPrincipal from a FakePrincipal and its data.
-		/// </summary>
-		/// <param name="userName">User name for principal identity.</param>
-		/// <param name="roles">Roles for the user.</param>
-		/// <returns>ClaimsPrincipal created from this data.</returns>
-		internal static ClaimsPrincipal CreatePrincipal(string userName, IEnumerable<string>? roles = null)
-		{
-			var principal = new ClaimsPrincipal(
-				new FakePrincipal
-				{
-					Identity = new FakeIdentity { Name = userName },
-					Roles = roles ?? Array.Empty<string>()
-				}
-			);
-			return principal;
 		}
 	}
 }
