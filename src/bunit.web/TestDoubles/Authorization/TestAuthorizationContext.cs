@@ -90,9 +90,8 @@ namespace Bunit.TestDoubles.Authorization
 		public TestAuthorizationContext SetRoles(params string[] roles)
 		{
 			Roles = roles ?? Array.Empty<string>();
-			_authProvider.TriggerAuthenticationStateChanged(UserName, Roles);
-
 			_authService.SetRoles(Roles);
+			_authProvider.TriggerAuthenticationStateChanged(UserName, Roles);
 
 			return this;
 		}

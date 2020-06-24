@@ -17,7 +17,7 @@ namespace Bunit.TestDoubles.Authorization
 	{
 		private AuthorizationState _currentState = AuthorizationState.Authorized;
 		private IEnumerable<string>? _supportedPolicies;
-		private IEnumerable<string> _supportedRoles = new List<string>();
+		private IEnumerable<string> _supportedRoles = Array.Empty<string>();
 
 		/// <summary>
 		/// Constructor that initializes the authorization state of the service. 
@@ -52,7 +52,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="roles">List of supported roles.</param>
 		public void SetRoles(IEnumerable<string> roles)
 		{
-			_supportedRoles = roles;
+			_supportedRoles = roles ?? Array.Empty<string>();
 		}
 
 		/// <summary>
