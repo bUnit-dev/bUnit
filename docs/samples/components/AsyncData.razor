@@ -1,0 +1,12 @@
+<p>@text</p>
+
+@code
+{
+  string text = string.Empty;
+  [Parameter] public Task<string> TextService { get; set; }
+
+  protected override async Task OnInitializedAsync()
+  {
+    text = await TextService;
+  }
+}

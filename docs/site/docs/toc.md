@@ -13,7 +13,7 @@
 # [Interaction](xref:interaction)
 ## [Trigger Event Handlers](xref:trigger-event-handlers)
 ## [Trigger Renders](xref:trigger-renders)
-## [Awaiting an Asynchronous State Change](xref:awaiting-async-state)
+## [Awaiting an Async State Change](xref:awaiting-async-state)
 
 # [Verifying output](xref:verification)
 ## [Verify Markup](xref:verify-markup)
@@ -22,7 +22,7 @@
 ## [Asynchronous Assertion of Changes](xref:async-assertion)
 
 # [Test Doubles](xref:test-doubles)
-## [Mocking Authorization](xref:mocking-auth)
+## [Faking Authorization](xref:faking-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
 ## [Mocking IJsRuntime](xref:mocking-ijsruntime)
 ## [Mocking Localization](xref:mocking-localizer)
