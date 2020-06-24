@@ -1,4 +1,5 @@
 using System;
+using System.Security.Claims;
 using Bunit.TestAssets.SampleComponents;
 using Xunit;
 
@@ -209,6 +210,27 @@ namespace Bunit.TestDoubles.Authorization
 
 			// assert
 			cut.MarkupMatches("Authorizing...");
+		}
+
+		[Fact(DisplayName = "AuthorizeView with claims")]
+		public void Test013()
+		{
+			// arrange
+			var userId = new Guid("{5d5fa9c1-abf9-4ed6-8fb0-3365382b629c}");
+			using var ctx = new TestContext();
+			var authContext = ctx.Services.AddTestAuthorization();
+			var emailClaim = new Claim(ClaimTypes.Email, "user@test.com");
+			var uuidClaim = new Claim(ClaimTypes.Sid, userId.ToString());
+			authContext.SetAuthorized("TestUser").SetClaims(uuidClaim, emailClaim);
+
+			// act
+			var cut = ctx.RenderComponent<SimpleAuthViewWithClaims>();
+
+			// assert
+			cut.MarkupMatches(@"<div>Authorized!</div>
+								<div>Name: TestUser</div>
+								<div>Email: user@test.com</div>
+								<div>Id: 5d5fa9c1-abf9-4ed6-8fb0-3365382b629c</div>");
 		}
 	}
 }

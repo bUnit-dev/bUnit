@@ -43,6 +43,11 @@ namespace Bunit.TestDoubles.Authorization
 		public IEnumerable<string> Policies { get; private set; } = Array.Empty<string>();
 
 		/// <summary>
+		/// Gets the set of principal claims for the current user.
+		/// </summary>
+		public IEnumerable<Claim> Claims { get; private set; } = Array.Empty<Claim>();
+
+		/// <summary>
 		/// Gets or sets the policy schemeName. Defaults to TestScheme and usually doesn't
 		/// need to be changed by user.
 		/// </summary>
@@ -69,7 +74,7 @@ namespace Bunit.TestDoubles.Authorization
 			IsAuthenticated = true;
 			UserName = userName;
 
-			_authProvider.TriggerAuthenticationStateChanged(userName, Roles);
+			_authProvider.TriggerAuthenticationStateChanged(userName, Roles, Claims);
 
 			Authorization = state;
 			_authService.SetAuthorizationState(state);
@@ -101,6 +106,18 @@ namespace Bunit.TestDoubles.Authorization
 			Policies = policies ?? Array.Empty<string>();
 			_policyProvider.SetPolicyScheme(PolicySchemeName);
 			_authService.SetPolicies(Policies);
+
+			return this;
+		}
+
+		/// <summary>
+		/// Sets the claims on the curren user/principal.
+		/// </summary>
+		/// <param name="claims">Claims to set.</param>
+		public TestAuthorizationContext SetClaims(params Claim[] claims)
+		{
+			Claims = claims ?? Array.Empty<Claim>();
+			_authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims);
 
 			return this;
 		}
