@@ -1,0 +1,23 @@
+<input type="text" placeholder="Add new item" 
+       @bind="newItemValue"
+       @onkeyup="OnTextInput" />
+<ul>
+  @foreach (var item in items)
+  {
+    <li @onclick="() => items.Remove(item)">@item</li>
+  }
+</ul>
+@code
+{
+  private string newItemValue = string.Empty;
+  private List<string> items = new List<string>();
+
+  private void OnTextInput(KeyboardEventArgs args)
+  {
+    if(args.Key == "Enter")
+    {
+      items.Add(newItemValue);
+      newItemValue = string.Empty;
+    }
+  }
+}
