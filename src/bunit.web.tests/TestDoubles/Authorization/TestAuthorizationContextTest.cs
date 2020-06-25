@@ -16,7 +16,24 @@ namespace Bunit.TestDoubles.Authorization
 
 			// assert
 			Assert.False(authContext.IsAuthenticated);
-			Assert.Equal(AuthorizationState.Unauthorized, authContext.Authorization);
+			Assert.Equal(AuthorizationState.Unauthorized, authContext.State);
+			Assert.Empty(authContext.Roles);
+			Assert.Empty(authContext.Policies);
+		}
+
+		[Fact(DisplayName = "Register Authorization services with authorizing state.")]
+		public void Test0031()
+		{
+			// arrange
+			using var sp = new TestServiceProvider();
+
+			// act
+			var authContext = sp.AddTestAuthorization();
+			authContext.SetAuthorizing();
+
+			// assert
+			Assert.False(authContext.IsAuthenticated);
+			Assert.Equal(AuthorizationState.Authorizing, authContext.State);
 			Assert.Empty(authContext.Roles);
 			Assert.Empty(authContext.Policies);
 		}
@@ -33,7 +50,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// assert
 			Assert.True(authContext.IsAuthenticated);
-			Assert.Equal(AuthorizationState.Unauthorized, authContext.Authorization);
+			Assert.Equal(AuthorizationState.Unauthorized, authContext.State);
 			Assert.Empty(authContext.Roles);
 			Assert.Empty(authContext.Policies);
 		}
@@ -50,7 +67,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// assert
 			Assert.True(authContext.IsAuthenticated);
-			Assert.Equal(AuthorizationState.Authorized, authContext.Authorization);
+			Assert.Equal(AuthorizationState.Authorized, authContext.State);
 			Assert.Empty(authContext.Roles);
 			Assert.Empty(authContext.Policies);
 		}
@@ -68,7 +85,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// assert
 			Assert.True(authContext.IsAuthenticated);
-			Assert.Equal(AuthorizationState.Authorized, authContext.Authorization);
+			Assert.Equal(AuthorizationState.Authorized, authContext.State);
 			Assert.Equal(new[] { "some-role" }, authContext.Roles);
 			Assert.Empty(authContext.Policies);
 		}
@@ -86,7 +103,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// assert
 			Assert.True(authContext.IsAuthenticated);
-			Assert.Equal(AuthorizationState.Authorized, authContext.Authorization);
+			Assert.Equal(AuthorizationState.Authorized, authContext.State);
 			Assert.Equal(new[] { "TestPolicy", "Other" }, authContext.Policies);
 			Assert.Empty(authContext.Roles);
 		}

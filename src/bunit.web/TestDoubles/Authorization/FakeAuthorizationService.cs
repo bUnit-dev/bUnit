@@ -38,7 +38,7 @@ namespace Bunit.TestDoubles.Authorization
 		}
 
 		/// <summary>
-		/// Sets the supported policies in the Authoriation service for current user.
+		/// Sets the supported policies in the Authorization service for current user.
 		/// </summary>
 		/// <param name="policies">List of supported policies.</param>
 		public void SetPolicies(IEnumerable<string> policies)
@@ -47,7 +47,7 @@ namespace Bunit.TestDoubles.Authorization
 		}
 
 		/// <summary>
-		/// Sets the supported roles in the Authoriation service for current user.
+		/// Sets the supported roles in the Authorization service for current user.
 		/// </summary>
 		/// <param name="roles">List of supported roles.</param>
 		public void SetRoles(IEnumerable<string> roles)

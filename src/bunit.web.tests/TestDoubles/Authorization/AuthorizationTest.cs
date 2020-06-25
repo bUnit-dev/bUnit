@@ -201,12 +201,10 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			using var ctx = new TestContext();
 			var authContext = ctx.Services.AddTestAuthorization();
-			authContext.SetNotAuthorized();
+			authContext.SetAuthorizing();
 
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthView>();
-
-			authContext.SetAuthorizing();
 
 			// assert
 			cut.MarkupMatches("Authorizing...");

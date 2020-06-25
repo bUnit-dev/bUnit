@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -13,68 +14,78 @@ namespace Bunit.TestDoubles.Authorization
 	/// </summary>
 	public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 	{
+		private TaskCompletionSource<AuthenticationState> _authState = new TaskCompletionSource<AuthenticationState>();
+
 		/// <summary>
 		/// Constructor to initialize this state provider with an initial AuthenticationState.
 		/// </summary>
 		/// <param name="userName">Identity's user name.</param>
 		/// <param name="roles">Roles that this user principal has.</param>
-		public FakeAuthenticationStateProvider(string userName, IEnumerable<string>? roles = null)
-		{
-			CurrentAuthStateTask = CreateAuthenticationState(userName, roles);
-		}
+		/// <param name="claims">Claims to add to user principal.</param>
+		public FakeAuthenticationStateProvider(string userName, IEnumerable<string>? roles = null, IEnumerable<Claim>? claims = null)
+			=> SetAuthenticatedState(userName, roles, claims);
 
 		/// <summary>
 		/// Default constructor that creates an unauthenticated state.
 		/// </summary>
-		public FakeAuthenticationStateProvider()
-		{
-			CurrentAuthStateTask = CreateUnauthenticationState();
-		}
-
-		/// <summary>
-		/// Gets or sets the current authentication state.
-		/// </summary>
-		protected Task<AuthenticationState> CurrentAuthStateTask { get; set; }
+		public FakeAuthenticationStateProvider() => SetUnauthenticatedState();
 
 		/// <summary>
 		/// Overridden method to get the current authentication state.
 		/// </summary>
 		/// <returns>Current authentication state.</returns>
-		public override Task<AuthenticationState> GetAuthenticationStateAsync()
-		{
-			return CurrentAuthStateTask;
-		}
+		public override Task<AuthenticationState> GetAuthenticationStateAsync() => _authState.Task;
 
 		/// <summary>
-		/// Method to change the authentication state and authenticated user.
+		/// Method to sets the authentication state and authenticated user.
 		/// </summary>
 		/// <param name="userName">Identity's user name.</param>
 		/// <param name="roles">Roles that this user principal has.</param>
 		/// <param name="claims">Claims to add to user principal.</param>
 		public void TriggerAuthenticationStateChanged(string userName, IEnumerable<string>? roles = null, IEnumerable<Claim>? claims = null)
 		{
-			CurrentAuthStateTask = CreateAuthenticationState(userName, roles, claims);
-			NotifyAuthenticationStateChanged(CurrentAuthStateTask);
+			SetAuthenticatedState(userName, roles, claims);
+			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 		}
 
 		/// <summary>
-		/// Method to change the authentication state to authorizing state.
+		/// Method to sets the authentication state to authorizing state.
 		/// </summary>
 		public void TriggerAuthorizingStateChanged()
 		{
-			// Note: setting null AuthenticationState in this state makes the AuthorizeView render the Authorizing fragment.
-			// Discovered this reading through the AuthorizeViewCore code -- it's undocumented.
-			CurrentAuthStateTask = Task.FromResult<AuthenticationState>(null!);
-			NotifyAuthenticationStateChanged(CurrentAuthStateTask);
+			SetAuthorizingState();
+			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 		}
 
 		/// <summary>
-		/// Method to change the authentication state to unauthenticated.
+		/// Method to sets the authentication state to unauthenticated.
 		/// </summary>
-		public void TriggerAuthenticationStateChanged()
+		public void TriggerUnauthenticationStateChanged()
 		{
-			CurrentAuthStateTask = CreateUnauthenticationState();
-			NotifyAuthenticationStateChanged(CurrentAuthStateTask);
+			SetUnauthenticatedState();
+			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+		}
+
+		private void SetUnauthenticatedState()
+		{
+			if (_authState.Task.IsCompleted)
+				_authState = new TaskCompletionSource<AuthenticationState>();
+
+			_authState.SetResult(CreateUnauthenticationState());
+		}
+
+		private void SetAuthorizingState()
+		{
+			if (_authState.Task.IsCompleted)
+				_authState = new TaskCompletionSource<AuthenticationState>();
+		}
+
+		private void SetAuthenticatedState(string userName, IEnumerable<string>? roles, IEnumerable<Claim>? claims)
+		{
+			if (_authState.Task.IsCompleted)
+				_authState = new TaskCompletionSource<AuthenticationState>();
+
+			_authState.SetResult(CreateAuthenticationState(userName, roles, claims));
 		}
 
 		/// <summary>
@@ -84,7 +95,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="roles">Roles that this user principal has.</param>
 		/// <param name="claims">Claims to add to user principal.</param>
 		/// <returns>Instance of AuthenticationState with user principal.</returns>
-		public static Task<AuthenticationState> CreateAuthenticationState(
+		private static AuthenticationState CreateAuthenticationState(
 			string username,
 			IEnumerable<string>? roles = null,
 			IEnumerable<Claim>? claims = null)
@@ -93,22 +104,22 @@ namespace Bunit.TestDoubles.Authorization
 			var testPrincipal = new FakePrincipal { Identity = identity, Roles = roles ?? Array.Empty<string>() };
 			var principal = new ClaimsPrincipal(testPrincipal);
 
-			if (claims is {} && claims.Any())
+			if (claims is { } && claims.Any())
 			{
 				principal.AddIdentity(new ClaimsIdentity(claims));
 			}
 
-			return Task.FromResult(new AuthenticationState(principal));
+			return new AuthenticationState(principal);
 		}
 
 		/// <summary>
 		/// Factory method to create an unauthenticated state.
 		/// </summary>
 		/// <returns>Instance of AuthenticationState for an unauthenticated user.</returns>
-		public static Task<AuthenticationState> CreateUnauthenticationState()
+		private static AuthenticationState CreateUnauthenticationState()
 		{
 			var principal = new ClaimsPrincipal(new FakePrincipal());
-			return Task.FromResult(new AuthenticationState(principal));
+			return new AuthenticationState(principal);
 		}
 	}
 }

@@ -30,7 +30,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Gets the authorization state for the user.
 		/// </summary>
-		public AuthorizationState Authorization { get; private set; } = AuthorizationState.Unauthorized;
+		public AuthorizationState State { get; private set; } = AuthorizationState.Unauthorized;
 
 		/// <summary>
 		/// Gets the set of roles for the current user.
@@ -38,7 +38,7 @@ namespace Bunit.TestDoubles.Authorization
 		public IEnumerable<string> Roles { get; private set; } = Array.Empty<string>();
 
 		/// <summary>
-		/// Gets the set of auth policies for the current user.
+		/// Gets the set of authentication policies for the current user.
 		/// </summary>
 		public IEnumerable<string> Policies { get; private set; } = Array.Empty<string>();
 
@@ -76,9 +76,41 @@ namespace Bunit.TestDoubles.Authorization
 
 			_authProvider.TriggerAuthenticationStateChanged(userName, Roles, Claims);
 
-			Authorization = state;
+			State = state;
 			_authService.SetAuthorizationState(state);
 			_authService.SetRoles(Roles);
+
+			return this;
+		}
+
+		/// <summary>
+		/// Puts the authorization services into the authorizing state.
+		/// </summary>
+		public TestAuthorizationContext SetAuthorizing()
+		{
+			IsAuthenticated = false;
+			Roles = Array.Empty<string>();
+
+			_authProvider.TriggerAuthorizingStateChanged();
+
+			State = AuthorizationState.Authorizing;
+			_authService.SetAuthorizationState(AuthorizationState.Authorizing);
+
+			return this;
+		}
+
+		/// <summary>
+		/// Puts the authorization services into an unauthenticated and unauthorized state.
+		/// </summary>
+		public TestAuthorizationContext SetNotAuthorized()
+		{
+			IsAuthenticated = false;
+			Roles = Array.Empty<string>();
+
+			_authProvider.TriggerUnauthenticationStateChanged();
+
+			State = AuthorizationState.Unauthorized;
+			_authService.SetAuthorizationState(AuthorizationState.Unauthorized);
 
 			return this;
 		}
@@ -117,35 +149,6 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			Claims = claims ?? Array.Empty<Claim>();
 			_authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims);
-
-			return this;
-		}
-
-		/// <summary>
-		/// Puts the authorization services into the authorizing state.
-		/// </summary>
-		public TestAuthorizationContext SetAuthorizing()
-		{
-			IsAuthenticated = false;
-			_authProvider.TriggerAuthorizingStateChanged();
-
-			Authorization = AuthorizationState.Unauthorized;
-			_authService.SetAuthorizationState(AuthorizationState.Unauthorized);
-
-			return this;
-		}
-
-		/// <summary>
-		/// Puts the authorization services into an unauthenticated and unauthorized state.
-		/// </summary>
-		public TestAuthorizationContext SetNotAuthorized()
-		{
-			IsAuthenticated = false;
-			Roles = Array.Empty<string>();
-			_authProvider.TriggerAuthenticationStateChanged();
-
-			Authorization = AuthorizationState.Unauthorized;
-			_authService.SetAuthorizationState(AuthorizationState.Unauthorized);
 
 			return this;
 		}
