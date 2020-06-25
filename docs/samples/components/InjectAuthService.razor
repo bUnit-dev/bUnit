@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<p>Test Component</p>
+
+@if (isAuthenticated)
+{
+    <p>User: @userName</p>
+}
+
+@code{
+    bool isAuthenticated = false;
+    string userName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync().ConfigureAwait(false);
+        if (state != null)
+        {
+            this.isAuthenticated = state.User.Identity.IsAuthenticated;
+            this.userName = state.User.Identity.Name;
+        }
+    }
+}

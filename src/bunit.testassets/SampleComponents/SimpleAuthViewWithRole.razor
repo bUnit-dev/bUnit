@@ -1,0 +1,7 @@
+@using Microsoft.AspNetCore.Components.Authorization
+
+<CascadingAuthenticationState>
+	<AuthorizeView Roles="Admin">
+		Authorized content for admins.
+	</AuthorizeView>
+</CascadingAuthenticationState>
