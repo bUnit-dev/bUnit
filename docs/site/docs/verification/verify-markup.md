@@ -8,14 +8,14 @@ title: Verifying Markup from a Component
 When a component is rendered in a test, the result is a <xref:Bunit.IRenderedFragment> or a <xref:Bunit.IRenderedComponent`1>. Through these it is possible to access the rendered markup (HTML) of the component, and in the case of <xref:Bunit.IRenderedComponent`1>, the instance of the component. 
 
 > [!NOTE]
-> An <xref:Bunit.IRenderedComponent`1> inherits from <xref:Bunit.IRenderedFragment>. This page will only show how a <xref:Bunit.IRenderedFragment> is used. <xref:Bunit.IRenderedComponent`1> is covered on the <xref:verify-component-state> page.
+> An <xref:Bunit.IRenderedComponent`1> inherits from <xref:Bunit.IRenderedFragment>. This page will only cover features of the <xref:Bunit.IRenderedFragment> type. <xref:Bunit.IRenderedComponent`1> is covered on the <xref:verify-component-state> page.
 
-This page cover the following **verification approaches**:
+This page cover the following **verification approaches:**
 
 - Basic verification of raw markup.
 - Semantic comparison of markup.
 - Inspecting the individual DOM nodes in the DOM tree.
-- Diffing of markup between renders.
+- Finding expected differences in markup between renders.
 
 The following sections will cover each of these.
 
@@ -23,14 +23,16 @@ The following sections will cover each of these.
 
 To access the rendered markup of a component, just use the <xref:Bunit.IRenderedFragment.Markup> property on <xref:Bunit.IRenderedFragment>. It holds the *raw* HTML from the component as a `string`. 
 
+> [!WARNING]
+> Be aware that all indentions and whitespace in your components (`.razor` files) are included in the raw rendered markup, so it is often wise to normalize the markup string a little, e.g. via the string `Trim()` method, to make the tests more stable. Otherwise a change to the formatting in your components might break the tests when it does not need to.
+> 
+> To avoid these issues and others related to asserting against raw markup, use the semantic HTML comparer that comes with bUnit, described in the next section.
+
 To get the markup as a string, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=16&end=21&highlight=5)]
 
 You can perform standard string assertions against the markup string, e.g. like checking if it contains a value or is empty.
-
-> [!WARNING]
-> Be aware that all indentions and whitespace in your components (`.razor` files) are included in the rendered markup, so it is often wise to normalize the markup string a little, e.g. via the string `Trim()` method, to make the tests more stable. Otherwise a change to the formatting in your components might break the tests when it does not need to.
 
 ## Semantic Comparison of Markup
 
@@ -50,13 +52,13 @@ Exactly the same as this HTML:
 
 ```html
 <span>
-  Foo Bar
+  Foo       Bar
 </span>
 ```
 
-That is why it makes sense to allow tests to pass, _even_ when the rendered HTML markup is not entire identical to the expected HTML, from a normal string comparer perspective.
+That is why it makes sense to allow tests to pass, _even_ when the rendered HTML markup is not entirely identical to the expected HTML, from a normal string comparer's perspective.
 
-bUnit's semantic HTML comparer safely ignores things like insignificant whitespace and the order of attributes on elements, and many more things. **This leads to much more stable tests, as e.g. a reformatted component doesn't break it's tests because insignificant whitespace changes.**
+bUnit's semantic HTML comparer safely ignores things like insignificant whitespace and the order of attributes on elements, and many more things. **This leads to much more stable tests, as e.g. a reformatted component doesn't break it's tests because of insignificant whitespace changes.**
 
 ### The MarkupMatches() Method
 
@@ -81,11 +83,15 @@ Here we use the `Find(string cssSelector)` method to find the `<small>` element,
 > [!TIP]
 > Working with `Find()`, `FindAll()`, `INode` and `INodeList` is covered later on this page.
 
+<!-- TODO UNCOMMENT WHEN MarkupMatches(this string markup ... ) IS DONE
 Text content can also be verified with the `MarkupMatches()` method, e.g. the text inside the `<small>` element. It has the advantage over regular string comparison that it removes insignificant whitespace in the text automatically, even between words, where a normal string `Trim()` method isn't enough. For example:
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=51&end=56&highlight=5)]
+-->
 
-The semantic HTML comparer can be customized to make a test case even more stable and easier to maintain. It is e.g. possible to ignore an element or attribute during comparison, or provide an regular expression to the comparer when comparing a specific element or attribute, to make the comparer work with generated data. Learn more about the customizations options on the <xref:semantic-html-comparison> page.
+The semantic HTML comparer can be customized to make a test case even more stable and easier to maintain. It is e.g. possible to ignore an element or attribute during comparison, or provide an regular expression to the comparer when comparing a specific element or attribute, to make the comparer work with generated data.
+
+Learn more about the customizations options on the <xref:semantic-html-comparison> page.
 
 ## Inspecting DOM Nodes
 
@@ -100,11 +106,11 @@ The DOM API in AngleSharp follows the W3C DOM API specifications and gives you t
 Users of the famous JavaScript framework [jQuery](https://jquery.com/) will recognize the two methods [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) and [`FindAll(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)). 
 
 - [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) takes a "CSS selector" as input and returns an `IElement` as output, or throws an exception if non is found.
-- [`FindAll(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) takes a "CSS selector" as input a list of `IElement` elements.
+- [`FindAll(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) takes a "CSS selector" as input and returns a list of `IElement` elements.
 
-Let's see some examples of using the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) and [`FindAll(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) methods to query the `<FanyTable>` component listed below.
+Let's see some examples of using the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) and [`FindAll(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) methods to query the `<FancyTable>` component listed below.
 
-[!code-razor[FanyTable.razor](../../../samples/components/FanyTable.razor)]
+[!code-razor[FancyTable.razor](../../../samples/components/FancyTable.razor)]
 
 To find the `<caption>` element and the first `<td>` elements in each row, do the following:
 
@@ -114,12 +120,63 @@ Once you have one or more elements, you verify against them by e.g. inspecting t
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=69&end=71)]
 
-#### Refreshable FindAll() Queries
+#### Auto-refreshing Find() Queries
 
-### Useful DOM Properties and Methods for Asserting 
+A element found with the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method will be updated if the component it came from is re-rendered. 
 
-## Diffing DOM Nodes
+However, that does not apply to elements that are found by traversing the DOM tree via e.g. the <xref:Bunit.IRenderedFragment.Nodes> property on <xref:Bunit.IRenderedFragment>, as those nodes do not know when their root component is re-rendered, and thus, when they should be updated.
 
-- Since first render
-- since snapshot
-- Assertion helpers for List of IDiff
+Therefore, always prefer using the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method when searching for a single element, or always reissue the query whenever you need the element.
+
+#### Auto-refreshable FindAll() Queries
+
+The [`FindAll(string cssSelector, bool enableAutoRefresh = false)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) method has an optional parameter, `enableAutoRefresh`, which, when set to `true`, will return an collection of `IElement`, that automatically refreshes itself when the component the elements came from is re-rendered.
+
+## Finding Expected Differences
+
+It can sometimes be easier to verify that an expected change has happened in the rendered markup (and only that), than it can be to specify how all the rendered markup should look after re-render.
+
+bUnit comes with a number of ways for finding lists of `IDiff`, the representation of a difference between two HTML fragments. All of these are direct methods or extension methods on the <xref:Bunit.IRenderedFragment> type, or on the `INode` or `INodeList` types:
+
+- <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> method on <xref:Bunit.IRenderedFragment>. This method returns a list of differences since the initial first render of a component.
+- <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> and <xref:Bunit.IRenderedFragment.SaveSnapshot> methods on <xref:Bunit.IRenderedFragment>. These two methods combined makes it possible to get a list of differences between the last time the <xref:Bunit.IRenderedFragment.SaveSnapshot> method was called and a call to the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method is placed.
+- `CompareTo()` methods from <xref:Bunit.CompareToExtensions> for the <xref:Bunit.IRenderedFragment>, `INode`, and `INodeList` types. These methods returns a list of differences between the two input HTML fragments.
+
+In addition to this, there are a number of experimental assertion helpers for `IDiff` and `IEnumerable<IDiff>`, that makes it easier and more concise to declare your assertions.
+
+Let's look at a few examples. In the first we will use the `<Counter>` component listed below:
+
+[!code-razor[Counter.razor](../../../samples/components/Counter.razor)]
+
+Here is an example of using the <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> method:
+
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=77&end=90&highlight=8,11,14)]
+
+This is what happens in the test:
+
+- On line 8, <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> is used to get a list of differences.
+- On line 11, the [`ShouldHaveSingleChange()`](xref:Bunit.DiffAssertExtensions.ShouldHaveSingleChange(System.Collections.Generic.IEnumerable{AngleSharp.Diffing.Core.IDiff})) method is used to verify that there is only one change found.
+- On line 14, the [`ShouldBeTextChange()`](xref:Bunit.ShouldBeTextChangeAssertExtensions.ShouldBeTextChange(AngleSharp.Diffing.Core.IDiff,System.String,System.String)) method is used to verify that the single `IDiff` is a text change.
+
+Testing a more **complex life cycle of a component** can be more easily done using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> and <xref:Bunit.IRenderedFragment.SaveSnapshot> methods, along with a host of other assert helpers. 
+
+This example tests the `<CheckList>` component listed below. The component allow you to add new items to the check list by typing into the input field and hitting the `enter` key, and items can be removed again from the list by clicking on them.
+
+[!code-razor[CheckList.razor](../../../samples/components/CheckList.razor)]
+
+To test the end-to-end life cycle of adding and removing items from the `<CheckList>` component, do the following:
+
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=96&end=141)]
+
+This is what happens in the test:
+
+1. First the component is rendered and the input field is found.
+2. The the first item is added through the input field.
+3. The <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender>, [`ShouldHaveSingleChange()`](xref:Bunit.DiffAssertExtensions.ShouldHaveSingleChange(System.Collections.Generic.IEnumerable{AngleSharp.Diffing.Core.IDiff})) and [`ShouldBeAddition()`](xref:Bunit.ShouldBeAdditionAssertExtensions.ShouldBeAddition(AngleSharp.Diffing.Core.IDiff,System.String,System.String)) methods are used to verify that the item was correctly added.
+4. The <xref:Bunit.IRenderedFragment.SaveSnapshot> is used to save a snapshot of current DOM nodes internally in the `cut`. This reduces the number of diffs found in the following steps, simplifying verification.
+5. A second item is added to the check list.
+6. Two verifications is performed at this point, one using the <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> method which finds two changes, and one using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method, that finds a single change. The first is only done for illustrative purposes.
+7. A new snapshot is saved, replacing the previous one, with a another call to the <xref:Bunit.IRenderedFragment.SaveSnapshot> method.
+8. Finally the last item in the list is found and clicked, and the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method is used to find the changes, a single diff, which is verified as a removal of the second item.
+
+As mentioned earlier, the `IDiff` assertion helpers are still experimental. Any feedback and suggestions for improvements should be directed to the [related issue](https://github.com/egil/bUnit/issues/84) on GitHub.
