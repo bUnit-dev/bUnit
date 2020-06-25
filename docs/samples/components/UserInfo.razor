@@ -5,24 +5,23 @@
 {
   <h1>Welcome @userName</h1>
 }
-<CascadingAuthenticationState>
-    <AuthorizeView>
-        <Authorized>
-            <p>State: Authorized</p>
-        </Authorized>
-        <Authorizing>
-            <p>State: Authorizing</p>
-      </Authorizing>
-        <NotAuthorized>
-            <p>State: Not authorized</p>
-        </NotAuthorized>
-  </AuthorizeView>
-</CascadingAuthenticationState>
-
 @if (!isAuthenticated)
 {
   <h1>Please log in!</h1>
 }
+<CascadingAuthenticationState>
+  <AuthorizeView>
+    <Authorized>
+      <p>State: Authorized</p>
+    </Authorized>
+    <Authorizing>
+      <p>State: Authorizing</p>
+    </Authorizing>
+    <NotAuthorized>
+      <p>State: Not authorized</p>
+    </NotAuthorized>
+  </AuthorizeView>
+</CascadingAuthenticationState>
 
 @code
 {

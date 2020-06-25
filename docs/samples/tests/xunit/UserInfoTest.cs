@@ -16,9 +16,25 @@ namespace Bunit.Docs.Samples
       var cut = ctx.RenderComponent<UserInfo>();
 
       // Assert
-      cut.MarkupMatches(@"<p>State: Not authorized</p>
-                          <h1>Please log in!</h1>");
+      cut.MarkupMatches(@"<h1>Please log in!</h1>
+                          <p>State: Not authorized</p>");
     }
+    
+    [Fact(DisplayName = "UserInfo while authorizing user")]
+    public void Test004()
+    {
+      // Arrange
+      using var ctx = new TestContext();
+      var authContext = ctx.Services.AddTestAuthorization();
+      authContext.SetAuthorizing();
+
+      // Act
+      var cut = ctx.RenderComponent<UserInfo>();
+
+      // Assert
+      cut.MarkupMatches(@"<h1>Please log in!</h1>
+                          <p>State: Authorizing</p>");
+    }    
 
     [Fact(DisplayName = "UserInfo with authenticated but unauthorized user")]
     public void Test002()
@@ -51,22 +67,5 @@ namespace Bunit.Docs.Samples
       cut.MarkupMatches(@"<h1>Welcome TEST USER</h1>
                           <p>State: Authorized</p>");
     } 
-
-    [Fact(DisplayName = "UserInfo while authorizing user")]
-    public void Test004()
-    {
-      // Arrange
-      using var ctx = new TestContext();
-      var authContext = ctx.Services.AddTestAuthorization();
-      authContext.SetNotAuthorized();
-
-      // Act
-      var cut = ctx.RenderComponent<UserInfo>();
-      authContext.SetAuthorizing();
-
-      // Assert
-      cut.MarkupMatches(@"<p>State: Authorizing</p>
-                          <h1>Please log in!</h1>");
-    }    
   }
 }
