@@ -129,9 +129,6 @@ namespace Bunit.Rendering
 			return Nodes.CompareTo(_firstRenderNodes);
 		}
 
-		/// <inheritdoc/>
-		public Task InvokeAsync(Action callback) => Renderer.Dispatcher.InvokeAsync(callback);
-
 		private string RetrieveLatestMarkupFromRenderer() => Htmlizer.GetHtml(Renderer, ComponentId);
 
 		Task IRenderEventHandler.Handle(RenderEvent renderEvent)
