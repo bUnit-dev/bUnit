@@ -9,50 +9,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 List of new features.
 
-- Authorization fakes added to make it much easier to test components that use authentication and authorization. By [@DarthPedro](https://github.com/DarthPedro) in [#151](https://github.com/egil/bUnit/pull/151).
+- Authorization fakes added to make it much easier to test components that use authentication and authorization. Learn more in the [Faking Blazor's Authentication and Authorization](https://bunit.egilhansen.com/docs/test-doubles/faking-auth) page. By [@DarthPedro](https://github.com/DarthPedro) in [#151](https://github.com/egil/bUnit/pull/151).
 
-#### Authorization Fakes
-Added authentication/authorization fake services to make it easy to test Blazor components that use authorization either through code or the AuthorizeView component.
-You just need to call the AddTestAuthorization method on your TestContext.Services collection.
-
-First define your component that uses AuthorizeView to render differently based on the user's authorization state:
-```
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.Authorization
-
-<CascadingAuthenticationState>
-	<AuthorizeView>
-		<Authorized>
-			Authorized!
-		</Authorized>
-		<NotAuthorized>
-			Not authorized?
-		</NotAuthorized>
-	</AuthorizeView>
-</CascadingAuthenticationState>
-```
-Then define your test method to specify the authorization state with a user name, and run your test.
-```c#
-public void Test002()
-{
-	// arrange
-	using var ctx = new TestContext();
-	var authContext = ctx.Services.AddTestAuthorization();
-	authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
-
-	// act
-	var cut = ctx.RenderComponent<SimpleAuthView>();
-
-	// assert
-	cut.MarkupMatches("Authorized!");
-}
-```
+- Added `MarkupMatches(this string actual ...)`  extension methods. Make it easier to compare just the text content from a DON text node with a string, while still getting the benefit of the semantic HTML comparer.
 
 ### Changed
 List of changes in existing functionality.
 
 - `TestContextBase.Dispose` made virtual to allow inheritor's to override it. By [@SimonCropp](https://github.com/SimonCropp) in [#137](https://github.com/egil/bunit/pull/137).
-- Changed naming convention for JSMock feature. All classes and methods containing `Js` (meaning JavaScript) renamed to `JS`. By [yourilima](https://github.com/yourilima) in [#150](https://github.com/egil/bUnit/pull/150)
+- **[Breaking change]** Changed naming convention for JSMock feature and moved to new namespace, `Bunit.TestDoubles.JSInterop`. All classes and methods containing `Js` (meaning JavaScript) renamed to `JS` for consistency with Blazor's `IJSRuntime`. By [@yourilima](https://github.com/yourilima) in [#150](https://github.com/egil/bUnit/pull/150)
 
 ### Deprecated
 List of soon-to-be removed features.
