@@ -63,7 +63,7 @@ namespace Bunit.Docs.Samples
 
       // Wait for assertion to pass
       cut.WaitForAssertion(() => cut.MarkupMatches("<p>Hello World</p>"));
-      cut.WaitForAssertion(() => cut.MarkupMatches("<p>xHello World</p>"), TimeSpan.FromSeconds(2));
+      cut.WaitForAssertion(() => cut.MarkupMatches("<p>Hello World</p>"), TimeSpan.FromSeconds(2));
     }
   }
 }
