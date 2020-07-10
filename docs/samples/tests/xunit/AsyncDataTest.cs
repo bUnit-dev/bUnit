@@ -16,7 +16,7 @@ namespace Bunit.Docs.Samples
       var textService = new TaskCompletionSource<string>();
       var cut = ctx.RenderComponent<AsyncData>(parameters => parameters
         .Add(p => p.TextService, textService.Task)
-      );      
+      );
 
       // Act - set the awaited result from the text service
       textService.SetResult("Hello World");
@@ -27,7 +27,7 @@ namespace Bunit.Docs.Samples
       // Assert - verify result has been set
       cut.MarkupMatches("<p>Hello World</p>");
     }
-    
+
     [Fact]
     public void LoadDataAsyncWithTimeout()
     {
@@ -36,7 +36,7 @@ namespace Bunit.Docs.Samples
       var textService = new TaskCompletionSource<string>();
       var cut = ctx.RenderComponent<AsyncData>(parameters => parameters
         .Add(p => p.TextService, textService.Task)
-      );      
+      );
 
       // Act - set the awaited result from the text service
       textService.SetResult("Long time");
@@ -47,6 +47,23 @@ namespace Bunit.Docs.Samples
       // Assert - verify result has been set
       cut.MarkupMatches("<p>Long time</p>");
     }
-  
+
+    [Fact]
+    public void LoadDataAsyncAssertion()
+    {
+      // Arrange
+      using var ctx = new TestContext();
+      var textService = new TaskCompletionSource<string>();
+      var cut = ctx.RenderComponent<AsyncData>(parameters => parameters
+        .Add(p => p.TextService, textService.Task)
+      );
+
+      // Act - set the awaited result from the text service
+      textService.SetResult("Hello World");
+
+      // Wait for assertion to pass
+      cut.WaitForAssertion(() => cut.MarkupMatches("<p>Hello World</p>"));
+      cut.WaitForAssertion(() => cut.MarkupMatches("<p>xHello World</p>"), TimeSpan.FromSeconds(2));
+    }
   }
 }

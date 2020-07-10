@@ -19,7 +19,7 @@
 ## [Verify Markup](xref:verify-markup)
 ## [Verify Component State](xref:verify-component-state)
 ## [Customizing Semantic Comparison](xref:semantic-html-comparison)
-## [Asynchronous Assertion of Changes](xref:async-assertion)
+## [Assertion of Asynchronous Changes](xref:async-assertion)
 
 # [Test Doubles](xref:test-doubles)
 ## [Faking Authorization](xref:faking-auth)
