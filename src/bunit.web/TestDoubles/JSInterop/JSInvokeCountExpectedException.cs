@@ -1,15 +1,14 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-
-using Bunit.Mocking.JSInterop;
+using Bunit.TestDoubles.JSInterop;
 
 namespace Bunit
 {
 	/// <summary>
-	/// Represents a number of unexpected invocation to a <see cref="MockJsRuntimeInvokeHandler"/>.
+	/// Represents a number of unexpected invocation to a <see cref="MockJSRuntimeInvokeHandler"/>.
 	/// </summary>
 	[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "<Pending>")]
-	public class JsInvokeCountExpectedException : Exception
+	public class JSInvokeCountExpectedException : Exception
 	{
 		/// <summary>
 		/// Gets the expected invocation count.
@@ -27,9 +26,9 @@ namespace Bunit
 		public string Identifier { get; }
 
 		/// <summary>
-		/// Creates an instance of the <see cref="JsInvokeCountExpectedException"/>.
+		/// Creates an instance of the <see cref="JSInvokeCountExpectedException"/>.
 		/// </summary>
-		public JsInvokeCountExpectedException(string identifier, int expectedCount, int actualCount, string assertMethod, string? userMessage = null)
+		public JSInvokeCountExpectedException(string identifier, int expectedCount, int actualCount, string assertMethod, string? userMessage = null)
 			: base(CreateMessage(identifier, expectedCount, actualCount, assertMethod, userMessage))
 		{
 			ExpectedInvocationCount = expectedCount;

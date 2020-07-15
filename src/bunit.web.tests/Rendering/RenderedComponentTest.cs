@@ -1,7 +1,6 @@
 using System;
-using Bunit.Mocking.JSInterop;
 using Bunit.TestAssets.SampleComponents;
-
+using Bunit.TestDoubles.JSInterop;
 using Shouldly;
 
 using Xunit;
@@ -47,7 +46,7 @@ namespace Bunit
 		public void Test003()
 		{
 			// arrange
-			Services.AddMockJsRuntime();
+			Services.AddMockJSRuntime();
 			var cut = RenderComponent<AllTypesOfParams<string>>();
 
 			// assert

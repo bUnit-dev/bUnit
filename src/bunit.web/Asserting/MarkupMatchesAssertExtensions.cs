@@ -13,6 +13,72 @@ namespace Bunit
 	/// </summary>
 	public static class MarkupMatchesAssertExtensions
 	{
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actual"/> markup fragment matches
+		/// the <paramref name="expected"/> markup fragment, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
+		/// <param name="actual">The markup fragment to verify.</param>
+		/// <param name="expected">The expected markup fragment.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		public static void MarkupMatches(this string actual, string expected, string? userMessage = null)
+		{
+			using var parser = new HtmlParser();
+			var actualNodes = parser.Parse(actual);
+			var expectedNodes = parser.Parse(expected);
+			actualNodes.MarkupMatches(expectedNodes, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actual"/> markup fragment matches
+		/// the <paramref name="expected"/> <see cref="IRenderedFragmentBase"/>, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
+		/// <param name="actual">The markup fragment to verify.</param>
+		/// <param name="expected">The expected <see cref="IRenderedFragmentBase"/>.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		public static void MarkupMatches(this string actual, IRenderedFragment expected, string? userMessage = null)
+		{
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			var actualNodes = actual.ToNodeList(expected.Services.GetRequiredService<HtmlParser>());
+			actualNodes.MarkupMatches(expected, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actual"/> markup fragment matches
+		/// the <paramref name="expected"/> <see cref="INodeList"/>, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
+		/// <param name="actual">The markup fragment to verify.</param>
+		/// <param name="expected">The expected <see cref="INodeList"/>.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		public static void MarkupMatches(this string actual, INodeList expected, string? userMessage = null)
+		{
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			var actualNodes = actual.ToNodeList(expected.GetHtmlParser());
+			actualNodes.MarkupMatches(expected, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actual"/> markup fragment matches
+		/// the <paramref name="expected"/> <see cref="INode"/>, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
+		/// <param name="actual">The markup fragment to verify.</param>
+		/// <param name="expected">The expected <see cref="INode"/>.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		public static void MarkupMatches(this string actual, INode expected, string? userMessage = null)
+		{
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			var actualNodes = actual.ToNodeList(expected.GetHtmlParser());
+			actualNodes.MarkupMatches(expected, userMessage);
+		}
 
 		/// <summary>
 		/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragmentBase"/> matches
@@ -29,9 +95,7 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var htmlParser = actual.Services.GetRequiredService<HtmlParser>();
-			var expectedNodes = htmlParser.Parse(expected);
-
+			var expectedNodes = expected.ToNodeList(actual.Services.GetRequiredService<HtmlParser>());
 			actual.Nodes.MarkupMatches(expectedNodes, userMessage);
 		}
 
@@ -105,17 +169,8 @@ namespace Bunit
 			if (actual is null)
 				throw new ArgumentNullException(nameof(actual));
 
-			INodeList expectedNodes;
-			if (actual.GetHtmlParser() is { } parser)
-			{
-				expectedNodes = parser.Parse(expected);
-			}
-			else
-			{
-				using var newParser = new HtmlParser();
-				expectedNodes = newParser.Parse(expected);
-			}
-			MarkupMatches(actual, expectedNodes, userMessage);
+			var expectedNodes = expected.ToNodeList(actual.GetHtmlParser());
+			actual.MarkupMatches(expectedNodes, userMessage);
 		}
 
 		/// <summary>
@@ -132,17 +187,8 @@ namespace Bunit
 			if (actual is null)
 				throw new ArgumentNullException(nameof(actual));
 
-			INodeList expectedNodes;
-			if (actual.Length > 0 && actual[0].GetHtmlParser() is { } parser)
-			{
-				expectedNodes = parser.Parse(expected);
-			}
-			else
-			{
-				using var newParser = new HtmlParser();
-				expectedNodes = newParser.Parse(expected);
-			}
-			MarkupMatches(actual, expectedNodes, userMessage);
+			var expectedNodes = expected.ToNodeList(actual.GetHtmlParser());
+			actual.MarkupMatches(expectedNodes, userMessage);
 		}
 
 		/// <summary>
@@ -194,6 +240,19 @@ namespace Bunit
 
 			if (diffs.Count != 0)
 				throw new HtmlEqualException(diffs, expected, actual, userMessage);
+		}
+
+		private static INodeList ToNodeList(this string markup, HtmlParser? htmlParser)
+		{
+			if (htmlParser is null)
+			{
+				using var newHtmlParser = new HtmlParser();
+				return newHtmlParser.Parse(markup);
+			}
+			else
+			{
+				return htmlParser.Parse(markup);
+			}
 		}
 	}
 }

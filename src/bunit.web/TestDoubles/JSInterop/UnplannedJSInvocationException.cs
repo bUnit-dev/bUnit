@@ -5,26 +5,26 @@ using System.Linq;
 
 using Bunit;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
 	/// <summary>
 	/// Exception use to indicate that an unplanned invocation was
-	/// received by the <see cref="MockJsRuntimeInvokeHandler"/> running in <see cref="JsRuntimeMockMode.Strict"/>.
+	/// received by the <see cref="MockJSRuntimeInvokeHandler"/> running in <see cref="JSRuntimeMockMode.Strict"/>.
 	/// </summary>
 	[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "<Pending>")]
-	public class UnplannedJsInvocationException : Exception
+	public class UnplannedJSInvocationException : Exception
 	{
 		/// <summary>
 		/// Gets the unplanned invocation.
 		/// </summary>
-		public JsRuntimeInvocation Invocation { get; }
+		public JSRuntimeInvocation Invocation { get; }
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="UnplannedJsInvocationException"/>
+		/// Creates a new instance of the <see cref="UnplannedJSInvocationException"/>
 		/// with the provided <see cref="Invocation"/> attached.
 		/// </summary>
 		/// <param name="invocation">The unplanned invocation.</param>
-		public UnplannedJsInvocationException(JsRuntimeInvocation invocation)
+		public UnplannedJSInvocationException(JSRuntimeInvocation invocation)
 			: base($"The invocation of '{invocation.Identifier}' {PrintArguments(invocation.Arguments)} was not expected.")
 		{
 			Invocation = invocation;

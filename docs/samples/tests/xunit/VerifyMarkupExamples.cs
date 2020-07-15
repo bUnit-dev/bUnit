@@ -45,16 +45,16 @@ namespace Bunit.Docs.Samples
       smallElm.MarkupMatches(@"<small class=""mark text-muted"">Secondary text</small>");
     }
 
-    // [Fact]
-    // public void MarkupMatchesOnTextNode()
-    // {
-    //   using var ctx = new TestContext();
+    [Fact]
+    public void MarkupMatchesOnTextNode()
+    {
+      using var ctx = new TestContext();
 
-    //   var cut = ctx.RenderComponent<Heading>();
+      var cut = ctx.RenderComponent<Heading>();
 
-    //   var smallElmText = cut.Find("small").TextContent;
-    //   smallElmText.MarkupMatches("Secondary text");
-    // }
+      var smallElmText = cut.Find("small").TextContent;
+      smallElmText.MarkupMatches("Secondary text");
+    }
 
     [Fact]
     public void FindAndFindAll()

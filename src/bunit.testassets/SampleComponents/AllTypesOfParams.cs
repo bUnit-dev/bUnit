@@ -9,7 +9,7 @@ namespace Bunit.TestAssets.SampleComponents
 	public class AllTypesOfParams<TItem> : ComponentBase
 	{
 		[Inject]
-		public IJSRuntime? JsRuntime { get; set; }
+		public IJSRuntime? JSRuntime { get; set; }
 
 		[Parameter(CaptureUnmatchedValues = true)]
 		public IReadOnlyDictionary<string, object> Attributes { get; set; } = default!;

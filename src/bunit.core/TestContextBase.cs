@@ -41,7 +41,7 @@ namespace Bunit
 		}
 
 		/// <inheritdoc/>
-		public void Dispose()
+		public virtual void Dispose()
 		{
 			// The service provider should dispose of any
 			// disposable object it has created, when it is disposed.

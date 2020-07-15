@@ -1,0 +1,34 @@
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<CascadingAuthenticationState>
+	<AuthorizeView>
+		<div>Authorized!</div>
+		<div>Name: @userName</div>
+		@if (hasUserEmail)
+		{
+			<div>Email: @userEmail</div>
+		}
+		@if (hasUserId)
+		{
+			<div>Id: @userId</div>
+		}
+	</AuthorizeView>
+</CascadingAuthenticationState>
+
+@code {
+	string userName = "";
+	string? userEmail = "";
+	string? userId = "";
+	bool hasUserEmail => userEmail != null;
+	bool hasUserId => userId != null;
+
+	protected override async Task OnParametersSetAsync()
+	{
+		var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		userName = state.User.Identity.Name;
+		userEmail = state.User.FindFirst(ClaimTypes.Email)?.Value;
+		userId = state.User.FindFirst(ClaimTypes.Sid)?.Value;
+	}
+}

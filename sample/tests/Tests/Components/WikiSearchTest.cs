@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SampleApp.Components;
-using Bunit.Mocking.JSInterop;
+using Bunit.TestDoubles.JSInterop;
 using Shouldly;
 using Xunit;
 using Bunit;
@@ -18,10 +18,10 @@ namespace SampleApp.CodeOnlyTests.Components
         public void Test001()
         {
             // Arrange
-            // Registered the MockJsRuntime in "Loose" mode with the service provider used when rendering components.
-            // JsRuntimeMockMode.Loose is the default. It configures the mock to just return the default
+            // Registered the MockJSRuntime in "Loose" mode with the service provider used when rendering components.
+            // JSRuntimeMockMode.Loose is the default. It configures the mock to just return the default
             // value for whatever is requested in a InvokeAsync call if no call has explicitly been set up.
-            var jsMock = Services.AddMockJsRuntime();
+            var jsMock = Services.AddMockJSRuntime();
 
             // Act - render the WikiSearch component
             var cut = RenderComponent<WikiSearch>();
@@ -37,10 +37,10 @@ namespace SampleApp.CodeOnlyTests.Components
         public void Test002()
         {
             // Arrange
-            // Registered the MockJsRuntime in "strict" mode with the service provider used when rendering components.
-            // JsRuntimeMockMode.Strict mode configures the mock to throw an error if it receives an InvokeAsync call
+            // Registered the MockJSRuntime in "strict" mode with the service provider used when rendering components.
+            // JSRuntimeMockMode.Strict mode configures the mock to throw an error if it receives an InvokeAsync call
             // it has not been set up to handle.
-            var jsMock = Services.AddMockJsRuntime(JsRuntimeMockMode.Strict);
+            var jsMock = Services.AddMockJSRuntime(JSRuntimeMockMode.Strict);
 
             // Set up the mock to handle the expected call
             var expectedSearchResult = "SEARCH RESULT";

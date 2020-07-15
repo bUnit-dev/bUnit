@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - dev
-    paths-ignore:
-      - 'docs/**'
+    paths:
+      - 'sample/**'
+      - 'src/**'
 
 env:
   VERSION: ''

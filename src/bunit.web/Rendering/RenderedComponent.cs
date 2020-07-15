@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit.Rendering
@@ -15,6 +16,9 @@ namespace Bunit.Rendering
 		{
 			Instance = component;
 		}
+
+		/// <inheritdoc/>
+		public Task InvokeAsync(Action callback) => Renderer.Dispatcher.InvokeAsync(callback);
 
 		/// <inheritdoc/>
 		public void Render() => SetParametersAndRender(ParameterView.Empty);

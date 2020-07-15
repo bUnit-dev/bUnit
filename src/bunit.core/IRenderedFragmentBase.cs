@@ -27,13 +27,6 @@ namespace Bunit
 		/// <summary>
 		/// Gets the <see cref="IServiceProvider"/> used when rendering the component.
 		/// </summary>
-		IServiceProvider Services { get; }
-		
-		/// <summary>
-		/// Invokes the given <paramref name="callback"/> in the context of the associated <see cref="ITestRenderer"/>.
-		/// </summary>
-		/// <param name="callback"></param>
-		/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing.</returns>
-		Task InvokeAsync(Action callback);
+		IServiceProvider Services { get; }	
 	}
 }

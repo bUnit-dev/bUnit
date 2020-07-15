@@ -6,7 +6,6 @@ using AngleSharp.Dom;
 
 using Bunit.Asserting;
 using Bunit.Diffing;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -16,45 +15,45 @@ using Shouldly;
 
 using Xunit;
 
-namespace Bunit.Mocking.JSInterop
+namespace Bunit.TestDoubles.JSInterop
 {
-	public class JsRuntimeAssertExtensionsTest
+	public class JSRuntimeAssertExtensionsTest
 	{
 		[Fact(DisplayName = "VerifyNotInvoke throws if handler is null")]
 		public void Test001()
 		{
-			MockJsRuntimeInvokeHandler? handler = null;
-			Should.Throw<ArgumentNullException>(() => JsRuntimeAssertExtensions.VerifyNotInvoke(handler!, ""));
+			MockJSRuntimeInvokeHandler? handler = null;
+			Should.Throw<ArgumentNullException>(() => (handler!).VerifyNotInvoke(""));
 		}
 
-		[Fact(DisplayName = "VerifyNotInvoke throws JsInvokeCountExpectedException if identifier " +
+		[Fact(DisplayName = "VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
 							"has been invoked one or more times")]
 		public async Task Test002()
 		{
 			var identifier = "test";
-			var handler = new MockJsRuntimeInvokeHandler();
-			await handler.ToJsRuntime().InvokeVoidAsync(identifier);
+			var handler = new MockJSRuntimeInvokeHandler();
+			await handler.ToJSRuntime().InvokeVoidAsync(identifier);
 
-			Should.Throw<JsInvokeCountExpectedException>(() => handler.VerifyNotInvoke(identifier));
+			Should.Throw<JSInvokeCountExpectedException>(() => handler.VerifyNotInvoke(identifier));
 		}
 
-		[Fact(DisplayName = "VerifyNotInvoke throws JsInvokeCountExpectedException if identifier " +
+		[Fact(DisplayName = "VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
 					"has been invoked one or more times, with custom error message")]
 		public async Task Test003()
 		{
 			var identifier = "test";
 			var errMsg = "HELLO WORLD";
-			var handler = new MockJsRuntimeInvokeHandler();
-			await handler.ToJsRuntime().InvokeVoidAsync(identifier);
+			var handler = new MockJSRuntimeInvokeHandler();
+			await handler.ToJSRuntime().InvokeVoidAsync(identifier);
 
-			Should.Throw<JsInvokeCountExpectedException>(() => handler.VerifyNotInvoke(identifier, errMsg))
+			Should.Throw<JSInvokeCountExpectedException>(() => handler.VerifyNotInvoke(identifier, errMsg))
 				.Message.ShouldContain(errMsg);
 		}
 
 		[Fact(DisplayName = "VerifyNotInvoke does not throw if identifier has not been invoked")]
 		public void Test004()
 		{
-			var handler = new MockJsRuntimeInvokeHandler();
+			var handler = new MockJSRuntimeInvokeHandler();
 
 			handler.VerifyNotInvoke("FOOBAR");
 		}
@@ -62,28 +61,28 @@ namespace Bunit.Mocking.JSInterop
 		[Fact(DisplayName = "VerifyInvoke throws if handler is null")]
 		public void Test100()
 		{
-			MockJsRuntimeInvokeHandler? handler = null;
-			Should.Throw<ArgumentNullException>(() => JsRuntimeAssertExtensions.VerifyInvoke(handler!, ""));
-			Should.Throw<ArgumentNullException>(() => JsRuntimeAssertExtensions.VerifyInvoke(handler!, "", 42));
+			MockJSRuntimeInvokeHandler? handler = null;
+			Should.Throw<ArgumentNullException>(() => (handler!).VerifyInvoke(""));
+			Should.Throw<ArgumentNullException>(() => (handler!).VerifyInvoke("", 42));
 		}
 
 		[Fact(DisplayName = "VerifyInvoke throws invokeCount is less than 1")]
 		public void Test101()
 		{
-			var handler = new MockJsRuntimeInvokeHandler();
+			var handler = new MockJSRuntimeInvokeHandler();
 
 			Should.Throw<ArgumentException>(() => handler.VerifyInvoke("", 0));
 		}
 
-		[Fact(DisplayName = "VerifyInvoke throws JsInvokeCountExpectedException when " +
+		[Fact(DisplayName = "VerifyInvoke throws JSInvokeCountExpectedException when " +
 							"invocation count doesn't match the expected")]
 		public async Task Test103()
 		{
 			var identifier = "test";
-			var handler = new MockJsRuntimeInvokeHandler();
-			await handler.ToJsRuntime().InvokeVoidAsync(identifier);
+			var handler = new MockJSRuntimeInvokeHandler();
+			await handler.ToJSRuntime().InvokeVoidAsync(identifier);
 
-			var actual = Should.Throw<JsInvokeCountExpectedException>(() => handler.VerifyInvoke(identifier, 2));
+			var actual = Should.Throw<JSInvokeCountExpectedException>(() => handler.VerifyInvoke(identifier, 2));
 			actual.ExpectedInvocationCount.ShouldBe(2);
 			actual.ActualInvocationCount.ShouldBe(1);
 			actual.Identifier.ShouldBe(identifier);
@@ -93,8 +92,8 @@ namespace Bunit.Mocking.JSInterop
 		public async Task Test104()
 		{
 			var identifier = "test";
-			var handler = new MockJsRuntimeInvokeHandler();
-			await handler.ToJsRuntime().InvokeVoidAsync(identifier);
+			var handler = new MockJSRuntimeInvokeHandler();
+			await handler.ToJSRuntime().InvokeVoidAsync(identifier);
 
 			var invocations = handler.VerifyInvoke(identifier, 1);
 			invocations.ShouldBeSameAs(handler.Invocations[identifier]);
@@ -106,9 +105,9 @@ namespace Bunit.Mocking.JSInterop
 		[Fact(DisplayName = "ShouldBeElementReferenceTo throws if actualArgument or targeted element is null")]
 		public void Test200()
 		{
-			Should.Throw<ArgumentNullException>(() => JsRuntimeAssertExtensions.ShouldBeElementReferenceTo(null!, null!))
+			Should.Throw<ArgumentNullException>(() => JSRuntimeAssertExtensions.ShouldBeElementReferenceTo(null!, null!))
 				.ParamName.ShouldBe("actualArgument");
-			Should.Throw<ArgumentNullException>(() => JsRuntimeAssertExtensions.ShouldBeElementReferenceTo(string.Empty, null!))
+			Should.Throw<ArgumentNullException>(() => string.Empty.ShouldBeElementReferenceTo(null!))
 				.ParamName.ShouldBe("expectedTargetElement");
 		}
 

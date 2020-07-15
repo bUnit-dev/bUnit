@@ -4,8 +4,9 @@ on:
   pull_request:
     branches:
       - dev
-    paths-ignore:
-      - 'docs/**'
+    paths:
+      - 'sample/**'
+      - 'src/**'
 
 env:
   VERSION: ''

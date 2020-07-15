@@ -1,6 +1,6 @@
 ﻿@inherits TestComponentBase
 
-<Fixture Setup="(fixture) => fixture.Services.AddMockJsRuntime()"
+<Fixture Setup="(fixture) => fixture.Services.AddMockJSRuntime()"
          Test="EmptyTodoListRendersCorrectly">
     <ComponentUnderTest>
         <TodoList>
@@ -36,7 +36,7 @@
     }
 </Fixture>
 
-<Fixture Setup="(fixture) => fixture.Services.AddMockJsRuntime()"
+<Fixture Setup="(fixture) => fixture.Services.AddMockJSRuntime()"
          Test="SettingLabelRendersCorrectly">
     <ComponentUnderTest>
         <TodoList>
@@ -65,7 +65,7 @@
     }
 </Fixture>
 
-<Fixture Setup="(fixture) => fixture.Services.AddMockJsRuntime()"
+<Fixture Setup="(fixture) => fixture.Services.AddMockJSRuntime()"
          Test="TaskListRendersItemsUsingItemTemplate">
     <ComponentUnderTest>
         <TodoList>
@@ -101,14 +101,14 @@
 </Fixture>
 
 @code {
-    MockJsRuntimeInvokeHandler jsRtMock = default!;
+    MockJSRuntimeInvokeHandler jsRtMock = default!;
     Todo? createdTodo;
 
     void OnAddingTodoHandler(Todo todo) => createdTodo = todo;
 
     void Setup(Fixture fixture)
     {
-        jsRtMock = fixture.Services.AddMockJsRuntime();
+        jsRtMock = fixture.Services.AddMockJSRuntime();
     }
 }
 

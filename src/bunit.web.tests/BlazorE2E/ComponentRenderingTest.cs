@@ -2,11 +2,9 @@ using System;
 using System.Configuration.Assemblies;
 using System.Linq;
 using System.Numerics;
-
-using Bunit.Mocking.JSInterop;
 using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
-
+using Bunit.TestDoubles.JSInterop;
 using Microsoft.AspNetCore.Components;
 
 using Shouldly;
@@ -367,9 +365,9 @@ namespace Bunit.BlazorE2E
 		}
 
 		[Fact]
-		public void CanUseJsInteropToReferenceElements()
+		public void CanUseJSInteropToReferenceElements()
 		{
-			// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJsRuntime
+			// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJSRuntime
 			//       The original test code is here:
 			// var cut = RenderComponent<ElementRefComponent>();
 			// var inputElement = cut.Find("#capturedElement");
@@ -382,14 +380,14 @@ namespace Bunit.BlazorE2E
 			// buttonElement.Click();
 			// Assert.Equal("Clicks: 2", inputElement.GetAttribute("value"));
 
-			var mockJs = Services.AddMockJsRuntime();
+			var mockJS = Services.AddMockJSRuntime();
 			var cut = RenderComponent<ElementRefComponent>();
 			var inputElement = cut.Find("#capturedElement");
 			var refId = inputElement.GetAttribute(Htmlizer.ELEMENT_REFERENCE_ATTR_NAME);
 			var buttonElement = cut.Find("button");
 
 			buttonElement.Click();
-			mockJs.VerifyInvoke("setElementValue")
+			mockJS.VerifyInvoke("setElementValue")
 				.Arguments[0]
 				.ShouldBeOfType<ElementReference>()
 				.Id.ShouldBe(refId);
@@ -398,7 +396,7 @@ namespace Bunit.BlazorE2E
 		[Fact]
 		public void CanCaptureReferencesToDynamicallyAddedElements()
 		{
-			// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJsRuntime
+			// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJSRuntime
 			//       The original test code is here:
 			//var cut = RenderComponent<ElementRefComponent>();
 			//var buttonElement = cut.Find("button");
@@ -421,7 +419,7 @@ namespace Bunit.BlazorE2E
 			//buttonElement.Click();
 			//Assert.Equal("Clicks: 1", () => inputElement.GetAttribute("value"));
 
-			var mockJs = Services.AddMockJsRuntime();
+			var mockJS = Services.AddMockJSRuntime();
 
 			var cut = RenderComponent<ElementRefComponent>();
 			var buttonElement = cut.Find("button");
@@ -443,7 +441,7 @@ namespace Bunit.BlazorE2E
 			// See that the capture variable was automatically updated to reference the new instance
 			buttonElement.Click();
 
-			mockJs.VerifyInvoke("setElementValue")
+			mockJS.VerifyInvoke("setElementValue")
 				.Arguments[0]
 				.ShouldBeOfType<ElementReference>()
 				.Id.ShouldBe(refId);
@@ -481,7 +479,7 @@ namespace Bunit.BlazorE2E
 
 		// Test depends on javascript changing the DOM, thus doesnt make sense in this context. 
 		//[Fact]
-		//public void CanUseJsInteropForRefElementsDuringOnAfterRender()
+		//public void CanUseJSInteropForRefElementsDuringOnAfterRender()
 		//{
 		//    var cut = RenderComponent<AfterRenderInteropComponent>();
 		//    Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));

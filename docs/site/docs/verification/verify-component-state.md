@@ -48,3 +48,4 @@ Assert.Equal(2, tasks.Count);
 ```
 
 Both the [`FindComponent<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponent``1(Bunit.IRenderedFragment)) and [`FindComponents<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponents``1(Bunit.IRenderedFragment)) methods performs a **depth-first search** of the render tree, with the first method returning only the first found matching component, while latter returning all matching components in the render tree.
+Both the [`FindComponent<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponent``1(Bunit.IRenderedFragment)) and [`FindComponents<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponents``1(Bunit.IRenderedFragment)) methods performs a **depth-first search** of the render tree, with the first method returning only the first found matching component, while latter returning all matching components in the render tree.

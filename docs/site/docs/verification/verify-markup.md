@@ -83,11 +83,9 @@ Here we use the `Find(string cssSelector)` method to find the `<small>` element,
 > [!TIP]
 > Working with `Find()`, `FindAll()`, `INode` and `INodeList` is covered later on this page.
 
-<!-- TODO UNCOMMENT WHEN MarkupMatches(this string markup ... ) IS DONE
 Text content can also be verified with the `MarkupMatches()` method, e.g. the text inside the `<small>` element. It has the advantage over regular string comparison that it removes insignificant whitespace in the text automatically, even between words, where a normal string `Trim()` method isn't enough. For example:
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=51&end=56&highlight=5)]
--->
 
 The semantic HTML comparer can be customized to make a test case even more stable and easier to maintain. It is e.g. possible to ignore an element or attribute during comparison, or provide an regular expression to the comparer when comparing a specific element or attribute, to make the comparer work with generated data.
 
