@@ -2,22 +2,15 @@
 
 All notable changes to **bUnit** will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased beta-8]
+## [Unreleased]
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Added
 List of new features.
 
-- Authorization fakes added to make it much easier to test components that use authentication and authorization. Learn more in the [Faking Blazor's Authentication and Authorization](https://bunit.egilhansen.com/docs/test-doubles/faking-auth) page. By [@DarthPedro](https://github.com/DarthPedro) in [#151](https://github.com/egil/bUnit/pull/151).
-
-- Added `MarkupMatches(this string actual ...)`  extension methods. Make it easier to compare just the text content from a DON text node with a string, while still getting the benefit of the semantic HTML comparer.
-
 ### Changed
 List of changes in existing functionality.
-
-- `TestContextBase.Dispose` made virtual to allow inheritor's to override it. By [@SimonCropp](https://github.com/SimonCropp) in [#137](https://github.com/egil/bunit/pull/137).
-- **[Breaking change]** Changed naming convention for JSMock feature and moved to new namespace, `Bunit.TestDoubles.JSInterop`. All classes and methods containing `Js` (meaning JavaScript) renamed to `JS` for consistency with Blazor's `IJSRuntime`. By [@yourilima](https://github.com/yourilima) in [#150](https://github.com/egil/bUnit/pull/150)
 
 ### Deprecated
 List of soon-to-be removed features.
@@ -31,7 +24,25 @@ List of any bug fixes.
 ### Security
 List of fixed security vulnerabilities.
 
-## [1.0.0-beta-7] - 2020-05-19
+## [1.0.0-beta-8] - 2020-07-15
+
+Here is beta-8, a small summer vacation release this time. A few needed additions, especially around testing components that use Blazor's authentication and authorization. In addition to this, a lot of documentation has been added to https://bunit.egilhansen.com/docs/getting-started/.
+
+### Added
+List of new features.
+
+- Authorization fakes added to make it much easier to test components that use authentication and authorization. Learn more in the [Faking Blazor's Authentication and Authorization](https://bunit.egilhansen.com/docs/test-doubles/faking-auth) page. By [@DarthPedro](https://github.com/DarthPedro) in [#151](https://github.com/egil/bUnit/pull/151).
+
+- Added `MarkupMatches(this string actual ...)` extension methods. Make it easier to compare just the text content from a DON text node with a string, while still getting the benefit of the semantic HTML comparer.
+
+### Changed
+List of changes in existing functionality.
+
+- `TestContextBase.Dispose` made virtual to allow inheritor's to override it. By [@SimonCropp](https://github.com/SimonCropp) in [#137](https://github.com/egil/bunit/pull/137).
+ 
+- **[Breaking change]** Changed naming convention for JSMock feature and moved to new namespace, `Bunit.TestDoubles.JSInterop`. All classes and methods containing `Js` (meaning JavaScript) renamed to `JS` for consistency with Blazor's `IJSRuntime`. By [@yourilima](https://github.com/yourilima) in [#150](https://github.com/egil/bUnit/pull/150)
+
+## [1.0.0-beta-7] - 2020-05-19## [1.0.0-beta-7] - 2020-05-19
 
 There are three big changes in bUnit in this release, as well as a whole host of small new features, improvements to the API, and bug fixes. The three big changes are:
 
