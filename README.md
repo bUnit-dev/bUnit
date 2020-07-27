@@ -35,7 +35,7 @@ bUnit is available on NuGet in various incarnations. If you are using xUnit as y
 
 To get started, head to the [getting started documentation](https://bunit.egilhansen.com/docs/getting-started) to learn more.
 
-### Sponsors
+## Sponsors
 
 A hugh thank you to the [sponsors of my work with bUnit](https://github.com/sponsors/egil). The higher tire sponsors are:
 
