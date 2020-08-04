@@ -24,5 +24,8 @@ Here is a list of some of the content out on the web that covers bUnit. If you p
   
 ### Articles and blog posts 
 
+- **[bUnit for Blazor and How to Integrate it in Azure Pipeline](https://www.syncfusion.com/blogs/post/bunit-for-blazor-and-how-to-integrate-it-in-azure-pipeline.aspx) by Ramkumar Shanmugam**   
+  Content is based on beta-8 of bUnit.
+
 - **[Unit Testing Blazor Components with bUnit and JustMock](https://www.telerik.com/blogs/unit-testing-blazor-components-bunit-justmock) by [Mihail Vladov](https://github.com/mihail-vladov)**  
   Content is based on beta-6 of bUnit.
