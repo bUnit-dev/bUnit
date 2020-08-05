@@ -30,15 +30,13 @@ namespace Bunit.Rendering
 		private HtmlParser HtmlParser { get; }
 
 		/// <summary>
-		/// Gets the renderer used to render the <see cref="IRenderedFragmentBase"/>.
-		/// </summary>
-		protected ITestRenderer Renderer { get; }
-
-		/// <summary>
 		/// Gets the first rendered markup.
 		/// </summary>
 		protected string FirstRenderMarkup { get; }
 
+		/// <inheritdoc/>
+		public ITestRenderer Renderer { get; }
+		
 		/// <inheritdoc/>
 		public IServiceProvider Services { get; }
 

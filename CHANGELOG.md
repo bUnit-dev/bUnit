@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 List of new features.
 
+- Added `InvokeAsync(Func<Task>)` to `IRenderedComponentBase`. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
+
 ### Changed
 List of changes in existing functionality.
 

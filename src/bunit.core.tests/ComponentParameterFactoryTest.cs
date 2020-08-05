@@ -84,46 +84,6 @@ namespace Bunit
 			Should.Throw<Exception>(() => instance.ItemTemplate!("")(null)).Message.ShouldBe("ItemTemplate");
 		}
 
-		[Fact(DisplayName = "Dispatcher awaits Task-returning callback")]
-		public async Task Test003()
-		{
-			// Arrange
-			var cut = RenderComponent<Simple1>();
-			bool delegateFinished = false;
-			
-			async Task Callback()
-			{
-				await Task.Delay(10); 
-				delegateFinished = true; 
-			}
-
-			// Act
-			await cut.InvokeAsync(Callback);
-
-			// Assert
-			delegateFinished.ShouldBe(true);
-		}
-
-		[Fact(DisplayName = "Dispatcher does not await void-returning callback")]
-		public async Task Test004()
-		{
-			// Arrange
-			var cut = RenderComponent<Simple1>();
-			bool delegateFinished = false;
-			
-			async void Callback()
-			{
-				await Task.Delay(10); 
-				delegateFinished = true; 
-			}
-
-			// Act
-			await cut.InvokeAsync(Callback);
-
-			// Assert
-			delegateFinished.ShouldBe(false);
-		}
-
 		[Fact(DisplayName = "Template(name, markupFactory) helper correctly renders markup template")]
 		public void Test100()
 		{

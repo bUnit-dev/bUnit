@@ -27,6 +27,11 @@ namespace Bunit
 		/// <summary>
 		/// Gets the <see cref="IServiceProvider"/> used when rendering the component.
 		/// </summary>
-		IServiceProvider Services { get; }	
+		IServiceProvider Services { get; }
+
+		/// <summary>
+		/// Gets the <see cref="ITestRenderer"/> renderer that rendered the component.
+		/// </summary>
+		ITestRenderer Renderer { get; }
 	}
 }
