@@ -21,6 +21,9 @@ namespace Bunit.Rendering
 		public Task InvokeAsync(Action callback) => Renderer.Dispatcher.InvokeAsync(callback);
 
 		/// <inheritdoc/>
+		public Task InvokeAsync(Func<Task> callback) => Renderer.Dispatcher.InvokeAsync(callback);
+
+		/// <inheritdoc/>
 		public void Render() => SetParametersAndRender(ParameterView.Empty);
 
 		/// <inheritdoc/>
