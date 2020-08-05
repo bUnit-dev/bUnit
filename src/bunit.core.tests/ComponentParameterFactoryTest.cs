@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
 using Bunit.TestDoubles.JSInterop;
@@ -81,6 +82,46 @@ namespace Bunit
 			new RenderedFragment(Services, Renderer.RenderFragment(instance.ChildContent!)).Markup.ShouldBe(nameof(ChildContent));
 			new RenderedFragment(Services, Renderer.RenderFragment(instance.OtherContent!)).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
 			Should.Throw<Exception>(() => instance.ItemTemplate!("")(null)).Message.ShouldBe("ItemTemplate");
+		}
+
+		[Fact(DisplayName = "Dispatcher awaits Task-returning callback")]
+		public async Task Test003()
+		{
+			// Arrange
+			var cut = RenderComponent<Simple1>();
+			bool delegateFinished = false;
+			
+			async Task Callback()
+			{
+				await Task.Delay(10); 
+				delegateFinished = true; 
+			}
+
+			// Act
+			await cut.InvokeAsync(Callback);
+
+			// Assert
+			delegateFinished.ShouldBe(true);
+		}
+
+		[Fact(DisplayName = "Dispatcher does not await void-returning callback")]
+		public async Task Test004()
+		{
+			// Arrange
+			var cut = RenderComponent<Simple1>();
+			bool delegateFinished = false;
+			
+			async void Callback()
+			{
+				await Task.Delay(10); 
+				delegateFinished = true; 
+			}
+
+			// Act
+			await cut.InvokeAsync(Callback);
+
+			// Assert
+			delegateFinished.ShouldBe(false);
 		}
 
 		[Fact(DisplayName = "Template(name, markupFactory) helper correctly renders markup template")]
