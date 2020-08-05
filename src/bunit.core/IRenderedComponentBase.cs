@@ -34,24 +34,24 @@ namespace Bunit
 		/// <summary>
 		/// Render the component under test again.
 		/// </summary>
-		Task Render();
+		void Render();
 
 		/// <summary>
 		/// Render the component under test again with the provided <paramref name="parameters"/>.
 		/// </summary>
 		/// <param name="parameters">Parameters to pass to the component upon rendered</param>
-		Task SetParametersAndRenderAsync(ParameterView parameters);
+		void SetParametersAndRender(ParameterView parameters);
 
 		/// <summary>
 		/// Render the component under test again with the provided <paramref name="parameters"/>.
 		/// </summary>
 		/// <param name="parameters">Parameters to pass to the component upon rendered</param>
-		Task SetParametersAndRenderAsync(params ComponentParameter[] parameters);
+		void SetParametersAndRender(params ComponentParameter[] parameters);
 
 		/// <summary>
 		/// Render the component under test again with the provided parameters from the <paramref name="parameterBuilder"/>.
 		/// </summary>
 		/// <param name="parameterBuilder">An action that receives a <see cref="ComponentParameterBuilder{TComponent}"/>.</param>
-		Task SetParametersAndRenderAsync(Action<ComponentParameterBuilder<TComponent>> parameterBuilder);
+		void SetParametersAndRender(Action<ComponentParameterBuilder<TComponent>> parameterBuilder);
 	}
 }

@@ -65,7 +65,7 @@ namespace Bunit
 			instance.ItemTemplate.ShouldBeNull();
 
 			// act - set components params and render
-			cut.SetParametersAndRenderAsync(
+			cut.SetParametersAndRender(
 				("some-unmatched-attribute", "unmatched value"),
 				(nameof(AllTypesOfParams<string>.RegularParam), "some value"),
 				EventCallback(nameof(AllTypesOfParams<string>.NonGenericCallback), () => throw new Exception("NonGenericCallback")),

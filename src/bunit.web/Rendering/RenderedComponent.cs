@@ -24,22 +24,25 @@ namespace Bunit.Rendering
 		public Task InvokeAsync(Func<Task> callback) => Renderer.Dispatcher.InvokeAsync(callback);
 
 		/// <inheritdoc/>
-		public Task Render() => SetParametersAndRenderAsync(ParameterView.Empty);
+		public void Render() => SetParametersAndRender(ParameterView.Empty);
 
 		/// <inheritdoc/>
-		public Task SetParametersAndRenderAsync(ParameterView parameters)
+		public void SetParametersAndRender(ParameterView parameters)
 		{
-			return InvokeAsync(() => Instance.SetParametersAsync(parameters));
+			InvokeAsync(() =>
+			{
+				Instance.SetParametersAsync(parameters);
+			});
 		}
 
 		/// <inheritdoc/>
-		public Task SetParametersAndRenderAsync(params ComponentParameter[] parameters)
+		public void SetParametersAndRender(params ComponentParameter[] parameters)
 		{
-			return SetParametersAndRenderAsync(ToParameterView(parameters));
+			SetParametersAndRender(ToParameterView(parameters));
 		}
 
 		/// <inheritdoc/>
-		public Task SetParametersAndRenderAsync(Action<ComponentParameterBuilder<TComponent>> parameterBuilder)
+		public void SetParametersAndRender(Action<ComponentParameterBuilder<TComponent>> parameterBuilder)
 		{
 			if (parameterBuilder is null)
 				throw new ArgumentNullException(nameof(parameterBuilder));
@@ -47,7 +50,7 @@ namespace Bunit.Rendering
 			var builder = new ComponentParameterBuilder<TComponent>();
 			parameterBuilder(builder);
 
-			return SetParametersAndRenderAsync(ToParameterView(builder.Build()));
+			SetParametersAndRender(ToParameterView(builder.Build()));
 		}
 
 		private static ParameterView ToParameterView(IReadOnlyList<ComponentParameter> parameters)
@@ -59,7 +62,7 @@ namespace Bunit.Rendering
 				foreach (var param in parameters)
 				{
 					if (param.IsCascadingValue)
-						throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(SetParametersAndRenderAsync)} method.");
+						throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(SetParametersAndRender)} method.");
 					paramDict.Add(param.Name!, param.Value);
 				}
 				parameterView = ParameterView.FromDictionary(paramDict);
