@@ -9,8 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 List of new features.
 
+- Added `InvokeAsync(Func<Task>)` to `RenderedComponentInvokeAsyncExtensions`. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
+- Added `ITestRenderer Renderer { get ; }` to `IRenderedFragment` to make it possible to simplify the `IRenderedComponentBase<TComponent>` interface. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
+
 ### Changed
 List of changes in existing functionality.
+
+- Moved `InvokeAsync()`, `Render()` and `SetParametersAndRender()` methods out of `IRenderedComponentBase<TComponent>` into extension methods. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
 
 ### Deprecated
 List of soon-to-be removed features.
