@@ -16,7 +16,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="renderedComponent">The rendered component whose dispatcher to invoke with.</param>
 		/// <param name="callback"></param>
-		/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing.</returns>
+		/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing or is suspended by an asynchronous operation.</returns>
 		public static Task InvokeAsync<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, Action callback)
 			where TComponent : IComponent
 		{
