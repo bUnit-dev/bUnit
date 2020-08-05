@@ -14,6 +14,8 @@ List of new features.
 ### Changed
 List of changes in existing functionality.
 
+- Moved `InvokeAsync()`, `Render()` and `SetParametersAndRender()` methods out of `IRenderedComponentBase<TComponent>` into extension methods. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
+
 ### Deprecated
 List of soon-to-be removed features.
 
