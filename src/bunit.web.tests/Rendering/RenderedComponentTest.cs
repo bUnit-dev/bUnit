@@ -25,7 +25,7 @@ namespace Bunit
 		{
 			var cut = RenderComponent<Wrapper>(parameters => parameters.AddChildContent("<div>"));
 
-			cut.SetParametersAndRender(parameters => parameters.AddChildContent("<p>"));
+			cut.SetParametersAndRenderAsync(parameters => parameters.AddChildContent("<p>"));
 
 			cut.Find("p").ShouldNotBeNull();
 		}
@@ -36,7 +36,7 @@ namespace Bunit
 		{
 			var cut = RenderComponent<Wrapper>(parameters => parameters.AddChildContent("<div>"));
 
-			cut.SetParametersAndRender(parameters => parameters.AddChildContent("<p>"));
+			cut.SetParametersAndRenderAsync(parameters => parameters.AddChildContent("<p>"));
 
 			cut.Find("p").ShouldNotBeNull();
 		}
@@ -50,8 +50,8 @@ namespace Bunit
 			var cut = RenderComponent<AllTypesOfParams<string>>();
 
 			// assert
-			Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(ps => ps.Add(p => p.UnnamedCascadingValue, 42)));
-			Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(ps => ps.Add(p => p.NamedCascadingValue, 1337)));
+			Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRenderAsync(ps => ps.Add(p => p.UnnamedCascadingValue, 42)));
+			Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRenderAsync(ps => ps.Add(p => p.NamedCascadingValue, 1337)));
 		}
 	}
 }

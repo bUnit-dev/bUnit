@@ -83,7 +83,7 @@ namespace Bunit
 
 			cut.Instance.Counter.ShouldBe(1);
 
-			cut.SetParametersAndRender((nameof(ToggleClickHandler.HandleClicks), false));
+			cut.SetParametersAndRenderAsync((nameof(ToggleClickHandler.HandleClicks), false));
 
 			cut.Find("#btn").Click();
 

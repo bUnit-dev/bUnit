@@ -47,7 +47,7 @@ namespace Bunit.Rendering.Internal
 			var cut = RenderComponent<Htmlizer01Component>();
 			cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 
-			cut.SetParametersAndRender(parameters => parameters.Add(p => p.OnClick, (MouseEventArgs e) => { }));
+			cut.SetParametersAndRenderAsync(parameters => parameters.Add(p => p.OnClick, (MouseEventArgs e) => { }));
 
 			cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 		}
