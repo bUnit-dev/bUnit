@@ -21,4 +21,4 @@ The *next level* topics are:
 
 ## Getting Help
 
-Cannot figure out how to write a test for a testing scenario? Found a testing scenario that is hard or inelegant with bUnit? Found a bug in bUnit? Head over to the [GitHub issues list](https://github.com/egil/bunit/issues) and ask a question, suggest a new feature, or join [bUnits Gitter channel](https://gitter.im/egil/bunit) and let us know. There are no stupid questions, and all questions are welcome!
+If you cannot figure out how to write a test for a testing scenario? If you a testing scenario that is hard to write or it cannot be written elegantly with bUnit? If you found a bug in bUnit? Head over to [GitHub issues list](https://github.com/egil/bunit/issues) to ask a question, suggest a new feature, or join [bUnits Gitter channel](https://gitter.im/egil/bunit) and let us know. There are no stupid questions, all questions are welcome!
