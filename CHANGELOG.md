@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+Thanks to [pharry22](https://github.com/pharry22) for submitting fixes and improvements to the documentation.
+
 ### Added
 List of new features.
 
@@ -16,6 +18,8 @@ List of new features.
 List of changes in existing functionality.
 
 - Moved `InvokeAsync()`, `Render()` and `SetParametersAndRender()` methods out of `IRenderedComponentBase<TComponent>` into extension methods. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
+- Accessing `Markup`, `Nodes` and related methods on a rendered fragment whose underlying component has been removed from the render tree (disposed) now throws a `ComponentDisposedException`. By [@egil](https://github.com/egil) in [#184](https://github.com/egil/bUnit/pull/184).
+
 
 ### Deprecated
 List of soon-to-be removed features.
@@ -25,6 +29,8 @@ List of now removed features.
 
 ### Fixed
 List of any bug fixes.
+
+- Fixes [#175](https://github.com/egil/bUnit/issues/175): When a component referenced in a test, e.g. through the `FindComponent()` method was removed from the render tree, accessing the reference could caused bUnit to look for updates to it in the renderer, causing a exception to be thrown. By [@egil](https://github.com/egil) in [#184](https://github.com/egil/bUnit/pull/184).
 
 ### Security
 List of fixed security vulnerabilities.

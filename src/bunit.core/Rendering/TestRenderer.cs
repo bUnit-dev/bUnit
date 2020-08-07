@@ -148,8 +148,19 @@ namespace Bunit.Rendering
 			{
 				0 => Task.CompletedTask,
 				1 => _renderEventHandlers[0].Handle(renderEvent),
-				_ => Task.WhenAll(_renderEventHandlers.Select(x => x.Handle(renderEvent)))
+				_ => NotifyEventHandlers(renderEvent)
 			};
+		}
+
+		private Task NotifyEventHandlers(RenderEvent renderEvent)
+		{
+			// copy to new array since _renderEventHandlers might be modified by the
+			// Handle method on event handlers if component is disposed.
+			var handleTasks = _renderEventHandlers
+				.ToArray()
+				.Select(x => x.Handle(renderEvent));
+
+			return Task.WhenAll(handleTasks);
 		}
 
 		private void AssertNoUnhandledExceptions()

@@ -1,4 +1,5 @@
 using System;
+using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
 using Bunit.TestDoubles.JSInterop;
 using Shouldly;
@@ -52,6 +53,18 @@ namespace Bunit
 			// assert
 			Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(ps => ps.Add(p => p.UnnamedCascadingValue, 42)));
 			Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(ps => ps.Add(p => p.NamedCascadingValue, 1337)));
+		}
+
+		[Fact(DisplayName = "Getting Instance from a RenderedComponent based on a disposed component throws")]
+		public void Test020()
+		{
+			var cut = RenderComponent<ToggleChildComponent>(ps => ps.Add(p => p.ShowChild, true));
+			var target = cut.FindComponent<Simple1>();
+
+			// Disposes of <Simple1 />
+			cut.SetParametersAndRender(ps => ps.Add(p => p.ShowChild, false));
+
+			Should.Throw<ComponentDisposedException>(() => target.Instance);
 		}
 	}
 }

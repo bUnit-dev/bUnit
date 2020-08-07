@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Bunit.Rendering
@@ -67,8 +68,8 @@ namespace Bunit.Rendering
 		/// <returns>True if component was disposed, false otherwise.</returns>
 		public bool DidComponentDispose(int componentId)
 		{
-			for (var i = 0; i < _renderBatch.DisposedEventHandlerIDs.Count; i++)
-				if (_renderBatch.DisposedEventHandlerIDs.Array[i].Equals(componentId))
+			for (var i = 0; i < _renderBatch.DisposedComponentIDs.Count; i++)
+				if (_renderBatch.DisposedComponentIDs.Array[i].Equals(componentId))
 					return true;
 
 			return false;
@@ -93,18 +94,21 @@ namespace Bunit.Rendering
 						return true;
 				}
 
-				return DidChildComponentRender(_renderer.GetCurrentRenderTreeFrames(componentId));
+				return DidChildComponentRender(componentId);
 			}
 
-			bool DidChildComponentRender(ArrayRange<RenderTreeFrame> componentRenderTreeFrames)
+			bool DidChildComponentRender(int componentId)
 			{
-				for (var i = 0; i < componentRenderTreeFrames.Count; i++)
+				var frames = _renderer.GetCurrentRenderTreeFrames(componentId);
+
+				for (var i = 0; i < frames.Count; i++)
 				{
-					ref var frame = ref componentRenderTreeFrames.Array[i];
+					ref var frame = ref frames.Array[i];
 					if (frame.FrameType == RenderTreeFrameType.Component)
 						if (DidComponentRenderRoot(frame.ComponentId))
 							return true;
 				}
+
 				return false;
 			}
 		}
