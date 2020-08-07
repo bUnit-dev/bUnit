@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+Thanks to Thanks to [pharry22](https://github.com/pharry22) for submitting fixes and improvements to the documentation.
+
 ### Added
 List of new features.
 
