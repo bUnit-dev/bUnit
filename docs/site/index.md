@@ -13,22 +13,16 @@ title: bUnit - a testing library for Blazor components
 
 **bUnit** is a testing library for Blazor Components. Its goal is to make it easy to write _comprehensive, stable unit tests_. You can:
 
-- Setup and define components under tests in C# or Razor syntax
+- Setup and define components under tests using C# or Razor syntax
 - Verify outcome using semantic HTML comparer
-- Interact with and inspect components
-- Trigger event handlers
-- Provide cascading values
-- Inject services
-- Mock `IJsRuntime`
+- Interact with and inspect components, trigger event handlers
+- Pass parameters, cascading values and inject services into components under test
+- Mock `IJsRuntime` and Blazors authentication and authorization
 - Perform snapshot testing
 
 bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which runs the Blazor components tests, just as any normal unit test. 
 
 **Go to the [Documentation](xref:getting-started) pages to learn more.**
-
-> [!NOTE]
-> The documentation is currently being rewritten to reflect the recent changes. 
-> Please excuse the mess.
 
 ### Test example 
 
@@ -38,7 +32,7 @@ For example, to test the `<Counter>` component listed below:
 
 You can do the following, using bUnit and xUnit:
 
-[!code-csharp[CounterTest.cs](../samples/tests/xunit/CounterTest.cs#L8-L20)]
+[!code-csharp[CounterTest.cs](../samples/tests/xunit/CounterTestWithCtx.cs#L8-L21)]
 
 ### NuGet downloads
 
@@ -46,7 +40,7 @@ bUnit is available on NuGet in various incarnations. If you are using xUnit as y
 
 | Name | Type | NuGet Download Link |
 | ----- | ----- | ---- |
-| bUnit | Library, includes core, web, and xUnit | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) | 
+| bUnit | Library, includes core, web, and xUnit support | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) | 
 | bUnit.core | Library, only core | [![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.core/) | 
 | bUnit.web | Library, web and core | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) | 
 | bUnit.xUnit |Library, xUnit and core | [![Nuget](https://img.shields.io/nuget/dt/bunit.xunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.xunit/) | 
