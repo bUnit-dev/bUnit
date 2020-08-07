@@ -17,7 +17,6 @@ namespace Bunit.Rendering
 		public ComponentDisposedException(int componentId)
 			: base($"The component has been removed from the render tree by the renderer and is no longer available for inspection. ComponentId = {componentId}.")
 		{
-
 		}
 	}
 }
