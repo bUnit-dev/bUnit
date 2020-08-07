@@ -1,3 +1,4 @@
+using System;
 using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
 
@@ -172,6 +173,18 @@ namespace Bunit
 			wrapper.RenderCount.ShouldBe(3);
 			first.RenderCount.ShouldBe(2);
 			second.RenderCount.ShouldBe(2);
+		}
+
+		[Fact(DisplayName = "Getting Markup from a RenderedFragment based on a disposed component throws")]
+		public void Test020()
+		{
+			var cut = RenderComponent<ToggleChildComponent>(ps => ps.Add(p => p.ShowChild, true));
+			var target = cut.FindComponent<Simple1>();
+
+			// Disposes of <Simple1 />
+			cut.SetParametersAndRender(ps => ps.Add(p => p.ShowChild, false));
+
+			Should.Throw<ComponentDisposedException>(() => target.Markup);
 		}
 	}
 }

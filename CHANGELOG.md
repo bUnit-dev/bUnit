@@ -18,6 +18,8 @@ List of new features.
 List of changes in existing functionality.
 
 - Moved `InvokeAsync()`, `Render()` and `SetParametersAndRender()` methods out of `IRenderedComponentBase<TComponent>` into extension methods. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
+- Accessing `Markup`, `Nodes` and related methods on a rendered fragment whose underlying component has been removed from the render tree (disposed) now throws a `ComponentDisposedException`. By [@egil](https://github.com/egil) in [#184](https://github.com/egil/bUnit/pull/184)
+
 
 ### Deprecated
 List of soon-to-be removed features.

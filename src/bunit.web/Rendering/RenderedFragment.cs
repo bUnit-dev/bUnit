@@ -19,13 +19,14 @@ namespace Bunit.Rendering
 	/// </summary>
 	public class RenderedFragment : IRenderedFragment, IRenderEventHandler
 	{
-		private readonly object _lock = new object();
+		private readonly object _markupAccessLock = new object();
 		private readonly ILogger<RenderedFragment> _logger;
 		private string? _snapshotMarkup;
 		private INodeList? _firstRenderNodes;
 		private INodeList? _latestRenderNodes;
 		private INodeList? _snapshotNodes;
 		private string _markup;
+		private bool _componentDisposed = false;
 
 		private HtmlParser HtmlParser { get; }
 
@@ -36,7 +37,7 @@ namespace Bunit.Rendering
 
 		/// <inheritdoc/>
 		public ITestRenderer Renderer { get; }
-		
+
 		/// <inheritdoc/>
 		public IServiceProvider Services { get; }
 
@@ -48,9 +49,11 @@ namespace Bunit.Rendering
 		{
 			get
 			{
+				EnsureComponentNotDisposed();
+
 				// The lock ensures that we cannot read the _markup and _latestRenderNodes
 				// field while it is being updated
-				lock (_lock)
+				lock (_markupAccessLock)
 				{
 					return Volatile.Read(ref _markup);
 				}
@@ -62,8 +65,10 @@ namespace Bunit.Rendering
 		{
 			get
 			{
+				EnsureComponentNotDisposed();
+
 				// The lock ensures that latest nodes is always based on the latest rendered markup.
-				lock (_lock)
+				lock (_markupAccessLock)
 				{
 					if (_latestRenderNodes is null)
 						_latestRenderNodes = HtmlParser.Parse(Markup);
@@ -131,26 +136,30 @@ namespace Bunit.Rendering
 
 		Task IRenderEventHandler.Handle(RenderEvent renderEvent)
 		{
-			HandleComponentRender(renderEvent);
+			if (renderEvent.DidComponentDispose(ComponentId))
+			{
+				HandleComponentDisposed();
+			}
+			else if (renderEvent.DidComponentRender(ComponentId))
+			{
+				HandleComponentRender(renderEvent);
+			}
 			return Task.CompletedTask;
 		}
 
 		private void HandleComponentRender(RenderEvent renderEvent)
 		{
-			if (renderEvent.DidComponentRender(ComponentId))
-			{
-				_logger.LogDebug(new EventId(1, nameof(HandleComponentRender)), $"Received a new render where component {ComponentId} did render.");
+			_logger.LogDebug(new EventId(1, nameof(HandleComponentRender)), $"Received a new render where component {ComponentId} did render.");
 
-				RenderCount++;
+			RenderCount++;
 
-				// First notify derived types, e.g. queried AngleSharp collections or elements
-				// that the markup has changed and they should rerun their queries.
-				HandleChangesToMarkup(renderEvent);
+			// First notify derived types, e.g. queried AngleSharp collections or elements
+			// that the markup has changed and they should rerun their queries.
+			HandleChangesToMarkup(renderEvent);
 
-				// Then it is safe to tell anybody waiting on updates or changes to the rendered fragment
-				// that they can redo their assertions or continue processing.
-				OnAfterRender?.Invoke();
-			}
+			// Then it is safe to tell anybody waiting on updates or changes to the rendered fragment
+			// that they can redo their assertions or continue processing.
+			OnAfterRender?.Invoke();
 		}
 
 		private void HandleChangesToMarkup(RenderEvent renderEvent)
@@ -160,7 +169,7 @@ namespace Bunit.Rendering
 				_logger.LogDebug(new EventId(1, nameof(HandleChangesToMarkup)), $"Received a new render where the markup of component {ComponentId} changed.");
 
 				// The lock ensures that latest nodes is always based on the latest rendered markup.
-				lock (_lock)
+				lock (_markupAccessLock)
 				{
 					_latestRenderNodes = null;
 					_markup = RetrieveLatestMarkupFromRenderer();
@@ -168,11 +177,23 @@ namespace Bunit.Rendering
 
 				OnMarkupUpdated?.Invoke();
 			}
-			else if (renderEvent.DidComponentDispose(ComponentId))
-			{
-				_logger.LogDebug(new EventId(1, nameof(HandleChangesToMarkup)), $"Received a new render where the component {ComponentId} was disposed.");
-				Renderer.RemoveRenderEventHandler(this);
-			}
+		}
+
+		private void HandleComponentDisposed()
+		{
+			_logger.LogDebug(new EventId(1, nameof(HandleChangesToMarkup)), $"Received a new render where the component {ComponentId} was disposed.");
+			_componentDisposed = true;
+			Renderer.RemoveRenderEventHandler(this);
+		}
+
+		/// <summary>
+		/// Ensures that the underlying component behind the
+		/// fragment has not been removed from the render tree.
+		/// </summary>
+		protected void EnsureComponentNotDisposed()
+		{
+			if (_componentDisposed)
+				throw new ComponentDisposedException(ComponentId);
 		}
 	}
 }
