@@ -5,13 +5,13 @@ title: Creating a new bUnit Test Project
 
 # Creating a new bUnit Test Project
 
-To write tests, you need a place to put them - a test project. bUnit is not a unit test runner, so a general-purpose test framework, like xUnit, NUnit, or MSTest, is needed, in addition to bUnit, to write and run tests. 
+To write tests, you need a place to put them - a test project. bUnit is not a unit test runner, so a general-purpose test framework, like xUnit, NUnit, or MSTest, is needed in addition to bUnit, to write and run tests. 
 
-To use bUnit with xUnit, the easiest approached is using the bUnit project template described in the [Create a test project with bUnit template](#create-a-test-project-with-bunit-template) section further down the page. To create a test project manually in a general-purpose testing frameworks agnostic way, read the following section.
+To use bUnit with xUnit, the easiest approached is to use the bUnit project template described in the [Create a test project with bUnit template](#create-a-test-project-with-bunit-template) section further down the page. To create a test project manually, in a general-purpose testing frameworks agnostic way, read the following section.
 
 ## Create a Test Project Manually
 
-This section will take you through the steps listed below to manually create a project for testing Blazor components, that uses either of three general purpose test frameworks. Read the rest of the section to get the all the details. Skip any steps you have already previously completed, e.g. if you already have a test project.
+This section will take you through the steps required to create a project for testing Blazor components using bUnit. Any of the three general purpose test frameworks shown in step 1 below can be used. 
 
 1. Create a new xUnit/NUnit/MSTest testing project
 2. Add bUnit to the test project
@@ -44,11 +44,11 @@ dotnet new mstest -o <NAME OF TEST PROJECT>
 
 ***
 
-where `-o <NAME OF PROJECT>` is used to name the test project.
+where `-o <NAME OF PROJECT>` refers to the name of the test project.
 
 **2. Add bUnit to the test project**
 
-To add bUnit to the test project, change to the newly created test projects folder and then use the following command:
+To add bUnit to the test project, change to the newly created test projects folder and use the following command:
 
 # [xUnit](#tab/xunit)
 
@@ -76,7 +76,7 @@ dotnet add package bunit.web --version #{NBGV_NuGetPackageVersion}#
 
 **3. Configure project settings**
 
-The test projects setting needs to be set accordingly: 
+The test projects setting needs to be set to the following: 
 
 - the project's SDK to `Microsoft.NET.Sdk.Razor`
 - set `RazorLangVersion` to `3.0`
@@ -99,14 +99,14 @@ To do so, change the first part of the test projects `.csproj` file to look like
 
 **4. Add the test project to your solution**
 
-If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and project containing the components that should be tested:
+If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and project containing the components that are to be tested:
 
 ```dotnetcli
 dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
 dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.csproj
 ```
 
-The result should be a test project with a `.csproj` that looks like this (other packages than bUnit might have different version numbers):
+The result should be a test project with a `.csproj` that looks like this (non bUnit packages may have different version numbers):
 
 # [xUnit](#tab/xunit)
 
@@ -188,7 +188,7 @@ The result should be a test project with a `.csproj` that looks like this (other
 
 ## Create a Test Project with bUnit Template
 
-To skip a few steps in the guide above, use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/). The bUnit project template is only available for using with xUnit as the general-purpose testing framework, but that will change in the future.
+To skip a few steps in the guide above, use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/). The bUnit project template currently only works with the xUnit general-purpose testing framework, others framework will be supported in the future.
 
 The steps are as follows:
 
