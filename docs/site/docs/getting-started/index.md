@@ -11,7 +11,7 @@ The *basic* getting started topics are:
 
 1. **<xref:create-test-project>** covers setting up a bUnit test project.
 2. **<xref:writing-csharp-tests>** covers the basics of writing tests in C#, i.e. like regular unit tests.
-3. **<xref:writing-razor-tests>** covers the basics of writing tests in `.razor` files in Razor and C# syntax.  
+3. **<xref:writing-razor-tests>** covers the basics of writing tests in `.razor` files using Razor and C# syntax.  
 
 The *next level* topics are:
 
