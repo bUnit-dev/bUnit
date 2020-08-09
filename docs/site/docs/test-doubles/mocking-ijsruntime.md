@@ -7,7 +7,7 @@ title: Mocking Blazor's IJSRuntime
 
 It is common for Blazor components to use `IJSRuntime` to call JavaScript, and since bUnit does not run JavaScript, mocking `IJSRuntime` is needed for components that uses it. In that regard, `IJSRuntime` is no different than other services that a component might depend on.
 
-bUnit comes a tailor built mock of `IJSRuntime`, that allows you to specify how JavaScript interop calls should be handled, what values they should return, and to verify that they have happened.
+bUnit comes with a tailor built mock of `IJSRuntime`, that allows you to specify how JavaScript interop calls should be handled, what values they should return, and to verify that they have happened.
 
 If you have more complex mocking needs, or you prefer to use the same mocking framework for all mocking in your tests to keep things consistent, general purpose mocking frameworks like [Moq](https://github.com/Moq), [JustMock Lite](https://github.com/telerik/JustMockLite), or [NSubstitute](https://nsubstitute.github.io/) all works nicely with bUnit.
 
@@ -15,7 +15,7 @@ The following sections shows how to use the built-in mock of `IJSRuntime`.
 
 ## Registering the mock `IJSRuntime`
 
-A mock of `IJSRuntime` must be added to the `Services` collection, just like other services that a component under test requires. This is done like this:
+A mock of `IJSRuntime` must be added to the `Services` collection, just like other services that a component under test requires. This is done like so:
 
 ```csharp
 using var ctx = new TestContext();
