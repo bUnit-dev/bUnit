@@ -71,7 +71,7 @@ jobs:
         run: dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages /p:PublicRelease=true
       - name: Verifying template
         run: |
-          dotnet new --install ${GITHUB_WORKSPACE}/packages/bunit.template.$VERSION.nupkg
+          dotnet new --install ${GITHUB_WORKSPACE}/packages/bunit.template.*.nupkg
           dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/Test
           dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/packages
           dotnet test ${GITHUB_WORKSPACE}/Test
