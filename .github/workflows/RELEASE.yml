@@ -30,7 +30,22 @@ jobs:
           files: '["*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.202'  
+          dotnet-version: '3.1.x'
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.100-preview.7.20366.6'
+      - name: DOTNET HACK
+        shell: pwsh
+        run: |
+          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
+          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
+          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
+          foreach ($dir in $directories) {
+            $from = $dir.FullName;
+            $to = "$root/$version";
+            Write-Host Copying from $from to $to;
+            Copy-Item "$from\*" $to -Recurse -Force;
+          } 
       - name: Building library
         run: |
           dotnet restore src

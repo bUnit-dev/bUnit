@@ -63,10 +63,10 @@ jobs:
           dotnet test src/bunit.xunit.tests/ -c Release --no-restore --verbosity normal /nowarn:CS1591
       - name: Creating library package
         run: |
-          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
       - name: Buidling template package
         run: dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages
       - name: Verifying template
