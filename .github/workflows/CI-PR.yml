@@ -33,7 +33,7 @@ jobs:
           files: '["*.csproj", "**/*.csproj"]'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.202'
+          dotnet-version: '5.x.x'
       - name: Building library
         run: |
           dotnet restore src
