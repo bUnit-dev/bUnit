@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 using AngleSharp.Dom;
 
@@ -66,14 +66,14 @@ namespace Bunit
 				ShiftKey = shiftKey,
 				AltKey = altKey,
 				MetaKey = metaKey,
-				Type = type,
+				Type = type!,
 				PointerId = pointerId,
 				Width = width,
 				Height = height,
 				Pressure = pressure,
 				TiltX = tiltX,
 				TiltY = tiltY,
-				PointerType = pointerType,
+				PointerType = pointerType!,
 				IsPrimary = isPrimary
 			});
 
@@ -149,14 +149,14 @@ namespace Bunit
 				ShiftKey = shiftKey,
 				AltKey = altKey,
 				MetaKey = metaKey,
-				Type = type,
+				Type = type!,
 				PointerId = pointerId,
 				Width = width,
 				Height = height,
 				Pressure = pressure,
 				TiltX = tiltX,
 				TiltY = tiltY,
-				PointerType = pointerType,
+				PointerType = pointerType!,
 				IsPrimary = isPrimary
 			});
 
@@ -234,14 +234,14 @@ namespace Bunit
 				ShiftKey = shiftKey,
 				AltKey = altKey,
 				MetaKey = metaKey,
-				Type = type,
+				Type = type!,
 				PointerId = pointerId,
 				Width = width,
 				Height = height,
 				Pressure = pressure,
 				TiltX = tiltX,
 				TiltY = tiltY,
-				PointerType = pointerType,
+				PointerType = pointerType!,
 				IsPrimary = isPrimary
 			});
 
@@ -318,14 +318,14 @@ namespace Bunit
 				ShiftKey = shiftKey,
 				AltKey = altKey,
 				MetaKey = metaKey,
-				Type = type,
+				Type = type!,
 				PointerId = pointerId,
 				Width = width,
 				Height = height,
 				Pressure = pressure,
 				TiltX = tiltX,
 				TiltY = tiltY,
-				PointerType = pointerType,
+				PointerType = pointerType!,
 				IsPrimary = isPrimary
 			});
 
@@ -402,14 +402,14 @@ namespace Bunit
 				ShiftKey = shiftKey,
 				AltKey = altKey,
 				MetaKey = metaKey,
-				Type = type,
+				Type = type!,
 				PointerId = pointerId,
 				Width = width,
 				Height = height,
 				Pressure = pressure,
 				TiltX = tiltX,
 				TiltY = tiltY,
-				PointerType = pointerType,
+				PointerType = pointerType!,
 				IsPrimary = isPrimary
 			});
 
@@ -485,14 +485,14 @@ namespace Bunit
 				ShiftKey = shiftKey,
 				AltKey = altKey,
 				MetaKey = metaKey,
-				Type = type,
+				Type = type!,
 				PointerId = pointerId,
 				Width = width,
 				Height = height,
 				Pressure = pressure,
 				TiltX = tiltX,
 				TiltY = tiltY,
-				PointerType = pointerType,
+				PointerType = pointerType!,
 				IsPrimary = isPrimary
 			});
 
@@ -568,14 +568,14 @@ namespace Bunit
 				ShiftKey = shiftKey,
 				AltKey = altKey,
 				MetaKey = metaKey,
-				Type = type,
+				Type = type!,
 				PointerId = pointerId,
 				Width = width,
 				Height = height,
 				Pressure = pressure,
 				TiltX = tiltX,
 				TiltY = tiltY,
-				PointerType = pointerType,
+				PointerType = pointerType!,
 				IsPrimary = isPrimary
 			});
 
@@ -651,14 +651,14 @@ namespace Bunit
 				ShiftKey = shiftKey,
 				AltKey = altKey,
 				MetaKey = metaKey,
-				Type = type,
+				Type = type!,
 				PointerId = pointerId,
 				Width = width,
 				Height = height,
 				Pressure = pressure,
 				TiltX = tiltX,
 				TiltY = tiltY,
-				PointerType = pointerType,
+				PointerType = pointerType!,
 				IsPrimary = isPrimary
 			});
 
@@ -734,14 +734,14 @@ namespace Bunit
 				ShiftKey = shiftKey,
 				AltKey = altKey,
 				MetaKey = metaKey,
-				Type = type,
+				Type = type!,
 				PointerId = pointerId,
 				Width = width,
 				Height = height,
 				Pressure = pressure,
 				TiltX = tiltX,
 				TiltY = tiltY,
-				PointerType = pointerType,
+				PointerType = pointerType!,
 				IsPrimary = isPrimary
 			});
 

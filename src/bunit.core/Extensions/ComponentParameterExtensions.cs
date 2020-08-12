@@ -63,7 +63,7 @@ namespace Bunit
 					for (var i = 0; i < parameters.Count; i++)
 					{
 						var para = parameters[i];
-						if (!para.IsCascadingValue)
+						if (!para.IsCascadingValue && para.Name is { })
 							builder.AddAttribute(i + 1, para.Name, para.Value);
 					}
 

@@ -10,11 +10,11 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Description>A project template for a testing Blazor/Razor components using the bUnit library.</Description>
 		<PackageDescription>
-    A project template for a testing Blazor/Razor components using the bUnit library.
+			A project template for a testing Blazor/Razor components using the bUnit library.
 
-    bUnit is a testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJSRuntime, and perform snapshot testing.
+			bUnit is a testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can easily interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJSRuntime, and perform snapshot testing.
 
-    The library's goal is to make it easy to write comprehensive, stable unit tests for Blazor Components/Razor Components. Go to bunit.egilhansen.com to learn more.
+			The library's goal is to make it easy to write comprehensive, stable unit tests for Blazor Components/Razor Components. Go to bunit.egilhansen.com to learn more.
 		</PackageDescription>
 		<PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
 		<PackageProjectUrl>https://github.com/egil/bunit</PackageProjectUrl>
@@ -30,7 +30,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.1.91">
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.2.31">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>

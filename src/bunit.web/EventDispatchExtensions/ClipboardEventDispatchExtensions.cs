@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 using AngleSharp.Dom;
@@ -63,7 +63,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="type">The type of the event.</param>
-		public static void Copy(this IElement element, string? type = default) => _ = CopyAsync(element, new ClipboardEventArgs { Type = type });
+		public static void Copy(this IElement element, string? type = default) => _ = CopyAsync(element, new ClipboardEventArgs { Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@oncopy</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -88,7 +88,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="type">The type of the event.</param>
-		public static void Cut(this IElement element, string? type = default) => _ = CutAsync(element, new ClipboardEventArgs { Type = type });
+		public static void Cut(this IElement element, string type = default!) => _ = CutAsync(element, new ClipboardEventArgs { Type = type });
 
 		/// <summary>
 		/// Raises the <c>@oncut</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -113,7 +113,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="type">The type of the event.</param>
-		public static void Paste(this IElement element, string? type = default) => _ = PasteAsync(element, new ClipboardEventArgs { Type = type });
+		public static void Paste(this IElement element, string type = default!) => _ = PasteAsync(element, new ClipboardEventArgs { Type = type });
 
 		/// <summary>
 		/// Raises the <c>@onpaste</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>

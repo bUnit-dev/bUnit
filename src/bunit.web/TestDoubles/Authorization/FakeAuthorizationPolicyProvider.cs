@@ -24,15 +24,15 @@ namespace Bunit.TestDoubles.Authorization
 		/// Gets the fallback authorization policy.
 		/// </summary>
 		/// <returns>Fallback policy.</returns>
-		public Task<AuthorizationPolicy> GetFallbackPolicyAsync()
-			=> Task.FromResult(_options.FallbackPolicy);
+		public Task<AuthorizationPolicy?> GetFallbackPolicyAsync()
+			=> Task.FromResult<AuthorizationPolicy?>(_options.FallbackPolicy);
 
 		/// <summary>
 		/// Get the current policy, which in this implementation just returns a test policy.
 		/// </summary>
 		/// <param name="policyName">Policy name.</param>
 		/// <returns>Test policy for the specified name.</returns>
-		public Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
+		public Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
 		{
 			var authPolicy = new AuthorizationPolicy(new[]
 			{
@@ -40,7 +40,7 @@ namespace Bunit.TestDoubles.Authorization
 			},
 			new[] { $"{_policySchemeName}:{policyName}" });
 
-			return Task.FromResult(authPolicy);
+			return Task.FromResult<AuthorizationPolicy?>(authPolicy);
 		}
 
 		/// <summary>

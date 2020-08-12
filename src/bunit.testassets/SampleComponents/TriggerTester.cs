@@ -19,7 +19,7 @@ namespace Bunit.TestAssets.SampleComponents
 				throw new InvalidOperationException($"{nameof(TriggeredEvent)} is null");
 
 			builder.OpenElement(0, Element);
-			builder.AddAttribute(1, EventName, EventCallback.Factory.Create<TEventArgs>(this, (args) => TriggeredEvent?.InvokeAsync(args)));
+			builder.AddAttribute(1, EventName, EventCallback.Factory.Create(this, TriggeredEvent.Value));
 			builder.CloseElement();
 		}
 	}

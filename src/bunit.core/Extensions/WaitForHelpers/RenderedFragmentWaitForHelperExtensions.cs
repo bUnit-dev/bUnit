@@ -27,7 +27,7 @@ namespace Bunit
 			{
 				waiter.WaitTask.Wait();
 			}
-			catch (AggregateException e)
+			catch (AggregateException e) when (e.InnerException is { })
 			{
 				throw e.InnerException;
 			}
@@ -50,7 +50,7 @@ namespace Bunit
 			{
 				waiter.WaitTask.Wait();
 			}
-			catch (AggregateException e)
+			catch (AggregateException e) when (e.InnerException is { })
 			{
 				throw e.InnerException;
 			}

@@ -8,7 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".items", ".items", "{A5D7B6
 		.editorconfig = .editorconfig
 		..\CHANGELOG.md = ..\CHANGELOG.md
 		Directory.Build.props = Directory.Build.props
-		..\global.json = ..\global.json
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
@@ -41,8 +40,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{785D7644-18F2-45E4-9B30-016ADB7AB9E3}"
 	ProjectSection(SolutionItems) = preProject
 		..\.github\workflows\CI-CD-Docs.yml = ..\.github\workflows\CI-CD-Docs.yml
+		..\.github\workflows\CI-PR.yml = ..\.github\workflows\CI-PR.yml
 		..\.github\workflows\CI.yml = ..\.github\workflows\CI.yml
+		..\.github\workflows\DEV-GPR-PUSH.yml = ..\.github\workflows\DEV-GPR-PUSH.yml
 		..\.github\workflows\nuget-pack-push.yml = ..\.github\workflows\nuget-pack-push.yml
+		..\.github\workflows\NUGET-PUSH.yml = ..\.github\workflows\NUGET-PUSH.yml
+		..\.github\workflows\RELEASE.yml = ..\.github\workflows\RELEASE.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.template", "bunit.template\bunit.template.csproj", "{58FB9C26-7170-426C-ACE8-A98237710CDB}"

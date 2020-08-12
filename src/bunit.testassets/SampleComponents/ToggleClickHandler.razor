@@ -1,4 +1,4 @@
-﻿<p><button id="btn" @onclick="@(HandleClicks ? (Action)IncrementCount : null)">Click me</button></p>
+<p><button id="btn" @onclick="@(HandleClicks ? (Action)IncrementCount : default(Action)!)">Click me</button></p>
 
 @code {
     public int Counter { get; set; }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
+		<TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<RootNamespace>Bunit.Xunit</RootNamespace>
 		<AssemblyName>Bunit.Xunit</AssemblyName>
@@ -32,18 +32,26 @@
 		<Deterministic>true</Deterministic>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-preview.7.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0-preview.7.*" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="SourceFileFinder" Version="1.0.0-preview-1" />
 		<PackageReference Include="System.Reflection.Metadata" Version="1.8.1" />
 		<PackageReference Include="xunit.assert" Version="2.4.0" />
 		<PackageReference Include="xunit.extensibility.core" Version="2.4.0" />
 		<PackageReference Include="xunit.extensibility.execution" Version="2.4.0" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.1.91">
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		  <PrivateAssets>all</PrivateAssets>
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.2.31">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>
 

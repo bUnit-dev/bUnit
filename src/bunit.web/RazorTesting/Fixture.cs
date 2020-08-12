@@ -22,7 +22,7 @@ namespace Bunit
 			{
 				if (_testData is null)
 				{
-					var id = Renderer.RenderFragment(ChildContent);
+					var id = Renderer.RenderFragment(ChildContent!);
 					_testData = Renderer.FindComponents<FragmentBase>(id).Select(x => x.Component).ToArray();
 				}
 				return _testData;
