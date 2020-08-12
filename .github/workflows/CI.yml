@@ -1,6 +1,12 @@
 name: CI
 
 on:
+  pull_request:
+    branches:
+      - dev
+    paths:
+      - 'sample/**'
+      - 'src/**'
   push:
     branches:
       - dev

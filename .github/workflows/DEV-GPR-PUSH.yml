@@ -8,6 +8,7 @@ on:
       - 'src/bunit.core/**'
       - 'src/bunit.web/**'
       - 'src/bunit.xunit/**'
+      - 'src/bunit.template/**'
 
 env:
   VERSION: ''
