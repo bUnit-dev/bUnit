@@ -25,7 +25,7 @@ jobs:
           setAllVars: true
       - name: Setting VERSION and BRANCH env
         run: |
-          echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
+          echo "::set-env name=VERSION::$NBGV_SimpleVersion$NBGV_PrereleaseVersion"
           echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
