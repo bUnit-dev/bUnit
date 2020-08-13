@@ -38,46 +38,46 @@ jobs:
       - name: Running unit tests
         run: dotnet test src --verbosity normal /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=lcov
 
-      - uses: coverallsapp/github-action@master
+      - uses: coverallsapp/github-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: src/bunit.core.tests/coverage/coverage.net5.0.info
           parallel: true
           flag-name: "bunit.core.net5.0"
-      - uses: coverallsapp/github-action@master
+      - uses: coverallsapp/github-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: src/bunit.core.tests/coverage/coverage.netcoreapp3.1.info
           parallel: true
           flag-name: "bunit.core.netcoreapp3.1"
 
-      - uses: coverallsapp/github-action@master
+      - uses: coverallsapp/github-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: src/bunit.web.tests/coverage/coverage.net5.0.info
           parallel: true
           flag-name: "bunit.web.net5.0"
-      - uses: coverallsapp/github-action@master
+      - uses: coverallsapp/github-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: src/bunit.web.tests/coverage/coverage.netcoreapp3.1.info
           parallel: true
           flag-name: "bunit.web.netcoreapp3.1"
 
-      - uses: coverallsapp/github-action@master
+      - uses: coverallsapp/github-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: src/bunit.xunit.tests/coverage/coverage.net5.0.info
           parallel: true
           flag-name: "bunit.xunit.net5.0"
-      - uses: coverallsapp/github-action@master
+      - uses: coverallsapp/github-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: src/bunit.xunit.tests/coverage/coverage.netcoreapp3.1.info
           parallel: true
           flag-name: "bunit.xunit.netcoreapp3.1"
 
-      - uses: coverallsapp/github-action@master
+      - uses: coverallsapp/github-action@v1.1.1
         with:
           github-token: ${{ secrets.github_token }}
           parallel-finished: true
