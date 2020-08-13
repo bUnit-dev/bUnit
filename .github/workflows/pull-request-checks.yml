@@ -2,6 +2,10 @@ name: Pull request code checks
 
 on:
   pull_request:
+    types: 
+      - opened
+      - synchronize
+      - reopened  
     branches:
       - dev
     # paths:
@@ -85,6 +89,21 @@ jobs:
           ref: ${{ github.head_ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        projectBaseDir: src
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   # code-scan:    
   #   runs-on: ubuntu-latest
