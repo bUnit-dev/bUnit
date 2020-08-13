@@ -80,6 +80,11 @@ jobs:
           parallel: true
           flag-name: "bunit.xunit.netcoreapp3.1"
 
+      - uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true
+
   dotnet-format:
     runs-on: ubuntu-latest
     steps:

@@ -2,6 +2,9 @@ name: "CodeQL Scanning"
 
 on:
   push:
+    branches:
+      - dev
+      - main
     paths:
       - 'src/**'
   schedule:
