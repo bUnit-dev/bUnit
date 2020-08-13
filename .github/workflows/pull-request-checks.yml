@@ -13,9 +13,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2   
-        with:
-          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
-      #- uses: dotnet/nbgv@master
       
       - uses: actions/setup-dotnet@v1
         with:
@@ -120,10 +117,6 @@ jobs:
           Write-Host Copying from $from to $to;
           Copy-Item "$from\*" $to -Recurse -Force;
         }
-
-    # - uses: dotnet/nbgv@master
-    #   with:
-    #     setAllVars: true
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
