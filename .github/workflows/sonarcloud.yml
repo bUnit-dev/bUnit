@@ -25,10 +25,7 @@ jobs:
         fetch-depth: 0
 
     - name: Create sonar-project.properties
-      uses: finnp/create-file-action@1.0.0
-      env:
-        FILE_NAME: "sonar-project.properties"
-        FILE_DATA: "sonar.organization=egil\nsonar.projectKey=egil_bUnit\nsonar.sources=./src"
+      run: echo -n -e "sonar.organization=egil\nsonar.projectKey=egil_bUnit\nsonar.sources=./src\n" > sonar-project.properties
 
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
