@@ -12,12 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-      - uses: actions/checkout@v2   
+        uses: actions/checkout@v2   
         with:
           fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
       #- uses: dotnet/nbgv@master
       
-      - name: Install dotnet SDK's
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.x'
@@ -52,7 +51,6 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
 
-      - name: Install dotnet SDK's
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.x'
@@ -104,7 +102,6 @@ jobs:
     - run: git checkout HEAD^2
       if: ${{ github.event_name == 'pull_request' }}
 
-    - name: Install dotnet SDK's
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x'
