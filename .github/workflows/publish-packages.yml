@@ -54,10 +54,7 @@ jobs:
         run: dotnet build src -c Release -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
 
       - name: Running unit tests
-        run: dotnet test src /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        run: dotnet test src -c Release /nowarn:CS1591
       
       - name: Creating library package
         run: |
@@ -65,9 +62,7 @@ jobs:
           dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
           dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
           dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
-      
-      - name: Buidling template package
-        run: dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages /p:PublicRelease=true
+          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages /p:PublicRelease=true
       
       - name: Verifying template
         run: |
