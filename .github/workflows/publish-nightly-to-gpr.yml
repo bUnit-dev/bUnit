@@ -58,8 +58,9 @@ jobs:
 
       - name: Building library
         run: dotnet build src -c Release -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+
       - name: Running unit tests
-        run: dotnet test src -c Release --no-build --no-restore --verbosity normal /nowarn:CS1591
+        run: dotnet test src --verbosity normal /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=lcov
 
       - name: Creating library package
         run: |
@@ -76,7 +77,45 @@ jobs:
           dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/Test
           dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/packages
           dotnet test ${GITHUB_WORKSPACE}/Test
-          
+
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.core.tests/coverage/coverage.net5.0.info
+          parallel: true
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.core.tests/coverage/coverage.netcoreapp3.1.info
+          parallel: true
+
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.web.tests/coverage/coverage.net5.0.info
+          parallel: true
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.web.tests/coverage/coverage.netcoreapp3.1.info
+          parallel: true
+
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.xunit.tests/coverage/coverage.net5.0.info
+          parallel: true
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.xunit.tests/coverage/coverage.netcoreapp3.1.info
+          parallel: true
+
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true
+
       - name: Push packages to GitHub Package Registry
         run: |
            for f in ${GITHUB_WORKSPACE}/packages/*.nupkg
