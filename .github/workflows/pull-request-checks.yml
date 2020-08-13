@@ -78,15 +78,14 @@ jobs:
       with:
         setAllVars: true
 
-    - name: Building library
-      run: dotnet build src -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-
-    # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
         languages: csharp
         config-file: ./.github/codeql/codeql-config.yml
+
+    - name: Building library
+      run: dotnet build src -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1          
