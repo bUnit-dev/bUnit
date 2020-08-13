@@ -48,7 +48,7 @@ jobs:
       with:
         # We must fetch at least the immediate parents so that if this is
         # a pull request then we can checkout the head.
-        fetch-depth: 2
+        fetch-depth: 0
 
     # If this run was triggered by a pull request event, then checkout
     # the head of the pull request instead of the merge commit.
