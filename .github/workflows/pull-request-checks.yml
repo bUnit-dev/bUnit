@@ -39,6 +39,11 @@ jobs:
         run: |
           dotnet test src /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=\"opencover,lcov\" /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
 
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        #with:
+        #  files: ./src/bunit.core.tests/coverage/coverage.net5.0.opencover.xml,./src/bunit.core.tests/coverage/coverage.netcoreapp3.1.info,./src/bunit.web.tests/coverage/coverage.net5.0.info
+
       - uses: coverallsapp/github-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
