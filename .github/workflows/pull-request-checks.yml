@@ -69,8 +69,8 @@ jobs:
       - name: Install dotnet-format
         run: dotnet tool install -g dotnet-format
 
-      # - name: Run dotnet-format
-      #   run: dotnet format src --verbosity diag
+      - name: Run dotnet-format
+        run: dotnet format src --verbosity diag
 
       - name: Commit formatted files      
         uses: EndBug/add-and-commit@v4.1.0
