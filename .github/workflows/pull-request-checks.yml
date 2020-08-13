@@ -8,6 +8,36 @@ on:
       - 'src/**'
 
 jobs:
+  dotnet-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2   
+        with:
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+      - uses: dotnet/nbgv@master
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.100-preview.7.20366.6'
+      - name: Move .net SDLs to shared folder (hack)
+        shell: pwsh
+        run: |
+          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
+          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
+          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
+          foreach ($dir in $directories) {
+            $from = $dir.FullName;
+            $to = "$root/$version";
+            Write-Host Copying from $from to $to;
+            Copy-Item "$from\*" $to -Recurse -Force;
+          }
+      - name: Build library
+        run: dotnet build src -c Release -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+      - name: Running unit tests
+        run: dotnet test src -c Release --no-build --no-restore --verbosity normal /nowarn:CS1591
+
   dotnet-format:
     runs-on: ubuntu-latest
     steps:
@@ -19,15 +49,28 @@ jobs:
 
       - name: Install dotnet-format
         run: dotnet tool install -g dotnet-format # --version 3.3.111304
+      
+      - name: Add dotnet-format problem matcher
+        uses: xt0rted/dotnet-format-problem-matcher@v1
+
+      - name: Restore dotnet tools
+        uses: xt0rted/dotnet-tool-restore@v1
 
       - name: Run dotnet format
-        id: format
         uses: xt0rted/dotnet-format@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           action: "fix"
-          only-changed-files: true
-          folder: "src"
+          only-changed-files: "true"
+
+      # - name: Run dotnet format
+      #   id: format
+      #   uses: xt0rted/dotnet-format@v1.0.1
+      #   with:
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
+      #     action: "fix"
+      #     only-changed-files: true
+      #     folder: "src"
       
       # - name: Commit files
       #   if: steps.format.outputs.has-changes == 'true'
