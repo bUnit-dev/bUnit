@@ -1,4 +1,4 @@
-name: Push nightly to GPR
+name: "Push nightly to GPR"
 
 on:
   push:
@@ -14,7 +14,7 @@ env:
   VERSION: ''
   BRANCH: ''
   
-jobs:  
+jobs:         
   push-to-gpr:
     runs-on: ubuntu-latest  
     steps:
@@ -57,64 +57,18 @@ jobs:
           }    
 
       - name: Building library
-        run: dotnet build src -c Release -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+        run: dotnet build src -c Release -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
 
       - name: Running unit tests
-        run: dotnet test src --verbosity normal /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=lcov
-
+        run: dotnet test src -c Release /nowarn:CS1591
+      
       - name: Creating library package
         run: |
-          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-      
-      - name: Buidling template package
-        run: dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages
-      - name: Verifying template
-        run: |
-          dotnet new --install ${GITHUB_WORKSPACE}/packages/bunit.template.$VERSION.nupkg
-          dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/Test
-          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/packages
-          dotnet test ${GITHUB_WORKSPACE}/Test
-
-      - uses: coverallsapp/github-action@v1.1.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: src/bunit.core.tests/coverage/coverage.net5.0.info
-          parallel: true
-      - uses: coverallsapp/github-action@v1.1.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: src/bunit.core.tests/coverage/coverage.netcoreapp3.1.info
-          parallel: true
-
-      - uses: coverallsapp/github-action@v1.1.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: src/bunit.web.tests/coverage/coverage.net5.0.info
-          parallel: true
-      - uses: coverallsapp/github-action@v1.1.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: src/bunit.web.tests/coverage/coverage.netcoreapp3.1.info
-          parallel: true
-
-      - uses: coverallsapp/github-action@v1.1.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: src/bunit.xunit.tests/coverage/coverage.net5.0.info
-          parallel: true
-      - uses: coverallsapp/github-action@v1.1.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: src/bunit.xunit.tests/coverage/coverage.netcoreapp3.1.info
-          parallel: true
-
-      - uses: coverallsapp/github-action@v1.1.1
-        with:
-          github-token: ${{ secrets.github_token }}
-          parallel-finished: true
+          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true /p:PublicRelease=true
+          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages /p:PublicRelease=true
 
       - name: Push packages to GitHub Package Registry
         run: |

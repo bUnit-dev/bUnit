@@ -1,6 +1,13 @@
 name: "CodeQL Scanning"
 
 on:
+  pull_request:
+    types: 
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - 'src/**'      
   push:
     branches:
       - dev
