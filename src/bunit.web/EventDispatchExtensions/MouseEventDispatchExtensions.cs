@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 using AngleSharp.Dom;
 
@@ -40,7 +40,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void MouseOver(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = MouseOverAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = MouseOverAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onmouseover</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -89,7 +89,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void MouseOut(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = MouseOutAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = MouseOutAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onmouseout</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -138,7 +138,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void MouseMove(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = MouseMoveAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = MouseMoveAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onmousemove</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -187,7 +187,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void MouseDown(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = MouseDownAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = MouseDownAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onmousedown</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -236,7 +236,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void MouseUp(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = MouseUpAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = MouseUpAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onmouseup</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -285,7 +285,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void Click(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = ClickAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = ClickAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onclick</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -334,7 +334,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void DoubleClick(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = DoubleClickAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = DoubleClickAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@ondblclick</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -387,7 +387,7 @@ namespace Bunit
 		/// <param name="deltaZ">The scroll amount for the z-axis.</param>
 		/// <param name="deltaMode">The unit of the delta values scroll amount.</param>
 		public static void Wheel(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, double deltaX = default, double deltaY = default, double deltaZ = default, long deltaMode = default)
-			=> _ = WheelAsync(element, new WheelEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DeltaX = deltaX, DeltaY = deltaY, DeltaZ = deltaZ, DeltaMode = deltaMode });
+			=> _ = WheelAsync(element, new WheelEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DeltaX = deltaX, DeltaY = deltaY, DeltaZ = deltaZ, DeltaMode = deltaMode });
 
 		/// <summary>
 		/// Raises the <c>@onwheel</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -440,7 +440,7 @@ namespace Bunit
 		/// <param name="deltaZ">The scroll amount for the z-axis.</param>
 		/// <param name="deltaMode">The unit of the delta values scroll amount.</param>
 		public static void MouseWheel(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, double deltaX = default, double deltaY = default, double deltaZ = default, long deltaMode = default)
-			=> MouseWheelAsync(element, new WheelEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DeltaX = deltaX, DeltaY = deltaY, DeltaZ = deltaZ, DeltaMode = deltaMode });
+			=> MouseWheelAsync(element, new WheelEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DeltaX = deltaX, DeltaY = deltaY, DeltaZ = deltaZ, DeltaMode = deltaMode });
 
 		/// <summary>
 		/// Raises the <c>@onmousewheel</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -489,7 +489,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void ContextMenu(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = ContextMenuAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = ContextMenuAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@oncontextmenu</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>

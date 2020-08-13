@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 using AngleSharp.Dom;
@@ -33,7 +33,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void TouchCancel(this IElement element, long detail = default, TouchPoint[]? touches = default, TouchPoint[]? targetTouches = default, TouchPoint[]? changedTouches = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = TouchCancelAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = TouchCancelAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@ontouchcancel</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -75,7 +75,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void TouchEnd(this IElement element, long detail = default, TouchPoint[]? touches = default, TouchPoint[]? targetTouches = default, TouchPoint[]? changedTouches = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = TouchEndAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = TouchEndAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@ontouchend</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -117,7 +117,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void TouchMove(this IElement element, long detail = default, TouchPoint[]? touches = default, TouchPoint[]? targetTouches = default, TouchPoint[]? changedTouches = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = TouchMoveAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = TouchMoveAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@ontouchmove</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -159,7 +159,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void TouchStart(this IElement element, long detail = default, TouchPoint[]? touches = default, TouchPoint[]? targetTouches = default, TouchPoint[]? changedTouches = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = TouchStartAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = TouchStartAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@ontouchstart</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -201,7 +201,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void TouchEnter(this IElement element, long detail = default, TouchPoint[]? touches = default, TouchPoint[]? targetTouches = default, TouchPoint[]? changedTouches = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = TouchEnterAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = TouchEnterAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@ontouchenter</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -243,7 +243,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void TouchLeave(this IElement element, long detail = default, TouchPoint[]? touches = default, TouchPoint[]? targetTouches = default, TouchPoint[]? changedTouches = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-			=> _ = TouchLeaveAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
+			=> _ = TouchLeaveAsync(element, new TouchEventArgs { Detail = detail, Touches = touches ?? Array.Empty<TouchPoint>(), TargetTouches = targetTouches ?? Array.Empty<TouchPoint>(), ChangedTouches = changedTouches ?? Array.Empty<TouchPoint>(), CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@ontouchleave</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>

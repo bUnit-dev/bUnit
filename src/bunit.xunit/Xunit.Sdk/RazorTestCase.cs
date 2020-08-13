@@ -118,9 +118,9 @@ namespace Xunit.Sdk
 			{
 				var assemblyName = testMethod.TestClass.TestCollection.TestAssembly.Assembly.Name;
 
-				//Get just the assembly name (without version info) when obtained by reflection
+				// Get just the assembly name (without version info) when obtained by reflection
 				if (testMethod.TestClass.TestCollection.TestAssembly.Assembly is IReflectionAssemblyInfo assembly)
-					assemblyName = assembly.Assembly.GetName().Name;
+					assemblyName = assembly.Assembly.GetName().Name ?? string.Empty;
 
 				Write(stream, assemblyName);
 				Write(stream, testMethod.TestClass.Class.Name);

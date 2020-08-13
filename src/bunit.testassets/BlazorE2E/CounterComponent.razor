@@ -1,29 +1,40 @@
 <h1>Counter</h1>
 <p>Current count: @currentCount</p>
-<p><button id="counter" @onclick="@(handleClicks ? (Action)IncrementCount : null)">Click me</button></p>
+<p><button id="counter" @onclick="OnClickHandler">Click me</button></p>
 
 <label>
-    <input type="checkbox" @bind="handleClicks" />
-    Toggle click handler registration
+	<input type="checkbox" @bind="handleClicks" />
+	Toggle click handler registration
 </label>
 
 @if (handleClicks)
 {
-    <p id="listening-message">Listening</p>
+	<p id="listening-message">Listening</p>
 }
 
 @code {
-    int currentCount = 0;
-    bool handleClicks = true;
+	private Action OnClickHandler
+	{
+		get
+		{
+			if (handleClicks)
+				return IncrementCount;
+			else
+				return default!;
+		}
+	}
 
-    void IncrementCount()
-    {
-        currentCount++;
-    }
+	int currentCount = 0;
+	bool handleClicks = true;
 
-    public void Reset()
-    {
-        currentCount = 0;
-        StateHasChanged();
-    }
+	void IncrementCount()
+	{
+		currentCount++;
+	}
+
+	public void Reset()
+	{
+		currentCount = 0;
+		StateHasChanged();
+	}
 }

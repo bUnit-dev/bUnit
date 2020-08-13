@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -62,11 +63,11 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			using var ctx = new TestContext();
 			var authService = ctx.Services.GetRequiredService<IAuthorizationService>();
-			IEnumerable<IAuthorizationRequirement>? requirements = null;
+			var requirements = Array.Empty<IAuthorizationRequirement>();
 
 			// act
 			var ex = await Assert.ThrowsAsync<MissingFakeAuthorizationException>(() =>
-				authService.AuthorizeAsync(null, string.Empty, requirements));
+				authService.AuthorizeAsync(null!, string.Empty, requirements));
 
 			// assert
 			Assert.Equal("IAuthorizationService", ex.ServiceName);
@@ -81,7 +82,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// act
 			var ex = await Assert.ThrowsAsync<MissingFakeAuthorizationException>(() =>
-				authService.AuthorizeAsync(null, string.Empty, "testPolicy"));
+				authService.AuthorizeAsync(default!, string.Empty, "testPolicy"));
 
 			// assert
 			Assert.Equal("IAuthorizationService", ex.ServiceName);

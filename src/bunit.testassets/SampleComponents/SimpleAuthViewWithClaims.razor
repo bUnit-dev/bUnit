@@ -27,8 +27,8 @@
 	protected override async Task OnParametersSetAsync()
 	{
 		var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-		userName = state.User.Identity.Name;
-		userEmail = state.User.FindFirst(ClaimTypes.Email)?.Value;
-		userId = state.User.FindFirst(ClaimTypes.Sid)?.Value;
+		userName = state?.User?.Identity?.Name ?? string.Empty;
+		userEmail = state?.User?.FindFirst(ClaimTypes.Email)?.Value;
+		userId = state?.User?.FindFirst(ClaimTypes.Sid)?.Value;
 	}
 }

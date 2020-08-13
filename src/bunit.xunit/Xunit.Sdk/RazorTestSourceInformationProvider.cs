@@ -22,7 +22,8 @@ namespace Xunit.Sdk
 			var razorTestBaseType = typeof(RazorTestBase);
 			foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
 			{
-				if (!a.FullName.StartsWith("Bunit", StringComparison.Ordinal))
+				var name = a.FullName ?? string.Empty;
+				if (!name.StartsWith("Bunit", StringComparison.Ordinal))
 					continue;
 
 				foreach (Type t in a.ExportedTypes)
@@ -67,7 +68,7 @@ namespace Xunit.Sdk
 			return null;
 		}
 
-		private bool TryFindSourceFile(Type testComponent, [NotNullWhen(true)]out string? razorFile)
+		private bool TryFindSourceFile(Type testComponent, [NotNullWhen(true)] out string? razorFile)
 		{
 			var sourceFileFinder = GetSourceFileFinderForType(testComponent);
 
@@ -89,7 +90,7 @@ namespace Xunit.Sdk
 
 			return razorFile is { };
 		}
-		
+
 		private SourceFileFinder GetSourceFileFinderForType(Type testComponent)
 		{
 			if (_sourceFileFinder is null || _sourceFileFinder.SearchAssembly != testComponent.Assembly)
@@ -116,7 +117,7 @@ namespace Xunit.Sdk
 				&& IsTestComponentFile(testComponent, file.Substring(0, file.Length - GENERATED_FILE_EXTENSION.Length));
 		}
 
-		private static bool TryGetRazorFileFromGeneratedFile(string file, [NotNullWhen(true)]out string? result)
+		private static bool TryGetRazorFileFromGeneratedFile(string file, [NotNullWhen(true)] out string? result)
 		{
 			// Pattern for first line in generated files: #pragma checksum "C:\...\bunit\src\bunit.xunit.tests\SampleComponents\ComponentWithTwoTests.razor" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "b0aa9328840c75d34f073c3300621046639ea9c7"
 			const string GENERATED_FILE_REF_PREFIX = "#pragma checksum \"";
@@ -127,7 +128,7 @@ namespace Xunit.Sdk
 			if (line.StartsWith(GENERATED_FILE_REF_PREFIX, StringComparison.Ordinal))
 			{
 				var refFileEndIndex = line.IndexOf('"', GENERATED_FILE_REF_PREFIX.Length);
-				result = line.Substring(GENERATED_FILE_REF_PREFIX.Length, refFileEndIndex - GENERATED_FILE_REF_PREFIX.Length);
+				result = line[GENERATED_FILE_REF_PREFIX.Length..refFileEndIndex];
 			}
 
 			return result is { };

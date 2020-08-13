@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 using AngleSharp.Dom;
 
@@ -21,7 +21,7 @@ namespace Bunit
 		/// <param name="total">The total number of bytes of content that will be transferred during the operation. If the total size is unknown, this value is zero.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void LoadStart(this IElement element, bool lengthComputable = default, long loaded = default, long total = default, string? type = default)
-			=> _ = LoadStartAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type });
+			=> _ = LoadStartAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onloadstart</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -50,7 +50,7 @@ namespace Bunit
 		/// <param name="total">The total number of bytes of content that will be transferred during the operation. If the total size is unknown, this value is zero.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void Timeout(this IElement element, bool lengthComputable = default, long loaded = default, long total = default, string? type = default)
-			=> _ = TimeoutAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type });
+			=> _ = TimeoutAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@ontimeout</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -79,7 +79,7 @@ namespace Bunit
 		/// <param name="total">The total number of bytes of content that will be transferred during the operation. If the total size is unknown, this value is zero.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void Abort(this IElement element, bool lengthComputable = default, long loaded = default, long total = default, string? type = default)
-			=> _ = AbortAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type });
+			=> _ = AbortAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onabort</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -108,7 +108,7 @@ namespace Bunit
 		/// <param name="total">The total number of bytes of content that will be transferred during the operation. If the total size is unknown, this value is zero.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void Load(this IElement element, bool lengthComputable = default, long loaded = default, long total = default, string? type = default)
-			=> _ = LoadAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type });
+			=> _ = LoadAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onload</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -137,7 +137,7 @@ namespace Bunit
 		/// <param name="total">The total number of bytes of content that will be transferred during the operation. If the total size is unknown, this value is zero.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void LoadEnd(this IElement element, bool lengthComputable = default, long loaded = default, long total = default, string? type = default)
-			=> _ = LoadEndAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type });
+			=> _ = LoadEndAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onloadend</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -166,7 +166,7 @@ namespace Bunit
 		/// <param name="total">The total number of bytes of content that will be transferred during the operation. If the total size is unknown, this value is zero.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void Progress(this IElement element, bool lengthComputable = default, long loaded = default, long total = default, string? type = default)
-			=> _ = ProgressAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type });
+			=> _ = ProgressAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onprogress</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -195,7 +195,7 @@ namespace Bunit
 		/// <param name="total">The total number of bytes of content that will be transferred during the operation. If the total size is unknown, this value is zero.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		public static void Error(this IElement element, bool lengthComputable = default, long loaded = default, long total = default, string? type = default)
-			=> _ = ErrorAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type });
+			=> _ = ErrorAsync(element, new ProgressEventArgs { LengthComputable = lengthComputable, Loaded = loaded, Total = total, Type = type! });
 
 		/// <summary>
 		/// Raises the <c>@onerror</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>

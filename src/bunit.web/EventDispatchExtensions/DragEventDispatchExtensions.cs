@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 using AngleSharp.Dom;
 
@@ -40,7 +40,7 @@ namespace Bunit
 		/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 		/// <param name="type">Gets or sets the type of the event.</param>
 		/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
-		public static void Drag(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
+		public static void Drag(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string type = default!, DataTransfer dataTransfer = default!)
 			=> _ = DragAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DataTransfer = dataTransfer });
 
 		/// <summary>
@@ -90,7 +90,7 @@ namespace Bunit
 		/// <param name="type">Gets or sets the type of the event.</param>
 		/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
 		public static void DragEnd(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-			=> _ = DragEndAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DataTransfer = dataTransfer });
+			=> _ = DragEndAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
 
 		/// <summary>
 		/// Raises the <c>@ondragend</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -139,7 +139,7 @@ namespace Bunit
 		/// <param name="type">Gets or sets the type of the event.</param>
 		/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
 		public static void DragEnter(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-			=> _ = DragEnterAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DataTransfer = dataTransfer });
+			=> _ = DragEnterAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
 
 		/// <summary>
 		/// Raises the <c>@ondragenter</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -188,7 +188,7 @@ namespace Bunit
 		/// <param name="type">Gets or sets the type of the event.</param>
 		/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
 		public static void DragLeave(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-			=> _ = DragLeaveAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DataTransfer = dataTransfer });
+			=> _ = DragLeaveAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
 
 		/// <summary>
 		/// Raises the <c>@ondragleave</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -237,7 +237,7 @@ namespace Bunit
 		/// <param name="type">Gets or sets the type of the event.</param>
 		/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
 		public static void DragOver(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-			=> _ = DragOverAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DataTransfer = dataTransfer });
+			=> _ = DragOverAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
 
 		/// <summary>
 		/// Raises the <c>@ondragover</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -286,7 +286,7 @@ namespace Bunit
 		/// <param name="type">Gets or sets the type of the event.</param>
 		/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
 		public static void DragStart(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-			=> _ = DragStartAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DataTransfer = dataTransfer });
+			=> _ = DragStartAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
 
 		/// <summary>
 		/// Raises the <c>@ondragstart</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -335,7 +335,7 @@ namespace Bunit
 		/// <param name="type">Gets or sets the type of the event.</param>
 		/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
 		public static void Drop(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-			=> _ = DropAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DataTransfer = dataTransfer });
+			=> _ = DropAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
 
 		/// <summary>
 		/// Raises the <c>@ondrop</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>

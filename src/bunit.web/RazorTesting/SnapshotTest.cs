@@ -34,12 +34,12 @@ namespace Bunit
 		/// <summary>
 		/// Gets or sets the input to the snapshot test.
 		/// </summary>
-		[Parameter] public RenderFragment TestInput { get; set; } = default!;
+		[Parameter] public RenderFragment? TestInput { get; set; }
 
 		/// <summary>
 		/// Gets or sets the expected output of the snapshot test.
 		/// </summary>
-		[Parameter] public RenderFragment ExpectedOutput { get; set; } = default!;
+		[Parameter] public RenderFragment? ExpectedOutput { get; set; }
 
 		/// <inheritdoc/>
 		protected override async Task Run()
@@ -53,10 +53,10 @@ namespace Bunit
 			if (SetupAsync is { })
 				await TryRunAsync(SetupAsync, this).ConfigureAwait(false);
 
-			var testRenderId = Renderer.RenderFragment(TestInput);
+			var testRenderId = Renderer.RenderFragment(TestInput!);
 			var inputHtml = Htmlizer.GetHtml(Renderer, testRenderId);
 
-			var expectedRenderId = Renderer.RenderFragment(ExpectedOutput);
+			var expectedRenderId = Renderer.RenderFragment(ExpectedOutput!);
 			var expectedHtml = Htmlizer.GetHtml(Renderer, expectedRenderId);
 
 			VerifySnapshot(inputHtml, expectedHtml);

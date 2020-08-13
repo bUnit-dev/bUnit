@@ -19,8 +19,8 @@ namespace Bunit.TestDoubles.Authorization
 			// assert
 			Assert.NotNull(authState.User);
 			Assert.NotNull(authState.User.Identity);
-			Assert.Equal("TestUser", authState.User.Identity.Name);
-			Assert.True(authState.User.Identity.IsAuthenticated);
+			Assert.Equal("TestUser", authState?.User?.Identity?.Name);
+			Assert.True(authState?.User?.Identity?.IsAuthenticated);
 		}
 
 		[Fact(DisplayName = "Create unauthenticated AuthenticationState")]
@@ -31,10 +31,10 @@ namespace Bunit.TestDoubles.Authorization
 			var authState = await authProvider.GetAuthenticationStateAsync();
 
 			// assert
-			Assert.NotNull(authState.User);
-			Assert.NotNull(authState.User.Identity);
-			Assert.Null(authState.User.Identity.Name);
-			Assert.False(authState.User.Identity.IsAuthenticated);
+			Assert.NotNull(authState?.User);
+			Assert.NotNull(authState?.User?.Identity);
+			Assert.Null(authState?.User?.Identity?.Name);
+			Assert.False(authState?.User?.Identity?.IsAuthenticated);
 		}
 
 		[Fact(DisplayName = "Switch AuthenticationState from unauthenticated to authenticated.")]
@@ -53,8 +53,8 @@ namespace Bunit.TestDoubles.Authorization
 			Assert.True(stateChangeHandled);
 			Assert.NotNull(authState.User);
 			Assert.NotNull(authState.User.Identity);
-			Assert.Equal("NewUser", authState.User.Identity.Name);
-			Assert.True(authState.User.Identity.IsAuthenticated);
+			Assert.Equal("NewUser", authState?.User?.Identity?.Name);
+			Assert.True(authState?.User?.Identity?.IsAuthenticated);
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace Bunit.RazorTesting
 		/// <summary>
 		/// Gets or sets the child content of the fragment.
 		/// </summary>
-		[Parameter] public RenderFragment ChildContent { get; set; } = default!;
+		[Parameter] public RenderFragment? ChildContent { get; set; }
 
 		/// <summary>
 		/// Gets or sets the setup action to perform before the <see cref="Test"/> action or
@@ -48,20 +48,6 @@ namespace Bunit.RazorTesting
 		/// </summary>
 		[Parameter] public Func<TFixture, Task>? TestAsync { get; set; }
 
-		/// <summary>
-		/// Obsolete. Methods assigned to this parameter will not be invoked.
-		/// </summary>
-		[Obsolete("This feature has been removed since it caused confusion about the state of the fixture being passed to the test methods. Methods assigned to this parameter will not be invoked.")]
-		[Parameter]
-		public IReadOnlyCollection<Action<TFixture>>? Tests { get; set; }
-
-		/// <summary>
-		/// Obsolete. Methods assigned to this parameter will not be invoked.
-		/// </summary>
-		[Obsolete("This feature has been removed since it caused confusion about the state of the fixture being passed to the test methods. Methods assigned to this parameter will not be invoked.")]
-		[Parameter]
-		public IReadOnlyCollection<Func<TFixture, Task>>? TestsAsync { get; set; }
-
 		/// <inheritdoc/>
 		public override Task SetParametersAsync(ParameterView parameters)
 		{
@@ -71,16 +57,8 @@ namespace Bunit.RazorTesting
 			Test = parameters.GetValueOrDefault<Action<TFixture>>(nameof(Test));
 			TestAsync = parameters.GetValueOrDefault<Func<TFixture, Task>>(nameof(TestAsync));
 
-#pragma warning disable CS0618 // Type or member is obsolete
-			if (parameters.TryGetValue<IReadOnlyCollection<Action<TFixture>>>(nameof(Tests), out var tests))
-				Tests = tests;
-			if (parameters.TryGetValue<IReadOnlyCollection<Func<TFixture, Task>>>(nameof(TestsAsync), out var asyncTests))
-				TestsAsync = asyncTests;
-#pragma warning restore CS0618 // Type or member is obsolete
-
 			return base.SetParametersAsync(parameters);
 		}
-
 
 		/// <inheritdoc/>
 		[SuppressMessage("Usage", "CA2208:Instantiate argument exceptions correctly", Justification = "Validating component parameters")]
@@ -93,12 +71,6 @@ namespace Bunit.RazorTesting
 				throw new ArgumentException($"No test action provided via the '{nameof(Test)}' or '{nameof(TestAsync)}' parameters to the {GetType().Name} component.", nameof(Test));
 			if (Test is { } && TestAsync is { })
 				throw new ArgumentException($"Only one of the '{nameof(Test)}' or '{nameof(TestAsync)}' actions can be provided to the {GetType().Name} component at the same time.", nameof(Test));
-#pragma warning disable CS0618 // Type or member is obsolete
-			if (Tests is { })
-				throw new ArgumentException($"The use of the '{nameof(Tests)}' parameter has been obsoleted, and any methods assigned to it will not longer be invoked.");
-			if (TestsAsync is { })
-				throw new ArgumentException($"The use of the '{nameof(TestsAsync)}' parameter has been obsoleted, and any methods assigned to it will not longer be invoked.");
-#pragma warning restore CS0618 // Type or member is obsolete
 		}
 
 		/// <inheritdoc/>

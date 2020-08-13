@@ -333,3 +333,4 @@ ASALocalRun/
 bunit.docs/log.txt
 
 .store
+*coverage*.info

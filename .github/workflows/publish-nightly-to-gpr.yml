@@ -1,0 +1,127 @@
+name: Push nightly to GPR
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'src/bunit.core/**'
+      - 'src/bunit.web/**'
+      - 'src/bunit.xunit/**'
+      - 'src/bunit.template/**'
+
+env:
+  VERSION: ''
+  BRANCH: ''
+  
+jobs:  
+  push-to-gpr:
+    runs-on: ubuntu-latest  
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2   
+        with:
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+
+      - uses: dotnet/nbgv@master
+        with:
+          setAllVars: true
+
+      - name: Setting VERSION and BRANCH env
+        run: |
+          echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
+          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+
+      - name: Update tokens in project files
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["*.csproj", "**/*.csproj"]'
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.100-preview.7.20366.6'
+      - name: DOTNET HACK
+        shell: pwsh
+        run: |
+          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
+          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
+          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
+          foreach ($dir in $directories) {
+            $from = $dir.FullName;
+            $to = "$root/$version";
+            Write-Host Copying from $from to $to;
+            Copy-Item "$from\*" $to -Recurse -Force;
+          }    
+
+      - name: Building library
+        run: dotnet build src -c Release -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+
+      - name: Running unit tests
+        run: dotnet test src --verbosity normal /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=lcov
+
+      - name: Creating library package
+        run: |
+          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+      
+      - name: Buidling template package
+        run: dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages
+      - name: Verifying template
+        run: |
+          dotnet new --install ${GITHUB_WORKSPACE}/packages/bunit.template.$VERSION.nupkg
+          dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/Test
+          dotnet restore ${GITHUB_WORKSPACE}/Test/Test.csproj --source ${GITHUB_WORKSPACE}/packages
+          dotnet test ${GITHUB_WORKSPACE}/Test
+
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.core.tests/coverage/coverage.net5.0.info
+          parallel: true
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.core.tests/coverage/coverage.netcoreapp3.1.info
+          parallel: true
+
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.web.tests/coverage/coverage.net5.0.info
+          parallel: true
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.web.tests/coverage/coverage.netcoreapp3.1.info
+          parallel: true
+
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.xunit.tests/coverage/coverage.net5.0.info
+          parallel: true
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: src/bunit.xunit.tests/coverage/coverage.netcoreapp3.1.info
+          parallel: true
+
+      - uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true
+
+      - name: Push packages to GitHub Package Registry
+        run: |
+           for f in ${GITHUB_WORKSPACE}/packages/*.nupkg
+           do
+             curl -vX PUT -u "egil:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/egil/
+           done
+        shell: bash          
+#      - name: Push packages to GitHub Package Registry
+#        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' --skip-duplicate

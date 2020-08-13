@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bunit.Rendering;
@@ -72,12 +72,16 @@ namespace Bunit
 			var parameterView = ParameterView.Empty;
 			if (parameters.Any())
 			{
-				var paramDict = new Dictionary<string, object?>();
+				var paramDict = new Dictionary<string, object>();
 				foreach (var param in parameters)
 				{
 					if (param.IsCascadingValue)
 						throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(SetParametersAndRender)} method.");
-					paramDict.Add(param.Name!, param.Value);
+					if (param.Name is null)
+						throw new InvalidOperationException($"A parameters name is required.");
+
+					// BANG: it should technically be allowed to pass null
+					paramDict.Add(param.Name, param.Value!);
 				}
 				parameterView = ParameterView.FromDictionary(paramDict);
 			}

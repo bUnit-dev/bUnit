@@ -108,7 +108,7 @@ namespace Bunit.Extensions.WaitForHelpers
 			}
 		}
 
-		private void OnTimeout(object state)
+		private void OnTimeout(object? state)
 		{
 			if (_isDisposed)
 				return;

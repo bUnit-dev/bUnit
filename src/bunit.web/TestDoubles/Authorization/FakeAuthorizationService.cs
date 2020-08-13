@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+
+using Bunit.Extensions;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 
@@ -62,9 +65,10 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="resource">Resource being authorized.</param>
 		/// <param name="requirements">Authorization requirements.</param>
 		/// <returns>Result of authorize request.</returns>
-		public Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements)
+		public Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object? resource, IEnumerable<IAuthorizationRequirement> requirements)
 		{
-			_ = requirements ?? throw new ArgumentNullException(nameof(requirements));
+			if (requirements is null)
+				throw new ArgumentNullException(nameof(requirements));
 
 			AuthorizationResult result;
 
@@ -72,7 +76,7 @@ namespace Bunit.TestDoubles.Authorization
 			{
 				result = (_currentState == AuthorizationState.Authorized) ? AuthorizationResult.Success() : AuthorizationResult.Failed();
 			}
-			else if (requirements.All( p => p is RolesAuthorizationRequirement))
+			else if (requirements.All(p => p is RolesAuthorizationRequirement))
 			{
 				result = VerifyRequiredRoles(requirements);
 			}
@@ -95,7 +99,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <param name="resource">Resource being authorized.</param>
 		/// <param name="policyName">Policy to use for authorization.</param>
 		/// <returns>Result of authorize request.</returns>
-		public Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object resource, string policyName)
+		public Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object? resource, string policyName)
 		{
 			var requirements = new List<IAuthorizationRequirement>
 			{
@@ -107,20 +111,23 @@ namespace Bunit.TestDoubles.Authorization
 
 		private AuthorizationResult VerifyRequiredPolicies(IEnumerable<IAuthorizationRequirement> requirements)
 		{
-			AuthorizationResult result = AuthorizationResult.Failed();
+			if (_supportedPolicies.IsNullOrEmpty() || requirements.IsNullOrEmpty())
+			{
+				return AuthorizationResult.Failed();
+			}
+
 			foreach (IAuthorizationRequirement req in requirements)
 			{
 				if (req is TestPolicyRequirement testReq)
 				{
 					if (_supportedPolicies.Contains(testReq.PolicyName))
 					{
-						result = AuthorizationResult.Success();
-						break;
+						return AuthorizationResult.Success();
 					}
 				}
 			}
 
-			return result;
+			return AuthorizationResult.Failed();
 		}
 
 		private AuthorizationResult VerifyRequiredRoles(IEnumerable<IAuthorizationRequirement> requirements)

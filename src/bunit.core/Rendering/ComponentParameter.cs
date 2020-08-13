@@ -79,7 +79,7 @@ namespace Bunit.Rendering
 			=> string.Equals(Name, other.Name, StringComparison.Ordinal) && Value == other.Value && IsCascadingValue == other.IsCascadingValue;
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is ComponentParameter other && Equals(other);
+		public override bool Equals(object? obj) => obj is ComponentParameter other && Equals(other);
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => HashCode.Combine(Name, Value, IsCascadingValue);
