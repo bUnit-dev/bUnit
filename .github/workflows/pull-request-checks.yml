@@ -73,7 +73,6 @@ jobs:
       #   run: dotnet format src --verbosity diag
 
       - name: Commit formatted files      
-        if: steps.format.outputs.has-changes == 'true'
         uses: EndBug/add-and-commit@v4.1.0
         with:
           add: 'src'
