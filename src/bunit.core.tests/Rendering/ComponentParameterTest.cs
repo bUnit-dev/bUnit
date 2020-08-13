@@ -6,7 +6,7 @@ using Xunit;
 namespace Bunit.Rendering
 {
 	public class ComponentParameterTest
-    {
+	{
 		public static IEnumerable<object[]> GetEqualsTestData()
 		{
 			var name = "foo";
@@ -65,5 +65,5 @@ namespace Bunit.Rendering
 		{
 			left.GetHashCode().Equals(right.GetHashCode()).ShouldBe(expectedResult);
 		}
-    }
+	}
 }

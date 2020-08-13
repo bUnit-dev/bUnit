@@ -1,4 +1,4 @@
-﻿namespace Bunit.Rendering
+namespace Bunit.Rendering
 {
 	/// <summary>
 	/// Represents a producer of <see cref="RenderEvent"/>s.

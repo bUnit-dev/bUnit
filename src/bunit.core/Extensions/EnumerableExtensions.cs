@@ -14,7 +14,7 @@ namespace Bunit.Extensions
 		/// <summary>
 		/// Returns true if the numerable is null or empty.
 		/// </summary>
-		public static bool IsNullOrEmpty<T>([NotNullWhen(false)]this IEnumerable<T>? enumerable)
+		public static bool IsNullOrEmpty<T>([NotNullWhen(false)] this IEnumerable<T>? enumerable)
 		{
 			return enumerable is null || !enumerable.Any();
 		}

@@ -77,7 +77,7 @@ namespace Bunit
 				{
 					if (param.IsCascadingValue)
 						throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(SetParametersAndRender)} method.");
-					if(param.Name is null)
+					if (param.Name is null)
 						throw new InvalidOperationException($"A parameters name is required.");
 
 					// BANG: it should technically be allowed to pass null
