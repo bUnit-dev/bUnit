@@ -1,0 +1,37 @@
+name: "SonarCloud Scanning"
+
+on:
+  pull_request:
+    types: 
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - 'src/**'      
+  push:
+    branches:
+      - dev
+      - main
+    paths:
+      - 'src/**'
+
+jobs:  
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Create sonar-project.properties
+      uses: finnp/create-file-action@1.0.0
+      env:
+        FILE_NAME: "sonar-project.properties"
+        FILE_DATA: "sonar.organization=egil\nsonar.projectKey=egil_bUnit\nsonar.sources=./src"
+
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
