@@ -49,19 +49,36 @@ jobs:
 
       - name: Install dotnet-format
         run: dotnet tool install -g dotnet-format # --version 3.3.111304
-      
-      - name: Add dotnet-format problem matcher
-        uses: xt0rted/dotnet-format-problem-matcher@v1
 
-      - name: Restore dotnet tools
-        uses: xt0rted/dotnet-tool-restore@v1
+      - name: Run dotnet-format
+        run: dotnet format src --verbosity diag
 
-      - name: Run dotnet format
-        uses: xt0rted/dotnet-format@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          action: "fix"
-          only-changed-files: "true"
+      - name: Commit formatted files
+        if: failure()
+        run: echo 'Files were formatted'
+      # - name: Commit files
+      #   if: steps.format.outputs.has-changes == 'true'
+      #   uses: EndBug/add-and-commit@v4.1.0
+      #   with:
+      #     author_name: Github Actions
+      #     author_email: actions@github.com
+      #     message: Automated dotnet-format update
+      #     ref: ${{ github.head_ref }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Add dotnet-format problem matcher
+      #   uses: xt0rted/dotnet-format-problem-matcher@v1
+
+      # - name: Restore dotnet tools
+      #   uses: xt0rted/dotnet-tool-restore@v1
+
+      # - name: Run dotnet format
+      #   uses: xt0rted/dotnet-format@v1
+      #   with:
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
+      #     action: "fix"
+      #     only-changed-files: "true"
 
       # - name: Run dotnet format
       #   id: format
