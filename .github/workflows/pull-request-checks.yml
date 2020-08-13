@@ -35,11 +35,8 @@ jobs:
             Copy-Item "$from\*" $to -Recurse -Force;
           }
 
-      - name: Build library
-        run: dotnet build src -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
-
       - name: Running unit tests
-        run: dotnet test src --no-build --no-restore --verbosity normal /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=lcov
+        run: dotnet test src --verbosity normal /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=lcov
 
       - uses: coverallsapp/github-action@master
         with:
