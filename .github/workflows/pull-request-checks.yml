@@ -36,7 +36,8 @@ jobs:
           }
 
       - name: Running unit tests
-        run: dotnet test src --verbosity normal /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=lcov
+        run: |
+          dotnet test src /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat="opencover,lcov" /p:CoverletOutputFormat="opencover" /p:ExcludeByAttribute="Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute" /p:UseSourceLink=true
 
       - uses: coverallsapp/github-action@v1.1.1
         with:
