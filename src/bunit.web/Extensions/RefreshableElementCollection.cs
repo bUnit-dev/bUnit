@@ -10,7 +10,7 @@ namespace Bunit
 		private readonly IRenderedFragment _renderedFragment;
 		private readonly string _cssSelector;
 		private IHtmlCollection<IElement> _elements;
-		private bool _enableAutoRefresh = false;
+		private bool _enableAutoRefresh;
 
 		public bool EnableAutoRefresh
 		{

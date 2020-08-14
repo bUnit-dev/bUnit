@@ -5,6 +5,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Usage", "BL0006:Do not use RenderTree types")]
+   [assembly: SuppressMessage("Usage", "BL0006:Do not use RenderTree types")]
 [assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
 [assembly: SuppressMessage("Design", "CA1031:Do not catch general exception types")]

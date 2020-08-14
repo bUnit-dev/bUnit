@@ -13,7 +13,7 @@ namespace Bunit.Extensions.WaitForHelpers
 		protected override string? TimeoutErrorMessage { get; } = TIMEOUT_MESSAGE;
 
 		/// <inheritdoc/>
-		protected override bool StopWaitingOnCheckException { get; } = false;
+		protected override bool StopWaitingOnCheckException { get; }
 
 		/// <summary>
 		/// Creates an instance of the <see cref="WaitForAssertionHelper"/> type,

@@ -26,7 +26,7 @@ namespace Bunit.Rendering
 		private INodeList? _latestRenderNodes;
 		private INodeList? _snapshotNodes;
 		private string _markup;
-		private bool _componentDisposed = false;
+		private bool _componentDisposed;
 
 		private HtmlParser HtmlParser { get; }
 

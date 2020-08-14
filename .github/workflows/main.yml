@@ -25,6 +25,37 @@ on:
     - cron: '0 0 * * 0'
 
 jobs:
+  dotnet-build:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.100-preview.7.20366.6'
+      - name: Move .net SDK's to shared folder (hack)
+        shell: pwsh
+        run: |
+          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
+          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
+          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
+          foreach ($dir in $directories) {
+            $from = $dir.FullName;
+            $to = "$root/$version";
+            Write-Host Copying from $from to $to;
+            Copy-Item "$from\*" $to -Recurse -Force;
+          }
+
+      - name: Building library in release mode
+        run: dotnet build -c Release -p:ContinuousIntegrationBuild=true
+
   dotnet-test:
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
@@ -152,9 +183,7 @@ jobs:
         run: dotnet tool install -g dotnet-format
 
       - name: Run dotnet-format
-        run: |
-          dotnet format src --verbosity diag
-          dotnet format tests --verbosity diag
+        run: dotnet format ./bunit.sln --verbosity diag
 
       - name: Commit formatted files
         uses: EndBug/add-and-commit@v4.1.0
@@ -185,7 +214,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  code-scan:
+  code-ql:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -226,12 +255,12 @@ jobs:
         config-file: ./.github/codeql/codeql-config.yml
 
     - name: Building library
-      run: dotnet build src -p:ContinuousIntegrationBuild=true -p:DeterministicSourcePaths=true
+      run: dotnet build -p:ContinuousIntegrationBuild=true
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
 
-  publish-nuget:
+  publish-nuget-packages:
     if: (github.event_name == 'push' && github.ref == 'refs/heads/dev') || github.event_name == 'release'
     needs: [dotnet-test, verify-template]
     runs-on: ubuntu-latest

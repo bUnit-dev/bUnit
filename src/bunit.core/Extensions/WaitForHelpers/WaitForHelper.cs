@@ -17,7 +17,7 @@ namespace Bunit.Extensions.WaitForHelpers
 		private readonly Func<bool> _completeChecker;
 		private readonly IRenderedFragmentBase _renderedFragment;
 		private readonly ILogger _logger;
-		private bool _isDisposed = false;
+		private bool _isDisposed;
 		private Exception? _capturedException;
 
 		/// <summary>
