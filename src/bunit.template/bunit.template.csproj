@@ -22,6 +22,7 @@
 		<AssemblyName>Bunit.Template</AssemblyName>
 		<RootNamespace>Bunit</RootNamespace>
 		<Deterministic>true</Deterministic>
+		<IncludeSymbols>false</IncludeSymbols>
 	</PropertyGroup>
 
 	<ItemGroup>
