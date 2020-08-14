@@ -5,10 +5,11 @@
 		<RazorLangVersion>3.0</RazorLangVersion>
 		<RootNamespace>Bunit.TestAssets</RootNamespace>
 		<AssemblyName>Bunit.TestAssets</AssemblyName>
-	</PropertyGroup>
-
-	<PropertyGroup>
+		<IsPackable>false</IsPackable>
+		<LangVersion>8.0</LangVersion>
+		<Nullable>enable</Nullable>
 		<!--
+			<WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>
 			TODO: Added because of bug in P7: https://github.com/dotnet/aspnetcore/issues/24794				
 		-->
 		<WarningsAsErrors>CS8602;CS8603;CS8625</WarningsAsErrors>

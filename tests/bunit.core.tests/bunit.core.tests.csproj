@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<RootNamespace>Bunit</RootNamespace>
+		<AssemblyName>Bunit.Core.Tests</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\bunit.core\bunit.core.csproj" />
+		<ProjectReference Include="..\..\src\bunit.web\bunit.web.csproj" />
+		<ProjectReference Include="..\..\src\bunit.xunit\bunit.xunit.csproj" />
+		<ProjectReference Include="..\bunit.testassets\bunit.testassets.csproj" />
+	</ItemGroup>
+
+</Project>

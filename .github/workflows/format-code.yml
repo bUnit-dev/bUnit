@@ -1,58 +1,58 @@
-name: "Format code"
+# name: "Format code"
 
-on:
-  pull_request:
-    types: 
-      - opened
-      - synchronize
-      - reopened  
-    branches:
-      - dev
-    paths:
-      - 'src/**'
+# on:
+#   pull_request:
+#     types:
+#       - opened
+#       - synchronize
+#       - reopened
+#     branches:
+#       - dev
+#     paths:
+#       - 'src/**'
 
-jobs:
-  dotnet-format:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
+# jobs:
+#   dotnet-format:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0
+#           ref: ${{ github.head_ref }}
 
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.x'
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '5.0.100-preview.7.20366.6'
-      - name: Move .net SDK's to shared folder (hack)
-        shell: pwsh
-        run: |
-          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-          foreach ($dir in $directories) {
-            $from = $dir.FullName;
-            $to = "$root/$version";
-            Write-Host Copying from $from to $to;
-            Copy-Item "$from\*" $to -Recurse -Force;
-          }
+#       - uses: actions/setup-dotnet@v1
+#         with:
+#           dotnet-version: '3.1.x'
+#       - uses: actions/setup-dotnet@v1
+#         with:
+#           dotnet-version: '5.0.100-preview.7.20366.6'
+#       - name: Move .net SDK's to shared folder (hack)
+#         shell: pwsh
+#         run: |
+#           $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
+#           $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
+#           $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
+#           foreach ($dir in $directories) {
+#             $from = $dir.FullName;
+#             $to = "$root/$version";
+#             Write-Host Copying from $from to $to;
+#             Copy-Item "$from\*" $to -Recurse -Force;
+#           }
 
-      - name: Install dotnet-format
-        run: dotnet tool install -g dotnet-format
+#       - name: Install dotnet-format
+#         run: dotnet tool install -g dotnet-format
 
-      - name: Run dotnet-format
-        run: dotnet format src --verbosity diag
+#       - name: Run dotnet-format
+#         run: dotnet format src --verbosity diag
 
-      - name: Commit formatted files      
-        uses: EndBug/add-and-commit@v4.1.0
-        with:
-          add: 'src'
-          author_name: Github Actions
-          author_email: actions@github.com
-          message: Automated dotnet-format update
-          ref: ${{ github.head_ref }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Commit formatted files
+#         uses: EndBug/add-and-commit@v4.1.0
+#         with:
+#           add: 'src'
+#           author_name: Github Actions
+#           author_email: actions@github.com
+#           message: Automated dotnet-format update
+#           ref: ${{ github.head_ref }}
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
