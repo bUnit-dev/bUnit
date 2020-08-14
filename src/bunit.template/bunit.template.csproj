@@ -23,6 +23,7 @@
 		<RootNamespace>Bunit</RootNamespace>
 		<Deterministic>true</Deterministic>
 		<IncludeSymbols>false</IncludeSymbols>
+		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
 	</PropertyGroup>
 
 	<ItemGroup>
