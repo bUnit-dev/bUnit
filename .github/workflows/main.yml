@@ -232,7 +232,7 @@ jobs:
       uses: github/codeql-action/analyze@v1
 
   publish-nuget:
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/dev) || github.event_name == 'release'
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/dev') || github.event_name == 'release'
     needs: [dotnet-test, verify-template]
     runs-on: ubuntu-latest
     env:
