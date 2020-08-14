@@ -147,7 +147,7 @@ jobs:
         run: |
           dotnet new --install ${GITHUB_WORKSPACE}/packages/bunit.template.$VERSION.nupkg
           dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTest
-          dotnet restore ${GITHUB_WORKSPACE}/TemplateTest/Test.csproj --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
+          dotnet restore ${GITHUB_WORKSPACE}/TemplateTest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
           dotnet test ${GITHUB_WORKSPACE}/TemplateTest
 
   dotnet-format:
