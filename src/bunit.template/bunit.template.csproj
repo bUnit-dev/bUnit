@@ -18,10 +18,12 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
 		<AssemblyName>Bunit.Template</AssemblyName>
 		<RootNamespace>Bunit</RootNamespace>
+		<Deterministic>true</Deterministic>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<Content Include="template\**\*" Exclude="template\**\bin\**;template\**\obj\**;template\**\.vs\**" />
 		<Compile Remove="**\*" />
