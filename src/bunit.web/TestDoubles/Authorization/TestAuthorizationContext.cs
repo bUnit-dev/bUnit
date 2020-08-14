@@ -20,7 +20,7 @@ namespace Bunit.TestDoubles.Authorization
 		/// <summary>
 		/// Gets whether user is authenticated.
 		/// </summary>
-		public bool IsAuthenticated { get; private set; } = false;
+		public bool IsAuthenticated { get; private set; }
 
 		/// <summary>
 		/// Gets the authorization context user name.

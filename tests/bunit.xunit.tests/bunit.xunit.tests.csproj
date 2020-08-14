@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<RootNamespace>Bunit</RootNamespace>
+		<AssemblyName>Bunit.Xunit.Tests</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Reflection.Metadata" Version="1.8.1" />
+		<PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
+		<PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.utility" Version="2.4.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\bunit.core\bunit.core.csproj" />
+		<ProjectReference Include="..\..\src\bunit.web\bunit.web.csproj" />
+		<ProjectReference Include="..\..\src\bunit.xunit\bunit.xunit.csproj" />
+		<ProjectReference Include="..\bunit.testassets\bunit.testassets.csproj" />
+	</ItemGroup>
+
+</Project>
