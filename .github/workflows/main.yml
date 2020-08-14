@@ -1,4 +1,4 @@
-name: "Build, verify, publish"
+name: "CI/CD"
 
 on:
   pull_request:
@@ -262,7 +262,7 @@ jobs:
 
   publish-nuget-packages:
     if: (github.event_name == 'push' && github.ref == 'refs/heads/dev') || github.event_name == 'release'
-    needs: [dotnet-test, verify-template]
+    needs: [dotnet-build, dotnet-test, verify-template]
     runs-on: ubuntu-latest
     env:
       VERSION: ''
