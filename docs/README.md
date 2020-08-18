@@ -28,5 +28,5 @@ To build and view the documentation locally, a few steps is needed:
 
 - All pages should have a [YAML header](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#yaml-header) with an `UID` to enable easy [cross reference](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#cross-reference) between pages
 - All page and code references should be created using the [`xref:UID` cross reference syntax](https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html#using-cross-reference).
-- Prefer to include code snippets as from sample files in the `samples` projects, using the [code snippet syntax](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#code-snippet).
+- Prefer to include code snippets as sample files in the `samples` projects, using the [code snippet syntax](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#code-snippet).
 - All code snippets should use 2 spaces as an indention unit (1 tab = 2 spaces)
