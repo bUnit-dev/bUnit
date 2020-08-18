@@ -27,4 +27,4 @@
 
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External Resources](xref:external-resources)
-# [Contribute](contribute.md)
+# [Contribute](xref:contribute)
