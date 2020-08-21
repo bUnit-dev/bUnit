@@ -35,7 +35,7 @@ To get started, head to the [getting started documentation](https://bunit.egilha
 
 ## Sponsors
 
-A hugh thank you to the [sponsors of my work with bUnit](https://github.com/sponsors/egil). The higher tire sponsors are:
+A hugh thank you to the [sponsors of my work with bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
 
 - [Hassan Rezk Habib (@hassanhabib)](https://github.com/hassanhabib)
 
