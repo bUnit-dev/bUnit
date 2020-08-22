@@ -39,10 +39,14 @@ namespace Bunit
 
 		public static string GetHtml(ITestRenderer renderer, int componentId)
 		{
-			var frames = renderer.GetCurrentRenderTreeFrames(componentId);
-			var context = new HtmlRenderingContext(renderer);
-			var newPosition = RenderFrames(context, frames, 0, frames.Count);
-			Debug.Assert(newPosition == frames.Count, $"frames.Count = {frames.Count}. newPosition = {newPosition}");
+			var testRenderer = (TestRenderer)renderer;
+			var context = new HtmlRenderingContext(testRenderer);
+			lock (testRenderer._renderLock)
+			{
+				var frames = testRenderer.GetCurrentRenderTreeFrames(componentId);
+				var newPosition = RenderFrames(context, frames, 0, frames.Count);
+				Debug.Assert(newPosition == frames.Count, $"frames.Count = {frames.Count}. newPosition = {newPosition}");
+			}
 			return string.Join(string.Empty, context.Result);
 		}
 

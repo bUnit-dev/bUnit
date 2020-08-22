@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace Bunit.Rendering
 		private readonly ILogger _logger;
 		private readonly List<IRenderEventHandler> _renderEventHandlers = new List<IRenderEventHandler>();
 		private Exception? _unhandledException;
+
+		public readonly object _renderLock = new object();
 
 		/// <inheritdoc/>
 		public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
@@ -51,14 +54,14 @@ namespace Bunit.Rendering
 		{
 			var componentType = typeof(TComponent);
 			var renderFragment = parameters.ToComponentRenderFragment<TComponent>();
-			var wrapperId = RenderFragmentInsideWrapper(renderFragment);
-			return FindComponent<TComponent>(wrapperId);
+			var rootComponentId = RenderFragmentInRootComponent(renderFragment);
+			return FindComponent<TComponent>(rootComponentId);
 		}
 
 		/// <inheritdoc/>
 		public int RenderFragment(RenderFragment renderFragment)
 		{
-			return RenderFragmentInsideWrapper(renderFragment);
+			return RenderFragmentInRootComponent(renderFragment);
 		}
 
 		/// <inheritdoc/>
@@ -114,17 +117,20 @@ namespace Bunit.Rendering
 			return result;
 		}
 
-		private int RenderFragmentInsideWrapper(RenderFragment renderFragment)
+		private int RenderFragmentInRootComponent(RenderFragment renderFragment)
 		{
-			var wrapper = new WrapperComponent(renderFragment);
+			int rootComponentId = -1;
 
-			var wrapperId = AssignRootComponentId(wrapper);
+			var task = Dispatcher.InvokeAsync(() =>
+			{
+				var root = new RootTestComponent(renderFragment);
+				rootComponentId = AssignRootComponentId(root);
+				return root.SetParametersAsync(ParameterView.Empty);
+			});
+
+			Debug.Assert(task.IsCompletedSuccessfully, "The render task did not complete as expected");
 			AssertNoUnhandledExceptions();
-
-			Dispatcher.InvokeAsync(wrapper.Render).Wait();
-			AssertNoUnhandledExceptions();
-
-			return wrapperId;
+			return rootComponentId;
 		}
 
 		/// <inheritdoc/>
@@ -138,6 +144,15 @@ namespace Bunit.Rendering
 			return _renderEventHandlers.Count == 0
 				? Task.CompletedTask
 				: PublishRenderEvent(in renderBatch);
+		}
+
+		/// <inheritdoc/>
+		protected override void ProcessPendingRender()
+		{
+			lock (_renderLock)
+			{
+				base.ProcessPendingRender();
+			}
 		}
 
 		private Task PublishRenderEvent(in RenderBatch renderBatch)

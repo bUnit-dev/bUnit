@@ -1,0 +1,27 @@
+<Wrapper>
+	@if (_eitherOr)
+	{
+		<Wrapper>
+			<Simple1 Header="FIRST" />
+		</Wrapper>
+	}
+	else
+	{
+		<Wrapper>
+			<Simple1 Header="SECOND" />
+		</Wrapper>
+	}
+</Wrapper>
+
+@code
+{
+	private bool _eitherOr = true;
+
+	[Parameter] public Task EitherOr { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		await EitherOr;
+		_eitherOr = false;
+	}
+}
