@@ -1,6 +1,6 @@
 ## Pull request description
 <!--- 
-    Describe the changes here and motiviations behind them, if it is not obvious
+    Describe the changes and motivation behind them here, if it is not obvious
     from the related issues. Does it have new features, breaking changes, etc. 
 -->
 
