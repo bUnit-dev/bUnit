@@ -7,11 +7,11 @@ title: Getting Started with bUnit
 
 To start writing tests for Blazor components, first set up a test project and then you can start adding tests, using either using C# or Razor syntax.
 
-The *basics* getting started topics are:
+The *basic* getting started topics are:
 
 1. **<xref:create-test-project>** covers setting up a bUnit test project.
 2. **<xref:writing-csharp-tests>** covers the basics of writing tests in C#, i.e. like regular unit tests.
-3. **<xref:writing-razor-tests>** covers the basics of writing tests in `.razor` files in Razor and C# syntax.  
+3. **<xref:writing-razor-tests>** covers the basics of writing tests in `.razor` files using Razor and C# syntax.  
 
 The *next level* topics are:
 
@@ -21,4 +21,4 @@ The *next level* topics are:
 
 ## Getting Help
 
-Cannot figure out how to write a test for a testing scenario? Found a testing scenario that is hard or inelegant with bUnit? Found a bug in bUnit? Head over to the [GitHub issues list](https://github.com/egil/bunit/issues) and ask a question, suggest a new feature, or join [bUnits Gitter channel](https://gitter.im/egil/bunit) and let us know. There are no stupid questions, and all questions are welcome!
+If you cannot figure out how to write a test for a testing scenario? If you have a testing scenario that is hard to write or it cannot be written elegantly with bUnit? If you found a bug in bUnit? Head over to [GitHub issues list](https://github.com/egil/bunit/issues) to ask a question, suggest a new feature, or join [bUnits Gitter channel](https://gitter.im/egil/bunit) and let us know. There are no stupid questions, all questions are welcome!

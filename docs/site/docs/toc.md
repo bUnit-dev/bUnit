@@ -23,11 +23,8 @@
 
 # [Test Doubles](xref:test-doubles)
 ## [Faking Authorization](xref:faking-auth)
-## [Mocking HttpClient](xref:mocking-httpclient)
-## [Mocking IJsRuntime](xref:mocking-ijsruntime)
-## [Mocking Localization](xref:mocking-localizer)
-## [Mocking NavigationManager](xref:mocking-navigation-manager)
+## [Mocking IJSRuntime](xref:mocking-ijsruntime)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External Resources](xref:external-resources)
-# [Contribute](contribute.md)
+# [Contribute](xref:contribute)
