@@ -35,7 +35,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.8.20411.6'
+          dotnet-version: '5.0.100-preview.8.20417.9'
       - name: DOTNET HACK
         shell: pwsh
         run: |
