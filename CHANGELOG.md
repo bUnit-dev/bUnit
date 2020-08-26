@@ -2,9 +2,9 @@
 
 All notable changes to **bUnit** will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0-beta-9] - 2020-08-26
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+This release contains a couple of fixes, and adds support for .NET Preview 8 and later. There are no breaking changes in this release.
 
 Thanks to [pharry22](https://github.com/pharry22) for submitting fixes and improvements to the documentation.
 
@@ -22,19 +22,10 @@ List of changes in existing functionality.
 - Accessing `Markup`, `Nodes` and related methods on a rendered fragment whose underlying component has been removed from the render tree (disposed) now throws a `ComponentDisposedException`. By [@egil](https://github.com/egil) in [#184](https://github.com/egil/bUnit/pull/184).
 - Changed bUnit's build to target both .net 5.0 and .net standard 2.1. By [@egil](https://github.com/egil) in [#187](https://github.com/egil/bUnit/pull/187).
 
-### Deprecated
-List of soon-to-be removed features.
-
-### Removed
-List of now removed features.
-
 ### Fixed
 List of any bug fixes.
 
 - Fixes [#175](https://github.com/egil/bUnit/issues/175): When a component referenced in a test, e.g. through the `FindComponent()` method was removed from the render tree, accessing the reference could caused bUnit to look for updates to it in the renderer, causing a exception to be thrown. By [@egil](https://github.com/egil) in [#184](https://github.com/egil/bUnit/pull/184).
-
-### Security
-List of fixed security vulnerabilities.
 
 ## [1.0.0-beta-8] - 2020-07-15
 
