@@ -52,4 +52,4 @@ In the post v1.0.0 to v1.0.x time frame, focus will be on improving performance.
 
 ## Contributors
 
-Shout outs and a big thank you [to all the contributors](https://github.com/egil/bunit/graphs/contributors) to the library, both those that raise issues, provide input to issues, and those who send pull requests. Thank you!
+Shout outs and a big thank you [to all the contributors](https://github.com/egil/bunit/graphs/contributors) to the library, both including those that raise issues, provide input to issues, and those who send pull requests. Thank you! 
