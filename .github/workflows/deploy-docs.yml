@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      VERSION: ''
     steps:
       - uses: actions/checkout@v2   
         with:
@@ -33,7 +35,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.7.20366.6'
+          dotnet-version: '5.0.100-preview.8.20411.6'
       - name: DOTNET HACK
         shell: pwsh
         run: |
@@ -48,7 +50,7 @@ jobs:
           }
       
       - name: Building library
-        run: dotnet build -p:version=$VERSION
+        run: dotnet build /p:PublicRelease=true
 
       - name: Verfiy docs samples
         run: dotnet test docs/samples

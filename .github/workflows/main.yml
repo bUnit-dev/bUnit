@@ -39,7 +39,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.7.20366.6'
+          dotnet-version: '5.0.100-preview.8.20411.6'
       - name: Move .net SDK's to shared folder (hack)
         shell: pwsh
         run: |
@@ -70,7 +70,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.7.20366.6'
+          dotnet-version: '5.0.100-preview.8.20411.6'
       - name: Move .net SDK's to shared folder (hack)
         shell: pwsh
         run: |
@@ -121,7 +121,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.7.20366.6'
+          dotnet-version: '5.0.100-preview.8.20411.6'
       - name: Move .net SDK's to shared folder (hack)
         shell: pwsh
         run: |
@@ -165,7 +165,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.7.20366.6'
+          dotnet-version: '5.0.100-preview.8.20411.6'
       - name: Move .net SDK's to shared folder (hack)
         shell: pwsh
         run: |
@@ -234,7 +234,7 @@ jobs:
         dotnet-version: '3.1.x'
     - uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '5.0.100-preview.7.20366.6'
+        dotnet-version: '5.0.100-preview.8.20411.6'
     - name: Move .net SDK's to shared folder (hack)
       shell: pwsh
       run: |
@@ -292,7 +292,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.7.20366.6'
+          dotnet-version: '5.0.100-preview.8.20411.6'
       - name: DOTNET HACK
         shell: pwsh
         run: |
