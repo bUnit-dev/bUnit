@@ -316,9 +316,9 @@ jobs:
       - name: Creating library package for release
         if: github.event_name == 'release'
         run: |
-          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
-          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
+          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=main -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=main -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
+          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=main -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
 
       - name: Push packages to GitHub Package Registry
         run: |
