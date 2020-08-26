@@ -26,11 +26,13 @@ namespace Bunit
 		};
 
 		private const string BLAZOR_INTERNAL_ATTR_PREFIX = "__internal_";
+		private const string BLAZOR_CSS_SCOPE_ATTR_PREFIX = "b-";
 		public const string BLAZOR_ATTR_PREFIX = "blazor:";
 		public const string ELEMENT_REFERENCE_ATTR_NAME = BLAZOR_ATTR_PREFIX + "elementreference";
 
 		public static bool IsBlazorAttribute(string attributeName)
-			=> attributeName.StartsWith(BLAZOR_ATTR_PREFIX, StringComparison.Ordinal);
+			=> attributeName.StartsWith(BLAZOR_ATTR_PREFIX, StringComparison.Ordinal) ||
+			   attributeName.StartsWith(BLAZOR_CSS_SCOPE_ATTR_PREFIX, StringComparison.Ordinal);
 
 		public static string ToBlazorAttribute(string attributeName)
 		{

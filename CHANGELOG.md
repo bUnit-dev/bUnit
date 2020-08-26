@@ -13,6 +13,7 @@ List of new features.
 
 - Added `InvokeAsync(Func<Task>)` to `RenderedComponentInvokeAsyncExtensions`. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
 - Added `ITestRenderer Renderer { get ; }` to `IRenderedFragment` to make it possible to simplify the `IRenderedComponentBase<TComponent>` interface. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
+- Added support for scoped CSS to `MarkupMatches` and related comparer methods. By [@egil](https://github.com/egil) in [#195](https://github.com/egil/bUnit/pull/195).
 
 ### Changed
 List of changes in existing functionality.
