@@ -1,4 +1,3 @@
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/egil/bunit/RELEASE?logo=github&style=flat-square)](https://github.com/egil/bunit/actions?query=workflow%3ARELEASE)
 [![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
 [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
 [![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github)](https://github.com/egil/bunit/issues)
