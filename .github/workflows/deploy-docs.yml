@@ -48,7 +48,7 @@ jobs:
           }
       
       - name: Building library
-        run: dotnet build src -p:version=$VERSION
+        run: dotnet build -p:version=$VERSION
 
       - name: Verfiy docs samples
         run: dotnet test docs/samples
