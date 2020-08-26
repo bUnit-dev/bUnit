@@ -1,5 +1,7 @@
 using System;
 using Bunit.TestAssets.BlazorE2E;
+using Bunit.TestAssets.SampleComponents;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
@@ -8,9 +10,9 @@ using Xunit;
 
 namespace Bunit.Rendering.Internal
 {
-	public class HtmlizerTests : TestContext
+	public partial class HtmlizerTests : TestContext
 	{
-		[Theory(DisplayName = "The component contains correctly prefixed internal attributes.")]
+		[Theory(DisplayName = "Htmlizer correctly prefixed stopPropagation and preventDefault attributes")]
 		[InlineData(false, true)]
 		[InlineData(true, false)]
 		[InlineData(true, true)]

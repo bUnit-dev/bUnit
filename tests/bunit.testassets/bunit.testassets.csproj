@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
-		<RazorLangVersion>3.0</RazorLangVersion>
 		<RootNamespace>Bunit.TestAssets</RootNamespace>
 		<AssemblyName>Bunit.TestAssets</AssemblyName>
 		<IsPackable>false</IsPackable>
@@ -15,15 +14,25 @@
 		<WarningsAsErrors>CS8602;CS8603;CS8625</WarningsAsErrors>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+		<RazorLangVersion>3.0</RazorLangVersion>
+	</PropertyGroup>
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.1" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-preview.7.*" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.0-preview.7.*" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-preview.7.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-preview.8.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.0-preview.8.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-preview.8.*" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Remove="bundleconfig.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="bundleconfig.json" />
 	</ItemGroup>
 
 </Project>
