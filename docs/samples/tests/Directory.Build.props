@@ -1,0 +1,9 @@
+<Project>
+	<PropertyGroup>
+		<TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+		<IsPackable>false</IsPackable>
+		<LangVersion>8.0</LangVersion>
+    <RazorLangVersion>3.0</RazorLangVersion>
+	</PropertyGroup>
+
+</Project>
