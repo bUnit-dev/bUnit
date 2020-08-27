@@ -1,16 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
     <RazorLangVersion>3.0</RazorLangVersion>
     <RootNamespace>Bunit.Docs.Samples</RootNamespace>
   </PropertyGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="3.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.4" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-preview.8.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0-preview.8.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-preview.8.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-preview.8.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.0-preview.8.*" />
+	</ItemGroup>
 
 </Project>
