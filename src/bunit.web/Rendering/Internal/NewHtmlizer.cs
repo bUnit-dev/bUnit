@@ -39,9 +39,9 @@ namespace Bunit
 			return $"{BLAZOR_ATTR_PREFIX}{attributeName}";
 		}
 
-		public static string GetHtml(int componentId, IReadOnlyDictionary<int, ArrayRange<RenderTreeFrame>> frameSet)
+		public static string GetHtml(int componentId, RenderTreeFrameCollection framesCollection)
 		{
-			var context = new HtmlRenderingContext(frameSet);
+			var context = new HtmlRenderingContext(framesCollection);
 			var frames = context.GetRenderTreeFrames(componentId);
 			var newPosition = RenderFrames(context, frames, 0, frames.Count);
 			Debug.Assert(newPosition == frames.Count, $"frames.Count = {frames.Count}. newPosition = {newPosition}");
@@ -264,9 +264,9 @@ namespace Bunit
 
 		private class HtmlRenderingContext
 		{
-			private readonly IReadOnlyDictionary<int, ArrayRange<RenderTreeFrame>> _frames;
+			private readonly RenderTreeFrameCollection _frames;
 
-			public HtmlRenderingContext(IReadOnlyDictionary<int, ArrayRange<RenderTreeFrame>> frames)
+			public HtmlRenderingContext(RenderTreeFrameCollection frames)
 			{
 				_frames = frames;
 			}
