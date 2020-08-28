@@ -70,6 +70,43 @@ namespace Bunit.Rendering
 			handler2.ReceivedEvents.Count.ShouldBe(1);
 		}
 
+		[Fact(DisplayName = "Can render component that awaits uncompleted task in OnInitializedAsync")]
+		public void Test100()
+		{
+			using var ctx = new TestContext();
+			var tcs = new TaskCompletionSource<object>();
+
+			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+				parameters.Add(p => p.EitherOr, tcs.Task)
+			);
+
+			cut.Find("h1").TextContent.ShouldBe("FIRST");
+		}
+
+		[Fact(DisplayName = "Can render component that awaits yielding task in OnInitializedAsync")]
+		public void Test101()
+		{
+			using var ctx = new TestContext();
+
+			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+				parameters.Add(p => p.EitherOr, Task.Delay(1))
+			);
+
+			cut.Find("h1").TextContent.ShouldBe("FIRST");
+		}
+
+		[Fact(DisplayName = "Can render component that awaits completed task in OnInitializedAsync")]
+		public void Test102()
+		{
+			using var ctx = new TestContext();
+
+			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+				parameters.Add(p => p.EitherOr, Task.CompletedTask)
+			);
+
+			cut.Find("h1").TextContent.ShouldBe("SECOND");
+		}
+
 		class MockRenderEventHandler : IRenderEventHandler
 		{
 			private TaskCompletionSource<object?> _handleTask = new TaskCompletionSource<object?>();
