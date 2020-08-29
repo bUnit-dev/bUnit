@@ -19,6 +19,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6EA09ED4-B714-4E6F-B0E1-4D987F8AE520}"
 	ProjectSection(SolutionItems) = preProject
 		tests\Directory.Build.props = tests\Directory.Build.props
+		tests\run-tests.ps1 = tests\run-tests.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".text", ".text", "{392FCD4E-356A-412A-A854-8EE197EA65B9}"

@@ -5,7 +5,7 @@ using System.Text;
 namespace Bunit.Rendering
 {
 	/// <summary>
-	/// Represents an exception that is thrown when a <see cref="IRenderedFragmentBase"/>'s
+	/// Represents an exception that is thrown when a <see cref="Bunit.IRenderedFragmentBase"/>'s
 	/// properties is accessed after the underlying component has been dispsoed by the renderer.
 	/// </summary>
 	public class ComponentDisposedException : Exception

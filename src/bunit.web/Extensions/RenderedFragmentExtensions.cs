@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using AngleSharp.Dom;
 
@@ -63,8 +64,7 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(renderedFragment));
 
 			var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
-			var (id, component) = renderer.FindComponent<TComponent>(renderedFragment.ComponentId);
-			return new RenderedComponent<TComponent>(renderedFragment.Services, id, component);
+			return (IRenderedComponent<TComponent>)renderer.FindComponent<TComponent>(renderedFragment);			
 		}
 
 		/// <summary>
@@ -79,15 +79,9 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(renderedFragment));
 
 			var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
-			var components = renderer.FindComponents<TComponent>(renderedFragment.ComponentId);
-			var result = components.Count == 0 ? Array.Empty<IRenderedComponent<TComponent>>() : new IRenderedComponent<TComponent>[components.Count];
+			var components = renderer.FindComponents<TComponent>(renderedFragment);
 
-			for (int i = 0; i < components.Count; i++)
-			{
-				result[i] = new RenderedComponent<TComponent>(renderedFragment.Services, components[i].ComponentId, components[i].Component);
-			}
-
-			return result;
+			return components.Cast<IRenderedComponent<TComponent>>().ToArray();
 		}
 	}
 }

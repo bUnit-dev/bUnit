@@ -1,0 +1,29 @@
+using System;
+
+using Microsoft.AspNetCore.Components;
+
+namespace Bunit.Rendering
+{
+	public sealed class RenderedComponentActivator : IRenderedComponentActivator
+	{
+		private readonly IServiceProvider _services;
+
+		public RenderedComponentActivator(IServiceProvider services)
+		{
+			_services = services;
+		}
+
+		/// <inheritdoc/>
+		public IRenderedFragmentBase CreateRenderedComponent(int componentId)
+			=> new RenderedFragment(componentId, _services);
+
+		/// <inheritdoc/>
+		public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId) where TComponent : IComponent
+			=> new RenderedComponent<TComponent>(componentId, _services);
+
+		/// <inheritdoc/>
+		public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId, TComponent component, RenderTreeFrameCollection componentFrames)
+			where TComponent : IComponent
+			=> new RenderedComponent<TComponent>(componentId, component, componentFrames, _services);
+	}
+}

@@ -14,45 +14,34 @@ using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering
 {
-	/// <summary>
-	/// Represents an abstract <see cref="IRenderedFragment"/> with base functionality.
-	/// </summary>
-	public class RenderedFragment : IRenderedFragment, IRenderEventHandler
+	internal class RenderedFragment : IRenderedFragment
 	{
 		private readonly object _markupAccessLock = new object();
-		private readonly ILogger<RenderedFragment> _logger;
+		private readonly HtmlParser _htmlParser;
+		private string _markup = string.Empty;
 		private string? _snapshotMarkup;
+
 		private INodeList? _firstRenderNodes;
 		private INodeList? _latestRenderNodes;
 		private INodeList? _snapshotNodes;
-		private string _markup;
-		private bool _componentDisposed;
-
-		private HtmlParser HtmlParser { get; }
 
 		/// <summary>
 		/// Gets the first rendered markup.
 		/// </summary>
-		protected string FirstRenderMarkup { get; }
+		protected string FirstRenderMarkup { get; private set; }
 
-		/// <inheritdoc/>
-		public ITestRenderer Renderer { get; }
+		public event Action? OnAfterRender;
+		public event Action? OnMarkupUpdated;
 
-		/// <inheritdoc/>
-		public IServiceProvider Services { get; }
+		public bool IsDisposed { get; private set; }
 
-		/// <inheritdoc/>
-		public int ComponentId { get; }
+		public int ComponentId { get; protected set; }
 
-		/// <inheritdoc/>
 		public string Markup
 		{
 			get
 			{
 				EnsureComponentNotDisposed();
-
-				// The lock ensures that we cannot read the _markup and _latestRenderNodes
-				// field while it is being updated
 				lock (_markupAccessLock)
 				{
 					return Volatile.Read(ref _markup);
@@ -60,7 +49,8 @@ namespace Bunit.Rendering
 			}
 		}
 
-		/// <inheritdoc/>
+		public int RenderCount { get; protected set; }
+
 		public INodeList Nodes
 		{
 			get
@@ -71,120 +61,93 @@ namespace Bunit.Rendering
 				lock (_markupAccessLock)
 				{
 					if (_latestRenderNodes is null)
-						_latestRenderNodes = HtmlParser.Parse(Markup);
+						_latestRenderNodes = _htmlParser.Parse(Markup);
+
 					return _latestRenderNodes;
 				}
 			}
 		}
 
-		/// <inheritdoc/>
-		public event Action? OnMarkupUpdated;
+		public IServiceProvider Services { get; }
 
-		/// <inheritdoc/>
-		public event Action? OnAfterRender;
-
-		/// <inheritdoc/>
-		public int RenderCount { get; private set; }
-
-		/// <summary>
-		/// Creates an instance of the <see cref="RenderedFragment"/> class.
-		/// </summary>
-		public RenderedFragment(IServiceProvider services, int componentId)
+		public RenderedFragment(int componentId, IServiceProvider service)
 		{
-			if (services is null)
-				throw new ArgumentNullException(nameof(services));
-
-			_logger = services.CreateLogger<RenderedFragment>();
-			HtmlParser = services.GetRequiredService<HtmlParser>();
-			Renderer = services.GetRequiredService<ITestRenderer>();
-			Services = services;
 			ComponentId = componentId;
-			_markup = RetrieveLatestMarkupFromRenderer();
-			FirstRenderMarkup = _markup;
-			Renderer.AddRenderEventHandler(this);
-			RenderCount = 1;
+			Services = service;
+			_htmlParser = Services.GetRequiredService<HtmlParser>();
 		}
 
-		/// <inheritdoc/>
+		public IReadOnlyList<IDiff> GetChangesSinceFirstRender()
+		{
+			if (_firstRenderNodes is null)
+				_firstRenderNodes = _htmlParser.Parse(FirstRenderMarkup);
+
+			return Nodes.CompareTo(_firstRenderNodes);
+		}
+
+		public IReadOnlyList<IDiff> GetChangesSinceSnapshot()
+		{
+			if (_snapshotMarkup is null)
+				throw new InvalidOperationException($"No snapshot exists to compare with. Call {nameof(SaveSnapshot)}() to create one.");
+
+			if (_snapshotNodes is null)
+				_snapshotNodes = _htmlParser.Parse(_snapshotMarkup);
+
+			return Nodes.CompareTo(_snapshotNodes);
+		}
+
 		public void SaveSnapshot()
 		{
 			_snapshotNodes = null;
 			_snapshotMarkup = Markup;
 		}
 
-		/// <inheritdoc/>
-		public IReadOnlyList<IDiff> GetChangesSinceSnapshot()
+		void IRenderedFragmentBase.OnRender(RenderEvent renderEvent)
 		{
-			if (_snapshotMarkup is null)
-				throw new InvalidOperationException($"No snapshot exists to compare with. Call {nameof(SaveSnapshot)} to create one.");
+			if (IsDisposed)
+				return;
 
-			if (_snapshotNodes is null)
-				_snapshotNodes = HtmlParser.Parse(_snapshotMarkup);
+			var (rendered, changed, disposed) = renderEvent.GetRenderStatus(this);
 
-			return Nodes.CompareTo(_snapshotNodes);
-		}
-
-		/// <inheritdoc/>
-		public IReadOnlyList<IDiff> GetChangesSinceFirstRender()
-		{
-			if (_firstRenderNodes is null)
-				_firstRenderNodes = HtmlParser.Parse(FirstRenderMarkup);
-			return Nodes.CompareTo(_firstRenderNodes);
-		}
-
-		private string RetrieveLatestMarkupFromRenderer() => Htmlizer.GetHtml(Renderer, ComponentId);
-
-		Task IRenderEventHandler.Handle(RenderEvent renderEvent)
-		{
-			if (renderEvent.DidComponentDispose(ComponentId))
+			if (disposed)
 			{
-				HandleComponentDisposed();
+				((IDisposable)this).Dispose();
+				return;
 			}
-			else if (renderEvent.DidComponentRender(ComponentId))
+
+			lock (_markupAccessLock)
 			{
-				HandleComponentRender(renderEvent);
-			}
-			return Task.CompletedTask;
-		}
-
-		private void HandleComponentRender(RenderEvent renderEvent)
-		{
-			_logger.LogDebug(new EventId(1, nameof(HandleComponentRender)), $"Received a new render where component {ComponentId} did render.");
-
-			RenderCount++;
-
-			// First notify derived types, e.g. queried AngleSharp collections or elements
-			// that the markup has changed and they should rerun their queries.
-			HandleChangesToMarkup(renderEvent);
-
-			// Then it is safe to tell anybody waiting on updates or changes to the rendered fragment
-			// that they can redo their assertions or continue processing.
-			OnAfterRender?.Invoke();
-		}
-
-		private void HandleChangesToMarkup(RenderEvent renderEvent)
-		{
-			if (renderEvent.HasMarkupChanges(ComponentId))
-			{
-				_logger.LogDebug(new EventId(1, nameof(HandleChangesToMarkup)), $"Received a new render where the markup of component {ComponentId} changed.");
-
-				// The lock ensures that latest nodes is always based on the latest rendered markup.
-				lock (_markupAccessLock)
+				if (rendered)
 				{
-					_latestRenderNodes = null;
-					_markup = RetrieveLatestMarkupFromRenderer();
+					OnRender(renderEvent);
+					RenderCount++;
 				}
 
+				if (changed)
+				{
+					UpdateMarkup(renderEvent.Frames);
+				}
+			}
+
+			if (rendered)
+				OnAfterRender?.Invoke();
+			if (changed)
 				OnMarkupUpdated?.Invoke();
+		}
+
+		protected void UpdateMarkup(RenderTreeFrameCollection framesCollection)
+		{
+			lock (_markupAccessLock)
+			{
+				_latestRenderNodes = null;
+				var newMarkup = Htmlizer.GetHtml(ComponentId, framesCollection);
+				Volatile.Write(ref _markup, newMarkup);
+				if (RenderCount == 1)
+					FirstRenderMarkup = newMarkup;
 			}
 		}
 
-		private void HandleComponentDisposed()
-		{
-			_logger.LogDebug(new EventId(1, nameof(HandleChangesToMarkup)), $"Received a new render where the component {ComponentId} was disposed.");
-			_componentDisposed = true;
-			Renderer.RemoveRenderEventHandler(this);
-		}
+		protected virtual void OnRender(RenderEvent renderEvent) { }
 
 		/// <summary>
 		/// Ensures that the underlying component behind the
@@ -192,8 +155,16 @@ namespace Bunit.Rendering
 		/// </summary>
 		protected void EnsureComponentNotDisposed()
 		{
-			if (_componentDisposed)
+			if (IsDisposed)
 				throw new ComponentDisposedException(ComponentId);
+		}
+
+		void IDisposable.Dispose()
+		{
+			IsDisposed = true;
+			_markup = string.Empty;
+			OnAfterRender = null;
+			FirstRenderMarkup = string.Empty;
 		}
 	}
 }

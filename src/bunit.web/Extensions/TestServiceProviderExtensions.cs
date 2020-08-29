@@ -28,6 +28,7 @@ namespace Bunit.Extensions
 					srv.GetRequiredService<HtmlComparer>()
 				)
 			);
+			services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
 			return services;
 		}
 	}

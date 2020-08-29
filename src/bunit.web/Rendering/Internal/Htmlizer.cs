@@ -16,7 +16,7 @@ namespace Bunit
 	/// https://source.dot.net/#Microsoft.AspNetCore.Mvc.ViewFeatures/RazorComponents/HtmlRenderer.cs
 	/// </summary>
 	[SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
-	internal class Htmlizer
+	public static class Htmlizer
 	{
 		private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
 
@@ -39,10 +39,10 @@ namespace Bunit
 			return $"{BLAZOR_ATTR_PREFIX}{attributeName}";
 		}
 
-		public static string GetHtml(ITestRenderer renderer, int componentId)
+		public static string GetHtml(int componentId, RenderTreeFrameCollection framesCollection)
 		{
-			var frames = renderer.GetCurrentRenderTreeFrames(componentId);
-			var context = new HtmlRenderingContext(renderer);
+			var context = new HtmlRenderingContext(framesCollection);
+			var frames = context.GetRenderTreeFrames(componentId);
 			var newPosition = RenderFrames(context, frames, 0, frames.Count);
 			Debug.Assert(newPosition == frames.Count, $"frames.Count = {frames.Count}. newPosition = {newPosition}");
 			return string.Join(string.Empty, context.Result);
@@ -101,7 +101,7 @@ namespace Bunit
 			int position)
 		{
 			ref var frame = ref frames.Array[position];
-			var childFrames = context.Renderer.GetCurrentRenderTreeFrames(frame.ComponentId);
+			var childFrames = context.GetRenderTreeFrames(frame.ComponentId);
 			RenderFrames(context, childFrames, 0, childFrames.Count);
 			return position + frame.ComponentSubtreeLength;
 		}
@@ -264,12 +264,15 @@ namespace Bunit
 
 		private class HtmlRenderingContext
 		{
-			public ITestRenderer Renderer { get; }
+			private readonly RenderTreeFrameCollection _frames;
 
-			public HtmlRenderingContext(ITestRenderer renderer)
+			public HtmlRenderingContext(RenderTreeFrameCollection frames)
 			{
-				Renderer = renderer;
+				_frames = frames;
 			}
+
+			public ArrayRange<RenderTreeFrame> GetRenderTreeFrames(int componentId)
+				=> _frames[componentId];
 
 			public List<string> Result { get; } = new List<string>();
 

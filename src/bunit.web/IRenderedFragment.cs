@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 
+using Bunit.Rendering;
+
 namespace Bunit
 {
 	/// <summary>
@@ -11,15 +13,12 @@ namespace Bunit
 	/// </summary>
 	public interface IRenderedFragment : IRenderedFragmentBase
 	{
+		event Action OnMarkupUpdated;
+
 		/// <summary>
 		/// Gets the HTML markup from the rendered fragment/component.
 		/// </summary>
 		string Markup { get; }
-
-		/// <summary>
-		/// An event that is raised after the markup of the <see cref="IRenderedFragmentBase"/> is updated.
-		/// </summary>
-		event Action OnMarkupUpdated;
 
 		/// <summary>
 		/// Gets the AngleSharp <see cref="INodeList"/> based
@@ -49,5 +48,7 @@ namespace Bunit
 		/// the snapshot and the rendered markup at that time.
 		/// </summary>
 		void SaveSnapshot();
+
+
 	}
 }

@@ -28,8 +28,8 @@ namespace Bunit
 		/// <returns>The rendered <typeparamref name="TComponent"/></returns>
 		public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
 		{
-			var renderResult = Renderer.RenderComponent<TComponent>(parameters);
-			return new RenderedComponent<TComponent>(Services, renderResult.ComponentId, renderResult.Component);
+			var renderedFragment = Renderer.RenderComponent<TComponent>(parameters);
+			return (IRenderedComponent<TComponent>)renderedFragment;
 		}
 
 		/// <summary>
@@ -45,8 +45,8 @@ namespace Bunit
 
 			var builder = new ComponentParameterBuilder<TComponent>();
 			parameterBuilder(builder);
-			var renderResult = Renderer.RenderComponent<TComponent>(builder.Build());
-			return new RenderedComponent<TComponent>(Services, renderResult.ComponentId, renderResult.Component);
+			var renderedFragment = Renderer.RenderComponent<TComponent>(builder.Build());
+			return (IRenderedComponent<TComponent>)renderedFragment;
 		}
 	}
 }

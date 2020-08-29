@@ -1,28 +1,18 @@
 using System;
-using System.Threading.Tasks;
+
 using Bunit.Rendering;
 
 namespace Bunit
 {
-	/// <summary>
-	/// Represents a rendered fragment.
-	/// </summary>
-	public interface IRenderedFragmentBase
+	public interface IRenderedFragmentBase : IDisposable
 	{
-		/// <summary>
-		/// Gets the id of the rendered component or fragment.
-		/// </summary>
-		int ComponentId { get; }
-
-		/// <summary>
-		/// Gets the total number times the fragment has been through its render life-cycle.
-		/// </summary>
 		int RenderCount { get; }
 
-		/// <summary>
-		/// Adds or removes an event handler that will be triggered after each render of this <see cref="IRenderedFragmentBase"/>.
-		/// </summary>
-		event Action OnAfterRender;
+		bool IsDisposed { get; }
+
+		int ComponentId { get; }
+
+		void OnRender(RenderEvent renderEvent);
 
 		/// <summary>
 		/// Gets the <see cref="IServiceProvider"/> used when rendering the component.
@@ -30,8 +20,8 @@ namespace Bunit
 		IServiceProvider Services { get; }
 
 		/// <summary>
-		/// Gets the <see cref="ITestRenderer"/> renderer that rendered the component.
+		/// Adds or removes an event handler that will be triggered after each render of this <see cref="IRenderedFragmentBase"/>.
 		/// </summary>
-		ITestRenderer Renderer { get; }
+		event Action? OnAfterRender;
 	}
 }

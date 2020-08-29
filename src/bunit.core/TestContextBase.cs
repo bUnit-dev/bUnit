@@ -1,4 +1,5 @@
 using System;
+using System.Xml.Serialization;
 
 using Bunit.Rendering;
 
@@ -37,7 +38,12 @@ namespace Bunit
 		public TestContextBase()
 		{
 			Services = new TestServiceProvider();
-			Services.AddSingleton<ITestRenderer>(srv => new TestRenderer(srv, srv.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance));
+			Services.AddSingleton<ITestRenderer>(srv =>
+			{
+				var rca = srv.GetRequiredService<IRenderedComponentActivator>();
+				var loggerFactory = srv.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance;
+				return new TestRenderer(rca, srv, loggerFactory);
+			});
 		}
 
 		/// <inheritdoc/>

@@ -15,6 +15,8 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Shouldly;
 using static Bunit.ComponentParameterFactory;
 using Xunit;
+using Bunit.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit.Rendering
 {
@@ -81,148 +83,35 @@ namespace Bunit.Rendering
 		}
 	}
 
-	internal class TestRenderedFragment : IRenderedComponent
-	{
-		private readonly object _markupAccessLock = new object();
-		private string _markup = string.Empty;
-
-		public bool IsDisposed { get; private set; }
-
-		public int ComponentId { get; protected set; }
-
-		public string Markup
-		{
-			get
-			{
-				if (IsDisposed)
-					throw new ComponentDisposedException(ComponentId);
-
-				lock (_markupAccessLock)
-				{
-					return _markup;
-				}
-			}
-		}
-
-		public int RenderCount { get; protected set; }
-
-		public TestRenderedFragment(int componentId)
-		{
-			ComponentId = componentId;
-		}
-
-		void IRenderedComponent.OnRender(NewRenderEvent renderEvent)
-		{
-			if (IsDisposed)
-				return;
-
-			lock (_markupAccessLock)
-			{
-				var (rendered, changed, disposed) = renderEvent.GetRenderStatus(this);
-
-				if (disposed)
-				{
-					((IDisposable)this).Dispose();
-					return;
-				}
-
-				if (rendered)
-				{
-					OnRender(renderEvent);
-					RenderCount++;
-
-					if (changed)
-						UpdateMarkup(renderEvent.Frames);
-				}
-			}
-		}
-		
-		void IDisposable.Dispose()
-		{
-			IsDisposed = true;
-			_markup = string.Empty;
-		}
-
-		protected void UpdateMarkup(RenderTreeFrameCollection framesCollection)
-		{
-			lock (_markupAccessLock)
-			{
-				_markup = HewHtmlizer.GetHtml(ComponentId, framesCollection);
-			}
-		}
-
-		protected virtual void OnRender(NewRenderEvent renderEvent) { }
-	}
-
-	internal class TestRenderedComponent<TComponent> : TestRenderedFragment where TComponent : IComponent
-	{
-		private TComponent _instance = default!;
-
-		public TComponent Instance => _instance ?? throw new InvalidOperationException("Component has not rendered yet...");
-
-		public TestRenderedComponent(int componentId) : base(componentId)
-		{
-		}
-
-		public TestRenderedComponent(int componentId, TComponent instance, RenderTreeFrameCollection componentFrames) : base(componentId)
-		{
-			_instance = instance;
-			RenderCount++;
-			UpdateMarkup(componentFrames);
-		}
-
-		protected override void OnRender(NewRenderEvent renderEvent)
-		{
-			if (_instance is null)
-			{
-				SetComponentAndID(renderEvent);
-			}
-		}
-
-		private void SetComponentAndID(NewRenderEvent renderEvent)
-		{
-			var frames = renderEvent.Frames[ComponentId];
-			if (frames.Array[0].Component is TComponent wrapperComponent)
-			{
-				_instance = wrapperComponent;
-				ComponentId = frames.Array[0].ComponentId;
-			}
-			else
-			{
-				throw new InvalidOperationException("Component instance not found at expected position in render tree.");
-			}
-		}
-	}
-
-	internal sealed class TestRenderedComponentActivator : IRenderedComponentActivator
-	{
-		public IRenderedComponent CreateRenderedComponent<T>(int componentId) where T : IComponent
-			=> new TestRenderedComponent<T>(componentId);
-		public IRenderedComponent CreateRenderedComponent(int componentId)
-			=> new TestRenderedFragment(componentId);
-		public IRenderedComponent CreateRenderedComponent<T>(int componentId, T component, RenderTreeFrameCollection componentFrames) where T : IComponent
-			=> new TestRenderedComponent<T>(componentId, component, componentFrames);
-	}
-
 	internal static class TestRendererExtensions
 	{
-		public static TestRenderedComponent<TComponent> RenderComponent<TComponent>(this NewTestRenderer renderer, params ComponentParameter[] parameters)
+		public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this ITestRenderer renderer, params ComponentParameter[] parameters)
 			where TComponent : IComponent
 		{
-			return (TestRenderedComponent<TComponent>)renderer.RenderComponent<TComponent>(parameters);
+			return (IRenderedComponent<TComponent>)renderer.RenderComponent<TComponent>(parameters);
 		}
 	}
 
 	public class NewTestRendererTest
 	{
-		private ILoggerFactory LoggerFactory { get; } = NullLoggerFactory.Instance;
-		private TestServiceProvider Services { get; } = new TestServiceProvider();
-		private IRenderedComponentActivator Activator { get; } = new TestRenderedComponentActivator();
+		private TestServiceProvider Services { get; }
+
+		public NewTestRendererTest()
+		{
+			Services = new TestServiceProvider();
+			Services.AddDefaultTestContextServices();
+			Services.AddSingleton<ITestRenderer>(srv =>
+			{
+				var rca = srv.GetRequiredService<IRenderedComponentActivator>();
+				var loggerFactory = srv.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance;
+				return new TestRenderer(rca, srv, loggerFactory);
+			});
+		}
 
 		[Fact(DisplayName = "RenderFragment re-throws exception from component")]
 		public void Test004()
 		{
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 			RenderFragment thowingFragment = b => { b.OpenComponent<ThrowsDuringSetParams>(0); b.CloseComponent(); };
 
 			Should.Throw<InvalidOperationException>(() => sut.RenderFragment(thowingFragment))
@@ -232,7 +121,7 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "RenderComponent re-throws exception from component")]
 		public void Test003()
 		{
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			Should.Throw<InvalidOperationException>(() => sut.RenderComponent<ThrowsDuringSetParams>())
 				.Message.ShouldBe(ThrowsDuringSetParams.EXCEPTION.Message);
@@ -242,9 +131,9 @@ namespace Bunit.Rendering
 		public void Test001()
 		{
 			const string MARKUP = "<h1>hello world</h1>";
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
-			var cut = (TestRenderedFragment)sut.RenderFragment(builder => builder.AddMarkupContent(0, MARKUP));
+			var cut = (IRenderedFragment)sut.RenderFragment(builder => builder.AddMarkupContent(0, MARKUP));
 
 			cut.RenderCount.ShouldBe(1);
 			cut.Markup.ShouldBe(MARKUP);
@@ -253,7 +142,7 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "Can render component without children and no parameters")]
 		public void Test002()
 		{
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<NoChildNoParams>();
 
@@ -266,7 +155,7 @@ namespace Bunit.Rendering
 		public void Test005()
 		{
 			const string VALUE = "FOO BAR";
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<HasParams>((nameof(HasParams.Value), VALUE));
 
@@ -279,7 +168,7 @@ namespace Bunit.Rendering
 			const string PARENT_VALUE = "PARENT";
 			const string CHILD_VALUE = "CHILD";
 
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<HasParams>(
 				(nameof(HasParams.Value), PARENT_VALUE),
@@ -293,7 +182,7 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "Rendered component gets RenderCount updated on re-render")]
 		public async Task Test010()
 		{
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<RenderTrigger>();
 
@@ -308,7 +197,7 @@ namespace Bunit.Rendering
 		public async Task Test011()
 		{
 			const string EXPECTED = "NOW VALUE";
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<RenderTrigger>();
 
@@ -327,7 +216,7 @@ namespace Bunit.Rendering
 			const string PARENT_VALUE = "PARENT";
 			const string CHILD_VALUE = "CHILD";
 
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<HasParams>(
 				(nameof(HasParams.Value), PARENT_VALUE),
@@ -335,7 +224,7 @@ namespace Bunit.Rendering
 			);
 
 			// act
-			var childCut = (TestRenderedComponent<HasParams>)sut.FindComponent<HasParams>(cut);
+			var childCut = (IRenderedComponent<HasParams>)sut.FindComponent<HasParams>(cut);
 
 			// assert
 			childCut.Markup.ShouldBe(CHILD_VALUE);
@@ -345,7 +234,7 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "FindComponent throws if parentComponent parameter is null")]
 		public void Test021()
 		{
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			Should.Throw<ArgumentNullException>(() => sut.FindComponent<HasParams>(null!));
 		}
@@ -353,7 +242,7 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "FindComponent throws if component is not found")]
 		public void Test022()
 		{
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 			var cut = sut.RenderComponent<HasParams>();
 
 			Should.Throw<ComponentNotFoundException>(() => sut.FindComponent<HasParams>(cut));
@@ -367,8 +256,7 @@ namespace Bunit.Rendering
 			const string PARENT_VALUE = nameof(PARENT_VALUE);
 			const string CHILD_VALUE = nameof(CHILD_VALUE);
 
-
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<HasParams>(
 				(nameof(HasParams.Value), GRAND_PARENT_VALUE),
@@ -382,7 +270,7 @@ namespace Bunit.Rendering
 
 			// act
 			var childCuts = sut.FindComponents<HasParams>(cut)
-				.Cast<TestRenderedComponent<HasParams>>()
+				.Cast<IRenderedComponent<HasParams>>()
 				.ToArray();
 
 			// assert
@@ -396,7 +284,7 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "FindComponents throws if parentComponent parameter is null")]
 		public void Test031()
 		{
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			Should.Throw<ArgumentNullException>(() => sut.FindComponents<HasParams>(null!));
 		}
@@ -404,14 +292,14 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "Retrieved rendered child component with FindComponent gets updated on re-render")]
 		public async Task Test040()
 		{
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var parent = sut.RenderComponent<HasParams>(
 				ChildContent<RenderTrigger>()
 			);
 
 			// act
-			var cut = (TestRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(parent);
+			var cut = (IRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(parent);
 
 			cut.RenderCount.ShouldBe(1);
 
@@ -424,14 +312,14 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "Retrieved rendered child component with FindComponents gets updated on re-render")]
 		public async Task Test041()
 		{
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var parent = sut.RenderComponent<HasParams>(
 				ChildContent<RenderTrigger>()
 			);
 
 			// act
-			var cut = (TestRenderedComponent<RenderTrigger>)sut.FindComponents<RenderTrigger>(parent).Single();
+			var cut = (IRenderedComponent<RenderTrigger>)sut.FindComponents<RenderTrigger>(parent).Single();
 
 			cut.RenderCount.ShouldBe(1);
 
@@ -445,12 +333,12 @@ namespace Bunit.Rendering
 		public async Task Test050()
 		{
 			// arrange
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<HasParams>(
 				ChildContent<RenderTrigger>()
 			);
-			var child = (TestRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(cut);
+			var child = (IRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(cut);
 
 			// act
 			await child.Instance.TriggerWithValue("X");
@@ -464,12 +352,12 @@ namespace Bunit.Rendering
 		public async Task Test060()
 		{
 			// arrange
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<ToggleChild>(
 				ChildContent<NoChildNoParams>()
 			);
-			var child = (TestRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
+			var child = (IRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
 
 			// act
 			await cut.Instance.DisposeChild();
@@ -483,15 +371,15 @@ namespace Bunit.Rendering
 		public async Task Test061()
 		{
 			// arrange
-			using var sut = new NewTestRenderer(Activator, Services, LoggerFactory);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<ToggleChild>(
 				ChildContent<ToggleChild>(
 					ChildContent<NoChildNoParams>()
 				)
 			);
-			var child = (TestRenderedComponent<ToggleChild>)sut.FindComponent<ToggleChild>(cut);
-			var childChild = (TestRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
+			var child = (IRenderedComponent<ToggleChild>)sut.FindComponent<ToggleChild>(cut);
+			var childChild = (IRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
 
 			// act
 			await child.Instance.DisposeChild();
@@ -504,11 +392,11 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "When test renderer is disposed, so is all rendered components")]
 		public void Test070()
 		{
-			TestRenderedComponent<NoChildNoParams> cut;
-			using (var sut = new NewTestRenderer(Activator, Services, LoggerFactory))
-			{
-				cut = sut.RenderComponent<NoChildNoParams>();
-			}
+			var sut = (TestRenderer)Services.GetRequiredService<ITestRenderer>();
+			var cut = sut.RenderComponent<NoChildNoParams>();
+
+			sut.Dispose();
+
 			cut.IsDisposed.ShouldBeTrue();
 		}
 	}
