@@ -16,8 +16,6 @@ namespace Bunit.Rendering
 {
 	public class TestRendererTest
 	{
-		private static readonly ServiceProvider ServiceProvider = new ServiceCollection().BuildServiceProvider();
-
 		[Fact(DisplayName = "Can render component that awaits uncompleted task in OnInitializedAsync")]
 		public void Test100()
 		{
@@ -40,7 +38,10 @@ namespace Bunit.Rendering
 				parameters.Add(p => p.EitherOr, Task.Delay(1))
 			);
 
-			cut.Find("h1").TextContent.ShouldBe("FIRST");
+
+			var h1 = cut.Find("h1");
+
+			cut.WaitForAssertion(() => h1.TextContent.ShouldBe("SECOND"));
 		}
 
 		[Fact(DisplayName = "Can render component that awaits completed task in OnInitializedAsync")]

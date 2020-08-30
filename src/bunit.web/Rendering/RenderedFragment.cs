@@ -129,10 +129,10 @@ namespace Bunit.Rendering
 				}
 			}
 
-			if (rendered)
-				OnAfterRender?.Invoke();
 			if (changed)
 				OnMarkupUpdated?.Invoke();
+			if (rendered)
+				OnAfterRender?.Invoke();
 		}
 
 		protected void UpdateMarkup(RenderTreeFrameCollection framesCollection)
