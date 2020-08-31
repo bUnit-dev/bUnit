@@ -1,16 +1,17 @@
 using System;
 using System.Threading.Tasks;
+using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
-
+using Bunit.TestDoubles.JSInterop;
 using Microsoft.AspNetCore.Components;
-
+using Microsoft.AspNetCore.Components.Rendering;
 using Shouldly;
 
 using Xunit;
 
 namespace Bunit
 {
-	public class ComponentParameterBuilderTests
+	public class ComponentParameterBuilderTests : TestContext
 	{
 		[Fact(DisplayName = "Add with a parameterSelector for a CascadingParameter and a nullable integer as value and Build should return the correct ComponentParameters")]
 		public void Test001()
@@ -332,6 +333,57 @@ namespace Bunit
 			parameter.IsCascadingValue.ShouldBeFalse();
 			parameter.Name.ShouldBe(key);
 			parameter.Value.ShouldBe(value);
+		}
+
+		[Fact(DisplayName = "Add with a parameterSelector for a unnamed CascadingParameter and a nullable integer as value and Build should return the correct ComponentParameters")]
+		public void Test016()
+		{
+			// Arrange
+			var sut = CreateSut();
+			const int value = 42;
+
+			// Act
+			sut.Add(c => c.UnnamedCascadingValue, value);
+			var result = sut.Build();
+
+			// Assert
+			result.Count.ShouldBe(1);
+
+			var parameter = result[0];
+			parameter.IsCascadingValue.ShouldBeTrue();
+			parameter.Name.ShouldBe(nameof(AllTypesOfParams<string>.UnnamedCascadingValue));
+			parameter.Value.ShouldBe(value);
+		}
+
+		[Fact(DisplayName = "All types of parameters are correctly assigned to component on render")]
+		public void Test017()
+		{
+			Services.AddMockJSRuntime();
+
+			var cut = RenderComponent<AllTypesOfParams<string>>(parameterBuilder => parameterBuilder
+				.AddUnmatched("some-unmatched-attribute", "unmatched value")
+				.Add(p => p.RegularParam, "some value")
+				.Add(p => p.UnnamedCascadingValue, 42)
+				.Add(p => p.NamedCascadingValue, 1337)
+				.Add(p => p.NonGenericCallback, () => throw new Exception("NonGenericCallback"))
+				.Add(p => p.GenericCallback, (EventArgs args) => throw new Exception("GenericCallback"))
+				.Add(p => p.ChildContent, nameof(AllTypesOfParams<string>.ChildContent))
+				.Add(p => p.OtherContent, nameof(AllTypesOfParams<string>.OtherContent))
+				.Add(p => p.ItemTemplate, (item) => (builder) => throw new Exception("ItemTemplate"))
+			);
+
+			// assert that all parameters have been set correctly
+			var instance = cut.Instance;
+			instance.Attributes["some-unmatched-attribute"].ShouldBe("unmatched value");
+			instance.RegularParam.ShouldBe("some value");
+			instance.UnnamedCascadingValue.ShouldBe(42); // Currently fails.
+			instance.NamedCascadingValue.ShouldBe(1337);
+			Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("NonGenericCallback");
+			Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
+
+			new RenderedFragment(Services, Renderer.RenderFragment(instance.ChildContent!)).Markup.ShouldBe(nameof(AllTypesOfParams<string>.ChildContent));
+			new RenderedFragment(Services, Renderer.RenderFragment(instance.OtherContent!)).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
+			Should.Throw<Exception>(() => instance.ItemTemplate!("")(new RenderTreeBuilder())).Message.ShouldBe("ItemTemplate");
 		}
 
 		[Fact(DisplayName = "Add duplicate name should throw Exception")]
