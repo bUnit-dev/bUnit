@@ -6,12 +6,25 @@ namespace Bunit
 {
 	public interface IRenderedFragmentBase : IDisposable
 	{
+		/// <summary>
+		/// Gets the total number times the fragment has been through its render life-cycle.
+		/// </summary>
 		int RenderCount { get; }
 
+		/// <summary>
+		/// Gets whether the rendered component or fragment has been disposed by the <see cref="ITestRenderer"/>.
+		/// </summary>
 		bool IsDisposed { get; }
 
+		/// <summary>
+		/// Gets the id of the rendered component or fragment.
+		/// </summary>
 		int ComponentId { get; }
 
+		/// <summary>
+		/// Called by the owning <see cref="ITestRenderer"/> when it finishes a render.
+		/// </summary>
+		/// <param name="renderEvent">A <see cref="RenderEvent"/> that represents a render.</param>
 		void OnRender(RenderEvent renderEvent);
 
 		/// <summary>

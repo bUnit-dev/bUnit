@@ -13,7 +13,19 @@ using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering
 {
-	public sealed class TestRenderer : Renderer, ITestRenderer
+	public partial class TestRenderer
+	{
+		private void LogUnhandledException(Exception unhandled)
+		{
+			var evt = new EventId(3, nameof(AssertNoUnhandledExceptions));
+			_logger.LogError(evt, unhandled, $"An unhandled exception happened during rendering: {unhandled.Message}{Environment.NewLine}{unhandled.StackTrace}");
+		}
+	}
+
+	/// <summary>
+	/// Represents a bUnit <see cref="ITestRenderer"/> used to render Blazor components and fragments during bUnit tests.
+	/// </summary>
+	public partial class TestRenderer : Renderer, ITestRenderer
 	{
 		private readonly object _renderTreeAccessLock = new object();
 		private readonly ILogger _logger;
@@ -21,149 +33,33 @@ namespace Bunit.Rendering
 		private Exception? _unhandledException;
 		private readonly Dictionary<int, IRenderedFragmentBase> _renderedComponents = new Dictionary<int, IRenderedFragmentBase>();
 
+		/// <inheritdoc/>
 		public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
 
+		/// <summary>
+		/// Creates an instance of the <see cref="TestRenderer"/>.
+		/// </summary>
 		public TestRenderer(IRenderedComponentActivator activator, IServiceProvider services, ILoggerFactory loggerFactory) : base(services, loggerFactory)
 		{
 			_logger = loggerFactory.CreateLogger<TestRenderer>();
 			_activator = activator;
 		}
 
+		/// <inheritdoc/>
 		public IRenderedFragmentBase RenderFragment(RenderFragment renderFragment)
 		{
-			IRenderedFragmentBase renderedComponent = default!;
-			var task = Dispatcher.InvokeAsync(() =>
-			{
-				var root = new WrapperComponent(renderFragment);
-				var rootComponentId = AssignRootComponentId(root);
-				renderedComponent = _activator.CreateRenderedComponent(rootComponentId);
-				_renderedComponents.Add(rootComponentId, renderedComponent);
-				root.Render();
-			});
-
-			Debug.Assert(task.IsCompleted, "The render task did not complete as expected");
-			AssertNoUnhandledExceptions();
-
-			return renderedComponent!;
+			return Render(renderFragment, id => _activator.CreateRenderedComponent(id));
 		}
 
+		/// <inheritdoc/>
 		public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(IEnumerable<ComponentParameter> componentParameters)
 			where TComponent : IComponent
 		{
-			IRenderedComponentBase<TComponent> renderedComponent = default!;
-			var task = Dispatcher.InvokeAsync(() =>
-			{
-				var root = new WrapperComponent(componentParameters.ToComponentRenderFragment<TComponent>());
-				var rootComponentId = AssignRootComponentId(root);
-				renderedComponent = _activator.CreateRenderedComponent<TComponent>(rootComponentId);
-				_renderedComponents.Add(rootComponentId, renderedComponent);
-				root.Render();
-			});
-
-			Debug.Assert(task.IsCompleted, "The render task did not complete as expected");
-			AssertNoUnhandledExceptions();
-
-			return renderedComponent!;
+			var parameters = componentParameters.ToComponentRenderFragment<TComponent>();
+			return Render(parameters, id => _activator.CreateRenderedComponent<TComponent>(id));
 		}
 
-		public IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent) where TComponent : IComponent
-		{
-			if (parentComponent is null)
-				throw new ArgumentNullException(nameof(parentComponent));
-
-			var framesCollection = new RenderTreeFrameCollection();
-
-			lock (_renderTreeAccessLock)
-			{
-				if (TryFindComponent(parentComponent.ComponentId, out var id, out var component))
-				{
-					LoadRenderTreeFrames(id, framesCollection);
-					var rc = _activator.CreateRenderedComponent(id, component, framesCollection);
-					_renderedComponents.Add(rc.ComponentId, rc);
-					return rc;
-				}
-				else
-				{
-					throw new ComponentNotFoundException(typeof(TComponent));
-				}
-			}
-
-			bool TryFindComponent(int parentComponentId, out int componentId, out TComponent component)
-			{
-				var result = false;
-				componentId = -1;
-				component = default!;
-
-				var frames = LoadAndGetRenderTreeFrame(framesCollection, parentComponentId);
-
-				for (var i = 0; i < frames.Count; i++)
-				{
-					ref var frame = ref frames.Array[i];
-					if (frame.FrameType == RenderTreeFrameType.Component)
-					{
-						if (frame.Component is TComponent c)
-						{
-							componentId = frame.ComponentId;
-							component = c;
-							result = true;
-							break;
-						}
-
-						if (TryFindComponent(frame.ComponentId, out componentId, out component))
-						{
-							result = true;
-							break;
-						}
-					}
-				}
-
-				return result;
-			}
-		}
-
-		public IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
-			where TComponent : IComponent
-		{
-			if (parentComponent is null)
-				throw new ArgumentNullException(nameof(parentComponent));
-
-			var result = new List<IRenderedComponentBase<TComponent>>();
-			var framesCollection = new RenderTreeFrameCollection();
-
-			lock (_renderTreeAccessLock)
-			{
-				FindComponentsInternal(parentComponent.ComponentId);
-				foreach (var rc in result)
-				{
-					_renderedComponents.Add(rc.ComponentId, rc);
-				}
-			}
-
-			return result;
-
-			void FindComponentsInternal(int componentId)
-			{
-				var frames = LoadAndGetRenderTreeFrame(framesCollection, componentId);
-
-				for (var i = 0; i < frames.Count; i++)
-				{
-					ref var frame = ref frames.Array[i];
-					if (frame.FrameType == RenderTreeFrameType.Component)
-					{
-						if (frame.Component is TComponent component)
-						{
-							var id = frame.ComponentId;
-							LoadRenderTreeFrames(id, framesCollection);
-							var rc = _activator.CreateRenderedComponent(id, component, framesCollection);
-							result.Add(rc);
-						}
-
-						FindComponentsInternal(frame.ComponentId);
-					}
-				}
-			}
-		}
-
+		/// <inheritdoc/>
 		public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
 		{
 			if (fieldInfo is null)
@@ -177,8 +73,31 @@ namespace Bunit.Rendering
 		}
 
 		/// <inheritdoc/>
+		public IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent) where TComponent : IComponent
+		{
+			var foundComponents = FindComponents<TComponent>(parentComponent, 1);
+			if (foundComponents.Count == 1)
+			{
+				return foundComponents[0];
+			}
+			else
+			{
+				throw new ComponentNotFoundException(typeof(TComponent));
+			}
+		}
+
+		/// <inheritdoc/>
+		public IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent) where TComponent : IComponent
+			=> FindComponents<TComponent>(parentComponent, int.MaxValue);
+
+		/// <inheritdoc/>
 		protected override void ProcessPendingRender()
 		{
+			// the lock is in place to avoid a race condition between
+			// the dispatchers thread and the test frameworks thread,
+			// where one will read the current render tree (find components)
+			// while the other thread (the renderer) updates the
+			// render tree.
 			lock (_renderTreeAccessLock)
 			{
 				base.ProcessPendingRender();
@@ -205,6 +124,7 @@ namespace Bunit.Rendering
 				}
 			}
 
+			// notify each rendered component about the render
 			foreach (var (key, rc) in _renderedComponents.ToArray())
 			{
 				LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
@@ -236,9 +156,86 @@ namespace Bunit.Rendering
 			base.Dispose(disposing);
 		}
 
+		private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
+			where TResult : IRenderedFragmentBase
+		{
+			TResult renderedComponent = default!;
+			var task = Dispatcher.InvokeAsync(() =>
+			{
+				var root = new WrapperComponent(renderFragment);
+				var rootComponentId = AssignRootComponentId(root);
+				renderedComponent = activator(rootComponentId);
+				_renderedComponents.Add(rootComponentId, renderedComponent);
+				root.Render();
+			});
+
+			Debug.Assert(task.IsCompleted, "The render task did not complete as expected");
+			AssertNoUnhandledExceptions();
+
+			return renderedComponent!;
+		}
+
+		private IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
+			where TComponent : IComponent
+		{
+			if (parentComponent is null)
+				throw new ArgumentNullException(nameof(parentComponent));
+
+			var result = new List<IRenderedComponentBase<TComponent>>();
+			var framesCollection = new RenderTreeFrameCollection();
+
+			// the lock is in place to avoid a race condition between
+			// the dispatchers thread and the test frameworks thread,
+			// where one will read the current render tree (this method)
+			// while the other thread (the renderer) updates the
+			// render tree.
+			lock (_renderTreeAccessLock)
+			{
+				FindComponentsInternal(parentComponent.ComponentId);
+				foreach (var rc in result)
+				{
+					_renderedComponents.Add(rc.ComponentId, rc);
+				}
+			}
+
+			return result;
+
+			void FindComponentsInternal(int componentId)
+			{
+				var frames = GetOrLoadRenderTreeFrame(framesCollection, componentId);
+
+				for (var i = 0; i < frames.Count; i++)
+				{
+					ref var frame = ref frames.Array[i];
+					if (frame.FrameType == RenderTreeFrameType.Component)
+					{
+						if (frame.Component is TComponent component)
+						{
+							var id = frame.ComponentId;
+							LoadRenderTreeFrames(id, framesCollection);
+							var rc = _activator.CreateRenderedComponent(id, component, framesCollection);
+							result.Add(rc);
+
+							if (result.Count == resultLimit)
+								return;
+						}
+
+						FindComponentsInternal(frame.ComponentId);
+
+						if (result.Count == resultLimit)
+							return;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Populates the <paramref name="framesCollection"/> with <see cref="ArrayRange{RenderTreeFrame}"/>
+		/// starting with the one that belongs to the component with ID <paramref name="componentId"/>.
+		/// </summary>
 		private void LoadRenderTreeFrames(int componentId, RenderTreeFrameCollection framesCollection)
 		{
-			var frames = LoadAndGetRenderTreeFrame(framesCollection, componentId);
+			var frames = GetOrLoadRenderTreeFrame(framesCollection, componentId);
 
 			for (var i = 0; i < frames.Count; i++)
 			{
@@ -250,11 +247,16 @@ namespace Bunit.Rendering
 			}
 		}
 
-		private ArrayRange<RenderTreeFrame> LoadAndGetRenderTreeFrame(RenderTreeFrameCollection framesCollection, int componentId)
+		/// <summary>
+		/// Gets the <see cref="ArrayRange{RenderTreeFrame}"/> from the <paramref name="framesCollection"/>.
+		/// If the <paramref name="framesCollection"/> does not contain the frames, they are loaded into it first.
+		/// </summary>
+		private ArrayRange<RenderTreeFrame> GetOrLoadRenderTreeFrame(RenderTreeFrameCollection framesCollection, int componentId)
 		{
 			if (!framesCollection.Contains(componentId))
 			{
-				framesCollection.Add(componentId, GetCurrentRenderTreeFrames(componentId));
+				var frames = GetCurrentRenderTreeFrames(componentId);
+				framesCollection.Add(componentId, frames);
 			}
 
 			return framesCollection[componentId];
@@ -265,8 +267,7 @@ namespace Bunit.Rendering
 			if (_unhandledException is { } unhandled)
 			{
 				_unhandledException = null;
-				var evt = new EventId(3, nameof(AssertNoUnhandledExceptions));
-				_logger.LogError(evt, unhandled, $"An unhandled exception happened during rendering: {unhandled.Message}{Environment.NewLine}{unhandled.StackTrace}");
+				LogUnhandledException(unhandled);
 				ExceptionDispatchInfo.Capture(unhandled).Throw();
 			}
 		}

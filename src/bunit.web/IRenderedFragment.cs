@@ -13,6 +13,9 @@ namespace Bunit
 	/// </summary>
 	public interface IRenderedFragment : IRenderedFragmentBase
 	{
+		/// <summary>
+		/// An event that is raised after the markup of the <see cref="IRenderedFragmentBase"/> is updated.
+		/// </summary>
 		event Action OnMarkupUpdated;
 
 		/// <summary>

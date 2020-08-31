@@ -15,7 +15,6 @@ namespace Bunit
 	/// This file is based on
 	/// https://source.dot.net/#Microsoft.AspNetCore.Mvc.ViewFeatures/RazorComponents/HtmlRenderer.cs
 	/// </summary>
-	[SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
 	public static class Htmlizer
 	{
 		private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
@@ -27,12 +26,15 @@ namespace Bunit
 
 		private const string BLAZOR_INTERNAL_ATTR_PREFIX = "__internal_";
 		private const string BLAZOR_CSS_SCOPE_ATTR_PREFIX = "b-";
-		public const string BLAZOR_ATTR_PREFIX = "blazor:";
-		public const string ELEMENT_REFERENCE_ATTR_NAME = BLAZOR_ATTR_PREFIX + "elementreference";
+		internal const string BLAZOR_ATTR_PREFIX = "blazor:";
+		internal const string ELEMENT_REFERENCE_ATTR_NAME = BLAZOR_ATTR_PREFIX + "elementreference";
 
 		public static bool IsBlazorAttribute(string attributeName)
-			=> attributeName.StartsWith(BLAZOR_ATTR_PREFIX, StringComparison.Ordinal) ||
-			   attributeName.StartsWith(BLAZOR_CSS_SCOPE_ATTR_PREFIX, StringComparison.Ordinal);
+		{
+			if (attributeName is null) throw new ArgumentNullException(nameof(attributeName));
+			return attributeName.StartsWith(BLAZOR_ATTR_PREFIX, StringComparison.Ordinal) ||
+						  attributeName.StartsWith(BLAZOR_CSS_SCOPE_ATTR_PREFIX, StringComparison.Ordinal);
+		}
 
 		public static string ToBlazorAttribute(string attributeName)
 		{

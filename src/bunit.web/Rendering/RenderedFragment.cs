@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace Bunit.Rendering
 	internal class RenderedFragment : IRenderedFragment
 	{
 		private readonly object _markupAccessLock = new object();
+		[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Instance is owned by the service provider and should not be disposed here.")]
 		private readonly HtmlParser _htmlParser;
 		private string _markup = string.Empty;
 		private string? _snapshotMarkup;
@@ -28,7 +30,7 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// Gets the first rendered markup.
 		/// </summary>
-		protected string FirstRenderMarkup { get; private set; }
+		protected string FirstRenderMarkup { get; private set; } = string.Empty;
 
 		public event Action? OnAfterRender;
 		public event Action? OnMarkupUpdated;

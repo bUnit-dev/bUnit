@@ -27,14 +27,35 @@ namespace Bunit.Rendering
 		/// <returns>A <see cref="Task"/> which will complete once all asynchronous processing related to the event has completed.</returns>
 		Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs);
 
+		/// <summary>
+		/// Renders the <paramref name="renderFragment"/>.
+		/// </summary>
+		/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
+		/// <returns>A <see cref="IRenderedFragmentBase"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
 		IRenderedFragmentBase RenderFragment(RenderFragment renderFragment);
 
+		/// <summary>
+		/// Renders a <typeparamref name="TComponent"/> with the parameters <paramref name="componentParameters"/> passed to it.
+		/// </summary>
+		/// <typeparam name = "TComponent" > The type of component to render.</typeparam>
+		/// <param name="componentParameters">The parameters to pass to the component.</param>
+		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/> that provides access to the rendered component.</returns>
 		IRenderedComponentBase<TComponent> RenderComponent<TComponent>(IEnumerable<ComponentParameter> componentParameters)
 			where TComponent : IComponent;
 
+		/// <summary>
+		/// Performs a depth-first search for the first <typeparamref name="TComponent"/> child component of the <paramref name="parentComponent"/>.
+		/// </summary>
+		/// <typeparam name="TComponent">Type of component to find.</typeparam>
+		/// <param name="parentComponent">Parent component to search.</param>
 		IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)
 			where TComponent : IComponent;
 
+		/// <summary>
+		/// Performs a depth-first search for all <typeparamref name="TComponent"/> child components of the <paramref name="parentComponent"/>.
+		/// </summary>
+		/// <typeparam name="TComponent">Type of components to find.</typeparam>
+		/// <param name="parentComponent">Parent component to search.</param>
 		IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
 			where TComponent : IComponent;
 	}
