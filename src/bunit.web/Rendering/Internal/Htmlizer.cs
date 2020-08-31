@@ -15,7 +15,7 @@ namespace Bunit
 	/// This file is based on
 	/// https://source.dot.net/#Microsoft.AspNetCore.Mvc.ViewFeatures/RazorComponents/HtmlRenderer.cs
 	/// </summary>
-	public static class Htmlizer
+	internal static class Htmlizer
 	{
 		private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
 

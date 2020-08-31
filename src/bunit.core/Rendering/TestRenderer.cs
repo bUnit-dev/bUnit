@@ -12,16 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering
-{
-	public partial class TestRenderer
-	{
-		private void LogUnhandledException(Exception unhandled)
-		{
-			var evt = new EventId(3, nameof(AssertNoUnhandledExceptions));
-			_logger.LogError(evt, unhandled, $"An unhandled exception happened during rendering: {unhandled.Message}{Environment.NewLine}{unhandled.StackTrace}");
-		}
-	}
-
+{	
 	/// <summary>
 	/// Represents a bUnit <see cref="ITestRenderer"/> used to render Blazor components and fragments during bUnit tests.
 	/// </summary>
@@ -128,6 +119,7 @@ namespace Bunit.Rendering
 			foreach (var (key, rc) in _renderedComponents.ToArray())
 			{
 				LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
+				
 				rc.OnRender(renderEvent);
 
 				// RC can replace the instance of the component is bound

@@ -4,10 +4,16 @@ using Microsoft.AspNetCore.Components;
 
 namespace Bunit.Rendering
 {
+	/// <summary>
+	/// Represents a rendered component activator for bUnit.web.
+	/// </summary>
 	public sealed class RenderedComponentActivator : IRenderedComponentActivator
 	{
 		private readonly IServiceProvider _services;
 
+		/// <summary>
+		/// Creates an instance of the activator.
+		/// </summary>
 		public RenderedComponentActivator(IServiceProvider services)
 		{
 			_services = services;

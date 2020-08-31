@@ -1,9 +1,13 @@
 using System;
 
 using Bunit.Rendering;
+using Microsoft.AspNetCore.Components;
 
 namespace Bunit
 {
+	/// <summary>
+	/// Represents a rendered <see cref="RenderFragment"/>.
+	/// </summary>
 	public interface IRenderedFragmentBase : IDisposable
 	{
 		/// <summary>

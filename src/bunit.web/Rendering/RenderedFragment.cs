@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering
 {
+	/// <inheritdoc />
 	internal class RenderedFragment : IRenderedFragment
 	{
 		private readonly object _markupAccessLock = new object();
@@ -32,27 +33,43 @@ namespace Bunit.Rendering
 		/// </summary>
 		protected string FirstRenderMarkup { get; private set; } = string.Empty;
 
+		/// <inheritdoc/>
 		public event Action? OnAfterRender;
+
+		/// <inheritdoc/>
 		public event Action? OnMarkupUpdated;
 
+		/// <inheritdoc/>
 		public bool IsDisposed { get; private set; }
 
+		/// <inheritdoc/>
 		public int ComponentId { get; protected set; }
 
+		/// <inheritdoc/>
 		public string Markup
 		{
 			get
 			{
 				EnsureComponentNotDisposed();
+
+				// The lock prevents a race condition between the renderers thread
+				// and the test frameworks thread, where one might be reading the Markup
+				// while the other is updating it due to async code in a rendered component.
 				lock (_markupAccessLock)
 				{
+					// Volatile read is necessary to ensure the updated markup
+					// is available across CPU cores. Without it, the pointer to the
+					// markup string can be stored in a CPUs register and not
+					// get updated when another CPU changes the string.
 					return Volatile.Read(ref _markup);
 				}
 			}
 		}
 
+		/// <inheritdoc/>
 		public int RenderCount { get; protected set; }
 
+		/// <inheritdoc/>
 		public INodeList Nodes
 		{
 			get
@@ -70,15 +87,17 @@ namespace Bunit.Rendering
 			}
 		}
 
+		/// <inheritdoc/>
 		public IServiceProvider Services { get; }
 
-		public RenderedFragment(int componentId, IServiceProvider service)
+		internal RenderedFragment(int componentId, IServiceProvider service)
 		{
 			ComponentId = componentId;
 			Services = service;
 			_htmlParser = Services.GetRequiredService<HtmlParser>();
 		}
 
+		/// <inheritdoc/>
 		public IReadOnlyList<IDiff> GetChangesSinceFirstRender()
 		{
 			if (_firstRenderNodes is null)
@@ -87,6 +106,7 @@ namespace Bunit.Rendering
 			return Nodes.CompareTo(_firstRenderNodes);
 		}
 
+		/// <inheritdoc/>
 		public IReadOnlyList<IDiff> GetChangesSinceSnapshot()
 		{
 			if (_snapshotMarkup is null)
@@ -98,6 +118,7 @@ namespace Bunit.Rendering
 			return Nodes.CompareTo(_snapshotNodes);
 		}
 
+		/// <inheritdoc/>
 		public void SaveSnapshot()
 		{
 			_snapshotNodes = null;
@@ -117,8 +138,12 @@ namespace Bunit.Rendering
 				return;
 			}
 
+			// The lock prevents a race condition between the renderers thread
+			// and the test frameworks thread, where one might be reading the Markup
+			// while the other is updating it due to async code in a rendered component.
 			lock (_markupAccessLock)
 			{
+
 				if (rendered)
 				{
 					OnRender(renderEvent);
@@ -131,6 +156,9 @@ namespace Bunit.Rendering
 				}
 			}
 
+			// The order here is important, since consumers of the events
+			// expect that markup has indeed changed when OnAfterRender is invoked
+			// (assuming there are markup changes)
 			if (changed)
 				OnMarkupUpdated?.Invoke();
 			if (rendered)
@@ -139,11 +167,20 @@ namespace Bunit.Rendering
 
 		protected void UpdateMarkup(RenderTreeFrameCollection framesCollection)
 		{
+			// The lock prevents a race condition between the renderers thread
+			// and the test frameworks thread, where one might be reading the Markup
+			// while the other is updating it due to async code in a rendered component.
 			lock (_markupAccessLock)
 			{
 				_latestRenderNodes = null;
 				var newMarkup = Htmlizer.GetHtml(ComponentId, framesCollection);
+
+				// Volatile write is necessary to ensure the updated markup
+				// is available across CPU cores. Without it, the pointer to the
+				// markup string can be stored in a CPUs register and not
+				// get updated when another CPU changes the string.
 				Volatile.Write(ref _markup, newMarkup);
+
 				if (RenderCount == 1)
 					FirstRenderMarkup = newMarkup;
 			}
