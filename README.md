@@ -1,3 +1,9 @@
+<a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message" title="Telerik UI for Blazor – Get 40+ native Blazor UI components to build high-performing web apps. Give it a try"><img align="right" width="200" height="200" src="http://www.fillmurray.com/100/100" alt="Telerik UI for Blazor – Get 40+ native Blazor UI components to build high-performing web apps. Give it a try" /></a>
+
+<sub>Sponsored message:</sub> 
+
+Telerik UI for Blazor – Get 40+ native Blazor UI components to build high-performing web apps. [Give it a try](https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message).
+
 [![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
 [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
 [![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github)](https://github.com/egil/bunit/issues)
