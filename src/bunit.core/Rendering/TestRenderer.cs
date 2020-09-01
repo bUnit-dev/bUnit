@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering
-{	
+{
 	/// <summary>
 	/// Represents a bUnit <see cref="ITestRenderer"/> used to render Blazor components and fragments during bUnit tests.
 	/// </summary>
@@ -119,7 +119,7 @@ namespace Bunit.Rendering
 			foreach (var (key, rc) in _renderedComponents.ToArray())
 			{
 				LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
-				
+
 				rc.OnRender(renderEvent);
 
 				// RC can replace the instance of the component is bound

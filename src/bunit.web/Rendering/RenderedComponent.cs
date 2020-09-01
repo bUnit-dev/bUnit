@@ -43,7 +43,7 @@ namespace Bunit.Rendering
 		}
 
 		private void SetComponentAndID(RenderEvent renderEvent)
-		{			
+		{
 			if (TryFindComponent(renderEvent.Frames, ComponentId, out var id, out var component))
 			{
 				_instance = component;

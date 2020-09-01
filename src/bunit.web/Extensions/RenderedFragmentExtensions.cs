@@ -64,7 +64,7 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(renderedFragment));
 
 			var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
-			return (IRenderedComponent<TComponent>)renderer.FindComponent<TComponent>(renderedFragment);			
+			return (IRenderedComponent<TComponent>)renderer.FindComponent<TComponent>(renderedFragment);
 		}
 
 		/// <summary>

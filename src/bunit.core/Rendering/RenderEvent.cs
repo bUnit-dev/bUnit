@@ -76,7 +76,7 @@ namespace Bunit.Rendering
 		private (bool rendered, bool hasChanges) GetRenderAndChangeStatus(IRenderedFragmentBase renderedComponent)
 		{
 			var result = (rendered: false, hasChanges: false);
-	
+
 			GetStatus(renderedComponent.ComponentId);
 
 			return result;
