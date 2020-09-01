@@ -99,16 +99,6 @@ namespace Bunit.BlazorE2E
 			);
 		}
 
-		[Fact(DisplayName = "After KeyPress event is triggered, <input value=''> contains keys passed to KeyPress", Skip = "Issue #46 - https://github.com/egil/razor-components-testing-library/issues/46")]
-		public void Test001()
-		{
-			var cut = RenderComponent<KeyPressEventComponent>();
-
-			cut.Find("input").KeyPress("abc");
-
-			cut.Find("input").GetAttribute("value").ShouldBe("abc");
-		}
-
 		[Fact]
 		public void CanAddAndRemoveEventHandlersDynamically()
 		{

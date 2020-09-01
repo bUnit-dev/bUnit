@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
 using Bunit.TestDoubles.JSInterop;
 
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
 using Shouldly;
@@ -17,6 +19,12 @@ namespace Bunit
 {
 	public class ComponentParameterFactoryTest : TestContext
 	{
+		string GetMarkupFromRenderFragment(RenderFragment renderFragment)
+		{
+			return ((IRenderedFragment)Renderer.RenderFragment(renderFragment)).Markup;
+		}
+
+
 		[Fact(DisplayName = "All types of parameters are correctly assigned to component on render")]
 		public void Test005()
 		{
@@ -43,8 +51,8 @@ namespace Bunit
 			Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("NonGenericCallback");
 			Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
 
-			new RenderedFragment(Services, Renderer.RenderFragment(instance.ChildContent!)).Markup.ShouldBe(nameof(ChildContent));
-			new RenderedFragment(Services, Renderer.RenderFragment(instance.OtherContent!)).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
+			GetMarkupFromRenderFragment(instance.ChildContent!).ShouldBe(nameof(ChildContent));
+			GetMarkupFromRenderFragment(instance.OtherContent!).ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
 			Should.Throw<Exception>(() => instance.ItemTemplate!("")(new RenderTreeBuilder())).Message.ShouldBe("ItemTemplate");
 		}
 
@@ -82,8 +90,8 @@ namespace Bunit
 			instance.RegularParam.ShouldBe("some value");
 			Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("NonGenericCallback");
 			Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
-			new RenderedFragment(Services, Renderer.RenderFragment(instance.ChildContent!)).Markup.ShouldBe(nameof(ChildContent));
-			new RenderedFragment(Services, Renderer.RenderFragment(instance.OtherContent!)).Markup.ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
+			GetMarkupFromRenderFragment(instance.ChildContent!).ShouldBe(nameof(ChildContent));
+			GetMarkupFromRenderFragment(instance.OtherContent!).ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
 			Should.Throw<Exception>(() => instance.ItemTemplate!("")(new RenderTreeBuilder())).Message.ShouldBe("ItemTemplate");
 		}
 

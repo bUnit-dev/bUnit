@@ -1,8 +1,11 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
+
 using Bunit.Rendering;
+
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
 {
@@ -23,7 +26,8 @@ namespace Bunit
 			if (renderedComponent is null)
 				throw new ArgumentNullException(nameof(renderedComponent));
 
-			return renderedComponent.Renderer.Dispatcher.InvokeAsync(callback);
+			return renderedComponent.Services.GetRequiredService<ITestRenderer>()
+				.Dispatcher.InvokeAsync(callback);
 		}
 
 		/// <summary>
@@ -38,7 +42,8 @@ namespace Bunit
 			if (renderedComponent is null)
 				throw new ArgumentNullException(nameof(renderedComponent));
 
-			return renderedComponent.Renderer.Dispatcher.InvokeAsync(callback);
+			return renderedComponent.Services.GetRequiredService<ITestRenderer>()
+				.Dispatcher.InvokeAsync(callback);
 		}
 	}
 }
