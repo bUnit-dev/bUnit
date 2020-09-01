@@ -40,7 +40,7 @@ To get started, head to the [getting started documentation](https://bunit.egilha
 
 A hugh thank you to the [sponsors of my work with bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
 
-- [Hassan Rezk Habib (@hassanhabib)](https://github.com/hassanhabib)
+<p><a src="https://github.com/progress"><img src="https://avatars3.githubusercontent.com/u/6099585?s=200&v=4" alt="Progress" width="40" height="40" /></a> <a src="https://github.com/hassanhabib"><img src="https://avatars0.githubusercontent.com/u/1453985?s=460&v=4" alt="Hassan Rezk Habib (@hassanhabib)" width="40" height="40" /></a></p>
 
 ## Milestones to v1.0.0
 
