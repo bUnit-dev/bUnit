@@ -12,8 +12,8 @@ namespace Bunit.Extensions
 	/// Helper methods that make it easier to work directly with a <see cref="ITestRenderer"/>
 	/// in bUnit web.
 	/// </summary>
-    public static class TestRendererExtensions
-    {
+	public static class TestRendererExtensions
+	{
 		/// <summary>
 		/// Renders a <typeparamref name="TComponent"/> with the parameters <paramref name="parameters"/> passed to it.
 		/// </summary>
