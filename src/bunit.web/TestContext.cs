@@ -27,10 +27,7 @@ namespace Bunit
 		/// <param name="parameters">Parameters to pass to the component when it is rendered</param>
 		/// <returns>The rendered <typeparamref name="TComponent"/></returns>
 		public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
-		{
-			var renderedFragment = Renderer.RenderComponent<TComponent>(parameters);
-			return (IRenderedComponent<TComponent>)renderedFragment;
-		}
+			=> TestRendererExtensions.RenderComponent<TComponent>(Renderer, parameters);
 
 		/// <summary>
 		/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
@@ -39,14 +36,6 @@ namespace Bunit
 		/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered</param>
 		/// <returns>The rendered <typeparamref name="TComponent"/></returns>
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterBuilder<TComponent>> parameterBuilder) where TComponent : IComponent
-		{
-			if (parameterBuilder is null)
-				throw new ArgumentNullException(nameof(parameterBuilder));
-
-			var builder = new ComponentParameterBuilder<TComponent>();
-			parameterBuilder(builder);
-			var renderedFragment = Renderer.RenderComponent<TComponent>(builder.Build());
-			return (IRenderedComponent<TComponent>)renderedFragment;
-		}
+			=> TestRendererExtensions.RenderComponent<TComponent>(Renderer, parameterBuilder);
 	}
 }

@@ -11,7 +11,7 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// Creates an <see cref="IRenderedFragmentBase"/> with the specified <paramref name="componentId"/>.
 		/// </summary>
-		IRenderedFragmentBase CreateRenderedComponent(int componentId);
+		IRenderedFragmentBase CreateRenderedFragment(int componentId);
 
 		/// <summary>
 		/// Creates an <see cref="IRenderedComponentBase{TComponent}"/> with the specified <paramref name="componentId"/>.

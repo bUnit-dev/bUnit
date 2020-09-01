@@ -18,7 +18,6 @@ using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering
 {
-
 	public class NoChildNoParams : ComponentBase
 	{
 		public const string MARKUP = "hello world";
@@ -82,15 +81,6 @@ namespace Bunit.Rendering
 		}
 	}
 
-	internal static class TestRendererExtensions
-	{
-		public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this ITestRenderer renderer, params ComponentParameter[] parameters)
-			where TComponent : IComponent
-		{
-			return (IRenderedComponent<TComponent>)renderer.RenderComponent<TComponent>(parameters);
-		}
-	}
-
 	public class TestRendererTest
 	{
 		private TestServiceProvider Services { get; }
@@ -99,12 +89,7 @@ namespace Bunit.Rendering
 		{
 			Services = new TestServiceProvider();
 			Services.AddDefaultTestContextServices();
-			Services.AddSingleton<ITestRenderer>(srv =>
-			{
-				var rca = srv.GetRequiredService<IRenderedComponentActivator>();
-				var loggerFactory = srv.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance;
-				return new TestRenderer(rca, srv, loggerFactory);
-			});
+			Services.AddSingleton<ITestRenderer, TestRenderer>();
 		}
 
 		[Fact(DisplayName = "RenderFragment re-throws exception from component")]

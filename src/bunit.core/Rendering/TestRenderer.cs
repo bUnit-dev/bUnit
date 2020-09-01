@@ -39,15 +39,15 @@ namespace Bunit.Rendering
 		/// <inheritdoc/>
 		public IRenderedFragmentBase RenderFragment(RenderFragment renderFragment)
 		{
-			return Render(renderFragment, id => _activator.CreateRenderedComponent(id));
+			return Render(renderFragment, id => _activator.CreateRenderedFragment(id));
 		}
 
 		/// <inheritdoc/>
-		public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(IEnumerable<ComponentParameter> componentParameters)
+		public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(IEnumerable<ComponentParameter> parameters)
 			where TComponent : IComponent
 		{
-			var parameters = componentParameters.ToComponentRenderFragment<TComponent>();
-			return Render(parameters, id => _activator.CreateRenderedComponent<TComponent>(id));
+			var fragment = parameters.ToComponentRenderFragment<TComponent>();
+			return Render(fragment, id => _activator.CreateRenderedComponent<TComponent>(id));
 		}
 
 		/// <inheritdoc/>
@@ -152,6 +152,7 @@ namespace Bunit.Rendering
 			where TResult : IRenderedFragmentBase
 		{
 			TResult renderedComponent = default!;
+
 			var task = Dispatcher.InvokeAsync(() =>
 			{
 				var root = new WrapperComponent(renderFragment);
@@ -161,7 +162,8 @@ namespace Bunit.Rendering
 				root.Render();
 			});
 
-			Debug.Assert(task.IsCompleted, "The render task did not complete as expected");
+			task.Wait();
+
 			AssertNoUnhandledExceptions();
 
 			return renderedComponent!;
@@ -262,6 +264,12 @@ namespace Bunit.Rendering
 				LogUnhandledException(unhandled);
 				ExceptionDispatchInfo.Capture(unhandled).Throw();
 			}
+		}
+
+		private void LogUnhandledException(Exception unhandled)
+		{
+			var evt = new EventId(3, nameof(AssertNoUnhandledExceptions));
+			_logger.LogError(evt, unhandled, $"An unhandled exception happened during rendering: {unhandled.Message}{Environment.NewLine}{unhandled.StackTrace}");
 		}
 	}
 }

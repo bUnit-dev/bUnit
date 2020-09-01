@@ -12,6 +12,8 @@ List of new features.
 ### Changed
 List of changes in existing functionality.
 
+- Related to [#189](https://github.com/egil/bUnit/issues/189), a bunch of the core `ITestRenderer` and related types have changed. The internals of `ITestRenderer` is now less exposed and the test renderer is now in control of when rendered components and rendered fragments are created, and when they are updated. This enables the test renderer to protect against race conditions when the `FindComponent`, `FindComponents`, `RenderFragment`, and `RenderComponent` methods are called.
+
 ### Deprecated
 List of soon-to-be removed features.
 
@@ -20,6 +22,8 @@ List of now removed features.
 
 ### Fixed
 List of any bug fixes.
+
+- Fixes [#189](https://github.com/egil/bUnit/issues/189): The test renderer did not correctly protect against a race condition during initial rendering of a component, and that could in some rare circumstances cause a test to fail when it should not. This has been addressed in this release with a major rewrite of the test renderer, which now controls and owns the rendered component and rendered fragment instances which is created when a component is rendered. By [@egil](https://github.com/egil) in [#201](https://github.com/egil/bUnit/pull/201). Credits to [@Smurf-IV](https://github.com/Smurf-IV) for reporting and helping investigate this issue.
 
 ### Security
 List of fixed security vulnerabilities.

@@ -20,7 +20,7 @@ namespace Bunit.Rendering
 		}
 
 		/// <inheritdoc/>
-		public IRenderedFragmentBase CreateRenderedComponent(int componentId)
+		public IRenderedFragmentBase CreateRenderedFragment(int componentId)
 			=> new RenderedFragment(componentId, _services);
 
 		/// <inheritdoc/>

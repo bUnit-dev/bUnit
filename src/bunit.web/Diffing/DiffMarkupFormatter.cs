@@ -9,7 +9,7 @@ using Bunit.Rendering;
 namespace Bunit.Diffing
 {
 	/// <summary>
-	/// A markup formatter, that skips any special Blazor attributes added by the <see cref="TestRenderer"/>/<see cref="Htmlizer"/>.
+	/// A markup formatter, that skips any special Blazor attributes added by the <see cref="Htmlizer"/>.
 	/// </summary>
 	public class DiffMarkupFormatter : PrettyMarkupFormatter, IMarkupFormatter
 	{

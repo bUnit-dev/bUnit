@@ -53,7 +53,7 @@ namespace Bunit
 		/// <param name="renderedComponent">The rendered component to re-render with new parameters</param>
 		/// <param name="parameterBuilder">An action that receives a <see cref="ComponentParameterBuilder{TComponent}"/>.</param>
 		public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, Action<ComponentParameterBuilder<TComponent>> parameterBuilder)
-						where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			if (renderedComponent is null)
 				throw new ArgumentNullException(nameof(renderedComponent));
@@ -70,7 +70,7 @@ namespace Bunit
 		private static ParameterView ToParameterView(IReadOnlyList<ComponentParameter> parameters)
 		{
 			var parameterView = ParameterView.Empty;
-			if (parameters.Any())
+			if (parameters.Count > 0)
 			{
 				var paramDict = new Dictionary<string, object>();
 				foreach (var param in parameters)

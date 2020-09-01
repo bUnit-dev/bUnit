@@ -24,7 +24,6 @@ namespace Bunit
 		/// <param name="eventName">The name of the event to raise (using on-form, e.g. <c>onclick</c>).</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler</param>
 		/// <returns></returns>
-		[SuppressMessage("Usage", "BL0006:Do not use RenderTree types", Justification = "<Pending>")]
 		public static Task TriggerEventAsync(this IElement element, string eventName, EventArgs eventArgs)
 		{
 			if (element is null)
