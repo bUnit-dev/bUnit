@@ -195,15 +195,17 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "Rendered component gets Markup updated on re-render")]
 		public async Task Test011()
 		{
+			// arrange
 			const string EXPECTED = "NOW VALUE";
 			var sut = Services.GetRequiredService<ITestRenderer>();
-
 			var cut = sut.RenderComponent<RenderTrigger>();
 
 			cut.RenderCount.ShouldBe(1);
 
+			// act
 			await cut.Instance.TriggerWithValue(EXPECTED);
 
+			// assert
 			cut.RenderCount.ShouldBe(2);
 			cut.Markup.ShouldBe(EXPECTED);
 		}

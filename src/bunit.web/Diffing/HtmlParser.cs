@@ -42,7 +42,7 @@ namespace Bunit.Diffing
 		{
 			var config = Configuration.Default
 				.WithCss()
-				.With(testRenderer)
+				.With(testRenderer) // added to allow elements to find the renderer to trigger events
 				.With(htmlComparer)
 				.With(this);
 

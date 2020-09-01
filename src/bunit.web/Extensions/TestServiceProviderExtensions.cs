@@ -5,6 +5,8 @@ using Bunit.TestDoubles.JSInterop;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.JSInterop;
 
 namespace Bunit.Extensions
@@ -19,15 +21,12 @@ namespace Bunit.Extensions
 		/// </summary>
 		public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services)
 		{
-			services.AddSingleton<AuthenticationStateProvider>(new PlaceholderAuthenticationStateProvider());
-			services.AddSingleton<IAuthorizationService>(new PlaceholderAuthorizationService());
-			services.AddSingleton<IJSRuntime>(new PlaceholderJSRuntime());
-			services.AddSingleton<HtmlComparer>(srv => new HtmlComparer());
-			services.AddSingleton<HtmlParser>(srv => new HtmlParser(
-					srv.GetRequiredService<ITestRenderer>(),
-					srv.GetRequiredService<HtmlComparer>()
-				)
-			);
+			services.AddSingleton<ILoggerFactory>(NullLoggerFactory.Instance);
+			services.AddSingleton<AuthenticationStateProvider, PlaceholderAuthenticationStateProvider>();
+			services.AddSingleton<IAuthorizationService, PlaceholderAuthorizationService>();
+			services.AddSingleton<IJSRuntime, PlaceholderJSRuntime>();
+			services.AddSingleton<HtmlComparer>();
+			services.AddSingleton<HtmlParser>();
 			services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
 			return services;
 		}

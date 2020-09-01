@@ -38,12 +38,7 @@ namespace Bunit
 		public TestContextBase()
 		{
 			Services = new TestServiceProvider();
-			Services.AddSingleton<ITestRenderer>(srv =>
-			{
-				var rca = srv.GetRequiredService<IRenderedComponentActivator>();
-				var loggerFactory = srv.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance;
-				return new TestRenderer(rca, srv, loggerFactory);
-			});
+			Services.AddSingleton<ITestRenderer, TestRenderer>();
 		}
 
 		/// <inheritdoc/>
