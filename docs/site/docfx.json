@@ -41,7 +41,8 @@
           ".nojekyll",
           "site.webmanifest",
           "*.png",
-		      "CNAME"
+          "CNAME",
+          "sponsors/**"
         ]
       }
     ],
