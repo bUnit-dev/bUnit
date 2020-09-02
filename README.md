@@ -1,13 +1,13 @@
-<a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message" title="Telerik UI for Blazor – Get 40+ native Blazor UI components to build high-performing web apps. Give it a try"><img align="right" width="200" src="https://raw.githubusercontent.com/egil/bUnit/telerik/docs/logos/300x250-blazor.png" alt="Telerik UI for Blazor – Get 40+ native Blazor UI components to build high-performing web apps. Give it a try" /></a>
-
-<p align="right"><i>Sponsored message:</i> Telerik UI for Blazor – Get 40+ native Blazor UI components to build high-performing web apps. <a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message">Give it a try</a>.</p>
-
 [![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
 [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
 [![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github)](https://github.com/egil/bunit/issues)
 [![Gitter](https://img.shields.io/gitter/room/egil/bunit?logo=gitter&style=flat-square)](https://gitter.im/egil/bunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # bUnit - a testing library for Blazor components
+
+<a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message" title="Telerik UI for Blazor – Get 40+ native Blazor UI components to build high-performing web apps. Give it a try"><img align="right" width="200" src="https://raw.githubusercontent.com/egil/bUnit/telerik/docs/logos/300x250-blazor.png" alt="Telerik UI for Blazor – Get 40+ native Blazor UI components to build high-performing web apps. Give it a try" /></a>
+
+*Sponsored message: Telerik UI for Blazor – Get 40+ native Blazor UI components to build high-performing web apps. [Give it a try](www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message).
 
 **bUnit** is a testing library for Blazor Components. Its goal is to make it easy to write _comprehensive, stable unit tests_. You can:
 
