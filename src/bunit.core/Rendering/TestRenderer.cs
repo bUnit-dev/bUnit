@@ -42,8 +42,8 @@ namespace Bunit.Rendering
 		public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(IEnumerable<ComponentParameter> parameters)
 			where TComponent : IComponent
 		{
-			var fragment = parameters.ToComponentRenderFragment<TComponent>();
-			return Render(fragment, id => _activator.CreateRenderedComponent<TComponent>(id));
+			var renderFragment = parameters.ToComponentRenderFragment<TComponent>();
+			return Render(renderFragment, id => _activator.CreateRenderedComponent<TComponent>(id));
 		}
 
 		/// <inheritdoc/>

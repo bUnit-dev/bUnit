@@ -1,8 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Bunit.TestAssets.SampleComponents;
+using Bunit.TestDoubles.JSInterop;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using Shouldly;
+
 using Xunit;
 
 namespace Bunit
@@ -382,10 +385,80 @@ namespace Bunit
 			Assert.Throws<ArgumentException>(() => sut.Add(c => c.DummyMethod(), 42));
 		}
 
+
+
+
 		private static ComponentParameterBuilder<AllTypesOfParams<string>> CreateSut()
 			=> CreateSut<AllTypesOfParams<string>>();
 
 		private static ComponentParameterBuilder<TComponent> CreateSut<TComponent>() where TComponent : IComponent
 			=> new ComponentParameterBuilder<TComponent>();
+	}
+
+	public class ComponentParameterBuilderTest : TestContext
+	{
+		string GetMarkupFromRenderFragment(RenderFragment renderFragment)
+		{
+			return ((IRenderedFragment)Renderer.RenderFragment(renderFragment)).Markup;
+		}
+
+		[Fact(DisplayName = "All types of parameters are correctly assigned to component on render")]
+		public void Test005()
+		{
+			Services.AddMockJSRuntime();
+
+			var cut = RenderComponent<AllTypesOfParams<string>>(parameters => parameters
+				.AddUnmatched("some-unmatched-attribute", "unmatched value")
+				.Add(p => p.RegularParam, "some value")
+				//.Add(42)
+				.Add(p => p.UnnamedCascadingValue, 42)
+				.Add(p => p.NamedCascadingValue, 1337)
+				.Add(p => p.NonGenericCallback, () => throw new Exception("NonGenericCallback"))
+				.Add(p => p.GenericCallback, args => throw new Exception("GenericCallback"))
+				.AddChildContent(nameof(AllTypesOfParams<string>.ChildContent))
+				.Add(p => p.OtherContent, nameof(AllTypesOfParams<string>.OtherContent))
+				.Add(p => p.ItemTemplate, (item) => (builder) => throw new Exception("ItemTemplate"))
+			);
+
+			// assert that all parameters have been set correctly
+			var instance = cut.Instance;
+			instance.Attributes["some-unmatched-attribute"].ShouldBe("unmatched value");
+			instance.RegularParam.ShouldBe("some value");
+			instance.UnnamedCascadingValue.ShouldBe(42);
+			instance.NamedCascadingValue.ShouldBe(1337);
+			Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("NonGenericCallback");
+			Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
+
+			GetMarkupFromRenderFragment(instance.ChildContent!).ShouldBe(nameof(AllTypesOfParams<string>.ChildContent));
+			GetMarkupFromRenderFragment(instance.OtherContent!).ShouldBe(nameof(AllTypesOfParams<string>.OtherContent));
+			Should.Throw<Exception>(() => instance.ItemTemplate!("")(new RenderTreeBuilder())).Message.ShouldBe("ItemTemplate");
+		}
+
+		[Fact]
+		public void MyTestMethod()
+		{
+			Services.AddMockJSRuntime();
+
+			var cut = RenderComponent<AllTypesOfParams<string>>(parameterBuilder => parameterBuilder
+				.AddUnmatched("some-unmatched-attribute", "unmatched value")
+				.Add(p => p.RegularParam, "some value")
+				.Add(p => p.UnnamedCascadingValue, 42)
+				.Add(p => p.NamedCascadingValue, 1337)
+				.Add(p => p.NonGenericCallback, () => throw new Exception("NonGenericCallback"))
+				.Add(p => p.GenericCallback, (EventArgs args) => throw new Exception("GenericCallback"))
+				.Add(p => p.ChildContent, nameof(AllTypesOfParams<string>.ChildContent))
+				.Add(p => p.OtherContent, nameof(AllTypesOfParams<string>.OtherContent))
+				.Add(p => p.ItemTemplate, (item) => (builder) => throw new Exception("ItemTemplate"))
+			);
+
+			// assert that all parameters have been set correctly
+			var instance = cut.Instance;
+			instance.Attributes["some-unmatched-attribute"].ShouldBe("unmatched value");
+			instance.RegularParam.ShouldBe("some value");
+			instance.UnnamedCascadingValue.ShouldBe(42); // Currently fails.
+			instance.NamedCascadingValue.ShouldBe(1337);
+			Should.Throw<Exception>(async () => await instance.NonGenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("NonGenericCallback");
+			Should.Throw<Exception>(async () => await instance.GenericCallback.InvokeAsync(EventArgs.Empty)).Message.ShouldBe("GenericCallback");
+		}
 	}
 }

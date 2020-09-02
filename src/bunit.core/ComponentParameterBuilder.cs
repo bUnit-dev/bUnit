@@ -244,7 +244,6 @@ namespace Bunit
 		{
 			var (name, isCascading) = GetChildContentParameterDetails();
 
-
 			RenderFragment childContentFragment;
 
 			if (childParameterBuilder is { })
@@ -350,7 +349,10 @@ namespace Bunit
 			if (_componentParameters.Any(cp => cp.Name == name))
 				throw new ArgumentException($"A parameter with the name '{name}' has already been added to the {typeof(TComponent).Name}.");
 
-			_componentParameters.Add(new ComponentParameter(name, value, isCascading));
+			if(isCascading)
+				_componentParameters.Add(ComponentParameter.CreateCascadingValue(name, value));
+			else
+				_componentParameters.Add(ComponentParameter.CreateParameter(name, value));
 
 			return this;
 		}

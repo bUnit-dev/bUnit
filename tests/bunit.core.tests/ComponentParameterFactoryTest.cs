@@ -16,7 +16,6 @@ namespace Bunit
 			return ((IRenderedFragment)Renderer.RenderFragment(renderFragment)).Markup;
 		}
 
-
 		[Fact(DisplayName = "All types of parameters are correctly assigned to component on render")]
 		public void Test005()
 		{

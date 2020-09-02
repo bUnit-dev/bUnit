@@ -31,7 +31,7 @@ namespace Bunit.Rendering
 		/// <param name="name">An optional name</param>
 		/// <param name="value">An optional value</param>
 		/// <param name="isCascadingValue">Whether or not this is a cascading value</param>
-		internal ComponentParameter(string? name, object? value, bool isCascadingValue)
+		private ComponentParameter(string? name, object? value, bool isCascadingValue)
 		{
 			if (isCascadingValue && value is null)
 				throw new ArgumentNullException(nameof(value), "Cascading values cannot be set to null");
