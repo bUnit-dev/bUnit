@@ -5,6 +5,10 @@
 
 # bUnit - a testing library for Blazor components
 
+<a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message"><img align="right" width="200" src="https://bunit.egilhansen.com/sponsors/progress-blazor-300x250.png" alt="Telerik UI for Blazor – Get 40+ native Blazor UI components to build high-performing web apps. Give it a try" /></a>
+
+*Sponsored message: Telerik UI for Blazor – Get 40+ native Blazor UI components to build high-performing web apps. [Give it a try](https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message).*
+
 **bUnit** is a testing library for Blazor Components. Its goal is to make it easy to write _comprehensive, stable unit tests_. You can:
 
 - Setup and define components under tests using C# or Razor syntax
@@ -36,7 +40,9 @@ To get started, head to the [getting started documentation](https://bunit.egilha
 
 A hugh thank you to the [sponsors of my work with bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
 
-- [Hassan Rezk Habib (@hassanhabib)](https://github.com/hassanhabib)
+<a src="https://github.com/Progress-Telerik"><img src="https://avatars3.githubusercontent.com/u/57092419?s=460&u=fd421a2b423c3cad85866976935df3d4bec2ace3&v=4" alt="@Progress-Telerik" width="40" height="40" /></a><br/>[Progress-Telerik](https://github.com/Progress-Telerik)
+
+<a src="https://github.com/hassanhabib"><img src="https://avatars0.githubusercontent.com/u/1453985?s=460&v=4" alt="Hassan Rezk Habib (@hassanhabib)" width="40" height="40" /></a><br/>[Hassan Rezk Habib (@hassanhabib)](https://github.com/hassanhabib)
 
 ## Milestones to v1.0.0
 

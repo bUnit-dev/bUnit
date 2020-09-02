@@ -135,3 +135,17 @@ h1 a h2 a, h3 a, h4 a, h5 a, h6 a {
 footer small {
   font-size: 0.9rem;
 }
+
+.sponsor-highlight {
+    width: 200px;
+    text-align: center;
+    font-size: 14px;
+    /* font-weight: 500; */
+    border-bottom: 1px solid #cccccc5c;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.sponsor-highlight p {
+    padding-top: 1rem;
+}
