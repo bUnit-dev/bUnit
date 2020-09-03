@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Bunit
 {
@@ -13,20 +16,8 @@ namespace Bunit
 	/// </summary>
 	public class ComponentParameterCollection
 	{
-		private HashSet<ComponentParameter>? _parameters;
-
-		/// <summary>
-		/// The internal collection of parameters
-		/// </summary>
-		protected virtual HashSet<ComponentParameter> Parameters
-		{
-			get
-			{
-				if (_parameters is null)
-					_parameters = new HashSet<ComponentParameter>();
-				return _parameters;
-			}
-		}
+		private static readonly MethodInfo CreateTemplateWrapperMethod = typeof(ComponentParameterCollection).GetMethod(nameof(CreateTemplateWrapper), BindingFlags.NonPublic | BindingFlags.Static);
+		private List<ComponentParameter>? _parameters;
 
 		/// <summary>
 		/// Gets the number of <see cref="ComponentParameter"/> in the collection.
@@ -42,7 +33,9 @@ namespace Bunit
 			if (parameter.Name is null && parameter.Value is null)
 				throw new ArgumentException("A component parameter without a name and value is not valid.");
 
-			Parameters.Add(parameter);
+			if (_parameters is null)
+				_parameters = new List<ComponentParameter>();
+			_parameters.Add(parameter);
 		}
 
 		/// <summary>
@@ -63,9 +56,84 @@ namespace Bunit
 			return builder =>
 			{
 				builder.OpenComponent<TComponent>(0);
+				AddAttributes(builder);
 				builder.CloseComponent();
 			};
+
+			void AddAttributes(RenderTreeBuilder builder)
+			{
+				if (_parameters is null) return;
+
+				var attrCount = 1;
+
+				foreach (var pgroup in _parameters.GroupBy(x => x.Name))
+				{
+					var group = pgroup.ToArray();
+					var groupObject = group.FirstOrDefault(x => !(x.Value is null)).Value;
+
+					if (group.Length == 1)
+					{
+						var p = group[0];
+						builder.AddAttribute(attrCount++, p.Name, p.Value);
+
+						continue;
+					}
+					
+					if (groupObject is RenderFragment)
+					{
+						builder.AddAttribute(attrCount++, group[0].Name, (RenderFragment)(ccBuilder =>
+						{
+							for (int i = 0; i < group.Length; i++)
+							{
+								if (group[i].Value is RenderFragment rf)
+									ccBuilder.AddContent(i, rf);
+							}
+						}));
+
+						continue;
+					}
+
+					var groupType = groupObject?.GetType();
+
+					if (groupType != null && groupType.IsGenericType && groupType.GetGenericTypeDefinition() == typeof(RenderFragment<>))
+					{
+						builder.AddAttribute(attrCount++, group[0].Name, WrapTemplates(groupType, group));
+
+						continue;
+					}
+
+					throw new ArgumentException($"The parameter with the name '{pgroup.Key}' was added more than once. This parameter can only be added one time.");
+				}
+			}
 		}
+
+		private static object WrapTemplates(Type templateParamterType, ComponentParameter[] templateParameters)
+		{
+			// gets the generic argument to RenderFragment<>, e.g. string with RenderFragment<string>
+			var templateType = templateParamterType.GetGenericArguments()[0];
+
+			// this creates an invokable version of CreateTemplateWrapper with the
+			// generic type set to tmeplateType, e.g. CreateTemplateWrapper<string>
+			var templateWrapper = CreateTemplateWrapperMethod.MakeGenericMethod(templateType);
+
+			// BANG: since CreateTemplateWrapper<T> will never return null BANG (!) is safe here
+			return templateWrapper.Invoke(null, new object[] { templateParameters })!;
+		}
+
+		private static RenderFragment<T> CreateTemplateWrapper<T>(ComponentParameter[] subTemplateParams)
+		{
+			return input => builder =>
+			{
+				foreach (var tp in subTemplateParams)
+				{
+					if (tp.Value is RenderFragment<T> rf)
+						builder.AddContent(0, rf(input));
+					else
+						throw new ArgumentException($"The parameter with name {tp.Name} was different types of templates.", tp.Name);
+				}
+			};
+		}
+
 		//	var parametersList = parameters as IReadOnlyList<ComponentParameter> ?? parameters.ToArray();
 		//	var cascadingParams = new Queue<ComponentParameter>(parametersList.Where(x => x.IsCascadingValue));
 
