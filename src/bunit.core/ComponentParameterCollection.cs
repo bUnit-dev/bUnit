@@ -78,7 +78,7 @@ namespace Bunit
 
 						continue;
 					}
-					
+
 					if (groupObject is RenderFragment)
 					{
 						builder.AddAttribute(attrCount++, group[0].Name, (RenderFragment)(ccBuilder =>
