@@ -17,6 +17,7 @@ namespace Bunit
 	public class ComponentParameterCollection
 	{
 		private static readonly MethodInfo CreateTemplateWrapperMethod = typeof(ComponentParameterCollection).GetMethod(nameof(CreateTemplateWrapper), BindingFlags.NonPublic | BindingFlags.Static);
+		private static readonly Type CascadingValueType = typeof(CascadingValue<>);
 		private List<ComponentParameter>? _parameters;
 
 		/// <summary>
@@ -52,21 +53,49 @@ namespace Bunit
 		/// </summary>
 		/// <typeparam name="TComponent">Type of component to render.</typeparam>
 		public RenderFragment ToComponentRenderFragment<TComponent>() where TComponent : IComponent
-		{
-			return builder =>
+		{			
+			var cascadingValues = new Queue<ComponentParameter>(
+				_parameters?.Where(x => x.IsCascadingValue) ?? Array.Empty<ComponentParameter>()
+			);
+
+			if (cascadingValues.Count > 0)
+				return AddCascadingValue;
+			else
+				return AddComponent;
+
+			void AddCascadingValue(RenderTreeBuilder builder)
+			{
+				var cv = cascadingValues.Dequeue();
+				builder.OpenComponent(0, GetCascadingValueType(cv));
+
+				if(cv.Name is string)
+					builder.AddAttribute(1, nameof(CascadingValue<object>.Name), cv.Value);
+
+				builder.AddAttribute(2, nameof(CascadingValue<object>.Value), cv.Value);
+				builder.AddAttribute(3, nameof(CascadingValue<object>.IsFixed), true);
+
+				if(cascadingValues.Count > 0)
+					builder.AddAttribute(4, nameof(CascadingValue<object>.ChildContent), (RenderFragment)(AddCascadingValue));
+				else
+					builder.AddAttribute(4, nameof(CascadingValue<object>.ChildContent), (RenderFragment)(AddComponent));
+
+				builder.CloseComponent();
+			}
+
+			void AddComponent(RenderTreeBuilder builder)
 			{
 				builder.OpenComponent<TComponent>(0);
 				AddAttributes(builder);
 				builder.CloseComponent();
-			};
+			}
 
 			void AddAttributes(RenderTreeBuilder builder)
 			{
 				if (_parameters is null) return;
 
-				var attrCount = 1;
+				var attrCount = 100;
 
-				foreach (var pgroup in _parameters.GroupBy(x => x.Name))
+				foreach (var pgroup in _parameters.Where(x => !x.IsCascadingValue).GroupBy(x => x.Name))
 				{
 					var group = pgroup.ToArray();
 					var groupObject = group.FirstOrDefault(x => !(x.Value is null)).Value;
@@ -134,6 +163,14 @@ namespace Bunit
 			};
 		}
 
+		private static Type GetCascadingValueType(ComponentParameter parameter)
+		{
+			if (parameter.Value is null)
+				throw new InvalidOperationException("Cannot get the type of a null object");
+			var cascadingValueType = parameter.Value.GetType();
+			return CascadingValueType.MakeGenericType(cascadingValueType);
+		}
+
 		//	var parametersList = parameters as IReadOnlyList<ComponentParameter> ?? parameters.ToArray();
 		//	var cascadingParams = new Queue<ComponentParameter>(parametersList.Where(x => x.IsCascadingValue));
 
@@ -182,15 +219,7 @@ namespace Bunit
 		//	}
 		//}
 
-		//private static readonly Type CascadingValueType = typeof(CascadingValue<>);
-
-		//private static Type GetCascadingValueType(ComponentParameter parameter)
-		//{
-		//	if (parameter.Value is null)
-		//		throw new InvalidOperationException("Cannot get the type of a null object");
-		//	var cascadingValueType = parameter.Value.GetType();
-		//	return CascadingValueType.MakeGenericType(cascadingValueType);
-		//}
+		//
 	}
 
 }

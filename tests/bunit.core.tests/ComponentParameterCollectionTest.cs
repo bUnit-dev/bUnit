@@ -262,6 +262,18 @@ namespace Bunit
 			Should.Throw<ArgumentException>(() => RenderWithRenderFragment(rf));
 		}
 
+		[Fact(DisplayName = "ToComponentRenderFragment wraps component in unnamed cascading values in RenderFragment")]
+		public void Test050()
+		{
+			var sut = new ComponentParameterCollection();
+			sut.Add(ComponentParameter.CreateCascadingValue(null, "FOO"));
+
+			var rf = sut.ToComponentRenderFragment<Params>();
+
+			var c = RenderWithRenderFragment(rf).Instance;
+			c.NullableStringCC.ShouldBe("FOO");
+		}
+
 		private class Params : ComponentBase
 		{
 			public const string TemplateContent = "FOO";
@@ -278,6 +290,8 @@ namespace Bunit
 			[Parameter] public EventCallback<EventArgs>? NullableECWithArgs { get; set; }
 			[Parameter] public EventCallback<EventArgs> ECWithArgs { get; set; } = EventCallback<EventArgs>.Empty;
 			[Parameter] public RenderFragment<string>? Template { get; set; }
+			[CascadingParameter] public string? NullableStringCC { get; set; }
+			[CascadingParameter] public int CC { get; set; } = -1;
 
 			public void VerifyParamsHaveDefaultValues()
 			{
@@ -292,6 +306,8 @@ namespace Bunit
 				NullableECWithArgs.ShouldBeNull();
 				ECWithArgs.ShouldBe(EventCallback<EventArgs>.Empty);
 				Template.ShouldBeNull();
+				NullableStringCC.ShouldBeNull();
+				CC.ShouldBe(-1);
 			}
 
 			protected override void BuildRenderTree(RenderTreeBuilder builder)
