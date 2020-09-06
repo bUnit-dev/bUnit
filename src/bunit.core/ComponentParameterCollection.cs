@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Bunit
@@ -14,7 +15,7 @@ namespace Bunit
 	/// <summary>
 	/// A collection for <see cref="ComponentParameter" />
 	/// </summary>
-	public class ComponentParameterCollection
+	public class ComponentParameterCollection : IEnumerable<ComponentParameter>
 	{
 		private static readonly MethodInfo CreateTemplateWrapperMethod = typeof(ComponentParameterCollection).GetMethod(nameof(CreateTemplateWrapper), BindingFlags.NonPublic | BindingFlags.Static);
 		private static readonly Type CascadingValueType = typeof(CascadingValue<>);
@@ -40,6 +41,18 @@ namespace Bunit
 		}
 
 		/// <summary>
+		/// Adds an enumerable of parameters to the collection.
+		/// </summary>
+		/// <param name="parameters">Parameters to add.</param>
+		public void Add(IEnumerable<ComponentParameter> parameters)
+		{
+			foreach (var cp in parameters)
+			{
+				Add(cp);
+			}
+		}
+
+		/// <summary>
 		/// Checks if the <paramref name="parameter"/> is in the collection.
 		/// </summary>
 		/// <param name="parameter">Parameter to check with.</param>
@@ -53,10 +66,8 @@ namespace Bunit
 		/// </summary>
 		/// <typeparam name="TComponent">Type of component to render.</typeparam>
 		public RenderFragment ToComponentRenderFragment<TComponent>() where TComponent : IComponent
-		{			
-			var cascadingValues = new Queue<ComponentParameter>(
-				_parameters?.Where(x => x.IsCascadingValue) ?? Array.Empty<ComponentParameter>()
-			);
+		{
+			var cascadingValues = GetCascadingValues();
 
 			if (cascadingValues.Count > 0)
 				return AddCascadingValue;
@@ -66,15 +77,16 @@ namespace Bunit
 			void AddCascadingValue(RenderTreeBuilder builder)
 			{
 				var cv = cascadingValues.Dequeue();
-				builder.OpenComponent(0, GetCascadingValueType(cv));
 
-				if(cv.Name is string)
-					builder.AddAttribute(1, nameof(CascadingValue<object>.Name), cv.Value);
+				builder.OpenComponent(0, cv.Type);
 
-				builder.AddAttribute(2, nameof(CascadingValue<object>.Value), cv.Value);
+				if (cv.Parameter.Name is string)
+					builder.AddAttribute(1, nameof(CascadingValue<object>.Name), cv.Parameter.Name);
+
+				builder.AddAttribute(2, nameof(CascadingValue<object>.Value), cv.Parameter.Value);
 				builder.AddAttribute(3, nameof(CascadingValue<object>.IsFixed), true);
 
-				if(cascadingValues.Count > 0)
+				if (cascadingValues.Count > 0)
 					builder.AddAttribute(4, nameof(CascadingValue<object>.ChildContent), (RenderFragment)(AddCascadingValue));
 				else
 					builder.AddAttribute(4, nameof(CascadingValue<object>.ChildContent), (RenderFragment)(AddComponent));
@@ -134,7 +146,60 @@ namespace Bunit
 					throw new ArgumentException($"The parameter with the name '{pgroup.Key}' was added more than once. This parameter can only be added one time.");
 				}
 			}
+
+			Queue<(ComponentParameter Parameter, Type Type)> GetCascadingValues()
+			{
+				var cascadingValues = _parameters?.Where(x => x.IsCascadingValue)
+					.Select(x => (Parameter: x, Type: GetCascadingValueType(x)))
+					.ToArray() ?? Array.Empty<(ComponentParameter Parameter, Type Type)>();
+
+				// Detect duplicated unnamed values
+				for (int i = 0; i < cascadingValues.Length; i++)
+				{
+
+					for (int j = i + 1; j < cascadingValues.Length; j++)
+					{
+						if (cascadingValues[i].Type == cascadingValues[j].Type)
+						{
+							var iName = cascadingValues[i].Parameter.Name;
+							if (iName is null)
+							{
+								var cascadingValueType = cascadingValues[i].Type.GetGenericArguments()[0];
+								throw new ArgumentException($"Two or more unnamed cascading values with the type '{cascadingValueType.Name}' was added. " +
+															$"Only add one unnamed cascading value of the same type.");
+							}
+
+							if (iName.Equals(cascadingValues[j].Parameter.Name, StringComparison.Ordinal))
+							{
+								throw new ArgumentException($"Two or more named cascading values with the name '{iName}' and the same type was added. " +
+															$"Only add one named cascading value with the same name and type.");
+							}
+						}
+					}
+				}
+
+				return new Queue<(ComponentParameter Parameter, Type Type)>(cascadingValues);
+			}
 		}
+
+		/// <inheritdoc/>
+		public IEnumerator<ComponentParameter> GetEnumerator()
+		{
+			if (_parameters is null)
+			{
+				yield break;
+			}
+			else
+			{
+				for (int i = 0; i < _parameters.Count; i++)
+				{
+					yield return _parameters[i];
+				}
+			}
+		}
+
+		/// <inheritdoc/>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
 		private static object WrapTemplates(Type templateParamterType, ComponentParameter[] templateParameters)
 		{
@@ -170,56 +235,5 @@ namespace Bunit
 			var cascadingValueType = parameter.Value.GetType();
 			return CascadingValueType.MakeGenericType(cascadingValueType);
 		}
-
-		//	var parametersList = parameters as IReadOnlyList<ComponentParameter> ?? parameters.ToArray();
-		//	var cascadingParams = new Queue<ComponentParameter>(parametersList.Where(x => x.IsCascadingValue));
-
-		//	if (cascadingParams.Count > 0)
-		//		return CreateCascadingValueRenderFragment(cascadingParams, parametersList);
-		//	else
-		//		return CreateComponentRenderFragment(parametersList);
-
-		//	static RenderFragment CreateCascadingValueRenderFragment(Queue<ComponentParameter> cascadingParams, IReadOnlyList<ComponentParameter> parameters)
-		//	{
-		//		var cp = cascadingParams.Dequeue();
-		//		var cascadingValueType = GetCascadingValueType(cp);
-		//		return builder =>
-		//		{
-		//			builder.OpenComponent(0, cascadingValueType);
-		//			if (cp.Name is { })
-		//				builder.AddAttribute(1, nameof(CascadingValue<object>.Name), cp.Name);
-
-		//			builder.AddAttribute(2, nameof(CascadingValue<object>.Value), cp.Value);
-		//			builder.AddAttribute(3, nameof(CascadingValue<object>.IsFixed), true);
-
-		//			if (cascadingParams.Count > 0)
-		//				builder.AddAttribute(4, nameof(CascadingValue<object>.ChildContent), CreateCascadingValueRenderFragment(cascadingParams, parameters));
-		//			else
-		//				builder.AddAttribute(4, nameof(CascadingValue<object>.ChildContent), CreateComponentRenderFragment(parameters));
-
-		//			builder.CloseComponent();
-		//		};
-		//	}
-
-		//	static RenderFragment CreateComponentRenderFragment(IReadOnlyList<ComponentParameter> parameters)
-		//	{
-		//		return builder =>
-		//		{
-		//			builder.OpenComponent(0, typeof(TComponent));
-
-		//			for (var i = 0; i < parameters.Count; i++)
-		//			{
-		//				var para = parameters[i];
-		//				if (!para.IsCascadingValue && para.Name is { })
-		//					builder.AddAttribute(i + 1, para.Name, para.Value);
-		//			}
-
-		//			builder.CloseComponent();
-		//		};
-		//	}
-		//}
-
-		//
 	}
-
 }

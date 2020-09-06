@@ -155,6 +155,17 @@ namespace Bunit
 		}
 
 		/// <summary>
+		/// Creates a ChildContent parameter that will pass the provided <paramref name="renderFragment"/>
+		/// to the parameter in the component.
+		/// </summary>
+		/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to pass to the ChildContent parameter.</param>
+		/// <returns>The <see cref="ComponentParameter"/>.</returns>
+		public static ComponentParameter ChildContent(RenderFragment renderFragment)
+		{
+			return Parameter(nameof(ChildContent), renderFragment);
+		}
+
+		/// <summary>
 		/// Creates a <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> with the provided 
 		/// <paramref name="markup"/> as rendered output and passes it to the parameter specified in <paramref name="name"/>.
 		/// </summary>
@@ -176,7 +187,8 @@ namespace Bunit
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		public static ComponentParameter RenderFragment<TComponent>(string name, params ComponentParameter[] parameters) where TComponent : class, IComponent
 		{
-			return ComponentParameter.CreateParameter(name, parameters.ToComponentRenderFragment<TComponent>());
+			var cpc = new ComponentParameterCollection() { parameters };
+			return ComponentParameter.CreateParameter(name, cpc.ToComponentRenderFragment<TComponent>());
 		}
 
 		/// <summary>

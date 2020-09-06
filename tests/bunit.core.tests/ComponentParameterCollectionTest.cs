@@ -17,7 +17,6 @@ namespace Bunit
 {
 	public class ComponentParameterCollectionTest
 	{
-		private const string RegularParamName = nameof(AllTypesOfParams<string>.RegularParam);
 		private static readonly TestContext Context = new TestContext();
 
 		static ComponentParameterCollectionTest()
@@ -271,7 +270,73 @@ namespace Bunit
 			var rf = sut.ToComponentRenderFragment<Params>();
 
 			var c = RenderWithRenderFragment(rf).Instance;
-			c.NullableStringCC.ShouldBe("FOO");
+			c.NullableCC.ShouldBe("FOO");
+		}
+
+		[Fact(DisplayName = "ToComponentRenderFragment wraps component in multiple unnamed cascading values in RenderFragment")]
+		public void Test051()
+		{
+			var sut = new ComponentParameterCollection();
+			sut.Add(ComponentParameter.CreateCascadingValue(null, "FOO"));
+			sut.Add(ComponentParameter.CreateCascadingValue(null, 42));
+
+			var rf = sut.ToComponentRenderFragment<Params>();
+
+			var c = RenderWithRenderFragment(rf).Instance;
+			c.NullableCC.ShouldBe("FOO");
+			c.CC.ShouldBe(42);
+		}
+
+		[Fact(DisplayName = "ToComponentRenderFragment throws when multiple unnamed cascading values with same type is added")]
+		public void Test052()
+		{
+			var sut = new ComponentParameterCollection();
+			sut.Add(ComponentParameter.CreateCascadingValue(null, "FOO"));
+			sut.Add(ComponentParameter.CreateCascadingValue(null, 42));
+			sut.Add(ComponentParameter.CreateCascadingValue(null, "BAR"));
+			sut.Add(ComponentParameter.CreateCascadingValue(null, Array.Empty<string>()));
+
+			Should.Throw<ArgumentException>(() => sut.ToComponentRenderFragment<Params>());
+		}
+
+		[Fact(DisplayName = "ToComponentRenderFragment wraps component in named cascading values in RenderFragment")]
+		public void Test053()
+		{
+			var sut = new ComponentParameterCollection();
+			sut.Add(ComponentParameter.CreateCascadingValue(nameof(Params.NullableNamedCC), "FOO"));
+
+			var rf = sut.ToComponentRenderFragment<Params>();
+
+			var c = RenderWithRenderFragment(rf).Instance;
+			c.NullableNamedCC.ShouldBe("FOO");
+		}
+
+		[Fact(DisplayName = "ToComponentRenderFragment wraps component in multiple named cascading values in RenderFragment")]
+		public void Test054()
+		{
+			var sut = new ComponentParameterCollection();
+			sut.Add(ComponentParameter.CreateCascadingValue(nameof(Params.NullableNamedCC), "FOO"));
+			sut.Add(ComponentParameter.CreateCascadingValue(nameof(Params.NamedCC), 42));
+			sut.Add(ComponentParameter.CreateCascadingValue(nameof(Params.AnotherNamedCC), 1337));
+
+			var rf = sut.ToComponentRenderFragment<Params>();
+
+			var c = RenderWithRenderFragment(rf).Instance;
+			c.NullableNamedCC.ShouldBe("FOO");
+			c.NamedCC.ShouldBe(42);
+			c.AnotherNamedCC.ShouldBe(1337);
+		}
+
+		[Fact(DisplayName = "ToComponentRenderFragment throws when multiple named cascading values with same name and type is added")]
+		public void Test055()
+		{
+			var sut = new ComponentParameterCollection();
+			sut.Add(ComponentParameter.CreateCascadingValue(nameof(Params.NullableNamedCC), "FOO"));
+			sut.Add(ComponentParameter.CreateCascadingValue(nameof(Params.NamedCC), 42));
+			sut.Add(ComponentParameter.CreateCascadingValue(nameof(Params.AnotherNamedCC), 1337));
+			sut.Add(ComponentParameter.CreateCascadingValue(nameof(Params.NamedCC), 42));
+
+			Should.Throw<ArgumentException>(() => sut.ToComponentRenderFragment<Params>());
 		}
 
 		private class Params : ComponentBase
@@ -290,8 +355,11 @@ namespace Bunit
 			[Parameter] public EventCallback<EventArgs>? NullableECWithArgs { get; set; }
 			[Parameter] public EventCallback<EventArgs> ECWithArgs { get; set; } = EventCallback<EventArgs>.Empty;
 			[Parameter] public RenderFragment<string>? Template { get; set; }
-			[CascadingParameter] public string? NullableStringCC { get; set; }
+			[CascadingParameter] public string? NullableCC { get; set; }
 			[CascadingParameter] public int CC { get; set; } = -1;
+			[CascadingParameter(Name = nameof(NullableNamedCC))] public string? NullableNamedCC { get; set; }
+			[CascadingParameter(Name = nameof(NamedCC))] public int NamedCC { get; set; } = -1;
+			[CascadingParameter(Name = nameof(AnotherNamedCC))] public int AnotherNamedCC { get; set; } = -1;
 
 			public void VerifyParamsHaveDefaultValues()
 			{
@@ -306,8 +374,11 @@ namespace Bunit
 				NullableECWithArgs.ShouldBeNull();
 				ECWithArgs.ShouldBe(EventCallback<EventArgs>.Empty);
 				Template.ShouldBeNull();
-				NullableStringCC.ShouldBeNull();
+				NullableCC.ShouldBeNull();
 				CC.ShouldBe(-1);
+				NullableNamedCC.ShouldBeNull();
+				NamedCC.ShouldBe(-1);
+				AnotherNamedCC.ShouldBe(-1);
 			}
 
 			protected override void BuildRenderTree(RenderTreeBuilder builder)
