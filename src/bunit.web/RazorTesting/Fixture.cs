@@ -145,15 +145,8 @@ namespace Bunit
 					$"That cannot be cast to an object of type IRenderedComponent<{typeof(TComponent).Name}>.");
 			}
 
-			if (target is IRenderedFragmentBase)
-			{
-				throw new InvalidOperationException($"It is not possible to call the generic version of {sourceMethod} after " +
-					$"the non-generic version has been called on the same test context. Change all calls to the same generic version and try again.");
-			}
-			else
-			{
-				throw new Exception($"This line should never have been reached. An unknown type was placed inside the {nameof(_renderedFragments)}.");
-			}
+			throw new InvalidOperationException($"It is not possible to call the generic version of {sourceMethod} after " +
+				$"the non-generic version has been called on the same test context. Change all calls to the same generic version and try again.");
 		}
 
 		/// <inheritdoc/>

@@ -76,7 +76,9 @@ namespace Bunit.Rendering
 
 		/// <inheritdoc/>
 		public bool Equals(ComponentParameter other)
-			=> string.Equals(Name, other.Name, StringComparison.Ordinal) && Value == other.Value && IsCascadingValue == other.IsCascadingValue;
+			=> string.Equals(Name, other.Name, StringComparison.Ordinal)
+			&& (Value is null && other.Value is null || (Value?.Equals(other.Value) ?? false))
+			&& IsCascadingValue == other.IsCascadingValue;
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is ComponentParameter other && Equals(other);
