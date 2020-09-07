@@ -98,11 +98,11 @@ namespace Bunit
 		public void Test013()
 		{
 			var sut = new ComponentParameterCollection
-			{ 
+			{
 				ComponentParameter.CreateParameter(nameof(Params.ChildContent), (RenderFragment)(b => b.AddMarkupContent(0, "FOO"))),
 				ComponentParameter.CreateParameter(nameof(Params.ChildContent), (RenderFragment)(b => b.AddMarkupContent(0, "BAR"))),
 				ComponentParameter.CreateParameter(nameof(Params.ChildContent), (RenderFragment)(b => b.AddMarkupContent(0, "BAZ")))
-			};					
+			};
 
 			var rf = sut.ToComponentRenderFragment<Params>();
 
