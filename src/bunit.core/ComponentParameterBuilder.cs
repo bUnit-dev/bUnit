@@ -350,9 +350,9 @@ namespace Bunit
 				throw new ArgumentException($"A parameter with the name '{name}' has already been added to the {typeof(TComponent).Name}.");
 
 			if (isCascading)
-				_componentParameters.Add(ComponentParameter.CreateCascadingValue(name, value));
+				_componentParameters.Add(ComponentParameter.CreateCascadingValue(name, value!));
 			else
-				_componentParameters.Add(ComponentParameter.CreateParameter(name, value));
+				_componentParameters.Add(ComponentParameter.CreateParameter(name!, value));
 
 			return this;
 		}

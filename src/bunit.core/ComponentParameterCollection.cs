@@ -17,7 +17,7 @@ namespace Bunit
 	/// </summary>
 	public class ComponentParameterCollection : IEnumerable<ComponentParameter>
 	{
-		private static readonly MethodInfo CreateTemplateWrapperMethod = typeof(ComponentParameterCollection).GetMethod(nameof(CreateTemplateWrapper), BindingFlags.NonPublic | BindingFlags.Static);
+		private static readonly MethodInfo CreateTemplateWrapperMethod = GetCreateTemplateWrapperMethod();
 		private static readonly Type CascadingValueType = typeof(CascadingValue<>);
 		private List<ComponentParameter>? _parameters;
 
@@ -46,6 +46,9 @@ namespace Bunit
 		/// <param name="parameters">Parameters to add.</param>
 		public void Add(IEnumerable<ComponentParameter> parameters)
 		{
+			if (parameters is null)
+				throw new ArgumentNullException(nameof(parameters));
+
 			foreach (var cp in parameters)
 			{
 				Add(cp);
@@ -115,21 +118,29 @@ namespace Bunit
 					if (group.Length == 1)
 					{
 						var p = group[0];
-						builder.AddAttribute(attrCount++, p.Name, p.Value);
+						builder.AddAttribute(
+							attrCount++,
+							p.Name!, // BANG: ComponentParameter does not allow a regular param to be created without a name
+							p.Value
+						);
 
 						continue;
 					}
 
 					if (groupObject is RenderFragment)
 					{
-						builder.AddAttribute(attrCount++, group[0].Name, (RenderFragment)(ccBuilder =>
-						{
-							for (int i = 0; i < group.Length; i++)
+						builder.AddAttribute(
+							attrCount++,
+							group[0].Name!, // BANG: ComponentParameter does not allow a regular param to be created without a name
+							(RenderFragment)(ccBuilder =>
 							{
-								if (group[i].Value is RenderFragment rf)
-									ccBuilder.AddContent(i, rf);
-							}
-						}));
+								for (int i = 0; i < group.Length; i++)
+								{
+									if (group[i].Value is RenderFragment rf)
+										ccBuilder.AddContent(i, rf);
+								}
+							})
+						);
 
 						continue;
 					}
@@ -138,7 +149,11 @@ namespace Bunit
 
 					if (groupType != null && groupType.IsGenericType && groupType.GetGenericTypeDefinition() == typeof(RenderFragment<>))
 					{
-						builder.AddAttribute(attrCount++, group[0].Name, WrapTemplates(groupType, group));
+						builder.AddAttribute(
+							attrCount++,
+							group[0].Name!, // BANG: ComponentParameter does not allow a regular param to be created without a name
+							WrapTemplates(groupType, group)
+						);
 
 						continue;
 					}
@@ -234,6 +249,12 @@ namespace Bunit
 				throw new InvalidOperationException("Cannot get the type of a null object");
 			var cascadingValueType = parameter.Value.GetType();
 			return CascadingValueType.MakeGenericType(cascadingValueType);
+		}
+
+		private static MethodInfo GetCreateTemplateWrapperMethod()
+		{
+			var result = typeof(ComponentParameterCollection).GetMethod(nameof(CreateTemplateWrapper), BindingFlags.NonPublic | BindingFlags.Static);
+			return result ?? throw new InvalidOperationException($"Could not find the {nameof(CreateTemplateWrapper)} method.");
 		}
 	}
 }
