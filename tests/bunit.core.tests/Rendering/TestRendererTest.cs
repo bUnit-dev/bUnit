@@ -295,7 +295,7 @@ namespace Bunit.Rendering
 		{
 			// arrange
 			var sut = Services.GetRequiredService<ITestRenderer>();
-			var cut = sut.RenderComponent<HasParams>(				
+			var cut = sut.RenderComponent<HasParams>(
 				ChildContent<HasParams>(
 					ChildContent<HasParams>()
 				)
