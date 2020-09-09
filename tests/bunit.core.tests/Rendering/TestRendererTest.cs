@@ -234,6 +234,21 @@ namespace Bunit.Rendering
 			Should.Throw<ComponentNotFoundException>(() => sut.FindComponent<HasParams>(cut));
 		}
 
+		[Fact(DisplayName = "FindComponent returns same rendered component when called multiple times")]
+		public void Test023()
+		{
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var cut = sut.RenderComponent<HasParams>(
+				ChildContent<HasParams>()
+			);
+
+			var child1 = sut.FindComponent<HasParams>(cut);
+			var child2 = sut.FindComponent<HasParams>(cut);
+
+			child1.ShouldBe(child2);
+		}
+
 		[Fact(DisplayName = "FindComponents returns all components nested inside another rendered component")]
 		public void Test030()
 		{
@@ -273,6 +288,25 @@ namespace Bunit.Rendering
 			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			Should.Throw<ArgumentNullException>(() => sut.FindComponents<HasParams>(null!));
+		}
+
+		[Fact(DisplayName = "FindComponents returns same rendered components when called multiple times")]
+		public void Test032()
+		{
+			// arrange
+			var sut = Services.GetRequiredService<ITestRenderer>();
+			var cut = sut.RenderComponent<HasParams>(				
+				ChildContent<HasParams>(
+					ChildContent<HasParams>()
+				)
+			);
+
+			// act
+			var childCuts1 = sut.FindComponents<HasParams>(cut);
+			var childCuts2 = sut.FindComponents<HasParams>(cut);
+
+			// assert
+			childCuts1.ShouldBe(childCuts2);
 		}
 
 		[Fact(DisplayName = "Retrieved rendered child component with FindComponent gets updated on re-render")]
