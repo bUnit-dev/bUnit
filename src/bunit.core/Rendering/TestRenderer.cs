@@ -186,10 +186,6 @@ namespace Bunit.Rendering
 			lock (_renderTreeAccessLock)
 			{
 				FindComponentsInternal(parentComponent.ComponentId);
-				foreach (var rc in result)
-				{
-					_renderedComponents.Add(rc.ComponentId, rc);
-				}
 			}
 
 			return result;
@@ -205,10 +201,7 @@ namespace Bunit.Rendering
 					{
 						if (frame.Component is TComponent component)
 						{
-							var id = frame.ComponentId;
-							LoadRenderTreeFrames(id, framesCollection);
-							var rc = _activator.CreateRenderedComponent(id, component, framesCollection);
-							result.Add(rc);
+							GetOrCreateRenderedComponent(frame.ComponentId, component);
 
 							if (result.Count == resultLimit)
 								return;
@@ -220,6 +213,24 @@ namespace Bunit.Rendering
 							return;
 					}
 				}
+			}
+
+			void GetOrCreateRenderedComponent(int componentId, TComponent component)
+			{
+				IRenderedComponentBase<TComponent> rc;
+
+				if (_renderedComponents.TryGetValue(componentId, out var rf))
+				{
+					rc = (IRenderedComponentBase<TComponent>)rf;
+				}
+				else
+				{
+					LoadRenderTreeFrames(componentId, framesCollection);
+					rc = _activator.CreateRenderedComponent(componentId, component, framesCollection);
+					_renderedComponents.Add(rc.ComponentId, rc);
+				}
+
+				result.Add(rc);
 			}
 		}
 
