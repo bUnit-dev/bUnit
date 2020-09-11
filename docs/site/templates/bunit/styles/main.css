@@ -48,6 +48,10 @@
   margin-bottom: 1rem;
 }
 
+.tabGroup a[role="tab"] {
+  border-bottom: none !important;
+}
+
 .tabGroup section[role="tabpanel"] {
   border: none;
   padding: 0px;
@@ -62,13 +66,25 @@
   margin-bottom: 0;
 }
 
+.tabGroup a[role="tab"]:hover, 
+.tabGroup a[role="tab"]:focus, 
+.tabGroup a[role="tab"][aria-selected="true"] {
+  background: #ccc;
+  border-radius: 4px 4px 0 0;
+  color: #222 !important;
+}
+
 .tabGroup .alert {
   margin-bottom: 0;
 }
 
 pre {
   border-radius: 4px;
-  border: none;
+  border: 1px solid #ccc;
+}
+
+.tabGroup pre {
+  border-radius: 0px 4px 4px 4px;
 }
 
 pre code {
