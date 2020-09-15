@@ -12,6 +12,111 @@ using EC = Microsoft.AspNetCore.Components.EventCallback;
 
 namespace Bunit
 {
+	public sealed class NewParamBuilder<TComponent> where TComponent : IComponent
+	{
+		private const string ChildContent = nameof(ChildContent);
+		private readonly ComponentParameterCollection _parameters = new ComponentParameterCollection();
+
+		/// <summary>
+		/// Get the list of <see cref="ComponentParameter"/>s added in the builder.
+		/// </summary>
+		public IEnumerable<ComponentParameter> Parameters => _parameters.AsEnumerable();
+
+		public NewParamBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, TValue>> parameterSelector, [AllowNull] TValue value)
+		{
+			var (name, isCascading) = GetParameterInfo(parameterSelector);
+			return AddParameter<TValue>(name, value);
+		}
+
+		public NewParamBuilder<TComponent> Add<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, Action<NewParamBuilder<TChildComponent>>? childParameterBuilder = null)
+			where TChildComponent : IComponent => Add(parameterSelector, GetRenderFragment(childParameterBuilder));
+
+		public NewParamBuilder<TComponent> Add<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, string markup)
+			where TChildComponent : IComponent => Add(parameterSelector, markup.ToMarkupRenderFragment());
+
+		public NewParamBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback>> parameterSelector, Action callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback?>> parameterSelector, Action callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback>> parameterSelector, Action<object> callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback?>> parameterSelector, Action<object> callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback>> parameterSelector, Func<Task> callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback?>> parameterSelector, Func<Task> callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> Add<T>(Expression<Func<TComponent, EventCallback<T>>> parameterSelector, Action callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create<T>(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> Add<T>(Expression<Func<TComponent, EventCallback<T>?>> parameterSelector, Action callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create<T>(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> Add<T>(Expression<Func<TComponent, EventCallback<T>>> parameterSelector, Action<T> callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create<T>(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> Add<T>(Expression<Func<TComponent, EventCallback<T>?>> parameterSelector, Action<T> callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create<T>(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> Add<T>(Expression<Func<TComponent, EventCallback<T>>> parameterSelector, Func<Task> callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create<T>(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> Add<T>(Expression<Func<TComponent, EventCallback<T>?>> parameterSelector, Func<Task> callback)
+			=> Add(parameterSelector, EventCallback.Factory.Create<T>(callback?.Target!, callback!));
+
+		public NewParamBuilder<TComponent> AddChildContent(RenderFragment childContent)
+		{
+			if (!HasChildContentParameter())
+				throw new ArgumentException($"The component '{typeof(TComponent)}' does not have a {ChildContent} [Parameter] attribute.");
+
+			return AddParameter(ChildContent, childContent);
+		}
+
+		public NewParamBuilder<TComponent> AddChildContent(string markup)
+			=> AddChildContent(markup.ToMarkupRenderFragment());
+
+		public NewParamBuilder<TComponent> AddChildContent<TChildComponent>(Action<NewParamBuilder<TChildComponent>>? childParameterBuilder = null) where TChildComponent : IComponent
+			=> AddChildContent(GetRenderFragment(childParameterBuilder));
+
+
+		private static (string name, bool isCascading) GetParameterInfo<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
+		{
+			if (parameterSelector is null) throw new ArgumentNullException(nameof(parameterSelector));
+
+			if (!(parameterSelector.Body is MemberExpression memberExpression) || !(memberExpression.Member is PropertyInfo propertyInfo))
+				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.");
+
+			if (propertyInfo.GetCustomAttribute<ParameterAttribute>(inherit: false) is null)
+				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] attribute.");
+
+			return (propertyInfo.Name, false);
+		}
+
+		private static bool HasChildContentParameter()
+			=> typeof(TComponent).GetProperty(ChildContent, BindingFlags.Public | BindingFlags.Instance) is PropertyInfo ccProp
+				&& ccProp.GetCustomAttribute<ParameterAttribute>(inherit: false) != null;
+
+		private NewParamBuilder<TComponent> AddParameter<TValue>(string name, [AllowNull] TValue value)
+		{
+			_parameters.Add(ComponentParameter.CreateParameter(name, value));
+			return this;
+		}
+
+
+		private static RenderFragment GetRenderFragment<TChildComponent>(Action<NewParamBuilder<TChildComponent>>? childParameterBuilder) where TChildComponent : IComponent
+		{
+			var childBuilder = new NewParamBuilder<TChildComponent>();
+			childParameterBuilder?.Invoke(childBuilder);
+			return childBuilder.Parameters.ToComponentRenderFragment<TChildComponent>();
+		}
+	}
+
 	/// <summary>
 	/// A builder to set a value for strongly typed ComponentParameters.
 	/// </summary>
@@ -20,7 +125,11 @@ namespace Bunit
 	{
 		private const string ParameterNameChildContent = "ChildContent";
 		private static readonly PropertyInfo[] ComponentProperties = typeof(TComponent).GetProperties();
-		private readonly List<ComponentParameter> _componentParameters = new List<ComponentParameter>();
+
+		/// <summary>
+		/// Get the list of <see cref="ComponentParameter"/>s added in the builder.
+		/// </summary>
+		private List<ComponentParameter> Parameters { get; } = new List<ComponentParameter>();
 
 		/// <summary>
 		/// Adds an unmatched attribute to the component under test.
@@ -280,7 +389,7 @@ namespace Bunit
 		/// <returns>A list of <see cref="ComponentParameter"/></returns>
 		public IReadOnlyList<ComponentParameter> Build()
 		{
-			return _componentParameters;
+			return Parameters;
 		}
 
 		private static (string name, bool isCascading) GetChildContentParameterDetails()
@@ -346,13 +455,13 @@ namespace Bunit
 
 		private ComponentParameterBuilder<TComponent> AddParameterToList(string? name, object? value, bool isCascading)
 		{
-			if (_componentParameters.Any(cp => cp.Name == name))
+			if (Parameters.Any(cp => cp.Name == name))
 				throw new ArgumentException($"A parameter with the name '{name}' has already been added to the {typeof(TComponent).Name}.");
 
 			if (isCascading)
-				_componentParameters.Add(ComponentParameter.CreateCascadingValue(name, value!));
+				Parameters.Add(ComponentParameter.CreateCascadingValue(name, value!));
 			else
-				_componentParameters.Add(ComponentParameter.CreateParameter(name!, value));
+				Parameters.Add(ComponentParameter.CreateParameter(name!, value));
 
 			return this;
 		}

@@ -132,7 +132,7 @@ namespace Bunit
 			return (IRenderedFragment)Renderer.RenderFragment(fragment);
 		}
 
-		private IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : IComponent
+		private static IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : IComponent
 		{
 			if (target is IRenderedComponent<TComponent> result)
 			{
