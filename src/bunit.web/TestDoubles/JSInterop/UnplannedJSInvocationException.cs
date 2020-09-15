@@ -12,7 +12,6 @@ namespace Bunit.TestDoubles.JSInterop
 	/// Exception use to indicate that an unplanned invocation was
 	/// received by the <see cref="MockJSRuntimeInvokeHandler"/> running in <see cref="JSRuntimeMockMode.Strict"/>.
 	/// </summary>
-	[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "<Pending>")]
 	public class UnplannedJSInvocationException : Exception
 	{
 		/// <summary>
