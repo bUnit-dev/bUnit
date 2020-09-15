@@ -3,7 +3,7 @@
 		<TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
 		<NoBuild>true</NoBuild>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
-		<IncludeSymbols>false</IncludeSymbols>
+		<IncludeSymbols>false</IncludeSymbols>		
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -27,4 +27,3 @@
 	</ItemGroup>
 
 </Project>
-

@@ -9,12 +9,12 @@ namespace Bunit.TestDoubles.JSInterop
 	/// </summary>
 	internal class PlaceholderJSRuntime : IJSRuntime
 	{
-		public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object[] args)
+		public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args)
 		{
 			throw new MissingMockJSRuntimeException(identifier, args);
 		}
 
-		public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object[] args)
+		public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
 		{
 			throw new MissingMockJSRuntimeException(identifier, args);
 		}
