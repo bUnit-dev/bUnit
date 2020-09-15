@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bunit.Extensions;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
+
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -22,8 +23,9 @@ namespace Bunit
 			{
 				if (_testData is null)
 				{
-					var id = Renderer.RenderFragment(ChildContent!);
-					_testData = Renderer.FindComponents<FragmentBase>(id).Select(x => x.Component).ToArray();
+					var renderedFragment = Renderer.RenderFragment(ChildContent!);
+					var comps = Renderer.FindComponents<FragmentBase>(renderedFragment);
+					_testData = comps.Select(x => x.Instance).ToArray();
 				}
 				return _testData;
 			}
@@ -124,15 +126,13 @@ namespace Bunit
 
 		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment) where TComponent : IComponent
 		{
-			var renderId = Renderer.RenderFragment(fragment);
-			var (componentId, component) = Renderer.FindComponent<TComponent>(renderId);
-			return new RenderedComponent<TComponent>(Services, componentId, component);
+			var renderedFragment = Renderer.RenderFragment(fragment);
+			return (IRenderedComponent<TComponent>)Renderer.FindComponent<TComponent>(renderedFragment);
 		}
 
 		private IRenderedFragment Factory(RenderFragment fragment)
 		{
-			var renderId = Renderer.RenderFragment(fragment);
-			return new RenderedFragment(Services, renderId);
+			return (IRenderedFragment)Renderer.RenderFragment(fragment);
 		}
 
 		private IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : IComponent

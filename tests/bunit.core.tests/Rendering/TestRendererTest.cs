@@ -1,104 +1,462 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-
+using Bunit.Extensions;
 using Bunit.TestAssets.SampleComponents;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
 using Shouldly;
 
 using Xunit;
+using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering
 {
+	public class NoChildNoParams : ComponentBase
+	{
+		public const string MARKUP = "hello world";
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+			=> builder.AddMarkupContent(0, MARKUP);
+	}
+
+	public class ThrowsDuringSetParams : ComponentBase
+	{
+		public static readonly InvalidOperationException EXCEPTION =
+			new InvalidOperationException("THROWS ON PURPOSE");
+
+		public override Task SetParametersAsync(ParameterView parameters) => throw EXCEPTION;
+	}
+
+	public class HasParams : ComponentBase
+	{
+		[Parameter] public string? Value { get; set; }
+		[Parameter] public RenderFragment? ChildContent { get; set; }
+
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.AddMarkupContent(0, Value);
+			builder.AddContent(1, ChildContent);
+		}
+	}
+
+	public class RenderTrigger : ComponentBase
+	{
+		[Parameter] public string? Value { get; set; }
+
+		public Task Trigger() => InvokeAsync(StateHasChanged);
+		public Task TriggerWithValue(string value)
+		{
+			Value = value;
+			return InvokeAsync(StateHasChanged);
+		}
+
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.AddMarkupContent(0, Value);
+		}
+	}
+
+	public class ToggleChild : ComponentBase
+	{
+		private bool _showing = true;
+
+		[Parameter] public RenderFragment? ChildContent { get; set; }
+
+		public Task DisposeChild()
+		{
+			_showing = false;
+			return InvokeAsync(StateHasChanged);
+		}
+
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			if (_showing)
+				builder.AddContent(0, ChildContent);
+		}
+	}
+
 	public class TestRendererTest
 	{
-		private static readonly ServiceProvider ServiceProvider = new ServiceCollection().BuildServiceProvider();
+		private TestServiceProvider Services { get; }
 
-		[Fact(DisplayName = "Renderer notifies handlers of render events")]
-		public async Task Test001()
+		public TestRendererTest()
 		{
-			// Arrange
-			using var sut = new TestRenderer(ServiceProvider, NullLoggerFactory.Instance);
-			var handler = new MockRenderEventHandler(completeHandleTaskSynchronously: true);
-			sut.AddRenderEventHandler(handler);
-
-			// Act #1
-			var cut = sut.RenderComponent<Simple1>(Array.Empty<ComponentParameter>());
-
-			// Assert #1
-			handler.ReceivedEvents.Count.ShouldBe(1);
-
-			// Act #2
-			await sut.Dispatcher.InvokeAsync(() => cut.Component.SetParametersAsync(ParameterView.Empty));
-
-			// Assert #2
-			handler.ReceivedEvents.Count.ShouldBe(2);
+			Services = new TestServiceProvider();
+			Services.AddDefaultTestContextServices();
+			Services.AddSingleton<ITestRenderer, TestRenderer>();
 		}
 
-		[Fact(DisplayName = "Multiple handlers can be added to the Renderer")]
-		public void Test002()
+		[Fact(DisplayName = "RenderFragment re-throws exception from component")]
+		public void Test004()
 		{
-			using var sut = new TestRenderer(ServiceProvider, NullLoggerFactory.Instance);
-			var handler1 = new MockRenderEventHandler(completeHandleTaskSynchronously: true);
-			var handler2 = new MockRenderEventHandler(completeHandleTaskSynchronously: true);
+			var sut = Services.GetRequiredService<ITestRenderer>();
+			RenderFragment thowingFragment = b => { b.OpenComponent<ThrowsDuringSetParams>(0); b.CloseComponent(); };
 
-			sut.AddRenderEventHandler(handler1);
-			sut.AddRenderEventHandler(handler2);
-
-			sut.RenderComponent<Simple1>(Array.Empty<ComponentParameter>());
-			handler1.ReceivedEvents.Count.ShouldBe(1);
-			handler2.ReceivedEvents.Count.ShouldBe(1);
+			Should.Throw<InvalidOperationException>(() => sut.RenderFragment(thowingFragment))
+				.Message.ShouldBe(ThrowsDuringSetParams.EXCEPTION.Message);
 		}
 
-		[Fact(DisplayName = "Handler is not invoked if removed from Renderer")]
+		[Fact(DisplayName = "RenderComponent re-throws exception from component")]
 		public void Test003()
 		{
-			using var sut = new TestRenderer(ServiceProvider, NullLoggerFactory.Instance);
-			var handler1 = new MockRenderEventHandler(completeHandleTaskSynchronously: true);
-			var handler2 = new MockRenderEventHandler(completeHandleTaskSynchronously: true);
-			sut.AddRenderEventHandler(handler1);
-			sut.AddRenderEventHandler(handler2);
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
-			sut.RemoveRenderEventHandler(handler1);
-
-			sut.RenderComponent<Simple1>(Array.Empty<ComponentParameter>());
-			handler1.ReceivedEvents.ShouldBeEmpty();
-			handler2.ReceivedEvents.Count.ShouldBe(1);
+			Should.Throw<InvalidOperationException>(() => sut.RenderComponent<ThrowsDuringSetParams>())
+				.Message.ShouldBe(ThrowsDuringSetParams.EXCEPTION.Message);
 		}
 
-		class MockRenderEventHandler : IRenderEventHandler
+		[Fact(DisplayName = "Can render fragment without children and no parameters")]
+		public void Test001()
 		{
-			private TaskCompletionSource<object?> _handleTask = new TaskCompletionSource<object?>();
-			private readonly bool _completeHandleTaskSynchronously;
+			const string MARKUP = "<h1>hello world</h1>";
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
-			public List<RenderEvent> ReceivedEvents { get; set; } = new List<RenderEvent>();
+			var cut = (IRenderedFragment)sut.RenderFragment(builder => builder.AddMarkupContent(0, MARKUP));
 
-			public MockRenderEventHandler(bool completeHandleTaskSynchronously)
-			{
-				if (completeHandleTaskSynchronously)
-					SetCompleted();
-				_completeHandleTaskSynchronously = completeHandleTaskSynchronously;
-			}
+			cut.RenderCount.ShouldBe(1);
+			cut.Markup.ShouldBe(MARKUP);
+		}
 
-			public Task Handle(RenderEvent renderEvent)
-			{
-				ReceivedEvents.Add(renderEvent);
-				return _handleTask.Task;
-			}
+		[Fact(DisplayName = "Can render component without children and no parameters")]
+		public void Test002()
+		{
+			var sut = Services.GetRequiredService<ITestRenderer>();
 
-			public void SetCompleted()
-			{
-				if (_completeHandleTaskSynchronously)
-					return;
+			var cut = sut.RenderComponent<NoChildNoParams>();
 
-				var existing = _handleTask;
-				_handleTask = new TaskCompletionSource<object?>();
-				existing.SetResult(null);
-			}
+			cut.RenderCount.ShouldBe(1);
+			cut.Markup.ShouldBe(NoChildNoParams.MARKUP);
+			cut.Instance.ShouldBeOfType<NoChildNoParams>();
+		}
+
+		[Fact(DisplayName = "Can render component with parameters")]
+		public void Test005()
+		{
+			const string VALUE = "FOO BAR";
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var cut = sut.RenderComponent<HasParams>((nameof(HasParams.Value), VALUE));
+
+			cut.Instance.Value.ShouldBe(VALUE);
+		}
+
+		[Fact(DisplayName = "Can render component with child component")]
+		public void Test006()
+		{
+			const string PARENT_VALUE = "PARENT";
+			const string CHILD_VALUE = "CHILD";
+
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var cut = sut.RenderComponent<HasParams>(
+				(nameof(HasParams.Value), PARENT_VALUE),
+				ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE))
+			);
+
+			cut.Markup.ShouldStartWith(PARENT_VALUE);
+			cut.Markup.ShouldEndWith(CHILD_VALUE);
+		}
+
+		[Fact(DisplayName = "Rendered component gets RenderCount updated on re-render")]
+		public async Task Test010()
+		{
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var cut = sut.RenderComponent<RenderTrigger>();
+
+			cut.RenderCount.ShouldBe(1);
+
+			await cut.Instance.Trigger();
+
+			cut.RenderCount.ShouldBe(2);
+		}
+
+		[Fact(DisplayName = "Rendered component gets Markup updated on re-render")]
+		public async Task Test011()
+		{
+			// arrange
+			const string EXPECTED = "NOW VALUE";
+			var sut = Services.GetRequiredService<ITestRenderer>();
+			var cut = sut.RenderComponent<RenderTrigger>();
+
+			cut.RenderCount.ShouldBe(1);
+
+			// act
+			await cut.Instance.TriggerWithValue(EXPECTED);
+
+			// assert
+			cut.RenderCount.ShouldBe(2);
+			cut.Markup.ShouldBe(EXPECTED);
+		}
+
+		[Fact(DisplayName = "FindComponent returns first component nested inside another rendered component")]
+		public void Test020()
+		{
+			// arrange
+			const string PARENT_VALUE = "PARENT";
+			const string CHILD_VALUE = "CHILD";
+
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var cut = sut.RenderComponent<HasParams>(
+				(nameof(HasParams.Value), PARENT_VALUE),
+				ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE))
+			);
+
+			// act
+			var childCut = (IRenderedComponent<HasParams>)sut.FindComponent<HasParams>(cut);
+
+			// assert
+			childCut.Markup.ShouldBe(CHILD_VALUE);
+			childCut.RenderCount.ShouldBe(1);
+		}
+
+		[Fact(DisplayName = "FindComponent throws if parentComponent parameter is null")]
+		public void Test021()
+		{
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			Should.Throw<ArgumentNullException>(() => sut.FindComponent<HasParams>(null!));
+		}
+
+		[Fact(DisplayName = "FindComponent throws if component is not found")]
+		public void Test022()
+		{
+			var sut = Services.GetRequiredService<ITestRenderer>();
+			var cut = sut.RenderComponent<HasParams>();
+
+			Should.Throw<ComponentNotFoundException>(() => sut.FindComponent<HasParams>(cut));
+		}
+
+		[Fact(DisplayName = "FindComponent returns same rendered component when called multiple times")]
+		public void Test023()
+		{
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var cut = sut.RenderComponent<HasParams>(
+				ChildContent<HasParams>()
+			);
+
+			var child1 = sut.FindComponent<HasParams>(cut);
+			var child2 = sut.FindComponent<HasParams>(cut);
+
+			child1.ShouldBe(child2);
+		}
+
+		[Fact(DisplayName = "FindComponents returns all components nested inside another rendered component")]
+		public void Test030()
+		{
+			// arrange
+			const string GRAND_PARENT_VALUE = nameof(GRAND_PARENT_VALUE);
+			const string PARENT_VALUE = nameof(PARENT_VALUE);
+			const string CHILD_VALUE = nameof(CHILD_VALUE);
+
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var cut = sut.RenderComponent<HasParams>(
+				(nameof(HasParams.Value), GRAND_PARENT_VALUE),
+				ChildContent<HasParams>(
+					(nameof(HasParams.Value), PARENT_VALUE),
+					ChildContent<HasParams>(
+						(nameof(HasParams.Value), CHILD_VALUE)
+					)
+				)
+			);
+
+			// act
+			var childCuts = sut.FindComponents<HasParams>(cut)
+				.OfType<IRenderedComponent<HasParams>>()
+				.ToList();
+
+			// assert
+			childCuts[0].Markup.ShouldBe(PARENT_VALUE + CHILD_VALUE);
+			childCuts[0].RenderCount.ShouldBe(1);
+
+			childCuts[1].Markup.ShouldBe(CHILD_VALUE);
+			childCuts[1].RenderCount.ShouldBe(1);
+		}
+
+		[Fact(DisplayName = "FindComponents throws if parentComponent parameter is null")]
+		public void Test031()
+		{
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			Should.Throw<ArgumentNullException>(() => sut.FindComponents<HasParams>(null!));
+		}
+
+		[Fact(DisplayName = "FindComponents returns same rendered components when called multiple times")]
+		public void Test032()
+		{
+			// arrange
+			var sut = Services.GetRequiredService<ITestRenderer>();
+			var cut = sut.RenderComponent<HasParams>(
+				ChildContent<HasParams>(
+					ChildContent<HasParams>()
+				)
+			);
+
+			// act
+			var childCuts1 = sut.FindComponents<HasParams>(cut);
+			var childCuts2 = sut.FindComponents<HasParams>(cut);
+
+			// assert
+			childCuts1.ShouldBe(childCuts2);
+		}
+
+		[Fact(DisplayName = "Retrieved rendered child component with FindComponent gets updated on re-render")]
+		public async Task Test040()
+		{
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var parent = sut.RenderComponent<HasParams>(
+				ChildContent<RenderTrigger>()
+			);
+
+			// act
+			var cut = (IRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(parent);
+
+			cut.RenderCount.ShouldBe(1);
+
+			await cut.Instance.TriggerWithValue("X");
+
+			cut.RenderCount.ShouldBe(2);
+			cut.Markup.ShouldBe("X");
+		}
+
+		[Fact(DisplayName = "Retrieved rendered child component with FindComponents gets updated on re-render")]
+		public async Task Test041()
+		{
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var parent = sut.RenderComponent<HasParams>(
+				ChildContent<RenderTrigger>()
+			);
+
+			// act
+			var cut = (IRenderedComponent<RenderTrigger>)sut.FindComponents<RenderTrigger>(parent).Single();
+
+			cut.RenderCount.ShouldBe(1);
+
+			await cut.Instance.TriggerWithValue("X");
+
+			cut.RenderCount.ShouldBe(2);
+			cut.Markup.ShouldBe("X");
+		}
+
+		[Fact(DisplayName = "Rendered component updates on re-renders from child components with changes in render tree")]
+		public async Task Test050()
+		{
+			// arrange
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var cut = sut.RenderComponent<HasParams>(
+				ChildContent<RenderTrigger>()
+			);
+			var child = (IRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(cut);
+
+			// act
+			await child.Instance.TriggerWithValue("X");
+
+			// assert
+			cut.RenderCount.ShouldBe(2);
+			cut.Markup.ShouldBe("X");
+		}
+
+		[Fact(DisplayName = "When component is disposed by renderer, getting Markup throws and IsDisposed returns true")]
+		public async Task Test060()
+		{
+			// arrange
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var cut = sut.RenderComponent<ToggleChild>(
+				ChildContent<NoChildNoParams>()
+			);
+			var child = (IRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
+
+			// act
+			await cut.Instance.DisposeChild();
+
+			// assert
+			child.IsDisposed.ShouldBeTrue();
+			Should.Throw<ComponentDisposedException>(() => child.Markup);
+		}
+
+		[Fact(DisplayName = "Rendered component updates itself if a child's child is disposed")]
+		public async Task Test061()
+		{
+			// arrange
+			var sut = Services.GetRequiredService<ITestRenderer>();
+
+			var cut = sut.RenderComponent<ToggleChild>(
+				ChildContent<ToggleChild>(
+					ChildContent<NoChildNoParams>()
+				)
+			);
+			var child = (IRenderedComponent<ToggleChild>)sut.FindComponent<ToggleChild>(cut);
+			var childChild = (IRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
+
+			// act
+			await child.Instance.DisposeChild();
+
+			// assert
+			childChild.IsDisposed.ShouldBeTrue();
+			cut.Markup.ShouldBe(string.Empty);
+		}
+
+		[Fact(DisplayName = "When test renderer is disposed, so is all rendered components")]
+		public void Test070()
+		{
+			var sut = (TestRenderer)Services.GetRequiredService<ITestRenderer>();
+			var cut = sut.RenderComponent<NoChildNoParams>();
+
+			sut.Dispose();
+
+			cut.IsDisposed.ShouldBeTrue();
+		}
+
+		[Fact(DisplayName = "Can render component that awaits uncompleted task in OnInitializedAsync")]
+		public void Test100()
+		{
+			using var ctx = new TestContext();
+			var tcs = new TaskCompletionSource<object>();
+
+			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+				parameters.Add(p => p.EitherOr, tcs.Task)
+			);
+
+			cut.Find("h1").TextContent.ShouldBe("FIRST");
+		}
+
+		[Fact(DisplayName = "Can render component that awaits yielding task in OnInitializedAsync")]
+		public void Test101()
+		{
+			using var ctx = new TestContext();
+
+			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+				parameters.Add(p => p.EitherOr, Task.Delay(1))
+			);
+
+			var h1 = cut.Find("h1");
+
+			cut.WaitForAssertion(() => h1.TextContent.ShouldBe("SECOND"));
+		}
+
+		[Fact(DisplayName = "Can render component that awaits completed task in OnInitializedAsync")]
+		public void Test102()
+		{
+			using var ctx = new TestContext();
+
+			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+				parameters.Add(p => p.EitherOr, Task.CompletedTask)
+			);
+
+			cut.Find("h1").TextContent.ShouldBe("SECOND");
 		}
 	}
 }

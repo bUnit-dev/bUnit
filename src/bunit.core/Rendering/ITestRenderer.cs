@@ -11,35 +11,12 @@ namespace Bunit.Rendering
 	/// <summary>
 	/// Represents a generalized Blazor renderer for testing purposes.
 	/// </summary>
-	public interface ITestRenderer : IRenderEventProducer
+	public interface ITestRenderer
 	{
 		/// <summary>
 		/// Gets the <see cref="Dispatcher"/> associated with this <see cref="ITestRenderer"/>.
 		/// </summary>
 		Dispatcher Dispatcher { get; }
-
-		///// <summary>
-		///// Invokes the given <paramref name="callback"/> in the context of this <see cref="ITestRenderer"/>.
-		///// </summary>
-		///// <param name="callback"></param>
-		///// <returns>A <see cref="Task"/> that will be completed when the action has finished executing.</returns>
-		//Task InvokeAsync(Action callback);
-
-		/// <summary>
-		/// Instantiates and renders the component of type <typeparamref name="TComponent"/>.
-		/// </summary>
-		/// <typeparam name="TComponent">Type of component to render.</typeparam>
-		/// <param name="parameters">Parameters to pass to the component during first render.</param>
-		/// <returns>The component and its assigned id.</returns>
-		(int ComponentId, TComponent Component) RenderComponent<TComponent>(IEnumerable<ComponentParameter> parameters) where TComponent : IComponent;
-
-		/// <summary>
-		/// Renders the provided <paramref name="renderFragment"/> inside a wrapper and returns
-		/// the wrappers component id.
-		/// </summary>
-		/// <param name="renderFragment"><see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
-		/// <returns>The id of the wrapper component which the <paramref name="renderFragment"/> is rendered inside.</returns>
-		int RenderFragment(RenderFragment renderFragment);
 
 		/// <summary>
 		/// Notifies the renderer that an event has occurred.
@@ -51,26 +28,35 @@ namespace Bunit.Rendering
 		Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs);
 
 		/// <summary>
-		/// Performs a depth-first search for a <typeparamref name="TComponent"/> child component of the component with the <paramref name="parentComponentId"/>.
+		/// Renders the <paramref name="renderFragment"/>.
 		/// </summary>
-		/// <typeparam name="TComponent">Type of component to look for.</typeparam>
-		/// <param name="parentComponentId">The id of the parent component.</param>
-		/// <returns>The first matching child component.</returns>
-		(int ComponentId, TComponent Component) FindComponent<TComponent>(int parentComponentId);
+		/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
+		/// <returns>A <see cref="IRenderedFragmentBase"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
+		IRenderedFragmentBase RenderFragment(RenderFragment renderFragment);
 
 		/// <summary>
-		/// Performs a depth-first search for all <typeparamref name="TComponent"/> child components of the component with the <paramref name="parentComponentId"/>.
+		/// Renders a <typeparamref name="TComponent"/> with the parameters <paramref name="componentParameters"/> passed to it.
 		/// </summary>
-		/// <typeparam name="TComponent">Type of components to look for.</typeparam>
-		/// <param name="parentComponentId">The id of the parent component.</param>
-		/// <returns>The matching child components.</returns>
-		IReadOnlyList<(int ComponentId, TComponent Component)> FindComponents<TComponent>(int parentComponentId);
+		/// <typeparam name = "TComponent" > The type of component to render.</typeparam>
+		/// <param name="componentParameters">The parameters to pass to the component.</param>
+		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/> that provides access to the rendered component.</returns>
+		IRenderedComponentBase<TComponent> RenderComponent<TComponent>(IEnumerable<ComponentParameter> componentParameters)
+			where TComponent : IComponent;
 
 		/// <summary>
-		/// Gets the current render tree for a given component.
+		/// Performs a depth-first search for the first <typeparamref name="TComponent"/> child component of the <paramref name="parentComponent"/>.
 		/// </summary>
-		/// <param name="componentId">The id for the component.</param>
-		/// <returns>The <see cref="RenderTreeBuilder"/> representing the current render tree.</returns>
-		ArrayRange<RenderTreeFrame> GetCurrentRenderTreeFrames(int componentId);
+		/// <typeparam name="TComponent">Type of component to find.</typeparam>
+		/// <param name="parentComponent">Parent component to search.</param>
+		IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)
+			where TComponent : IComponent;
+
+		/// <summary>
+		/// Performs a depth-first search for all <typeparamref name="TComponent"/> child components of the <paramref name="parentComponent"/>.
+		/// </summary>
+		/// <typeparam name="TComponent">Type of components to find.</typeparam>
+		/// <param name="parentComponent">Parent component to search.</param>
+		IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
+			where TComponent : IComponent;
 	}
 }

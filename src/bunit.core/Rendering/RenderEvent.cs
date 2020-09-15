@@ -1,115 +1,121 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Bunit.Rendering
 {
 	/// <summary>
-	/// Represents a render event from a <see cref="ITestRenderer"/>.
+	/// Represents an render event from a <see cref="ITestRenderer"/>.
 	/// </summary>
 	public sealed class RenderEvent
 	{
-		private readonly ITestRenderer _renderer;
 		private readonly RenderBatch _renderBatch;
 
 		/// <summary>
-		/// Gets the related <see cref="RenderBatch"/> from the render.
+		/// A collection of <see cref="ArrayRange{RenderTreeFrame}"/>, accessible via the ID
+		/// of the component they are created by.
 		/// </summary>
-		public ref readonly RenderBatch RenderBatch => ref _renderBatch;
+		public RenderTreeFrameCollection Frames { get; }
 
 		/// <summary>
 		/// Creates an instance of the <see cref="RenderEvent"/> type.
 		/// </summary>
-		public RenderEvent(in RenderBatch renderBatch, ITestRenderer renderer)
+		/// <param name="renderBatch">The <see cref="RenderBatch"/> update from the render event.</param>
+		/// <param name="frames">The <see cref="RenderTreeFrameCollection"/> from the current render.</param>
+		internal RenderEvent(RenderBatch renderBatch, RenderTreeFrameCollection frames)
 		{
 			_renderBatch = renderBatch;
-			_renderer = renderer;
+			Frames = frames;
 		}
 
 		/// <summary>
-		/// Checks whether the a component with <paramref name="componentId"/> or one or more of 
-		/// its sub components was changed during the <see cref="RenderEvent"/>.
+		/// Gets the render status for a <paramref name="renderedComponent"/>.
 		/// </summary>
-		/// <param name="componentId">Id of component to check for updates to.</param>
-		/// <returns>True if <see cref="RenderEvent"/> contains updates to component, false otherwise.</returns>
-		public bool HasMarkupChanges(int componentId)
+		/// <param name="renderedComponent">The <paramref name="renderedComponent"/> to get the status for.</param>
+		/// <returns>A tuple of statuses indicating whether the rendered component rendered during the render cycle, if it changed or if it was disposed.</returns>
+		public (bool rendered, bool changed, bool disposed) GetRenderStatus(IRenderedFragmentBase renderedComponent)
 		{
-			return HasChangesToRoot(componentId);
+			if (renderedComponent is null)
+				throw new ArgumentNullException(nameof(renderedComponent));
 
-			bool HasChangesToRoot(int componentId)
+			var result = (rendered: false, changed: false, disposed: false);
+
+			if (DidComponentDispose(renderedComponent))
 			{
-				for (var i = 0; i < _renderBatch.UpdatedComponents.Count; i++)
-				{
-					ref var update = ref _renderBatch.UpdatedComponents.Array[i];
-					if (update.ComponentId == componentId && update.Edits.Count > 0)
-						return true;
-				}
-
-				var renderFrames = _renderer.GetCurrentRenderTreeFrames(componentId);
-				return HasChangedToChildren(renderFrames);
+				result.disposed = true;
+			}
+			else
+			{
+				(result.rendered, result.changed) = GetRenderAndChangeStatus(renderedComponent);
 			}
 
-			bool HasChangedToChildren(ArrayRange<RenderTreeFrame> componentRenderTreeFrames)
-			{
-				for (var i = 0; i < componentRenderTreeFrames.Count; i++)
-				{
-					ref var frame = ref componentRenderTreeFrames.Array[i];
-					if (frame.FrameType == RenderTreeFrameType.Component)
-						if (HasChangesToRoot(frame.ComponentId))
-							return true;
-				}
-				return false;
-			}
+			return result;
 		}
 
-		/// <summary>
-		/// Checks whether the a component with <paramref name="componentId"/> was disposed.
-		/// </summary>
-		/// <param name="componentId">Id of component to check.</param>
-		/// <returns>True if component was disposed, false otherwise.</returns>
-		public bool DidComponentDispose(int componentId)
+		private bool DidComponentDispose(IRenderedFragmentBase renderedComponent)
 		{
 			for (var i = 0; i < _renderBatch.DisposedComponentIDs.Count; i++)
-				if (_renderBatch.DisposedComponentIDs.Array[i].Equals(componentId))
+				if (_renderBatch.DisposedComponentIDs.Array[i].Equals(renderedComponent.ComponentId))
 					return true;
 
 			return false;
 		}
 
 		/// <summary>
-		/// Checks whether the a component with <paramref name="componentId"/> or one or more of 
-		/// its sub components was rendered during the <see cref="RenderEvent"/>.
+		/// This method determines if the <paramref name="renderedComponent"/> or any of the
+		/// components underneath it in the render tree rendered and whether they they changed
+		/// their render tree during render.
+		///
+		/// It does this by getting the status from the <paramref name="renderedComponent"/>,
+		/// then from all its children, using a recursive pattern, where the internal methods
+		/// GetStatus and GetStatusFromChildren call each other until there are no more children,
+		/// or both a render and a change is found.
 		/// </summary>
-		/// <param name="componentId">Id of component to check if rendered.</param>
-		/// <returns>True if the component or a sub component rendered, false otherwise.</returns>
-		public bool DidComponentRender(int componentId)
+		private (bool rendered, bool hasChanges) GetRenderAndChangeStatus(IRenderedFragmentBase renderedComponent)
 		{
-			return DidComponentRenderRoot(componentId);
+			var result = (rendered: false, hasChanges: false);
 
-			bool DidComponentRenderRoot(int componentId)
+			GetStatus(renderedComponent.ComponentId);
+
+			return result;
+
+			void GetStatus(int componentId)
 			{
 				for (var i = 0; i < _renderBatch.UpdatedComponents.Count; i++)
 				{
 					ref var update = ref _renderBatch.UpdatedComponents.Array[i];
 					if (update.ComponentId == componentId)
-						return true;
+					{
+						result.rendered = true;
+						result.hasChanges = update.Edits.Count > 0;
+						break;
+					}
 				}
 
-				return DidChildComponentRender(componentId);
+				if (!result.hasChanges)
+				{
+					GetStatusFromChildren(componentId);
+				}
 			}
 
-			bool DidChildComponentRender(int componentId)
+			void GetStatusFromChildren(int componentId)
 			{
-				var frames = _renderer.GetCurrentRenderTreeFrames(componentId);
-
+				var frames = Frames[componentId];
 				for (var i = 0; i < frames.Count; i++)
 				{
 					ref var frame = ref frames.Array[i];
 					if (frame.FrameType == RenderTreeFrameType.Component)
-						if (DidComponentRenderRoot(frame.ComponentId))
-							return true;
-				}
+					{
+						GetStatus(frame.ComponentId);
 
-				return false;
+						if (result.hasChanges)
+						{
+							break;
+						}
+					}
+				}
 			}
 		}
 	}

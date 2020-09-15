@@ -2,6 +2,25 @@
 
 All notable changes to **bUnit** will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-beta 10] - 2020-09-15
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+
+### Added
+List of new features.
+
+- Added support for .NET 5 RC-1.
+
+### Changed
+List of changes in existing functionality.
+
+- Related to [#189](https://github.com/egil/bUnit/issues/189), a bunch of the core `ITestRenderer` and related types have changed. The internals of `ITestRenderer` is now less exposed and the test renderer is now in control of when rendered components and rendered fragments are created, and when they are updated. This enables the test renderer to protect against race conditions when the `FindComponent`, `FindComponents`, `RenderFragment`, and `RenderComponent` methods are called.
+
+### Fixed
+List of any bug fixes.
+
+- Fixes [#189](https://github.com/egil/bUnit/issues/189): The test renderer did not correctly protect against a race condition during initial rendering of a component, and that could in some rare circumstances cause a test to fail when it should not. This has been addressed in this release with a major rewrite of the test renderer, which now controls and owns the rendered component and rendered fragment instances which is created when a component is rendered. By [@egil](https://github.com/egil) in [#201](https://github.com/egil/bUnit/pull/201). Credits to [@Smurf-IV](https://github.com/Smurf-IV) for reporting and helping investigate this issue.
+
 ## [1.0.0-beta-9] - 2020-08-26
 
 This release contains a couple of fixes, and adds support for .NET Preview 8 and later. There are no breaking changes in this release.

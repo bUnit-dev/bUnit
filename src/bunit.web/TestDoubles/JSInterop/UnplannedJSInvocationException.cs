@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Bunit;
+using Bunit.Extensions;
 
 namespace Bunit.TestDoubles.JSInterop
 {
@@ -11,7 +12,6 @@ namespace Bunit.TestDoubles.JSInterop
 	/// Exception use to indicate that an unplanned invocation was
 	/// received by the <see cref="MockJSRuntimeInvokeHandler"/> running in <see cref="JSRuntimeMockMode.Strict"/>.
 	/// </summary>
-	[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "<Pending>")]
 	public class UnplannedJSInvocationException : Exception
 	{
 		/// <summary>
@@ -30,14 +30,14 @@ namespace Bunit.TestDoubles.JSInterop
 			Invocation = invocation;
 		}
 
-		private static string PrintArguments(IReadOnlyList<object> arguments)
+		private static string PrintArguments(IReadOnlyList<object?> arguments)
 		{
 			if (arguments.Count == 0)
 				return "without arguments";
 			else if (arguments.Count == 1)
-				return $"with the argument [{arguments[0].ToString()}]";
+				return $"with the argument [{arguments[0]}]";
 			else
-				return $"with arguments [{string.Join(", ", arguments.Select(x => x.ToString()))}]";
+				return $"with arguments [{string.Join(", ", arguments.OfType<object>().Select(x => x.ToString()))}]";
 		}
 	}
 }

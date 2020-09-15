@@ -19,7 +19,7 @@ namespace Bunit.TestDoubles.JSInterop
 		/// <summary>
 		/// Arguments passed to the JSInvoke method.
 		/// </summary>
-		public IReadOnlyList<object> Arguments { get; }
+		public IReadOnlyList<object?> Arguments { get; }
 
 		/// <summary>
 		/// Creates a new instance of the <see cref="MissingMockJSRuntimeException"/>
@@ -27,11 +27,11 @@ namespace Bunit.TestDoubles.JSInterop
 		/// </summary>
 		/// <param name="identifier">The identifer used in the invocation.</param>
 		/// <param name="arguments">The args used in the invocation, if any</param>
-		public MissingMockJSRuntimeException(string identifier, object[] arguments)
+		public MissingMockJSRuntimeException(string identifier, object?[]? arguments)
 			: base($"This test requires a IJSRuntime to be supplied, because the component under test invokes the IJSRuntime during the test. The invoked method is '{identifier}' and the invocation arguments are stored in the {nameof(Arguments)} property of this exception. Guidance on mocking the IJSRuntime is available in the testing library's Wiki.")
 		{
 			Identifier = identifier;
-			Arguments = arguments;
+			Arguments = arguments ?? Array.Empty<object?>();
 			HelpLink = "https://github.com/egil/razor-components-testing-library/wiki/Mocking-JsRuntime";
 		}
 	}

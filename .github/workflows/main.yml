@@ -39,7 +39,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.8.20417.9'
+          dotnet-version: '5.0.100-rc.1.20452.10'
       - name: Move .net SDK's to shared folder (hack)
         shell: pwsh
         run: |
@@ -70,7 +70,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.8.20417.9'
+          dotnet-version: '5.0.100-rc.1.20452.10'
       - name: Move .net SDK's to shared folder (hack)
         shell: pwsh
         run: |
@@ -85,7 +85,9 @@ jobs:
           }
 
       - name: Running unit tests
-        run: dotnet test -c Debug /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
+        run: |
+          dotnet build -c Debug /nowarn:CS1591  /p:UseSourceLink=true
+          dotnet test -c Debug --no-build /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
@@ -121,7 +123,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.8.20417.9'
+          dotnet-version: '5.0.100-rc.1.20452.10'
       - name: Move .net SDK's to shared folder (hack)
         shell: pwsh
         run: |
@@ -137,6 +139,7 @@ jobs:
 
       - name: Creating library package
         run: |
+          dotnet restore
           dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
           dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
           dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
@@ -165,7 +168,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.8.20417.9'
+          dotnet-version: '5.0.100-rc.1.20452.10'
       - name: Move .net SDK's to shared folder (hack)
         shell: pwsh
         run: |
@@ -234,7 +237,7 @@ jobs:
         dotnet-version: '3.1.x'
     - uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '5.0.100-preview.8.20417.9'
+        dotnet-version: '5.0.100-rc.1.20452.10'
     - name: Move .net SDK's to shared folder (hack)
       shell: pwsh
       run: |
@@ -292,7 +295,7 @@ jobs:
           dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-preview.8.20417.9'
+          dotnet-version: '5.0.100-rc.1.20452.10'
       - name: DOTNET HACK
         shell: pwsh
         run: |
@@ -316,9 +319,9 @@ jobs:
       - name: Creating library package for release
         if: github.event_name == 'release'
         run: |
-          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
-          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
+          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=main -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=main -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
+          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=main -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
 
       - name: Push packages to GitHub Package Registry
         run: |
