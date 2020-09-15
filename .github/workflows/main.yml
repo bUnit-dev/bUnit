@@ -333,7 +333,7 @@ jobs:
 
       - name: Push packages to NuGet
         if: github.event_name == 'release'
-        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
 
 #      - name: Push packages to GitHub Package Registry
 #        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' --skip-duplicate
