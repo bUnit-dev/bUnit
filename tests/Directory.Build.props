@@ -4,7 +4,7 @@
 		<IsPackable>false</IsPackable>
 		<LangVersion>8.0</LangVersion>
 		<Nullable>enable</Nullable>
-		<WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>
+		<!--<WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>-->
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' AND $(MSBuildProjectName)!='bunit.testassets'">
@@ -15,10 +15,10 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0' AND $(MSBuildProjectName)!='bunit.testassets'">
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-preview.8.*" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0-preview.8.*" />
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-preview.8.*" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-preview.8.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-rc.1.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0-rc.1.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-rc.1.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-rc.1.*" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(MSBuildProjectName)!='bunit.testassets'">

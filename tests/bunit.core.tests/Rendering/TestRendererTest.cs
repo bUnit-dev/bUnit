@@ -272,7 +272,8 @@ namespace Bunit.Rendering
 			// act
 			var childCuts = sut.FindComponents<HasParams>(cut)
 				.Cast<IRenderedComponent<HasParams>>()
-				.ToArray();
+				.NotNull()
+				.ToList();
 
 			// assert
 			childCuts[0].Markup.ShouldBe(PARENT_VALUE + CHILD_VALUE);
@@ -441,7 +442,6 @@ namespace Bunit.Rendering
 			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
 				parameters.Add(p => p.EitherOr, Task.Delay(1))
 			);
-
 
 			var h1 = cut.Find("h1");
 

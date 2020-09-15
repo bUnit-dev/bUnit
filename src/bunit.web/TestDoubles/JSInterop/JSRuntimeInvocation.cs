@@ -24,17 +24,17 @@ namespace Bunit.TestDoubles.JSInterop
 		/// <summary>
 		/// Gets the arguments used in the invocation.
 		/// </summary>
-		public IReadOnlyList<object> Arguments { get; }
+		public IReadOnlyList<object?> Arguments { get; }
 
 
 		/// <summary>
 		/// Creates an instance of the <see cref="JSRuntimeInvocation"/>.
 		/// </summary>
-		public JSRuntimeInvocation(string identifier, CancellationToken cancellationToken, object[] args)
+		public JSRuntimeInvocation(string identifier, CancellationToken cancellationToken, object?[]? args)
 		{
 			Identifier = identifier;
 			CancellationToken = cancellationToken;
-			Arguments = args;
+			Arguments = args ?? Array.Empty<object?>();
 		}
 
 		/// <inheritdoc/>
@@ -67,15 +67,26 @@ namespace Bunit.TestDoubles.JSInterop
 		/// <inheritdoc/>
 		public static bool operator !=(JSRuntimeInvocation left, JSRuntimeInvocation right) => !(left == right);
 
-		private static bool ArgumentsEqual(IReadOnlyList<object> left, IReadOnlyList<object> right)
+		private static bool ArgumentsEqual(IReadOnlyList<object?> left, IReadOnlyList<object?> right)
 		{
 			if (left.Count != right.Count)
 				return false;
 
 			for (var i = 0; i < left.Count; i++)
 			{
-				if (!left[i].Equals(right[i]))
-					return false;
+				var l = left[i];
+				var r = right[i];
+
+				if (l is null)
+				{
+					if (r is object)
+						return false;
+				}
+				else
+				{
+					if (!l.Equals(right[i]))
+						return false;
+				}
 			}
 
 			return true;

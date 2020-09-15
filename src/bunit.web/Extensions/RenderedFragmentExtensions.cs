@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using AngleSharp.Dom;
-
 using AngleSharpWrappers;
-
+using Bunit.Extensions;
 using Bunit.Rendering;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -81,7 +78,7 @@ namespace Bunit
 			var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
 			var components = renderer.FindComponents<TComponent>(renderedFragment);
 
-			return components.Cast<IRenderedComponent<TComponent>>().ToArray();
+			return components.Cast<IRenderedComponent<TComponent>>().NotNull().ToArray();
 		}
 	}
 }

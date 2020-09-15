@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Bunit;
+using Bunit.Extensions;
 
 namespace Bunit.TestDoubles.JSInterop
 {
@@ -30,14 +31,14 @@ namespace Bunit.TestDoubles.JSInterop
 			Invocation = invocation;
 		}
 
-		private static string PrintArguments(IReadOnlyList<object> arguments)
+		private static string PrintArguments(IReadOnlyList<object?> arguments)
 		{
 			if (arguments.Count == 0)
 				return "without arguments";
 			else if (arguments.Count == 1)
-				return $"with the argument [{arguments[0].ToString()}]";
+				return $"with the argument [{arguments[0]}]";
 			else
-				return $"with arguments [{string.Join(", ", arguments.Select(x => x.ToString()))}]";
+				return $"with arguments [{string.Join(", ", arguments.NotNull().Select(x => x.ToString()))}]";
 		}
 	}
 }

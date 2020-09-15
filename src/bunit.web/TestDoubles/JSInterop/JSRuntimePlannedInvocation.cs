@@ -8,7 +8,7 @@ namespace Bunit.TestDoubles.JSInterop
 	/// </summary>
 	public class JSRuntimePlannedInvocation : JSRuntimePlannedInvocationBase<object>
 	{
-		internal JSRuntimePlannedInvocation(string identifier, Func<IReadOnlyList<object>, bool> matcher) : base(identifier, matcher)
+		internal JSRuntimePlannedInvocation(string identifier, Func<IReadOnlyList<object?>, bool> matcher) : base(identifier, matcher)
 		{
 		}
 
@@ -27,7 +27,7 @@ namespace Bunit.TestDoubles.JSInterop
 	/// <typeparam name="TResult"></typeparam>
 	public class JSRuntimePlannedInvocation<TResult> : JSRuntimePlannedInvocationBase<TResult>
 	{
-		internal JSRuntimePlannedInvocation(string identifier, Func<IReadOnlyList<object>, bool> matcher) : base(identifier, matcher)
+		internal JSRuntimePlannedInvocation(string identifier, Func<IReadOnlyList<object?>, bool> matcher) : base(identifier, matcher)
 		{
 		}
 

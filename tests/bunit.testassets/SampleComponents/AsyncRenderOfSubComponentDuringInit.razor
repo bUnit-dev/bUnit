@@ -17,7 +17,7 @@
 {
 	private bool _eitherOr = true;
 
-	[Parameter] public Task EitherOr { get; set; }
+	[Parameter] public Task EitherOr { get; set; } = Task.CompletedTask;
 
 	protected override async Task OnInitializedAsync()
 	{

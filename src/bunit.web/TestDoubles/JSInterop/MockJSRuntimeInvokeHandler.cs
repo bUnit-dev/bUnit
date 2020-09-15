@@ -52,7 +52,7 @@ namespace Bunit.TestDoubles.JSInterop
 		/// <param name="identifier">The identifier to setup a response for</param>
 		/// <param name="argumentsMatcher">A matcher that is passed arguments received in invocations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
 		/// <returns>A <see cref="JSRuntimePlannedInvocation{TResult}"/>.</returns>
-		public JSRuntimePlannedInvocation<TResult> Setup<TResult>(string identifier, Func<IReadOnlyList<object>, bool> argumentsMatcher)
+		public JSRuntimePlannedInvocation<TResult> Setup<TResult>(string identifier, Func<IReadOnlyList<object?>, bool> argumentsMatcher)
 		{
 			var result = new JSRuntimePlannedInvocation<TResult>(identifier, argumentsMatcher);
 
@@ -80,7 +80,7 @@ namespace Bunit.TestDoubles.JSInterop
 		/// <param name="identifier">The identifier to setup a response for</param>
 		/// <param name="argumentsMatcher">A matcher that is passed arguments received in invocations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
 		/// <returns>A <see cref="JSRuntimePlannedInvocation"/>.</returns>
-		public JSRuntimePlannedInvocation SetupVoid(string identifier, Func<IReadOnlyList<object>, bool> argumentsMatcher)
+		public JSRuntimePlannedInvocation SetupVoid(string identifier, Func<IReadOnlyList<object?>, bool> argumentsMatcher)
 		{
 			var result = new JSRuntimePlannedInvocation(identifier, argumentsMatcher);
 
@@ -128,10 +128,10 @@ namespace Bunit.TestDoubles.JSInterop
 				_handlers = mockJSRuntimeInvokeHandler;
 			}
 
-			public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object[] args)
+			public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args)
 				=> InvokeAsync<TValue>(identifier, default, args);
 
-			public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object[] args)
+			public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
 			{
 				var invocation = new JSRuntimeInvocation(identifier, cancellationToken, args);
 				_handlers.AddInvocation(invocation);

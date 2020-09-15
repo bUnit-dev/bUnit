@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -17,6 +18,25 @@ namespace Bunit.Extensions
 		public static bool IsNullOrEmpty<T>([NotNullWhen(false)] this IEnumerable<T>? enumerable)
 		{
 			return enumerable is null || !enumerable.Any();
+		}
+
+		/// <summary>
+		/// Filters a enumerable of nullable objects
+		/// to a collection with the any null objects filtered out.
+		/// </summary>
+		/// <typeparam name="TResult"></typeparam>
+		/// <param name="source"></param>
+		/// <returns></returns>
+		public static IEnumerable<TResult> NotNull<TResult>(this IEnumerable<TResult?> source)
+			where TResult : class
+		{
+			if (source is null) throw new ArgumentNullException(nameof(source));
+			foreach (var item in source)
+			{
+				if (item is null)
+					continue;
+				yield return item;
+			}
 		}
 	}
 }
