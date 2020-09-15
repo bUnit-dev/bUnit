@@ -2,6 +2,28 @@
 
 All notable changes to **bUnit** will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED BETA 11]
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+
+### Added
+List of new features.
+
+### Changed
+List of changes in existing functionality.
+
+### Deprecated
+List of soon-to-be removed features.
+
+### Removed
+List of now removed features.
+
+### Fixed
+List of any bug fixes.
+
+### Security
+List of fixed security vulnerabilities.
+
 ## [1.0.0-beta 10] - 2020-09-15
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
