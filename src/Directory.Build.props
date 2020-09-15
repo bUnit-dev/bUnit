@@ -15,7 +15,7 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>		
 	</PropertyGroup>
 	
-	<PropertyGroup Condition="$(MSBuildProjectName)!='bunit.template' AND $(MSBuildProjectName)!='bunit'">
+	<PropertyGroup Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
 		<TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
 		<LangVersion>8.0</LangVersion>
 		<Nullable>enable</Nullable>
@@ -23,11 +23,11 @@
 		<Deterministic>true</Deterministic>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND $(MSBuildProjectName)!='bunit.template' AND $(MSBuildProjectName)!='bunit'">
+	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1' AND $(MSBuildProjectName)!='bunit.template' AND $(MSBuildProjectName)!='bunit'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1' AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.1" />
@@ -35,7 +35,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.1" />
 	</ItemGroup>
 	
-	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0' AND $(MSBuildProjectName)!='bunit.template' AND $(MSBuildProjectName)!='bunit'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0' AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.0-rc.1.*" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-rc.1.*" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0-rc.1.*" />
@@ -43,7 +43,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-rc.1.*" />
 	</ItemGroup>
 
-	<ItemGroup Condition="$(MSBuildProjectName)!='bunit.template' AND $(MSBuildProjectName)!='bunit'">
+	<ItemGroup Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
 		<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

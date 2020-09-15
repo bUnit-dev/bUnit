@@ -78,7 +78,7 @@ namespace Bunit
 			var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
 			var components = renderer.FindComponents<TComponent>(renderedFragment);
 
-			return components.Cast<IRenderedComponent<TComponent>>().NotNull().ToArray();
+			return components.OfType<IRenderedComponent<TComponent>>().ToArray();
 		}
 	}
 }

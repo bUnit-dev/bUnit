@@ -86,9 +86,8 @@ jobs:
 
       - name: Running unit tests
         run: |
-          dotnet test tests/bunit.core.tests -c Debug /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
-          dotnet test tests/bunit.web.tests -c Debug /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
-          dotnet test tests/bunit.xunit.tests -c Debug /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
+          dotnet build -c Debug /nowarn:CS1591  /p:UseSourceLink=true
+          dotnet test -c Debug --no-build /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
@@ -140,11 +139,12 @@ jobs:
 
       - name: Creating library package
         run: |
-          dotnet pack src/bunit.core/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit.web/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit.xunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
+          dotnet build -c Release -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit.core/ --no-build -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit.web/ --no-build -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit.xunit/ --no-build -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit/ --no-build -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit.template/ --no-build -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
 
       - name: Verifying template
         run: |

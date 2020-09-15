@@ -4,24 +4,24 @@
 		<IsPackable>false</IsPackable>
 		<LangVersion>8.0</LangVersion>
 		<Nullable>enable</Nullable>
-		<!--<WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>-->
+		<WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' AND $(MSBuildProjectName)!='bunit.testassets'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' AND $(MSBuildProjectName) != 'bunit.testassets'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.1" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0' AND $(MSBuildProjectName)!='bunit.testassets'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0' AND $(MSBuildProjectName) != 'bunit.testassets'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-rc.1.*" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0-rc.1.*" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-rc.1.*" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-rc.1.*" />
 	</ItemGroup>
 
-	<ItemGroup Condition="$(MSBuildProjectName)!='bunit.testassets'">
+	<ItemGroup Condition="$(MSBuildProjectName) != 'bunit.testassets'">
 		<PackageReference Include="AngleSharp" Version="0.14.0" />
 		<PackageReference Include="AngleSharp.Css" Version="0.14.0" />
 		<PackageReference Include="AngleSharp.Diffing" Version="0.14.0" />

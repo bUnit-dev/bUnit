@@ -38,7 +38,7 @@ namespace Bunit.TestDoubles.JSInterop
 			else if (arguments.Count == 1)
 				return $"with the argument [{arguments[0]}]";
 			else
-				return $"with arguments [{string.Join(", ", arguments.NotNull().Select(x => x.ToString()))}]";
+				return $"with arguments [{string.Join(", ", arguments.OfType<object>().Select(x => x.ToString()))}]";
 		}
 	}
 }

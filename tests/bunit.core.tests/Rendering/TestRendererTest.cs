@@ -271,8 +271,7 @@ namespace Bunit.Rendering
 
 			// act
 			var childCuts = sut.FindComponents<HasParams>(cut)
-				.Cast<IRenderedComponent<HasParams>>()
-				.NotNull()
+				.OfType<IRenderedComponent<HasParams>>()
 				.ToList();
 
 			// assert
