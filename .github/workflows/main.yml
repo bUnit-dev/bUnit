@@ -85,7 +85,10 @@ jobs:
           }
 
       - name: Running unit tests
-        run: dotnet test -c Debug /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
+        run: |
+          dotnet test tests/bunit.core.tests -c Debug /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
+          dotnet test tests/bunit.web.tests -c Debug /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
+          dotnet test tests/bunit.xunit.tests -c Debug /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
