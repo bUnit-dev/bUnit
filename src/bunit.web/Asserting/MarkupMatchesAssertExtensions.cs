@@ -1,9 +1,6 @@
 using System;
-
 using AngleSharp.Dom;
-
 using Bunit.Diffing;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit

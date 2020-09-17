@@ -1,10 +1,8 @@
 using System;
 using System.Threading.Tasks;
-
 using Bunit.Diffing;
 using Bunit.Extensions;
 using Bunit.RazorTesting;
-
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit

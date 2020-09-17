@@ -2,16 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using System.Threading.Tasks;
-
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-
 using Bunit.Diffing;
-using Bunit.Extensions;
-
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering
 {

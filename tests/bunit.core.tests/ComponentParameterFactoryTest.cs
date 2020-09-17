@@ -1,18 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
 using Bunit.TestDoubles.JSInterop;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-
 using Shouldly;
-
 using Xunit;
-
 using static Bunit.ComponentParameterFactory;
 
 namespace Bunit

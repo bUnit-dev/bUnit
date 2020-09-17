@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-
 using Bunit.Asserting;
 using Bunit.Diffing;
 

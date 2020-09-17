@@ -2,7 +2,6 @@ using System;
 using Bunit.TestAssets.SampleComponents;
 using Bunit.TestDoubles.JSInterop;
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit

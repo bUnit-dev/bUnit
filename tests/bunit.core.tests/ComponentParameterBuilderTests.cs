@@ -1,11 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Bunit.TestAssets.SampleComponents;
-
 using Microsoft.AspNetCore.Components;
-
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit

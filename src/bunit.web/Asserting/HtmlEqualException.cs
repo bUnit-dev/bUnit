@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-
 using AngleSharp;
 using AngleSharp.Diffing.Core;
-
 using Bunit;
 using Bunit.Asserting;
 
@@ -14,7 +11,6 @@ namespace Bunit
 	/// <summary>
 	/// Represents an differences between pieces of markup.
 	/// </summary>
-	[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "<Pending>")]
 	public class HtmlEqualException : ActualExpectedAssertException
 	{
 		/// <summary>
@@ -30,7 +26,6 @@ namespace Bunit
 			return $"HTML comparison failed. {userMessage}{Environment.NewLine}{Environment.NewLine}The following errors were found:{Environment.NewLine}{PrintDiffs(diffs)}";
 		}
 
-		[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "<Pending>")]
 		private static string PrintDiffs(IEnumerable<IDiff> diffs)
 		{
 			return string.Join(Environment.NewLine, diffs.Select((x, i) =>

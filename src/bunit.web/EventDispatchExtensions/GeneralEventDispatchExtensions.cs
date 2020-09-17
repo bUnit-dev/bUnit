@@ -1,12 +1,8 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading.Tasks;
-
 using AngleSharp.Dom;
-
 using Bunit.Rendering;
-
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Bunit

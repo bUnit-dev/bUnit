@@ -12,7 +12,7 @@ using Xunit;
 namespace Bunit.Rendering.Internal
 {
 	public partial class HtmlizerTests : TestContext
-	{	
+	{
 		[Theory(DisplayName = "IsBlazorAttribute correctly identifies Blazor attributes")]
 		[InlineData("b-twl12ishk1=\"\"")]
 		[InlineData("blazor:onclick=\"1\"")]
