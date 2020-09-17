@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Bunit.Extensions;
 using Bunit.RazorTesting;
-using Bunit.Rendering;
-
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit

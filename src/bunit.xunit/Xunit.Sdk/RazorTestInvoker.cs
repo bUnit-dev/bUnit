@@ -2,12 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
-
 using Bunit.RazorTesting;
 using Bunit.Rendering;
-
 using Microsoft.Extensions.DependencyInjection;
-
 using Xunit.Abstractions;
 
 namespace Xunit.Sdk

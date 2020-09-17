@@ -1,16 +1,11 @@
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
-
 using AngleSharp;
 using AngleSharp.Dom;
-
 using Bunit.Rendering;
-
 using Moq;
-
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit

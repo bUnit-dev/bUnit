@@ -1,7 +1,5 @@
 using Bunit.TestAssets.SampleComponents;
-
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit

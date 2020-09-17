@@ -1,11 +1,6 @@
 using System;
-using System.Xml.Serialization;
-
 using Bunit.Rendering;
-
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Bunit
 {

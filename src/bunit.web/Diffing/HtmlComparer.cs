@@ -1,12 +1,9 @@
 using System.Collections.Generic;
-
 using AngleSharp.Diffing;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Diffing.Strategies;
 using AngleSharp.Dom;
-
 using AngleSharpWrappers;
-
 using Bunit.Rendering;
 
 namespace Bunit.Diffing

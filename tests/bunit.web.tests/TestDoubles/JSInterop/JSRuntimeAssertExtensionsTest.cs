@@ -1,18 +1,13 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-
 using AngleSharp.Dom;
-
 using Bunit.Asserting;
 using Bunit.Diffing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-
 using Moq;
-
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit.TestDoubles.JSInterop

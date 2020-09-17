@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Linq;
-
 using Microsoft.Extensions.DependencyInjection;
-
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit

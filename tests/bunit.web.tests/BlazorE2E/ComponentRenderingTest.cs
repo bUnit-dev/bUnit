@@ -6,9 +6,7 @@ using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
 using Bunit.TestDoubles.JSInterop;
 using Microsoft.AspNetCore.Components;
-
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit.BlazorE2E
@@ -269,7 +267,7 @@ namespace Bunit.BlazorE2E
 
 			// When we click the button, the region is shown
 			originalButton.Click();
-			fragmentElements.Single();
+			fragmentElements.Single().ShouldNotBeNull();
 
 			// The button itself was preserved, so we can click it again and see the effect
 			originalButton.Click();

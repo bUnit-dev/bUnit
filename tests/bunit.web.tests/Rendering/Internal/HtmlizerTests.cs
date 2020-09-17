@@ -1,6 +1,3 @@
-using System;
-using Bunit.TestAssets.BlazorE2E;
-using Bunit.TestAssets.SampleComponents;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;

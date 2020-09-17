@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-
 using AngleSharp.Dom;
-
 using Bunit.Diffing;
 
 namespace Bunit

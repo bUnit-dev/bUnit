@@ -1,7 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using Bunit.Rendering;
-
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit

@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-
 using AngleSharp.Dom;
-
 using Bunit.Asserting;
-
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit.TestDoubles.JSInterop
