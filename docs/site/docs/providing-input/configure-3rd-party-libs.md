@@ -17,7 +17,7 @@ This section contains a table of 3rd party component libraries that are known to
 
 | Component Library | bUnit compatibility notes | Test context setup guide |
 | ----------------- | ------------------------- | -------------------------|
-| . | . | . |
+| Telerik UI for Blazor | [Feedback is appreciated](https://feedback.telerik.com/blazor) | [Telerik Grid Setup](https://www.telerik.com/blogs/unit-testing-blazor-components-bunit-justmock) |
 
 
 > [!TIP]
