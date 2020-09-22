@@ -31,8 +31,22 @@ namespace Bunit
 		public NewParamBuilder<TComponent> Add<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, Action<NewParamBuilder<TChildComponent>>? childParameterBuilder = null)
 			where TChildComponent : IComponent => Add(parameterSelector, GetRenderFragment(childParameterBuilder));
 
-		public NewParamBuilder<TComponent> Add<TChildComponent>(Expression<Func<TComponent, RenderFragment?>> parameterSelector, string markup)
-			where TChildComponent : IComponent => Add(parameterSelector, markup.ToMarkupRenderFragment());
+		public NewParamBuilder<TComponent> Add(Expression<Func<TComponent, RenderFragment?>> parameterSelector, string markup)
+			=> Add(parameterSelector, markup.ToMarkupRenderFragment());
+
+		public NewParamBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, RenderFragment<TValue>?>> parameterSelector, Func<TValue, string> markupFactory)
+		{
+			if (markupFactory is null) throw new ArgumentNullException(nameof(markupFactory));
+			return Add(parameterSelector, v => b => b.AddMarkupContent(0, markupFactory(v)));
+		}
+
+		public NewParamBuilder<TComponent> Add<TChildComponent, TValue>(Expression<Func<TComponent, RenderFragment<TValue>?>> parameterSelector, Func<TValue, Action<NewParamBuilder<TChildComponent>>> templateFactory)
+			where TChildComponent : IComponent
+		{
+			if (templateFactory is null) throw new ArgumentNullException(nameof(templateFactory));
+
+			return Add(parameterSelector, value => GetRenderFragment(templateFactory(value)));
+		}
 
 		public NewParamBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback>> parameterSelector, Action callback)
 			=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
@@ -84,7 +98,6 @@ namespace Bunit
 		public NewParamBuilder<TComponent> AddChildContent<TChildComponent>(Action<NewParamBuilder<TChildComponent>>? childParameterBuilder = null) where TChildComponent : IComponent
 			=> AddChildContent(GetRenderFragment(childParameterBuilder));
 
-
 		private static (string name, bool isCascading) GetParameterInfo<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
 		{
 			if (parameterSelector is null) throw new ArgumentNullException(nameof(parameterSelector));
@@ -107,7 +120,6 @@ namespace Bunit
 			_parameters.Add(ComponentParameter.CreateParameter(name, value));
 			return this;
 		}
-
 
 		private static RenderFragment GetRenderFragment<TChildComponent>(Action<NewParamBuilder<TChildComponent>>? childParameterBuilder) where TChildComponent : IComponent
 		{

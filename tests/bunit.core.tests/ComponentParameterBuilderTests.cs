@@ -7,7 +7,6 @@ using Bunit.TestDoubles.JSInterop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit
@@ -85,14 +84,14 @@ namespace Bunit
 			VerifyParameter("ValueTypeParam", 42);
 		}
 
-		[Fact(DisplayName = "Null for struct with parameter selector")]
+		[Fact(DisplayName = "Null for struct? with parameter selector")]
 		public void Test002()
 		{
 			Builder.Add(x => x.NullableValueTypeParam, null);
 			VerifyParameter<int?>("NullableValueTypeParam", null);
 		}
 
-		[Fact(DisplayName = "Nullable struct with parameter selector")]
+		[Fact(DisplayName = "Struct? with parameter selector")]
 		public void Test003()
 		{
 			Builder.Add(x => x.NullableValueTypeParam, 1234);
@@ -128,7 +127,7 @@ namespace Bunit
 			Should.Throw<ArgumentNullException>(() => Builder.Add(x => x.EC, null!));
 		}
 
-		[Fact(DisplayName = "Null struct with parameter selector")]
+		[Fact(DisplayName = "Null for EventCallback? with parameter selector")]
 		public void Test011_2()
 		{
 			Builder.Add<EventCallback?>(x => x.NullableEC, null);
@@ -285,7 +284,6 @@ namespace Bunit
 			actualComponent.Markup.ShouldBe(input);
 		}
 
-
 		[Fact(DisplayName = "RenderFragment can be passed as a nested component parameter builder")]
 		public void Test040()
 		{
@@ -312,7 +310,7 @@ namespace Bunit
 		public void Test042()
 		{
 			var input = "<p>42</p>";
-			Builder.Add<InhertedParams>(x => x.OtherFragment, input);
+			Builder.Add(x => x.OtherFragment, input);
 
 			var actual = Builder.Parameters.ShouldHaveSingleItem()
 				.ShouldBeParameter<RenderFragment>("OtherFragment", isCascadingValue: false);
@@ -320,7 +318,55 @@ namespace Bunit
 			actualComponent.Markup.ShouldBe(input);
 		}
 
+		[Fact(DisplayName = "RenderFragment can be passed RenderFragment")]
+		public void Test043()
+		{
+			RenderFragment input = b => b.AddMarkupContent(0, "");
 
+			Builder.Add(x => x.OtherFragment, input);
+
+			Builder.Parameters.ShouldHaveSingleItem()
+				.ShouldBeParameter("OtherFragment", input, isCascadingValue: false);
+		}
+
+		[Fact(DisplayName = "RenderFragment<string>? can be passed as RenderFragment")]
+		public void Test050()
+		{
+			RenderFragment<string> input = s => b => b.AddMarkupContent(0, s);
+
+			Builder.Add(x => x.Template, input);
+
+			Builder.Parameters.ShouldHaveSingleItem()
+				.ShouldBeParameter("Template", input, isCascadingValue: false);
+		}
+
+		[Fact(DisplayName = "RenderFragment<string>? can be passed lambda builder")]
+		public void Test051()
+		{
+			var input = "FOO";
+			Builder.Add(x => x.Template, value => value);
+
+			var actual = Builder.Parameters.ShouldHaveSingleItem()
+				.ShouldBeParameter<RenderFragment<string>>("Template", isCascadingValue: false);
+			var actualComponent = RenderWithRenderFragment(actual(input));
+			actualComponent.Markup.ShouldBe(input);
+		}
+
+		// TODO: Document new feature
+		[Fact(DisplayName = "RenderFragment<string>? can be passed as nested object builder")]
+		public void Test052()
+		{
+			var input = "FOO";
+			Builder.Add<InhertedParams, string>(
+				x => x.Template,
+				value => parameters => parameters.Add(p => p.Param, value)
+			);
+
+			var actual = Builder.Parameters.ShouldHaveSingleItem()
+				.ShouldBeParameter<RenderFragment<string>>("Template", isCascadingValue: false);
+			var actualComponent = RenderWithRenderFragment<InhertedParams>(actual(input));
+			actualComponent.Instance.Param.ShouldBe(input);
+		}
 
 		[Fact(DisplayName = "Can select parameters inherited from base component ")]
 		public void Test101()

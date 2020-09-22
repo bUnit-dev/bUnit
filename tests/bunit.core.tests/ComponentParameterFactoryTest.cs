@@ -32,7 +32,6 @@ namespace Bunit
 			await VerifyEventCallbackParameter(cp);
 		}
 
-
 		[Fact(DisplayName = "EventCallback(Action<object>) creates parameter with provided name and callback")]
 		public async Task Test002()
 		{
@@ -82,7 +81,6 @@ namespace Bunit
 
 			await VerifyEventCallbackParameter<EventArgs>(cp);
 		}
-
 
 		[Fact(DisplayName = "EventCallback(Func<Task>) creates parameter with provided name and callback")]
 		public async Task Test013()
