@@ -15,7 +15,7 @@ namespace Bunit
 			ShouldSatisfyAllConditionsTestExtensions.ShouldSatisfyAllConditions(actual, conds);
 		}
 
-		public static void ShouldBeParameter<T>(this ComponentParameter parameter, string name, [AllowNull] T value, bool isCascadingValue)
+		public static void ShouldBeParameter<T>(this ComponentParameter parameter, string? name, [AllowNull] T value, bool isCascadingValue)
 		{
 			parameter.ShouldSatisfyAllConditions(
 				x => x.Name.ShouldBe(name),
@@ -24,7 +24,7 @@ namespace Bunit
 			);
 		}
 
-		public static T ShouldBeParameter<T>(this ComponentParameter parameter, string name, bool isCascadingValue)
+		public static T ShouldBeParameter<T>(this ComponentParameter parameter, string? name, bool isCascadingValue)
 		{
 			parameter.ShouldSatisfyAllConditions(
 				x => x.Name.ShouldBe(name),

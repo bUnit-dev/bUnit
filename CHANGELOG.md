@@ -12,6 +12,9 @@ List of new features.
 ### Changed
 List of changes in existing functionality.
 
+- Add(object) has been replaced by AddCascadingValue(object)
+- ComponentParameterBuilder renamed to ComponentParameterCollectionBuilder
+
 ### Deprecated
 List of soon-to-be removed features.
 

@@ -15,7 +15,7 @@ namespace Bunit
 	/// <summary>
 	/// A collection for <see cref="ComponentParameter" />
 	/// </summary>
-	public class ComponentParameterCollection : IEnumerable<ComponentParameter>
+	public class ComponentParameterCollection : ICollection<ComponentParameter>, IReadOnlyCollection<ComponentParameter>, IEnumerable<ComponentParameter>
 	{
 		private static readonly MethodInfo CreateTemplateWrapperMethod = GetCreateTemplateWrapperMethod();
 		private static readonly Type CascadingValueType = typeof(CascadingValue<>);
@@ -25,6 +25,9 @@ namespace Bunit
 		/// Gets the number of <see cref="ComponentParameter"/> in the collection.
 		/// </summary>
 		public int Count => _parameters?.Count ?? 0;
+
+		/// <inheritdoc />
+		public bool IsReadOnly { get; }
 
 		/// <summary>
 		/// Adds a <paramref name="parameter"/> to the collection.
@@ -61,6 +64,15 @@ namespace Bunit
 		/// <param name="parameter">Parameter to check with.</param>
 		/// <returns>True if <paramref name="parameter"/> is in the collection, false otherwise.</returns>
 		public bool Contains(ComponentParameter parameter) => _parameters?.Contains(parameter) ?? false;
+
+		/// <inheritdoc/>
+		public void Clear() => _parameters?.Clear();
+
+		/// <inheritdoc/>
+		public void CopyTo(ComponentParameter[] array, int arrayIndex) => _parameters?.CopyTo(array, arrayIndex);
+
+		/// <inheritdoc/>
+		public bool Remove(ComponentParameter item) => _parameters?.Remove(item) ?? false;
 
 		/// <summary>
 		/// Creates a <see cref="RenderFragment"/> that will render a
