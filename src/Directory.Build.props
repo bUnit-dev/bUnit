@@ -18,10 +18,11 @@
 	
 	<PropertyGroup Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
 		<TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
-		<LangVersion>8.0</LangVersion>
+		<LangVersion>9.0</LangVersion>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>
 		<Deterministic>true</Deterministic>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">

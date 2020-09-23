@@ -22,7 +22,7 @@ namespace Bunit.Extensions
 		{
 			if (renderer is null) throw new ArgumentNullException(nameof(renderer));
 
-			var resultBase = renderer.RenderComponent<TComponent>(parameters);
+			var resultBase = renderer.RenderComponent<TComponent>(new ComponentParameterCollection { parameters });
 			if (resultBase is IRenderedComponent<TComponent> result)
 				return result;
 			else

@@ -90,7 +90,7 @@ namespace Bunit.Rendering
 
 		private void AssertNoUnhandledExceptions()
 		{
-			if (_unhandledException is { } unhandled)
+			if (_unhandledException is Exception unhandled)
 			{
 				_unhandledException = null;
 				ExceptionDispatchInfo.Capture(unhandled).Throw();

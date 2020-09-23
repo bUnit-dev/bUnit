@@ -46,9 +46,9 @@ namespace Bunit
 
 			Services.AddDefaultTestContextServices();
 
-			if (Setup is { })
+			if (Setup is not null)
 				TryRun(Setup, this);
-			if (SetupAsync is { })
+			if (SetupAsync is not null)
 				await TryRunAsync(SetupAsync, this).ConfigureAwait(false);
 
 			var renderedTestInput = (IRenderedFragment)Renderer.RenderFragment(TestInput!);

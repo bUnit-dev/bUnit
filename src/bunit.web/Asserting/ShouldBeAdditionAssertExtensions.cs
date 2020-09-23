@@ -29,7 +29,7 @@ namespace Bunit
 			var actual = actualChange as UnexpectedNodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Unexpected, "The change was not an addition.");
 
 			INodeList expected;
-			if (actual.Test.Node.GetHtmlParser() is { } parser)
+			if (actual.Test.Node.GetHtmlParser() is HtmlParser parser)
 			{
 				expected = parser.Parse(expectedChange);
 			}

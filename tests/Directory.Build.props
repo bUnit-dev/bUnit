@@ -2,9 +2,10 @@
 	<PropertyGroup>
 		<TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
 		<IsPackable>false</IsPackable>
-		<LangVersion>8.0</LangVersion>
+		<LangVersion>9.0</LangVersion>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' AND $(MSBuildProjectName) != 'bunit.testassets'">
