@@ -38,7 +38,7 @@ namespace Bunit
 		/// invokes the <paramref name="parameterAdder"/> with it as the argument.
 		/// </summary>		
 		public ComponentParameterCollectionBuilder(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterAdder)
-		{			
+		{
 			parameterAdder?.Invoke(this);
 		}
 
