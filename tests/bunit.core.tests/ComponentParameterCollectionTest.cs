@@ -56,7 +56,7 @@ namespace Bunit
 		{
 			var sut = new ComponentParameterCollection();
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var c = RenderWithRenderFragment(rf).Instance;
 			c.VerifyParamsHaveDefaultValues();
@@ -72,7 +72,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter(nameof(Params.NullableValueTypeParam), 1337)
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var c = RenderWithRenderFragment(rf).Instance;
 			c.Param.ShouldBe("FOO");
@@ -88,7 +88,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter(nameof(Params.ChildContent), (RenderFragment)(b => b.AddMarkupContent(0, "FOO")))
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var rc = RenderWithRenderFragment(rf);
 			rc.Markup.ShouldBe("FOO");
@@ -104,7 +104,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter(nameof(Params.ChildContent), (RenderFragment)(b => b.AddMarkupContent(0, "BAZ")))
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var rc = RenderWithRenderFragment(rf);
 			rc.Markup.ShouldBe("FOOBARBAZ");
@@ -118,7 +118,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter(nameof(Params.OtherFragment), (RenderFragment)(b => b.AddMarkupContent(0, "FOO")))
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var rc = RenderWithRenderFragment(rf);
 			rc.Markup.ShouldBe("FOO");
@@ -134,7 +134,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter(nameof(Params.OtherFragment), (RenderFragment)(b => b.AddMarkupContent(0, "BAZ")))
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var rc = RenderWithRenderFragment(rf);
 			rc.Markup.ShouldBe("FOOBARBAZ");
@@ -148,7 +148,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter("attr", "")
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var c = RenderWithRenderFragment(rf).Instance;
 			c.Attributes?.ContainsKey("attr").ShouldBeTrue();
@@ -171,7 +171,7 @@ namespace Bunit
 			};
 
 			// act
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			// assert
 			var c = RenderWithRenderFragment(rf).Instance;
@@ -189,7 +189,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter(nameof(Params.Template), (RenderFragment<string>)(s => b => b.AddMarkupContent(0, s)))
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var rc = RenderWithRenderFragment(rf);
 			rc.Markup.ShouldBe(Params.TemplateContent);
@@ -204,7 +204,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter(nameof(Params.Template), (RenderFragment<string>)(s => b => b.AddMarkupContent(0, $"{s}2")))
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var rc = RenderWithRenderFragment(rf);
 			rc.Markup.ShouldBe($"{Params.TemplateContent}1{Params.TemplateContent}2");
@@ -219,7 +219,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter(nameof(Params.Template), (RenderFragment<int>)(s => b => b.AddMarkupContent(0, $"{s}2")))
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			Should.Throw<ArgumentException>(() => RenderWithRenderFragment(rf));
 		}
@@ -233,7 +233,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter(nameof(Params.OtherFragment), (RenderFragment)(b => b.AddMarkupContent(0, "BAR")))
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var rc = RenderWithRenderFragment(rf);
 			rc.Markup.ShouldBe("BAR");
@@ -248,7 +248,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter(nameof(Params.Param), "BAR")
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			Should.Throw<ArgumentException>(() => RenderWithRenderFragment(rf));
 		}
@@ -262,7 +262,7 @@ namespace Bunit
 				ComponentParameter.CreateParameter(nameof(Params.Param), null)
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			Should.Throw<ArgumentException>(() => RenderWithRenderFragment(rf));
 		}
@@ -275,7 +275,7 @@ namespace Bunit
 				ComponentParameter.CreateCascadingValue(null, "FOO")
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var c = RenderWithRenderFragment(rf).Instance;
 			c.NullableCC.ShouldBe("FOO");
@@ -290,7 +290,7 @@ namespace Bunit
 				ComponentParameter.CreateCascadingValue(null, 42)
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var c = RenderWithRenderFragment(rf).Instance;
 			c.NullableCC.ShouldBe("FOO");
@@ -308,7 +308,7 @@ namespace Bunit
 				ComponentParameter.CreateCascadingValue(null, Array.Empty<string>())
 			};
 
-			Should.Throw<ArgumentException>(() => sut.ToComponentRenderFragment<Params>());
+			Should.Throw<ArgumentException>(() => sut.ToRenderFragment<Params>());
 		}
 
 		[Fact(DisplayName = "ToComponentRenderFragment wraps component in named cascading values in RenderFragment")]
@@ -319,7 +319,7 @@ namespace Bunit
 				ComponentParameter.CreateCascadingValue(nameof(Params.NullableNamedCC), "FOO")
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var c = RenderWithRenderFragment(rf).Instance;
 			c.NullableNamedCC.ShouldBe("FOO");
@@ -335,7 +335,7 @@ namespace Bunit
 				ComponentParameter.CreateCascadingValue(nameof(Params.AnotherNamedCC), 1337)
 			};
 
-			var rf = sut.ToComponentRenderFragment<Params>();
+			var rf = sut.ToRenderFragment<Params>();
 
 			var c = RenderWithRenderFragment(rf).Instance;
 			c.NullableNamedCC.ShouldBe("FOO");
@@ -354,7 +354,7 @@ namespace Bunit
 				ComponentParameter.CreateCascadingValue(nameof(Params.NamedCC), 42)
 			};
 
-			Should.Throw<ArgumentException>(() => sut.ToComponentRenderFragment<Params>());
+			Should.Throw<ArgumentException>(() => sut.ToRenderFragment<Params>());
 		}
 
 		private class Params : ComponentBase

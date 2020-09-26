@@ -367,7 +367,6 @@ namespace Bunit
 			actualComponent.Markup.ShouldBe(input);
 		}
 
-		// TODO: Document new feature
 		[Fact(DisplayName = "RenderFragment<T>? can be passed as nested object builder")]
 		public void Test052()
 		{
@@ -411,14 +410,14 @@ namespace Bunit
 			Builder.Add(p => p.RFCC, "BAZ");
 
 			Builder.Build().ShouldAllBe(
-				x => x.ShouldBeParameter("NullableCC", "FOO", isCascadingValue: true),
-				x => x.ShouldBeParameter("CC", 1, isCascadingValue: true),
-				x => x.ShouldBeParameter("NullableNamedCC", "BAR", isCascadingValue: true),
-				x => x.ShouldBeParameter("NamedCC", 2, isCascadingValue: true),
-				x => x.ShouldBeParameter("AnotherNamedCC", 3, isCascadingValue: true),
+				x => x.ShouldBeParameter(null, "FOO", isCascadingValue: true),
+				x => x.ShouldBeParameter(null, 1, isCascadingValue: true),
+				x => x.ShouldBeParameter("NullableNamedCCNAME", "BAR", isCascadingValue: true),
+				x => x.ShouldBeParameter("NamedCCNAME", 2, isCascadingValue: true),
+				x => x.ShouldBeParameter("AnotherNamedCCNAME", 3, isCascadingValue: true),
 				x =>
 				{
-					var rf = x.ShouldBeParameter<RenderFragment>("RFCC", isCascadingValue: true);
+					var rf = x.ShouldBeParameter<RenderFragment>(null, isCascadingValue: true);
 					RenderWithRenderFragment(rf).Markup.ShouldBe("BAZ");
 				}
 			);
@@ -513,9 +512,9 @@ namespace Bunit
 			[Parameter] public RenderFragment<string>? Template { get; set; }
 			[CascadingParameter] public string? NullableCC { get; set; }
 			[CascadingParameter] public int CC { get; set; } = -1;
-			[CascadingParameter(Name = nameof(NullableNamedCC))] public string? NullableNamedCC { get; set; }
-			[CascadingParameter(Name = nameof(NamedCC))] public int NamedCC { get; set; } = -1;
-			[CascadingParameter(Name = nameof(AnotherNamedCC))] public int AnotherNamedCC { get; set; } = -1;
+			[CascadingParameter(Name = nameof(NullableNamedCC) + "NAME")] public string? NullableNamedCC { get; set; }
+			[CascadingParameter(Name = nameof(NamedCC) + "NAME")] public int NamedCC { get; set; } = -1;
+			[CascadingParameter(Name = nameof(AnotherNamedCC) + "NAME")] public int AnotherNamedCC { get; set; } = -1;
 			[CascadingParameter] public RenderFragment? RFCC { get; set; }
 			public int _nonParam = -1;
 			public object? NonParamProp { get; set; }

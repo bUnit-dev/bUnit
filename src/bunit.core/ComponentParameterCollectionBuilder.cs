@@ -322,7 +322,11 @@ namespace Bunit
 			if (paramAttr is null && cascadingParamAttr is null)
 				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter] attribute.");
 
-			return (propertyInfo.Name, cascadingParamAttr is not null);
+			var name = cascadingParamAttr is not null
+				? cascadingParamAttr.Name
+				: propertyInfo.Name;
+
+			return (name, cascadingParamAttr is not null);
 		}
 
 		private static bool HasChildContentParameter()
@@ -344,7 +348,7 @@ namespace Bunit
 		private static RenderFragment GetRenderFragment<TChildComponent>(Action<ComponentParameterCollectionBuilder<TChildComponent>>? childParameterBuilder) where TChildComponent : IComponent
 		{
 			var childBuilder = new ComponentParameterCollectionBuilder<TChildComponent>(childParameterBuilder);
-			return childBuilder.Build().ToComponentRenderFragment<TChildComponent>();
+			return childBuilder.Build().ToRenderFragment<TChildComponent>();
 		}
 	}
 }

@@ -188,7 +188,7 @@ namespace Bunit
 		public static ComponentParameter RenderFragment<TComponent>(string name, params ComponentParameter[] parameters) where TComponent : class, IComponent
 		{
 			var cpc = new ComponentParameterCollection() { parameters };
-			return ComponentParameter.CreateParameter(name, cpc.ToComponentRenderFragment<TComponent>());
+			return ComponentParameter.CreateParameter(name, cpc.ToRenderFragment<TComponent>());
 		}
 
 		/// <summary>

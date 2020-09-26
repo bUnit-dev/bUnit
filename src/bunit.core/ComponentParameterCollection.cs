@@ -80,7 +80,7 @@ namespace Bunit
 		/// the parameters in the collection passed to it.
 		/// </summary>
 		/// <typeparam name="TComponent">Type of component to render.</typeparam>
-		public RenderFragment ToComponentRenderFragment<TComponent>() where TComponent : IComponent
+		public RenderFragment ToRenderFragment<TComponent>() where TComponent : IComponent
 		{
 			var cascadingValues = GetCascadingValues();
 

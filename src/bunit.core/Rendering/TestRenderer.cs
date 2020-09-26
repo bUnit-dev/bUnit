@@ -44,7 +44,7 @@ namespace Bunit.Rendering
 		{
 			if (parameters is null) throw new ArgumentNullException(nameof(parameters));
 
-			var renderFragment = parameters.ToComponentRenderFragment<TComponent>();
+			var renderFragment = parameters.ToRenderFragment<TComponent>();
 			return Render(renderFragment, id => _activator.CreateRenderedComponent<TComponent>(id));
 		}
 
