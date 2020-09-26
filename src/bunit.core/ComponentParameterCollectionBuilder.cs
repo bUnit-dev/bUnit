@@ -321,7 +321,7 @@ namespace Bunit
 
 			if (paramAttr is null && cascadingParamAttr is null)
 				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter] attribute.");
-			
+
 			return (propertyInfo.Name, cascadingParamAttr?.Name, cascadingParamAttr is not null);
 		}
 
