@@ -217,5 +217,25 @@ namespace Bunit
 		{
 			return Template<TValue>(name, value => (RenderTreeBuilder builder) => builder.AddMarkupContent(0, markupFactory(value)));
 		}
+
+		/// <summary>
+		/// Creates a template component parameter which will pass the a <see cref="Microsoft.AspNetCore.Components.RenderFragment{TValue}" />
+		/// to the <paramref name="parameterCollectionBuilder"/> at runtime. The parameters returned from it
+		/// will be passed to the <typeparamref name="TComponent"/> and it will be rendered as the template.
+		/// </summary>
+		/// <typeparam name="TComponent">The type of component to render in template.</typeparam>
+		/// <typeparam name="TValue">The value used to build the content.</typeparam>
+		/// <param name="name">Parameter name.</param>
+		/// <param name="parameterCollectionBuilder">The parameter collection builder function that will be passed the template <typeparamref name="TValue"/>.</param>
+		/// <returns>The <see cref="ComponentParameter"/>.</returns>
+		public static ComponentParameter Template<TComponent, TValue>(string name, Func<TValue, ComponentParameter[]> parameterCollectionBuilder)
+			where TComponent : IComponent
+		{			
+			return Template<TValue>(name, value =>
+			{
+				var cpc = new ComponentParameterCollection() { parameterCollectionBuilder(value) };
+				return cpc.ToRenderFragment<TComponent>();
+			});
+		}
 	}
 }

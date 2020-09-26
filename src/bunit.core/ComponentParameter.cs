@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Bunit.Rendering
+namespace Bunit
 {
 	/// <summary>
 	/// Represents a single parameter supplied to an <see cref="Microsoft.AspNetCore.Components.IComponent"/>

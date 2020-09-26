@@ -255,6 +255,20 @@ namespace Bunit
 			renderedFragment.Markup.ShouldBe(EXPECTED);
 		}
 
+		[Fact(DisplayName = "Template<TValue>(string, Func<TValue, string>) creates a parameter with a Template")]
+		public void Test063()
+		{
+			var cp = Template<TestComponent, string>(NAME, value => new ComponentParameter[] {
+				(nameof(TestComponent.Input), value)
+			});
+
+			cp.Name.ShouldBe(NAME);
+			cp.IsCascadingValue.ShouldBeFalse();
+			var template = cp.Value.ShouldBeOfType<RenderFragment<string>>();
+			var renderedFragment = RenderWithRenderFragment(template(EXPECTED));
+			renderedFragment.Markup.ShouldBe(nameof(TestComponent) + EXPECTED);
+		}
+
 		class TestComponent : ComponentBase
 		{
 			[Parameter] public string? Input { get; set; }
