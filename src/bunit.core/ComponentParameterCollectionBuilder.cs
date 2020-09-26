@@ -52,9 +52,9 @@ namespace Bunit
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 		public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, TValue>> parameterSelector, [AllowNull] TValue value)
 		{
-			var (name, isCascading) = GetParameterInfo(parameterSelector);
+			var (name, cascadingValueName, isCascading) = GetParameterInfo(parameterSelector);
 			return isCascading
-				? AddCascadingValueParameter(name, value ?? throw new ArgumentNullException(nameof(value), "Passing null values to cascading value parameters is not allowed."))
+				? AddCascadingValueParameter(cascadingValueName, value)
 				: AddParameter<TValue>(name, value);
 		}
 
@@ -309,7 +309,7 @@ namespace Bunit
 		/// </summary>
 		public ComponentParameterCollection Build() => _parameters;
 
-		private static (string name, bool isCascading) GetParameterInfo<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
+		private static (string paramName, string? cascadingValueName, bool isCascading) GetParameterInfo<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
 		{
 			if (parameterSelector is null) throw new ArgumentNullException(nameof(parameterSelector));
 
@@ -321,12 +321,8 @@ namespace Bunit
 
 			if (paramAttr is null && cascadingParamAttr is null)
 				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter] attribute.");
-
-			var name = cascadingParamAttr is not null
-				? cascadingParamAttr.Name
-				: propertyInfo.Name;
-
-			return (name, cascadingParamAttr is not null);
+			
+			return (propertyInfo.Name, cascadingParamAttr?.Name, cascadingParamAttr is not null);
 		}
 
 		private static bool HasChildContentParameter()
@@ -339,9 +335,10 @@ namespace Bunit
 			return this;
 		}
 
-		private ComponentParameterCollectionBuilder<TComponent> AddCascadingValueParameter(string? name, object cascadingValue)
+		private ComponentParameterCollectionBuilder<TComponent> AddCascadingValueParameter(string? name, object? cascadingValue)
 		{
-			_parameters.Add(ComponentParameter.CreateCascadingValue(name, cascadingValue));
+			var value = cascadingValue ?? throw new ArgumentNullException(nameof(cascadingValue), "Passing null values to cascading value parameters is not allowed.");
+			_parameters.Add(ComponentParameter.CreateCascadingValue(name, value));
 			return this;
 		}
 
