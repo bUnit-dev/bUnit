@@ -1,34 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RazorLangVersion>3.0</RazorLangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="samples\tests\razor\FixtureWithCutAndFragments.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="samples\tests\razor\FixtureWithCutAndFragments.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.4" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="nunit" Version="3.12.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.1.1" />
-    <PackageReference Include="docfx.console" Version="2.53.1">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="docfx.console" Version="2.56.2">
       <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <ProjectReference Include="../../src/bunit.core/bunit.core.csproj" />
     <ProjectReference Include="../../src/bunit.web/bunit.web.csproj" />
     <ProjectReference Include="../../src/bunit.xunit/bunit.xunit.csproj" />
-  </ItemGroup>
+  </ItemGroup>-->
 
 </Project>

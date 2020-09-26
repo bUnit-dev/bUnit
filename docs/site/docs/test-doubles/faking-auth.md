@@ -15,7 +15,7 @@ The test implementation of Blazor's authentication and authorization can be put 
 - **Authenticated** and **authorized** 
 - **Authenticated** and **authorized** with one or more **roles**, **claims**, and/or **policies**
 
-bUnit's authentication and authorization implementation is easily available by calling [AddTestAuthorization()](xref:Bunit.FakeAuthorizationExtensions.AddTestAuthorization(Bunit.TestServiceProvider)) on a test context's `Services` collection. It returns an instance of the <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext> type that allows you to control the authentication and authorization state for a test.
+bUnit's authentication and authorization implementation is easily available by calling [AddTestAuthorization()](xref:Bunit.TestDoubles.Authorization.FakeAuthorizationExtensions.AddTestAuthorization(Bunit.TestServiceProvider)) on a test context's `Services` collection. It returns an instance of the <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext> type that allows you to control the authentication and authorization state for a test.
 
 The following sections will show how to set each of these states in a test.
 
