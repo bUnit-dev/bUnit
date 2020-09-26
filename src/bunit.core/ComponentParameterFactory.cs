@@ -230,7 +230,7 @@ namespace Bunit
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		public static ComponentParameter Template<TComponent, TValue>(string name, Func<TValue, ComponentParameter[]> parameterCollectionBuilder)
 			where TComponent : IComponent
-		{			
+		{
 			return Template<TValue>(name, value =>
 			{
 				var cpc = new ComponentParameterCollection() { parameterCollectionBuilder(value) };
