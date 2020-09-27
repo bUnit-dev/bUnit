@@ -5,6 +5,7 @@ using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Bunit.Asserting;
 using Bunit.Diffing;
+using Bunit.Rendering;
 
 namespace Bunit
 {
@@ -39,7 +40,7 @@ namespace Bunit
 
 			var actual = actualChange as NodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 
-			var parser = actual.Control.Node.Owner.Context.GetService<HtmlParser>();
+			var parser = actual.Control.Node.Owner.Context.GetService<BunitHtmlParser>();
 			var expected = parser.Parse(expectedChange);
 
 			ShouldBeTextChange(actualChange, expected, userMessage);

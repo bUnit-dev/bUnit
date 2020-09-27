@@ -14,7 +14,7 @@ namespace Bunit.Rendering
 	{
 		private readonly object _markupAccessLock = new object();
 		[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Instance is owned by the service provider and should not be disposed here.")]
-		private readonly HtmlParser _htmlParser;
+		private readonly BunitHtmlParser _htmlParser;
 		private string _markup = string.Empty;
 		private string? _snapshotMarkup;
 
@@ -88,7 +88,7 @@ namespace Bunit.Rendering
 		{
 			ComponentId = componentId;
 			Services = service;
-			_htmlParser = Services.GetRequiredService<HtmlParser>();
+			_htmlParser = Services.GetRequiredService<BunitHtmlParser>();
 		}
 
 		/// <inheritdoc/>

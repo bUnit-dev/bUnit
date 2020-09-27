@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Bunit.Diffing;
 using Bunit.Extensions;
 using Bunit.RazorTesting;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -62,7 +63,7 @@ namespace Bunit
 
 		private void VerifySnapshot(string inputHtml, string expectedHtml)
 		{
-			using var parser = new HtmlParser();
+			using var parser = new BunitHtmlParser();
 			var inputNodes = parser.Parse(inputHtml);
 			var expectedNodes = parser.Parse(expectedHtml);
 

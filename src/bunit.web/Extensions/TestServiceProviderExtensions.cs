@@ -26,7 +26,7 @@ namespace Bunit.Extensions
 			services.AddSingleton<IAuthorizationService, PlaceholderAuthorizationService>();
 			services.AddSingleton<IJSRuntime, PlaceholderJSRuntime>();
 			services.AddSingleton<HtmlComparer>();
-			services.AddSingleton<HtmlParser>();
+			services.AddSingleton<BunitHtmlParser>();
 			services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
 			return services;
 		}
