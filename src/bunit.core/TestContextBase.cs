@@ -25,7 +25,7 @@ namespace Bunit
 		}
 
 		/// <inheritdoc/>
-		public virtual TestServiceProvider Services { get; }
+		public TestServiceProvider Services { get; }
 
 		/// <summary>
 		/// Creates a new instance of the <see cref="ITestContext"/> class.

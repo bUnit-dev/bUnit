@@ -33,12 +33,12 @@ namespace Bunit.Rendering
 		IRenderedFragmentBase RenderFragment(RenderFragment renderFragment);
 
 		/// <summary>
-		/// Renders a <typeparamref name="TComponent"/> with the parameters <paramref name="componentParameters"/> passed to it.
+		/// Renders a <typeparamref name="TComponent"/> with the <paramref name="parameters"/> passed to it.
 		/// </summary>
 		/// <typeparam name = "TComponent" > The type of component to render.</typeparam>
-		/// <param name="componentParameters">The parameters to pass to the component.</param>
+		/// <param name="parameters">The parameters to pass to the component.</param>
 		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/> that provides access to the rendered component.</returns>
-		IRenderedComponentBase<TComponent> RenderComponent<TComponent>(IEnumerable<ComponentParameter> componentParameters)
+		IRenderedComponentBase<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 			where TComponent : IComponent;
 
 		/// <summary>

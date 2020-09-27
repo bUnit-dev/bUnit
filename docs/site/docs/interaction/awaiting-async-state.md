@@ -9,11 +9,11 @@ A test can fail if a component performs asynchronous renders, e.g. because it wa
 
 This happens because tests execute in the test framework's synchronization context and the test renderer executes renders in its own synchronization context.
 
-bUnit comes with two methods that helps deal with this issue, the [`WaitForState(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) method covered on this page, and the [`WaitForAssertion(Action, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})) method covered on the <xref:async-assertion> page.
+bUnit comes with two methods that helps deal with this issue, the `WaitForState(Func<Boolean>, TimeSpan?)` method covered on this page, and the `WaitForAssertion(Action, TimeSpan?)` method covered on the <xref:async-assertion> page.
 
 ## Waiting for State Using `WaitForState`
 
-The [`WaitForState(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) method can be used to block and wait in a test method, until the provided predicate returns true, or the timeout is reached (the default timeout is one second).
+The `WaitForState(Func<Boolean>, TimeSpan?)` method can be used to block and wait in a test method, until the provided predicate returns true, or the timeout is reached (the default timeout is one second).
 
 > [!NOTE]
 > The `WaitForState()` method will try the predicate pass to it when the `WaitForState()` method is called, and every time the component under test renders.
@@ -34,7 +34,7 @@ This is what happens in the test:
 4. Finally, the tests assertion step can execute, knowing that the desired state has been reached.
 
 > [!WARNING]
-> The wait predicate and an assertion should not verify the same thing. Instead, use the [`WaitForAssertion(...)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})) method covered on the <xref:async-assertion> page instead.
+> The wait predicate and an assertion should not verify the same thing. Instead, use the `WaitForAssertion(...)` method covered on the <xref:async-assertion> page instead.
  
 ### Controlling Wait Timeout
 

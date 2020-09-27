@@ -149,7 +149,7 @@ namespace Bunit.TestDoubles.JSInterop
 					var planned = plannedInvocations.OfType<JSRuntimePlannedInvocationBase<TValue>>()
 						.SingleOrDefault(x => x.Matches(invocation));
 
-					if (planned is { })
+					if (planned is not null)
 					{
 						var task = planned.RegisterInvocation(invocation);
 						result = new ValueTask<TValue>(task);

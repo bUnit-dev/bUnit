@@ -9,11 +9,11 @@ A test can fail if a component performs asynchronous renders, e.g. because it wa
 
 This happens because tests execute in the test framework's synchronization context and the test renderer executes renders in its own synchronization context.
 
-bUnit comes with two methods that helps deal with this issue, the [`WaitForAssertion(Action, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})) method covered on this page, and the [`WaitForState(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) method covered on the <xref:awaiting-async-state> page.
+bUnit comes with two methods that helps deal with this issue, the `WaitForAssertion(Action, TimeSpan?)` method covered on this page, and the `WaitForState(Func<Boolean>, TimeSpan?)` method covered on the <xref:awaiting-async-state> page.
 
 ## Waiting for Assertion to Pass Using `WaitForAssertion`
 
-The [`WaitForAssertion(Action, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})) method can be used to block and wait in a test method, until the provided assert action does not throw an exception, or the timeout is reached (the default timeout is one second).
+The `WaitForAssertion(Action, TimeSpan?)` method can be used to block and wait in a test method, until the provided assert action does not throw an exception, or the timeout is reached (the default timeout is one second).
 
 > [!NOTE]
 > The `WaitForAssertion()` method will try the assert action pass to it when the `WaitForAssertion()` method is called, and every time the component under test renders.

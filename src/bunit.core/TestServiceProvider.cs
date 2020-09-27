@@ -23,7 +23,7 @@ namespace Bunit
 		/// Gets whether this <see cref="TestServiceProvider"/> has been initialized, and 
 		/// no longer will accept calls to the <c>AddService</c>'s methods.
 		/// </summary>
-		public bool IsProviderInitialized => _serviceProvider is { };
+		public bool IsProviderInitialized => _serviceProvider is not null;
 
 		/// <inheritdoc/>
 		public int Count => _serviceCollection.Count;

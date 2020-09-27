@@ -5,7 +5,7 @@ title: Verifying the State of a Component Under Test
 
 # Verifying the State of a Component
 
-Calling [`RenderComponent<TComponent>`()](xref:Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterBuilder{``0}})) on a <xref:Bunit.TestContext> or calling <xref:Bunit.Fixture.GetComponentUnderTest``1> on a <xref:Bunit.Fixture> returns an instance of the <xref:Bunit.IRenderedComponent`1> type. 
+Calling [`RenderComponent<TComponent>`()](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},Bunit.Rendering.ComponentParameter[])) on a <xref:Bunit.TestContext> or calling <xref:Bunit.Fixture.GetComponentUnderTest``1> on a <xref:Bunit.Fixture> returns an instance of the <xref:Bunit.IRenderedComponent`1> type. 
 
 The <xref:Bunit.IRenderedComponent`1> type makes it possible to inspect the instance of the component under test (`TComponent`), and trigger re-renders explicitly.
 
@@ -29,7 +29,7 @@ Alert alert = cut.Instance;
 > [!WARNING]
 > While it is possible to set `[Parameter]` and `[CascadingParameter]` properties directly through the <xref:Bunit.IRenderedComponentBase`1.Instance> property on the <xref:Bunit.IRenderedComponent`1> type, doing so does not implicitly trigger a render and the component life-cycle methods are not called. 
 > 
-> The correct approach is to set parameters through the [`SetParametersAndRender()`](xref:Bunit.IRenderedComponentBase`1.SetParametersAndRender(Bunit.Rendering.ComponentParameter[])) methods. See the <xref:trigger-renders> page for more on this.
+> The correct approach is to set parameters through the [`SetParametersAndRender()`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},Bunit.Rendering.ComponentParameter[])) methods. See the <xref:trigger-renders> page for more on this.
 
 ## Finding Components in the Render Tree
 

@@ -40,18 +40,6 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.100-rc.1.20452.10'
-      - name: Move .net SDK's to shared folder (hack)
-        shell: pwsh
-        run: |
-          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-          foreach ($dir in $directories) {
-            $from = $dir.FullName;
-            $to = "$root/$version";
-            Write-Host Copying from $from to $to;
-            Copy-Item "$from\*" $to -Recurse -Force;
-          }
 
       - name: Building library in release mode
         run: dotnet build -c Release -p:ContinuousIntegrationBuild=true
@@ -71,18 +59,6 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.100-rc.1.20452.10'
-      - name: Move .net SDK's to shared folder (hack)
-        shell: pwsh
-        run: |
-          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-          foreach ($dir in $directories) {
-            $from = $dir.FullName;
-            $to = "$root/$version";
-            Write-Host Copying from $from to $to;
-            Copy-Item "$from\*" $to -Recurse -Force;
-          }
 
       - name: Running unit tests
         run: |
@@ -124,18 +100,6 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.100-rc.1.20452.10'
-      - name: Move .net SDK's to shared folder (hack)
-        shell: pwsh
-        run: |
-          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-          foreach ($dir in $directories) {
-            $from = $dir.FullName;
-            $to = "$root/$version";
-            Write-Host Copying from $from to $to;
-            Copy-Item "$from\*" $to -Recurse -Force;
-          }
 
       - name: Creating library package
         run: |
@@ -169,18 +133,6 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.100-rc.1.20452.10'
-      - name: Move .net SDK's to shared folder (hack)
-        shell: pwsh
-        run: |
-          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-          foreach ($dir in $directories) {
-            $from = $dir.FullName;
-            $to = "$root/$version";
-            Write-Host Copying from $from to $to;
-            Copy-Item "$from\*" $to -Recurse -Force;
-          }
 
       - name: Install dotnet-format
         run: dotnet tool install -g dotnet-format
@@ -238,18 +190,6 @@ jobs:
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '5.0.100-rc.1.20452.10'
-    - name: Move .net SDK's to shared folder (hack)
-      shell: pwsh
-      run: |
-        $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-        $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-        $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-        foreach ($dir in $directories) {
-          $from = $dir.FullName;
-          $to = "$root/$version";
-          Write-Host Copying from $from to $to;
-          Copy-Item "$from\*" $to -Recurse -Force;
-        }
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
@@ -296,18 +236,6 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.100-rc.1.20452.10'
-      - name: DOTNET HACK
-        shell: pwsh
-        run: |
-          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-          foreach ($dir in $directories) {
-            $from = $dir.FullName;
-            $to = "$root/$version";
-            Write-Host Copying from $from to $to;
-            Copy-Item "$from\*" $to -Recurse -Force;
-          }
 
       - name: Creating library package for pre-release
         if: github.event_name != 'release'

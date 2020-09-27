@@ -50,8 +50,8 @@ namespace Bunit
 		/// Render the component under test again with the provided parameters from the <paramref name="parameterBuilder"/>.
 		/// </summary>
 		/// <param name="renderedComponent">The rendered component to re-render with new parameters</param>
-		/// <param name="parameterBuilder">An action that receives a <see cref="ComponentParameterBuilder{TComponent}"/>.</param>
-		public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, Action<ComponentParameterBuilder<TComponent>> parameterBuilder)
+		/// <param name="parameterBuilder">An action that receives a <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</param>
+		public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
 			where TComponent : IComponent
 		{
 			if (renderedComponent is null)
@@ -59,14 +59,11 @@ namespace Bunit
 			if (parameterBuilder is null)
 				throw new ArgumentNullException(nameof(parameterBuilder));
 
-			var builder = new ComponentParameterBuilder<TComponent>();
-			parameterBuilder(builder);
-
+			var builder = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder);
 			SetParametersAndRender(renderedComponent, ToParameterView(builder.Build()));
 		}
 
-
-		private static ParameterView ToParameterView(IReadOnlyList<ComponentParameter> parameters)
+		private static ParameterView ToParameterView(IReadOnlyCollection<ComponentParameter> parameters)
 		{
 			var parameterView = ParameterView.Empty;
 			if (parameters.Count > 0)

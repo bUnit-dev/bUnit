@@ -1,13 +1,10 @@
-﻿@typeparam T
+@typeparam T
 @foreach (var d in Data)
 {
-    if (Template is { })
-    {
-        @Template(d);
-    }
+	@Template?.Invoke(d);
 }
 @code
 {
-    [Parameter] public RenderFragment<T>? Template { get; set; }
-    [Parameter] public IReadOnlyList<T> Data { get; set; } = Array.Empty<T>();
+	[Parameter] public RenderFragment<T>? Template { get; set; }
+	[Parameter] public IReadOnlyList<T> Data { get; set; } = Array.Empty<T>();
 }

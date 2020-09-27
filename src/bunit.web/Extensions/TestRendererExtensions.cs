@@ -22,7 +22,7 @@ namespace Bunit.Extensions
 		{
 			if (renderer is null) throw new ArgumentNullException(nameof(renderer));
 
-			var resultBase = renderer.RenderComponent<TComponent>(parameters);
+			var resultBase = renderer.RenderComponent<TComponent>(new ComponentParameterCollection { parameters });
 			if (resultBase is IRenderedComponent<TComponent> result)
 				return result;
 			else
@@ -36,15 +36,13 @@ namespace Bunit.Extensions
 		/// <param name="renderer">The renderer to use.</param>
 		/// <param name="parameterBuilder">The a builder to create parameters to pass to the component.</param>
 		/// <returns>A <see cref="IRenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
-		public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this ITestRenderer renderer, Action<ComponentParameterBuilder<TComponent>> parameterBuilder)
+		public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this ITestRenderer renderer, Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
 			where TComponent : IComponent
 		{
 			if (renderer is null) throw new ArgumentNullException(nameof(renderer));
 			if (parameterBuilder is null) throw new ArgumentNullException(nameof(parameterBuilder));
 
-			var builder = new ComponentParameterBuilder<TComponent>();
-			parameterBuilder(builder);
-
+			var builder = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder);
 			var resultBase = renderer.RenderComponent<TComponent>(builder.Build());
 			if (resultBase is IRenderedComponent<TComponent> result)
 				return result;
