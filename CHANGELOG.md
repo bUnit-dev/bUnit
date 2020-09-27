@@ -9,11 +9,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 List of new features.
 
+- Two new overloads to the `RenderFragment()` and `ChildContent()` component parameter factory methods have been added that takes a `RenderFragment` as input. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
+- Added a `ComponentParameterCollection` type. The `ComponentParameterCollection` is a collection of component parameters, that knows how to turn those components parameters into a `RenderFragment`, which will render a component and pass any parameters inside the collection to that component. That logic was spread out over multiple places in bUnit, and is now owned by the `ComponentParameterCollection` type. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
+
 ### Changed
 List of changes in existing functionality.
 
-- Add(object) has been replaced by AddCascadingValue(object)
-- ComponentParameterBuilder renamed to ComponentParameterCollectionBuilder
+- The `ComponentParameterBuilder` has been renamed to `ComponentParameterCollectionBuilder`, since it now builds the `ComponentParameterCollection` type, introduced in this release of bUnit. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
+- `ComponentParameterCollectionBuilder` now allows adding cascading values that is not directly used by the component type it targets. This makes it possible to add cascading values to children of the target component. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
+- The `Add(object)` has been replaced by `AddCascadingValue(object)` in `ComponentParameterCollectionBuilder`, to make it more clear that an unnnamed cascading value is being passed to the target component or one of its child components. It it is also possible to pass unnamed cascading values using the `Add(parameterSelector, value)` method, which now correctly detect if the selected cascading value parameter is named or unnamed. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
+- It is now possible to call the `Add()`, `AddChildContent()` methods on `ComponentParameterCollectionBuilder`, and the factory methods `RenderFragment()`, `ChildContent()`, and `Template()`, _**multiple times**_ for the same parameter, if it is of type `RenderFragment` or `RenderFragment<TValue>`. Doing so previously would either result in an exception or just the last passed `RenderFragment` to be used. Now all the provided `RenderFragment` or `RenderFragment<TValue>` will be combined at runtime into a single `RenderFragment` or `RenderFragment<TValue>`.
+
+  For example, this makes it easier to pass e.g. both a markup string and a component to a `ChildContent` parameter:
+   
+  ```csharp
+  var cut = ctx.RenderComponent<Component>(parameters => parameters
+    .AddChildContent("<h1>Below you will find a most interesting alert!</h1>")
+    .AddChildContent<Alert>(childParams => childParams
+      .Add(p => p.Heading, "Alert heading")
+      .Add(p => p.Type, AlertType.Warning)
+      .AddChildContent("<p>Hello World</p>")
+    )
+  );
+  ```
+  By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).  
 
 ### Deprecated
 List of soon-to-be removed features.
@@ -23,6 +42,8 @@ List of now removed features.
 
 ### Fixed
 List of any bug fixes.
+
+- Using the ComponentParameterCollectionBuilder's `Add(p => p.Param, value)` method to add a unnamed cascading value didn't create an unnnamed cascading value parameter. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203). Credits to [Ben Sampica (@benjaminsampica)](https://github.com/benjaminsampica) for reporting and helping investigate this issue.
 
 ### Security
 List of fixed security vulnerabilities.
