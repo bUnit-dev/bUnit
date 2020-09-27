@@ -85,7 +85,7 @@ namespace Xunit.Sdk
 					break;
 			}
 
-			return razorFile is { };
+			return razorFile is not null;
 		}
 
 		private SourceFileFinder GetSourceFileFinderForType(Type testComponent)
@@ -128,7 +128,7 @@ namespace Xunit.Sdk
 				result = line[GENERATED_FILE_REF_PREFIX.Length..refFileEndIndex];
 			}
 
-			return result is { };
+			return result is not null;
 		}
 
 		private static int? FindLineNumber(string razorFile, RazorTestBase test, int testNumber)

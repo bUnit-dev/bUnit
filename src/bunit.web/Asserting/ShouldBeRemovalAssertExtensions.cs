@@ -29,7 +29,7 @@ namespace Bunit
 			var actual = actualChange as MissingNodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Missing, "The change was not an removal.");
 
 			INodeList expected;
-			if (actual.Control.Node.GetHtmlParser() is { } parser)
+			if (actual.Control.Node.GetHtmlParser() is HtmlParser parser)
 			{
 				expected = parser.Parse(expectedChange);
 			}

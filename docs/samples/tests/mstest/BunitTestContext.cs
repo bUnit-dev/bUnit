@@ -29,7 +29,7 @@ namespace Bunit.Docs.Samples
     public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
         => _context?.RenderComponent<TComponent>(parameters) ?? throw new InvalidOperationException("MSTest has not started executing tests yet");
 
-    public IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterBuilder<TComponent>> parameterBuilder) where TComponent : IComponent
+    public IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder) where TComponent : IComponent
         => _context?.RenderComponent<TComponent>(parameterBuilder) ?? throw new InvalidOperationException("MSTest has not started executing tests yet");
   }
 }

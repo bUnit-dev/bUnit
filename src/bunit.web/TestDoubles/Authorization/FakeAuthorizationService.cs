@@ -78,7 +78,7 @@ namespace Bunit.TestDoubles.Authorization
 			{
 				result = VerifyRequiredRoles(requirements);
 			}
-			else if (_supportedPolicies is { })
+			else if (_supportedPolicies is not null)
 			{
 				result = VerifyRequiredPolicies(requirements);
 			}

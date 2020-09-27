@@ -10,10 +10,13 @@ for ($num = 1 ; $num -le $maxRuns ; $num++)
 	
 	if($filter)
 	{
-		dotnet test ..\bunit.sln -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s -f net5.0 --nologo --filter $filter
+		dotnet test .\bunit.core.tests\bunit.core.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s -f net5.0 --nologo --filter $filter
+		dotnet test .\bunit.web.tests\bunit.web.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s -f net5.0 --nologo --filter $filter
+		dotnet test .\bunit.xunit.tests\bunit.xunit.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s -f net5.0 --nologo --filter $filter
 	}
 	else
 	{
-		dotnet test ..\bunit.sln -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s -f net5.0 --nologo
+		dotnet test .\bunit.web.tests\bunit.web.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s -f net5.0 --nologo
+		dotnet test .\bunit.xunit.tests\bunit.xunit.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s -f net5.0 --nologo 
 	}
 }

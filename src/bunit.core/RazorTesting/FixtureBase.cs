@@ -67,7 +67,7 @@ namespace Bunit.RazorTesting
 				throw new ArgumentException($"No '{nameof(ChildContent)}' specified in the {GetType().Name} component.", nameof(ChildContent));
 			if (Test is null && TestAsync is null)
 				throw new ArgumentException($"No test action provided via the '{nameof(Test)}' or '{nameof(TestAsync)}' parameters to the {GetType().Name} component.", nameof(Test));
-			if (Test is { } && TestAsync is { })
+			if (Test is not null && TestAsync is not null)
 				throw new ArgumentException($"Only one of the '{nameof(Test)}' or '{nameof(TestAsync)}' actions can be provided to the {GetType().Name} component at the same time.", nameof(Test));
 		}
 
@@ -75,16 +75,16 @@ namespace Bunit.RazorTesting
 		protected virtual async Task Run(TFixture self)
 		{
 			Validate();
-			if (Setup is { })
+			if (Setup is not null)
 				TryRun(Setup, self);
 
-			if (SetupAsync is { })
+			if (SetupAsync is not null)
 				await TryRunAsync(SetupAsync, self).ConfigureAwait(false);
 
-			if (Test is { })
+			if (Test is not null)
 				TryRun(Test, self);
 
-			if (TestAsync is { })
+			if (TestAsync is not null)
 				await TryRunAsync(TestAsync, self).ConfigureAwait(false);
 		}
 	}

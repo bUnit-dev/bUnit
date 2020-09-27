@@ -103,7 +103,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// assert
 			Assert.Equal("AuthenticationStateProvider", ex.ServiceName);
-			Assert.Equal("https://bunit.egilhansen.com/docs/test-doubles/faking-auth.html", ex.HelpLink);
+			Assert.Equal("https://bunit.egilhansen.com/docs/test-doubles/faking-auth", ex.HelpLink);
 		}
 
 		[Fact(DisplayName = "AuthorizeView with set policy with authenticated and authorized user")]
