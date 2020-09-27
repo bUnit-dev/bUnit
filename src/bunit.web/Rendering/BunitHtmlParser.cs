@@ -16,7 +16,7 @@ namespace Bunit.Rendering
 		private const string TBODY_SUB_ELEMENT = "TR";
 		private static readonly string[] TR_SUB_ELEMENTS = { "TD", "TH" };
 		private const string COLGROUP_SUB_ELEMENT = "COL";
-		private static readonly string[] HTML_SUB_ELEMENTS = { "HEAD", "BODY" };
+		//private static readonly string[] HTML_SUB_ELEMENTS = { "HEAD", "BODY" };
 
 		private readonly IBrowsingContext _context;
 		private readonly IHtmlParser _htmlParser;
