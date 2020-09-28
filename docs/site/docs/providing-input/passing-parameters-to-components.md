@@ -70,7 +70,7 @@ All of these examples do the same thing, here is what is going on:
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L3-L7)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L3-L7)]
 
 This is just regular Blazor parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -95,7 +95,7 @@ These examples o the same thing, here is what is going on:
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L9-L14)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L9-L14)]
 
 This is just regular Blazor parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -122,7 +122,7 @@ These examples do the same thing, here is what is going on:
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L16-L22)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L16-L22)]
 
 This is just regular Blazor child content parameter passing, e.g. as child content to the component under test, which is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -143,7 +143,7 @@ These examples do the same thing, here is what is going on:
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L24-L30)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L24-L30)]
 
 This is just regular Blazor child content parameter passing, where the `<Counter />` component is declared inside the component under test.  This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -166,7 +166,7 @@ These examples do the same thing, here is what is going on:
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L32-L40)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L32-L40)]
 
 This is just regular Blazor child content parameter passing, where the `<Alert>` component is declared inside the component under test, and any parameters is passed to it like normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -184,7 +184,7 @@ Passing a mix of markup and a component to a `ChildContent` parameter is current
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L42-L51)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L42-L51)]
 
 This is just regular Blazor child content parameter passing, where regular HTML markup and an `<Alert>` component is declared inside the component under test, and any parameters is passed to it like normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -213,7 +213,7 @@ These examples do the same thing, here is what is going on:
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L53-L61)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L53-L61)]
 
 This is just regular Blazor `RenderFragment` parameter passing, e.g. as markup in the component under test's `<Content>` element, which is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -234,7 +234,7 @@ These examples do the same thing, here is what is going on:
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L63-L71)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L63-L71)]
 
 This is just regular Blazor child content parameter passing, where the `<Counter />` component is declared inside component under test's `<Content>` element.  This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -257,7 +257,7 @@ These examples do the same thing, here is what is going on:
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L73-L83)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L73-L83)]
 
 This is just regular Blazor `RenderFragment` parameter passing, where the `<Alert>` component is declared inside the component under test's `<Content>` element, and any parameters is passed to it like normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -275,7 +275,7 @@ Passing a mix of markup and a component to a `RenderFragment` parameter is curre
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L85-L96)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L85-L96)]
 
 This is just regular Blazor `RenderFragment` parameter passing, where regular HTML markup and an `<Alert>` component is declared inside the component under test's `<Content>` element, and any parameters is passed to it like normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -306,7 +306,7 @@ The delegate creates a simple markup string in both examples.
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L98-L109)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L98-L109)]
 
 This is just regular Blazor `RenderFragment<TValue>` parameter passing, in this case, to the `Template` parameter. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -329,7 +329,7 @@ These examples do the same thing, i.e. create a template which consist of a `<di
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L108-L118)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L108-L118)]
 
 This is just regular Blazor `RenderFragment<TValue>` parameter passing, in this case, to the `Template` parameter. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -351,7 +351,7 @@ These examples do the same thing, i.e. pass in the parameter `some-unknown-param
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L120-L124)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L120-L124)]
 
 This is just regular Blazor parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests. In this case, the parameter `some-unknown-param` with the value `a value` is passed to the component under test.
 
@@ -381,7 +381,7 @@ These examples do the same thing, i.e. pass in variable `isDarkTheme` to the cas
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L126-L132)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L126-L132)]
 
 This is just regular Blazor cascading value parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests. In this case, the `<CascadingValue>` component is used to pass the unnamed parameter value.
 
@@ -402,7 +402,7 @@ These examples do the same thing, i.e. pass in value `Egil Hansen` to the cascad
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L134-L140)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L134-L140)]
 
 This is just regular Blazor cascading value parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests. In this case, the `<CascadingValue>` component is used to pass a named parameter value, since both the `Name` and `Value` parameters are specified.
 
@@ -424,7 +424,7 @@ These examples do the same thing, i.e. pass both the unnamed `IsDarkTheme` casca
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L142-L152)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L142-L152)]
 
 This is just regular Blazor cascading value parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests. In this case, multiple `<CascadingValue>` components is used to pass the unnamed and named cascading parameter values to the component.
 
@@ -442,7 +442,7 @@ These examples do the same thing, i.e. rendering the `<HelloWorld>` component in
 
 # [Razor test code](#tab/razor)
 
-[!code-html[](../../../samples/tests/razor/NestedComponentTest.razor#L3-)]
+[!code-cshtml[](../../../samples/tests/razor/NestedComponentTest.razor#L3-)]
 
 This is just regular Blazor child content parameter passing, where one component is rendered inside another, i.e. the `<HelloWorld>` component inside the `<Wrapper>` component. 
 

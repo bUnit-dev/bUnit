@@ -13,7 +13,7 @@ In bUnit, you register the services in the `Services` collection _before_ you re
 
 The following sections shows how to do this in C# and Razor based tests. The examples will test the `<WeatherForecasts>` component listed below, that depends on the `IWeatherForecastService` service, injected in line 1:
 
-[!code-html[WeatherForecasts.razor](../../../samples/components/WeatherForecasts.razor?highlight=1)]
+[!code-cshtml[WeatherForecasts.razor](../../../samples/components/WeatherForecasts.razor?highlight=1)]
 
 ## Injecting Services in C# Based Tests
 
@@ -30,7 +30,7 @@ The highlighted line shows how the `IWeatherForecastService` is registered in th
 
 Here is a Razor based test that registers the `IWeatherForecastService` in the `Services` collection during the `Setup` methods, which is needed by the `<WeatherForecasts>` component listed above.
 
-[!code-html[WeatherForecastsTest.razor](../../../samples/tests/razor/WeatherForecastsTest.razor?highlight=10-13)]
+[!code-cshtml[WeatherForecastsTest.razor](../../../samples/tests/razor/WeatherForecastsTest.razor?highlight=10-13)]
 
 The highlighted line shows how the `IWeatherForecastService` is registered, using the standard .NET Core DI services method, [`AddSingleton`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.servicecollectionserviceextensions.addsingleton?view=dotnet-plat-ext-3.1#Microsoft_Extensions_DependencyInjection_ServiceCollectionServiceExtensions_AddSingleton__1_Microsoft_Extensions_DependencyInjection_IServiceCollection___0_).
 
@@ -38,7 +38,7 @@ This can either be done via the `Fixture`'s `Setup` method as in this example, i
 
 In the following example shows how to do this with `<SnapshotTest>` tests:
 
-[!code-html[WeatherForecastsTest.razor](../../../samples/tests/razor/WeatherForecastsSnapshotTest.html?highlight=5-8)]
+[!code-cshtml[WeatherForecastsTest.razor](../../../samples/tests/razor/WeatherForecastsSnapshotTest.html?highlight=5-8)]
 
 > [!TIP]
 > If multiple Razor tests share the same setup logic, they can share the same dedicated setup method as well.

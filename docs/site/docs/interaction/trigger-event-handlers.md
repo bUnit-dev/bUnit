@@ -33,7 +33,7 @@ To invoke an event handler on an element, first find the element in the componen
 
 Let's look at a common example, where a `@onclick` event handler is invoked. The example will use the `<ClickMe>` component listed here:
 
-[!code-html[ClickMe.razor](../../../samples/components/ClickMe.razor)]
+[!code-cshtml[ClickMe.razor](../../../samples/components/ClickMe.razor)]
 
 To trigger the `@onclick` `ClickHandler` event handler method in the `<ClickMe>` component, do the following:
 
@@ -43,7 +43,7 @@ To trigger the `@onclick` `ClickHandler` event handler method in the `<ClickMe>`
 
 # [Razor test code](#tab/razor)
 
-[!code-html[ClickMeTest.razor](../../../samples/tests/razor/ClickMeTest.razor?highlight=17-19)]
+[!code-cshtml[ClickMeTest.razor](../../../samples/tests/razor/ClickMeTest.razor?highlight=17-19)]
 
 ***
 

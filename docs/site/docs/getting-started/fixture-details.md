@@ -14,7 +14,7 @@ bUnit's <xref:Bunit.Fixture> component provides different parameters you can set
 
 All the parameters the <xref:Bunit.Fixture> component support is shown in the listing below:
 
-[!code-html[](../../../samples/tests/razor/AllFixtureParameters.razor)]
+[!code-cshtml[](../../../samples/tests/razor/AllFixtureParameters.razor)]
 
 **Setup and Test methods:**
 
@@ -49,7 +49,7 @@ The other parameters affect how the test runs, and how it is displayed in e.g. V
 
 The <xref:Bunit.Fixture> component only accepts the <xref:Bunit.ComponentUnderTest> and <xref:Bunit.Fragment> components as its child content. All other components and markup are ignored. E.g.:
 
-[!code-html[](../../../samples/tests/razor/FixtureWithCutAndFragments.html)]
+[!code-cshtml[](../../../samples/tests/razor/FixtureWithCutAndFragments.html)]
 
 Here are the rules for the <xref:Bunit.Fixture> components child content:
 
@@ -87,7 +87,7 @@ The generic versions of <xref:Bunit.Fixture.GetComponentUnderTest``1> and <xref:
 
 Let's look at a complete example, where we have a simple task list component, `<SimpleTodo>`, listed below, that have a service injected, receive a cascading value, and changes between renders:
 
-[!code-html[SimpleTodo.razor](../../../samples/components/SimpleTodo.razor)]
+[!code-cshtml[SimpleTodo.razor](../../../samples/components/SimpleTodo.razor)]
 
 In the test, we want to verify that:
 
@@ -97,7 +97,7 @@ In the test, we want to verify that:
 
 The test looks like this:
 
-[!code-html[SimpleTodoTest.razor](../../../samples/tests/razor/SimpleTodoTest.razor?highlight=4,5,8-10,13,20,29,30,35-37,44)]
+[!code-cshtml[SimpleTodoTest.razor](../../../samples/tests/razor/SimpleTodoTest.razor?highlight=4,5,8-10,13,20,29,30,35-37,44)]
 
 Let's look at what's going on in this test:
 

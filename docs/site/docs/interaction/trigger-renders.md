@@ -47,7 +47,7 @@ If you receive this error, you need to invoke your method inside an `Action` del
 
 Consider the `<ImparativeCalc>` component listed below:
 
-[!code-html[ImparativeCalc.razor](../../../samples/components/ImparativeCalc.razor)]
+[!code-cshtml[ImparativeCalc.razor](../../../samples/components/ImparativeCalc.razor)]
 
 To invoke the `Calculate()` method on the component instance, do the following:
 

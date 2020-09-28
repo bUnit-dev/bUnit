@@ -17,7 +17,7 @@ bUnit's support for snapshot testing comes with the <xref:Bunit.SnapshotTest> co
 
 All the parameters the <xref:Bunit.SnapshotTest> component support is shown in the listing below:
 
-[!code-html[](../../../samples/tests/razor/AllSnapshotTestParameters.razor)]
+[!code-cshtml[](../../../samples/tests/razor/AllSnapshotTestParameters.razor)]
 
 Let us go over each of these:
 

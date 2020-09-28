@@ -20,7 +20,7 @@ The [`WaitForAssertion(Action, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHe
 
 Let us look at an example. Consider the following `<AsyncData>` component, who awaits an async `TextService` in its `OnInitializedAsync()` life-cycle method. When the service returns the data, the component will automatically re-render, to update its rendered markup. 
 
-[!code-html[AsyncData.razor](../../../samples/components/AsyncData.razor)]
+[!code-cshtml[AsyncData.razor](../../../samples/components/AsyncData.razor)]
 
 To test the `<AsyncData>` component, do the following:
 

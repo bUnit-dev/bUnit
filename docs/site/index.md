@@ -27,7 +27,7 @@ bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, an
 
 For example, to test the `<Counter>` component listed below:
 
-[!code-html[Counter.razor](../samples/components/Counter.razor)]
+[!code-cshtml[Counter.razor](../samples/components/Counter.razor)]
 
 You can do the following, using bUnit and xUnit:
 
