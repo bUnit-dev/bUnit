@@ -14,9 +14,7 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// All HTML5 elements according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element
 		/// </summary>
-		private static readonly string[] ALL_HTML_ELEMENTS =
-		{
-			// "html","head","body", how to handle these?
+		public static readonly IEnumerable<string[]> BODY_HTML_ELEMENTS = (new[]{
 			"base","link","meta","style","title",
 			"address","article","aside","footer","header","h1", "h2", "h3", "h4", "h5", "h6","hgroup","main","nav","section",
 			"blockquote","dd","div","dl","dt","figcaption","figure","hr","li","main","ol","p","pre","ul",
@@ -31,9 +29,7 @@ namespace Bunit.Rendering
 			"slot","template",
 			"acronym","applet","basefont","bgsound","big","blink","center","command","content","dir","element","font","keygen","listing","marquee","menuitem","multicol","nextid","nobr","noembed","noframes","plaintext","shadow","spacer","strike","tt","xmp",
 			// "frame","frameset","image","isindex" // not supported 
-		};
-
-		public static IEnumerable<string[]> TestData => ALL_HTML_ELEMENTS.Select(x => new[] { x });
+		}).Select(x => new[] { x });
 
 		[Fact(DisplayName = "Parse() called with null")]
 		public void ParseCalledWithNull()
@@ -52,7 +48,7 @@ namespace Bunit.Rendering
 		}
 
 		[Theory(DisplayName = "Parse() passed <TAG id=TAG>")]
-		[MemberData(nameof(TestData))]
+		[MemberData(nameof(BODY_HTML_ELEMENTS))]
 		public void Test001(string elementName)
 		{
 			var actual = Parser.Parse($@"<{elementName} id=""{elementName}"">").ToList();
@@ -61,7 +57,7 @@ namespace Bunit.Rendering
 		}
 
 		[Theory(DisplayName = "Parse() passed <TAG> with whitespace before")]
-		[MemberData(nameof(TestData))]
+		[MemberData(nameof(BODY_HTML_ELEMENTS))]
 		public void Test002(string elementName)
 		{
 			var actual = Parser.Parse($@" {'\t'}{'\n'}{'\r'}{Environment.NewLine} <{elementName} id=""{elementName}"">").ToList();
@@ -70,7 +66,7 @@ namespace Bunit.Rendering
 		}
 
 		[Theory(DisplayName = "Parse() passed <TAG>")]
-		[MemberData(nameof(TestData))]
+		[MemberData(nameof(BODY_HTML_ELEMENTS))]
 		public void Test003(string elementName)
 		{
 			var actual = Parser.Parse($@"<{elementName}>").ToList();
@@ -81,7 +77,7 @@ namespace Bunit.Rendering
 		}
 
 		[Theory(DisplayName = "Parse() passed <TAG/>")]
-		[MemberData(nameof(TestData))]
+		[MemberData(nameof(BODY_HTML_ELEMENTS))]
 		public void Test004(string elementName)
 		{
 			var actual = Parser.Parse($@"<{elementName}/>").ToList();
@@ -92,7 +88,7 @@ namespace Bunit.Rendering
 		}
 
 		[Theory(DisplayName = "Parse() passed <TAG ...")]
-		[MemberData(nameof(TestData))]
+		[MemberData(nameof(BODY_HTML_ELEMENTS))]
 		public void Test005(string elementName)
 		{
 			var input = $@" <{elementName} foo bar {'\t'}{Environment.NewLine}";
@@ -103,7 +99,7 @@ namespace Bunit.Rendering
 		}
 
 		[Theory(DisplayName = "Parse() passed <TAG .../")]
-		[MemberData(nameof(TestData))]
+		[MemberData(nameof(BODY_HTML_ELEMENTS))]
 		public void Test006(string elementName)
 		{
 			var input = $@" <{elementName}/ ";
@@ -111,6 +107,17 @@ namespace Bunit.Rendering
 
 			actual.ShouldHaveSingleItem()
 				.TextContent.ShouldBe(" ");
+		}
+
+		[Theory(DisplayName = "Parse() with special tags")]
+		[InlineData("html")]
+		[InlineData("head")]
+		[InlineData("body")]
+		public void Test007(string elementName)
+		{
+			var actual = Parser.Parse($@"<{elementName} id=""{elementName}"">").ToList();
+
+			VerifyElementParsedWithId(elementName, actual);
 		}
 
 		private static void VerifyElementParsedWithId(string expectedElementName, List<INode> actual)

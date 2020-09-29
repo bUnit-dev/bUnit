@@ -1,6 +1,13 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using Bunit.Diffing;
 
@@ -16,45 +23,30 @@ namespace Bunit.Rendering
 		private const string TBODY_SUB_ELEMENT = "TR";
 		private static readonly string[] TR_SUB_ELEMENTS = { "TD", "TH" };
 		private const string COLGROUP_SUB_ELEMENT = "COL";
-		//private static readonly string[] HTML_SUB_ELEMENTS = { "HEAD", "BODY" };
+		private static readonly string[] SPECIAL_HTML_ELEMENTS = { "HTML", "HEAD", "BODY" };
 
 		private readonly IBrowsingContext _context;
 		private readonly IHtmlParser _htmlParser;
-		private readonly IDocument _document;
-		private readonly IElement _bodyContext;
-		private readonly IElement _tableContext;
-		private readonly IElement _tbodyContext;
-		private readonly IElement _trContext;
-		private readonly IElement _colgroupContext;
+		private readonly List<IDocument> _documents = new List<IDocument>();
 
 		/// <summary>
 		/// Creates an instance of the parser with a AngleSharp context 
 		/// without a <see cref="TestRenderer"/> registered.
 		/// </summary>
-		public BunitHtmlParser() : this(Configuration.Default.WithCss().With(new HtmlComparer()))
-		{
-		}
+		public BunitHtmlParser() : this(Configuration.Default.WithCss().With(new HtmlComparer())) { }
 
 		/// <summary>
 		/// Creates an instance of the parser with a AngleSharp context 
 		/// with the <paramref name="testRenderer"/> registered.
 		/// </summary>
 		public BunitHtmlParser(ITestRenderer testRenderer, HtmlComparer htmlComparer)
-			: this(Configuration.Default.WithCss().With(testRenderer).With(htmlComparer))
-		{
-		}
+			: this(Configuration.Default.WithCss().With(testRenderer).With(htmlComparer)) { }
 
 		private BunitHtmlParser(IConfiguration angleSharpConfiguration)
 		{
 			var config = angleSharpConfiguration.With(this);
 			_context = BrowsingContext.New(config);
 			_htmlParser = _context.GetService<IHtmlParser>();
-			_document = _context.OpenNewAsync().Result;
-			_bodyContext = _document.Body;
-			_tableContext = _bodyContext.AppendElement(_document.CreateElement("table"));
-			_tbodyContext = _tableContext.AppendElement(_document.CreateElement("tbody"));
-			_trContext = _tbodyContext.AppendElement(_document.CreateElement("tr"));
-			_colgroupContext = _tableContext.AppendElement(_document.CreateElement("colgroup"));
 		}
 
 		/// <summary>
@@ -65,96 +57,112 @@ namespace Bunit.Rendering
 		public INodeList Parse(string markup)
 		{
 			if (markup is null) throw new ArgumentNullException(nameof(markup));
-			var parseContext = GetParseContext(markup);
-			return _htmlParser.ParseFragment(markup, parseContext);
+			var (ctx, matchedElement) = GetParseContext(markup).GetAwaiter().GetResult();
+
+			return ctx is null && matchedElement is not null
+				? ParseSpecial(markup, matchedElement)
+				: _htmlParser.ParseFragment(markup, ctx);
 		}
 
-		private IElement GetParseContext(string markup)
+		private INodeList ParseSpecial(string markup, string matchedElement)
 		{
+			var doc = _htmlParser.ParseDocument(markup);
+
+			return matchedElement switch
+			{
+				"HTML" => new SingleNodeNodeList(doc.Body.ParentElement),
+				"HEAD" => new SingleNodeNodeList(doc.Head),
+				"BODY" => new SingleNodeNodeList(doc.Body),
+				_ => throw new InvalidOperationException($"{matchedElement} should not be parsed by {nameof(ParseSpecial)}.")
+			};
+		}
+
+		private async Task<(IElement? ctx, string? matchedElement)> GetParseContext(string markup)
+		{
+			var document = await GetNewDocument().ConfigureAwait(false);
 			var startIndex = markup.IndexOfFirstNonWhitespaceChar();
 
 			// verify that first non-whitespace characters is a '<'
 			if (markup.Length > 0 && markup[startIndex].IsTagStart())
 			{
-				if (markup.StartsWithElements(TABLE_SUB_ELEMENTS, startIndex))
-				{
-					return _tableContext;
-				}
-				else if (markup.StartsWithElements(TR_SUB_ELEMENTS, startIndex))
-				{
-					return _trContext;
-				}
-				else if (markup.StartsWithElement(TBODY_SUB_ELEMENT, startIndex))
-				{
-					return _tbodyContext;
-				}
-				else if (markup.StartsWithElement(COLGROUP_SUB_ELEMENT, startIndex))
-				{
-					return _colgroupContext;
-				}
+				return GetParseContextFromTag(markup, startIndex, document);
+			}
+			else
+			{
+				return (document.Body, null);
+			}
+		}
+
+		private static (IElement? ctx, string? matchedElement) GetParseContextFromTag(string markup, int startIndex, IDocument document)
+		{
+			IElement? context = null;
+			string? matchedElement;
+
+			if (markup.StartsWithElements(TABLE_SUB_ELEMENTS, startIndex, out matchedElement))
+			{
+				context = CreateTable();
+			}
+			else if (markup.StartsWithElements(TR_SUB_ELEMENTS, startIndex, out matchedElement))
+			{
+				context = CreateTable().AppendElement(document.CreateElement("tr"));
+			}
+			else if (markup.StartsWithElement(TBODY_SUB_ELEMENT, startIndex))
+			{
+				context = CreateTable().AppendElement(document.CreateElement("tbody"));
+				matchedElement = TBODY_SUB_ELEMENT;
+			}
+			else if (markup.StartsWithElement(COLGROUP_SUB_ELEMENT, startIndex))
+			{
+				context = CreateTable().AppendElement(document.CreateElement("colgroup"));
+				matchedElement = COLGROUP_SUB_ELEMENT;
+			}
+			else if (markup.StartsWithElements(SPECIAL_HTML_ELEMENTS, startIndex, out matchedElement)) { }
+			else
+			{
+				context = document.Body;
 			}
 
-			return _bodyContext;
+			return (context, matchedElement);
+
+			IElement CreateTable() => document.Body.AppendElement(document.CreateElement("table"));
+		}
+
+		private async Task<IDocument> GetNewDocument()
+		{
+			var result = await _context.OpenNewAsync().ConfigureAwait(false);
+			_documents.Add(result);
+			return result;
 		}
 
 		/// <inheritdoc/>
 		public void Dispose()
 		{
-			_document.Dispose();
 			_context.Dispose();
-		}
-	}
-
-	internal static class HtmlParserHelpers
-	{
-		internal static bool StartsWithElements(this string markup, string[] tags, int startIndex)
-		{
-			for (int i = 0; i < tags.Length; i++)
+			foreach (var doc in _documents)
 			{
-				if (markup.StartsWithElement(tags[i], startIndex))
-					return true;
+				doc.Dispose();
 			}
-			return false;
 		}
 
-		internal static bool StartsWithElement(this string markup, string tag, int startIndex)
+		private class SingleNodeNodeList : INodeList
 		{
-			var matchesTag = tag.Length + 1 < markup.Length - startIndex;
-			var charIndexAfterTag = tag.Length + startIndex + 1;
-
-			if (matchesTag)
+			private readonly INode node;
+			public INode this[int index]
 			{
-				var charAfterTag = markup[charIndexAfterTag];
-				matchesTag = char.IsWhiteSpace(charAfterTag) ||
-							 charAfterTag == '>' ||
-							 charAfterTag == '/';
+				get
+				{
+					if (index != 0) throw new IndexOutOfRangeException();
+					return node;
+				}
 			}
-
-			// match characters in tag
-			for (int i = 0; i < tag.Length && matchesTag; i++)
+			public int Length { get; } = 1;
+			public SingleNodeNodeList(INode node) => this.node = node ?? throw new ArgumentNullException(nameof(node));
+			public IEnumerator<INode> GetEnumerator()
 			{
-				matchesTag = char.ToUpperInvariant(markup[startIndex + i + 1]) == tag[i];
+				yield return node;
 			}
-
-			// look for start tags end - '>'
-			for (int i = charIndexAfterTag; i < markup.Length && matchesTag; i++)
-			{
-				if (markup[i] == '>') break;
-			}
-
-			return matchesTag;
-		}
-
-		internal static bool IsTagStart(this char c) => c == '<';
-
-		internal static int IndexOfFirstNonWhitespaceChar(this string markup)
-		{
-			for (int i = 0; i < markup.Length; i++)
-			{
-				if (!char.IsWhiteSpace(markup, i))
-					return i;
-			}
-			return 0;
+			public void ToHtml(TextWriter writer, IMarkupFormatter formatter) => node.ToHtml(writer, formatter);
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		}
 	}
 }
