@@ -11,7 +11,12 @@
         <a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-bunit-sponsored-message">Give it a try</a>.</i>
       </p>
     </div>
-
+    <div class="supported">
+      <a href="https://www.packtpub.com/" title="Packt">
+        <img width="150" src="/sponsors/packt-retina-logo.png" />
+      </a>
+      <p>Editorial support provided by <a href="https://www.packtpub.com/" title="Packt">Packt!</a></p>
+    </div>
     {{^_disableContribution}}
     <div class="contribution">
       <ul class="nav">

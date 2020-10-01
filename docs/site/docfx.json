@@ -13,6 +13,9 @@
         }
       ],
       "dest": "api",
+      "properties": {
+        "TargetFramework": "netstandard2.1"
+      },
       "disableGitFeatures": false,
       "disableDefaultFilter": false
     }
@@ -78,7 +81,7 @@
     "markdownEngineName": "markdig",
     "noLangKeyword": false,
     "keepFileLink": false,
-    "cleanupCacheHistory": false,
+    "cleanupCacheHistory": true,
     "disableGitFeatures": false
   }
 }

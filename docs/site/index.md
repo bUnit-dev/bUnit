@@ -1,6 +1,6 @@
 ---
 uid: home
-title: bUnit - a testing library for Blazor components
+title: bUnit - a Testing Library for Blazor Components
 ---
 
 [![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
@@ -8,60 +8,72 @@ title: bUnit - a testing library for Blazor components
 [![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github)](https://github.com/egil/bunit/issues)
 [![Gitter](https://img.shields.io/gitter/room/egil/bunit?logo=gitter&style=flat-square)](https://gitter.im/egil/bunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-# bUnit - a testing library for Blazor components
+# bUnit: a Testing Library for Blazor Components
 
-**bUnit** is a testing library for Blazor Components. Its goal is to make it easy to write _comprehensive, stable unit tests_. You can:
+**bUnit** is a testing library for Blazor Components. Its goal is to make it easy to write _comprehensive, stable_ unit tests. With bUnit, you can:
 
 - Setup and define components under tests using C# or Razor syntax
 - Verify outcome using semantic HTML comparer
-- Interact with and inspect components, trigger event handlers
+- Interact with and inspect components as well as triggering event handlers
 - Pass parameters, cascading values and inject services into components under test
-- Mock `IJsRuntime` and Blazors authentication and authorization
+- Mock `IJSRuntime` and Blazors authentication and authorization
 - Perform snapshot testing
 
-bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which runs the Blazor components tests, just as any normal unit test. 
+bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which runs the Blazor components tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests, where a test usually takes seconds to run. 
 
 **Go to the [Documentation](xref:getting-started) pages to learn more.**
 
-### Test example 
+### Test Example 
 
-For example, to test the `<Counter>` component listed below:
+Let’s write a test for the `<Counter>` component listed below. This comes with the standard Blazor project template which verifies that the counter corrects increments when the button is clicked:
 
 [!code-cshtml[Counter.razor](../samples/components/Counter.razor)]
 
-You can do the following, using bUnit and xUnit:
+Tp do this, you can do the following using bUnit and xUnit:
 
 [!code-csharp[CounterTest.cs](../samples/tests/xunit/CounterTestWithCtx.cs#L8-L21)]
 
-### NuGet downloads
+This test uses bUnit’s test context to render the ‘Counter’ component with the ‘RenderComponent’ method. It then finds the button the component rendered and clicks it with the ‘Find’ and ‘Click’ methods. Finally, it finds the paragraph (<p>) element and verifies that it matches the expected markup passed to the MarkupMatches method.
+
+**Go to the [Documentation](xref:getting-started) pages to learn more.**
+
+
+### NuGet Downloads
 
 bUnit is available on NuGet in various incarnations. If you are using xUnit as your general purpose testing framework, you can use `bunit`, which includes everything in one package. If you want to use NUnit or MStest, then pick `bunit.core` and `bunit.web`:
 
-| Name | Type | NuGet Download Link |
+| Name | Description | NuGet Download Link |
 | ----- | ----- | ---- |
-| bUnit | Library, includes core, web, and xUnit support | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) | 
-| bUnit.core | Library, only core | [![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.core/) | 
-| bUnit.web | Library, web and core | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) | 
-| bUnit.xUnit |Library, xUnit and core | [![Nuget](https://img.shields.io/nuget/dt/bunit.xunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.xunit/) | 
+| bUnit.web | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) | 
+| bUnit.xUnit | Adds additional support for using bUnit with xUnit, including support for Razor-based tests. | [![Nuget](https://img.shields.io/nuget/dt/bunit.xunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.xunit/) |
+| bUnit.core | Core library that enables rendering a Blazor component in a test context. | [![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.core/) | 
 | bUnit.template | Template, which currently creates an xUnit based bUnit test projects only | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) | 
 
-## Sponsors 
+## Sponsors
 
-A hugh thank you to the [sponsors of my work with bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
+A huge thank you to the [sponsors of my work with bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
 
-<a src="https://github.com/Progress-Telerik"><img src="https://avatars3.githubusercontent.com/u/57092419?s=460&u=fd421a2b423c3cad85866976935df3d4bec2ace3&v=4" alt="@Progress-Telerik" width="40" height="40" /></a><br/>[Progress-Telerik](https://github.com/Progress-Telerik)
-
-<a src="https://github.com/hassanhabib"><img src="https://avatars0.githubusercontent.com/u/1453985?s=460&v=4" alt="Hassan Rezk Habib (@hassanhabib)" width="40" height="40" /></a><br/>[Hassan Rezk Habib (@hassanhabib)](https://github.com/hassanhabib)
+<table border="0" class="sponsors">
+	<tr>
+		<td align="center">
+			<a src="https://github.com/Progress-Telerik"><img src="https://avatars3.githubusercontent.com/u/57092419?s=460&u=fd421a2b423c3cad85866976935df3d4bec2ace3&v=4" alt="@Progress-Telerik" width="40" height="40" /></a><br/><a href="https://github.com/Progress-Telerik">Progress-Telerik</a>
+		</td>
+		<td align="center">
+			<a src="https://github.com/hassanhabib"><img src="https://avatars0.githubusercontent.com/u/1453985?s=460&v=4" alt="Hassan Rezk Habib (@hassanhabib)" width="40" height="40" /></a><br/><a href="https://github.com/hassanhabib">Hassan Rezk Habib (@hassanhabib)</a>
+		</td>
+	</tr>
+</table>
 
 ## Milestones to v1.0.0
 
-These are the current goals that should be reached before v1.0.0 is ready:
+Going forward, we have a variety of milestones to reach. These are the current goals that should be reached before v1.0.0 is ready:
 
-- **Stabilize the APIs**, such that they work equally well with both xUnit, NUnit, and MSTest as the underlying test framework. The general goals is to make it easy and obvious for developers to create the tests they needed, and fall into the pit of success.
+- **Stabilize the APIs**, such that they work equally well with both xUnit, NUnit, and MSTest as the underlying test framework. The general goal is to make it easy for developers to create their required tests successfully.
 - **Get the Razor-based testing to stable**, e.g. make the discovery and running of tests defined in .razor files stable and efficient. This includes adding support for NUnit and MSTest as test runners.
-- **Join the .NET Foundation.**. This project is too large for one person to be the owner and be the sole maintainer of, so the plan is to apply for membership as soon as possible, most likely close to or after v1.0.0 ships, and get the needed support and guidance to ensure the project long term.
+- **Improve the documentation**. It is a good idea to get an experienced technical editor to review the documentation, making sure it is clear and understandable. In addition to this, more ‘How to’ guides are planned in the [Update Docs](https://github.com/egil/bunit/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22updated+docs%22) milestone.
+- **Join the .NET Foundation.**. This project is too large for one person to be the owner and sole maintainer of, so the plan is to apply for membership as soon as possible, most likely close to or after v1.0.0 ships, and get the needed support and guidance to ensure the project long term.
 
-In the post v1.0.0 to v1.0.x time frame, focus will be on improving performance. Especially the spin-up time of about one second would be nice to get reduced.
+In the post-v1.0.0 to v1.0.x time frame, focus will be on improving performance. In particular, it would be nice to reduce the spin-up time of about one second.
 
 ## Contributors
 

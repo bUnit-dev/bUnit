@@ -5,20 +5,22 @@ title: Awaiting an Asynchronous State Change in a Component Under Test
 
 # Awaiting an Asynchronous State Change
 
-A test can fail if a component performs asynchronous renders, e.g. because it was awaiting a task to complete before continuing its render life-cycle. For example, if a component is waiting for an async web service to return data to it in the `OnInitializedAsync()` life-cycle method, before rendering it to the render tree.
+A test can fail if a component performs asynchronous renders. This may be due to a reason such as waiting for an asynchronous operation to complete before continuing its render life-cycle. For example, if a component is waiting for an async web service to return data to it in the `OnInitializedAsync()` life-cycle method before rendering it to the render tree.
 
-This happens because tests execute in the test framework's synchronization context and the test renderer executes renders in its own synchronization context.
+You need to handle this specifically in your tests because tests execute in the test framework's synchronization context and the test renderer executes renders in its own synchronization context. If you do not, you will likely experience tests that sometimes pass, and sometimes fail.
 
-bUnit comes with two methods that helps deal with this issue, the [`WaitForState(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) method covered on this page, and the [`WaitForAssertion(Action, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})) method covered on the <xref:async-assertion> page.
+bUnit comes with two methods that help to deal with this issue: the [`WaitForState(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) method covered on this page, and the [`WaitForAssertion(Action, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})) method covered on the <xref:async-assertion> page.
+
+Let's start by taking a look at the `WaitForState` method in more detail.
 
 ## Waiting for State Using `WaitForState`
 
-The [`WaitForState(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) method can be used to block and wait in a test method, until the provided predicate returns true, or the timeout is reached (the default timeout is one second).
+The [`WaitForState(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) method can be used to block and wait in a test method, until the provided predicate returns true or the timeout is reached (the default timeout is one second).
 
 > [!NOTE]
 > The `WaitForState()` method will try the predicate pass to it when the `WaitForState()` method is called, and every time the component under test renders.
 
-Let us look at an example. Consider the following `<AsyncData>` component, who awaits an async `TextService` in its `OnInitializedAsync()` life-cycle method. When the service returns the data, the component will automatically re-render, to update its rendered markup. 
+Let us look at an example. Consider the following `<AsyncData>` component who awaits an async `TextService` in its `OnInitializedAsync()` life-cycle method. When the service returns the data, the component will automatically re-render to update its rendered markup:
 
 [!code-cshtml[AsyncData.razor](../../../samples/components/AsyncData.razor)]
 

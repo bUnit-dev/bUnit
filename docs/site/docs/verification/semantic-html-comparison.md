@@ -5,35 +5,35 @@ title: Customizing the Semantic HTML Comparison
 
 # Customizing the Semantic HTML Comparison
 
-This library includes comparison and assert helpers that uses the [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library to perform semantic HTML comparison.
+This library includes comparison and assert helpers that use the [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library to perform semantic HTML comparison.
 
 On this page we will go through how the comparison works, and what options you have to affect the comparison process.
 
 > [!NOTE]
 > The semantic HTML comparison is available in both C# and Razor tests with the <xref:Bunit.Fixture> component, and is always used in Razor tests with the <xref:Bunit.SnapshotTest> component.
 
-## Why semantic comparison is needed for stable tests
+## Why Semantic Comparison is Needed for Stable Tests
 
-Just performing string comparison of two strings containing HTML markup can break quite easily, _even_ if the two markup strings are semantically equivalent. Some changes that can cause a regular string comparison to fail are:
+Just performing string comparison of two strings containing HTML markup can break quite easily, _even_ if the two markup strings are semantically equivalent. Some changes that can cause a regular string comparison to fail are as follows:
 
-- Formatting of markup, e.g. with extra line breaks or indentions, changes to insignificant whitespace.
+- Formatting of markup, e.g. with extra line breaks or indentions and changes to insignificant whitespace.
 - Reordering of attributes. The order of attributes does not matter.
 - Reordering of classes defined in the `class="..."` attribute. The order of classes does not matter.
-- Change of boolean attribute to be implicit or explicit, e.g. from `required="required"` to `required`.
-- Change to insignificant whitespace inside `<style>` tags.
+- Change of boolean attributes  to be implicit or explicit, e.g. from `required="required"` to `required`.
+- Change s to insignificant whitespace inside `<style>` tags.
 - Changes to HTML comments and comments inside `<style>` tags.
 
 The [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library handles all those cases, so your tests are more stable.
 
 ## Customizing Options
 
-The [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library also allows us to customize the comparison process, by added special attributes to the _"control" markup_, i.e. the expected markup we want to use in verification.
+The [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library also allows us to customize the comparison process by adding special attributes to the _"control" markup_, i.e. the expected markup we want to use in verification.
 
-There are the customization options you have available to you:
+Here are the customization options you have available to you:
 
 - **Ignore comments (enabled by default):** Comments in markup and inside `<style>` tags are automatically ignored and not part of the comparison process.
 
-- **Ignore element:** Use the `diff:ignore` attribute to ignore an element, all it's attributes and child nodes. For example, to ignore the `h1` element:
+- **Ignore element:** Use the `diff:ignore` attribute to ignore an element, all its attributes and child nodes. For example, to ignore the `h1` element, do the following:
 
   ```html
   <header>
@@ -49,9 +49,9 @@ There are the customization options you have available to you:
   </header>
   ```
 
-- **Configure whitespace handling:** By default all nodes and elements are compared using the `Normalize` whitespace handling option. The `Normalize` option will trim all text nodes and replace two or more whitespace characters with a single space character. The other options are `Preserve`, which will leave all whitespace unchanged, and `RemoveWhitespaceNodes`, which will only remove empty text nodes.
+- **Configure whitespace handling:** By default, all nodes and elements are compared using the `Normalize` whitespace handling option. The `Normalize` option will trim all text nodes and replace two or more whitespace characters with a single space character. The other options are `Preserve`, which will leave all whitespace unchanged, and `RemoveWhitespaceNodes`, which will only remove empty text nodes.
 
-  To override the default option, use the `diff:whitespace` attribute, and pass one of the three options to it, for example:
+  To override the default option, use the `diff:whitespace` attribute, and pass one of the three options to it. For example:
 
   ```html
   <header>
@@ -60,19 +60,19 @@ There are the customization options you have available to you:
   ```
 
   > [!NOTE]
-  > The default for `<pre>` and `<script>` elements is the `Preserve` option. To change that, use the `diff:whitespace` attribute, for example:
+  > The default for `<pre>` and `<script>` elements is the `Preserve` option. To change that, use the `diff:whitespace` attribute. For example:
 
   ```html
   <pre diff:whitespace="RemoveWhitespaceNodes">...</pre>
   ```
 
-- **Perform case insensitive comparison:** By default, all text comparison is case sensitive, but if you want to perform a case insensitive comparison of text inside elements or attributes, use the `diff:ignoreCase` attributes on elements and `:ignoreCase` modifier on attributes. For example, to do case insensitive comparison of the text in the `h1` element:
+- **Perform case insensitive comparison:** By default, all text comparison is case sensitive, but if you want to perform a case insensitive comparison of text inside elements or attributes, use the `diff:ignoreCase` attributes on elements and `:ignoreCase` modifier on attributes. For example, to perform a case insensitive comparison of the text in the following `h1` element , do the following:
 
   ```html
   <h1 diff:ignoreCase>HellO WoRlD</h1>
   ```
 
-  To do case insensitive comparison of the text inside the `title` attribute:
+  To perform case insensitive comparison of the text inside the `title` attribute, do the following:
 
   ```html
   <h1 title:ignoreCase="HeaDinG">...</h1>
@@ -93,17 +93,15 @@ There are the customization options you have available to you:
   ```
 
   > [!NOTE] 
-  > The attribute modifiers `:ignoreCase` and `:regex` can be combined, for example as: `attr:ignoreCase:regex="FOO-\d{4}"`
+  > The attribute modifiers `:ignoreCase` and `:regex` can be combined, for example, as: `attr:ignoreCase:regex="FOO-\d{4}"`
 
 ## Examples
 
-To verify the rendered output of a component, we have the `MarkupMatches()` methods we can use.
+Let’s look at a few examples where we use the semantic comparison options listed above to modify the comparison. In C#-based tests, we have the `MarkupMatches()` methods we can use to perform the semantic comparison of the output from a rendered component. For example, we may have a component, `<Heading>`, that renders the following markup:
 
-If for example we have a component, `<Heading>`, that renders the following markup:
+[!code-razor[Heading.razor](../../../samples/components/Heading.razor)]   
 
-[!code-razor[Heading.razor](../../../samples/components/Heading.razor)]
-
-If we want to verify the markup is rendered correctly, and for example use RegEx to verify the `id` attribute (it might be generated) and ignore the `<small>` element, we can do it like this in C# based tests:
+In this case, we want to verify the markup is rendered correctly, using something such as RegEx to verify the `id` attribute (it might be generated) and ignoring the `<small>` element. We can do this like so in C#-based tests with the `MarkupMatches()` method:
 
 [!code-csharp[SemanticHtmlTest.cs](../../../samples/tests/xunit/SemanticHtmlTest.cs#L16-L29)]
 
@@ -111,6 +109,6 @@ In a Razor based test, using the `<Fixture>` test type, the example looks like t
 
 [!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L3-L30)]
 
-In a Razor based test, using the `<SnapshotTest>` test type, the example looks like this:
+In a Snapshot test, using the `<SnapshotTest>` test type, the example looks like this:
 
 [!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L32-L42)]

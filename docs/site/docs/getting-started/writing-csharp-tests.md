@@ -5,15 +5,15 @@ title: Writing Tests in C# for Blazor Components
 
 # Writing Tests in C# for Blazor Components
 
-Testing Blazor components is a little different from testing regular C# classes: Blazor components are *rendered*, they have the *Blazor component life cycle*, during which we can *provide input* to them and where they *produce output*.
+Testing Blazor components is a little different from testing regular C# classes: Blazor components are *rendered*; they have the *Blazor component life cycle* during which we can *provide input* to them and they can *produce output*.
 
-Use **bUnit** to render the component under test, pass in it's parameters, inject required services, and access the rendered component instance and the markup it has produced.
+Use **bUnit** to render the component under test, pass in its parameters, inject required services, and access the rendered component instance and the markup it has produced.
 
-Rendering a component happens through bUnit's <xref:Bunit.TestContext>, and the result of the rendering, a <xref:Bunit.IRenderedComponent`1>, provides access to the component instance, and the markup produced by the component.
+Rendering a component happens through bUnit's <xref:Bunit.TestContext>. The result of the rendering - a <xref:Bunit.IRenderedComponent`1> - provides access to the component instance and the markup produced by the component.
 
 ## Creating a Basic Test
 
-This is a simple example, that tests the following `<HelloWorld>` component:
+This is a simple example that tests the following `<HelloWorld>` component:
 
 [!code-cshtml[HelloWorld.razor](../../../samples/components/HelloWorld.razor)]
 
@@ -38,11 +38,11 @@ This is a simple example, that tests the following `<HelloWorld>` component:
 
 ***
 
-The following happens in the test above:
+The test above does the following:
 
-1. Create a new instance of the disposable bUnit <xref:Bunit.TestContext>, and assign it to ctx using the `using var` syntax, to avoid unnecessary source code indention.
-2. Render the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> method. We cover passing parameters to components elsewhere.
-3. Verify the rendered markup from the `<HelloWorld>` component, using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
+1. Creates a new instance of the disposable bUnit <xref:Bunit.TestContext>, and assigns it to `ctx` variable using the `using var` syntax to avoid unnecessary source code indention.
+2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
+3. Verify the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
 > [!TIP]
 > Learn more about how the semantic HTML/markup comparison in bUnit works, and how to customize it on the <xref:semantic-html-comparison> page.
@@ -52,7 +52,7 @@ The following happens in the test above:
 
 ## Remove Boilerplate Code from Tests
 
-We can remove some boilerplate code from each test by making the <xref:Bunit.TestContext> implicitly available to the test class, so we do not have to have `using var ctx = new Bunit.TestContext();` in every test. This can be done like this:
+We can remove some boilerplate code from each test by making the <xref:Bunit.TestContext> implicitly available to the test class so we do not have to have `using var ctx = new Bunit.TestContext();` in every test. This can be done like this:
 
 # [xUnit](#tab/xunit)
 
@@ -66,9 +66,9 @@ Since xUnit instantiates test classes for each execution of test methods inside 
 
 [!code-csharp[BunitTestContext.cs](../../../samples/tests/nunit/BunitTestContext.cs)]
 
-Since NUnit instantiates the test class is once, we cannot simply inherit directly from <xref:Bunit.TestContext>, as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, which is listed above, and use that to hook into NUnit's `[SetUp]` and `[TearDown]` methods, which runs before and after each test.
+Since NUnit instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, which is listed above, and use that to hook into NUnit's `[SetUp]` and `[TearDown]` methods, which runs before and after each test.
 
-Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> can now be called directly from each test, as seen in the listing above.
+Methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> can then be called directly from each test, as seen in the listing above.
 
 # [MSTest](#tab/mstest)
 
@@ -76,7 +76,7 @@ Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.Com
 
 [!code-csharp[BunitTestContext.cs](../../../samples/tests/mstest/BunitTestContext.cs)]
 
-Since MSTest instantiates the test class once, we cannot simply inherit directly from <xref:Bunit.TestContext>, as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, which is listed above, and use that to hook into MSTest's `[TestInitialize]` and `[TestCleanup]` methods, which runs before and after each test.
+Since MSTest instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, which is listed above, and use that to hook into MSTest's `[TestInitialize]` and `[TestCleanup]` methods. This runs before and after each test.
 
 Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> can now be called directly from each test, as seen in the listing above.
 
@@ -84,7 +84,7 @@ Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.Com
 
 ## Further Reading
 
-With the basics out of the way, we will next look at how to pass parameters and inject services into our component under test, and after that, cover in more detail ways we can verify the outcome of a rendering.
+With the basics out of the way, next we will look at how to pass parameters and inject services into our component under test. After that, we will cover ways we can verify the outcome of a rendering in more detail
 
 - <xref:passing-parameters-to-components>
 - <xref:inject-services>
