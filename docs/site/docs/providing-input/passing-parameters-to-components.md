@@ -267,7 +267,7 @@ Some times you need to pass multiple different types of content to a `RenderFrag
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L208-L227)]
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L208-L228)]
 
 Passing a mix of markup and components to a `RenderFragment` parameter is simply done by calling the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add()` methods or using the `ChildContent()` factory methods in <xref:Bunit.ComponentParameterFactory>, as seen here.
 
@@ -304,7 +304,7 @@ The delegate creates a simple markup string in both examples.
 
 # [Razor test code](#tab/razor)
 
-[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L98-L109)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L98-L106)]
 
 This is just regular Blazor `RenderFragment<TValue>` parameter passing, in this case, to the `Template` parameter. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -318,13 +318,13 @@ To pass a template into a `RenderFragment<TValue>` parameter, which is based on 
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L253-L269)]
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L252-L268)]
 
 These examples do the same thing, i.e. create a template with the `<Item>` component listed above. 
 
 # [Razor test code](#tab/razor)
 
-[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L108-L118)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L108-L116)]
 
 This is just regular Blazor `RenderFragment<TValue>` parameter passing, in this case, to the `Template` parameter. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
@@ -340,13 +340,13 @@ In the follow examples, we will pass an unmatched parameter to the following com
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L275-L285)]
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L274-L284)]
 
 These examples do the same thing, i.e. pass in the parameter `some-unknown-param` with the value `a value` to the component under test.
 
 # [Razor test code](#tab/razor)
 
-[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L120-L124)]
+[!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L119-L123)]
 
 This is just regular Blazor parameter passing, which is the same for both `Fixture` and `SnapshotTest` razor tests. In this case, the parameter `some-unknown-param` with the value `a value` is passed to the component under test.
 
@@ -366,7 +366,7 @@ To pass the unnamed `IsDarkTheme` cascading parameter to the `<CascadingParams>`
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L291-L307)]
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L290-L306)]
 
 These examples do the same thing, i.e. passing the variable `isDarkTheme` to the cascading parameter `IsDarkTheme`.
 
@@ -388,7 +388,7 @@ To pass a named cascading parameter to the `<CascadingParams>` component, do the
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L313-L323)]
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L312-L322)]
 
 These examples do the same thing, i.e. pass in value `Egil Hansen` to the cascading parameter with the name `LoggedInUser`. Note that the name of the parameter is not the same as the property of the parameter, e.g. `LoggedInUser` vs. `UserName`.
 
@@ -409,7 +409,7 @@ To pass all cascading parameters to the `<CascadingParams>` component, do the fo
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L329-L351)]
+[!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L328-L350)]
 
 These examples do the same thing, i.e. passing both the unnamed `IsDarkTheme` cascading parameter and the two named cascading parameters (`LoggedInUser`, `LoggedInEmail`).
 
