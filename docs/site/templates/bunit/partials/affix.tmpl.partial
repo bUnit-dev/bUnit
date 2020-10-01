@@ -15,7 +15,7 @@
       <a href="https://www.packtpub.com/" title="Packt">
         <img width="150" src="/sponsors/packt-retina-logo.png" />
       </a>
-      <p>Editorial support provided by <a href="https://www.packtpub.com/" title="Packt">Packt!</a></p>
+      <p>Editorial support provided by <a href="https://www.packtpub.com/" title="Packt">Packt</a>.</p>
     </div>
     {{^_disableContribution}}
     <div class="contribution">
