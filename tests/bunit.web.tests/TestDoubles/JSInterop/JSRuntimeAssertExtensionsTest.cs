@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Bunit.Asserting;
-using Bunit.Diffing;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;

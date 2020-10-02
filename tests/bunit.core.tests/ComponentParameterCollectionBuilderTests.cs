@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
 using Xunit;

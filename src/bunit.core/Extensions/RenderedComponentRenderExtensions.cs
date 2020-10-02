@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
