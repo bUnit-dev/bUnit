@@ -1,6 +1,7 @@
 using System;
 using Bunit.TestAssets.SampleComponents;
 using Bunit.TestDoubles.JSInterop;
+using Bunit.TestDoubles.NavigationManagement;
 using Shouldly;
 
 using Xunit;
@@ -23,5 +24,11 @@ namespace Bunit
 
 			RenderComponent<SimpleWithJSRuntimeDep>();
 		}
+
+		[Fact(DisplayName = "The test service provider should register a placeholder NavigationManager which throws exceptions")]
+        public void Test023()
+        {
+        	Should.Throw<MissingMockNavigationManagerException>(() => RenderComponent<SimpleNavigation>());
+        }
 	}
 }

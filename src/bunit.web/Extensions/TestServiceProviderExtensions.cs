@@ -2,7 +2,9 @@ using Bunit.Diffing;
 using Bunit.Rendering;
 using Bunit.TestDoubles.Authorization;
 using Bunit.TestDoubles.JSInterop;
+using Bunit.TestDoubles.NavigationManagement;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,6 +27,7 @@ namespace Bunit.Extensions
 			services.AddSingleton<AuthenticationStateProvider, PlaceholderAuthenticationStateProvider>();
 			services.AddSingleton<IAuthorizationService, PlaceholderAuthorizationService>();
 			services.AddSingleton<IJSRuntime, PlaceholderJSRuntime>();
+			services.AddSingleton<NavigationManager, PlaceholderNavigationManager>();
 			services.AddSingleton<HtmlComparer>();
 			services.AddSingleton<HtmlParser>();
 			services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();

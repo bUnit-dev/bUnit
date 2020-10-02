@@ -1,0 +1,10 @@
+﻿@inject NavigationManager Navigation
+
+<h3>SimpleNavigation</h3>
+
+@code {
+	protected override void OnInitialized()
+	{
+		Navigation.NavigateTo("Index");
+	}
+}
