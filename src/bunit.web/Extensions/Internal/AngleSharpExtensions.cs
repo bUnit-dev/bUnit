@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AngleSharp.Dom;
 using Bunit.Diffing;
+using Bunit.Rendering;
 
 namespace Bunit
 {
@@ -20,23 +21,23 @@ namespace Bunit
 		}
 
 		/// <summary>
-		/// Gets the <see cref="HtmlParser"/> stored in the <paramref name="node"/>s
+		/// Gets the <see cref="BunitHtmlParser"/> stored in the <paramref name="node"/>s
 		/// owning context, if one is available. 
 		/// </summary>
 		/// <param name="node"></param>
-		/// <returns>The <see cref="HtmlParser"/> or null if not found.</returns>
-		public static HtmlParser? GetHtmlParser(this INode? node)
+		/// <returns>The <see cref="BunitHtmlParser"/> or null if not found.</returns>
+		public static BunitHtmlParser? GetHtmlParser(this INode? node)
 		{
-			return node?.Owner.Context.GetService<HtmlParser>();
+			return node?.Owner.Context.GetService<BunitHtmlParser>();
 		}
 
 		/// <summary>
-		/// Gets the <see cref="HtmlParser"/> stored in the <paramref name="nodes"/>s
+		/// Gets the <see cref="BunitHtmlParser"/> stored in the <paramref name="nodes"/>s
 		/// owning context, if one is available. 
 		/// </summary>
 		/// <param name="nodes"></param>
-		/// <returns>The <see cref="HtmlParser"/> or null if not found.</returns>
-		public static HtmlParser? GetHtmlParser(this INodeList nodes)
+		/// <returns>The <see cref="BunitHtmlParser"/> or null if not found.</returns>
+		public static BunitHtmlParser? GetHtmlParser(this INodeList nodes)
 		{
 			return nodes?.Length > 0 ? nodes[0].GetHtmlParser() : null;
 		}

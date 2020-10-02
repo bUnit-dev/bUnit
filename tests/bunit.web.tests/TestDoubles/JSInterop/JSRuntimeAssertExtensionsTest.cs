@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Bunit.Asserting;
-using Bunit.Diffing;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Moq;
@@ -116,7 +116,7 @@ namespace Bunit.TestDoubles.JSInterop
 		[Fact(DisplayName = "ShouldBeElementReferenceTo throws if element reference does not point to the provided element")]
 		public void Test202()
 		{
-			using var htmlParser = new HtmlParser();
+			using var htmlParser = new BunitHtmlParser();
 			var elmRef = new ElementReference(Guid.NewGuid().ToString());
 			var elm = (IElement)htmlParser.Parse($"<p {Htmlizer.ELEMENT_REFERENCE_ATTR_NAME}=\"ASDF\" />").First();
 

@@ -3,6 +3,7 @@ using System.Linq;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Bunit.Diffing;
+using Bunit.Rendering;
 
 namespace Bunit
 {
@@ -29,13 +30,13 @@ namespace Bunit
 			var actual = actualChange as MissingNodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Missing, "The change was not an removal.");
 
 			INodeList expected;
-			if (actual.Control.Node.GetHtmlParser() is HtmlParser parser)
+			if (actual.Control.Node.GetHtmlParser() is BunitHtmlParser parser)
 			{
 				expected = parser.Parse(expectedChange);
 			}
 			else
 			{
-				using var newParser = new HtmlParser();
+				using var newParser = new BunitHtmlParser();
 				expected = newParser.Parse(expectedChange);
 			}
 

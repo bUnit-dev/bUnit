@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
-using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
 

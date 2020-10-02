@@ -1,8 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Bunit.Rendering;
-using Microsoft.AspNetCore.Components;
 using Shouldly;
 
 namespace Bunit

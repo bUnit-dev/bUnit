@@ -1,15 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bunit.Extensions;
-using Bunit.Rendering;
-using Bunit.TestAssets.SampleComponents;
 using Bunit.TestDoubles.JSInterop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
 
