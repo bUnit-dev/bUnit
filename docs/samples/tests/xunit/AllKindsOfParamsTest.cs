@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Bunit.Rendering;
-
 using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Docs.Samples

@@ -5,20 +5,20 @@ title: Creating a new bUnit Test Project
 
 # Creating a new bUnit Test Project
 
-To write tests, you need a place to put them - a test project. bUnit is not a unit test runner, so a general-purpose test framework, like xUnit, NUnit, or MSTest, is needed in addition to bUnit, to write and run tests. 
+To write tests, you need a place to put them - a test project. bUnit is not a unit test runner, so a general-purpose test framework like xUnit, NUnit, or MSTest is needed in addition to bUnit in order to write and run tests. 
 
-To use bUnit with xUnit, the easiest approached is to use the bUnit project template described in the [Create a test project with bUnit template](#create-a-test-project-with-bunit-template) section further down the page. To create a test project manually, in a general-purpose testing frameworks agnostic way, read the following section.
+To use bUnit with xUnit, the easiest approach is to use the bUnit project template described in the [Create a test project with bUnit template](#creating-a-test-project-with-bunit-template) section further down the page. To create a test project manually and in a general-purpose testing frameworks agnostic way, read the following section.
 
-## Create a Test Project Manually
+## Creating a Test Project Manually
 
-This section will take you through the steps required to create a project for testing Blazor components using bUnit. Any of the three general purpose test frameworks shown in step 1 below can be used. 
+This section will take you through the steps required to create a project for testing Blazor components using bUnit. Any of the three general purpose test frameworks shown in step 1 below can be used. Briefly, here is what we will do:
 
 1. Create a new xUnit/NUnit/MSTest testing project
 2. Add bUnit to the test project
 3. Configure project settings
 4. Add the test project to your existing solution
 
-These steps look like this from the `dotnet` CLI:
+Let's look at these in more detail. These steps look like this from the 'dotnet' CLI:
 
 **1. Create a new test project**
 
@@ -44,7 +44,7 @@ dotnet new mstest -o <NAME OF TEST PROJECT>
 
 ***
 
-where `-o <NAME OF PROJECT>` refers to the name of the test project.
+The `-o` option in the `dotnet new` command above is used to specify the name of the test project.
 
 **2. Add bUnit to the test project**
 
@@ -78,9 +78,8 @@ dotnet add package bunit.web --version #{NBGV_NuGetPackageVersion}#
 
 The test projects setting needs to be set to the following: 
 
-- the project's SDK to `Microsoft.NET.Sdk.Razor`
-- set `RazorLangVersion` to `3.0`
-- set the `<TargetFramework>` to `netcoreapp3.1` (bUnit builds on `.netstandard 2.1`)
+- the project's SDK needs to be set to `Microsoft.NET.Sdk.Razor`
+- set the `<TargetFramework>` to `net5.0`
 
 To do so, change the first part of the test projects `.csproj` file to look like this.:
 
@@ -88,11 +87,8 @@ To do so, change the first part of the test projects `.csproj` file to look like
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RazorLangVersion>3.0</RazorLangVersion>
-  </PropertyGroup>
-
-  ...
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>  ...
 
 </Project>
 ```
@@ -114,16 +110,15 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RazorLangVersion>3.0</RazorLangVersion>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="bunit.web" Version="#{NBGV_NuGetPackageVersion}#" />
     <PackageReference Include="bunit.xunit" Version="#{NBGV_NuGetPackageVersion}#" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -138,18 +133,17 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <IsPackable>false</IsPackable>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>    
     <PackageReference Include="bunit.web" Version="#{NBGV_NuGetPackageVersion}#" />
     <PackageReference Include="nunit" Version="3.12.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -165,13 +159,12 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <IsPackable>false</IsPackable>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="bunit.web" Version="#{NBGV_NuGetPackageVersion}#" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
@@ -186,11 +179,11 @@ The result should be a test project with a `.csproj` that looks like this (non b
 
 ***
 
-## Create a Test Project with bUnit Template
+## Creating a Test Project with bUnit Template
 
-To skip a few steps in the guide above, use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/). The bUnit project template currently only works with the xUnit general-purpose testing framework, others framework will be supported in the future.
+To skip a few steps in the guide above, use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/). The bUnit project template currently only works with the xUnit general-purpose testing framework, but other frameworks will be supported in the future.
 
-The steps are as follows:
+The steps  for creating a test project with the bUnit template are as follows:
 
 1. Install the template (only needed the first time)
 2. Create a new test project
@@ -214,8 +207,7 @@ Use the following command to create a bUnit with xUnit test project:
 dotnet new bunit -o <NAME OF TEST PROJECT>
 ```
 
-where `-o <NAME OF PROJECT>` is used to name the test project.
-
+The `-o` option in the `dotnet new` command above is used to specify the name of the test project.
 **3. Add the test project to your solution**
 
 If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and project containing the components that should be tested:
@@ -225,8 +217,10 @@ dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
 dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.csproj
 ```
 
+This will allow the test project to see and test the components in the component project.
+
 ## Further Reading
 
 To start creating tests, continue reading the <xref:writing-csharp-tests> and <xref:writing-razor-tests> pages.
 
-For addition tips and tricks that will make writing tests easier, see the <xref:misc-test-tips> page.
+For additional tips and tricks that will make writing tests easier, see the <xref:misc-test-tips> page.

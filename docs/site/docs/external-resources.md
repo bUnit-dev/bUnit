@@ -4,7 +4,7 @@ title: External Resources
 ---
 
 # Presentations, guides, articles, tutorials, and blog posts
-Here is a list of some of the content out on the web that covers bUnit. If you produce something you think can be useful to bUnit's users, feel free to add the content to this page and send a pull request.
+Here is a list of some web content that covers bUnit. If you produce something you think can be useful to bUnit's users, feel free to add it to this page and send a pull request.
 
 ### Presentations
 

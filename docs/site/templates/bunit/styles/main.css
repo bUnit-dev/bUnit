@@ -115,26 +115,20 @@ code[name]:before {
   }
 }
 
-.alert-info code, .alert-info a.xref {
+.alert-info code, .alert-info a.xref code {
   background-color: inherit;
-  color: #131ed2;
+  color: inherit;
 }
 
-a.xref[href*="/api/"] {
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-  padding: 2px 4px;
-  font-size: 90%;
-  color: #337ab7;
-  background-color: #f1f2f3;
-  border-radius: 4px;
-}
-
-a.xref[href*="/api/"]:hover {
+code {
+  color: inherit;
   background-color: inherit;
-  text-decoration: underline;
+  padding: .1em .2em;
 }
 
 a code {
+  color: inherit;
+  background-color: inherit;
   text-decoration: none;
 }
 
@@ -152,16 +146,48 @@ footer small {
   font-size: 0.9rem;
 }
 
+.sponsors.table {
+  width: auto;
+  border: none !important;
+}
+
+.sponsors.table tr {    
+  background: none !important;
+}
+.sponsors.table td {
+  border: none !important;
+  border-color: #f5f5f5;
+  max-width: 120px;
+}
+
+.sponsors.table img {
+  border-radius: 20px;
+}
+
 .sponsor-highlight {
     width: 200px;
     text-align: center;
     font-size: 14px;
-    /* font-weight: 500; */
     border-bottom: 1px solid #cccccc5c;
-    padding-bottom: 1rem;
     margin-bottom: 1rem;
 }
 
 .sponsor-highlight p {
     padding-top: 1rem;
+}
+
+.supported {
+  width: 200px;
+  text-align: center;
+  font-size: 14px;
+  font-style: italic;       
+  border-bottom: 1px solid #eee;
+}
+
+.supported p {
+  padding: 5px 30px 0 30px;
+}
+
+.contribution {
+  margin-top: 1rem;
 }

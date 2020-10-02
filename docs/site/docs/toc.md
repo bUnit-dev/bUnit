@@ -28,3 +28,5 @@
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External Resources](xref:external-resources)
 # [Contribute](xref:contribute)
+# [Code of Conduct](xref:code-of-conduct)
+
