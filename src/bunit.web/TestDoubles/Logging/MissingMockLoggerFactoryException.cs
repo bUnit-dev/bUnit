@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Bunit.TestDoubles.Logging
 {
@@ -16,7 +17,7 @@ namespace Bunit.TestDoubles.Logging
 		/// <summary>
 		/// The parameters passed into the logger factory
 		/// </summary>
-		public object?[]? Arguments { get; }
+		public IReadOnlyList<object?> Arguments { get; }
 
 		/// <summary>
 		/// Creates a new instance of <see cref="MissingMockLoggerFactoryException"/>
@@ -28,7 +29,7 @@ namespace Bunit.TestDoubles.Logging
 			: base ($"This test requires a LoggerFactory to be supplied, because the component under test invokes the LoggerFactory during the test. The method invocation was '{methodName}', the arguments are contained within the '{nameof(Arguments)}' attribute of this exception. Guidance on mocking the LoggerFactory is available in the testing library's Wiki.")
 		{
 			MethodName = methodName;
-			Arguments = arguments;
+			Arguments = arguments ?? Array.Empty<object?>();
 		}
 	}
 }

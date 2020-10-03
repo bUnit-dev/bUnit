@@ -6,7 +6,6 @@ using Bunit.TestDoubles.Authorization;
 using Bunit.TestDoubles.HttpClient;
 using Bunit.TestDoubles.JSInterop;
 using Bunit.TestDoubles.Localization;
-using Bunit.TestDoubles.Logging;
 using Bunit.TestDoubles.NavigationManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
@@ -24,19 +23,27 @@ namespace Bunit.Extensions
 	/// </summary>
 	public static class TestServiceProviderExtensions
 	{
+		// Have to make these fields so that the compiler thinks we will dispose of them
+		// later
+		private static HttpClient? _implementationInstance;
+		private static PlaceholderHttpMessageHandler? _placeholderHttpMessageHandler;
+
 		/// <summary>
 		/// Registers the default services required by the web <see cref="TestContext"/>.
 		/// </summary>
 		public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services)
 		{
+			_placeholderHttpMessageHandler = new PlaceholderHttpMessageHandler();
+			_implementationInstance = new HttpClient(_placeholderHttpMessageHandler)
+				{BaseAddress = new Uri("http://localhost:5000")};
+
 			services.AddSingleton<ILoggerFactory>(NullLoggerFactory.Instance);
 			services.AddSingleton<AuthenticationStateProvider, PlaceholderAuthenticationStateProvider>();
 			services.AddSingleton<IAuthorizationService, PlaceholderAuthorizationService>();
 			services.AddSingleton<IJSRuntime, PlaceholderJSRuntime>();
 			services.AddSingleton<NavigationManager, PlaceholderNavigationManager>();
 			services.AddSingleton<HtmlComparer>();
-			services.AddSingleton(new HttpClient(new PlaceholderHttpMessageHandler())
-				{BaseAddress = new Uri("http://localhost:5000")});
+			services.AddSingleton(_implementationInstance);
 			// services.AddSingleton<ILoggerFactory, PlaceholderLogFactory>();
 			services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
 			services.AddSingleton<BunitHtmlParser>();

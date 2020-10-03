@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Bunit.TestDoubles.Localization
 {
@@ -9,7 +10,10 @@ namespace Bunit.TestDoubles.Localization
 	public class MissingMockStringLocalizationException : Exception
 	{
 
-		public object?[]? Arguments { get; }
+		/// <summary>
+		/// The arguments that were passed into the localizer
+		/// </summary>
+		public IReadOnlyList<object?> Arguments { get; }
 
 		/// <summary>
 		/// Creates a new instance of the <see cref="MissingMockStringLocalizationException"/>
@@ -20,7 +24,7 @@ namespace Bunit.TestDoubles.Localization
 		public MissingMockStringLocalizationException(string methodName, params object?[]? arguments)
 			:base($"This test requires a StringLocalizer to be supplied, because the component under test invokes the StringLocalizer during the test. The method that was called was '{methodName}', the parameters are container within the '{nameof(Arguments)}' property of this exception. Guidance on mocking the StringLocalizer is available in the testing library's Wiki.")
 		{
-			Arguments = arguments;
+			Arguments = arguments ?? Array.Empty<object?>();;
 		}
 	}
 }
