@@ -40,6 +40,7 @@ namespace Bunit.Extensions
 			// services.AddSingleton<ILoggerFactory, PlaceholderLogFactory>();
 			services.AddSingleton<HtmlParser>();
 			services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
+			services.AddSingleton<BunitHtmlParser>();
 			services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
 			return services;
 		}

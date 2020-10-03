@@ -1,11 +1,6 @@
 using System;
-using System.Xml.Serialization;
-
 using Bunit.Rendering;
-
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Bunit
 {
@@ -30,7 +25,7 @@ namespace Bunit
 		}
 
 		/// <inheritdoc/>
-		public virtual TestServiceProvider Services { get; }
+		public TestServiceProvider Services { get; }
 
 		/// <summary>
 		/// Creates a new instance of the <see cref="ITestContext"/> class.

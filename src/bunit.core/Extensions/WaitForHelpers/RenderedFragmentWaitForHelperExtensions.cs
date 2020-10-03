@@ -1,5 +1,4 @@
 using System;
-
 using Bunit.Extensions.WaitForHelpers;
 
 namespace Bunit
@@ -27,7 +26,7 @@ namespace Bunit
 			{
 				waiter.WaitTask.Wait();
 			}
-			catch (AggregateException e) when (e.InnerException is { })
+			catch (AggregateException e) when (e.InnerException is not null)
 			{
 				throw e.InnerException;
 			}
@@ -50,7 +49,7 @@ namespace Bunit
 			{
 				waiter.WaitTask.Wait();
 			}
-			catch (AggregateException e) when (e.InnerException is { })
+			catch (AggregateException e) when (e.InnerException is not null)
 			{
 				throw e.InnerException;
 			}

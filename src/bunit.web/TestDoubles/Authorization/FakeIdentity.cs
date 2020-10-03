@@ -1,6 +1,5 @@
 using System;
 using System.Security.Principal;
-using Bunit.Extensions;
 
 namespace Bunit.TestDoubles.Authorization
 {

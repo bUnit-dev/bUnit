@@ -1,9 +1,7 @@
 using System;
-
 using AngleSharp.Dom;
-
 using Bunit.Diffing;
-
+using Bunit.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
@@ -23,7 +21,7 @@ namespace Bunit
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 		public static void MarkupMatches(this string actual, string expected, string? userMessage = null)
 		{
-			using var parser = new HtmlParser();
+			using var parser = new BunitHtmlParser();
 			var actualNodes = parser.Parse(actual);
 			var expectedNodes = parser.Parse(expected);
 			actualNodes.MarkupMatches(expectedNodes, userMessage);
@@ -42,7 +40,7 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var actualNodes = actual.ToNodeList(expected.Services.GetRequiredService<HtmlParser>());
+			var actualNodes = actual.ToNodeList(expected.Services.GetRequiredService<BunitHtmlParser>());
 			actualNodes.MarkupMatches(expected, userMessage);
 		}
 
@@ -95,7 +93,7 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var expectedNodes = expected.ToNodeList(actual.Services.GetRequiredService<HtmlParser>());
+			var expectedNodes = expected.ToNodeList(actual.Services.GetRequiredService<BunitHtmlParser>());
 			actual.Nodes.MarkupMatches(expectedNodes, userMessage);
 		}
 
@@ -242,11 +240,11 @@ namespace Bunit
 				throw new HtmlEqualException(diffs, expected, actual, userMessage);
 		}
 
-		private static INodeList ToNodeList(this string markup, HtmlParser? htmlParser)
+		private static INodeList ToNodeList(this string markup, BunitHtmlParser? htmlParser)
 		{
 			if (htmlParser is null)
 			{
-				using var newHtmlParser = new HtmlParser();
+				using var newHtmlParser = new BunitHtmlParser();
 				return newHtmlParser.Parse(markup);
 			}
 			else

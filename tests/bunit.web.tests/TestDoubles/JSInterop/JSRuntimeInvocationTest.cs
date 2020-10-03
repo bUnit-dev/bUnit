@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit.TestDoubles.JSInterop

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -104,7 +103,7 @@ namespace Bunit.TestDoubles.Authorization
 			var testPrincipal = new FakePrincipal { Identity = identity, Roles = roles ?? Array.Empty<string>() };
 			var principal = new ClaimsPrincipal(testPrincipal);
 
-			if (claims is { } && claims.Any())
+			if (claims is not null && claims.Any())
 			{
 				principal.AddIdentity(new ClaimsIdentity(claims));
 			}

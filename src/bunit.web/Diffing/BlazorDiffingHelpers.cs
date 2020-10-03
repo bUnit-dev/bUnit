@@ -1,7 +1,5 @@
 using AngleSharp.Diffing.Core;
 
-using Bunit.Rendering;
-
 namespace Bunit.Diffing
 {
 	/// <summary>

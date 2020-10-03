@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
 using Bunit.Extensions;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 
@@ -80,7 +78,7 @@ namespace Bunit.TestDoubles.Authorization
 			{
 				result = VerifyRequiredRoles(requirements);
 			}
-			else if (_supportedPolicies is { })
+			else if (_supportedPolicies is not null)
 			{
 				result = VerifyRequiredPolicies(requirements);
 			}

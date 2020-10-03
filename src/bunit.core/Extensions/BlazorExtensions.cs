@@ -12,9 +12,12 @@ namespace Bunit
 		/// </summary>
 		/// <param name="markup">Markup to render</param>
 		/// <returns>The <see cref="RenderFragment"/>.</returns>
-		public static RenderFragment ToMarkupRenderFragment(this string markup)
+		public static RenderFragment ToMarkupRenderFragment(this string? markup)
 		{
-			return builder => builder.AddMarkupContent(0, markup);
+			if (string.IsNullOrEmpty(markup))
+				return builder => { };
+			return
+				builder => builder.AddMarkupContent(0, markup);
 		}
 	}
 }

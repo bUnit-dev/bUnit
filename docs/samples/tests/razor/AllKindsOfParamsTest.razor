@@ -109,19 +109,19 @@
   <ComponentUnderTest>
     <TemplateParams Items=@(new string[]{ "Foo", "Bar", "Baz" }) TItem="string">
       <Template>
-        <div class="item">
           <Item Value=@context></Item>
-        </div>
       </Template>
     </TemplateParams>
   </ComponentUnderTest>
 </Fixture>
+
 
 <Fixture Test="f => {}">
   <ComponentUnderTest>
     <UnmatchedParams some-unknown-param="a value" />
   </ComponentUnderTest>
 </Fixture>
+
 
 <Fixture Test="f => {}">
   <ComponentUnderTest>

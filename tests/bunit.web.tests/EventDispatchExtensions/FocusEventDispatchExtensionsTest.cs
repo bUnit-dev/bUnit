@@ -1,8 +1,6 @@
 using System.Reflection;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Components.Web;
-
 using Xunit;
 
 namespace Bunit

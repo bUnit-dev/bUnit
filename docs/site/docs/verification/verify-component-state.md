@@ -29,7 +29,7 @@ Alert alert = cut.Instance;
 > [!WARNING]
 > While it is possible to set `[Parameter]` and `[CascadingParameter]` properties directly through the <xref:Bunit.IRenderedComponentBase`1.Instance> property on the <xref:Bunit.IRenderedComponent`1> type, doing so does not implicitly trigger a render and the component life-cycle methods are not called. 
 > 
-> The correct approach is to set parameters through the [`SetParametersAndRender()`](xref:Bunit.IRenderedComponentBase`1.Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.Rendering.ComponentParameter[])) methods. See the <xref:trigger-renders> page for more on this.
+> The correct approach is to set parameters through the [`SetParametersAndRender()`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},Bunit.Rendering.ComponentParameter[])) methods. See the <xref:trigger-renders> page for more on this.
 
 ## Finding Components in the Render Tree
 

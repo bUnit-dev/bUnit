@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Bunit.TestDoubles.JSInterop;
 
 namespace Bunit
@@ -7,7 +6,6 @@ namespace Bunit
 	/// <summary>
 	/// Represents a number of unexpected invocation to a <see cref="MockJSRuntimeInvokeHandler"/>.
 	/// </summary>
-	[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "<Pending>")]
 	public class JSInvokeCountExpectedException : Exception
 	{
 		/// <summary>

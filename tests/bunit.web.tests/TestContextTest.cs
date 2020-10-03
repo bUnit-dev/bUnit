@@ -6,7 +6,6 @@ using Bunit.TestDoubles.Localization;
 using Bunit.TestDoubles.Logging;
 using Bunit.TestDoubles.NavigationManagement;
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit

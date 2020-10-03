@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Bunit.TestDoubles.JSInterop
 {
@@ -8,7 +7,6 @@ namespace Bunit.TestDoubles.JSInterop
 	/// Exception use to indicate that a MockJSRuntime is required by a test
 	/// but was not provided.
 	/// </summary>
-	[SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "<Pending>")]
 	public class MissingMockJSRuntimeException : Exception
 	{
 		/// <summary>
