@@ -1,5 +1,6 @@
 using System;
 using Bunit.TestAssets.SampleComponents;
+using Bunit.TestDoubles.HttpClient;
 using Bunit.TestDoubles.JSInterop;
 using Bunit.TestDoubles.NavigationManagement;
 using Shouldly;
@@ -29,6 +30,12 @@ namespace Bunit
         public void Test023()
         {
         	Should.Throw<MissingMockNavigationManagerException>(() => RenderComponent<SimpleNavigation>());
+        }
+
+        [Fact(DisplayName = "The test service provider should register a placeholder HttpClient which throws exceptions")]
+        public void Test024()
+        {
+	        Should.Throw<MissingMockHttpClientException>(() => RenderComponent<SimpleWithHttpClient>());
         }
 	}
 }

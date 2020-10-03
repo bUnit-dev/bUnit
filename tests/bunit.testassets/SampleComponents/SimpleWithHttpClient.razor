@@ -1,0 +1,12 @@
+﻿@inject HttpClient HttpClient
+
+
+<h3>SimpleWithHttpClient</h3>
+
+@code {
+	protected override async Task OnInitializedAsync()
+	{
+		await HttpClient.GetAsync("/api/weather");
+		StateHasChanged();
+	}
+}
