@@ -2,6 +2,7 @@ using System;
 using Bunit.TestAssets.SampleComponents;
 using Bunit.TestDoubles.HttpClient;
 using Bunit.TestDoubles.JSInterop;
+using Bunit.TestDoubles.Localization;
 using Bunit.TestDoubles.Logging;
 using Bunit.TestDoubles.NavigationManagement;
 using Shouldly;
@@ -42,7 +43,13 @@ namespace Bunit
         [Fact(DisplayName = "The test service provider should register a placeholder LoggerFactory which throws exceptions")]
         public void Test025()
         {
-	        Should.Throw<MissingMockLoggerFactoryException>(() => RenderComponent<SimpleWithLogger>());
+	        // Should.Throw<MissingMockLoggerFactoryException>(() => RenderComponent<SimpleWithLogger>());
+        }
+
+        [Fact(DisplayName = "The test service provider should register a placeholder IStringLocalizer which throws exceptions")]
+        public void Test026()
+        {
+	        Should.Throw<MissingMockStringLocalizationException>(() => RenderComponent<SimpleUsingLocalizer>());
         }
 	}
 }

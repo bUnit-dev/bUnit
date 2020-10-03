@@ -22,6 +22,7 @@
 		<PackageReference Include="AngleSharp.Css" Version="0.14.0" />
 		<PackageReference Include="AngleSharp.Diffing" Version="0.14.0" />
 		<PackageReference Include="AngleSharp.Wrappers" Version="1.2.0" />
+		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.1.8" />
 	</ItemGroup>
 
 	<ItemGroup>
