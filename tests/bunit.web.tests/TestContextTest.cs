@@ -2,6 +2,7 @@ using System;
 using Bunit.TestAssets.SampleComponents;
 using Bunit.TestDoubles.HttpClient;
 using Bunit.TestDoubles.JSInterop;
+using Bunit.TestDoubles.Logging;
 using Bunit.TestDoubles.NavigationManagement;
 using Shouldly;
 
@@ -36,6 +37,12 @@ namespace Bunit
         public void Test024()
         {
 	        Should.Throw<MissingMockHttpClientException>(() => RenderComponent<SimpleWithHttpClient>());
+        }
+
+        [Fact(DisplayName = "The test service provider should register a placeholder LoggerFactory which throws exceptions")]
+        public void Test025()
+        {
+	        Should.Throw<MissingMockLoggerFactoryException>(() => RenderComponent<SimpleWithLogger>());
         }
 	}
 }
