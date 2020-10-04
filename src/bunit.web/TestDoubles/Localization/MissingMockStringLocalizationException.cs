@@ -22,7 +22,7 @@ namespace Bunit.TestDoubles.Localization
 		/// <param name="methodName">The method that was called on the localizer</param>
 		/// <param name="arguments">The arguments that were passed in</param>
 		public MissingMockStringLocalizationException(string methodName, params object?[]? arguments)
-			:base($"This test requires a StringLocalizer to be supplied, because the component under test invokes the StringLocalizer during the test. The method that was called was '{methodName}', the parameters are container within the '{nameof(Arguments)}' property of this exception. Guidance on mocking the StringLocalizer is available in the testing library's Wiki.")
+			:base($"This test requires a IStringLocalizer to be supplied, because the component under test invokes the IStringLocalizer during the test. The method that was called was '{methodName}', the parameters are container within the '{nameof(Arguments)}' property of this exception.")
 		{
 			Arguments = arguments ?? Array.Empty<object?>();;
 		}

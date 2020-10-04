@@ -21,7 +21,7 @@ namespace Bunit.TestDoubles.JSInterop
 		public IReadOnlyDictionary<string, List<JSRuntimeInvocation>> Invocations => _invocations;
 
 		/// <summary>
-		/// Gets whether the mock is running in <see cref="JSRuntimeMockMode.Loose"/> or 
+		/// Gets whether the mock is running in <see cref="JSRuntimeMockMode.Loose"/> or
 		/// <see cref="JSRuntimeMockMode.Strict"/>.
 		/// </summary>
 		public JSRuntimeMockMode Mode { get; }
@@ -50,7 +50,7 @@ namespace Bunit.TestDoubles.JSInterop
 		/// </summary>
 		/// <typeparam name="TResult">The result type of the invocation</typeparam>
 		/// <param name="identifier">The identifier to setup a response for</param>
-		/// <param name="argumentsMatcher">A matcher that is passed arguments received in invocations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
+		/// <param name="argumentsMatcher">A matcher that is passed arguments received in invocTestServiceProviderExtensions.cs ations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
 		/// <returns>A <see cref="JSRuntimePlannedInvocation{TResult}"/>.</returns>
 		public JSRuntimePlannedInvocation<TResult> Setup<TResult>(string identifier, Func<IReadOnlyList<object?>, bool> argumentsMatcher)
 		{
@@ -90,7 +90,7 @@ namespace Bunit.TestDoubles.JSInterop
 		}
 
 		/// <summary>
-		/// Configure a planned JSInterop invocation with the <paramref name="identifier"/> 
+		/// Configure a planned JSInterop invocation with the <paramref name="identifier"/>
 		/// and <paramref name="arguments"/>, that should not receive any result.
 		/// </summary>
 		/// <param name="identifier">The identifier to setup a response for</param>
