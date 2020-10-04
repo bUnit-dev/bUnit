@@ -24,7 +24,7 @@ namespace Bunit
 		/// <param name="parameters">Parameters to pass to the component when it is rendered</param>
 		/// <returns>The rendered <typeparamref name="TComponent"/></returns>
 		public IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
-			=> TestRendererExtensions.RenderComponent<TComponent>(Renderer, parameters);
+   => TestRendererExtensions.RenderComponent<TComponent>(Renderer, parameters);
 
 		/// <summary>
 		/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
