@@ -6,15 +6,16 @@ namespace Bunit
 {
 	/// <summary>
 	/// A test context is a factory that makes it possible to create components under tests.
+	/// TEST
 	/// </summary>
 	public class TestContext : TestContextBase, ITestContext
 	{
 		/// <summary>
 		/// Creates a new instance of the <see cref="TestContext"/> class.
 		/// </summary>
-		public TestContext()
-		{
-			Services.AddDefaultTestContextServices();
+		public TestContext ()
+		{ 
+		  Services.AddDefaultTestContextServices();
 		}
 
 		/// <summary>
