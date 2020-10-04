@@ -1,5 +1,9 @@
 namespace Bunit
 {
+	// Integer values are same as in Selenium Keys class. The Selenium Keys class provides values of strings with single characters.
+	// These values are integer code of the characters in Selenium Keys class. Exceptions are Null and control keys (e.g. Shift, Alt, Control).
+	// Principle is that control keys are encoded as bit flags in high 16 bits. Non-control key values must be in low 16 bits.
+	// This way it is possible to combine special keys with control keys. E.g. Key.Enter | Key.Alt
 	/// <summary>
 	/// Special keys that can be dispatched in keyboard events.
 	/// </summary>

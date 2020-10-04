@@ -6,6 +6,7 @@ namespace Bunit
 {
 	internal static class KeysEventFactory
 	{
+		// Values were recorded using small Selenium application in Chrome browser.
 		private static readonly Dictionary<Key, (string Key, string Code)> KeyEvents = new Dictionary<Key, (string key, string code)>()
 		{
 			{ Key.Backspace, ("Backspace", "Backspace") },
