@@ -158,7 +158,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   sonarcloud:
-    if: github.event_name != 'schedule'
+    if: github.event_name != 'schedule' && secrets.SONAR_TOKEN
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
