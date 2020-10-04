@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Components.Web;
 using Xunit;
@@ -6,10 +8,12 @@ namespace Bunit
 {
 	public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<KeyboardEventArgs>
 	{
+		public static IEnumerable<MethodInfo[]> Helpers { get; } = GetEventHelperMethods(typeof(KeyboardEventDispatchExtensions), x => x.GetParameters().All(p => p.ParameterType != typeof(Key)));
+
 		protected override string ElementName => "input";
 
 		[Theory(DisplayName = "Keyboard events are raised correctly through helpers")]
-		[MemberData(nameof(GetEventHelperMethods), typeof(KeyboardEventDispatchExtensions))]
+		[MemberData(nameof(Helpers))]
 		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new KeyboardEventArgs()
@@ -27,10 +31,5 @@ namespace Bunit
 
 			VerifyEventRaisesCorrectly(helper, expected);
 		}
-
-
 	}
-
-
 }
-

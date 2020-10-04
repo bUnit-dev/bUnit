@@ -44,6 +44,20 @@ namespace Bunit
 		public static void KeyDown(this IElement element, KeyboardEventArgs eventArgs) => _ = KeyDownAsync(element, eventArgs);
 
 		/// <summary>
+		/// Raises the <c>@onkeydown</c> event on <paramref name="element"/>, passing the provided keyboard <paramref name="key"/>.
+		/// </summary>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="key">The keyboard key to raise the event for.</param>
+		public static void KeyDown(this IElement element, Key key)
+		{
+			var eventArgs = KeysEventFactory.CreateKeyboardEventArgs(key);
+			if (eventArgs != null)
+			{
+				KeyDown(element, eventArgs);
+			}
+		}
+
+		/// <summary>
 		/// Raises the <c>@onkeydown</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
@@ -85,6 +99,20 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		public static void KeyUp(this IElement element, KeyboardEventArgs eventArgs) => _ = KeyUpAsync(element, eventArgs);
+
+		/// <summary>
+		/// Raises the <c>@onkeyup</c> event on <paramref name="element"/>, passing the provided keyboard <paramref name="key"/>.
+		/// </summary>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="key">The keyboard key to raise the event for.</param>
+		public static void KeyUp(this IElement element, Key key)
+		{
+			var eventArgs = KeysEventFactory.CreateKeyboardEventArgs(key);
+			if (eventArgs != null)
+			{
+				KeyUp(element, eventArgs);
+			}
+		}
 
 		/// <summary>
 		/// Raises the <c>@onkeyup</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
