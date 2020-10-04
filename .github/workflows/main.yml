@@ -40,18 +40,6 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.100-rc.1.20452.10'
-      - name: Move .net SDK's to shared folder (hack)
-        shell: pwsh
-        run: |
-          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-          foreach ($dir in $directories) {
-            $from = $dir.FullName;
-            $to = "$root/$version";
-            Write-Host Copying from $from to $to;
-            Copy-Item "$from\*" $to -Recurse -Force;
-          }
 
       - name: Building library in release mode
         run: dotnet build -c Release -p:ContinuousIntegrationBuild=true
@@ -71,18 +59,6 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.100-rc.1.20452.10'
-      - name: Move .net SDK's to shared folder (hack)
-        shell: pwsh
-        run: |
-          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-          foreach ($dir in $directories) {
-            $from = $dir.FullName;
-            $to = "$root/$version";
-            Write-Host Copying from $from to $to;
-            Copy-Item "$from\*" $to -Recurse -Force;
-          }
 
       - name: Running unit tests
         run: |
@@ -124,18 +100,6 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.100-rc.1.20452.10'
-      - name: Move .net SDK's to shared folder (hack)
-        shell: pwsh
-        run: |
-          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-          foreach ($dir in $directories) {
-            $from = $dir.FullName;
-            $to = "$root/$version";
-            Write-Host Copying from $from to $to;
-            Copy-Item "$from\*" $to -Recurse -Force;
-          }
 
       - name: Creating library package
         run: |
@@ -160,8 +124,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - uses: actions/setup-dotnet@v1
         with:
@@ -169,18 +132,6 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.100-rc.1.20452.10'
-      - name: Move .net SDK's to shared folder (hack)
-        shell: pwsh
-        run: |
-          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-          foreach ($dir in $directories) {
-            $from = $dir.FullName;
-            $to = "$root/$version";
-            Write-Host Copying from $from to $to;
-            Copy-Item "$from\*" $to -Recurse -Force;
-          }
 
       - name: Install dotnet-format
         run: dotnet tool install -g dotnet-format
@@ -195,7 +146,7 @@ jobs:
           author_name: Github Actions
           author_email: actions@github.com
           message: Automated dotnet-format update
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -218,6 +169,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   code-ql:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -227,29 +179,12 @@ jobs:
         # a pull request then we can checkout the head.
         fetch-depth: 0
 
-      # If this run was triggered by a pull request event, then checkout
-      # the head of the pull request instead of the merge commit.
-    - run: git checkout HEAD^2
-      if: ${{ github.event_name == 'pull_request' }}
-
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x'
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '5.0.100-rc.1.20452.10'
-    - name: Move .net SDK's to shared folder (hack)
-      shell: pwsh
-      run: |
-        $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-        $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-        $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-        foreach ($dir in $directories) {
-          $from = $dir.FullName;
-          $to = "$root/$version";
-          Write-Host Copying from $from to $to;
-          Copy-Item "$from\*" $to -Recurse -Force;
-        }
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
@@ -296,18 +231,6 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.100-rc.1.20452.10'
-      - name: DOTNET HACK
-        shell: pwsh
-        run: |
-          $version = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Leaf;
-          $root = Split-Path (Split-Path $ENV:DOTNET_ROOT -Parent) -Parent;
-          $directories = Get-ChildItem $root | Where-Object { $_.Name -ne $version };
-          foreach ($dir in $directories) {
-            $from = $dir.FullName;
-            $to = "$root/$version";
-            Write-Host Copying from $from to $to;
-            Copy-Item "$from\*" $to -Recurse -Force;
-          }
 
       - name: Creating library package for pre-release
         if: github.event_name != 'release'
