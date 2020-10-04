@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 
 namespace Bunit.TestDoubles.HttpClient
 {
-	public class PlaceholderHttpClient : System.Net.Http.HttpClient
+	/// <summary>
+	/// This PlaceholderHttpClient is used to provide users with helpful exceptions if they fail to provide a mock when required.
+	/// </summary>
+	internal class PlaceholderHttpClient : System.Net.Http.HttpClient
 	{
 		/// <summary>
 		/// Creates an instance of <see cref="PlaceholderHttpClient"/>
@@ -32,9 +35,7 @@ namespace Bunit.TestDoubles.HttpClient
 			/// <returns></returns>
 			/// <exception cref="MissingMockHttpClientException"></exception>
 			protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-			{
-				throw new MissingMockHttpClientException(request);
-			}
+				=> throw new MissingMockHttpClientException(request);
 		}
 	}
 }
