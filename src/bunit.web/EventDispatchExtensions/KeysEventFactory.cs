@@ -89,7 +89,7 @@ namespace Bunit
 				}
 			}
 
-			if (KeyEvents.TryGetValue(key, out var keyArguments))
+			if (KeyEvents.TryGetValue(keyWithoutControlKeys, out var keyArguments))
 			{
 				return new KeyboardEventArgs
 				{
