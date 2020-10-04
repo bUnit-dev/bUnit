@@ -123,8 +123,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPr
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout PR
+        uses: dawidd6/action-checkout-pr@v1
+        with:
+          pr: steps.findPr.outputs.number
 
       - uses: actions/setup-dotnet@v1
         with:
@@ -146,7 +154,6 @@ jobs:
           author_name: Github Actions
           author_email: actions@github.com
           message: Automated dotnet-format update
-          ref: ${{ github.event.pull_request.head.sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
