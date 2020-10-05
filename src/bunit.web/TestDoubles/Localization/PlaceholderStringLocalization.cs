@@ -1,8 +1,8 @@
-﻿using System.Globalization;
 using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.Extensions.Localization;
 
-namespace Bunit.TestDoubles.Localization
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// This IStringLocalizer is used to provide users with helpful exceptions if they fail to provide a mock when required.

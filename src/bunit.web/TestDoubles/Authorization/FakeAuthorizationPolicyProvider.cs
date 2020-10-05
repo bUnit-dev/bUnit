@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Bunit.TestDoubles.Authorization
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Test class that provides an implementation of IAuthorizationPolicyProvider that

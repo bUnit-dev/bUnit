@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Bunit;
 
-namespace Bunit.TestDoubles.JSInterop
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Exception use to indicate that an unplanned invocation was

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Bunit.TestDoubles.JSInterop
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Exception use to indicate that a MockJSRuntime is required by a test

@@ -18,6 +18,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="TestDoubles\Logging\**" />
+	  <EmbeddedResource Remove="TestDoubles\Logging\**" />
+	  <None Remove="TestDoubles\Logging\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AngleSharp" Version="0.14.0" />
 		<PackageReference Include="AngleSharp.Css" Version="0.14.0" />
 		<PackageReference Include="AngleSharp.Diffing" Version="0.14.0" />
@@ -32,10 +38,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="TestDoubles\Logging" />
 	</ItemGroup>
 
 </Project>

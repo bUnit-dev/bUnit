@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Bunit.TestDoubles.Authorization
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Root authorization service that manages different authentication/authorization state

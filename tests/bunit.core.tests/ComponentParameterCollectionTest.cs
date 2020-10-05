@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Bunit.TestDoubles.JSInterop;
+using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Shouldly;

@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 
-namespace Bunit.TestDoubles.JSInterop
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// The execution mode of the <see cref="MockJSRuntimeExtensions"/>.

@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 
-namespace Bunit.TestDoubles.NavigationManagement
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// This NavigationManager is used to provide users with helpful exceptions if they fail to provide a mock when required.

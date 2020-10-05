@@ -1,4 +1,4 @@
-namespace Bunit.TestDoubles.Authorization
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Helper methods for registering the Authentication/Authorization services with

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Bunit.TestDoubles.Authorization
+namespace Bunit.TestDoubles
 {
 	internal class PlaceholderAuthenticationStateProvider : AuthenticationStateProvider
 	{

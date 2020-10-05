@@ -1,7 +1,7 @@
 using System;
 using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
-using Bunit.TestDoubles.JSInterop;
+using Bunit.TestDoubles;
 using Shouldly;
 
 using Xunit;

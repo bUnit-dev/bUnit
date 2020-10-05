@@ -517,6 +517,8 @@ namespace Bunit
 			[CascadingParameter] public RenderFragment? RFCC { get; set; }
 			public int _nonParam = -1;
 			public object? NonParamProp { get; set; }
+
+			[SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
 			public void SomeMethod() { }
 		}
 

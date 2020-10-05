@@ -1,11 +1,7 @@
 using System.Net.Http;
 using Bunit.Diffing;
 using Bunit.Rendering;
-using Bunit.TestDoubles.Authorization;
-using Bunit.TestDoubles.HttpClient;
-using Bunit.TestDoubles.JSInterop;
-using Bunit.TestDoubles.Localization;
-using Bunit.TestDoubles.NavigationManagement;
+using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -27,6 +23,7 @@ namespace Bunit.Extensions
 		/// </summary>
 		public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services)
 		{
+			// Placeholders and defaults for common Blazor services
 			services.AddSingleton<ILoggerFactory>(NullLoggerFactory.Instance);
 			services.AddSingleton<AuthenticationStateProvider, PlaceholderAuthenticationStateProvider>();
 			services.AddSingleton<IAuthorizationService, PlaceholderAuthorizationService>();
@@ -34,9 +31,12 @@ namespace Bunit.Extensions
 			services.AddSingleton<NavigationManager, PlaceholderNavigationManager>();
 			services.AddSingleton<HttpClient, PlaceholderHttpClient>();
 			services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
+
+			// bUnit specific services
 			services.AddSingleton<HtmlComparer>();
 			services.AddSingleton<BunitHtmlParser>();
 			services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
+
 			return services;
 		}
 	}

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Net.Http;
 
-namespace Bunit.TestDoubles.HttpClient
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Exception use to indicate that a mock HttpClient is required by a test

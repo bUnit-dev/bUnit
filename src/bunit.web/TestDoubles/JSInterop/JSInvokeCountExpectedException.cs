@@ -1,7 +1,6 @@
 using System;
-using Bunit.TestDoubles.JSInterop;
 
-namespace Bunit
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Represents a number of unexpected invocation to a <see cref="MockJSRuntimeInvokeHandler"/>.

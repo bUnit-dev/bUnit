@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
-namespace Bunit.TestDoubles.JSInterop
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Represents an invoke handler for a mock of a <see cref="IJSRuntime"/>.
@@ -50,7 +50,7 @@ namespace Bunit.TestDoubles.JSInterop
 		/// </summary>
 		/// <typeparam name="TResult">The result type of the invocation</typeparam>
 		/// <param name="identifier">The identifier to setup a response for</param>
-		/// <param name="argumentsMatcher">A matcher that is passed arguments received in invocTestServiceProviderExtensions.cs ations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
+		/// <param name="argumentsMatcher">A matcher that is passed arguments received in invocations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
 		/// <returns>A <see cref="JSRuntimePlannedInvocation{TResult}"/>.</returns>
 		public JSRuntimePlannedInvocation<TResult> Setup<TResult>(string identifier, Func<IReadOnlyList<object?>, bool> argumentsMatcher)
 		{
