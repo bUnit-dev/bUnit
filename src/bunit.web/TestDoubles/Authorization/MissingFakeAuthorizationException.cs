@@ -1,6 +1,6 @@
 using System;
 
-namespace Bunit.TestDoubles.Authorization
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Exception used to indicate that the fake authorization services are required by a test

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Bunit.TestDoubles.JSInterop
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Represents a planned invocation of a JavaScript function which returns nothing, with specific arguments.

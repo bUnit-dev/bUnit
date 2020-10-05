@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Bunit.TestDoubles.Authorization
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Represents a fake implementation of AuthenticationStateProvider for testing purposes that allows

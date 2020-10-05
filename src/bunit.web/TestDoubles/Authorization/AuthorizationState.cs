@@ -1,4 +1,4 @@
-namespace Bunit.TestDoubles.Authorization
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Enumeration that represents the user's authorization state.
