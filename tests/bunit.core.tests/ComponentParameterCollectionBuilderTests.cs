@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Bunit
 {
-	public class ComponentParameterCollectionBuilderTests
+	public class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		private readonly ComponentParameterCollectionBuilder<Params> Builder = new ComponentParameterCollectionBuilder<Params>();
 
@@ -43,16 +43,14 @@ namespace Bunit
 			EventCallbackCalled.ShouldBeTrue();
 		}
 
-		private static IRenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
+		private IRenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
 		{
-			var ctx = new TestContext();
-			return (IRenderedFragment)ctx.Renderer.RenderFragment(renderFragment);
+			return (IRenderedFragment)Renderer.RenderFragment(renderFragment);
 		}
 
-		private static IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment) where TComponent : IComponent
+		private IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment) where TComponent : IComponent
 		{
-			var ctx = new TestContext();
-			var res = (IRenderedFragment)ctx.Renderer.RenderFragment(renderFragment);
+			var res = (IRenderedFragment)Renderer.RenderFragment(renderFragment);
 			return res.FindComponent<TComponent>();
 		}
 
@@ -389,7 +387,7 @@ namespace Bunit
 
 			Builder.Build().ShouldAllBe(VerifyTemplate, VerifyTemplate);
 
-			static void VerifyTemplate(ComponentParameter template)
+			void VerifyTemplate(ComponentParameter template)
 			{
 				var input = "FOO";
 				var rf = template.ShouldBeParameter<RenderFragment<string>>("Template", isCascadingValue: false);
