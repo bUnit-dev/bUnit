@@ -11,7 +11,7 @@ namespace Bunit
 
 		[Theory(DisplayName = "Pointer events are raised correctly through helpers")]
 		[MemberData(nameof(GetEventHelperMethods), typeof(PointerEventDispatchExtensions))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new PointerEventArgs()
 			{
@@ -40,7 +40,7 @@ namespace Bunit
 				PointerType = "MOUSE"
 			};
 
-			await VerifyEventRaisesCorrectly(helper, expected);
+			VerifyEventRaisesCorrectly(helper, expected);
 		}
 	}
 }

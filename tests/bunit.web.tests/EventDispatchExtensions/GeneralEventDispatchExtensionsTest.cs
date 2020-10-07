@@ -16,7 +16,7 @@ namespace Bunit
 
 		[Theory(DisplayName = "General events are raised correctly through helpers")]
 		[MemberData(nameof(GetEventHelperMethods), typeof(GeneralEventDispatchExtensions))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			if (helper is null)
 				throw new ArgumentNullException(nameof(helper));
@@ -24,7 +24,7 @@ namespace Bunit
 			if (helper.Name == nameof(GeneralEventDispatchExtensions.TriggerEventAsync))
 				return;
 
-			await VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
+			VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
 		}
 
 		[Fact(DisplayName = "TriggerEventAsync throws element is null")]

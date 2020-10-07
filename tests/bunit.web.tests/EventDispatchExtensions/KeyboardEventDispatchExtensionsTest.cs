@@ -11,7 +11,7 @@ namespace Bunit
 
 		[Theory(DisplayName = "Keyboard events are raised correctly through helpers")]
 		[MemberData(nameof(GetEventHelperMethods), typeof(KeyboardEventDispatchExtensions))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new KeyboardEventArgs()
 			{
@@ -26,7 +26,7 @@ namespace Bunit
 				Type = "ASDF"
 			};
 
-			await VerifyEventRaisesCorrectly(helper, expected);
+			VerifyEventRaisesCorrectly(helper, expected);
 		}
 
 

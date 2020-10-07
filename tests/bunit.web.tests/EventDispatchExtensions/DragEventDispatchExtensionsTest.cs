@@ -11,7 +11,7 @@ namespace Bunit
 
 		[Theory(DisplayName = "Drag events are raised correctly through helpers")]
 		[MemberData(nameof(GetEventHelperMethods), typeof(DragEventDispatchExtensions))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new DragEventArgs()
 			{
@@ -30,7 +30,7 @@ namespace Bunit
 				DataTransfer = new DataTransfer()
 			};
 
-			await VerifyEventRaisesCorrectly(helper, expected);
+			VerifyEventRaisesCorrectly(helper, expected);
 		}
 	}
 

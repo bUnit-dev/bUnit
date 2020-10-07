@@ -12,14 +12,14 @@ namespace Bunit
 
 		[Theory(DisplayName = "Focus events are raised correctly through helpers")]
 		[MemberData(nameof(GetEventHelperMethods), typeof(FocusEventDispatchExtensions))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new FocusEventArgs()
 			{
 				Type = "SOME TYPE"
 			};
 
-			await VerifyEventRaisesCorrectly(helper, expected);
+			VerifyEventRaisesCorrectly(helper, expected);
 		}
 	}
 

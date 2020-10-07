@@ -22,7 +22,7 @@ namespace Bunit
 			return new TriggerEventSpy<EventArgs>(p => RenderComponent<TriggerTester<EventArgs>>(p), element, eventName);
 		}
 
-		protected async Task VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string methodName, string eventName)[] methodNameEventMap)
+		protected void VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string methodName, string eventName)[] methodNameEventMap)
 		{
 			if (helper is null)
 				throw new ArgumentNullException(nameof(helper));

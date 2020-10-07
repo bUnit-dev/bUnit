@@ -15,7 +15,7 @@ namespace Bunit
 
 		[Theory(DisplayName = "Mouse events are raised correctly through helpers")]
 		[MemberData(nameof(Helpers))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new MouseEventArgs
 			{
@@ -33,7 +33,7 @@ namespace Bunit
 				Type = "TYPE"
 			};
 
-			await VerifyEventRaisesCorrectly(helper, expected,
+			VerifyEventRaisesCorrectly(helper, expected,
 				(nameof(MouseEventDispatchExtensions.DoubleClick), "ondblclick")
 			);
 		}
@@ -47,7 +47,7 @@ namespace Bunit
 
 		[Theory(DisplayName = "Mouse wheel/wheel events are raised correctly through helpers")]
 		[MemberData(nameof(Helpers))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new WheelEventArgs
 			{
@@ -68,7 +68,7 @@ namespace Bunit
 				Type = "TYPE"
 			};
 
-			await VerifyEventRaisesCorrectly(helper, expected);
+			VerifyEventRaisesCorrectly(helper, expected);
 		}
 	}
 }
