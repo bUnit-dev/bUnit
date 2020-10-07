@@ -34,8 +34,7 @@ namespace Bunit
 			};
 
 			await VerifyEventRaisesCorrectly(helper, expected,
-				(nameof(MouseEventDispatchExtensions.DoubleClick), "ondblclick"),
-				(nameof(MouseEventDispatchExtensions.DoubleClickAsync), "ondblclick")
+				(nameof(MouseEventDispatchExtensions.DoubleClick), "ondblclick")
 			);
 		}
 	}

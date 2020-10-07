@@ -33,26 +33,8 @@ namespace Bunit
 			var spy = CreateTriggerSpy(ElementName, eventName);
 			var evtArg = new TEventArgs();
 
-			// Matches methods like: public static Task XxxxAsync(this IElement element, EventArgs args)
-			if (helper.ReturnType == typeof(Task) && helper.GetParameters().Length > 1)
-			{
-				await spy.Trigger(element =>
-				{
-					return (Task)helper.Invoke(null, new object[] { element, evtArg })!;
-				});
-				spy.RaisedEvent.ShouldBe(evtArg);
-			}
-			// Matches methods like: public static Task XxxxAsync(this IElement element)
-			else if (helper.ReturnType == typeof(Task) && helper.GetParameters().Length == 1)
-			{
-				await spy.Trigger(element =>
-				{
-					return (Task)helper.Invoke(null, new object[] { element })!;
-				});
-				spy.RaisedEvent.ShouldBe(EventArgs.Empty);
-			}
 			// Matches methods like: public static void Xxxx(this IElement element, TEventArgs args)
-			else if (helper.GetParameters().Any(p => p.ParameterType == EventArgsType))
+			if (helper.GetParameters().Any(p => p.ParameterType == EventArgsType))
 			{
 				spy.Trigger(element =>
 				{
