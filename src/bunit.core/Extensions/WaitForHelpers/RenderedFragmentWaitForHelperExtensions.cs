@@ -1,5 +1,4 @@
 using System;
-using Bunit.Asserting;
 using Bunit.Extensions.WaitForHelpers;
 
 namespace Bunit
