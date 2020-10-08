@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
+using AngleSharpWrappers;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
 
@@ -12,6 +15,9 @@ namespace Bunit
 	/// </summary>
 	public static class GeneralEventDispatchExtensions
 	{
+		private static HashSet<string> NonBubblingEvents = new HashSet<string> { "onabort", "onblur", "onchange", "onerror", "onfocus", "onload", "onloadend", "onloadstart", "onmouseenter", "onmouseleave", "onprogress", "onreset", "onscroll", "onsubmit", "onunload", "ontoggle", "ondomnodeinsertedintodocument", "ondomnoderemovedfromdocument" };
+		private static HashSet<string> DisabledEventNames = new HashSet<string> { "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup" };
+
 		/// <summary>
 		/// Raises the event <paramref name="eventName"/> on the element <paramref name="element"/>
 		/// passing the <paramref name="eventArgs"/> to the event handler.
@@ -24,20 +30,56 @@ namespace Bunit
 		{
 			if (element is null)
 				throw new ArgumentNullException(nameof(element));
-
-			var blazorEventAttr = Htmlizer.ToBlazorAttribute(eventName);
-			var eventHandlerIdString = element.GetAttribute(blazorEventAttr);
-
-			if (string.IsNullOrEmpty(eventHandlerIdString))
-				throw new MissingEventHandlerException(element, eventName);
-
-			var eventHandlerId = ulong.Parse(eventHandlerIdString, CultureInfo.InvariantCulture);
-
+			if (eventName is null)
+				throw new ArgumentNullException(nameof(eventName));
 			var renderer = element.Owner.Context.GetService<ITestRenderer>();
 			if (renderer is null)
 				throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(ITestRenderer)}'.");
 
-			return renderer.DispatchEventAsync(eventHandlerId, new EventFieldInfo() { FieldValue = eventName }, eventArgs);
+			var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
+			var eventStopPropergationAttrName = $"{eventAttrName}:stoppropagation";
+			var result = new List<Task>();
+			var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
+
+			foreach (var candidate in element.GetParentsAndSelf())
+			{
+				if (candidate.TryGetEventId(eventAttrName, out var id))
+					result.Add(renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs));
+
+				if (isNonBubblingEvent || candidate.HasAttribute(eventStopPropergationAttrName) || candidate.EventIsDisabled(eventName))
+				{
+					break;
+				}
+			}
+
+			if (result.Count == 0)
+				throw new MissingEventHandlerException(element, eventName);
+
+			return Task.WhenAll(result);
+		}
+
+		private static bool EventIsDisabled(this IElement element, string eventName)
+		{
+			// We want to replicate the normal DOM event behavior that, for 'interactive' elements
+			// with a 'disabled' attribute, certain mouse events are suppressed
+
+			var elm = (element as ElementWrapper)?.WrappedElement ?? element;
+			switch (elm)
+			{
+				case IHtmlButtonElement:
+				case IHtmlInputElement:
+				case IHtmlTextAreaElement:
+				case IHtmlSelectElement:
+					return DisabledEventNames.Contains(eventName) && elm.IsDisabled();
+				default:
+					return false;
+			}
+		}
+
+		private static bool TryGetEventId(this IElement element, string blazorEventName, out ulong id)
+		{
+			var eventId = element.GetAttribute(blazorEventName);
+			return ulong.TryParse(eventId, NumberStyles.Integer, CultureInfo.InvariantCulture, out id);
 		}
 
 		/// <summary>

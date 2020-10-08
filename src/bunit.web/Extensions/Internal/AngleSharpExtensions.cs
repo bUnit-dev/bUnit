@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AngleSharp.Diffing.Extensions;
 using AngleSharp.Dom;
 using Bunit.Diffing;
 using Bunit.Rendering;
@@ -62,6 +63,20 @@ namespace Bunit
 		public static HtmlComparer? GetHtmlComparer(this INodeList nodes)
 		{
 			return nodes?.Length > 0 ? nodes[0].GetHtmlComparer() : null;
+		}
+
+		/// <summary>
+		/// Gets the parents of the <paramref name="element"/>, starting with
+		/// the <paramref name="element"/> itself.
+		/// </summary>
+		public static IEnumerable<IElement> GetParentsAndSelf(this IElement element)
+		{
+			yield return element;
+			foreach (var node in element.GetParents())
+			{
+				if (node is IElement parent)
+					yield return parent;
+			}
 		}
 	}
 }

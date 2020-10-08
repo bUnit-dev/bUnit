@@ -2,9 +2,11 @@
 
 All notable changes to **bUnit** will be documented in this file. The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
+
 ## [UNRELEASED BETA 11]
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+The following section list all changes in beta-11.
 
 ### Added
 List of new features.
@@ -42,17 +44,17 @@ List of soon-to-be removed features.
 ### Removed
 List of now removed features.
 
+- The async event dispatcher helper methods have been removed (e.g. `ClickAsync()`), as they do not provide any benefit. If you have an event that triggers async operations in the component under test, instead use `cut.WaitForState()` or `cut.WaitForAssertion()` to await the expected state in the component.  
+
 ### Fixed
 List of any bug fixes.
 
 - Using the ComponentParameterCollectionBuilder's `Add(p => p.Param, value)` method to add a unnamed cascading value didn't create an unnnamed cascading value parameter. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203). Credits to [Ben Sampica (@benjaminsampica)](https://github.com/benjaminsampica) for reporting and helping investigate this issue.
-
-### Security
-List of fixed security vulnerabilities.
+- Triggered events now bubble correctly up the DOM tree and triggers other events of the same type. This is a **potentially breaking change,** since this changes the behaviour of event triggering and thus you might see tests start breaking as a result hereof. By [@egil](https://github.com/egil) in [#119](https://github.com/egil/bUnit/issues/119).
 
 ## [1.0.0-beta 10] - 2020-09-15
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+The following section list all changes in beta-10.
 
 ### Added
 List of new features.
