@@ -11,7 +11,7 @@ List of new features.
 
 - Two new overloads to the `RenderFragment()` and `ChildContent()` component parameter factory methods have been added that takes a `RenderFragment` as input. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
 - Added a `ComponentParameterCollection` type. The `ComponentParameterCollection` is a collection of component parameters, that knows how to turn those components parameters into a `RenderFragment`, which will render a component and pass any parameters inside the collection to that component. That logic was spread out over multiple places in bUnit, and is now owned by the `ComponentParameterCollection` type. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
-- Added additional placeholder services for `NavigationManager`, `HttpClient`, and `IStringLocalizer`, to make it easier for users to figure out why a test is failing due to missing service registration before rendering a component. By [@joro550](https://github.com/joro550) in [#203](https://github.com/egil/bUnit/pull/223).
+- Added additional placeholder services for `NavigationManager`, `HttpClient`, and `IStringLocalizer`, to make it easier for users to figure out why a test is failing due to missing service registration before rendering a component. By [@joro550](https://github.com/joro550) in [#223](https://github.com/egil/bUnit/pull/223).
 
 ### Changed
 List of changes in existing functionality.
@@ -34,7 +34,8 @@ List of changes in existing functionality.
   );
   ```
   By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
-- All test doubles are now in the same namespace, `Bunit.TestDoubles`. So all import statements for `Bunit.TestDoubles.JSInterop` and `Bunit.TestDoubles.Authorization` must be changed to `Bunit.TestDoubles`. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/223).
+- All test doubles are now in the same namespace, `Bunit.TestDoubles`. So all import statements for `Bunit.TestDoubles.JSInterop` and `Bunit.TestDoubles.Authorization` must be changed to `Bunit.TestDoubles`. By [@egil](https://github.com/egil) in [#223](https://github.com/egil/bUnit/pull/223).
+- Marked MarkupMatches methods as assertion methods to stop SonarSource analyzers complaining about missing assertions in tests. By [@egil](https://github.com/egil) in [#229](https://github.com/egil/bUnit/pull/229).
 
 ### Deprecated
 List of soon-to-be removed features.
