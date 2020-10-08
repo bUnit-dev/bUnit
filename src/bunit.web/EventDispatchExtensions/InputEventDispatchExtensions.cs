@@ -35,7 +35,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task ChangeAsync(this IElement element, ChangeEventArgs eventArgs) => element.TriggerEventAsync("onchange", eventArgs);
+		private static Task ChangeAsync(this IElement element, ChangeEventArgs eventArgs) => element.TriggerEventAsync("onchange", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@oninput</c> event on <paramref name="element"/>,  passing the provided
@@ -62,7 +62,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task InputAsync(this IElement element, ChangeEventArgs eventArgs) => element.TriggerEventAsync("oninput", eventArgs);
+		private static Task InputAsync(this IElement element, ChangeEventArgs eventArgs) => element.TriggerEventAsync("oninput", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
@@ -77,7 +77,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task InputAsync(this IElement element) => element.TriggerEventAsync("oninput", EventArgs.Empty);
+		private static Task InputAsync(this IElement element) => element.TriggerEventAsync("oninput", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@oninvalid</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
@@ -92,7 +92,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task InvalidAsync(this IElement element) => element.TriggerEventAsync("oninvalid", EventArgs.Empty);
+		private static Task InvalidAsync(this IElement element) => element.TriggerEventAsync("oninvalid", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onreset</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
@@ -107,7 +107,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task ResetAsync(this IElement element) => element.TriggerEventAsync("onreset", EventArgs.Empty);
+		private static Task ResetAsync(this IElement element) => element.TriggerEventAsync("onreset", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onselect</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
@@ -122,7 +122,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task SelectAsync(this IElement element) => element.TriggerEventAsync("onselect", EventArgs.Empty);
+		private static Task SelectAsync(this IElement element) => element.TriggerEventAsync("onselect", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onselectstart</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
@@ -137,7 +137,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task SelectStartAsync(this IElement element) => element.TriggerEventAsync("onselectstart", EventArgs.Empty);
+		private static Task SelectStartAsync(this IElement element) => element.TriggerEventAsync("onselectstart", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onselectionchange</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
@@ -152,7 +152,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task SelectionChangeAsync(this IElement element) => element.TriggerEventAsync("onselectionchange", EventArgs.Empty);
+		private static Task SelectionChangeAsync(this IElement element) => element.TriggerEventAsync("onselectionchange", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onsubmit</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
@@ -167,6 +167,6 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task SubmitAsync(this IElement element) => element.TriggerEventAsync("onsubmit", EventArgs.Empty);
+		private static Task SubmitAsync(this IElement element) => element.TriggerEventAsync("onsubmit", EventArgs.Empty);
 	}
 }

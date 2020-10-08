@@ -24,7 +24,7 @@ namespace Bunit
 		private const string BLAZOR_INTERNAL_ATTR_PREFIX = "__internal_";
 		private const string BLAZOR_CSS_SCOPE_ATTR_PREFIX = "b-";
 		internal const string BLAZOR_ATTR_PREFIX = "blazor:";
-		internal const string ELEMENT_REFERENCE_ATTR_NAME = BLAZOR_ATTR_PREFIX + "elementreference";
+		internal const string ELEMENT_REFERENCE_ATTR_NAME = BLAZOR_ATTR_PREFIX + "elementReference";
 
 		public static bool IsBlazorAttribute(string attributeName)
 		{
@@ -236,10 +236,13 @@ namespace Bunit
 					case bool flag when flag && frame.AttributeName.StartsWith(BLAZOR_INTERNAL_ATTR_PREFIX, StringComparison.Ordinal):
 						// NOTE: This was added to make it more obvious
 						//       that this is a generated/special blazor attribute
-						//	     for internal usage                    
+						//	     for internal usage
+						var nameParts = frame.AttributeName.Split('_', StringSplitOptions.RemoveEmptyEntries);
 						result.Add(" ");
 						result.Add(BLAZOR_ATTR_PREFIX);
-						result.Add(frame.AttributeName);
+						result.Add(nameParts[2]);
+						result.Add(":");
+						result.Add(nameParts[1]);
 						break;
 					case bool flag when flag:
 						result.Add(" ");

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Xunit;
 
@@ -15,7 +14,7 @@ namespace Bunit
 
 		[Theory(DisplayName = "Mouse events are raised correctly through helpers")]
 		[MemberData(nameof(Helpers))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new MouseEventArgs
 			{
@@ -33,9 +32,8 @@ namespace Bunit
 				Type = "TYPE"
 			};
 
-			await VerifyEventRaisesCorrectly(helper, expected,
-				(nameof(MouseEventDispatchExtensions.DoubleClick), "ondblclick"),
-				(nameof(MouseEventDispatchExtensions.DoubleClickAsync), "ondblclick")
+			VerifyEventRaisesCorrectly(helper, expected,
+				(nameof(MouseEventDispatchExtensions.DoubleClick), "ondblclick")
 			);
 		}
 	}
@@ -48,7 +46,7 @@ namespace Bunit
 
 		[Theory(DisplayName = "Mouse wheel/wheel events are raised correctly through helpers")]
 		[MemberData(nameof(Helpers))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new WheelEventArgs
 			{
@@ -69,7 +67,7 @@ namespace Bunit
 				Type = "TYPE"
 			};
 
-			await VerifyEventRaisesCorrectly(helper, expected);
+			VerifyEventRaisesCorrectly(helper, expected);
 		}
 	}
 }

@@ -27,7 +27,7 @@ namespace Bunit.RazorTesting
 		[Fact(DisplayName = "Can find single razor test in test component")]
 		public void Test001()
 		{
-			var discoverer = new RazorTestDiscoverer(_messageBus);
+			using var discoverer = new RazorTestDiscoverer(_messageBus);
 			var testMethod = Mocks.TestMethod(typeof(OneFixtureComponent), nameof(TestComponentBase.RazorTests));
 
 			var testCases = discoverer.Discover(_options, testMethod, _attribute);
@@ -38,7 +38,7 @@ namespace Bunit.RazorTesting
 		[Fact(DisplayName = "Can find two razor test in test component")]
 		public void Test002()
 		{
-			var discoverer = new RazorTestDiscoverer(_messageBus);
+			using var discoverer = new RazorTestDiscoverer(_messageBus);
 			var testMethod = Mocks.TestMethod(typeof(TwoFixtureComponent), nameof(TestComponentBase.RazorTests));
 
 			var testCases = discoverer.Discover(_options, testMethod, _attribute);
@@ -52,7 +52,7 @@ namespace Bunit.RazorTesting
 		[Fact(DisplayName = "Can find zero razor test in test component")]
 		public void Test003()
 		{
-			var discoverer = new RazorTestDiscoverer(_messageBus);
+			using var discoverer = new RazorTestDiscoverer(_messageBus);
 			var testMethod = Mocks.TestMethod(typeof(ZeroFixtureComponent), nameof(TestComponentBase.RazorTests));
 
 			var testCases = discoverer.Discover(_options, testMethod, _attribute);
@@ -63,7 +63,7 @@ namespace Bunit.RazorTesting
 		[Fact(DisplayName = "If no description is provided, the name of the test method is used")]
 		public void Test004()
 		{
-			var discoverer = new RazorTestDiscoverer(_messageBus);
+			using var discoverer = new RazorTestDiscoverer(_messageBus);
 			var testMethod = Mocks.TestMethod(typeof(FixturesWithoutDescription), nameof(TestComponentBase.RazorTests));
 
 			var testCases = discoverer.Discover(_options, testMethod, _attribute);
@@ -77,7 +77,7 @@ namespace Bunit.RazorTesting
 		[Fact(DisplayName = "Timeout is set correctly in test case")]
 		public void Test005()
 		{
-			var discoverer = new RazorTestDiscoverer(_messageBus);
+			using var discoverer = new RazorTestDiscoverer(_messageBus);
 			var testMethod = Mocks.TestMethod(typeof(TimeoutRazorComponent), nameof(TestComponentBase.RazorTests));
 
 			var testCases = discoverer.Discover(_options, testMethod, _attribute);

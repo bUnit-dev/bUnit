@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Xunit;
 
@@ -11,7 +10,7 @@ namespace Bunit
 
 		[Theory(DisplayName = "Progress events are raised correctly through helpers")]
 		[MemberData(nameof(GetEventHelperMethods), typeof(ProgressEventDispatchExtensions))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new ProgressEventArgs()
 			{
@@ -21,7 +20,7 @@ namespace Bunit
 				Type = "FILE"
 			};
 
-			await VerifyEventRaisesCorrectly(helper, expected);
+			VerifyEventRaisesCorrectly(helper, expected);
 		}
 	}
 }

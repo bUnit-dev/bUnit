@@ -26,8 +26,8 @@ namespace Bunit.Rendering.Internal
 			var button = component.Find("button");
 
 			//Assert
-			button.HasAttribute(Htmlizer.ToBlazorAttribute("__internal_stopPropagation_onclick")).ShouldBe(stopPropagation);
-			button.HasAttribute(Htmlizer.ToBlazorAttribute("__internal_preventDefault_onclick")).ShouldBe(preventDefault);
+			button.HasAttribute(Htmlizer.ToBlazorAttribute("onclick:stopPropagation")).ShouldBe(stopPropagation);
+			button.HasAttribute(Htmlizer.ToBlazorAttribute("onclick:preventDefault")).ShouldBe(preventDefault);
 		}
 
 		[Fact(DisplayName = "Blazor ElementReferences are included in rendered markup")]
