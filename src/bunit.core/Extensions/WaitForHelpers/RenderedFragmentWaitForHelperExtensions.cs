@@ -43,7 +43,6 @@ namespace Bunit
 		/// <param name="assertion">The verification or assertion to perform.</param>
 		/// <param name="timeout">The maximum time to attempt the verification.</param>
 		/// <exception cref="WaitForFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
-		[AssertionMethod]
 		public static void WaitForAssertion(this IRenderedFragmentBase renderedFragment, Action assertion, TimeSpan? timeout = null)
 		{
 			using var waiter = new WaitForAssertionHelper(renderedFragment, assertion, timeout);

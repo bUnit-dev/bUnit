@@ -35,7 +35,7 @@ List of changes in existing functionality.
   ```
   By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
 - All test doubles are now in the same namespace, `Bunit.TestDoubles`. So all import statements for `Bunit.TestDoubles.JSInterop` and `Bunit.TestDoubles.Authorization` must be changed to `Bunit.TestDoubles`. By [@egil](https://github.com/egil) in [#223](https://github.com/egil/bUnit/pull/223).
-- Marked MarkupMatches and WaitForAssertion as assertion methods to stop SonarQube analyzers complaining about missing assertions in tests. By [@egil](https://github.com/egil) in [#229](https://github.com/egil/bUnit/pull/229).
+- Marked MarkupMatches methods as assertion methods to stop SonarSource analyzers complaining about missing assertions in tests. By [@egil](https://github.com/egil) in [#229](https://github.com/egil/bUnit/pull/229).
 
 ### Deprecated
 List of soon-to-be removed features.
