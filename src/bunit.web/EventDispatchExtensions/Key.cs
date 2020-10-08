@@ -60,14 +60,14 @@ namespace Bunit
 
 		/// <summary>
 		/// Gets the key value of the key represented. If the value has a printed
-        /// representation, this attribute's value is the same as the char attribute.
+		/// representation, this attribute's value is the same as the char attribute.
 		/// </summary>
 		public string Value { get; }
 
 		/// <summary>
 		/// Gets the string that identifies the physical key being pressed. The value is not
-        /// affected by the current keyboard layout or modifier state, so a particular key
-        /// will always return the same value.
+		/// affected by the current keyboard layout or modifier state, so a particular key
+		/// will always return the same value.
 		/// </summary>
 		public string Code { get; }
 
@@ -337,23 +337,23 @@ namespace Bunit
 		/// <param name="value">The key value.</param>
 		public static Key FromChar(char value) => new Key(value);
 
-        /// <summary>
-        /// Gets the value indicating whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="obj">The object to compare with this object.</param>
-        /// <returns><c>True</c> if the current object is equal to the other parameter; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object? obj)
-        {
-            return obj is Key key && Equals(key);
-        }
+		/// <summary>
+		/// Gets the value indicating whether the current object is equal to another object of the same type.
+		/// </summary>
+		/// <param name="obj">The object to compare with this object.</param>
+		/// <returns><c>True</c> if the current object is equal to the other parameter; otherwise, <c>false</c>.</returns>
+		public override bool Equals(object? obj)
+		{
+			return obj is Key key && Equals(key);
+		}
 
 		/// <summary>
 		/// Gets the value indicating whether the current object is equal to another object of the same type.
 		/// </summary>
 		/// <param name="other">A key to compare with this object.</param>
 		/// <returns><c>True</c> if the current object is equal to the other parameter; otherwise, <c>false</c>.</returns>
-        public bool Equals(Key? other)
-        {
+		public bool Equals(Key? other)
+		{
 			if (other is null)
 			{
 				return false;
@@ -365,25 +365,25 @@ namespace Bunit
 				ShiftKey == other.ShiftKey &&
 				AltKey == other.AltKey &&
 				CommandKey == other.CommandKey;
-        }
+		}
 
 		/// <summary>
 		/// Gets hash code of this object.
 		/// </summary>
 		/// <returns>A hash code for the current object.</returns>
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Value, Code, ControlKey, ShiftKey, AltKey, CommandKey);
-        }
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Value, Code, ControlKey, ShiftKey, AltKey, CommandKey);
+		}
 
 		/// <summary>
 		/// Gets a string that represents the current object.
 		/// </summary>
 		/// <returns>A string that represents the current object.</returns>
-        public override string ToString()
-        {
-            return Value;
-        }
+		public override string ToString()
+		{
+			return Value;
+		}
 
 		/// <summary>
 		/// Gets the key with new value of Control key.
@@ -526,11 +526,14 @@ namespace Bunit
 		/// <returns>The Key instance with character value.</returns>
 		[return: NotNullIfNotNull("key")]
 		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Key should have minimal relation to KeyboardEventArgs type")]
-		public static implicit operator KeyboardEventArgs?(Key? key)
+		public static implicit operator KeyboardEventArgs(Key key)
 		{
 			if (key is null)
 			{
-				return null;
+				// In future the operator should support null as input.
+				// However, NotNullIfNotNull does not work correctly with operators.
+				// Therfore workaround is to make input non-nullable. 
+				return null!;
 			}
 
 			return new KeyboardEventArgs
@@ -543,5 +546,5 @@ namespace Bunit
 				MetaKey = key.CommandKey
 			};
 		}
-    }
+	}
 }

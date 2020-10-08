@@ -11,7 +11,7 @@ namespace Bunit
 	{
 		public static IEnumerable<object[]> CharTestData { get; } = new[] { ' ', 'x', 'A', '2', '0', '&', (char)0 }
 			.Select(c => new object[] { c }).ToList();
-		
+
 		public static IEnumerable<Key[]> EqualsTestData { get; } = GetEqualsTestData().Select(i => new[] { i.Item1, i.Item2 });
 
 		public static IEnumerable<Key?[]> NonEqualsTestData { get; } = GetNonEqualsTestData().Select(i => new[] { i.Item1, i.Item2 });
@@ -308,7 +308,7 @@ namespace Bunit
 		[MemberData(nameof(KeyboardEventArgsTestData))]
 		public void ToKeyboardEventArgs(Key key, string value, string code, bool ctrlKey, bool shiftKey, bool altKey, bool metaKey)
 		{
-			KeyboardEventArgs result = key!;
+			KeyboardEventArgs result = key;
 			result.Key.ShouldBe(value);
 			result.Code.ShouldBe(code);
 			result.CtrlKey.ShouldBe(ctrlKey);
@@ -317,6 +317,14 @@ namespace Bunit
 			result.MetaKey.ShouldBe(metaKey);
 			result.Location.ShouldBe(0);
 			result.Type.ShouldBe(null);
+		}
+
+		[Fact(DisplayName = "Can convert null to KeyboardEventArgs")]
+		public void NullToKeyboardEventArgs()
+		{
+			Key key = null!;
+			KeyboardEventArgs result = key;
+			result.ShouldBeNull();
 		}
 
 		private static IEnumerable<ValueTuple<Key, Key>> GetEqualsTestData()
