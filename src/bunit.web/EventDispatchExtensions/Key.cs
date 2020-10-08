@@ -354,7 +354,7 @@ namespace Bunit
 		/// <returns><c>True</c> if the current object is equal to the other parameter; otherwise, <c>false</c>.</returns>
         public bool Equals(Key? other)
         {
-			if (other == null)
+			if (other is null)
 			{
 				return false;
 			}
@@ -431,10 +431,9 @@ namespace Bunit
 		/// </summary>
 		/// <param name="key">The other key to combine with.</param>
 		/// <returns>A new key with combination of Control, Shift, Alt, and Command keys.</returns>
-		[return: NotNullIfNotNull("key")]
 		public Key Combine(Key? key)
 		{
-			if (key == null)
+			if (key is null)
 			{
 				return this;
 			}
@@ -473,7 +472,7 @@ namespace Bunit
 				return true;
 			}
 
-			return x != null && x.Equals(y);
+			return !(x is null) && x.Equals(y);
 		}
 
 		/// <summary>
@@ -494,19 +493,22 @@ namespace Bunit
 		[return: NotNullIfNotNull("x")]
 		[return: NotNullIfNotNull("y")]
 		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Alternative method is named Combine")]
-		public static Key? operator +(Key? x, Key? y)
+		public static Key operator +(Key x, Key? y)
 		{
-			if (x != null)
+			if (!(x is null))
 			{
 				return x.Combine(y);
 			}
-			else if (y != null)
+			else if (!(y is null))
 			{
 				return y.Combine(x);
 			}
 			else
 			{
-				return null;
+				// In future 'x' should be supported as nullable.
+				// However, NotNullIfNotNull does not work correctly with operators.
+				// Therfore workaround is to make 'x' non-nullable. 
+				return null!;
 			}
 		}
 
@@ -526,7 +528,7 @@ namespace Bunit
 		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Key should have minimal relation to KeyboardEventArgs type")]
 		public static implicit operator KeyboardEventArgs?(Key? key)
 		{
-			if (key == null)
+			if (key is null)
 			{
 				return null;
 			}
