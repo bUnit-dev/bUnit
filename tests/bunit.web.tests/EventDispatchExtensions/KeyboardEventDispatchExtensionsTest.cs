@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Components.Web;
 using Shouldly;
@@ -7,10 +9,12 @@ namespace Bunit
 {
 	public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<KeyboardEventArgs>
 	{
+		public static IEnumerable<MethodInfo[]> Helpers { get; } = GetEventHelperMethods(typeof(KeyboardEventDispatchExtensions), x => x.GetParameters().All(p => p.ParameterType != typeof(Key)));
+
 		protected override string ElementName => "input";
 
 		[Theory(DisplayName = "Keyboard events are raised correctly through helpers")]
-		[MemberData(nameof(GetEventHelperMethods), typeof(KeyboardEventDispatchExtensions))]
+		[MemberData(nameof(Helpers))]
 		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new KeyboardEventArgs()
@@ -47,19 +51,90 @@ namespace Bunit
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}
 
-		[Fact(DisplayName = "KeyDown event is raised correctly through helper using character keys")]
-		public void CanRaiseKeyUpWithAKey()
+		[Fact(DisplayName = "KeyDown event is raised correctly through helper using character key")]
+		public void CanRaiseKeyDownWithAKey()
 		{
-			var spy = CreateTriggerSpy(ElementName, "onkeyup");
+			var spy = CreateTriggerSpy(ElementName, "onkeydown");
 			spy.Trigger(element =>
 			{
-				element.KeyUp((Key)'A');
+				element.KeyDown('A');
 			});
 
 			var expected = new KeyboardEventArgs
 			{
 				Key = "A",
 				Code = "A"
+			};
+			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
+		}
+
+		[Fact(DisplayName = "KeyUp event is raised correctly through helper using special key")]
+		public void CanRaiseKeyUpWithShiftSpace()
+		{
+			var spy = CreateTriggerSpy(ElementName, "onkeyup");
+			spy.Trigger(element =>
+			{
+				element.KeyUp(Key.Space + Key.Shift + Key.Alt);
+			});
+
+			var expected = new KeyboardEventArgs
+			{
+				Key = " ",
+				Code = "Space",
+				ShiftKey = true,
+				AltKey = true
+			};
+			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
+		}
+
+		[Fact(DisplayName = "KeyUp event is raised correctly through helper using character key")]
+		public void CanRaiseKeyUpWithBKey()
+		{
+			var spy = CreateTriggerSpy(ElementName, "onkeyup");
+			spy.Trigger(element =>
+			{
+				element.KeyUp(Key.Alt + 'B');
+			});
+
+			var expected = new KeyboardEventArgs
+			{
+				Key = "B",
+				Code = "B",
+				AltKey = true
+			};
+			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
+		}
+
+		[Fact(DisplayName = "KeyPress event is raised correctly through helper using special key")]
+		public void CanRaiseKeyPressWithNum8Key()
+		{
+			var spy = CreateTriggerSpy(ElementName, "onkeypress");
+			spy.Trigger(element =>
+			{
+				element.KeyPress(Key.NumberPad8);
+			});
+
+			var expected = new KeyboardEventArgs
+			{
+				Key = "8",
+				Code = "Numpad8"
+			};
+			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
+		}
+
+		[Fact(DisplayName = "KeyPress event is raised correctly through helper using character key")]
+		public void CanRaiseKeyPressWith8Key()
+		{
+			var spy = CreateTriggerSpy(ElementName, "onkeypress");
+			spy.Trigger(element =>
+			{
+				element.KeyPress('8');
+			});
+
+			var expected = new KeyboardEventArgs
+			{
+				Key = "8",
+				Code = "8"
 			};
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}

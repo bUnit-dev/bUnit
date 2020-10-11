@@ -181,13 +181,13 @@ namespace Bunit
 		[MemberData(nameof(NonEqualsTestData))]
 		public void EqualsShouldBeFalseForDifferentKeys(Key? key1, Key? key2)
 		{
-			if (!(key1 is null))
+			if (key1 is not null)
 			{
 				key1.Equals(key2).ShouldBeFalse();
 				key1.Equals((object?)key2).ShouldBeFalse();
 			}
 
-			if (!(key2 is null))
+			if (key2 is not null)
 			{
 				key2.Equals(key1).ShouldBeFalse();
 				key2.Equals((object?)key1).ShouldBeFalse();

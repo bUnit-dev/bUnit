@@ -536,7 +536,7 @@ namespace Bunit
 				return true;
 			}
 
-			return !(x is null) && x.Equals(y);
+			return x is not null && x.Equals(y);
 		}
 
 		/// <summary>
@@ -559,11 +559,11 @@ namespace Bunit
 		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Alternative method is named " + nameof(Combine))]
 		public static Key operator +(Key x, Key? y)
 		{
-			if (!(x is null))
+			if (x is not null)
 			{
 				return x.Combine(y);
 			}
-			else if (!(y is null))
+			else if (y is not null)
 			{
 				return y.Combine(x);
 			}
