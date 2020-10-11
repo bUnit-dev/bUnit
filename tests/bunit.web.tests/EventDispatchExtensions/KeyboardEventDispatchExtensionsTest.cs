@@ -68,6 +68,26 @@ namespace Bunit
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}
 
+		[Fact(DisplayName = "KeyDown event is raised correctly through helper specifying repeat and type")]
+		public void CanRaiseKeyDownWithRepeatAndType()
+		{
+			var spy = CreateTriggerSpy(ElementName, "onkeydown");
+			spy.Trigger(element =>
+			{
+				element.KeyDown(Key.Up + Key.Command, true, "Test Down");
+			});
+
+			var expected = new KeyboardEventArgs
+			{
+				Key = "ArrowUp",
+				Code = "ArrowUp",
+				MetaKey = true,
+				Repeat = true,
+				Type = "Test Down"
+			};
+			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
+		}
+
 		[Fact(DisplayName = "KeyUp event is raised correctly through helper using special key")]
 		public void CanRaiseKeyUpWithShiftSpace()
 		{
@@ -105,6 +125,27 @@ namespace Bunit
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}
 
+		[Fact(DisplayName = "KeyUp event is raised correctly through helper specifying repeat and type")]
+		public void CanRaiseKeyUpWithWithRepeatAndType()
+		{
+			var spy = CreateTriggerSpy(ElementName, "onkeyup");
+			spy.Trigger(element =>
+			{
+				element.KeyUp(Key.Down + Key.Shift + Key.Command, true, "Test Up");
+			});
+
+			var expected = new KeyboardEventArgs
+			{
+				Key = "ArrowDown",
+				Code = "ArrowDown",
+				ShiftKey = true,
+				MetaKey = true,
+				Repeat = true,
+				Type = "Test Up"
+			};
+			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
+		}
+
 		[Fact(DisplayName = "KeyPress event is raised correctly through helper using special key")]
 		public void CanRaiseKeyPressWithNum8Key()
 		{
@@ -135,6 +176,26 @@ namespace Bunit
 			{
 				Key = "8",
 				Code = "8"
+			};
+			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
+		}
+
+		[Fact(DisplayName = "KeyPress event is raised correctly through  specifying repeat and type")]
+		public void CanRaiseKeyPressWithRepeatAndType()
+		{
+			var spy = CreateTriggerSpy(ElementName, "onkeypress");
+			spy.Trigger(element =>
+			{
+				element.KeyPress(Key.Shift + "P", true, "Press Test");
+			});
+
+			var expected = new KeyboardEventArgs
+			{
+				Key = "P",
+				Code = "P",
+				ShiftKey = true,
+				Repeat = true,
+				Type = "Press Test"
 			};
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}

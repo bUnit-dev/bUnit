@@ -12,6 +12,8 @@ namespace Bunit
 	[SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "Arguments are provided from test data")]
 	public class KeyTest
 	{
+		public static IEnumerable<object[]> KeyValueTestData { get; } = GetKeyValueTestData().Select(c => new object[] { c }).ToList();
+
 		public static IEnumerable<object[]> CharTestData { get; } = new[] { ' ', 'x', 'A', '2', '0', '&', (char)0 }
 			.Select(c => new object[] { c }).ToList();
 
@@ -34,15 +36,7 @@ namespace Bunit
 		public static IEnumerable<object[]> KeyboardEventArgsTestData { get; } = GetKeyboardEventArgsTestData();
 
 		[Theory(DisplayName = "Get method with value parameter should return initialized Key object")]
-		[InlineData(" ")]
-		[InlineData("x")]
-		[InlineData("A")]
-		[InlineData("2")]
-		[InlineData("0")]
-		[InlineData("&")]
-		[InlineData("Key")]
-		[InlineData("TEST_test$44")]
-		[InlineData("F5")]
+		[MemberData(nameof(KeyValueTestData))]
 		public void GetWithValue(string value)
 		{
 			var key = Key.Get(value);
@@ -60,6 +54,30 @@ namespace Bunit
 		public void GetWithNullValue(string value)
 		{
 			Should.Throw<ArgumentNullException>(() => Key.Get(value));
+		}
+
+		[Theory(DisplayName = "Casting from string should return initialized Key object")]
+		[MemberData(nameof(KeyValueTestData))]
+		public void CanCastFromString(string value)
+		{
+			Key key = value;
+			key.Value.ShouldBe(value);
+			key.Code.ShouldBe(value);
+			key.ControlKey.ShouldBeFalse();
+			key.ShiftKey.ShouldBeFalse();
+			key.AltKey.ShouldBeFalse();
+			key.CommandKey.ShouldBeFalse();
+		}
+
+		[Theory(DisplayName = "Custing from null or empty string throws ArgumentNullException")]
+		[InlineData(null)]
+		[InlineData("")]
+		public void CastingFromNullStringThrowsException(string value)
+		{
+			Should.Throw<ArgumentNullException>(() =>
+			{
+				Key key = value;
+			});
 		}
 
 		[Theory(DisplayName = "Get method with value and code parameters should return initialized Key object")]
@@ -331,6 +349,22 @@ namespace Bunit
 			Key key = null!;
 			KeyboardEventArgs result = key;
 			result.ShouldBeNull();
+		}
+
+		private static IEnumerable<string> GetKeyValueTestData()
+		{
+			return new[]
+			{
+				" ",
+				"x",
+				"A",
+				"2",
+				"0",
+				"&",
+				"Key",
+				"TEST_test$44",
+				"F5"
+			};
 		}
 
 		private static IEnumerable<ValueTuple<Key, Key>> GetEqualsTestData()

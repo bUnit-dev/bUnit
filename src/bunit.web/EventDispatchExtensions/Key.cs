@@ -531,7 +531,15 @@ namespace Bunit
 		/// <returns><c>True</c> if the instances of Key are equal; otherwise, <c>false</c>.</returns>
 		public static bool operator ==(Key? x, Key? y)
 		{
-			if (object.ReferenceEquals(x, y))
+			if (x is null && y is null)
+			{
+				return true;
+			}
+			else if (x is null || y is null)
+			{
+				return false;
+			}
+			else if (object.ReferenceEquals(x, y))
 			{
 				return true;
 			}
@@ -557,6 +565,7 @@ namespace Bunit
 		[return: NotNullIfNotNull("x")]
 		[return: NotNullIfNotNull("y")]
 		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Alternative method is named " + nameof(Combine))]
+		[SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "False warning is caused by bug in Roslyn analyzer")]
 		public static Key operator +(Key x, Key? y)
 		{
 			if (x is not null)
@@ -576,6 +585,16 @@ namespace Bunit
 				return null!;
 			}
 		}
+
+		/// <summary>
+		/// Gets a new <see cref="Key" /> instance with value of string object.
+		/// </summary>
+		/// <param name="value">The string value to convert to Key instance.</param>
+		/// <returns>The Key instance with the specified value.</returns>
+		// It would make sense to convert null and "" to null Key instead of throwing ArgumentNullException,
+		// but this would force consumers to use ! operator to enforce not-null value.
+		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Alternative method is named " + nameof(Get))]
+		public static implicit operator Key(string value) => Key.Get(value);
 
 		/// <summary>
 		/// Gets a new <see cref="Key" /> instance with value of character.
