@@ -25,7 +25,7 @@ var element = cut.Find("input");
 element.KeyDown(Key.Enter + Key.Control); // Triggers onkeydown event with Ctrl + Enter
 element.KeyUp(Key.Control + Key.Shift + 'B'); // Triggers onkeyup event with Ctrl + Shift + B
 element.KeyPress('1'); // Triggers onkeypress event with key 1
-element.KeyDown(Key.Alt + Key.Get("<")); // Triggers onkeydown event with Alt + <
+element.KeyDown(Key.Alt + "<"); // Triggers onkeydown event with Alt + <
 ```
 By [@duracellko](https://github.com/duracellko) in [#101](https://github.com/egil/bUnit/issues/101).
 
