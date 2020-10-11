@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using Microsoft.AspNetCore.Components.Web;
 using Shouldly;
 using Xunit;
 
 namespace Bunit
 {
+	[SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "Arguments are provided from test data")]
 	public class KeyTest
 	{
 		public static IEnumerable<object[]> CharTestData { get; } = new[] { ' ', 'x', 'A', '2', '0', '&', (char)0 }
@@ -30,7 +33,7 @@ namespace Bunit
 
 		public static IEnumerable<object[]> KeyboardEventArgsTestData { get; } = GetKeyboardEventArgsTestData();
 
-		[Theory(DisplayName = "Constructor with value parameter should return initialized Key object")]
+		[Theory(DisplayName = "Get method with value parameter should return initialized Key object")]
 		[InlineData(" ")]
 		[InlineData("x")]
 		[InlineData("A")]
@@ -39,9 +42,10 @@ namespace Bunit
 		[InlineData("&")]
 		[InlineData("Key")]
 		[InlineData("TEST_test$44")]
-		public void ConstructorWithValue(string value)
+		[InlineData("F5")]
+		public void GetWithValue(string value)
 		{
-			var key = new Key(value);
+			var key = Key.Get(value);
 			key.Value.ShouldBe(value);
 			key.Code.ShouldBe(value);
 			key.ControlKey.ShouldBeFalse();
@@ -50,15 +54,15 @@ namespace Bunit
 			key.CommandKey.ShouldBeFalse();
 		}
 
-		[Theory(DisplayName = "Constructor with empty value parameter should throw exception")]
+		[Theory(DisplayName = "Get method with empty value parameter should throw exception")]
 		[InlineData(null)]
 		[InlineData("")]
-		public void ConstructorWithNullValue(string value)
+		public void GetWithNullValue(string value)
 		{
-			Should.Throw<ArgumentNullException>(() => new Key(value));
+			Should.Throw<ArgumentNullException>(() => Key.Get(value));
 		}
 
-		[Theory(DisplayName = "Constructor with value and code parameters should return initialized Key object")]
+		[Theory(DisplayName = "Get method with value and code parameters should return initialized Key object")]
 		[InlineData(" ", " ")]
 		[InlineData("x", "x")]
 		[InlineData("A", "A")]
@@ -75,9 +79,9 @@ namespace Bunit
 		[InlineData("&", "amp")]
 		[InlineData("Key", "Test")]
 		[InlineData("TEST_test$44", "$44-test")]
-		public void ConstructorWithValueAndCode(string value, string code)
+		public void GetWithValueAndCode(string value, string code)
 		{
-			var key = new Key(value, code);
+			var key = Key.Get(value, code);
 			key.Value.ShouldBe(value);
 			key.Code.ShouldBe(code);
 			key.ControlKey.ShouldBeFalse();
@@ -86,36 +90,23 @@ namespace Bunit
 			key.CommandKey.ShouldBeFalse();
 		}
 
-		[Theory(DisplayName = "Constructor with empty value or code should throw exception")]
+		[Theory(DisplayName = "Get method with empty value or code should throw exception")]
 		[InlineData(null, "")]
 		[InlineData("", null)]
 		[InlineData(null, "t")]
 		[InlineData("", "t")]
 		[InlineData("T", null)]
 		[InlineData("T", "")]
-		public void ConstructorWithNullValueAndNonNullCode(string value, string code)
+		public void GetWithNullValueAndNonNullCode(string value, string code)
 		{
-			Should.Throw<ArgumentNullException>(() => new Key(value, code));
+			Should.Throw<ArgumentNullException>(() => Key.Get(value, code));
 		}
 
-		[Theory(DisplayName = "Constructor with value character should return initialized Key object")]
+		[Theory(DisplayName = "Get with char value should return initialized Key object")]
 		[MemberData(nameof(CharTestData))]
-		public void ConstructorWithValueCharacter(char value)
+		public void GetFromChar(char value)
 		{
-			var key = new Key(value);
-			key.Value.ShouldBe(value.ToString());
-			key.Code.ShouldBe(value.ToString());
-			key.ControlKey.ShouldBeFalse();
-			key.ShiftKey.ShouldBeFalse();
-			key.AltKey.ShouldBeFalse();
-			key.CommandKey.ShouldBeFalse();
-		}
-
-		[Theory(DisplayName = "FromChar should return initialized Key object")]
-		[MemberData(nameof(CharTestData))]
-		public void FromChar(char value)
-		{
-			var key = Key.FromChar(value);
+			var key = Key.Get(value);
 			key.Value.ShouldBe(value.ToString());
 			key.Code.ShouldBe(value.ToString());
 			key.ControlKey.ShouldBeFalse();
@@ -128,13 +119,28 @@ namespace Bunit
 		[MemberData(nameof(CharTestData))]
 		public void CanCastFromChar(char value)
 		{
-			var key = (Key)value;
+			Key key = value;
 			key.Value.ShouldBe(value.ToString());
 			key.Code.ShouldBe(value.ToString());
 			key.ControlKey.ShouldBeFalse();
 			key.ShiftKey.ShouldBeFalse();
 			key.AltKey.ShouldBeFalse();
 			key.CommandKey.ShouldBeFalse();
+		}
+
+		[Fact(DisplayName = "Get method returns same instances for predefined keys")]
+		public void GetPredefinedKeys()
+		{
+			var keyType = typeof(Key);
+			var predefinedKeyProperties = keyType.GetProperties(BindingFlags.Public | BindingFlags.Static)
+				.Where(p => p.CanRead && p.PropertyType == keyType);
+
+			foreach (var predefinedKeyProperty in predefinedKeyProperties)
+			{
+				var predefinedKey = (Key)predefinedKeyProperty.GetValue(null)!;
+				var instanceKey = Key.Get(predefinedKey.Value, predefinedKey.Code);
+				instanceKey.ShouldBeSameAs(predefinedKey);
+			}
 		}
 
 		[Theory(DisplayName = "Keys with same values should be equal")]
@@ -329,9 +335,9 @@ namespace Bunit
 
 		private static IEnumerable<ValueTuple<Key, Key>> GetEqualsTestData()
 		{
-			var xKey = Key.FromChar('x');
-			var DollarKey = new Key("$", "Dollar");
-			var CustomKey = new Key("Test", "12345");
+			var xKey = Key.Get('x');
+			var DollarKey = Key.Get("$", "Dollar");
+			var CustomKey = Key.Get("Test", "12345");
 			return new[]
 			{
 				(Key.Enter, Key.Enter),
@@ -342,35 +348,35 @@ namespace Bunit
 				(Key.Shift, Key.Shift),
 				(Key.Alt, Key.Alt),
 				(Key.Command, Key.Command),
-				(Key.Enter, new Key("Enter")),
-				(Key.F10, new Key("F10")),
-				(Key.NumberPad2, new Key("2", "Numpad2")),
-				(Key.Space, new Key(" ", "Space")),
-				(Key.Control, new Key("Control", "ControlLeft") + Key.Control),
-				(Key.Shift, new Key("Shift", "ShiftLeft") + Key.Shift),
-				(Key.Alt, new Key("Alt", "AltLeft") + Key.Alt),
-				(Key.Command, new Key("Meta", "MetaLeft") + Key.Command),
+				(Key.Enter, Key.Get("Enter")),
+				(Key.F10, Key.Get("F10")),
+				(Key.NumberPad2, Key.Get("2", "Numpad2")),
+				(Key.Space, Key.Get(" ", "Space")),
+				(Key.Control, Key.Get("Control", "ControlLeft") + Key.Control),
+				(Key.Shift, Key.Get("Shift", "ShiftLeft") + Key.Shift),
+				(Key.Alt, Key.Get("Alt", "AltLeft") + Key.Alt),
+				(Key.Command, Key.Get("Meta", "MetaLeft") + Key.Command),
 				(xKey, xKey),
 				(DollarKey, DollarKey),
 				(CustomKey, CustomKey),
-				(xKey, Key.FromChar('x')),
-				(DollarKey, new Key("$", "Dollar")),
-				(CustomKey, new Key("Test", "12345")),
+				(xKey, Key.Get('x')),
+				(DollarKey, Key.Get("$", "Dollar")),
+				(CustomKey, Key.Get("Test", "12345")),
 				(Key.Control + Key.Alt + Key.Shift, Key.Control + Key.Alt + Key.Shift),
 				(Key.Enter + Key.Command, Key.Enter + Key.Command),
 				(Key.F10 + Key.Control, Key.F10 + Key.Control),
-				(Key.Space + Key.Alt, new Key(" ", "Space") + Key.Alt),
+				(Key.Space + Key.Alt, Key.Get(" ", "Space") + Key.Alt),
 				(xKey + Key.Shift, xKey + Key.Shift),
-				(DollarKey + Key.Control + Key.Shift, new Key("$", "Dollar") + Key.Shift + Key.Control),
-				(CustomKey + Key.Alt + Key.Control, new Key("Test", "12345") + Key.Control + Key.Alt)
+				(DollarKey + Key.Control + Key.Shift, Key.Get("$", "Dollar") + Key.Shift + Key.Control),
+				(CustomKey + Key.Alt + Key.Control, Key.Get("Test", "12345") + Key.Control + Key.Alt)
 			};
 		}
 
 		private static IEnumerable<ValueTuple<Key?, Key?>> GetNonEqualsTestData()
 		{
-			var xKey = Key.FromChar('x');
-			var DollarKey = new Key("$", "Dollar");
-			var CustomKey = new Key("Test", "12345");
+			var xKey = Key.Get('x');
+			var DollarKey = Key.Get("$", "Dollar");
+			var CustomKey = Key.Get("Test", "12345");
 			return new ValueTuple<Key?, Key?>[]
 			{
 				(Key.Enter, Key.Escape),
@@ -378,9 +384,9 @@ namespace Bunit
 				(Key.NumberPad2, Key.NumberPad8),
 				(Key.Space, Key.Control),
 				(Key.Alt, Key.Shift),
-				(xKey, new Key('y')),
-				(DollarKey, new Key("$", "Pound")),
-				(CustomKey, new Key("test", "12345")),
+				(xKey, Key.Get('y')),
+				(DollarKey, Key.Get("$", "Pound")),
+				(CustomKey, Key.Get("test", "12345")),
 				(Key.Control + Key.Alt + Key.Shift, Key.Control + Key.Alt),
 				(Key.Enter + Key.Control, Key.Enter + Key.Alt),
 				(Key.F10 + Key.Alt, Key.F10 + Key.Shift),
@@ -401,10 +407,10 @@ namespace Bunit
 			return new ValueTuple<Key, object>[]
 			{
 				(Key.Space, false),
-				(Key.FromChar('G'), 'G'),
-				(new Key("Test"), "Test"),
+				(Key.Get('G'), 'G'),
+				(Key.Get("Test"), "Test"),
 				(Key.Control, 2),
-				(new Key("Event", "Args"), EventArgs.Empty)
+				(Key.Get("Event", "Args"), EventArgs.Empty)
 			};
 		}
 
@@ -414,14 +420,14 @@ namespace Bunit
 			{
 				Key.Enter,
 				Key.Add,
-				new Key('c'),
-				new Key("T", "Test"),
+				Key.Get('c'),
+				Key.Get("T", "Test"),
 				Key.Enter + Key.Control,
 				Key.Add + Key.Shift,
-				new Key('c') + Key.Alt,
-				new Key("T", "Test") + Key.Command,
+				Key.Get('c') + Key.Alt,
+				Key.Get("T", "Test") + Key.Command,
 				Key.Space + Key.Control + Key.Alt + Key.Shift,
-				Key.FromChar('0') + Key.Shift + Key.Control
+				Key.Get('0') + Key.Shift + Key.Control
 			};
 		}
 
@@ -431,13 +437,13 @@ namespace Bunit
 			{
 				new object[] { Key.Enter, Key.Control, true, false, false, false },
 				new object[] { Key.Add, Key.Shift, false, true, false, false },
-				new object[] { new Key('c'), Key.Alt, false, false, true, false },
-				new object[] { new Key("T", "Test"), Key.Command, false, false, false, true },
+				new object[] { Key.Get('c'), Key.Alt, false, false, true, false },
+				new object[] { Key.Get("T", "Test"), Key.Command, false, false, false, true },
 				new object[] { Key.Escape + Key.Alt, Key.Control, true, false, true, false },
 				new object[] { Key.NumberPad0, Key.Alt + Key.Shift, false, true, true, false },
 				new object[] { Key.Multiply + Key.Command, Key.Command, false, false, false, true },
 				new object[] { Key.Enter + Key.Shift, Key.Shift + Key.Control, true, true, false, false },
-				new object[] { new Key('1') + Key.Command, Key.Shift + Key.Control + Key.Alt, true, true, true, true },
+				new object[] { Key.Get('1') + Key.Command, Key.Shift + Key.Control + Key.Alt, true, true, true, true },
 				new object[] { Key.Enter + Key.Shift + Key.Alt, Key.Shift + Key.Control, true, true, true, false }
 			};
 		}
@@ -448,11 +454,11 @@ namespace Bunit
 			{
 				(Key.Enter, Key.Enter),
 				(Key.Space, Key.Backspace),
-				(new Key('0'), Key.NumberPad0),
+				(Key.Get('0'), Key.NumberPad0),
 				(Key.Enter + Key.Control, Key.Enter),
 				(Key.Add + Key.Alt, Key.Enter + Key.Shift),
-				(new Key("T", "Test"), new Key("T", "Test")),
-				(new Key('0') + Key.Command, Key.NumberPad0 + Key.Command + Key.Alt),
+				(Key.Get("T", "Test"), Key.Get("T", "Test")),
+				(Key.Get('0') + Key.Command, Key.NumberPad0 + Key.Command + Key.Alt),
 			};
 		}
 
@@ -462,12 +468,12 @@ namespace Bunit
 			{
 				new object[] { Key.Enter, "Enter", "Enter", false, false, false, false },
 				new object[] { Key.Add, "+", "NumpadAdd", false, false, false, false },
-				new object[] { new Key('c'), "c", "c", false, false, false, false },
-				new object[] { new Key("T", "Test"), "T", "Test", false, false, false, false },
+				new object[] { Key.Get('c'), "c", "c", false, false, false, false },
+				new object[] { Key.Get("T", "Test"), "T", "Test", false, false, false, false },
 				new object[] { Key.Enter + Key.Control, "Enter", "Enter", true, false, false, false },
 				new object[] { Key.Add + Key.Shift, "+", "NumpadAdd", false, true, false, false },
-				new object[] { new Key('c') + Key.Alt, "c", "c", false, false, true, false },
-				new object[] { new Key("T", "Test") + Key.Command, "T", "Test", false, false, false, true },
+				new object[] { Key.Get('c') + Key.Alt, "c", "c", false, false, true, false },
+				new object[] { Key.Get("T", "Test") + Key.Command, "T", "Test", false, false, false, true },
 				new object[] { Key.Control, "Control", "ControlLeft", true, false, false, false },
 				new object[] { Key.Shift, "Shift", "ShiftLeft", false, true, false, false },
 				new object[] { Key.Alt, "Alt", "AltLeft", false, false, true, false },

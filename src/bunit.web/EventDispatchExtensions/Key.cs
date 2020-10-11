@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Bunit
@@ -9,42 +11,71 @@ namespace Bunit
 	/// </summary>
 	public sealed class Key : IEquatable<Key>
 	{
-		/// <summary>
-		/// Creates a new instance of the <see cref="Key"/> class.
-		/// </summary>
-		/// <param name="value">The key value.</param>
-		public Key(string value)
+		private static readonly Dictionary<(string value, string code), Key> PredefinedKeys;
+
+		[SuppressMessage("Microsoft.Performance", "CA1810:Initialize reference type static fields inline", Justification = "Properties are initialized after fields")]
+		static Key()
+		{
+			PredefinedKeys = new[]
+			{
+				Key.Backspace,
+				Key.Tab,
+				Key.Enter,
+				Key.Pause,
+				Key.Escape,
+				Key.Space,
+				Key.PageUp,
+				Key.PageDown,
+				Key.End,
+				Key.Home,
+				Key.Left,
+				Key.Up,
+				Key.Right,
+				Key.Down,
+				Key.Insert,
+				Key.Delete,
+				Key.Equal,
+				Key.NumberPad0,
+				Key.NumberPad1,
+				Key.NumberPad2,
+				Key.NumberPad3,
+				Key.NumberPad4,
+				Key.NumberPad5,
+				Key.NumberPad6,
+				Key.NumberPad7,
+				Key.NumberPad8,
+				Key.NumberPad9,
+				Key.Multiply,
+				Key.Add,
+				Key.Subtract,
+				Key.NumberPadDecimal,
+				Key.Divide,
+				Key.F1,
+				Key.F2,
+				Key.F3,
+				Key.F4,
+				Key.F5,
+				Key.F6,
+				Key.F7,
+				Key.F8,
+				Key.F9,
+				Key.F10,
+				Key.F11,
+				Key.F12,
+				Key.Control,
+				Key.Shift,
+				Key.Alt,
+				Key.Command
+			}.ToDictionary(k => (k.Value, k.Code));
+		}
+
+		private Key(string value)
 			: this(value, value)
 		{
 		}
 
-		/// <summary>
-		/// Creates a new instance of the <see cref="Key"/> class.
-		/// </summary>
-		/// <param name="value">The key value.</param>
-		/// <param name="code">The key code of physical key.</param>
-		public Key(string value, string code)
-		{
-			if (string.IsNullOrEmpty(value))
-			{
-				throw new ArgumentNullException(nameof(value));
-			}
-
-			if (string.IsNullOrEmpty(code))
-			{
-				throw new ArgumentNullException(nameof(code));
-			}
-
-			Value = value;
-			Code = code;
-		}
-
-		/// <summary>
-		/// Creates a new instance of the <see cref="Key"/> class.
-		/// </summary>
-		/// <param name="value">The key value.</param>
-		public Key(char value)
-			: this(value.ToString())
+		private Key(string value, string code)
+			: this(value, code, false, false, false, false)
 		{
 		}
 
@@ -332,10 +363,43 @@ namespace Bunit
 		public static Key Command { get; } = new Key("Meta", "MetaLeft", false, false, false, true);
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="Key"/> class from specified character.
+		/// Gets <see cref="Key"/> object with specified value and code.
 		/// </summary>
 		/// <param name="value">The key value.</param>
-		public static Key FromChar(char value) => new Key(value);
+		/// <param name="code">The key code of physical key.</param>
+		public static Key Get(string value, string code)
+		{
+			if (string.IsNullOrEmpty(value))
+			{
+				throw new ArgumentNullException(nameof(value));
+			}
+
+			if (string.IsNullOrEmpty(code))
+			{
+				throw new ArgumentNullException(nameof(code));
+			}
+
+			if (PredefinedKeys.TryGetValue((value, code), out var key))
+			{
+				return key;
+			}
+			else
+			{
+				return new Key(value, code);
+			}
+		}
+
+		/// <summary>
+		/// Gets <see cref="Key"/> object with specified value.
+		/// </summary>
+		/// <param name="value">The key value.</param>
+		public static Key Get(string value) => Get(value, value);
+
+		/// <summary>
+		/// Gets <see cref="Key"/> object from specified character.
+		/// </summary>
+		/// <param name="value">The key value.</param>
+		public static Key Get(char value) => Get(value.ToString());
 
 		/// <summary>
 		/// Gets the value indicating whether the current object is equal to another object of the same type.
@@ -492,7 +556,7 @@ namespace Bunit
 		/// <returns>A new key with combination of Control, Shift, Alt, and Command keys.</returns>
 		[return: NotNullIfNotNull("x")]
 		[return: NotNullIfNotNull("y")]
-		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Alternative method is named Combine")]
+		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Alternative method is named " + nameof(Combine))]
 		public static Key operator +(Key x, Key? y)
 		{
 			if (!(x is null))
@@ -507,7 +571,8 @@ namespace Bunit
 			{
 				// In future 'x' should be supported as nullable.
 				// However, NotNullIfNotNull does not work correctly with operators.
-				// Therfore workaround is to make 'x' non-nullable. 
+				// Therfore workaround is to make 'x' non-nullable.
+				// See: https://github.com/dotnet/roslyn/issues/48489
 				return null!;
 			}
 		}
@@ -517,7 +582,8 @@ namespace Bunit
 		/// </summary>
 		/// <param name="key">The character to convert to Key instance.</param>
 		/// <returns>The Key instance with character value.</returns>
-		public static implicit operator Key(char key) => new Key(key);
+		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Alternative method is named " + nameof(Get))]
+		public static implicit operator Key(char key) => Key.Get(key);
 
 		/// <summary>
 		/// Gets a new <see cref="Key" /> instance with value of character.
@@ -532,7 +598,8 @@ namespace Bunit
 			{
 				// In future the operator should support null as input.
 				// However, NotNullIfNotNull does not work correctly with operators.
-				// Therfore workaround is to make input non-nullable. 
+				// Therfore workaround is to make input non-nullable.
+				// See: https://github.com/dotnet/roslyn/issues/39802
 				return null!;
 			}
 
