@@ -81,7 +81,8 @@ The test projects setting needs to be set to the following:
 - the project's SDK needs to be set to `Microsoft.NET.Sdk.Razor`
 - set the `<TargetFramework>` to `net5.0`
 
-> [!NOTE] bUnit works equally well with `netcoreapp3.1` and `netstandard2.1` test projects.
+> [!NOTE]
+> bUnit works with `netcoreapp3.1` and `netstandard2.1` test projects as well.
 
 To do so, change the first part of the test projects `.csproj` file to look like this.:
 
