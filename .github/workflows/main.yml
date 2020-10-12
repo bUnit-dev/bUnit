@@ -130,6 +130,11 @@ jobs:
       with:
         setAllVars: true
 
+    - name: Setting VERSION and BRANCH env
+      run: |
+        echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
+        echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x'
@@ -144,9 +149,12 @@ jobs:
       shell: bash
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: ${{ $BRANCH }}
       run: |
-        dotnet sonarscanner begin /k:"egil_bUnit" /o:"egil" /n:"bUnit" /v:"$NBGV_NuGetPackageVersion" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url=https://sonarcloud.io
-        dotnet build bunit.sln
+        dotnet sonarscanner begin /k:"egil_bUnit" /o:"egil" /n:"bUnit" /v:"$NBGV_NuGetPackageVersion" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url=https://sonarcloud.io /d:sonar.branch.name="$BRANCH"
+        dotnet build /p:UseSourceLink=true
+        dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
         dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 
   code-ql:

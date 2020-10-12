@@ -335,3 +335,4 @@ bunit.docs/log.txt
 .store
 *coverage*.info
 .sonarqube
+tests/*/coverage
