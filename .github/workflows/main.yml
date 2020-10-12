@@ -130,10 +130,10 @@ jobs:
       with:
         setAllVars: true
 
-    - name: Setting VERSION and BRANCH env
-      run: |
-        echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
-        echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+    # - name: Setting VERSION and BRANCH env
+    #   run: |
+    #     echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
+    #     echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
 
     - uses: actions/setup-dotnet@v1
       with:
@@ -142,20 +142,37 @@ jobs:
       with:
         dotnet-version: '5.0.100-rc.1.20452.10'
 
-    - name: Install dotnet-sonarscanner
-      run: dotnet tool install --global dotnet-sonarscanner
-
-    - name: Running dotnet-sonarscanner
-      shell: bash
+    # - name: Install dotnet-sonarscanner
+    #   run: dotnet tool install --global dotnet-sonarscanner
+    # - name: Running dotnet-sonarscanner
+    #   shell: bash
+    #   env:
+    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   run: |
+    #     dotnet sonarscanner begin /k:"egil_bUnit" /o:"egil" /n:"bUnit" /v:"$NBGV_NuGetPackageVersion" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url=https://sonarcloud.io /d:sonar.branch.name="$BRANCH"
+    #     dotnet build /p:UseSourceLink=true
+    #     dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
+    #     dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+    - name: Sonarscanner for dotnet
+      uses: Secbyte/dotnet-sonarscanner@v2.3
+      with:
+        buildCommand: dotnet build .
+        testCommand: dotnet test .
+        projectKey: egil_bUnit
+        projectName: bUnit
+        sonarOrganisation: egil
+        beginArguments: >
+            /d:sonar.verbose="true"
+            /d:sonar.cs.opencover.reportsPaths="tests/**/coverage/*.opencover.xml"
+            /d:sonar.coverage.exclusions='"**/*.cs","**/*.md"'            
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        dotnet sonarscanner begin /k:"egil_bUnit" /o:"egil" /n:"bUnit" /v:"$NBGV_NuGetPackageVersion" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url=https://sonarcloud.io /d:sonar.branch.name="$BRANCH"
-        dotnet build /p:UseSourceLink=true
-        dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
-        dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 
+            #/d:sonar.cs.opencover.reportsPaths='"/path/to/coverage.xml","/path/to/coverage.2.xml"'
+            #/v:"$NBGV_NuGetPackageVersion"
+            #/d:sonar.branch.name="$BRANCH"
   code-ql:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
