@@ -126,14 +126,28 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Create sonar-project.properties
-      run: echo -n -e "sonar.organization=egil\nsonar.projectKey=egil_bUnit\nsonar.sources=./src\nsonar.tests=./tests\n" > sonar-project.properties
+    - uses: dotnet/nbgv@master
+      with:
+        setAllVars: true
 
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.100-rc.1.20452.10'
+
+    - name: Install dotnet-sonarscanner
+      run: dotnet tool install --global dotnet-sonarscanner
+
+    - name: Running dotnet-sonarscanner
+      shell: bash
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        dotnet sonarscanner begin /k:"egil_bUnit" /o:"egil" /n:"bUnit" /v:"$NBGV_NuGetPackageVersion" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url=https://sonarcloud.io
+        dotnet build bunit.sln
+        dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 
   code-ql:
     if: github.event_name != 'pull_request'

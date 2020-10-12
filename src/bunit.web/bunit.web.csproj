@@ -25,7 +25,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AngleSharp" Version="0.14.0" />
-		<PackageReference Include="AngleSharp.Css" Version="0.14.0" />
+		<PackageReference Include="AngleSharp.Css" Version="0.14.2" />
 		<PackageReference Include="AngleSharp.Diffing" Version="0.14.0" />
 		<PackageReference Include="AngleSharp.Wrappers" Version="1.2.0" />
 	</ItemGroup>
