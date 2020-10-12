@@ -124,7 +124,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        fetch-depth: 0
+        fetch-depth: 0w
 
     - uses: dotnet/nbgv@master
       with:
@@ -150,7 +150,6 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: ${{ $BRANCH }}
       run: |
         dotnet sonarscanner begin /k:"egil_bUnit" /o:"egil" /n:"bUnit" /v:"$NBGV_NuGetPackageVersion" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url=https://sonarcloud.io /d:sonar.branch.name="$BRANCH"
         dotnet build /p:UseSourceLink=true
