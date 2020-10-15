@@ -82,6 +82,14 @@ Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.Com
 
 ***
 
+> [!IMPORTANT]
+> All the examples in the documentation explicitly new up a `TestContext`, i.e. `using var ctx = new TestContext()`. If you are using the trick above and have your test class inherit from `TestContext`, you should **NOT** new up a `TestContext` in test methods also. 
+> 
+> Simply call the test contest's methods directly, as they are available in your test class. 
+> 
+> For example, `var cut = ctx.RenderComponent<HelloWorld>();`  
+> becomes `var cut = RenderComponent<HelloWorld>();`.
+
 ## Further Reading
 
 With the basics out of the way, next we will look at how to pass parameters and inject services into our component under test. After that, we will cover ways we can verify the outcome of a rendering in more detail
