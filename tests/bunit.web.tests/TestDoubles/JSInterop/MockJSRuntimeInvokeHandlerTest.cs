@@ -246,5 +246,94 @@ namespace Bunit.TestDoubles.JSInterop
 			invocation.Arguments[0].ShouldBe("bar");
 			invocation.Arguments[1].ShouldBe(42);
 		}
+
+		[Fact(DisplayName = "Empty Setup returns the same result for all matching return type invocation")]
+		public async Task Test015()
+		{
+			var sut = new MockJSRuntimeInvokeHandler(JSRuntimeMockMode.Strict);
+			var plannedInvoke = sut.Setup<Guid>();
+			var jsRuntime = sut.ToJSRuntime();
+
+			var expectedResult1 = Guid.NewGuid();
+			plannedInvoke.SetResult(expectedResult1);
+			var i1 = jsRuntime.InvokeAsync<Guid>("someFunc");
+
+			var i2 = jsRuntime.InvokeAsync<Guid>("otherFunc");
+
+			(await i1).ShouldBe(expectedResult1);
+			(await i2).ShouldBe(expectedResult1);
+		}
+
+		[Fact(DisplayName = "Empty Setup only matches the configured return type")]
+		public void Test016()
+		{
+			var sut = new MockJSRuntimeInvokeHandler(JSRuntimeMockMode.Strict);
+			var planned = sut.Setup<Guid>();
+
+			Should.Throw<UnplannedJSInvocationException>(() => { var _ = sut.ToJSRuntime().InvokeAsync<string>("foo"); });
+
+			planned.Invocations.Count.ShouldBe(0);
+		}
+
+		[Fact(DisplayName = "Empty Setup allows to return different results by return types")]
+		public async Task Test017()
+		{
+			var sut = new MockJSRuntimeInvokeHandler(JSRuntimeMockMode.Strict);
+			var plannedInvoke1 = sut.Setup<Guid>();
+			var plannedInvoke2 = sut.Setup<string>();
+			var jsRuntime = sut.ToJSRuntime();
+
+			var expectedResult1 = Guid.NewGuid();
+			plannedInvoke1.SetResult(expectedResult1);
+			var i1 = jsRuntime.InvokeAsync<Guid>("someFunc");
+
+			var expectedResult2 = "somestring";
+			plannedInvoke2.SetResult(expectedResult2);
+			var i2 = jsRuntime.InvokeAsync<string>("otherFunc");
+
+			(await i1).ShouldBe(expectedResult1);
+			(await i2).ShouldBe(expectedResult2);
+		}
+
+		[Fact(DisplayName = "Empty Setup is only used when there is no handler exist for the invocation identifier")]
+		public async Task Test018()
+		{
+			var sut = new MockJSRuntimeInvokeHandler(JSRuntimeMockMode.Strict);
+			var catchAllplannedInvoke = sut.Setup<Guid>();
+			var jsRuntime = sut.ToJSRuntime();
+
+			var catchAllexpectedResult = Guid.NewGuid();
+			catchAllplannedInvoke.SetResult(catchAllexpectedResult);
+
+			var expectedResult = Guid.NewGuid();
+			var plannedInvoke = sut.Setup<Guid>("func");
+			plannedInvoke.SetResult(expectedResult);
+
+			var i1 = jsRuntime.InvokeAsync<Guid>("someFunc");
+
+			var i2 = jsRuntime.InvokeAsync<Guid>("func");
+
+			(await i1).ShouldBe(catchAllexpectedResult);
+			(await i2).ShouldBe(expectedResult);
+		}
+
+		[Fact(DisplayName = "Empty Setup uses the last set result")]
+		public async Task Test019()
+		{
+			var sut = new MockJSRuntimeInvokeHandler(JSRuntimeMockMode.Strict);
+			var plannedInvoke1 = sut.Setup<Guid>();
+			var plannedInvoke2 = sut.Setup<Guid>();
+			var jsRuntime = sut.ToJSRuntime();
+
+			var expectedResult1 = Guid.NewGuid();
+			var expectedResult2 = Guid.NewGuid();
+
+			plannedInvoke1.SetResult(expectedResult1);
+			plannedInvoke2.SetResult(expectedResult2);
+
+			var i1 = jsRuntime.InvokeAsync<Guid>("someFunc");
+
+			(await i1).ShouldBe(expectedResult2);
+		}
 	}
 }
