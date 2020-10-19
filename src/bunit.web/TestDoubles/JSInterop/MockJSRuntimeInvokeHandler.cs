@@ -14,7 +14,6 @@ namespace Bunit.TestDoubles
 	{
 		private readonly Dictionary<string, List<JSRuntimeInvocation>> _invocations = new Dictionary<string, List<JSRuntimeInvocation>>();
 		private readonly Dictionary<string, List<object>> _plannedInvocations = new Dictionary<string, List<object>>();
-
 		private readonly Dictionary<Type, object> _catchAllInvocations = new Dictionary<Type, object>();
 
 		/// <summary>
@@ -51,9 +50,9 @@ namespace Bunit.TestDoubles
 		/// </summary>
 		/// <typeparam name="TResult">The result type of the invocation</typeparam>
 		/// <returns>A <see cref="JSRuntimePlannedInvocation{TResult}"/>.</returns>
-		public JSRuntimePlannedInvocation<TResult> Setup<TResult>()
+		public JSRuntimeCatchAllPlannedInvocation<TResult> Setup<TResult>()
 		{
-			var result = new JSRuntimePlannedInvocation<TResult>(null!, (args) => true);
+			var result = new JSRuntimeCatchAllPlannedInvocation<TResult>();
 
 			_catchAllInvocations[typeof(TResult)] = result;
 
@@ -117,7 +116,7 @@ namespace Bunit.TestDoubles
 			return SetupVoid(identifier, args => args.SequenceEqual(arguments));
 		}
 
-		private void AddPlannedInvocation<TResult>(JSRuntimePlannedInvocationBase<TResult> planned)
+		private void AddPlannedInvocation<TResult>(JSRuntimePlannedInvocationWithIdentifierBase<TResult> planned)
 		{
 			if (!_plannedInvocations.ContainsKey(planned.Identifier))
 			{
