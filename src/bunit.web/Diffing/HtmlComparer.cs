@@ -22,7 +22,7 @@ namespace Bunit.Diffing
 		{
 			var strategy = new DiffingStrategyPipeline();
 			strategy.AddDefaultOptions();
-			strategy.AddFilter(BlazorDiffingHelpers.BlazorEventHandlerIdAttrFilter, StrategyType.Specialized);
+			strategy.AddFilter(BlazorDiffingHelpers.BlazorAttributeFilter, StrategyType.Specialized);
 			_differenceEngine = new HtmlDiffer(strategy);
 		}
 
