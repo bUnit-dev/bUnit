@@ -14,6 +14,7 @@ namespace Bunit
 	/// <typeparam name="TComponent">The type of component under test to add the parameters</typeparam>
 	public sealed class ComponentParameterCollectionBuilder<TComponent> where TComponent : IComponent
 	{
+		private static readonly Type TComponentType = typeof(TComponent);
 		private const string ChildContent = nameof(ChildContent);
 
 		/// <summary>
@@ -304,6 +305,38 @@ namespace Bunit
 		}
 
 		/// <summary>
+		/// Try to add a <paramref name="value"/> for a parameter with the <paramref name="name"/>, if
+		/// <typeparamref name="TComponent"/> has a property with that name, AND that property has a <see cref="ParameterAttribute"/>
+		/// or a <see cref="CascadingParameterAttribute"/>.
+		/// </summary>
+		/// <remarks>
+		/// This is an untyped version of the <see cref="Add{TValue}(Expression{Func{TComponent, TValue}}, TValue)"/> method. Always
+		/// prefer the strongly typed <c>Add</c> methods whenever possible.
+		/// </remarks>
+		/// <typeparam name="TValue">Value type.</typeparam>
+		/// <param name="name">Name of the property for the parameter.</param>
+		/// <param name="value">Value to assign to the parameter</param>
+		/// <returns>True if parameter with the name exists and value was set, false otherwise.</returns>
+		public bool TryAdd<TValue>(string name, [AllowNull] TValue value)
+		{
+			if (TComponentType.GetProperty(name, BindingFlags.Public | BindingFlags.Instance) is PropertyInfo ccProp)
+			{
+				if (ccProp.GetCustomAttribute<ParameterAttribute>(inherit: false) is not null)
+				{
+					AddParameter(name, value);
+					return true;
+				}
+
+				if(ccProp.GetCustomAttribute<CascadingParameterAttribute>(inherit: false) is CascadingParameterAttribute cpa)
+				{
+					AddCascadingValueParameter(cpa.Name, value);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>
 		/// Builds the <see cref="ComponentParameterCollection"/>.
 		/// </summary>
 		public ComponentParameterCollection Build() => _parameters;
@@ -325,8 +358,8 @@ namespace Bunit
 		}
 
 		private static bool HasChildContentParameter()
-			=> typeof(TComponent).GetProperty(ChildContent, BindingFlags.Public | BindingFlags.Instance) is PropertyInfo ccProp
-				&& ccProp.GetCustomAttribute<ParameterAttribute>(inherit: false) != null;
+			=> TComponentType.GetProperty(ChildContent, BindingFlags.Public | BindingFlags.Instance) is PropertyInfo ccProp
+				&& ccProp.GetCustomAttribute<ParameterAttribute>(inherit: false) is not null;
 
 		private ComponentParameterCollectionBuilder<TComponent> AddParameter<TValue>(string name, [AllowNull] TValue value)
 		{
