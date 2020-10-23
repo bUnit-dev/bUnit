@@ -12,8 +12,6 @@ namespace Bunit.TestDoubles
 	{
 		private readonly List<JSRuntimeInvocation> _invocations;
 
-		internal Func<IReadOnlyList<object?>, bool> InvocationMatcher { get; }
-
 		private TaskCompletionSource<TResult> _completionSource;
 
 		/// <summary>
@@ -24,10 +22,9 @@ namespace Bunit.TestDoubles
 		/// <summary>
 		/// Creates an instance of a <see cref="JSRuntimePlannedInvocationBase{TResult}"/>.
 		/// </summary>
-		protected JSRuntimePlannedInvocationBase(Func<IReadOnlyList<object?>, bool> matcher)
+		protected JSRuntimePlannedInvocationBase()
 		{
 			_invocations = new List<JSRuntimeInvocation>();
-			InvocationMatcher = matcher;
 			_completionSource = new TaskCompletionSource<TResult>();
 		}
 

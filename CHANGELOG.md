@@ -16,18 +16,20 @@ List of new features.
 - Added additional placeholder services for `NavigationManager`, `HttpClient`, and `IStringLocalizer`, to make it easier for users to figure out why a test is failing due to missing service registration before rendering a component. By [@joro550](https://github.com/joro550) in [#223](https://github.com/egil/bUnit/pull/223).
 - Added `Key` class that represents a keyboard key and helps to avoid constructing `KeyboardEventArgs` object manually. The key can be passed to `KeyPress`, `KeyDown`, or `KeyUp` helper methods to raise keyboard events. The `Key` class provides static special keys or can be obtained from character or string. Keys can be combined with key modifiers: `Key.Enter + Key.Alt`.
 
-For example, this makes it easier to trigger keyboard events on an element:
+  For example, this makes it easier to trigger keyboard events on an element:
+  
+  ```csharp
+  var cut = ctx.RenderComponent<ComponentWithKeyboardEvents>();
+  var element = cut.Find("input");
+  
+  element.KeyDown(Key.Enter + Key.Control); // Triggers onkeydown event with Ctrl + Enter
+  element.KeyUp(Key.Control + Key.Shift + 'B'); // Triggers onkeyup event with Ctrl + Shift + B
+  element.KeyPress('1'); // Triggers onkeypress event with key 1
+  element.KeyDown(Key.Alt + "<"); // Triggers onkeydown event with Alt + <
+  ```
+  By [@duracellko](https://github.com/duracellko) in [#101](https://github.com/egil/bUnit/issues/101).
 
-```csharp
-var cut = ctx.RenderComponent<ComponentWithKeyboardEvents>();
-var element = cut.Find("input");
-
-element.KeyDown(Key.Enter + Key.Control); // Triggers onkeydown event with Ctrl + Enter
-element.KeyUp(Key.Control + Key.Shift + 'B'); // Triggers onkeyup event with Ctrl + Shift + B
-element.KeyPress('1'); // Triggers onkeypress event with key 1
-element.KeyDown(Key.Alt + "<"); // Triggers onkeydown event with Alt + <
-```
-By [@duracellko](https://github.com/duracellko) in [#101](https://github.com/egil/bUnit/issues/101).
+- Added "catch-all" `Setup` method to bUnit's mock JS runtime, that allows you to specify only the type when setting up a planned invocation.  By [@nemesv](https://github.com/nemesv) in [#234](https://github.com/egil/bUnit/issues/234).
 
 ### Changed
 List of changes in existing functionality.

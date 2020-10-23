@@ -129,7 +129,7 @@ namespace Bunit.TestDoubles
 			return result;
 		}
 
-		private void AddPlannedInvocation<TResult>(JSRuntimePlannedInvocationWithIdentifierBase<TResult> planned)
+		private void AddPlannedInvocation<TResult>(JSRuntimePlannedInvocation<TResult> planned)
 		{
 			if (!_plannedInvocations.ContainsKey(planned.Identifier))
 			{
