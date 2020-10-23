@@ -84,4 +84,24 @@ namespace Bunit.TestDoubles
 		/// <param name="result"></param>
 		public void SetResult(TResult result) => SetResultBase(result);
 	}
+
+	/// <summary>
+	/// Represents any planned invocation of a JavaScript function which returns nothing.
+	/// </summary>
+	public class JSRuntimeCatchAllPlannedInvocation : JSRuntimePlannedInvocationBase<object>
+	{
+		internal JSRuntimeCatchAllPlannedInvocation() : base((args) => true)
+		{
+		}
+
+		internal override bool Matches(JSRuntimeInvocation invocation)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Completes the current awaiting void invocation request.
+		/// </summary>
+		public void SetVoid() => SetResultBase(default!);
+	}
 }

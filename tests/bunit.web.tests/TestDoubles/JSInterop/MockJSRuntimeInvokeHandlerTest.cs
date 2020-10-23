@@ -335,5 +335,50 @@ namespace Bunit.TestDoubles.JSInterop
 
 			(await i1).ShouldBe(expectedResult2);
 		}
+
+		[Fact(DisplayName = "SetupVoid matches all void invocations")]
+		public async Task Test020()
+		{
+			var identifier = "someFunc";
+			var sut = new MockJSRuntimeInvokeHandler(JSRuntimeMockMode.Strict);
+			var plannedInvoke = sut.SetupVoid();
+
+			Should.Throw<UnplannedJSInvocationException>(() => { var _ = sut.ToJSRuntime().InvokeAsync<string>(identifier); });
+
+			var invocation = sut.ToJSRuntime().InvokeVoidAsync(identifier);
+			plannedInvoke.SetVoid();
+
+			await invocation;
+
+			invocation.IsCompletedSuccessfully.ShouldBeTrue();
+			plannedInvoke.Invocations.Count.ShouldBe(1);
+		}
+
+		[Fact(DisplayName = "Empty Setup is not used for invocation with void return types")]
+		public async Task Test021()
+		{
+			var sut = new MockJSRuntimeInvokeHandler(JSRuntimeMockMode.Strict);
+			var plannedInvoke = sut.Setup<Guid>();
+
+			await Should.ThrowAsync<UnplannedJSInvocationException>(sut.ToJSRuntime().InvokeVoidAsync("someFunc").AsTask());
+		}
+
+		[Fact(DisplayName = "SetupVoid is only used when there is no void handler")]
+		public async Task Test022()
+		{
+			var identifier = "someFunc";
+			var sut = new MockJSRuntimeInvokeHandler(JSRuntimeMockMode.Strict);
+			var plannedInvoke = sut.SetupVoid(identifier);
+			var plannedCatchall = sut.SetupVoid();
+
+			var invocation = sut.ToJSRuntime().InvokeVoidAsync(identifier);
+			plannedInvoke.SetVoidResult();
+
+			await invocation;
+
+			invocation.IsCompletedSuccessfully.ShouldBeTrue();
+			plannedInvoke.Invocations.Count.ShouldBe(1);
+			plannedCatchall.Invocations.Count.ShouldBe(0);
+		}
 	}
 }

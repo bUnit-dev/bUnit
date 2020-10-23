@@ -49,7 +49,7 @@ namespace Bunit.TestDoubles
 		/// Configure a catch all JSInterop invocation for a specific return type.
 		/// </summary>
 		/// <typeparam name="TResult">The result type of the invocation</typeparam>
-		/// <returns>A <see cref="JSRuntimePlannedInvocation{TResult}"/>.</returns>
+		/// <returns>A <see cref="JSRuntimeCatchAllPlannedInvocation{TResult}"/>.</returns>
 		public JSRuntimeCatchAllPlannedInvocation<TResult> Setup<TResult>()
 		{
 			var result = new JSRuntimeCatchAllPlannedInvocation<TResult>();
@@ -116,6 +116,19 @@ namespace Bunit.TestDoubles
 			return SetupVoid(identifier, args => args.SequenceEqual(arguments));
 		}
 
+		/// <summary>
+		/// Configure a catch all JSInterop invocation, that should not receive any result.
+		/// </summary>
+		/// <returns>A <see cref="JSRuntimeCatchAllPlannedInvocation"/>.</returns>
+		public JSRuntimeCatchAllPlannedInvocation SetupVoid()
+		{
+			var result = new JSRuntimeCatchAllPlannedInvocation();
+
+			_catchAllInvocations[typeof(object)] = result;
+
+			return result;
+		}
+
 		private void AddPlannedInvocation<TResult>(JSRuntimePlannedInvocationWithIdentifierBase<TResult> planned)
 		{
 			if (!_plannedInvocations.ContainsKey(planned.Identifier))
@@ -158,7 +171,6 @@ namespace Bunit.TestDoubles
 			private ValueTask<TValue>? TryHandlePlannedInvocation<TValue>(string identifier, JSRuntimeInvocation invocation)
 			{
 				ValueTask<TValue>? result = default;
-
 				if (_handlers._plannedInvocations.TryGetValue(identifier, out var plannedInvocations))
 				{
 					var planned = plannedInvocations.OfType<JSRuntimePlannedInvocationBase<TValue>>()
@@ -173,8 +185,13 @@ namespace Bunit.TestDoubles
 
 				if (_handlers._catchAllInvocations.TryGetValue(typeof(TValue), out var catchAllInvocation))
 				{
-					var task = ((JSRuntimePlannedInvocationBase<TValue>)catchAllInvocation).RegisterInvocation(invocation);
-					return new ValueTask<TValue>(task);
+					var planned = catchAllInvocation as JSRuntimePlannedInvocationBase<TValue>;
+
+					if (planned is not null)
+					{
+						var task = ((JSRuntimePlannedInvocationBase<TValue>)catchAllInvocation).RegisterInvocation(invocation);
+						return new ValueTask<TValue>(task);
+					}
 				}
 
 				if (result is null && _handlers.Mode == JSRuntimeMockMode.Strict)
