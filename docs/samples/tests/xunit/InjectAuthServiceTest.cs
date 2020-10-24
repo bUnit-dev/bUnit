@@ -11,7 +11,7 @@ namespace Bunit.Docs.Samples
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorized("TestUserName", AuthorizationState.Authorized);
 
 			// act
@@ -26,7 +26,7 @@ namespace Bunit.Docs.Samples
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 
 			// act
 			var cut = ctx.RenderComponent<InjectAuthService>();
