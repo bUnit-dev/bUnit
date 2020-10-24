@@ -2,16 +2,13 @@ using Xunit;
 
 namespace Bunit.TestDoubles.Authorization
 {
-	public class TestAuthorizationContextTest
+	public class TestAuthorizationContextTest : TestContext
 	{
 		[Fact(DisplayName = "Register Authorization services with unauthenticated user.")]
 		public void Test003()
 		{
-			// arrange
-			using var sp = new TestServiceProvider();
-
 			// act
-			var authContext = sp.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 
 			// assert
 			Assert.False(authContext.IsAuthenticated);
@@ -23,11 +20,8 @@ namespace Bunit.TestDoubles.Authorization
 		[Fact(DisplayName = "Register Authorization services with authorizing state.")]
 		public void Test0031()
 		{
-			// arrange
-			using var sp = new TestServiceProvider();
-
 			// act
-			var authContext = sp.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorizing();
 
 			// assert
@@ -40,11 +34,8 @@ namespace Bunit.TestDoubles.Authorization
 		[Fact(DisplayName = "Register Authorization services with authenticated but unauthorized user.")]
 		public void Test002()
 		{
-			// arrange
-			using var sp = new TestServiceProvider();
-
 			// act
-			var authContext = sp.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("DarthPedro", AuthorizationState.Unauthorized);
 
 			// assert
@@ -57,11 +48,8 @@ namespace Bunit.TestDoubles.Authorization
 		[Fact(DisplayName = "Register Authorization services with authenticated and authorized user")]
 		public void Test0010()
 		{
-			// arrange
-			using var sp = new TestServiceProvider();
-
 			// act
-			var authContext = sp.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("DarthPedro");
 
 			// assert
@@ -74,11 +62,8 @@ namespace Bunit.TestDoubles.Authorization
 		[Fact(DisplayName = "Register Authorization services with authenticated and authorized user and role.")]
 		public void Test001()
 		{
-			// arrange
-			using var sp = new TestServiceProvider();
-
 			// act
-			var authContext = sp.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("DarthPedro");
 			authContext.SetRoles("some-role");
 
@@ -91,12 +76,9 @@ namespace Bunit.TestDoubles.Authorization
 
 		[Fact(DisplayName = "Register Authorization services with authenticated and authorized user and policy.")]
 		public void Test0011()
-		{
-			// arrange
-			using var sp = new TestServiceProvider();
-
+		{			
 			// act
-			var authContext = sp.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("DarthPedro");
 			authContext.SetPolicies("TestPolicy", "Other");
 

@@ -73,6 +73,8 @@ List of changes in existing functionality.
 
 - Marked MarkupMatches methods as assertion methods to stop SonarSource analyzers complaining about missing assertions in tests. By [@egil](https://github.com/egil) in [#229](https://github.com/egil/bUnit/pull/229).
 
+- `AddTestAuthorization` now extends `TestContext` instead of `TestServiceProvider`, and also automatically adds the `CascadingAuthenticationState` component to the root render tree. [@egil](https://github.com/egil) in [#237](https://github.com/egil/bUnit/pull/367).
+
 ### Deprecated
 List of soon-to-be removed features.
 
