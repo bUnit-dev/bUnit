@@ -1,4 +1,4 @@
-using Bunit.TestDoubles.Authorization;
+using Bunit.TestDoubles;
 using Xunit;
 
 namespace Bunit.Docs.Samples

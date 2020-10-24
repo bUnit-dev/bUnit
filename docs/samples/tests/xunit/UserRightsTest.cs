@@ -1,4 +1,4 @@
-using Bunit.TestDoubles.Authorization;
+using Bunit.TestDoubles;
 using System.Security.Claims;
 using System.Globalization;
 using Xunit;
