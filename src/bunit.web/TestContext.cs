@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Bunit.Extensions;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -8,40 +9,22 @@ namespace Bunit
 	/// <summary>
 	/// A test context is a factory that makes it possible to create components under tests.
 	/// </summary>
-	public class TestContext : TestContextBase, ITestContext
+	public class TestContext : TestContextBase
 	{
-		private readonly List<(Type LayoutType, RenderFragment<RenderFragment> LayoutFragment)> _layouts = new();
+		/// <summary>
+		/// Gets the <see cref="RootRenderTree"/> that all components rendered with the
+		/// <c>RenderComponent&lt;TComponent&gt;()</c> methods, are rendered inside.
+		/// </summary>
+		/// <remarks>
+		/// Use this to add default layout- or root-components which a component under test
+		/// should be rendered under.
+		/// </remarks>
+		public RootRenderTree RenderTree { get; } = new RootRenderTree();
 
 		/// <summary>
 		/// Creates a new instance of the <see cref="TestContext"/> class.
 		/// </summary>
 		public TestContext() => Services.AddDefaultTestContextServices();
-
-		/// <summary>
-		/// Adds a "layout" component to the test context, which components rendered using one of the 
-		/// <c>RenderComponent&lt;TComponent&gt;()</c>> methods will be rendered inside. This method can
-		/// be called multiple times, with each invocation adding a <typeparamref name="TComponent"/>
-		/// to the "layout" render tree. The <typeparamref name="TComponent"/> must have a <c>ChildContent</c>
-		/// or <c>Body</c> parameter.
-		/// </summary>
-		/// <typeparam name="TComponent">The type of the component to use as a layout component.</typeparam>
-		/// <param name="parameterBuilder">An optional parameter builder, used to pass parameters to <typeparamref name="TComponent"/>.</param>
-		public virtual void AddLayoutComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null) where TComponent : IComponent
-		{
-			RenderFragment<RenderFragment> layoutFragment = rc =>
-			{
-				var builder = new ComponentParameterCollectionBuilder<TComponent>();
-				parameterBuilder?.Invoke(builder);
-
-				var added = builder.TryAdd("ChildContent", rc) || builder.TryAdd("Body", rc);
-				if (!added)
-					throw new ArgumentException($"The {typeof(TComponent)} does not have a ChildContent or Body parameter. Only components with one of these parameters can be used as layout components.");
-
-				return builder.Build().ToRenderFragment<TComponent>();
-			};
-
-			_layouts.Add((typeof(TComponent), layoutFragment));
-		}
 
 		/// <summary>
 		/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
@@ -73,25 +56,14 @@ namespace Bunit
 		{
 			// Wrap TComponent in any layout components added to the test context.
 			// If one of the layout components is the same type as TComponent,
-			// make sure to return the rendered component, not the layout compnent.
-			var rcType = typeof(TComponent);
-			var rcInLayoutCount = 0;
-			var wrappedRenderFragment = renderFragment;
-
-			for (int i = 0; i < _layouts.Count; i++)
-			{
-				if (rcType == _layouts[i].LayoutType)
-					rcInLayoutCount++;
-
-				wrappedRenderFragment = _layouts[i].LayoutFragment(wrappedRenderFragment);
-			}
-
-			var resultBase = Renderer.RenderFragment(wrappedRenderFragment);
+			// make sure to return the rendered component, not the layout component.			
+			var resultBase = Renderer.RenderFragment(RenderTree.Wrap(renderFragment));
 
 			// This ensures that the correct component is returned, in case an added layout component
 			// is of type TComponent.
-			var result = rcInLayoutCount > 0
-				? Renderer.FindComponents<TComponent>(resultBase)[rcInLayoutCount]
+			var renderTreeTComponentCount = RenderTree.GetCountOf<TComponent>();
+			var result = renderTreeTComponentCount > 0
+				? Renderer.FindComponents<TComponent>(resultBase)[renderTreeTComponentCount]
 				: Renderer.FindComponent<TComponent>(resultBase);
 
 			return (IRenderedComponent<TComponent>)result;
