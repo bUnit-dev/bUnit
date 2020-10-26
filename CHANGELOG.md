@@ -33,16 +33,18 @@ List of new features.
 
   By [@duracellko](https://github.com/duracellko) in [#101](https://github.com/egil/bUnit/issues/101).
 
-- Added support for registering/adding "layout" components to a test context, which components should be rendered inside. This allows you to simplify the "arrange" step of a test when a component under test requires a certain render tree as its parent, e.g. a cascading value.
+- Added support for registering/adding components to a test context root render tree, which components under test is rendered inside. This allows you to simplify the "arrange" step of a test when a component under test requires a certain render tree as its parent, e.g. a cascading value.
   
   For example, to pass a cascading string value `foo` to all components rendered with the test context, do the following:
 
   ```csharp
-  ctx.AddLayoutComponent<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "foo"));
+  ctx.RenderTree<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "foo"));
   var cut = ctx.RenderComponent<ComponentReceivingFoo>();
   ```
 
-  By [@duracellko](https://github.com/duracellko) in [#101](https://github.com/egil/bUnit/issues/101).
+  By [@egil](https://github.com/egil) in [#236](https://github.com/egil/bUnit/pull/236).
+
+- Added "catch-all" `Setup` method to bUnit's mock JS runtime, that allows you to specify only the type when setting up a planned invocation. By [@nemesv](https://github.com/nemesv) in [#234](https://github.com/egil/bUnit/issues/234).
 
 ### Changed
 List of changes in existing functionality.

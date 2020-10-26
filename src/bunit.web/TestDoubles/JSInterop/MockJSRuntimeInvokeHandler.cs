@@ -14,6 +14,7 @@ namespace Bunit.TestDoubles
 	{
 		private readonly Dictionary<string, List<JSRuntimeInvocation>> _invocations = new Dictionary<string, List<JSRuntimeInvocation>>();
 		private readonly Dictionary<string, List<object>> _plannedInvocations = new Dictionary<string, List<object>>();
+		private readonly Dictionary<Type, object> _catchAllInvocations = new Dictionary<Type, object>();
 
 		/// <summary>
 		/// Gets a dictionary of all <see cref="List{JSRuntimeInvocation}"/> this mock has observed.
@@ -42,6 +43,20 @@ namespace Bunit.TestDoubles
 		public IJSRuntime ToJSRuntime()
 		{
 			return new MockJSRuntime(this);
+		}
+
+		/// <summary>
+		/// Configure a catch all JSInterop invocation for a specific return type.
+		/// </summary>
+		/// <typeparam name="TResult">The result type of the invocation</typeparam>
+		/// <returns>A <see cref="JSRuntimeCatchAllPlannedInvocation{TResult}"/>.</returns>
+		public JSRuntimeCatchAllPlannedInvocation<TResult> Setup<TResult>()
+		{
+			var result = new JSRuntimeCatchAllPlannedInvocation<TResult>();
+
+			_catchAllInvocations[typeof(TResult)] = result;
+
+			return result;
 		}
 
 		/// <summary>
@@ -101,7 +116,20 @@ namespace Bunit.TestDoubles
 			return SetupVoid(identifier, args => args.SequenceEqual(arguments));
 		}
 
-		private void AddPlannedInvocation<TResult>(JSRuntimePlannedInvocationBase<TResult> planned)
+		/// <summary>
+		/// Configure a catch all JSInterop invocation, that should not receive any result.
+		/// </summary>
+		/// <returns>A <see cref="JSRuntimeCatchAllPlannedInvocation"/>.</returns>
+		public JSRuntimeCatchAllPlannedInvocation SetupVoid()
+		{
+			var result = new JSRuntimeCatchAllPlannedInvocation();
+
+			_catchAllInvocations[typeof(object)] = result;
+
+			return result;
+		}
+
+		private void AddPlannedInvocation<TResult>(JSRuntimePlannedInvocation<TResult> planned)
 		{
 			if (!_plannedInvocations.ContainsKey(planned.Identifier))
 			{
@@ -143,7 +171,6 @@ namespace Bunit.TestDoubles
 			private ValueTask<TValue>? TryHandlePlannedInvocation<TValue>(string identifier, JSRuntimeInvocation invocation)
 			{
 				ValueTask<TValue>? result = default;
-
 				if (_handlers._plannedInvocations.TryGetValue(identifier, out var plannedInvocations))
 				{
 					var planned = plannedInvocations.OfType<JSRuntimePlannedInvocationBase<TValue>>()
@@ -152,7 +179,18 @@ namespace Bunit.TestDoubles
 					if (planned is not null)
 					{
 						var task = planned.RegisterInvocation(invocation);
-						result = new ValueTask<TValue>(task);
+						return new ValueTask<TValue>(task);
+					}
+				}
+
+				if (_handlers._catchAllInvocations.TryGetValue(typeof(TValue), out var catchAllInvocation))
+				{
+					var planned = catchAllInvocation as JSRuntimePlannedInvocationBase<TValue>;
+
+					if (planned is not null)
+					{
+						var task = ((JSRuntimePlannedInvocationBase<TValue>)catchAllInvocation).RegisterInvocation(invocation);
+						return new ValueTask<TValue>(task);
 					}
 				}
 
