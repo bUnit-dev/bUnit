@@ -59,7 +59,8 @@ These are the current goals that should be reached before v1.0.0 is ready:
 - **Improve the documentation**. It’s a good idea to get an experienced technical editor to review the documentation, making sure it is clear and understandable. In addition to this, more ‘How to’ guides are planned in the [Update Docs](https://github.com/egil/bunit/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22updated+docs%22) milestone.
 - **Join the .NET Foundation.**. This project is too large for one person to be the owner and the sole maintainer, so the plan is to apply for membership as soon as possible - most likely close to or after v1.0.0 ships - and to get the required support and guidance to ensure the project long term.
 
-In the post-v1.0.0 to v1.0.x time frame, focus will be on improving performance. In particular, it would be nice to reduce the spin-up time of about one second.
+In the post-v1.0.0 to v1.0.x time frame, focus will be on improving performance. 
+In particular, it would be nice to reduce the spin-up time of about one second.
 
 ## Contributors
 
