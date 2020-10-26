@@ -3,14 +3,14 @@ using AngleSharp.Diffing.Core;
 namespace Bunit.Diffing
 {
 	/// <summary>
-	/// Blazor Dffing Helpers
+	/// Blazor Diffing Helpers
 	/// </summary>
 	public static class BlazorDiffingHelpers
 	{
 		/// <summary>
 		/// Represents a diffing filter that removes all special Blazor attributes added by the /<see cref="Htmlizer"/>.
 		/// </summary>
-		public static FilterDecision BlazorEventHandlerIdAttrFilter(in AttributeComparisonSource attrSource, FilterDecision currentDecision)
+		public static FilterDecision BlazorAttributeFilter(in AttributeComparisonSource attrSource, FilterDecision currentDecision)
 		{
 			if (currentDecision == FilterDecision.Exclude)
 				return currentDecision;
@@ -19,7 +19,6 @@ namespace Bunit.Diffing
 				return FilterDecision.Exclude;
 
 			return currentDecision;
-		}
+		}		
 	}
-
 }

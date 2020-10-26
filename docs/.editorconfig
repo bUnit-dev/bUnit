@@ -10,6 +10,7 @@ trim_trailing_whitespace = false
 
 [*.{cs,razor}]
 tab_size = 2
+indent_style = space
 dotnet_diagnostic.BL0001.severity = none
 dotnet_diagnostic.BL0002.severity = none
 dotnet_diagnostic.BL0003.severity = none

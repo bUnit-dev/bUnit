@@ -494,6 +494,56 @@ namespace Bunit
 			builder.Build().ShouldHaveSingleItem();
 		}
 
+		[Fact(DisplayName = "TryAdd returns false when parameter does not exist on component")]
+		public void Test200()
+		{
+			var sut = new ComponentParameterCollectionBuilder<NoParams>();
+
+			var result = sut.TryAdd("FOO", "VALUE");
+
+			result.ShouldBeFalse();
+			sut.Build().Count.ShouldBe(0);
+		}
+
+		[Fact(DisplayName = "TryAdd returns true when parameter exists on component")]
+		public void Test201()
+		{
+			var name = nameof(Params.ValueTypeParam);
+			var input = 42;
+
+			var result = Builder.TryAdd(name, input);
+
+			result.ShouldBeTrue();
+			Builder.Build().ShouldHaveSingleItem()
+				.ShouldBeParameter(name, input, isCascadingValue: false);
+		}
+
+		[Fact(DisplayName = "TryAdd returns true when unnamed cascading parameter exists on component")]
+		public void Test202()
+		{
+			var name = nameof(Params.CC);
+			var input = 42;
+
+			var result = Builder.TryAdd(name, input);
+
+			result.ShouldBeTrue();
+			Builder.Build().ShouldHaveSingleItem()
+				.ShouldBeParameter(null, input, isCascadingValue: true);
+		}
+
+		[Fact(DisplayName = "TryAdd returns true when named cascading parameter exists on component")]
+		public void Test203()
+		{
+			var name = nameof(Params.NamedCC);
+			var input = 42;
+
+			var result = Builder.TryAdd(name, input);
+
+			result.ShouldBeTrue();
+			Builder.Build().ShouldHaveSingleItem()
+				.ShouldBeParameter(name + "NAME", input, isCascadingValue: true);
+		}
+
 		private class Params : ComponentBase
 		{
 			[Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? Attributes { get; set; }

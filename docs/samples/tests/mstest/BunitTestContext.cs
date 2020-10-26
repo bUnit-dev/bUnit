@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Bunit.Docs.Samples
 {
-  public abstract class BunitTestContext : ITestContext, IDisposable
+  public abstract class BunitTestContext : IDisposable
   {
     private Bunit.TestContext _context;
 
