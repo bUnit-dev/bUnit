@@ -1,8 +1,7 @@
 using System;
 using Bunit.TestAssets.SampleComponents;
-using Bunit.TestDoubles.JSInterop;
+using Bunit.TestDoubles;
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit
@@ -20,8 +19,25 @@ namespace Bunit
 		public void Test022()
 		{
 			Services.AddMockJSRuntime();
-
 			RenderComponent<SimpleWithJSRuntimeDep>();
+		}
+
+		[Fact(DisplayName = "The test service provider should register a placeholder NavigationManager which throws exceptions")]
+		public void Test023()
+		{
+			Should.Throw<MissingMockNavigationManagerException>(() => RenderComponent<SimpleNavigation>());
+		}
+
+		[Fact(DisplayName = "The test service provider should register a placeholder HttpClient which throws exceptions")]
+		public void Test024()
+		{
+			Should.Throw<MissingMockHttpClientException>(() => RenderComponent<SimpleWithHttpClient>());
+		}
+
+		[Fact(DisplayName = "The test service provider should register a placeholder IStringLocalizer which throws exceptions")]
+		public void Test026()
+		{
+			Should.Throw<MissingMockStringLocalizationException>(() => RenderComponent<SimpleUsingLocalizer>());
 		}
 	}
 }

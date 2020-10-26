@@ -1,9 +1,8 @@
 using System;
-
 using AngleSharp.Dom;
-
+using Bunit.Asserting;
 using Bunit.Diffing;
-
+using Bunit.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
@@ -21,9 +20,10 @@ namespace Bunit
 		/// <param name="actual">The markup fragment to verify.</param>
 		/// <param name="expected">The expected markup fragment.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this string actual, string expected, string? userMessage = null)
 		{
-			using var parser = new HtmlParser();
+			using var parser = new BunitHtmlParser();
 			var actualNodes = parser.Parse(actual);
 			var expectedNodes = parser.Parse(expected);
 			actualNodes.MarkupMatches(expectedNodes, userMessage);
@@ -37,12 +37,13 @@ namespace Bunit
 		/// <param name="actual">The markup fragment to verify.</param>
 		/// <param name="expected">The expected <see cref="IRenderedFragmentBase"/>.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this string actual, IRenderedFragment expected, string? userMessage = null)
 		{
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var actualNodes = actual.ToNodeList(expected.Services.GetRequiredService<HtmlParser>());
+			var actualNodes = actual.ToNodeList(expected.Services.GetRequiredService<BunitHtmlParser>());
 			actualNodes.MarkupMatches(expected, userMessage);
 		}
 
@@ -54,6 +55,7 @@ namespace Bunit
 		/// <param name="actual">The markup fragment to verify.</param>
 		/// <param name="expected">The expected <see cref="INodeList"/>.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this string actual, INodeList expected, string? userMessage = null)
 		{
 			if (expected is null)
@@ -71,6 +73,7 @@ namespace Bunit
 		/// <param name="actual">The markup fragment to verify.</param>
 		/// <param name="expected">The expected <see cref="INode"/>.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this string actual, INode expected, string? userMessage = null)
 		{
 			if (expected is null)
@@ -88,6 +91,7 @@ namespace Bunit
 		/// <param name="actual">The rendered fragment to verify.</param>
 		/// <param name="expected">The expected markup.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this IRenderedFragment actual, string expected, string? userMessage = null)
 		{
 			if (actual is null)
@@ -95,7 +99,7 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var expectedNodes = expected.ToNodeList(actual.Services.GetRequiredService<HtmlParser>());
+			var expectedNodes = expected.ToNodeList(actual.Services.GetRequiredService<BunitHtmlParser>());
 			actual.Nodes.MarkupMatches(expectedNodes, userMessage);
 		}
 
@@ -107,6 +111,7 @@ namespace Bunit
 		/// <param name="actual">The rendered fragment to verify.</param>
 		/// <param name="expected">The expected rendered fragment.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this IRenderedFragment actual, IRenderedFragment expected, string? userMessage = null)
 		{
 			if (actual is null)
@@ -126,6 +131,7 @@ namespace Bunit
 		/// <param name="actual">The list of nodes to verify.</param>
 		/// <param name="expected">The expected rendered fragment.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this INodeList actual, IRenderedFragment expected, string? userMessage = null)
 		{
 			if (actual is null)
@@ -145,6 +151,7 @@ namespace Bunit
 		/// <param name="actual">The node to verify.</param>
 		/// <param name="expected">The expected rendered fragment.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this INode actual, IRenderedFragment expected, string? userMessage = null)
 		{
 			if (actual is null)
@@ -164,6 +171,7 @@ namespace Bunit
 		/// <param name="actual">The node to verify.</param>
 		/// <param name="expected">The expected markup.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this INode actual, string expected, string? userMessage = null)
 		{
 			if (actual is null)
@@ -182,6 +190,7 @@ namespace Bunit
 		/// <param name="actual">The list of nodes to verify.</param>
 		/// <param name="expected">The expected markup.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this INodeList actual, string expected, string? userMessage = null)
 		{
 			if (actual is null)
@@ -200,6 +209,7 @@ namespace Bunit
 		/// <param name="actual">The list of nodes to verify.</param>
 		/// <param name="expected">The expected list of nodes.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this INodeList actual, INodeList expected, string? userMessage = null)
 		{
 			var diffs = actual.CompareTo(expected);
@@ -217,6 +227,7 @@ namespace Bunit
 		/// <param name="actual">The list of nodes to verify.</param>
 		/// <param name="expected">The expected node.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this INodeList actual, INode expected, string? userMessage = null)
 		{
 			var diffs = actual.CompareTo(expected);
@@ -234,6 +245,7 @@ namespace Bunit
 		/// <param name="actual">The node to verify.</param>
 		/// <param name="expected">The expected list of nodes.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
 		public static void MarkupMatches(this INode actual, INodeList expected, string? userMessage = null)
 		{
 			var diffs = actual.CompareTo(expected);
@@ -242,11 +254,11 @@ namespace Bunit
 				throw new HtmlEqualException(diffs, expected, actual, userMessage);
 		}
 
-		private static INodeList ToNodeList(this string markup, HtmlParser? htmlParser)
+		private static INodeList ToNodeList(this string markup, BunitHtmlParser? htmlParser)
 		{
 			if (htmlParser is null)
 			{
-				using var newHtmlParser = new HtmlParser();
+				using var newHtmlParser = new BunitHtmlParser();
 				return newHtmlParser.Parse(markup);
 			}
 			else

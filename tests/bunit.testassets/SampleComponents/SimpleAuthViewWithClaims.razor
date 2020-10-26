@@ -2,20 +2,18 @@
 @using System.Security.Claims
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<CascadingAuthenticationState>
-	<AuthorizeView>
-		<div>Authorized!</div>
-		<div>Name: @userName</div>
-		@if (hasUserEmail)
-		{
-			<div>Email: @userEmail</div>
-		}
-		@if (hasUserId)
-		{
-			<div>Id: @userId</div>
-		}
-	</AuthorizeView>
-</CascadingAuthenticationState>
+<AuthorizeView>
+	<div>Authorized!</div>
+	<div>Name: @userName</div>
+	@if (hasUserEmail)
+	{
+		<div>Email: @userEmail</div>
+	}
+	@if (hasUserId)
+	{
+		<div>Id: @userId</div>
+	}
+</AuthorizeView>
 
 @code {
 	string userName = "";

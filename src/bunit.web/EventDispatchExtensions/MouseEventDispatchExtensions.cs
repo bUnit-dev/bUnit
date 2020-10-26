@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
-
 using AngleSharp.Dom;
-
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Bunit
@@ -58,7 +56,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task MouseOverAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onmouseover", eventArgs);
+		private static Task MouseOverAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onmouseover", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onmouseout</c> event on <paramref name="element"/>,  passing the provided
@@ -107,7 +105,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task MouseOutAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onmouseout", eventArgs);
+		private static Task MouseOutAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onmouseout", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onmousemove</c> event on <paramref name="element"/>,  passing the provided
@@ -156,7 +154,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task MouseMoveAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onmousemove", eventArgs);
+		private static Task MouseMoveAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onmousemove", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onmousedown</c> event on <paramref name="element"/>,  passing the provided
@@ -205,7 +203,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task MouseDownAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onmousedown", eventArgs);
+		private static Task MouseDownAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onmousedown", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onmouseup</c> event on <paramref name="element"/>,  passing the provided
@@ -254,7 +252,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task MouseUpAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onmouseup", eventArgs);
+		private static Task MouseUpAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onmouseup", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onclick</c> event on <paramref name="element"/>,  passing the provided
@@ -303,7 +301,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task ClickAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onclick", eventArgs);
+		private static Task ClickAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("onclick", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@ondblclick</c> event on <paramref name="element"/>,  passing the provided
@@ -352,7 +350,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task DoubleClickAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("ondblclick", eventArgs);
+		private static Task DoubleClickAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("ondblclick", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onwheel</c> event on <paramref name="element"/>,  passing the provided
@@ -405,7 +403,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task WheelAsync(this IElement element, WheelEventArgs eventArgs) => element.TriggerEventAsync("onwheel", eventArgs);
+		private static Task WheelAsync(this IElement element, WheelEventArgs eventArgs) => element.TriggerEventAsync("onwheel", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onmousewheel</c> event on <paramref name="element"/>,  passing the provided
@@ -458,7 +456,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task MouseWheelAsync(this IElement element, WheelEventArgs eventArgs) => element.TriggerEventAsync("onmousewheel", eventArgs);
+		private static Task MouseWheelAsync(this IElement element, WheelEventArgs eventArgs) => element.TriggerEventAsync("onmousewheel", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@oncontextmenu</c> event on <paramref name="element"/>,  passing the provided
@@ -507,6 +505,6 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task ContextMenuAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("oncontextmenu", eventArgs);
+		private static Task ContextMenuAsync(this IElement element, MouseEventArgs eventArgs) => element.TriggerEventAsync("oncontextmenu", eventArgs);
 	}
 }

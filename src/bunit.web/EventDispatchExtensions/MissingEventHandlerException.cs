@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-
 using AngleSharp.Dom;
 
 namespace Bunit

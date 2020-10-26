@@ -1,13 +1,9 @@
 using System;
 using System.IO;
-
 using Bunit.Rendering;
 using Bunit.SampleComponents;
-
 using Moq;
-
 using Shouldly;
-
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;

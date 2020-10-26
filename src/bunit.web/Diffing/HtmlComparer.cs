@@ -1,12 +1,9 @@
 using System.Collections.Generic;
-
 using AngleSharp.Diffing;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Diffing.Strategies;
 using AngleSharp.Dom;
-
 using AngleSharpWrappers;
-
 using Bunit.Rendering;
 
 namespace Bunit.Diffing
@@ -25,7 +22,7 @@ namespace Bunit.Diffing
 		{
 			var strategy = new DiffingStrategyPipeline();
 			strategy.AddDefaultOptions();
-			strategy.AddFilter(BlazorDiffingHelpers.BlazorEventHandlerIdAttrFilter, StrategyType.Specialized);
+			strategy.AddFilter(BlazorDiffingHelpers.BlazorAttributeFilter, StrategyType.Specialized);
 			_differenceEngine = new HtmlDiffer(strategy);
 		}
 

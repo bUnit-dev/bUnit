@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-
 using AngleSharp.Dom;
-
 using Bunit.Asserting;
-
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit.TestDoubles.JSInterop
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Assert extensions for JSRuntimeMock
@@ -82,8 +79,7 @@ namespace Bunit.TestDoubles.JSInterop
 				throw new ArgumentNullException(nameof(actualArgument));
 			if (expectedTargetElement is null)
 				throw new ArgumentNullException(nameof(expectedTargetElement));
-
-			if (!(actualArgument is ElementReference elmRef))
+			if (actualArgument is not ElementReference elmRef)
 				throw new ActualExpectedAssertException(actualArgument.GetType().Name, nameof(ElementReference), "Actual argument type", "Expected argument type", $"The argument was not an {nameof(ElementReference)}");
 
 			var elmRefAttrName = Htmlizer.ELEMENT_REFERENCE_ATTR_NAME;

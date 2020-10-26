@@ -12,7 +12,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// Arrange
 			using var ctx = new TestContext();
-			ctx.Services.AddTestAuthorization();
+			ctx.AddTestAuthorization();
 
 			// Act
 			var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -26,7 +26,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
 
 			// act
@@ -41,7 +41,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser", AuthorizationState.Unauthorized);
 
 			// act
@@ -56,7 +56,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 
 			// start off unauthenticated.
 			var cut = ctx.RenderComponent<SimpleAuthView>();
@@ -76,7 +76,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser005", AuthorizationState.Authorized);
 
 			// start off unauthenticated.
@@ -103,7 +103,7 @@ namespace Bunit.TestDoubles.Authorization
 
 			// assert
 			Assert.Equal("AuthenticationStateProvider", ex.ServiceName);
-			Assert.Equal("https://bunit.egilhansen.com/docs/test-doubles/faking-auth.html", ex.HelpLink);
+			Assert.Equal("https://bunit.egilhansen.com/docs/test-doubles/faking-auth", ex.HelpLink);
 		}
 
 		[Fact(DisplayName = "AuthorizeView with set policy with authenticated and authorized user")]
@@ -111,7 +111,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser").SetPolicies("ContentViewer");
 
 			// act
@@ -126,7 +126,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser");
 			// act
 			var cut = ctx.RenderComponent<SimpleAuthViewWithPolicy>();
@@ -140,7 +140,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser").SetPolicies("OtherPolicy");
 
 			// act
@@ -155,7 +155,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser").SetRoles("Admin");
 
 			// act
@@ -170,7 +170,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser");
 
 			// act
@@ -185,7 +185,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser").SetRoles("NotAdmin");
 
 			// act
@@ -200,7 +200,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorizing();
 
 			// act
@@ -216,7 +216,7 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			var userId = new Guid("{5d5fa9c1-abf9-4ed6-8fb0-3365382b629c}");
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			var emailClaim = new Claim(ClaimTypes.Email, "user@test.com");
 			var uuidClaim = new Claim(ClaimTypes.Sid, userId.ToString());
 			authContext.SetAuthorized("TestUser").SetClaims(uuidClaim, emailClaim);
@@ -237,7 +237,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			using var ctx = new TestContext();
-			var authContext = ctx.Services.AddTestAuthorization();
+			var authContext = ctx.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser");
 
 			// act

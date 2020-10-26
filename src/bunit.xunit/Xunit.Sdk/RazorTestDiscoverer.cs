@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-
 using Bunit.RazorTesting;
 using Bunit.Rendering;
-
 using Xunit.Abstractions;
 
 namespace Xunit.Sdk

@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.ExceptionServices;
-using System.Text;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering
@@ -43,18 +39,19 @@ namespace Bunit.Rendering
 		}
 
 		/// <inheritdoc/>
-		public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(IEnumerable<ComponentParameter> parameters)
+		public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 			where TComponent : IComponent
 		{
-			var fragment = parameters.ToComponentRenderFragment<TComponent>();
-			return Render(fragment, id => _activator.CreateRenderedComponent<TComponent>(id));
+			if (parameters is null) throw new ArgumentNullException(nameof(parameters));
+
+			var renderFragment = parameters.ToRenderFragment<TComponent>();
+			return Render(renderFragment, id => _activator.CreateRenderedComponent<TComponent>(id));
 		}
 
 		/// <inheritdoc/>
 		public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
 		{
-			if (fieldInfo is null)
-				throw new ArgumentNullException(nameof(fieldInfo));
+			if (fieldInfo is null) throw new ArgumentNullException(nameof(fieldInfo));
 
 			var result = Dispatcher.InvokeAsync(() => base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs));
 
@@ -269,7 +266,7 @@ namespace Bunit.Rendering
 
 		private void AssertNoUnhandledExceptions()
 		{
-			if (_unhandledException is { } unhandled)
+			if (_unhandledException is Exception unhandled)
 			{
 				_unhandledException = null;
 				LogUnhandledException(unhandled);

@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
-
 using AngleSharp.Dom;
-
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Bunit
@@ -24,7 +22,7 @@ namespace Bunit
 		/// event arguments to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
-		/// <param name="eventArgs">The event arguments to passs the event handler.</param>
+		/// <param name="eventArgs">The event arguments to pass the event handler.</param>
 		public static void Focus(this IElement element, FocusEventArgs eventArgs) => _ = FocusAsync(element, eventArgs);
 
 		/// <summary>
@@ -32,9 +30,9 @@ namespace Bunit
 		/// event arguments to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
-		/// <param name="eventArgs">The event arguments to passs the event handler.</param>
+		/// <param name="eventArgs">The event arguments to pass the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task FocusAsync(this IElement element, FocusEventArgs eventArgs) => element.TriggerEventAsync("onfocus", eventArgs);
+		private static Task FocusAsync(this IElement element, FocusEventArgs eventArgs) => element.TriggerEventAsync("onfocus", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onblur</c> event on <paramref name="element"/>, passing the provided
@@ -49,7 +47,7 @@ namespace Bunit
 		/// event arguments to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
-		/// <param name="eventArgs">The event arguments to passs the event handler.</param>
+		/// <param name="eventArgs">The event arguments to pass the event handler.</param>
 		public static void Blur(this IElement element, FocusEventArgs eventArgs) => _ = BlurAsync(element, eventArgs);
 
 		/// <summary>
@@ -57,9 +55,9 @@ namespace Bunit
 		/// event arguments to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
-		/// <param name="eventArgs">The event arguments to passs the event handler.</param>
+		/// <param name="eventArgs">The event arguments to pass the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task BlurAsync(this IElement element, FocusEventArgs eventArgs) => element.TriggerEventAsync("onblur", eventArgs);
+		private static Task BlurAsync(this IElement element, FocusEventArgs eventArgs) => element.TriggerEventAsync("onblur", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onfocusin</c> event on <paramref name="element"/>, passing the provided
@@ -74,7 +72,7 @@ namespace Bunit
 		/// event arguments to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
-		/// <param name="eventArgs">The event arguments to passs the event handler.</param>
+		/// <param name="eventArgs">The event arguments to pass the event handler.</param>
 		public static void FocusIn(this IElement element, FocusEventArgs eventArgs) => _ = FocusInAsync(element, eventArgs);
 
 		/// <summary>
@@ -82,9 +80,9 @@ namespace Bunit
 		/// event arguments to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
-		/// <param name="eventArgs">The event arguments to passs the event handler.</param>
+		/// <param name="eventArgs">The event arguments to pass the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task FocusInAsync(this IElement element, FocusEventArgs eventArgs) => element.TriggerEventAsync("onfocusin", eventArgs);
+		private static Task FocusInAsync(this IElement element, FocusEventArgs eventArgs) => element.TriggerEventAsync("onfocusin", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onfocusout</c> event on <paramref name="element"/>, passing the provided
@@ -99,7 +97,7 @@ namespace Bunit
 		/// event arguments to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
-		/// <param name="eventArgs">The event arguments to passs the event handler.</param>
+		/// <param name="eventArgs">The event arguments to pass the event handler.</param>
 		public static void FocusOut(this IElement element, FocusEventArgs eventArgs) => _ = FocusOutAsync(element, eventArgs);
 
 		/// <summary>
@@ -107,8 +105,8 @@ namespace Bunit
 		/// event arguments to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
-		/// <param name="eventArgs">The event arguments to passs the event handler.</param>
+		/// <param name="eventArgs">The event arguments to pass the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task FocusOutAsync(this IElement element, FocusEventArgs eventArgs) => element.TriggerEventAsync("onfocusout", eventArgs);
+		private static Task FocusOutAsync(this IElement element, FocusEventArgs eventArgs) => element.TriggerEventAsync("onfocusout", eventArgs);
 	}
 }

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Bunit.RazorTesting;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
@@ -92,7 +90,7 @@ namespace Bunit.Rendering
 
 		private void AssertNoUnhandledExceptions()
 		{
-			if (_unhandledException is { } unhandled)
+			if (_unhandledException is Exception unhandled)
 			{
 				_unhandledException = null;
 				ExceptionDispatchInfo.Capture(unhandled).Throw();

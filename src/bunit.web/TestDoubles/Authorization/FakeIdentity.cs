@@ -1,8 +1,7 @@
 using System;
 using System.Security.Principal;
-using Bunit.Extensions;
 
-namespace Bunit.TestDoubles.Authorization
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Identity class to use in tests where you specify a user identity.

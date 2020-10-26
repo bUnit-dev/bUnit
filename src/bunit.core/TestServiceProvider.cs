@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
@@ -11,7 +9,6 @@ namespace Bunit
 	/// Represents a <see cref="IServiceProvider"/> and <see cref="IServiceCollection"/> 
 	/// as a single type used for test purposes.
 	/// </summary>
-	[SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix")]
 	public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, IDisposable
 	{
 		private readonly IServiceCollection _serviceCollection;
@@ -26,7 +23,7 @@ namespace Bunit
 		/// Gets whether this <see cref="TestServiceProvider"/> has been initialized, and 
 		/// no longer will accept calls to the <c>AddService</c>'s methods.
 		/// </summary>
-		public bool IsProviderInitialized => _serviceProvider is { };
+		public bool IsProviderInitialized => _serviceProvider is not null;
 
 		/// <inheritdoc/>
 		public int Count => _serviceCollection.Count;

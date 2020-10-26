@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Bunit.Rendering
+namespace Bunit
 {
 	/// <summary>
 	/// Represents a single parameter supplied to an <see cref="Microsoft.AspNetCore.Components.IComponent"/>
@@ -31,7 +31,7 @@ namespace Bunit.Rendering
 		/// <param name="name">An optional name</param>
 		/// <param name="value">An optional value</param>
 		/// <param name="isCascadingValue">Whether or not this is a cascading value</param>
-		internal ComponentParameter(string? name, object? value, bool isCascadingValue)
+		private ComponentParameter(string? name, object? value, bool isCascadingValue)
 		{
 			if (isCascadingValue && value is null)
 				throw new ArgumentNullException(nameof(value), "Cascading values cannot be set to null");
@@ -76,7 +76,9 @@ namespace Bunit.Rendering
 
 		/// <inheritdoc/>
 		public bool Equals(ComponentParameter other)
-			=> string.Equals(Name, other.Name, StringComparison.Ordinal) && Value == other.Value && IsCascadingValue == other.IsCascadingValue;
+			=> string.Equals(Name, other.Name, StringComparison.Ordinal)
+			&& (Value is null && other.Value is null || (Value?.Equals(other.Value) ?? false))
+			&& IsCascadingValue.Equals(other.IsCascadingValue);
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is ComponentParameter other && Equals(other);

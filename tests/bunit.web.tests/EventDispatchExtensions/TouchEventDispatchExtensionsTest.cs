@@ -1,9 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Components.Web;
-
 using Xunit;
 
 namespace Bunit
@@ -15,7 +12,7 @@ namespace Bunit
 		[Theory(DisplayName = "Touch events are raised correctly through helpers")]
 		[MemberData(nameof(GetEventHelperMethods), typeof(TouchEventDispatchExtensions))]
 		[SuppressMessage("Performance", "CA1825:Avoid zero-length array allocations.", Justification = "<Pending>")]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new TouchEventArgs
 			{
@@ -30,7 +27,7 @@ namespace Bunit
 				Type = "TOUCH"
 			};
 
-			await VerifyEventRaisesCorrectly(helper, expected);
+			VerifyEventRaisesCorrectly(helper, expected);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-using Bunit.TestDoubles.Authorization;
+using Bunit.TestDoubles;
 using Xunit;
 
 namespace Bunit.Docs.Samples
@@ -10,7 +10,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange
       using var ctx = new TestContext();
-      ctx.Services.AddTestAuthorization();
+      ctx.AddTestAuthorization();
 
       // Act
       var cut = ctx.RenderComponent<UserInfo>();
@@ -25,7 +25,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange
       using var ctx = new TestContext();
-      var authContext = ctx.Services.AddTestAuthorization();
+      var authContext = ctx.AddTestAuthorization();
       authContext.SetAuthorizing();
 
       // Act
@@ -41,7 +41,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange
       using var ctx = new TestContext();
-      var authContext = ctx.Services.AddTestAuthorization();
+      var authContext = ctx.AddTestAuthorization();
       authContext.SetAuthorized("TEST USER", AuthorizationState.Unauthorized);
 
       // Act
@@ -57,7 +57,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange
       using var ctx = new TestContext();
-      var authContext = ctx.Services.AddTestAuthorization();
+      var authContext = ctx.AddTestAuthorization();
       authContext.SetAuthorized("TEST USER");
 
       // Act

@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
-
 using AngleSharp.Dom;
-
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Bunit
@@ -51,7 +49,7 @@ namespace Bunit
 		/// <param name="element"></param>
 		/// <param name="eventArgs"></param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task TouchCancelAsync(this IElement element, TouchEventArgs eventArgs)
+		private static Task TouchCancelAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchcancel", eventArgs);
 
 		/// <summary>
@@ -93,7 +91,7 @@ namespace Bunit
 		/// <param name="element"></param>
 		/// <param name="eventArgs"></param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task TouchEndAsync(this IElement element, TouchEventArgs eventArgs)
+		private static Task TouchEndAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchend", eventArgs);
 
 		/// <summary>
@@ -135,7 +133,7 @@ namespace Bunit
 		/// <param name="element"></param>
 		/// <param name="eventArgs"></param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task TouchMoveAsync(this IElement element, TouchEventArgs eventArgs)
+		private static Task TouchMoveAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchmove", eventArgs);
 
 		/// <summary>
@@ -177,7 +175,7 @@ namespace Bunit
 		/// <param name="element"></param>
 		/// <param name="eventArgs"></param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task TouchStartAsync(this IElement element, TouchEventArgs eventArgs)
+		private static Task TouchStartAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchstart", eventArgs);
 
 		/// <summary>
@@ -219,7 +217,7 @@ namespace Bunit
 		/// <param name="element"></param>
 		/// <param name="eventArgs"></param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task TouchEnterAsync(this IElement element, TouchEventArgs eventArgs)
+		private static Task TouchEnterAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchenter", eventArgs);
 
 		/// <summary>
@@ -261,7 +259,7 @@ namespace Bunit
 		/// <param name="element"></param>
 		/// <param name="eventArgs"></param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		public static Task TouchLeaveAsync(this IElement element, TouchEventArgs eventArgs)
+		private static Task TouchLeaveAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchleave", eventArgs);
 	}
 }

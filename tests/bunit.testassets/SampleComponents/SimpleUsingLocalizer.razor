@@ -1,0 +1,12 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer StringLocalizer
+
+<h3>SimpleUsingLocalizer</h3>
+
+@code {
+	protected override void OnInitialized()
+	{
+		var localizedString = StringLocalizer["StringName"];
+	}
+
+}

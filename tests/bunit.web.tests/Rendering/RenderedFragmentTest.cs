@@ -1,4 +1,3 @@
-using System;
 using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
 

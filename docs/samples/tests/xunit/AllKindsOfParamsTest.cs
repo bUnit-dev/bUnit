@@ -3,7 +3,7 @@ using Bunit;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-
+using Bunit.Rendering;
 using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Docs.Samples
@@ -125,17 +125,24 @@ namespace Bunit.Docs.Samples
     {
       using var ctx = new TestContext();
 
+      // Using factory method
+      var cut1 = ctx.RenderComponent<ChildContentParams>(
+        ChildContent("<h1>Below you will find a most interesting alert!</h1>"),
+        ChildContent<Alert>(
+          ("Heading", "Alert heading"),
+          ("Type", AlertType.Warning),
+          ChildContent("<p>Hello World</p>")
+        )
+      );
+
       // Using parameter builder
-      var cut = ctx.RenderComponent<ChildContentParams>(parameters => parameters
-        .Add(p => p.ChildContent, (RenderFragment)(builder =>
-        {
-          builder.AddMarkupContent(1, "<h1>Below you will find a most interesting alert!</h1>");
-          builder.OpenComponent<Alert>(2);
-          builder.AddAttribute(3, "Heading", "Alert heading");
-          builder.AddAttribute(4, "Type", AlertType.Warning);
-          builder.AddAttribute(5, "ChildContent", (RenderFragment)(alertBuilder => alertBuilder.AddMarkupContent(1, "<p>Hello World</p>")));
-          builder.CloseComponent();
-        }))
+      var cut2 = ctx.RenderComponent<ChildContentParams>(parameters => parameters
+        .AddChildContent("<h1>Below you will find a most interesting alert!</h1>")
+        .AddChildContent<Alert>(childParams => childParams
+          .Add(p => p.Heading, "Alert heading")
+          .Add(p => p.Type, AlertType.Warning)
+          .AddChildContent("<p>Hello World</p>")
+        )
       );
     }
 
@@ -200,17 +207,24 @@ namespace Bunit.Docs.Samples
     {
       using var ctx = new TestContext();
 
+      // Using factory method
+      var cut1 = ctx.RenderComponent<RenderFragmentParams>(
+        RenderFragment("Content", "<h1>Below you will find a most interesting alert!</h1>"),
+        RenderFragment<Alert>("Content",
+          ("Heading", "Alert heading"),
+          ("Type", AlertType.Warning),
+          ChildContent("<p>Hello World</p>")
+        )
+      );
+
       // Using parameter builder
-      var cut = ctx.RenderComponent<RenderFragmentParams>(parameters => parameters
-        .Add(p => p.Content, (RenderFragment)(builder =>
-        {
-          builder.AddMarkupContent(1, "<h1>Below you will find a most interesting alert!</h1>");
-          builder.OpenComponent<Alert>(2);
-          builder.AddAttribute(3, "Heading", "Alert heading");
-          builder.AddAttribute(4, "Type", AlertType.Warning);
-          builder.AddAttribute(5, "ChildContent", (RenderFragment)(alertBuilder => alertBuilder.AddMarkupContent(1, "<p>Hello World</p>")));
-          builder.CloseComponent();
-        }))
+      var cut2 = ctx.RenderComponent<RenderFragmentParams>(parameters => parameters
+        .Add(p => p.Content, "<h1>Below you will find a most interesting alert!</h1>")
+        .Add<Alert>(p => p.Content, childParams => childParams
+          .Add(p => p.Heading, "Alert heading")
+          .Add(p => p.Type, AlertType.Warning)
+          .AddChildContent("<p>Hello World</p>")
+        )
       );
     }
 
@@ -240,29 +254,17 @@ namespace Bunit.Docs.Samples
       // Using factory method
       var cut1 = ctx.RenderComponent<TemplateParams<string>>(
         ("Items", new string[] { "Foo", "Bar", "Baz" }),
-        Template<string>("Template", item => builder =>
-        {
-          builder.OpenElement(1, "div");
-          builder.AddAttribute(2, "class", "item");
-          builder.OpenComponent<Item>(3);
-          builder.AddAttribute(4, "Value", item);
-          builder.CloseComponent();
-          builder.CloseElement();
+        Template<Item, string>("Template", value => new ComponentParameter[] {
+          ("Value", value)
         })
       );
 
       // Using parameter builder
       var cut2 = ctx.RenderComponent<TemplateParams<string>>(parameters => parameters
         .Add(p => p.Items, new[] { "Foo", "Bar", "Baz" })
-        .Add(p => p.Template, item => builder =>
-        {
-          builder.OpenElement(1, "div");
-          builder.AddAttribute(2, "class", "item");
-          builder.OpenComponent<Item>(3);
-          builder.AddAttribute(4, "Value", item);
-          builder.CloseComponent();
-          builder.CloseElement();
-        })
+        .Add<Item, string>(p => p.Template, value => itemParams => itemParams
+          .Add(p => p.Value, value)
+        )
       );
     }
 
@@ -295,7 +297,7 @@ namespace Bunit.Docs.Samples
 
       // Using parameter builder
       var cut2 = ctx.RenderComponent<CascadingParams>(parameters => parameters
-        .Add(isDarkTheme)
+        .AddCascadingValue(isDarkTheme)
       );
 
       // Using parameter builder and selecting unnamed cascading parameter
@@ -335,7 +337,7 @@ namespace Bunit.Docs.Samples
 
       // Using parameter builder
       var cut2 = ctx.RenderComponent<CascadingParams>(parameters => parameters
-        .Add(isDarkTheme)
+        .AddCascadingValue(isDarkTheme)
         .Add(p => p.UserName, "Egil Hansen")
         .Add(p => p.Email, "egil@example.com")
       );

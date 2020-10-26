@@ -1,4 +1,4 @@
-using Bunit.TestDoubles.Authorization;
+using Bunit.TestDoubles;
 using System.Security.Claims;
 using System.Globalization;
 using Xunit;
@@ -12,7 +12,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange
       using var ctx = new TestContext();
-      var authContext = ctx.Services.AddTestAuthorization();
+      var authContext = ctx.AddTestAuthorization();
       authContext.SetAuthorized("TEST USER");
 
       // Act
@@ -28,7 +28,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange
       using var ctx = new TestContext();
-      var authContext = ctx.Services.AddTestAuthorization();
+      var authContext = ctx.AddTestAuthorization();
       authContext.SetAuthorized("TEST USER");
       authContext.SetRoles("superuser");
 
@@ -47,7 +47,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange
       using var ctx = new TestContext();
-      var authContext = ctx.Services.AddTestAuthorization();
+      var authContext = ctx.AddTestAuthorization();
       authContext.SetAuthorized("TEST USER");
       authContext.SetRoles("admin", "superuser");
 
@@ -67,7 +67,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange
       using var ctx = new TestContext();
-      var authContext = ctx.Services.AddTestAuthorization();
+      var authContext = ctx.AddTestAuthorization();
       authContext.SetAuthorized("TEST USER");
       authContext.SetPolicies("content-editor");
 
@@ -86,7 +86,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange
       using var ctx = new TestContext();
-      var authContext = ctx.Services.AddTestAuthorization();
+      var authContext = ctx.AddTestAuthorization();
       authContext.SetAuthorized("TEST USER");
       authContext.SetPolicies("content-editor", "approver");
 
@@ -105,7 +105,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange
       using var ctx = new TestContext();
-      var authContext = ctx.Services.AddTestAuthorization();
+      var authContext = ctx.AddTestAuthorization();
       authContext.SetAuthorized("TEST USER");
       authContext.SetClaims(        
         new Claim(ClaimTypes.Email, "test@example.com"),
@@ -128,7 +128,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange
       using var ctx = new TestContext();
-      var authContext = ctx.Services.AddTestAuthorization();
+      var authContext = ctx.AddTestAuthorization();
       authContext.SetAuthorized("TEST USER");
       authContext.SetRoles("admin", "superuser");
       authContext.SetPolicies("content-editor");

@@ -1,7 +1,5 @@
 using System;
 using System.Reflection;
-using System.Threading.Tasks;
-
 using Xunit;
 
 namespace Bunit
@@ -12,9 +10,9 @@ namespace Bunit
 
 		[Theory(DisplayName = "Media events are raised correctly through helpers")]
 		[MemberData(nameof(GetEventHelperMethods), typeof(MediaEventDispatchExtensions))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
-			await VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
+			VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
 		}
 	}
 }

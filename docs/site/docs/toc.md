@@ -8,6 +8,7 @@
 # [Providing Input](xref:providing-input)
 ## [Parameters and Cascading Values](xref:passing-parameters-to-components)
 ## [Inject Services into Components](xref:inject-services)
+## [Controlling the Root Render Tree](xref:root-render-tree)
 ## [Configure 3rd Party Libraries](xref:configure-3rd-party-libs)
 
 # [Interaction](xref:interaction)
@@ -23,6 +24,7 @@
 
 # [Test Doubles](xref:test-doubles)
 ## [Faking Authorization](xref:faking-auth)
+## [Mocking HttpClient](xref:mocking-httpclient)
 ## [Mocking IJSRuntime](xref:mocking-ijsruntime)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)

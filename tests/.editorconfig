@@ -1,0 +1,5 @@
+root = false
+
+[*.cs]
+# IDE0039: Use local function
+csharp_style_pattern_local_over_anonymous_function = false:suggestion

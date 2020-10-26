@@ -1,7 +1,5 @@
 using System;
-
 using Shouldly;
-
 using Xunit;
 using Xunit.Sdk;
 

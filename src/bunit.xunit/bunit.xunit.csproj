@@ -17,9 +17,9 @@
 	<ItemGroup>
 		<PackageReference Include="SourceFileFinder" Version="1.0.0" />
 		<PackageReference Include="System.Reflection.Metadata" Version="1.8.1" />
-		<PackageReference Include="xunit.assert" Version="2.4.0" />
-		<PackageReference Include="xunit.extensibility.core" Version="2.4.0" />
-		<PackageReference Include="xunit.extensibility.execution" Version="2.4.0" />
+		<PackageReference Include="xunit.assert" Version="2.4.1" />
+		<PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
+		<PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
 	</ItemGroup>
 
 	<ItemGroup>

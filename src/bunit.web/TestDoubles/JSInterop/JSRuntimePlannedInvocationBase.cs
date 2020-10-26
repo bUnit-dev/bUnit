@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Bunit.TestDoubles.JSInterop
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Represents a planned invocation of a JavaScript function with specific arguments.
@@ -12,14 +12,7 @@ namespace Bunit.TestDoubles.JSInterop
 	{
 		private readonly List<JSRuntimeInvocation> _invocations;
 
-		private Func<IReadOnlyList<object?>, bool> InvocationMatcher { get; }
-
 		private TaskCompletionSource<TResult> _completionSource;
-
-		/// <summary>
-		/// The expected identifier for the function to invoke.
-		/// </summary>
-		public string Identifier { get; }
 
 		/// <summary>
 		/// Gets the invocations that this <see cref="JSRuntimePlannedInvocation{TResult}"/> has matched with.
@@ -29,11 +22,9 @@ namespace Bunit.TestDoubles.JSInterop
 		/// <summary>
 		/// Creates an instance of a <see cref="JSRuntimePlannedInvocationBase{TResult}"/>.
 		/// </summary>
-		protected JSRuntimePlannedInvocationBase(string identifier, Func<IReadOnlyList<object?>, bool> matcher)
+		protected JSRuntimePlannedInvocationBase()
 		{
-			Identifier = identifier;
 			_invocations = new List<JSRuntimeInvocation>();
-			InvocationMatcher = matcher;
 			_completionSource = new TaskCompletionSource<TResult>();
 		}
 
@@ -79,10 +70,6 @@ namespace Bunit.TestDoubles.JSInterop
 			return _completionSource.Task;
 		}
 
-		internal bool Matches(JSRuntimeInvocation invocation)
-		{
-			return Identifier.Equals(invocation.Identifier, StringComparison.Ordinal)
-				&& InvocationMatcher(invocation.Arguments);
-		}
+		internal abstract bool Matches(JSRuntimeInvocation invocation);
 	}
 }

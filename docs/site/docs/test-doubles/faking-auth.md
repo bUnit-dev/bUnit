@@ -15,7 +15,10 @@ The test implementation of Blazor's authentication and authorization can be put 
 - **Authenticated** and **authorized** 
 - **Authenticated** and **authorized** with one or more **roles**, **claims**, and/or **policies**
 
-bUnit's authentication and authorization implementation is easily available by calling [`AddTestAuthorization()`](xref:Bunit.TestDoubles.Authorization.FakeAuthorizationExtensions.AddTestAuthorization(Bunit.TestServiceProvider)) on a test context's `Services` collection. This returns an instance of the <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext> type that allows you to control the authentication and authorization state for a test.
+bUnit's authentication and authorization implementation is easily available by calling [`AddTestAuthorization()`](xref:Bunit.TestDoubles.FakeAuthorizationExtensions.AddTestAuthorization(Bunit.TestContext)) on a test context. This adds the necessary services to the `Services` collection and the `CascadingAuthenticationState` component to the [root render tree](xref:root-render-tree). The method returns an instance of the <xref:Bunit.TestDoubles.TestAuthorizationContext> type that allows you to control the authentication and authorization state for a test.
+
+> [!NOTE]
+> If your inherits directly from bUnit's <xref:Bunit.TestContext> as described in <xref:writing-csharp-tests#remove-boilerplate-code-from-tests>, then you need to call the [`AddTestAuthorization()`](xref:Bunit.TestDoubles.FakeAuthorizationExtensions.AddTestAuthorization(Bunit.TestContext)) method like so: `this.AddTestAuthorization()`.
 
 The following sections will show how to set each of these states in a test.
 
@@ -43,7 +46,7 @@ To set the state to authenticating and authorizing, do the following:
 
 [!code-csharp[UserInfoTest.cs](../../../samples/tests/xunit/UserInfoTest.cs?start=26&end=36&highlight=4)]
 
-After calling `AddTestAuthorization()`, the returned <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext> is used to set the authenticating and authorizing state through the <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext.SetAuthorizing> method.
+After calling `AddTestAuthorization()`, the returned <xref:Bunit.TestDoubles.TestAuthorizationContext> is used to set the authenticating and authorizing state through the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorizing> method.
 
 ### Authenticated and Unauthorized State
 
@@ -51,7 +54,7 @@ To set the state to authenticated and unauthorized, do the following:
 
 [!code-csharp[UserInfoTest.cs](../../../samples/tests/xunit/UserInfoTest.cs?start=42&end=52&highlight=4)]
 
-After calling `AddTestAuthorization()`, the returned <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext> is used to set the authenticated and unauthorized state through the <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext.SetAuthorized(System.String,Bunit.TestDoubles.Authorization.AuthorizationState)> method.
+After calling `AddTestAuthorization()`, the returned <xref:Bunit.TestDoubles.TestAuthorizationContext> is used to set the authenticated and unauthorized state through the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(System.String,Bunit.TestDoubles.AuthorizationState)> method.
 
 ### Authenticated and Authorized state
 
@@ -59,7 +62,7 @@ To set the state to authenticated and authorized, do the following:
 
 [!code-csharp[UserInfoTest.cs](../../../samples/tests/xunit/UserInfoTest.cs?start=58&end=68&highlight=4)]
 
-After calling `AddTestAuthorization()`, the returned <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext> is used to set the authenticated and authorized state through the <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext.SetAuthorized(System.String,Bunit.TestDoubles.Authorization.AuthorizationState)> method. 
+After calling `AddTestAuthorization()`, the returned <xref:Bunit.TestDoubles.TestAuthorizationContext> is used to set the authenticated and authorized state through the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(System.String,Bunit.TestDoubles.AuthorizationState)> method. 
 
 Note, the second parameter, `AuthorizationState`, is optional, and defaults to `AuthorizationState.Authorized`, if not specified.
 
@@ -77,7 +80,7 @@ To specify one or more roles for the authenticated and authorized user, do the f
 
 [!code-csharp[UserRightsTest.cs](../../../samples/tests/xunit/UserRightsTest.cs?start=29&end=42&highlight=5)]
 
-The highlighted line shows how the <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext.SetRoles(System.String[])> method is used to specify one role. To specify multiple roles, do the following:
+The highlighted line shows how the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetRoles(System.String[])> method is used to specify one role. To specify multiple roles, do the following:
 
 [!code-csharp[UserRightsTest.cs](../../../samples/tests/xunit/UserRightsTest.cs?start=48&end=62&highlight=5)]
 
@@ -87,7 +90,7 @@ To specify one or more policies for the authenticated and authorized user, do th
 
 [!code-csharp[UserRightsTest.cs](../../../samples/tests/xunit/UserRightsTest.cs?start=68&end=81&highlight=5)]
 
-The highlighted line shows how the <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext.SetPolicies(System.String[])> method is used to specify one policy. To specify multiple policies, do the following:
+The highlighted line shows how the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetPolicies(System.String[])> method is used to specify one policy. To specify multiple policies, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/UserRightsTest.cs?start=91&end=91)]
 
@@ -97,7 +100,7 @@ To specify one or more claims for the authenticated and authorized user, do the 
 
 [!code-csharp[UserRightsTest.cs](../../../samples/tests/xunit/UserRightsTest.cs?start=106&end=123&highlight=5-8)]
 
-The highlighted line shows how the <xref:Bunit.TestDoubles.Authorization.TestAuthorizationContext.SetClaims(System.Security.Claims.Claim[])> method is used to pass two instances of the `Claim` types.
+The highlighted line shows how the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetClaims(System.Security.Claims.Claim[])> method is used to pass two instances of the `Claim` types.
 
 ### Example of passing both roles, claims, and policies
 

@@ -1,22 +1,19 @@
 using System;
-using System.Xml.Serialization;
-
 using Bunit.Rendering;
-
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Bunit
 {
 	/// <summary>
 	/// A test context is a factory that makes it possible to create components under tests.
 	/// </summary>
-	public class TestContextBase : ITestContext, IDisposable
+	public abstract class TestContextBase : IDisposable
 	{
 		private ITestRenderer? _testRenderer;
 
-		/// <inheritdoc/>
+		/// <summary>
+		/// Gets the renderer used by the test context.
+		/// </summary>
 		public ITestRenderer Renderer
 		{
 			get
@@ -29,13 +26,16 @@ namespace Bunit
 			}
 		}
 
-		/// <inheritdoc/>
-		public virtual TestServiceProvider Services { get; }
+		/// <summary>
+		/// Gets the service collection and service provider that is used when a 
+		/// component is rendered by the test context.
+		/// </summary>
+		public TestServiceProvider Services { get; }
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="ITestContext"/> class.
+		/// Creates a new instance of the <see cref="TestContextBase"/> class.
 		/// </summary>
-		public TestContextBase()
+		protected TestContextBase()
 		{
 			Services = new TestServiceProvider();
 			Services.AddSingleton<ITestRenderer, TestRenderer>();

@@ -1,8 +1,5 @@
 using System.Reflection;
-using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Components;
-
 using Xunit;
 
 namespace Bunit
@@ -13,14 +10,14 @@ namespace Bunit
 
 		[Theory(DisplayName = "Input events are raised correctly through helpers")]
 		[MemberData(nameof(GetEventHelperMethods), typeof(InputEventDispatchExtensions))]
-		public async Task CanRaiseEvents(MethodInfo helper)
+		public void CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new ChangeEventArgs()
 			{
 				Value = "SOME VALUE"
 			};
 
-			await VerifyEventRaisesCorrectly(helper, expected);
+			VerifyEventRaisesCorrectly(helper, expected);
 		}
 
 	}

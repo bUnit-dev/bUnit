@@ -1,9 +1,7 @@
 using System;
 using System.Globalization;
 using System.Threading;
-
 using Microsoft.Extensions.Logging;
-
 using Xunit.Abstractions;
 
 namespace Bunit.Xunit.Logging

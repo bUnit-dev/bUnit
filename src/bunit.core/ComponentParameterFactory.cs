@@ -1,8 +1,5 @@
 using System;
 using System.Threading.Tasks;
-
-using Bunit.Rendering;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -157,6 +154,17 @@ namespace Bunit
 		}
 
 		/// <summary>
+		/// Creates a ChildContent parameter that will pass the provided <paramref name="renderFragment"/>
+		/// to the parameter in the component.
+		/// </summary>
+		/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to pass to the ChildContent parameter.</param>
+		/// <returns>The <see cref="ComponentParameter"/>.</returns>
+		public static ComponentParameter ChildContent(RenderFragment renderFragment)
+		{
+			return Parameter(nameof(ChildContent), renderFragment);
+		}
+
+		/// <summary>
 		/// Creates a <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> with the provided 
 		/// <paramref name="markup"/> as rendered output and passes it to the parameter specified in <paramref name="name"/>.
 		/// </summary>
@@ -178,7 +186,8 @@ namespace Bunit
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
 		public static ComponentParameter RenderFragment<TComponent>(string name, params ComponentParameter[] parameters) where TComponent : class, IComponent
 		{
-			return ComponentParameter.CreateParameter(name, parameters.ToComponentRenderFragment<TComponent>());
+			var cpc = new ComponentParameterCollection() { parameters };
+			return ComponentParameter.CreateParameter(name, cpc.ToRenderFragment<TComponent>());
 		}
 
 		/// <summary>
@@ -206,6 +215,26 @@ namespace Bunit
 		public static ComponentParameter Template<TValue>(string name, Func<TValue, string> markupFactory)
 		{
 			return Template<TValue>(name, value => (RenderTreeBuilder builder) => builder.AddMarkupContent(0, markupFactory(value)));
+		}
+
+		/// <summary>
+		/// Creates a template component parameter which will pass the a <see cref="Microsoft.AspNetCore.Components.RenderFragment{TValue}" />
+		/// to the <paramref name="parameterCollectionBuilder"/> at runtime. The parameters returned from it
+		/// will be passed to the <typeparamref name="TComponent"/> and it will be rendered as the template.
+		/// </summary>
+		/// <typeparam name="TComponent">The type of component to render in template.</typeparam>
+		/// <typeparam name="TValue">The value used to build the content.</typeparam>
+		/// <param name="name">Parameter name.</param>
+		/// <param name="parameterCollectionBuilder">The parameter collection builder function that will be passed the template <typeparamref name="TValue"/>.</param>
+		/// <returns>The <see cref="ComponentParameter"/>.</returns>
+		public static ComponentParameter Template<TComponent, TValue>(string name, Func<TValue, ComponentParameter[]> parameterCollectionBuilder)
+			where TComponent : IComponent
+		{
+			return Template<TValue>(name, value =>
+			{
+				var cpc = new ComponentParameterCollection() { parameterCollectionBuilder(value) };
+				return cpc.ToRenderFragment<TComponent>();
+			});
 		}
 	}
 }

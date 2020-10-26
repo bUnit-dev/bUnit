@@ -1,4 +1,6 @@
-namespace Bunit.TestDoubles.Authorization
+using Microsoft.AspNetCore.Components.Authorization;
+
+namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Helper methods for registering the Authentication/Authorization services with
@@ -7,14 +9,17 @@ namespace Bunit.TestDoubles.Authorization
 	public static class FakeAuthorizationExtensions
 	{
 		/// <summary>
-		/// Adds the appropriate auth services to the <see cref="TestServiceProvider"/> to enable
-		/// an authenticated user.
+		/// Adds the appropriate Blazor authentication and authorization services to the <see cref="TestServiceProvider"/> to enable
+		/// an authenticated user, as well as adding the <see cref="CascadingAuthenticationState"/> component to the
+		/// <see cref="TestContext.RenderTree"/>.
 		/// </summary>
-		public static TestAuthorizationContext AddTestAuthorization(this TestServiceProvider serviceProvider)
+		public static TestAuthorizationContext AddTestAuthorization(this TestContext context)
 		{
+			context.RenderTree.TryAdd<CascadingAuthenticationState>();
+
 			var authCtx = new TestAuthorizationContext();
 			authCtx.SetNotAuthorized();
-			authCtx.RegisterAuthorizationServices(serviceProvider);
+			authCtx.RegisterAuthorizationServices(context.Services);
 			return authCtx;
 		}
 	}

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Bunit.Rendering

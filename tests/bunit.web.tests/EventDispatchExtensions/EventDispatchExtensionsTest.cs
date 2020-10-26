@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-
 using AngleSharp.Dom;
-
 using Bunit.TestAssets.SampleComponents;
-
 using Shouldly;
 
 namespace Bunit
@@ -25,7 +21,7 @@ namespace Bunit
 			return new TriggerEventSpy<EventArgs>(p => RenderComponent<TriggerTester<EventArgs>>(p), element, eventName);
 		}
 
-		protected async Task VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string methodName, string eventName)[] methodNameEventMap)
+		protected void VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string methodName, string eventName)[] methodNameEventMap)
 		{
 			if (helper is null)
 				throw new ArgumentNullException(nameof(helper));
@@ -36,26 +32,8 @@ namespace Bunit
 			var spy = CreateTriggerSpy(ElementName, eventName);
 			var evtArg = new TEventArgs();
 
-			// Matches methods like: public static Task XxxxAsync(this IElement element, EventArgs args)
-			if (helper.ReturnType == typeof(Task) && helper.GetParameters().Length > 1)
-			{
-				await spy.Trigger(element =>
-				{
-					return (Task)helper.Invoke(null, new object[] { element, evtArg })!;
-				});
-				spy.RaisedEvent.ShouldBe(evtArg);
-			}
-			// Matches methods like: public static Task XxxxAsync(this IElement element)
-			else if (helper.ReturnType == typeof(Task) && helper.GetParameters().Length == 1)
-			{
-				await spy.Trigger(element =>
-				{
-					return (Task)helper.Invoke(null, new object[] { element })!;
-				});
-				spy.RaisedEvent.ShouldBe(EventArgs.Empty);
-			}
 			// Matches methods like: public static void Xxxx(this IElement element, TEventArgs args)
-			else if (helper.GetParameters().Any(p => p.ParameterType == EventArgsType))
+			if (helper.GetParameters().Any(p => p.ParameterType == EventArgsType))
 			{
 				spy.Trigger(element =>
 				{

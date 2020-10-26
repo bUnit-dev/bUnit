@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Xunit.Abstractions;
 
 namespace Xunit.Sdk
@@ -35,7 +34,7 @@ namespace Xunit.Sdk
 		{
 			string result = string.Empty;
 
-			if (_testOutputHelper is { })
+			if (_testOutputHelper is not null)
 			{
 				result = _testOutputHelper.Output;
 				_testOutputHelper.Uninitialize();

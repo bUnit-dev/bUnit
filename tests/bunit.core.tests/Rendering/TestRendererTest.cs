@@ -1,31 +1,25 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bunit.Extensions;
 using Bunit.TestAssets.SampleComponents;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-
 using Shouldly;
-
 using Xunit;
 using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering
 {
-	public class NoChildNoParams : ComponentBase
+	internal class NoChildNoParams : ComponentBase
 	{
 		public const string MARKUP = "hello world";
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 			=> builder.AddMarkupContent(0, MARKUP);
 	}
 
-	public class ThrowsDuringSetParams : ComponentBase
+	internal class ThrowsDuringSetParams : ComponentBase
 	{
 		public static readonly InvalidOperationException EXCEPTION =
 			new InvalidOperationException("THROWS ON PURPOSE");
@@ -33,7 +27,7 @@ namespace Bunit.Rendering
 		public override Task SetParametersAsync(ParameterView parameters) => throw EXCEPTION;
 	}
 
-	public class HasParams : ComponentBase
+	internal class HasParams : ComponentBase
 	{
 		[Parameter] public string? Value { get; set; }
 		[Parameter] public RenderFragment? ChildContent { get; set; }
@@ -45,7 +39,7 @@ namespace Bunit.Rendering
 		}
 	}
 
-	public class RenderTrigger : ComponentBase
+	internal class RenderTrigger : ComponentBase
 	{
 		[Parameter] public string? Value { get; set; }
 
@@ -62,7 +56,7 @@ namespace Bunit.Rendering
 		}
 	}
 
-	public class ToggleChild : ComponentBase
+	internal class ToggleChild : ComponentBase
 	{
 		private bool _showing = true;
 

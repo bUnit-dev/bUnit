@@ -2,28 +2,26 @@
 @using System.Security.Claims
 @using System.Globalization
 
-<CascadingAuthenticationState>
+<AuthorizeView>
+  <h1>Hi @context.User.Identity.Name, you have these claims and rights:</h1>
+</AuthorizeView>
+<ul>
   <AuthorizeView>
-    <h1>Hi @context.User.Identity.Name, you have these claims and rights:</h1>
+    @foreach (var claim in @context.User.FindAll(x => x.Type != ClaimTypes.Name))
+    {
+      <li>@GetClaimName(claim): @claim.Value</li>
+    }
   </AuthorizeView>
-  <ul>
-    <AuthorizeView>
-      @foreach (var claim in @context.User.FindAll(x => x.Type != ClaimTypes.Name))
-      {
-        <li>@GetClaimName(claim): @claim.Value</li>
-      }
-    </AuthorizeView>
-    <AuthorizeView Roles="superuser">
-      <li>You have the role SUPER USER</li>
-    </AuthorizeView>  
-    <AuthorizeView Roles="admin">
-      <li>You have the role ADMIN</li>
-    </AuthorizeView>
-    <AuthorizeView Policy="content-editor">
-      <li>You are a CONTENT EDITOR</li>
-    </AuthorizeView>
-  </ul>
-</CascadingAuthenticationState>
+  <AuthorizeView Roles="superuser">
+    <li>You have the role SUPER USER</li>
+  </AuthorizeView>  
+  <AuthorizeView Roles="admin">
+    <li>You have the role ADMIN</li>
+  </AuthorizeView>
+  <AuthorizeView Policy="content-editor">
+    <li>You are a CONTENT EDITOR</li>
+  </AuthorizeView>
+</ul>
 
 @code 
 {
