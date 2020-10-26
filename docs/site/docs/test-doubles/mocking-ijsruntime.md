@@ -40,9 +40,13 @@ var mockJS = ctx.Services.AddMockJSRuntime(JSRuntimeMockMode.Strict);
 
 ## Setting up invocations
 
-Use the `Setup<TResult>(...)` and `SetupVoid(...)` methods to configure the mock to handle calls from the matching `InvokeAsync<TResult>(...)` and `InvokeVoidAsync(...)` methods on `IJSRuntime`.
+Use the `Setup<TResult>(...)` and `SetupVoid(...)` methods to configure the mock to handle calls from the **matching** `InvokeAsync<TResult>(...)` and `InvokeVoidAsync(...)` methods on `IJSRuntime`.
 
-When an invocation is set up through the `Setup<TResult>(...)` and `SetupVoid(...)` methods, a `JSRuntimePlannedInvocation<TResult>` object is returned. This can be used to set a result or an exception, to emulate what can happen during a JavaScript interop call in Blazor.
+Use the parameterless `Setup<TResult>()` method to mock any call to `InvokeAsync<TResult>(...)` with a given return type `TResult` and use the parameterless `SetupVoid()` to mock any call to `InvokeVoidAsync(...)`.
+
+When an invocation is set up through of the `Setup<TResult>(...)` and `SetupVoid(...)` methods, a `JSRuntimePlannedInvocation<TResult>` object is returned. This can be used to set a result or an exception, to emulate what can happen during a JavaScript interop call in Blazor.
+
+Similarly when the parameterless `Setup<TResult>()` and `SetupVoid()` methods are used a `JSRuntimeCatchAllPlannedInvocation<TResult>` object is returned which can be used to set the result of invocation.
 
 Here are two examples:
 
