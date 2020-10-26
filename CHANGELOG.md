@@ -4,7 +4,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
-## [UNRELEASED BETA 11]
+## [1.0.0-beta 11] - 2020-10-26
 
 The following section list all changes in beta-11.
 
@@ -76,9 +76,6 @@ List of changes in existing functionality.
 - Marked MarkupMatches methods as assertion methods to stop SonarSource analyzers complaining about missing assertions in tests. By [@egil](https://github.com/egil) in [#229](https://github.com/egil/bUnit/pull/229).
 
 - `AddTestAuthorization` now extends `TestContext` instead of `TestServiceProvider`, and also automatically adds the `CascadingAuthenticationState` component to the root render tree. [@egil](https://github.com/egil) in [#237](https://github.com/egil/bUnit/pull/367).
-
-### Deprecated
-List of soon-to-be removed features.
 
 ### Removed
 List of now removed features.
