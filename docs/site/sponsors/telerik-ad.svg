@@ -1,0 +1,27 @@
+<svg width="200" height="400" xmlns="http://www.w3.org/2000/svg">
+  <a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&amp;utm_medium=cpm&amp;utm_campaign=blazor-trial-bunit-sponsored-message">
+    <image href="https://github.com/egil/bUnit/raw/main/docs/site/sponsors/progress-blazor-300x250.png" x="0" y="0" width="200" />
+  </a>
+  <text y="185" x="100">Sponsored message:</text>
+  <text y="205" x="100">Telerik UI for Blazor - Get 50+</text>
+  <text y="225" x="100">native Blazor UI components to</text>
+  <text y="245" x="100">build high-performing web apps.</text>
+  <a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&amp;utm_medium=cpm&amp;utm_campaign=blazor-trial-bunit-sponsored-message">
+    <text y="265" x="100">Give it a try.</text>
+  </a>
+  <style>
+    <![CDATA[
+    text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+      font-size: 14px;
+      font-style: italic;
+      text-anchor: middle;
+    }
+
+    a {
+      cursor: pointer;
+      fill: #0366d6;
+    }
+    ]]>
+  </style>
+</svg>
