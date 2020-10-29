@@ -1,6 +1,6 @@
-<svg width="200" height="400" xmlns="http://www.w3.org/2000/svg">
+<svg width="200" height="400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">>
   <a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&amp;utm_medium=cpm&amp;utm_campaign=blazor-trial-bunit-sponsored-message">
-    <image href="progress-blazor-300x250.png" x="0" y="0" width="200" />
+    <image xlink:href="progress-blazor-300x250.png" x="0" y="0" width="200" height="168" />
   </a>
   <text y="185" x="100">Sponsored message:</text>
   <text y="205" x="100">Telerik UI for Blazor - Get 50+</text>
