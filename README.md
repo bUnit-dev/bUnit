@@ -5,7 +5,7 @@
 
 # bUnit - a testing library for Blazor components
 
-<img align="right" width="200" src="https://raw.githubusercontent.com/egil/bUnit/main/docs/site/sponsors/telerik-ad.svg" alt="Telerik UI for Blazor – Get 50+ native Blazor UI components to build high-performing web apps. Give it a try" />
+<a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-bunit-sponsored-message"><img align="right" width="200" src="https://raw.githubusercontent.com/egil/bUnit/main/docs/site/sponsors/telerik-ad.svg" alt="Telerik UI for Blazor – Get 50+ native Blazor UI components to build high-performing web apps. Give it a try" /></a>
 
 **bUnit** is a testing library for Blazor Components. Its goal is to make it easy to write _comprehensive, stable unit tests_. With bUnit, you can:
 
