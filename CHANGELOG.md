@@ -4,89 +4,23 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
-## [1.0.0-beta 11] - 2020-10-26
+## UNRELEASED [1.0.0-preview 1]
 
-The following section list all changes in beta-11.
+The following section list all changes in 1.0.0 preview 1.
 
 ### Added
 List of new features.
 
-- Two new overloads to the `RenderFragment()` and `ChildContent()` component parameter factory methods have been added that takes a `RenderFragment` as input. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
-
-- Added a `ComponentParameterCollection` type. The `ComponentParameterCollection` is a collection of component parameters, that knows how to turn those components parameters into a `RenderFragment`, which will render a component and pass any parameters inside the collection to that component. That logic was spread out over multiple places in bUnit, and is now owned by the `ComponentParameterCollection` type. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
-
-- Added additional placeholder services for `NavigationManager`, `HttpClient`, and `IStringLocalizer`, to make it easier for users to figure out why a test is failing due to missing service registration before rendering a component. By [@joro550](https://github.com/joro550) in [#223](https://github.com/egil/bUnit/pull/223).
-
-- Added `Key` class that represents a keyboard key and helps to avoid constructing `KeyboardEventArgs` object manually. The key can be passed to `KeyPress`, `KeyDown`, or `KeyUp` helper methods to raise keyboard events. The `Key` class provides static special keys or can be obtained from character or string. Keys can be combined with key modifiers: `Key.Enter + Key.Alt`.
-
-  For example, this makes it easier to trigger keyboard events on an element:
-  
-  ```csharp
-  var cut = ctx.RenderComponent<ComponentWithKeyboardEvents>();
-  var element = cut.Find("input");
-  
-  element.KeyDown(Key.Enter + Key.Control); // Triggers onkeydown event with Ctrl + Enter
-  element.KeyUp(Key.Control + Key.Shift + 'B'); // Triggers onkeyup event with Ctrl + Shift  + B
-  element.KeyPress('1'); // Triggers onkeypress event with key 1
-  element.KeyDown(Key.Alt + "<"); // Triggers onkeydown event with Alt + <
-  ```
-
-  By [@duracellko](https://github.com/duracellko) in [#101](https://github.com/egil/bUnit/issues/101).
-
-- Added support for registering/adding components to a test context root render tree, which components under test is rendered inside. This allows you to simplify the "arrange" step of a test when a component under test requires a certain render tree as its parent, e.g. a cascading value.
-  
-  For example, to pass a cascading string value `foo` to all components rendered with the test context, do the following:
-
-  ```csharp
-  ctx.RenderTree<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "foo"));
-  var cut = ctx.RenderComponent<ComponentReceivingFoo>();
-  ```
-
-  By [@egil](https://github.com/egil) in [#236](https://github.com/egil/bUnit/pull/236).
-
-- Added "catch-all" `Setup` method to bUnit's mock JS runtime, that allows you to specify only the type when setting up a planned invocation. By [@nemesv](https://github.com/nemesv) in [#234](https://github.com/egil/bUnit/issues/234).
-
 ### Changed
 List of changes in existing functionality.
-
-- The `ComponentParameterBuilder` has been renamed to `ComponentParameterCollectionBuilder`, since it now builds the `ComponentParameterCollection` type, introduced in this release of bUnit. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
-
-- `ComponentParameterCollectionBuilder` now allows adding cascading values that is not directly used by the component type it targets. This makes it possible to add cascading values to children of the target component. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
-
-- The `Add(object)` has been replaced by `AddCascadingValue(object)` in `ComponentParameterCollectionBuilder`, to make it more clear that an unnamed cascading value is being passed to the target component or one of its child components. It is also possible to pass unnamed cascading values using the `Add(parameterSelector, value)` method, which now correctly detect if the selected cascading value parameter is named or unnamed. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
-
-- It is now possible to call the `Add()`, `AddChildContent()` methods on `ComponentParameterCollectionBuilder`, and the factory methods `RenderFragment()`, `ChildContent()`, and `Template()`, _**multiple times**_ for the same parameter, if it is of type `RenderFragment` or `RenderFragment<TValue>`. Doing so previously would either result in an exception or just the last passed `RenderFragment` to be used. Now all the provided `RenderFragment` or `RenderFragment<TValue>` will be combined at runtime into a single `RenderFragment` or `RenderFragment<TValue>`.
-
-  For example, this makes it easier to pass e.g. both a markup string and a component to a `ChildContent` parameter:
-   
-  ```csharp
-  var cut = ctx.RenderComponent<Component>(parameters => parameters
-    .AddChildContent("<h1>Below you will find a most interesting alert!</h1>")
-    .AddChildContent<Alert>(childParams => childParams
-      .Add(p => p.Heading, "Alert heading")
-      .Add(p => p.Type, AlertType.Warning)
-      .AddChildContent("<p>Hello World</p>")
-    )
-  );
-  ```
-  By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203).
-
-- All test doubles are now in the same namespace, `Bunit.TestDoubles`. So all import statements for `Bunit.TestDoubles.JSInterop` and `Bunit.TestDoubles.Authorization` must be changed to `Bunit.TestDoubles`. By [@egil](https://github.com/egil) in [#223](https://github.com/egil/bUnit/pull/223).
-
-- Marked MarkupMatches methods as assertion methods to stop SonarSource analyzers complaining about missing assertions in tests. By [@egil](https://github.com/egil) in [#229](https://github.com/egil/bUnit/pull/229).
-
-- `AddTestAuthorization` now extends `TestContext` instead of `TestServiceProvider`, and also automatically adds the `CascadingAuthenticationState` component to the root render tree. [@egil](https://github.com/egil) in [#237](https://github.com/egil/bUnit/pull/367).
 
 ### Removed
 List of now removed features.
 
-- The async event dispatcher helper methods have been removed (e.g. `ClickAsync()`), as they do not provide any benefit. If you have an event that triggers async operations in the component under test, instead use `cut.WaitForState()` or `cut.WaitForAssertion()` to await the expected state in the component.  
+- A few bUnit internal xUnit assert helper methods, the custom `ShouldAllBe` methods, has mistakingly been part of the bunit.xunit package. These have been removed.
 
 ### Fixed
 List of any bug fixes.
-
-- Using the ComponentParameterCollectionBuilder's `Add(p => p.Param, value)` method to add a unnamed cascading value didn't create an unnnamed cascading value parameter. By [@egil](https://github.com/egil) in [#203](https://github.com/egil/bUnit/pull/203). Credits to [Ben Sampica (@benjaminsampica)](https://github.com/benjaminsampica) for reporting and helping investigate this issue.
-- Triggered events now bubble correctly up the DOM tree and triggers other events of the same type. This is a **potentially breaking change,** since this changes the behaviour of event triggering and thus you might see tests start breaking as a result hereof. By [@egil](https://github.com/egil) in [#119](https://github.com/egil/bUnit/issues/119).
 
 ## [1.0.0-beta 10] - 2020-09-15
 
