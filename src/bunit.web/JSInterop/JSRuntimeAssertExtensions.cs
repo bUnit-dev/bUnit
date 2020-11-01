@@ -4,7 +4,7 @@ using AngleSharp.Dom;
 using Bunit.Asserting;
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit.TestDoubles
+namespace Bunit
 {
 	/// <summary>
 	/// Assert extensions for JSRuntimeMock
@@ -17,7 +17,7 @@ namespace Bunit.TestDoubles
 		/// <param name="handler">Handler to verify against.</param>
 		/// <param name="identifier">Identifier of invocation that should not have happened.</param>
 		/// <param name="userMessage">A custom user message to display if the assertion fails.</param>
-		public static void VerifyNotInvoke(this MockJSRuntimeInvokeHandler handler, string identifier, string? userMessage = null)
+		public static void VerifyNotInvoke(this BunitJSInterop handler, string identifier, string? userMessage = null)
 		{
 			if (handler is null)
 				throw new ArgumentNullException(nameof(handler));
@@ -34,7 +34,7 @@ namespace Bunit.TestDoubles
 		/// <param name="identifier">Identifier of invocation that should have been invoked.</param>
 		/// <param name="userMessage">A custom user message to display if the assertion fails.</param>
 		/// <returns>The <see cref="JSRuntimeInvocation"/>.</returns>
-		public static JSRuntimeInvocation VerifyInvoke(this MockJSRuntimeInvokeHandler handler, string identifier, string? userMessage = null)
+		public static JSRuntimeInvocation VerifyInvoke(this BunitJSInterop handler, string identifier, string? userMessage = null)
 			=> handler.VerifyInvoke(identifier, 1, userMessage)[0];
 
 		/// <summary>
@@ -45,7 +45,7 @@ namespace Bunit.TestDoubles
 		/// <param name="calledTimes">The number of times the invocation is expected to have been called.</param>
 		/// <param name="userMessage">A custom user message to display if the assertion fails.</param>
 		/// <returns>The <see cref="JSRuntimeInvocation"/>.</returns>
-		public static IReadOnlyList<JSRuntimeInvocation> VerifyInvoke(this MockJSRuntimeInvokeHandler handler, string identifier, int calledTimes, string? userMessage = null)
+		public static IReadOnlyList<JSRuntimeInvocation> VerifyInvoke(this BunitJSInterop handler, string identifier, int calledTimes, string? userMessage = null)
 		{
 			if (handler is null)
 				throw new ArgumentNullException(nameof(handler));

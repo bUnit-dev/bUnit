@@ -12,11 +12,6 @@ namespace Bunit
 	{
 		private static readonly TestContext Context = new TestContext();
 
-		static ComponentParameterCollectionTest()
-		{
-			Context.Services.AddMockJSRuntime();
-		}
-
 		private static IRenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
 		{
 			var res = (IRenderedFragment)Context.Renderer.RenderFragment(renderFragment);

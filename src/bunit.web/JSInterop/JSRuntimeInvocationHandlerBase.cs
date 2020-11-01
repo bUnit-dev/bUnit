@@ -2,27 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Bunit.TestDoubles
+namespace Bunit
 {
 	/// <summary>
-	/// Represents a planned invocation of a JavaScript function with specific arguments.
+	/// Represents a handler for an invocation of a JavaScript function with specific arguments.
 	/// </summary>
 	/// <typeparam name="TResult"></typeparam>
-	public abstract class JSRuntimePlannedInvocationBase<TResult>
+	public abstract class JSRuntimeInvocationHandlerBase<TResult>
 	{
 		private readonly List<JSRuntimeInvocation> _invocations;
 
 		private TaskCompletionSource<TResult> _completionSource;
 
 		/// <summary>
-		/// Gets the invocations that this <see cref="JSRuntimePlannedInvocation{TResult}"/> has matched with.
+		/// Gets the invocations that this <see cref="JSRuntimeInvocationHandlerBase{TResult}"/> has matched with.
 		/// </summary>
 		public IReadOnlyList<JSRuntimeInvocation> Invocations => _invocations.AsReadOnly();
 
 		/// <summary>
-		/// Creates an instance of a <see cref="JSRuntimePlannedInvocationBase{TResult}"/>.
+		/// Creates an instance of a <see cref="JSRuntimeInvocationHandlerBase{TResult}"/>.
 		/// </summary>
-		protected JSRuntimePlannedInvocationBase()
+		protected JSRuntimeInvocationHandlerBase()
 		{
 			_invocations = new List<JSRuntimeInvocation>();
 			_completionSource = new TaskCompletionSource<TResult>();

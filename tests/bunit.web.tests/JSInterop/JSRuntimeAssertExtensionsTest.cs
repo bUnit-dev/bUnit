@@ -14,11 +14,14 @@ namespace Bunit.TestDoubles.JSInterop
 {
 	public class JSRuntimeAssertExtensionsTest
 	{
+		private BunitJSInterop CreateSut(JSRuntimeMode mode = JSRuntimeMode.Loose)
+			=> new BunitJSInterop { Mode = mode };
+
 		[Fact(DisplayName = "VerifyNotInvoke throws if handler is null")]
 		public void Test001()
 		{
-			MockJSRuntimeInvokeHandler? handler = null;
-			Should.Throw<ArgumentNullException>(() => (handler!).VerifyNotInvoke(""));
+			BunitJSInterop? sut = null;
+			Should.Throw<ArgumentNullException>(() => (sut!).VerifyNotInvoke(""));
 		}
 
 		[Fact(DisplayName = "VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
@@ -26,10 +29,10 @@ namespace Bunit.TestDoubles.JSInterop
 		public async Task Test002()
 		{
 			var identifier = "test";
-			var handler = new MockJSRuntimeInvokeHandler();
-			await handler.ToJSRuntime().InvokeVoidAsync(identifier);
+			var sut = CreateSut();
+			await sut.JSRuntime.InvokeVoidAsync(identifier);
 
-			Should.Throw<JSInvokeCountExpectedException>(() => handler.VerifyNotInvoke(identifier));
+			Should.Throw<JSInvokeCountExpectedException>(() => sut.VerifyNotInvoke(identifier));
 		}
 
 		[Fact(DisplayName = "VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
@@ -38,46 +41,45 @@ namespace Bunit.TestDoubles.JSInterop
 		{
 			var identifier = "test";
 			var errMsg = "HELLO WORLD";
-			var handler = new MockJSRuntimeInvokeHandler();
-			await handler.ToJSRuntime().InvokeVoidAsync(identifier);
+			var sut = CreateSut();
+			await sut.JSRuntime.InvokeVoidAsync(identifier);
 
-			Should.Throw<JSInvokeCountExpectedException>(() => handler.VerifyNotInvoke(identifier, errMsg))
+			Should.Throw<JSInvokeCountExpectedException>(() => sut.VerifyNotInvoke(identifier, errMsg))
 				.Message.ShouldContain(errMsg);
 		}
 
 		[Fact(DisplayName = "VerifyNotInvoke does not throw if identifier has not been invoked")]
 		public void Test004()
 		{
-			var handler = new MockJSRuntimeInvokeHandler();
-
-			handler.VerifyNotInvoke("FOOBAR");
+			var sut = CreateSut();
+			sut.VerifyNotInvoke("FOOBAR");
 		}
 
 		[Fact(DisplayName = "VerifyInvoke throws if handler is null")]
 		public void Test100()
 		{
-			MockJSRuntimeInvokeHandler? handler = null;
-			Should.Throw<ArgumentNullException>(() => (handler!).VerifyInvoke(""));
-			Should.Throw<ArgumentNullException>(() => (handler!).VerifyInvoke("", 42));
+			BunitJSInterop? sut = null;
+			Should.Throw<ArgumentNullException>(() => (sut!).VerifyInvoke(""));
+			Should.Throw<ArgumentNullException>(() => (sut!).VerifyInvoke("", 42));
 		}
 
 		[Fact(DisplayName = "VerifyInvoke throws invokeCount is less than 1")]
 		public void Test101()
 		{
-			var handler = new MockJSRuntimeInvokeHandler();
+			var sut = CreateSut();
 
-			Should.Throw<ArgumentException>(() => handler.VerifyInvoke("", 0));
+			Should.Throw<ArgumentException>(() => sut.VerifyInvoke("", 0));
 		}
 
 		[Fact(DisplayName = "VerifyInvoke throws JSInvokeCountExpectedException when " +
 							"invocation count doesn't match the expected")]
 		public async Task Test103()
 		{
+			var sut = CreateSut();
 			var identifier = "test";
-			var handler = new MockJSRuntimeInvokeHandler();
-			await handler.ToJSRuntime().InvokeVoidAsync(identifier);
+			await sut.JSRuntime.InvokeVoidAsync(identifier);
 
-			var actual = Should.Throw<JSInvokeCountExpectedException>(() => handler.VerifyInvoke(identifier, 2));
+			var actual = Should.Throw<JSInvokeCountExpectedException>(() => sut.VerifyInvoke(identifier, 2));
 			actual.ExpectedInvocationCount.ShouldBe(2);
 			actual.ActualInvocationCount.ShouldBe(1);
 			actual.Identifier.ShouldBe(identifier);
@@ -86,15 +88,15 @@ namespace Bunit.TestDoubles.JSInterop
 		[Fact(DisplayName = "VerifyInvoke returns the invocation(s) if the expected count matched")]
 		public async Task Test104()
 		{
+			var sut = CreateSut();
 			var identifier = "test";
-			var handler = new MockJSRuntimeInvokeHandler();
-			await handler.ToJSRuntime().InvokeVoidAsync(identifier);
+			await sut.JSRuntime.InvokeVoidAsync(identifier);
 
-			var invocations = handler.VerifyInvoke(identifier, 1);
-			invocations.ShouldBeSameAs(handler.Invocations[identifier]);
+			var invocations = sut.VerifyInvoke(identifier, 1);
+			invocations.ShouldBeSameAs(sut.Invocations[identifier]);
 
-			var invocation = handler.VerifyInvoke(identifier);
-			invocation.ShouldBe(handler.Invocations[identifier][0]);
+			var invocation = sut.VerifyInvoke(identifier);
+			invocation.ShouldBe(sut.Invocations[identifier][0]);
 		}
 
 		[Fact(DisplayName = "ShouldBeElementReferenceTo throws if actualArgument or targeted element is null")]
