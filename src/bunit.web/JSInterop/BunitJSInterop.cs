@@ -170,12 +170,12 @@ namespace Bunit
 				ValueTask<TValue>? result = default;
 				if (_jsInterop._handlers.TryGetValue(identifier, out var plannedInvocations))
 				{
-					var planned = plannedInvocations.OfType<JSRuntimeInvocationHandlerBase<TValue>>()
-						.SingleOrDefault(x => x.Matches(invocation));
+					var handler = plannedInvocations.OfType<JSRuntimeInvocationHandlerBase<TValue>>()
+						.Where(x => x.Matches(invocation)).LastOrDefault();
 
-					if (planned is not null)
+					if (handler is not null)
 					{
-						var task = planned.RegisterInvocation(invocation);
+						var task = handler.RegisterInvocation(invocation);
 						return new ValueTask<TValue>(task);
 					}
 				}

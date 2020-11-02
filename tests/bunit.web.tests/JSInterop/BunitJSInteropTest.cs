@@ -382,5 +382,19 @@ namespace Bunit.TestDoubles.JSInterop
 			handler.Invocations.Count.ShouldBe(1);
 			plannedCatchall.Invocations.Count.ShouldBe(0);
 		}
+
+		[Fact(DisplayName = "The last handler matching an invocation receives the invocation")]
+		public void Test030()
+		{
+			var identifier = "someFunc";
+			var sut = CreateSut(JSRuntimeMode.Strict);
+			var h1 = sut.Setup<string>(identifier);
+			var h2 = sut.Setup<string>(identifier);
+
+			sut.JSRuntime.InvokeAsync<string>(identifier);
+
+			h1.Invocations.ShouldBeEmpty();
+			h2.Invocations.Count.ShouldBe(1);
+		}
 	}
 }
