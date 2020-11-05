@@ -4,9 +4,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
-## UNRELEASED [1.0.0-preview 1]
+## UNRELEASED [1.0.0 preview 01]
 
-The following section list all changes in 1.0.0 preview 1.
+The following section list all changes in 1.0.0 preview 01.
 
 ### Added
 List of new features.
@@ -21,6 +21,8 @@ List of now removed features.
 
 ### Fixed
 List of any bug fixes.
+
+- When an `Add` call to the component parameter collection builder was used to select a parameter that was inherited from a base component, the builder incorrectly reported the selected property/parameter as missing on the type. Reported by [@nickmuller](https://github.com/nickmuller) in [#250](https://github.com/egil/bUnit/issues/250).
 
 ## [1.0.0-beta 10] - 2020-09-15
 

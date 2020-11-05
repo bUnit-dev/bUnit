@@ -544,6 +544,30 @@ namespace Bunit
 				.ShouldBeParameter(name + "NAME", input, isCascadingValue: true);
 		}
 
+		[Fact(DisplayName = "Add of inherited overriden parameter works")]
+		public void Test300()
+		{
+			var sut = new ComponentParameterCollectionBuilder<InheritedParamsWithOverride>();
+
+			sut.Add(x => x.Value, true);
+
+			sut.Build()
+				.ShouldHaveSingleItem()
+				.ShouldBeParameter("Value", true, isCascadingValue: false);
+		}
+
+		[Fact(DisplayName = "Add of inherited parameter works")]
+		public void Test301()
+		{
+			var sut = new ComponentParameterCollectionBuilder<InheritedParamsWithoutOverride>();
+
+			sut.Add(x => x.Value, true);
+
+			sut.Build()
+				.ShouldHaveSingleItem()
+				.ShouldBeParameter("Value", true, isCascadingValue: false);
+		}
+
 		private class Params : ComponentBase
 		{
 			[Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? Attributes { get; set; }
@@ -565,13 +589,22 @@ namespace Bunit
 			[CascadingParameter] public RenderFragment? RFCC { get; set; }
 			public int _nonParam = -1;
 			public object? NonParamProp { get; set; }
-
-			[SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
 			public void SomeMethod() { }
 		}
 
 		private class NoParams : ComponentBase { }
 		private class NonChildContentParameter : ComponentBase { public RenderFragment? ChildContent { get; set; } }
 		private class InhertedParams : Params { }
+		private abstract class ParamsBase<T> : ComponentBase
+		{
+			public abstract T Value { get; set; }
+		}
+		private class InheritedParamsWithOverride : ParamsBase<bool?>
+		{
+			[Parameter] public override bool? Value { get; set; }
+		}
+		private class InheritedParamsWithoutOverride : InheritedParamsWithOverride
+		{
+		}
 	}
 }

@@ -345,13 +345,17 @@ namespace Bunit
 		{
 			if (parameterSelector is null) throw new ArgumentNullException(nameof(parameterSelector));
 
-			if (!(parameterSelector.Body is MemberExpression memberExpression) || !(memberExpression.Member is PropertyInfo propertyInfo))
+			if (!(parameterSelector.Body is MemberExpression memberExpression) || !(memberExpression.Member is PropertyInfo propInfoCandidate))
 				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.");
 
-			var paramAttr = propertyInfo.GetCustomAttribute<ParameterAttribute>(inherit: false);
-			var cascadingParamAttr = propertyInfo.GetCustomAttribute<CascadingParameterAttribute>(inherit: false);
+			var propertyInfo = propInfoCandidate.DeclaringType != TComponentType
+				? TComponentType.GetProperty(propInfoCandidate.Name, propInfoCandidate.PropertyType)
+				: propInfoCandidate;
+			
+			var paramAttr = propertyInfo?.GetCustomAttribute<ParameterAttribute>(inherit: true);
+			var cascadingParamAttr = propertyInfo?.GetCustomAttribute<CascadingParameterAttribute>(inherit: true);
 
-			if (paramAttr is null && cascadingParamAttr is null)
+			if (propertyInfo is null || paramAttr is null && cascadingParamAttr is null)
 				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter] attribute.");
 
 			return (propertyInfo.Name, cascadingParamAttr?.Name, cascadingParamAttr is not null);
