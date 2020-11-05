@@ -76,7 +76,7 @@ namespace Bunit.TestDoubles.Authorization
 
 		[Fact(DisplayName = "Register Authorization services with authenticated and authorized user and policy.")]
 		public void Test0011()
-		{			
+		{
 			// act
 			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("DarthPedro");

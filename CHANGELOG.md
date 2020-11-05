@@ -24,6 +24,8 @@ List of any bug fixes.
 
 - When an `Add` call to the component parameter collection builder was used to select a parameter that was inherited from a base component, the builder incorrectly reported the selected property/parameter as missing on the type. Reported by [@nickmuller](https://github.com/nickmuller) in [#250](https://github.com/egil/bUnit/issues/250).
 
+- When an element, found in the DOM tree using the `Find()`, method was removed because of an event handler trigger on it, e.g. an `cut.Find("button").Click()` event trigger method, an `ElementNotFoundException` was thrown. Reported by [@nickmuller](https://github.com/nickmuller) in [#251](https://github.com/egil/bUnit/issues/251).
+
 ## [1.0.0-beta 10] - 2020-09-15
 
 The following section list all changes in beta-10.

@@ -14,7 +14,15 @@ namespace Bunit
 		public string CssSelector { get; }
 
 		/// <inheritdoc/>
-		public ElementNotFoundException(string cssSelector) : base($"No elements were found that matches the selector '{cssSelector}'")
+		public ElementNotFoundException(string cssSelector)
+			: base($"No elements were found that matches the selector '{cssSelector}'")
+		{
+			CssSelector = cssSelector;
+		}
+
+		/// <inheritdoc/>
+		protected ElementNotFoundException(string message, string cssSelector)
+			: base(message)
 		{
 			CssSelector = cssSelector;
 		}

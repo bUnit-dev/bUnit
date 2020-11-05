@@ -39,7 +39,8 @@ namespace Bunit.Rendering
 		public BunitHtmlParser(ITestRenderer testRenderer, HtmlComparer htmlComparer)
 			: this(Configuration.Default.WithCss()
 				  .With(testRenderer ?? throw new ArgumentNullException(nameof(testRenderer)))
-				  .With(htmlComparer ?? throw new ArgumentNullException(nameof(htmlComparer)))) { }
+				  .With(htmlComparer ?? throw new ArgumentNullException(nameof(htmlComparer))))
+		{ }
 
 		private BunitHtmlParser(IConfiguration angleSharpConfiguration)
 		{

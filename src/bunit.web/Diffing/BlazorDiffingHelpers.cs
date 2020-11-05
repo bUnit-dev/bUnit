@@ -19,6 +19,6 @@ namespace Bunit.Diffing
 				return FilterDecision.Exclude;
 
 			return currentDecision;
-		}		
+		}
 	}
 }

@@ -22,7 +22,7 @@ namespace Bunit
 			if (helper is null)
 				throw new ArgumentNullException(nameof(helper));
 
-			if (helper.Name == nameof(GeneralEventDispatchExtensions.TriggerEventAsync))
+			if (helper.Name == nameof(TriggerEventDispatchExtensions.TriggerEventAsync))
 				return;
 
 			VerifyEventRaisesCorrectly(helper, EventArgs.Empty);

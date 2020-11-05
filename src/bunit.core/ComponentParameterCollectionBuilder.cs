@@ -327,7 +327,7 @@ namespace Bunit
 					return true;
 				}
 
-				if(ccProp.GetCustomAttribute<CascadingParameterAttribute>(inherit: false) is CascadingParameterAttribute cpa)
+				if (ccProp.GetCustomAttribute<CascadingParameterAttribute>(inherit: false) is CascadingParameterAttribute cpa)
 				{
 					AddCascadingValueParameter(cpa.Name, value);
 					return true;
@@ -351,7 +351,7 @@ namespace Bunit
 			var propertyInfo = propInfoCandidate.DeclaringType != TComponentType
 				? TComponentType.GetProperty(propInfoCandidate.Name, propInfoCandidate.PropertyType)
 				: propInfoCandidate;
-			
+
 			var paramAttr = propertyInfo?.GetCustomAttribute<ParameterAttribute>(inherit: true);
 			var cascadingParamAttr = propertyInfo?.GetCustomAttribute<CascadingParameterAttribute>(inherit: true);
 
