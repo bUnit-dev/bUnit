@@ -348,7 +348,7 @@ namespace Bunit.TestDoubles.JSInterop
 			Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = sut.JSRuntime.InvokeAsync<string>(identifier); });
 
 			var invocation = sut.JSRuntime.InvokeVoidAsync(identifier);
-			handler.SetVoid();
+			handler.SetVoidResult();
 
 			await invocation;
 
@@ -395,6 +395,42 @@ namespace Bunit.TestDoubles.JSInterop
 
 			h1.Invocations.ShouldBeEmpty();
 			h2.Invocations.Count.ShouldBe(1);
+		}
+
+		[Fact(DisplayName = "TryGetInvokeHandler returns null when no handlers matches the arguments")]
+		public void Test040()
+		{
+			var sut = CreateSut(JSRuntimeMode.Loose);
+
+			var actual = sut.TryGetInvokeHandler<string>("foo");
+
+			actual.ShouldBeNull();
+		}
+
+		[Fact(DisplayName = "TryGetInvokeHandler returns the last handler matching the input parameters")]
+		public void Test041()
+		{
+			var sut = CreateSut(JSRuntimeMode.Loose);
+			var h1 = sut.Setup<string>("foo");
+			var expected = sut.Setup<string>("foo");
+
+			var actual = sut.TryGetInvokeHandler<string>("foo");
+
+			actual.ShouldBe(expected);
+			actual.ShouldNotBe(h1);
+		}
+
+		[Fact(DisplayName = "TryGetInvokeVoidHandler can find void-return handlers")]
+		public void Test042()
+		{
+			var sut = CreateSut(JSRuntimeMode.Loose);
+			var h1 = sut.Setup<object>("foo");
+			var expected = sut.SetupVoid("foo");
+
+			var actual = sut.TryGetInvokeVoidHandler("foo");
+
+			actual.ShouldBe(expected);
+			actual.ShouldNotBe(h1);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +15,6 @@ namespace Bunit
 	{
 		private readonly Dictionary<string, List<JSRuntimeInvocation>> _invocations = new Dictionary<string, List<JSRuntimeInvocation>>();
 		private readonly Dictionary<string, List<object>> _handlers = new Dictionary<string, List<object>>();
-		private readonly Dictionary<Type, object> _catchAllHandlers = new Dictionary<Type, object>();
 
 		/// <summary>
 		/// Gets a dictionary of all <see cref="List{JSRuntimeInvocation}"/> this mock has observed.
@@ -48,12 +48,12 @@ namespace Bunit
 		/// <see cref="IJSRuntime.InvokeAsync{TValue}(string, object[])"/>.
 		/// </summary>
 		/// <typeparam name="TResult">The result type of the invocation.</typeparam>
-		/// <returns>A <see cref="JSRuntimeCatchAllInvocationHandler{TResult}"/>.</returns>
-		public JSRuntimeCatchAllInvocationHandler<TResult> Setup<TResult>()
+		/// <returns>A <see cref="JSRuntimeInvocationHandler{TResult}"/>.</returns>
+		public JSRuntimeInvocationHandler<TResult> Setup<TResult>()
 		{
-			var result = new JSRuntimeCatchAllInvocationHandler<TResult>();
+			var result = new JSRuntimeInvocationHandler<TResult>(JSRuntimeInvocationHandler<object>.CatchAllIdentifier, _ => true);
 
-			_catchAllHandlers[typeof(TResult)] = result;
+			AddHandler(result);
 
 			return result;
 		}
@@ -118,13 +118,32 @@ namespace Bunit
 		/// <summary>
 		/// Configure a catch all JSInterop invocation handler, that should not receive any result.
 		/// </summary>
-		/// <returns>A <see cref="JSRuntimeCatchAllInvocationHandler"/>.</returns>
-		public JSRuntimeCatchAllInvocationHandler SetupVoid()
+		/// <returns>A <see cref="JSRuntimeInvocationHandler"/>.</returns>
+		public JSRuntimeInvocationHandler SetupVoid()
 		{
-			var result = new JSRuntimeCatchAllInvocationHandler();
-			_catchAllHandlers[typeof(object)] = result;
+			var result = new JSRuntimeInvocationHandler(JSRuntimeInvocationHandler<object>.CatchAllIdentifier, _ => true);
+
+			AddHandler(result);
+
 			return result;
 		}
+
+		/// <summary>
+		/// Looks through the registered handlers and returns the latest registered that can handle
+		/// the provided <paramref name="identifier"/> and <paramref name="args"/>, and that
+		/// will return <typeparamref name="TResult"/>.
+		/// </summary>
+		/// <returns>Returns the <see cref="JSRuntimeInvocationHandler{TResult}"/> or null if no one is found.</returns>
+		public JSRuntimeInvocationHandler<TResult>? TryGetInvokeHandler<TResult>(string identifier, object?[]? args = null)
+			=> TryGetHandlerFor<TResult>(new JSRuntimeInvocation(identifier, default, args));
+
+		/// <summary>
+		/// Looks through the registered handlers and returns the latest registered that can handle
+		/// the provided <paramref name="identifier"/> and <paramref name="args"/>, and that returns a "void" result.
+		/// </summary>
+		/// <returns>Returns the <see cref="JSRuntimeInvocationHandler"/> or null if no one is found.</returns>
+		public JSRuntimeInvocationHandler? TryGetInvokeVoidHandler(string identifier, object?[]? args = null)
+			=> TryGetHandlerFor<object>(new JSRuntimeInvocation(identifier, default, args), x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
 
 		private void AddHandler<TResult>(JSRuntimeInvocationHandler<TResult> handler)
 		{
@@ -144,6 +163,23 @@ namespace Bunit
 			_invocations[invocation.Identifier].Add(invocation);
 		}
 
+		private JSRuntimeInvocationHandler<TResult>? TryGetHandlerFor<TResult>(JSRuntimeInvocation invocation, Predicate<JSRuntimeInvocationHandler<TResult>>? handlerPredicate = null)
+		{
+			handlerPredicate ??= _ => true;
+			JSRuntimeInvocationHandler<TResult>? result = default;
+			if (_handlers.TryGetValue(invocation.Identifier, out var plannedInvocations))
+			{
+				result = plannedInvocations.OfType<JSRuntimeInvocationHandler<TResult>>()
+					.Where(x => handlerPredicate(x) && x.Matches(invocation)).LastOrDefault();
+			}
+
+			if (result is null && _handlers.TryGetValue(JSRuntimeInvocationHandler<TResult>.CatchAllIdentifier, out var catchAllHandlers))
+			{
+				result = catchAllHandlers.OfType<JSRuntimeInvocationHandler<TResult>>().Where(x => handlerPredicate(x)).LastOrDefault();
+			}
+			return result;
+		}
+
 		private class BUnitJSRuntime : IJSRuntime
 		{
 			private readonly BunitJSInterop _jsInterop;
@@ -161,37 +197,19 @@ namespace Bunit
 				var invocation = new JSRuntimeInvocation(identifier, cancellationToken, args);
 				_jsInterop.RegisterInvocation(invocation);
 
-				return TryHandlePlannedInvocation<TValue>(identifier, invocation)
-					?? new ValueTask<TValue>(default(TValue)!);
+				return TryHandlePlannedInvocation<TValue>(invocation) ?? new ValueTask<TValue>(default(TValue)!);
 			}
 
-			private ValueTask<TValue>? TryHandlePlannedInvocation<TValue>(string identifier, JSRuntimeInvocation invocation)
+			private ValueTask<TValue>? TryHandlePlannedInvocation<TValue>(JSRuntimeInvocation invocation)
 			{
 				ValueTask<TValue>? result = default;
-				if (_jsInterop._handlers.TryGetValue(identifier, out var plannedInvocations))
+
+				if (_jsInterop.TryGetHandlerFor<TValue>(invocation) is JSRuntimeInvocationHandler<TValue> handler)
 				{
-					var handler = plannedInvocations.OfType<JSRuntimeInvocationHandlerBase<TValue>>()
-						.Where(x => x.Matches(invocation)).LastOrDefault();
-
-					if (handler is not null)
-					{
-						var task = handler.RegisterInvocation(invocation);
-						return new ValueTask<TValue>(task);
-					}
+					var task = handler.RegisterInvocation(invocation);
+					result = new ValueTask<TValue>(task);
 				}
-
-				if (_jsInterop._catchAllHandlers.TryGetValue(typeof(TValue), out var catchAllInvocation))
-				{
-					var planned = catchAllInvocation as JSRuntimeInvocationHandlerBase<TValue>;
-
-					if (planned is not null)
-					{
-						var task = ((JSRuntimeInvocationHandlerBase<TValue>)catchAllInvocation).RegisterInvocation(invocation);
-						return new ValueTask<TValue>(task);
-					}
-				}
-
-				if (result is null && _jsInterop.Mode == JSRuntimeMode.Strict)
+				else if (_jsInterop.Mode == JSRuntimeMode.Strict)
 				{
 					throw new JSRuntimeUnhandledInvocationException(invocation);
 				}

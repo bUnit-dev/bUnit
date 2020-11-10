@@ -8,7 +8,7 @@ namespace Bunit
 	/// <summary>
 	/// Represents an invocation of JavaScript via the JSRuntime Mock
 	/// </summary>
-	[SuppressMessage("Design", "CA1068:CancellationToken parameters must come last", Justification = "Following Blazors design")]
+	[SuppressMessage("Design", "CA1068:CancellationToken parameters must come last", Justification = "Following Blazor's API design")]
 	public readonly struct JSRuntimeInvocation : IEquatable<JSRuntimeInvocation>
 	{
 		/// <summary>
