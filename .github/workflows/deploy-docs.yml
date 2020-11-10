@@ -35,7 +35,7 @@ jobs:
           dotnet-version: '3.1.x'          
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.100-rc.2.20479.15'
+          dotnet-version: '5.0.x'
       
       - name: Building library
         run: dotnet build /p:PublicRelease=true

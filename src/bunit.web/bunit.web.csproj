@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<RazorLangVersion>3.0</RazorLangVersion>
@@ -33,7 +33,7 @@
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.1.1" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="5.0.0-rc.2.*" />
+		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="5.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
