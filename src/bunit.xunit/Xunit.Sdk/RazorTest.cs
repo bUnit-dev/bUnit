@@ -2,7 +2,7 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTest : XunitTest, ITest
+	internal class RazorTest : XunitTest
 	{
 		public int TestNumber { get; }
 

@@ -10,7 +10,7 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestSourceInformationProvider : IDisposable
+	internal sealed class RazorTestSourceInformationProvider : IDisposable
 	{
 		private static readonly Type[] RazorTestTypes = GetRazorTestTypes().ToArray();
 

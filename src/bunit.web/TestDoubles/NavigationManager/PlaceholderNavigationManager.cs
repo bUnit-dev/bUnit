@@ -7,6 +7,8 @@ namespace Bunit.TestDoubles
 	/// </summary>
 	internal class PlaceholderNavigationManager : NavigationManager
 	{
+		private const string PlaceholderBaseUri = "http://localhost/";
+
 		/// <summary>
 		/// Will throw exception to prompt user
 		/// </summary>
@@ -24,7 +26,7 @@ namespace Bunit.TestDoubles
 		/// </summary>
 		protected override void EnsureInitialized()
 		{
-			Initialize("http://localhost/", "http://localhost/");
+			Initialize(PlaceholderBaseUri, PlaceholderBaseUri);
 		}
 	}
 }

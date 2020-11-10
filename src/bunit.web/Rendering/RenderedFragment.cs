@@ -12,7 +12,6 @@ namespace Bunit.Rendering
 	internal class RenderedFragment : IRenderedFragment
 	{
 		private readonly object _markupAccessLock = new object();
-		[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Instance is owned by the service provider and should not be disposed here.")]
 		private readonly BunitHtmlParser _htmlParser;
 		private string _markup = string.Empty;
 		private string? _snapshotMarkup;
@@ -191,8 +190,26 @@ namespace Bunit.Rendering
 				throw new ComponentDisposedException(ComponentId);
 		}
 
-		void IDisposable.Dispose()
+		/// <inheritdoc/>
+		public void Dispose()
 		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		/// <summary>
+		/// Disposes of the render fragment content.
+		/// </summary>
+		/// <remarks>
+		/// The disposing parameter should be false when called from a finalizer, and true when called from the
+		/// <see cref="Dispose()"/> method. In other words, it is true when deterministically called and false when non-deterministically called.
+		/// </remarks>
+		/// <param name="disposing">Set to true if called from <see cref="Dispose()"/>, false if called from a finalizer.f</param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (IsDisposed || !disposing)
+				return;
+
 			IsDisposed = true;
 			_markup = string.Empty;
 			OnAfterRender = null;

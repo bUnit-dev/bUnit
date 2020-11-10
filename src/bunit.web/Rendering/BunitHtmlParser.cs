@@ -151,7 +151,9 @@ namespace Bunit.Rendering
 			{
 				get
 				{
-					if (index != 0) throw new IndexOutOfRangeException();
+					if (index != 0)
+						throw new IndexOutOfRangeException();
+
 					return node;
 				}
 			}

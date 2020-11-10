@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Bunit.TestDoubles
 {
@@ -6,7 +7,8 @@ namespace Bunit.TestDoubles
 	/// Exception use to indicate that a NavigationManager is required by a test
 	/// but was not provided.
 	/// </summary>
-	public class MissingMockNavigationManagerException : Exception
+	[Serializable]
+	public sealed class MissingMockNavigationManagerException : Exception
 	{
 		private static string ExceptionMessage(string url, bool forceLoad) =>
 			$"This test requires a NavigationManager to be supplied, because the component under test invokes the NavigationManager during the test. " +
@@ -35,5 +37,8 @@ namespace Bunit.TestDoubles
 		{
 
 		}
+
+		private MissingMockNavigationManagerException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+			: base(serializationInfo, streamingContext) { }
 	}
 }

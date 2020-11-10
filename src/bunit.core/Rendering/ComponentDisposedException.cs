@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Bunit.Rendering
 {
@@ -6,7 +7,8 @@ namespace Bunit.Rendering
 	/// Represents an exception that is thrown when a <see cref="Bunit.IRenderedFragmentBase"/>'s
 	/// properties is accessed after the underlying component has been dispsoed by the renderer.
 	/// </summary>
-	public class ComponentDisposedException : Exception
+	[Serializable]
+	public sealed class ComponentDisposedException : Exception
 	{
 		/// <summary>
 		/// Creates an instance of the <see cref="ComponentDisposedException"/>.
@@ -16,5 +18,8 @@ namespace Bunit.Rendering
 			: base($"The component has been removed from the render tree by the renderer and is no longer available for inspection. ComponentId = {componentId}.")
 		{
 		}
+
+		private ComponentDisposedException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+			: base(serializationInfo, streamingContext) { }
 	}
 }

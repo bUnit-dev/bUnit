@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using AngleSharp.Diffing.Core;
 using Bunit.Asserting;
 
@@ -7,7 +8,8 @@ namespace Bunit
 	/// <summary>
 	/// Represents an diff change assertion that has failed.
 	/// </summary>
-	public class DiffChangeAssertException : ActualExpectedAssertException
+	[Serializable]
+	public sealed class DiffChangeAssertException : ActualExpectedAssertException
 	{
 		/// <summary>
 		/// Creates an instance of the <see cref="DiffChangeAssertException"/>.
@@ -26,5 +28,8 @@ namespace Bunit
 			DiffResult.Unexpected => "Added",
 			_ => throw new InvalidOperationException("Unknown DiffResult type")
 		};
+
+		private DiffChangeAssertException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+			: base(serializationInfo, streamingContext) { }
 	}
 }

@@ -6,7 +6,7 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestDiscoverer : IXunitTestCaseDiscoverer, IDisposable
+	internal sealed class RazorTestDiscoverer : IXunitTestCaseDiscoverer, IDisposable
 	{
 		private readonly RazorTestSourceInformationProvider _sourceInfoDiscoverer;
 

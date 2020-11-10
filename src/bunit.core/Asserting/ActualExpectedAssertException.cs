@@ -1,10 +1,12 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Bunit.Asserting
 {
 	/// <summary>
 	/// Represents a generic assert exception used when an actual result does not match an expected result.
 	/// </summary>
+	[Serializable]
 	public class ActualExpectedAssertException : Exception
 	{
 		/// <summary>
@@ -19,6 +21,9 @@ namespace Bunit.Asserting
 			: base(CreateMessage(actual, expected, actualText, expectedText, message))
 		{
 		}
+
+		/// <inheritdoc/>
+		protected ActualExpectedAssertException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
 		private static string CreateMessage(string actual, string expected, string actualText, string expectedText, string message)
 		{

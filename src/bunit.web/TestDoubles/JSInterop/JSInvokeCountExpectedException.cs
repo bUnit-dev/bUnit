@@ -1,11 +1,13 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Represents a number of unexpected invocation to a <see cref="MockJSRuntimeInvokeHandler"/>.
 	/// </summary>
-	public class JSInvokeCountExpectedException : Exception
+	[Serializable]
+	public sealed class JSInvokeCountExpectedException : Exception
 	{
 		/// <summary>
 		/// Gets the expected invocation count.
@@ -31,6 +33,26 @@ namespace Bunit.TestDoubles
 			ExpectedInvocationCount = expectedCount;
 			ActualInvocationCount = actualCount;
 			Identifier = identifier;
+		}
+
+		private JSInvokeCountExpectedException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+			: base(serializationInfo, streamingContext)
+		{
+			if (serializationInfo is null) throw new ArgumentNullException(nameof(serializationInfo));
+			ExpectedInvocationCount = serializationInfo.GetInt32(nameof(ExpectedInvocationCount));
+			ActualInvocationCount = serializationInfo.GetInt32(nameof(ActualInvocationCount));
+			Identifier = serializationInfo.GetString(nameof(Identifier)) ?? string.Empty;
+		}
+
+		/// <inheritdoc/>
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			if (info is null) throw new ArgumentNullException(nameof(info));
+
+			info.AddValue(nameof(ExpectedInvocationCount), ExpectedInvocationCount);
+			info.AddValue(nameof(ActualInvocationCount), ActualInvocationCount);
+			info.AddValue(nameof(Identifier), Identifier);
+			base.GetObjectData(info, context);
 		}
 
 		private static string CreateMessage(string identifier, int expectedCount, int actualCount, string assertMethod, string? userMessage = null)

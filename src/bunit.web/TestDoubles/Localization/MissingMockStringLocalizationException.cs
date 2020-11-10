@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Bunit.TestDoubles
 {
@@ -7,7 +8,8 @@ namespace Bunit.TestDoubles
 	/// Exception use to indicate that a IStringLocalizer is required by a test
 	/// but was not provided.
 	/// </summary>
-	public class MissingMockStringLocalizationException : Exception
+	[Serializable]
+	public sealed class MissingMockStringLocalizationException : Exception
 	{
 
 		/// <summary>
@@ -24,7 +26,22 @@ namespace Bunit.TestDoubles
 		public MissingMockStringLocalizationException(string methodName, params object?[]? arguments)
 			: base($"This test requires a IStringLocalizer to be supplied, because the component under test invokes the IStringLocalizer during the test. The method that was called was '{methodName}', the parameters are container within the '{nameof(Arguments)}' property of this exception.")
 		{
-			Arguments = arguments ?? Array.Empty<object?>(); ;
+			Arguments = arguments ?? Array.Empty<object?>();
+		}
+
+
+		private MissingMockStringLocalizationException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+		{
+			if (serializationInfo is null) throw new ArgumentNullException(nameof(serializationInfo));
+			Arguments = serializationInfo.GetValue(nameof(Arguments), typeof(object?[])) as object?[] ?? Array.Empty<object?>();
+		}
+
+		/// <inheritdoc/>
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			if (info is null) throw new ArgumentNullException(nameof(info));
+			info.AddValue(nameof(Arguments), Arguments, typeof(object?[]));
+			base.GetObjectData(info, context);
 		}
 	}
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Bunit
 {
@@ -6,10 +7,11 @@ namespace Bunit
 	/// Represents a failure to find an element in the searched target
 	/// using a css selector.
 	/// </summary>
+	[Serializable]
 	public class ElementNotFoundException : Exception
 	{
 		/// <summary>
-		/// The css selector used to search with.
+		/// The CSS selector used to search with.
 		/// </summary>
 		public string CssSelector { get; }
 
@@ -28,15 +30,18 @@ namespace Bunit
 		}
 
 		/// <inheritdoc/>
-		public ElementNotFoundException()
+		protected ElementNotFoundException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+			: base(serializationInfo, streamingContext)
 		{
-			CssSelector = string.Empty;
+			CssSelector = serializationInfo?.GetString(nameof(CssSelector)) ?? string.Empty;
 		}
 
 		/// <inheritdoc/>
-		public ElementNotFoundException(string message, Exception innerException) : base(message, innerException)
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
-			CssSelector = string.Empty;
+			if (info is null) throw new ArgumentNullException(nameof(info));
+			info.AddValue(nameof(CssSelector), CssSelector);
+			base.GetObjectData(info, context);
 		}
 	}
 }

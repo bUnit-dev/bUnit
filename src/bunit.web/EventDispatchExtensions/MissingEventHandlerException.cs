@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.Serialization;
 using AngleSharp.Dom;
 
 namespace Bunit
@@ -7,7 +8,8 @@ namespace Bunit
 	/// <summary>
 	/// Represents an exception that is thrown when triggering an event handler failed because it wasn't available on the targeted <see cref="IElement"/>.
 	/// </summary>
-	public class MissingEventHandlerException : Exception
+	[Serializable]
+	public sealed class MissingEventHandlerException : Exception
 	{
 		/// <summary>
 		/// Creates an instance of the <see cref="MissingEventHandlerException"/> type.
@@ -34,5 +36,7 @@ namespace Bunit
 			return $"{result}{suggestAlternatives}";
 		}
 
+		private MissingEventHandlerException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+			: base(serializationInfo, streamingContext) { }
 	}
 }

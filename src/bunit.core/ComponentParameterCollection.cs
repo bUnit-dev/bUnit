@@ -10,7 +10,7 @@ namespace Bunit
 	/// <summary>
 	/// A collection for <see cref="ComponentParameter" />
 	/// </summary>
-	public class ComponentParameterCollection : ICollection<ComponentParameter>, IReadOnlyCollection<ComponentParameter>, IEnumerable<ComponentParameter>
+	public class ComponentParameterCollection : ICollection<ComponentParameter>, IReadOnlyCollection<ComponentParameter>
 	{
 		private static readonly MethodInfo CreateTemplateWrapperMethod = GetCreateTemplateWrapperMethod();
 		private static readonly Type CascadingValueType = typeof(CascadingValue<>);
@@ -207,11 +207,7 @@ namespace Bunit
 		/// <inheritdoc/>
 		public IEnumerator<ComponentParameter> GetEnumerator()
 		{
-			if (_parameters is null)
-			{
-				yield break;
-			}
-			else
+			if (_parameters is not null)
 			{
 				for (int i = 0; i < _parameters.Count; i++)
 				{

@@ -15,7 +15,11 @@ namespace Bunit.RazorTesting
 		[Parameter] public RenderFragment ChildContent { get; set; } = default!;
 
 		/// <inheritdoc />
-		public void Attach(RenderHandle renderHandle) { }
+		public void Attach(RenderHandle renderHandle)
+		{
+			// Since this component just captures a render fragment for testing,
+			// the renderHandler is not used for anything in this component.
+		}
 
 		/// <inheritdoc />
 		public virtual Task SetParametersAsync(ParameterView parameters)
