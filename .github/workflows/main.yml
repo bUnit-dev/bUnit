@@ -124,7 +124,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        fetch-depth: 0w
+        fetch-depth: 0
 
     - uses: dotnet/nbgv@master
       with:
