@@ -10,7 +10,7 @@ namespace Bunit.TestDoubles
 	/// </summary>
 	public class FakeAuthorizationPolicyProvider : IAuthorizationPolicyProvider
 	{
-		private readonly AuthorizationOptions _options = new AuthorizationOptions();
+		private readonly AuthorizationOptions _options = new();
 		private string _policySchemeName = "TestScheme";
 
 		/// <summary>

@@ -12,7 +12,7 @@ namespace Bunit
 	{
 		private const string NAME = nameof(NAME);
 		private const string EXPECTED = nameof(EXPECTED);
-		private static readonly TestContext Context = new TestContext();
+		private static readonly TestContext Context = new();
 
 		private static IRenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
 		{

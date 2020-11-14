@@ -24,7 +24,7 @@ namespace Bunit.Rendering
 
 		private readonly IBrowsingContext _context;
 		private readonly IHtmlParser _htmlParser;
-		private readonly List<IDocument> _documents = new List<IDocument>();
+		private readonly List<IDocument> _documents = new();
 
 		/// <summary>
 		/// Creates an instance of the parser with a AngleSharp context 

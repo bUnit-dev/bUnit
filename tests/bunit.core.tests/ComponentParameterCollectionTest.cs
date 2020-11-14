@@ -10,12 +10,7 @@ namespace Bunit
 {
 	public class ComponentParameterCollectionTest
 	{
-		private static readonly TestContext Context = new TestContext();
-
-		static ComponentParameterCollectionTest()
-		{
-			Context.Services.AddMockJSRuntime();
-		}
+		private static readonly TestContext Context = new();
 
 		private static IRenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
 		{

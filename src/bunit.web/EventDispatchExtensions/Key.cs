@@ -566,7 +566,7 @@ namespace Bunit
 		}
 
 		// This has to be placed last since it is referencing other static fields, that must be initialized first.
-		private static readonly Dictionary<(string value, string code), Key> PredefinedKeys = new Dictionary<(string value, string code), Key>
+		private static readonly Dictionary<(string value, string code), Key> PredefinedKeys = new()
 		{
 			{ (Key.Backspace.Value, Key.Backspace.Code), Key.Backspace },
 			{ (Key.Tab.Value, Key.Tab.Code), Key.Tab },

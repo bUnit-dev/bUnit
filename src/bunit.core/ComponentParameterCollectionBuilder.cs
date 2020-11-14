@@ -26,7 +26,7 @@ namespace Bunit
 				.OfType<ParameterAttribute>()
 				.Any(x => x.CaptureUnmatchedValues);
 
-		private readonly ComponentParameterCollection _parameters = new ComponentParameterCollection();
+		private readonly ComponentParameterCollection _parameters = new();
 
 		/// <summary>
 		/// Creates an instance of the <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.

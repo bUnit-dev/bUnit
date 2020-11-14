@@ -1,10 +1,10 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Bunit.TestDoubles
+namespace Bunit
 {
 	/// <summary>
-	/// Represents a number of unexpected invocation to a <see cref="MockJSRuntimeInvokeHandler"/>.
+	/// Represents a number of unexpected invocation to a <see cref="BunitJSInterop"/>.
 	/// </summary>
 	[Serializable]
 	public sealed class JSInvokeCountExpectedException : Exception

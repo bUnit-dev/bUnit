@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bunit.TestDoubles
+namespace Bunit
 {
 	/// <summary>
-	/// Exception use to indicate that an unplanned invocation was
-	/// received by the <see cref="MockJSRuntimeInvokeHandler"/> running in <see cref="JSRuntimeMockMode.Strict"/>.
+	/// Exception use to indicate that an invocation was
+	/// received by the <see cref="BunitJSInterop"/> running in <see cref="JSRuntimeMode.Strict"/> mode,
+	/// which didn't contain a matching invocation handler.
 	/// </summary>
-	public class UnplannedJSInvocationException : Exception
+	public class JSRuntimeUnhandledInvocationException : Exception
 	{
 		/// <summary>
 		/// Gets the unplanned invocation.
@@ -16,11 +17,11 @@ namespace Bunit.TestDoubles
 		public JSRuntimeInvocation Invocation { get; }
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="UnplannedJSInvocationException"/>
+		/// Creates a new instance of the <see cref="JSRuntimeUnhandledInvocationException"/>
 		/// with the provided <see cref="Invocation"/> attached.
 		/// </summary>
 		/// <param name="invocation">The unplanned invocation.</param>
-		public UnplannedJSInvocationException(JSRuntimeInvocation invocation)
+		public JSRuntimeUnhandledInvocationException(JSRuntimeInvocation invocation)
 			: base($"The invocation of '{invocation.Identifier}' {PrintArguments(invocation.Arguments)} was not expected.")
 		{
 			Invocation = invocation;

@@ -19,6 +19,11 @@ namespace Bunit.BlazorE2E
 	/// </summary>
 	public class ComponentRenderingTest : TestContext
 	{
+		public ComponentRenderingTest()
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose; 
+		}
+
 		[Fact]
 		public void CanRenderTextOnlyComponent()
 		{
@@ -367,15 +372,14 @@ namespace Bunit.BlazorE2E
 			// Assert.Equal("Clicks: 1", inputElement.GetAttribute("value"));
 			// buttonElement.Click();
 			// Assert.Equal("Clicks: 2", inputElement.GetAttribute("value"));
-
-			var mockJS = Services.AddMockJSRuntime();
+			
 			var cut = RenderComponent<ElementRefComponent>();
 			var inputElement = cut.Find("#capturedElement");
 			var refId = inputElement.GetAttribute(Htmlizer.ELEMENT_REFERENCE_ATTR_NAME);
 			var buttonElement = cut.Find("button");
 
 			buttonElement.Click();
-			mockJS.VerifyInvoke("setElementValue")
+			JSInterop.VerifyInvoke("setElementValue")
 				.Arguments[0]
 				.ShouldBeOfType<ElementReference>()
 				.Id.ShouldBe(refId);
@@ -407,8 +411,6 @@ namespace Bunit.BlazorE2E
 			//buttonElement.Click();
 			//Assert.Equal("Clicks: 1", () => inputElement.GetAttribute("value"));
 
-			var mockJS = Services.AddMockJSRuntime();
-
 			var cut = RenderComponent<ElementRefComponent>();
 			var buttonElement = cut.Find("button");
 			var checkbox = cut.Find("input[type=checkbox]");
@@ -429,7 +431,7 @@ namespace Bunit.BlazorE2E
 			// See that the capture variable was automatically updated to reference the new instance
 			buttonElement.Click();
 
-			mockJS.VerifyInvoke("setElementValue")
+			JSInterop.VerifyInvoke("setElementValue")
 				.Arguments[0]
 				.ShouldBeOfType<ElementReference>()
 				.Id.ShouldBe(refId);

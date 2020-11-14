@@ -8,7 +8,7 @@ namespace Bunit.Rendering
 	/// </summary>
 	public sealed class RenderTreeFrameCollection
 	{
-		private readonly Dictionary<int, ArrayRange<RenderTreeFrame>> _currentRenderTree = new Dictionary<int, ArrayRange<RenderTreeFrame>>();
+		private readonly Dictionary<int, ArrayRange<RenderTreeFrame>> _currentRenderTree = new();
 
 		/// <summary>
 		/// Gets the <see cref="ArrayRange{RenderTreeFrame}"/> associated with the <paramref name="componentId"/>.

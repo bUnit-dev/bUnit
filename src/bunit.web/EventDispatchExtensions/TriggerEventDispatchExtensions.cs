@@ -16,8 +16,8 @@ namespace Bunit
 	/// </summary>
 	public static class TriggerEventDispatchExtensions
 	{
-		private static readonly HashSet<string> NonBubblingEvents = new HashSet<string> { "onabort", "onblur", "onchange", "onerror", "onfocus", "onload", "onloadend", "onloadstart", "onmouseenter", "onmouseleave", "onprogress", "onreset", "onscroll", "onsubmit", "onunload", "ontoggle", "ondomnodeinsertedintodocument", "ondomnoderemovedfromdocument" };
-		private static readonly HashSet<string> DisabledEventNames = new HashSet<string> { "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup" };
+		private static readonly HashSet<string> NonBubblingEvents = new() { "onabort", "onblur", "onchange", "onerror", "onfocus", "onload", "onloadend", "onloadstart", "onmouseenter", "onmouseleave", "onprogress", "onreset", "onscroll", "onsubmit", "onunload", "ontoggle", "ondomnodeinsertedintodocument", "ondomnoderemovedfromdocument" };
+		private static readonly HashSet<string> DisabledEventNames = new() { "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup" };
 
 		/// <summary>
 		/// Raises the event <paramref name="eventName"/> on the element <paramref name="element"/>

@@ -13,7 +13,7 @@ namespace Bunit.TestDoubles
 	/// </summary>
 	public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 	{
-		private TaskCompletionSource<AuthenticationState> _authState = new TaskCompletionSource<AuthenticationState>();
+		private TaskCompletionSource<AuthenticationState> _authState = new();
 
 		/// <summary>
 		/// Constructor to initialize this state provider with an initial AuthenticationState.

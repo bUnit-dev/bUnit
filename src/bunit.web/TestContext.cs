@@ -1,7 +1,10 @@
 using System;
 using Bunit.Extensions;
 using Bunit.Rendering;
+using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 
 namespace Bunit
 {
@@ -21,9 +24,19 @@ namespace Bunit
 		public RootRenderTree RenderTree { get; } = new RootRenderTree();
 
 		/// <summary>
+		/// Gets bUnits JSInterop, that allows setting up handlers for <see cref="IJSRuntime.InvokeAsync{TValue}(string, object[])"/> invocations
+		/// that components under tests will issue during testing. It also makes it possible to verify that the invocations has happened as expected.
+		/// </summary>
+		public BunitJSInterop JSInterop { get; } = new BunitJSInterop();
+
+		/// <summary>
 		/// Creates a new instance of the <see cref="TestContext"/> class.
 		/// </summary>
-		public TestContext() => Services.AddDefaultTestContextServices();
+		public TestContext()
+		{
+			Services.AddDefaultTestContextServices();
+			Services.AddSingleton<IJSRuntime>(JSInterop.JSRuntime);
+		}
 
 		/// <summary>
 		/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.

@@ -11,7 +11,7 @@ namespace Bunit
 	/// <inheritdoc/>
 	public class Fixture : FixtureBase<Fixture>
 	{
-		private readonly Dictionary<string, IRenderedFragment> _renderedFragments = new Dictionary<string, IRenderedFragment>();
+		private readonly Dictionary<string, IRenderedFragment> _renderedFragments = new();
 		private IReadOnlyList<FragmentBase>? _testData;
 
 		private IReadOnlyList<FragmentBase> TestData
