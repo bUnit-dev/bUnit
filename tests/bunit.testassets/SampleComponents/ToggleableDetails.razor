@@ -1,0 +1,19 @@
+<div>
+	@if (detailsExpanded)
+	{
+		<p>Read the details carefully!</p>
+	}
+	<details id="details-toggle" @ontoggle="OnToggle">
+		<summary>Summary</summary>
+		<p>Detailed content</p>
+	</details>
+</div>
+
+@code {
+	bool detailsExpanded;
+
+	void OnToggle()
+	{
+		detailsExpanded = !detailsExpanded;
+	}
+}

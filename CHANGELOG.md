@@ -11,6 +11,8 @@ The following section list all changes in 1.0.0 preview 01.
 ### Added
 List of new features.
 
+- Added support for triggering `@ontoggle` event handlers through a dedicated `Toggle()` method. By [@egil](https://github.com/egil) in [#248](https://github.com/egil/bUnit/pull/248).
+
 ### Changed
 List of changes in existing functionality.
 
