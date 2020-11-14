@@ -31,6 +31,6 @@ namespace Bunit.TestDoubles
 		/// </summary>
 		/// <param name="role">Role name</param>
 		/// <returns>Returns that this principal is not in any role.</returns>
-		public bool IsInRole(string role) => Roles.Any(p => p.Equals(role, StringComparison.Ordinal));
+		public bool IsInRole(string role) => Roles.Any(x => x.Equals(role, StringComparison.Ordinal));
 	}
 }

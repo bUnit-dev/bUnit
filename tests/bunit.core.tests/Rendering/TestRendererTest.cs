@@ -15,14 +15,12 @@ namespace Bunit.Rendering
 	internal class NoChildNoParams : ComponentBase
 	{
 		public const string MARKUP = "hello world";
-		protected override void BuildRenderTree(RenderTreeBuilder builder)
-			=> builder.AddMarkupContent(0, MARKUP);
+		protected override void BuildRenderTree(RenderTreeBuilder builder) => builder.AddMarkupContent(0, MARKUP);
 	}
 
 	internal class ThrowsDuringSetParams : ComponentBase
 	{
-		public static readonly InvalidOperationException EXCEPTION =
-			new InvalidOperationException("THROWS ON PURPOSE");
+		public static readonly InvalidOperationException EXCEPTION = new("THROWS ON PURPOSE");
 
 		public override Task SetParametersAsync(ParameterView parameters) => throw EXCEPTION;
 	}

@@ -10,7 +10,7 @@ namespace Bunit
 {
 	public class ComponentParameterCollectionTest
 	{
-		private static readonly TestContext Context = new TestContext();
+		private static readonly TestContext Context = new();
 
 		private static IRenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
 		{

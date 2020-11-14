@@ -14,6 +14,14 @@ List of new features.
 ### Changed
 List of changes in existing functionality.
 
+- bUnit's mock IJSRuntime has been moved to an "always on" state by default, in strict mode, and is now available through `TestContext`'s `JSInterop` property. This makes it possible for first party Blazor components like the `<Virtualize>` component, which depend on JSInterop, to "just work" in tests.
+
+  **Compatible with previous releases:** To get the same effect as calling `Services.AddMockJSRuntime()` in beta-11, which used to add the mock IJSRuntime in "loose" mode, you now just need to change the mode of the already on JSInterop, i.e. `ctx.JSInterop.Mode = JSRuntimeMode.Loose`.
+
+  **Inspect registered handlers:** Since the new design allows registering invoke handlers in the context of the `TestContext`, you might need to get already registered handlers in your individual tests. This can be done with the `TryGetInvokeHandler()` method, that will return handler that can handle the parameters passed to it. E.g. to get a handler for a `IJSRuntime.InvokaAsync<string>("getValue")`, call `ctx.JSInterop.TryGetInvokeHandler<string>("getValue")`.
+
+  Learn more [issue #237](https://github.com/egil/bUnit/issues/237). By [@egil](https://github.com/egil) in [#247](https://github.com/egil/bUnit/pull/247).
+
 ### Removed
 List of now removed features.
 

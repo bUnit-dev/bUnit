@@ -13,8 +13,8 @@ namespace Bunit
 	/// </summary>
 	public class BunitJSInterop
 	{
-		private readonly Dictionary<string, List<JSRuntimeInvocation>> _invocations = new Dictionary<string, List<JSRuntimeInvocation>>();
-		private readonly Dictionary<string, List<object>> _handlers = new Dictionary<string, List<object>>();
+		private readonly Dictionary<string, List<JSRuntimeInvocation>> _invocations = new();
+		private readonly Dictionary<string, List<object>> _handlers = new();
 
 		/// <summary>
 		/// Gets a dictionary of all <see cref="List{JSRuntimeInvocation}"/> this mock has observed.

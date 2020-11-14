@@ -14,8 +14,7 @@ namespace Bunit.TestDoubles.JSInterop
 {
 	public class JSRuntimeAssertExtensionsTest
 	{
-		private BunitJSInterop CreateSut(JSRuntimeMode mode = JSRuntimeMode.Loose)
-			=> new BunitJSInterop { Mode = mode };
+		private BunitJSInterop CreateSut(JSRuntimeMode mode = JSRuntimeMode.Loose) => new BunitJSInterop { Mode = mode };
 
 		[Fact(DisplayName = "VerifyNotInvoke throws if handler is null")]
 		public void Test001()

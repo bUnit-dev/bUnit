@@ -11,7 +11,7 @@ namespace Bunit.Rendering
 	/// <inheritdoc />
 	internal class RenderedFragment : IRenderedFragment
 	{
-		private readonly object _markupAccessLock = new object();
+		private readonly object _markupAccessLock = new();
 		private readonly BunitHtmlParser _htmlParser;
 		private string _markup = string.Empty;
 		private string? _snapshotMarkup;

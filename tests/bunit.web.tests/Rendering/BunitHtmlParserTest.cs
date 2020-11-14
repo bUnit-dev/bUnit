@@ -9,7 +9,7 @@ namespace Bunit.Rendering
 {
 	public class BunitHtmlParserTest
 	{
-		private static readonly BunitHtmlParser Parser = new BunitHtmlParser();
+		private static readonly BunitHtmlParser Parser = new();
 
 		/// <summary>
 		/// All HTML5 elements according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element

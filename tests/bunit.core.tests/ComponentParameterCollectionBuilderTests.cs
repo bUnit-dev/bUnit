@@ -10,7 +10,7 @@ namespace Bunit
 {
 	public class ComponentParameterCollectionBuilderTests : TestContext
 	{
-		private readonly ComponentParameterCollectionBuilder<Params> Builder = new ComponentParameterCollectionBuilder<Params>();
+		private readonly ComponentParameterCollectionBuilder<Params> Builder = new();
 
 		private bool EventCallbackCalled { get; set; }
 

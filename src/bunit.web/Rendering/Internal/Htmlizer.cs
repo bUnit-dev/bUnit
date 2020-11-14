@@ -16,7 +16,7 @@ namespace Bunit
 	{
 		private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
 
-		private static readonly HashSet<string> SelfClosingElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+		private static readonly HashSet<string> SelfClosingElements = new(StringComparer.OrdinalIgnoreCase)
 		{
 			"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"
 		};
