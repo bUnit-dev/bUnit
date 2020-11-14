@@ -13,7 +13,7 @@ List of new features.
 
 - Added support for triggering `@ontoggle` event handlers through a dedicated `Toggle()` method. By [@egil](https://github.com/egil) in [#256](https://github.com/egil/bUnit/pull/256).
 
-- Added out of the box support for `<Virtualize>` component. When a `<Virtualize>` component is used in a component under test, it's JavaScript interop-calls are faked by bUnits JSInterop, and it should result in all items being rendered immediately.
+- Added out of the box support for `<Virtualize>` component. When a `<Virtualize>` component is used in a component under test, it's JavaScript interop-calls are faked by bUnits JSInterop, and it should result in all items being rendered immediately. By [@egil](https://github.com/egil) in [#240](https://github.com/egil/bUnit/issues/240).
 
 - Added support for components that call `ElementReference.FocusAsync`. These calls are handled by the bUnits JSInterop, that also allows you to verify that `FocusAsync` has been called for a specific element. For example, if a component has rendered an `<input>` element, then the following code will verify that it has been focused using `FocusAsync`:
 
@@ -98,6 +98,8 @@ List of changes in existing functionality.
 
    `ctx.JSInterop.Setup<string>("foo", args => args.Count == 2)` to this:  
    `ctx.JSInterop.Setup<string>("foo", invocation => invocation.Arguments.Count == 2)`.
+
+  Changed added in relation to [#240](https://github.com/egil/bUnit/issues/240) in [#257](https://github.com/egil/bUnit/issues/257) by [@egil](https://github.com/egil).
 
 ### Removed
 List of now removed features.
