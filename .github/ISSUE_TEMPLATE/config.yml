@@ -2,4 +2,4 @@ blank_issues_enabled: true
 contact_links:
   - name: Questions and Discussions
     url: https://github.com/egil/bUnit/discussions/new
-    about: Is your issue perhaps more of a discussion or question? Please open topics for discussion or questions using the new GitHub Discussions feature.
+    about: Is your issue perhaps more of a discussion or question? Please open topics for discussion or questions using the new GitHub Discussions feature. Remember to choose the right category.
