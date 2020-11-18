@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions and Discussions
+    url: https://github.com/egil/bUnit/discussions/new
+    about: Is your issue perhaps more of a discussion or question? Please open topics for discussion or questions using the new GitHub Discussions feature.
+  - name: Bug Report
+    url:  https://github.com/dotnet/runtime/issues/new/choose
+    about: Create a report to help us improve.
+  - name: Feature Request
+    url:  https://github.com/dotnet/runtime/issues/new/choose
+    about: Suggest an idea for this project.
