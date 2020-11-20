@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Bunit.Extensions;
 using Bunit.RazorTesting;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 
 namespace Bunit
 {
@@ -26,6 +28,21 @@ namespace Bunit
 				}
 				return _testData;
 			}
+		}
+
+		/// <summary>
+		/// Gets bUnits JSInterop, that allows setting up handlers for <see cref="IJSRuntime.InvokeAsync{TValue}(string, object[])"/> invocations
+		/// that components under tests will issue during testing. It also makes it possible to verify that the invocations has happened as expected.
+		/// </summary>
+		public BunitJSInterop JSInterop { get; } = new BunitJSInterop();
+
+		/// <summary>
+		/// Creates an instance of the <see cref="Fixture"/> type.
+		/// </summary>
+		public Fixture()
+		{
+			Services.AddSingleton<IJSRuntime>(JSInterop.JSRuntime);
+			Services.AddDefaultTestContextServices();
 		}
 
 		/// <summary>
@@ -123,13 +140,12 @@ namespace Bunit
 
 		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment) where TComponent : IComponent
 		{
-			var renderedFragment = Renderer.RenderFragment(fragment);
-			return (IRenderedComponent<TComponent>)Renderer.FindComponent<TComponent>(renderedFragment);
+			return (IRenderedComponent<TComponent>)RenderComponent<TComponent>(fragment);
 		}
 
 		private IRenderedFragment Factory(RenderFragment fragment)
 		{
-			return (IRenderedFragment)Renderer.RenderFragment(fragment);
+			return (IRenderedFragment)RenderFragment(fragment);
 		}
 
 		private static IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : IComponent

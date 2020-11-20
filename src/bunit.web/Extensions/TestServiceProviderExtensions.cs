@@ -32,6 +32,7 @@ namespace Bunit.Extensions
 			services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
 
 			// bUnit specific services
+			services.AddSingleton<ITestRenderer, WebTestRenderer>();
 			services.AddSingleton<HtmlComparer>();
 			services.AddSingleton<BunitHtmlParser>();
 			services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();

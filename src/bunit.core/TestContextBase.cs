@@ -1,5 +1,7 @@
 using System;
+using Bunit.RazorTesting;
 using Bunit.Rendering;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
@@ -34,12 +36,61 @@ namespace Bunit
 		public TestServiceProvider Services { get; }
 
 		/// <summary>
+		/// Gets the <see cref="RootRenderTree"/> that all components rendered with the
+		/// <c>RenderComponent&lt;TComponent&gt;()</c> methods, are rendered inside.
+		/// </summary>
+		/// <remarks>
+		/// Use this to add default layout- or root-components which a component under test
+		/// should be rendered under.
+		/// </remarks>
+		public RootRenderTree RenderTree { get; } = new RootRenderTree();
+
+		/// <summary>
 		/// Creates a new instance of the <see cref="TestContextBase"/> class.
 		/// </summary>
 		protected TestContextBase()
 		{
-			Services = new TestServiceProvider();
-			Services.AddSingleton<ITestRenderer, TestRenderer>();
+			Services = new TestServiceProvider();			
+		}
+
+		/// <summary>
+		/// Renders a component, declared in the <paramref name="renderFragment"/>, inside the <see cref="RenderTree"/>.
+		/// </summary>
+		/// <typeparam name="TComponent">The type of component to render.</typeparam>
+		/// <param name="renderFragment">The <see cref="RenderFragment"/> that contains a declaration of the component.</param>
+		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/>.</returns>
+		protected IRenderedComponentBase<TComponent> RenderComponent<TComponent>(RenderFragment renderFragment) where TComponent : IComponent
+		{
+			// Wrap TComponent in any layout components added to the test context.
+			// If one of the layout components is the same type as TComponent,
+			// make sure to return the rendered component, not the layout component.			
+			var resultBase = Renderer.RenderFragment(RenderTree.Wrap(renderFragment));
+
+			// This ensures that the correct component is returned, in case an added layout component
+			// is of type TComponent.
+			var renderTreeTComponentCount = RenderTree.GetCountOf<TComponent>();
+			var result = renderTreeTComponentCount > 0
+				? Renderer.FindComponents<TComponent>(resultBase)[renderTreeTComponentCount]
+				: Renderer.FindComponent<TComponent>(resultBase);
+
+			return result;
+		}
+
+		/// <summary>
+		/// Renders a fragment, declared in the <paramref name="renderFragment"/>, inside the <see cref="RenderTree"/>.
+		/// </summary>
+		/// <param name="renderFragment">The <see cref="RenderFragment"/> to render.</param>
+		/// <returns>A <see cref="IRenderedFragmentBase"/>.</returns>
+		protected IRenderedFragmentBase RenderFragment(RenderFragment renderFragment)
+		{
+			// Wrap fragment in a FragmentContainer so the start of the test supplied
+			// razor fragment can be found after, and then wrap in any layout components
+			// added to the test context.		
+			var wrappedInFragmentContainer = FragmentContainer.Wrap(renderFragment);
+			var wrappedInRenderTree = RenderTree.Wrap(wrappedInFragmentContainer);
+			var resultBase = Renderer.RenderFragment(wrappedInRenderTree);
+
+			return Renderer.FindComponent<FragmentContainer>(resultBase);
 		}
 
 		/// <inheritdoc/>

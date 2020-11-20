@@ -7,7 +7,8 @@
 		</CascadingValue>
 	</ComponentUnderTest>
 
-	@code {
+	@code
+	{
 		void CanGetComponentInsideCascadingValue(Fixture fixture)
 		{
 			var cut = fixture.GetComponentUnderTest<ClickCounter>();
@@ -20,7 +21,8 @@
 	<ComponentUnderTest>
 		<Wrapper>CUT</Wrapper>
 	</ComponentUnderTest>
-	@code {
+	@code
+	{
 		void Test004(Fixture f)
 		{
 			var cut1 = f.GetComponentUnderTest<Wrapper>();
@@ -34,7 +36,8 @@
 <Fixture Test="Test005" Description="Calling GetFragment with same args multiple times returns same instance">
 	<Fragment Id="first">first</Fragment>
 	<Fragment Id="second">second</Fragment>
-	@code{
+	@code
+	{
 		void Test005(Fixture f)
 		{
 			var firstFragmentNoId1 = f.GetFragment();
@@ -51,7 +54,8 @@
 <Fixture Test="Test006" Description="Getting first fragment with and without id should return the same instance">
 	<Fragment Id="first">first</Fragment>
 	<Fragment Id="second">second</Fragment>
-	@code{
+	@code
+	{
 		void Test006(Fixture f)
 		{
 			var firstFragmentNoId1 = f.GetFragment();
@@ -64,7 +68,8 @@
 
 <Fixture Test="Test007" Description="Using the generic GetFragment returns an IRenderedComponent with the component of the generic type">
 	<Fragment><Wrapper /></Fragment>
-	@code{
+	@code
+	{
 		void Test007(Fixture f)
 		{
 			var fragment = f.GetFragment<Wrapper>();
@@ -77,7 +82,8 @@
 
 <Fixture Test="Test008" Description="Using the generic GetComponentUnderTest returns an IRenderedComponent with the component of the generic type">
 	<ComponentUnderTest><Wrapper /></ComponentUnderTest>
-	@code{
+	@code
+	{
 		void Test008(Fixture f)
 		{
 			var cut = f.GetComponentUnderTest<Wrapper>();
@@ -90,7 +96,8 @@
 
 <Fixture Test="Test009" Description="Using the non-generic GetFragment returns an IRenderedFragment">
 	<Fragment><Wrapper /></Fragment>
-	@code{
+	@code
+	{
 		void Test009(Fixture f)
 		{
 			var fragment = f.GetFragment();
@@ -98,12 +105,12 @@
 			fragment.ShouldBeAssignableTo<IRenderedFragment>();
 		}
 	}
-
 </Fixture>
 
 <Fixture Test="Test010" Description="Using the non-generic GetComponentUnderTest returns an IRenderedFragment">
 	<ComponentUnderTest><Wrapper /></ComponentUnderTest>
-	@code{
+	@code
+	{
 		void Test010(Fixture f)
 		{
 			var cut = f.GetComponentUnderTest();
@@ -121,7 +128,8 @@
 	<Fragment>
 		<Wrapper>second</Wrapper>
 	</Fragment>
-	@code{
+	@code
+	{
 		void Test011(Fixture f)
 		{
 			f.GetComponentUnderTest();
@@ -144,11 +152,50 @@
 	<Fragment>
 		<Wrapper></Wrapper>
 	</Fragment>
-	@code{
+	@code
+	{
 		void Test012(Fixture f)
 		{
 			Assert.Throws<ComponentNotFoundException>(() => f.GetComponentUnderTest<Simple1>());
 			Assert.Throws<ComponentNotFoundException>(() => f.GetFragment<Simple1>());
+		}
+	}
+</Fixture>
+
+<Fixture Setup="Setup020" Test="Test020" Description="Renders CUT inside components added to RenderTree and returns correct CUT from GetComponentUnderTest">
+	<ComponentUnderTest>
+		<PrintCascadingValue />
+	</ComponentUnderTest>
+	@code
+	{
+		void Setup020(Fixture f)
+		{
+			f.RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
+			f.RenderTree.Add<WrapperDiv>();
+		}
+
+		void Test020(Fixture f)
+		{
+			f.GetComponentUnderTest().MarkupMatches("<p>FOO</p>");
+		}
+	}
+</Fixture>
+
+<Fixture Setup="Setup021" Test="Test021" Description="Renders CUT inside components added to RenderTree and returns correct CUT from generic GetComponentUnderTest<T>">
+	<ComponentUnderTest>
+		<PrintCascadingValue />
+	</ComponentUnderTest>
+	@code
+	{
+		void Setup021(Fixture f)
+		{
+			f.RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
+			f.RenderTree.Add<WrapperDiv>();
+		}
+
+		void Test021(Fixture f)
+		{
+			f.GetComponentUnderTest<PrintCascadingValue>().MarkupMatches("<p>FOO</p>");
 		}
 	}
 </Fixture>
