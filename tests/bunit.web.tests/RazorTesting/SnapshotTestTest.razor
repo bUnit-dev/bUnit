@@ -16,3 +16,20 @@
 		<p>BAR</p>
 	</ExpectedOutput> 
 </SnapshotTest>
+
+<SnapshotTest Setup="Setup020" Description="Renders CUT inside components added to RenderTree">
+	<TestInput>
+		<PrintCascadingValue />
+	</TestInput>
+	<ExpectedOutput>
+		<p>FOO</p>
+	</ExpectedOutput>
+	@code
+	{
+		void Setup020(SnapshotTest f)
+		{
+			f.RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
+			f.RenderTree.Add<WrapperDiv>();
+		}
+	}
+</SnapshotTest>

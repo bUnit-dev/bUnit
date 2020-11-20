@@ -76,7 +76,7 @@ namespace Bunit.Rendering
 		/// </summary>
 		/// <param name="target"><see cref="RenderFragment"/> to render inside the render tree.</param>
 		/// <returns>A <see cref="RenderFragment"/> that renders the <paramref name="target"/> inside this <see cref="RootRenderTree"/> render tree.</returns>
-		internal RenderFragment Wrap(RenderFragment target)
+		public RenderFragment Wrap(RenderFragment target)
 		{
 			// Wrap from the last added to the first added, as we start with the
 			// target and goes from inside to out.
@@ -94,7 +94,7 @@ namespace Bunit.Rendering
 		/// </summary>
 		/// <typeparam name="TComponent">Component type to count.</typeparam>
 		/// <returns>Number of components of type <typeparamref name="TComponent"/> in render tree.</returns>
-		internal int GetCountOf<TComponent>() where TComponent : IComponent
+		public int GetCountOf<TComponent>() where TComponent : IComponent
 		{
 			var result = 0;
 			var countType = typeof(TComponent);

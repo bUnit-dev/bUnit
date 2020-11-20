@@ -4,6 +4,8 @@ using Bunit.Extensions;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 
 namespace Bunit
 {
@@ -14,6 +16,12 @@ namespace Bunit
 	/// </summary>
 	public class SnapshotTest : RazorTestBase
 	{
+		/// <summary>
+		/// Gets bUnits JSInterop, that allows setting up handlers for <see cref="IJSRuntime.InvokeAsync{TValue}(string, object[])"/> invocations
+		/// that components under tests will issue during testing. It also makes it possible to verify that the invocations has happened as expected.
+		/// </summary>
+		public BunitJSInterop JSInterop { get; } = new BunitJSInterop();
+
 		/// <inheritdoc/>
 		public override string? DisplayName => Description;
 
@@ -39,22 +47,29 @@ namespace Bunit
 		/// </summary>
 		[Parameter] public RenderFragment? ExpectedOutput { get; set; }
 
+		/// <summary>
+		/// Creates an instance of the <see cref="SnapshotTest"/> type.
+		/// </summary>
+		public SnapshotTest()
+		{
+			Services.AddSingleton<IJSRuntime>(JSInterop.JSRuntime);
+			Services.AddDefaultTestContextServices();
+		}
+
 		/// <inheritdoc/>
 		protected override async Task Run()
 		{
 			Validate();
-
-			Services.AddDefaultTestContextServices();
 
 			if (Setup is not null)
 				TryRun(Setup, this);
 			if (SetupAsync is not null)
 				await TryRunAsync(SetupAsync, this).ConfigureAwait(false);
 
-			var renderedTestInput = (IRenderedFragment)Renderer.RenderFragment(TestInput!);
+			var renderedTestInput = (IRenderedFragment)RenderFragment(TestInput!);
 			var inputHtml = renderedTestInput.Markup;
 
-			var renderedExpectedRender = (IRenderedFragment)Renderer.RenderFragment(ExpectedOutput!);
+			var renderedExpectedRender = (IRenderedFragment)RenderFragment(ExpectedOutput!);
 			var expectedHtml = renderedExpectedRender.Markup;
 
 			VerifySnapshot(inputHtml, expectedHtml);
