@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Bunit.Extensions;
+using Bunit.JSInterop.ComponentSupport;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
@@ -52,6 +53,7 @@ namespace Bunit
 		/// </summary>
 		public SnapshotTest()
 		{
+			JSInterop.AddBuiltInJSRuntimeInvocationHandlers();
 			Services.AddSingleton<IJSRuntime>(JSInterop.JSRuntime);
 			Services.AddDefaultTestContextServices();
 		}

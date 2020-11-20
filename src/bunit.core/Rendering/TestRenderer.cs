@@ -270,7 +270,15 @@ namespace Bunit.Rendering
 			{
 				_unhandledException = null;
 				LogUnhandledException(unhandled);
-				ExceptionDispatchInfo.Capture(unhandled).Throw();
+
+				if (unhandled is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
+				{
+					ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
+				}
+				else
+				{
+					ExceptionDispatchInfo.Capture(unhandled).Throw();
+				}
 			}
 		}
 

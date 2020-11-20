@@ -1,16 +1,18 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Bunit;
 using Microsoft.JSInterop;
 using Shouldly;
 using Xunit;
 
-namespace Bunit.TestDoubles.JSInterop
+namespace Bunit.JSInterop
 {
 	public class BunitJSInteropTest
 	{
-		private BunitJSInterop CreateSut(JSRuntimeMode mode) => new BunitJSInterop { Mode = mode };
+		private static BunitJSInterop CreateSut(JSRuntimeMode mode) => new BunitJSInterop { Mode = mode };
 
 		[Fact(DisplayName = "Mock returns default value in loose mode without invocation setup")]
 		public async Task Test001()
@@ -178,7 +180,7 @@ namespace Bunit.TestDoubles.JSInterop
 		public void Test011()
 		{
 			var sut = CreateSut(JSRuntimeMode.Strict);
-			var planned = sut.Setup<object>("foo", args => args.Count == 1);
+			var planned = sut.Setup<object>("foo", x => x.Arguments.Count == 1);
 
 			var _ = sut.JSRuntime.InvokeAsync<object>("foo", 42);
 
@@ -229,7 +231,7 @@ namespace Bunit.TestDoubles.JSInterop
 		public async Task Test014()
 		{
 			var sut = CreateSut(JSRuntimeMode.Strict);
-			var planned = sut.SetupVoid("foo", args => args.Count == 2);
+			var planned = sut.SetupVoid("foo", x => x.Arguments.Count == 2);
 
 			var i1 = sut.JSRuntime.InvokeVoidAsync("foo", "bar", 42);
 
@@ -360,7 +362,8 @@ namespace Bunit.TestDoubles.JSInterop
 		public async Task Test021()
 		{
 			var sut = CreateSut(JSRuntimeMode.Strict);
-			var handler = sut.Setup<Guid>();
+
+			sut.Setup<Guid>();
 
 			await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(sut.JSRuntime.InvokeVoidAsync("someFunc").AsTask());
 		}
@@ -383,6 +386,7 @@ namespace Bunit.TestDoubles.JSInterop
 			plannedCatchall.Invocations.Count.ShouldBe(0);
 		}
 
+		[SuppressMessage("Reliability", "CA2012:Use ValueTasks correctly", Justification = "Not relevant for test")]
 		[Fact(DisplayName = "The last handler matching an invocation receives the invocation")]
 		public void Test030()
 		{
@@ -424,13 +428,12 @@ namespace Bunit.TestDoubles.JSInterop
 		public void Test042()
 		{
 			var sut = CreateSut(JSRuntimeMode.Loose);
-			var h1 = sut.Setup<object>("foo");
+			sut.Setup<object>("foo");
 			var expected = sut.SetupVoid("foo");
 
 			var actual = sut.TryGetInvokeVoidHandler("foo");
 
 			actual.ShouldBe(expected);
-			actual.ShouldNotBe(h1);
 		}
 	}
 }

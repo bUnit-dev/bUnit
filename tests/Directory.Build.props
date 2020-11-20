@@ -29,11 +29,13 @@
 		<PackageReference Include="AngleSharp" Version="0.14.0" />
 		<PackageReference Include="AngleSharp.Css" Version="0.14.2" />
 		<PackageReference Include="AngleSharp.Diffing" Version="0.14.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
-		<PackageReference Include="Moq" Version="4.14.6" />
-		<PackageReference Include="Shouldly" Version="4.0.0-beta0002" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
+		<PackageReference Include="Moq" Version="4.15.1" />
+		<PackageReference Include="Shouldly" Version="4.0.0" />
 		<PackageReference Include="xunit" Version="2.4.1" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" PrivateAssets="All" />
+		<PackageReference Include="AutoFixture.Xunit2" Version="4.14.0" />
+		<PackageReference Include="Xunit.Combinatorial" Version="1.4.1" />
 		<PackageReference Include="coverlet.msbuild" Version="2.9.0" PrivateAssets="All" />
 	</ItemGroup>
 </Project>
