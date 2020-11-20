@@ -1,5 +1,6 @@
 using System;
 using Bunit.Extensions;
+using Bunit.JSInterop.ComponentSupport;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
@@ -22,6 +23,7 @@ namespace Bunit
 		/// </summary>
 		public TestContext()
 		{
+			JSInterop.AddBuiltInJSRuntimeInvocationHandlers();
 			Services.AddSingleton<IJSRuntime>(JSInterop.JSRuntime);
 			Services.AddDefaultTestContextServices();
 		}

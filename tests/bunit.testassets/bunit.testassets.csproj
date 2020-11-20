@@ -1,17 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
 		<RootNamespace>Bunit.TestAssets</RootNamespace>
 		<AssemblyName>Bunit.TestAssets</AssemblyName>
 		<IsPackable>false</IsPackable>
-		<LangVersion>8.0</LangVersion>
+		<LangVersion>9.0</LangVersion>
 		<Nullable>enable</Nullable>
-		<!--
-			<WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>
-			TODO: Added because of bug in P7: https://github.com/dotnet/aspnetcore/issues/24794				
-		-->
-		<WarningsAsErrors>CS8602;CS8603;CS8625</WarningsAsErrors>
+		<WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">

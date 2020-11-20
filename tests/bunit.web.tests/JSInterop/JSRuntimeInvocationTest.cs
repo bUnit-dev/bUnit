@@ -4,7 +4,7 @@ using System.Threading;
 using Shouldly;
 using Xunit;
 
-namespace Bunit.TestDoubles.JSInterop
+namespace Bunit.JSInterop
 {
 	public class JSRuntimeInvocationTest
 	{

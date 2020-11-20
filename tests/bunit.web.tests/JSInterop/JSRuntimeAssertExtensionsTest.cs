@@ -10,11 +10,11 @@ using Moq;
 using Shouldly;
 using Xunit;
 
-namespace Bunit.TestDoubles.JSInterop
+namespace Bunit.JSInterop
 {
 	public class JSRuntimeAssertExtensionsTest
 	{
-		private BunitJSInterop CreateSut(JSRuntimeMode mode = JSRuntimeMode.Loose) => new BunitJSInterop { Mode = mode };
+		private static BunitJSInterop CreateSut(JSRuntimeMode mode = JSRuntimeMode.Loose) => new BunitJSInterop { Mode = mode };
 
 		[Fact(DisplayName = "VerifyNotInvoke throws if handler is null")]
 		public void Test001()

@@ -11,7 +11,9 @@ The following section list all changes in 1.0.0 preview 01.
 ### Added
 List of new features.
 
-- Added support for triggering `@ontoggle` event handlers through a dedicated `Toggle()` method. By [@egil](https://github.com/egil) in [#248](https://github.com/egil/bUnit/pull/248).
+- Added support for triggering `@ontoggle` event handlers through a dedicated `Toggle()` method. By [@egil](https://github.com/egil) in [#256](https://github.com/egil/bUnit/pull/256).
+
+- Added out of the box support for `<Virtualize>` component. When a `<Virtualize>` component is used in a component under test, it's JavaScript interop-calls are faked by bUnits JSInterop, and it should result in all items being rendered immediately.
 
 ### Changed
 List of changes in existing functionality.
@@ -23,6 +25,13 @@ List of changes in existing functionality.
   **Inspect registered handlers:** Since the new design allows registering invoke handlers in the context of the `TestContext`, you might need to get already registered handlers in your individual tests. This can be done with the `TryGetInvokeHandler()` method, that will return handler that can handle the parameters passed to it. E.g. to get a handler for a `IJSRuntime.InvokaAsync<string>("getValue")`, call `ctx.JSInterop.TryGetInvokeHandler<string>("getValue")`.
 
   Learn more [issue #237](https://github.com/egil/bUnit/issues/237). By [@egil](https://github.com/egil) in [#247](https://github.com/egil/bUnit/pull/247).
+
+- The `Setup<TResult>(string identifier, Func<IReadOnlyList<object?>, bool> argumentsMatcher)` and `SetupVoid(string identifier, Func<IReadOnlyList<object?>, bool> argumentsMatcher)` methods in bUnits JSInterop/MockJSRuntime has a new second parameter, an `InvocationMatcher`.
+
+  The `InvocationMatcher` type is a delegate that receives a `JSRuntimeInvoation` and returns true. The `JSRuntimeInvoation` type contains the arguments of the invocation and the identifier for the invocation. This means old code using the `Setup` and `SetupVoid` methods should be updated to use the arguments list in `JSRuntimeInvoation`, e.g., change the following call:
+
+   `ctx.JSInterop.Setup<string>("foo", args => args.Count == 2)` to this:  
+   `ctx.JSInterop.Setup<string>("foo", invocation => invocation.Arguments.Count == 2)`.
 
 ### Removed
 List of now removed features.

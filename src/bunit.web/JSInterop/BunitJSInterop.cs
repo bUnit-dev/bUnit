@@ -52,26 +52,22 @@ namespace Bunit
 		public JSRuntimeInvocationHandler<TResult> Setup<TResult>()
 		{
 			var result = new JSRuntimeInvocationHandler<TResult>(JSRuntimeInvocationHandler<object>.CatchAllIdentifier, _ => true);
-
-			AddHandler(result);
-
+			AddInvocationHandler(result);
 			return result;
 		}
 
 		/// <summary>
 		/// Configure a JSInterop invocation handler with the <paramref name="identifier"/> and arguments
-		/// passing the <paramref name="argumentsMatcher"/> test.
+		/// passing the <paramref name="invocationMatcher"/> test.
 		/// </summary>
 		/// <typeparam name="TResult">The result type of the invocation.</typeparam>
 		/// <param name="identifier">The identifier to setup a response for.</param>
-		/// <param name="argumentsMatcher">A matcher that is passed arguments received in invocations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
+		/// <param name="invocationMatcher">A matcher that is passed an <see cref="JSRuntimeInvocation"/> associated with  the<paramref name="identifier"/>. If it returns true the invocation is matched.</param>
 		/// <returns>A <see cref="JSRuntimeInvocationHandler{TResult}"/>.</returns>
-		public JSRuntimeInvocationHandler<TResult> Setup<TResult>(string identifier, Func<IReadOnlyList<object?>, bool> argumentsMatcher)
+		public JSRuntimeInvocationHandler<TResult> Setup<TResult>(string identifier, InvocationMatcher invocationMatcher)
 		{
-			var result = new JSRuntimeInvocationHandler<TResult>(identifier, argumentsMatcher);
-
-			AddHandler(result);
-
+			var result = new JSRuntimeInvocationHandler<TResult>(identifier, invocationMatcher);
+			AddInvocationHandler(result);
 			return result;
 		}
 
@@ -84,22 +80,20 @@ namespace Bunit
 		/// <returns>A <see cref="JSRuntimeInvocationHandler{TResult}"/>.</returns>
 		public JSRuntimeInvocationHandler<TResult> Setup<TResult>(string identifier, params object[] arguments)
 		{
-			return Setup<TResult>(identifier, args => args.SequenceEqual(arguments));
+			return Setup<TResult>(identifier, invocation => invocation.Arguments.SequenceEqual(arguments));
 		}
 
 		/// <summary>
 		/// Configure a JSInterop invocation handler with the <paramref name="identifier"/> and arguments
-		/// passing the <paramref name="argumentsMatcher"/> test, that should not receive any result.
+		/// passing the <paramref name="invocationMatcher"/> test, that should not receive any result.
 		/// </summary>
 		/// <param name="identifier">The identifier to setup a response for.</param>
-		/// <param name="argumentsMatcher">A matcher that is passed arguments received in invocations to <paramref name="identifier"/>. If it returns true the invocation is matched.</param>
+		/// <param name="invocationMatcher">A matcher that is passed an <see cref="JSRuntimeInvocation"/> associated with  the<paramref name="identifier"/>. If it returns true the invocation is matched.</param>
 		/// <returns>A <see cref="JSRuntimeInvocationHandler"/>.</returns>
-		public JSRuntimeInvocationHandler SetupVoid(string identifier, Func<IReadOnlyList<object?>, bool> argumentsMatcher)
+		public JSRuntimeInvocationHandler SetupVoid(string identifier, InvocationMatcher invocationMatcher)
 		{
-			var result = new JSRuntimeInvocationHandler(identifier, argumentsMatcher);
-
-			AddHandler(result);
-
+			var result = new JSRuntimeInvocationHandler(identifier, invocationMatcher);
+			AddInvocationHandler(result);
 			return result;
 		}
 
@@ -112,7 +106,7 @@ namespace Bunit
 		/// <returns>A <see cref="JSRuntimeInvocationHandler"/>.</returns>
 		public JSRuntimeInvocationHandler SetupVoid(string identifier, params object[] arguments)
 		{
-			return SetupVoid(identifier, args => args.SequenceEqual(arguments));
+			return SetupVoid(identifier, invocation => invocation.Arguments.SequenceEqual(arguments));
 		}
 
 		/// <summary>
@@ -122,9 +116,7 @@ namespace Bunit
 		public JSRuntimeInvocationHandler SetupVoid()
 		{
 			var result = new JSRuntimeInvocationHandler(JSRuntimeInvocationHandler<object>.CatchAllIdentifier, _ => true);
-
-			AddHandler(result);
-
+			AddInvocationHandler(result);
 			return result;
 		}
 
@@ -135,7 +127,7 @@ namespace Bunit
 		/// </summary>
 		/// <returns>Returns the <see cref="JSRuntimeInvocationHandler{TResult}"/> or null if no one is found.</returns>
 		public JSRuntimeInvocationHandler<TResult>? TryGetInvokeHandler<TResult>(string identifier, object?[]? args = null)
-			=> TryGetHandlerFor<TResult>(new JSRuntimeInvocation(identifier, default, args));
+			=> TryGetHandlerFor<TResult>(new JSRuntimeInvocation(identifier, default, args)) as JSRuntimeInvocationHandler<TResult>;
 
 		/// <summary>
 		/// Looks through the registered handlers and returns the latest registered that can handle
@@ -145,7 +137,11 @@ namespace Bunit
 		public JSRuntimeInvocationHandler? TryGetInvokeVoidHandler(string identifier, object?[]? args = null)
 			=> TryGetHandlerFor<object>(new JSRuntimeInvocation(identifier, default, args), x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
 
-		private void AddHandler<TResult>(JSRuntimeInvocationHandler<TResult> handler)
+		/// <summary>
+		/// Adds an invocation handler to bUnit's JSInterop. Can be used to register
+		/// custom invocation handlers.
+		/// </summary>
+		public void AddInvocationHandler<TResult>(JSRuntimeInvocationHandlerBase<TResult> handler)
 		{
 			if (!_handlers.ContainsKey(handler.Identifier))
 			{
@@ -163,20 +159,23 @@ namespace Bunit
 			_invocations[invocation.Identifier].Add(invocation);
 		}
 
-		private JSRuntimeInvocationHandler<TResult>? TryGetHandlerFor<TResult>(JSRuntimeInvocation invocation, Predicate<JSRuntimeInvocationHandler<TResult>>? handlerPredicate = null)
+		private JSRuntimeInvocationHandlerBase<TResult>? TryGetHandlerFor<TResult>(JSRuntimeInvocation invocation, Predicate<JSRuntimeInvocationHandlerBase<TResult>>? handlerPredicate = null)
 		{
 			handlerPredicate ??= _ => true;
-			JSRuntimeInvocationHandler<TResult>? result = default;
+			JSRuntimeInvocationHandlerBase<TResult>? result = default;
+
 			if (_handlers.TryGetValue(invocation.Identifier, out var plannedInvocations))
 			{
-				result = plannedInvocations.OfType<JSRuntimeInvocationHandler<TResult>>()
-					.Where(x => handlerPredicate(x) && x.Matches(invocation)).LastOrDefault();
+				result = plannedInvocations.OfType<JSRuntimeInvocationHandlerBase<TResult>>()
+					.LastOrDefault(x => handlerPredicate(x) && x.Matches(invocation));
 			}
 
-			if (result is null && _handlers.TryGetValue(JSRuntimeInvocationHandler<TResult>.CatchAllIdentifier, out var catchAllHandlers))
+			if (result is null && _handlers.TryGetValue(JSRuntimeInvocationHandler.CatchAllIdentifier, out var catchAllHandlers))
 			{
-				result = catchAllHandlers.OfType<JSRuntimeInvocationHandler<TResult>>().Where(x => handlerPredicate(x)).LastOrDefault();
+				result = catchAllHandlers.OfType<JSRuntimeInvocationHandlerBase<TResult>>()
+					.LastOrDefault(x => handlerPredicate(x) && x.Matches(invocation));
 			}
+
 			return result;
 		}
 
@@ -204,7 +203,7 @@ namespace Bunit
 			{
 				ValueTask<TValue>? result = default;
 
-				if (_jsInterop.TryGetHandlerFor<TValue>(invocation) is JSRuntimeInvocationHandler<TValue> handler)
+				if (_jsInterop.TryGetHandlerFor<TValue>(invocation) is JSRuntimeInvocationHandlerBase<TValue> handler)
 				{
 					var task = handler.RegisterInvocation(invocation);
 					result = new ValueTask<TValue>(task);
