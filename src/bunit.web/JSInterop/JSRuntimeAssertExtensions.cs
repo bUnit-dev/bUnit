@@ -73,7 +73,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="actualArgument">object to verify.</param>
 		/// <param name="expectedTargetElement">expected targeted element.</param>
-		public static void ShouldBeElementReferenceTo(this object actualArgument, IElement expectedTargetElement)
+		public static void ShouldBeElementReferenceTo(this object? actualArgument, IElement expectedTargetElement)
 		{
 			if (actualArgument is null)
 				throw new ArgumentNullException(nameof(actualArgument));
