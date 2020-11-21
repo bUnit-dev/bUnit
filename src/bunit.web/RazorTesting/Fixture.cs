@@ -142,12 +142,12 @@ namespace Bunit
 
 		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment) where TComponent : IComponent
 		{
-			return (IRenderedComponent<TComponent>)RenderComponent<TComponent>(fragment);
+			return (IRenderedComponent<TComponent>)RenderComponentBase<TComponent>(fragment);
 		}
 
 		private IRenderedFragment Factory(RenderFragment fragment)
 		{
-			return (IRenderedFragment)RenderFragment(fragment);
+			return (IRenderedFragment)RenderFragmentBase(fragment);
 		}
 
 		private static IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : IComponent

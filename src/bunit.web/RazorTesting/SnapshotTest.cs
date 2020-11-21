@@ -68,10 +68,10 @@ namespace Bunit
 			if (SetupAsync is not null)
 				await TryRunAsync(SetupAsync, this).ConfigureAwait(false);
 
-			var renderedTestInput = (IRenderedFragment)RenderFragment(TestInput!);
+			var renderedTestInput = (IRenderedFragment)RenderFragmentBase(TestInput!);
 			var inputHtml = renderedTestInput.Markup;
 
-			var renderedExpectedRender = (IRenderedFragment)RenderFragment(ExpectedOutput!);
+			var renderedExpectedRender = (IRenderedFragment)RenderFragmentBase(ExpectedOutput!);
 			var expectedHtml = renderedExpectedRender.Markup;
 
 			VerifySnapshot(inputHtml, expectedHtml);
