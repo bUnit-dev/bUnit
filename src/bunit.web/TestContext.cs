@@ -37,7 +37,7 @@ namespace Bunit
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
 		{
 			var renderFragment = new ComponentParameterCollection { parameters }.ToRenderFragment<TComponent>();
-			return (IRenderedComponent<TComponent>)RenderComponent<TComponent>(renderFragment);
+			return (IRenderedComponent<TComponent>)RenderComponentBase<TComponent>(renderFragment);
 		}
 
 		/// <summary>
@@ -49,7 +49,7 @@ namespace Bunit
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder) where TComponent : IComponent
 		{
 			var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder).Build().ToRenderFragment<TComponent>();
-			return (IRenderedComponent<TComponent>)RenderComponent<TComponent>(renderFragment);
+			return (IRenderedComponent<TComponent>)RenderComponentBase<TComponent>(renderFragment);
 		}
 	}
 }
