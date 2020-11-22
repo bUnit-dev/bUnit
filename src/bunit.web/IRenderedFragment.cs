@@ -48,7 +48,5 @@ namespace Bunit
 		/// the snapshot and the rendered markup at that time.
 		/// </summary>
 		void SaveSnapshot();
-
-
 	}
 }

@@ -3,6 +3,7 @@ using AngleSharp.Dom;
 using Bunit.Asserting;
 using Bunit.Diffing;
 using Bunit.Rendering;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
@@ -23,6 +24,11 @@ namespace Bunit
 		[AssertionMethod]
 		public static void MarkupMatches(this string actual, string expected, string? userMessage = null)
 		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
 			using var parser = new BunitHtmlParser();
 			var actualNodes = parser.Parse(actual);
 			var expectedNodes = parser.Parse(expected);
@@ -31,15 +37,17 @@ namespace Bunit
 
 		/// <summary>
 		/// Verifies that the rendered markup from the <paramref name="actual"/> markup fragment matches
-		/// the <paramref name="expected"/> <see cref="IRenderedFragmentBase"/>, using the <see cref="HtmlComparer"/> type.
+		/// the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
 		/// <param name="actual">The markup fragment to verify.</param>
-		/// <param name="expected">The expected <see cref="IRenderedFragmentBase"/>.</param>
+		/// <param name="expected">The expected <see cref="IRenderedFragment"/>.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 		[AssertionMethod]
 		public static void MarkupMatches(this string actual, IRenderedFragment expected, string? userMessage = null)
 		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
@@ -58,6 +66,8 @@ namespace Bunit
 		[AssertionMethod]
 		public static void MarkupMatches(this string actual, INodeList expected, string? userMessage = null)
 		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
@@ -76,6 +86,8 @@ namespace Bunit
 		[AssertionMethod]
 		public static void MarkupMatches(this string actual, INode expected, string? userMessage = null)
 		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
@@ -84,7 +96,7 @@ namespace Bunit
 		}
 
 		/// <summary>
-		/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragmentBase"/> matches
+		/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragment"/> matches
 		/// the <paramref name="expected"/> markup, using the <see cref="HtmlComparer"/> type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -104,8 +116,8 @@ namespace Bunit
 		}
 
 		/// <summary>
-		/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragmentBase"/> matches
-		/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentBase"/>, using the <see cref="HtmlComparer"/> type.
+		/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragment"/> matches
+		/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
 		/// <param name="actual">The rendered fragment to verify.</param>
@@ -124,7 +136,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> matches
-		/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentBase"/>, using the <see cref="HtmlComparer"/> 
+		/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> 
 		/// type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -144,7 +156,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Verifies that the <paramref name="actual"/> <see cref="INode"/> matches
-		/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragmentBase"/>, using the <see cref="HtmlComparer"/> 
+		/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> 
 		/// type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -176,6 +188,8 @@ namespace Bunit
 		{
 			if (actual is null)
 				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
 
 			var expectedNodes = expected.ToNodeList(actual.GetHtmlParser());
 			actual.MarkupMatches(expectedNodes, userMessage);
@@ -195,6 +209,8 @@ namespace Bunit
 		{
 			if (actual is null)
 				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
 
 			var expectedNodes = expected.ToNodeList(actual.GetHtmlParser());
 			actual.MarkupMatches(expectedNodes, userMessage);
@@ -212,6 +228,11 @@ namespace Bunit
 		[AssertionMethod]
 		public static void MarkupMatches(this INodeList actual, INodeList expected, string? userMessage = null)
 		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
 			var diffs = actual.CompareTo(expected);
 
 			if (diffs.Count != 0)
@@ -230,6 +251,11 @@ namespace Bunit
 		[AssertionMethod]
 		public static void MarkupMatches(this INodeList actual, INode expected, string? userMessage = null)
 		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
 			var diffs = actual.CompareTo(expected);
 
 			if (diffs.Count != 0)
@@ -248,10 +274,78 @@ namespace Bunit
 		[AssertionMethod]
 		public static void MarkupMatches(this INode actual, INodeList expected, string? userMessage = null)
 		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
 			var diffs = actual.CompareTo(expected);
 
 			if (diffs.Count != 0)
 				throw new HtmlEqualException(diffs, expected, actual, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragment"/> matches
+		/// the rendered markup from the <paramref name="expected"/> <see cref="RenderFragment"/>, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
+		/// <param name="actual">The rendered fragment to verify.</param>
+		/// <param name="expected">The render fragment whose output to compare against.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this IRenderedFragment actual, RenderFragment expected, string? userMessage = null)
+		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			var testContext = actual.Services.GetRequiredService<TestContext>();
+			var renderedFragment = testContext.Render(expected);
+			MarkupMatches(actual, renderedFragment, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the markup from the <paramref name="actual"/> matches
+		/// the rendered markup from the <paramref name="expected"/> <see cref="RenderFragment"/>, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
+		/// <param name="actual">The markup to verify.</param>
+		/// <param name="expected">The render fragment whose output to compare against.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this INode actual, RenderFragment expected, string? userMessage = null)
+		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			var testContext = actual.GetTestContext() ?? new TestContext();
+			var renderedFragment = testContext.Render(expected);
+			MarkupMatches(actual, renderedFragment, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the markup from the <paramref name="actual"/> matches
+		/// the rendered markup from the <paramref name="expected"/> <see cref="RenderFragment"/>, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
+		/// <param name="actual">The markup to verify.</param>
+		/// <param name="expected">The render fragment whose output to compare against.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this INodeList actual, RenderFragment expected, string? userMessage = null)
+		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			var testContext = actual.GetTestContext() ?? new TestContext();
+			var renderedFragment = testContext.Render(expected);
+			MarkupMatches(actual, renderedFragment, userMessage);
 		}
 
 		private static INodeList ToNodeList(this string markup, BunitHtmlParser? htmlParser)

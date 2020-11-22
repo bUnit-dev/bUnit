@@ -1,7 +1,5 @@
 using System;
-using Bunit.RazorTesting;
 using Bunit.Rendering;
-using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
@@ -51,46 +49,6 @@ namespace Bunit
 		protected TestContextBase()
 		{
 			Services = new TestServiceProvider();			
-		}
-
-		/// <summary>
-		/// Renders a component, declared in the <paramref name="renderFragment"/>, inside the <see cref="RenderTree"/>.
-		/// </summary>
-		/// <typeparam name="TComponent">The type of component to render.</typeparam>
-		/// <param name="renderFragment">The <see cref="RenderFragmentBase"/> that contains a declaration of the component.</param>
-		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/>.</returns>
-		protected IRenderedComponentBase<TComponent> RenderComponentBase<TComponent>(RenderFragment renderFragment) where TComponent : IComponent
-		{
-			// Wrap TComponent in any layout components added to the test context.
-			// If one of the layout components is the same type as TComponent,
-			// make sure to return the rendered component, not the layout component.			
-			var resultBase = Renderer.RenderFragment(RenderTree.Wrap(renderFragment));
-
-			// This ensures that the correct component is returned, in case an added layout component
-			// is of type TComponent.
-			var renderTreeTComponentCount = RenderTree.GetCountOf<TComponent>();
-			var result = renderTreeTComponentCount > 0
-				? Renderer.FindComponents<TComponent>(resultBase)[renderTreeTComponentCount]
-				: Renderer.FindComponent<TComponent>(resultBase);
-
-			return result;
-		}
-
-		/// <summary>
-		/// Renders a fragment, declared in the <paramref name="renderFragment"/>, inside the <see cref="RenderTree"/>.
-		/// </summary>
-		/// <param name="renderFragment">The <see cref="RenderFragmentBase"/> to render.</param>
-		/// <returns>A <see cref="IRenderedFragmentBase"/>.</returns>
-		protected IRenderedFragmentBase RenderFragmentBase(RenderFragment renderFragment)
-		{
-			// Wrap fragment in a FragmentContainer so the start of the test supplied
-			// razor fragment can be found after, and then wrap in any layout components
-			// added to the test context.		
-			var wrappedInFragmentContainer = FragmentContainer.Wrap(renderFragment);
-			var wrappedInRenderTree = RenderTree.Wrap(wrappedInFragmentContainer);
-			var resultBase = Renderer.RenderFragment(wrappedInRenderTree);
-
-			return Renderer.FindComponent<FragmentContainer>(resultBase);
 		}
 
 		/// <inheritdoc/>
