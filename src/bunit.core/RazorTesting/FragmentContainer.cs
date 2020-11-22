@@ -9,7 +9,7 @@ namespace Bunit.RazorTesting
 	/// when a fragment is rendered inside a test contexts render tree.
 	/// It is primarily used to be able to find the starting point to return.
 	/// </summary>
-	internal sealed class FragmentContainer : ComponentBase
+	public sealed class FragmentContainer : ComponentBase
 	{
 		/// <summary>
 		/// The content to wrap.
@@ -25,7 +25,7 @@ namespace Bunit.RazorTesting
 		/// <summary>
 		/// Wraps the <paramref name="wrappingTarget"/> in a <see cref="FragmentContainer"/>.
 		/// </summary>
-		internal static RenderFragment Wrap(RenderFragment wrappingTarget)
+		public static RenderFragment Wrap(RenderFragment wrappingTarget)
 		{
 			return builder =>
 			{

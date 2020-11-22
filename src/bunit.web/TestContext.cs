@@ -23,8 +23,9 @@ namespace Bunit
 		/// </summary>
 		public TestContext()
 		{
+			Services.AddSingleton(this);
 			JSInterop.AddBuiltInJSRuntimeInvocationHandlers();
-			Services.AddSingleton<IJSRuntime>(JSInterop.JSRuntime);
+			Services.AddSingleton(JSInterop.JSRuntime);
 			Services.AddDefaultTestContextServices();
 		}
 
@@ -37,7 +38,7 @@ namespace Bunit
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
 		{
 			var renderFragment = new ComponentParameterCollection { parameters }.ToRenderFragment<TComponent>();
-			return (IRenderedComponent<TComponent>)RenderComponentBase<TComponent>(renderFragment);
+			return Render<TComponent>(renderFragment);
 		}
 
 		/// <summary>
@@ -49,7 +50,33 @@ namespace Bunit
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder) where TComponent : IComponent
 		{
 			var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder).Build().ToRenderFragment<TComponent>();
-			return (IRenderedComponent<TComponent>)RenderComponentBase<TComponent>(renderFragment);
+			return Render<TComponent>(renderFragment);
 		}
+
+		/// <summary>
+		/// Renders the <paramref name="renderFragment"/> and returns the first <typeparamref name="TComponent"/> in the resulting render tree.
+		/// </summary>
+		/// <remarks>
+		/// Calling this method is equivalent to calling <c>Render(renderFragment).FindComponent&lt;TComponent&gt;()</c>.
+		/// </remarks>
+		/// <typeparam name="TComponent">The type of component to find in the render tree.</typeparam>
+		/// <param name="renderFragment">The render fragment to render.</param>
+		/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
+		public virtual IRenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment) where TComponent : IComponent
+			=> this.RenderInsideRenderTree<TComponent>(renderFragment);
+
+		/// <summary>
+		/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="IRenderedFragment"/>.
+		/// </summary>
+		/// <param name="renderFragment">The render fragment to render.</param>
+		/// <returns>The <see cref="IRenderedFragment"/>.</returns>
+		public virtual IRenderedFragment Render(RenderFragment renderFragment)
+			=> this.RenderInsideRenderTree(renderFragment);
+
+		/// <summary>
+		/// Dummy method required to allow Blazors compiler to generate
+		/// C# from .razor files.
+		/// </summary>
+		protected virtual void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) { }
 	}
 }
