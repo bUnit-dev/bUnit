@@ -27,6 +27,58 @@ List of new features.
 
   By [@egil](https://github.com/egil) in [#260](https://github.com/egil/bUnit/pull/260).
 
+- Added `Render(RenderFragment)` and `Render<TComponent>(RenderFragment)` methods to `TestContext`, as well as various overloads to the `MarkupMatches` methods, that also takes a `RenderFragment` as the expected value.
+
+  The difference between the generic `Render` method and the non-generic one is that the generic returns an `IRenderedComponent<TComponent>`, whereas the non-generic one returns a `IRenderedFragment`.
+
+  Calling `Render<TComponent>(RenderFragent)` is equivalent to calling `Render(RenderFragment).FindComponent<TComponent>()`, e.g. it returns the first component in the render tree of type `TComponent`. This is different from the `RenderComponent<TComponent>()` method, where `TComponent` _is_ the root component of the render tree.
+
+  The main usecase for these are when writing tests inside .razor files. Here the inline syntax for declaring render fragments make these methods very useful.
+
+  For example, to tests the `<Counter>` page/component that is part of new Blazor apps, do the following (inside a `CounterTest.razor` file):
+
+  ```cshtml
+  @code
+  {
+    [Fact]
+    public void Counter_Increments_When_Button_Is_Clicked()
+    {
+      using var ctx = new TestContext();
+      var cut = ctx.Render(@<Counter />);
+
+      cut.Find("button").Click();
+
+      cut.Find("p").MarkupMatches(@<p>Current count: 1</p>);
+    }
+  }
+  ```
+
+  Note: This example uses xUnit, but NUnit or MSTest works equally well.
+
+  In addition to the new `Render` methods, a empty `BuildRenderTree` method has been added to the `TestContext` type. This makes it possible to inherit from the `TestContext` type in test components, removing the need for newing up the `TestContext` in each test.
+
+  This means the test component above ends up looking like this:
+
+  ```cshtml
+  @inherts TestContext
+  @code
+  {
+    [Fact]
+    public void Counter_Increments_When_Button_Is_Clicked()
+    {
+      var cut = Render(@<Counter />);
+
+      cut.Find("button").Click();
+
+      cut.Find("p").MarkupMatches(@<p>Current count: 1</p>);
+    }
+  }
+  ```
+
+  Tip: If you have multiple test components in the same folder, you can add a `_Imports.razor` file inside it and add the `@inherits TestContext` statement in that, removing the need to add it to every test component.
+
+  By [@egil](https://github.com/egil) in [#262](https://github.com/egil/bUnit/pull/262).
+
 ### Changed
 List of changes in existing functionality.
 

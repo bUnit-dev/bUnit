@@ -13,12 +13,7 @@ namespace Bunit
 	{
 		private readonly IServiceCollection _serviceCollection;
 		private ServiceProvider? _serviceProvider;
-
-		/// <summary>
-		/// Gets a reusable default test service provider.
-		/// </summary>
-		public static readonly IServiceProvider Default = new TestServiceProvider(new ServiceCollection(), true);
-
+		
 		/// <summary>
 		/// Gets whether this <see cref="TestServiceProvider"/> has been initialized, and 
 		/// no longer will accept calls to the <c>AddService</c>'s methods.
