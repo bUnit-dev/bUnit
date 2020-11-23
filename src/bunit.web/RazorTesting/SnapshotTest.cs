@@ -53,9 +53,7 @@ namespace Bunit
 		/// </summary>
 		public SnapshotTest()
 		{
-			JSInterop.AddBuiltInJSRuntimeInvocationHandlers();
-			Services.AddSingleton<IJSRuntime>(JSInterop.JSRuntime);
-			Services.AddDefaultTestContextServices();
+			Services.AddDefaultTestContextServices(this, JSInterop);
 		}
 
 		/// <inheritdoc/>
@@ -79,7 +77,7 @@ namespace Bunit
 
 		private void VerifySnapshot(string inputHtml, string expectedHtml)
 		{
-			using var parser = new BunitHtmlParser();
+			var parser = Services.GetRequiredService<BunitHtmlParser>();
 			var inputNodes = parser.Parse(inputHtml);
 			var expectedNodes = parser.Parse(expectedHtml);
 

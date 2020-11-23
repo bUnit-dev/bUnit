@@ -2,6 +2,7 @@ using System;
 using AngleSharp.Dom;
 using Bunit.Asserting;
 using Bunit.Diffing;
+using Bunit.Extensions;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -301,8 +302,8 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var testContext = actual.Services.GetRequiredService<TestContext>();
-			var renderedFragment = testContext.Render(expected);
+			var testContext = actual.Services.GetRequiredService<TestContextBase>();
+			var renderedFragment = testContext.RenderInsideRenderTree(expected);
 			MarkupMatches(actual, renderedFragment, userMessage);
 		}
 
@@ -323,7 +324,7 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(expected));
 
 			var testContext = actual.GetTestContext() ?? new TestContext();
-			var renderedFragment = testContext.Render(expected);
+			var renderedFragment = testContext.RenderInsideRenderTree(expected);
 			MarkupMatches(actual, renderedFragment, userMessage);
 		}
 
@@ -344,7 +345,7 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(expected));
 
 			var testContext = actual.GetTestContext() ?? new TestContext();
-			var renderedFragment = testContext.Render(expected);
+			var renderedFragment = testContext.RenderInsideRenderTree(expected);
 			MarkupMatches(actual, renderedFragment, userMessage);
 		}
 

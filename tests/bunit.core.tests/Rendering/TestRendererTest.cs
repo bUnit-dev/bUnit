@@ -73,17 +73,8 @@ namespace Bunit.Rendering
 		}
 	}
 
-	public class TestRendererTest
+	public class TestRendererTest : TestContext
 	{
-		private TestServiceProvider Services { get; }
-
-		public TestRendererTest()
-		{
-			Services = new TestServiceProvider();
-			Services.AddDefaultTestContextServices();
-			Services.AddSingleton<ITestRenderer, TestRenderer>();
-		}
-
 		[Fact(DisplayName = "RenderFragment re-throws exception from component")]
 		public void Test004()
 		{
