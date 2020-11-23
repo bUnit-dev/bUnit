@@ -42,9 +42,7 @@ namespace Bunit
 		/// </summary>
 		public Fixture()
 		{
-			JSInterop.AddBuiltInJSRuntimeInvocationHandlers();
-			Services.AddSingleton<IJSRuntime>(JSInterop.JSRuntime);
-			Services.AddDefaultTestContextServices();
+			Services.AddDefaultTestContextServices(this, JSInterop);
 		}
 
 		/// <summary>
@@ -170,7 +168,6 @@ namespace Bunit
 		/// <inheritdoc/>
 		protected override Task Run()
 		{
-			Services.AddDefaultTestContextServices();
 			return base.Run(this);
 		}
 	}

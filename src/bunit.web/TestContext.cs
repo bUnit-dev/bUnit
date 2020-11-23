@@ -23,10 +23,7 @@ namespace Bunit
 		/// </summary>
 		public TestContext()
 		{
-			Services.AddSingleton(this);
-			JSInterop.AddBuiltInJSRuntimeInvocationHandlers();
-			Services.AddSingleton(JSInterop.JSRuntime);
-			Services.AddDefaultTestContextServices();
+			Services.AddDefaultTestContextServices(this, JSInterop);
 		}
 
 		/// <summary>

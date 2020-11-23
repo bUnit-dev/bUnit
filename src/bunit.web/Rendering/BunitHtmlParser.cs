@@ -36,7 +36,7 @@ namespace Bunit.Rendering
 		/// Creates an instance of the parser with a AngleSharp context 
 		/// with the <paramref name="testRenderer"/> registered.
 		/// </summary>
-		public BunitHtmlParser(ITestRenderer testRenderer, HtmlComparer htmlComparer, TestContext testContext)
+		public BunitHtmlParser(ITestRenderer testRenderer, HtmlComparer htmlComparer, TestContextBase testContext)
 			: this(Configuration.Default.WithCss()
 				  .With(testRenderer ?? throw new ArgumentNullException(nameof(testRenderer)))
 				  .With(htmlComparer ?? throw new ArgumentNullException(nameof(htmlComparer)))

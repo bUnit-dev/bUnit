@@ -1,5 +1,6 @@
 using System.Net.Http;
 using Bunit.Diffing;
+using Bunit.JSInterop;
 using Bunit.Rendering;
 using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,7 @@ namespace Bunit.Extensions
 		/// <summary>
 		/// Registers the default services required by the web <see cref="TestContext"/>.
 		/// </summary>
-		public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services)
+		public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services, TestContextBase testContext, BunitJSInterop jsInterop)
 		{
 			// Placeholders and defaults for common Blazor services
 			services.AddSingleton<ILoggerFactory>(NullLoggerFactory.Instance);
@@ -31,7 +32,12 @@ namespace Bunit.Extensions
 			services.AddSingleton<HttpClient, PlaceholderHttpClient>();
 			services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
 
+			// bUnits fake JSInterop
+			jsInterop.AddBuiltInJSRuntimeInvocationHandlers();
+			services.AddSingleton<IJSRuntime>(jsInterop.JSRuntime);
+
 			// bUnit specific services
+			services.AddSingleton<TestContextBase>(testContext);
 			services.AddSingleton<ITestRenderer, WebTestRenderer>();
 			services.AddSingleton<HtmlComparer>();
 			services.AddSingleton<BunitHtmlParser>();

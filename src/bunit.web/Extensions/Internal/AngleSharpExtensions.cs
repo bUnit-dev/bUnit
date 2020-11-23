@@ -71,9 +71,9 @@ namespace Bunit
 		/// </summary>
 		/// <param name="node"></param>
 		/// <returns>The <see cref="TestContext"/> or null if not found.</returns>
-		public static TestContext? GetTestContext(this INode? node)
+		public static TestContextBase? GetTestContext(this INode? node)
 		{
-			return node?.Owner.Context.GetService<TestContext>();
+			return node?.Owner.Context.GetService<TestContextBase>();
 		}
 
 		/// <summary>
@@ -82,7 +82,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="nodes"></param>
 		/// <returns>The <see cref="TestContext"/> or null if not found.</returns>
-		public static TestContext? GetTestContext(this INodeList nodes)
+		public static TestContextBase? GetTestContext(this INodeList nodes)
 		{
 			return nodes?.Length > 0 ? nodes[0].GetTestContext() : null;
 		}

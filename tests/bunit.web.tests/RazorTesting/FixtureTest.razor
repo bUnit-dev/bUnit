@@ -199,3 +199,18 @@
 		}
 	}
 </Fixture>
+
+<Fixture Test="Test030" Description="Can raise events from markup rendered with Fixture">
+	<ComponentUnderTest>
+		<ClickCounter></ClickCounter>
+	</ComponentUnderTest>
+	@code
+	{
+		void Test030(Fixture f)
+		{
+			f.GetComponentUnderTest()
+				.Find("button")
+				.Click();
+		}
+	}
+</Fixture>

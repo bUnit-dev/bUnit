@@ -86,6 +86,14 @@ namespace Bunit
 				.ShouldBe("FOO");
 		}
 
+		[Fact(DisplayName = "Can raise events from markup rendered with TestContext")]
+		public void Test040()
+		{
+			RenderComponent<ClickCounter>()
+				.Find("button")
+				.Click();
+		}
+
 		class ReceivesCascadinValue : ComponentBase
 		{
 			[CascadingParameter] public string? Value { get; set; }
