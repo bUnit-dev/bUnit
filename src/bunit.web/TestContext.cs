@@ -71,7 +71,7 @@ namespace Bunit
 			=> this.RenderInsideRenderTree(renderFragment);
 
 		/// <summary>
-		/// Dummy method required to allow Blazors compiler to generate
+		/// Dummy method required to allow Blazor's compiler to generate
 		/// C# from .razor files.
 		/// </summary>
 		protected virtual void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) { }

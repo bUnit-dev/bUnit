@@ -1,3 +1,7 @@
+#if NET5_0
+using Bunit.JSInterop.InvocationHandlers;
+#endif
+
 namespace Bunit.JSInterop
 {
 	/// <summary>
@@ -11,7 +15,8 @@ namespace Bunit.JSInterop
 		public static BunitJSInterop AddBuiltInJSRuntimeInvocationHandlers(this BunitJSInterop jsInterop)
 		{
 #if NET5_0
-			jsInterop.AddInvocationHandler(new InvocationHandlers.FocusAsyncInvocationHandler());
+			jsInterop.AddInvocationHandler(new FocusAsyncInvocationHandler());
+			jsInterop.AddInvocationHandler(new VirtualizeJSRuntimeInvocationHandler());
 #endif
 			return jsInterop;
 		}
