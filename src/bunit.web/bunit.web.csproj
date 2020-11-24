@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<RazorLangVersion>3.0</RazorLangVersion>
@@ -16,12 +16,6 @@
 			You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect the component under test, trigger event handlers, provide cascading values, inject services, mock JavaScript interopt, and perform snapshot testing.
 		</Description>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Remove="TestDoubles\Logging\**" />
-	  <EmbeddedResource Remove="TestDoubles\Logging\**" />
-	  <None Remove="TestDoubles\Logging\**" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AngleSharp" Version="0.14.0" />
