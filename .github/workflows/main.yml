@@ -70,9 +70,6 @@ jobs:
 
   verify-template:
     if: github.event_name != 'schedule'
-    env:
-      BRANCH: ''
-      VERSION: ''
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -84,10 +81,11 @@ jobs:
         with:
           setAllVars: true
 
+      - uses: nelonoel/branch-name@v1.0.1
       - name: Setting VERSION and BRANCH env
         run: |
-          echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
-          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+          echo "VERSION=$NBGV_NuGetPackageVersion" >> $GITHUB_ENV
+          echo "BRANCH=$BRANCH_NAME" >> $GITHUB_ENV
 
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
@@ -121,79 +119,78 @@ jobs:
     if: github.event_name != 'schedule' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-    - uses: dotnet/nbgv@master
-      with:
-        setAllVars: true
+      - uses: dotnet/nbgv@master
+        with:
+          setAllVars: true
 
-    - name: Setting VERSION and BRANCH env
-      run: |
-        echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
-        echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+      - uses: nelonoel/branch-name@v1.0.1
 
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.x'
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '5.0.x'
+      - name: Setting VERSION and BRANCH env
+        run: |
+          echo "VERSION=$NBGV_NuGetPackageVersion" >> $GITHUB_ENV
+          echo "BRANCH=$BRANCH_NAME" >> $GITHUB_ENV
 
-    - name: Install dotnet-sonarscanner
-      run: dotnet tool install --global dotnet-sonarscanner
-    - name: Running dotnet-sonarscanner
-      shell: bash
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        dotnet sonarscanner begin /k:"egil_bUnit" /o:"egil" /n:"bUnit" /v:"$NBGV_NuGetPackageVersion" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url=https://sonarcloud.io /d:sonar.branch.name="$BRANCH" /d:sonar.verbose="true" /d:sonar.cs.opencover.reportsPaths="tests/**/coverage/*.opencover.xml"
-        dotnet build
-        dotnet test tests/bunit.core.tests/ /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\"
-        dotnet test tests/bunit.web.tests/ /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\"
-        dotnet test tests/bunit.xunit.tests/ /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\"
-        dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Install dotnet-sonarscanner
+        run: dotnet tool install --global dotnet-sonarscanner
+      - name: Running dotnet-sonarscanner
+        shell: bash
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet sonarscanner begin /k:"egil_bUnit" /o:"egil" /n:"bUnit" /v:"$NBGV_NuGetPackageVersion" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url=https://sonarcloud.io /d:sonar.branch.name="$BRANCH" /d:sonar.verbose="true" /d:sonar.cs.opencover.reportsPaths="tests/**/coverage/*.opencover.xml"
+          dotnet build
+          dotnet test tests/bunit.core.tests/ /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\"
+          dotnet test tests/bunit.web.tests/ /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\"
+          dotnet test tests/bunit.xunit.tests/ /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\"
+          dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 
   code-ql:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      with:
-        # We must fetch at least the immediate parents so that if this is
-        # a pull request then we can checkout the head.
-        fetch-depth: 0
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 0
 
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.x'
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '5.0.x'
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: csharp
-        config-file: ./.github/codeql/codeql-config.yml
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: csharp
+          config-file: ./.github/codeql/codeql-config.yml
 
-    - name: Building library
-      run: dotnet build -p:ContinuousIntegrationBuild=true
+      - name: Building library
+        run: dotnet build -p:ContinuousIntegrationBuild=true
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
 
   publish-nuget-packages:
     if: (github.event_name == 'push' && github.ref == 'refs/heads/dev') || github.event_name == 'release'
     needs: [dotnet-build, dotnet-test, verify-template]
     runs-on: ubuntu-latest
-    env:
-      VERSION: ''
-      BRANCH: ''
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -204,10 +201,11 @@ jobs:
         with:
           setAllVars: true
 
+      - uses: nelonoel/branch-name@v1.0.1
       - name: Setting VERSION and BRANCH env
         run: |
-          echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
-          echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+          echo "VERSION=$NBGV_NuGetPackageVersion" >> $GITHUB_ENV
+          echo "BRANCH=$BRANCH_NAME" >> $GITHUB_ENV
 
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
