@@ -22,9 +22,9 @@ jobs:
         with:
           setAllVars: true
 
-      - name: Setting VERSION
-        run: echo "::set-env name=VERSION::$NBGV_NuGetPackageVersion"
-      
+      - name: Setting VERSION env
+        run: echo "VERSION=$NBGV_NuGetPackageVersion" >> $GITHUB_ENV
+
       - name: Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
