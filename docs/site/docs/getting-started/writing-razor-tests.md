@@ -15,6 +15,9 @@ A test for a Blazor component can be written in a Blazor _test_ component using 
 > [!WARNING]
 > Razor tests are currently only compatible with using xUnit as the general purpose testing framework.
 
+> [!IMPORTANT]
+> Make sure the project SDK type is set to `<Project Sdk="Microsoft.NET.Sdk.Razor">`, instead of the default `<Project Sdk="Microsoft.NET.Sdk">` that is used with standard testing projects. See <xref:create-test-project> for a guide on setting up bUnit test projects.
+
 ## Creating a Test Specific `_Imports.razor` File
 
 Razor tests are written in Blazor test components. To make our lives a little easier, let’s first set up a `_Imports.razor` file with the "using directives" we are going to be using throughout our tests. Simply add the following `_Imports.razor` to the root folder where you will be placing your Blazor test components:
