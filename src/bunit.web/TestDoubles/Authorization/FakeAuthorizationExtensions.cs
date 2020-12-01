@@ -13,10 +13,9 @@ namespace Bunit.TestDoubles
 		/// an authenticated user, as well as adding the <see cref="CascadingAuthenticationState"/> component to the
 		/// test contexts render tree.
 		/// </summary>
-		public static TestAuthorizationContext AddTestAuthorization(this TestContext context)
+		public static TestAuthorizationContext AddTestAuthorization(this TestContextBase context)
 		{
 			context.RenderTree.TryAdd<CascadingAuthenticationState>();
-
 			var authCtx = new TestAuthorizationContext();
 			authCtx.SetNotAuthorized();
 			authCtx.RegisterAuthorizationServices(context.Services);
