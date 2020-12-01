@@ -101,6 +101,8 @@ List of changes in existing functionality.
 
   Changed added in relation to [#240](https://github.com/egil/bUnit/issues/240) in [#257](https://github.com/egil/bUnit/issues/257) by [@egil](https://github.com/egil).
 
+- Changed `AddTestAuthorization` such that it works in Razor-based test contexts, i.e. on the `Fixture` and `SnapshotTest` types.
+
 ### Removed
 List of now removed features.
 
