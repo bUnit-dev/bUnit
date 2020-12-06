@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -179,7 +180,11 @@ namespace Bunit
 			return result;
 		}
 
-		private class BUnitJSRuntime : IJSRuntime
+		#if NET5_0
+		private class BUnitJSRuntime : IJSRuntime, IJSInProcessRuntime, IJSUnmarshalledRuntime
+		#else
+		private class BUnitJSRuntime : IJSRuntime, IJSInProcessRuntime
+		#endif
 		{
 			private readonly BunitJSInterop _jsInterop;
 
@@ -187,6 +192,9 @@ namespace Bunit
 			{
 				_jsInterop = bunitJsInterop;
 			}
+
+			public TResult Invoke<TResult>(string identifier, params object?[]? args) =>
+				InvokeAsync<TResult>(identifier, args).GetAwaiter().GetResult();
 
 			public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args)
 				=> InvokeAsync<TValue>(identifier, default, args);
@@ -198,6 +206,18 @@ namespace Bunit
 
 				return TryHandlePlannedInvocation<TValue>(invocation) ?? new ValueTask<TValue>(default(TValue)!);
 			}
+
+			public TResult InvokeUnmarshalled<TResult>(string identifier) =>
+				InvokeAsync<TResult>(identifier, null).GetAwaiter().GetResult();
+
+			public TResult InvokeUnmarshalled<T0, TResult>(string identifier, [DisallowNull] T0 arg0) =>
+				InvokeAsync<TResult>(identifier, new object[1] {arg0}).GetAwaiter().GetResult();
+
+			public TResult InvokeUnmarshalled<T0, T1, TResult>(string identifier, [DisallowNull] T0 arg0, [DisallowNull] T1 arg1) =>
+				InvokeAsync<TResult>(identifier, new object[2] { arg0, arg1 }).GetAwaiter().GetResult();
+
+			public TResult InvokeUnmarshalled<T0, T1, T2, TResult>(string identifier, [DisallowNull] T0 arg0, [DisallowNull] T1 arg1, [DisallowNull] T2 arg2) =>
+				InvokeAsync<TResult>(identifier, new object[3] { arg0, arg1, arg2 }).GetAwaiter().GetResult();
 
 			private ValueTask<TValue>? TryHandlePlannedInvocation<TValue>(JSRuntimeInvocation invocation)
 			{
