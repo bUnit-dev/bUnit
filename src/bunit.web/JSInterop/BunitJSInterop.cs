@@ -180,9 +180,11 @@ namespace Bunit
 			return result;
 		}
 
-		#if NET5_0
+
+		[SuppressMessage("Design", "CA2012:ValueTask instances should not have their result directly accessed unless the instance has already completed.", Justification = "The ValueTask always wraps a Task object.")]
+#if NET5_0
 		private class BUnitJSRuntime : IJSRuntime, IJSInProcessRuntime, IJSUnmarshalledRuntime
-		#else
+#else
 		private class BUnitJSRuntime : IJSRuntime, IJSInProcessRuntime
 		#endif
 		{
