@@ -525,6 +525,17 @@ namespace Bunit.JSInterop
 			exception.Invocation.Identifier.ShouldBe(identifier);
 			exception.Invocation.Arguments.ShouldBe(args);
 		}
+
+		[Fact(DisplayName = "Mock throws exception when in strict mode and IJSUnmarshalledRuntime invocation has not been setup with zero arguments")]
+		public void Test050()
+		{
+			var sut = CreateSut(JSRuntimeMode.Strict);
+			var identifier = "func";
+
+			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<object>(identifier); });
+			exception.Invocation.Identifier.ShouldBe(identifier);
+			exception.Invocation.Arguments.ShouldBeEmpty();
+		}
 #endif
 	}
 }
