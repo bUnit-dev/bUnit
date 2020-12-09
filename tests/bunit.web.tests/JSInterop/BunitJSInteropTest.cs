@@ -451,7 +451,6 @@ namespace Bunit.JSInterop
 		{
 			var identifier = "fooFunc";
 			var args = new[] { "bar", "baz" };
-			using var cts = new CancellationTokenSource();
 			var sut = CreateSut(JSRuntimeMode.Loose);
 
 			var _ = ((IJSInProcessRuntime)sut.JSRuntime).Invoke<object>(identifier, args);
@@ -484,7 +483,7 @@ namespace Bunit.JSInterop
 			var identifier = "func";
 			var args = new[] { "bar", "baz" };
 
-			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = ((IJSInProcessRuntime)sut.JSRuntime).Invoke<object>(identifier, args); });
+			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => ((IJSInProcessRuntime)sut.JSRuntime).Invoke<object>(identifier, args));
 			exception.Invocation.Identifier.ShouldBe(identifier);
 			exception.Invocation.Arguments.ShouldBe(args);
 		}

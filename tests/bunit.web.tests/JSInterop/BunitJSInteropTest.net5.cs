@@ -20,7 +20,7 @@ namespace Bunit.JSInterop
 			var identifier = "func";
 			var args = new[] { "bar" };
 
-			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, object>(identifier, "bar"); });
+			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, object>(identifier, "bar"));
 			exception.Invocation.Identifier.ShouldBe(identifier);
 			exception.Invocation.Arguments.ShouldBe(args);
 		}
@@ -32,7 +32,7 @@ namespace Bunit.JSInterop
 			var identifier = "func";
 			var args = new[] { "bar", "baz" };
 
-			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, string, object>(identifier, "bar", "baz"); });
+			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, string, object>(identifier, "bar", "baz"));
 			exception.Invocation.Identifier.ShouldBe(identifier);
 			exception.Invocation.Arguments.ShouldBe(args);
 		}
@@ -44,7 +44,7 @@ namespace Bunit.JSInterop
 			var identifier = "func";
 			var args = new[] { "bar", "baz", "bau" };
 
-			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, string, string, object>(identifier, "bar", "baz", "bau"); });
+			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, string, string, object>(identifier, "bar", "baz", "bau"));
 			exception.Invocation.Identifier.ShouldBe(identifier);
 			exception.Invocation.Arguments.ShouldBe(args);
 		}
@@ -55,7 +55,7 @@ namespace Bunit.JSInterop
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var identifier = "func";
 
-			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<object>(identifier); });
+			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<object>(identifier));
 			exception.Invocation.Identifier.ShouldBe(identifier);
 			exception.Invocation.Arguments.ShouldBeEmpty();
 		}
@@ -65,7 +65,6 @@ namespace Bunit.JSInterop
 		{
 			var identifier = "fooFunc";
 			var args = new[] { "bar"};
-			using var cts = new CancellationTokenSource();
 			var sut = CreateSut(JSRuntimeMode.Strict);
 
 			var planned = sut.Setup<Guid>("fooFunc", args);
@@ -83,7 +82,6 @@ namespace Bunit.JSInterop
 		{
 			var identifier = "fooFunc";
 			var args = new[] { "bar", "baz" };
-			using var cts = new CancellationTokenSource();
 			var sut = CreateSut(JSRuntimeMode.Strict);
 
 			var planned = sut.Setup<Guid>("fooFunc", args);
@@ -101,7 +99,6 @@ namespace Bunit.JSInterop
 		{
 			var identifier = "fooFunc";
 			var args = new[] { "bar", "baz", "boa" };
-			using var cts = new CancellationTokenSource();
 			var sut = CreateSut(JSRuntimeMode.Strict);
 
 			var planned = sut.Setup<Guid>("fooFunc", args);
@@ -119,7 +116,6 @@ namespace Bunit.JSInterop
 		{
 			var identifier = "fooFunc";
 			var args = new[] { "bar", "baz", "boa" };
-			using var cts = new CancellationTokenSource();
 			var sut = CreateSut(JSRuntimeMode.Strict);
 
 			var planned = sut.Setup<Guid>("fooFunc", args);
@@ -137,7 +133,6 @@ namespace Bunit.JSInterop
 		{
 			var identifier = "fooFunc";
 			var args = new[] { "bar" };
-			using var cts = new CancellationTokenSource();
 			var sut = CreateSut(JSRuntimeMode.Strict);
 
 			var expectedResult = Guid.NewGuid();
@@ -153,7 +148,6 @@ namespace Bunit.JSInterop
 		{
 			var identifier = "fooFunc";
 			var args = new[] { "bar", "baz" };
-			using var cts = new CancellationTokenSource();
 			var sut = CreateSut(JSRuntimeMode.Strict);
 
 			var expectedResult = Guid.NewGuid();
@@ -169,7 +163,6 @@ namespace Bunit.JSInterop
 		{
 			var identifier = "fooFunc";
 			var args = new[] { "bar", "baz", "bao" };
-			using var cts = new CancellationTokenSource();
 			var sut = CreateSut(JSRuntimeMode.Strict);
 
 			var expectedResult = Guid.NewGuid();
@@ -184,7 +177,6 @@ namespace Bunit.JSInterop
 		public void Test058()
 		{
 			var identifier = "fooFunc";
-			using var cts = new CancellationTokenSource();
 			var sut = CreateSut(JSRuntimeMode.Strict);
 
 			var expectedResult = Guid.NewGuid();
