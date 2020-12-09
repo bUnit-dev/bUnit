@@ -191,3 +191,9 @@ footer small {
 .contribution {
   margin-top: 1rem;
 }
+
+#sponsor-button {
+  display: inline-block;
+  padding-top: 10px;
+  padding-left: 20px;
+}
