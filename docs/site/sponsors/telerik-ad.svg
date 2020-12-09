@@ -24,6 +24,14 @@
       cursor: pointer;
       fill: #0366d6;
     }
+    @media (prefers-color-scheme: dark) {
+      text {
+        fill: #c9d1d9;
+      }
+      .link {
+        fill: #58a6ff;
+      }
+    }
     ]]>
   </style>
 </svg>
