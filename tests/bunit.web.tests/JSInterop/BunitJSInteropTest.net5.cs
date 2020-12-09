@@ -60,8 +60,26 @@ namespace Bunit.JSInterop
 			exception.Invocation.Arguments.ShouldBeEmpty();
 		}
 
-		[Fact(DisplayName = "After IJSUnmarshalledRuntime invocation a invocation should be visible from the Invocations list.")]
+		[Fact(DisplayName = "After IJSUnmarshalledRuntime invocation a invocation should be visible from the Invocations list when parsed one arguments.")]
 		public void Test051()
+		{
+			var identifier = "fooFunc";
+			var args = new[] { "bar"};
+			using var cts = new CancellationTokenSource();
+			var sut = CreateSut(JSRuntimeMode.Strict);
+
+			var planned = sut.Setup<Guid>("fooFunc", args);
+			planned.SetResult(Guid.NewGuid());
+
+			var _ = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, Guid>(identifier, "bar");
+
+			var invocation = sut.Invocations[identifier].Single();
+			invocation.Identifier.ShouldBe(identifier);
+			invocation.Arguments.ShouldBe(args);
+		}
+
+		[Fact(DisplayName = "After IJSUnmarshalledRuntime invocation a invocation should be visible from the Invocations list when parsed two arguments.")]
+		public void Test052()
 		{
 			var identifier = "fooFunc";
 			var args = new[] { "bar", "baz" };
@@ -78,8 +96,60 @@ namespace Bunit.JSInterop
 			invocation.Arguments.ShouldBe(args);
 		}
 
-		[Fact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result.")]
-		public void Test052()
+		[Fact(DisplayName = "After IJSUnmarshalledRuntime invocation a invocation should be visible from the Invocations list when parsed three arguments.")]
+		public void Test053()
+		{
+			var identifier = "fooFunc";
+			var args = new[] { "bar", "baz", "boa" };
+			using var cts = new CancellationTokenSource();
+			var sut = CreateSut(JSRuntimeMode.Strict);
+
+			var planned = sut.Setup<Guid>("fooFunc", args);
+			planned.SetResult(Guid.NewGuid());
+
+			var _ = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, string, string, Guid>(identifier, "bar", "baz", "boa");
+
+			var invocation = sut.Invocations[identifier].Single();
+			invocation.Identifier.ShouldBe(identifier);
+			invocation.Arguments.ShouldBe(args);
+		}
+
+		[Fact(DisplayName = "After IJSUnmarshalledRuntime invocation a invocation should be visible from the Invocations list when parsed zero arguments.")]
+		public void Test054()
+		{
+			var identifier = "fooFunc";
+			var args = new[] { "bar", "baz", "boa" };
+			using var cts = new CancellationTokenSource();
+			var sut = CreateSut(JSRuntimeMode.Strict);
+
+			var planned = sut.Setup<Guid>("fooFunc", args);
+			planned.SetResult(Guid.NewGuid());
+
+			var _ = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, string, string, Guid>(identifier, "bar", "baz", "boa");
+
+			var invocation = sut.Invocations[identifier].Single();
+			invocation.Identifier.ShouldBe(identifier);
+			invocation.Arguments.ShouldBe(args);
+		}
+
+		[Fact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when parsed one arguments.")]
+		public void Test055()
+		{
+			var identifier = "fooFunc";
+			var args = new[] { "bar" };
+			using var cts = new CancellationTokenSource();
+			var sut = CreateSut(JSRuntimeMode.Strict);
+
+			var expectedResult = Guid.NewGuid();
+			var planned = sut.Setup<Guid>("fooFunc", args);
+			planned.SetResult(expectedResult);
+
+			var actual = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, Guid>(identifier, "bar");
+			actual.ShouldBe(expectedResult);
+		}
+
+		[Fact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when parsed two arguments.")]
+		public void Test056()
 		{
 			var identifier = "fooFunc";
 			var args = new[] { "bar", "baz" };
@@ -91,6 +161,37 @@ namespace Bunit.JSInterop
 			planned.SetResult(expectedResult);
 
 			var actual = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, string, Guid>(identifier, "bar", "baz");
+			actual.ShouldBe(expectedResult);
+		}
+
+		[Fact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when parsed three arguments.")]
+		public void Test057()
+		{
+			var identifier = "fooFunc";
+			var args = new[] { "bar", "baz", "bao" };
+			using var cts = new CancellationTokenSource();
+			var sut = CreateSut(JSRuntimeMode.Strict);
+
+			var expectedResult = Guid.NewGuid();
+			var planned = sut.Setup<Guid>("fooFunc", args);
+			planned.SetResult(expectedResult);
+
+			var actual = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, string, string, Guid>(identifier, "bar", "baz", "bao");
+			actual.ShouldBe(expectedResult);
+		}
+
+		[Fact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when parsed zero arguments.")]
+		public void Test058()
+		{
+			var identifier = "fooFunc";
+			using var cts = new CancellationTokenSource();
+			var sut = CreateSut(JSRuntimeMode.Strict);
+
+			var expectedResult = Guid.NewGuid();
+			var planned = sut.Setup<Guid>("fooFunc");
+			planned.SetResult(expectedResult);
+
+			var actual = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<Guid>(identifier);
 			actual.ShouldBe(expectedResult);
 		}
 	}
