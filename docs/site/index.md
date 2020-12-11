@@ -33,7 +33,7 @@ Tp do this, you can do the following using bUnit and xUnit:
 
 [!code-csharp[CounterTest.cs](../samples/tests/xunit/CounterTestWithCtx.cs#L8-L21)]
 
-This test uses bUnit’s test context to render the ‘Counter’ component with the ‘RenderComponent’ method. It then finds the button the component rendered and clicks it with the ‘Find’ and ‘Click’ methods. Finally, it finds the paragraph (<p>) element and verifies that it matches the expected markup passed to the MarkupMatches method.
+This test uses bUnit’s test context to render the ‘Counter’ component with the ‘RenderComponent’ method. It then finds the button the component rendered and clicks it with the ‘Find’ and ‘Click’ methods. Finally, it finds the paragraph (`<p>`) element and verifies that it matches the expected markup passed to the MarkupMatches method.
 
 **Go to the [Documentation](xref:getting-started) pages to learn more.**
 
