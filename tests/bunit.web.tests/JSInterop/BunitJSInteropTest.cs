@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Bunit.JSInterop
 {
-	public class BunitJSInteropTest
+	public partial class BunitJSInteropTest
 	{
 		private static BunitJSInterop CreateSut(JSRuntimeMode mode) => new BunitJSInterop { Mode = mode };
 
@@ -434,6 +434,58 @@ namespace Bunit.JSInterop
 			var actual = sut.TryGetInvokeVoidHandler("foo");
 
 			actual.ShouldBe(expected);
+		}
+
+		[Fact(DisplayName = "Mock returns default value from IJSInProcessRuntime's invoke method in loose mode without invocation setup")]
+		public void Test043()
+		{
+			var sut = CreateSut(JSRuntimeMode.Loose);
+
+			var result = ((IJSInProcessRuntime)sut.JSRuntime).Invoke<object>("ident", Array.Empty<object>());
+
+			result.ShouldBe(default);
+		}
+
+		[Fact(DisplayName = "After IJSInProcessRuntime invocation a invocation should be visible from the Invocations list")]
+		public void Test044()
+		{
+			var identifier = "fooFunc";
+			var args = new[] { "bar", "baz" };
+			var sut = CreateSut(JSRuntimeMode.Loose);
+
+			var _ = ((IJSInProcessRuntime)sut.JSRuntime).Invoke<object>(identifier, args);
+
+			var invocation = sut.Invocations[identifier].Single();
+			invocation.Identifier.ShouldBe(identifier);
+			invocation.Arguments.ShouldBe(args);
+		}
+
+		[Fact(DisplayName = "IJSInProcessRuntime invocations receive the result set in a planned invocation")]
+		public void Test045()
+		{
+			var identifier = "func";
+			var args = new[] { "bar", "baz" };
+			var sut = CreateSut(JSRuntimeMode.Strict);
+
+			var expectedResult = Guid.NewGuid();
+			var planned = sut.Setup<Guid>(identifier, args);
+			planned.SetResult(expectedResult);
+
+			var i = ((IJSInProcessRuntime)sut.JSRuntime).Invoke<Guid>(identifier, args);
+
+			i.ShouldBe(expectedResult);
+		}
+
+		[Fact(DisplayName = "Mock throws exception when in strict mode and IJSInProcessRuntime invocation has not been setup")]
+		public void Test046()
+		{
+			var sut = CreateSut(JSRuntimeMode.Strict);
+			var identifier = "func";
+			var args = new[] { "bar", "baz" };
+
+			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => ((IJSInProcessRuntime)sut.JSRuntime).Invoke<object>(identifier, args));
+			exception.Invocation.Identifier.ShouldBe(identifier);
+			exception.Invocation.Arguments.ShouldBe(args);
 		}
 	}
 }

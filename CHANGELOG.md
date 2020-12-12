@@ -11,6 +11,8 @@ The following section list all changes in 1.0.0 preview 01.
 ### Added
 List of new features.
 
+- Added support for casting `BUnitJSRuntime` to `IJSInProcessRuntime` and `IJSUnmarshalledRuntime`. By [@KristofferStrube](https://github.com/KristofferStrube) in [#279](https://github.com/egil/bUnit/pull/279)
+
 - Added support for triggering `@ontoggle` event handlers through a dedicated `Toggle()` method. By [@egil](https://github.com/egil) in [#256](https://github.com/egil/bUnit/pull/256).
 
 - Added out of the box support for `<Virtualize>` component. When a `<Virtualize>` component is used in a component under test, it's JavaScript interop-calls are faked by bUnits JSInterop, and it should result in all items being rendered immediately. By [@egil](https://github.com/egil) in [#240](https://github.com/egil/bUnit/issues/240).
