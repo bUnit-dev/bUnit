@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Bunit
+namespace Bunit.JSInterop.InvocationHandlers
 {
 	/// <summary>
 	/// Represents a handler for an invocation of a JavaScript function with specific arguments

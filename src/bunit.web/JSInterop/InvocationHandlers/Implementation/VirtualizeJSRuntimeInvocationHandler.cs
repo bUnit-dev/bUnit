@@ -2,15 +2,16 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.JSInterop;
 
-namespace Bunit.JSInterop.InvocationHandlers
+namespace Bunit.JSInterop.InvocationHandlers.Implementation
 {
 	/// <summary>
 	/// Represents an JSInterop handler for the <see cref="Virtualize{TItem}"/> component.
 	/// </summary>
-	public class VirtualizeJSRuntimeInvocationHandler : JSRuntimeInvocationHandler
+	internal sealed class VirtualizeJSRuntimeInvocationHandler : JSRuntimeInvocationHandler
 	{
 		private const string JsFunctionsPrefix = "Blazor._internal.Virtualize.";
 		private static readonly Lazy<(PropertyInfo, MethodInfo)> VirtualizeReflection = new Lazy<(PropertyInfo, MethodInfo)>(() =>
@@ -36,20 +37,22 @@ namespace Bunit.JSInterop.InvocationHandlers
 			: base(CatchAllIdentifier, i => i.Identifier.StartsWith(JsFunctionsPrefix, StringComparison.Ordinal))
 		{ }
 
-		/// <inheritdoc/>
-		protected override void OnInvocation(JSRuntimeInvocation invocation)
+		/// <inheritdoc/>		
+		protected internal override Task<object> Handle(JSRuntimeInvocation invocation)
 		{
-			if (invocation.Identifier.Equals(JsFunctionsPrefix + "dispose", StringComparison.Ordinal))
-				return;
+			if (!invocation.Identifier.Equals(JsFunctionsPrefix + "dispose", StringComparison.Ordinal))
+			{
+				// Assert expectations about the internals of the <Virtualize> component
+				Debug.Assert(invocation.Identifier.Equals(JsFunctionsPrefix + "init", StringComparison.Ordinal), "Received an unexpected invocation identifier from the <Virtualize> component.");
+				Debug.Assert(invocation.Arguments.Count == 3, "Received an unexpected amount of arguments from the <Virtualize> component.");
+				Debug.Assert(invocation.Arguments[0] is not null, "Received an unexpected null argument, expected an DotNetObjectReference<VirtualizeJsInterop> instance.");
 
-			// Assert expectations about the internals of the <Virtualize> component
-			Debug.Assert(invocation.Identifier.Equals(JsFunctionsPrefix + "init", StringComparison.Ordinal), "Received an unexpected invocation identifier from the <Virtualize> component.");
-			Debug.Assert(invocation.Arguments.Count == 3, "Received an unexpected amount of arguments from the <Virtualize> component.");
-			Debug.Assert(invocation.Arguments[0] is not null, "Received an unexpected null argument, expected an DotNetObjectReference<VirtualizeJsInterop> instance.");
+				InvokeOnSpacerBeforeVisible(invocation.Arguments[0]!);
 
-			InvokeOnSpacerBeforeVisible(invocation.Arguments[0]!);
+				SetVoidResult();
+			}
 
-			SetVoidResult();
+			return base.Handle(invocation);
 		}
 
 		private static void InvokeOnSpacerBeforeVisible(object dotNetObjectReference)

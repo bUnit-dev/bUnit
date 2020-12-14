@@ -33,7 +33,6 @@ namespace Bunit.Extensions
 			services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
 
 			// bUnits fake JSInterop
-			jsInterop.AddBuiltInJSRuntimeInvocationHandlers();
 			services.AddSingleton<IJSRuntime>(jsInterop.JSRuntime);
 
 			// bUnit specific services

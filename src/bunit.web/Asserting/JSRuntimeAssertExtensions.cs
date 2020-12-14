@@ -21,9 +21,12 @@ namespace Bunit
 		{
 			if (handler is null)
 				throw new ArgumentNullException(nameof(handler));
-			if (handler.Invocations.TryGetValue(identifier, out var invocations) && invocations.Count > 0)
+
+			var invocationCount = handler.Invocations[identifier].Count;
+
+			if (invocationCount > 0)
 			{
-				throw new JSInvokeCountExpectedException(identifier, 0, invocations.Count, nameof(VerifyNotInvoke), userMessage);
+				throw new JSInvokeCountExpectedException(identifier, 0, invocationCount, nameof(VerifyNotInvoke), userMessage);
 			}
 		}
 
@@ -53,7 +56,9 @@ namespace Bunit
 			if (calledTimes < 1)
 				throw new ArgumentException($"Use {nameof(VerifyNotInvoke)} to verify an identifier has not been invoked.", nameof(calledTimes));
 
-			if (!handler.Invocations.TryGetValue(identifier, out var invocations))
+			var invocations = handler.Invocations[identifier];
+
+			if (invocations.Count == 0)
 			{
 				throw new JSInvokeCountExpectedException(identifier, calledTimes, 0, nameof(VerifyInvoke), userMessage);
 			}

@@ -152,14 +152,14 @@ namespace Bunit.JSInterop
 			var identifier = "func";
 			var sut = new BunitJSInterop();
 			var handler = sut.Setup<Guid>(identifier, x => true);
-			sut.JSRuntime.InvokeAsync<Guid>(identifier, "first");
-			sut.JSRuntime.InvokeAsync<Guid>(identifier, "second");
+			var i1 = sut.JSRuntime.InvokeAsync<Guid>(identifier, "first");
+			var i2 = sut.JSRuntime.InvokeAsync<Guid>(identifier, "second");
 
 			var invocations = handler.Invocations;
 
-			invocations.Count.ShouldBe(2);
-			invocations[0].Arguments[0].ShouldBe("first");
-			invocations[1].Arguments[0].ShouldBe("second");
+			invocations[identifier].Count.ShouldBe(2);
+			invocations[identifier][0].Arguments[0].ShouldBe("first");
+			invocations[identifier][1].Arguments[0].ShouldBe("second");
 		}
 
 		[Fact(DisplayName = "Arguments used in Setup are matched with invocations")]
@@ -168,12 +168,12 @@ namespace Bunit.JSInterop
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var planned = sut.Setup<object>("foo", "bar", 42);
 
-			sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42);
+			var _ = sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42);
 
-			Should.Throw<JSRuntimeUnhandledInvocationException>(() => sut.JSRuntime.InvokeAsync<object>("foo", "bar", 41));
+			Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = sut.JSRuntime.InvokeAsync<object>("foo", "bar", 41); });
 
 			planned.Invocations.Count.ShouldBe(1);
-			var invocation = planned.Invocations[0];
+			var invocation = planned.Invocations["foo"][0];
 			invocation.Identifier.ShouldBe("foo");
 			invocation.Arguments[0].ShouldBe("bar");
 			invocation.Arguments[1].ShouldBe(42);
@@ -185,12 +185,12 @@ namespace Bunit.JSInterop
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var planned = sut.Setup<object>("foo", x => x.Arguments.Count == 1);
 
-			sut.JSRuntime.InvokeAsync<object>("foo", 42);
+			var _ = sut.JSRuntime.InvokeAsync<object>("foo", 42);
 
-			Should.Throw<JSRuntimeUnhandledInvocationException>(() => sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42));
+			Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42); });
 
 			planned.Invocations.Count.ShouldBe(1);
-			var invocation = planned.Invocations[0];
+			var invocation = planned.Invocations["foo"][0];
 			invocation.Identifier.ShouldBe("foo");
 			invocation.Arguments.Count.ShouldBe(1);
 			invocation.Arguments[0].ShouldBe(42);
@@ -222,7 +222,7 @@ namespace Bunit.JSInterop
 			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo", "bar", 41));
 
 			planned.Invocations.Count.ShouldBe(1);
-			var invocation = planned.Invocations[0];
+			var invocation = planned.Invocations["foo"][0];
 			invocation.Identifier.ShouldBe("foo");
 			invocation.Arguments[0].ShouldBe("bar");
 			invocation.Arguments[1].ShouldBe(42);
@@ -239,7 +239,7 @@ namespace Bunit.JSInterop
 			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo"));
 
 			planned.Invocations.Count.ShouldBe(1);
-			var invocation = planned.Invocations[0];
+			var invocation = planned.Invocations["foo"][0];
 			invocation.Identifier.ShouldBe("foo");
 			invocation.Arguments.Count.ShouldBe(2);
 			invocation.Arguments[0].ShouldBe("bar");

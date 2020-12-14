@@ -1,18 +1,13 @@
 #if NET5_0
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit.JSInterop.InvocationHandlers
+namespace Bunit.JSInterop.InvocationHandlers.Implementation
 {
 	/// <summary>
 	/// Represents a handler for Blazor's
 	/// <see cref="ElementReferenceExtensions.FocusAsync(ElementReference)"/> feature.
 	/// </summary>
-	public class FocusAsyncInvocationHandler : JSRuntimeInvocationHandler
+	internal sealed class FocusAsyncInvocationHandler : JSRuntimeInvocationHandler
 	{
 		/// <summary>
 		/// The internal identifier used by <see cref="ElementReferenceExtensions.FocusAsync(ElementReference)"/>
@@ -23,7 +18,7 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// <summary>
 		/// Creates an instance of the <see cref="FocusEventDispatchExtensions"/>.
 		/// </summary>
-		protected internal FocusAsyncInvocationHandler() : base(FocusIdentifier, _ => true)
+		internal FocusAsyncInvocationHandler() : base(FocusIdentifier, _ => true)
 		{
 		}
 	}

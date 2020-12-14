@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Bunit
+namespace Bunit.JSInterop.InvocationHandlers
 {
 	/// <summary>
 	/// Represents an invocation handler for <see cref="JSRuntimeInvocation"/> instances.
@@ -15,7 +15,6 @@ namespace Bunit
 		protected internal const string CatchAllIdentifier = "*";
 
 		private readonly InvocationMatcher _invocationMatcher;
-		private readonly List<JSRuntimeInvocation> _invocations;
 		private TaskCompletionSource<TResult> _completionSource;
 
 		/// <summary>
@@ -36,7 +35,7 @@ namespace Bunit
 		/// <summary>
 		/// Gets the invocations that this <see cref="JSRuntimeInvocationHandler{TResult}"/> has matched with.
 		/// </summary>
-		public IReadOnlyList<JSRuntimeInvocation> Invocations => _invocations.AsReadOnly();
+		public JSRuntimeInvocationDictionary Invocations { get; } = new();
 
 		/// <summary>
 		/// Creates an instance of the <see cref="JSRuntimeInvocationHandlerBase{TResult}"/>.
@@ -48,7 +47,6 @@ namespace Bunit
 			Identifier = identifier;
 			IsCatchAllHandler = identifier == CatchAllIdentifier;
 			_invocationMatcher = matcher;
-			_invocations = new List<JSRuntimeInvocation>();
 			_completionSource = new TaskCompletionSource<TResult>();
 		}
 
@@ -89,21 +87,26 @@ namespace Bunit
 		}
 
 		/// <summary>
-		/// This method is called when a new invocation is registered with the handler,
-		/// but before the invocation receives the result task from the handler.
+		/// Call this to have the this handler handle the <paramref name="invocation"/>.
 		/// </summary>
-		/// <param name="invocation">The received invocation.</param>
-		protected virtual void OnInvocation(JSRuntimeInvocation invocation) { }
-
-		internal bool Matches(JSRuntimeInvocation invocation) => (IsCatchAllHandler || MatchesIdentifier(invocation)) && _invocationMatcher(invocation);
-
-		private bool MatchesIdentifier(JSRuntimeInvocation invocation) => Identifier.Equals(invocation.Identifier, StringComparison.Ordinal);
-
-		internal Task<TResult> RegisterInvocation(JSRuntimeInvocation invocation)
+		/// <remarks>
+		/// Note to implementors: Always call the <see cref="JSRuntimeInvocationHandlerBase{TResult}.Handle(JSRuntimeInvocation)"/>
+		/// method when overriding it in a sub class. It will make sure the invocation is correctly registered in the <see cref="Invocations"/> dictionary.
+		/// </remarks>
+		/// <param name="invocation">Invocation to handle.</param>
+		protected internal virtual Task<TResult> Handle(JSRuntimeInvocation invocation)
 		{
-			_invocations.Add(invocation);
-			OnInvocation(invocation);
+			Invocations.RegisterInvocation(invocation);
 			return _completionSource.Task;
 		}
+
+		/// <summary>
+		/// Checks whether this invocation handler can handle the <paramref name="invocation"/>.
+		/// </summary>
+		/// <param name="invocation">Invocation to check.</param>
+		/// <returns>True if the handler can handle the invocation, false otherwise.</returns>
+		internal bool CanHandle(JSRuntimeInvocation invocation) => (IsCatchAllHandler || MatchesIdentifier(invocation)) && _invocationMatcher(invocation);
+
+		private bool MatchesIdentifier(JSRuntimeInvocation invocation) => Identifier.Equals(invocation.Identifier, StringComparison.Ordinal);
 	}
 }
