@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Bunit;
 using Microsoft.JSInterop;
 using Shouldly;
 using Xunit;
@@ -32,7 +31,7 @@ namespace Bunit.JSInterop
 			using var cts = new CancellationTokenSource();
 			var sut = CreateSut(JSRuntimeMode.Loose);
 
-			var _ = sut.JSRuntime.InvokeAsync<object>(identifier, cts.Token, args);
+			sut.JSRuntime.InvokeAsync<object>(identifier, cts.Token, args);
 
 			var invocation = sut.Invocations[identifier].Single();
 			invocation.Identifier.ShouldBe(identifier);
@@ -41,19 +40,23 @@ namespace Bunit.JSInterop
 		}
 
 		[Fact(DisplayName = "Mock throws exception when in strict mode and invocation has not been setup")]
-		public async Task Test003()
+		public void Test003()
 		{
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var identifier = "func";
 			var args = new[] { "bar", "baz" };
 
-			var exception = await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(sut.JSRuntime.InvokeVoidAsync(identifier, args).AsTask());
-			exception.Invocation.Identifier.ShouldBe(identifier);
-			exception.Invocation.Arguments.ShouldBe(args);
+			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync(identifier, args))
+				.Invocation.ShouldSatisfyAllConditions(
+					x => x.Identifier.ShouldBe(identifier),
+					x => x.Arguments.ShouldBe(args)
+				);
 
-			exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = sut.JSRuntime.InvokeAsync<object>(identifier, args); });
-			exception.Invocation.Identifier.ShouldBe(identifier);
-			exception.Invocation.Arguments.ShouldBe(args);
+			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeAsync<object>(identifier, args))
+				.Invocation.ShouldSatisfyAllConditions(
+					x => x.Identifier.ShouldBe(identifier),
+					x => x.Arguments.ShouldBe(args)
+				);
 		}
 
 		[Fact(DisplayName = "All invocations received AFTER a invocation handler " +
@@ -149,8 +152,8 @@ namespace Bunit.JSInterop
 			var identifier = "func";
 			var sut = new BunitJSInterop();
 			var handler = sut.Setup<Guid>(identifier, x => true);
-			var i1 = sut.JSRuntime.InvokeAsync<Guid>(identifier, "first");
-			var i2 = sut.JSRuntime.InvokeAsync<Guid>(identifier, "second");
+			sut.JSRuntime.InvokeAsync<Guid>(identifier, "first");
+			sut.JSRuntime.InvokeAsync<Guid>(identifier, "second");
 
 			var invocations = handler.Invocations;
 
@@ -165,9 +168,9 @@ namespace Bunit.JSInterop
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var planned = sut.Setup<object>("foo", "bar", 42);
 
-			var _ = sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42);
+			sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42);
 
-			Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = sut.JSRuntime.InvokeAsync<object>("foo", "bar", 41); });
+			Should.Throw<JSRuntimeUnhandledInvocationException>(() => sut.JSRuntime.InvokeAsync<object>("foo", "bar", 41));
 
 			planned.Invocations.Count.ShouldBe(1);
 			var invocation = planned.Invocations[0];
@@ -182,9 +185,9 @@ namespace Bunit.JSInterop
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var planned = sut.Setup<object>("foo", x => x.Arguments.Count == 1);
 
-			var _ = sut.JSRuntime.InvokeAsync<object>("foo", 42);
+			sut.JSRuntime.InvokeAsync<object>("foo", 42);
 
-			Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42); });
+			Should.Throw<JSRuntimeUnhandledInvocationException>(() => sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42));
 
 			planned.Invocations.Count.ShouldBe(1);
 			var invocation = planned.Invocations[0];
@@ -209,16 +212,14 @@ namespace Bunit.JSInterop
 		}
 
 		[Fact(DisplayName = "Arguments used in SetupVoid are matched with invocations")]
-		public async Task Test013()
+		public void Test013()
 		{
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var planned = sut.SetupVoid("foo", "bar", 42);
 
-			var _ = sut.JSRuntime.InvokeVoidAsync("foo", "bar", 42);
+			sut.JSRuntime.InvokeVoidAsync("foo", "bar", 42);
 
-			await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(
-				sut.JSRuntime.InvokeVoidAsync("foo", "bar", 41).AsTask()
-			);
+			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo", "bar", 41));
 
 			planned.Invocations.Count.ShouldBe(1);
 			var invocation = planned.Invocations[0];
@@ -228,20 +229,14 @@ namespace Bunit.JSInterop
 		}
 
 		[Fact(DisplayName = "Argument matcher used in SetupVoid are matched with invocations")]
-		public async Task Test014()
+		public void Test014()
 		{
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var planned = sut.SetupVoid("foo", x => x.Arguments.Count == 2);
+			sut.JSRuntime.InvokeVoidAsync("foo", "bar", 42);
 
-			var i1 = sut.JSRuntime.InvokeVoidAsync("foo", "bar", 42);
-
-			await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(
-				sut.JSRuntime.InvokeVoidAsync("foo", 42).AsTask()
-			);
-
-			await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(
-				sut.JSRuntime.InvokeVoidAsync("foo").AsTask()
-			 );
+			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo", 42));
+			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo"));
 
 			planned.Invocations.Count.ShouldBe(1);
 			var invocation = planned.Invocations[0];
@@ -274,7 +269,7 @@ namespace Bunit.JSInterop
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var planned = sut.Setup<Guid>();
 
-			Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = sut.JSRuntime.InvokeAsync<string>("foo"); });
+			Should.Throw<JSRuntimeUnhandledInvocationException>(() => sut.JSRuntime.InvokeAsync<string>("foo"));
 
 			planned.Invocations.Count.ShouldBe(0);
 		}
@@ -347,7 +342,7 @@ namespace Bunit.JSInterop
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var handler = sut.SetupVoid();
 
-			Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = sut.JSRuntime.InvokeAsync<string>(identifier); });
+			Should.Throw<JSRuntimeUnhandledInvocationException>(() => sut.JSRuntime.InvokeAsync<string>(identifier));
 
 			var invocation = sut.JSRuntime.InvokeVoidAsync(identifier);
 			handler.SetVoidResult();
@@ -359,13 +354,13 @@ namespace Bunit.JSInterop
 		}
 
 		[Fact(DisplayName = "Empty Setup is not used for invocation with void return types")]
-		public async Task Test021()
+		public void Test021()
 		{
 			var sut = CreateSut(JSRuntimeMode.Strict);
 
 			sut.Setup<Guid>();
 
-			await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(sut.JSRuntime.InvokeVoidAsync("someFunc").AsTask());
+			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("someFunc"));
 		}
 
 		[Fact(DisplayName = "SetupVoid is only used when there is no void handler")]
@@ -453,7 +448,7 @@ namespace Bunit.JSInterop
 			var args = new[] { "bar", "baz" };
 			var sut = CreateSut(JSRuntimeMode.Loose);
 
-			var _ = ((IJSInProcessRuntime)sut.JSRuntime).Invoke<object>(identifier, args);
+			((IJSInProcessRuntime)sut.JSRuntime).Invoke<object>(identifier, args);
 
 			var invocation = sut.Invocations[identifier].Single();
 			invocation.Identifier.ShouldBe(identifier);

@@ -1,9 +1,7 @@
 using System;
 using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
-using Bunit.TestDoubles;
 using Shouldly;
-
 using Xunit;
 
 namespace Bunit
@@ -37,11 +35,10 @@ namespace Bunit
 		{
 			var cut = RenderComponent<Wrapper>(parameters => parameters.AddChildContent("<div>"));
 
-			cut.SetParametersAndRender(parameters => parameters.AddChildContent("<p>"));
+			cut.SetParametersAndRender(ComponentParameterFactory.ChildContent("<p>"));
 
 			cut.Find("p").ShouldNotBeNull();
 		}
-
 
 		[Fact(DisplayName = "Trying to set CascadingValue during SetParametersAndRender throws")]
 		public void Test003()

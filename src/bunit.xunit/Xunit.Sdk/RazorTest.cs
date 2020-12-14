@@ -1,5 +1,3 @@
-using Xunit.Abstractions;
-
 namespace Xunit.Sdk
 {
 	internal class RazorTest : XunitTest

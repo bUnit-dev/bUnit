@@ -35,7 +35,7 @@ namespace Bunit.JSInterop
 		}
 
 		[Fact(DisplayName = "VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
-					"has been invoked one or more times, with custom error message")]
+							"has been invoked one or more times, with custom error message")]
 		public async Task Test003()
 		{
 			var identifier = "test";
