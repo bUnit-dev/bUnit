@@ -4,7 +4,6 @@ using System.Linq;
 using System.Numerics;
 using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
-using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
 using Xunit;

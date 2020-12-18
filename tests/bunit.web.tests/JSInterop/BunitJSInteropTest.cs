@@ -130,6 +130,22 @@ namespace Bunit.JSInterop
 			invocation.IsCanceled.ShouldBeTrue();
 		}
 
+		[Fact(DisplayName = "A invocation handler can be canceled after it has been set to a different result")]
+		public void Test107()
+		{
+			var identifier = "func";
+			var sut = CreateSut(JSRuntimeMode.Strict);
+			var handler = sut.Setup<Guid>(identifier);
+
+			var invocation1 = sut.JSRuntime.InvokeAsync<Guid>(identifier);
+			handler.SetResult(Guid.NewGuid());
+			invocation1.IsCompletedSuccessfully.ShouldBeTrue();
+
+			handler.SetCanceled();
+			var invocation2 = sut.JSRuntime.InvokeAsync<Guid>(identifier);
+			invocation2.IsCanceled.ShouldBeTrue();
+		}
+
 		[Fact(DisplayName = "A invocation handler can throw an exception for any waiting received invocations")]
 		public async Task Test008()
 		{
@@ -144,6 +160,23 @@ namespace Bunit.JSInterop
 			var actual = await Should.ThrowAsync<InvalidOperationException>(invocation.AsTask());
 			actual.ShouldBe(expectedException);
 			invocation.IsFaulted.ShouldBeTrue();
+		}
+
+		[Fact(DisplayName = "A invocation handler can throw an exception after it has been set to a different result")]
+		public void Test108()
+		{
+			var identifier = "func";
+			var sut = CreateSut(JSRuntimeMode.Strict);
+			var handler = sut.Setup<Guid>(identifier);
+			var expectedException = new InvalidOperationException("TADA");
+
+			var invocation1 = sut.JSRuntime.InvokeAsync<Guid>(identifier);
+			handler.SetResult(Guid.NewGuid());
+			invocation1.IsCompletedSuccessfully.ShouldBeTrue();
+
+			handler.SetException(expectedException);
+			var invocation2 = sut.JSRuntime.InvokeAsync<Guid>(identifier);
+			invocation2.IsFaulted.ShouldBeTrue();
 		}
 
 		[Fact(DisplayName = "Invocations returns all from a invocation handler")]

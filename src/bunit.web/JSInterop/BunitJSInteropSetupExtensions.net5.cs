@@ -22,7 +22,7 @@ namespace Bunit
 		/// <remarks>
 		/// The returned <see cref="BunitJSInterop"/> can be used to setup handlers for
 		/// <c>InvokeAsync&lt;TValue&gt;(string, object?[]?)"</c> calls to the module, using either
-		/// <see cref="SetupModule(BunitJSInterop, string)"/> or <see cref="Setup{TResult}(BunitJSInterop, string, object[])"/> calls.
+		/// <see cref="SetupModule(BunitJSInterop, string)"/> or Setup calls.
 		/// </remarks>
 		/// <param name="jsInterop">The JSInterop to setup the handler for.</param>
 		/// <param name="moduleName">The name of the JavaScript module to handle invocations for.</param>
@@ -47,16 +47,16 @@ namespace Bunit
 		/// <remarks>
 		/// The returned <see cref="BunitJSInterop"/> can be used to setup handlers for
 		/// <c>InvokeAsync&lt;TValue&gt;(string, object?[]?)"</c> calls to the module, using either
-		/// <see cref="SetupModule(BunitJSInterop, string)"/> or <see cref="Setup{TResult}(BunitJSInterop, string, object[])"/> calls.
+		/// <see cref="SetupModule(BunitJSInterop, string)"/> or Setup calls.
 		/// </remarks>
 		/// <param name="jsInterop">The JSInterop to setup the handler for.</param>
 		/// <param name="identifier">The identifier to setup a response for.</param>
-		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match. Use <c>Array.Empty&lt;object&gt;()</c> for none.</param>
+		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match. Use <c>Array.Empty&lt;object?&gt;()</c> for none.</param>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="jsInterop"/> is null.</exception>
 		/// <exception cref="ArgumentException">Thrown when <paramref name="identifier"/> is null or whitespace.</exception>
 		/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
-		public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, string identifier, object[] arguments)
-			=> SetupModule(jsInterop, identifier, invocation => invocation.Arguments.SequenceEqual(arguments));
+		public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, string identifier, object?[] arguments)
+			=> SetupModule(jsInterop, identifier, invocation => invocation.Arguments.SequenceEqual(arguments ?? Array.Empty<object?>()));
 
 		/// <summary>
 		/// Setup a handler for a <c>IJSRuntime.InvokeAsync&lt;IJSObjectReference&gt;()</c> call whose input parameters is matched by the provided
@@ -65,7 +65,7 @@ namespace Bunit
 		/// <remarks>
 		/// The returned <see cref="BunitJSInterop"/> can be used to setup handlers for
 		/// <c>InvokeAsync&lt;TValue&gt;(string, object?[]?)"</c> calls to the module, using either
-		/// <see cref="SetupModule(BunitJSInterop, string)"/> or <see cref="Setup{TResult}(BunitJSInterop, string, object[])"/> calls.
+		/// <see cref="SetupModule(BunitJSInterop, string)"/> or Setup calls.
 		/// </remarks>
 		/// <param name="jsInterop">The JSInterop to setup the handler for.</param>
 		/// <param name="invocationMatcher">The matcher to use to match <see cref="JSRuntimeInvocation"/>'s with.</param>
@@ -82,7 +82,7 @@ namespace Bunit
 		/// <remarks>
 		/// The returned <see cref="BunitJSInterop"/> can be used to setup handlers for
 		/// <c>InvokeAsync&lt;TValue&gt;(string, object?[]?)"</c> calls to the module, using either
-		/// <see cref="SetupModule(BunitJSInterop, string)"/> or <see cref="Setup{TResult}(BunitJSInterop, string, object[])"/> calls.
+		/// <see cref="SetupModule(BunitJSInterop, string)"/> or Setup calls.
 		/// </remarks>
 		/// <param name="jsInterop">The JSInterop to setup the handler for.</param>
 		/// <param name="identifier">The identifier to setup a response for.</param>
@@ -111,7 +111,7 @@ namespace Bunit
 		/// <remarks>
 		/// The returned <see cref="BunitJSInterop"/> can be used to setup handlers for
 		/// <c>InvokeAsync&lt;TValue&gt;(string, object?[]?)"</c> calls to the module, using either
-		/// <see cref="SetupModule(BunitJSInterop, string)"/> or <see cref="Setup{TResult}(BunitJSInterop, string, object[])"/> calls.
+		/// <see cref="SetupModule(BunitJSInterop, string)"/> or Setup calls.
 		/// </remarks>
 		/// <param name="jsInterop">The JSInterop to setup the handler for.</param>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="jsInterop"/> is null.</exception>
@@ -121,14 +121,16 @@ namespace Bunit
 
 		/// <summary>
 		/// Looks through the registered handlers and returns the latest registered that can handle
-		/// the provided <paramref name="identifier"/> and <paramref name="args"/>, and that
+		/// the provided <paramref name="identifier"/> and <paramref name="arguments"/>, and that
 		/// will return <see cref="IJSObjectReference"/>.
 		/// </summary>
 		/// <param name="jsInterop">The JSInterop to setup the handler for.</param>
+		/// <param name="identifier">The identifier the handler should match with.</param>
+		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
 		/// <returns>A <see cref="BunitJSModuleInterop"/> or null if no one is found.</returns>
-		public static BunitJSModuleInterop? TryGetModuleJSInterop(this BunitJSInterop jsInterop, string identifier, object?[]? args = null)
+		public static BunitJSModuleInterop? TryGetModuleJSInterop(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
 		{
-			var handler = jsInterop.TryGetHandlerFor<IJSObjectReference>(new JSRuntimeInvocation(identifier, default, args)) as JSObjectReferenceInvocationHandler;
+			var handler = jsInterop.TryGetHandlerFor<IJSObjectReference>(new JSRuntimeInvocation(identifier, default, arguments)) as JSObjectReferenceInvocationHandler;
 			return handler?.JSInterop;
 		}
 

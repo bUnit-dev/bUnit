@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Bunit.JSInterop.InvocationHandlers
 {
@@ -19,7 +19,34 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// Sets the <typeparamref name="TResult"/> result that invocations will receive.
 		/// </summary>
 		/// <param name="result"></param>
-		public void SetResult(TResult result) => SetResultBase(result);
+		/// <returns>This handler to allow calls to be chained.</returns>
+		public JSRuntimeInvocationHandler<TResult> SetResult(TResult result)
+		{
+			SetResultBase(result);
+			return this;
+		}
+
+		/// <summary>
+		/// Marks the <see cref="Task{TResult}"/> that invocations will receive as canceled.
+		/// </summary>
+		/// <returns>This handler to allow calls to be chained.</returns>
+		public JSRuntimeInvocationHandler<TResult> SetCanceled()
+		{
+			SetCanceledBase();
+			return this;
+		}
+
+		/// <summary>
+		/// Sets the <typeparamref name="TException"/> exception that invocations will receive.
+		/// </summary>
+		/// <param name="exception">The exception to set.</param>
+		/// <returns>This handler to allow calls to be chained.</returns>
+		public JSRuntimeInvocationHandler<TResult> SetException<TException>(TException exception)
+			where TException : Exception
+		{
+			SetExceptionBase(exception);
+			return this;
+		}
 	}
 
 	/// <summary>
@@ -38,6 +65,33 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// <summary>
 		/// Completes the current awaiting void invocation requests.
 		/// </summary>
-		public void SetVoidResult() => SetResultBase(default!);
+		/// <returns>This handler to allow calls to be chained.</returns>
+		public JSRuntimeInvocationHandler SetVoidResult()
+		{
+			SetResultBase(default!);
+			return this;
+		}
+
+		/// <summary>
+		/// Marks the <see cref="Task"/> that invocations will receive as canceled.
+		/// </summary>
+		/// <returns>This handler to allow calls to be chained.</returns>
+		public JSRuntimeInvocationHandler SetCanceled()
+		{
+			SetCanceledBase();
+			return this;
+		}
+
+		/// <summary>
+		/// Sets the <typeparamref name="TException"/> exception that invocations will receive.
+		/// </summary>
+		/// <param name="exception">The exception to set.</param>
+		/// <returns>This handler to allow calls to be chained.</returns>
+		public JSRuntimeInvocationHandler SetException<TException>(TException exception)
+			where TException : Exception
+		{
+			SetExceptionBase(exception);
+			return this;
+		}
 	}
 }

@@ -1,8 +1,12 @@
 using System;
+#if NET5_0
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
+# endif
 using Microsoft.Extensions.Logging;
+#if NET5_0
 using Microsoft.JSInterop;
+#endif
 
 namespace Bunit.Rendering
 {

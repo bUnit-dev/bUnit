@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Bunit.Extensions;
-using Bunit.JSInterop;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;

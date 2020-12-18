@@ -1,5 +1,4 @@
 #if NET5_0
-using System;
 using System.Threading.Tasks;
 using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;

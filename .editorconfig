@@ -39,3 +39,12 @@ dotnet_diagnostic.BL0003.severity = none
 dotnet_diagnostic.BL0004.severity = none
 dotnet_diagnostic.BL0005.severity = none
 dotnet_diagnostic.BL0006.severity = none
+
+## Code analysis configuration
+
+[*.cs]
+
+dotnet_diagnostic.S927.severity = suggestion # S927: Parameter names should match base declaration and other partial definitions
+dotnet_diagnostic.S1075.severity = suggestion # S1075: URIs should not be hardcoded
+dotnet_diagnostic.S1186.severity = suggestion # S1186: Methods should not be empty
+dotnet_diagnostic.S3925.severity = suggestion # S3925: "ISerializable" should be implemented correctly

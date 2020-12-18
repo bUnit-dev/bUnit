@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Bunit.JSInterop.InvocationHandlers
@@ -53,7 +52,7 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// <summary>
 		/// Marks the <see cref="Task{TResult}"/> that invocations will receive as canceled.
 		/// </summary>
-		public void SetCanceled()
+		protected void SetCanceledBase()
 		{
 			if (_completionSource.Task.IsCompleted)
 				_completionSource = new TaskCompletionSource<TResult>();
@@ -65,7 +64,7 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// Sets the <typeparamref name="TException"/> exception that invocations will receive.
 		/// </summary>
 		/// <param name="exception"></param>
-		public void SetException<TException>(TException exception)
+		protected void SetExceptionBase<TException>(TException exception)
 			where TException : Exception
 		{
 			if (_completionSource.Task.IsCompleted)
@@ -78,7 +77,7 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// Sets the <typeparamref name="TResult"/> result that invocations will receive.
 		/// </summary>
 		/// <param name="result"></param>
-		public void SetResultBase(TResult result)
+		protected void SetResultBase(TResult result)
 		{
 			if (_completionSource.Task.IsCompleted)
 				_completionSource = new TaskCompletionSource<TResult>();

@@ -31,6 +31,14 @@ namespace Bunit.JSInterop
 		public void Test002(string url)
 			=> Should.Throw<ArgumentException>(() => JSInterop.SetupModule(url));
 
+		[Fact(DisplayName = "Calling SetupModule(jsInterop, identifier, invocationMatcher) with any null values throws")]
+		public void Test003()
+		{
+			Should.Throw<ArgumentNullException>(() => default(BunitJSInterop)!.SetupModule("identifier", _ => true));
+			Should.Throw<ArgumentException>(() => JSInterop.SetupModule(string.Empty, _ => true));
+			Should.Throw<ArgumentNullException>(() => JSInterop.SetupModule("import", default(InvocationMatcher)!));
+		}
+
 		[Fact(DisplayName = "Calling SetupModule(uri) registers handler for module JS Interop")]
 		public void Test010()
 		{
@@ -234,7 +242,25 @@ namespace Bunit.JSInterop
 				.Identifier.ShouldBe("helloWorld");
 		}
 
-		// moduleJSInterop has setup methods IJSObjectReference calls that mirros BuntJSInterop
+		[Fact(DisplayName = "TryGetModuleJSInterop returns registered module handler when called with parameters that the handler matches with")]
+		public void Test060()
+		{
+			var expected = JSInterop.SetupModule("FOO.js");
+
+			var actual = JSInterop.TryGetModuleJSInterop("import", "FOO.js");
+
+			actual.ShouldBe(expected);
+		}
+
+		[Fact(DisplayName = "TryGetModuleJSInterop returns null when called with parameters that the handler does not matches with")]
+		public void Test061()
+		{
+			JSInterop.SetupModule("FOO.js");
+
+			var actual = JSInterop.TryGetModuleJSInterop("import", "BAR.js");
+
+			actual.ShouldBeNull();
+		}
 	}
 }
 #endif

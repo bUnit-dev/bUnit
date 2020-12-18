@@ -65,10 +65,9 @@ namespace Bunit
 			if (eventIds.Count == 0)
 				throw new MissingEventHandlerException(element, eventName);
 
-			return Task.WhenAll(eventIds.Select(TriggerEvent).ToArray());
+			var triggerTasks = eventIds.Select(id => renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs));
 
-			Task TriggerEvent(ulong id)
-				=> renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs);
+			return Task.WhenAll(triggerTasks.ToArray());
 		}
 
 		private static Task TriggerNonBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)

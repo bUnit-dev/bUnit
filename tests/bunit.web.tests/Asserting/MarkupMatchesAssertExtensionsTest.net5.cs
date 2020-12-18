@@ -3,7 +3,7 @@
 using Bunit.TestAssets.SampleComponents;
 using Xunit;
 
-namespace Bunit
+namespace Bunit.Asserting
 {
 	public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	{

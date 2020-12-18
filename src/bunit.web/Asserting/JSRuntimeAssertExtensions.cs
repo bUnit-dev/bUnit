@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using AngleSharp.Dom;
 using Bunit.Asserting;
+using Bunit.JSInterop;
+using Bunit.JSInterop.InvocationHandlers;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -12,23 +14,43 @@ namespace Bunit
 	public static class JSRuntimeAssertExtensions
 	{
 		/// <summary>
+		/// Verifies that the <paramref name="identifier"/> was never invoked on the <paramref name="jsInterop"/>.
+		/// </summary>
+		/// <param name="jsInterop">The bUnit JSInterop to verify against.</param>
+		/// <param name="identifier">Identifier of invocation that should not have happened.</param>
+		/// <param name="userMessage">A custom user message to display if the assertion fails.</param>
+		public static void VerifyNotInvoke(this BunitJSInterop jsInterop, string identifier, string? userMessage = null)
+			=> VerifyNotInvoke(jsInterop?.Invocations ?? throw new ArgumentNullException(nameof(jsInterop)), identifier, userMessage);
+
+		/// <summary>
 		/// Verifies that the <paramref name="identifier"/> was never invoked on the <paramref name="handler"/>.
 		/// </summary>
 		/// <param name="handler">Handler to verify against.</param>
 		/// <param name="identifier">Identifier of invocation that should not have happened.</param>
 		/// <param name="userMessage">A custom user message to display if the assertion fails.</param>
-		public static void VerifyNotInvoke(this BunitJSInterop handler, string identifier, string? userMessage = null)
-		{
-			if (handler is null)
-				throw new ArgumentNullException(nameof(handler));
+		public static void VerifyNotInvoke<TResult>(this JSRuntimeInvocationHandlerBase<TResult> handler, string identifier, string? userMessage = null)
+			=> VerifyNotInvoke(handler?.Invocations ?? throw new ArgumentNullException(nameof(handler)), identifier, userMessage);
 
-			var invocationCount = handler.Invocations[identifier].Count;
+		/// <summary>
+		/// Verifies that the <paramref name="identifier"/> has been invoked one time.
+		/// </summary>
+		/// <param name="jsInterop">The bUnit JSInterop to verify against.</param>
+		/// <param name="identifier">Identifier of invocation that should have been invoked.</param>
+		/// <param name="userMessage">A custom user message to display if the assertion fails.</param>
+		/// <returns>The <see cref="JSRuntimeInvocation"/>.</returns>
+		public static JSRuntimeInvocation VerifyInvoke(this BunitJSInterop jsInterop, string identifier, string? userMessage = null)
+			=> jsInterop.VerifyInvoke(identifier, 1, userMessage)[0];
 
-			if (invocationCount > 0)
-			{
-				throw new JSInvokeCountExpectedException(identifier, 0, invocationCount, nameof(VerifyNotInvoke), userMessage);
-			}
-		}
+		/// <summary>
+		/// Verifies that the <paramref name="identifier"/> has been invoked <paramref name="calledTimes"/> times.
+		/// </summary>
+		/// <param name="jsInterop">The bUnit JSInterop to verify against.</param>
+		/// <param name="identifier">Identifier of invocation that should have been invoked.</param>
+		/// <param name="calledTimes">The number of times the invocation is expected to have been called.</param>
+		/// <param name="userMessage">A custom user message to display if the assertion fails.</param>
+		/// <returns>The <see cref="JSRuntimeInvocation"/>.</returns>
+		public static IReadOnlyList<JSRuntimeInvocation> VerifyInvoke(this BunitJSInterop jsInterop, string identifier, int calledTimes, string? userMessage = null)
+			=> VerifyInvoke(jsInterop?.Invocations ?? throw new ArgumentNullException(nameof(jsInterop)), identifier, calledTimes, userMessage);
 
 		/// <summary>
 		/// Verifies that the <paramref name="identifier"/> has been invoked one time.
@@ -37,7 +59,7 @@ namespace Bunit
 		/// <param name="identifier">Identifier of invocation that should have been invoked.</param>
 		/// <param name="userMessage">A custom user message to display if the assertion fails.</param>
 		/// <returns>The <see cref="JSRuntimeInvocation"/>.</returns>
-		public static JSRuntimeInvocation VerifyInvoke(this BunitJSInterop handler, string identifier, string? userMessage = null)
+		public static JSRuntimeInvocation VerifyInvoke<TResult>(this JSRuntimeInvocationHandlerBase<TResult> handler, string identifier, string? userMessage = null)
 			=> handler.VerifyInvoke(identifier, 1, userMessage)[0];
 
 		/// <summary>
@@ -48,28 +70,8 @@ namespace Bunit
 		/// <param name="calledTimes">The number of times the invocation is expected to have been called.</param>
 		/// <param name="userMessage">A custom user message to display if the assertion fails.</param>
 		/// <returns>The <see cref="JSRuntimeInvocation"/>.</returns>
-		public static IReadOnlyList<JSRuntimeInvocation> VerifyInvoke(this BunitJSInterop handler, string identifier, int calledTimes, string? userMessage = null)
-		{
-			if (handler is null)
-				throw new ArgumentNullException(nameof(handler));
-
-			if (calledTimes < 1)
-				throw new ArgumentException($"Use {nameof(VerifyNotInvoke)} to verify an identifier has not been invoked.", nameof(calledTimes));
-
-			var invocations = handler.Invocations[identifier];
-
-			if (invocations.Count == 0)
-			{
-				throw new JSInvokeCountExpectedException(identifier, calledTimes, 0, nameof(VerifyInvoke), userMessage);
-			}
-
-			if (invocations.Count != calledTimes)
-			{
-				throw new JSInvokeCountExpectedException(identifier, calledTimes, invocations.Count, nameof(VerifyInvoke), userMessage);
-			}
-
-			return invocations;
-		}
+		public static IReadOnlyList<JSRuntimeInvocation> VerifyInvoke<TResult>(this JSRuntimeInvocationHandlerBase<TResult> handler, string identifier, int calledTimes, string? userMessage = null)
+			=> VerifyInvoke(handler?.Invocations ?? throw new ArgumentNullException(nameof(handler)), identifier, calledTimes, userMessage);
 
 		/// <summary>
 		/// Verifies that an argument <paramref name="actualArgument"/>
@@ -96,6 +98,42 @@ namespace Bunit
 														"Actual element reference",
 														"Expected referenced element",
 														"Element does not have a the expected element reference.");
+			}
+		}
+
+		private static IReadOnlyList<JSRuntimeInvocation> VerifyInvoke(JSRuntimeInvocationDictionary allInvocations, string identifier, int calledTimes, string? userMessage = null)
+		{			
+			if (string.IsNullOrWhiteSpace(identifier))
+				throw new ArgumentException($"'{nameof(identifier)}' cannot be null or whitespace.", nameof(identifier));
+
+			if (calledTimes < 1)
+				throw new ArgumentException($"Use {nameof(VerifyNotInvoke)} to verify an identifier has not been invoked.", nameof(calledTimes));
+
+			var invocations = allInvocations[identifier];
+
+			if (invocations.Count == 0)
+			{
+				throw new JSInvokeCountExpectedException(identifier, calledTimes, 0, nameof(VerifyInvoke), userMessage);
+			}
+
+			if (invocations.Count != calledTimes)
+			{
+				throw new JSInvokeCountExpectedException(identifier, calledTimes, allInvocations.Count, nameof(VerifyInvoke), userMessage);
+			}
+
+			return invocations;
+		}
+
+		private static void VerifyNotInvoke(JSRuntimeInvocationDictionary allInvocations, string identifier, string? userMessage = null)
+		{
+			if (string.IsNullOrWhiteSpace(identifier))
+				throw new ArgumentException($"'{nameof(identifier)}' cannot be null or whitespace.", nameof(identifier));
+
+			var invocationCount = allInvocations[identifier].Count;
+
+			if (invocationCount > 0)
+			{
+				throw new JSInvokeCountExpectedException(identifier, 0, invocationCount, nameof(VerifyNotInvoke), userMessage);
 			}
 		}
 	}

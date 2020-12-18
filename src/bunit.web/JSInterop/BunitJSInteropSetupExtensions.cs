@@ -38,8 +38,8 @@ namespace Bunit.JSInterop
 		/// <param name="identifier">The identifier to setup a response for.</param>
 		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
 		/// <returns>A <see cref="JSRuntimeInvocationHandler{TResult}"/>.</returns>
-		public static JSRuntimeInvocationHandler<TResult> Setup<TResult>(this BunitJSInterop jsInterop, string identifier, params object[] arguments)
-			=> Setup<TResult>(jsInterop, identifier, invocation => invocation.Arguments.SequenceEqual(arguments));
+		public static JSRuntimeInvocationHandler<TResult> Setup<TResult>(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
+			=> Setup<TResult>(jsInterop, identifier, invocation => invocation.Arguments.SequenceEqual(arguments ?? Array.Empty<object?>()));
 
 		/// <summary>
 		/// Configure a catch all JSInterop invocation handler for a specific return type.
@@ -75,8 +75,8 @@ namespace Bunit.JSInterop
 		/// <param name="identifier">The identifier to setup a response for.</param>
 		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
 		/// <returns>A <see cref="JSRuntimeInvocationHandler"/>.</returns>
-		public static JSRuntimeInvocationHandler SetupVoid(this BunitJSInterop jsInterop, string identifier, params object[] arguments)
-			=> SetupVoid(jsInterop, identifier, invocation => invocation.Arguments.SequenceEqual(arguments));
+		public static JSRuntimeInvocationHandler SetupVoid(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
+			=> SetupVoid(jsInterop, identifier, invocation => invocation.Arguments.SequenceEqual(arguments ?? Array.Empty<object?>()));
 
 		/// <summary>
 		/// Configure a catch all JSInterop invocation handler, that should not receive any result.
@@ -88,22 +88,26 @@ namespace Bunit.JSInterop
 
 		/// <summary>
 		/// Looks through the registered handlers and returns the latest registered that can handle
-		/// the provided <paramref name="identifier"/> and <paramref name="args"/>, and that
+		/// the provided <paramref name="identifier"/> and <paramref name="arguments"/>, and that
 		/// will return <typeparamref name="TResult"/>.
 		/// </summary>
 		/// <param name="jsInterop">The bUnit JSInterop to setup the invocation handling with.</param>
+		/// <param name="identifier">The identifier the handler should match with.</param>
+		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
 		/// <returns>Returns the <see cref="JSRuntimeInvocationHandler{TResult}"/> or null if no one is found.</returns>
-		public static JSRuntimeInvocationHandler<TResult>? TryGetInvokeHandler<TResult>(this BunitJSInterop jsInterop, string identifier, params object?[]? args)
-			=> jsInterop.TryGetHandlerFor<TResult>(new JSRuntimeInvocation(identifier, default, args)) as JSRuntimeInvocationHandler<TResult>;
+		public static JSRuntimeInvocationHandler<TResult>? TryGetInvokeHandler<TResult>(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
+			=> jsInterop.TryGetHandlerFor<TResult>(new JSRuntimeInvocation(identifier, default, arguments)) as JSRuntimeInvocationHandler<TResult>;
 
 		/// <summary>
 		/// Looks through the registered handlers and returns the latest registered that can handle
-		/// the provided <paramref name="identifier"/> and <paramref name="args"/>, and that returns a "void" result.
+		/// the provided <paramref name="identifier"/> and <paramref name="arguments"/>, and that returns a "void" result.
 		/// </summary>
 		/// <param name="jsInterop">The bUnit JSInterop to setup the invocation handling with.</param>
+		/// <param name="identifier">The identifier the handler should match with.</param>
+		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
 		/// <returns>Returns the <see cref="JSRuntimeInvocationHandler"/> or null if no one is found.</returns>
-		public static JSRuntimeInvocationHandler? TryGetInvokeVoidHandler(this BunitJSInterop jsInterop, string identifier, params object?[]? args)
-			=> jsInterop.TryGetHandlerFor<object>(new JSRuntimeInvocation(identifier, default, args), x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
+		public static JSRuntimeInvocationHandler? TryGetInvokeVoidHandler(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
+			=> jsInterop.TryGetHandlerFor<object>(new JSRuntimeInvocation(identifier, default, arguments), x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
 
 #if NET5_0
 		private static void EnsureResultNotIJSObjectReference<TResult>()
@@ -111,9 +115,9 @@ namespace Bunit.JSInterop
 			const string UseSetupModuleErrorMessage = "Use one of the SetupModule() methods instead to set up an invocation handler that returns an IJSObjectReference.";
 			var resultType = typeof(TResult);
 			if (resultType == typeof(IJSObjectReference))
-				throw new System.ArgumentException(UseSetupModuleErrorMessage);
+				throw new ArgumentException(UseSetupModuleErrorMessage);
 			if (resultType == typeof(Microsoft.JSInterop.Implementation.JSObjectReference))
-				throw new System.ArgumentException(UseSetupModuleErrorMessage);
+				throw new ArgumentException(UseSetupModuleErrorMessage);
 		}
 #endif
 	}

@@ -9,7 +9,7 @@ namespace Bunit
 	/// received by the <see cref="BunitJSInterop"/> running in <see cref="JSRuntimeMode.Strict"/> mode,
 	/// which didn't contain a matching invocation handler.
 	/// </summary>
-	public class JSRuntimeUnhandledInvocationException : Exception
+	public sealed class JSRuntimeUnhandledInvocationException : Exception
 	{
 		/// <summary>
 		/// Gets the unplanned invocation.

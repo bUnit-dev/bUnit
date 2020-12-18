@@ -1,6 +1,5 @@
 using System.Net.Http;
 using Bunit.Diffing;
-using Bunit.JSInterop;
 using Bunit.Rendering;
 using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Authorization;
