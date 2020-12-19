@@ -98,6 +98,8 @@ List of new features.
 
   By [@egil](https://github.com/egil) in [#288](https://github.com/egil/bUnit/pull/288).
 
+- Added support for registering services in bUnits `Services` collection that implements `IAsyncDisposable`. Suggested by [@jmaillet](https://github.com/jmaillet) in [#249](https://github.com/egil/bUnit/issues/249). 
+
 ### Changed
 List of changes in existing functionality.
 
