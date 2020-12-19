@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Bunit.JSInterop.InvocationHandlers;
 using Bunit.JSInterop.InvocationHandlers.Implementation;
 using Microsoft.JSInterop;
 using Microsoft.JSInterop.Implementation;
@@ -11,7 +10,7 @@ using Xunit;
 
 namespace Bunit.JSInterop
 {
-    public class BunitJSModuleInteropTest : TestContext
+	public class BunitJSObjectReferenceTest : TestContext
 	{
 		[Theory(DisplayName = "Calling Setup<JSObjectReference> or Setup<IJSObjectReference> throws")]
 		[InlineData("import", null)]
@@ -260,6 +259,76 @@ namespace Bunit.JSInterop
 			var actual = JSInterop.TryGetModuleJSInterop("import", "BAR.js");
 
 			actual.ShouldBeNull();
+		}
+
+		[Fact(DisplayName = "IJSObjectReference can be cast to IJSInProcessObjectReference")]
+		public async Task Test070()
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+
+			var jsRuntime = await JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("FOO.js");
+
+			jsRuntime.ShouldBeAssignableTo<IJSInProcessObjectReference>();
+		}
+
+		[Fact(DisplayName = "IJSObjectReference can be cast to IJSUnmarshalledObjectReference")]
+		public async Task Test071()
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+
+			var jsRuntime = await JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("FOO.js");
+
+			jsRuntime.ShouldBeAssignableTo<IJSUnmarshalledObjectReference>();
+		}
+
+		[Fact(DisplayName = "IJSInProcessObjectReference-invocations is handled by handlers from BunitJSInterop")]
+		public async Task Test080()
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+			var jsInProcess = (IJSInProcessObjectReference)(await JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("FOO.js"));
+
+			await jsInProcess.InvokeAsync<string>("bar1");
+			await jsInProcess.InvokeAsync<string>("bar2", "baz");
+			await jsInProcess.InvokeVoidAsync("bar3");
+			await jsInProcess.InvokeVoidAsync("bar4", "baz");
+			jsInProcess.Invoke<string>("bar5");
+			jsInProcess.Invoke<string>("bar6", "baz");
+
+			JSInterop.VerifyInvoke("bar1");
+			JSInterop.VerifyInvoke("bar2").Arguments.ShouldBe(new[] { "baz" });
+			JSInterop.VerifyInvoke("bar3");
+			JSInterop.VerifyInvoke("bar4").Arguments.ShouldBe(new[] { "baz" });
+			JSInterop.VerifyInvoke("bar5");
+			JSInterop.VerifyInvoke("bar6").Arguments.ShouldBe(new[] { "baz" });
+		}
+
+		[Fact(DisplayName = "IJSUnmarshalledObjectReference-invocations is handled by handlers from BunitJSInterop")]
+		public async Task Test081()
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+			var jsUnmarshalled = (IJSUnmarshalledObjectReference)(await JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("FOO.js"));
+
+			await jsUnmarshalled.InvokeAsync<string>("bar1");
+			await jsUnmarshalled.InvokeAsync<string>("bar2", "baz");
+			await jsUnmarshalled.InvokeVoidAsync("bar3");
+			await jsUnmarshalled.InvokeVoidAsync("bar4", "baz");
+			jsUnmarshalled.Invoke<string>("bar5");
+			jsUnmarshalled.Invoke<string>("bar6", "baz");
+			jsUnmarshalled.InvokeUnmarshalled<string>("bar7");
+			jsUnmarshalled.InvokeUnmarshalled<string, string>("bar8", "baz");
+			jsUnmarshalled.InvokeUnmarshalled<string, string, string>("bar9", "baz", "boo");
+			jsUnmarshalled.InvokeUnmarshalled<string, string, string, string>("bar10", "baz", "boo", "bah");
+
+			JSInterop.VerifyInvoke("bar1");
+			JSInterop.VerifyInvoke("bar2").Arguments.ShouldBe(new[] { "baz" });
+			JSInterop.VerifyInvoke("bar3");
+			JSInterop.VerifyInvoke("bar4").Arguments.ShouldBe(new[] { "baz" });
+			JSInterop.VerifyInvoke("bar5");
+			JSInterop.VerifyInvoke("bar6").Arguments.ShouldBe(new[] { "baz" });
+			JSInterop.VerifyInvoke("bar7");
+			JSInterop.VerifyInvoke("bar8").Arguments.ShouldBe(new[] { "baz" });
+			JSInterop.VerifyInvoke("bar9").Arguments.ShouldBe(new[] { "baz", "boo" });
+			JSInterop.VerifyInvoke("bar10").Arguments.ShouldBe(new[] { "baz", "boo", "bah" });
 		}
 	}
 }

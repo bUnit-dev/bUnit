@@ -185,8 +185,8 @@ namespace Bunit.JSInterop
 			var identifier = "func";
 			var sut = new BunitJSInterop();
 			var handler = sut.Setup<Guid>(identifier, x => true);
-			var i1 = sut.JSRuntime.InvokeAsync<Guid>(identifier, "first");
-			var i2 = sut.JSRuntime.InvokeAsync<Guid>(identifier, "second");
+			sut.JSRuntime.InvokeAsync<Guid>(identifier, "first");
+			sut.JSRuntime.InvokeAsync<Guid>(identifier, "second");
 
 			var invocations = handler.Invocations;
 
@@ -201,9 +201,9 @@ namespace Bunit.JSInterop
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var planned = sut.Setup<object>("foo", "bar", 42);
 
-			var _ = sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42);
+			sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42);
 
-			Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = sut.JSRuntime.InvokeAsync<object>("foo", "bar", 41); });
+			Should.Throw<JSRuntimeUnhandledInvocationException>(() => sut.JSRuntime.InvokeAsync<object>("foo", "bar", 41));
 
 			planned.Invocations.Count.ShouldBe(1);
 			var invocation = planned.Invocations["foo"][0];
@@ -218,9 +218,9 @@ namespace Bunit.JSInterop
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var planned = sut.Setup<object>("foo", x => x.Arguments.Count == 1);
 
-			var _ = sut.JSRuntime.InvokeAsync<object>("foo", 42);
+			sut.JSRuntime.InvokeAsync<object>("foo", 42);
 
-			Should.Throw<JSRuntimeUnhandledInvocationException>(() => { var _ = sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42); });
+			Should.Throw<JSRuntimeUnhandledInvocationException>(() => sut.JSRuntime.InvokeAsync<object>("foo", "bar", 42));
 
 			planned.Invocations.Count.ShouldBe(1);
 			var invocation = planned.Invocations["foo"][0];

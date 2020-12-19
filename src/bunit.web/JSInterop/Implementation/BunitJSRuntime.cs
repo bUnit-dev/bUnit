@@ -9,7 +9,7 @@ namespace Bunit.JSInterop
 	[SuppressMessage("Minor Code Smell", "S1939:Inheritance list should not be redundant", Justification = "By design. To make it obvious that both is implemented.")]
 	[SuppressMessage("Design", "CA2012:ValueTask instances should not have their result directly accessed unless the instance has already completed.", Justification = "The ValueTask always wraps a Task object.")]
 	internal sealed partial class BunitJSRuntime : IJSRuntime, IJSInProcessRuntime
-    {
+	{
 		private BunitJSInterop _jsInterop { get; }
 
 		public BunitJSRuntime(BunitJSInterop jsInterop)
@@ -33,8 +33,8 @@ namespace Bunit.JSInterop
 		}
 
 		/// <inheritdoc/>
-		public TResult Invoke<TResult>(string identifier, params object?[]? args) =>
-			InvokeAsync<TResult>(identifier, args).GetAwaiter().GetResult();
+		public TResult Invoke<TResult>(string identifier, params object?[]? args)
+			=> InvokeAsync<TResult>(identifier, args).GetAwaiter().GetResult();
 
 		private ValueTask<TValue>? TryHandlePlannedInvocation<TValue>(JSRuntimeInvocation invocation)
 		{
