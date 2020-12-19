@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Bunit
 {
-	public class TestServiceProviderTest
+	public partial class TestServiceProviderTest
 	{
 		class DummyService { }
 		class AnotherDummyService { }
