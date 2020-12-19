@@ -1,0 +1,17 @@
+@using Microsoft.AspNetCore.Components.Authorization
+
+<p>@isInRole</p>
+
+@code {
+	private bool isInRole;
+
+	[Parameter] public string ExpectedRole { get; set; } = string.Empty;
+
+	[CascadingParameter] public Task<AuthenticationState> AuthenticationStateTask { get; set; } = default!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		var authenticationState = await AuthenticationStateTask;
+		isInRole = authenticationState.User.IsInRole(ExpectedRole);
+	}
+}

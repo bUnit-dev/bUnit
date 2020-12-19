@@ -5,17 +5,16 @@ using Xunit;
 
 namespace Bunit.TestDoubles.Authorization
 {
-	public class AuthorizationTest
+	public class AuthorizationTest : TestContext
 	{
 		[Fact(DisplayName = "AuthorizeView with unauthenticated user")]
 		public void Test001()
 		{
 			// Arrange
-			using var ctx = new TestContext();
-			ctx.AddTestAuthorization();
+			this.AddTestAuthorization();
 
 			// Act
-			var cut = ctx.RenderComponent<SimpleAuthView>();
+			var cut = RenderComponent<SimpleAuthView>();
 
 			// Assert
 			cut.MarkupMatches("Not authorized?");
@@ -25,12 +24,11 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test002()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
 
 			// act
-			var cut = ctx.RenderComponent<SimpleAuthView>();
+			var cut = RenderComponent<SimpleAuthView>();
 
 			// assert
 			cut.MarkupMatches("Authorized!");
@@ -40,12 +38,11 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test003()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser", AuthorizationState.Unauthorized);
 
 			// act
-			var cut = ctx.RenderComponent<SimpleAuthView>();
+			var cut = RenderComponent<SimpleAuthView>();
 
 			// assert
 			cut.MarkupMatches("Not authorized?");
@@ -55,11 +52,10 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test004()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 
 			// start off unauthenticated.
-			var cut = ctx.RenderComponent<SimpleAuthView>();
+			var cut = RenderComponent<SimpleAuthView>();
 			cut.MarkupMatches("Not authorized?");
 
 			// act
@@ -75,12 +71,11 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test005()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser005", AuthorizationState.Authorized);
 
 			// start off unauthenticated.
-			var cut = ctx.RenderComponent<SimpleAuthView>();
+			var cut = RenderComponent<SimpleAuthView>();
 			cut.MarkupMatches("Authorized!");
 
 			// act
@@ -95,11 +90,8 @@ namespace Bunit.TestDoubles.Authorization
 		[Fact(DisplayName = "AuthorizeView rendering without authorization services registered")]
 		public void Test006()
 		{
-			// arrange
-			using var ctx = new TestContext();
-
 			// act
-			var ex = Assert.Throws<MissingFakeAuthorizationException>(() => ctx.RenderComponent<SimpleAuthView>());
+			var ex = Assert.Throws<MissingFakeAuthorizationException>(() => RenderComponent<SimpleAuthView>());
 
 			// assert
 			Assert.Equal("AuthenticationStateProvider", ex.ServiceName);
@@ -110,12 +102,11 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test007()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser").SetPolicies("ContentViewer");
 
 			// act
-			var cut = ctx.RenderComponent<SimpleAuthViewWithPolicy>();
+			var cut = RenderComponent<SimpleAuthViewWithPolicy>();
 
 			// assert
 			cut.MarkupMatches("Authorized for content viewers.");
@@ -125,11 +116,10 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test008()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser");
 			// act
-			var cut = ctx.RenderComponent<SimpleAuthViewWithPolicy>();
+			var cut = RenderComponent<SimpleAuthViewWithPolicy>();
 
 			// assert
 			cut.MarkupMatches("");
@@ -139,12 +129,11 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test0081()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser").SetPolicies("OtherPolicy");
 
 			// act
-			var cut = ctx.RenderComponent<SimpleAuthViewWithPolicy>();
+			var cut = RenderComponent<SimpleAuthViewWithPolicy>();
 
 			// assert
 			cut.MarkupMatches("");
@@ -154,12 +143,11 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test009()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser").SetRoles("Admin");
 
 			// act
-			var cut = ctx.RenderComponent<SimpleAuthViewWithRole>();
+			var cut = RenderComponent<SimpleAuthViewWithRole>();
 
 			// assert
 			cut.MarkupMatches("Authorized content for admins.");
@@ -169,12 +157,11 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test010()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser");
 
 			// act
-			var cut = ctx.RenderComponent<SimpleAuthViewWithRole>();
+			var cut = RenderComponent<SimpleAuthViewWithRole>();
 
 			// assert
 			cut.MarkupMatches("");
@@ -184,12 +171,11 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test011()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser").SetRoles("NotAdmin");
 
 			// act
-			var cut = ctx.RenderComponent<SimpleAuthViewWithRole>();
+			var cut = RenderComponent<SimpleAuthViewWithRole>();
 
 			// assert
 			cut.MarkupMatches("");
@@ -199,12 +185,11 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test012()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorizing();
 
 			// act
-			var cut = ctx.RenderComponent<SimpleAuthView>();
+			var cut = RenderComponent<SimpleAuthView>();
 
 			// assert
 			cut.MarkupMatches("Authorizing...");
@@ -215,14 +200,13 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			var userId = new Guid("{5d5fa9c1-abf9-4ed6-8fb0-3365382b629c}");
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			var emailClaim = new Claim(ClaimTypes.Email, "user@test.com");
 			var uuidClaim = new Claim(ClaimTypes.Sid, userId.ToString());
 			authContext.SetAuthorized("TestUser").SetClaims(uuidClaim, emailClaim);
 
 			// act
-			var cut = ctx.RenderComponent<SimpleAuthViewWithClaims>();
+			var cut = RenderComponent<SimpleAuthViewWithClaims>();
 
 			// assert
 			cut.MarkupMatches(@$"<div>Authorized!</div>
@@ -236,16 +220,28 @@ namespace Bunit.TestDoubles.Authorization
 		public void Test014()
 		{
 			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser");
 
 			// act
-			var cut = ctx.RenderComponent<SimpleAuthViewWithClaims>();
+			var cut = RenderComponent<SimpleAuthViewWithClaims>();
 
 			// assert
 			cut.MarkupMatches(@$"<div>Authorized!</div>
 								<div>Name: TestUser</div>");
+		}
+
+		[Fact(DisplayName = "IsInRole can resolve role assigned to auth context")]
+		public void Test020()
+		{
+			var role = "myTestRole";
+			var authCtx = this.AddTestAuthorization();
+			authCtx.SetAuthorized("FooBar");
+			authCtx.SetRoles(role);
+
+			var cut = RenderComponent<AuthCascading>(ps => ps.Add(p => p.ExpectedRole, role));
+
+			cut.MarkupMatches("<p>True</p>");
 		}
 	}
 }

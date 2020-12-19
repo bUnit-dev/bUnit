@@ -99,14 +99,15 @@ namespace Bunit.TestDoubles
 			IEnumerable<string>? roles = null,
 			IEnumerable<Claim>? claims = null)
 		{
-			var identity = new FakeIdentity { Name = username };
-			var testPrincipal = new FakePrincipal { Identity = identity, Roles = roles ?? Array.Empty<string>() };
-			var principal = new ClaimsPrincipal(testPrincipal);
+			roles = roles ?? Array.Empty<string>();
+			claims = claims ?? Array.Empty<Claim>();
 
-			if (claims is not null && claims.Any())
-			{
-				principal.AddIdentity(new ClaimsIdentity(claims));
-			}
+			var usernameClaim = new Claim(ClaimsIdentity.DefaultNameClaimType, username);
+			var roleClaims = roles.Select(x => new Claim(ClaimsIdentity.DefaultRoleClaimType, x));
+			var allClaims = roleClaims.Concat(claims).Prepend(usernameClaim);
+
+			var identity = new ClaimsIdentity(claims: allClaims, authenticationType: "bUnit Fake Authentication");
+			var principal = new ClaimsPrincipal(identity);
 
 			return new AuthenticationState(principal);
 		}
@@ -117,7 +118,7 @@ namespace Bunit.TestDoubles
 		/// <returns>Instance of AuthenticationState for an unauthenticated user.</returns>
 		private static AuthenticationState CreateUnauthenticationState()
 		{
-			var principal = new ClaimsPrincipal(new FakePrincipal());
+			var principal = new ClaimsPrincipal(new ClaimsIdentity());
 			return new AuthenticationState(principal);
 		}
 	}
