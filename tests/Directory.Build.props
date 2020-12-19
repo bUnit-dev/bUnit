@@ -36,5 +36,9 @@
 		<PackageReference Include="AutoFixture.Xunit2" Version="4.14.0" />
 		<PackageReference Include="Xunit.Combinatorial" Version="1.4.1" />
 		<PackageReference Include="coverlet.msbuild" Version="2.9.0" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.15.0.24505">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 </Project>

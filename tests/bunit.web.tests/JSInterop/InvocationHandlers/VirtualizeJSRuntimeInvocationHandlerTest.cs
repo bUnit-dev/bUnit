@@ -108,7 +108,7 @@ namespace Bunit.JSInterop.ComponentSupport
 		private static ICollection<string> CreateItems(int itemsToCreate)
 			=> Enumerable.Range(0, itemsToCreate).Select(x => Guid.NewGuid().ToString()).ToArray();
 
-		private ItemsProviderDelegate<string> CreateItemsProvider(int itemsInCollection)
+		private static ItemsProviderDelegate<string> CreateItemsProvider(int itemsInCollection)
 		{
 			return request =>
 			{

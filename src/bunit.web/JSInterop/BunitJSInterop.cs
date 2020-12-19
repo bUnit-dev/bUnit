@@ -41,7 +41,9 @@ namespace Bunit
 		{
 			Mode = JSRuntimeMode.Strict;
 			JSRuntime = new BunitJSRuntime(this);
+#if NET5_0
 			AddCustomHandlers();
+#endif
 		}
 
 		/// <summary>
@@ -83,13 +85,13 @@ namespace Bunit
 			return result;
 		}
 
+#if NET5_0
 		private void AddCustomHandlers()
 		{
-#if NET5_0
 			AddInvocationHandler(new FocusAsyncInvocationHandler());
 			AddInvocationHandler(new VirtualizeJSRuntimeInvocationHandler());
 			AddInvocationHandler(new LooseModeJSObjectReferenceInvocationHandler(this));
-#endif
 		}
+#endif
 	}
 }

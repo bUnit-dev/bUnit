@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Components.Web;
@@ -8,8 +7,7 @@ using Shouldly;
 using Xunit;
 
 namespace Bunit
-{
-	[SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "Arguments are provided from test data")]
+{	
 	public class KeyTest
 	{
 		public static IEnumerable<object[]> KeyValueTestData { get; } = GetKeyValueTestData().Select(c => new object[] { c }).ToList();
@@ -69,15 +67,12 @@ namespace Bunit
 			key.CommandKey.ShouldBeFalse();
 		}
 
-		[Theory(DisplayName = "Custing from null or empty string throws ArgumentNullException")]
+		[Theory(DisplayName = "Casting from null or empty string throws ArgumentNullException")]
 		[InlineData(null)]
 		[InlineData("")]
 		public void CastingFromNullStringThrowsException(string value)
 		{
-			Should.Throw<ArgumentNullException>(() =>
-			{
-				Key key = value;
-			});
+			Should.Throw<ArgumentNullException>(() => (Key)value);
 		}
 
 		[Theory(DisplayName = "Get method with value and code parameters should return initialized Key object")]

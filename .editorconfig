@@ -44,13 +44,20 @@ dotnet_diagnostic.BL0006.severity = none
 
 [*.cs]
 
+dotnet_diagnostic.IDE0022.severity = silent # IDE0022: Use block body for methods
+dotnet_diagnostic.IDE0090.severity = silent # IDE0090: Use 'new(...)'
 dotnet_diagnostic.S125.severity = suggestion # S125: Sections of code should not be commented out
 dotnet_diagnostic.S927.severity = suggestion # S927: Parameter names should match base declaration and other partial definitions
 dotnet_diagnostic.S1075.severity = suggestion # S1075: URIs should not be hardcoded
-dotnet_diagnostic.S1186.severity = suggestion # S1186: Methods should not be empty
+dotnet_diagnostic.S1186.severity = silent # S1186: Methods should not be empty
 dotnet_diagnostic.S1199.severity = suggestion # S1199: Nested code blocks should not be used 
 dotnet_diagnostic.S3925.severity = suggestion # S3925: "ISerializable" should be implemented correctly
 
-[tests/**.cs]
+[src/bunit.web/EventDispatchExtensions/**.cs]
+dotnet_diagnostic.S107.severity = none # S107: Methods should not have too many parameters
 
-dotnet_diagnostic.S3459.severity = suggestion # S3459: Unassigned members should be removed
+[tests/**.cs]
+dotnet_diagnostic.S125.severity = none # S125: Sections of code should not be commented out
+dotnet_diagnostic.CA2012.severity = none # CA2012: Use ValueTasks correctly
+dotnet_diagnostic.S3459.severity = none # S3459: Unassigned members should be removed
+dotnet_diagnostic.S1186.severity = none # S1186: Methods should not be empty

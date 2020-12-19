@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Shouldly;
 using Xunit;
 using Xunit.Sdk;
@@ -22,7 +23,7 @@ namespace Bunit
 			catch (Exception ex)
 			{
 				exception = ex;
-			};
+			}
 
 			var actual = exception.ShouldBeOfType<CollectionException>();
 			actual.ActualCount.ShouldBe(collection.Length);
@@ -31,6 +32,7 @@ namespace Bunit
 
 		[Fact(DisplayName = "ShouldAllBe for Action<T> throws CollectionException if one of " +
 							"the element inspectors throws")]
+		[SuppressMessage("Minor Code Smell", "S3626:Jump statements should not be redundant", Justification = "Necessary for testing purposes.")]
 		public void Test002()
 		{
 			Exception? exception = null;
@@ -43,7 +45,7 @@ namespace Bunit
 			catch (Exception ex)
 			{
 				exception = ex;
-			};
+			}
 
 			var actual = exception.ShouldBeOfType<CollectionException>();
 			actual.IndexFailurePoint.ShouldBe(1);
@@ -64,7 +66,7 @@ namespace Bunit
 			catch (Exception ex)
 			{
 				exception = ex;
-			};
+			}
 
 			var actual = exception.ShouldBeOfType<CollectionException>();
 			actual.ActualCount.ShouldBe(collection.Length);
@@ -73,6 +75,7 @@ namespace Bunit
 
 		[Fact(DisplayName = "ShouldAllBe for Action<T, int> throws CollectionException if one of " +
 							"the element inspectors throws")]
+		[SuppressMessage("Minor Code Smell", "S3626:Jump statements should not be redundant", Justification = "Necessary for testing purposes.")]
 		public void Test004()
 		{
 			Exception? exception = null;
@@ -85,7 +88,7 @@ namespace Bunit
 			catch (Exception ex)
 			{
 				exception = ex;
-			};
+			}
 
 			var actual = exception.ShouldBeOfType<CollectionException>();
 			actual.IndexFailurePoint.ShouldBe(1);

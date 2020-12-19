@@ -8,13 +8,6 @@ namespace Bunit
 {
 	public class TestContextTest : TestContext
 	{
-		[Fact(DisplayName = "The placeholder IJSRuntime is overridden by a supplied mock and does not throw")]
-		public void Test022()
-		{
-			JSInterop.Mode = JSRuntimeMode.Loose;
-			RenderComponent<SimpleWithJSRuntimeDep>();
-		}
-
 		[Fact(DisplayName = "The test service provider should register a placeholder NavigationManager which throws exceptions")]
 		public void Test023()
 		{
@@ -89,9 +82,7 @@ namespace Bunit
 		[Fact(DisplayName = "Can raise events from markup rendered with TestContext")]
 		public void Test040()
 		{
-			RenderComponent<ClickCounter>()
-				.Find("button")
-				.Click();
+			Should.NotThrow(() => RenderComponent<ClickCounter>().Find("button").Click());
 		}
 
 		class ReceivesCascadinValue : ComponentBase
