@@ -70,7 +70,7 @@ namespace Bunit.Extensions
 
 			var btn = cut.Find("button");
 
-			btn.Click(); // remove from dom
+			Should.NotThrow(() => btn.Click());
 		}
 
 		[Fact(DisplayName = "Found element throws when its properties or methods are used after it's removed from DOM")]

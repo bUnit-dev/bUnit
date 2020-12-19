@@ -23,7 +23,7 @@ namespace Bunit
 			catch (Exception ex)
 			{
 				exception = ex;
-			};
+			}
 
 			exception.ShouldBeOfType<ArgumentNullException>();
 		}
@@ -41,7 +41,7 @@ namespace Bunit
 			catch (Exception ex)
 			{
 				exception = ex;
-			};
+			}
 
 			exception.ShouldBeOfType<ActualExpectedAssertException>();
 		}

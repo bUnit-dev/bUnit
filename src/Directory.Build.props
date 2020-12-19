@@ -46,9 +46,13 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
 		<PackageReference Include="Nerdbank.GitVersioning" Version="3.3.37" PrivateAssets="All" />
-	</ItemGroup>
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.15.0.24505">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>	
 </Project>

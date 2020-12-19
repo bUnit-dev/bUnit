@@ -1,6 +1,4 @@
 #if NET5_0
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Bunit.TestAssets.SampleComponents;
 using Shouldly;
 using Xunit;

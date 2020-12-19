@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -414,7 +413,6 @@ namespace Bunit.JSInterop
 			plannedCatchall.Invocations.Count.ShouldBe(0);
 		}
 
-		[SuppressMessage("Reliability", "CA2012:Use ValueTasks correctly", Justification = "Not relevant for test")]
 		[Fact(DisplayName = "The last handler matching an invocation receives the invocation")]
 		public void Test030()
 		{

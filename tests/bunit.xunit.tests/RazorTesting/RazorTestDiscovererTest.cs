@@ -11,14 +11,12 @@ namespace Bunit.RazorTesting
 {
 	public class RazorTestDiscovererTest
 	{
-		private readonly ExceptionAggregator _aggregator;
 		private readonly IMessageSink _messageBus;
 		private readonly ITestFrameworkDiscoveryOptions _options;
 		private readonly IReflectionAttributeInfo _attribute;
 
 		public RazorTestDiscovererTest()
 		{
-			_aggregator = new ExceptionAggregator();
 			_options = TestFrameworkOptions.ForDiscovery();
 			_messageBus = Mock.Of<IMessageSink>();
 			_attribute = Mock.Of<IReflectionAttributeInfo>();

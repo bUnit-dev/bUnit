@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Bunit
 {
@@ -7,7 +6,6 @@ namespace Bunit
 	/// Represents a single parameter supplied to an <see cref="Microsoft.AspNetCore.Components.IComponent"/>
 	/// component under test.
 	/// </summary>    
-	[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "<Pending>")]
 	public readonly struct ComponentParameter : IEquatable<ComponentParameter>
 	{
 		/// <summary>
