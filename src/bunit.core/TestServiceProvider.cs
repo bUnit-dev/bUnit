@@ -13,7 +13,7 @@ namespace Bunit
 	{
 		private readonly IServiceCollection _serviceCollection;
 		private ServiceProvider? _serviceProvider;
-		
+
 		/// <summary>
 		/// Gets whether this <see cref="TestServiceProvider"/> has been initialized, and 
 		/// no longer will accept calls to the <c>AddService</c>'s methods.
@@ -78,7 +78,14 @@ namespace Bunit
 		/// <inheritdoc/>
 		public void Dispose()
 		{
-			_serviceProvider?.Dispose();
+			if (_serviceProvider is null) return;
+
+			var disposedTask = _serviceProvider.DisposeAsync().AsTask();
+
+			if (!disposedTask.IsCompleted)
+				disposedTask.GetAwaiter().GetResult();
+
+			_serviceProvider.Dispose();
 		}
 
 		/// <inheritdoc/>
