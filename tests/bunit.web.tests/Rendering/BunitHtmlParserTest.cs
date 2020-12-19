@@ -31,6 +31,10 @@ namespace Bunit.Rendering
 			// "frame","frameset","image","isindex" // not supported 
 		}).Select(x => new[] { x });
 
+		public static readonly IEnumerable<string[]> BODY_HTML_AND_SPEACIAL_ELEMENTS = BODY_HTML_ELEMENTS.Concat(
+			(new[] { "html", "head", "body", }).Select(x => new[] { x })
+		);
+
 		[Fact(DisplayName = "Parse() called with null")]
 		public void ParseCalledWithNull()
 		{
@@ -48,7 +52,7 @@ namespace Bunit.Rendering
 		}
 
 		[Theory(DisplayName = "Parse() passed <TAG id=TAG>")]
-		[MemberData(nameof(BODY_HTML_ELEMENTS))]
+		[MemberData(nameof(BODY_HTML_AND_SPEACIAL_ELEMENTS))]
 		public void Test001(string elementName)
 		{
 			var actual = Parser.Parse($@"<{elementName} id=""{elementName}"">").ToList();
@@ -108,18 +112,7 @@ namespace Bunit.Rendering
 			actual.ShouldHaveSingleItem()
 				.TextContent.ShouldBe(" ");
 		}
-
-		[Theory(DisplayName = "Parse() with special tags")]
-		[InlineData("html")]
-		[InlineData("head")]
-		[InlineData("body")]
-		public void Test007(string elementName)
-		{
-			var actual = Parser.Parse($@"<{elementName} id=""{elementName}"">").ToList();
-
-			VerifyElementParsedWithId(elementName, actual);
-		}
-
+		
 		private static void VerifyElementParsedWithId(string expectedElementName, List<INode> actual)
 		{
 			var elm = actual.OfType<IElement>()

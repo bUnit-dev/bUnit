@@ -1,6 +1,5 @@
 using System.Net.Http;
 using Bunit.Diffing;
-using Bunit.JSInterop;
 using Bunit.Rendering;
 using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +32,6 @@ namespace Bunit.Extensions
 			services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
 
 			// bUnits fake JSInterop
-			jsInterop.AddBuiltInJSRuntimeInvocationHandlers();
 			services.AddSingleton<IJSRuntime>(jsInterop.JSRuntime);
 
 			// bUnit specific services

@@ -90,7 +90,7 @@ namespace Bunit
 
 				builder.OpenComponent(0, cv.Type);
 
-				if (cv.Parameter.Name is string)
+				if (cv.Parameter.Name is not null)
 					builder.AddAttribute(1, nameof(CascadingValue<object>.Name), cv.Parameter.Name);
 
 				builder.AddAttribute(2, nameof(CascadingValue<object>.Value), cv.Parameter.Value);

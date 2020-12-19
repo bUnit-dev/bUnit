@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 namespace Bunit
 {
 	/// <inheritdoc/>
-	public interface IRenderedComponent<TComponent> : IRenderedComponentBase<TComponent>, IRenderedFragment
+	public interface IRenderedComponent<out TComponent> : IRenderedComponentBase<TComponent>, IRenderedFragment
 		where TComponent : IComponent
 	{
 	}

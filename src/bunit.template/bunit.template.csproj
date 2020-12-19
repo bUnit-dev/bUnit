@@ -35,4 +35,8 @@
 		<None Remove="template\obj\**" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include="..\..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
 </Project>

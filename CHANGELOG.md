@@ -83,6 +83,21 @@ List of new features.
 
   By [@egil](https://github.com/egil) in [#262](https://github.com/egil/bUnit/pull/262).
 
+- Added support for `IJSRuntime.InvokeAsync<IJSObjectReference>(...)` calls from components. There is now a new setup helper methods for configuring how invocations towards JS modules should be handled. This is done with the various `SetupModule` methods available on the `BunitJSInterop` type available through the `TestContext.JSInterop` property. For example, to set up a module for handling calls to `foo.js`, do the following:
+
+  ```c#
+  using var ctx = new TestContext();
+  var moduleJsInterop = ctx.JSInterop.SetupModule("foo.js");
+  ```
+
+  The returned `moduleJsInterop` is a `BunitJSInterop` type, which means all the normal `Setup<TResult>` and `SetupVoid` methods can be used to configure it to handle calls to the module from a component. For example, to configure a handler for a call to `hello` in the `foo.js` module, do the following:
+
+  ```c#
+  moduleJsInterop.SetupVoid("hello");
+  ```
+
+  By [@egil](https://github.com/egil) in [#288](https://github.com/egil/bUnit/pull/288).
+
 ### Changed
 List of changes in existing functionality.
 

@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Bunit.Asserting
 {
-	public class MarkupMatchesAssertExtensionsTest : TestContext
+	public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	{
 		private const string ActualMarkup = "<p>FOO</p>";
 		private const string ExpectedMarkup = "<div>BAR</div>";

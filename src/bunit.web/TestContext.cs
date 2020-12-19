@@ -1,8 +1,6 @@
 using System;
 using Bunit.Extensions;
-using Bunit.JSInterop;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 
 namespace Bunit

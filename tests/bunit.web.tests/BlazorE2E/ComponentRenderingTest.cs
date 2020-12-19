@@ -4,7 +4,6 @@ using System.Linq;
 using System.Numerics;
 using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
-using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
 using Xunit;
@@ -21,7 +20,7 @@ namespace Bunit.BlazorE2E
 	{
 		public ComponentRenderingTest()
 		{
-			JSInterop.Mode = JSRuntimeMode.Loose; 
+			JSInterop.Mode = JSRuntimeMode.Loose;
 		}
 
 		[Fact]
@@ -372,7 +371,7 @@ namespace Bunit.BlazorE2E
 			// Assert.Equal("Clicks: 1", inputElement.GetAttribute("value"));
 			// buttonElement.Click();
 			// Assert.Equal("Clicks: 2", inputElement.GetAttribute("value"));
-			
+
 			var cut = RenderComponent<ElementRefComponent>();
 			var inputElement = cut.Find("#capturedElement");
 			var refId = inputElement.GetAttribute(Htmlizer.ELEMENT_REFERENCE_ATTR_NAME);

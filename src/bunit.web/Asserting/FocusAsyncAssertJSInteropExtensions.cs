@@ -1,5 +1,5 @@
 #if NET5_0
-using Bunit.JSInterop.InvocationHandlers;
+using Bunit.JSInterop.InvocationHandlers.Implementation;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 
