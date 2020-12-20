@@ -2,6 +2,9 @@ name: "CI/CD"
 
 on:
   pull_request:
+    branches:
+      - dev
+      - main
     types:
       - opened
       - synchronize
@@ -234,7 +237,7 @@ jobs:
           dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
 
       - name: Push packages to GitHub Package Registry
-        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/egilx`/index.json --skip-duplicate --no-symbols true
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/egil/index.json --skip-duplicate --no-symbols true
 
       - name: Push packages to NuGet
         if: github.event_name == 'release'
