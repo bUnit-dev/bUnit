@@ -10,12 +10,19 @@ namespace Bunit.TestDoubles.Authorization
 {
 	public class FakeAuthorizationServiceTest
 	{
+		private ClaimsPrincipal CreateUserPrincipal(string username)
+		{
+			var usernameClaim = new Claim(ClaimsIdentity.DefaultNameClaimType, username);
+			var identity = new ClaimsIdentity(claims: new[] { usernameClaim }, authenticationType: "bUnit Fake Authentication");
+			return new ClaimsPrincipal(identity);
+		}
+
 		[Fact(DisplayName = "Get AuthorizeAsync with an authorized result.")]
 		public async Task Test002()
 		{
 			// arrange
 			var service = new FakeAuthorizationService(AuthorizationState.Unauthorized);
-			var user = new ClaimsPrincipal(new FakeIdentity { Name = "DarthPedro" });
+			var user = CreateUserPrincipal("FooBar");
 			var requirements = new List<IAuthorizationRequirement>();
 
 			// act
@@ -31,7 +38,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			var service = new FakeAuthorizationService();
-			var user = new ClaimsPrincipal(new FakeIdentity { Name = "DarthPedro" });
+			var user = CreateUserPrincipal("FooBar");
 			var requirements = new List<IAuthorizationRequirement>();
 
 			// act
@@ -47,7 +54,7 @@ namespace Bunit.TestDoubles.Authorization
 		{
 			// arrange
 			var service = new FakeAuthorizationService(AuthorizationState.Unauthorized);
-			var user = new ClaimsPrincipal(new FakeIdentity { Name = "DarthPedro" });
+			var user = CreateUserPrincipal("FooBar");
 
 			// act
 			var result = await service.AuthorizeAsync(user, "testResource", "testPolicy");

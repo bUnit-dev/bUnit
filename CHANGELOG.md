@@ -134,6 +134,8 @@ List of any bug fixes.
 
 - When an element, found in the DOM tree using the `Find()`, method was removed because of an event handler trigger on it, e.g. an `cut.Find("button").Click()` event trigger method, an `ElementNotFoundException` was thrown. Reported by [@nickmuller](https://github.com/nickmuller) in [#251](https://github.com/egil/bUnit/issues/251).
 
+- In the built-in fake authentication system in bUnit, roles and claims were not available in components through the a cascading parameter of type `Task<AuthenticationState>`. Reported by [@AFAde](https://github.com/AFAde) in [#253](https://github.com/egil/bUnit/discussions/253) and fixed in [#291](https://github.com/egil/bUnit/pull/291) by [@egil](https://github.com/egil).
+
 ## [1.0.0-beta 11] - 2020-10-26
 
 The following section list all changes in beta-11.
