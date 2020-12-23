@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using AngleSharp;
 using AngleSharp.Diffing.Core;
 using Bunit;
@@ -11,7 +12,8 @@ namespace Bunit
 	/// <summary>
 	/// Represents an differences between pieces of markup.
 	/// </summary>
-	public class HtmlEqualException : ActualExpectedAssertException
+	[Serializable]
+	public sealed class HtmlEqualException : ActualExpectedAssertException
 	{
 		/// <summary>
 		/// Creates an instance of the <see cref="HtmlEqualException"/> type.
@@ -51,6 +53,9 @@ namespace Bunit
 				return $"  {i + 1}: {diffText}";
 			})) + Environment.NewLine;
 		}
+
+		private HtmlEqualException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+			: base(serializationInfo, streamingContext) { }
 	}
 
 	internal static class ComparisonFormatHelpers

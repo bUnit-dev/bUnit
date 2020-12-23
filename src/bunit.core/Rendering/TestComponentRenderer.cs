@@ -74,9 +74,8 @@ namespace Bunit.Rendering
 			for (var i = 0; i < ownFrames.Count; i++)
 			{
 				ref var frame = ref ownFrames.Array[i];
-				if (frame.FrameType == RenderTreeFrameType.Component)
-					if (frame.Component is TComponent component)
-						result.Add(component);
+				if (frame.FrameType == RenderTreeFrameType.Component && frame.Component is TComponent component)
+					result.Add(component);
 			}
 
 			return result;

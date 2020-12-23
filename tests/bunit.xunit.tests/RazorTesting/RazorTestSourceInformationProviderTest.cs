@@ -12,7 +12,7 @@ namespace Bunit.RazorTesting
 {
 	public sealed class RazorTestSourceInformationProviderTest : IDisposable
 	{
-		private readonly TestComponentRenderer _renderer = new TestComponentRenderer();
+		private readonly TestComponentRenderer _renderer = new();
 		private readonly IMessageSink _messageBus = Mock.Of<IMessageSink>();
 
 		private RazorTestBase GetTest(Type testComponent, int testIndex)

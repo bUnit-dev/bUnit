@@ -1,11 +1,13 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Bunit.Rendering
 {
 	/// <summary>
 	/// Represents an exception that is thrown when a search for a component did not succeed.
 	/// </summary>
-	public class ComponentNotFoundException : Exception
+	[Serializable]
+	public sealed class ComponentNotFoundException : Exception
 	{
 		/// <summary>
 		/// Creates an instance of the <see cref="ComponentNotFoundException"/> type.
@@ -14,5 +16,8 @@ namespace Bunit.Rendering
 		public ComponentNotFoundException(Type componentType) : base($"A component of type {componentType?.Name} was not found in the render tree.")
 		{
 		}
+
+		private ComponentNotFoundException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+			: base(serializationInfo, streamingContext) { }
 	}
 }

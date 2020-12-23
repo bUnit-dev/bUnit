@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Bunit
@@ -11,71 +10,11 @@ namespace Bunit
 	/// </summary>
 	public sealed class Key : IEquatable<Key>
 	{
-		private static readonly Dictionary<(string value, string code), Key> PredefinedKeys;
-
-		[SuppressMessage("Microsoft.Performance", "CA1810:Initialize reference type static fields inline", Justification = "Properties are initialized after fields")]
-		static Key()
-		{
-			PredefinedKeys = new[]
-			{
-				Key.Backspace,
-				Key.Tab,
-				Key.Enter,
-				Key.Pause,
-				Key.Escape,
-				Key.Space,
-				Key.PageUp,
-				Key.PageDown,
-				Key.End,
-				Key.Home,
-				Key.Left,
-				Key.Up,
-				Key.Right,
-				Key.Down,
-				Key.Insert,
-				Key.Delete,
-				Key.Equal,
-				Key.NumberPad0,
-				Key.NumberPad1,
-				Key.NumberPad2,
-				Key.NumberPad3,
-				Key.NumberPad4,
-				Key.NumberPad5,
-				Key.NumberPad6,
-				Key.NumberPad7,
-				Key.NumberPad8,
-				Key.NumberPad9,
-				Key.Multiply,
-				Key.Add,
-				Key.Subtract,
-				Key.NumberPadDecimal,
-				Key.Divide,
-				Key.F1,
-				Key.F2,
-				Key.F3,
-				Key.F4,
-				Key.F5,
-				Key.F6,
-				Key.F7,
-				Key.F8,
-				Key.F9,
-				Key.F10,
-				Key.F11,
-				Key.F12,
-				Key.Control,
-				Key.Shift,
-				Key.Alt,
-				Key.Command
-			}.ToDictionary(k => (k.Value, k.Code));
-		}
-
-		private Key(string value)
-			: this(value, value)
+		private Key(string value) : this(value, value)
 		{
 		}
 
-		private Key(string value, string code)
-			: this(value, code, false, false, false, false)
+		private Key(string value, string code) : this(value, code, false, false, false, false)
 		{
 		}
 
@@ -564,8 +503,6 @@ namespace Bunit
 		/// <returns>A new key with combination of Control, Shift, Alt, and Command keys.</returns>
 		[return: NotNullIfNotNull("x")]
 		[return: NotNullIfNotNull("y")]
-		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Alternative method is named " + nameof(Combine))]
-		[SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "False warning is caused by bug in Roslyn analyzer")]
 		public static Key operator +(Key x, Key? y)
 		{
 			if (x is not null)
@@ -591,9 +528,6 @@ namespace Bunit
 		/// </summary>
 		/// <param name="value">The string value to convert to Key instance.</param>
 		/// <returns>The Key instance with the specified value.</returns>
-		// It would make sense to convert null and "" to null Key instead of throwing ArgumentNullException,
-		// but this would force consumers to use ! operator to enforce not-null value.
-		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Alternative method is named " + nameof(Get))]
 		public static implicit operator Key(string value) => Key.Get(value);
 
 		/// <summary>
@@ -601,7 +535,6 @@ namespace Bunit
 		/// </summary>
 		/// <param name="key">The character to convert to Key instance.</param>
 		/// <returns>The Key instance with character value.</returns>
-		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Alternative method is named " + nameof(Get))]
 		public static implicit operator Key(char key) => Key.Get(key);
 
 		/// <summary>
@@ -610,7 +543,6 @@ namespace Bunit
 		/// <param name="key">The character to convert to Key instance.</param>
 		/// <returns>The Key instance with character value.</returns>
 		[return: NotNullIfNotNull("key")]
-		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Key should have minimal relation to KeyboardEventArgs type")]
 		public static implicit operator KeyboardEventArgs(Key key)
 		{
 			if (key is null)
@@ -632,5 +564,58 @@ namespace Bunit
 				MetaKey = key.CommandKey
 			};
 		}
+
+		// This has to be placed last since it is referencing other static fields, that must be initialized first.
+		private static readonly Dictionary<(string value, string code), Key> PredefinedKeys = new()
+		{
+			{ (Key.Backspace.Value, Key.Backspace.Code), Key.Backspace },
+			{ (Key.Tab.Value, Key.Tab.Code), Key.Tab },
+			{ (Key.Enter.Value, Key.Enter.Code), Key.Enter },
+			{ (Key.Pause.Value, Key.Pause.Code), Key.Pause },
+			{ (Key.Escape.Value, Key.Escape.Code), Key.Escape },
+			{ (Key.Space.Value, Key.Space.Code), Key.Space },
+			{ (Key.PageUp.Value, Key.PageUp.Code), Key.PageUp },
+			{ (Key.PageDown.Value, Key.PageDown.Code), Key.PageDown },
+			{ (Key.End.Value, Key.End.Code), Key.End },
+			{ (Key.Home.Value, Key.Home.Code), Key.Home },
+			{ (Key.Left.Value, Key.Left.Code), Key.Left },
+			{ (Key.Up.Value, Key.Up.Code), Key.Up },
+			{ (Key.Right.Value, Key.Right.Code), Key.Right },
+			{ (Key.Down.Value, Key.Down.Code), Key.Down },
+			{ (Key.Insert.Value, Key.Insert.Code), Key.Insert },
+			{ (Key.Delete.Value, Key.Delete.Code), Key.Delete },
+			{ (Key.Equal.Value, Key.Equal.Code), Key.Equal },
+			{ (Key.NumberPad0.Value, Key.NumberPad0.Code), Key.NumberPad0 },
+			{ (Key.NumberPad1.Value, Key.NumberPad1.Code), Key.NumberPad1 },
+			{ (Key.NumberPad2.Value, Key.NumberPad2.Code), Key.NumberPad2 },
+			{ (Key.NumberPad3.Value, Key.NumberPad3.Code), Key.NumberPad3 },
+			{ (Key.NumberPad4.Value, Key.NumberPad4.Code), Key.NumberPad4 },
+			{ (Key.NumberPad5.Value, Key.NumberPad5.Code), Key.NumberPad5 },
+			{ (Key.NumberPad6.Value, Key.NumberPad6.Code), Key.NumberPad6 },
+			{ (Key.NumberPad7.Value, Key.NumberPad7.Code), Key.NumberPad7 },
+			{ (Key.NumberPad8.Value, Key.NumberPad8.Code), Key.NumberPad8 },
+			{ (Key.NumberPad9.Value, Key.NumberPad9.Code), Key.NumberPad9 },
+			{ (Key.Multiply.Value, Key.Multiply.Code), Key.Multiply },
+			{ (Key.Add.Value, Key.Add.Code), Key.Add },
+			{ (Key.Subtract.Value, Key.Subtract.Code), Key.Subtract },
+			{ (Key.NumberPadDecimal.Value, Key.NumberPadDecimal.Code), Key.NumberPadDecimal },
+			{ (Key.Divide.Value, Key.Divide.Code), Key.Divide },
+			{ (Key.F1.Value, Key.F1.Code), Key.F1 },
+			{ (Key.F2.Value, Key.F2.Code), Key.F2 },
+			{ (Key.F3.Value, Key.F3.Code), Key.F3 },
+			{ (Key.F4.Value, Key.F4.Code), Key.F4 },
+			{ (Key.F5.Value, Key.F5.Code), Key.F5 },
+			{ (Key.F6.Value, Key.F6.Code), Key.F6 },
+			{ (Key.F7.Value, Key.F7.Code), Key.F7 },
+			{ (Key.F8.Value, Key.F8.Code), Key.F8 },
+			{ (Key.F9.Value, Key.F9.Code), Key.F9 },
+			{ (Key.F10.Value, Key.F10.Code), Key.F10 },
+			{ (Key.F11.Value, Key.F11.Code), Key.F11 },
+			{ (Key.F12.Value, Key.F12.Code), Key.F12 },
+			{ (Key.Control.Value, Key.Control.Code), Key.Control },
+			{ (Key.Shift.Value, Key.Shift.Code), Key.Shift },
+			{ (Key.Alt.Value, Key.Alt.Code), Key.Alt },
+			{ (Key.Command.Value, Key.Command.Code), Key.Command }
+		};
 	}
 }

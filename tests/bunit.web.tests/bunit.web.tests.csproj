@@ -6,10 +6,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Xunit.Combinatorial" Version="1.4.1" />
-	</ItemGroup>
-	
-	<ItemGroup>
 		<ProjectReference Include="..\..\src\bunit.core\bunit.core.csproj" />
 		<ProjectReference Include="..\..\src\bunit.web\bunit.web.csproj" />
 		<ProjectReference Include="..\..\src\bunit.xunit\bunit.xunit.csproj" />

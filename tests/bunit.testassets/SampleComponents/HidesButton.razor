@@ -1,0 +1,14 @@
+@if (showButton)
+{
+	<button @onclick="ClickHandler">BUTTON</button>
+}
+
+@code
+{
+	private bool showButton = true;
+
+	private void ClickHandler()
+	{
+		showButton = false;
+	}
+}

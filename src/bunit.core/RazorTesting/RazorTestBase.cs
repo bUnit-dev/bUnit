@@ -72,7 +72,11 @@ namespace Bunit.RazorTesting
 		public virtual void Validate() { }
 
 		/// <inheritdoc/>
-		void IComponent.Attach(RenderHandle renderHandle) { }
+		void IComponent.Attach(RenderHandle renderHandle)
+		{
+			// Since this component just captures a render fragments and test settings for testing,
+			// the renderHandler is not used for anything in this component.
+		}
 
 		/// <summary>
 		/// Implements the logic for running the test.
@@ -92,11 +96,11 @@ namespace Bunit.RazorTesting
 		/// <summary>
 		/// Try to run the <see cref="Func{T, Task}"/>.
 		/// </summary>
-		protected static async Task TryRunAsync<T>(Func<T, Task> action, T input)
+		protected static Task TryRunAsync<T>(Func<T, Task> action, T input)
 		{
 			if (action is null)
 				throw new ArgumentNullException(nameof(action));
-			await action(input).ConfigureAwait(false);
+			return action(input);
 		}
 	}
 }

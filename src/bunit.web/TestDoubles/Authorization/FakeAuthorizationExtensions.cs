@@ -11,12 +11,11 @@ namespace Bunit.TestDoubles
 		/// <summary>
 		/// Adds the appropriate Blazor authentication and authorization services to the <see cref="TestServiceProvider"/> to enable
 		/// an authenticated user, as well as adding the <see cref="CascadingAuthenticationState"/> component to the
-		/// <see cref="TestContext.RenderTree"/>.
+		/// test contexts render tree.
 		/// </summary>
-		public static TestAuthorizationContext AddTestAuthorization(this TestContext context)
+		public static TestAuthorizationContext AddTestAuthorization(this TestContextBase context)
 		{
 			context.RenderTree.TryAdd<CascadingAuthenticationState>();
-
 			var authCtx = new TestAuthorizationContext();
 			authCtx.SetNotAuthorized();
 			authCtx.RegisterAuthorizationServices(context.Services);

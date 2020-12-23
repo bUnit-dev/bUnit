@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Shouldly;
 using Xunit;
@@ -14,6 +15,7 @@ namespace Bunit.RazorTesting
 		}
 
 		[Fact(DisplayName = "Setup, SetupAsync and Test methods are called in the correct order")]
+		[SuppressMessage("Minor Bug", "S4158:Empty collections should not be accessed or iterated", Justification = "False positive!")]
 		public async Task Test001()
 		{
 			var callLog = new List<string>(3);
@@ -40,6 +42,7 @@ namespace Bunit.RazorTesting
 		}
 
 		[Fact(DisplayName = "Setup, SetupAsync and TestAsync methods are called in the correct order")]
+		[SuppressMessage("Minor Bug", "S4158:Empty collections should not be accessed or iterated", Justification = "False positive!")]
 		public async Task Test002()
 		{
 			var callLog = new List<string>(3);

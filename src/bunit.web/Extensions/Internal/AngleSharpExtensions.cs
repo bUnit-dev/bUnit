@@ -66,6 +66,28 @@ namespace Bunit
 		}
 
 		/// <summary>
+		/// Gets the <see cref="TestContext"/> stored in the <paramref name="node"/>s
+		/// owning context, if one is available. 
+		/// </summary>
+		/// <param name="node"></param>
+		/// <returns>The <see cref="TestContext"/> or null if not found.</returns>
+		public static TestContextBase? GetTestContext(this INode? node)
+		{
+			return node?.Owner.Context.GetService<TestContextBase>();
+		}
+
+		/// <summary>
+		/// Gets the <see cref="TestContext"/> stored in the <paramref name="nodes"/>s
+		/// owning context, if one is available. 
+		/// </summary>
+		/// <param name="nodes"></param>
+		/// <returns>The <see cref="TestContext"/> or null if not found.</returns>
+		public static TestContextBase? GetTestContext(this INodeList nodes)
+		{
+			return nodes?.Length > 0 ? nodes[0].GetTestContext() : null;
+		}
+
+		/// <summary>
 		/// Gets the parents of the <paramref name="element"/>, starting with
 		/// the <paramref name="element"/> itself.
 		/// </summary>

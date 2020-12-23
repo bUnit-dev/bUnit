@@ -56,15 +56,6 @@ namespace Bunit
 			=> _ = InputAsync(element, eventArgs);
 
 		/// <summary>
-		/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
-		/// to the event handler.
-		/// </summary>
-		/// <param name="element">The element to raise the event on.</param>
-		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task InputAsync(this IElement element, ChangeEventArgs eventArgs) => element.TriggerEventAsync("oninput", eventArgs);
-
-		/// <summary>
 		/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
 		/// to the event handler.
 		/// </summary>
@@ -78,6 +69,15 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task InputAsync(this IElement element) => element.TriggerEventAsync("oninput", EventArgs.Empty);
+
+		/// <summary>
+		/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
+		/// to the event handler.
+		/// </summary>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
+		/// <returns>A task that completes when the event handler is done.</returns>
+		private static Task InputAsync(this IElement element, ChangeEventArgs eventArgs) => element.TriggerEventAsync("oninput", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@oninvalid</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 

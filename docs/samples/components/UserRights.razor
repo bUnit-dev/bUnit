@@ -7,7 +7,7 @@
 </AuthorizeView>
 <ul>
   <AuthorizeView>
-    @foreach (var claim in @context.User.FindAll(x => x.Type != ClaimTypes.Name))
+    @foreach (var claim in @context.User.FindAll(x => x.Type != ClaimTypes.Name && x.Type != ClaimTypes.Role))
     {
       <li>@GetClaimName(claim): @claim.Value</li>
     }

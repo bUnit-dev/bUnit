@@ -5,19 +5,19 @@
 		<RootNamespace>Bunit.TestAssets</RootNamespace>
 		<AssemblyName>Bunit.TestAssets</AssemblyName>
 		<IsPackable>false</IsPackable>
-		<LangVersion>8.0</LangVersion>
+		<LangVersion>9.0</LangVersion>
 		<Nullable>enable</Nullable>
-		<!--
-			<WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>
-			TODO: Added because of bug in P7: https://github.com/dotnet/aspnetcore/issues/24794				
-		-->
-		<WarningsAsErrors>CS8602;CS8603;CS8625</WarningsAsErrors>
+		<WarningsAsErrors>CS8600;CS8602;CS8603;CS8625</WarningsAsErrors>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<RazorLangVersion>3.0</RazorLangVersion>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="xunit.assert" Version="2.4.1" />
+	</ItemGroup>
+	
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.1" />
@@ -25,10 +25,10 @@
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="3.1.1" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-rc.2.*" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.0-rc.2.*" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-rc.2.*" />
-		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="5.0.0-rc.2.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="5.0.0" />
 	</ItemGroup>
 
 </Project>

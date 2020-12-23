@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using Bunit.Extensions;
 using Bunit.RazorTesting;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Bunit
 {
 	/// <inheritdoc/>
 	public class Fixture : FixtureBase<Fixture>
 	{
-		private readonly Dictionary<string, IRenderedFragment> _renderedFragments = new Dictionary<string, IRenderedFragment>();
+		private readonly Dictionary<string, IRenderedFragment> _renderedFragments = new();
 		private IReadOnlyList<FragmentBase>? _testData;
 
 		private IReadOnlyList<FragmentBase> TestData
@@ -26,6 +27,20 @@ namespace Bunit
 				}
 				return _testData;
 			}
+		}
+
+		/// <summary>
+		/// Gets bUnits JSInterop, that allows setting up handlers for <see cref="IJSRuntime.InvokeAsync{TValue}(string, object[])"/> invocations
+		/// that components under tests will issue during testing. It also makes it possible to verify that the invocations has happened as expected.
+		/// </summary>
+		public BunitJSInterop JSInterop { get; } = new BunitJSInterop();
+
+		/// <summary>
+		/// Creates an instance of the <see cref="Fixture"/> type.
+		/// </summary>
+		public Fixture()
+		{
+			Services.AddDefaultTestContextServices(this, JSInterop);
 		}
 
 		/// <summary>
@@ -123,13 +138,12 @@ namespace Bunit
 
 		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment) where TComponent : IComponent
 		{
-			var renderedFragment = Renderer.RenderFragment(fragment);
-			return (IRenderedComponent<TComponent>)Renderer.FindComponent<TComponent>(renderedFragment);
+			return this.RenderInsideRenderTree<TComponent>(fragment);
 		}
 
 		private IRenderedFragment Factory(RenderFragment fragment)
 		{
-			return (IRenderedFragment)Renderer.RenderFragment(fragment);
+			return this.RenderInsideRenderTree(fragment);
 		}
 
 		private static IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : IComponent
@@ -152,7 +166,6 @@ namespace Bunit
 		/// <inheritdoc/>
 		protected override Task Run()
 		{
-			Services.AddDefaultTestContextServices();
 			return base.Run(this);
 		}
 	}

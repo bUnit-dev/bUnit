@@ -11,7 +11,7 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestCase : LongLivedMarshalByRefObject, IXunitTestCase, ITestCase, IXunitSerializable
+	internal class RazorTestCase : LongLivedMarshalByRefObject, IXunitTestCase
 	{
 		private string? _uniqueId;
 
@@ -85,24 +85,24 @@ namespace Xunit.Sdk
 		}
 
 		/// <inheritdoc/>
-		public void Serialize(IXunitSerializationInfo data)
+		public void Serialize(IXunitSerializationInfo info)
 		{
-			data.AddValue(nameof(TestMethod), TestMethod);
-			data.AddValue(nameof(Timeout), Timeout);
-			data.AddValue(nameof(DisplayName), DisplayName);
-			data.AddValue(nameof(SkipReason), SkipReason);
-			data.AddValue(nameof(TestNumber), TestNumber);
+			info.AddValue(nameof(TestMethod), TestMethod);
+			info.AddValue(nameof(Timeout), Timeout);
+			info.AddValue(nameof(DisplayName), DisplayName);
+			info.AddValue(nameof(SkipReason), SkipReason);
+			info.AddValue(nameof(TestNumber), TestNumber);
 		}
 
 		/// <inheritdoc/>
-		public void Deserialize(IXunitSerializationInfo data)
+		public void Deserialize(IXunitSerializationInfo info)
 		{
-			TestMethod = data.GetValue<ITestMethod>(nameof(TestMethod));
+			TestMethod = info.GetValue<ITestMethod>(nameof(TestMethod));
 			Method = TestMethod.Method;
-			Timeout = data.GetValue<int>(nameof(Timeout));
-			DisplayName = data.GetValue<string>(nameof(DisplayName));
-			SkipReason = data.GetValue<string?>(nameof(SkipReason));
-			TestNumber = data.GetValue<int>(nameof(TestNumber));
+			Timeout = info.GetValue<int>(nameof(Timeout));
+			DisplayName = info.GetValue<string>(nameof(DisplayName));
+			SkipReason = info.GetValue<string?>(nameof(SkipReason));
+			TestNumber = info.GetValue<int>(nameof(TestNumber));
 		}
 
 		/// <summary>

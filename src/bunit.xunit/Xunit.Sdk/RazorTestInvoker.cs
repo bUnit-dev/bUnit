@@ -32,8 +32,6 @@ namespace Xunit.Sdk
 
 			var test = tests[razorTest.TestNumber - 1];
 
-			// TODO: ensure that test has not been replaced somehow.
-
 			return test;
 		}
 

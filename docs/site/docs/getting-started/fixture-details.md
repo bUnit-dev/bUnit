@@ -31,10 +31,7 @@ In the example above, the setup and test methods are declared in a `@code { }` b
 
 You can have the methods anywhere inside the test component you want, which can be useful. For example, if you have the same setup steps for multiple tests, they can be placed in a common setup method that the tests in the same test component can share, avoiding code duplication.
 
-The methods can also be declared in the parameter directly, e.g.: `<Fixture Setup="f => f.Services.AddMockJsRuntime()" ...>`, to save space and when they are very short.
-
-> [!TIP]
-> Learn more about mocking and `AddMockJsRuntime()` on the <xref:mocking-ijsruntime> page.
+TODO EGIL
 
 **Other parameters**
 

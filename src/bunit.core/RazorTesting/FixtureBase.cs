@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
@@ -59,16 +58,15 @@ namespace Bunit.RazorTesting
 		}
 
 		/// <inheritdoc/>
-		[SuppressMessage("Usage", "CA2208:Instantiate argument exceptions correctly", Justification = "Validating component parameters")]
 		public override void Validate()
 		{
 			base.Validate();
 			if (ChildContent is null)
-				throw new ArgumentException($"No '{nameof(ChildContent)}' specified in the {GetType().Name} component.", nameof(ChildContent));
+				throw new ParameterException($"No '{nameof(ChildContent)}' specified in the {GetType().Name} component.", nameof(ChildContent));
 			if (Test is null && TestAsync is null)
-				throw new ArgumentException($"No test action provided via the '{nameof(Test)}' or '{nameof(TestAsync)}' parameters to the {GetType().Name} component.", nameof(Test));
+				throw new ParameterException($"No test action provided via the '{nameof(Test)}' or '{nameof(TestAsync)}' parameters to the {GetType().Name} component.", nameof(Test));
 			if (Test is not null && TestAsync is not null)
-				throw new ArgumentException($"Only one of the '{nameof(Test)}' or '{nameof(TestAsync)}' actions can be provided to the {GetType().Name} component at the same time.", nameof(Test));
+				throw new ParameterException($"Only one of the '{nameof(Test)}' or '{nameof(TestAsync)}' actions can be provided to the {GetType().Name} component at the same time.", nameof(Test));
 		}
 
 		/// <inheritdoc/>
@@ -88,4 +86,5 @@ namespace Bunit.RazorTesting
 				await TryRunAsync(TestAsync, self).ConfigureAwait(false);
 		}
 	}
+
 }

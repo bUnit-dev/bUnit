@@ -25,18 +25,18 @@ namespace Bunit.Rendering
 			yield return new object[] { p1, p5, false };
 		}
 
-		[Fact(DisplayName = "Creating a cascading value throws")]
+		[Fact(DisplayName = "Creating a cascading value with null throws")]
 		public void Test001()
 		{
 			Should.Throw<ArgumentNullException>(() => ComponentParameter.CreateCascadingValue(null, null!));
-			Should.Throw<ArgumentNullException>(() => { ComponentParameter p = (null, null, true); });
+			Should.Throw<ArgumentNullException>(() => (ComponentParameter)(null, null, true));
 		}
 
 		[Fact(DisplayName = "Creating a regular parameter without a name throws")]
 		public void Test002()
 		{
 			Should.Throw<ArgumentNullException>(() => ComponentParameter.CreateParameter(null!, null));
-			Should.Throw<ArgumentNullException>(() => { ComponentParameter p = (null, null, false); });
+			Should.Throw<ArgumentNullException>(() => (ComponentParameter)(null, null, false));
 		}
 
 		[Theory(DisplayName = "Equals compares correctly")]

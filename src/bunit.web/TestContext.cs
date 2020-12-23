@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Bunit.Extensions;
-using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Bunit
 {
@@ -12,19 +11,18 @@ namespace Bunit
 	public class TestContext : TestContextBase
 	{
 		/// <summary>
-		/// Gets the <see cref="RootRenderTree"/> that all components rendered with the
-		/// <c>RenderComponent&lt;TComponent&gt;()</c> methods, are rendered inside.
+		/// Gets bUnits JSInterop, that allows setting up handlers for <see cref="IJSRuntime.InvokeAsync{TValue}(string, object[])"/> invocations
+		/// that components under tests will issue during testing. It also makes it possible to verify that the invocations has happened as expected.
 		/// </summary>
-		/// <remarks>
-		/// Use this to add default layout- or root-components which a component under test
-		/// should be rendered under.
-		/// </remarks>
-		public RootRenderTree RenderTree { get; } = new RootRenderTree();
+		public BunitJSInterop JSInterop { get; } = new BunitJSInterop();
 
 		/// <summary>
 		/// Creates a new instance of the <see cref="TestContext"/> class.
 		/// </summary>
-		public TestContext() => Services.AddDefaultTestContextServices();
+		public TestContext()
+		{
+			Services.AddDefaultTestContextServices(this, JSInterop);
+		}
 
 		/// <summary>
 		/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
@@ -34,7 +32,8 @@ namespace Bunit
 		/// <returns>The rendered <typeparamref name="TComponent"/></returns>
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
 		{
-			return RenderComponent<TComponent>(new ComponentParameterCollection { parameters }.ToRenderFragment<TComponent>());
+			var renderFragment = new ComponentParameterCollection { parameters }.ToRenderFragment<TComponent>();
+			return Render<TComponent>(renderFragment);
 		}
 
 		/// <summary>
@@ -45,28 +44,34 @@ namespace Bunit
 		/// <returns>The rendered <typeparamref name="TComponent"/></returns>
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder) where TComponent : IComponent
 		{
-			return RenderComponent<TComponent>(
-				new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder)
-				.Build()
-				.ToRenderFragment<TComponent>()
-			);
+			var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder).Build().ToRenderFragment<TComponent>();
+			return Render<TComponent>(renderFragment);
 		}
 
-		private IRenderedComponent<TComponent> RenderComponent<TComponent>(RenderFragment renderFragment) where TComponent : IComponent
-		{
-			// Wrap TComponent in any layout components added to the test context.
-			// If one of the layout components is the same type as TComponent,
-			// make sure to return the rendered component, not the layout component.			
-			var resultBase = Renderer.RenderFragment(RenderTree.Wrap(renderFragment));
+		/// <summary>
+		/// Renders the <paramref name="renderFragment"/> and returns the first <typeparamref name="TComponent"/> in the resulting render tree.
+		/// </summary>
+		/// <remarks>
+		/// Calling this method is equivalent to calling <c>Render(renderFragment).FindComponent&lt;TComponent&gt;()</c>.
+		/// </remarks>
+		/// <typeparam name="TComponent">The type of component to find in the render tree.</typeparam>
+		/// <param name="renderFragment">The render fragment to render.</param>
+		/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
+		public virtual IRenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment) where TComponent : IComponent
+			=> this.RenderInsideRenderTree<TComponent>(renderFragment);
 
-			// This ensures that the correct component is returned, in case an added layout component
-			// is of type TComponent.
-			var renderTreeTComponentCount = RenderTree.GetCountOf<TComponent>();
-			var result = renderTreeTComponentCount > 0
-				? Renderer.FindComponents<TComponent>(resultBase)[renderTreeTComponentCount]
-				: Renderer.FindComponent<TComponent>(resultBase);
+		/// <summary>
+		/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="IRenderedFragment"/>.
+		/// </summary>
+		/// <param name="renderFragment">The render fragment to render.</param>
+		/// <returns>The <see cref="IRenderedFragment"/>.</returns>
+		public virtual IRenderedFragment Render(RenderFragment renderFragment)
+			=> this.RenderInsideRenderTree(renderFragment);
 
-			return (IRenderedComponent<TComponent>)result;
-		}
+		/// <summary>
+		/// Dummy method required to allow Blazor's compiler to generate
+		/// C# from .razor files.
+		/// </summary>
+		protected virtual void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) { }
 	}
 }

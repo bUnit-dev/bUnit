@@ -16,7 +16,7 @@ namespace Bunit.TestDoubles
 	/// </summary>
 	public class FakeAuthorizationService : IAuthorizationService
 	{
-		private AuthorizationState _currentState = AuthorizationState.Authorized;
+		private AuthorizationState _currentState;
 		private IEnumerable<string>? _supportedPolicies;
 		private IEnumerable<string> _supportedRoles = Array.Empty<string>();
 
@@ -116,13 +116,8 @@ namespace Bunit.TestDoubles
 
 			foreach (IAuthorizationRequirement req in requirements)
 			{
-				if (req is TestPolicyRequirement testReq)
-				{
-					if (_supportedPolicies.Contains(testReq.PolicyName))
-					{
-						return AuthorizationResult.Success();
-					}
-				}
+				if (req is TestPolicyRequirement testReq && _supportedPolicies.Contains(testReq.PolicyName))
+					return AuthorizationResult.Success();
 			}
 
 			return AuthorizationResult.Failed();

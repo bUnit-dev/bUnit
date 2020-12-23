@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
 using AngleSharp;
@@ -24,7 +25,7 @@ namespace Bunit.Rendering
 
 		private readonly IBrowsingContext _context;
 		private readonly IHtmlParser _htmlParser;
-		private readonly List<IDocument> _documents = new List<IDocument>();
+		private readonly List<IDocument> _documents = new();
 
 		/// <summary>
 		/// Creates an instance of the parser with a AngleSharp context 
@@ -36,10 +37,12 @@ namespace Bunit.Rendering
 		/// Creates an instance of the parser with a AngleSharp context 
 		/// with the <paramref name="testRenderer"/> registered.
 		/// </summary>
-		public BunitHtmlParser(ITestRenderer testRenderer, HtmlComparer htmlComparer)
+		public BunitHtmlParser(ITestRenderer testRenderer, HtmlComparer htmlComparer, TestContextBase testContext)
 			: this(Configuration.Default.WithCss()
 				  .With(testRenderer ?? throw new ArgumentNullException(nameof(testRenderer)))
-				  .With(htmlComparer ?? throw new ArgumentNullException(nameof(htmlComparer)))) { }
+				  .With(htmlComparer ?? throw new ArgumentNullException(nameof(htmlComparer)))
+				  .With(testContext ?? throw new ArgumentNullException(nameof(testContext))))
+		{ }
 
 		private BunitHtmlParser(IConfiguration angleSharpConfiguration)
 		{
@@ -115,7 +118,10 @@ namespace Bunit.Rendering
 				context = CreateTable().AppendElement(document.CreateElement("colgroup"));
 				matchedElement = COLGROUP_SUB_ELEMENT;
 			}
-			else if (markup.StartsWithElements(SPECIAL_HTML_ELEMENTS, startIndex, out matchedElement)) { }
+			else if (markup.StartsWithElements(SPECIAL_HTML_ELEMENTS, startIndex, out matchedElement))
+			{
+				// default case, nothing to do.
+			}
 			else
 			{
 				context = document.Body;
@@ -146,11 +152,16 @@ namespace Bunit.Rendering
 		private class SingleNodeNodeList : INodeList
 		{
 			private readonly INode node;
+
+			[SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown",
+							 Justification = "This is an indexer, thus it makes sense in to throw IndexOutOfRangeException here")]
 			public INode this[int index]
 			{
 				get
 				{
-					if (index != 0) throw new IndexOutOfRangeException();
+					if (index != 0)
+						throw new IndexOutOfRangeException();
+
 					return node;
 				}
 			}

@@ -131,7 +131,21 @@ namespace Bunit.Extensions.WaitForHelpers
 		/// </summary>
 		public void Dispose()
 		{
-			if (_isDisposed)
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		/// <summary>
+		/// Disposes of the wait task and related logic.
+		/// </summary>
+		/// <remarks>
+		/// The disposing parameter should be false when called from a finalizer, and true when called from the
+		/// <see cref="Dispose()"/> method. In other words, it is true when deterministically called and false when non-deterministically called.
+		/// </remarks>
+		/// <param name="disposing">Set to true if called from <see cref="Dispose()"/>, false if called from a finalizer.f</param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_isDisposed || !disposing)
 				return;
 
 			lock (_completionSouce)

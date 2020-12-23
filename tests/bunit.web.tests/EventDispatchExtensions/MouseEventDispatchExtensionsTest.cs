@@ -69,6 +69,8 @@ namespace Bunit
 
 			VerifyEventRaisesCorrectly(helper, expected);
 		}
+
+
 	}
 }
 

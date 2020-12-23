@@ -13,7 +13,7 @@ namespace Bunit.Diffing
 		/// <summary>
 		/// Gets an instance of the <see cref="DiffMarkupFormatter"/>.
 		/// </summary>
-		public new static readonly DiffMarkupFormatter Instance = new DiffMarkupFormatter();
+		public new static readonly DiffMarkupFormatter Instance = new();
 
 		/// <summary>
 		/// Creates an instance of the <see cref="DiffMarkupFormatter"/>.

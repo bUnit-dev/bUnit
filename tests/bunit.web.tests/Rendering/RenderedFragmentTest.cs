@@ -1,17 +1,13 @@
 using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-
 using Shouldly;
-
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Bunit
 {
-
 	public class RenderedFragmentTest : TestContext
 	{
 		public RenderedFragmentTest(ITestOutputHelper output)

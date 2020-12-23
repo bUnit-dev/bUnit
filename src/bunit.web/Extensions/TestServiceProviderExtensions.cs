@@ -21,18 +21,22 @@ namespace Bunit.Extensions
 		/// <summary>
 		/// Registers the default services required by the web <see cref="TestContext"/>.
 		/// </summary>
-		public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services)
+		public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services, TestContextBase testContext, BunitJSInterop jsInterop)
 		{
 			// Placeholders and defaults for common Blazor services
 			services.AddSingleton<ILoggerFactory>(NullLoggerFactory.Instance);
 			services.AddSingleton<AuthenticationStateProvider, PlaceholderAuthenticationStateProvider>();
 			services.AddSingleton<IAuthorizationService, PlaceholderAuthorizationService>();
-			services.AddSingleton<IJSRuntime, PlaceholderJSRuntime>();
 			services.AddSingleton<NavigationManager, PlaceholderNavigationManager>();
 			services.AddSingleton<HttpClient, PlaceholderHttpClient>();
 			services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
 
+			// bUnits fake JSInterop
+			services.AddSingleton<IJSRuntime>(jsInterop.JSRuntime);
+
 			// bUnit specific services
+			services.AddSingleton<TestContextBase>(testContext);
+			services.AddSingleton<ITestRenderer, WebTestRenderer>();
 			services.AddSingleton<HtmlComparer>();
 			services.AddSingleton<BunitHtmlParser>();
 			services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();

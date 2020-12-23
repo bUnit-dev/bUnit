@@ -26,7 +26,7 @@ namespace Bunit
 				.OfType<ParameterAttribute>()
 				.Any(x => x.CaptureUnmatchedValues);
 
-		private readonly ComponentParameterCollection _parameters = new ComponentParameterCollection();
+		private readonly ComponentParameterCollection _parameters = new();
 
 		/// <summary>
 		/// Creates an instance of the <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.
@@ -327,7 +327,7 @@ namespace Bunit
 					return true;
 				}
 
-				if(ccProp.GetCustomAttribute<CascadingParameterAttribute>(inherit: false) is CascadingParameterAttribute cpa)
+				if (ccProp.GetCustomAttribute<CascadingParameterAttribute>(inherit: false) is CascadingParameterAttribute cpa)
 				{
 					AddCascadingValueParameter(cpa.Name, value);
 					return true;
@@ -345,13 +345,17 @@ namespace Bunit
 		{
 			if (parameterSelector is null) throw new ArgumentNullException(nameof(parameterSelector));
 
-			if (!(parameterSelector.Body is MemberExpression memberExpression) || !(memberExpression.Member is PropertyInfo propertyInfo))
+			if (!(parameterSelector.Body is MemberExpression memberExpression) || !(memberExpression.Member is PropertyInfo propInfoCandidate))
 				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.");
 
-			var paramAttr = propertyInfo.GetCustomAttribute<ParameterAttribute>(inherit: false);
-			var cascadingParamAttr = propertyInfo.GetCustomAttribute<CascadingParameterAttribute>(inherit: false);
+			var propertyInfo = propInfoCandidate.DeclaringType != TComponentType
+				? TComponentType.GetProperty(propInfoCandidate.Name, propInfoCandidate.PropertyType)
+				: propInfoCandidate;
 
-			if (paramAttr is null && cascadingParamAttr is null)
+			var paramAttr = propertyInfo?.GetCustomAttribute<ParameterAttribute>(inherit: true);
+			var cascadingParamAttr = propertyInfo?.GetCustomAttribute<CascadingParameterAttribute>(inherit: true);
+
+			if (propertyInfo is null || paramAttr is null && cascadingParamAttr is null)
 				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter] attribute.");
 
 			return (propertyInfo.Name, cascadingParamAttr?.Name, cascadingParamAttr is not null);

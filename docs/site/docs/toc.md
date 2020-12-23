@@ -25,7 +25,7 @@
 # [Test Doubles](xref:test-doubles)
 ## [Faking Authorization](xref:faking-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
-## [Mocking IJSRuntime](xref:mocking-ijsruntime)
+## [Mocking IJSRuntime](xref:emulating-ijsruntime)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External Resources](xref:external-resources)

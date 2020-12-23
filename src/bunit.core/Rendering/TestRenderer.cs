@@ -14,11 +14,11 @@ namespace Bunit.Rendering
 	/// </summary>
 	public partial class TestRenderer : Renderer, ITestRenderer
 	{
-		private readonly object _renderTreeAccessLock = new object();
+		private readonly object _renderTreeAccessLock = new();
 		private readonly ILogger _logger;
 		private readonly IRenderedComponentActivator _activator;
 		private Exception? _unhandledException;
-		private readonly Dictionary<int, IRenderedFragmentBase> _renderedComponents = new Dictionary<int, IRenderedFragmentBase>();
+		private readonly Dictionary<int, IRenderedFragmentBase> _renderedComponents = new();
 
 		/// <inheritdoc/>
 		public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
@@ -270,7 +270,15 @@ namespace Bunit.Rendering
 			{
 				_unhandledException = null;
 				LogUnhandledException(unhandled);
-				ExceptionDispatchInfo.Capture(unhandled).Throw();
+
+				if (unhandled is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
+				{
+					ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
+				}
+				else
+				{
+					ExceptionDispatchInfo.Capture(unhandled).Throw();
+				}
 			}
 		}
 

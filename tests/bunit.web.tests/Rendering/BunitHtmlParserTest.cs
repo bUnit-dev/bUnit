@@ -9,7 +9,7 @@ namespace Bunit.Rendering
 {
 	public class BunitHtmlParserTest
 	{
-		private static readonly BunitHtmlParser Parser = new BunitHtmlParser();
+		private static readonly BunitHtmlParser Parser = new();
 
 		/// <summary>
 		/// All HTML5 elements according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element
@@ -17,7 +17,7 @@ namespace Bunit.Rendering
 		public static readonly IEnumerable<string[]> BODY_HTML_ELEMENTS = (new[]{
 			"base","link","meta","style","title",
 			"address","article","aside","footer","header","h1", "h2", "h3", "h4", "h5", "h6","hgroup","main","nav","section",
-			"blockquote","dd","div","dl","dt","figcaption","figure","hr","li","main","ol","p","pre","ul",
+			"blockquote","dd","div","dl","dt","figcaption","figure","hr","li","ol","p","pre","ul",
 			"a","abbr","b","bdi","bdo","br","cite","code","data","dfn","em","i","kbd","mark","q","rb","rp","rt","rtc","ruby","s","samp","small","span","strong","sub","sup","time","u","var","wbr",
 			"area","audio","img","map","track","video",
 			"embed","iframe","object","param","picture","source",
@@ -30,6 +30,10 @@ namespace Bunit.Rendering
 			"acronym","applet","basefont","bgsound","big","blink","center","command","content","dir","element","font","keygen","listing","marquee","menuitem","multicol","nextid","nobr","noembed","noframes","plaintext","shadow","spacer","strike","tt","xmp",
 			// "frame","frameset","image","isindex" // not supported 
 		}).Select(x => new[] { x });
+
+		public static readonly IEnumerable<string[]> BODY_HTML_AND_SPEACIAL_ELEMENTS = BODY_HTML_ELEMENTS.Concat(
+			(new[] { "html", "head", "body", }).Select(x => new[] { x })
+		);
 
 		[Fact(DisplayName = "Parse() called with null")]
 		public void ParseCalledWithNull()
@@ -48,7 +52,7 @@ namespace Bunit.Rendering
 		}
 
 		[Theory(DisplayName = "Parse() passed <TAG id=TAG>")]
-		[MemberData(nameof(BODY_HTML_ELEMENTS))]
+		[MemberData(nameof(BODY_HTML_AND_SPEACIAL_ELEMENTS))]
 		public void Test001(string elementName)
 		{
 			var actual = Parser.Parse($@"<{elementName} id=""{elementName}"">").ToList();
@@ -108,18 +112,7 @@ namespace Bunit.Rendering
 			actual.ShouldHaveSingleItem()
 				.TextContent.ShouldBe(" ");
 		}
-
-		[Theory(DisplayName = "Parse() with special tags")]
-		[InlineData("html")]
-		[InlineData("head")]
-		[InlineData("body")]
-		public void Test007(string elementName)
-		{
-			var actual = Parser.Parse($@"<{elementName} id=""{elementName}"">").ToList();
-
-			VerifyElementParsedWithId(elementName, actual);
-		}
-
+		
 		private static void VerifyElementParsedWithId(string expectedElementName, List<INode> actual)
 		{
 			var elm = actual.OfType<IElement>()

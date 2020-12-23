@@ -9,6 +9,7 @@ namespace Bunit
 	/// </summary>
 	public abstract class TestContextBase : IDisposable
 	{
+		private bool _disposed;
 		private ITestRenderer? _testRenderer;
 
 		/// <summary>
@@ -33,17 +34,45 @@ namespace Bunit
 		public TestServiceProvider Services { get; }
 
 		/// <summary>
+		/// Gets the <see cref="RootRenderTree"/> that all components rendered with the
+		/// <c>RenderComponent&lt;TComponent&gt;()</c> methods, are rendered inside.
+		/// </summary>
+		/// <remarks>
+		/// Use this to add default layout- or root-components which a component under test
+		/// should be rendered under.
+		/// </remarks>
+		public RootRenderTree RenderTree { get; } = new RootRenderTree();
+
+		/// <summary>
 		/// Creates a new instance of the <see cref="TestContextBase"/> class.
 		/// </summary>
 		protected TestContextBase()
 		{
-			Services = new TestServiceProvider();
-			Services.AddSingleton<ITestRenderer, TestRenderer>();
+			Services = new TestServiceProvider();			
 		}
 
 		/// <inheritdoc/>
-		public virtual void Dispose()
+		public void Dispose()
 		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		/// <summary>
+		/// Disposes of the test context resources.
+		/// </summary>
+		/// <remarks>
+		/// The disposing parameter should be false when called from a finalizer, and true when called from the
+		/// <see cref="Dispose()"/> method. In other words, it is true when deterministically called and false when non-deterministically called.
+		/// </remarks>
+		/// <param name="disposing">Set to true if called from <see cref="Dispose()"/>, false if called from a finalizer.f</param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_disposed || !disposing)
+				return;
+
+			_disposed = true;
+
 			// The service provider should dispose of any
 			// disposable object it has created, when it is disposed.
 			Services.Dispose();

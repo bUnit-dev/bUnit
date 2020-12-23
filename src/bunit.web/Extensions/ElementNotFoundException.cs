@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Bunit
 {
@@ -6,29 +7,41 @@ namespace Bunit
 	/// Represents a failure to find an element in the searched target
 	/// using a css selector.
 	/// </summary>
+	[Serializable]
 	public class ElementNotFoundException : Exception
 	{
 		/// <summary>
-		/// The css selector used to search with.
+		/// The CSS selector used to search with.
 		/// </summary>
 		public string CssSelector { get; }
 
 		/// <inheritdoc/>
-		public ElementNotFoundException(string cssSelector) : base($"No elements were found that matches the selector '{cssSelector}'")
+		public ElementNotFoundException(string cssSelector)
+			: base($"No elements were found that matches the selector '{cssSelector}'")
 		{
 			CssSelector = cssSelector;
 		}
 
 		/// <inheritdoc/>
-		public ElementNotFoundException()
+		protected ElementNotFoundException(string message, string cssSelector)
+			: base(message)
 		{
-			CssSelector = string.Empty;
+			CssSelector = cssSelector;
 		}
 
 		/// <inheritdoc/>
-		public ElementNotFoundException(string message, Exception innerException) : base(message, innerException)
+		protected ElementNotFoundException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+			: base(serializationInfo, streamingContext)
 		{
-			CssSelector = string.Empty;
+			CssSelector = serializationInfo?.GetString(nameof(CssSelector)) ?? string.Empty;
+		}
+
+		/// <inheritdoc/>
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			if (info is null) throw new ArgumentNullException(nameof(info));
+			info.AddValue(nameof(CssSelector), CssSelector);
+			base.GetObjectData(info, context);
 		}
 	}
 }

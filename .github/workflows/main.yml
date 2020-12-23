@@ -2,6 +2,9 @@ name: "CI/CD"
 
 on:
   pull_request:
+    branches:
+      - dev
+      - main
     types:
       - opened
       - synchronize
@@ -229,21 +232,13 @@ jobs:
       - name: Creating library package for release
         if: github.event_name == 'release'
         run: |
-          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=main -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=main -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
-          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=main -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
+          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
+          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=true
 
       - name: Push packages to GitHub Package Registry
-        run: |
-           for f in ${GITHUB_WORKSPACE}/packages/*.nupkg
-           do
-             curl -vX PUT -u "egil:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/egil/
-           done
-        shell: bash
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/egil/index.json --skip-duplicate --no-symbols true
 
       - name: Push packages to NuGet
         if: github.event_name == 'release'
         run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
-
-#      - name: Push packages to GitHub Package Registry
-#        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' --skip-duplicate

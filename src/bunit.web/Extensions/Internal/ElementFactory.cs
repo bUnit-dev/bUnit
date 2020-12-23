@@ -27,7 +27,7 @@ namespace Bunit
 				if (queryResult is TElement element)
 					_element = element;
 			}
-			return _element ?? throw new ElementNotFoundException();
+			return _element ?? throw new ElementRemovedFromDomException(_cssSelector);
 		}
 	}
 }

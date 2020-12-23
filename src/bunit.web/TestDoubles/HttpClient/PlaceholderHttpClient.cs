@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,12 +8,13 @@ namespace Bunit.TestDoubles
 	/// <summary>
 	/// This PlaceholderHttpClient is used to provide users with helpful exceptions if they fail to provide a mock when required.
 	/// </summary>
-	internal class PlaceholderHttpClient : System.Net.Http.HttpClient
+	internal class PlaceholderHttpClient : HttpClient
 	{
-		[SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
+		private const string PlaceholderBaseAddress = "http://localhost";
+
 		public PlaceholderHttpClient() : base(new PlaceholderHttpMessageHandler())
 		{
-			BaseAddress = new Uri("http://localhost");
+			BaseAddress = new Uri(PlaceholderBaseAddress);
 		}
 
 		private class PlaceholderHttpMessageHandler : HttpMessageHandler

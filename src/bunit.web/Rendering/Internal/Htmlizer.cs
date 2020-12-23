@@ -16,7 +16,7 @@ namespace Bunit
 	{
 		private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
 
-		private static readonly HashSet<string> SelfClosingElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+		private static readonly HashSet<string> SelfClosingElements = new(StringComparer.OrdinalIgnoreCase)
 		{
 			"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"
 		};
@@ -216,9 +216,7 @@ namespace Bunit
 
 				if (frame.AttributeEventHandlerId > 0)
 				{
-					// NOTE: this was changed from  
-					//       result.Add($" {frame.AttributeName}=\"{frame.AttributeEventHandlerId}\"");
-					//       to the following to make it more obvious
+					// NOTE: this was changed to make it more obvious
 					//       that this is a generated/special blazor attribute
 					//       used for tracking event handler id's
 					result.Add(" ");

@@ -1,11 +1,4 @@
 #if NET5_0
-using System;
-using Bunit.TestAssets.BlazorE2E;
-using Bunit.TestAssets.SampleComponents;
-
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Components.Web;
 using Shouldly;
 using Xunit;
 
