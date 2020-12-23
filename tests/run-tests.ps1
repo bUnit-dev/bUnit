@@ -16,6 +16,7 @@ for ($num = 1 ; $num -le $maxRuns ; $num++)
 	}
 	else
 	{
+		dotnet test .\bunit.core.tests\bunit.core.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s -f net5.0 --nologo
 		dotnet test .\bunit.web.tests\bunit.web.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s -f net5.0 --nologo
 		dotnet test .\bunit.xunit.tests\bunit.xunit.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s -f net5.0 --nologo 
 	}
