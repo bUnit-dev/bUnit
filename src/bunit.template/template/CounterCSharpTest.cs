@@ -2,13 +2,12 @@ using System;
 using Xunit;
 using Bunit;
 using Bunit.TestDoubles;
-using static Bunit.ComponentParameterFactory;
 
 namespace Company.BlazorTests1
 {
     /// <summary>
     /// These tests are written entirely in C#.
-    /// Learn more at https://bunit.egilhansen.com/docs/
+    /// Learn more at https://bunit.egilhansen.com/docs/getting-started/
     /// </summary>
     public class CounterCSharpTests : TestContext
     {
