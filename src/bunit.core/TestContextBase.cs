@@ -23,6 +23,7 @@ namespace Bunit
 				{
 					_testRenderer = Services.GetRequiredService<ITestRenderer>();
 				}
+				
 				return _testRenderer;
 			}
 		}
