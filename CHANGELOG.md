@@ -4,7 +4,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
-## UNRELEASED [1.0.0 preview 01]
+## [1.0.0-preview-01] - 2020-12-24
 
 The following section list all changes in 1.0.0 preview 01.
 
