@@ -1,4 +1,4 @@
-﻿---
+---
 uid: mocking-httpclient
 title: Mocking HttpClient
 ---
@@ -33,4 +33,4 @@ mock.When("/getData").RespondJson(new List<Data>{ ... });
 This registers the mock `HttpClient` in bUnit's test context's `Services` collection, and then tells the mock that when a request is received for `/getData`, it should respond with the `new List<Data>{ ... }`, serialized as JSON.
 
 > [!TIP]
-> You can add addtional `RespondXXX` methods to the `MockHttpClientBunitHelpers` class to fit your testing needs.
+> You can add additional `RespondXXX` methods to the `MockHttpClientBunitHelpers` class to fit your testing needs.

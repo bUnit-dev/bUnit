@@ -213,7 +213,7 @@ These examples do the same thing. Here is what is going on:
 
 [!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L53-L61)]
 
-This is just regular Blazor `RenderFragment` parameter passing as markup, for example, in the component under test's `<Content>` element. Thisis the same for both `Fixture` and `SnapshotTest` razor tests.
+This is just regular Blazor `RenderFragment` parameter passing as markup, for example, in the component under test's `<Content>` element. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
 ***
 
