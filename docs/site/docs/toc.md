@@ -23,9 +23,9 @@
 ## [Assertion of Asynchronous Changes](xref:async-assertion)
 
 # [Test Doubles](xref:test-doubles)
+## [Emulating Blazor's IJSRuntime](xref:emulating-ijsruntime)
 ## [Faking Authorization](xref:faking-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
-## [Mocking IJSRuntime](xref:emulating-ijsruntime)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External Resources](xref:external-resources)
