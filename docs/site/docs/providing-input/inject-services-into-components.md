@@ -36,7 +36,7 @@ The highlighted line shows how the `IWeatherForecastService` is registered using
 
 This can either be done via the `Fixture`'s `Setup` method as in this example, if you want to separate the service registration from the test method, or it can be done in the test method _before_ calling `GetComponentUnderTest()`.
 
-IThe following example shows how to do this with `<SnapshotTest>` tests:
+The following example shows how to do this with `<SnapshotTest>` tests:
 
 [!code-cshtml[WeatherForecastsTest.razor](../../../samples/tests/razor/WeatherForecastsSnapshotTest.html?highlight=5-8)]
 
