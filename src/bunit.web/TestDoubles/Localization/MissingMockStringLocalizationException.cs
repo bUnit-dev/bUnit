@@ -31,6 +31,7 @@ namespace Bunit.TestDoubles
 
 
 		private MissingMockStringLocalizationException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+			: base(serializationInfo, streamingContext)
 		{
 			if (serializationInfo is null) throw new ArgumentNullException(nameof(serializationInfo));
 			Arguments = serializationInfo.GetValue(nameof(Arguments), typeof(object?[])) as object?[] ?? Array.Empty<object?>();

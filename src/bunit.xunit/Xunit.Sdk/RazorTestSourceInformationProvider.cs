@@ -137,28 +137,18 @@ namespace Xunit.Sdk
 			var lineNumber = 0;
 			var lastTestCaseName = string.Empty;
 			var testCaseName = test.GetType().Name;
+
 			foreach (var line in File.ReadLines(razorFile))
 			{
 				lineNumber++;
 
-				if (!line.StartsWith($"<", StringComparison.OrdinalIgnoreCase))
+				if (!StartsWithTagStart(line))
 					continue;
 
-				for (int i = 0; i < RazorTestTypes.Length; i++)
+				if (TryFindRazorTestComponent(line, out var componentName))
 				{
-					if (line.StartsWith($"<{RazorTestTypes[i].Name}", StringComparison.Ordinal))
-					{
-						char? nextChar = null;
-						if (line.Length > RazorTestTypes[i].Name.Length + 1)
-							nextChar = line[RazorTestTypes[i].Name.Length + 1];
-
-						if (nextChar is null || nextChar == ' ' || nextChar == '>' || nextChar == '\n' || nextChar == '\r')
-						{
-							testCasesSeen++;
-							lastTestCaseName = RazorTestTypes[i].Name;
-							break;
-						}
-					}
+					testCasesSeen++;
+					lastTestCaseName = componentName;
 				}
 
 				if (testNumber == testCasesSeen && lastTestCaseName.Equals(testCaseName, StringComparison.Ordinal))
@@ -166,7 +156,38 @@ namespace Xunit.Sdk
 				else if (testNumber < testCasesSeen)
 					break;
 			}
+
 			return null;
+		}
+
+		private static bool StartsWithTagStart(string line) => line.StartsWith($"<", StringComparison.OrdinalIgnoreCase);
+
+		private static bool TryFindRazorTestComponent(string line, [NotNullWhen(true)] out string? testComponentName)
+		{
+			testComponentName = default;
+
+			for (int i = 0; i < RazorTestTypes.Length; i++)
+			{
+				if (StartsWithRazorTestComponent(line, RazorTestTypes[i].Name))
+				{
+					testComponentName = RazorTestTypes[i].Name;
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		private static bool StartsWithRazorTestComponent(string line, string testComponentName)
+		{
+			if (!line.StartsWith($"<{testComponentName}", StringComparison.Ordinal))
+				return false;
+
+			char? nextChar = line.Length > testComponentName.Length + 1
+				? line[testComponentName.Length + 1]
+				: null;
+
+			return nextChar is null || nextChar == ' ' || nextChar == '>' || nextChar == '\n' || nextChar == '\r';
 		}
 	}
 }
