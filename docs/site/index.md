@@ -29,7 +29,7 @@ Let’s write a test for the `<Counter>` component listed below. This comes with
 
 [!code-cshtml[Counter.razor](../samples/components/Counter.razor)]
 
-Top do this, you can do the following using bUnit and xUnit:
+To do this, you can do the following using bUnit and xUnit:
 
 [!code-csharp[CounterTest.cs](../samples/tests/xunit/CounterTestWithCtx.cs#L8-L21)]
 
