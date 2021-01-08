@@ -6,7 +6,7 @@ Here is a small getting started guide for contributing to the documentation...
 
 ## Structure
 
-1. The `site` folder contains the code for generating the documentation site, _and_ the documentation in markdown files, located in `site/docs`.
+1. The ['site'] folder contains the code for generating the documentation site, _and_ the documentation in markdown files, located in `site/docs`.
 2. The `samples` folder projects for the sample code that is displayed in the documentation. It has the following projects:  
   - `samples/components`: A Blazor component library project where components under test are placed.
   - `samples/tests/mstest`: A MSTest project where MSTest test samples are placed.
@@ -30,3 +30,6 @@ To build and view the documentation locally, following a few steps is required:
 - All page and code references should be created using the [`xref:UID` cross reference syntax](https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html#using-cross-reference).
 -   By default, you should include code snippets as sample files in the `samples` projects, using the [code snippet syntax](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#code-snippet).
 - All code snippets should use 2 spaces as an indention unit (1 tab = 2 spaces).
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbMTI4NDQ3OTI5OV19
+-->
