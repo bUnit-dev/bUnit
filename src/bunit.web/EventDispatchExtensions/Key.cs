@@ -10,13 +10,9 @@ namespace Bunit
 	/// </summary>
 	public sealed class Key : IEquatable<Key>
 	{
-		private Key(string value) : this(value, value)
-		{
-		}
+		private Key(string value) : this(value, value) { }
 
-		private Key(string value, string code) : this(value, code, false, false, false, false)
-		{
-		}
+		private Key(string value, string code) : this(value, code, false, false, false, false) { }
 
 		private Key(string value, string code, bool controlKey, bool shiftKey, bool altKey, bool commandKey)
 		{
@@ -309,23 +305,15 @@ namespace Bunit
 		public static Key Get(string value, string code)
 		{
 			if (string.IsNullOrEmpty(value))
-			{
 				throw new ArgumentNullException(nameof(value));
-			}
 
 			if (string.IsNullOrEmpty(code))
-			{
 				throw new ArgumentNullException(nameof(code));
-			}
 
 			if (PredefinedKeys.TryGetValue((value, code), out var key))
-			{
 				return key;
-			}
 			else
-			{
 				return new Key(value, code);
-			}
 		}
 
 		/// <summary>
@@ -345,10 +333,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="obj">The object to compare with this object.</param>
 		/// <returns><c>True</c> if the current object is equal to the other parameter; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object? obj)
-		{
-			return obj is Key key && Equals(key);
-		}
+		public override bool Equals(object? obj) => obj is Key key && Equals(key);
 
 		/// <summary>
 		/// Gets the value indicating whether the current object is equal to another object of the same type.
@@ -358,75 +343,55 @@ namespace Bunit
 		public bool Equals(Key? other)
 		{
 			if (other is null)
-			{
 				return false;
-			}
 
 			return Value == other.Value &&
-				Code == other.Code &&
-				ControlKey == other.ControlKey &&
-				ShiftKey == other.ShiftKey &&
-				AltKey == other.AltKey &&
-				CommandKey == other.CommandKey;
+				   Code == other.Code &&
+				   ControlKey == other.ControlKey &&
+				   ShiftKey == other.ShiftKey &&
+				   AltKey == other.AltKey &&
+				   CommandKey == other.CommandKey;
 		}
 
 		/// <summary>
 		/// Gets hash code of this object.
 		/// </summary>
 		/// <returns>A hash code for the current object.</returns>
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(Value, Code, ControlKey, ShiftKey, AltKey, CommandKey);
-		}
+		public override int GetHashCode() => HashCode.Combine(Value, Code, ControlKey, ShiftKey, AltKey, CommandKey);
 
 		/// <summary>
 		/// Gets a string that represents the current object.
 		/// </summary>
 		/// <returns>A string that represents the current object.</returns>
-		public override string ToString()
-		{
-			return Value;
-		}
+		public override string ToString() => Value;
 
 		/// <summary>
 		/// Gets the key with new value of Control key.
 		/// </summary>
 		/// <param name="value">New value of Control key.</param>
 		/// <returns>The key with new value of Control key.</returns>
-		public Key WithControlKey(bool value)
-		{
-			return new Key(Value, Code, value, ShiftKey, AltKey, CommandKey);
-		}
+		public Key WithControlKey(bool value) => new Key(Value, Code, value, ShiftKey, AltKey, CommandKey);
 
 		/// <summary>
 		/// Gets the key with new value of Shift key.
 		/// </summary>
 		/// <param name="value">New value of Shift key.</param>
 		/// <returns>The key with new value of Shift key.</returns>
-		public Key WithShiftKey(bool value)
-		{
-			return new Key(Value, Code, ControlKey, value, AltKey, CommandKey);
-		}
+		public Key WithShiftKey(bool value) => new Key(Value, Code, ControlKey, value, AltKey, CommandKey);
 
 		/// <summary>
 		/// Gets the key with new value of Alt key.
 		/// </summary>
 		/// <param name="value">New value of Alt key.</param>
 		/// <returns>The key with new value of Alt key.</returns>
-		public Key WithAltKey(bool value)
-		{
-			return new Key(Value, Code, ControlKey, ShiftKey, value, CommandKey);
-		}
+		public Key WithAltKey(bool value) => new Key(Value, Code, ControlKey, ShiftKey, value, CommandKey);
 
 		/// <summary>
 		/// Gets the key with new value of Command key.
 		/// </summary>
 		/// <param name="value">New value of Command key.</param>
 		/// <returns>The key with new value of Command key.</returns>
-		public Key WithCommandKey(bool value)
-		{
-			return new Key(Value, Code, ControlKey, ShiftKey, AltKey, value);
-		}
+		public Key WithCommandKey(bool value) => new Key(Value, Code, ControlKey, ShiftKey, AltKey, value);
 
 		/// <summary>
 		/// Gets a combination of current key with another key. A key instance can be combined only 
@@ -437,29 +402,28 @@ namespace Bunit
 		public Key Combine(Key? key)
 		{
 			if (key is null)
-			{
 				return this;
-			}
 			else if (IsSuitableForCombination(key))
-			{
-				return new Key(Value, Code, ControlKey || key.ControlKey, ShiftKey || key.ShiftKey, AltKey || key.AltKey, CommandKey || key.CommandKey);
-			}
+				return Combine(this, key);
 			else if (IsSuitableForCombination(this))
-			{
-				return new Key(key.Value, key.Code, ControlKey || key.ControlKey, ShiftKey || key.ShiftKey, AltKey || key.AltKey, CommandKey || key.CommandKey);
-			}
+				return Combine(key, this);
 			else
-			{
 				throw new ArgumentException($"Keys '{this}' and '{key}' cannot be combined. The other key must be Control, Shift, Alt, or Command key.", nameof(key));
-			}
 
 			static bool IsSuitableForCombination(Key key)
-			{
-				return (key.Value == Control.Value && key.Code == Control.Code) ||
-					(key.Value == Shift.Value && key.Code == Shift.Code) ||
-					(key.Value == Alt.Value && key.Code == Alt.Code) ||
-					(key.Value == Command.Value && key.Code == Command.Code);
-			}
+				=> (key.Value == Control.Value && key.Code == Control.Code) ||
+				   (key.Value == Shift.Value && key.Code == Shift.Code) ||
+				   (key.Value == Alt.Value && key.Code == Alt.Code) ||
+				   (key.Value == Command.Value && key.Code == Command.Code);
+
+			static Key Combine(Key first, Key second)
+				=> new Key(
+					first.Value,
+					first.Code,
+					first.ControlKey || second.ControlKey,
+					first.ShiftKey || second.ShiftKey,
+					first.AltKey || second.AltKey,
+					first.CommandKey || second.CommandKey);
 		}
 
 		/// <summary>
@@ -471,17 +435,11 @@ namespace Bunit
 		public static bool operator ==(Key? x, Key? y)
 		{
 			if (x is null && y is null)
-			{
 				return true;
-			}
 			else if (x is null || y is null)
-			{
 				return false;
-			}
 			else if (object.ReferenceEquals(x, y))
-			{
 				return true;
-			}
 
 			return x is not null && x.Equals(y);
 		}
@@ -506,21 +464,11 @@ namespace Bunit
 		public static Key operator +(Key x, Key? y)
 		{
 			if (x is not null)
-			{
 				return x.Combine(y);
-			}
 			else if (y is not null)
-			{
 				return y.Combine(x);
-			}
 			else
-			{
-				// In future 'x' should be supported as nullable.
-				// However, NotNullIfNotNull does not work correctly with operators.
-				// Therfore workaround is to make 'x' non-nullable.
-				// See: https://github.com/dotnet/roslyn/issues/48489
 				return null!;
-			}
 		}
 
 		/// <summary>
@@ -546,13 +494,7 @@ namespace Bunit
 		public static implicit operator KeyboardEventArgs(Key key)
 		{
 			if (key is null)
-			{
-				// In future the operator should support null as input.
-				// However, NotNullIfNotNull does not work correctly with operators.
-				// Therfore workaround is to make input non-nullable.
-				// See: https://github.com/dotnet/roslyn/issues/39802
 				return null!;
-			}
 
 			return new KeyboardEventArgs
 			{
