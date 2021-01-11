@@ -14,14 +14,10 @@ namespace Bunit
 		{
 			var expected = new ChangeEventArgs()
 			{
-				Value = "SOME VALUE"
+				Value = "SOME VALUE",
 			};
 
 			VerifyEventRaisesCorrectly(helper, expected);
 		}
-
 	}
-
-
 }
-

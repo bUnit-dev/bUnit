@@ -27,7 +27,6 @@ namespace Bunit
 			sut[0].TagName.ShouldBe("H1");
 		}
 
-
 		[Fact(DisplayName = "When Refresh is called, the query is run again and new elements are made available")]
 		public void Test003()
 		{

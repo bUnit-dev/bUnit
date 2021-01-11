@@ -11,7 +11,7 @@ namespace Bunit.RazorTesting
 	{
 		private class FixtureComponent : FixtureBase<FixtureComponent>
 		{
-			protected override Task Run() => Run(this);
+			protected override Task RunAsync() => RunAsync(this);
 		}
 
 		[Fact(DisplayName = "Setup, SetupAsync and Test methods are called in the correct order")]
@@ -23,10 +23,9 @@ namespace Bunit.RazorTesting
 				.Add(p => p.Setup, Setup)
 				.Add(p => p.SetupAsync, SetupAsync)
 				.Add(p => p.Test, Test)
-				.AddChildContent("FOO")
-			);
+				.AddChildContent("FOO"));
 
-			await cut.Instance.RunTest();
+			await cut.Instance.RunTestAsync();
 
 			callLog[0].ShouldBe(nameof(Setup));
 			callLog[1].ShouldBe(nameof(SetupAsync));
@@ -38,6 +37,7 @@ namespace Bunit.RazorTesting
 				callLog?.Add(nameof(SetupAsync));
 				return Task.CompletedTask;
 			}
+
 			void Test(FixtureComponent fixture) => callLog?.Add(nameof(Test));
 		}
 
@@ -50,10 +50,9 @@ namespace Bunit.RazorTesting
 				.Add(p => p.Setup, Setup)
 				.Add(p => p.SetupAsync, SetupAsync)
 				.Add(p => p.TestAsync, TestAsync)
-				.AddChildContent("FOO")
-			);
+				.AddChildContent("FOO"));
 
-			await cut.Instance.RunTest();
+			await cut.Instance.RunTestAsync();
 
 			callLog[0].ShouldBe(nameof(Setup));
 			callLog[1].ShouldBe(nameof(SetupAsync));
@@ -65,6 +64,7 @@ namespace Bunit.RazorTesting
 				callLog?.Add(nameof(SetupAsync));
 				return Task.CompletedTask;
 			}
+
 			Task TestAsync(FixtureComponent fixture)
 			{
 				callLog?.Add(nameof(TestAsync));
@@ -76,10 +76,9 @@ namespace Bunit.RazorTesting
 		public void Test010()
 		{
 			var cut = RenderComponent<FixtureComponent>(builder => builder
-				.Add(p => p.Test, _ => { })
-			);
+				.Add(p => p.Test, _ => { }));
 
-			Should.Throw<ArgumentException>(() => cut.Instance.RunTest())
+			Should.Throw<ArgumentException>(() => cut.Instance.RunTestAsync())
 				.ParamName.ShouldBe(nameof(FixtureComponent.ChildContent));
 		}
 
@@ -87,10 +86,9 @@ namespace Bunit.RazorTesting
 		public void Test011()
 		{
 			var cut = RenderComponent<FixtureComponent>(builder => builder
-				.AddChildContent("FOO")
-			);
+				.AddChildContent("FOO"));
 
-			Should.Throw<ArgumentException>(() => cut.Instance.RunTest())
+			Should.Throw<ArgumentException>(() => cut.Instance.RunTestAsync())
 				.ParamName.ShouldBe(nameof(FixtureComponent.Test));
 		}
 
@@ -100,10 +98,9 @@ namespace Bunit.RazorTesting
 			var cut = RenderComponent<FixtureComponent>(builder => builder
 				.Add(p => p.Test, _ => { })
 				.Add(p => p.TestAsync, _ => Task.CompletedTask)
-				.AddChildContent("FOO")
-			);
+				.AddChildContent("FOO"));
 
-			Should.Throw<ArgumentException>(() => cut.Instance.RunTest())
+			Should.Throw<ArgumentException>(() => cut.Instance.RunTestAsync())
 				.ParamName.ShouldBe(nameof(FixtureComponent.Test));
 		}
 	}

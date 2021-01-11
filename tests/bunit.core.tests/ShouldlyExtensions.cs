@@ -18,8 +18,7 @@ namespace Bunit
 			parameter.ShouldSatisfyAllConditions(
 				x => x.Name.ShouldBe(name),
 				x => x.Value.ShouldBe(value),
-				x => x.IsCascadingValue.ShouldBe(isCascadingValue)
-			);
+				x => x.IsCascadingValue.ShouldBe(isCascadingValue));
 		}
 
 		public static T ShouldBeParameter<T>(this ComponentParameter parameter, string? name, bool isCascadingValue)
@@ -28,8 +27,7 @@ namespace Bunit
 				x => x.Name.ShouldBe(name),
 				x => x.Value.ShouldBeOfType<T>(),
 				x => x.Value.ShouldNotBeNull(),
-				x => x.IsCascadingValue.ShouldBe(isCascadingValue)
-			);
+				x => x.IsCascadingValue.ShouldBe(isCascadingValue));
 			return (T)parameter.Value!;
 		}
 	}

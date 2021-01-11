@@ -22,7 +22,7 @@ namespace Bunit.Rendering
 		/// Creates an <see cref="IRenderedComponentBase{TComponent}"/> with the specified <paramref name="componentId"/>,
 		/// <paramref name="component"/>, and <paramref name="componentFrames"/>.
 		/// </summary>
-		IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId, TComponent component, RenderTreeFrameCollection componentFrames)
+		IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId, TComponent component, RenderTreeFrameDictionary componentFrames)
 			where TComponent : IComponent;
 	}
 }

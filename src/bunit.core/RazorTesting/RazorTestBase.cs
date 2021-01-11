@@ -15,12 +15,12 @@ namespace Bunit.RazorTesting
 		public abstract string? DisplayName { get; }
 
 		/// <summary>
-		/// Gets whether the tests is running or not.
+		/// Gets a value indicating whether the tests is running or not.
 		/// </summary>
 		public bool IsRunning { get; private set; }
 
 		/// <summary>
-		/// A description or name for the test that will be displayed if the test fails.
+		/// Gets or sets a description for the test that will be displayed in the test explorer.
 		/// </summary>
 		[Parameter] public virtual string? Description { get; set; }
 
@@ -38,8 +38,7 @@ namespace Bunit.RazorTesting
 		/// Run the test logic of the <see cref="RazorTestBase"/>.
 		/// </summary>
 		/// <exception cref="InvalidOperationException">Thrown when called and <see cref="IsRunning"/> is true.</exception>
-		/// <returns></returns>
-		public async Task RunTest()
+		public async Task RunTestAsync()
 		{
 			if (IsRunning)
 				throw new InvalidOperationException("The razor test is already running.");
@@ -48,7 +47,7 @@ namespace Bunit.RazorTesting
 
 			try
 			{
-				await Run().ConfigureAwait(false);
+				await RunAsync().ConfigureAwait(false);
 			}
 			finally
 			{
@@ -81,7 +80,7 @@ namespace Bunit.RazorTesting
 		/// <summary>
 		/// Implements the logic for running the test.
 		/// </summary>
-		protected abstract Task Run();
+		protected abstract Task RunAsync();
 
 		/// <summary>
 		/// Try to run the <see cref="Action{T}"/>.
@@ -90,6 +89,7 @@ namespace Bunit.RazorTesting
 		{
 			if (action is null)
 				throw new ArgumentNullException(nameof(action));
+
 			action(input);
 		}
 
@@ -100,6 +100,7 @@ namespace Bunit.RazorTesting
 		{
 			if (action is null)
 				throw new ArgumentNullException(nameof(action));
+
 			return action(input);
 		}
 	}

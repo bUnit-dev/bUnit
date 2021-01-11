@@ -31,7 +31,7 @@ namespace Xunit.Sdk
 			}
 		}
 
-		private SourceFileFinder? _sourceFileFinder;
+		private SourceFileFinder? sourceFileFinder;
 
 		public IMessageSink DiagnosticMessageSink { get; set; }
 
@@ -40,7 +40,7 @@ namespace Xunit.Sdk
 			DiagnosticMessageSink = diagnosticMessageSink ?? new NullMessageSink();
 		}
 
-		public void Dispose() => _sourceFileFinder?.Dispose();
+		public void Dispose() => sourceFileFinder?.Dispose();
 
 		public ISourceInformation? GetSourceInformation(Type testComponent, RazorTestBase test, int testNumber)
 		{
@@ -62,21 +62,21 @@ namespace Xunit.Sdk
 				DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"{nameof(GetSourceInformation)}({testComponent.Name}): Failed to find source information. Exception message: " +
 					$"{ex.Message}{Environment.NewLine}{ex.StackTrace}"));
 			}
+
 			return null;
 		}
 
 		private bool TryFindSourceFile(Type testComponent, [NotNullWhen(true)] out string? razorFile)
 		{
-			var sourceFileFinder = GetSourceFileFinderForType(testComponent);
+			var finder = GetSourceFileFinderForType(testComponent);
 
 			razorFile = null;
 
-			foreach (var file in sourceFileFinder.Find(testComponent))
+			foreach (var file in finder.Find(testComponent))
 			{
 				DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"{nameof(GetSourceInformation)}({testComponent.Name}): Verifying file = {file}"));
 
 				razorFile = file;
-
 
 				if (IsTestComponentFile(testComponent, file))
 					break;
@@ -90,12 +90,13 @@ namespace Xunit.Sdk
 
 		private SourceFileFinder GetSourceFileFinderForType(Type testComponent)
 		{
-			if (_sourceFileFinder is null || _sourceFileFinder.SearchAssembly != testComponent.Assembly)
+			if (sourceFileFinder is null || sourceFileFinder.SearchAssembly != testComponent.Assembly)
 			{
-				_sourceFileFinder?.Dispose();
-				_sourceFileFinder = new SourceFileFinder(testComponent.Assembly);
+				sourceFileFinder?.Dispose();
+				sourceFileFinder = new SourceFileFinder(testComponent.Assembly);
 			}
-			return _sourceFileFinder;
+
+			return sourceFileFinder;
 		}
 
 		private static bool IsTestComponentFile(Type testComponent, string file)
@@ -153,7 +154,8 @@ namespace Xunit.Sdk
 
 				if (testNumber == testCasesSeen && lastTestCaseName.Equals(testCaseName, StringComparison.Ordinal))
 					return lineNumber;
-				else if (testNumber < testCasesSeen)
+
+				if (testNumber < testCasesSeen)
 					break;
 			}
 

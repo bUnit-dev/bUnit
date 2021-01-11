@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit.Rendering
@@ -21,7 +21,7 @@ namespace Bunit.Rendering
 		public RenderFragment<RenderFragment> RenderFragmentBuilder { get; }
 
 		/// <summary>
-		/// Creates an instance of the <see cref="RootRenderTreeRegistration"/> type.
+		/// Initializes a new instance of the <see cref="RootRenderTreeRegistration"/> class.
 		/// </summary>
 		internal RootRenderTreeRegistration(Type componentType, RenderFragment<RenderFragment> renderFragmentBuilder)
 		{

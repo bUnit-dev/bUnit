@@ -16,7 +16,7 @@ namespace Bunit.TestDoubles
 		public string ServiceName { get; }
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="MissingFakeAuthorizationException"/>
+		/// Initializes a new instance of the <see cref="MissingFakeAuthorizationException"/> class
 		/// with the arguments used in the invocation.
 		/// </summary>
 		/// <param name="serviceName">The service being used.</param>

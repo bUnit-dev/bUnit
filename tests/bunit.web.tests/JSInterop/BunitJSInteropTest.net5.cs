@@ -60,7 +60,7 @@ namespace Bunit.JSInterop
 		public void Test051()
 		{
 			var identifier = "fooFunc";
-			var args = new[] { "bar"};
+			var args = new[] { "bar" };
 			var sut = CreateSut(JSRuntimeMode.Strict);
 
 			var planned = sut.Setup<Guid>("fooFunc", args);

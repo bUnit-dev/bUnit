@@ -32,7 +32,7 @@ namespace Bunit
 		public void Test001()
 		{
 			IElement elm = default!;
-			Should.Throw<ArgumentNullException>(() => elm.TriggerEventAsync("", EventArgs.Empty))
+			Should.Throw<ArgumentNullException>(() => elm.TriggerEventAsync(string.Empty, EventArgs.Empty))
 				.ParamName.ShouldBe("element");
 		}
 
@@ -118,8 +118,7 @@ namespace Bunit
 		{
 			var cut = RenderComponent<EventBubbles>(ps => ps
 				.Add(p => p.EventName, "onclick")
-				.Add(p => p.ChildStopPropergation, true)
-			);
+				.Add(p => p.ChildStopPropergation, true));
 
 			await cut.Find("#child").TriggerEventAsync("onclick", EventArgs.Empty);
 
@@ -133,8 +132,7 @@ namespace Bunit
 		{
 			var cut = RenderComponent<EventBubbles>(ps => ps
 				.Add(p => p.EventName, "onclick")
-				.Add(p => p.ParentStopPropergation, true)
-			);
+				.Add(p => p.ParentStopPropergation, true));
 
 			await cut.Find("#child").TriggerEventAsync("onclick", EventArgs.Empty);
 
@@ -151,8 +149,7 @@ namespace Bunit
 			var cut = RenderComponent<EventBubbles>(ps => ps
 				.Add(p => p.EventName, eventName)
 				.Add(p => p.ChildElementType, elementType)
-				.Add(p => p.ChildElementDisabled, true)
-			);
+				.Add(p => p.ChildElementDisabled, true));
 
 			await cut.Find("#child").TriggerEventAsync(eventName, EventArgs.Empty);
 
@@ -169,8 +166,7 @@ namespace Bunit
 			var cut = RenderComponent<EventBubbles>(ps => ps
 				.Add(p => p.EventName, eventName)
 				.Add(p => p.ChildElementType, elementType)
-				.Add(p => p.ChildElementDisabled, false)
-			);
+				.Add(p => p.ChildElementDisabled, false));
 
 			await cut.Find("#child").TriggerEventAsync(eventName, EventArgs.Empty);
 

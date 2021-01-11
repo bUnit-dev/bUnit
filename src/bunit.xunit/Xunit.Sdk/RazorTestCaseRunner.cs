@@ -8,17 +8,17 @@ namespace Xunit.Sdk
 {
 	internal class RazorTestCaseRunner : XunitTestCaseRunner
 	{
-		private readonly RazorTestCase _razorTestCase;
+		private readonly RazorTestCase razorTestCase;
 
 		public RazorTestCaseRunner(RazorTestCase testCase, string displayName, string? skipReason, object[] constructorArguments, object[] testMethodArguments, IMessageBus messageBus, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
 			: base(testCase, displayName, skipReason, constructorArguments, testMethodArguments, messageBus, aggregator, cancellationTokenSource)
 		{
-			_razorTestCase = testCase;
+			razorTestCase = testCase;
 		}
 
 		protected override ITest CreateTest(IXunitTestCase testCase, string displayName)
 		{
-			var test = new RazorTest(_razorTestCase, displayName);
+			var test = new RazorTest(razorTestCase, displayName);
 			return test;
 		}
 

@@ -13,10 +13,11 @@ namespace Bunit.TestDoubles
 	/// </summary>
 	public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 	{
-		private TaskCompletionSource<AuthenticationState> _authState = new();
+		private TaskCompletionSource<AuthenticationState> authState = new();
 
 		/// <summary>
-		/// Constructor to initialize this state provider with an initial AuthenticationState.
+		/// Initializes a new instance of the <see cref="FakeAuthenticationStateProvider"/> class
+		/// with an initial AuthenticationState.
 		/// </summary>
 		/// <param name="userName">Identity's user name.</param>
 		/// <param name="roles">Roles that this user principal has.</param>
@@ -25,7 +26,7 @@ namespace Bunit.TestDoubles
 			=> SetAuthenticatedState(userName, roles, claims);
 
 		/// <summary>
-		/// Default constructor that creates an unauthenticated state.
+		/// Initializes a new instance of the <see cref="FakeAuthenticationStateProvider"/> class.
 		/// </summary>
 		public FakeAuthenticationStateProvider() => SetUnauthenticatedState();
 
@@ -33,7 +34,7 @@ namespace Bunit.TestDoubles
 		/// Overridden method to get the current authentication state.
 		/// </summary>
 		/// <returns>Current authentication state.</returns>
-		public override Task<AuthenticationState> GetAuthenticationStateAsync() => _authState.Task;
+		public override Task<AuthenticationState> GetAuthenticationStateAsync() => authState.Task;
 
 		/// <summary>
 		/// Method to sets the authentication state and authenticated user.
@@ -67,24 +68,24 @@ namespace Bunit.TestDoubles
 
 		private void SetUnauthenticatedState()
 		{
-			if (_authState.Task.IsCompleted)
-				_authState = new TaskCompletionSource<AuthenticationState>();
+			if (authState.Task.IsCompleted)
+				authState = new TaskCompletionSource<AuthenticationState>();
 
-			_authState.SetResult(CreateUnauthenticationState());
+			authState.SetResult(CreateUnauthenticationState());
 		}
 
 		private void SetAuthorizingState()
 		{
-			if (_authState.Task.IsCompleted)
-				_authState = new TaskCompletionSource<AuthenticationState>();
+			if (authState.Task.IsCompleted)
+				authState = new TaskCompletionSource<AuthenticationState>();
 		}
 
 		private void SetAuthenticatedState(string userName, IEnumerable<string>? roles, IEnumerable<Claim>? claims)
 		{
-			if (_authState.Task.IsCompleted)
-				_authState = new TaskCompletionSource<AuthenticationState>();
+			if (authState.Task.IsCompleted)
+				authState = new TaskCompletionSource<AuthenticationState>();
 
-			_authState.SetResult(CreateAuthenticationState(userName, roles, claims));
+			authState.SetResult(CreateAuthenticationState(userName, roles, claims));
 		}
 
 		/// <summary>

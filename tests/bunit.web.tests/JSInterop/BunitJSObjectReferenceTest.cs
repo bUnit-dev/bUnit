@@ -1,5 +1,6 @@
 #if NET5_0
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Bunit.JSInterop.InvocationHandlers.Implementation;
@@ -10,6 +11,7 @@ using Xunit;
 
 namespace Bunit.JSInterop
 {
+	[SuppressMessage("Usage", "VSTHRD103:Call async methods when in an async method", Justification = "Purpose of tests is to call Invoke.")]
 	public class BunitJSObjectReferenceTest : TestContext
 	{
 		[Theory(DisplayName = "Calling Setup<JSObjectReference> or Setup<IJSObjectReference> throws")]
@@ -47,8 +49,7 @@ namespace Bunit.JSInterop
 				.ShouldNotBeNull()
 				.ShouldSatisfyAllConditions(
 					x => x.Identifier.ShouldBe("import"),
-					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>()
-				);
+					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>());
 		}
 
 		[Fact(DisplayName = "Calling SetupModule(invocationMatcher) registers handler for module JS Interop")]
@@ -60,8 +61,7 @@ namespace Bunit.JSInterop
 				.ShouldNotBeNull()
 				.ShouldSatisfyAllConditions(
 					x => x.Identifier.ShouldBe("import"),
-					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>()
-				);
+					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>());
 		}
 
 		[Fact(DisplayName = "Calling the catch-all SetupModule() registers handler for module JS Interop")]
@@ -73,8 +73,7 @@ namespace Bunit.JSInterop
 				.ShouldNotBeNull()
 				.ShouldSatisfyAllConditions(
 					x => x.Identifier.ShouldBe(JSObjectReferenceInvocationHandler.CatchAllIdentifier),
-					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>()
-				);
+					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>());
 		}
 
 		[Fact(DisplayName = "Calling SetupModule(customImport, args) registers handler for module JS Interop")]
@@ -86,8 +85,7 @@ namespace Bunit.JSInterop
 				.ShouldNotBeNull()
 				.ShouldSatisfyAllConditions(
 					x => x.Identifier.ShouldBe("foo"),
-					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>()
-				);
+					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>());
 		}
 
 		[Fact(DisplayName = "Handler for specific module name returns IJSObjectReference when receiving matching invocation")]
@@ -109,9 +107,7 @@ namespace Bunit.JSInterop
 		{
 			JSInterop.SetupModule("FOO.js");
 
-			Should.Throw<JSRuntimeUnhandledInvocationException>(
-				() => JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("import", requestedRoduleName)
-			);
+			Should.Throw<JSRuntimeUnhandledInvocationException>(() => JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("import", requestedRoduleName));
 		}
 
 		[Fact(DisplayName = "Handler for matcher returns IJSObjectReference when receiving matching invocation")]
@@ -217,8 +213,7 @@ namespace Bunit.JSInterop
 				.ShouldHaveSingleItem()
 				.ShouldSatisfyAllConditions(
 					x => x.Identifier.ShouldBe("import"),
-					x => x.Arguments.ShouldHaveSingleItem().ShouldBe("FOO.js")
-				);
+					x => x.Arguments.ShouldHaveSingleItem().ShouldBe("FOO.js"));
 
 			moduleJSInterop.Invocations.ShouldBeEmpty();
 		}

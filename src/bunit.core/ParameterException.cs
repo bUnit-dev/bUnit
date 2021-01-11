@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.Serialization;
 
 namespace Bunit.RazorTesting
@@ -10,7 +10,7 @@ namespace Bunit.RazorTesting
 	public sealed class ParameterException : ArgumentException
 	{
 		/// <summary>
-		/// Creates an instance of the <see cref="ParameterException"/> class.
+		/// Initializes a new instance of the <see cref="ParameterException"/> class.
 		/// </summary>
 		/// <param name="messsage">Validation message.</param>
 		/// <param name="parameterName">Name of the Blazor parameter.</param>
@@ -22,5 +22,4 @@ namespace Bunit.RazorTesting
 			: base(serializationInfo, streamingContext)
 		{ }
 	}
-
 }

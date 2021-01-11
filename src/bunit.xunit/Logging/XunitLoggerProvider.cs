@@ -8,22 +8,27 @@ namespace Bunit.Xunit.Logging
 	/// </summary>
 	public sealed class XunitLoggerProvider : ILoggerProvider
 	{
-		private readonly ITestOutputHelper _output;
-		private readonly LogLevel _minimumLogLevel;
+		private readonly ITestOutputHelper output;
+		private readonly LogLevel minimumLogLevel;
 
 		/// <summary>
-		/// Creates an instance of the <see cref="XunitLoggerProvider"/>.
+		/// Initializes a new instance of the <see cref="XunitLoggerProvider"/> class.
 		/// </summary>
+		/// <param name="output">The <see cref="ITestOutputHelper" /> to log to.</param>
+		/// <param name="minimumLogLevel">The minimum log level to log.</param>
 		public XunitLoggerProvider(ITestOutputHelper output, LogLevel minimumLogLevel = LogLevel.Debug)
 		{
-			_output = output;
-			_minimumLogLevel = minimumLogLevel;
+			this.output = output;
+			this.minimumLogLevel = minimumLogLevel;
 		}
 
 		/// <inheritdoc/>
-		public ILogger CreateLogger(string categoryName) => new XunitLogger(_output, categoryName, _minimumLogLevel);
+		public ILogger CreateLogger(string categoryName) => new XunitLogger(output, categoryName, minimumLogLevel);
 
 		/// <inheritdoc/>
-		public void Dispose() { }
+		public void Dispose()
+		{
+			// No disposable resources that need disposing.
+		}
 	}
 }

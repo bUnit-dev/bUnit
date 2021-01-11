@@ -5,31 +5,37 @@ namespace Bunit
 {
 	/// <summary>
 	/// Represents a failure to find an element in the searched target
-	/// using a css selector.
+	/// using a CSS selector.
 	/// </summary>
 	[Serializable]
 	public class ElementNotFoundException : Exception
 	{
 		/// <summary>
-		/// The CSS selector used to search with.
+		/// Gets the CSS selector used to search with.
 		/// </summary>
 		public string CssSelector { get; }
 
-		/// <inheritdoc/>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ElementNotFoundException"/> class.
+		/// </summary>
 		public ElementNotFoundException(string cssSelector)
 			: base($"No elements were found that matches the selector '{cssSelector}'")
 		{
 			CssSelector = cssSelector;
 		}
 
-		/// <inheritdoc/>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ElementNotFoundException"/> class.
+		/// </summary>
 		protected ElementNotFoundException(string message, string cssSelector)
 			: base(message)
 		{
 			CssSelector = cssSelector;
 		}
 
-		/// <inheritdoc/>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ElementNotFoundException"/> class.
+		/// </summary>
 		protected ElementNotFoundException(SerializationInfo serializationInfo, StreamingContext streamingContext)
 			: base(serializationInfo, streamingContext)
 		{

@@ -16,7 +16,7 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		public BunitJSModuleInterop JSInterop { get; }
 
 		/// <summary>
-		/// Creates an instance of the <see cref="JSObjectReferenceInvocationHandler"/>.
+		/// Initializes a new instance of the <see cref="JSObjectReferenceInvocationHandler"/> class.
 		/// </summary>
 		public JSObjectReferenceInvocationHandler(BunitJSInterop parent, string identifier, InvocationMatcher invocationMatcher)
 			: base(identifier, invocationMatcher)

@@ -29,7 +29,6 @@ namespace Bunit
 			cut.Find("p").ShouldNotBeNull();
 		}
 
-
 		[Fact(DisplayName = "Call to SetParametersAndRender(params) provides the parameters to component")]
 		public void Test0041()
 		{

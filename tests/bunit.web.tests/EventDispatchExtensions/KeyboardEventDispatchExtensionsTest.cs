@@ -27,7 +27,7 @@ namespace Bunit
 				MetaKey = true,
 				Repeat = true,
 				ShiftKey = true,
-				Type = "ASDF"
+				Type = "ASDF",
 			};
 
 			VerifyEventRaisesCorrectly(helper, expected);
@@ -46,7 +46,7 @@ namespace Bunit
 			{
 				Key = "Enter",
 				Code = "Enter",
-				CtrlKey = true
+				CtrlKey = true,
 			};
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}
@@ -63,7 +63,7 @@ namespace Bunit
 			var expected = new KeyboardEventArgs
 			{
 				Key = "A",
-				Code = "A"
+				Code = "A",
 			};
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}
@@ -83,7 +83,7 @@ namespace Bunit
 				Code = "ArrowUp",
 				MetaKey = true,
 				Repeat = true,
-				Type = "Test Down"
+				Type = "Test Down",
 			};
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}
@@ -102,7 +102,7 @@ namespace Bunit
 				Key = " ",
 				Code = "Space",
 				ShiftKey = true,
-				AltKey = true
+				AltKey = true,
 			};
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}
@@ -120,7 +120,7 @@ namespace Bunit
 			{
 				Key = "B",
 				Code = "B",
-				AltKey = true
+				AltKey = true,
 			};
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}
@@ -141,7 +141,7 @@ namespace Bunit
 				ShiftKey = true,
 				MetaKey = true,
 				Repeat = true,
-				Type = "Test Up"
+				Type = "Test Up",
 			};
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}
@@ -158,7 +158,7 @@ namespace Bunit
 			var expected = new KeyboardEventArgs
 			{
 				Key = "8",
-				Code = "Numpad8"
+				Code = "Numpad8",
 			};
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}
@@ -175,7 +175,7 @@ namespace Bunit
 			var expected = new KeyboardEventArgs
 			{
 				Key = "8",
-				Code = "8"
+				Code = "8",
 			};
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}
@@ -195,7 +195,7 @@ namespace Bunit
 				Code = "P",
 				ShiftKey = true,
 				Repeat = true,
-				Type = "Press Test"
+				Type = "Press Test",
 			};
 			spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 		}

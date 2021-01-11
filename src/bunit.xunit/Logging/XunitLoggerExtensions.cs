@@ -32,6 +32,5 @@ namespace Bunit
 			services.AddSingleton<ITestOutputHelper>(outputHelper);
 			return AddXunitLogger(services, minimumLogLevel);
 		}
-
 	}
 }

@@ -77,7 +77,7 @@ namespace Bunit
 			var formatter = new PrettyMarkupFormatter()
 			{
 				NewLine = Environment.NewLine,
-				Indentation = "  "
+				Indentation = "  ",
 			};
 			nodes.ToHtml(sw, formatter);
 			return sw.ToString();
@@ -96,15 +96,15 @@ namespace Bunit
 			var formatter = new PrettyMarkupFormatter()
 			{
 				NewLine = Environment.NewLine,
-				Indentation = "  "
+				Indentation = "  ",
 			};
 			markupFormattable.ToHtml(sw, formatter);
 			return sw.ToString();
 		}
 
 		/// <summary>
-		/// Converts an <see cref="IElement"/> into a HTML markup string, 
-		/// with only its tag and attributes included in the output. All 
+		/// Converts an <see cref="IElement"/> into a HTML markup string,
+		/// with only its tag and attributes included in the output. All
 		/// child nodes are skipped.
 		/// </summary>
 		public static string ToMarkupElementOnly(this IElement element)

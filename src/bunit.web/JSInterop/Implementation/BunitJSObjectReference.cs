@@ -9,22 +9,23 @@ namespace Bunit
 {
 	[SuppressMessage("Minor Code Smell", "S1939:Inheritance list should not be redundant", Justification = "By design. To make it obvious that both is implemented.")]
 	[SuppressMessage("Design", "CA2012:ValueTask instances should not have their result directly accessed unless the instance has already completed.", Justification = "The ValueTask always wraps a Task object.")]
+	[SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "By design. Test and renderer run in separate threads, making this safe.")]
 	internal sealed class BunitJSObjectReference : IJSObjectReference, IJSInProcessObjectReference, IJSUnmarshalledObjectReference
 	{
-		private readonly IJSRuntime _jsRuntime;
+		private readonly IJSRuntime jsRuntime;
 
 		public BunitJSObjectReference(IJSRuntime jsRuntime)
 		{
-			_jsRuntime = jsRuntime;
+			this.jsRuntime = jsRuntime;
 		}
 
 		/// <inheritdoc/>
 		public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args)
-			=> _jsRuntime.InvokeAsync<TValue>(identifier, CancellationToken.None, args);
+			=> jsRuntime.InvokeAsync<TValue>(identifier, CancellationToken.None, args);
 
 		/// <inheritdoc/>
 		public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
-			=> _jsRuntime.InvokeAsync<TValue>(identifier, cancellationToken, args);
+			=> jsRuntime.InvokeAsync<TValue>(identifier, cancellationToken, args);
 
 		/// <inheritdoc/>
 		public TValue Invoke<TValue>(string identifier, params object?[]? args)
@@ -47,7 +48,10 @@ namespace Bunit
 			InvokeAsync<TResult>(identifier, new object?[] { arg0, arg1, arg2 }).GetAwaiter().GetResult();
 
 		/// <inheritdoc/>
-		public void Dispose() { }
+		public void Dispose()
+		{
+			// Just here to meet the interface requirements. Nothing to dispose.
+		}
 
 		/// <inheritdoc/>
 		public ValueTask DisposeAsync() => ValueTask.CompletedTask;

@@ -13,7 +13,7 @@ namespace Bunit.Rendering
 	/// </summary>
 	public sealed class RootRenderTree : IReadOnlyCollection<RootRenderTreeRegistration>
 	{
-		private readonly List<RootRenderTreeRegistration> _registrations = new();
+		private readonly List<RootRenderTreeRegistration> registrations = new();
 
 		/// <summary>
 		/// Adds a component to the render tree. This method can
@@ -25,11 +25,8 @@ namespace Bunit.Rendering
 		/// <param name="parameterBuilder">An optional parameter builder, used to pass parameters to <typeparamref name="TComponent"/>.</param>
 		public void Add<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null) where TComponent : IComponent
 		{
-			var registration = new RootRenderTreeRegistration(
-				typeof(TComponent),
-				CreateRenderFragmentBuilder<TComponent>(parameterBuilder)
-			);
-			_registrations.Add(registration);
+			var registration = new RootRenderTreeRegistration(typeof(TComponent), CreateRenderFragmentBuilder(parameterBuilder));
+			registrations.Add(registration);
 		}
 
 		/// <summary>
@@ -49,23 +46,20 @@ namespace Bunit.Rendering
 		public bool TryAdd<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null) where TComponent : IComponent
 		{
 			var componentType = typeof(TComponent);
-			if (_registrations.Any(x => x.ComponentType == componentType))
+			if (registrations.Any(x => x.ComponentType == componentType))
 				return false;
 
-			var registration = new RootRenderTreeRegistration(
-				componentType,
-				CreateRenderFragmentBuilder<TComponent>(parameterBuilder)
-			);
-			_registrations.Add(registration);
+			var registration = new RootRenderTreeRegistration(componentType, CreateRenderFragmentBuilder(parameterBuilder));
+			registrations.Add(registration);
 
 			return true;
 		}
 
 		/// <inheritdoc/>
-		public int Count => _registrations.Count;
+		public int Count => registrations.Count;
 
 		/// <inheritdoc/>
-		public IEnumerator<RootRenderTreeRegistration> GetEnumerator() => _registrations.GetEnumerator();
+		public IEnumerator<RootRenderTreeRegistration> GetEnumerator() => registrations.GetEnumerator();
 
 		/// <inheritdoc/>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -81,10 +75,11 @@ namespace Bunit.Rendering
 			// Wrap from the last added to the first added, as we start with the
 			// target and goes from inside to out.
 			var result = target;
-			for (int i = _registrations.Count - 1; i >= 0; i--)
+			for (int i = registrations.Count - 1; i >= 0; i--)
 			{
-				result = _registrations[i].RenderFragmentBuilder(result);
+				result = registrations[i].RenderFragmentBuilder(result);
 			}
+
 			return result;
 		}
 
@@ -99,9 +94,9 @@ namespace Bunit.Rendering
 			var result = 0;
 			var countType = typeof(TComponent);
 
-			for (int i = 0; i < _registrations.Count; i++)
+			for (int i = 0; i < registrations.Count; i++)
 			{
-				if (countType == _registrations[i].ComponentType)
+				if (countType == registrations[i].ComponentType)
 					result++;
 			}
 

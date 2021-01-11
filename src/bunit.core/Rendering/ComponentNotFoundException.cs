@@ -10,10 +10,11 @@ namespace Bunit.Rendering
 	public sealed class ComponentNotFoundException : Exception
 	{
 		/// <summary>
-		/// Creates an instance of the <see cref="ComponentNotFoundException"/> type.
+		/// Initializes a new instance of the <see cref="ComponentNotFoundException"/> class.
 		/// </summary>
 		/// <param name="componentType">The type of component that was not found.</param>
-		public ComponentNotFoundException(Type componentType) : base($"A component of type {componentType?.Name} was not found in the render tree.")
+		public ComponentNotFoundException(Type componentType)
+			: base($"A component of type {componentType?.Name} was not found in the render tree.")
 		{
 		}
 

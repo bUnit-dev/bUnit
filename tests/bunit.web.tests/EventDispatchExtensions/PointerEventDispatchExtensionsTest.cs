@@ -36,7 +36,7 @@ namespace Bunit
 				IsPrimary = true,
 				PointerId = 4242L,
 				Pressure = 1337F,
-				PointerType = "MOUSE"
+				PointerType = "MOUSE",
 			};
 
 			VerifyEventRaisesCorrectly(helper, expected);

@@ -48,8 +48,7 @@ namespace Bunit
 		{
 			var cut = RenderComponent<CascadingValue<string>>(builder => builder
 				.Add(p => p.Value, "FOO")
-				.AddChildContent<ClickCounter>()
-			);
+				.AddChildContent<ClickCounter>());
 
 			var initialNodes = cut.Nodes;
 
@@ -94,8 +93,7 @@ namespace Bunit
 					.AddChildContent<Simple1>(simple1 => simple1
 						.Add(p => p.Header, "First")))
 				.Add<Simple1>(p => p.Second, simple1 => simple1
-					.Add(p => p.Header, "Second"))
-			);
+					.Add(p => p.Header, "Second")));
 
 			var cut = wrapper.FindComponent<Simple1>();
 
@@ -108,8 +106,7 @@ namespace Bunit
 			var wrapper = RenderComponent<TwoComponentWrapper>(builder => builder
 				.Add<Wrapper>(p => p.First)
 				.Add<Simple1>(p => p.Second, simple1 => simple1
-					.Add(p => p.Header, "Second"))
-			);
+					.Add(p => p.Header, "Second")));
 
 			var cut = wrapper.FindComponent<Simple1>();
 
@@ -132,8 +129,7 @@ namespace Bunit
 					.AddChildContent<Simple1>(simple1 => simple1
 						.Add(p => p.Header, "First")))
 				.Add<Simple1>(p => p.Second, simple1 => simple1
-					.Add(p => p.Header, "Second"))
-			);
+					.Add(p => p.Header, "Second")));
 
 			var cuts = wrapper.FindComponents<Simple1>();
 
@@ -147,8 +143,7 @@ namespace Bunit
 		{
 			var wrapper = RenderComponent<TwoComponentWrapper>(parameters => parameters
 				.Add<Simple1>(p => p.First)
-				.Add<Simple1>(p => p.Second)
-			);
+				.Add<Simple1>(p => p.Second));
 			var cuts = wrapper.FindComponents<Simple1>();
 			var first = cuts[0];
 			var second = cuts[1];

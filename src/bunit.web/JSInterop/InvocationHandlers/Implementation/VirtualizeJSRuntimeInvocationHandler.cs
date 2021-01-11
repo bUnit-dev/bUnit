@@ -1,6 +1,7 @@
 #if NET5_0
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
@@ -16,18 +17,18 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		private const string JsFunctionsPrefix = "Blazor._internal.Virtualize.";
 		private static readonly Lazy<(PropertyInfo, MethodInfo)> VirtualizeReflection = new Lazy<(PropertyInfo, MethodInfo)>(() =>
 		{
-			var VirtualizeJsInteropType = typeof(Virtualize<>)
+			var virtualizeJsInteropType = typeof(Virtualize<>)
 				.Assembly
 				.GetType("Microsoft.AspNetCore.Components.Web.Virtualization.VirtualizeJsInterop")
 					?? throw new InvalidOperationException("Did not find the VirtualizeJsInterop in the expected namespace/assembly.");
 
-			var DotNetObjectReferenceVirtualizeJsInteropType = typeof(DotNetObjectReference<>).MakeGenericType(VirtualizeJsInteropType);
+			var dotNetObjectReferenceVirtualizeJsInteropType = typeof(DotNetObjectReference<>).MakeGenericType(virtualizeJsInteropType);
 
-			var dotNetObjectReferenceValuePropertyInfo = DotNetObjectReferenceVirtualizeJsInteropType
+			var dotNetObjectReferenceValuePropertyInfo = dotNetObjectReferenceVirtualizeJsInteropType
 				.GetProperty("Value", BindingFlags.Public | BindingFlags.Instance)
 				?? throw new InvalidOperationException("Did not find the Value property on the DotNetObjectReference<VirtualizeJsInterop> type.");
 
-			var onSpacerBeforeVisibleMethodInfo = VirtualizeJsInteropType?.GetMethod("OnSpacerBeforeVisible")
+			var onSpacerBeforeVisibleMethodInfo = virtualizeJsInteropType?.GetMethod("OnSpacerBeforeVisible")
 				?? throw new InvalidOperationException("Did not find the OnSpacerBeforeVisible method on the VirtualizeJsInterop type.");
 
 			return (dotNetObjectReferenceValuePropertyInfo, onSpacerBeforeVisibleMethodInfo);
@@ -37,8 +38,8 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 			: base(CatchAllIdentifier, i => i.Identifier.StartsWith(JsFunctionsPrefix, StringComparison.Ordinal))
 		{ }
 
-		/// <inheritdoc/>		
-		protected internal override Task<object> Handle(JSRuntimeInvocation invocation)
+		/// <inheritdoc/>
+		protected internal override Task<object> HandleAsync(JSRuntimeInvocation invocation)
 		{
 			if (!invocation.Identifier.Equals(JsFunctionsPrefix + "dispose", StringComparison.Ordinal))
 			{
@@ -52,20 +53,20 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 				SetVoidResult();
 			}
 
-			return base.Handle(invocation);
+			return base.HandleAsync(invocation);
 		}
 
 		private static void InvokeOnSpacerBeforeVisible(object dotNetObjectReference)
 		{
 			var (dotNetObjectReferenceValuePropertyInfo, onSpacerBeforeVisibleMethodInfo) = VirtualizeReflection.Value;
-			var virtualizeJsInterop = dotNetObjectReferenceValuePropertyInfo.GetValue(dotNetObjectReference);			
-			onSpacerBeforeVisibleMethodInfo.Invoke(
-				virtualizeJsInterop,
-				new object[] {
-					0f /* spacerSize */,
-					0f /* spacerSeparation */,
-					1_000_000_000f /* containerSize - very large number to ensure all items are loaded at once */
-				});
+			var virtualizeJsInterop = dotNetObjectReferenceValuePropertyInfo.GetValue(dotNetObjectReference);
+			var parameters = new object[]
+			{
+				0f, /* spacerSize */
+				0f, /* spacerSeparation */
+				1_000_000_000f, /* containerSize - very large number to ensure all items are loaded at once */
+			};
+			onSpacerBeforeVisibleMethodInfo.Invoke(virtualizeJsInterop, parameters);
 		}
 	}
 }

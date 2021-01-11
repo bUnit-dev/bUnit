@@ -10,11 +10,8 @@ namespace Bunit.TestDoubles
 		private const string PlaceholderBaseUri = "http://localhost/";
 
 		/// <summary>
-		/// Will throw exception to prompt user
+		/// Will throw exception to prompt user.
 		/// </summary>
-		/// <param name="uri"></param>
-		/// <param name="forceLoad"></param>
-		/// <exception cref="MissingMockNavigationManagerException"></exception>
 		protected override void NavigateToCore(string uri, bool forceLoad)
 		{
 			throw new MissingMockNavigationManagerException(uri, forceLoad);
@@ -22,7 +19,7 @@ namespace Bunit.TestDoubles
 
 		/// <summary>
 		/// Will initialize the navigation manager with a hard coded
-		/// value of http://localhost:5000/
+		/// value of http://localhost:5000/.
 		/// </summary>
 		protected override void EnsureInitialized()
 		{

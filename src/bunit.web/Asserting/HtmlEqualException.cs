@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 using AngleSharp;
@@ -16,7 +17,7 @@ namespace Bunit
 	public sealed class HtmlEqualException : ActualExpectedAssertException
 	{
 		/// <summary>
-		/// Creates an instance of the <see cref="HtmlEqualException"/> type.
+		/// Initializes a new instance of the <see cref="HtmlEqualException"/> class.
 		/// </summary>
 		public HtmlEqualException(IEnumerable<IDiff> diffs, IMarkupFormattable expected, IMarkupFormattable actual, string? userMessage)
 			: base(actual.PrintHtml(), expected.PrintHtml(), "Actual HTML", "Expected HTML", CreateUserMessage(diffs, userMessage))
@@ -48,7 +49,7 @@ namespace Bunit
 					MissingAttrDiff diff => $"The attribute at {diff.Control.Path} is missing.",
 					UnexpectedNodeDiff diff => $"The {diff.Test.NodeName()} at {diff.Test.Path} was not expected.",
 					UnexpectedAttrDiff diff => $"The attribute at {diff.Test.Path} was not expected.",
-					_ => throw new InvalidOperationException($"Unknown diff type detected: {x.GetType()}")
+					_ => throw new InvalidOperationException($"Unknown diff type detected: {x.GetType()}"),
 				};
 				return $"  {i + 1}: {diffText}";
 			})) + Environment.NewLine;
@@ -58,6 +59,8 @@ namespace Bunit
 			: base(serializationInfo, streamingContext) { }
 	}
 
+	[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single type", Justification = "Only useful for the class above.")]
+	[SuppressMessage("Design", "MA0048:File name must match type name")]
 	internal static class ComparisonFormatHelpers
 	{
 		public static string NodeName(this ComparisonSource source) => source.Node.NodeType.ToString().ToLowerInvariant();

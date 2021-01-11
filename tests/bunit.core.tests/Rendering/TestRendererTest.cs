@@ -12,67 +12,6 @@ using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering
 {
-	internal class NoChildNoParams : ComponentBase
-	{
-		public const string MARKUP = "hello world";
-		protected override void BuildRenderTree(RenderTreeBuilder builder) => builder.AddMarkupContent(0, MARKUP);
-	}
-
-	internal class ThrowsDuringSetParams : ComponentBase
-	{
-		public static readonly InvalidOperationException EXCEPTION = new("THROWS ON PURPOSE");
-
-		public override Task SetParametersAsync(ParameterView parameters) => throw EXCEPTION;
-	}
-
-	internal class HasParams : ComponentBase
-	{
-		[Parameter] public string? Value { get; set; }
-		[Parameter] public RenderFragment? ChildContent { get; set; }
-
-		protected override void BuildRenderTree(RenderTreeBuilder builder)
-		{
-			builder.AddMarkupContent(0, Value);
-			builder.AddContent(1, ChildContent);
-		}
-	}
-
-	internal class RenderTrigger : ComponentBase
-	{
-		[Parameter] public string? Value { get; set; }
-
-		public Task Trigger() => InvokeAsync(StateHasChanged);
-		public Task TriggerWithValue(string value)
-		{
-			Value = value;
-			return InvokeAsync(StateHasChanged);
-		}
-
-		protected override void BuildRenderTree(RenderTreeBuilder builder)
-		{
-			builder.AddMarkupContent(0, Value);
-		}
-	}
-
-	internal class ToggleChild : ComponentBase
-	{
-		private bool _showing = true;
-
-		[Parameter] public RenderFragment? ChildContent { get; set; }
-
-		public Task DisposeChild()
-		{
-			_showing = false;
-			return InvokeAsync(StateHasChanged);
-		}
-
-		protected override void BuildRenderTree(RenderTreeBuilder builder)
-		{
-			if (_showing)
-				builder.AddContent(0, ChildContent);
-		}
-	}
-
 	public class TestRendererTest : TestContext
 	{
 		[Fact(DisplayName = "RenderFragment re-throws exception from component")]
@@ -139,8 +78,7 @@ namespace Bunit.Rendering
 
 			var cut = sut.RenderComponent<HasParams>(
 				(nameof(HasParams.Value), PARENT_VALUE),
-				ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE))
-			);
+				ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE)));
 
 			cut.Markup.ShouldStartWith(PARENT_VALUE);
 			cut.Markup.ShouldEndWith(CHILD_VALUE);
@@ -189,8 +127,7 @@ namespace Bunit.Rendering
 
 			var cut = sut.RenderComponent<HasParams>(
 				(nameof(HasParams.Value), PARENT_VALUE),
-				ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE))
-			);
+				ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE)));
 
 			// act
 			var childCut = (IRenderedComponent<HasParams>)sut.FindComponent<HasParams>(cut);
@@ -223,8 +160,7 @@ namespace Bunit.Rendering
 			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<HasParams>(
-				ChildContent<HasParams>()
-			);
+				ChildContent<HasParams>());
 
 			var child1 = sut.FindComponent<HasParams>(cut);
 			var child2 = sut.FindComponent<HasParams>(cut);
@@ -247,10 +183,7 @@ namespace Bunit.Rendering
 				ChildContent<HasParams>(
 					(nameof(HasParams.Value), PARENT_VALUE),
 					ChildContent<HasParams>(
-						(nameof(HasParams.Value), CHILD_VALUE)
-					)
-				)
-			);
+						(nameof(HasParams.Value), CHILD_VALUE))));
 
 			// act
 			var childCuts = sut.FindComponents<HasParams>(cut)
@@ -280,9 +213,7 @@ namespace Bunit.Rendering
 			var sut = Services.GetRequiredService<ITestRenderer>();
 			var cut = sut.RenderComponent<HasParams>(
 				ChildContent<HasParams>(
-					ChildContent<HasParams>()
-				)
-			);
+					ChildContent<HasParams>()));
 
 			// act
 			var childCuts1 = sut.FindComponents<HasParams>(cut);
@@ -298,8 +229,7 @@ namespace Bunit.Rendering
 			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var parent = sut.RenderComponent<HasParams>(
-				ChildContent<RenderTrigger>()
-			);
+				ChildContent<RenderTrigger>());
 
 			// act
 			var cut = (IRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(parent);
@@ -318,8 +248,7 @@ namespace Bunit.Rendering
 			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var parent = sut.RenderComponent<HasParams>(
-				ChildContent<RenderTrigger>()
-			);
+				ChildContent<RenderTrigger>());
 
 			// act
 			var cut = (IRenderedComponent<RenderTrigger>)sut.FindComponents<RenderTrigger>(parent).Single();
@@ -339,8 +268,7 @@ namespace Bunit.Rendering
 			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<HasParams>(
-				ChildContent<RenderTrigger>()
-			);
+				ChildContent<RenderTrigger>());
 			var child = (IRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(cut);
 
 			// act
@@ -358,8 +286,7 @@ namespace Bunit.Rendering
 			var sut = Services.GetRequiredService<ITestRenderer>();
 
 			var cut = sut.RenderComponent<ToggleChild>(
-				ChildContent<NoChildNoParams>()
-			);
+				ChildContent<NoChildNoParams>());
 			var child = (IRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
 
 			// act
@@ -378,9 +305,7 @@ namespace Bunit.Rendering
 
 			var cut = sut.RenderComponent<ToggleChild>(
 				ChildContent<ToggleChild>(
-					ChildContent<NoChildNoParams>()
-				)
-			);
+					ChildContent<NoChildNoParams>()));
 			var child = (IRenderedComponent<ToggleChild>)sut.FindComponent<ToggleChild>(cut);
 			var childChild = (IRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
 
@@ -410,8 +335,7 @@ namespace Bunit.Rendering
 			var tcs = new TaskCompletionSource<object>();
 
 			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
-				parameters.Add(p => p.EitherOr, tcs.Task)
-			);
+				parameters.Add(p => p.EitherOr, tcs.Task));
 
 			cut.Find("h1").TextContent.ShouldBe("FIRST");
 		}
@@ -422,8 +346,7 @@ namespace Bunit.Rendering
 			using var ctx = new TestContext();
 
 			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
-				parameters.Add(p => p.EitherOr, Task.Delay(1))
-			);
+				parameters.Add(p => p.EitherOr, Task.Delay(1)));
 
 			var h1 = cut.Find("h1");
 
@@ -436,10 +359,70 @@ namespace Bunit.Rendering
 			using var ctx = new TestContext();
 
 			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
-				parameters.Add(p => p.EitherOr, Task.CompletedTask)
-			);
+				parameters.Add(p => p.EitherOr, Task.CompletedTask));
 
 			cut.Find("h1").TextContent.ShouldBe("SECOND");
+		}
+
+		internal class NoChildNoParams : ComponentBase
+		{
+			public const string MARKUP = "hello world";
+			protected override void BuildRenderTree(RenderTreeBuilder builder) => builder.AddMarkupContent(0, MARKUP);
+		}
+
+		internal class ThrowsDuringSetParams : ComponentBase
+		{
+			public static readonly InvalidOperationException EXCEPTION = new("THROWS ON PURPOSE");
+
+			public override Task SetParametersAsync(ParameterView parameters) => throw EXCEPTION;
+		}
+
+		internal class HasParams : ComponentBase
+		{
+			[Parameter] public string? Value { get; set; }
+			[Parameter] public RenderFragment? ChildContent { get; set; }
+
+			protected override void BuildRenderTree(RenderTreeBuilder builder)
+			{
+				builder.AddMarkupContent(0, Value);
+				builder.AddContent(1, ChildContent);
+			}
+		}
+
+		internal class RenderTrigger : ComponentBase
+		{
+			[Parameter] public string? Value { get; set; }
+
+			public Task Trigger() => InvokeAsync(StateHasChanged);
+			public Task TriggerWithValue(string value)
+			{
+				Value = value;
+				return InvokeAsync(StateHasChanged);
+			}
+
+			protected override void BuildRenderTree(RenderTreeBuilder builder)
+			{
+				builder.AddMarkupContent(0, Value);
+			}
+		}
+
+		internal class ToggleChild : ComponentBase
+		{
+			private bool showing = true;
+
+			[Parameter] public RenderFragment? ChildContent { get; set; }
+
+			public Task DisposeChild()
+			{
+				showing = false;
+				return InvokeAsync(StateHasChanged);
+			}
+
+			protected override void BuildRenderTree(RenderTreeBuilder builder)
+			{
+				if (showing)
+					builder.AddContent(0, ChildContent);
+			}
 		}
 	}
 }

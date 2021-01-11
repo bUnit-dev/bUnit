@@ -17,7 +17,7 @@ namespace Bunit
 		public BunitJSInterop JSInterop { get; } = new BunitJSInterop();
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="TestContext"/> class.
+		/// Initializes a new instance of the <see cref="TestContext"/> class.
 		/// </summary>
 		public TestContext()
 		{
@@ -27,9 +27,9 @@ namespace Bunit
 		/// <summary>
 		/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
 		/// </summary>
-		/// <typeparam name="TComponent">Type of the component to render</typeparam>
-		/// <param name="parameters">Parameters to pass to the component when it is rendered</param>
-		/// <returns>The rendered <typeparamref name="TComponent"/></returns>
+		/// <typeparam name="TComponent">Type of the component to render.</typeparam>
+		/// <param name="parameters">Parameters to pass to the component when it is rendered.</param>
+		/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters) where TComponent : IComponent
 		{
 			var renderFragment = new ComponentParameterCollection { parameters }.ToRenderFragment<TComponent>();
@@ -39,9 +39,9 @@ namespace Bunit
 		/// <summary>
 		/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
 		/// </summary>
-		/// <typeparam name="TComponent">Type of the component to render</typeparam>
-		/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered</param>
-		/// <returns>The rendered <typeparamref name="TComponent"/></returns>
+		/// <typeparam name="TComponent">Type of the component to render.</typeparam>
+		/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered.</param>
+		/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder) where TComponent : IComponent
 		{
 			var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder).Build().ToRenderFragment<TComponent>();

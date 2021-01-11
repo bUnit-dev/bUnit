@@ -10,7 +10,7 @@ namespace Bunit
 		/// <summary>
 		/// Creates a <see cref="RenderFragment"/> that will render the <paramref name="markup"/>.
 		/// </summary>
-		/// <param name="markup">Markup to render</param>
+		/// <param name="markup">Markup to render.</param>
 		/// <returns>The <see cref="RenderFragment"/>.</returns>
 		public static RenderFragment ToMarkupRenderFragment(this string? markup)
 		{

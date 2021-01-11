@@ -16,5 +16,4 @@ namespace Bunit.Asserting
 		}
 	}
 }
-
 #endif

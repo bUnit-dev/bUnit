@@ -13,7 +13,7 @@ namespace Bunit
 		/// <summary>
 		/// An event that is raised after the markup of the <see cref="IRenderedFragmentBase"/> is updated.
 		/// </summary>
-		event Action OnMarkupUpdated;
+		event EventHandler OnMarkupUpdated;
 
 		/// <summary>
 		/// Gets the HTML markup from the rendered fragment/component.
@@ -27,15 +27,15 @@ namespace Bunit
 		INodeList Nodes { get; }
 
 		/// <summary>
-		/// Performs a comparison of the markup produced by the initial rendering of the 
-		/// fragment or component under test with the current rendering of the fragment 
+		/// Performs a comparison of the markup produced by the initial rendering of the
+		/// fragment or component under test with the current rendering of the fragment
 		/// or component under test.
 		/// </summary>
 		/// <returns>A list of differences found.</returns>
 		IReadOnlyList<IDiff> GetChangesSinceFirstRender();
 
 		/// <summary>
-		/// Performs a comparison of the markup produced by the rendering of the 
+		/// Performs a comparison of the markup produced by the rendering of the
 		/// fragment or component under test at the time the <see cref="SaveSnapshot"/> was called
 		/// with the current rendering of the fragment or component under test.
 		/// </summary>

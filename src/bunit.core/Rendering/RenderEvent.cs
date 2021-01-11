@@ -8,22 +8,22 @@ namespace Bunit.Rendering
 	/// </summary>
 	public sealed class RenderEvent
 	{
-		private readonly RenderBatch _renderBatch;
+		private readonly RenderBatch renderBatch;
 
 		/// <summary>
-		/// A collection of <see cref="ArrayRange{RenderTreeFrame}"/>, accessible via the ID
+		/// Gets a collection of <see cref="ArrayRange{RenderTreeFrame}"/>, accessible via the ID
 		/// of the component they are created by.
 		/// </summary>
-		public RenderTreeFrameCollection Frames { get; }
+		public RenderTreeFrameDictionary Frames { get; }
 
 		/// <summary>
-		/// Creates an instance of the <see cref="RenderEvent"/> type.
+		/// Initializes a new instance of the <see cref="RenderEvent"/> class.
 		/// </summary>
 		/// <param name="renderBatch">The <see cref="RenderBatch"/> update from the render event.</param>
-		/// <param name="frames">The <see cref="RenderTreeFrameCollection"/> from the current render.</param>
-		internal RenderEvent(RenderBatch renderBatch, RenderTreeFrameCollection frames)
+		/// <param name="frames">The <see cref="RenderTreeFrameDictionary"/> from the current render.</param>
+		internal RenderEvent(RenderBatch renderBatch, RenderTreeFrameDictionary frames)
 		{
-			_renderBatch = renderBatch;
+			this.renderBatch = renderBatch;
 			Frames = frames;
 		}
 
@@ -32,20 +32,20 @@ namespace Bunit.Rendering
 		/// </summary>
 		/// <param name="renderedComponent">The <paramref name="renderedComponent"/> to get the status for.</param>
 		/// <returns>A tuple of statuses indicating whether the rendered component rendered during the render cycle, if it changed or if it was disposed.</returns>
-		public (bool rendered, bool changed, bool disposed) GetRenderStatus(IRenderedFragmentBase renderedComponent)
+		public (bool Rendered, bool Changed, bool Disposed) GetRenderStatus(IRenderedFragmentBase renderedComponent)
 		{
 			if (renderedComponent is null)
 				throw new ArgumentNullException(nameof(renderedComponent));
 
-			var result = (rendered: false, changed: false, disposed: false);
+			var result = (Rendered: false, Changed: false, Disposed: false);
 
 			if (DidComponentDispose(renderedComponent))
 			{
-				result.disposed = true;
+				result.Disposed = true;
 			}
 			else
 			{
-				(result.rendered, result.changed) = GetRenderAndChangeStatus(renderedComponent);
+				(result.Rendered, result.Changed) = GetRenderAndChangeStatus(renderedComponent);
 			}
 
 			return result;
@@ -53,9 +53,13 @@ namespace Bunit.Rendering
 
 		private bool DidComponentDispose(IRenderedFragmentBase renderedComponent)
 		{
-			for (var i = 0; i < _renderBatch.DisposedComponentIDs.Count; i++)
-				if (_renderBatch.DisposedComponentIDs.Array[i].Equals(renderedComponent.ComponentId))
+			for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
+			{
+				if (renderBatch.DisposedComponentIDs.Array[i].Equals(renderedComponent.ComponentId))
+				{
 					return true;
+				}
+			}
 
 			return false;
 		}
@@ -70,9 +74,9 @@ namespace Bunit.Rendering
 		/// GetStatus and GetStatusFromChildren call each other until there are no more children,
 		/// or both a render and a change is found.
 		/// </summary>
-		private (bool rendered, bool hasChanges) GetRenderAndChangeStatus(IRenderedFragmentBase renderedComponent)
+		private (bool Rendered, bool HasChanges) GetRenderAndChangeStatus(IRenderedFragmentBase renderedComponent)
 		{
-			var result = (rendered: false, hasChanges: false);
+			var result = (Rendered: false, HasChanges: false);
 
 			GetStatus(renderedComponent.ComponentId);
 
@@ -80,18 +84,18 @@ namespace Bunit.Rendering
 
 			void GetStatus(int componentId)
 			{
-				for (var i = 0; i < _renderBatch.UpdatedComponents.Count; i++)
+				for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
 				{
-					ref var update = ref _renderBatch.UpdatedComponents.Array[i];
+					ref var update = ref renderBatch.UpdatedComponents.Array[i];
 					if (update.ComponentId == componentId)
 					{
-						result.rendered = true;
-						result.hasChanges = update.Edits.Count > 0;
+						result.Rendered = true;
+						result.HasChanges = update.Edits.Count > 0;
 						break;
 					}
 				}
 
-				if (!result.hasChanges)
+				if (!result.HasChanges)
 				{
 					GetStatusFromChildren(componentId);
 				}
@@ -107,7 +111,7 @@ namespace Bunit.Rendering
 					{
 						GetStatus(frame.ComponentId);
 
-						if (result.hasChanges)
+						if (result.HasChanges)
 						{
 							break;
 						}

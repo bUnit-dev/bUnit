@@ -65,7 +65,7 @@ namespace Bunit
 				{
 					Mock.Of<IDiff>(),
 					Mock.Of<IDiff>(),
-				}
+				},
 			};
 		}
 	}

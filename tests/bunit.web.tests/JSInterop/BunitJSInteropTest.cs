@@ -48,14 +48,12 @@ namespace Bunit.JSInterop
 			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync(identifier, args))
 				.Invocation.ShouldSatisfyAllConditions(
 					x => x.Identifier.ShouldBe(identifier),
-					x => x.Arguments.ShouldBe(args)
-				);
+					x => x.Arguments.ShouldBe(args));
 
 			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeAsync<object>(identifier, args))
 				.Invocation.ShouldSatisfyAllConditions(
 					x => x.Identifier.ShouldBe(identifier),
-					x => x.Arguments.ShouldBe(args)
-				);
+					x => x.Arguments.ShouldBe(args));
 		}
 
 		[Fact(DisplayName = "All invocations received AFTER a invocation handler " +
