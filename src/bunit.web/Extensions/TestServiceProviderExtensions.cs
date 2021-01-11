@@ -14,7 +14,7 @@ using Microsoft.JSInterop;
 namespace Bunit.Extensions
 {
 	/// <summary>
-	/// Helper methods for correctly registering test dependencies
+	/// Helper methods for correctly registering test dependencies.
 	/// </summary>
 	public static class TestServiceProviderExtensions
 	{

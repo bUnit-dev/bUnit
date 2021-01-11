@@ -28,9 +28,7 @@ namespace Bunit.Extensions.WaitForHelpers
 			// Clicking 'tock' completes the task, which updates the state
 			// This click causes two renders, thus something is needed to await here.
 			cut.Find("#tock").Click();
-			cut.WaitForAssertion(
-				() => cut.Find("#state").TextContent.ShouldBe("Stopped")
-			);
+			cut.WaitForAssertion(() => cut.Find("#state").TextContent.ShouldBe("Stopped"));
 		}
 
 		[Fact(DisplayName = "WaitForAssertion throws assertion exception after timeout")]
@@ -39,10 +37,9 @@ namespace Bunit.Extensions.WaitForHelpers
 			var cut = RenderComponent<Simple1>();
 
 			var expected = Should.Throw<WaitForFailedException>(() =>
-			  cut.WaitForAssertion(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(10))
-			);
+				cut.WaitForAssertion(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(10)));
 
-			expected.Message.ShouldBe(WaitForAssertionHelper.TIMEOUT_MESSAGE);
+			expected.Message.ShouldBe(WaitForAssertionHelper.TimeoutMessage);
 			expected.InnerException.ShouldBeOfType<ShouldAssertException>();
 		}
 
@@ -52,10 +49,9 @@ namespace Bunit.Extensions.WaitForHelpers
 			var cut = RenderComponent<Simple1>();
 
 			var expected = Should.Throw<WaitForFailedException>(() =>
-				cut.WaitForState(() => string.IsNullOrEmpty(cut.Markup), TimeSpan.FromMilliseconds(100))
-			);
+				cut.WaitForState(() => string.IsNullOrEmpty(cut.Markup), TimeSpan.FromMilliseconds(100)));
 
-			expected.Message.ShouldBe(WaitForStateHelper.TIMEOUT_BEFORE_PASS);
+			expected.Message.ShouldBe(WaitForStateHelper.TimeoutBeforePassMessage);
 		}
 
 		[Fact(DisplayName = "WaitForState throws exception if statePredicate throws on a later render")]
@@ -72,10 +68,9 @@ namespace Bunit.Extensions.WaitForHelpers
 					if (cut.Find("#state").TextContent == "Stopped")
 						throw new InvalidOperationException(expectedInnerMessage);
 					return false;
-				})
-			);
+				}));
 
-			expected.Message.ShouldBe(WaitForStateHelper.EXCEPTION_IN_PREDICATE);
+			expected.Message.ShouldBe(WaitForStateHelper.ExceptionInPredicateMessage);
 			expected.InnerException.ShouldBeOfType<InvalidOperationException>()
 				.Message.ShouldBe(expectedInnerMessage);
 		}

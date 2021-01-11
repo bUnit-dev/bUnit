@@ -20,7 +20,7 @@ namespace Bunit.Asserting
 		[Fact(DisplayName = "BunitJSInterop.VerifyNotInvoke throws if handler is null")]
 		public void Test001()
 		{
-			Should.Throw<ArgumentNullException>(() => default(BunitJSInterop)!.VerifyNotInvoke(""));
+			Should.Throw<ArgumentNullException>(() => default(BunitJSInterop)!.VerifyNotInvoke(string.Empty));
 		}
 
 		[Fact(DisplayName = "BunitJSInterop.VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
@@ -60,8 +60,8 @@ namespace Bunit.Asserting
 		public void Test100()
 		{
 			BunitJSInterop? sut = null;
-			Should.Throw<ArgumentNullException>(() => (sut!).VerifyInvoke(""));
-			Should.Throw<ArgumentNullException>(() => (sut!).VerifyInvoke("", 42));
+			Should.Throw<ArgumentNullException>(() => (sut!).VerifyInvoke(string.Empty));
+			Should.Throw<ArgumentNullException>(() => (sut!).VerifyInvoke(string.Empty, 42));
 		}
 
 		[Fact(DisplayName = "BunitJSInterop.VerifyInvoke throws invokeCount is less than 1")]
@@ -69,7 +69,7 @@ namespace Bunit.Asserting
 		{
 			var sut = CreateSut();
 
-			Should.Throw<ArgumentException>(() => sut.VerifyInvoke("", 0));
+			Should.Throw<ArgumentException>(() => sut.VerifyInvoke(string.Empty, 0));
 		}
 
 		[Fact(DisplayName = "BunitJSInterop.VerifyInvoke throws JSInvokeCountExpectedException when " +
@@ -121,7 +121,7 @@ namespace Bunit.Asserting
 		{
 			using var htmlParser = new BunitHtmlParser();
 			var elmRef = new ElementReference(Guid.NewGuid().ToString());
-			var elm = (IElement)htmlParser.Parse($"<p {Htmlizer.ELEMENT_REFERENCE_ATTR_NAME}=\"ASDF\" />").First();
+			var elm = (IElement)htmlParser.Parse($"<p {Htmlizer.ElementReferenceAttrName}=\"ASDF\" />").First();
 
 			Should.Throw<ActualExpectedAssertException>(() => elmRef.ShouldBeElementReferenceTo(elm));
 
@@ -133,7 +133,7 @@ namespace Bunit.Asserting
 		[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyNotInvoke throws if handler is null")]
 		public void Test301()
 		{
-			Should.Throw<ArgumentNullException>(() => default(JSRuntimeInvocationHandler)!.VerifyNotInvoke(""));
+			Should.Throw<ArgumentNullException>(() => default(JSRuntimeInvocationHandler)!.VerifyNotInvoke(string.Empty));
 		}
 
 		[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
@@ -164,7 +164,6 @@ namespace Bunit.Asserting
 				.Message.ShouldContain(errMsg);
 		}
 
-
 		[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyNotInvoke does not throw if identifier has not been invoked")]
 		public void Test304()
 		{
@@ -177,8 +176,8 @@ namespace Bunit.Asserting
 		[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke throws if handler is null")]
 		public void Test305()
 		{
-			Should.Throw<ArgumentNullException>(() => default(JSRuntimeInvocationHandler)!.VerifyInvoke(""));
-			Should.Throw<ArgumentNullException>(() => default(JSRuntimeInvocationHandler)!.VerifyInvoke("", 42));
+			Should.Throw<ArgumentNullException>(() => default(JSRuntimeInvocationHandler)!.VerifyInvoke(string.Empty));
+			Should.Throw<ArgumentNullException>(() => default(JSRuntimeInvocationHandler)!.VerifyInvoke(string.Empty, 42));
 		}
 
 		[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke throws invokeCount is less than 1")]
@@ -187,7 +186,7 @@ namespace Bunit.Asserting
 			var sut = CreateSut();
 			var handler = sut.SetupVoid().SetVoidResult();
 
-			Should.Throw<ArgumentException>(() => handler.VerifyInvoke("", 0));
+			Should.Throw<ArgumentException>(() => handler.VerifyInvoke(string.Empty, 0));
 		}
 
 		[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke throws JSInvokeCountExpectedException when " +
@@ -221,6 +220,5 @@ namespace Bunit.Asserting
 			var invocation = handler.VerifyInvoke(identifier);
 			invocation.ShouldBe(handler.Invocations[identifier][0]);
 		}
-
 	}
 }

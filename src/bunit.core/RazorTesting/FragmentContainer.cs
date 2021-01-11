@@ -11,7 +11,7 @@ namespace Bunit.RazorTesting
 	public sealed class FragmentContainer : ComponentBase
 	{
 		/// <summary>
-		/// The content to wrap.
+		/// Gets or sets the content to wrap.
 		/// </summary>
 		[Parameter] public RenderFragment? ChildContent { get; set; }
 

@@ -16,8 +16,8 @@ namespace Bunit
 	/// </summary>
 	public static class TriggerEventDispatchExtensions
 	{
-		private static readonly HashSet<string> NonBubblingEvents = new() { "onabort", "onblur", "onchange", "onerror", "onfocus", "onload", "onloadend", "onloadstart", "onmouseenter", "onmouseleave", "onprogress", "onreset", "onscroll", "onsubmit", "onunload", "ontoggle", "ondomnodeinsertedintodocument", "ondomnoderemovedfromdocument" };
-		private static readonly HashSet<string> DisabledEventNames = new() { "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup" };
+		private static readonly HashSet<string> NonBubblingEvents = new(StringComparer.Ordinal) { "onabort", "onblur", "onchange", "onerror", "onfocus", "onload", "onloadend", "onloadstart", "onmouseenter", "onmouseleave", "onprogress", "onreset", "onscroll", "onsubmit", "onunload", "ontoggle", "ondomnodeinsertedintodocument", "ondomnoderemovedfromdocument" };
+		private static readonly HashSet<string> DisabledEventNames = new(StringComparer.Ordinal) { "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup" };
 
 		/// <summary>
 		/// Raises the event <paramref name="eventName"/> on the element <paramref name="element"/>
@@ -25,8 +25,8 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventName">The name of the event to raise (using on-form, e.g. <c>onclick</c>).</param>
-		/// <param name="eventArgs">The event arguments to pass to the event handler</param>
-		/// <returns></returns>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
+		/// <returns>A <see cref="Task"/> that completes when the render caused by the triggering of the event finishes.</returns>
 		public static Task TriggerEventAsync(this IElement element, string eventName, EventArgs eventArgs)
 		{
 			if (element is null)
@@ -41,8 +41,8 @@ namespace Bunit
 
 			if (isNonBubblingEvent)
 				return TriggerNonBubblingEventAsync(renderer, element.Unwrap(), eventName, eventArgs);
-			else
-				return TriggerBubblingEventAsync(renderer, element.Unwrap(), eventName, eventArgs);
+
+			return TriggerBubblingEventAsync(renderer, element.Unwrap(), eventName, eventArgs);
 		}
 
 		private static Task TriggerBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
@@ -76,8 +76,8 @@ namespace Bunit
 
 			if (element.TryGetEventId(eventAttrName, out var id))
 				return renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs);
-			else
-				throw new MissingEventHandlerException(element, eventName);
+
+			throw new MissingEventHandlerException(element, eventName);
 		}
 
 		private static bool EventIsDisabled(this IElement element, string eventName)

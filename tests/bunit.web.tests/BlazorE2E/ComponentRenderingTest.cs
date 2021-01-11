@@ -14,7 +14,7 @@ namespace Bunit.BlazorE2E
 	/// This tests are based on the tests from the following AspNetCore tests class.
 	/// The aim is to only modify the original tests to not use Selenium, and instead use the
 	/// <see cref="TextContext" />.
-	/// https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs
+	/// https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs.
 	/// </summary>
 	public class ComponentRenderingTest : TestContext
 	{
@@ -97,8 +97,7 @@ namespace Bunit.BlazorE2E
 			inputElement.KeyPress("b");
 			liElements.ShouldAllBe(
 				li => Assert.Equal("a", li.TextContent),
-				li => Assert.Equal("b", li.TextContent)
-			);
+				li => Assert.Equal("b", li.TextContent));
 		}
 
 		[Fact]
@@ -220,20 +219,24 @@ namespace Bunit.BlazorE2E
 
 			// Click to add/remove some child components
 			addButton.Click();
-			Assert.Collection(cut.FindAll("p .message"),
+			Assert.Collection(
+				cut.FindAll("p .message"),
 				msg => Assert.Equal("Child 1", msg.TextContent));
 
 			addButton.Click();
-			Assert.Collection(cut.FindAll("p .message"),
+			Assert.Collection(
+				cut.FindAll("p .message"),
 				msg => Assert.Equal("Child 1", msg.TextContent),
 				msg => Assert.Equal("Child 2", msg.TextContent));
 
 			removeButton.Click();
-			Assert.Collection(cut.FindAll("p .message"),
+			Assert.Collection(
+				cut.FindAll("p .message"),
 				msg => Assert.Equal("Child 1", msg.TextContent));
 
 			addButton.Click();
-			Assert.Collection(cut.FindAll("p .message"),
+			Assert.Collection(
+				cut.FindAll("p .message"),
 				msg => Assert.Equal("Child 1", msg.TextContent),
 				msg => Assert.Equal("Child 3", msg.TextContent));
 		}
@@ -284,42 +287,11 @@ namespace Bunit.BlazorE2E
 			// The component is able to compile and output these type names only because
 			// of the _ViewImports.cshtml files at the same and ancestor levels
 			var cut = RenderComponent<ComponentUsingImports>();
-			Assert.Collection(cut.FindAll("p"),
+			Assert.Collection(
+				cut.FindAll("p"),
 				elem => Assert.Equal(typeof(Complex).FullName, elem.TextContent),
 				elem => Assert.Equal(typeof(AssemblyHashAlgorithm).FullName, elem.TextContent));
 		}
-
-		// Test removed since doesn't make sense in this context.
-		//[Fact]
-		//public void CanUseComponentAndStaticContentFromExternalNuGetPackage()
-		//{
-		//    var appElement = Browser.MountTestComponent<ExternalContentPackage>();
-
-		//    // NuGet packages can use JS interop features to provide
-		//    // .NET code access to browser APIs
-		//    var showPromptButton = appElement.FindElements(By.TagName("button")).First();
-		//    showPromptButton.Click();
-
-		//    var modal = new WebDriverWait(Browser, TimeSpan.FromSeconds(3))
-		//        .Until(SwitchToAlert);
-		//    modal.SendKeys("Some value from test");
-		//    modal.Accept();
-		//    var promptResult = appElement.FindElement(By.TagName("strong"));
-		//    Browser.Equal("Some value from test", () => promptResult.Text);
-
-		//    // NuGet packages can also embed entire components (themselves
-		//    // authored as Razor files), including static content. The CSS value
-		//    // here is in a .css file, so if it's correct we know that static content
-		//    // file was loaded.
-		//    var specialStyleDiv = appElement.FindElement(By.ClassName("special-style"));
-		//    Assert.Equal("50px", specialStyleDiv.GetCssValue("padding"));
-
-		//    // The external components are fully functional, not just static HTML
-		//    var externalComponentButton = specialStyleDiv.FindElement(By.TagName("button"));
-		//    Assert.Equal("Click me", externalComponentButton.Text);
-		//    externalComponentButton.Click();
-		//    Browser.Equal("It works", () => externalComponentButton.Text);
-		//}
 
 		[Fact]
 		public void CanRenderSvgWithCorrectNamespace()
@@ -374,7 +346,7 @@ namespace Bunit.BlazorE2E
 
 			var cut = RenderComponent<ElementRefComponent>();
 			var inputElement = cut.Find("#capturedElement");
-			var refId = inputElement.GetAttribute(Htmlizer.ELEMENT_REFERENCE_ATTR_NAME);
+			var refId = inputElement.GetAttribute(Htmlizer.ElementReferenceAttrName);
 			var buttonElement = cut.Find("button");
 
 			buttonElement.Click();
@@ -389,26 +361,26 @@ namespace Bunit.BlazorE2E
 		{
 			// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJSRuntime
 			//       The original test code is here:
-			//var cut = RenderComponent<ElementRefComponent>();
-			//var buttonElement = cut.Find("button");
-			//var checkbox = cut.Find("input[type=checkbox]");
-
-			//// We're going to remove the input. But first, put in some contents
-			//// so we can observe it's not the same instance later
-			//cut.Find("#capturedElement").SendKeys("some text");
-
-			//// Remove the captured element
-			//checkbox.Click();
-			//Browser.Empty(() => cut.FindAll("#capturedElement"));
-
-			//// Re-add it; observe it starts empty again
-			//checkbox.Click();
-			//var inputElement = cut.Find("#capturedElement");
-			//Assert.Equal(string.Empty, inputElement.GetAttribute("value"));
-
-			//// See that the capture variable was automatically updated to reference the new instance
-			//buttonElement.Click();
-			//Assert.Equal("Clicks: 1", () => inputElement.GetAttribute("value"));
+			// var cut = RenderComponent<ElementRefComponent>();
+			// var buttonElement = cut.Find("button");
+			// var checkbox = cut.Find("input[type=checkbox]");
+			//
+			// // We're going to remove the input. But first, put in some contents
+			// // so we can observe it's not the same instance later
+			// cut.Find("#capturedElement").SendKeys("some text");
+			//
+			// // Remove the captured element
+			// checkbox.Click();
+			// Browser.Empty(() => cut.FindAll("#capturedElement"));
+			//
+			// // Re-add it; observe it starts empty again
+			// checkbox.Click();
+			// var inputElement = cut.Find("#capturedElement");
+			// Assert.Equal(string.Empty, inputElement.GetAttribute("value"));
+			//
+			// // See that the capture variable was automatically updated to reference the new instance
+			// buttonElement.Click();
+			// Assert.Equal("Clicks: 1", () => inputElement.GetAttribute("value"));
 
 			var cut = RenderComponent<ElementRefComponent>();
 			var buttonElement = cut.Find("button");
@@ -425,7 +397,7 @@ namespace Bunit.BlazorE2E
 			// Re-add it; observe it starts empty again
 			checkbox.Change(true);
 			var inputElement = cut.Find("#capturedElement");
-			var refId = inputElement.GetAttribute(Htmlizer.ELEMENT_REFERENCE_ATTR_NAME);
+			var refId = inputElement.GetAttribute(Htmlizer.ElementReferenceAttrName);
 
 			// See that the capture variable was automatically updated to reference the new instance
 			buttonElement.Click();
@@ -466,13 +438,13 @@ namespace Bunit.BlazorE2E
 			Assert.Equal("Current count: 0", currentCountText.TextContent);
 		}
 
-		// Test depends on javascript changing the DOM, thus doesnt make sense in this context. 
-		//[Fact]
-		//public void CanUseJSInteropForRefElementsDuringOnAfterRender()
-		//{
-		//    var cut = RenderComponent<AfterRenderInteropComponent>();
-		//    Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));
-		//}
+		// Test depends on javascript changing the DOM, thus doesnt make sense in this context.
+		// [Fact]
+		// public void CanUseJSInteropForRefElementsDuringOnAfterRender()
+		// {
+		//     var cut = RenderComponent<AfterRenderInteropComponent>();
+		//     Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));
+		// }
 
 		[Fact]
 		public void CanRenderMarkupBlocks()
@@ -503,7 +475,8 @@ namespace Bunit.BlazorE2E
 
 			// code block template (component parameter)
 			var element = cut.Find("div#codeblocktemplate ol");
-			Assert.Collection(element.QuerySelectorAll("li"),
+			Assert.Collection(
+				element.QuerySelectorAll("li"),
 				e => Assert.Equal("#1 - a", e.TextContent),
 				e => Assert.Equal("#2 - b", e.TextContent),
 				e => Assert.Equal("#3 - c", e.TextContent));
@@ -528,14 +501,14 @@ namespace Bunit.BlazorE2E
 			var toggle = cut.Find("#toggle");
 			toggle.Change(true);
 
-			Assert.Collection(tfootElements,
+			Assert.Collection(
+				tfootElements,
 				e => Assert.Equal("The", e.TextContent),
-				e => Assert.Equal("", e.TextContent),
-				e => Assert.Equal("End", e.TextContent)
-			);
+				e => Assert.Equal(string.Empty, e.TextContent),
+				e => Assert.Equal("End", e.TextContent));
 		}
 
-		[Fact()]
+		[Fact]
 		public void CanAcceptSimultaneousRenderRequests()
 		{
 			var expectedOutput = string.Join(
@@ -546,14 +519,13 @@ namespace Bunit.BlazorE2E
 
 			// It's supposed to pause the rendering for this long. The WaitAssert below
 			// allows it to take up extra time if needed.
-			//await Task.Delay(1000);
+			// await Task.Delay(1000);
 
 			var outputElement = cut.Find("#concurrent-render-output");
 
 			cut.WaitForAssertion(
 				() => Assert.Equal(expectedOutput, outputElement.TextContent.Trim()),
-				timeout: TimeSpan.FromMilliseconds(2000)
-			);
+				timeout: TimeSpan.FromMilliseconds(2000));
 		}
 
 		[Fact]
@@ -586,29 +558,30 @@ namespace Bunit.BlazorE2E
 
 			cut.Find("#run-async-with-dispatch").Click();
 
-			cut.WaitForAssertion(() =>
-			{
-				// In some cases, the original assert wont work, since the sync context might not be idle,
-				// which results in this order: First Third Second Fourth Fifth
-				// Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim())
+			cut.WaitForAssertion(
+				() =>
+				{
+					// In some cases, the original assert wont work, since the sync context might not be idle,
+					// which results in this order: First Third Second Fourth Fifth
+					Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim());
 
-				Assert.Contains("First", result.TextContent, StringComparison.Ordinal);
-				Assert.Contains("Second", result.TextContent, StringComparison.Ordinal);
-				Assert.Contains("Third", result.TextContent, StringComparison.Ordinal);
-				Assert.Contains("Fourth", result.TextContent, StringComparison.Ordinal);
-				Assert.Contains("Fifth", result.TextContent, StringComparison.Ordinal);
-
-			}, timeout: TimeSpan.FromSeconds(2));
+					Assert.Contains("First", result.TextContent, StringComparison.Ordinal);
+					Assert.Contains("Second", result.TextContent, StringComparison.Ordinal);
+					Assert.Contains("Third", result.TextContent, StringComparison.Ordinal);
+					Assert.Contains("Fourth", result.TextContent, StringComparison.Ordinal);
+					Assert.Contains("Fifth", result.TextContent, StringComparison.Ordinal);
+				},
+				timeout: TimeSpan.FromSeconds(2));
 		}
 
 		// Test removed since it does not have any value in this context.
-		//[Fact]
-		//public void CanPerformInteropImmediatelyOnComponentInsertion()
-		//{
-		//    var cut = RenderComponent<InteropOnInitializationComponent>();
-		//    Assert.Equal("Hello from interop call", () => cut.Find("#val-get-by-interop").TextContent);
-		//    Assert.Equal("Hello from interop call", () => cut.Find("#val-set-by-interop").GetAttribute("value"));
-		//}
+		// [Fact]
+		// public void CanPerformInteropImmediatelyOnComponentInsertion()
+		// {
+		//     var cut = RenderComponent<InteropOnInitializationComponent>();
+		//     Assert.Equal("Hello from interop call", () => cut.Find("#val-get-by-interop").TextContent);
+		//     Assert.Equal("Hello from interop call", () => cut.Find("#val-set-by-interop").GetAttribute("value"));
+		// }
 
 		[Fact]
 		public void CanUseAddMultipleAttributes()
@@ -647,6 +620,5 @@ namespace Bunit.BlazorE2E
 			Assert.Equal(2, completeLIs.Count);
 			Assert.True(completeLIs[0].QuerySelector(".item-isdone").HasAttribute("checked"));
 		}
-
 	}
 }

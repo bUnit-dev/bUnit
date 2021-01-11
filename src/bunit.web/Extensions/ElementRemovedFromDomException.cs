@@ -10,7 +10,9 @@ namespace Bunit
 	[Serializable]
 	public sealed class ElementRemovedFromDomException : ElementNotFoundException
 	{
-		/// <inheritdoc/>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ElementRemovedFromDomException"/> class.
+		/// </summary>
 		public ElementRemovedFromDomException(string cssSelector)
 			: base($"The DOM element you tried to access, which you previously found with the CSS selector \"{cssSelector}\", is no longer available in the DOM tree. It has probably been removed after a render.", cssSelector)
 		{

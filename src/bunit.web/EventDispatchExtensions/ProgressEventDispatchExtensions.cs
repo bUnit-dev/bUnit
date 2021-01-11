@@ -33,8 +33,8 @@ namespace Bunit
 		/// Raises the <c>@onloadstart</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task LoadStartAsync(this IElement element, ProgressEventArgs eventArgs) => element.TriggerEventAsync("onloadstart", eventArgs);
 
@@ -62,8 +62,8 @@ namespace Bunit
 		/// Raises the <c>@ontimeout</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task TimeoutAsync(this IElement element, ProgressEventArgs eventArgs) => element.TriggerEventAsync("ontimeout", eventArgs);
 
@@ -91,8 +91,8 @@ namespace Bunit
 		/// Raises the <c>@onabort</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task AbortAsync(this IElement element, ProgressEventArgs eventArgs) => element.TriggerEventAsync("onabort", eventArgs);
 
@@ -120,8 +120,8 @@ namespace Bunit
 		/// Raises the <c>@onload</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task LoadAsync(this IElement element, ProgressEventArgs eventArgs) => element.TriggerEventAsync("onload", eventArgs);
 
@@ -149,8 +149,8 @@ namespace Bunit
 		/// Raises the <c>@onloadend</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task LoadEndAsync(this IElement element, ProgressEventArgs eventArgs) => element.TriggerEventAsync("onloadend", eventArgs);
 
@@ -178,8 +178,8 @@ namespace Bunit
 		/// Raises the <c>@onprogress</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task ProgressAsync(this IElement element, ProgressEventArgs eventArgs) => element.TriggerEventAsync("onprogress", eventArgs);
 
@@ -207,8 +207,8 @@ namespace Bunit
 		/// Raises the <c>@onerror</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task ErrorAsync(this IElement element, ProgressEventArgs eventArgs) => element.TriggerEventAsync("onerror", eventArgs);
 	}

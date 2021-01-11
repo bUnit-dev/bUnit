@@ -9,9 +9,11 @@ namespace Bunit
 {
 	public partial class TestServiceProviderTest
 	{
-		class DummyService { }
-		class AnotherDummyService { }
-		class OneMoreDummyService { }
+		private class DummyService { }
+
+		private class AnotherDummyService { }
+
+		private class OneMoreDummyService { }
 
 		[Fact(DisplayName = "Provider initialized without a service collection has zero services by default")]
 		public void Test001()

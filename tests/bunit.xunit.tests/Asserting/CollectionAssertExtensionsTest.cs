@@ -102,8 +102,7 @@ namespace Bunit
 
 			collection.ShouldAllBe(
 				x => x.ShouldBe(collection[0]),
-				x => x.ShouldBe(collection[1])
-			);
+				x => x.ShouldBe(collection[1]));
 		}
 
 		[Fact(DisplayName = "ShouldAllBe for Action<T, int> passes elements to " +
@@ -115,9 +114,7 @@ namespace Bunit
 
 			collection.ShouldAllBe(
 				(x, i) => { x.ShouldBe(collection[0]); i.ShouldBe(0); },
-				(x, i) => { x.ShouldBe(collection[1]); i.ShouldBe(1); }
-			);
+				(x, i) => { x.ShouldBe(collection[1]); i.ShouldBe(1); });
 		}
-
 	}
 }

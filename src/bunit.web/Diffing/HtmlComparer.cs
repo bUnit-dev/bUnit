@@ -13,7 +13,7 @@ namespace Bunit.Diffing
 	/// </summary>
 	public sealed class HtmlComparer
 	{
-		private readonly HtmlDiffer _differenceEngine;
+		private readonly HtmlDiffer differenceEngine;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="HtmlComparer"/> class.
@@ -23,7 +23,7 @@ namespace Bunit.Diffing
 			var strategy = new DiffingStrategyPipeline();
 			strategy.AddDefaultOptions();
 			strategy.AddFilter(BlazorDiffingHelpers.BlazorAttributeFilter, StrategyType.Specialized);
-			_differenceEngine = new HtmlDiffer(strategy);
+			differenceEngine = new HtmlDiffer(strategy);
 		}
 
 		/// <summary>
@@ -31,7 +31,7 @@ namespace Bunit.Diffing
 		/// </summary>
 		public IEnumerable<IDiff> Compare(INode controlHtml, INode testHtml)
 		{
-			return _differenceEngine.Compare(controlHtml.Unwrap(), testHtml.Unwrap());
+			return differenceEngine.Compare(controlHtml.Unwrap(), testHtml.Unwrap());
 		}
 
 		/// <summary>
@@ -39,7 +39,7 @@ namespace Bunit.Diffing
 		/// </summary>
 		public IEnumerable<IDiff> Compare(IEnumerable<INode> controlHtml, IEnumerable<INode> testHtml)
 		{
-			return _differenceEngine.Compare(controlHtml.Unwrap(), testHtml.Unwrap());
+			return differenceEngine.Compare(controlHtml.Unwrap(), testHtml.Unwrap());
 		}
 	}
 }

@@ -28,13 +28,11 @@ namespace Bunit
 
 			RenderTree.ShouldAllBe(
 				x => x.ComponentType.ShouldBe(typeof(LayoutComponent)),
-				x => x.ComponentType.ShouldBe(typeof(CascadingValue<string>))
-			);
+				x => x.ComponentType.ShouldBe(typeof(CascadingValue<string>)));
 
 			((IEnumerable)RenderTree).OfType<RootRenderTreeRegistration>().ShouldAllBe(
 				x => x.ComponentType.ShouldBe(typeof(LayoutComponent)),
-				x => x.ComponentType.ShouldBe(typeof(CascadingValue<string>))
-			);
+				x => x.ComponentType.ShouldBe(typeof(CascadingValue<string>)));
 		}
 
 		[Fact(DisplayName = "RenderTree.Add<T> throws when T doesn't have a ChildContent or Body parameter")]
@@ -98,8 +96,7 @@ namespace Bunit
 			RenderTree.Add<CascadingValue<int>>(parameters => parameters.Add(p => p.Value, 42));
 
 			var cut = RenderComponent<CascadingValue<string>>(parameters => parameters
-				.Add(p => p.Value, "FOO")
-			);
+				.Add(p => p.Value, "FOO"));
 
 			cut.Instance.Value.ShouldBe("FOO");
 		}
@@ -151,8 +148,7 @@ namespace Bunit
 
 			RenderTree.ShouldAllBe(
 				x => x.ComponentType.ShouldBe(typeof(CascadingValue<string>)),
-				x => x.ComponentType.ShouldBe(typeof(CascadingValue<int>))
-			);
+				x => x.ComponentType.ShouldBe(typeof(CascadingValue<int>)));
 		}
 
 		private class LayoutComponent : LayoutComponentBase

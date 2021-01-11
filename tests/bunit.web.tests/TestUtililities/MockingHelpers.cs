@@ -12,8 +12,7 @@ namespace Bunit.TestUtililities
 	{
 		private static readonly MethodInfo MockOfInfo = typeof(Mock)
 			.GetMethods()
-			.Where(x => x.Name == nameof(Mock.Of))
-			.First(x => x.GetParameters().Length == 0);
+			.First(x => string.Equals(x.Name, nameof(Mock.Of), StringComparison.Ordinal) && x.GetParameters().Length == 0);
 
 		private static readonly Type DelegateType = typeof(MulticastDelegate);
 		private static readonly Type StringType = typeof(string);
@@ -37,14 +36,13 @@ namespace Bunit.TestUtililities
 
 				return result;
 			}
-			else if (type.Equals(StringType))
+
+			if (type.Equals(StringType))
 			{
 				return string.Empty;
 			}
-			else
-			{
-				throw new NotSupportedException($"Cannot create an mock of {type.FullName}. Type to mock must be an interface, a delegate, or a non-sealed, non-static class.");
-			}
+
+			throw new NotSupportedException($"Cannot create an mock of {type.FullName}. Type to mock must be an interface, a delegate, or a non-sealed, non-static class.");
 		}
 
 		/// <summary>

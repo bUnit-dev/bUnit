@@ -7,7 +7,7 @@ namespace Bunit.Rendering
 	/// <inheritdoc/>
 	internal class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent> where TComponent : IComponent
 	{
-		private TComponent _instance = default!;
+		private TComponent instance = default!;
 
 		/// <inheritdoc/>
 		public TComponent Instance
@@ -15,15 +15,15 @@ namespace Bunit.Rendering
 			get
 			{
 				EnsureComponentNotDisposed();
-				return _instance ?? throw new InvalidOperationException("Component has not rendered yet...");
+				return instance ?? throw new InvalidOperationException("Component has not rendered yet...");
 			}
 		}
 
 		internal RenderedComponent(int componentId, IServiceProvider services) : base(componentId, services) { }
 
-		internal RenderedComponent(int componentId, TComponent instance, RenderTreeFrameCollection componentFrames, IServiceProvider services) : base(componentId, services)
+		internal RenderedComponent(int componentId, TComponent instance, RenderTreeFrameDictionary componentFrames, IServiceProvider services) : base(componentId, services)
 		{
-			_instance = instance;
+			this.instance = instance;
 			RenderCount++;
 			UpdateMarkup(componentFrames);
 		}
@@ -31,8 +31,8 @@ namespace Bunit.Rendering
 		protected override void OnRender(RenderEvent renderEvent)
 		{
 			// checks if this is the first render, and if it is
-			// tries to find the TCompoent in the render event			
-			if (_instance is null)
+			// tries to find the TCompoent in the render event
+			if (instance is null)
 			{
 				SetComponentAndID(renderEvent);
 			}
@@ -42,7 +42,7 @@ namespace Bunit.Rendering
 		{
 			if (TryFindComponent(renderEvent.Frames, ComponentId, out var id, out var component))
 			{
-				_instance = component;
+				instance = component;
 				ComponentId = id;
 			}
 			else
@@ -51,7 +51,7 @@ namespace Bunit.Rendering
 			}
 		}
 
-		private bool TryFindComponent(RenderTreeFrameCollection framesCollection, int parentComponentId, out int componentId, out TComponent component)
+		private bool TryFindComponent(RenderTreeFrameDictionary framesCollection, int parentComponentId, out int componentId, out TComponent component)
 		{
 			var result = false;
 			componentId = -1;

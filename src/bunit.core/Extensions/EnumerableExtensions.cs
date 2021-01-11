@@ -5,7 +5,7 @@ using System.Linq;
 namespace Bunit.Extensions
 {
 	/// <summary>
-	/// Helper methods for working with <see cref="IEnumerable{T}"/>
+	/// Helper methods for working with <see cref="IEnumerable{T}"/>.
 	/// </summary>
 	public static class EnumerableExtensions
 	{

@@ -118,11 +118,12 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			var authContext = this.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser");
+
 			// act
 			var cut = RenderComponent<SimpleAuthViewWithPolicy>();
 
 			// assert
-			cut.MarkupMatches("");
+			cut.MarkupMatches(string.Empty);
 		}
 
 		[Fact(DisplayName = "AuthorizeView with wrong policy set")]
@@ -136,7 +137,7 @@ namespace Bunit.TestDoubles.Authorization
 			var cut = RenderComponent<SimpleAuthViewWithPolicy>();
 
 			// assert
-			cut.MarkupMatches("");
+			cut.MarkupMatches(string.Empty);
 		}
 
 		[Fact(DisplayName = "SimpleAuthViewWithRole with set role")]
@@ -164,7 +165,7 @@ namespace Bunit.TestDoubles.Authorization
 			var cut = RenderComponent<SimpleAuthViewWithRole>();
 
 			// assert
-			cut.MarkupMatches("");
+			cut.MarkupMatches(string.Empty);
 		}
 
 		[Fact(DisplayName = "AuthorizeView with wrong role set")]
@@ -178,7 +179,7 @@ namespace Bunit.TestDoubles.Authorization
 			var cut = RenderComponent<SimpleAuthViewWithRole>();
 
 			// assert
-			cut.MarkupMatches("");
+			cut.MarkupMatches(string.Empty);
 		}
 
 		[Fact(DisplayName = "AuthorizeView in authorizing state")]
@@ -214,7 +215,6 @@ namespace Bunit.TestDoubles.Authorization
 								<div>Email: user@test.com</div>
 								<div>Id: {userId}</div>");
 		}
-
 
 		[Fact(DisplayName = "AuthorizeView without defined claims")]
 		public void Test014()

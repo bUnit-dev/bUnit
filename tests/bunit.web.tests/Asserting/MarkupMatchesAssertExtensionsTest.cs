@@ -19,7 +19,6 @@ namespace Bunit.Asserting
 		private INode ActualNode => ActualNodeList[0];
 		private INode ExpectedNode => ExpectedNodeList[0];
 
-
 		[Fact(DisplayName = "MarkupMatches with null arguments throws ArgumentNullException")]
 		public void Test001()
 		{
@@ -75,7 +74,6 @@ namespace Bunit.Asserting
 		[Fact(DisplayName = "MarkupMatches(INodeList, INodeList) correctly diffs markup")]
 		public void Test005()
 			=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedNodeList));
-
 
 		[Fact(DisplayName = "MarkupMatches(INodeList, INode) correctly diffs markup")]
 		public void Test006()

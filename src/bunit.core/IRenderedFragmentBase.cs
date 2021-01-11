@@ -15,7 +15,7 @@ namespace Bunit
 		int RenderCount { get; }
 
 		/// <summary>
-		/// Gets whether the rendered component or fragment has been disposed by the <see cref="ITestRenderer"/>.
+		/// Gets a value indicating whether the rendered component or fragment has been disposed by the <see cref="ITestRenderer"/>.
 		/// </summary>
 		bool IsDisposed { get; }
 
@@ -38,6 +38,6 @@ namespace Bunit
 		/// <summary>
 		/// Adds or removes an event handler that will be triggered after each render of this <see cref="IRenderedFragmentBase"/>.
 		/// </summary>
-		event Action? OnAfterRender;
+		event EventHandler OnAfterRender;
 	}
 }

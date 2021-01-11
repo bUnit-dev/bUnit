@@ -3,7 +3,7 @@ using AngleSharp.Diffing.Core;
 namespace Bunit.Diffing
 {
 	/// <summary>
-	/// Blazor Diffing Helpers
+	/// Blazor Diffing Helpers.
 	/// </summary>
 	public static class BlazorDiffingHelpers
 	{

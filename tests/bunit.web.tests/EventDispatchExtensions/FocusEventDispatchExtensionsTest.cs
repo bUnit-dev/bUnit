@@ -4,7 +4,6 @@ using Xunit;
 
 namespace Bunit
 {
-
 	public class FocusEventDispatchExtensionsTest : EventDispatchExtensionsTest<FocusEventArgs>
 	{
 		protected override string ElementName => "p";
@@ -15,12 +14,10 @@ namespace Bunit
 		{
 			var expected = new FocusEventArgs()
 			{
-				Type = "SOME TYPE"
+				Type = "SOME TYPE",
 			};
 
 			VerifyEventRaisesCorrectly(helper, expected);
 		}
 	}
-
 }
-

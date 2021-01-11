@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
@@ -15,17 +14,13 @@ namespace Bunit.Rendering.Internal
 		[InlineData(true, true)]
 		public void Test002(bool stopPropagation, bool preventDefault)
 		{
-			//Arrange
 			var component = RenderComponent<Htmlizer01Component>(parameters => parameters
 				.Add(p => p.OnClick, (MouseEventArgs e) => { })
 				.Add(p => p.OnClickStopPropagation, stopPropagation)
-				.Add(p => p.OnClickPreventDefault, preventDefault)
-			);
+				.Add(p => p.OnClickPreventDefault, preventDefault));
 
-			//Act
 			var button = component.Find("button");
 
-			//Assert
 			button.HasAttribute(Htmlizer.ToBlazorAttribute("onclick:stopPropagation")).ShouldBe(stopPropagation);
 			button.HasAttribute(Htmlizer.ToBlazorAttribute("onclick:preventDefault")).ShouldBe(preventDefault);
 		}

@@ -34,6 +34,7 @@ namespace Bunit.RazorTesting
 
 			return new TestCollection(TestAssembly(assembly), definition, displayName);
 		}
+
 		public static TestAssembly TestAssembly(Assembly? assembly = null, string? configFileName = null)
 		{
 			return new TestAssembly(Reflector.Wrap(assembly ?? typeof(Mocks).GetTypeInfo().Assembly), configFileName);

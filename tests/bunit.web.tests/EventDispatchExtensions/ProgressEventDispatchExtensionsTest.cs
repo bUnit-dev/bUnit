@@ -17,7 +17,7 @@ namespace Bunit
 				LengthComputable = true,
 				Loaded = 42L,
 				Total = 1337L,
-				Type = "FILE"
+				Type = "FILE",
 			};
 
 			VerifyEventRaisesCorrectly(helper, expected);

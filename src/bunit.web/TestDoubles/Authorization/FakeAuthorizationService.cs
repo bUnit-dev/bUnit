@@ -16,17 +16,17 @@ namespace Bunit.TestDoubles
 	/// </summary>
 	public class FakeAuthorizationService : IAuthorizationService
 	{
-		private AuthorizationState _currentState;
-		private IEnumerable<string>? _supportedPolicies;
-		private IEnumerable<string> _supportedRoles = Array.Empty<string>();
+		private AuthorizationState currentState;
+		private IEnumerable<string>? supportedPolicies;
+		private IEnumerable<string> supportedRoles = Array.Empty<string>();
 
 		/// <summary>
-		/// Constructor that initializes the authorization state of the service. 
+		/// Initializes a new instance of the <see cref="FakeAuthorizationService"/> class.
 		/// </summary>
 		/// <param name="state">Initial authorization state.</param>
 		public FakeAuthorizationService(AuthorizationState state = AuthorizationState.Authorized)
 		{
-			_currentState = state;
+			currentState = state;
 		}
 
 		/// <summary>
@@ -35,7 +35,7 @@ namespace Bunit.TestDoubles
 		/// <param name="state">New state to set.</param>
 		public void SetAuthorizationState(AuthorizationState state)
 		{
-			_currentState = state;
+			currentState = state;
 		}
 
 		/// <summary>
@@ -44,7 +44,7 @@ namespace Bunit.TestDoubles
 		/// <param name="policies">List of supported policies.</param>
 		public void SetPolicies(IEnumerable<string> policies)
 		{
-			_supportedPolicies = policies;
+			supportedPolicies = policies;
 		}
 
 		/// <summary>
@@ -53,7 +53,7 @@ namespace Bunit.TestDoubles
 		/// <param name="roles">List of supported roles.</param>
 		public void SetRoles(IEnumerable<string> roles)
 		{
-			_supportedRoles = roles ?? Array.Empty<string>();
+			supportedRoles = roles ?? Array.Empty<string>();
 		}
 
 		/// <summary>
@@ -72,13 +72,13 @@ namespace Bunit.TestDoubles
 
 			if (requirements.All(p => p is DenyAnonymousAuthorizationRequirement))
 			{
-				result = (_currentState == AuthorizationState.Authorized) ? AuthorizationResult.Success() : AuthorizationResult.Failed();
+				result = (currentState == AuthorizationState.Authorized) ? AuthorizationResult.Success() : AuthorizationResult.Failed();
 			}
 			else if (requirements.All(p => p is RolesAuthorizationRequirement))
 			{
 				result = VerifyRequiredRoles(requirements);
 			}
-			else if (_supportedPolicies is not null)
+			else if (supportedPolicies is not null)
 			{
 				result = VerifyRequiredPolicies(requirements);
 			}
@@ -101,7 +101,7 @@ namespace Bunit.TestDoubles
 		{
 			var requirements = new List<IAuthorizationRequirement>
 			{
-				new TestPolicyRequirement { PolicyName = policyName }
+				new TestPolicyRequirement { PolicyName = policyName },
 			};
 
 			return AuthorizeAsync(user, resource, requirements);
@@ -109,14 +109,14 @@ namespace Bunit.TestDoubles
 
 		private AuthorizationResult VerifyRequiredPolicies(IEnumerable<IAuthorizationRequirement> requirements)
 		{
-			if (_supportedPolicies.IsNullOrEmpty() || requirements.IsNullOrEmpty())
+			if (supportedPolicies.IsNullOrEmpty() || requirements.IsNullOrEmpty())
 			{
 				return AuthorizationResult.Failed();
 			}
 
 			foreach (IAuthorizationRequirement req in requirements)
 			{
-				if (req is TestPolicyRequirement testReq && _supportedPolicies.Contains(testReq.PolicyName))
+				if (req is TestPolicyRequirement testReq && supportedPolicies.Contains(testReq.PolicyName, StringComparer.Ordinal))
 					return AuthorizationResult.Success();
 			}
 
@@ -130,7 +130,7 @@ namespace Bunit.TestDoubles
 			{
 				if (req is RolesAuthorizationRequirement testReq)
 				{
-					IEnumerable<string> rolesFound = testReq.AllowedRoles.Intersect(_supportedRoles);
+					IEnumerable<string> rolesFound = testReq.AllowedRoles.Intersect(supportedRoles, StringComparer.Ordinal);
 					if (rolesFound.Any())
 					{
 						result = AuthorizationResult.Success();

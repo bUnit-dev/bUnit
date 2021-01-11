@@ -13,9 +13,8 @@ namespace Bunit.JSInterop.ComponentSupport
 	{
 		public static readonly IEnumerable<object[]> ItemsInCollection = new object[][]
 		{
-			new object[]{0}, new object[]{7}, new object[]{30}, new object[]{60}, new object[]{100}, new object[]{300}, new object[]{500}
+			new object[] { 0 }, new object[] { 7 }, new object[] { 30 }, new object[] { 60 }, new object[] { 100 }, new object[] { 300 }, new object[] { 500 },
 		};
-
 
 		[Theory(DisplayName = "Can render component using <Virtualize Items> with ChildContent")]
 		[MemberData(nameof(ItemsInCollection))]
@@ -23,8 +22,7 @@ namespace Bunit.JSInterop.ComponentSupport
 		{
 			var cut = RenderComponent<Virtualize<string>>(ps => ps
 				.Add(p => p.Items, CreateItems(itemsInDataSource))
-				.Add(p => p.ChildContent, item => $"<p>{item}</p>")
-			);
+				.Add(p => p.ChildContent, item => $"<p>{item}</p>"));
 
 			cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
 		}
@@ -35,8 +33,7 @@ namespace Bunit.JSInterop.ComponentSupport
 		{
 			var cut = RenderComponent<Virtualize<string>>(ps => ps
 				.Add(p => p.Items, CreateItems(itemsInDataSource))
-				.Add(p => p.ItemContent, item => $"<p>{item}</p>")
-			);
+				.Add(p => p.ItemContent, item => $"<p>{item}</p>"));
 
 			cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
 		}
@@ -47,8 +44,7 @@ namespace Bunit.JSInterop.ComponentSupport
 		{
 			var cut = RenderComponent<Virtualize<string>>(ps => ps
 				.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
-				.Add(p => p.ChildContent, item => $"<p>{item}</p>")
-			);
+				.Add(p => p.ChildContent, item => $"<p>{item}</p>"));
 
 			cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
 		}
@@ -59,8 +55,7 @@ namespace Bunit.JSInterop.ComponentSupport
 		{
 			var cut = RenderComponent<Virtualize<string>>(ps => ps
 				.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
-				.Add(p => p.ItemContent, item => $"<p>{item}</p>")
-			);
+				.Add(p => p.ItemContent, item => $"<p>{item}</p>"));
 
 			cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
 		}
@@ -76,7 +71,6 @@ namespace Bunit.JSInterop.ComponentSupport
 				new object[] { x[0], 1_000_000, 1_000_000 },
 			}).SelectMany(x => x);
 
-
 		[Theory(DisplayName = "Can render component using <Virtualize Items> and different ItemSize and OverscanCount")]
 		[MemberData(nameof(ItemCountItemSizeOverscanCount))]
 		public void Test030(int itemsInDataSource, float itemSize, int overscanCount)
@@ -85,8 +79,7 @@ namespace Bunit.JSInterop.ComponentSupport
 				.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
 				.Add(p => p.ItemContent, item => $"<p>{item}</p>")
 				.Add(p => p.ItemSize, itemSize)
-				.Add(p => p.OverscanCount, overscanCount)
-			);
+				.Add(p => p.OverscanCount, overscanCount));
 
 			cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
 		}
@@ -98,8 +91,7 @@ namespace Bunit.JSInterop.ComponentSupport
 			var cut = RenderComponent<Virtualize<string>>(ps => ps
 				.Add(p => p.ItemsProvider, _ => ValueTask.FromResult(new ItemsProviderResult<string>(Array.Empty<string>(), itemsInDataSource)))
 				.Add(p => p.ItemContent, item => @$"<p class=""item"">{item}</p>")
-				.Add(p => p.Placeholder, item => @"<p class=""placeholder"" />")
-			);
+				.Add(p => p.Placeholder, item => @"<p class=""placeholder"" />"));
 
 			cut.FindAll(".placeholder").Count.ShouldBe(itemsInDataSource);
 			cut.FindAll(".item").Count.ShouldBe(0);

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Bunit.JSInterop.InvocationHandlers;
 using Microsoft.JSInterop;
@@ -33,7 +34,7 @@ namespace Bunit.JSInterop
 		/// <summary>
 		/// Configure a JSInterop invocation handler with the <paramref name="identifier"/> and <paramref name="arguments"/>.
 		/// </summary>
-		/// <typeparam name="TResult"></typeparam>
+		/// <typeparam name="TResult">The type of value to match with in a InvokeAsync&lt;TResult&gt; call.</typeparam>
 		/// <param name="jsInterop">The bUnit JSInterop to setup the invocation handling with.</param>
 		/// <param name="identifier">The identifier to setup a response for.</param>
 		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
@@ -94,6 +95,7 @@ namespace Bunit.JSInterop
 		/// <param name="jsInterop">The bUnit JSInterop to setup the invocation handling with.</param>
 		/// <param name="identifier">The identifier the handler should match with.</param>
 		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
+		/// <typeparam name="TResult">The result type of the invocation.</typeparam>
 		/// <returns>Returns the <see cref="JSRuntimeInvocationHandler{TResult}"/> or null if no one is found.</returns>
 		public static JSRuntimeInvocationHandler<TResult>? TryGetInvokeHandler<TResult>(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
 			=> jsInterop.TryGetHandlerFor<TResult>(new JSRuntimeInvocation(identifier, default, arguments)) as JSRuntimeInvocationHandler<TResult>;

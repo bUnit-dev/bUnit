@@ -19,7 +19,7 @@ namespace Bunit
 			Should.NotThrow(() => sut.Dispose());
 		}
 
-		class AsyncDisposableService : IAsyncDisposable
+		private class AsyncDisposableService : IAsyncDisposable
 		{
 			public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 		}

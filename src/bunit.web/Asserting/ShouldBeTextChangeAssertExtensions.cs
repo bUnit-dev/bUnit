@@ -10,7 +10,7 @@ using Bunit.Rendering;
 namespace Bunit
 {
 	/// <summary>
-	/// Verification helpers for text
+	/// Verification helpers for text.
 	/// </summary>
 	public static class ShouldBeTextChangeAssertExtensions
 	{
@@ -104,11 +104,13 @@ namespace Bunit
 			if (!expectedAttrName.Equals(actual.Test.Attribute.Name, StringComparison.Ordinal))
 			{
 				throw new ActualExpectedAssertException(
-					actual.Test.Attribute.Name, expectedAttrName,
+					actual.Test.Attribute.Name,
+					expectedAttrName,
 					"Actual attribute name",
 					"Expected attribute name",
 					userMessage ?? "The name of the changed attribute does not match the expected name.");
 			}
+
 			if (!expectedAttrValue.Equals(actual.Test.Attribute.Value, StringComparison.Ordinal))
 			{
 				throw new ActualExpectedAssertException(

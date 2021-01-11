@@ -16,11 +16,10 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		public const string FocusIdentifier = "Blazor._internal.domWrapper.focus";
 
 		/// <summary>
-		/// Creates an instance of the <see cref="FocusEventDispatchExtensions"/>.
+		/// Initializes a new instance of the <see cref="FocusAsyncInvocationHandler"/> class.
 		/// </summary>
 		internal FocusAsyncInvocationHandler() : base(FocusIdentifier, _ => true)
-		{
-		}
+		{ }
 	}
 }
 #endif

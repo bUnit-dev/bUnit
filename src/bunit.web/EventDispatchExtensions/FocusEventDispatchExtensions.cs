@@ -11,7 +11,7 @@ namespace Bunit
 	{
 		/// <summary>
 		/// Raises the <c>@onfocus</c> event on <paramref name="element"/>, passing the provided
-		/// properties to the event handler via a <see cref="FocusEventArgs"/> object
+		/// properties to the event handler via a <see cref="FocusEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="type">The type of the event.</param>
@@ -36,7 +36,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@onblur</c> event on <paramref name="element"/>, passing the provided
-		/// properties to the event handler via a <see cref="FocusEventArgs"/> object
+		/// properties to the event handler via a <see cref="FocusEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="type">The type of the event.</param>
@@ -61,7 +61,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@onfocusin</c> event on <paramref name="element"/>, passing the provided
-		/// properties to the event handler via a <see cref="FocusEventArgs"/> object
+		/// properties to the event handler via a <see cref="FocusEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="type">The type of the event.</param>
@@ -86,7 +86,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@onfocusout</c> event on <paramref name="element"/>, passing the provided
-		/// properties to the event handler via a <see cref="FocusEventArgs"/> object
+		/// properties to the event handler via a <see cref="FocusEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="type">The type of the event.</param>

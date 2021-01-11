@@ -12,10 +12,10 @@ namespace Bunit
 	{
 		/// <summary>
 		/// Raises the <c>@onchange</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="ChangeEventArgs"/> object
+		/// properties to the event handler via a <see cref="ChangeEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
-		/// <param name="value">The new value</param>        
+		/// <param name="value">The new value.</param>
 		public static void Change(this IElement element, object value)
 			=> _ = ChangeAsync(element, new ChangeEventArgs { Value = value });
 
@@ -39,10 +39,10 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@oninput</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="ChangeEventArgs"/> object
+		/// properties to the event handler via a <see cref="ChangeEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
-		/// <param name="value">The new value</param>        
+		/// <param name="value">The new value.</param>
 		public static void Input(this IElement element, string value)
 			=> _ = InputAsync(element, new ChangeEventArgs { Value = value });
 
@@ -56,14 +56,14 @@ namespace Bunit
 			=> _ = InputAsync(element, eventArgs);
 
 		/// <summary>
-		/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		public static void Input(this IElement element) => _ = InputAsync(element);
 
 		/// <summary>
-		/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
@@ -80,14 +80,14 @@ namespace Bunit
 		private static Task InputAsync(this IElement element, ChangeEventArgs eventArgs) => element.TriggerEventAsync("oninput", eventArgs);
 
 		/// <summary>
-		/// Raises the <c>@oninvalid</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@oninvalid</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		public static void Invalid(this IElement element) => _ = InvalidAsync(element);
 
 		/// <summary>
-		/// Raises the <c>@oninvalid</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@oninvalid</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
@@ -95,14 +95,14 @@ namespace Bunit
 		private static Task InvalidAsync(this IElement element) => element.TriggerEventAsync("oninvalid", EventArgs.Empty);
 
 		/// <summary>
-		/// Raises the <c>@onreset</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@onreset</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		public static void Reset(this IElement element) => _ = ResetAsync(element);
 
 		/// <summary>
-		/// Raises the <c>@onreset</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@onreset</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
@@ -110,14 +110,14 @@ namespace Bunit
 		private static Task ResetAsync(this IElement element) => element.TriggerEventAsync("onreset", EventArgs.Empty);
 
 		/// <summary>
-		/// Raises the <c>@onselect</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@onselect</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		public static void Select(this IElement element) => _ = SelectAsync(element);
 
 		/// <summary>
-		/// Raises the <c>@onselect</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@onselect</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
@@ -125,14 +125,14 @@ namespace Bunit
 		private static Task SelectAsync(this IElement element) => element.TriggerEventAsync("onselect", EventArgs.Empty);
 
 		/// <summary>
-		/// Raises the <c>@onselectstart</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@onselectstart</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		public static void SelectStart(this IElement element) => _ = SelectStartAsync(element);
 
 		/// <summary>
-		/// Raises the <c>@onselectstart</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@onselectstart</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
@@ -140,14 +140,14 @@ namespace Bunit
 		private static Task SelectStartAsync(this IElement element) => element.TriggerEventAsync("onselectstart", EventArgs.Empty);
 
 		/// <summary>
-		/// Raises the <c>@onselectionchange</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@onselectionchange</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		public static void SelectionChange(this IElement element) => _ = SelectionChangeAsync(element);
 
 		/// <summary>
-		/// Raises the <c>@onselectionchange</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@onselectionchange</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
@@ -155,14 +155,14 @@ namespace Bunit
 		private static Task SelectionChangeAsync(this IElement element) => element.TriggerEventAsync("onselectionchange", EventArgs.Empty);
 
 		/// <summary>
-		/// Raises the <c>@onsubmit</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@onsubmit</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		public static void Submit(this IElement element) => _ = SubmitAsync(element);
 
 		/// <summary>
-		/// Raises the <c>@onsubmit</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>) 
+		/// Raises the <c>@onsubmit</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 		/// to the event handler.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>

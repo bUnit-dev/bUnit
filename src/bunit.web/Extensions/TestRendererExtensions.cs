@@ -25,8 +25,8 @@ namespace Bunit.Extensions
 			var resultBase = renderer.RenderComponent<TComponent>(new ComponentParameterCollection { parameters });
 			if (resultBase is IRenderedComponent<TComponent> result)
 				return result;
-			else
-				throw new InvalidOperationException($"The renderer did not produce the expected type. Is the test renderer using the expected {nameof(IRenderedComponentActivator)}?");
+
+			throw new InvalidOperationException($"The renderer did not produce the expected type. Is the test renderer using the expected {nameof(IRenderedComponentActivator)}?");
 		}
 
 		/// <summary>
@@ -46,8 +46,8 @@ namespace Bunit.Extensions
 			var resultBase = renderer.RenderComponent<TComponent>(builder.Build());
 			if (resultBase is IRenderedComponent<TComponent> result)
 				return result;
-			else
-				throw new InvalidOperationException($"The renderer did not produce the expected type. Is the test renderer using the expected {nameof(IRenderedComponentActivator)}?");
+
+			throw new InvalidOperationException($"The renderer did not produce the expected type. Is the test renderer using the expected {nameof(IRenderedComponentActivator)}?");
 		}
 	}
 }

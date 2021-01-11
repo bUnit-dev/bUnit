@@ -1,130 +1,138 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
 {
 	/// <summary>
-	/// Represents a <see cref="IServiceProvider"/> and <see cref="IServiceCollection"/> 
+	/// Represents a <see cref="IServiceProvider"/> and <see cref="IServiceCollection"/>
 	/// as a single type used for test purposes.
 	/// </summary>
 	public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, IDisposable
 	{
-		private readonly IServiceCollection _serviceCollection;
-		private ServiceProvider? _serviceProvider;
+		private readonly IServiceCollection serviceCollection;
+		private ServiceProvider? serviceProvider;
 
 		/// <summary>
-		/// Gets whether this <see cref="TestServiceProvider"/> has been initialized, and 
+		/// Gets a value indicating whether this <see cref="TestServiceProvider"/> has been initialized, and
 		/// no longer will accept calls to the <c>AddService</c>'s methods.
 		/// </summary>
-		public bool IsProviderInitialized => _serviceProvider is not null;
+		public bool IsProviderInitialized => serviceProvider is not null;
 
 		/// <inheritdoc/>
-		public int Count => _serviceCollection.Count;
+		public int Count => serviceCollection.Count;
 
 		/// <inheritdoc/>
-		public bool IsReadOnly => IsProviderInitialized || _serviceCollection.IsReadOnly;
+		public bool IsReadOnly => IsProviderInitialized || serviceCollection.IsReadOnly;
 
 		/// <inheritdoc/>
 		public ServiceDescriptor this[int index]
 		{
-			get => _serviceCollection[index];
+			get => serviceCollection[index];
 			set
 			{
 				CheckInitializedAndThrow();
-				_serviceCollection[index] = value;
+				serviceCollection[index] = value;
 			}
 		}
 
 		/// <summary>
-		/// Creates an instance of the <see cref="TestServiceProvider"/> and sets its service collection to the
-		/// provided <paramref name="initialServiceCollection"/>, if any.
+		/// Initializes a new instance of the <see cref="TestServiceProvider"/> class
+		/// and sets its service collection to the provided <paramref name="initialServiceCollection"/>, if any.
 		/// </summary>
-		/// <param name="initialServiceCollection"></param>
-		public TestServiceProvider(IServiceCollection? initialServiceCollection = null) : this(initialServiceCollection ?? new ServiceCollection(), false)
+		public TestServiceProvider(IServiceCollection? initialServiceCollection = null)
+			: this(initialServiceCollection ?? new ServiceCollection(), initializeProvider: false)
 		{
 		}
 
 		private TestServiceProvider(IServiceCollection initialServiceCollection, bool initializeProvider)
 		{
-			_serviceCollection = initialServiceCollection;
+			serviceCollection = initialServiceCollection;
 			if (initializeProvider)
-				_serviceProvider = _serviceCollection.BuildServiceProvider();
+				serviceProvider = serviceCollection.BuildServiceProvider();
 		}
 
 		/// <summary>
 		/// Get service of type T from the test provider.
 		/// </summary>
 		/// <typeparam name="TService">The type of service object to get.</typeparam>
-		/// <returns>A service object of type T or null if there is no such service.</returns>        
+		/// <returns>A service object of type T or null if there is no such service.</returns>
 		public TService GetService<TService>() => (TService)GetService(typeof(TService));
 
 		/// <inheritdoc/>
 		public object GetService(Type serviceType)
 		{
-			if (_serviceProvider is null)
-				_serviceProvider = _serviceCollection.BuildServiceProvider();
+			if (serviceProvider is null)
+				serviceProvider = serviceCollection.BuildServiceProvider();
 
-			return _serviceProvider.GetService(serviceType);
+			return serviceProvider.GetService(serviceType);
 		}
 
 		/// <inheritdoc/>
-		public IEnumerator<ServiceDescriptor> GetEnumerator() => _serviceCollection.GetEnumerator();
+		public IEnumerator<ServiceDescriptor> GetEnumerator() => serviceCollection.GetEnumerator();
 
 		/// <inheritdoc/>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		/// <inheritdoc/>
+		[SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "By design. This should only be called at the end of a test run. Implementing IAsyncDisposable would require users to use a different using pattern and we want to keep tests as sync as possible.")]
 		public void Dispose()
 		{
-			if (_serviceProvider is null) return;
+			if (serviceProvider is null) return;
 
-			var disposedTask = _serviceProvider.DisposeAsync().AsTask();
+			var disposedTask = serviceProvider.DisposeAsync().AsTask();
 
 			if (!disposedTask.IsCompleted)
 				disposedTask.GetAwaiter().GetResult();
 
-			_serviceProvider.Dispose();
+			serviceProvider.Dispose();
 		}
 
 		/// <inheritdoc/>
-		public int IndexOf(ServiceDescriptor item) => _serviceCollection.IndexOf(item);
+		public int IndexOf(ServiceDescriptor item) => serviceCollection.IndexOf(item);
+
 		/// <inheritdoc/>
 		public void Insert(int index, ServiceDescriptor item)
 		{
 			CheckInitializedAndThrow();
-			_serviceCollection.Insert(index, item);
+			serviceCollection.Insert(index, item);
 		}
+
 		/// <inheritdoc/>
 		public void RemoveAt(int index)
 		{
 			CheckInitializedAndThrow();
-			_serviceCollection.RemoveAt(index);
+			serviceCollection.RemoveAt(index);
 		}
 
 		/// <inheritdoc/>
 		public void Add(ServiceDescriptor item)
 		{
 			CheckInitializedAndThrow();
-			_serviceCollection.Add(item);
+			serviceCollection.Add(item);
 		}
+
 		/// <inheritdoc/>
 		public void Clear()
 		{
 			CheckInitializedAndThrow();
-			_serviceCollection.Clear();
+			serviceCollection.Clear();
 		}
 
 		/// <inheritdoc/>
-		public bool Contains(ServiceDescriptor item) => _serviceCollection.Contains(item);
+		public bool Contains(ServiceDescriptor item) => serviceCollection.Contains(item);
+
 		/// <inheritdoc/>
-		public void CopyTo(ServiceDescriptor[] array, int arrayIndex) => _serviceCollection.CopyTo(array, arrayIndex);
+		public void CopyTo(ServiceDescriptor[] array, int arrayIndex) => serviceCollection.CopyTo(array, arrayIndex);
+
 		/// <inheritdoc/>
 		public bool Remove(ServiceDescriptor item)
 		{
 			CheckInitializedAndThrow();
-			return _serviceCollection.Remove(item);
+			return serviceCollection.Remove(item);
 		}
 
 		private void CheckInitializedAndThrow()

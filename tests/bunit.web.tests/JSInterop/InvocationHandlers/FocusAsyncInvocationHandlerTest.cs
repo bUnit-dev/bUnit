@@ -22,8 +22,7 @@ namespace Bunit.JSInterop.InvocationHandlers
 		{
 			var cut = RenderComponent<Wrapper>(ps => ps
 				.AddChildContent<FocusingComponent>()
-				.AddChildContent<FocusingComponent>()
-			);
+				.AddChildContent<FocusingComponent>());
 
 			var inputs = cut.FindAll("input");
 
@@ -32,9 +31,9 @@ namespace Bunit.JSInterop.InvocationHandlers
 			invocations[1].Arguments[0].ShouldBeElementReferenceTo(inputs[1]);
 		}
 
-		class FocusingComponent : ComponentBase
+		private class FocusingComponent : ComponentBase
 		{
-			ElementReference elmRef;
+			private ElementReference elmRef;
 			protected override async Task OnAfterRenderAsync(bool firstRender)
 			{
 				if (firstRender)

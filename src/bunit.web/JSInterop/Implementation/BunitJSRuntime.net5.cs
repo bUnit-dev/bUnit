@@ -1,9 +1,14 @@
 #if NET5_0
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
 
 namespace Bunit.JSInterop
 {
+	/// <summary>
+	/// bUnit's implementation of <see cref="IJSUnmarshalledRuntime"/>.
+	/// </summary>
+	[SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "By design. Test and renderer run in separate threads, making this safe.")]
 	internal sealed partial class BunitJSRuntime : IJSUnmarshalledRuntime
 	{
 		/// <inheritdoc/>

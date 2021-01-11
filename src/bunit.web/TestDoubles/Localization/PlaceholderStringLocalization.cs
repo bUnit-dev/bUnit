@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Microsoft.Extensions.Localization;
 
@@ -10,35 +11,26 @@ namespace Bunit.TestDoubles
 	internal class PlaceholderStringLocalization : IStringLocalizer
 	{
 		/// <summary>
-		/// Will throw exception to prompt the user
+		/// Will throw exception to prompt the user.
 		/// </summary>
-		/// <param name="includeParentCultures"></param>
-		/// <returns></returns>
-		/// <exception cref="MissingMockStringLocalizationException"></exception>
 		public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
 			=> throw new MissingMockStringLocalizationException(nameof(GetAllStrings), includeParentCultures);
 
 		/// <summary>
-		/// Will throw exception to prompt the user
+		/// Will throw exception to prompt the user.
 		/// </summary>
-		/// <param name="culture"></param>
-		/// <returns></returns>
-		/// <exception cref="MissingMockStringLocalizationException"></exception>
 		public IStringLocalizer WithCulture(CultureInfo culture)
 			=> throw new MissingMockStringLocalizationException(nameof(WithCulture), culture);
 
 		/// <summary>
-		/// Will throw exception to prompt the user
+		/// Will throw exception to prompt the user.
 		/// </summary>
-		/// <param name="name"></param>
 		public LocalizedString this[string name]
 			=> Throw(name);
 
 		/// <summary>
-		/// Will throw exception to prompt the user
+		/// Will throw exception to prompt the user.
 		/// </summary>
-		/// <param name="name"></param>
-		/// <param name="arguments"></param>
 		public LocalizedString this[string name, params object[] arguments]
 			=> Throw(name, arguments);
 

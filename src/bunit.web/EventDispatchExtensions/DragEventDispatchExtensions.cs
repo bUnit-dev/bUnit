@@ -53,8 +53,8 @@ namespace Bunit
 		/// Raises the <c>@ondrag</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task DragAsync(this IElement element, DragEventArgs eventArgs) => element.TriggerEventAsync("ondrag", eventArgs);
 
@@ -102,8 +102,8 @@ namespace Bunit
 		/// Raises the <c>@ondragend</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task DragEndAsync(this IElement element, DragEventArgs eventArgs) => element.TriggerEventAsync("ondragend", eventArgs);
 
@@ -151,8 +151,8 @@ namespace Bunit
 		/// Raises the <c>@ondragenter</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task DragEnterAsync(this IElement element, DragEventArgs eventArgs) => element.TriggerEventAsync("ondragenter", eventArgs);
 
@@ -200,8 +200,8 @@ namespace Bunit
 		/// Raises the <c>@ondragleave</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task DragLeaveAsync(this IElement element, DragEventArgs eventArgs) => element.TriggerEventAsync("ondragleave", eventArgs);
 
@@ -249,8 +249,8 @@ namespace Bunit
 		/// Raises the <c>@ondragover</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task DragOverAsync(this IElement element, DragEventArgs eventArgs) => element.TriggerEventAsync("ondragover", eventArgs);
 
@@ -298,8 +298,8 @@ namespace Bunit
 		/// Raises the <c>@ondragstart</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task DragStartAsync(this IElement element, DragEventArgs eventArgs) => element.TriggerEventAsync("ondragstart", eventArgs);
 
@@ -347,8 +347,8 @@ namespace Bunit
 		/// Raises the <c>@ondrop</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task DropAsync(this IElement element, DragEventArgs eventArgs) => element.TriggerEventAsync("ondrop", eventArgs);
 	}

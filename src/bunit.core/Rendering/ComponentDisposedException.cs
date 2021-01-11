@@ -11,7 +11,7 @@ namespace Bunit.Rendering
 	public sealed class ComponentDisposedException : Exception
 	{
 		/// <summary>
-		/// Creates an instance of the <see cref="ComponentDisposedException"/>.
+		/// Initializes a new instance of the <see cref="ComponentDisposedException"/> class.
 		/// </summary>
 		/// <param name="componentId">Id of the disposed component.</param>
 		public ComponentDisposedException(int componentId)

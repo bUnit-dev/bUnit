@@ -2,7 +2,7 @@ using System;
 #if NET5_0
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-# endif
+#endif
 using Microsoft.Extensions.Logging;
 #if NET5_0
 using Microsoft.JSInterop;
@@ -17,7 +17,7 @@ namespace Bunit.Rendering
 	public class WebTestRenderer : TestRenderer
 	{
 		/// <summary>
-		/// Creates an instance of the <see cref="WebTestRenderer"/>.
+		/// Initializes a new instance of the <see cref="WebTestRenderer"/> class.
 		/// </summary>
 		public WebTestRenderer(IRenderedComponentActivator activator, IServiceProvider services, ILoggerFactory loggerFactory) : base(activator, services, loggerFactory)
 		{

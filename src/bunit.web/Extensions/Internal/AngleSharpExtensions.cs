@@ -14,7 +14,7 @@ namespace Bunit
 		/// <summary>
 		/// Wraps the <paramref name="node"/> in an <see cref="IEnumerable{INode}"/>.
 		/// </summary>
-		/// <param name="node">The node to wrap</param>
+		/// <param name="node">The node to wrap.</param>
 		/// <returns>The <see cref="IEnumerable{INode}"/>.</returns>
 		public static IEnumerable<INode> AsEnumerable(this INode node)
 		{
@@ -23,9 +23,8 @@ namespace Bunit
 
 		/// <summary>
 		/// Gets the <see cref="BunitHtmlParser"/> stored in the <paramref name="node"/>s
-		/// owning context, if one is available. 
+		/// owning context, if one is available.
 		/// </summary>
-		/// <param name="node"></param>
 		/// <returns>The <see cref="BunitHtmlParser"/> or null if not found.</returns>
 		public static BunitHtmlParser? GetHtmlParser(this INode? node)
 		{
@@ -34,9 +33,8 @@ namespace Bunit
 
 		/// <summary>
 		/// Gets the <see cref="BunitHtmlParser"/> stored in the <paramref name="nodes"/>s
-		/// owning context, if one is available. 
+		/// owning context, if one is available.
 		/// </summary>
-		/// <param name="nodes"></param>
 		/// <returns>The <see cref="BunitHtmlParser"/> or null if not found.</returns>
 		public static BunitHtmlParser? GetHtmlParser(this INodeList nodes)
 		{
@@ -45,9 +43,8 @@ namespace Bunit
 
 		/// <summary>
 		/// Gets the <see cref="HtmlComparer"/> stored in the <paramref name="node"/>s
-		/// owning context, if one is available. 
+		/// owning context, if one is available.
 		/// </summary>
-		/// <param name="node"></param>
 		/// <returns>The <see cref="HtmlComparer"/> or null if not found.</returns>
 		public static HtmlComparer? GetHtmlComparer(this INode? node)
 		{
@@ -56,9 +53,8 @@ namespace Bunit
 
 		/// <summary>
 		/// Gets the <see cref="HtmlComparer"/> stored in the <paramref name="nodes"/>s
-		/// owning context, if one is available. 
+		/// owning context, if one is available.
 		/// </summary>
-		/// <param name="nodes"></param>
 		/// <returns>The <see cref="HtmlComparer"/> or null if not found.</returns>
 		public static HtmlComparer? GetHtmlComparer(this INodeList nodes)
 		{
@@ -67,9 +63,8 @@ namespace Bunit
 
 		/// <summary>
 		/// Gets the <see cref="TestContext"/> stored in the <paramref name="node"/>s
-		/// owning context, if one is available. 
+		/// owning context, if one is available.
 		/// </summary>
-		/// <param name="node"></param>
 		/// <returns>The <see cref="TestContext"/> or null if not found.</returns>
 		public static TestContextBase? GetTestContext(this INode? node)
 		{
@@ -78,9 +73,8 @@ namespace Bunit
 
 		/// <summary>
 		/// Gets the <see cref="TestContext"/> stored in the <paramref name="nodes"/>s
-		/// owning context, if one is available. 
+		/// owning context, if one is available.
 		/// </summary>
-		/// <param name="nodes"></param>
 		/// <returns>The <see cref="TestContext"/> or null if not found.</returns>
 		public static TestContextBase? GetTestContext(this INodeList nodes)
 		{
