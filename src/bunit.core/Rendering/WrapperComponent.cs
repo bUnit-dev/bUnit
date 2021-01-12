@@ -7,7 +7,7 @@ namespace Bunit.Rendering
 	/// <summary>
 	/// Wrapper class that provides access to a <see cref="RenderHandle"/>.
 	/// </summary>
-	internal class WrapperComponent : IComponent
+	internal sealed class WrapperComponent : IComponent
 	{
 		private readonly RenderFragment renderFragment;
 		private RenderHandle renderHandle;

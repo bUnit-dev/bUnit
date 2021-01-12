@@ -6,7 +6,7 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestCaseRunner : XunitTestCaseRunner
+	internal sealed class RazorTestCaseRunner : XunitTestCaseRunner
 	{
 		private readonly RazorTestCase razorTestCase;
 

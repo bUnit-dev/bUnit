@@ -15,7 +15,8 @@ namespace Bunit
 		/// </summary>
 		/// <param name="renderedComponent">The rendered component to re-render.</param>
 		/// <typeparam name="TComponent">The type of the component.</typeparam>
-		public static void Render<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent) where TComponent : IComponent
+		public static void Render<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent)
+			where TComponent : IComponent
 			=> SetParametersAndRender(renderedComponent, ParameterView.Empty);
 
 		/// <summary>
@@ -45,10 +46,13 @@ namespace Bunit
 		/// <param name="renderedComponent">The rendered component to re-render with new parameters.</param>
 		/// <param name="parameters">Parameters to pass to the component upon rendered.</param>
 		/// <typeparam name="TComponent">The type of the component.</typeparam>
-		public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, params ComponentParameter[] parameters) where TComponent : IComponent
+		public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, params ComponentParameter[] parameters)
+			where TComponent : IComponent
 		{
 			if (renderedComponent is null)
 				throw new ArgumentNullException(nameof(renderedComponent));
+			if (parameters is null)
+				throw new ArgumentNullException(nameof(parameters));
 
 			SetParametersAndRender(renderedComponent, ToParameterView(parameters));
 		}

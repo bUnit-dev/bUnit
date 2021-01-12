@@ -7,7 +7,7 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestRunner : XunitTestRunner
+	internal sealed class RazorTestRunner : XunitTestRunner
 	{
 		private TestOutputHelper? testOutputHelper;
 

@@ -18,7 +18,8 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FocusAsyncInvocationHandler"/> class.
 		/// </summary>
-		internal FocusAsyncInvocationHandler() : base(FocusIdentifier, _ => true)
+		internal FocusAsyncInvocationHandler()
+			: base(FocusIdentifier, _ => true)
 		{ }
 	}
 }

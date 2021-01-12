@@ -38,6 +38,8 @@ namespace Bunit
 		{
 			if (diffs is null)
 				throw new ArgumentNullException(nameof(diffs));
+			if (diffInspectors is null)
+				throw new ArgumentNullException(nameof(diffInspectors));
 
 			if (diffs.Count() != diffInspectors.Length)
 				throw new ActualExpectedAssertException(diffs.Count().ToString(CultureInfo.InvariantCulture), diffInspectors.Length.ToString(CultureInfo.InvariantCulture), "Actual changes", "Expected changes", "The actual number of changes does not match the expected.");

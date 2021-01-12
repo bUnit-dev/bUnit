@@ -12,7 +12,8 @@ namespace Bunit
 	/// A <see cref="ComponentParameterCollection"/> builder for a specific <typeparamref name="TComponent"/> component under test.
 	/// </summary>
 	/// <typeparam name="TComponent">The type of component under test to add the parameters.</typeparam>
-	public sealed class ComponentParameterCollectionBuilder<TComponent> where TComponent : IComponent
+	public sealed class ComponentParameterCollectionBuilder<TComponent>
+	    where TComponent : IComponent
 	{
 		private const string ChildContent = nameof(ChildContent);
 		private static readonly Type TComponentType = typeof(TComponent);
@@ -269,8 +270,9 @@ namespace Bunit
 		/// <typeparam name="TChildComponent">Type of child component to pass to the ChildContent parameter.</typeparam>
 		/// <param name="childParameterBuilder">A parameter builder for the <typeparamref name="TChildComponent"/>.</param>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-		public ComponentParameterCollectionBuilder<TComponent> AddChildContent<TChildComponent>(Action<ComponentParameterCollectionBuilder<TChildComponent>>? childParameterBuilder = null) where TChildComponent : IComponent
-			=> AddChildContent(GetRenderFragment(childParameterBuilder));
+		public ComponentParameterCollectionBuilder<TComponent> AddChildContent<TChildComponent>(Action<ComponentParameterCollectionBuilder<TChildComponent>>? childParameterBuilder = null)
+		    where TChildComponent : IComponent
+		    => AddChildContent(GetRenderFragment(childParameterBuilder));
 
 		/// <summary>
 		/// Adds an UNNAMED cascading value around the <typeparamref name="TComponent"/> when it is rendered. Used to
@@ -279,8 +281,9 @@ namespace Bunit
 		/// <typeparam name="TValue">The type of cascading value.</typeparam>
 		/// <param name="cascadingValue">The cascading value.</param>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-		public ComponentParameterCollectionBuilder<TComponent> AddCascadingValue<TValue>(TValue cascadingValue) where TValue : notnull
-			=> AddCascadingValueParameter(name: null, cascadingValue);
+		public ComponentParameterCollectionBuilder<TComponent> AddCascadingValue<TValue>(TValue cascadingValue)
+		    where TValue : notnull
+		    => AddCascadingValueParameter(name: null, cascadingValue);
 
 		/// <summary>
 		/// Adds an NAMED cascading value around the <typeparamref name="TComponent"/> when it is rendered. Used to
@@ -290,8 +293,9 @@ namespace Bunit
 		/// <param name="name">The name of the cascading value.</param>
 		/// <param name="cascadingValue">The cascading value.</param>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-		public ComponentParameterCollectionBuilder<TComponent> AddCascadingValue<TValue>(string name, TValue cascadingValue) where TValue : notnull
-			=> AddCascadingValueParameter(name, cascadingValue);
+		public ComponentParameterCollectionBuilder<TComponent> AddCascadingValue<TValue>(string name, TValue cascadingValue)
+		    where TValue : notnull
+		    => AddCascadingValueParameter(name, cascadingValue);
 
 		/// <summary>
 		/// Adds an unmatched attribute value to <typeparamref name="TComponent"/>.
@@ -386,7 +390,8 @@ namespace Bunit
 			return this;
 		}
 
-		private static RenderFragment GetRenderFragment<TChildComponent>(Action<ComponentParameterCollectionBuilder<TChildComponent>>? childParameterBuilder) where TChildComponent : IComponent
+		private static RenderFragment GetRenderFragment<TChildComponent>(Action<ComponentParameterCollectionBuilder<TChildComponent>>? childParameterBuilder)
+		    where TChildComponent : IComponent
 		{
 			var childBuilder = new ComponentParameterCollectionBuilder<TChildComponent>(childParameterBuilder);
 			return childBuilder.Build().ToRenderFragment<TChildComponent>();

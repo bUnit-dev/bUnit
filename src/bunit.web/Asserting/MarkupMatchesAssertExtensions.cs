@@ -323,8 +323,8 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var testContext = actual.GetTestContext() ?? new TestContext();
-			var renderedFragment = testContext.RenderInsideRenderTree(expected);
+			var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected)
+				?? AdhocRenderRenderFragment(expected);
 			MarkupMatches(actual, renderedFragment, userMessage);
 		}
 
@@ -344,9 +344,15 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var testContext = actual.GetTestContext() ?? new TestContext();
-			var renderedFragment = testContext.RenderInsideRenderTree(expected);
+			var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected)
+				?? AdhocRenderRenderFragment(expected);
 			MarkupMatches(actual, renderedFragment, userMessage);
+		}
+
+		private static IRenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
+		{
+			using var ctx = new TestContext();
+			return ctx.RenderInsideRenderTree(renderFragment);
 		}
 
 		private static INodeList ToNodeList(this string markup, BunitHtmlParser? htmlParser)

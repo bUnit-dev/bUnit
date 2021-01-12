@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Bunit.JSInterop.InvocationHandlers;
 using Microsoft.JSInterop;
@@ -22,6 +21,9 @@ namespace Bunit.JSInterop
 		/// <returns>A <see cref="JSRuntimeInvocationHandler{TResult}"/>.</returns>
 		public static JSRuntimeInvocationHandler<TResult> Setup<TResult>(this BunitJSInterop jsInterop, string identifier, InvocationMatcher invocationMatcher)
 		{
+			if (jsInterop is null)
+				throw new ArgumentNullException(nameof(jsInterop));
+
 #if NET5_0
 			EnsureResultNotIJSObjectReference<TResult>();
 #endif
@@ -63,6 +65,9 @@ namespace Bunit.JSInterop
 		/// <returns>A <see cref="JSRuntimeInvocationHandler"/>.</returns>
 		public static JSRuntimeInvocationHandler SetupVoid(this BunitJSInterop jsInterop, string identifier, InvocationMatcher invocationMatcher)
 		{
+			if (jsInterop is null)
+				throw new ArgumentNullException(nameof(jsInterop));
+
 			var result = new JSRuntimeInvocationHandler(identifier, invocationMatcher);
 			jsInterop.AddInvocationHandler(result);
 			return result;
@@ -98,7 +103,12 @@ namespace Bunit.JSInterop
 		/// <typeparam name="TResult">The result type of the invocation.</typeparam>
 		/// <returns>Returns the <see cref="JSRuntimeInvocationHandler{TResult}"/> or null if no one is found.</returns>
 		public static JSRuntimeInvocationHandler<TResult>? TryGetInvokeHandler<TResult>(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
-			=> jsInterop.TryGetHandlerFor<TResult>(new JSRuntimeInvocation(identifier, default, arguments)) as JSRuntimeInvocationHandler<TResult>;
+		{
+			if (jsInterop is null)
+				throw new ArgumentNullException(nameof(jsInterop));
+
+			return jsInterop.TryGetHandlerFor<TResult>(new JSRuntimeInvocation(identifier, default, arguments)) as JSRuntimeInvocationHandler<TResult>;
+		}
 
 		/// <summary>
 		/// Looks through the registered handlers and returns the latest registered that can handle
@@ -109,7 +119,12 @@ namespace Bunit.JSInterop
 		/// <param name="arguments">The arguments that an invocation to <paramref name="identifier"/> should match.</param>
 		/// <returns>Returns the <see cref="JSRuntimeInvocationHandler"/> or null if no one is found.</returns>
 		public static JSRuntimeInvocationHandler? TryGetInvokeVoidHandler(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
-			=> jsInterop.TryGetHandlerFor<object>(new JSRuntimeInvocation(identifier, default, arguments), x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
+		{
+			if (jsInterop is null)
+				throw new ArgumentNullException(nameof(jsInterop));
+
+			return jsInterop.TryGetHandlerFor<object>(new JSRuntimeInvocation(identifier, default, arguments), x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
+		}
 
 #if NET5_0
 		private static void EnsureResultNotIJSObjectReference<TResult>()

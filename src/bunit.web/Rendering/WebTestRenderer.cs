@@ -19,7 +19,8 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WebTestRenderer"/> class.
 		/// </summary>
-		public WebTestRenderer(IRenderedComponentActivator activator, IServiceProvider services, ILoggerFactory loggerFactory) : base(activator, services, loggerFactory)
+		public WebTestRenderer(IRenderedComponentActivator activator, IServiceProvider services, ILoggerFactory loggerFactory)
+			: base(activator, services, loggerFactory)
 		{
 #if NET5_0
 			ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());

@@ -439,9 +439,12 @@ dotnet_diagnostic.IDE0079.severity = warning # IDE0079: Remove unnecessary suppr
 dotnet_diagnostic.MA0004.severity = none # MA0004: Use .ConfigureAwait(false)
 dotnet_diagnostic.MA0012.severity = none # MA0012: Do not raise reserved exception type
 dotnet_diagnostic.MA0015.severity = suggestion # MA0015: Specify the parameter name
+dotnet_diagnostic.MA0018.severity = none # MA0018: Do not declare static members on generic types - same as CA1000
 
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+dotnet_diagnostic.CA1014.severity = none # CA1014: Mark assemblies with CLSCompliant
+dotnet_diagnostic.CA1032.severity = none # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA2201.severity = suggestion # CA2201: Do not raise reserved exception types
 
 # Microsoft - Threading
@@ -506,9 +509,16 @@ dotnet_diagnostic.MA0048.severity = silent # MA0048: File name must match type n
 
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+dotnet_diagnostic.CA1054.severity = none # CA1054: URI-like parameters should not be strings
+dotnet_diagnostic.CA1062.severity = none # CA1062: Validate arguments of public methods
+dotnet_diagnostic.CA1707.severity = none # CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1812.severity = none # CA1812: Avoid uninstantiated internal classes - components under test are never instantiated directly.
+dotnet_diagnostic.CA1822.severity = suggestion # CA1822: Mark members as static
+dotnet_diagnostic.CA2007.severity = none # CA2007: Consider calling ConfigureAwait on the awaited task
 
 # Microsoft - FxCop
 # https://github.com/dotnet/roslyn-analyzers
+dotnet_diagnostic.CA1031.severity = none # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA2012.severity = none # CA2012: Use ValueTasks correctly
 dotnet_diagnostic.CA2201.severity = none # CA2201: Do not raise reserved exception types
 

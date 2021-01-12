@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Components.Web;
@@ -180,6 +181,7 @@ namespace Bunit
 		}
 
 		[Fact(DisplayName = "Null keys should be equal")]
+		[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "Point of test is to validate correctly implemented Equals")]
 		public void NullsAreEqual()
 		{
 			Key? key1 = default;

@@ -42,6 +42,7 @@ namespace Xunit.Sdk
 
 		public void Dispose() => sourceFileFinder?.Dispose();
 
+		[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 		public ISourceInformation? GetSourceInformation(Type testComponent, RazorTestBase test, int testNumber)
 		{
 			DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"{nameof(GetSourceInformation)}({testComponent.Name}): Attempting to find source file"));

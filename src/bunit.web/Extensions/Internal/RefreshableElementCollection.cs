@@ -5,7 +5,7 @@ using AngleSharp.Dom;
 
 namespace Bunit
 {
-	internal class RefreshableElementCollection : IRefreshableElementCollection<IElement>
+	internal sealed class RefreshableElementCollection : IRefreshableElementCollection<IElement>
 	{
 		private readonly IRenderedFragment renderedFragment;
 		private readonly string cssSelector;

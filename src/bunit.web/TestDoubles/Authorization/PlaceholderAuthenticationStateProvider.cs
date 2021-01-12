@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Bunit.TestDoubles
 {
-	internal class PlaceholderAuthenticationStateProvider : AuthenticationStateProvider
+	internal sealed class PlaceholderAuthenticationStateProvider : AuthenticationStateProvider
 	{
 		public override Task<AuthenticationState> GetAuthenticationStateAsync()
 		{

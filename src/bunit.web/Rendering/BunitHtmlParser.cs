@@ -31,7 +31,8 @@ namespace Bunit.Rendering
 		/// Initializes a new instance of the <see cref="BunitHtmlParser"/> class
 		/// with a AngleSharp context without a <see cref="TestRenderer"/> registered.
 		/// </summary>
-		public BunitHtmlParser() : this(Configuration.Default.WithCss().With(new HtmlComparer())) { }
+		public BunitHtmlParser()
+			: this(Configuration.Default.WithCss().With(new HtmlComparer())) { }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BunitHtmlParser"/> class
@@ -101,9 +102,8 @@ namespace Bunit.Rendering
 		private static (IElement? Context, string? MatchedElement) GetParseContextFromTag(string markup, int startIndex, IDocument document)
 		{
 			IElement? result = null;
-			string? matchedElement;
 
-			if (markup.StartsWithElements(TableSubElements, startIndex, out matchedElement))
+			if (markup.StartsWithElements(TableSubElements, startIndex, out var matchedElement))
 			{
 				result = CreateTable();
 			}
@@ -152,7 +152,7 @@ namespace Bunit.Rendering
 			}
 		}
 
-		private class SingleNodeNodeList : INodeList, IReadOnlyList<INode>
+		private sealed class SingleNodeNodeList : INodeList, IReadOnlyList<INode>
 		{
 			private readonly INode node;
 

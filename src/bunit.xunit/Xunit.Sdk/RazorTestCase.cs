@@ -10,7 +10,7 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestCase : LongLivedMarshalByRefObject, IXunitTestCase
+	internal sealed class RazorTestCase : LongLivedMarshalByRefObject, IXunitTestCase
 	{
 		private string? uniqueId;
 
@@ -27,7 +27,7 @@ namespace Xunit.Sdk
 			DisplayName = displayName;
 			Timeout = timeout is null
 				? 0
-				: Convert.ToInt32(timeout?.TotalMilliseconds, CultureInfo.InvariantCulture);
+				: Convert.ToInt32(timeout.Value.TotalMilliseconds, CultureInfo.InvariantCulture);
 			SkipReason = skipReason;
 			TestNumber = testNumber;
 			SourceInformation = sourceInformation;

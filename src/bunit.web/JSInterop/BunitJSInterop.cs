@@ -53,6 +53,9 @@ namespace Bunit
 		/// </summary>
 		public void AddInvocationHandler<TResult>(JSRuntimeInvocationHandlerBase<TResult> handler)
 		{
+			if (handler is null)
+				throw new ArgumentNullException(nameof(handler));
+
 			if (!handlers.ContainsKey(handler.Identifier))
 				handlers.Add(handler.Identifier, new List<object>());
 

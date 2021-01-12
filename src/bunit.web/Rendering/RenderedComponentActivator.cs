@@ -23,8 +23,9 @@ namespace Bunit.Rendering
 			=> new RenderedFragment(componentId, services);
 
 		/// <inheritdoc/>
-		public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId) where TComponent : IComponent
-			=> new RenderedComponent<TComponent>(componentId, services);
+		public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId)
+		    where TComponent : IComponent
+		    => new RenderedComponent<TComponent>(componentId, services);
 
 		/// <inheritdoc/>
 		public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId, TComponent component, RenderTreeFrameDictionary componentFrames)

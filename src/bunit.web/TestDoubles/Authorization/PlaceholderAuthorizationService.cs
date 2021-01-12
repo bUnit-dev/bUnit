@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Bunit.TestDoubles
 {
-	internal class PlaceholderAuthorizationService : IAuthorizationService
+	internal sealed class PlaceholderAuthorizationService : IAuthorizationService
 	{
 		public Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object? resource, IEnumerable<IAuthorizationRequirement> requirements)
 		{

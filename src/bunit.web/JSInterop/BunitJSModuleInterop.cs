@@ -28,7 +28,8 @@ namespace Bunit.JSInterop
 		/// Initializes a new instance of the <see cref="BunitJSModuleInterop"/> class.
 		/// </summary>
 		/// <param name="parent">The parent <see cref="BunitJSInterop"/>.</param>
-		public BunitJSModuleInterop(BunitJSInterop parent) : base()
+		public BunitJSModuleInterop(BunitJSInterop parent)
+			: base()
 		{
 			this.parent = parent;
 			handlerMode = null;

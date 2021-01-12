@@ -11,5 +11,5 @@ namespace Xunit
 	/// </summary>
 	[XunitTestCaseDiscoverer("Xunit.Sdk.RazorTestDiscoverer", "Bunit.Xunit")]
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-	public class RazorTestAttribute : FactAttribute { }
+	public sealed class RazorTestAttribute : FactAttribute { }
 }

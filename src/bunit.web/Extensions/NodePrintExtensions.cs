@@ -130,7 +130,7 @@ namespace Bunit
 			{
 				result.Append(Symbols.GreaterThan);
 				result.Append("...");
-				result.Append($"</{tag}>");
+				result.Append("</").Append(tag).Append('>');
 			}
 			else
 			{

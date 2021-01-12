@@ -18,7 +18,7 @@ namespace Bunit.RazorTesting
 		/// <inheritdoc/>
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			builder.AddContent(0, ChildContent);
+			builder?.AddContent(0, ChildContent);
 		}
 
 		/// <summary>

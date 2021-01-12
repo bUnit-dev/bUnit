@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -71,6 +72,7 @@ namespace Bunit.Extensions.WaitForHelpers
 			}
 		}
 
+		[SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "The user supplied code might throw any type of exception, thus we cannot catch a more specific one.")]
 		private void OnAfterRender(object? sender, EventArgs args)
 		{
 			if (isDisposed)
