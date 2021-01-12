@@ -19,7 +19,7 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// <summary>
 		/// Gets a value indicating whether this handler is set up to handle calls to <c>InvokeVoidAsync(string, object[])</c>.
 		/// </summary>
-		public virtual bool IsVoidResultHandler { get; } = false;
+		public virtual bool IsVoidResultHandler { get; }
 
 		/// <summary>
 		/// Gets a value indicating whether this handler will match any invocations that expect a <typeparamref name="TResult"/> as the return type.
@@ -43,9 +43,12 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// <param name="matcher">An invocation matcher used to determine if the handler should handle an invocation.</param>
 		protected JSRuntimeInvocationHandlerBase(string identifier, InvocationMatcher matcher)
 		{
+			if (string.IsNullOrWhiteSpace(identifier))
+				throw new ArgumentException($"'{nameof(identifier)}' cannot be null or whitespace", nameof(identifier));
+
 			Identifier = identifier;
-			IsCatchAllHandler = identifier.Equals(CatchAllIdentifier, StringComparison.Ordinal);
-			invocationMatcher = matcher;
+			IsCatchAllHandler = string.Equals(identifier, CatchAllIdentifier, StringComparison.Ordinal);
+			invocationMatcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
 			completionSource = new TaskCompletionSource<TResult>();
 		}
 

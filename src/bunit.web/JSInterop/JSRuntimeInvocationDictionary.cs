@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Bunit.JSInterop
 {
 	/// <summary>
 	/// Represents a dictionary of <see cref="JSRuntimeInvocation"/>, keyed by their identifier.
 	/// </summary>
+	[SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "Implementing IReadOnlyDictionary would require a different GetEnumerator implementation, which is less useful in testing scenarios. This is however a dictionary.")]
 	public sealed class JSRuntimeInvocationDictionary : IReadOnlyCollection<JSRuntimeInvocation>
 	{
 		private readonly Dictionary<string, List<JSRuntimeInvocation>> invocations = new(StringComparer.Ordinal);

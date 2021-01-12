@@ -79,7 +79,8 @@ namespace Bunit
 		/// <typeparam name="TComponent">Type of component to render.</typeparam>
 		[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
 		[SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "TODO: Refactor")]
-		public RenderFragment ToRenderFragment<TComponent>() where TComponent : IComponent
+		public RenderFragment ToRenderFragment<TComponent>()
+		    where TComponent : IComponent
 		{
 			var cascadingValues = GetCascadingValues();
 

@@ -54,7 +54,8 @@ namespace Bunit
 		/// <typeparam name="TComponent">Type of component to find.</typeparam>
 		/// <exception cref="ComponentNotFoundException">Thrown if a component of type <typeparamref name="TComponent"/> was not found in the render tree.</exception>
 		/// <returns>The <see cref="IRenderedComponent{T}"/>.</returns>
-		public static IRenderedComponent<TComponent> FindComponent<TComponent>(this IRenderedFragment renderedFragment) where TComponent : IComponent
+		public static IRenderedComponent<TComponent> FindComponent<TComponent>(this IRenderedFragment renderedFragment)
+		    where TComponent : IComponent
 		{
 			if (renderedFragment is null)
 				throw new ArgumentNullException(nameof(renderedFragment));
@@ -69,7 +70,8 @@ namespace Bunit
 		/// </summary>
 		/// <typeparam name="TComponent">Type of components to find.</typeparam>
 		/// <returns>The <see cref="IRenderedComponent{T}"/>s.</returns>
-		public static IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(this IRenderedFragment renderedFragment) where TComponent : IComponent
+		public static IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(this IRenderedFragment renderedFragment)
+		    where TComponent : IComponent
 		{
 			if (renderedFragment is null)
 				throw new ArgumentNullException(nameof(renderedFragment));

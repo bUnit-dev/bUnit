@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -8,6 +9,7 @@ namespace Bunit
 	/// <summary>
 	/// Base test class/test runner, that runs Fixtures defined in razor files.
 	/// </summary>
+	[SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "User has no need to override Attach and SetParametersAsync")]
 	public abstract class TestComponentBase : IComponent
 	{
 		/// <summary>

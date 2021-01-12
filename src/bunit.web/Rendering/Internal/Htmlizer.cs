@@ -283,7 +283,7 @@ namespace Bunit
 			return position + maxElements;
 		}
 
-		private class HtmlRenderingContext
+		private sealed class HtmlRenderingContext
 		{
 			private readonly RenderTreeFrameDictionary frames;
 

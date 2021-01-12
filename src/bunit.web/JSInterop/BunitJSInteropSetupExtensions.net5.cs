@@ -42,7 +42,7 @@ namespace Bunit
 				jsInterop,
 				DefaultImportIdentifier,
 				invocation => invocation.Arguments?[0] is string requestedModuleName
-				           && requestedModuleName.Equals(moduleName, StringComparison.Ordinal));
+						   && requestedModuleName.Equals(moduleName, StringComparison.Ordinal));
 		}
 
 		/// <summary>
@@ -135,6 +135,9 @@ namespace Bunit
 		/// <returns>A <see cref="BunitJSModuleInterop"/> or null if no one is found.</returns>
 		public static BunitJSModuleInterop? TryGetModuleJSInterop(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
 		{
+			if (jsInterop is null)
+				throw new ArgumentNullException(nameof(jsInterop));
+
 			var handler = jsInterop.TryGetHandlerFor<IJSObjectReference>(new JSRuntimeInvocation(identifier, default, arguments)) as JSObjectReferenceInvocationHandler;
 			return handler?.JSInterop;
 		}

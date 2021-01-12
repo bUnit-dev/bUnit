@@ -152,7 +152,8 @@ namespace Bunit
 		/// <typeparam name="TComponent">The type of the component to render with the <see cref="Microsoft.AspNetCore.Components.RenderFragment"/>.</typeparam>
 		/// <param name="parameters">Parameters to pass to the <typeparamref name="TComponent"/>.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
-		public static ComponentParameter ChildContent<TComponent>(params ComponentParameter[] parameters) where TComponent : class, IComponent
+		public static ComponentParameter ChildContent<TComponent>(params ComponentParameter[] parameters)
+		    where TComponent : class, IComponent
 		{
 			return RenderFragment<TComponent>(nameof(ChildContent), parameters);
 		}
@@ -188,7 +189,8 @@ namespace Bunit
 		/// <param name="name">Parameter name.</param>
 		/// <param name="parameters">Parameters to pass to the <typeparamref name="TComponent"/>.</param>
 		/// <returns>The <see cref="ComponentParameter"/>.</returns>
-		public static ComponentParameter RenderFragment<TComponent>(string name, params ComponentParameter[] parameters) where TComponent : class, IComponent
+		public static ComponentParameter RenderFragment<TComponent>(string name, params ComponentParameter[] parameters)
+		    where TComponent : class, IComponent
 		{
 			var cpc = new ComponentParameterCollection() { parameters };
 			return ComponentParameter.CreateParameter(name, cpc.ToRenderFragment<TComponent>());

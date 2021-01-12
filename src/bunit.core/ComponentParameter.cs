@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Bunit
 {
@@ -65,6 +66,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="input">A name/value pair for the parameter.</param>
 		/// <returns>The created <see cref="ComponentParameter"/>.</returns>
+		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates")]
 		public static implicit operator ComponentParameter((string Name, object? Value) input)
 			=> CreateParameter(input.Name, input.Value);
 
@@ -73,6 +75,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="input">A name/value/isCascadingValue triple for the parameter.</param>
 		/// <returns>The created <see cref="ComponentParameter"/>.</returns>
+		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates")]
 		public static implicit operator ComponentParameter((string? Name, object? Value, bool IsCascadingValue) input)
 			=> new ComponentParameter(input.Name, input.Value, input.IsCascadingValue);
 

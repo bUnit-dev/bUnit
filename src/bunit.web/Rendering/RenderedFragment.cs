@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
@@ -10,8 +11,9 @@ namespace Bunit.Rendering
 	/// <inheritdoc />
 	internal class RenderedFragment : IRenderedFragment
 	{
-		private readonly object markupAccessLock = new();
+		[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Instance controlled by IOC container.")]
 		private readonly BunitHtmlParser htmlParser;
+		private readonly object markupAccessLock = new();
 		private string markup = string.Empty;
 		private string? snapshotMarkup;
 

@@ -33,7 +33,8 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TestComponentRenderer"/> class.
 		/// </summary>
-		public TestComponentRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory) : base(serviceProvider, loggerFactory) { }
+		public TestComponentRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+			: base(serviceProvider, loggerFactory) { }
 
 		/// <summary>
 		/// Renders an instance of the specified Razor-based test.

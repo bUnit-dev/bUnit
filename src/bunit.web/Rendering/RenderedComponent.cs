@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Components.RenderTree;
 namespace Bunit.Rendering
 {
 	/// <inheritdoc/>
-	internal class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent> where TComponent : IComponent
+	internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent>
+	    where TComponent : IComponent
 	{
 		private TComponent instance = default!;
 
@@ -19,9 +20,11 @@ namespace Bunit.Rendering
 			}
 		}
 
-		internal RenderedComponent(int componentId, IServiceProvider services) : base(componentId, services) { }
+		internal RenderedComponent(int componentId, IServiceProvider services)
+			: base(componentId, services) { }
 
-		internal RenderedComponent(int componentId, TComponent instance, RenderTreeFrameDictionary componentFrames, IServiceProvider services) : base(componentId, services)
+		internal RenderedComponent(int componentId, TComponent instance, RenderTreeFrameDictionary componentFrames, IServiceProvider services)
+			: base(componentId, services)
 		{
 			this.instance = instance;
 			RenderCount++;

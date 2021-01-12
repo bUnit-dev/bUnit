@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestInvoker : XunitTestInvoker
+	internal sealed class RazorTestInvoker : XunitTestInvoker
 	{
 		private readonly Func<ITestOutputHelper> testOutputHelperFactory;
 

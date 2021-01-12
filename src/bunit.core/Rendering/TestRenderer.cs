@@ -63,7 +63,8 @@ namespace Bunit.Rendering
 		}
 
 		/// <inheritdoc/>
-		public IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent) where TComponent : IComponent
+		public IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)
+		    where TComponent : IComponent
 		{
 			var foundComponents = FindComponents<TComponent>(parentComponent, 1);
 			return foundComponents.Count == 1
@@ -72,8 +73,9 @@ namespace Bunit.Rendering
 		}
 
 		/// <inheritdoc/>
-		public IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent) where TComponent : IComponent
-			=> FindComponents<TComponent>(parentComponent, int.MaxValue);
+		public IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
+		    where TComponent : IComponent
+		    => FindComponents<TComponent>(parentComponent, int.MaxValue);
 
 		/// <inheritdoc/>
 		protected override void ProcessPendingRender()

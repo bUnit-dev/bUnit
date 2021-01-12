@@ -12,7 +12,8 @@ namespace Bunit.Extensions
 		/// <param name="testContext">Test context to use to render with.</param>
 		/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> that contains a declaration of the component.</param>
 		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/>.</returns>
-		public static IRenderedComponent<TComponent> RenderInsideRenderTree<TComponent>(this TestContextBase testContext, RenderFragment renderFragment) where TComponent : IComponent
+		public static IRenderedComponent<TComponent> RenderInsideRenderTree<TComponent>(this TestContextBase testContext, RenderFragment renderFragment)
+		    where TComponent : IComponent
 		{
 			// Wrap TComponent in any layout components added to the test context.
 			// If one of the layout components is the same type as TComponent,

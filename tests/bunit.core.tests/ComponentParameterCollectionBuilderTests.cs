@@ -33,7 +33,8 @@ namespace Bunit
 			EventCallbackCalled.ShouldBeTrue();
 		}
 
-		private async Task VerifyEventCallbackAsync<T>(string expectedName) where T : new()
+		private async Task VerifyEventCallbackAsync<T>(string expectedName)
+			where T : new()
 		{
 			var actual = Builder.Build()
 				.ShouldHaveSingleItem()
@@ -47,7 +48,8 @@ namespace Bunit
 			return (IRenderedFragment)Renderer.RenderFragment(renderFragment);
 		}
 
-		private IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment) where TComponent : IComponent
+		private IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
+			where TComponent : IComponent
 		{
 			var res = (IRenderedFragment)Renderer.RenderFragment(renderFragment);
 			return res.FindComponent<TComponent>();

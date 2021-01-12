@@ -10,13 +10,6 @@ namespace Bunit.TestDoubles.Authorization
 {
 	public class FakeAuthorizationServiceTest
 	{
-		private ClaimsPrincipal CreateUserPrincipal(string username)
-		{
-			var usernameClaim = new Claim(ClaimsIdentity.DefaultNameClaimType, username);
-			var identity = new ClaimsIdentity(claims: new[] { usernameClaim }, authenticationType: "bUnit Fake Authentication");
-			return new ClaimsPrincipal(identity);
-		}
-
 		[Fact(DisplayName = "Get AuthorizeAsync with an authorized result.")]
 		public async Task Test002()
 		{
@@ -93,6 +86,13 @@ namespace Bunit.TestDoubles.Authorization
 
 			// assert
 			Assert.Equal("IAuthorizationService", ex.ServiceName);
+		}
+
+		private static ClaimsPrincipal CreateUserPrincipal(string username)
+		{
+			var usernameClaim = new Claim(ClaimsIdentity.DefaultNameClaimType, username);
+			var identity = new ClaimsIdentity(claims: new[] { usernameClaim }, authenticationType: "bUnit Fake Authentication");
+			return new ClaimsPrincipal(identity);
 		}
 	}
 }

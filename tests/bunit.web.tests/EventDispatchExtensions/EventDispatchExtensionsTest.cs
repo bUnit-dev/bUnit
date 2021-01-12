@@ -68,6 +68,7 @@ namespace Bunit
 			}
 		}
 
+		[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "Events has to be in lowercase.")]
 		private static string GetEventNameFromMethod(MethodInfo helper)
 		{
 			if (helper is null)
@@ -85,7 +86,7 @@ namespace Bunit
 			return eventName;
 		}
 
-		[SuppressMessage("Design", "MA0018:Do not declare static members on generic types")]
+		[SuppressMessage("Design", "CA1000:Do not declare static members on generic types")]
 		public static IEnumerable<MethodInfo[]> GetEventHelperMethods(Type helperClassType)
 		{
 			if (helperClassType is null)
@@ -97,7 +98,7 @@ namespace Bunit
 				.ToArray();
 		}
 
-		[SuppressMessage("Design", "MA0018:Do not declare static members on generic types")]
+		[SuppressMessage("Design", "CA1000:Do not declare static members on generic types")]
 		public static IEnumerable<MethodInfo[]> GetEventHelperMethods(Type helperClassType, Func<MethodInfo, bool> customFilter)
 		{
 			if (helperClassType is null)

@@ -14,7 +14,8 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// <summary>
 		/// Initializes a new instance of the <see cref="JSRuntimeInvocationHandler"/> class.
 		/// </summary>
-		protected internal JSRuntimeInvocationHandler(string identifier, InvocationMatcher matcher) : base(identifier, matcher) { }
+		protected internal JSRuntimeInvocationHandler(string identifier, InvocationMatcher matcher)
+			: base(identifier, matcher) { }
 
 		/// <summary>
 		/// Completes the current awaiting void invocation requests.

@@ -15,6 +15,9 @@ namespace Bunit.TestDoubles
 		/// </summary>
 		public static TestAuthorizationContext AddTestAuthorization(this TestContextBase context)
 		{
+			if (context is null)
+				throw new System.ArgumentNullException(nameof(context));
+
 			context.RenderTree.TryAdd<CascadingAuthenticationState>();
 			var authCtx = new TestAuthorizationContext();
 			authCtx.SetNotAuthorized();
