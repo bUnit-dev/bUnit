@@ -54,7 +54,7 @@ Here are the rules for the <xref:Bunit.Fixture> component’s child content:
 
 1. One <xref:Bunit.ComponentUnderTest> component must be added, and it should not be empty.
 2. Zero or more <xref:Bunit.Fragment> components can be added.
-3. The order the <xref:Bunit.ComponentUnderTest> and <xref:Bunit.Fragment> components are added in does not matter.
+3. The order in which the <xref:Bunit.ComponentUnderTest> and <xref:Bunit.Fragment> components are added does not matter.
 4. The <xref:Bunit.ComponentUnderTest> and <xref:Bunit.Fragment> components can contain both Razor markup and regular HTML markup.
 5. If more than one <xref:Bunit.Fragment> component is added, give each fragment an `Id` to be able to identify them when retrieving them in the test method.
 6. The first <xref:Bunit.Fragment> component added can always be retrieved without an id.
@@ -110,6 +110,6 @@ This covers the “arrange”-steps in the test above and shows how you can easi
 
 Learn more about injecting services into components under test on the <xref:inject-services> page. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTY5NzU1NTIwMSwtMTg3OTExMTMxOSwtMT
-gyOTU5MzMxNF19
+eyJoaXN0b3J5IjpbLTE5OTE3NTMxMzAsLTE4NzkxMTEzMTksLT
+E4Mjk1OTMzMTRdfQ==
 -->
