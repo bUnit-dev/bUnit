@@ -5,7 +5,7 @@ title: Fixture Test Details
 
 # `<Fixture>` Test Details
 
-bUnit's <xref:Bunit.Fixture> component provides different parameters you can set on it which change the behavior of the test. It also allows you to set up both a component under test, and additional fragments that can be used in the test. Fragments are a way to define additional markup that is needed in a test, for example to serve as an expected value in an assertion.
+bUnit's <xref:Bunit.Fixture> component provides different parameters you can set to change the behavior of the test. It also allows you to set up both a component under test and additional fragments that can be used in the test. Fragments are a way to define additional markup that is needed in a test, for example to serve as an expected value in an assertion.
 
 > [!WARNING]
 > Razor tests, where <xref:Bunit.Fixture> components are used, are currently only compatible with using xUnit as the general purpose testing framework.
@@ -109,3 +109,6 @@ Let's look at what's going on in this test:
 This covers the “arrange”-steps in the test above and shows how you can easily get access to both the component under test and other fragments that you might need to write your test concisely. We will cover the details of the "act" and "assertion" step in the <xref:interaction> and <xref:verification> pages. 
 
 Learn more about injecting services into components under test on the <xref:inject-services> page. 
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbMTc5MTI4MTgyMV19
+-->
