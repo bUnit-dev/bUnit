@@ -34,7 +34,7 @@ In addition to that, Blazor test components have to inherit from <xref:Bunit.Tes
 
 [!code-cshtml[](../../../samples/tests/razor/HelloWorldTest.razor#L1)]
 
-The following two sections will show how to create tests using bUnit's <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
+The following two sections will show you how to create tests using bUnit's <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
 
 ### Creating a Test using the `<Fixture>` Component
 
@@ -42,7 +42,7 @@ Let's see a simple example where we test the following `<HelloWorld>` component 
 
 [!code-cshtml[HelloWorld.razor](../../../samples/components/HelloWorld.razor)]
 
-Here is the Razor code that tests the `<HelloWorld>` component:
+Here's the Razor code that tests the `<HelloWorld>` component:
 
 [!code-cshtml[HelloWorldTest.razor](../../../samples/tests/razor/HelloWorldTest.razor#L1-L19)]
 
@@ -104,5 +104,5 @@ Now that we have covered the basics of writing tests using Razor syntax, you can
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODE2MjUzMTldfQ==
+eyJoaXN0b3J5IjpbMTExNjQ5NzUxMl19
 -->
