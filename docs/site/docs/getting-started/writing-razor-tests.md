@@ -62,7 +62,7 @@ Let's break down what is going on in this test:
 
 ### Creating a Test using the `<SnapshotTest>` Component
 
-In snapshot testing, you declare your input (e.g. one or more component under test) and the expected output, and the library will automatically tell you if they do not match. With bUnit, this comparison is done using a smart built-in semantic HTML comparison logic.
+In snapshot testing, you declare your input (e.g. one or more components under test) and the expected output, and the library will automatically tell you if they do not match. With bUnit, this comparison is done using a smart built-in semantic HTML comparison logic.
 
 Let's see a simple example where we test the following `<HelloWorld>` component using the bUnit <xref:Bunit.SnapshotTest> component:
 
@@ -104,5 +104,6 @@ Now that we have covered the basics of writing tests using Razor syntax, you can
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI5MjI0MDc4NiwxMTE2NDk3NTEyXX0=
+eyJoaXN0b3J5IjpbMTYxODM0NDc3NSwtMjkyMjQwNzg2LDExMT
+Y0OTc1MTJdfQ==
 -->
