@@ -5,7 +5,7 @@ title: Writing Tests in C# for Blazor Components
 
 # Writing Tests in C# for Blazor Components
 
-Testing Blazor components is a little different from testing regular C# classes: Blazor components are *rendered*; they have the *Blazor component life cycle* during which we can *provide input* to them and they can *produce output*.
+Testing Blazor components is a little different from testing regular C# classes: Blazor components are *rendered*, they have the *Blazor component life cycle* during which we can *provide input* to them, and they can *produce output*.
 
 Use **bUnit** to render the component under test, pass in its parameters, inject required services, and access the rendered component instance and the markup it has produced.
 
@@ -99,3 +99,6 @@ With the basics out of the way, next we will look at how to pass parameters and 
 - <xref:verify-markup>
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbNzc3ODU3MTg2XX0=
+-->
