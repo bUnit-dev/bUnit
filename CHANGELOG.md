@@ -18,7 +18,6 @@ List of now removed features.
 ### Fixed
 List of any bug fixes.
 
-
 ## [1.0.0-preview-01] - 2020-12-24
 
 The following section list all changes in 1.0.0 preview 01.
@@ -26,14 +25,130 @@ The following section list all changes in 1.0.0 preview 01.
 ### Added
 List of new features.
 
+- Added support for casting `BUnitJSRuntime` to `IJSInProcessRuntime` and `IJSUnmarshalledRuntime`. By [@KristofferStrube](https://github.com/KristofferStrube) in [#279](https://github.com/egil/bUnit/pull/279)
+
+- Added support for triggering `@ontoggle` event handlers through a dedicated `Toggle()` method. By [@egil](https://github.com/egil) in [#256](https://github.com/egil/bUnit/pull/256).
+
+- Added out of the box support for `<Virtualize>` component. When a `<Virtualize>` component is used in a component under test, it's JavaScript interop-calls are faked by bUnits JSInterop, and it should result in all items being rendered immediately. By [@egil](https://github.com/egil) in [#240](https://github.com/egil/bUnit/issues/240).
+
+- Added support for components that call `ElementReference.FocusAsync`. These calls are handled by the bUnits JSInterop, that also allows you to verify that `FocusAsync` has been called for a specific element. For example, if a component has rendered an `<input>` element, then the following code will verify that it has been focused using `FocusAsync`:
+
+  ```csharp
+  var cut = RenderComponent<FocusingComponent>();
+
+  var input = cut.Find("input");
+
+  JSInterop.VerifyFocusAsyncInvoke()
+    .Arguments[0] // the first argument is the ElemenetReference
+    .ShouldBeElementReferenceTo(input);
+  ```
+
+  By [@egil](https://github.com/egil) in [#260](https://github.com/egil/bUnit/pull/260).
+
+- Added `Render(RenderFragment)` and `Render<TComponent>(RenderFragment)` methods to `TestContext`, as well as various overloads to the `MarkupMatches` methods, that also takes a `RenderFragment` as the expected value.
+
+  The difference between the generic `Render` method and the non-generic one is that the generic returns an `IRenderedComponent<TComponent>`, whereas the non-generic one returns a `IRenderedFragment`.
+
+  Calling `Render<TComponent>(RenderFragent)` is equivalent to calling `Render(RenderFragment).FindComponent<TComponent>()`, e.g. it returns the first component in the render tree of type `TComponent`. This is different from the `RenderComponent<TComponent>()` method, where `TComponent` _is_ the root component of the render tree.
+
+  The main usecase for these are when writing tests inside .razor files. Here the inline syntax for declaring render fragments make these methods very useful.
+
+  For example, to tests the `<Counter>` page/component that is part of new Blazor apps, do the following (inside a `CounterTest.razor` file):
+
+  ```cshtml
+  @code
+  {
+    [Fact]
+    public void Counter_Increments_When_Button_Is_Clicked()
+    {
+      using var ctx = new TestContext();
+      var cut = ctx.Render(@<Counter />);
+
+      cut.Find("button").Click();
+
+      cut.Find("p").MarkupMatches(@<p>Current count: 1</p>);
+    }
+  }
+  ```
+
+  Note: This example uses xUnit, but NUnit or MSTest works equally well.
+
+  In addition to the new `Render` methods, a empty `BuildRenderTree` method has been added to the `TestContext` type. This makes it possible to inherit from the `TestContext` type in test components, removing the need for newing up the `TestContext` in each test.
+
+  This means the test component above ends up looking like this:
+
+  ```cshtml
+  @inherts TestContext
+  @code
+  {
+    [Fact]
+    public void Counter_Increments_When_Button_Is_Clicked()
+    {
+      var cut = Render(@<Counter />);
+
+      cut.Find("button").Click();
+
+      cut.Find("p").MarkupMatches(@<p>Current count: 1</p>);
+    }
+  }
+  ```
+
+  Tip: If you have multiple test components in the same folder, you can add a `_Imports.razor` file inside it and add the `@inherits TestContext` statement in that, removing the need to add it to every test component.
+
+  By [@egil](https://github.com/egil) in [#262](https://github.com/egil/bUnit/pull/262).
+
+- Added support for `IJSRuntime.InvokeAsync<IJSObjectReference>(...)` calls from components. There is now a new setup helper methods for configuring how invocations towards JS modules should be handled. This is done with the various `SetupModule` methods available on the `BunitJSInterop` type available through the `TestContext.JSInterop` property. For example, to set up a module for handling calls to `foo.js`, do the following:
+
+  ```c#
+  using var ctx = new TestContext();
+  var moduleJsInterop = ctx.JSInterop.SetupModule("foo.js");
+  ```
+
+  The returned `moduleJsInterop` is a `BunitJSInterop` type, which means all the normal `Setup<TResult>` and `SetupVoid` methods can be used to configure it to handle calls to the module from a component. For example, to configure a handler for a call to `hello` in the `foo.js` module, do the following:
+
+  ```c#
+  moduleJsInterop.SetupVoid("hello");
+  ```
+
+  By [@egil](https://github.com/egil) in [#288](https://github.com/egil/bUnit/pull/288).
+
+- Added support for registering services in bUnits `Services` collection that implements `IAsyncDisposable`. Suggested by [@jmaillet](https://github.com/jmaillet) in [#249](https://github.com/egil/bUnit/issues/249). 
+
 ### Changed
 List of changes in existing functionality.
+
+- bUnit's mock IJSRuntime has been moved to an "always on" state by default, in strict mode, and is now available through `TestContext`'s `JSInterop` property. This makes it possible for first party Blazor components like the `<Virtualize>` component, which depend on JSInterop, to "just work" in tests.
+
+  **Compatible with previous releases:** To get the same effect as calling `Services.AddMockJSRuntime()` in beta-11, which used to add the mock IJSRuntime in "loose" mode, you now just need to change the mode of the already on JSInterop, i.e. `ctx.JSInterop.Mode = JSRuntimeMode.Loose`.
+
+  **Inspect registered handlers:** Since the new design allows registering invoke handlers in the context of the `TestContext`, you might need to get already registered handlers in your individual tests. This can be done with the `TryGetInvokeHandler()` method, that will return handler that can handle the parameters passed to it. E.g. to get a handler for a `IJSRuntime.InvokaAsync<string>("getValue")`, call `ctx.JSInterop.TryGetInvokeHandler<string>("getValue")`.
+
+  Learn more [issue #237](https://github.com/egil/bUnit/issues/237). By [@egil](https://github.com/egil) in [#247](https://github.com/egil/bUnit/pull/247).
+
+- The `Setup<TResult>(string identifier, Func<IReadOnlyList<object?>, bool> argumentsMatcher)` and `SetupVoid(string identifier, Func<IReadOnlyList<object?>, bool> argumentsMatcher)` methods in bUnits JSInterop/MockJSRuntime has a new second parameter, an `InvocationMatcher`.
+
+  The `InvocationMatcher` type is a delegate that receives a `JSRuntimeInvoation` and returns true. The `JSRuntimeInvoation` type contains the arguments of the invocation and the identifier for the invocation. This means old code using the `Setup` and `SetupVoid` methods should be updated to use the arguments list in `JSRuntimeInvoation`, e.g., change the following call:
+
+   `ctx.JSInterop.Setup<string>("foo", args => args.Count == 2)` to this:  
+   `ctx.JSInterop.Setup<string>("foo", invocation => invocation.Arguments.Count == 2)`.
+
+  Changed added in relation to [#240](https://github.com/egil/bUnit/issues/240) in [#257](https://github.com/egil/bUnit/issues/257) by [@egil](https://github.com/egil).
+
+- Changed `AddTestAuthorization` such that it works in Razor-based test contexts, i.e. on the `Fixture` and `SnapshotTest` types.
 
 ### Removed
 List of now removed features.
 
+- A few bUnit internal xUnit assert helper methods, the custom `ShouldAllBe` methods, has mistakingly been part of the bunit.xunit package. These have been removed.
+
 ### Fixed
 List of any bug fixes.
+
+- When an `Add` call to the component parameter collection builder was used to select a parameter that was inherited from a base component, the builder incorrectly reported the selected property/parameter as missing on the type. Reported by [@nickmuller](https://github.com/nickmuller) in [#250](https://github.com/egil/bUnit/issues/250).
+
+- When an element, found in the DOM tree using the `Find()`, method was removed because of an event handler trigger on it, e.g. an `cut.Find("button").Click()` event trigger method, an `ElementNotFoundException` was thrown. Reported by [@nickmuller](https://github.com/nickmuller) in [#251](https://github.com/egil/bUnit/issues/251).
+
+- In the built-in fake authentication system in bUnit, roles and claims were not available in components through the a cascading parameter of type `Task<AuthenticationState>`. Reported by [@AFAde](https://github.com/AFAde) in [#253](https://github.com/egil/bUnit/discussions/253) and fixed in [#291](https://github.com/egil/bUnit/pull/291) by [@egil](https://github.com/egil).
 
 ## [1.0.0-beta 11] - 2020-10-26
 
