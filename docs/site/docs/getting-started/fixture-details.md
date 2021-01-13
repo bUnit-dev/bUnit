@@ -77,7 +77,7 @@ The <xref:Bunit.Fixture>'s setup and test methods receive the <xref:Bunit.Fixtur
 
 For both `GetFragment` methods, the `id` string parameter is optional. If it is not provided, the first <xref:Bunit.Fragment> is used to return a <xref:Bunit.IRenderedFragment> or <xref:Bunit.IRenderedComponent`1>. Otherwise, the <xref:Bunit.Fragment> with an `Id` parameter that matches the `id` specified in the `GetFragment` method call will be used.
 
-The generic versions of <xref:Bunit.Fixture.GetComponentUnderTest``1> and <xref:Bunit.Fixture.GetFragment``1(System.String)> can specify a component of type `TComponent` which is not the first child of <xref:Bunit.ComponentUnderTest> or <xref:Bunit.Fragment>. This is useful in situations such as the component under test being wrapped inside a `<CascadingValue>`. The methods will return the _first_ component it finds that matches the requested type through a depth-first search of the render tree.
+The generic versions of <xref:Bunit.Fixture.GetComponentUnderTest``1> and <xref:Bunit.Fixture.GetFragment``1(System.String)> can specify a component of type `TComponent` which is not the first child of <xref:Bunit.ComponentUnderTest> or <xref:Bunit.Fragment>. This is useful in situations such as the component under test being wrapped inside a `<CascadingValue>`. The methods [__AP: method or methods?__] will return the _first_ component it [__AP: it or they?__] finds that matches the requested type through a depth-first search of the render tree.
 
 > [!NOTE]
 > You can call the `GetComponentUnderTest` or `GetFragment` methods multiple times on the same `Fixture` instance. Each time will return the same instance for the same input. However, you cannot mix the generic and non-generic versions.
@@ -110,6 +110,6 @@ This covers the “arrange”-steps in the test above and shows how you can easi
 
 Learn more about injecting services into components under test on the <xref:inject-services> page. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5OTE3NTMxMzAsLTE4NzkxMTEzMTksLT
-E4Mjk1OTMzMTRdfQ==
+eyJoaXN0b3J5IjpbLTEwNzQ2NTgzNjQsLTE5OTE3NTMxMzAsLT
+E4NzkxMTEzMTksLTE4Mjk1OTMzMTRdfQ==
 -->
