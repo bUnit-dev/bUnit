@@ -75,13 +75,13 @@ Here is the Razor code that tests the `<HelloWorld>` component:
 Let's break down what is going on in this test with the <xref:Bunit.SnapshotTest> component:
 
 - We specify the `Description` parameter. The text it contains will be shown when the test runs and in the Test Explorer in Visual Studio, just like regular unit tests names.
-- Inside the `<TestInput>` child component of <xref:Bunit.SnapshotTest> we declare the component under test. In this case, this is the `<HelloWorld>` component.
-- Inside the `<ExpectedOutput>` child component of <xref:Bunit.SnapshotTest>, we declare the expected rendered output from whatever is declared in the `<TestInput>` child component.
+- Inside the `<TestInput>` child component of <xref:Bunit.SnapshotTest> we declare the component under test. In this case, it is the `<HelloWorld>` component.
+- Inside the `<ExpectedOutput>` child component of <xref:Bunit.SnapshotTest> we declare the expected rendered output from whatever is declared in the `<TestInput>` child component.
 
 When the test runs, the <xref:Bunit.SnapshotTest> component will automatically compare the rendered output of the `<TestInput>` component with that of the `<ExpectedOutput>` component using the semantic HTML comparison logic in bUnit.
 
 > [!TIP]
-> Learn more about how the semantic HTML/markup comparison in bUnit work, and how to customize it on the <xref:semantic-html-comparison> page.
+> Learn more about how the semantic HTML/markup comparison in bUnit works, and how to customize it, on the <xref:semantic-html-comparison> page.
 
 ### Passing Parameters to Components Under Test
 
@@ -104,6 +104,6 @@ Now that we have covered the basics of writing tests using Razor syntax, you can
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTA3MTcyODk2OSwtMjkyMjQwNzg2LDExMT
+eyJoaXN0b3J5IjpbMTMxMjU2NTcyNywtMjkyMjQwNzg2LDExMT
 Y0OTc1MTJdfQ==
 -->
