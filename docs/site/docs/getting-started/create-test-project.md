@@ -98,7 +98,7 @@ To do so, change the first part of the test projects `.csproj` file to look like
 
 **4. Add the test project to your solution**
 
-If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and project containing the components that are to be tested:
+If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and the project containing the components that are to be tested:
 
 ```dotnetcli
 dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
@@ -228,5 +228,5 @@ To start creating tests, continue reading the <xref:writing-csharp-tests> and <x
 
 For additional tips and tricks that will make writing tests easier, see the <xref:misc-test-tips> page.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTcxOTgwNzk3Ml19
+eyJoaXN0b3J5IjpbNTAzODE2MjQ1LDE3MTk4MDc5NzJdfQ==
 -->
