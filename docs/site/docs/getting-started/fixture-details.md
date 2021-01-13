@@ -102,14 +102,14 @@ Let's look at what's going on in this test:
 
 1. The fixture has both a setup and test method specified. The setup method is used to register an empty list of tasks that the `<SimpleTodo>` component requires.
 2. The `<SimpleTodo>` component is wrapped in a `<CascadingValue>` component that passes down the "Theme" cascading value.
-3. The first `<Fragment>` does not have an `id` since the `GetFragment()` method will pick the first fragment if no `id` is provided.
-4. The second `<Fragment Id="expected tasks">` does have an `Id` to make it possible to get the second fragment through a call to the `GetFragment("expected tasks")` method.
+3. The first `<Fragment>` does not have an `id`, since the `GetFragment()` method will pick the first fragment if no `id` is provided.
+4. The second `<Fragment Id="expected tasks">` does have an `Id`, to make it possible to get the second fragment through a call to the `GetFragment("expected tasks")` method.
 5. The test uses the generic version of `GetComponentUnderTest<SimpleTodo>()`, which gives us access to the instance of `SimpleTodo` and allows us to inspect its properties, e.g. `ThemeClass`.
 
-This covers the “arrange”-steps in the test above and shows how you can easily get access to both the component under test and other fragments that you might need to write your test concisely. We will cover the details of the "act" and "assertion" step in the <xref:interaction> and <xref:verification> pages. 
+This covers the “arrange”-steps in the test above and shows how you can easily access both the component under test and other fragments that you might need to write your test concisely. We will cover the details of the "act" and "assertion" steps in the <xref:interaction> and <xref:verification> pages. 
 
 Learn more about injecting services into components under test on the <xref:inject-services> page. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTIzNTY2NDg4MywtMTk5MTc1MzEzMCwtMT
-g3OTExMTMxOSwtMTgyOTU5MzMxNF19
+eyJoaXN0b3J5IjpbLTEyODc0NTI4MzEsLTE5OTE3NTMxMzAsLT
+E4NzkxMTEzMTksLTE4Mjk1OTMzMTRdfQ==
 -->
