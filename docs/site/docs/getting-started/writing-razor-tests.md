@@ -13,10 +13,10 @@ A test for a Blazor component can be written in a Blazor _test_ component using 
 > However, they will _not_ show up before the Blazor test component has been compiled into C# by the Blazor compiler, and if there are compile-errors from the Blazor compiler, they might appear to come and go in the Test Explorer.
 
 > [!WARNING]
-> Razor tests are currently only compatible with using xUnit as the general purpose testing framework.
+> Razor tests are currently only compatible with using xUnit as the general-purpose testing framework.
 
 > [!IMPORTANT]
-> Make sure the project SDK type is set to `<Project Sdk="Microsoft.NET.Sdk.Razor">`, instead of the default `<Project Sdk="Microsoft.NET.Sdk">` that is used with standard testing projects. See <xref:create-test-project> for a guide on setting up bUnit test projects.
+> Make sure the project SDK type is set to `<Project Sdk="Microsoft.NET.Sdk.Razor">`, instead of the default `<Project Sdk="Microsoft.NET.Sdk">` that is used with standard testing projects. See <xref:create-test-project> for a guide to setting up bUnit test projects.
 
 ## Creating a Test Specific `_Imports.razor` File
 
@@ -103,3 +103,6 @@ Now that we have covered the basics of writing tests using Razor syntax, you can
 - <xref:verify-markup>
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbLTEwODIyNTYzXX0=
+-->
