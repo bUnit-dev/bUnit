@@ -29,9 +29,9 @@ These are usually used to configure the <xref:Bunit.ITestContext.Services> colle
   
 In the example above, the setup and test methods are declared in a `@code { }` block nested inside the <xref:Bunit.Fixture> component. This visually groups the methods nicely with the <xref:Bunit.Fixture> component, making it easier to see what parts of a test belong together, especially when you have multiple tests inside the same test component. 
 
-You can place the methods anywhere you want inside the test component, which can be useful. For example, if you have the same setup steps for multiple tests, they can be placed in a common setup method that the tests in the same test component can share, avoiding code duplication.
+You can place the methods anywhere you want inside the test component, which can be useful. For example, if you have the same setup steps for multiple tests, you can avoid code duplication by placing them in a common setup method that can be shared by the tests in the same test component.
 
-TODO EGIL
+TODO EGIL [AP: <== !! ]
 
 **Other parameters**
 
@@ -110,6 +110,6 @@ This covers the “arrange”-steps in the test above and shows how you can easi
 
 Learn more about injecting services into components under test on the <xref:inject-services> page. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwMzc5MzQ5MiwtMTg3OTExMTMxOSwtMT
+eyJoaXN0b3J5IjpbLTEzMDg2NjI5MSwtMTg3OTExMTMxOSwtMT
 gyOTU5MzMxNF19
 -->
