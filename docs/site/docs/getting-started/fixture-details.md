@@ -31,11 +31,11 @@ In the example above, the setup and test methods are declared in a `@code { }` b
 
 You can place the methods anywhere you want inside the test component, which can be useful. For example, if you have the same setup steps for multiple tests, you can avoid code duplication by placing them in a common setup method that can be shared by the tests in the same test component.
 
-TODO EGIL [AP: <== !! ]
+TODO EGIL [__AP: <== !!__]
 
 **Other parameters**
 
-There are other parameters which affect how the test runs, and how it is displayed in something like Visual Studio's Test Explorer:
+There are other parameters that affect how the test runs, and how it is displayed in something like Visual Studio's Test Explorer:
 
 1. **<xref:Bunit.RazorTesting.RazorTestBase.Description>:**   
    If a description is provided, it will be displayed by the test runner when the test runs, and in Visual Studio's Test Explorer. If no description is provided, the name of the provided test method is used.
@@ -110,6 +110,6 @@ This covers the “arrange”-steps in the test above and shows how you can easi
 
 Learn more about injecting services into components under test on the <xref:inject-services> page. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMDg2NjI5MSwtMTg3OTExMTMxOSwtMT
+eyJoaXN0b3J5IjpbMTcwMTEyMzczMywtMTg3OTExMTMxOSwtMT
 gyOTU5MzMxNF19
 -->
