@@ -18,9 +18,9 @@ A test for a Blazor component can be written in a Blazor _test_ component using 
 > [!IMPORTANT]
 > Make sure the project SDK type is set to `<Project Sdk="Microsoft.NET.Sdk.Razor">`, instead of the default `<Project Sdk="Microsoft.NET.Sdk">` that is used with standard testing projects. See <xref:create-test-project> for a guide to setting up bUnit test projects.
 
-## Creating a Test Specific `_Imports.razor` File
+## Creating a Test-Specific `_Imports.razor` File
 
-Razor tests are written in Blazor test components. To make our lives a little easier, let’s first set up a `_Imports.razor` file with the "using directives" we are going to be using throughout our tests. Simply add the following `_Imports.razor` to the root folder where you will be placing your Blazor test components:
+Razor tests are written in Blazor test components. To make life a little easier, let’s first set up an `_Imports.razor` file with the "using directives" we are going to be using throughout our tests. Simply add the following `_Imports.razor` to the root folder where you will be placing your Blazor test components:
 
 [!code-cshtml[_Imports.razor](../../../samples/tests/razor/_Imports.razor#L4-)]
 
@@ -30,7 +30,7 @@ With that created, we are ready to create our first Razor test.
 
 A Blazor test component is conceptually very similar to a regular test class in xUnit or NUnit, for example. You can define multiple tests inside a single test component as long as they are based on the special bUnit test components, currently either <xref:Bunit.Fixture> or <xref:Bunit.SnapshotTest>. 
 
-In addition to  that, Blazor test components has to inherit from <xref:Bunit.TestComponentBase>, e.g.:
+In addition to that, Blazor test components have to inherit from <xref:Bunit.TestComponentBase>, e.g.:
 
 [!code-cshtml[](../../../samples/tests/razor/HelloWorldTest.razor#L1)]
 
@@ -104,5 +104,5 @@ Now that we have covered the basics of writing tests using Razor syntax, you can
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwODIyNTYzXX0=
+eyJoaXN0b3J5IjpbODE2MjUzMTldfQ==
 -->
