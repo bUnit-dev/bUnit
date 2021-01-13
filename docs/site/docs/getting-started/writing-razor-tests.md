@@ -85,9 +85,9 @@ When the test runs, the <xref:Bunit.SnapshotTest> component will automatically c
 
 ### Passing Parameters to Components Under Test
 
-Since we are declaring our component under test in Razor syntax, passing parameters to the component under test is the same as passing parameters in normal Blazor components. This is the same for tests created with both the <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
+Since we are declaring our component under test in Razor syntax, passing parameters to the component under test is the same as passing parameters into normal Blazor components. This is the same for tests created with both the <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
 
-In this example, we are passing both attribute parameters and child content to the component under test. In this case, this is a basic `<Alert>` component:
+In this example, we are passing both attribute parameters and child content to the component under test. In this case, it's a basic `<Alert>` component:
 
 [!code-cshtml[](../../../samples/tests/razor/PassingParametersToComponents.razor)]
 
@@ -104,6 +104,6 @@ Now that we have covered the basics of writing tests using Razor syntax, you can
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTMxMjU2NTcyNywtMjkyMjQwNzg2LDExMT
-Y0OTc1MTJdfQ==
+eyJoaXN0b3J5IjpbNzc4MzY2OTA5LC0yOTIyNDA3ODYsMTExNj
+Q5NzUxMl19
 -->
