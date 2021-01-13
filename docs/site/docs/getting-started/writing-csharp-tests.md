@@ -66,7 +66,7 @@ Since xUnit instantiates test classes for each execution of the test methods ins
 
 [!code-csharp[BunitTestContext.cs](../../../samples/tests/nunit/BunitTestContext.cs)]
 
-Since NUnit instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, which is listed above, and use that to hook into NUnit's `[SetUp]` and `[TearDown]` methods, which runs before and after each test.
+Since NUnit instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed above, and use that to hook into NUnit's `[SetUp]` and `[TearDown]` methods, which runs before and after each test.
 
 Methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> can then be called directly from each test, as seen in the listing above.
 
@@ -76,7 +76,7 @@ Methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.Componen
 
 [!code-csharp[BunitTestContext.cs](../../../samples/tests/mstest/BunitTestContext.cs)]
 
-Since MSTest instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, which is listed above, and use that to hook into MSTest's `[TestInitialize]` and `[TestCleanup]` methods. This runs before and after each test.
+Since MSTest instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed above, and use that to hook into MSTest's `[TestInitialize]` and `[TestCleanup]` methods. This runs before and after each test.
 
 Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> can now be called directly from each test, as seen in the listing above.
 
@@ -100,5 +100,6 @@ With the basics out of the way, next we will look at how to pass parameters and 
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTYxOTcxMjY5Nyw3Nzc4NTcxODZdfQ==
+eyJoaXN0b3J5IjpbLTE3MjYxNzg2NTEsLTYxOTcxMjY5Nyw3Nz
+c4NTcxODZdfQ==
 -->
