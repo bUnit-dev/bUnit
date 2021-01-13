@@ -40,7 +40,7 @@ There are other parameters that affect how the test runs, and how it is displaye
 1. **<xref:Bunit.RazorTesting.RazorTestBase.Description>:**   
    If a description is provided, it will be displayed by the test runner when the test runs, and in Visual Studio's Test Explorer. If no description is provided, the name of the provided test method is used.
 2. **<xref:Bunit.RazorTesting.RazorTestBase.Skip>:**  
-   If the skip parameter is provided, the test is skipped, and the text entered in the skip parameter is passed to the test runner as the reason to skip the test.
+   If the skip parameter is provided, the test is skipped and the text entered in the skip parameter is passed to the test runner as the reason to skip the test.
 3. **<xref:Bunit.RazorTesting.RazorTestBase.Timeout>:**  
    If provided, the test runner will terminate the test after the specified amount of time if it has not completed already.
 
@@ -110,6 +110,6 @@ This covers the “arrange”-steps in the test above and shows how you can easi
 
 Learn more about injecting services into components under test on the <xref:inject-services> page. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTcwMTEyMzczMywtMTg3OTExMTMxOSwtMT
+eyJoaXN0b3J5IjpbMTY5NzU1NTIwMSwtMTg3OTExMTMxOSwtMT
 gyOTU5MzMxNF19
 -->
