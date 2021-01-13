@@ -52,13 +52,13 @@ The test above does the following:
 
 ## Remove Boilerplate Code from Tests
 
-We can remove some boilerplate code from each test by making the <xref:Bunit.TestContext> implicitly available to the test class so we do not have to have `using var ctx = new Bunit.TestContext();` in every test. This can be done like this:
+We can remove some boilerplate code from each test by making the <xref:Bunit.TestContext> implicitly available to the test class, so we don't have to have `using var ctx = new Bunit.TestContext();` in every test. This can be done like this:
 
 # [xUnit](#tab/xunit)
 
 [!code-csharp[HelloWorldImplicitContextTest.cs](../../../samples/tests/xunit/HelloWorldImplicitContextTest.cs)]
 
-Since xUnit instantiates test classes for each execution of test methods inside them and disposes of them after each test method has run, we simply inherit from <xref:Bunit.TestContext>, and methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> can now be called directly from each test, as seen in the listing above. 
+Since xUnit instantiates test classes for each execution of the test methods inside them, and disposes of them after each test method has run, we simply inherit from <xref:Bunit.TestContext>, and methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> can now be called directly from each test. This is seen in the listing above. 
 
 # [NUnit](#tab/nunit)
 
@@ -100,5 +100,5 @@ With the basics out of the way, next we will look at how to pass parameters and 
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ2Nzc2MzY4Niw3Nzc4NTcxODZdfQ==
+eyJoaXN0b3J5IjpbLTYxOTcxMjY5Nyw3Nzc4NTcxODZdfQ==
 -->
