@@ -214,7 +214,7 @@ The `-o` option in the `dotnet new` command above is used to specify the name of
 
 **3. Add the test project to your solution**
 
-If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and project containing the components that should be tested:
+If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and the project containing the components that should be tested:
 
 ```dotnetcli
 dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
@@ -229,6 +229,6 @@ To start creating tests, continue reading the <xref:writing-csharp-tests> and <x
 
 For additional tips and tricks that will make writing tests easier, see the <xref:misc-test-tips> page.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExODMxMzQyNjUsNTAzODE2MjQ1LDE3MT
+eyJoaXN0b3J5IjpbLTEyNDg0MjIyNDgsNTAzODE2MjQ1LDE3MT
 k4MDc5NzJdfQ==
 -->
