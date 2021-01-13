@@ -8,7 +8,7 @@ title: Fixture Test Details
 bUnit's <xref:Bunit.Fixture> component provides different parameters you can set to change the behavior of the test. It also allows you to set up both a component under test and additional fragments that can be used in the test. Fragments are a way to define additional markup that is needed in a test, for example to serve as an expected value in an assertion.
 
 > [!WARNING]
-> Razor tests, where <xref:Bunit.Fixture> components are used, are currently only compatible with using xUnit as the general purpose testing framework.
+> Razor tests, where <xref:Bunit.Fixture> components are used, are currently only compatible with using xUnit as the general-purpose testing framework.
 
 ## Parameters
 
@@ -18,7 +18,7 @@ All the parameters the <xref:Bunit.Fixture> component supports are shown in the 
 
 **Setup and Test Methods:**
 
-Let us start by looking at the parameters that take a method as input first. The methods are called in the order they are listed in below, and should be used for the described purpose:
+Let us start by looking at the parameters that take a method as input first [AP: do you mean that we'll first look at ... or that we'l look at ]. The methods are called in the order they are listed in below, and should be used for the described purpose:
 
 1. **<xref:Bunit.RazorTesting.FixtureBase`1.Setup>** and **<xref:Bunit.RazorTesting.FixtureBase`1.SetupAsync>:**  
 The `Setup` and `SetupAsync` methods are called first, and you can provide both if needed. If both are provided, `Setup` is called first.   
@@ -110,5 +110,5 @@ This covers the “arrange”-steps in the test above and shows how you can easi
 
 Learn more about injecting services into components under test on the <xref:inject-services> page. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTc5MTI4MTgyMV19
+eyJoaXN0b3J5IjpbLTYzODQwNTYxOV19
 -->
