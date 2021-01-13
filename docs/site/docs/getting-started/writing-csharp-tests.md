@@ -26,14 +26,14 @@ This is a simple example that tests the following `<HelloWorld>` component:
 [!code-csharp[HelloWorldTest.cs](../../../samples/tests/nunit/HelloWorldTest.cs)]
 
 > [!NOTE]
-> `TestContext` is an ambiguous reference between `TestContext` and `NUnit.Framework.TestContext`, so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.: `using BunitTestContext = Bunit.TestContext;` 
+> `TestContext` is an ambiguous reference - it could mean `TestContext` or `NUnit.Framework.TestContext` - so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.: `using BunitTestContext = Bunit.TestContext;` 
 
 # [MSTest](#tab/mstest)
 
 [!code-csharp[HelloWorldTest.cs](../../../samples/tests/mstest/HelloWorldTest.cs)]
 
 > [!NOTE]
-> `TestContext` is an ambiguous reference between `TestContext` and `Microsoft.VisualStudio.TestTools.UnitTesting.TestContext`, so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.:   
+> `TestContext` is an ambiguous reference - it could mean `TestContext` or `Microsoft.VisualStudio.TestTools.UnitTesting.TestContext` - so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.:   
 > `using BunitTestContext = Bunit.TestContext;` 
 
 ***
@@ -100,5 +100,5 @@ With the basics out of the way, next we will look at how to pass parameters and 
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzc3ODU3MTg2XX0=
+eyJoaXN0b3J5IjpbMjA5OTg4Mjc2OCw3Nzc4NTcxODZdfQ==
 -->
