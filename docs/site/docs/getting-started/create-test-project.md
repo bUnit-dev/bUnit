@@ -211,6 +211,7 @@ dotnet new bunit -o <NAME OF TEST PROJECT>
 ```
 
 The `-o` option in the `dotnet new` command above is used to specify the name of the test project.
+
 **3. Add the test project to your solution**
 
 If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and project containing the components that should be tested:
@@ -228,5 +229,6 @@ To start creating tests, continue reading the <xref:writing-csharp-tests> and <x
 
 For additional tips and tricks that will make writing tests easier, see the <xref:misc-test-tips> page.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTAzODE2MjQ1LDE3MTk4MDc5NzJdfQ==
+eyJoaXN0b3J5IjpbLTExODMxMzQyNjUsNTAzODE2MjQ1LDE3MT
+k4MDc5NzJdfQ==
 -->
