@@ -50,7 +50,7 @@ Let's break down what is going on in this test:
 
 - The test component inherits from <xref:Bunit.TestComponentBase>. This is done in line 1 with `@inherits Bunit.TestComponentBase`.
 - The test is defined using the <xref:Bunit.Fixture> component. It orchestrates the test.
-- Inside the <xref:Bunit.Fixture> component, we add a <xref:Bunit.ComponentUnderTest> component where the component under test is declared using regular Razor syntax. In this case, it is a very simple `<HelloWorld />` declaration.
+- Inside the <xref:Bunit.Fixture> component, we add a <xref:Bunit.ComponentUnderTest> component where the component under test is declared using regular Razor syntax. In this case, it's a very simple `<HelloWorld />` declaration.
 - The <xref:Bunit.Fixture> component's `Test` parameter takes a method which is called when the test runs, and is passed  to the <xref:Bunit.Fixture> component.
 - In the test method, we use the <xref:Bunit.Fixture.GetComponentUnderTest``1> to get the `HelloWorld` declared in the <xref:Bunit.Fixture>. In addition, we verify the rendered markup from the `HelloWorld` component using the `MarkupMatches` method. This performs a semantic comparison of the expected markup with the rendered markup.
 
@@ -104,5 +104,5 @@ Now that we have covered the basics of writing tests using Razor syntax, you can
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTExNjQ5NzUxMl19
+eyJoaXN0b3J5IjpbLTI5MjI0MDc4NiwxMTE2NDk3NTEyXX0=
 -->
