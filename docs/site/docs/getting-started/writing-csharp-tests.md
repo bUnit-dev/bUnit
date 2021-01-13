@@ -42,10 +42,10 @@ The test above does the following:
 
 1. Creates a new instance of the disposable bUnit <xref:Bunit.TestContext>, and assigns it to `ctx` variable using the `using var` syntax to avoid unnecessary source code indention.
 2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
-3. Verify the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
+3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
 > [!TIP]
-> Learn more about how the semantic HTML/markup comparison in bUnit works, and how to customize it on the <xref:semantic-html-comparison> page.
+> Learn more about how the semantic HTML/markup comparison in bUnit works, and how to customize it, on the <xref:semantic-html-comparison> page.
 
 > [!TIP]
 > In bUnit tests, we like to use the abbreviation `CUT`, short for "component under test", to indicate the component that is being tested. This is inspired by the common testing abbreviation `SUT`, short for "system under test".
@@ -100,5 +100,5 @@ With the basics out of the way, next we will look at how to pass parameters and 
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA5OTg4Mjc2OCw3Nzc4NTcxODZdfQ==
+eyJoaXN0b3J5IjpbLTQ2Nzc2MzY4Niw3Nzc4NTcxODZdfQ==
 -->
