@@ -8,7 +8,7 @@ title: SnapshotTest Details
 bUnit's support for snapshot testing comes with the <xref:Bunit.SnapshotTest> component. In snapshot testing, you declare your input (e.g. one or more components under test) and the expected output, and the library will automatically tell you if they do not match.
 
 > [!NOTE] 
-> One notable snapshot testing feature is missing now: the ability to auto-generate the expected output initially, when it is not specified. If you want to contribute to this, take a look at [issue #3 on GitHub](https://github.com/egil/bunit/issues/3).
+> One notable snapshot testing feature is currently missing: the ability to auto-generate the expected output initially, when it is not specified. If you want to contribute to resolving this, take a look at [issue #3 on GitHub](https://github.com/egil/bunit/issues/3).
 
 > [!WARNING]
 > Razor tests, where <xref:Bunit.SnapshotTest> components are used, are currently only compatible with xUnit as the general purpose testing framework.
@@ -46,5 +46,5 @@ The semantic comparison in bUnit allows you to customize the snapshot verificati
 
 To learn more about semantic comparison modifiers, go to the <xref:semantic-html-comparison> page.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTE5MTAxODcxXX0=
+eyJoaXN0b3J5IjpbLTE0NjEyMDEzNjhdfQ==
 -->
