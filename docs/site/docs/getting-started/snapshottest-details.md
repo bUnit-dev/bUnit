@@ -24,9 +24,9 @@ Let us go over each of these:
 1. **<xref:Bunit.RazorTesting.FixtureBase`1.Setup>** and **<xref:Bunit.RazorTesting.FixtureBase`1.SetupAsync>:**  
    The `Setup` and `SetupAsync` methods can be used to register any services that should be injected into the components declared inside the `<TestInput>` and `<ExpectedOutput>`, and you can use both `Setup` and `SetupAsync` if needed. If both are provided, `Setup` is called first.   
 2. **<xref:Bunit.RazorTesting.RazorTestBase.Description>:**   
-   If a description is provided, it will be displayed by the test runner when the test runs, as well as in Visual Studio's Test Explorer. If no description is provided, "SnapshotTest #NUM" is used where NUM is the position the test has in the file it is declared in.
+   If a description is provided, it will be displayed by the test runner when the test runs, as well as in Visual Studio's Test Explorer. If no description is provided then "SnapshotTest #NUM" is used, where NUM is the position the test has in the file it is declared in.
 3. **<xref:Bunit.RazorTesting.RazorTestBase.Skip>:**  
-   If the skip parameter is provided, the test is skipped and the text entered in the skip parameter is passed to the test runner as the reason to skip the test.
+   If the skip parameter is provided, the test is skipped and the text entered in the skip parameter is passed to the test runner as the reason for skipping the test.
 4. **<xref:Bunit.RazorTesting.RazorTestBase.Timeout>:**  
    If provided, the test runner will terminate the test after the specified amount of time if it has not completed already.
 5. **<xref:Bunit.SnapshotTest.TestInput> child component:**  
@@ -46,5 +46,5 @@ The semantic comparison in bUnit allows you to customize the snapshot verificati
 
 To learn more about semantic comparison modifiers, go to the <xref:semantic-html-comparison> page.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTY1MTU4NDQ4NF19
+eyJoaXN0b3J5IjpbLTEyMzk4MDE1NjUsLTY1MTU4NDQ4NF19
 -->
