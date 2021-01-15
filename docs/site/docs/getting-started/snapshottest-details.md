@@ -5,7 +5,7 @@ title: SnapshotTest Details
 
 # `<SnapshotTest>` Details
 
-bUnit's support for snapshot testing comes with the <xref:Bunit.SnapshotTest> component. In snapshot testing, you declare your input (e.g. one or more component under test) and the expected output, and the library will automatically tell you if they do not match.
+bUnit's support for snapshot testing comes with the <xref:Bunit.SnapshotTest> component. In snapshot testing, you declare your input (e.g. one or more components under test) and the expected output, and the library will automatically tell you if they do not match.
 
 > [!NOTE] 
 > One notable snapshot testing feature is missing now: the ability to auto-generate the expected output initially, when it is not specified. If you want to contribute to this, take a look at [issue #3 on GitHub](https://github.com/egil/bunit/issues/3).
@@ -45,3 +45,6 @@ When a <xref:Bunit.SnapshotTest> runs, this happens:
 The semantic comparison in bUnit allows you to customize the snapshot verification  through _"comparison modifiers"_ in the `<ExpectedOutput>` markup. For example, if you want to tell the semantic comparer to ignore the case of the text content inside an element, you can add the `diff:ignoreCase` attribute to the element inside `<ExpectedOutput>`. 
 
 To learn more about semantic comparison modifiers, go to the <xref:semantic-html-comparison> page.
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbMTE5MTAxODcxXX0=
+-->
