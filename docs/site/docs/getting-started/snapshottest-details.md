@@ -30,7 +30,7 @@ Let us go over each of these:
 4. **<xref:Bunit.RazorTesting.RazorTestBase.Timeout>:**  
    If provided, the test runner will terminate the test after the specified amount of time if it has not completed already.
 5. **<xref:Bunit.SnapshotTest.TestInput> child component:**  
-   Inside the `<TestInput>` child component is where you put all Razor and HTML markup that constitute the test input or component under test.
+   Inside the `<TestInput>` child component is where you put all Razor and HTML markup that constitutes the test input or component under test.
 6. **<xref:Bunit.SnapshotTest.ExpectedOutput> child component:**  
    Inside the `<ExpectedOutput>` child component is where you put all Razor and HTML markup that represents what the rendered result of `<TestInput>` should be. 
 
@@ -46,5 +46,5 @@ The semantic comparison in bUnit allows you to customize the snapshot verificati
 
 To learn more about semantic comparison modifiers, go to the <xref:semantic-html-comparison> page.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyMzk4MDE1NjUsLTY1MTU4NDQ4NF19
+eyJoaXN0b3J5IjpbMTQxODE3NzE5NiwtNjUxNTg0NDg0XX0=
 -->
