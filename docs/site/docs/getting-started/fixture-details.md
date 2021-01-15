@@ -84,7 +84,7 @@ The generic versions of <xref:Bunit.Fixture.GetComponentUnderTest``1> and <xref:
 
 ## `<SimpleTodo>` Test Example
 
-Let's look at an example of an elaborate test which tests the lifecycle of a simple task list component, `<SimpleTodo>` (listed below), that has a service injected, receives a cascading value, and changes between renders:
+Let's look at an example of an elaborate test that tests the lifecycle of a simple task list component, `<SimpleTodo>` (listed below), which has a service injected, receives a cascading value, and changes between renders:
 
 [!code-cshtml[SimpleTodo.razor](../../../samples/components/SimpleTodo.razor)]
 
@@ -110,6 +110,6 @@ This covers the “arrange”-steps in the test above and shows how you can easi
 
 Learn more about injecting services into components under test on the <xref:inject-services> page. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyODc0NTI4MzEsLTE5OTE3NTMxMzAsLT
-E4NzkxMTEzMTksLTE4Mjk1OTMzMTRdfQ==
+eyJoaXN0b3J5IjpbLTc0MzkyNzE1OSwtMTI4NzQ1MjgzMSwtMT
+k5MTc1MzEzMCwtMTg3OTExMTMxOSwtMTgyOTU5MzMxNF19
 -->
