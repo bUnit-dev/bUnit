@@ -91,8 +91,8 @@ Let's look at an example of an elaborate test that tests the lifecycle of a simp
 In the test, we want to verify that:
 
 - The `<form>` resets itself correctly after a task has been added
-- The task was added correctly to the task list
-- The "Theme" cascading value was correctly assigned to the task list
+- The task is added correctly to the task list
+- The "Theme" cascading value is correctly assigned to the task list
 
 The test looks like this:
 
@@ -101,7 +101,7 @@ The test looks like this:
 Let's look at what's going on in this test:
 
 1. The fixture has both a setup and test method specified. The setup method is used to register an empty list of tasks that the `<SimpleTodo>` component requires.
-2. The `<SimpleTodo>` component is wrapped in a `<CascadingValue>` component that passes down the "Theme" cascading value.
+2. The `<SimpleTodo>` component is wrapped in a `<CascadingValue>` component which passes down the "Theme" cascading value.
 3. The first `<Fragment>` does not have an `id`, since the `GetFragment()` method will pick the first fragment if no `id` is provided.
 4. The second `<Fragment Id="expected tasks">` does have an `Id`, to make it possible to get the second fragment through a call to the `GetFragment("expected tasks")` method.
 5. The test uses the generic version of `GetComponentUnderTest<SimpleTodo>()`, which gives us access to the instance of `SimpleTodo` and allows us to inspect its properties, e.g. `ThemeClass`.
@@ -110,6 +110,6 @@ This covers the “arrange”-steps in the test above and shows how you can easi
 
 Learn more about injecting services into components under test on the <xref:inject-services> page. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc0MzkyNzE1OSwtMTI4NzQ1MjgzMSwtMT
+eyJoaXN0b3J5IjpbLTYzMjk4MjA3MywtMTI4NzQ1MjgzMSwtMT
 k5MTc1MzEzMCwtMTg3OTExMTMxOSwtMTgyOTU5MzMxNF19
 -->
