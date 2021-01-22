@@ -66,7 +66,7 @@ Here are the customization options you have available to you:
   <pre diff:whitespace="RemoveWhitespaceNodes">...</pre>
   ```
 
-- **Perform case insensitive comparison:** By default, all text comparison is case sensitive, but if you want to perform a case insensitive comparison of text inside elements or attributes, use the `diff:ignoreCase` attributes on elements and `:ignoreCase` modifier on attributes. For example, to perform a case insensitive comparison of the text in the following `h1` element , do the following:
+- **Perform case-insensitive comparison:** By default, all text comparison is case sensitive, but if you want to perform a case-insensitive comparison of text inside elements or attributes, use the `diff:ignoreCase` attribute on elements and `:ignoreCase` modifier on attributes. For example, to perform a case insensitive comparison of the text in the following `h1` element , do the following:
 
   ```html
   <h1 diff:ignoreCase>HellO WoRlD</h1>
@@ -113,5 +113,5 @@ In a Snapshot test, using the `<SnapshotTest>` test type, the example looks like
 
 [!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L32-L42)]
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4Nzg5ODkzODddfQ==
+eyJoaXN0b3J5IjpbMTc0Nzk1NzUwNCwtMTg3ODk4OTM4N119
 -->
