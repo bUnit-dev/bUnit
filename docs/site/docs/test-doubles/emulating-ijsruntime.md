@@ -111,11 +111,11 @@ To set up a handler for an `Invoke` or `InvokeUnmarshalled` call, just use the r
 
 ## First-Party JSInterop Component Emulation
 
-Blazor comes out of the box with a few components that requires a working JSInterop. bUnit's JSInterop is setup to emulate the JavaScript interactions of those components. The following sections describes how the interaction is emulated for the supported components.
+Blazor comes out of the box with a few components that require a working JSInterop. bUnit's JSInterop is setup to emulate the JavaScript interactions of those components. The following sections describe how the interaction is emulated for the supported components.
 
 ### <Virtualize> JSInterop Emulation
 
-The `<Virtualize>` component require JavaScript to notify it about the available screen space it is being rendered to, and when the users scrolls the viewport, to trigger the loading of new data. bUnit emulates this interaction by telling the `<Virtualize>` component that the viewport is `1,000,000,000` pixels large. That should ensure that all items is loaded, which makes sense in a testing scenario.
+The `<Virtualize>` component requires JavaScript to notify it about the available screen space it is being rendered to, and when the users scrolls the viewport, to trigger the loading of new data. bUnit emulates this interaction by telling the `<Virtualize>` component that the viewport is `1,000,000,000` pixels large. That should ensure that all items is loaded, which makes sense in a testing scenario.
 
 To test the `<Placeholder>` template of the `<Virtualize>` component, create a items provider that doesn't return all items when queried.
 
@@ -159,5 +159,5 @@ bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUn
 
 To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTk4NzM3NTQ4NCwtOTI3MjM0MzNdfQ==
+eyJoaXN0b3J5IjpbLTEzMDEwMDIwNDcsLTkyNzIzNDMzXX0=
 -->
