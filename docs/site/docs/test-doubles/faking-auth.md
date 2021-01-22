@@ -5,7 +5,7 @@ title: Faking Authentication and Authorization
 
 # Faking Authentication and Authorization
 
-bUnit comes with test-specific implementations of Blazor's authentication and authorization types, which make it easy to test components that use Blazor's `<AuthorizeView>`, `<CascadingAuthenticationState>` and `<AuthorizeRouteView>` components, as well as the `AuthenticationStateProvider` type.
+bUnit comes with test-specific implementations of Blazor's authentication and authorization types, making it easy to test components that use Blazor's `<AuthorizeView>`, `<CascadingAuthenticationState>` and `<AuthorizeRouteView>` components, as well as the `AuthenticationStateProvider` type.
 
 The test implementation of Blazor's authentication and authorization can be put into the following states:
 
@@ -18,7 +18,7 @@ The test implementation of Blazor's authentication and authorization can be put 
 bUnit's authentication and authorization implementation is easily available by calling [`AddTestAuthorization()`](xref:Bunit.TestDoubles.FakeAuthorizationExtensions.AddTestAuthorization(Bunit.TestContext)) on a test context. This adds the necessary services to the `Services` collection and the `CascadingAuthenticationState` component to the [root render tree](xref:root-render-tree). The method returns an instance of the <xref:Bunit.TestDoubles.TestAuthorizationContext> type that allows you to control the authentication and authorization state for a test.
 
 > [!NOTE]
-> If your inherits directly from bUnit's <xref:Bunit.TestContext> as described in <xref:writing-csharp-tests#remove-boilerplate-code-from-tests>, then you need to call the [`AddTestAuthorization()`](xref:Bunit.TestDoubles.FakeAuthorizationExtensions.AddTestAuthorization(Bunit.TestContext)) method like so: `this.AddTestAuthorization()`.
+> If your [__A__] inherits directly from bUnit's <xref:Bunit.TestContext> as described in <xref:writing-csharp-tests#remove-boilerplate-code-from-tests>, then you need to call the [`AddTestAuthorization()`](xref:Bunit.TestDoubles.FakeAuthorizationExtensions.AddTestAuthorization(Bunit.TestContext)) method like so: `this.AddTestAuthorization()`.
 
 The following sections will show how to set each of these states in a test.
 
@@ -110,5 +110,5 @@ Let’s try to combine all the possibilities shown in the previous examples into
 
 With this example done, all auth related test scenarios should be covered. If you find one that is missing, please let us know in the [bUnit discussion forum](https://github.com/egil/bUnit/discussions).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODg5NDI2NTMxXX0=
+eyJoaXN0b3J5IjpbLTg3MDIyODA0Nl19
 -->
