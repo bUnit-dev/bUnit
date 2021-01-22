@@ -96,7 +96,7 @@ moduleInterop.SetupVoid("world");
 
 ### Module Interop Mode
 
-By default, a module Interop inherits the `Mode` setting from the root JSInterop in bUnit. However, you can override it explicitly and have it in a different mode from other module Interop or the root JSInterop. Just set the `Mode` property, e.g.:
+By default, a module Interop inherits the `Mode` setting from the root JSInterop in bUnit. However, you can override it explicitly and have it in a different mode from another module's Interop or the root JSInterop. Just set the `Mode` property, e.g.:
 
 ```csharp
 var moduleInterop = ctx.JSInterop.SetupModule("hello.js");
@@ -105,11 +105,11 @@ moduleInterop.Mode = JSRuntimeMockMode.Loose;
 
 ### Support for `IJSInProcessObjectReference` and `IJSUnmarshalledObjectReference`
 
-bUnit's `IJSObjectReference` supports being cast to the `IJSInProcessObjectReference` and `IJSUnmarshalledObjectReference` types, just like Blazors `IJSObjectReference`. 
+bUnit's `IJSObjectReference` supports being cast to the `IJSInProcessObjectReference` and `IJSUnmarshalledObjectReference` types, just like Blazor's `IJSObjectReference`. 
 
-To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
+To set up a handler for an `Invoke` or `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 
-## First Party JSInterop Component Emulation
+## First-Party JSInterop Component Emulation
 
 Blazor comes out of the box with a few components that requires a working JSInterop. bUnit's JSInterop is setup to emulate the JavaScript interactions of those components. The following sections describes how the interaction is emulated for the supported components.
 
@@ -159,5 +159,5 @@ bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUn
 
 To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTk0Mzc1MTY5MywtOTI3MjM0MzNdfQ==
+eyJoaXN0b3J5IjpbLTk4NzM3NTQ4NCwtOTI3MjM0MzNdfQ==
 -->
