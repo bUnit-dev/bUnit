@@ -135,10 +135,11 @@ To pass a component, e.g. the classic `<Counter>` component, which does not take
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L86-L96)]
 
-These examples do the same thing, here is what is going on:
+These examples do the same thing.
 
-1. The first example uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
-2. The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
+The first example uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
+
+The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
 
 # [Razor test code](#tab/razor)
 
@@ -450,5 +451,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyODI5NjEwODJdfQ==
+eyJoaXN0b3J5IjpbMTYzOTQ4MTg4NF19
 -->
