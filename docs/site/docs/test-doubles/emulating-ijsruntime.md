@@ -7,11 +7,11 @@ title: Emulating Blazor's IJSRuntime
 
 It is common for Blazor components to use `IJSRuntime` to call JavaScript, and since bUnit does not run JavaScript, emulating `IJSRuntime` is needed for components that use it. In that regard, `IJSRuntime` is no different than other services that a component might depend on.
 
-bUnit comes with it's own JSInterop, a tailor-made implementation of `IJSRuntime` that is _active by default_, allowing you to specify how JavaScript interop calls should be handled and what values the calls should return, and also allowing you to verify that they the calls have happened. The implementation is running in "strict mode", which means means it will throw an exception if it receives an invocation it has not been configured to handle. See more about strict vs loose mode in the following section.
+bUnit comes with it's own JSInterop, a tailor-made implementation of `IJSRuntime` that is _active by default_, allowing you to specify how JavaScript interop calls should be handled and what values the calls should return, and also allowing you to verify that they the calls have happened. The implementation runs in "strict mode", which means means it will throw an exception if it receives an invocation it has not been configured to handle. See more about strict vs. loose mode in the following section.
 
-If you prefer to use the same mocking framework for all mocking in your tests to keep things consistent, general purpose mocking frameworks like [Moq](https://github.com/Moq), [JustMock Lite](https://github.com/telerik/JustMockLite), or [NSubstitute](https://nsubstitute.github.io/) all works nicely with bUnit and can be used to mock `IJSRuntime`. In general, registering an implementation of `IJSRuntime` with bUnit's `Services` collection replaces bUnit's implementation.
+If you prefer to use the same mocking framework for all mocking in your tests to keep things consistent, general-purpose mocking frameworks like [Moq](https://github.com/Moq), [JustMock Lite](https://github.com/telerik/JustMockLite), or [NSubstitute](https://nsubstitute.github.io/) all work nicely with bUnit and can be used to mock `IJSRuntime`. In general, registering an implementation of `IJSRuntime` with bUnit's `Services` collection replaces bUnit's implementation.
 
-The following sections shows how to use the built-in implementation of `IJSRuntime`.
+The following sections show how to use the built-in implementation of `IJSRuntime`.
 
 > [!NOTE] 
 > In the beta versions of bUnit, you had to explicitly add the mock JSRuntime by calling `Services.AddMockJSRuntime()`. That is no longer needed, and doesn't work any more.
@@ -158,5 +158,5 @@ bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUn
 
 To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM0ODg2ODM4MF19
+eyJoaXN0b3J5IjpbNTk4MjE1MjI2XX0=
 -->
