@@ -33,7 +33,7 @@ This is a simple example that tests the following `<HelloWorld>` component:
 [!code-csharp[HelloWorldTest.cs](../../../samples/tests/mstest/HelloWorldTest.cs)]
 
 > [!NOTE]
-> `TestContext` is an ambiguous reference - it could mean `TestContext` or `Microsoft.VisualStudio.TestTools.UnitTesting.TestContext` - so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.:   
+> `TestContext` is an ambiguous reference - it could mean `Bunit.TestContext` or `Microsoft.VisualStudio.TestTools.UnitTesting.TestContext` - so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.:   
 > `using BunitTestContext = Bunit.TestContext;` 
 
 ***
