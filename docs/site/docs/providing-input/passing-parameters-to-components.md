@@ -239,7 +239,7 @@ The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s
 
 [!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L63-L71)]
 
-This is just regular Blazor child content parameter passing, where the `<Counter />` component is declared inside component under test's `<Content>` element.  This is the same for both `Fixture` and `SnapshotTest` razor tests.
+This is just regular Blazor child content parameter passing, where the `<Counter />` component is declared inside the component under test's `<Content>` element.  This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
 ***
 
@@ -253,10 +253,11 @@ To pass a component with parameters to a `RenderFragment` parameter, e.g. the `<
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L184-L202)]
 
-These examples do the same thing. Here is what is going on:
+These examples do the same thing.
 
-1. The first example uses the `RenderFragment<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the  `RenderFragment` parameter. `RenderFragment<TChildComponent>` factory method takes the name of the parameter and zero or more component parameters as input, which will be passed to the `TChildComponent` component, in this case, the `<Alert>` component.
-2. The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter. The `Add<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterCollectionBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, in this case, the `<Alert>` component.
+The first example uses the `RenderFragment<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the  `RenderFragment` parameter.  The `RenderFragment<TChildComponent>` factory method takes the name of the parameter and zero or more component parameters as input, which will be passed to the `TChildComponent` component, which in this case is the `<Alert>` component.
+
+The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter. The `Add<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterCollectionBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, in this case, the `<Alert>` component.
 
 # [Razor test code](#tab/razor)
 
@@ -454,5 +455,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwNzEzMjExNzksMjIxMzgyNDgxXX0=
+eyJoaXN0b3J5IjpbLTkwMjM5MDY1MCwyMjEzODI0ODFdfQ==
 -->
