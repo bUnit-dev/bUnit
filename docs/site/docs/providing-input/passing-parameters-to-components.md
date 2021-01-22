@@ -44,11 +44,11 @@ In the following sub sections, we will show both C#- and Razor-based test code; 
 
 ## Regular Parameters
 
-A regular parameter is one that is declared using the `[Parameter]` attribute. The following subsections will cover both _non_-Blazor types parameters, e.g. `int` and `List<string>`, and the special Blazor types like `EventCallback` and `RenderFragment`.
+A regular parameter is one that is declared using the `[Parameter]` attribute. The following subsections will cover both _non_-Blazor type parameters, e.g. `int` and `List<string>`, and the special Blazor types like `EventCallback` and `RenderFragment`.
 
 ### Non-Blazor Type Parameters
 
-Let us look at an example of passing parameter that takes types which or _not_ special to Blazor, i.e.:
+Let's look at an example of passing parameters that takes types which or [__AP: should 'or' be 'are'?__] _not_ special to Blazor, i.e.:
 
 [!code-csharp[NonBlazorTypesParams](../../../samples/components/NonBlazorTypesParams.cs#L10-L17)]
 
@@ -448,5 +448,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3NDM2MjM2OTRdfQ==
+eyJoaXN0b3J5IjpbMjc3MDYyMjY3XX0=
 -->
