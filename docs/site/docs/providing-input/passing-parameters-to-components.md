@@ -257,19 +257,19 @@ These examples do the same thing.
 
 The first example uses the `RenderFragment<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the  `RenderFragment` parameter.  The `RenderFragment<TChildComponent>` factory method takes the name of the parameter and zero or more component parameters as input, which will be passed to the `TChildComponent` component, which in this case is the `<Alert>` component.
 
-The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter. The `Add<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterCollectionBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, in this case, the `<Alert>` component.
+The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter. The `Add<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterCollectionBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, which in this case is the `<Alert>` component.
 
 # [Razor test code](#tab/razor)
 
 [!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L73-L83)]
 
-This is just regular Blazor `RenderFragment` parameter passing, where the `<Alert>` component is declared inside the component under test's `<Content>` element, and any parameters is passed to it like normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
+This is just regular Blazor `RenderFragment` parameter passing, where the `<Alert>` component is declared inside the component under test's `<Content>` element, and any parameters are passed to it as normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
 ***
 
 #### Passing a mix of Razor and HTML to a RenderFragment Parameter  
 
-Some times you need to pass multiple different types of content to a `RenderFragment` parameter, e.g. both some Markup and and a component. This can be done in the following way:
+Some times you need to pass multiple different types of content to a `RenderFragment` parameter, e.g. both markup and and a component. This can be done in the following way:
 
 # [C# test code](#tab/csharp)
 
@@ -455,5 +455,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTkwMjM5MDY1MCwyMjEzODI0ODFdfQ==
+eyJoaXN0b3J5IjpbMTk2MjQwNjI0NiwyMjEzODI0ODFdfQ==
 -->
