@@ -33,7 +33,7 @@ Alert alert = cut.Instance;
 
 ## Finding Components in the Render Tree
 
-To get the instance of components nested inside the component under test, use the 
+To get the instances of components nested inside the component under test, use the 
 [`FindComponent<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponent``1(Bunit.IRenderedFragment)) and [`FindComponents<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponents``1(Bunit.IRenderedFragment)) methods on the <xref:Bunit.IRenderedComponent`1> type. Suppose we have a `<TodoList>` component with `<Task>` components nested inside for each task in the todo list. In this case, the `<Task>` components can be found like this:
 
 ```csharp
@@ -50,5 +50,5 @@ Assert.Equal(2, tasks.Count);
 Both the [`FindComponent<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponent``1(Bunit.IRenderedFragment)) and [`FindComponents<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponents``1(Bunit.IRenderedFragment)) methods perform a **depth-first search** of the render tree, with the first method returning only the first found matching component, and the latter returning all matching components in the render tree.
 Both the [`FindComponent<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponent``1(Bunit.IRenderedFragment)) and [`FindComponents<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponents``1(Bunit.IRenderedFragment)) methods performs a **depth-first search** of the render tree, with the first method returning only the first found matching component, and the latter returning all matching components in the render tree.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0NTAxMTA5NTBdfQ==
+eyJoaXN0b3J5IjpbLTg4NjUyMTk0NV19
 -->
