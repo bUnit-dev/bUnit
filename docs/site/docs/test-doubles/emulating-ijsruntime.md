@@ -115,13 +115,13 @@ Blazor comes out of the box with a few components that require a working JSInter
 
 ### <Virtualize> JSInterop Emulation
 
-The `<Virtualize>` component requires JavaScript to notify it about the available screen space it is being rendered to, and when the users scrolls the viewport, to trigger the loading of new data. bUnit emulates this interaction by telling the `<Virtualize>` component that the viewport is `1,000,000,000` pixels large. That should ensure that all items is loaded, which makes sense in a testing scenario.
+The `<Virtualize>` component requires JavaScript to notify it about the available screen space it is being rendered to, and also when the users scrolls the viewport, to trigger the loading of new data. bUnit emulates this interaction by telling the `<Virtualize>` component that the viewport is `1,000,000,000` pixels large. That should ensure that all items are loaded, which makes sense in a testing scenario.
 
-To test the `<Placeholder>` template of the `<Virtualize>` component, create a items provider that doesn't return all items when queried.
+To test the `<Placeholder>` template of the `<Virtualize>` component, create an items provider that doesn't return all items when queried.
 
 ### FocusAsync JSInterop Emulation
 
-Support for the [`FocusAsync`](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/event-handling?view=aspnetcore-5.0#focus-an-element) method on `ElementReference` in Blazor's .NET 5 release works by simply registering the invocations, which can then be verified to have happened.
+Support for the [`FocusAsync`](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/event-handling?view=aspnetcore-5.0#focus-an-element) method on `ElementReference` in Blazor's .NET 5 release works by simply registering the invocations, which can then be verified to have occurred.
 
 To verify that the `FocusAsync` has been called in the `<ClickToFocus>` component:
 
@@ -148,7 +148,7 @@ var inputElement = cut.Find("input");
 
 cut.Find("button").Click(); // Triggers onclick handler that sets focus of input element
 
-ctx.JSInterop.VerifyFocusAsyncInvoke() // Verifies that a FocusAsync call has happenend
+ctx.JSInterop.VerifyFocusAsyncInvoke() // Verifies that a FocusAsync call has happened
    .Arguments[0] // gets the first argument passed to the FocusAsync method
    .ShouldBeElementReferenceTo(inputElement); // verify that it is an element reference to the input element.
 ```
@@ -159,5 +159,5 @@ bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUn
 
 To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMDEwMDIwNDcsLTkyNzIzNDMzXX0=
+eyJoaXN0b3J5IjpbMjA5NzcyMjU5NCwtOTI3MjM0MzNdfQ==
 -->
