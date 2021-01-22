@@ -217,7 +217,7 @@ The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s
 
 [!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L53-L61)]
 
-This is just regular Blazor `RenderFragment` parameter passing as markup, for example, in the component under test's `<Content>` element. This is the same for both `Fixture` and `SnapshotTest` razor tests.
+This is just regular Blazor `RenderFragment` parameter passing as markup, for example in the component under test's `<Content>` element. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
 ***
 
@@ -229,10 +229,11 @@ To pass a component such as the classic `<Counter>` component, which does not ta
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L168-L178)]
 
-These examples do the same thing. Here is what is going on:
+These examples do the same thing.
 
-1. The first example uses the `RenderFragment<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter.
-2. The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter.
+The first example uses the `RenderFragment<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter.
+
+The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter.
 
 # [Razor test code](#tab/razor)
 
@@ -453,5 +454,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM3NTg4Mzc1NSwyMjEzODI0ODFdfQ==
+eyJoaXN0b3J5IjpbLTEwNzEzMjExNzksMjIxMzgyNDgxXX0=
 -->
