@@ -18,7 +18,7 @@ There are two methods in bUnit that allow passing parameters in C#-based test co
 - `RenderComponent` method on the test context, which is used to render a component initially.
 - `SetParametersAndRender` method on a rendered component, which is used to pass new parameters to an already rendered component.
 
-In the following sub sections, we will show both C# and Razor-based test code, just click between them using the tabs.
+In the following sub sections, we will show both C#- and Razor-based test code; just click between them using the tabs.
 
 > [!TIP]
 > In all examples below, the <xref:Bunit.ComponentParameterFactory> is imported into the test class using `using static Bunit.ComponentParameterFactory;`. This results in a lot less boilerplate code, which improves test readability. 
@@ -44,8 +44,7 @@ In the following sub sections, we will show both C# and Razor-based test code, j
 
 ## Regular Parameters
 
-A regular parameter is one that is declared using the `[Parameter]` attribute. The following subsections will
-cover both _non_ Blazor types parameters, e.g. `int` and `List<string>`, and the special Blazor types like `EventCallback` and `RenderFragment`.
+A regular parameter is one that is declared using the `[Parameter]` attribute. The following subsections will cover both _non_-Blazor types parameters, e.g. `int` and `List<string>`, and the special Blazor types like `EventCallback` and `RenderFragment`.
 
 ### Non-Blazor Type Parameters
 
@@ -449,5 +448,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ0NjQ3Nzc4MV19
+eyJoaXN0b3J5IjpbLTE3NDM2MjM2OTRdfQ==
 -->
