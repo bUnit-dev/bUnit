@@ -21,18 +21,18 @@ Here is a C#-based test that registers the `IWeatherForecastService` in the `Ser
 
 [!code-csharp[WeatherForecastsTest.cs](../../../samples/tests/xunit/WeatherForecastsTest.cs?start=17&end=27&highlight=4)]
 
-The highlighted line shows how the `IWeatherForecastService` is registered in the test context's `Services` collection, which is just a standard [`IServiceCollection`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection), using the standard .NET Core dependency DI services method, [`AddSingleton`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.servicecollectionserviceextensions.addsingleton?view=dotnet-plat-ext-3.1#Microsoft_Extensions_DependencyInjection_ServiceCollectionServiceExtensions_AddSingleton__1_Microsoft_Extensions_DependencyInjection_IServiceCollection___0_).
+The highlighted line shows how the `IWeatherForecastService` is registered in the test context's `Services` collection, which is just a standard [`IServiceCollection`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection), using the standard .NET Core dependency injection (DI) services method, [`AddSingleton`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.servicecollectionserviceextensions.addsingleton?view=dotnet-plat-ext-3.1#Microsoft_Extensions_DependencyInjection_ServiceCollectionServiceExtensions_AddSingleton__1_Microsoft_Extensions_DependencyInjection_IServiceCollection___0_).
 
 > [!NOTE]
 > The `AddSingleton()` method is only available on the `Services` collection if you import the `Microsoft.Extensions.DependencyInjection` type.
 
 ## Injecting Services in Razor Based Tests
 
-Here is a Razor based test that registers the `IWeatherForecastService` in the `Services` collection during the `Setup` methods, which is a requirement of the `<WeatherForecasts>` component mentioned above:
+Here is a Razor-based test that registers the `IWeatherForecastService` in the `Services` collection during the `Setup` methods, which is a requirement of the `<WeatherForecasts>` component mentioned above:
 
 [!code-cshtml[WeatherForecastsTest.razor](../../../samples/tests/razor/WeatherForecastsTest.razor?highlight=10-13)]
 
-The highlighted line shows how the `IWeatherForecastService` is registered using the standard .NET Core DI services method, [`AddSingleton`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.servicecollectionserviceextensions.addsingleton?view=dotnet-plat-ext-3.1#Microsoft_Extensions_DependencyInjection_ServiceCollectionServiceExtensions_AddSingleton__1_Microsoft_Extensions_DependencyInjection_IServiceCollection___0_).
+The highlighted line shows how the `IWeatherForecastService` is registered using the standard .NET Core dependency injection (DI) services method, [`AddSingleton`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.servicecollectionserviceextensions.addsingleton?view=dotnet-plat-ext-3.1#Microsoft_Extensions_DependencyInjection_ServiceCollectionServiceExtensions_AddSingleton__1_Microsoft_Extensions_DependencyInjection_IServiceCollection___0_).
 
 This can either be done via the `Fixture`'s `Setup` method as in this example, if you want to separate the service registration from the test method, or it can be done in the test method _before_ calling `GetComponentUnderTest()`.
 
@@ -50,5 +50,5 @@ The following example shows how to do this with `<SnapshotTest>` tests:
 
 A closely related topic is mocking. To learn more about mocking in bUnit, go to the <xref:test-doubles> page.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2MTUxMDg3NTRdfQ==
+eyJoaXN0b3J5IjpbLTc5NjkzNDk5Nl19
 -->
