@@ -13,10 +13,10 @@ bUnit comes with a number of ways to pass parameters to components under test:
   - Loosely typed factory methods and simple tuple-based syntax, i.e. `(name, value)`
   - Strongly typed builder (preferred in most cases)
 
-There are two methods in bUnit that allows passing parameters in C#-based test code:
+There are two methods in bUnit that allow passing parameters in C#-based test code:
 
-- `RenderComponent` method on the test context, that is used to render a component initially.
-- `SetParametersAndRender` method on a rendered component, that is used to pass new parameters to an already rendered component.
+- `RenderComponent` method on the test context, which is used to render a component initially.
+- `SetParametersAndRender` method on a rendered component, which is used to pass new parameters to an already rendered component.
 
 In the following sub sections, we will show both C# and Razor-based test code, just click between them using the tabs.
 
@@ -448,3 +448,6 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 ## Further Reading
 
 - <xref:inject-services>
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbLTQ0NjQ3Nzc4MV19
+-->
