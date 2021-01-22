@@ -5,7 +5,7 @@ title: Faking Authentication and Authorization
 
 # Faking Authentication and Authorization
 
-bUnit comes with test specific implementation of Blazor's authentication and authorization types which make it easy to test components that use Blazor's `<AuthorizeView>`, `<CascadingAuthenticationState>` and `<AuthorizeRouteView>` components, as well as the `AuthenticationStateProvider` type.
+bUnit comes with test-specific implementations of Blazor's authentication and authorization types, which make it easy to test components that use Blazor's `<AuthorizeView>`, `<CascadingAuthenticationState>` and `<AuthorizeRouteView>` components, as well as the `AuthenticationStateProvider` type.
 
 The test implementation of Blazor's authentication and authorization can be put into the following states:
 
@@ -109,3 +109,6 @@ Let’s try to combine all the possibilities shown in the previous examples into
 [!code-csharp[UserRightsTest.cs](../../../samples/tests/xunit/UserRightsTest.cs?start=129&end=147&highlight=4-8)]
 
 With this example done, all auth related test scenarios should be covered. If you find one that is missing, please let us know in the [bUnit discussion forum](https://github.com/egil/bUnit/discussions).
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbODg5NDI2NTMxXX0=
+-->
