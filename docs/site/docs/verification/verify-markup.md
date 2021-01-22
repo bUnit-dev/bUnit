@@ -89,15 +89,15 @@ Text content can also be verified with the `MarkupMatches()` method, e.g. the te
 
 The semantic HTML comparer can be customized to make a test case even more stable and easier to maintain. For example, it is possible to ignore an element or attribute during comparison, or provide a regular expression to the comparer when comparing a specific element or attribute to make the comparer work with generated data.
 
-Learn more about the customizations options on the <xref:semantic-html-comparison> page.
+Learn more about the customization options on the <xref:semantic-html-comparison> page.
 
 ## Inspecting DOM Nodes
 
 The rendered markup from a component is available as a DOM node through the <xref:Bunit.IRenderedFragment.Nodes> property on <xref:Bunit.IRenderedFragment>, as well as the `Find(string cssSelector)` and `FindAll(string cssSelector)` extension methods on <xref:Bunit.IRenderedFragment>.
 
-The <xref:Bunit.IRenderedFragment.Nodes> property and the `FindAll()` method returns an [AngleSharp](https://anglesharp.github.io/) `INodeList` type, and the `Find()` method returns an [AngleSharp](https://anglesharp.github.io/) `IElement` type. 
+The <xref:Bunit.IRenderedFragment.Nodes> property and the `FindAll()` method return an [AngleSharp](https://anglesharp.github.io/) `INodeList` type, and the `Find()` method returns an [AngleSharp](https://anglesharp.github.io/) `IElement` type. 
 
-The DOM API in AngleSharp follows the W3C DOM API specifications and gives you the same results as state-of-the-art browser’s implementation of the DOM API in JavaScript. Besides the official DOM API, AngleSharp and bUnit adds some useful extension methods on top. This makes working with DOM nodes convenient.
+The DOM API in AngleSharp follows the W3C DOM API specifications and gives you the same results as a state-of-the-art browser’s implementation of the DOM API in JavaScript. Besides the official DOM API, AngleSharp and bUnit add some useful extension methods on top. This makes working with DOM nodes convenient.
 
 ### Finding Nodes with the Find() and FindAll() methods
 
@@ -179,5 +179,5 @@ This is what happens in the test:
 
 As mentioned earlier, the `IDiff` assertion helpers are still experimental. Any feedback and suggestions for improvements should be directed to the [related issue](https://github.com/egil/bUnit/issues/84) on GitHub.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzQ0NDA5NDQzXX0=
+eyJoaXN0b3J5IjpbMzY4MTk2ODA5LDc0NDQwOTQ0M119
 -->
