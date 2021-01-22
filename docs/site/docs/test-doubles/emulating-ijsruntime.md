@@ -85,7 +85,7 @@ To set up a handler for an `Invoke` or `InvokeUnmarshalled` call, just use the r
 
 Since the .NET 5 release of Blazor, it has been possible to import JavaScript modules directly from components. This is supported by bUnit's JSInterop through the `SetupModule` methods, that sets up calls to `InvokeAsync<IJSObjectReference>`.
 
-The `SetupModule` methods return a module JSInterop, that can be configured to handle the any JavaScript calls using the `Setup` and `SetupVoid` methods. For example, to configure bUnit's JSInterop to handle an import of the JavaScript module `hello.js`, and a call to the function `world()` in that model, do the following:
+The `SetupModule` methods return a module JSInterop, which can be configured to handle JavaScript calls using the `Setup` and `SetupVoid` methods. For example, to configure bUnit's JSInterop to handle an import of the JavaScript module `hello.js`, and a call to the function `world()` in that model, do the following:
 
 ```csharp
 using var ctx = new TestContext();
@@ -159,5 +159,5 @@ bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUn
 
 To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTc4Mzk5NjgyNiwtOTI3MjM0MzNdfQ==
+eyJoaXN0b3J5IjpbLTk0Mzc1MTY5MywtOTI3MjM0MzNdfQ==
 -->
