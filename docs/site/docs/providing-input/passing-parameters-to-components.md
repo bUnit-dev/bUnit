@@ -129,7 +129,7 @@ This is just regular Blazor child content parameter passing, e.g. as child conte
 
 #### Passing a Component without Parameters to the ChildContent Parameter
 
-To pass a component, e.g. the classic `<Counter>` component, that does not take any parameters itself, to a `ChildContent` parameter, do the following:
+To pass a component, e.g. the classic `<Counter>` component, which does not take any parameters itself, to a `ChildContent` parameter, do the following:
 
 # [C# test code](#tab/csharp)
 
@@ -450,5 +450,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2NDk3ODM2NzBdfQ==
+eyJoaXN0b3J5IjpbLTEyODI5NjEwODJdfQ==
 -->
