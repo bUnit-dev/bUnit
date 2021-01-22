@@ -28,7 +28,7 @@ The examples in the following sections will use the `<UserInfo>` component liste
 
 [!code-razor[UserInfo.razor](../../../samples/components/UserInfo.razor)]
 
-The following subsections will demonstrate how to set the `<UserInfo>` into all three authentication and authorization states.
+The following subsections demonstrate how to set the `<UserInfo>` into all three authentication and authorization states.
 
 ### Unauthenticated and Unauthorized State
 
@@ -36,7 +36,7 @@ To set the state to unauthenticated and unauthorized, do the following:
 
 [!code-csharp[UserInfoTest.cs](../../../samples/tests/xunit/UserInfoTest.cs?start=11&end=20&highlight=3)]
 
-The highlighted line shows how `AddTestAuthorization()` is used to add the test specific implementation of Blazor's authentication and authorization types to the `Services` collection, which makes the authentication state available to other services as well as components used throughout the test that require it.
+The highlighted line shows how `AddTestAuthorization()` is used to add the test-specific implementation of Blazor's authentication and authorization types to the `Services` collection, which makes the authentication state available to other services as well as components used throughout the test that require it.
 
 After calling `AddTestAuthorization()`, the default authentication state is unauthenticated and unauthorized.
 
@@ -110,5 +110,5 @@ Let’s try to combine all the possibilities shown in the previous examples into
 
 With this example done, all auth related test scenarios should be covered. If you find one that is missing, please let us know in the [bUnit discussion forum](https://github.com/egil/bUnit/discussions).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTcxNzc1Mjg1NywzMzU0NzQ2NDBdfQ==
+eyJoaXN0b3J5IjpbLTE2NzM3OTEzMTAsMzM1NDc0NjQwXX0=
 -->
