@@ -361,7 +361,7 @@ This is just regular Blazor parameter passing, which is the same for both `Fixtu
 
 ## Cascading Parameters and Cascading Values
 
-Cascading parameters are properties with the `[CascadingParameter]` attribute. There are two variants: **named** and **unnamed** cascading parameters. In Blazor, the `<CascadingValue>` component is used to provide values to cascading parameters, which we also do in Razor based tests. However, in C# based tests, we need to do it a little differently.
+Cascading parameters are properties with the `[CascadingParameter]` attribute. There are two variants: **named** and **unnamed** cascading parameters. In Blazor, the `<CascadingValue>` component is used to provide values to cascading parameters, which we also do in Razor-based tests. However, in C#-based tests we need to do it a little differently.
 
 The following examples will pass cascading values to the `<CascadingParams>` component listed below:
 
@@ -375,11 +375,13 @@ To pass the unnamed `IsDarkTheme` cascading parameter to the `<CascadingParams>`
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L290-L306)]
 
-These examples do the same thing, i.e. passing the variable `isDarkTheme` to the cascading parameter `IsDarkTheme`.
+These examples achieve the same thing, i.e. pass the variable `isDarkTheme` to the cascading parameter `IsDarkTheme`.
 
-1. The first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the unnamed parameter value.
-2. The second example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> to pass the unnamed parameter value.
-3. The last example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to explicitly select the desired cascading parameter and pass the unnamed parameter value that way.
+The first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the unnamed parameter value.
+
+The second example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> to pass the unnamed parameter value.
+
+The last example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to explicitly select the desired cascading parameter and pass the unnamed parameter value that way.
 
 # [Razor test code](#tab/razor)
 
@@ -456,6 +458,6 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjUzMDMwNjIzLDQxODk4MDY4NCwyMTEzOT
-kxOTQsLTE5NDc3MTQ3ODYsMjIxMzgyNDgxXX0=
+eyJoaXN0b3J5IjpbLTc2NTM0NzExMSw0MTg5ODA2ODQsMjExMz
+k5MTk0LC0xOTQ3NzE0Nzg2LDIyMTM4MjQ4MV19
 -->
