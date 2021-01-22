@@ -61,7 +61,7 @@ var plannedInvocation = ctx.JSInterop.SetupVoid("startAnimation");
 // is likely waiting until the call to SetCompleted() below.
 plannedInvocation.SetCompleted();
 ```
-[__AP: In the above comment, last line, should waiting be waiting   __]
+[__AP: In the above comment, last line,  I feel there should be something after waiting () __]
 
 ## Verifying invocations
 
@@ -159,5 +159,5 @@ bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUn
 
 To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDE3MjI5MTMwLC05MjcyMzQzM119
+eyJoaXN0b3J5IjpbLTM2MTE4OTg4NywtOTI3MjM0MzNdfQ==
 -->
