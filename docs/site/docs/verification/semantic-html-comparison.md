@@ -101,11 +101,11 @@ Let’s look at a few examples where we use the semantic comparison options list
 
 [!code-razor[Heading.razor](../../../samples/components/Heading.razor)]   
 
-In this case, we want to verify that the markup is rendered correctly, using something such as RegEx to verify the `id` attribute (it might be generated) and ignoring the `<small>` element. We can do this like so in C#-based tests with the `MarkupMatches()` method:
+In this case, we want to verify that the markup is rendered correctly, using something such as RegEx to verify the `id` attribute (it might be generated) and ignoring the `<small>` element.  In C#-based tests we can do this like so with the `MarkupMatches()` method:
 
 [!code-csharp[SemanticHtmlTest.cs](../../../samples/tests/xunit/SemanticHtmlTest.cs#L16-L29)]
 
-In a Razor based test, using the `<Fixture>` test type, the example looks like this:
+In a Razor-based test, using the `<Fixture>` test type, the example looks like this:
 
 [!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L3-L30)]
 
@@ -113,5 +113,6 @@ In a Snapshot test, using the `<SnapshotTest>` test type, the example looks like
 
 [!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L32-L42)]
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjgwNDAyNDgxLC0xODc4OTg5Mzg3XX0=
+eyJoaXN0b3J5IjpbLTEwODgxMjk4OTQsLTE4Nzg5ODkzODddfQ
+==
 -->
