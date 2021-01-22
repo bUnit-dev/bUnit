@@ -313,13 +313,13 @@ The delegate creates a simple markup string in both examples.
 
 [!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L98-L106)]
 
-This is just regular Blazor `RenderFragment<TValue>` parameter passing, in this case, to the `Template` parameter. This is the same for both `Fixture` and `SnapshotTest` razor tests.
+This is just regular Blazor `RenderFragment<TValue>` parameter passing, in this case to the `Template` parameter. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
 ***
 
-#### Passing a Component-based template
+#### Passing a Component-Based Template
 
-To pass a template into a `RenderFragment<TValue>` parameter, which is based on a component that receives the template value as input, in this case, the `<Item>` component listed below, do the following:
+To pass a template into a `RenderFragment<TValue>` parameter, which is based on a component that receives the template value as input (in this case, the `<Item>` component listed below), do the following:
 
 [!code-csharp[Item.razor](../../../samples/components/Item.razor)]
 
@@ -333,7 +333,7 @@ These examples do the same thing, i.e. create a template with the `<Item>` compo
 
 [!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L108-L116)]
 
-This is just regular Blazor `RenderFragment<TValue>` parameter passing, in this case, to the `Template` parameter. This is the same for both `Fixture` and `SnapshotTest` razor tests.
+This is just regular Blazor `RenderFragment<TValue>` parameter passing, in this case to the `Template` parameter. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
 ***
 
@@ -456,6 +456,6 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDE4OTgwNjg0LDIxMTM5OTE5NCwtMTk0Nz
-cxNDc4NiwyMjEzODI0ODFdfQ==
+eyJoaXN0b3J5IjpbNjQ1Mjc2OTI1LDQxODk4MDY4NCwyMTEzOT
+kxOTQsLTE5NDc3MTQ3ODYsMjIxMzgyNDgxXX0=
 -->
