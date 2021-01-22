@@ -132,7 +132,7 @@ The [`FindAll(string cssSelector, bool enableAutoRefresh = false)`](xref:Bunit.R
 
 ## Finding Expected Differences
 
-It can sometimes be easier to verify that an expected change has happened in the rendered markup (and only that change), than it can be to specify how all the rendered markup should look after re-render.
+It can sometimes be easier to verify that an expected change, and only that change, has occurred in the rendered markup than it can be to specify how all the rendered markup should look after re-rendering.
 
 bUnit comes with a number of ways for finding lists of `IDiff`; the representation of a difference between two HTML fragments. All of these are direct methods or extension methods on the <xref:Bunit.IRenderedFragment> type or on the `INode` or `INodeList` types:
 
@@ -179,6 +179,6 @@ This is what happens in the test:
 
 As mentioned earlier, the `IDiff` assertion helpers are still experimental. Any feedback and suggestions for improvements should be directed to the [related issue](https://github.com/egil/bUnit/issues/84) on GitHub.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzMzMzg3NiwzNjgxOTY4MDksNzQ0NDA5ND
-QzXX0=
+eyJoaXN0b3J5IjpbMTU3NTM2NDI0MywzNjgxOTY4MDksNzQ0ND
+A5NDQzXX0=
 -->
