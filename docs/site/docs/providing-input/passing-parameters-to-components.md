@@ -453,7 +453,7 @@ These examples do the same thing, i.e. render the `<HelloWorld>` component insid
 
 This is just regular Blazor child content parameter passing, where one component is rendered inside another, i.e. the `<HelloWorld>` component inside the `<Wrapper>` component. 
 
-The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()` method specifies the `<HelloWorld>` component as its target instead of the outer `<Wrapper>` component. This returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance. [__AP: The last clause is a bit problematic here. Is it that IRenderedComponent\<HelloWorld\> gives access to two things - the \<HelloWorld\> components part of the render tree AND the \<HelloWorld\> components instance - or __]
+The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()` method specifies the `<HelloWorld>` component as its target instead of the outer `<Wrapper>` component. This returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance. [__AP: The last clause is potentially problematic here. Is it that the IRenderedComponent\<HelloWorld\> gives access to two things - the \<HelloWorld\> components part of the render tree AND the \<HelloWorld\> components instance - or that __]
 
 ***
 
@@ -461,7 +461,8 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTY0NTY2NjcwNCwtMjA5MDE5OTM5OCwxOT
-ExMjk2NDI4LC03NjUzNDcxMTEsNDE4OTgwNjg0LDIxMTM5OTE5
-NCwtMTk0NzcxNDc4NiwyMjEzODI0ODFdfQ==
+eyJoaXN0b3J5IjpbLTIxMzE1ODYzNjcsLTY0NTY2NjcwNCwtMj
+A5MDE5OTM5OCwxOTExMjk2NDI4LC03NjUzNDcxMTEsNDE4OTgw
+Njg0LDIxMTM5OTE5NCwtMTk0NzcxNDc4NiwyMjEzODI0ODFdfQ
+==
 -->
