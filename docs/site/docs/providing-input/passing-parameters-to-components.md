@@ -399,10 +399,10 @@ To pass a named cascading parameter to the `<CascadingParams>` component, do the
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L312-L322)]
 
-These examples botaccomplish the same thing, i.e. pass in the value `Egil Hansen` to the cascading parameter with the name `LoggedInUser`. Note that the name of the parameter is not the same as the property of the parameter, e.g. `LoggedInUser` vs. `UserName`.
+These examples both accomplish the same thing, i.e. pass in the value `Egil Hansen` to the cascading parameter with the name `LoggedInUser`. Note that the name of the parameter is not the same as the property of the parameter, e.g. `LoggedInUser` vs. `UserName`.
 
-1. The first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the named parameter value, specifying the cascading parameters name and a value (not the property name).
-2. The second example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to select the cascading parameter property and pass the parameter value that way. 
+The first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the named parameter value, specifying the cascading parameters name and a value (not the property name).
+The second example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to select the cascading parameter property and pass the parameter value that way. 
 
 # [Razor test code](#tab/razor)
 
@@ -458,7 +458,7 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTgyOTQxNzc3MSwtNzY1MzQ3MTExLDQxOD
+eyJoaXN0b3J5IjpbMjAyOTA5MjI3NiwtNzY1MzQ3MTExLDQxOD
 k4MDY4NCwyMTEzOTkxOTQsLTE5NDc3MTQ3ODYsMjIxMzgyNDgx
 XX0=
 -->
