@@ -32,11 +32,11 @@ To get the markup as a string, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=16&end=21&highlight=5)]
 
-You can perform standard string assertions against the markup string, like checking whether it contains a value or whether it is empty.
+You can perform standard string assertions against the markup string, like checking whether it contains a value or is empty.
 
 ## Semantic Comparison of Markup
 
-Working with raw markup only works well with very simple output, and even then you have to sanitize it to get stable tests. A much better approach is to use the semantic HTML comparer that comes with bUnit.
+Working with raw markup only works well with very simple output, but even then you have to sanitize it to get stable tests. A much better approach is to use the semantic HTML comparer that comes with bUnit.
 
 ### How does the Semantic HTML Comparer Work?
 
@@ -178,3 +178,6 @@ This is what happens in the test:
 8. Finally the last item in the list is found and clicked, and the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method is used to find the changes, a single diff, which is verified as a removal of the second item.
 
 As mentioned earlier, the `IDiff` assertion helpers are still experimental. Any feedback and suggestions for improvements should be directed to the [related issue](https://github.com/egil/bUnit/issues/84) on GitHub.
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbMTU4ODgwMzE0OV19
+-->
