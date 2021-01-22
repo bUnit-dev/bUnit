@@ -339,7 +339,7 @@ This is just regular Blazor `RenderFragment<TValue>` parameter passing, in this 
 
 ### Unmatched Parameters
 
-An unmatched parameter is a parameter passed to a component under test, which does not have an explicit `[Parameter]` parameter, but instead is captured by a `[Parameter(CaptureUnmatchedValues = true)]` parameter.
+An unmatched parameter is a parameter that is passed to a component under test, and which does not have an explicit `[Parameter]` parameter but instead is captured by a `[Parameter(CaptureUnmatchedValues = true)]` parameter.
 
 In the follow examples, we will pass an unmatched parameter to the following component:
 
@@ -456,6 +456,6 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjQ1Mjc2OTI1LDQxODk4MDY4NCwyMTEzOT
+eyJoaXN0b3J5IjpbMjUzMDMwNjIzLDQxODk4MDY4NCwyMTEzOT
 kxOTQsLTE5NDc3MTQ3ODYsMjIxMzgyNDgxXX0=
 -->
