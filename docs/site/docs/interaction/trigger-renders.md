@@ -8,10 +8,10 @@ title: Triggering a Render Life Cycle on a Component
 When a component under test is rendered, an instance of the <xref:Bunit.IRenderedComponent`1> type is returned. Through that, it is possible to cause the component under test to render again directly through the [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponentBase{``0})) method or one of the [`SetParametersAndRender()`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods, or indirectly through the [`InvokeAsync()`](xref:Bunit.RenderedComponentInvokeAsyncExtensions.InvokeAsync``1(Bunit.IRenderedComponentBase{``0},System.Action)) method.
 
 > [!WARNING]
-> The `Render()` and `SetParametersAndRender()` methods are not available in the <xref:Bunit.IRenderedFragment> type that is returned when calling the _non_-generic version of `GetComponentUnderTest()` in `<Fixture>`-based Razor tests. Call the generic version of `GetComponentUnderTest<TComponent>()` to get a <xref:Bunit.IRenderedComponent`1>.
+> The `Render()` and `SetParametersAndRender()` methods are not available in the <xref:Bunit.IRenderedFragment> type that is returned when calling the _non-generic_ version of `GetComponentUnderTest()` in `<Fixture>`-based Razor tests. Call the generic version of `GetComponentUnderTest<TComponent>()` to get a <xref:Bunit.IRenderedComponent`1>.
 
 > [!NOTE]
-> These methods are available and work the same in both C# and Razor-based tests. The examples below are from C# based tests only.
+> These methods are available and work the same in both C#- and Razor-based tests. The examples below are from C#-based tests only.
 
 Let's look at how to use each of these methods to cause a re-render.
 
@@ -57,3 +57,6 @@ The highlighted line shows the call to [`InvokeAsync(...)`](xref:Bunit.RenderedC
 
 > [!TIP]
 > The instance of a component under test is available through the <xref:Bunit.IRenderedComponentBase`1.Instance> property.
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbMjA3NDg1MzUyM119
+-->
