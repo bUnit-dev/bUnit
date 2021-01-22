@@ -70,7 +70,7 @@ Note that the second parameter, `AuthorizationState`, is optional, and defaults 
 
 The following section will show how to specify **roles** and/or **policies** in a test.
 
-The examples will use the `<UserRights>` component listed below. It uses the `<AuthorizeView>` components to include different content based on the **roles**, **claims**, or **policies** specified in each test.
+The examples will use the `<UserRights>` component listed below. It uses the `<AuthorizeView>` component to include different content based on the **roles**, **claims**, or **policies** specified in each test.
 
 [!code-razor[UserRights.razor](../../../samples/components/UserRights.razor)]
 
@@ -80,7 +80,7 @@ To specify one or more roles for the authenticated and authorized user, do the f
 
 [!code-csharp[UserRightsTest.cs](../../../samples/tests/xunit/UserRightsTest.cs?start=29&end=42&highlight=5)]
 
-The highlighted line shows how the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetRoles(System.String[])> method is used to specify one role. To specify multiple roles, do the following:
+The highlighted line shows how the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetRoles(System.String[])> method is used to specify a single role. To specify multiple roles, do the following:
 
 [!code-csharp[UserRightsTest.cs](../../../samples/tests/xunit/UserRightsTest.cs?start=48&end=62&highlight=5)]
 
@@ -110,6 +110,6 @@ Let’s try to combine all the possibilities shown in the previous examples into
 
 With this example done, all auth related test scenarios should be covered. If you find one that is missing, please let us know in the [bUnit discussion forum](https://github.com/egil/bUnit/discussions).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM1MDQzNzg3MywtMTY3Mzc5MTMxMCwzMz
-U0NzQ2NDBdfQ==
+eyJoaXN0b3J5IjpbLTIwOTk4NDU1MDEsLTE2NzM3OTEzMTAsMz
+M1NDc0NjQwXX0=
 -->
