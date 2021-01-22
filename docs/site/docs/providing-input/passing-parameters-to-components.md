@@ -85,10 +85,11 @@ Using either C# or Razor test code, this can be done like this:
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L46-L64)]
 
-These examples do the same thing. Here is what is going on:
+These examples do the same thing.
 
-1. The first and second example uses the `EventCallback` factory method in <xref:Bunit.ComponentParameterFactory> (there are many overloads that take different kinds of `Action` and `Func` delegates), to pass a lambda as the event callback to the specified parameter.
-2. The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type of callback method. This makes the builders methods strongly typed and refactor safe.
+The first and second examples use the `EventCallback` factory method in <xref:Bunit.ComponentParameterFactory> (there are many overloads that take different kinds of `Action` and `Func` delegates) to pass a lambda as the event callback to the specified parameter.
+
+The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type of callback method. This makes the builder's methods strongly typed and refactor-safe.
 
 # [Razor test code](#tab/razor)
 
@@ -448,5 +449,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ2MjIxMjE3Ml19
+eyJoaXN0b3J5IjpbMTk1NTA5OTU2Nl19
 -->
