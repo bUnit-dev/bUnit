@@ -169,7 +169,7 @@ The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s
 
 [!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L32-L40)]
 
-This is just regular Blazor child content parameter passing, where the `<Alert>` component is declared inside the component under test, and any parameters is passed to it like normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
+This is just regular Blazor child content parameter passing, where the `<Alert>` component is declared inside the component under test, and any parameters are passed to it as normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
 ***
 
@@ -452,5 +452,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjQ0MDgxMjMwXX0=
+eyJoaXN0b3J5IjpbMjIxMzgyNDgxXX0=
 -->
