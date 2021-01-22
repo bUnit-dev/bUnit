@@ -60,10 +60,13 @@ Using either C# or Razor test code, this can be done like this:
 
 All of these examples do the same thing. Here's what's going on:
 
-1. The first example passes parameters using C# tuples, `(string name, object? value)`.
-2. The second example also uses C# tuples to pass the parameters, but the name is retrieved in a refactor-safe manner using the `nameof` keyword in C#.
-3. The third example uses the <xref:Bunit.ComponentParameterFactory.Parameter(System.String,System.Object)> factory method.
-4. The last example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type for the value. This makes the builder's methods strongly typed and refactor-safe.
+The **first example** passes parameters using C# tuples, `(string name, object? value)`.
+
+The **second example** also uses C# tuples to pass the parameters, but the name is retrieved in a refactor-safe manner using the `nameof` keyword in C#.
+
+The **third example** uses the <xref:Bunit.ComponentParameterFactory.Parameter(System.String,System.Object)> factory method.
+
+The **last example** uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type for the value. This makes the builder's methods strongly typed and refactor-safe.
 
 # [Razor test code](#tab/razor)
 
@@ -87,9 +90,9 @@ Using either C# or Razor test code, this can be done like this:
 
 These examples do the same thing.
 
-The first and second examples use the `EventCallback` factory method in <xref:Bunit.ComponentParameterFactory> (there are many overloads that take different kinds of `Action` and `Func` delegates) to pass a lambda as the event callback to the specified parameter.
+The **first and second examples** use the `EventCallback` factory method in <xref:Bunit.ComponentParameterFactory> (there are many overloads that take different kinds of `Action` and `Func` delegates) to pass a lambda as the event callback to the specified parameter.
 
-The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type of callback method. This makes the builder's methods strongly typed and refactor-safe.
+The **second example** uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type of callback method. This makes the builder's methods strongly typed and refactor-safe.
 
 # [Razor test code](#tab/razor)
 
@@ -115,9 +118,9 @@ The following subsections have different examples of child content being passed 
 
 These examples do the same thing.
 
-The first example uses the `ChildContent` factory method in <xref:Bunit.ComponentParameterFactory> to pass an HTML markup string as the input to the `ChildContent` parameter.
+The **first example** uses the `ChildContent` factory method in <xref:Bunit.ComponentParameterFactory> to pass an HTML markup string as the input to the `ChildContent` parameter.
 
-The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent` method to pass an HTML markup string as the input to the `ChildContent` parameter.
+The **second example** uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent` method to pass an HTML markup string as the input to the `ChildContent` parameter.
 
 # [Razor test code](#tab/razor)
 
@@ -139,7 +142,7 @@ These examples do the same thing.
 
 The **first example** uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
 
-The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
+The **second example** uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
 
 # [Razor test code](#tab/razor)
 
@@ -461,7 +464,7 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4MDUwOTg2NzIsLTYzNjg4ODQzMCwtNj
+eyJoaXN0b3J5IjpbLTE1MjE4NjM3OTIsLTYzNjg4ODQzMCwtNj
 Q1NjY2NzA0LC0yMDkwMTk5Mzk4LDE5MTEyOTY0MjgsLTc2NTM0
 NzExMSw0MTg5ODA2ODQsMjExMzk5MTk0LC0xOTQ3NzE0Nzg2LD
 IyMTM4MjQ4MV19
