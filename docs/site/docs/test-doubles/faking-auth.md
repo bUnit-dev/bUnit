@@ -64,13 +64,13 @@ To set the state to authenticated and authorized, do the following:
 
 After calling `AddTestAuthorization()`, the returned <xref:Bunit.TestDoubles.TestAuthorizationContext> is used to set the authenticated and authorized state through the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(System.String,Bunit.TestDoubles.AuthorizationState)> method. 
 
-Note, the second parameter, `AuthorizationState`, is optional, and defaults to `AuthorizationState.Authorized`, if not specified.
+Note that the second parameter, `AuthorizationState`, is optional, and defaults to `AuthorizationState.Authorized` if not specified.
 
 ## Setting Authorization Details
 
 The following section will show how to specify **roles** and/or **policies** in a test.
 
-The examples will use the `<UserRights>` component listed below. It  uses the `<AuthorizeView>` components to include different content based on the **roles**, **claims**, or **policies** specified in each test.
+The examples will use the `<UserRights>` component listed below. It uses the `<AuthorizeView>` components to include different content based on the **roles**, **claims**, or **policies** specified in each test.
 
 [!code-razor[UserRights.razor](../../../samples/components/UserRights.razor)]
 
@@ -110,5 +110,6 @@ Let’s try to combine all the possibilities shown in the previous examples into
 
 With this example done, all auth related test scenarios should be covered. If you find one that is missing, please let us know in the [bUnit discussion forum](https://github.com/egil/bUnit/discussions).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2NzM3OTEzMTAsMzM1NDc0NjQwXX0=
+eyJoaXN0b3J5IjpbMTM1MDQzNzg3MywtMTY3Mzc5MTMxMCwzMz
+U0NzQ2NDBdfQ==
 -->
