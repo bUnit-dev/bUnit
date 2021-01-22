@@ -58,10 +58,10 @@ Using either C# or Razor test code, this can be done like this:
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L16-L40)]
 
-All of these examples do the same thing, here is what is going on:
+All of these examples do the same thing. Here's what's going on:
 
 1. The first example passes parameters using C# tuples, `(string name, object? value)`.
-2. The second example also uses C# tuples to pass the parameters, but the name is retrieved in a refactor safe manner using the `nameof` keyword in C#.
+2. The second example also uses C# tuples to pass the parameters, but the name is retrieved in a refactor-safe manner using the `nameof` keyword in C#.
 3. The third example uses the <xref:Bunit.ComponentParameterFactory.Parameter(System.String,System.Object)> factory method.
 4. The last example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type for the value. This makes the builders methods strongly typed and refactor safe.
 
@@ -448,5 +448,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjc3MDYyMjY3XX0=
+eyJoaXN0b3J5IjpbMTk2MDcwNzY5OF19
 -->
