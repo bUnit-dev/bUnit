@@ -187,7 +187,7 @@ Passing a mix of markup and components to a `ChildContent` parameter is done by 
 
 [!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L42-L51)]
 
-This is just regular Blazor child content parameter passing, where regular HTML markup and an `<Alert>` component is declared inside the component under test, and any parameters are passed to it like normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
+This is just regular Blazor child content parameter passing, where regular HTML markup and an `<Alert>` component is declared inside the component under test, and any parameters are passed to it as normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
 ***
 
@@ -197,7 +197,7 @@ A `RenderFragment` parameter is very similar to the special `ChildContent` param
 
 In Blazor, a `RenderFragment` parameter can be regular HTML markup, it can be Razor markup, e.g. other component declarations, or it can be a mix of the two. If it is another component, then that component can also receive child content, and so forth.
 
-The following subsections has different examples of content being passed to the following component's `RenderFragment` parameter:
+The following subsections have different examples of content being passed to the following component's `RenderFragment` parameter:
 
 [!code-csharp[RenderFragmentParams.razor](../../../samples/components/RenderFragmentParams.cs#L9-L13)]
 
@@ -207,10 +207,11 @@ The following subsections has different examples of content being passed to the 
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L152-L162)]
 
-These examples do the same thing. Here is what is going on:
+These examples do the same thing.
 
-1. The first example uses the `RenderFragment` factory method in <xref:Bunit.ComponentParameterFactory>, to pass a HTML markup string as the input to the `RenderFragment` parameter.
-2. The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method to pass a HTML markup string as the input to the `RenderFragment` parameter.
+The first example uses the `RenderFragment` factory method in <xref:Bunit.ComponentParameterFactory> to pass an HTML markup string as the input to the `RenderFragment` parameter.
+
+The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method to pass an HTML markup string as the input to the `RenderFragment` parameter.
 
 # [Razor test code](#tab/razor)
 
@@ -452,5 +453,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ2MTAyMDQ3NiwyMjEzODI0ODFdfQ==
+eyJoaXN0b3J5IjpbLTM3NTg4Mzc1NSwyMjEzODI0ODFdfQ==
 -->
