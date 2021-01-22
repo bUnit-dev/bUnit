@@ -38,7 +38,7 @@ Use the parameterless `Setup<TResult>()` method to emulate any call to `InvokeAs
 
 When an invocation is set up through of the `Setup<TResult>(...)` and `SetupVoid(...)` methods, a `JSRuntimePlannedInvocation<TResult>` object is returned. This can be used to set a result or an exception, to emulate what can happen during a JavaScript interop call in Blazor.
 
-Similarly when the parameterless `Setup<TResult>()` and `SetupVoid()` methods are used a `JSRuntimeCatchAllPlannedInvocation<TResult>` object is returned which can be used to set the result of invocation.
+Similarly, when the parameterless `Setup<TResult>()` and `SetupVoid()` methods are used a `JSRuntimeCatchAllPlannedInvocation<TResult>` object is returned which can be used to set the result of invocation.
 
 Here are two examples:
 
@@ -57,7 +57,7 @@ var plannedInvocation = ctx.JSInterop.SetupVoid("startAnimation");
 // SetResult() is not used in this case since InvokeVoidAsync
 // only completes or throws, it doesn’t return a value.
 // Any calls to InvokeVoidAsync(...) up till this point will
-// have received an incompleted Task which the component 
+// have received an incomplete Task which the component 
 // is likely waiting until the call to SetCompleted() below.
 plannedInvocation.SetCompleted();
 ```
@@ -158,5 +158,5 @@ bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUn
 
 To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2MzgxMzU0MTldfQ==
+eyJoaXN0b3J5IjpbODkyMzAzNDE3XX0=
 -->
