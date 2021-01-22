@@ -7,15 +7,15 @@ title: Injecting Services into Components Under Test
 
 It is common for components under test to have a dependency on services, injected into them through the `@inject IMyService MyService` syntax in .razor files, or the `[Inject] private IMyService MyService { get; set; }` syntax in .cs files.
 
-This is supported in bUnit through the `Services` collection available through the test contexts used in both C#- and Razor-based tests. The `Services` collection is just a `IServiceCollection`, which means services can be registered in the same manner as done in production code in `Startup.cs` in Blazor Server projects and in `Program.cs` in Blazor Wasm projects.
+This is supported in bUnit through the `Services` collection available through the test contexts used in both C#- and Razor-based tests. The `Services` collection is just an `IServiceCollection`, which means services can be registered in the same manner as done for production code in `Startup.cs` in Blazor Server projects and in `Program.cs` in Blazor Wasm projects.
 
 In bUnit, you register the services in the `Services` collection _before_ you render a component under test. 
 
-The following sections demonstrate how to do this in C# and Razor based tests. The examples we will cover will test the `<WeatherForecasts>` component listed below, which depends on the `IWeatherForecastService` service, injected in line 1:
+The following sections demonstrate how to do this in C#- and Razor-based tests. The examples we will cover will test the `<WeatherForecasts>` component listed below, which depends on the `IWeatherForecastService` service, injected in line 1:
 
 [!code-cshtml[WeatherForecasts.razor](../../../samples/components/WeatherForecasts.razor?highlight=1)]
 
-## Injecting Services in C# Based Tests
+## Injecting Services in C#-Based Tests
 
 Here is a C# based test that registers the `IWeatherForecastService` in the `Services` collection, which is a requirement of the `<WeatherForecasts>` component listed above.
 
@@ -50,5 +50,5 @@ The following example shows how to do this with `<SnapshotTest>` tests:
 
 A closely related topic is mocking. To learn more about mocking in bUnit, go to the <xref:test-doubles> page.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTg2MDcwMTU0M119
+eyJoaXN0b3J5IjpbLTEyMzQyODEyMjJdfQ==
 -->
