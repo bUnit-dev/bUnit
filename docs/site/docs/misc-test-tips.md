@@ -45,7 +45,7 @@ TODO: Document XunitLogger and XunitLoggerFactory
 
 ## Copying/pasting HTML easier
 
-When writing C#-based tests, you may want to copy/paste HTML into C# strings from something like a Razor file, for example. This is tedious to do manually as you have to escape quotes and other special characters, for example `<div class="alert">` needs to be written as `"<div class=\"alert\">"`. The extension [SmartPaster2019](https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster2013), when we use it to copy  automatically escapes any characters that need to be escaped. allows us to copy strings in any character that needs to be escaped will be automatically.
+When writing C#-based tests, you may want to copy/paste HTML into C# strings from something like a Razor file, for example. This is tedious to do manually as you have to escape quotes and other special characters, for example `<div class="alert">` needs to be written as `"<div class=\"alert\">"`. The extension [SmartPaster2019](https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster2013) automatically escapes any characters that need to be escaped when we use it to copy strings.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyNTQyODU5ODYsLTI2OTg0ODY3N119
+eyJoaXN0b3J5IjpbLTc1MzA3Mzg3OSwtMjY5ODQ4Njc3XX0=
 -->
