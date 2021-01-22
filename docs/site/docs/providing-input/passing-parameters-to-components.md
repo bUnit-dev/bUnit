@@ -421,11 +421,13 @@ To pass all cascading parameters to the `<CascadingParams>` component, do the fo
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L328-L350)]
 
-These examples do the same thing, i.e. passing both the unnamed `IsDarkTheme` cascading parameter and the two named cascading parameters (`LoggedInUser`, `LoggedInEmail`).
+These examples do the same thing, i.e. pass both the unnamed `IsDarkTheme` cascading parameter and the two named cascading parameters (`LoggedInUser`, `LoggedInEmail`).
 
-1. The first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the unnamed and named parameter values.
-2. The second example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> without a parameter to pass the unnamed parameter value, and `Add` method with the parameter selector to select each of the named parameters to pass the named parameter values.
-3. The last example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to select both the named and unnamed cascading parameters and pass values to them that way.
+The first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the unnamed and named parameter values.
+
+The second example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> without a parameter to pass the unnamed parameter value, and `Add` method with the parameter selector to select each of the named parameters to pass the named parameter values.
+
+The last example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to select both the named and unnamed cascading parameters and pass values to them that way.
 
 # [Razor test code](#tab/razor)
 
@@ -459,7 +461,7 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTg0NTQ1NTYyMiwtNzY1MzQ3MTExLDQxOD
+eyJoaXN0b3J5IjpbMTI1NTk4MjM4MCwtNzY1MzQ3MTExLDQxOD
 k4MDY4NCwyMTEzOTkxOTQsLTE5NDc3MTQ3ODYsMjIxMzgyNDgx
 XX0=
 -->
