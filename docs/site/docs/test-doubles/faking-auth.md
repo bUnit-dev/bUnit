@@ -100,16 +100,16 @@ To specify one or more claims for the authenticated and authorized user, do the 
 
 [!code-csharp[UserRightsTest.cs](../../../samples/tests/xunit/UserRightsTest.cs?start=106&end=123&highlight=5-8)]
 
-The highlighted line shows how the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetClaims(System.Security.Claims.Claim[])> method is used to pass two instances of the `Claim` types.
+The highlighted line shows how the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetClaims(System.Security.Claims.Claim[])> method is used to pass two instances of the `Claim` types.[__AP: type or types?__]
 
 ### Example of passing both roles, claims, and policies
 
-Let’s try to combine all the possibilities shown in the previous examples into on. The following example specifies two roles, one claim, and one policy for the authenticated and authorized user:
+Let’s try to combine all the possibilities shown in the previous examples into one. The following example specifies two roles, one claim, and one policy for the authenticated and authorized user:
 
 [!code-csharp[UserRightsTest.cs](../../../samples/tests/xunit/UserRightsTest.cs?start=129&end=147&highlight=4-8)]
 
-With this example done, all auth related test scenarios should be covered. If you find one that is missing, please let us know in the [bUnit discussion forum](https://github.com/egil/bUnit/discussions).
+With this example done, all auth-related test scenarios should be covered. If you find that one is missing, please let us know in the [bUnit discussion forum](https://github.com/egil/bUnit/discussions).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwOTk4NDU1MDEsLTE2NzM3OTEzMTAsMz
-M1NDc0NjQwXX0=
+eyJoaXN0b3J5IjpbMTM5MTk1MzU5LC0xNjczNzkxMzEwLDMzNT
+Q3NDY0MF19
 -->
