@@ -61,11 +61,11 @@ var plannedInvocation = ctx.JSInterop.SetupVoid("startAnimation");
 // is likely waiting until the call to SetCompleted() below.
 plannedInvocation.SetCompleted();
 ```
-[__AP: In the above comment, last line,  I feel there should be something after 'waiting', but not quite sure what. (The  __]
+[__AP: In the above comment, last line,  I feel there should be something after 'waiting', but not quite sure what.__]
 
 ## Verifying invocations
 
-All calls to the `InvokeAsync<TResult>(...)` and `InvokeVoidAsync(...)` methods in bUnit's JSInterop are stored in its `Invocations` list, which can be inspected and asserted against. In addition to this, all planned invocations have their own `Invocations` list which only contain their invocations.
+All calls to the `InvokeAsync<TResult>(...)` and `InvokeVoidAsync(...)` methods in bUnit's JSInterop are stored in its `Invocations` list, which can be inspected and asserted against. In addition to this, all planned invocations have their own `Invocations` lists which only contain their invocations.
 
 Invocations are represented by the `JSRuntimeInvocation` type which has three properties of interest when verifying an invocation happened as expected: 
 
@@ -159,5 +159,5 @@ bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUn
 
 To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTkyNjUxOTA4NiwtOTI3MjM0MzNdfQ==
+eyJoaXN0b3J5IjpbMTAwNDAyNTMzNCwtOTI3MjM0MzNdfQ==
 -->
