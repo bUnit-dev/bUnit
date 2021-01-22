@@ -103,7 +103,7 @@ This is just regular Blazor parameter passing, which is the same for both `Fixtu
 
 The `ChildContent` parameter in Blazor is represented by a `RenderFragment`. In Blazor, this can be regular HTML markup, it can be Razor markup, e.g. other component declarations, or a mix of the two. If it is another component, then that component can also receive child content, and so forth.
 
-The following subsections has different examples of child content being passed to the following component:
+The following subsections have different examples of child content being passed to the following component:
 
 [!code-csharp[ChildContentParams.razor](../../../samples/components/ChildContentParams.cs#L10-L14)]
 
@@ -113,10 +113,11 @@ The following subsections has different examples of child content being passed t
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L70-L80)]
 
-These examples do the same thing, here is what is going on:
+These examples do the same thing.
 
-1. The first example uses the `ChildContent` factory method in <xref:Bunit.ComponentParameterFactory>, to pass a HTML markup string as the input to the `ChildContent` parameter.
-2. The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent` method to pass a HTML markup string as the input to the `ChildContent` parameter.
+The first example uses the `ChildContent` factory method in <xref:Bunit.ComponentParameterFactory> to pass an HTML markup string as the input to the `ChildContent` parameter.
+
+The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent` method to pass an HTML markup string as the input to the `ChildContent` parameter.
 
 # [Razor test code](#tab/razor)
 
@@ -449,5 +450,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk1NTA5OTU2Nl19
+eyJoaXN0b3J5IjpbLTE2NDk3ODM2NzBdfQ==
 -->
