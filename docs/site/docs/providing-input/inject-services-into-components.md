@@ -32,7 +32,7 @@ Here is a Razor-based test that registers the `IWeatherForecastService` in the `
 
 [!code-cshtml[WeatherForecastsTest.razor](../../../samples/tests/razor/WeatherForecastsTest.razor?highlight=10-13)]
 
-The highlighted line shows how the `IWeatherForecastService` is registered using the standard .NET Core dependency injection (DI) services method, [`AddSingleton`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.servicecollectionserviceextensions.addsingleton?view=dotnet-plat-ext-3.1#Microsoft_Extensions_DependencyInjection_ServiceCollectionServiceExtensions_AddSingleton__1_Microsoft_Extensions_DependencyInjection_IServiceCollection___0_).
+The highlighted line shows how the `IWeatherForecastService` is registered using the standard .NET Core DI services method, [`AddSingleton`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.servicecollectionserviceextensions.addsingleton?view=dotnet-plat-ext-3.1#Microsoft_Extensions_DependencyInjection_ServiceCollectionServiceExtensions_AddSingleton__1_Microsoft_Extensions_DependencyInjection_IServiceCollection___0_).
 
 This can either be done via the `Fixture`'s `Setup` method as in this example, if you want to separate the service registration from the test method, or it can be done in the test method _before_ calling `GetComponentUnderTest()`.
 
@@ -50,5 +50,5 @@ The following example shows how to do this with `<SnapshotTest>` tests:
 
 A closely related topic is mocking. To learn more about mocking in bUnit, go to the <xref:test-doubles> page.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc5NjkzNDk5Nl19
+eyJoaXN0b3J5IjpbNzY2NTY2MjAzXX0=
 -->
