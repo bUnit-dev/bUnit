@@ -62,7 +62,7 @@ bUnit's semantic HTML comparer safely ignores things like insignificant whitespa
 
 ### The MarkupMatches() Method
 
-The HTML comparer can be easily accessed through `MarkupMatches()` extension methods, available in places that represents HTML fragments in bUnit, i.e. on <xref:Bunit.IRenderedFragment> and the `INode` and `INodeList` types.
+The HTML comparer can be easily accessed through `MarkupMatches()` extension methods, available in places that represent HTML fragments in bUnit, i.e. on <xref:Bunit.IRenderedFragment> and the `INode` and `INodeList` types.
 
 In the following examples, the `<Heading>` component listed below will be used as the component under test.
 
@@ -179,5 +179,5 @@ This is what happens in the test:
 
 As mentioned earlier, the `IDiff` assertion helpers are still experimental. Any feedback and suggestions for improvements should be directed to the [related issue](https://github.com/egil/bUnit/issues/84) on GitHub.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU4ODgwMzE0OV19
+eyJoaXN0b3J5IjpbMTE2ODgwNTExMF19
 -->
