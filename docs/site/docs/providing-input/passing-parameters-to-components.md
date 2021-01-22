@@ -453,7 +453,7 @@ These examples do the same thing, i.e. render the `<HelloWorld>` component insid
 
 This is just regular Blazor child content parameter passing, where one component is rendered inside another, i.e. the `<HelloWorld>` component inside the `<Wrapper>` component. 
 
-The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()` method specifies the `<HelloWorld>` component as its target instead of the outer `<Wrapper>` component. This returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance. [__AP: The last clause is rather ambiguous. Is it that the IRenderedComponent\<HelloWorld\> gives access to two things - the \<HelloWorld\> components part of the render tree AND the \<HelloWorld\> components instance - or that something (\<Wrapper\>?) returns (1) the IRenderedComponent\<HelloWorld\> and (2) the \<HelloWorld\> components instance?__]
+The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()` method specifies the `<HelloWorld>` component as its target instead of the outer `<Wrapper>` component. This returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance. [__AP: The last clause is rather ambiguous. Is it that the IRenderedComponent\<HelloWorld\> gives access to two things - the \<HelloWorld\> components part of the render tree AND the \<HelloWorld\> components instance - or that something (\<Wrapper\>?) returns (1) the IRenderedComponent\<HelloWorld\> and (2) the \<HelloWorld\> components instance? (Same issue arises in previous case too.)__]
 
 ***
 
@@ -461,8 +461,7 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2MTU1MjUyNTEsLTY0NTY2NjcwNCwtMj
-A5MDE5OTM5OCwxOTExMjk2NDI4LC03NjUzNDcxMTEsNDE4OTgw
-Njg0LDIxMTM5OTE5NCwtMTk0NzcxNDc4NiwyMjEzODI0ODFdfQ
-==
+eyJoaXN0b3J5IjpbLTYzNjg4ODQzMCwtNjQ1NjY2NzA0LC0yMD
+kwMTk5Mzk4LDE5MTEyOTY0MjgsLTc2NTM0NzExMSw0MTg5ODA2
+ODQsMjExMzk5MTk0LC0xOTQ3NzE0Nzg2LDIyMTM4MjQ4MV19
 -->
