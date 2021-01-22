@@ -24,7 +24,7 @@ The following sections show how to set each of these states in a test.
 
 ## Setting Authenticating, Authenticated and Authorized States
 
-The examples in the following sections will use the `<UserInfo>` component listed below. This uses an injected `AuthenticationStateProvider`, the `<CascadingAuthenticationState>`, and `<AuthorizeView>` components to show the user name when a user is authenticated. It also shows the authorization state when the authenticated user is authorized.
+The examples in the following sections will use the `<UserInfo>` component listed below. This uses an injected `AuthenticationStateProvider` service  and `<CascadingAuthenticationState>` and `<AuthorizeView>` components to show the user name when a user is authenticated. It also shows the authorization state when the authenticated user is authorized.
 
 [!code-razor[UserInfo.razor](../../../samples/components/UserInfo.razor)]
 
@@ -110,5 +110,5 @@ Let’s try to combine all the possibilities shown in the previous examples into
 
 With this example done, all auth related test scenarios should be covered. If you find one that is missing, please let us know in the [bUnit discussion forum](https://github.com/egil/bUnit/discussions).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzM1NDc0NjQwXX0=
+eyJoaXN0b3J5IjpbLTcxNzc1Mjg1NywzMzU0NzQ2NDBdfQ==
 -->
