@@ -78,7 +78,7 @@ Here are the customization options you have available to you:
   <h1 title:ignoreCase="HeaDinG">...</h1>
   ```
 
-- **Use RegEx during comparison:** To use a regular expression when comparing the text inside an element or inside an attribute, use the `diff:regex` on elements and `:regex` modifier on attributes.
+- **Use RegEx during comparison:** To use a regular expression when comparing the text inside an element or inside an attribute, use the `diff:regex` attribute on elements and the `:regex` modifier on attributes.
 
   For example, to use a regular expression during comparison of the text in the `h1` element, add the `diff:regex` attribute to the element and place the regular expression in the body of the element:
 
@@ -86,7 +86,7 @@ Here are the customization options you have available to you:
   <h1 diff:regex diff:ignoreCase>Hello World \d{4}</h1>
   ```
 
-  To use a regular expression during comparison of the text inside the `title` attribute, add the `:regex` modifier to attribute and add the regular expression in the attributes value:
+  To use a regular expression during comparison of the text inside the `title` attribute, add the `:regex` modifier to the attribute and add the regular expression in the attribute value:
 
   ```html
   <h1 title:regex="Heading-\d{4}">...</h1>
@@ -113,5 +113,6 @@ In a Snapshot test, using the `<SnapshotTest>` test type, the example looks like
 
 [!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L32-L42)]
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTc0Nzk1NzUwNCwtMTg3ODk4OTM4N119
+eyJoaXN0b3J5IjpbLTIxMDM4MzQ3NjEsLTE4Nzg5ODkzODddfQ
+==
 -->
