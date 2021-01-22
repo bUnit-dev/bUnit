@@ -20,7 +20,7 @@ The following sections show how to use the built-in implementation of `IJSRuntim
 
 bUnit's JSInterop can run in two modes, **strict** or **loose**:
 
-- **Loose** mode configures the implementation to return just the default value when it receives an invocation that has not been explicitly set up, e.g. if a component calls `InvokeAsync<int>(...)` the mock will simply return `default(int)` back to it immediately.
+- **Loose** mode configures the implementation to just return the default value when it receives an invocation that has not been explicitly set up, e.g. if a component calls `InvokeAsync<int>(...)` the mock will simply return `default(int)` back to it immediately.
 - **Strict** mode configures the implementation to throw an exception if it is invoked with a method call it has _not_ been set up to handle explicitly. This is useful if you want to ensure that a component only performs a specific set of `IJSRuntime` invocations.
 
 By default, the bUnit's JSInterop runs in **Strict** mode. To change the mode, do the following:
@@ -158,5 +158,5 @@ bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUn
 
 To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM5Njg4MzU4MV19
+eyJoaXN0b3J5IjpbLTE2MzgxMzU0MTldfQ==
 -->
