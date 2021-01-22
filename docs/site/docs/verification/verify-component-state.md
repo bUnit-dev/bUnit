@@ -10,7 +10,7 @@ Calling [`RenderComponent<TComponent>()`](xref:Bunit.TestContext.RenderComponent
 The <xref:Bunit.IRenderedComponent`1> type makes it possible to inspect the instance of the component under test (`TComponent`), and trigger re-renders explicitly.
 
 > [!NOTE]
-> Since <xref:Bunit.IRenderedComponent`1> inherits from <xref:Bunit.IRenderedFragment>, all the markup verification techniques covered on the <xref:verify-markup> page also applies to the <xref:Bunit.IRenderedComponent`1> type.
+> Since <xref:Bunit.IRenderedComponent`1> inherits from <xref:Bunit.IRenderedFragment>, all the markup verification techniques covered on the <xref:verify-markup> page also apply to the <xref:Bunit.IRenderedComponent`1> type.
 
 ## Inspecting the Component Under Test
 
@@ -49,3 +49,6 @@ Assert.Equal(2, tasks.Count);
 
 Both the [`FindComponent<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponent``1(Bunit.IRenderedFragment)) and [`FindComponents<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponents``1(Bunit.IRenderedFragment)) methods perform a **depth-first search** of the render tree, with the first method returning only the first found matching component, and the latter returning all matching components in the render tree.
 Both the [`FindComponent<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponent``1(Bunit.IRenderedFragment)) and [`FindComponents<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponents``1(Bunit.IRenderedFragment)) methods performs a **depth-first search** of the render tree, with the first method returning only the first found matching component, and the latter returning all matching components in the render tree.
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbLTE0NTAxMTA5NTBdfQ==
+-->
