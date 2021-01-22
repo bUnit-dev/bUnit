@@ -401,7 +401,7 @@ To pass a named cascading parameter to the `<CascadingParams>` component, do the
 
 These examples both accomplish the same thing, i.e. pass in the value `Egil Hansen` to the cascading parameter with the name `LoggedInUser`. Note that the name of the parameter is not the same as the property of the parameter, e.g. `LoggedInUser` vs. `UserName`.
 
-The first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the named parameter value, specifying the cascading parameters name and a value (not the property name).
+The **first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the named parameter value, specifying the cascading parameters name and a value (not the property name).
 
 The second example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to select the cascading parameter property and pass the parameter value that way. 
 
@@ -445,7 +445,7 @@ It is possible to nest a component under tests inside other components, if that 
 
 [!code-csharp[](../../../samples/tests/xunit/NestedComponentTest.cs#L16-L28)]
 
-These examples do the same thing, i.e. render the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()`, which returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance.
+These examples do the same thing, i.e. render the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()`, which returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance.[__AP: The last clause is rather ambiguous. Is it that the IRenderedComponent\<HelloWorld\> gives access to two things - the \<HelloWorld\> components part of the render tree and the \<HelloWorld\> components instance - or that something (\<Wrapper\>?) returns (1) the IRenderedComponent\<HelloWorld\> and (2) the \<HelloWorld\> components instance?__]
 
 # [Razor test code](#tab/razor)
 
@@ -453,7 +453,7 @@ These examples do the same thing, i.e. render the `<HelloWorld>` component insid
 
 This is just regular Blazor child content parameter passing, where one component is rendered inside another, i.e. the `<HelloWorld>` component inside the `<Wrapper>` component. 
 
-The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()` method specifies the `<HelloWorld>` component as its target instead of the outer `<Wrapper>` component. This returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance. [__AP: The last clause is rather ambiguous. Is it that the IRenderedComponent\<HelloWorld\> gives access to two things - the \<HelloWorld\> components part of the render tree AND the \<HelloWorld\> components instance - or that something (\<Wrapper\>?) returns (1) the IRenderedComponent\<HelloWorld\> and (2) the \<HelloWorld\> components instance? (Same issue arises in previous case too.)__]
+The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()` method specifies the `<HelloWorld>` component as its target instead of the outer `<Wrapper>` component. This returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance. [__AP: The last clause is rather ambiguous. Is it that the IRenderedComponent\<HelloWorld\> gives access to two things - the \<HelloWorld\> components part of the render tree and the \<HelloWorld\> components instance - or that something (\<Wrapper\>?) returns (1) the IRenderedComponent\<HelloWorld\> and (2) the \<HelloWorld\> components instance?__]
 
 ***
 
@@ -461,7 +461,8 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTYzNjg4ODQzMCwtNjQ1NjY2NzA0LC0yMD
-kwMTk5Mzk4LDE5MTEyOTY0MjgsLTc2NTM0NzExMSw0MTg5ODA2
-ODQsMjExMzk5MTk0LC0xOTQ3NzE0Nzg2LDIyMTM4MjQ4MV19
+eyJoaXN0b3J5IjpbLTEwNDQyOTMxNjgsLTYzNjg4ODQzMCwtNj
+Q1NjY2NzA0LC0yMDkwMTk5Mzk4LDE5MTEyOTY0MjgsLTc2NTM0
+NzExMSw0MTg5ODA2ODQsMjExMzk5MTk0LC0xOTQ3NzE0Nzg2LD
+IyMTM4MjQ4MV19
 -->
