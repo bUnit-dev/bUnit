@@ -287,13 +287,13 @@ This is just regular Blazor `RenderFragment` parameter passing, where regular HT
 
 ### Templates Parameters
 
-Template parameters are closely related to the `RenderFragment` parameters described in the previous section. The difference is that a template parameter is of type `RenderFragment<TValue>`. Like with regular `RenderFragment`, a `RenderFragment<TValue>` template parameter can be regular HTML markup, it can be Razor markup, e.g. other component declarations, or it can be a mix of the two. If it is another component, then that component can also receive child content, and so forth.
+Template parameters are closely related to the `RenderFragment` parameters described in the previous section. The difference is that a template parameter is of type `RenderFragment<TValue>`. As with a regular `RenderFragment`, a `RenderFragment<TValue>` template parameter can consist of regular HTML markup, it can be Razor markup, e.g. other component declarations, or it can be a mix of the two. If it is another component, then that component can also receive child content, and so forth.
 
-The following examples renders this template component, which has a `RenderFragment<TValue>` template parameter:
+The following examples renders a template component which has a `RenderFragment<TValue>` template parameter:
 
 [!code-csharp[TemplateParams.razor](../../../samples/components/TemplateParams.razor)]
 
-#### Passing HTML based templates
+#### Passing HTML-based templates
 
 To pass a template into a `RenderFragment<TValue>` parameter that just consists of regular HTML markup, do the following:
 
@@ -455,5 +455,6 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5NDc3MTQ3ODYsMjIxMzgyNDgxXX0=
+eyJoaXN0b3J5IjpbNzUzMjAwNzIzLC0xOTQ3NzE0Nzg2LDIyMT
+M4MjQ4MV19
 -->
