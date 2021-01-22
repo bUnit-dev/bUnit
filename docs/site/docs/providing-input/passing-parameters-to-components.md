@@ -137,7 +137,7 @@ To pass a component, e.g. the classic `<Counter>` component, which does not take
 
 These examples do the same thing.
 
-The first example uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
+The **first example** uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
 
 The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test's `ChildContent` parameter.
 
@@ -161,9 +161,9 @@ To pass a component with parameters to a component under test, e.g. the `<Alert>
 
 These examples do the same thing.
 
-The first example uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test. `ChildContent<TChildComponent>` factory method can take zero or more component parameters as input itself, which will be passed to the `TChildComponent` component, which in this case is the `<Alert>` component.
+The **first example** uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test. `ChildContent<TChildComponent>` factory method can take zero or more component parameters as input itself, which will be passed to the `TChildComponent` component, which in this case is the `<Alert>` component.
 
-The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test. The `AddChildContent<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterCollectionBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, which in this case is the `<Alert>` component.
+The **second example** uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test. The `AddChildContent<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterCollectionBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, which in this case is the `<Alert>` component.
 
 # [Razor test code](#tab/razor)
 
@@ -209,9 +209,9 @@ The following subsections have different examples of content being passed to the
 
 These examples do the same thing.
 
-The first example uses the `RenderFragment` factory method in <xref:Bunit.ComponentParameterFactory> to pass an HTML markup string as the input to the `RenderFragment` parameter.
+The **first example** uses the `RenderFragment` factory method in <xref:Bunit.ComponentParameterFactory> to pass an HTML markup string as the input to the `RenderFragment` parameter.
 
-The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method to pass an HTML markup string as the input to the `RenderFragment` parameter.
+The **second example** uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method to pass an HTML markup string as the input to the `RenderFragment` parameter.
 
 # [Razor test code](#tab/razor)
 
@@ -231,9 +231,9 @@ To pass a component such as the classic `<Counter>` component, which does not ta
 
 These examples do the same thing.
 
-The first example uses the `RenderFragment<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter.
+The **first example** uses the `RenderFragment<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter.
 
-The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter.
+The **second example** uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter.
 
 # [Razor test code](#tab/razor)
 
@@ -255,9 +255,9 @@ To pass a component with parameters to a `RenderFragment` parameter, e.g. the `<
 
 These examples do the same thing.
 
-The first example uses the `RenderFragment<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the  `RenderFragment` parameter.  The `RenderFragment<TChildComponent>` factory method takes the name of the parameter and zero or more component parameters as input, which will be passed to the `TChildComponent` component, which in this case is the `<Alert>` component.
+The **first example** uses the `RenderFragment<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the  `RenderFragment` parameter.  The `RenderFragment<TChildComponent>` factory method takes the name of the parameter and zero or more component parameters as input, which will be passed to the `TChildComponent` component, which in this case is the `<Alert>` component.
 
-The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter. The `Add<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterCollectionBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, which in this case is the `<Alert>` component.
+The **second example** uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the `RenderFragment` parameter. The `Add<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterCollectionBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, which in this case is the `<Alert>` component.
 
 # [Razor test code](#tab/razor)
 
@@ -303,9 +303,9 @@ To pass a template into a `RenderFragment<TValue>` parameter that just consists 
 
 These examples do the same thing, i.e. pass a HTML markup template into the component under test. This is done with the help of a `Func<TValue, string>` delegate which takes whatever the template value is as input, and returns a (markup) string. The delegate is automatically turned into a `RenderFragment<TValue>` type and passed to the template parameter.
 
-The first example passes data to the `Items` parameter, and then it uses the `Template<TValue>` factory method in <xref:Bunit.ComponentParameterFactory>, which takes the name of the `RenderFragment<TValue>` template parameter and the `Func<TValue, string>` delegate as input.
+The **first example** passes data to the `Items` parameter, and then it uses the `Template<TValue>` factory method in <xref:Bunit.ComponentParameterFactory>, which takes the name of the `RenderFragment<TValue>` template parameter and the `Func<TValue, string>` delegate as input.
 
-The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method to first add the data to the `Items` parameter and then to a `Func<TValue, string>` delegate.
+The **second example** uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method to first add the data to the `Items` parameter and then to a `Func<TValue, string>` delegate.
 
 The delegate creates a simple markup string in both examples.
 
@@ -377,11 +377,11 @@ To pass the unnamed `IsDarkTheme` cascading parameter to the `<CascadingParams>`
 
 These examples achieve the same thing, i.e. pass the variable `isDarkTheme` to the cascading parameter `IsDarkTheme`.
 
-The first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the unnamed parameter value.
+The **first example** uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the unnamed parameter value.
 
-The second example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> to pass the unnamed parameter value.
+The **second example** uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> to pass the unnamed parameter value.
 
-The last example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to explicitly select the desired cascading parameter and pass the unnamed parameter value that way.
+The **last example** uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to explicitly select the desired cascading parameter and pass the unnamed parameter value that way.
 
 # [Razor test code](#tab/razor)
 
@@ -401,9 +401,9 @@ To pass a named cascading parameter to the `<CascadingParams>` component, do the
 
 These examples both accomplish the same thing, i.e. pass in the value `Egil Hansen` to the cascading parameter with the name `LoggedInUser`. Note that the name of the parameter is not the same as the property of the parameter, e.g. `LoggedInUser` vs. `UserName`.
 
-The **first example uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the named parameter value, specifying the cascading parameters name and a value (not the property name).
+The **first example** uses the `CascadingValue` factory method in <xref:Bunit.ComponentParameterFactory> to pass the named parameter value, specifying the cascading parameters name and a value (not the property name).
 
-The second example uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to select the cascading parameter property and pass the parameter value that way. 
+The **second example** uses the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to select the cascading parameter property and pass the parameter value that way. 
 
 # [Razor test code](#tab/razor)
 
@@ -461,7 +461,7 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwNDQyOTMxNjgsLTYzNjg4ODQzMCwtNj
+eyJoaXN0b3J5IjpbLTE4MDUwOTg2NzIsLTYzNjg4ODQzMCwtNj
 Q1NjY2NzA0LC0yMDkwMTk5Mzk4LDE5MTEyOTY0MjgsLTc2NTM0
 NzExMSw0MTg5ODA2ODQsMjExMzk5MTk0LC0xOTQ3NzE0Nzg2LD
 IyMTM4MjQ4MV19
