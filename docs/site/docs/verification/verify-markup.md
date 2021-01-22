@@ -173,12 +173,12 @@ This is what happens in the test:
 3. The <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender>, [`ShouldHaveSingleChange()`](xref:Bunit.DiffAssertExtensions.ShouldHaveSingleChange(System.Collections.Generic.IEnumerable{AngleSharp.Diffing.Core.IDiff})) and [`ShouldBeAddition()`](xref:Bunit.ShouldBeAdditionAssertExtensions.ShouldBeAddition(AngleSharp.Diffing.Core.IDiff,System.String,System.String)) methods are used to verify that the item was correctly added.
 4. The <xref:Bunit.IRenderedFragment.SaveSnapshot> is used to save a snapshot of current DOM nodes internally in the `cut`. This reduces the number of diffs found in the following steps, simplifying verification.
 5. A second item is added to the check list.
-6. Two verifications are performed at this point, one using the <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> method which finds two changes, and one using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method, whfinds a single change. The first is only done for illustrative purposes.
+6. Two verifications are performed at this point, one using the <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> method which finds two changes, and one using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method, which finds a single change. The first is only done for illustrative purposes.
 7. A new snapshot is saved, replacing the previous one with another call to the <xref:Bunit.IRenderedFragment.SaveSnapshot> method.
 8. Finally the last item in the list is found and clicked, and the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method is used to find the changes, a single diff, which is verified as a removal of the second item.
 
 As mentioned earlier, the `IDiff` assertion helpers are still experimental. Any feedback and suggestions for improvements should be directed to the [related issue](https://github.com/egil/bUnit/issues/84) on GitHub.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTExMDkyMzQ5NSwxNTc1MzY0MjQzLDM2OD
+eyJoaXN0b3J5IjpbLTgyNzgwNjUzNSwxNTc1MzY0MjQzLDM2OD
 E5NjgwOSw3NDQ0MDk0NDNdfQ==
 -->
