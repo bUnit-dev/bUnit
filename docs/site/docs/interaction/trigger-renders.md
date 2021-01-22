@@ -28,7 +28,7 @@ The highlighted line shows the call to [`Render()`](xref:Bunit.RenderedComponent
 
 ## SetParametersAndRender
 
-The [`SetParametersAndRender(...)`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods tells the renderer to re-render the component with new parameters, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods), passing the new parameters -- _but only the new parameters_ -- to the `SetParametersAsync()` method. To use it, do the following:
+The [`SetParametersAndRender(...)`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods tells the renderer to re-render the component with new parameters, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods), passing the new parameters &mdash; _but only the new parameters_ &mdash; to the `SetParametersAsync()` method. To use it, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=31&end=42&highlight=8-10)]
 
@@ -58,5 +58,5 @@ The highlighted line shows the call to [`InvokeAsync(...)`](xref:Bunit.RenderedC
 > [!TIP]
 > The instance of a component under test is available through the <xref:Bunit.IRenderedComponentBase`1.Instance> property.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc2MjMzNDk4MF19
+eyJoaXN0b3J5IjpbLTc1ODI0ODE2MF19
 -->
