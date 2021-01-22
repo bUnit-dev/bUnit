@@ -63,7 +63,7 @@ All of these examples do the same thing. Here's what's going on:
 1. The first example passes parameters using C# tuples, `(string name, object? value)`.
 2. The second example also uses C# tuples to pass the parameters, but the name is retrieved in a refactor-safe manner using the `nameof` keyword in C#.
 3. The third example uses the <xref:Bunit.ComponentParameterFactory.Parameter(System.String,System.Object)> factory method.
-4. The last example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type for the value. This makes the builders methods strongly typed and refactor safe.
+4. The last example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type for the value. This makes the builder's methods strongly typed and refactor-safe.
 
 # [Razor test code](#tab/razor)
 
@@ -448,5 +448,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk2MDcwNzY5OF19
+eyJoaXN0b3J5IjpbLTQ2MjIxMjE3Ml19
 -->
