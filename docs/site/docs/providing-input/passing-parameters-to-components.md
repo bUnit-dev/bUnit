@@ -281,13 +281,13 @@ Passing a mix of markup and components to a `RenderFragment` parameter is simply
 
 [!code-cshtml[](../../../samples/tests/razor/AllKindsOfParamsTest.razor#L85-L96)]
 
-This is just regular Blazor `RenderFragment` parameter passing, where regular HTML markup and an `<Alert>` component is declared inside the component under test's `<Content>` element, and any parameters is passed to it like normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
+This is just regular Blazor `RenderFragment` parameter passing, where regular HTML markup and an `<Alert>` component is declared inside the component under test's `<Content>` element, and any parameters are passed to it as normal in Blazor. This is the same for both `Fixture` and `SnapshotTest` razor tests.
 
 ***
 
 ### Templates Parameters
 
-Template parameters are closely related to `RenderFragment` parameters described in the previous section. The difference is that a template parameter is of type `RenderFragment<TValue>`. Like with regular `RenderFragment`, a `RenderFragment<TValue>` template parameter can be regular HTML markup, it can be Razor markup, e.g. other component declarations, or it can be a mix of the two. If it is another component, then that component can also receive child content, and so forth.
+Template parameters are closely related to the `RenderFragment` parameters described in the previous section. The difference is that a template parameter is of type `RenderFragment<TValue>`. Like with regular `RenderFragment`, a `RenderFragment<TValue>` template parameter can be regular HTML markup, it can be Razor markup, e.g. other component declarations, or it can be a mix of the two. If it is another component, then that component can also receive child content, and so forth.
 
 The following examples renders this template component, which has a `RenderFragment<TValue>` template parameter:
 
@@ -455,5 +455,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk2MjQwNjI0NiwyMjEzODI0ODFdfQ==
+eyJoaXN0b3J5IjpbLTE5NDc3MTQ3ODYsMjIxMzgyNDgxXX0=
 -->
