@@ -439,13 +439,13 @@ This is just regular Blazor cascading value parameter passing, which is the same
 
 ## Rendering a Component Under Test Inside Other Components
 
-It is possible to nest a component under tests inside other components, if that is required to test it. For example, to nest the `<HelloWorld>` component inside the `<Wrapper>` component, do the following:
+It is possible to nest a component under tests inside other components, if that is required to test it. For example, to nest the `<HelloWorld>` component inside the `<Wrapper>` component do the following:
 
 # [C# test code](#tab/csharp)
 
 [!code-csharp[](../../../samples/tests/xunit/NestedComponentTest.cs#L16-L28)]
 
-These examples do the same thing, i.e. rendering the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()`, which returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance.
+These examples do the same thing, i.e. render the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()`, which returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance.
 
 # [Razor test code](#tab/razor)
 
@@ -461,7 +461,7 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkxMTI5NjQyOCwtNzY1MzQ3MTExLDQxOD
-k4MDY4NCwyMTEzOTkxOTQsLTE5NDc3MTQ3ODYsMjIxMzgyNDgx
-XX0=
+eyJoaXN0b3J5IjpbLTIwOTAxOTkzOTgsMTkxMTI5NjQyOCwtNz
+Y1MzQ3MTExLDQxODk4MDY4NCwyMTEzOTkxOTQsLTE5NDc3MTQ3
+ODYsMjIxMzgyNDgxXX0=
 -->
