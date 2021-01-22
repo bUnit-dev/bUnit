@@ -158,7 +158,7 @@ This is what happens in the test:
 
 Testing a more **complex life cycle of a component** can be done more easily using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> and <xref:Bunit.IRenderedFragment.SaveSnapshot> methods along with a host of other assert helpers. 
 
-This example tests the `<CheckList>` component listed below. The component allows you to add new items to the checklist by typing into the input field and hitting the `enter` key. Items can be removed from the again list by clicking on them.
+This example tests the `<CheckList>` component listed below. The component allows you to add new items to the checklist by typing into the input field and hitting the `enter` key. Items can be removed from the again list [__AP: Is 'again list' correct?__] by clicking on them.
 
 [!code-razor[CheckList.razor](../../../samples/components/CheckList.razor)]
 
@@ -173,12 +173,12 @@ This is what happens in the test:
 3. The <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender>, [`ShouldHaveSingleChange()`](xref:Bunit.DiffAssertExtensions.ShouldHaveSingleChange(System.Collections.Generic.IEnumerable{AngleSharp.Diffing.Core.IDiff})) and [`ShouldBeAddition()`](xref:Bunit.ShouldBeAdditionAssertExtensions.ShouldBeAddition(AngleSharp.Diffing.Core.IDiff,System.String,System.String)) methods are used to verify that the item was correctly added.
 4. The <xref:Bunit.IRenderedFragment.SaveSnapshot> is used to save a snapshot of current DOM nodes internally in the `cut`. This reduces the number of diffs found in the following steps, simplifying verification.
 5. A second item is added to the check list.
-6. Two verifications are performed at this point, one using the <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> method which finds two changes, and one using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method, that finds a single change. The first is only done for illustrative purposes.
+6. Two verifications are performed at this point, one using the <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> method which finds two changes, and one using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method, whfinds a single change. The first is only done for illustrative purposes.
 7. A new snapshot is saved, replacing the previous one with another call to the <xref:Bunit.IRenderedFragment.SaveSnapshot> method.
 8. Finally the last item in the list is found and clicked, and the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method is used to find the changes, a single diff, which is verified as a removal of the second item.
 
 As mentioned earlier, the `IDiff` assertion helpers are still experimental. Any feedback and suggestions for improvements should be directed to the [related issue](https://github.com/egil/bUnit/issues/84) on GitHub.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU3NTM2NDI0MywzNjgxOTY4MDksNzQ0ND
-A5NDQzXX0=
+eyJoaXN0b3J5IjpbMTExMDkyMzQ5NSwxNTc1MzY0MjQzLDM2OD
+E5NjgwOSw3NDQ0MDk0NDNdfQ==
 -->
