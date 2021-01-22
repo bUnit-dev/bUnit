@@ -20,7 +20,7 @@ Just performing string comparison of two strings containing HTML markup can brea
 - Reordering of attributes. The order of attributes does not matter.
 - Reordering of classes defined in the `class="..."` attribute. The order of classes does not matter.
 - Change of boolean attributes  to be implicit or explicit, e.g. from `required="required"` to `required`.
-- Change s to insignificant whitespace inside `<style>` tags.
+- Changes to insignificant whitespace inside `<style>` tags.
 - Changes to HTML comments and comments inside `<style>` tags.
 
 The [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library handles all those cases, so your tests are more stable.
@@ -33,7 +33,7 @@ Here are the customization options you have available to you:
 
 - **Ignore comments (enabled by default):** Comments in markup and inside `<style>` tags are automatically ignored and not part of the comparison process.
 
-- **Ignore element:** Use the `diff:ignore` attribute to ignore an element, all its attributes and child nodes. For example, to ignore the `h1` element, do the following:
+- **Ignore element:** Use the `diff:ignore` attribute to ignore an element, all its attributes and its child nodes. For example, to ignore the `h1` element, do the following:
 
   ```html
   <header>
@@ -112,3 +112,6 @@ In a Razor based test, using the `<Fixture>` test type, the example looks like t
 In a Snapshot test, using the `<SnapshotTest>` test type, the example looks like this:
 
 [!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L32-L42)]
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbLTE4Nzg5ODkzODddfQ==
+-->
