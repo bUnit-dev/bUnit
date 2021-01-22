@@ -7,7 +7,7 @@ title: Injecting Services into Components Under Test
 
 It is common for components under test to have a dependency on services, injected into them through the `@inject IMyService MyService` syntax in .razor files, or the `[Inject] private IMyService MyService { get; set; }` syntax in .cs files.
 
-This is supported in bUnit through the `Services` collection available through the test contexts used in both C# and Razor based tests. The `Services` collection is just a `IServiceCollection`, which means services can be registered in the same manner as done in production code in `Startup.cs` in Blazor Server projects and in `Program.cs` in Blazor Wasm projects.
+This is supported in bUnit through the `Services` collection available through the test contexts used in both C#- and Razor-based tests. The `Services` collection is just a `IServiceCollection`, which means services can be registered in the same manner as done in production code in `Startup.cs` in Blazor Server projects and in `Program.cs` in Blazor Wasm projects.
 
 In bUnit, you register the services in the `Services` collection _before_ you render a component under test. 
 
@@ -49,3 +49,6 @@ The following example shows how to do this with `<SnapshotTest>` tests:
 ## Further Reading
 
 A closely related topic is mocking. To learn more about mocking in bUnit, go to the <xref:test-doubles> page.
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbLTg2MDcwMTU0M119
+-->
