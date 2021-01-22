@@ -159,10 +159,11 @@ To pass a component with parameters to a component under test, e.g. the `<Alert>
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L102-L120)]
 
-These examples do the same thing, here is what is going on:
+These examples do the same thing.
 
-1. The first example uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test. `ChildContent<TChildComponent>` factory method can take zero or more component parameters as input itself, which will be passed to the `TChildComponent` component, in this case, the `<Alert>` component.
-2. The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test. The `AddChildContent<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterCollectionBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, in this case, the `<Alert>` component.
+The first example uses the `ChildContent<TChildComponent>` factory method in <xref:Bunit.ComponentParameterFactory>, where `TChildComponent` is the (child) component that should be passed to the component under test. `ChildContent<TChildComponent>` factory method can take zero or more component parameters as input itself, which will be passed to the `TChildComponent` component, which in this case is the `<Alert>` component.
+
+The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent<TChildComponent>` method, where `TChildComponent` is the (child) component that should be passed to the component under test. The `AddChildContent<TChildComponent>` method takes an optional <xref:Bunit.ComponentParameterCollectionBuilder`1> as input, which can be used to pass parameters to the `TChildComponent` component, which in this case is the `<Alert>` component.
 
 # [Razor test code](#tab/razor)
 
@@ -451,5 +452,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYzOTQ4MTg4NF19
+eyJoaXN0b3J5IjpbMjQ0MDgxMjMwXX0=
 -->
