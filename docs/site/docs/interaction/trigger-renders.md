@@ -45,7 +45,7 @@ Invoking methods on a component under test which cause [__AP: I'm assuming it's 
 
 If you receive this error, you need to invoke your method inside an `Action` delegate passed to the [`InvokeAsync(...)`](xref:Bunit.RenderedComponentInvokeAsyncExtensions.InvokeAsync``1(Bunit.IRenderedComponentBase{``0},System.Action)) method.
 
-Let’s look at an example of this, using the `<ImparativeCalc>` component listed below:
+Let’s look at an example of this, using the `<ImparativeCalc>` component listed below: [__AP: Should this be <Im__]
 
 [!code-cshtml[ImparativeCalc.razor](../../../samples/components/ImparativeCalc.razor)]
 
@@ -58,5 +58,5 @@ The highlighted line shows the call to [`InvokeAsync(...)`](xref:Bunit.RenderedC
 > [!TIP]
 > The instance of a component under test is available through the <xref:Bunit.IRenderedComponentBase`1.Instance> property.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MTcwNjAzXX0=
+eyJoaXN0b3J5IjpbLTM2MDY3MjU3MF19
 -->
