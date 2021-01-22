@@ -86,7 +86,7 @@ Here are the customization options you have available to you:
   <h1 diff:regex diff:ignoreCase>Hello World \d{4}</h1>
   ```
 
-  To use a regular expression during comparison of the text inside the `title` attribute, add the `:regex` modifier to the attribute and add the regular expression in the attribute value:
+  To use a regular expression during comparison of the text inside the `title` attribute, add the `:regex` modifier to the attribute and add the regular expression in the attribute's value:
 
   ```html
   <h1 title:regex="Heading-\d{4}">...</h1>
@@ -97,11 +97,11 @@ Here are the customization options you have available to you:
 
 ## Examples
 
-Let’s look at a few examples where we use the semantic comparison options listed above to modify the comparison. In C#-based tests, we have the `MarkupMatches()` methods we can use to perform the semantic comparison of the output from a rendered component. For example, we may have a component, `<Heading>`, that renders the following markup:
+Let’s look at a few examples where we use the semantic comparison options listed above to modify the comparison. In C#-based tests, we have the `MarkupMatches()` methods we can use to perform semantic comparison of the output from a rendered component. For example, we may have a component, `<Heading>`, that renders the following markup:
 
 [!code-razor[Heading.razor](../../../samples/components/Heading.razor)]   
 
-In this case, we want to verify the markup is rendered correctly, using something such as RegEx to verify the `id` attribute (it might be generated) and ignoring the `<small>` element. We can do this like so in C#-based tests with the `MarkupMatches()` method:
+In this case, we want to verify that the markup is rendered correctly, using something such as RegEx to verify the `id` attribute (it might be generated) and ignoring the `<small>` element. We can do this like so in C#-based tests with the `MarkupMatches()` method:
 
 [!code-csharp[SemanticHtmlTest.cs](../../../samples/tests/xunit/SemanticHtmlTest.cs#L16-L29)]
 
@@ -113,6 +113,5 @@ In a Snapshot test, using the `<SnapshotTest>` test type, the example looks like
 
 [!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L32-L42)]
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMDM4MzQ3NjEsLTE4Nzg5ODkzODddfQ
-==
+eyJoaXN0b3J5IjpbMjgwNDAyNDgxLC0xODc4OTg5Mzg3XX0=
 -->
