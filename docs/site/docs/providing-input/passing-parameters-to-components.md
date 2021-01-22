@@ -303,8 +303,9 @@ To pass a template into a `RenderFragment<TValue>` parameter that just consists 
 
 These examples do the same thing, i.e. pass a HTML markup template into the component under test. This is done with the help of a `Func<TValue, string>` delegate which takes whatever the template value is as input, and returns a (markup) string. The delegate is automatically turned into a `RenderFragment<TValue>` type and passed to the template parameter.
 
-1. The first example passes data to the `Items` parameter, and then it uses the `Template<TValue>` factory method in <xref:Bunit.ComponentParameterFactory>, that takes the name of the `RenderFragment<TValue>` template parameter, and the `Func<TValue, string>` delegate as input.
-2. The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method to first add the data to `Items` parameter and then a `Func<TValue, string>` delegate.
+The first example passes data to the `Items` parameter, and then it uses the `Template<TValue>` factory method in <xref:Bunit.ComponentParameterFactory>, that takes the name of the `RenderFragment<TValue>` template parameter, and the `Func<TValue, string>` delegate as input.
+
+The second example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method to first add the data to `Items` parameter and then a `Func<TValue, string>` delegate.
 
 The delegate creates a simple markup string in both examples.
 
@@ -455,6 +456,6 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzUzMjAwNzIzLC0xOTQ3NzE0Nzg2LDIyMT
+eyJoaXN0b3J5IjpbMjExMzk5MTk0LC0xOTQ3NzE0Nzg2LDIyMT
 M4MjQ4MV19
 -->
