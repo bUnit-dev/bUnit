@@ -72,7 +72,7 @@ To use the `MarkupMatches()` method to perform a semantic comparison of the outp
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=27&end=34&highlight=5-9)]
 
-The highlighted line shows the call to the `MarkupMatches()` method. This test passes even though the insignificant whitespace is not exactly the same between the expected HTML string and the raw markup produced by the `<Heading>` component. It even works when the CSS class-list is not in the same order on the `<small>` element.
+The highlighted line shows the call to the `MarkupMatches()` method. This test passes even though the insignificant whitespace is not exactly the same between the expected HTML string and the raw markup produced by the `<Heading>` component. It even works when the CSS class list is not in the same order on the `<small>` element.
 
 The `MarkupMatches()` method is also available on `INode` and `INodeList` types, for example:
 
@@ -179,5 +179,5 @@ This is what happens in the test:
 
 As mentioned earlier, the `IDiff` assertion helpers are still experimental. Any feedback and suggestions for improvements should be directed to the [related issue](https://github.com/egil/bUnit/issues/84) on GitHub.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTE2ODgwNTExMF19
+eyJoaXN0b3J5IjpbNzQ0NDA5NDQzXX0=
 -->
