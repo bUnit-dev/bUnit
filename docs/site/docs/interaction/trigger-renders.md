@@ -39,7 +39,7 @@ The highlighted line shows the call to [`SetParametersAndRender()`](xref:Bunit.R
 
 ## InvokeAsync
 
-Invoking methods on a component under test which cause [__AP: I'm assuming it's the methods that cause the rend] a render - e.g. by calling `StateHasChanged` - can result in the following error:
+Invoking methods on a component under test which cause [__AP: I'm assuming it's the _methods_ that cause the render rather than the _component under test_ - is that right?__] a render - e.g. by calling `StateHasChanged` - can result in the following error:
 
 > The current thread is not associated with the Dispatcher. Use InvokeAsync() to switch execution to the Dispatcher when triggering rendering or component state.
 
@@ -58,5 +58,5 @@ The highlighted line shows the call to [`InvokeAsync(...)`](xref:Bunit.RenderedC
 > [!TIP]
 > The instance of a component under test is available through the <xref:Bunit.IRenderedComponentBase`1.Instance> property.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTIwMDAxOTcwMl19
+eyJoaXN0b3J5IjpbLTE5MTcwNjAzXX0=
 -->
