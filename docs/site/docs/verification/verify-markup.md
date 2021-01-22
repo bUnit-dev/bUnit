@@ -124,15 +124,15 @@ An element found with the [`Find(string cssSelector)`](xref:Bunit.RenderedFragme
 
 However, that does not apply to elements that are found by traversing the DOM tree via the <xref:Bunit.IRenderedFragment.Nodes> property on <xref:Bunit.IRenderedFragment>, for example, as those nodes do not know when their root component is re-rendered. Consequently, they don’t know when they should be updated.
 
-As a result of this, it is always recommended to use the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method when searching for a single element. Alternatively, always reissue the query whenever you need the element  .
+As a result of this, it is always recommended to use the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method when searching for a single element. Alternatively, always reissue the query whenever you need the element.
 
 #### Auto-refreshable FindAll() Queries
 
-The [`FindAll(string cssSelector, bool enableAutoRefresh = false)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) method has an optional parameter, `enableAutoRefresh`, which, when set to `true`, will return a collection of `IElement` which automatically refreshes itself when the component the elements came from is re-rendered.
+The [`FindAll(string cssSelector, bool enableAutoRefresh = false)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) method has an optional parameter, `enableAutoRefresh`, which when set to `true` will return a collection of `IElement`. This automatically refreshes itself when the component the elements came from is re-rendered.
 
 ## Finding Expected Differences
 
-It can sometimes be easier to verify that an expected change has happened in the rendered markup (and only that), than it can be to specify how all the rendered markup should look after re-render.
+It can sometimes be easier to verify that an expected change has happened in the rendered markup (and only that change), than it can be to specify how all the rendered markup should look after re-render.
 
 bUnit comes with a number of ways for finding lists of `IDiff`; the representation of a difference between two HTML fragments. All of these are direct methods or extension methods on the <xref:Bunit.IRenderedFragment> type or on the `INode` or `INodeList` types:
 
@@ -179,5 +179,6 @@ This is what happens in the test:
 
 As mentioned earlier, the `IDiff` assertion helpers are still experimental. Any feedback and suggestions for improvements should be directed to the [related issue](https://github.com/egil/bUnit/issues/84) on GitHub.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzY4MTk2ODA5LDc0NDQwOTQ0M119
+eyJoaXN0b3J5IjpbMzMzMzg3NiwzNjgxOTY4MDksNzQ0NDA5ND
+QzXX0=
 -->
