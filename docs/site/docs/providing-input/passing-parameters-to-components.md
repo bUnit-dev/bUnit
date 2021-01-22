@@ -175,13 +175,13 @@ This is just regular Blazor child content parameter passing, where the `<Alert>`
 
 #### Passing a mix of Razor and HTML to a ChildContent Parameter
 
-Some times you need to pass multiple different types of content to a ChildContent parameter, e.g. both some Markup and and a component. This can be done in the following way:
+Some times you need to pass multiple different types of content to a ChildContent parameter, e.g. both some markup and a component. This can be done in the following way:
 
 # [C# test code](#tab/csharp)
 
 [!code-csharp[](../../../samples/tests/xunit/AllKindsOfParamsTest.cs#L126-L146)]
 
-Passing a mix of markup and components to a `ChildContent` parameter is simply done by calling the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent()` methods or using the `ChildContent()` factory methods in <xref:Bunit.ComponentParameterFactory>, as seen here.
+Passing a mix of markup and components to a `ChildContent` parameter is done by simply calling the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddChildContent()` methods or using the `ChildContent()` factory methods in <xref:Bunit.ComponentParameterFactory>, as seen here.
 
 # [Razor test code](#tab/razor)
 
@@ -452,5 +452,5 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 
 - <xref:inject-services>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjIxMzgyNDgxXX0=
+eyJoaXN0b3J5IjpbLTQ2MTAyMDQ3NiwyMjEzODI0ODFdfQ==
 -->
