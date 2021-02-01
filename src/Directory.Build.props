@@ -1,9 +1,5 @@
 <Project>
-	
-	<PropertyGroup>
-		<NoWarn>CA1014</NoWarn>
-	</PropertyGroup>
-	
+		
 	<PropertyGroup Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
 		<TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
 	</PropertyGroup>
