@@ -27,7 +27,7 @@ By default, the bUnit's JSInterop runs in **Strict** mode. To change the mode, d
 
 ```csharp
 using var ctx = new TestContext();
-ctx.JSInterop.Mode = JSRuntimeMockMode.Loose;
+ctx.JSInterop.Mode = JSRuntimeMode.Loose;
 ```
 
 ## Setting up invocations
@@ -99,7 +99,7 @@ By default, a module Interop inherits the `Mode` setting from the root JSInterop
 
 ```csharp
 var moduleInterop = ctx.JSInterop.SetupModule("hello.js");
-moduleInterop.Mode = JSRuntimeMockMode.Loose;
+moduleInterop.Mode = JSRuntimeMode.Loose;
 ```
 
 ### Support for `IJSInProcessObjectReference` and `IJSUnmarshalledObjectReference`
