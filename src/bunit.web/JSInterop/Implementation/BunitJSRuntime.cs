@@ -37,7 +37,6 @@ namespace Bunit.JSInterop
 		}
 
 		/// <inheritdoc/>
-		[SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "By design. Test and renderer runs on different threads.")]
 		public TResult Invoke<TResult>(string identifier, params object?[]? args)
 			=> InvokeAsync<TResult>(identifier, args).GetAwaiter().GetResult();
 

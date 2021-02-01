@@ -1,0 +1,16 @@
+{
+	// https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/Configuration.md
+	"settings": {
+		"orderingRules": {
+			"usingDirectivesPlacement": "outsideNamespace",
+			"systemUsingDirectivesFirst": true,
+			"blankLinesBetweenUsingGroups": "omit"
+		},
+		"layoutRules": {
+			"allowConsecutiveUsings": true
+		},
+		"documentationRules": {
+			"fileNamingConvention": "stylecop"
+		}
+	}
+}

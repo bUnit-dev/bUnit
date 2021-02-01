@@ -11,13 +11,13 @@
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
-	<ItemGroup Label="Analyzers">
-		<PackageReference Include="AsyncFixer" Version="1.3.0" PrivateAssets="All" />
+	<ItemGroup Label="Analyzers">	
+    <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
+    <PackageReference Include="Asyncify" Version="0.9.7" PrivateAssets="all" />
 		<PackageReference Include="Meziantou.Analyzer" Version="1.0.645" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3" PrivateAssets="All" />
-		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.8.55" PrivateAssets="all" />
-		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.321" PrivateAssets="All" />
 		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.16.0.25740" PrivateAssets="all" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.321" PrivateAssets="All" />
+		<AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
 	</ItemGroup>
 
 </Project>

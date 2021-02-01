@@ -51,6 +51,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{90C94D37-04F6-47D9-B0E2-12D53B2777CD}"
 	ProjectSection(SolutionItems) = preProject
 		.build\code-analysis.props = .build\code-analysis.props
+		.build\stylecop.json = .build\stylecop.json
 	EndProjectSection
 EndProject
 Global

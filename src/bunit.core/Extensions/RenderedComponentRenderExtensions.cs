@@ -25,7 +25,6 @@ namespace Bunit
 		/// <param name="renderedComponent">The rendered component to re-render with new parameters.</param>
 		/// <param name="parameters">Parameters to pass to the component upon rendered.</param>
 		/// <typeparam name="TComponent">The type of the component.</typeparam>
-		[SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "The work will execute on a different thread of the renderer, and the wait will happen on the tests thread. Deadlocks should not be possible unless due to how Blazor works.")]
 		public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, ParameterView parameters)
 			where TComponent : IComponent
 		{
@@ -51,8 +50,6 @@ namespace Bunit
 		{
 			if (renderedComponent is null)
 				throw new ArgumentNullException(nameof(renderedComponent));
-			if (parameters is null)
-				throw new ArgumentNullException(nameof(parameters));
 
 			SetParametersAndRender(renderedComponent, ToParameterView(parameters));
 		}

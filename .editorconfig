@@ -447,9 +447,6 @@ dotnet_diagnostic.CA1014.severity = none # CA1014: Mark assemblies with CLSCompl
 dotnet_diagnostic.CA1032.severity = none # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA2201.severity = suggestion # CA2201: Do not raise reserved exception types
 
-# Microsoft - Threading
-# https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/index.md
-
 # StyleCop
 # https://github.com/DotNetAnalyzers/StyleCopAnalyzers
 dotnet_diagnostic.SA1027.severity = none # SA1027: Use Tabs Correctly
@@ -521,12 +518,6 @@ dotnet_diagnostic.CA2007.severity = none # CA2007: Consider calling ConfigureAwa
 dotnet_diagnostic.CA1031.severity = none # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA2012.severity = none # CA2012: Use ValueTasks correctly
 dotnet_diagnostic.CA2201.severity = none # CA2201: Do not raise reserved exception types
-
-# Microsoft - Threading
-# https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/index.md
-dotnet_diagnostic.VSTHRD111.severity = none # VSTHRD111: Use ConfigureAwait(bool)
-dotnet_diagnostic.VSTHRD105.severity = none # VSTHRD105: Avoid method overloads that assume TaskScheduler.Current
-dotnet_diagnostic.VSTHRD200.severity = none # VSTHRD200: Use "Async" suffix for async methods
 
 # StyleCop
 # https://github.com/DotNetAnalyzers/StyleCopAnalyzers

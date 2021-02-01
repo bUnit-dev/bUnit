@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
@@ -8,9 +9,10 @@ namespace Bunit.Rendering
 	internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent>
 	    where TComponent : IComponent
 	{
-		private TComponent instance = default!;
+		private TComponent? instance;
 
 		/// <inheritdoc/>
+		[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "Pretty sure this is an analyzer bug.")]
 		public TComponent Instance
 		{
 			get

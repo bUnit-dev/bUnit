@@ -20,7 +20,6 @@ namespace Bunit
 		/// <param name="statePredicate">The predicate to invoke after each render, which must returns <c>true</c> when the desired state has been reached.</param>
 		/// <param name="timeout">The maximum time to wait for the desired state.</param>
 		/// <exception cref="WaitForFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
-		[SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "By design. We explicitly want to block the test thread.")]
 		public static void WaitForState(this IRenderedFragmentBase renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
 		{
 			using var waiter = new WaitForStateHelper(renderedFragment, statePredicate, timeout);
@@ -44,7 +43,6 @@ namespace Bunit
 		/// <param name="assertion">The verification or assertion to perform.</param>
 		/// <param name="timeout">The maximum time to attempt the verification.</param>
 		/// <exception cref="WaitForFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
-		[SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "By design. We explicitly want to block the test thread.")]
 		public static void WaitForAssertion(this IRenderedFragmentBase renderedFragment, Action assertion, TimeSpan? timeout = null)
 		{
 			using var waiter = new WaitForAssertionHelper(renderedFragment, assertion, timeout);

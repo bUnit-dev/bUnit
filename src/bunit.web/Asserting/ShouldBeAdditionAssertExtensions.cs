@@ -26,8 +26,8 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(actualChange));
 			if (expectedChange is null)
 				throw new ArgumentNullException(nameof(expectedChange));
-
-			var actual = actualChange as UnexpectedNodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Unexpected, "The change was not an addition.");
+			if (actualChange is not UnexpectedNodeDiff actual)
+				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Unexpected, "The change was not an addition.");
 
 			INodeList expected;
 			if (actual.Test.Node.GetHtmlParser() is BunitHtmlParser parser)
@@ -72,8 +72,9 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(actualChange));
 			if (expectedChange is null)
 				throw new ArgumentNullException(nameof(expectedChange));
+			if (actualChange is not UnexpectedNodeDiff actual)
+				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Unexpected, "The change was not an addition.");
 
-			var actual = actualChange as UnexpectedNodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Unexpected, "The change was not an addition.");
 			var comparer = actual.Test.Node.GetHtmlComparer() ?? new HtmlComparer();
 
 			var diffs = comparer.Compare(expectedChange, actual.Test.Node.AsEnumerable()).ToList();

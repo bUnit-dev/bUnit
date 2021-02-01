@@ -57,10 +57,6 @@ namespace Bunit.Rendering
 		/// </summary>
 		/// <param name="markup">The markup to parse.</param>
 		/// <returns>The <see cref="INodeList"/>.</returns>
-		[SuppressMessage(
-			"Usage",
-			"VSTHRD002:Avoid problematic synchronous waits",
-			Justification = "Design decision. AngleSharp API is async by default, but since we are not downloading any resources from the network, it should always complete immediately, and keeping things sync keeps bUnit mostly synchronous.")]
 		public INodeList Parse(string markup)
 		{
 			if (markup is null)

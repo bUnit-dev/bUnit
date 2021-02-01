@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Bunit.JSInterop
 {
-	[SuppressMessage("Usage", "VSTHRD103:Call async methods when in an async method", Justification = "Purpose of tests is to call Invoke.")]
 	public class BunitJSObjectReferenceTest : TestContext
 	{
 		[Theory(DisplayName = "Calling Setup<JSObjectReference> or Setup<IJSObjectReference> throws")]

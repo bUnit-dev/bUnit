@@ -21,7 +21,7 @@ namespace Bunit
 		{
 			if (diffs is null)
 				throw new ArgumentNullException(nameof(diffs));
-			if (diffs.Count() != 1)
+			if (diffs.Take(2).Count() != 1) // Optimized way of writing "diffs.Count() != 1"
 				throw new ActualExpectedAssertException(diffs.Count().ToString(CultureInfo.InvariantCulture), "1", "Actual changes", "Expected changes", "There were more than one change");
 
 			return diffs.First();
@@ -38,10 +38,7 @@ namespace Bunit
 		{
 			if (diffs is null)
 				throw new ArgumentNullException(nameof(diffs));
-			if (diffInspectors is null)
-				throw new ArgumentNullException(nameof(diffInspectors));
-
-			if (diffs.Count() != diffInspectors.Length)
+			if (diffs.Take(diffInspectors.Length + 1).Count() != diffInspectors.Length) // Optimized way of writing "diffs.Count() != diffInspectors.Length"
 				throw new ActualExpectedAssertException(diffs.Count().ToString(CultureInfo.InvariantCulture), diffInspectors.Length.ToString(CultureInfo.InvariantCulture), "Actual changes", "Expected changes", "The actual number of changes does not match the expected.");
 
 			int index = 0;

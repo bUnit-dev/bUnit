@@ -116,6 +116,7 @@ namespace Xunit.Sdk
 				&& IsTestComponentFile(testComponent, file.Substring(0, file.Length - GENERATED_FILE_EXTENSION.Length));
 		}
 
+		[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "Pretty sure this is an analyzer bug.")]
 		private static bool TryGetRazorFileFromGeneratedFile(string file, [NotNullWhen(true)] out string? result)
 		{
 			// Pattern for first line in generated files: #pragma checksum "C:\...\bunit\src\bunit.xunit.tests\SampleComponents\ComponentWithTwoTests.razor" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "b0aa9328840c75d34f073c3300621046639ea9c7"

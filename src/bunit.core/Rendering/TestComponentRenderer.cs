@@ -47,7 +47,6 @@ namespace Bunit.Rendering
 			return GetRazorTests<RazorTestBase>(componentId);
 		}
 
-		[SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "By design. In all currently known cases the task will always complete immediately.")]
 		private int RenderComponent(Type componentType)
 		{
 			int componentId = -1;

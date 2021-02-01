@@ -37,8 +37,8 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(actualChange));
 			if (expectedChange is null)
 				throw new ArgumentNullException(nameof(expectedChange));
-
-			var actual = actualChange as NodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
+			if (actualChange is not NodeDiff actual)
+				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 
 			var parser = actual.Control.Node.Owner.Context.GetService<BunitHtmlParser>();
 			var expected = parser.Parse(expectedChange);
@@ -71,8 +71,9 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(actualChange));
 			if (expectedChange is null)
 				throw new ArgumentNullException(nameof(expectedChange));
+			if (actualChange is not NodeDiff actual)
+				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 
-			var actual = actualChange as NodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 			var comparer = actual.Control.Node.Owner.Context.GetService<HtmlComparer>();
 
 			var diffs = comparer.Compare(expectedChange, new[] { actual.Test.Node }).ToList();
@@ -98,8 +99,8 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(expectedAttrName));
 			if (expectedAttrValue is null)
 				throw new ArgumentNullException(nameof(expectedAttrValue));
-
-			var actual = actualChange as AttrDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a attribute change.");
+			if (actualChange is not AttrDiff actual)
+				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a attribute change.");
 
 			if (!expectedAttrName.Equals(actual.Test.Attribute.Name, StringComparison.Ordinal))
 			{

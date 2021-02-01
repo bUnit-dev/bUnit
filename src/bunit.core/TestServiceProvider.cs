@@ -78,7 +78,6 @@ namespace Bunit
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		/// <inheritdoc/>
-		[SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "By design. This should only be called at the end of a test run. Implementing IAsyncDisposable would require users to use a different using pattern and we want to keep tests as sync as possible.")]
 		public void Dispose()
 		{
 			if (serviceProvider is null) return;

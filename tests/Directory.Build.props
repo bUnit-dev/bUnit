@@ -3,6 +3,7 @@
 		<TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
 		<IsPackable>false</IsPackable>
 		<SonarQubeTestProject>true</SonarQubeTestProject>
+		<NoWarn>CA1014</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' AND $(MSBuildProjectName) != 'bunit.testassets'">

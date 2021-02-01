@@ -26,8 +26,8 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(actualChange));
 			if (expectedChange is null)
 				throw new ArgumentNullException(nameof(expectedChange));
-
-			var actual = actualChange as MissingNodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Missing, "The change was not an removal.");
+			if (actualChange is not MissingNodeDiff actual)
+				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Missing, "The change was not an removal.");
 
 			INodeList expected;
 			if (actual.Control.Node.GetHtmlParser() is BunitHtmlParser parser)
@@ -72,8 +72,8 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(actualChange));
 			if (expectedChange is null)
 				throw new ArgumentNullException(nameof(expectedChange));
-
-			var actual = actualChange as MissingNodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Missing, "The change was not an removal.");
+			if (actualChange is not MissingNodeDiff actual)
+				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Missing, "The change was not an removal.");
 
 			var comparer = actual.Control.Node.Owner.Context.GetService<HtmlComparer>();
 

@@ -121,7 +121,7 @@ namespace Bunit.TestDoubles
 		/// <param name="roles">Roles for the claims principal.</param>
 		public TestAuthorizationContext SetRoles(params string[] roles)
 		{
-			Roles = roles ?? Array.Empty<string>();
+			Roles = roles;
 			authService.SetRoles(Roles);
 			authProvider.TriggerAuthenticationStateChanged(UserName, Roles);
 
@@ -134,7 +134,7 @@ namespace Bunit.TestDoubles
 		/// <param name="policies">Supported authorization policies.</param>
 		public TestAuthorizationContext SetPolicies(params string[] policies)
 		{
-			Policies = policies ?? Array.Empty<string>();
+			Policies = policies;
 			policyProvider.SetPolicyScheme(PolicySchemeName);
 			authService.SetPolicies(Policies);
 
@@ -147,7 +147,7 @@ namespace Bunit.TestDoubles
 		/// <param name="claims">Claims to set.</param>
 		public TestAuthorizationContext SetClaims(params Claim[] claims)
 		{
-			Claims = claims ?? Array.Empty<Claim>();
+			Claims = claims;
 			authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims);
 
 			return this;

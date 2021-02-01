@@ -146,7 +146,6 @@ namespace Bunit.Rendering
 			base.Dispose(disposing);
 		}
 
-		[SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "By design. In all currently known cases the task will always complete immediately.")]
 		private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
 			where TResult : IRenderedFragmentBase
 		{
