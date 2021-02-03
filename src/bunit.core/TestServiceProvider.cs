@@ -13,6 +13,7 @@ namespace Bunit
 	{
 		private readonly IServiceCollection _serviceCollection;
 		private ServiceProvider? _serviceProvider;
+		private IServiceProvider? _fallbackServiceProvider;
 
 		/// <summary>
 		/// Gets whether this <see cref="TestServiceProvider"/> has been initialized, and 
@@ -57,17 +58,48 @@ namespace Bunit
 		/// Get service of type T from the test provider.
 		/// </summary>
 		/// <typeparam name="TService">The type of service object to get.</typeparam>
-		/// <returns>A service object of type T or null if there is no such service.</returns>        
-		public TService GetService<TService>() => (TService)GetService(typeof(TService));
+		/// <returns>A service object of type T or null if there is no such service.</returns>
+		public TService GetService<TService>() => (TService)GetService(typeof(TService))!;
 
+		/// <summary>
+		/// Add a fall back service provider that provides services when the default returns null
+		/// </summary>
+		/// <param name="fallbackServiceProvider"></param>
+		public void AddFallbackServiceProvider(IServiceProvider fallbackServiceProvider)
+		{
+			_fallbackServiceProvider = fallbackServiceProvider;
+		}
+
+
+#if NETSTANDARD2_1
 		/// <inheritdoc/>
 		public object GetService(Type serviceType)
 		{
 			if (_serviceProvider is null)
 				_serviceProvider = _serviceCollection.BuildServiceProvider();
 
-			return _serviceProvider.GetService(serviceType);
+			var result = _serviceProvider.GetService(serviceType);
+			
+			if (result is null && _fallbackServiceProvider is not null)
+				result = _fallbackServiceProvider.GetService(serviceType);
+
+			return result!;
 		}
+#elif NET5_0
+		/// <inheritdoc/>
+		public object? GetService(Type serviceType)
+		{
+			if (_serviceProvider is null)
+				_serviceProvider = _serviceCollection.BuildServiceProvider();
+
+			var result = _serviceProvider.GetService(serviceType);
+			
+			if (result is null && _fallbackServiceProvider is not null)
+				result = _fallbackServiceProvider.GetService(serviceType);
+
+			return result;
+		}
+#endif
 
 		/// <inheritdoc/>
 		public IEnumerator<ServiceDescriptor> GetEnumerator() => _serviceCollection.GetEnumerator();
