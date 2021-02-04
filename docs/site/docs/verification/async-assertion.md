@@ -20,7 +20,7 @@ The [`WaitForAssertion(Action, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHe
 > [!NOTE]
 > The `WaitForAssertion()` method will try the assert action passed to it when the `WaitForAssertion()` method is called and every time the component under test renders.
 
-Let us look at an example. Consider the following `<AsyncData>` component, who awaits an async `TextService` in its `OnInitializedAsync()` life-cycle method. When the service returns the data, the component will automatically re-render to update its rendered markup. 
+Let's look at an example. Consider the following `<AsyncData>` component, which awaits an async `TextService` in its `OnInitializedAsync()` life-cycle method. When the service returns the data, the component will automatically re-render to update its rendered markup. 
 
 [!code-cshtml[AsyncData.razor](../../../samples/components/AsyncData.razor)]
 
@@ -46,5 +46,5 @@ If the timeout is reached, a <xref:Bunit.Extensions.WaitForHelpers.WaitForFailed
 
 Setting the timeout to something less than one second does _not_ make tests run faster. The `WaitForAssertion()` method returns as soon as it observes the predicate assertion running without throwing. So, it is generally only useful to set a different timeout than the default if the asynchronous operations takes longer than one second to complete, which should only be an issue in end-2-end or integration-testing scenarios.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA0MDI0MDE4MV19
+eyJoaXN0b3J5IjpbLTEyNzY3NTg1NjZdfQ==
 -->
