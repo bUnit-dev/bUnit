@@ -46,6 +46,18 @@ The following example shows how to do this with `<SnapshotTest>` tests:
 > [!NOTE]
 > The `AddSingleton()` method is only available on the `Services` collection if you import the `Microsoft.Extensions.DependencyInjection` type.
 
+##  Custom Service Provider
+Here is example on how to insert a custom service provider. This service provider gets used when the default service provider return null for that type.
+Here is an example of a an implementation and the usage of a fallback service provider.
+[!code-csharp]([!code-cshtml[FallbackServiceProvider.cs](../../../samples/tests/razor/FallbackServiceProvider.cs)])
+
+Even though you did not register the dummy service, the fallback service provider will return it.
+
+[!code-csharp]([!code-cshtml[Usage](../../../samples/tests/razor/FallBackServiceProviderUsage.cs?highlight=6-8)])
+
+> [!TIP]
+> A great use case to use the fallback service provider would be in combination with a library that automatically creates implementation/mocks for you such as AutoFixture in combination with Moq.
+
 ## Further Reading
 
 A closely related topic is mocking. To learn more about mocking in bUnit, go to the <xref:test-doubles> page.
