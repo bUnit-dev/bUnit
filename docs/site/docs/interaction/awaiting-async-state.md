@@ -15,12 +15,12 @@ Let's start by taking a look at the `WaitForState` method in more detail.
 
 ## Waiting for State Using `WaitForState`
 
-The [`WaitForState(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) method can be used to block and wait in a test method, until the provided predicate returns true or the timeout is reached (the default timeout is one second).
+The [`WaitForState(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) method can be used to block and wait in a test method, until the provided predicate returns true or the timeout is reached. (The default timeout is one second.)
 
 > [!NOTE]
-> The `WaitForState()` method will try the predicate pass to it when the `WaitForState()` method is called, and every time the component under test renders.
+> The `WaitForState()` method will try the predicate passed to it when the `WaitForState()` method is called, and every time the component under test renders.
 
-Let us look at an example. Consider the following `<AsyncData>` component who awaits an async `TextService` in its `OnInitializedAsync()` life-cycle method. When the service returns the data, the component will automatically re-render to update its rendered markup:
+Let us look at an example. Consider the following `<AsyncData>` component which awaits an async `TextService` in its `OnInitializedAsync()` life-cycle method. When the service returns the data, the component will automatically re-render to update its rendered markup:
 
 [!code-cshtml[AsyncData.razor](../../../samples/components/AsyncData.razor)]
 
@@ -48,5 +48,5 @@ If the timeout is reached, a <xref:Bunit.Extensions.WaitForHelpers.WaitForFailed
 
 > The state predicate did not pass before the timeout period passed.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTczNDkwMzkyNF19
+eyJoaXN0b3J5IjpbMTg3MjQ2NzQyXX0=
 -->
