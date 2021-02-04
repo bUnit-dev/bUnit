@@ -55,13 +55,6 @@ namespace Bunit
 		}
 
 		/// <summary>
-		/// Get service of type T from the test provider.
-		/// </summary>
-		/// <typeparam name="TService">The type of service object to get.</typeparam>
-		/// <returns>A service object of type T or null if there is no such service.</returns>
-		public TService? GetService<TService>() => (TService?)GetService(typeof(TService))!;
-
-		/// <summary>
 		/// Add a fall back service provider that provides services when the default returns null
 		/// </summary>
 		/// <param name="fallbackServiceProvider"></param>
@@ -70,6 +63,12 @@ namespace Bunit
 			_fallbackServiceProvider = fallbackServiceProvider;
 		}
 
+		/// <summary>
+		/// Get service of type T from the test provider.
+		/// </summary>
+		/// <typeparam name="TService">The type of service object to get.</typeparam>
+		/// <returns>A service object of type T or null if there is no such service.</returns>
+		public TService? GetService<TService>() => (TService?)GetService(typeof(TService))!;
 
 #if NETSTANDARD2_1
 		/// <inheritdoc/>
