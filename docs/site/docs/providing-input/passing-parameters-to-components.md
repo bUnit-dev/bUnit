@@ -48,7 +48,7 @@ A regular parameter is one that is declared using the `[Parameter]` attribute. T
 
 ### Non-Blazor Type Parameters
 
-Let's look at an example of passing parameters that takes types which or [__AP: should 'or' be 'are'?__] _not_ special to Blazor, i.e.:
+Let's look at an example of passing parameters that takes types which are _not_ special to Blazor, i.e.:
 
 [!code-csharp[NonBlazorTypesParams](../../../samples/components/NonBlazorTypesParams.cs#L10-L17)]
 
