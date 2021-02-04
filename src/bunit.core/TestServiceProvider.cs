@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
@@ -13,9 +11,9 @@ namespace Bunit
 	/// </summary>
 	public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, IDisposable
 	{
-		private readonly IServiceCollection _serviceCollection;
-		private ServiceProvider? _serviceProvider;
-		private IServiceProvider? _fallbackServiceProvider;
+		private readonly IServiceCollection serviceCollection;
+		private ServiceProvider? serviceProvider;
+		private IServiceProvider? fallbackServiceProvider;
 
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="TestServiceProvider"/> has been initialized, and
@@ -59,10 +57,10 @@ namespace Bunit
 		/// <summary>
 		/// Add a fall back service provider that provides services when the default returns null
 		/// </summary>
-		/// <param name="fallbackServiceProvider"></param>
-		public void AddFallbackServiceProvider(IServiceProvider fallbackServiceProvider)
+		/// <param name="serviceProvider">The fallback service provider</param>
+		public void AddFallbackServiceProvider(IServiceProvider serviceProvider)
 		{
-			_fallbackServiceProvider = fallbackServiceProvider;
+			fallbackServiceProvider = serviceProvider;
 		}
 
 		/// <summary>
@@ -79,10 +77,10 @@ namespace Bunit
 			if (serviceProvider is null)
 				serviceProvider = serviceCollection.BuildServiceProvider();
 
-      var result = _serviceProvider.GetService(serviceType);
-			
-			if (result is null && _fallbackServiceProvider is not null)
-				result = _fallbackServiceProvider.GetService(serviceType);
+			var result = serviceProvider.GetService(serviceType);
+
+			if (result is null && fallbackServiceProvider is not null)
+				result = fallbackServiceProvider.GetService(serviceType);
 
 			return result!;
 		}
@@ -90,13 +88,13 @@ namespace Bunit
 		/// <inheritdoc/>
 		public object? GetService(Type serviceType)
 		{
-			if (_serviceProvider is null)
-				_serviceProvider = _serviceCollection.BuildServiceProvider();
+			if (serviceProvider is null)
+				serviceProvider = serviceCollection.BuildServiceProvider();
 
-			var result = _serviceProvider.GetService(serviceType);
-			
-			if (result is null && _fallbackServiceProvider is not null)
-				result = _fallbackServiceProvider.GetService(serviceType);
+			var result = serviceProvider.GetService(serviceType);
+
+			if (result is null && fallbackServiceProvider is not null)
+				result = fallbackServiceProvider.GetService(serviceType);
 
 			return result;
 		}
