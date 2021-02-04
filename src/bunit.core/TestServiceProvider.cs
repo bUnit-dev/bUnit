@@ -59,7 +59,7 @@ namespace Bunit
 		/// </summary>
 		/// <typeparam name="TService">The type of service object to get.</typeparam>
 		/// <returns>A service object of type T or null if there is no such service.</returns>
-		public TService GetService<TService>() => (TService)GetService(typeof(TService))!;
+		public TService? GetService<TService>() => (TService?)GetService(typeof(TService))!;
 
 		/// <summary>
 		/// Add a fall back service provider that provides services when the default returns null
