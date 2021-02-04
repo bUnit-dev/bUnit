@@ -7,7 +7,7 @@ title: Awaiting an Asynchronous State Change in a Component Under Test
 
 A test can fail if a component performs asynchronous renders. This may be due to a reason such as waiting for an asynchronous operation to complete before continuing its render life-cycle. For example, if a component is waiting for an async web service to return data to it in the `OnInitializedAsync()` life-cycle method before rendering it to the render tree.
 
-You need to handle this specifically in your tests because tests execute in the test framework's synchronization context and the test renderer executes renders in its own synchronization context. If you do not, you will likely experience tests that sometimes pass, and sometimes fail.
+You need to handle this specifically in your tests because tests execute in the test framework's synchronization context and the test renderer executes renders in its own synchronization context. If you do not, you will likely experience tests that sometimes pass and sometimes fail.
 
 bUnit comes with two methods that help to deal with this issue: the [`WaitForState()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) method covered on this page, and the [`WaitForAssertion()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})) method covered on the <xref:async-assertion> page.
 
@@ -47,3 +47,6 @@ The timeout, which defaults to one second, can be controlled by passing a `TimeS
 If the timeout is reached, a <xref:Bunit.Extensions.WaitForHelpers.WaitForFailedException> exception is thrown with the following error message:
 
 > The state predicate did not pass before the timeout period passed.
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbLTczNDkwMzkyNF19
+-->
