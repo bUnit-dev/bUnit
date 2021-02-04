@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
@@ -8,34 +9,35 @@ using Microsoft.AspNetCore.Components.Rendering;
 namespace Bunit
 {
 	/// <summary>
-	/// A collection for <see cref="ComponentParameter" />
+	/// A collection for <see cref="ComponentParameter" />.
 	/// </summary>
 	public class ComponentParameterCollection : ICollection<ComponentParameter>, IReadOnlyCollection<ComponentParameter>
 	{
 		private static readonly MethodInfo CreateTemplateWrapperMethod = GetCreateTemplateWrapperMethod();
 		private static readonly Type CascadingValueType = typeof(CascadingValue<>);
-		private List<ComponentParameter>? _parameters;
+		private List<ComponentParameter>? parameters;
 
 		/// <summary>
 		/// Gets the number of <see cref="ComponentParameter"/> in the collection.
 		/// </summary>
-		public int Count => _parameters?.Count ?? 0;
+		public int Count => parameters?.Count ?? 0;
 
 		/// <inheritdoc />
 		public bool IsReadOnly { get; }
 
 		/// <summary>
-		/// Adds a <paramref name="parameter"/> to the collection.
+		/// Adds a <paramref name="item"/> to the collection.
 		/// </summary>
-		/// <param name="parameter">Parameter to add to the collection.</param>
-		public void Add(ComponentParameter parameter)
+		/// <param name="item">Parameter to add to the collection.</param>
+		public void Add(ComponentParameter item)
 		{
-			if (parameter.Name is null && parameter.Value is null)
-				throw new ArgumentException("A component parameter without a name and value is not valid.");
+			if (item.Name is null && item.Value is null)
+				throw new ArgumentException("A component parameter without a name and value is not valid.", nameof(item));
 
-			if (_parameters is null)
-				_parameters = new List<ComponentParameter>();
-			_parameters.Add(parameter);
+			if (parameters is null)
+				parameters = new List<ComponentParameter>();
+
+			parameters.Add(item);
 		}
 
 		/// <summary>
@@ -54,20 +56,20 @@ namespace Bunit
 		}
 
 		/// <summary>
-		/// Checks if the <paramref name="parameter"/> is in the collection.
+		/// Checks if the <paramref name="item"/> is in the collection.
 		/// </summary>
-		/// <param name="parameter">Parameter to check with.</param>
-		/// <returns>True if <paramref name="parameter"/> is in the collection, false otherwise.</returns>
-		public bool Contains(ComponentParameter parameter) => _parameters?.Contains(parameter) ?? false;
+		/// <param name="item">Parameter to check with.</param>
+		/// <returns>True if <paramref name="item"/> is in the collection, false otherwise.</returns>
+		public bool Contains(ComponentParameter item) => parameters?.Contains(item) ?? false;
 
 		/// <inheritdoc/>
-		public void Clear() => _parameters?.Clear();
+		public void Clear() => parameters?.Clear();
 
 		/// <inheritdoc/>
-		public void CopyTo(ComponentParameter[] array, int arrayIndex) => _parameters?.CopyTo(array, arrayIndex);
+		public void CopyTo(ComponentParameter[] array, int arrayIndex) => parameters?.CopyTo(array, arrayIndex);
 
 		/// <inheritdoc/>
-		public bool Remove(ComponentParameter item) => _parameters?.Remove(item) ?? false;
+		public bool Remove(ComponentParameter item) => parameters?.Remove(item) ?? false;
 
 		/// <summary>
 		/// Creates a <see cref="RenderFragment"/> that will render a
@@ -75,14 +77,16 @@ namespace Bunit
 		/// the parameters in the collection passed to it.
 		/// </summary>
 		/// <typeparam name="TComponent">Type of component to render.</typeparam>
-		public RenderFragment ToRenderFragment<TComponent>() where TComponent : IComponent
+		[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
+		[SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "TODO: Refactor")]
+		public RenderFragment ToRenderFragment<TComponent>()
+		    where TComponent : IComponent
 		{
 			var cascadingValues = GetCascadingValues();
 
-			if (cascadingValues.Count > 0)
-				return AddCascadingValue;
-			else
-				return AddComponent;
+			return cascadingValues.Count > 0
+				? AddCascadingValue
+				: AddComponent;
 
 			void AddCascadingValue(RenderTreeBuilder builder)
 			{
@@ -94,12 +98,12 @@ namespace Bunit
 					builder.AddAttribute(1, nameof(CascadingValue<object>.Name), cv.Parameter.Name);
 
 				builder.AddAttribute(2, nameof(CascadingValue<object>.Value), cv.Parameter.Value);
-				builder.AddAttribute(3, nameof(CascadingValue<object>.IsFixed), true);
+				builder.AddAttribute(3, nameof(CascadingValue<object>.IsFixed), value: true);
 
 				if (cascadingValues.Count > 0)
-					builder.AddAttribute(4, nameof(CascadingValue<object>.ChildContent), (RenderFragment)(AddCascadingValue));
+					builder.AddAttribute(4, nameof(CascadingValue<object>.ChildContent), (RenderFragment)AddCascadingValue);
 				else
-					builder.AddAttribute(4, nameof(CascadingValue<object>.ChildContent), (RenderFragment)(AddComponent));
+					builder.AddAttribute(4, nameof(CascadingValue<object>.ChildContent), (RenderFragment)AddComponent);
 
 				builder.CloseComponent();
 			}
@@ -113,11 +117,11 @@ namespace Bunit
 
 			void AddAttributes(RenderTreeBuilder builder)
 			{
-				if (_parameters is null) return;
+				if (parameters is null) return;
 
 				var attrCount = 100;
 
-				foreach (var pgroup in _parameters.Where(x => !x.IsCascadingValue).GroupBy(x => x.Name))
+				foreach (var pgroup in parameters.Where(x => !x.IsCascadingValue).GroupBy(x => x.Name, StringComparer.Ordinal))
 				{
 					var group = pgroup.ToArray();
 					var groupObject = group.FirstOrDefault(x => !(x.Value is null)).Value;
@@ -128,8 +132,7 @@ namespace Bunit
 						builder.AddAttribute(
 							attrCount++,
 							p.Name!, // BANG: ComponentParameter does not allow a regular param to be created without a name
-							p.Value
-						);
+							p.Value);
 
 						continue;
 					}
@@ -141,13 +144,12 @@ namespace Bunit
 							group[0].Name!, // BANG: ComponentParameter does not allow a regular param to be created without a name
 							(RenderFragment)(ccBuilder =>
 							{
-								for (int i = 0; i < group.Length; i++)
+								for (var i = 0; i < group.Length; i++)
 								{
 									if (group[i].Value is RenderFragment rf)
 										ccBuilder.AddContent(i, rf);
 								}
-							})
-						);
+							}));
 
 						continue;
 					}
@@ -159,8 +161,7 @@ namespace Bunit
 						builder.AddAttribute(
 							attrCount++,
 							group[0].Name!, // BANG: ComponentParameter does not allow a regular param to be created without a name
-							WrapTemplates(groupType, group)
-						);
+							WrapTemplates(groupType, group));
 
 						continue;
 					}
@@ -171,15 +172,14 @@ namespace Bunit
 
 			Queue<(ComponentParameter Parameter, Type Type)> GetCascadingValues()
 			{
-				var cascadingValues = _parameters?.Where(x => x.IsCascadingValue)
+				var cascadingValues = parameters?.Where(x => x.IsCascadingValue)
 					.Select(x => (Parameter: x, Type: GetCascadingValueType(x)))
 					.ToArray() ?? Array.Empty<(ComponentParameter Parameter, Type Type)>();
 
 				// Detect duplicated unnamed values
-				for (int i = 0; i < cascadingValues.Length; i++)
+				for (var i = 0; i < cascadingValues.Length; i++)
 				{
-
-					for (int j = i + 1; j < cascadingValues.Length; j++)
+					for (var j = i + 1; j < cascadingValues.Length; j++)
 					{
 						if (cascadingValues[i].Type == cascadingValues[j].Type)
 						{
@@ -207,11 +207,11 @@ namespace Bunit
 		/// <inheritdoc/>
 		public IEnumerator<ComponentParameter> GetEnumerator()
 		{
-			if (_parameters is not null)
+			if (parameters is not null)
 			{
-				for (int i = 0; i < _parameters.Count; i++)
+				for (var i = 0; i < parameters.Count; i++)
 				{
-					yield return _parameters[i];
+					yield return parameters[i];
 				}
 			}
 		}

@@ -26,13 +26,13 @@ namespace Bunit
 		public override string? DisplayName => Description;
 
 		/// <summary>
-		/// Sets the setup action to perform before the <see cref="TestInput"/> and <see cref="ExpectedOutput"/>
+		/// Gets or sets the setup action to perform before the <see cref="TestInput"/> and <see cref="ExpectedOutput"/>
 		/// is rendered and compared.
 		/// </summary>
 		[Parameter] public Action<SnapshotTest>? Setup { get; set; }
 
 		/// <summary>
-		/// Sets the setup action to perform before the <see cref="TestInput"/> and <see cref="ExpectedOutput"/>
+		/// Gets or sets the setup action to perform before the <see cref="TestInput"/> and <see cref="ExpectedOutput"/>
 		/// is rendered and compared.
 		/// </summary>
 		[Parameter] public Func<SnapshotTest, Task>? SetupAsync { get; set; }
@@ -48,7 +48,7 @@ namespace Bunit
 		[Parameter] public RenderFragment? ExpectedOutput { get; set; }
 
 		/// <summary>
-		/// Creates an instance of the <see cref="SnapshotTest"/> type.
+		/// Initializes a new instance of the <see cref="SnapshotTest"/> class.
 		/// </summary>
 		public SnapshotTest()
 		{
@@ -56,7 +56,7 @@ namespace Bunit
 		}
 
 		/// <inheritdoc/>
-		protected override async Task Run()
+		protected override async Task RunAsync()
 		{
 			Validate();
 

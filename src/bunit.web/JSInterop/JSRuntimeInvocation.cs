@@ -6,7 +6,7 @@ using System.Threading;
 namespace Bunit
 {
 	/// <summary>
-	/// Represents an invocation of JavaScript via the JSRuntime Mock
+	/// Represents an invocation of JavaScript via the JSRuntime Mock.
 	/// </summary>
 	[SuppressMessage("Design", "CA1068:CancellationToken parameters must come last", Justification = "Following Blazor's API design")]
 	public readonly struct JSRuntimeInvocation : IEquatable<JSRuntimeInvocation>
@@ -26,9 +26,8 @@ namespace Bunit
 		/// </summary>
 		public IReadOnlyList<object?> Arguments { get; }
 
-
 		/// <summary>
-		/// Creates an instance of the <see cref="JSRuntimeInvocation"/>.
+		/// Initializes a new instance of the <see cref="JSRuntimeInvocation"/> struct.
 		/// </summary>
 		public JSRuntimeInvocation(string identifier, CancellationToken cancellationToken, object?[]? args)
 		{
@@ -49,7 +48,7 @@ namespace Bunit
 		/// <inheritdoc/>
 		public override int GetHashCode()
 		{
-			var hash = new HashCode();
+			var hash = default(HashCode);
 			hash.Add(Identifier);
 			hash.Add(CancellationToken);
 
@@ -61,10 +60,16 @@ namespace Bunit
 			return hash.ToHashCode();
 		}
 
-		/// <inheritdoc/>
+		/// <summary>
+		/// Verify whether <paramref name="left"/> and <paramref name="right"/>
+		/// <see cref="JSRuntimeInvocation"/> is equal.
+		/// </summary>
 		public static bool operator ==(JSRuntimeInvocation left, JSRuntimeInvocation right) => left.Equals(right);
 
-		/// <inheritdoc/>
+		/// <summary>
+		/// Verify whether <paramref name="left"/> and <paramref name="right"/>
+		/// <see cref="JSRuntimeInvocation"/> is not equal.
+		/// </summary>
 		public static bool operator !=(JSRuntimeInvocation left, JSRuntimeInvocation right) => !(left == right);
 
 		private static bool ArgumentsEqual(IReadOnlyList<object?> left, IReadOnlyList<object?> right)

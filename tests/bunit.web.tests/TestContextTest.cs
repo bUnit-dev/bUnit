@@ -85,7 +85,7 @@ namespace Bunit
 			Should.NotThrow(() => RenderComponent<ClickCounter>().Find("button").Click());
 		}
 
-		class ReceivesCascadinValue : ComponentBase
+		private class ReceivesCascadinValue : ComponentBase
 		{
 			[CascadingParameter] public string? Value { get; set; }
 

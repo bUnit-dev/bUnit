@@ -31,7 +31,7 @@ namespace Xunit.Sdk
 			}
 		}
 
-		private SourceFileFinder? _sourceFileFinder;
+		private SourceFileFinder? sourceFileFinder;
 
 		public IMessageSink DiagnosticMessageSink { get; set; }
 
@@ -40,8 +40,9 @@ namespace Xunit.Sdk
 			DiagnosticMessageSink = diagnosticMessageSink ?? new NullMessageSink();
 		}
 
-		public void Dispose() => _sourceFileFinder?.Dispose();
+		public void Dispose() => sourceFileFinder?.Dispose();
 
+		[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 		public ISourceInformation? GetSourceInformation(Type testComponent, RazorTestBase test, int testNumber)
 		{
 			DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"{nameof(GetSourceInformation)}({testComponent.Name}): Attempting to find source file"));
@@ -62,21 +63,21 @@ namespace Xunit.Sdk
 				DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"{nameof(GetSourceInformation)}({testComponent.Name}): Failed to find source information. Exception message: " +
 					$"{ex.Message}{Environment.NewLine}{ex.StackTrace}"));
 			}
+
 			return null;
 		}
 
 		private bool TryFindSourceFile(Type testComponent, [NotNullWhen(true)] out string? razorFile)
 		{
-			var sourceFileFinder = GetSourceFileFinderForType(testComponent);
+			var finder = GetSourceFileFinderForType(testComponent);
 
 			razorFile = null;
 
-			foreach (var file in sourceFileFinder.Find(testComponent))
+			foreach (var file in finder.Find(testComponent))
 			{
 				DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"{nameof(GetSourceInformation)}({testComponent.Name}): Verifying file = {file}"));
 
 				razorFile = file;
-
 
 				if (IsTestComponentFile(testComponent, file))
 					break;
@@ -90,12 +91,13 @@ namespace Xunit.Sdk
 
 		private SourceFileFinder GetSourceFileFinderForType(Type testComponent)
 		{
-			if (_sourceFileFinder is null || _sourceFileFinder.SearchAssembly != testComponent.Assembly)
+			if (sourceFileFinder is null || sourceFileFinder.SearchAssembly != testComponent.Assembly)
 			{
-				_sourceFileFinder?.Dispose();
-				_sourceFileFinder = new SourceFileFinder(testComponent.Assembly);
+				sourceFileFinder?.Dispose();
+				sourceFileFinder = new SourceFileFinder(testComponent.Assembly);
 			}
-			return _sourceFileFinder;
+
+			return sourceFileFinder;
 		}
 
 		private static bool IsTestComponentFile(Type testComponent, string file)
@@ -114,6 +116,7 @@ namespace Xunit.Sdk
 				&& IsTestComponentFile(testComponent, file.Substring(0, file.Length - GENERATED_FILE_EXTENSION.Length));
 		}
 
+		[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "Pretty sure this is an analyzer bug.")]
 		private static bool TryGetRazorFileFromGeneratedFile(string file, [NotNullWhen(true)] out string? result)
 		{
 			// Pattern for first line in generated files: #pragma checksum "C:\...\bunit\src\bunit.xunit.tests\SampleComponents\ComponentWithTwoTests.razor" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "b0aa9328840c75d34f073c3300621046639ea9c7"
@@ -137,36 +140,58 @@ namespace Xunit.Sdk
 			var lineNumber = 0;
 			var lastTestCaseName = string.Empty;
 			var testCaseName = test.GetType().Name;
+
 			foreach (var line in File.ReadLines(razorFile))
 			{
 				lineNumber++;
 
-				if (!line.StartsWith($"<", StringComparison.OrdinalIgnoreCase))
+				if (!StartsWithTagStart(line))
 					continue;
 
-				for (int i = 0; i < RazorTestTypes.Length; i++)
+				if (TryFindRazorTestComponent(line, out var componentName))
 				{
-					if (line.StartsWith($"<{RazorTestTypes[i].Name}", StringComparison.Ordinal))
-					{
-						char? nextChar = null;
-						if (line.Length > RazorTestTypes[i].Name.Length + 1)
-							nextChar = line[RazorTestTypes[i].Name.Length + 1];
-
-						if (nextChar is null || nextChar == ' ' || nextChar == '>' || nextChar == '\n' || nextChar == '\r')
-						{
-							testCasesSeen++;
-							lastTestCaseName = RazorTestTypes[i].Name;
-							break;
-						}
-					}
+					testCasesSeen++;
+					lastTestCaseName = componentName;
 				}
 
 				if (testNumber == testCasesSeen && lastTestCaseName.Equals(testCaseName, StringComparison.Ordinal))
 					return lineNumber;
-				else if (testNumber < testCasesSeen)
+
+				if (testNumber < testCasesSeen)
 					break;
 			}
+
 			return null;
+		}
+
+		private static bool StartsWithTagStart(string line) => line.StartsWith($"<", StringComparison.OrdinalIgnoreCase);
+
+		private static bool TryFindRazorTestComponent(string line, [NotNullWhen(true)] out string? testComponentName)
+		{
+			testComponentName = default;
+
+			for (int i = 0; i < RazorTestTypes.Length; i++)
+			{
+				if (StartsWithRazorTestComponent(line, RazorTestTypes[i].Name))
+				{
+					testComponentName = RazorTestTypes[i].Name;
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		private static bool StartsWithRazorTestComponent(string line, string testComponentName)
+		{
+			if (!line.StartsWith($"<{testComponentName}", StringComparison.Ordinal))
+				return false;
+
+			char? nextChar = line.Length > testComponentName.Length + 1
+				? line[testComponentName.Length + 1]
+				: null;
+
+			return nextChar is null || nextChar == ' ' || nextChar == '>' || nextChar == '\n' || nextChar == '\r';
 		}
 	}
 }

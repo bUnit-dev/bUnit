@@ -34,8 +34,7 @@ namespace Bunit.Extensions
 			var cut = RenderComponent<Markup>(ps => ps
 				.Add(p => p.Base, expected)
 				.Add(p => p.Optional, "<div>bar</div>")
-				.Add(p => p.ShowOptional, true)
-			);
+				.Add(p => p.ShowOptional, true));
 
 			var actual = cut.Find("div");
 
@@ -48,8 +47,7 @@ namespace Bunit.Extensions
 			var cut = RenderComponent<Markup>(ps => ps
 				.Add(p => p.Base, "<div>foo</div>")
 				.Add(p => p.Optional, "<div>bar</div>")
-				.Add(p => p.ShowOptional, false)
-			);
+				.Add(p => p.ShowOptional, false));
 
 			var elm = cut.Find("div:last-child");
 
@@ -84,7 +82,7 @@ namespace Bunit.Extensions
 			Should.Throw<ElementRemovedFromDomException>(() => btn.TextContent);
 		}
 
-		class Markup : ComponentBase
+		private class Markup : ComponentBase
 		{
 			[Parameter] public string Base { get; set; } = string.Empty;
 			[Parameter] public string? Optional { get; set; }

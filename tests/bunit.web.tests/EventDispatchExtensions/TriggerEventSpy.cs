@@ -6,25 +6,27 @@ using Microsoft.AspNetCore.Components;
 
 namespace Bunit
 {
-	public class TriggerEventSpy<TEventArgs> where TEventArgs : EventArgs, new()
+	public class TriggerEventSpy<TEventArgs>
+	    where TEventArgs : EventArgs, new()
 	{
-		private readonly IRenderedComponent<TriggerTester<TEventArgs>> _renderedComponent;
-		private readonly string _element;
-		private TEventArgs? _receivedEvent;
+		private readonly IRenderedComponent<TriggerTester<TEventArgs>> renderedComponent;
+		private readonly string element;
+		private TEventArgs? receivedEvent;
 
-		public TEventArgs RaisedEvent => _receivedEvent!;
+		public TEventArgs RaisedEvent => receivedEvent!;
 
 		public TriggerEventSpy(Func<ComponentParameter[], IRenderedComponent<TriggerTester<TEventArgs>>> componentRenderer, string element, string eventName)
 		{
 			if (componentRenderer is null)
 				throw new ArgumentNullException(nameof(componentRenderer));
 
-			_renderedComponent = componentRenderer(new ComponentParameter[] {
+			renderedComponent = componentRenderer(new ComponentParameter[]
+				{
 					(nameof(TriggerTester<TEventArgs>.Element), element),
 					(nameof(TriggerTester<TEventArgs>.EventName), eventName),
-					(nameof(TriggerTester<TEventArgs>.TriggeredEvent), EventCallback.Factory.Create<TEventArgs>(this, CallbackHandler))
+					(nameof(TriggerTester<TEventArgs>.TriggeredEvent), EventCallback.Factory.Create<TEventArgs>(this, CallbackHandler)),
 				});
-			_element = element;
+			this.element = element;
 		}
 
 		public void Trigger(Action<IElement> trigger)
@@ -32,7 +34,7 @@ namespace Bunit
 			if (trigger is null)
 				throw new ArgumentNullException(nameof(trigger));
 
-			trigger(_renderedComponent.Find(_element));
+			trigger(renderedComponent.Find(element));
 		}
 
 		public Task Trigger(Func<IElement, Task> trigger)
@@ -40,9 +42,9 @@ namespace Bunit
 			if (trigger is null)
 				throw new ArgumentNullException(nameof(trigger));
 
-			return trigger(_renderedComponent.Find(_element));
+			return trigger(renderedComponent.Find(element));
 		}
 
-		private void CallbackHandler(TEventArgs args) => _receivedEvent = args;
+		private void CallbackHandler(TEventArgs args) => receivedEvent = args;
 	}
 }

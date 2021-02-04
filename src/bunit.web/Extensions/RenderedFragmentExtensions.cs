@@ -16,7 +16,7 @@ namespace Bunit
 	{
 		/// <summary>
 		/// Returns the first element from the rendered fragment or component under test,
-		/// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
+		/// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal
 		/// of the rendered nodes.
 		/// </summary>
 		/// <param name="renderedFragment">The rendered fragment to search.</param>
@@ -32,8 +32,8 @@ namespace Bunit
 		}
 
 		/// <summary>
-		/// Returns a refreshable collection of <see cref="IElement"/>s from the rendered fragment or component under test, 
-		/// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal 
+		/// Returns a refreshable collection of <see cref="IElement"/>s from the rendered fragment or component under test,
+		/// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal
 		/// of the rendered nodes.
 		/// </summary>
 		/// <param name="renderedFragment">The rendered fragment to search.</param>
@@ -48,13 +48,14 @@ namespace Bunit
 		}
 
 		/// <summary>
-		/// Finds the first component of type <typeparamref name="TComponent"/> in the render tree of 
+		/// Finds the first component of type <typeparamref name="TComponent"/> in the render tree of
 		/// this <see cref="IRenderedFragment"/>.
 		/// </summary>
 		/// <typeparam name="TComponent">Type of component to find.</typeparam>
 		/// <exception cref="ComponentNotFoundException">Thrown if a component of type <typeparamref name="TComponent"/> was not found in the render tree.</exception>
 		/// <returns>The <see cref="IRenderedComponent{T}"/>.</returns>
-		public static IRenderedComponent<TComponent> FindComponent<TComponent>(this IRenderedFragment renderedFragment) where TComponent : IComponent
+		public static IRenderedComponent<TComponent> FindComponent<TComponent>(this IRenderedFragment renderedFragment)
+		    where TComponent : IComponent
 		{
 			if (renderedFragment is null)
 				throw new ArgumentNullException(nameof(renderedFragment));
@@ -64,12 +65,13 @@ namespace Bunit
 		}
 
 		/// <summary>
-		/// Finds all components of type <typeparamref name="TComponent"/> in the render tree of 
+		/// Finds all components of type <typeparamref name="TComponent"/> in the render tree of
 		/// this <see cref="IRenderedFragment"/>, in depth-first order.
 		/// </summary>
 		/// <typeparam name="TComponent">Type of components to find.</typeparam>
-		/// <returns>The <see cref="IRenderedComponent{T}"/>s</returns>
-		public static IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(this IRenderedFragment renderedFragment) where TComponent : IComponent
+		/// <returns>The <see cref="IRenderedComponent{T}"/>s.</returns>
+		public static IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(this IRenderedFragment renderedFragment)
+		    where TComponent : IComponent
 		{
 			if (renderedFragment is null)
 				throw new ArgumentNullException(nameof(renderedFragment));

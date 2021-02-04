@@ -10,7 +10,7 @@ using Bunit.Rendering;
 namespace Bunit
 {
 	/// <summary>
-	/// Verification helpers for text
+	/// Verification helpers for text.
 	/// </summary>
 	public static class ShouldBeTextChangeAssertExtensions
 	{
@@ -37,8 +37,8 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(actualChange));
 			if (expectedChange is null)
 				throw new ArgumentNullException(nameof(expectedChange));
-
-			var actual = actualChange as NodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
+			if (actualChange is not NodeDiff actual)
+				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 
 			var parser = actual.Control.Node.Owner.Context.GetService<BunitHtmlParser>();
 			var expected = parser.Parse(expectedChange);
@@ -71,8 +71,9 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(actualChange));
 			if (expectedChange is null)
 				throw new ArgumentNullException(nameof(expectedChange));
+			if (actualChange is not NodeDiff actual)
+				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 
-			var actual = actualChange as NodeDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 			var comparer = actual.Control.Node.Owner.Context.GetService<HtmlComparer>();
 
 			var diffs = comparer.Compare(expectedChange, new[] { actual.Test.Node }).ToList();
@@ -98,17 +99,19 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(expectedAttrName));
 			if (expectedAttrValue is null)
 				throw new ArgumentNullException(nameof(expectedAttrValue));
-
-			var actual = actualChange as AttrDiff ?? throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a attribute change.");
+			if (actualChange is not AttrDiff actual)
+				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a attribute change.");
 
 			if (!expectedAttrName.Equals(actual.Test.Attribute.Name, StringComparison.Ordinal))
 			{
 				throw new ActualExpectedAssertException(
-					actual.Test.Attribute.Name, expectedAttrName,
+					actual.Test.Attribute.Name,
+					expectedAttrName,
 					"Actual attribute name",
 					"Expected attribute name",
 					userMessage ?? "The name of the changed attribute does not match the expected name.");
 			}
+
 			if (!expectedAttrValue.Equals(actual.Test.Attribute.Value, StringComparison.Ordinal))
 			{
 				throw new ActualExpectedAssertException(

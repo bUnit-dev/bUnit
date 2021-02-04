@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 namespace Bunit
 {
 	/// <summary>
-	/// Assert extensions for JSRuntimeMock
+	/// Assert extensions for JSRuntimeMock.
 	/// </summary>
 	public static class JSRuntimeAssertExtensions
 	{
@@ -89,20 +89,21 @@ namespace Bunit
 			if (actualArgument is not ElementReference elmRef)
 				throw new ActualExpectedAssertException(actualArgument.GetType().Name, nameof(ElementReference), "Actual argument type", "Expected argument type", $"The argument was not an {nameof(ElementReference)}");
 
-			var elmRefAttrName = Htmlizer.ELEMENT_REFERENCE_ATTR_NAME;
+			var elmRefAttrName = Htmlizer.ElementReferenceAttrName;
 			var expectedId = expectedTargetElement.GetAttribute(elmRefAttrName);
 			if (string.IsNullOrEmpty(expectedId) || !elmRef.Id.Equals(expectedId, StringComparison.Ordinal))
 			{
-				throw new ActualExpectedAssertException(expectedTargetElement.ToMarkupElementOnly(),
-														$"{elmRefAttrName}=\"{elmRef.Id}\"",
-														"Actual element reference",
-														"Expected referenced element",
-														"Element does not have a the expected element reference.");
+				throw new ActualExpectedAssertException(
+					expectedTargetElement.ToMarkupElementOnly(),
+					$"{elmRefAttrName}=\"{elmRef.Id}\"",
+					"Actual element reference",
+					"Expected referenced element",
+					"Element does not have a the expected element reference.");
 			}
 		}
 
 		private static IReadOnlyList<JSRuntimeInvocation> VerifyInvoke(JSRuntimeInvocationDictionary allInvocations, string identifier, int calledTimes, string? userMessage = null)
-		{			
+		{
 			if (string.IsNullOrWhiteSpace(identifier))
 				throw new ArgumentException($"'{nameof(identifier)}' cannot be null or whitespace.", nameof(identifier));
 

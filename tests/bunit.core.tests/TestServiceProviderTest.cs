@@ -9,10 +9,13 @@ namespace Bunit
 {
 	public partial class TestServiceProviderTest
 	{
-		class DummyService { }
-		class AnotherDummyService { }
-		class OneMoreDummyService { }
-		class FallbackServiceProvider : IServiceProvider
+		private class DummyService { }
+    
+		private class AnotherDummyService { }
+    
+		private class OneMoreDummyService { }
+    
+		private class FallbackServiceProvider : IServiceProvider
 		{
 			public object GetService(Type serviceType)
 			{

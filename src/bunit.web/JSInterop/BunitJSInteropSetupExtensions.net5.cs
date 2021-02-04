@@ -1,5 +1,6 @@
 #if NET5_0
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Bunit.JSInterop;
 using Bunit.JSInterop.InvocationHandlers;
@@ -13,7 +14,7 @@ namespace Bunit
 	/// </summary>
 	public static partial class BunitJSInteropSetupExtensions
 	{
-		private const string DEFAULT_IMPORT_IDENTIFER = "import";
+		private const string DefaultImportIdentifier = "import";
 
 		/// <summary>
 		/// Setup a handler for a <c>IJSRuntime.InvokeAsync&lt;IJSObjectReference&gt;("import", <paramref name="moduleName"/>)</c>
@@ -31,13 +32,17 @@ namespace Bunit
 		/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
 		public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, string moduleName)
 		{
+			if (jsInterop is null)
+				throw new ArgumentNullException(nameof(jsInterop));
+
 			if (string.IsNullOrWhiteSpace(moduleName))
 				throw new ArgumentException($"'{nameof(moduleName)}' cannot be null or whitespace.", nameof(moduleName));
 
-			return SetupModule(jsInterop,
-							   DEFAULT_IMPORT_IDENTIFER,
-								invocation => invocation.Arguments?[0] is string requestedModuleName
-										   && requestedModuleName.Equals(moduleName, StringComparison.Ordinal));
+			return SetupModule(
+				jsInterop,
+				DefaultImportIdentifier,
+				invocation => invocation.Arguments?[0] is string requestedModuleName
+						   && requestedModuleName.Equals(moduleName, StringComparison.Ordinal));
 		}
 
 		/// <summary>
@@ -73,7 +78,7 @@ namespace Bunit
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="invocationMatcher"/> is null.</exception>
 		/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
 		public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher)
-			=> SetupModule(jsInterop, DEFAULT_IMPORT_IDENTIFER, invocationMatcher);
+			=> SetupModule(jsInterop, DefaultImportIdentifier, invocationMatcher);
 
 		/// <summary>
 		/// Setup a handler for a <c>IJSRuntime.InvokeAsync&lt;IJSObjectReference&gt;()</c> call whose input parameters is matched by the provided
@@ -130,6 +135,9 @@ namespace Bunit
 		/// <returns>A <see cref="BunitJSModuleInterop"/> or null if no one is found.</returns>
 		public static BunitJSModuleInterop? TryGetModuleJSInterop(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
 		{
+			if (jsInterop is null)
+				throw new ArgumentNullException(nameof(jsInterop));
+
 			var handler = jsInterop.TryGetHandlerFor<IJSObjectReference>(new JSRuntimeInvocation(identifier, default, arguments)) as JSObjectReferenceInvocationHandler;
 			return handler?.JSInterop;
 		}

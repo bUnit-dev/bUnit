@@ -25,7 +25,7 @@ namespace Bunit
 		public string Identifier { get; }
 
 		/// <summary>
-		/// Creates an instance of the <see cref="JSInvokeCountExpectedException"/>.
+		/// Initializes a new instance of the <see cref="JSInvokeCountExpectedException"/> class.
 		/// </summary>
 		public JSInvokeCountExpectedException(string identifier, int expectedCount, int actualCount, string assertMethod, string? userMessage = null)
 			: base(CreateMessage(identifier, expectedCount, actualCount, assertMethod, userMessage))

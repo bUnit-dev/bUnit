@@ -10,7 +10,7 @@ namespace Bunit
 {
 	public class ComponentParameterCollectionBuilderTests : TestContext
 	{
-		private readonly ComponentParameterCollectionBuilder<Params> Builder = new();
+		private ComponentParameterCollectionBuilder<Params> Builder { get; } = new();
 
 		private bool EventCallbackCalled { get; set; }
 
@@ -21,11 +21,10 @@ namespace Bunit
 				.ShouldBeParameter<object?>(
 					name: expectedName,
 					value: expectedInput,
-					isCascadingValue: false
-				);
+					isCascadingValue: false);
 		}
 
-		private async Task VerifyEventCallback(string expectedName)
+		private async Task VerifyEventCallbackAsync(string expectedName)
 		{
 			var actual = Builder.Build()
 				.ShouldHaveSingleItem()
@@ -34,7 +33,8 @@ namespace Bunit
 			EventCallbackCalled.ShouldBeTrue();
 		}
 
-		private async Task VerifyEventCallback<T>(string expectedName) where T : new()
+		private async Task VerifyEventCallbackAsync<T>(string expectedName)
+			where T : new()
 		{
 			var actual = Builder.Build()
 				.ShouldHaveSingleItem()
@@ -48,7 +48,8 @@ namespace Bunit
 			return (IRenderedFragment)Renderer.RenderFragment(renderFragment);
 		}
 
-		private IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment) where TComponent : IComponent
+		private IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
+			where TComponent : IComponent
 		{
 			var res = (IRenderedFragment)Renderer.RenderFragment(renderFragment);
 			return res.FindComponent<TComponent>();
@@ -63,7 +64,7 @@ namespace Bunit
 		[Fact(DisplayName = "Selecting a non property with parameter selector throws")]
 		public void Test0000()
 		{
-			Should.Throw<ArgumentException>(() => Builder.Add(x => x._nonParam, 42));
+			Should.Throw<ArgumentException>(() => Builder.Add(x => x.Field, 42));
 		}
 
 		[Fact(DisplayName = "Selecting a non parameter property with parameter selector throws")]
@@ -133,42 +134,42 @@ namespace Bunit
 		public async Task Test012()
 		{
 			Builder.Add(x => x.EC, () => { EventCallbackCalled = true; });
-			await VerifyEventCallback("EC");
+			await VerifyEventCallbackAsync("EC");
 		}
 
 		[Fact(DisplayName = "Action<object> to EventCallback with parameter selector")]
 		public async Task Test013()
 		{
 			Builder.Add(x => x.EC, (x) => { EventCallbackCalled = true; });
-			await VerifyEventCallback("EC");
+			await VerifyEventCallbackAsync("EC");
 		}
 
 		[Fact(DisplayName = "Func<Task> to EventCallback with parameter selector")]
 		public async Task Test014()
 		{
 			Builder.Add(x => x.EC, () => { EventCallbackCalled = true; return Task.CompletedTask; });
-			await VerifyEventCallback("EC");
+			await VerifyEventCallbackAsync("EC");
 		}
 
 		[Fact(DisplayName = "Action to EventCallback? with parameter selector")]
 		public async Task Test015()
 		{
 			Builder.Add(x => x.NullableEC, () => { EventCallbackCalled = true; });
-			await VerifyEventCallback("NullableEC");
+			await VerifyEventCallbackAsync("NullableEC");
 		}
 
 		[Fact(DisplayName = "Action<object> to EventCallback? with parameter selector")]
 		public async Task Test016()
 		{
 			Builder.Add(x => x.NullableEC, (x) => { EventCallbackCalled = true; });
-			await VerifyEventCallback("NullableEC");
+			await VerifyEventCallbackAsync("NullableEC");
 		}
 
 		[Fact(DisplayName = "Func<Task> to EventCallback? with parameter selector")]
 		public async Task Test017()
 		{
 			Builder.Add(x => x.NullableEC, () => { EventCallbackCalled = true; return Task.CompletedTask; });
-			await VerifyEventCallback("NullableEC");
+			await VerifyEventCallbackAsync("NullableEC");
 		}
 
 		[Fact(DisplayName = "EventCallback<T> with parameter selector")]
@@ -183,21 +184,21 @@ namespace Bunit
 		public async Task Test019()
 		{
 			Builder.Add(x => x.ECWithArgs, () => { EventCallbackCalled = true; });
-			await VerifyEventCallback<EventArgs>("ECWithArgs");
+			await VerifyEventCallbackAsync<EventArgs>("ECWithArgs");
 		}
 
 		[Fact(DisplayName = "Action<object> to EventCallback<T> with parameter selector")]
 		public async Task Test020()
 		{
 			Builder.Add(x => x.ECWithArgs, (x) => { EventCallbackCalled = true; });
-			await VerifyEventCallback<EventArgs>("ECWithArgs");
+			await VerifyEventCallbackAsync<EventArgs>("ECWithArgs");
 		}
 
 		[Fact(DisplayName = "Func<Task> to EventCallback<T> with parameter selector")]
 		public async Task Test021()
 		{
 			Builder.Add(x => x.ECWithArgs, () => { EventCallbackCalled = true; return Task.CompletedTask; });
-			await VerifyEventCallback<EventArgs>("ECWithArgs");
+			await VerifyEventCallbackAsync<EventArgs>("ECWithArgs");
 		}
 
 		[Fact(DisplayName = "EventCallback<T> with parameter selector")]
@@ -212,27 +213,27 @@ namespace Bunit
 		public async Task Test023()
 		{
 			Builder.Add(x => x.NullableECWithArgs, () => { EventCallbackCalled = true; });
-			await VerifyEventCallback<EventArgs>("NullableECWithArgs");
+			await VerifyEventCallbackAsync<EventArgs>("NullableECWithArgs");
 		}
 
 		[Fact(DisplayName = "Action<object> to EventCallback<T> with parameter selector")]
 		public async Task Test024()
 		{
 			Builder.Add(x => x.NullableECWithArgs, (x) => { EventCallbackCalled = true; });
-			await VerifyEventCallback<EventArgs>("NullableECWithArgs");
+			await VerifyEventCallbackAsync<EventArgs>("NullableECWithArgs");
 		}
 
 		[Fact(DisplayName = "Func<Task> to EventCallback<T> with parameter selector")]
 		public async Task Test025()
 		{
 			Builder.Add(x => x.NullableECWithArgs, () => { EventCallbackCalled = true; return Task.CompletedTask; });
-			await VerifyEventCallback<EventArgs>("NullableECWithArgs");
+			await VerifyEventCallbackAsync<EventArgs>("NullableECWithArgs");
 		}
 
 		[Fact(DisplayName = "ChildContent can be passed as RenderFragment")]
 		public void Test030()
 		{
-			RenderFragment input = b => b.AddMarkupContent(0, "");
+			RenderFragment input = b => b.AddMarkupContent(0, string.Empty);
 			Builder.AddChildContent(input);
 			VerifyParameter<RenderFragment>("ChildContent", input);
 		}
@@ -240,7 +241,7 @@ namespace Bunit
 		[Fact(DisplayName = "Calling AddChildContent when TCompnent does not have a parameter named ChildContent throws")]
 		public void Test031()
 		{
-			RenderFragment input = b => b.AddMarkupContent(0, "");
+			RenderFragment input = b => b.AddMarkupContent(0, string.Empty);
 			Assert.Throws<ArgumentException>(() => new ComponentParameterCollectionBuilder<NoParams>().AddChildContent(input));
 			Assert.Throws<ArgumentException>(() => new ComponentParameterCollectionBuilder<NonChildContentParameter>().AddChildContent(input));
 		}
@@ -316,7 +317,7 @@ namespace Bunit
 		[Fact(DisplayName = "RenderFragment can be passed RenderFragment")]
 		public void Test043()
 		{
-			RenderFragment input = b => b.AddMarkupContent(0, "");
+			RenderFragment input = b => b.AddMarkupContent(0, string.Empty);
 
 			Builder.Add(x => x.OtherFragment, input);
 
@@ -370,11 +371,11 @@ namespace Bunit
 			var input = "FOO";
 			Builder.Add<InhertedParams, string>(
 				x => x.Template,
-				value => parameters => parameters.Add(p => p.Param, value)
-			);
+				value => parameters => parameters.Add(p => p.Param, value));
 
 			var actual = Builder.Build().ShouldHaveSingleItem()
 				.ShouldBeParameter<RenderFragment<string>>("Template", isCascadingValue: false);
+
 			var actualComponent = RenderWithRenderFragment<InhertedParams>(actual(input));
 			actualComponent.Instance.Param.ShouldBe(input);
 		}
@@ -416,8 +417,7 @@ namespace Bunit
 				{
 					var rf = x.ShouldBeParameter<RenderFragment>(null, isCascadingValue: true);
 					RenderWithRenderFragment(rf).Markup.ShouldBe("BAZ");
-				}
-			);
+				});
 		}
 
 		[Fact(DisplayName = "AddCascadingValue can add unnamed cascading values")]
@@ -570,6 +570,8 @@ namespace Bunit
 
 		private class Params : ComponentBase
 		{
+			[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private")]
+			public int Field = -1;
 			[Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? Attributes { get; set; }
 			[Parameter] public int? NullableValueTypeParam { get; set; }
 			[Parameter] public int ValueTypeParam { get; set; } = -1;
@@ -587,7 +589,6 @@ namespace Bunit
 			[CascadingParameter(Name = nameof(NamedCC) + "NAME")] public int NamedCC { get; set; } = -1;
 			[CascadingParameter(Name = nameof(AnotherNamedCC) + "NAME")] public int AnotherNamedCC { get; set; } = -1;
 			[CascadingParameter] public RenderFragment? RFCC { get; set; }
-			public int _nonParam = -1;
 			public object? NonParamProp { get; set; }
 			public void SomeMethod() { }
 		}
@@ -599,12 +600,13 @@ namespace Bunit
 		{
 			public abstract T Value { get; set; }
 		}
+
 		private class InheritedParamsWithOverride : ParamsBase<bool?>
 		{
 			[Parameter] public override bool? Value { get; set; }
 		}
+
 		private class InheritedParamsWithoutOverride : InheritedParamsWithOverride
-		{
-		}
+		{ }
 	}
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Bunit
@@ -9,6 +10,7 @@ namespace Bunit
 	/// received by the <see cref="BunitJSInterop"/> running in <see cref="JSRuntimeMode.Strict"/> mode,
 	/// which didn't contain a matching invocation handler.
 	/// </summary>
+	[SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly", Justification = "No good way to serialize Invocation?")]
 	public sealed class JSRuntimeUnhandledInvocationException : Exception
 	{
 		/// <summary>
@@ -17,7 +19,7 @@ namespace Bunit
 		public JSRuntimeInvocation Invocation { get; }
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="JSRuntimeUnhandledInvocationException"/>
+		/// Initializes a new instance of the <see cref="JSRuntimeUnhandledInvocationException"/> class
 		/// with the provided <see cref="Invocation"/> attached.
 		/// </summary>
 		/// <param name="invocation">The unplanned invocation.</param>
@@ -31,10 +33,10 @@ namespace Bunit
 		{
 			if (arguments.Count == 0)
 				return "without arguments";
-			else if (arguments.Count == 1)
+			if (arguments.Count == 1)
 				return $"with the argument [{arguments[0]}]";
-			else
-				return $"with arguments [{string.Join(", ", arguments.OfType<object>().Select(x => x.ToString()))}]";
+
+			return $"with arguments [{string.Join(", ", arguments.OfType<object>().Select(x => x.ToString()))}]";
 		}
 	}
 }

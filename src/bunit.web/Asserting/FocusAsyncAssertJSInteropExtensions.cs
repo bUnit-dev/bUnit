@@ -1,7 +1,7 @@
 #if NET5_0
+using System.Collections.Generic;
 using Bunit.JSInterop.InvocationHandlers.Implementation;
 using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
 
 namespace Bunit
 {
@@ -13,7 +13,7 @@ namespace Bunit
 		/// <summary>
 		/// Verifies that the <see cref="ElementReferenceExtensions.FocusAsync(ElementReference)"/> method has been invoked one time.
 		/// </summary>
-		/// <param name="handler">Handler to verify against.</param>		
+		/// <param name="handler">Handler to verify against.</param>
 		/// <param name="userMessage">A custom user message to display if the assertion fails.</param>
 		/// <returns>The <see cref="JSRuntimeInvocation"/>.</returns>
 		public static JSRuntimeInvocation VerifyFocusAsyncInvoke(this BunitJSInterop handler, string? userMessage = null)

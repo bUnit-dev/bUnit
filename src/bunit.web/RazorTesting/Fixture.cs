@@ -12,20 +12,21 @@ namespace Bunit
 	/// <inheritdoc/>
 	public class Fixture : FixtureBase<Fixture>
 	{
-		private readonly Dictionary<string, IRenderedFragment> _renderedFragments = new();
-		private IReadOnlyList<FragmentBase>? _testData;
+		private readonly Dictionary<string, IRenderedFragment> renderedFragments = new(StringComparer.Ordinal);
+		private IReadOnlyList<FragmentBase>? testData;
 
 		private IReadOnlyList<FragmentBase> TestData
 		{
 			get
 			{
-				if (_testData is null)
+				if (testData is null)
 				{
 					var renderedFragment = Renderer.RenderFragment(ChildContent!);
 					var comps = Renderer.FindComponents<FragmentBase>(renderedFragment);
-					_testData = comps.Select(x => x.Instance).ToArray();
+					testData = comps.Select(x => x.Instance).ToArray();
 				}
-				return _testData;
+
+				return testData;
 			}
 		}
 
@@ -36,7 +37,7 @@ namespace Bunit
 		public BunitJSInterop JSInterop { get; } = new BunitJSInterop();
 
 		/// <summary>
-		/// Creates an instance of the <see cref="Fixture"/> type.
+		/// Initializes a new instance of the <see cref="Fixture"/> class.
 		/// </summary>
 		public Fixture()
 		{
@@ -45,37 +46,38 @@ namespace Bunit
 
 		/// <summary>
 		/// Gets (and renders) the markup/component defined in the &lt;Fixture&gt;&lt;ComponentUnderTest&gt;...&lt;ComponentUnderTest/&gt;&lt;Fixture/&gt; element.
-		/// 
+		///
 		/// The HTML/component is only rendered the first this method is called.
 		/// </summary>
-		/// <returns>A <see cref="IRenderedFragmentBase"/></returns>
+		/// <returns>A <see cref="IRenderedFragmentBase"/>.</returns>
 		public IRenderedFragment GetComponentUnderTest() => GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory);
 
 		/// <summary>
-		/// Gets (and renders) the component of type <typeparamref name="TComponent"/> defined in the 
+		/// Gets (and renders) the component of type <typeparamref name="TComponent"/> defined in the
 		/// &lt;Fixture&gt;&lt;ComponentUnderTest&gt;...&lt;ComponentUnderTest/&gt;&lt;Fixture/&gt; element.
-		/// 
+		///
 		/// The HTML/component is only rendered the first this method is called.
 		/// </summary>
-		/// <typeparam name="TComponent">The type of component to render</typeparam>
-		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/></returns>
-		public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>() where TComponent : IComponent
+		/// <typeparam name="TComponent">The type of component to render.</typeparam>
+		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/>.</returns>
+		public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>()
+		    where TComponent : IComponent
 		{
 			var result = GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory<TComponent>);
 			return TryCastTo<TComponent>(result);
 		}
 
 		/// <summary>
-		/// Gets (and renders) the markup/component defined in the 
+		/// Gets (and renders) the markup/component defined in the
 		/// &lt;Fixture&gt;&lt;Fragment id="<paramref name="id"/>" &gt;...&lt;Fragment/&gt;&lt;Fixture/&gt; element.
 		///
-		/// If <paramref name="id"/> is null/not provided, the component defined in the first &lt;Fragment/&gt; in 
+		/// If <paramref name="id"/> is null/not provided, the component defined in the first &lt;Fragment/&gt; in
 		/// the &lt;Fixture/&gt; element is returned.
-		/// 
+		///
 		/// The HTML/component is only rendered the first this method is called.
 		/// </summary>
 		/// <param name="id">The id of the fragment where the HTML/component is defined in Razor syntax.</param>
-		/// <returns>A <see cref="IRenderedFragmentBase"/></returns>
+		/// <returns>A <see cref="IRenderedFragmentBase"/>.</returns>
 		public IRenderedFragment GetFragment(string? id = null)
 		{
 			var key = id ?? SelectFirstFragment().Id;
@@ -84,18 +86,19 @@ namespace Bunit
 		}
 
 		/// <summary>
-		/// Gets (and renders) the component of type <typeparamref name="TComponent"/> defined in the 
+		/// Gets (and renders) the component of type <typeparamref name="TComponent"/> defined in the
 		/// &lt;Fixture&gt;&lt;Fragment id="<paramref name="id"/>" &gt;...&lt;Fragment/&gt;&lt;Fixture/&gt; element.
-		/// 
-		/// If <paramref name="id"/> is null/not provided, the component defined in the first &lt;Fragment/&gt; in 
+		///
+		/// If <paramref name="id"/> is null/not provided, the component defined in the first &lt;Fragment/&gt; in
 		/// the &lt;Fixture/&gt; element is returned.
-		/// 
+		///
 		/// The HTML/component is only rendered the first this method is called.
 		/// </summary>
-		/// <typeparam name="TComponent">The type of component to render</typeparam>
+		/// <typeparam name="TComponent">The type of component to render.</typeparam>
 		/// <param name="id">The id of the fragment where the component is defined in Razor syntax.</param>
-		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/></returns>
-		public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null) where TComponent : IComponent
+		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/>.</returns>
+		public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null)
+		    where TComponent : IComponent
 		{
 			var key = id ?? SelectFirstFragment().Id;
 			var result = GetOrRenderFragment(key, SelectFragmentById, Factory<TComponent>);
@@ -108,17 +111,15 @@ namespace Bunit
 		/// </summary>
 		private IRenderedFragment GetOrRenderFragment(string id, Func<string, FragmentBase> fragmentSelector, Func<RenderFragment, IRenderedFragment> renderedFragmentFactory)
 		{
-			if (_renderedFragments.TryGetValue(id, out var renderedFragment))
+			if (renderedFragments.TryGetValue(id, out var renderedFragment))
 			{
 				return renderedFragment;
 			}
-			else
-			{
-				var fragment = fragmentSelector(id);
-				var result = renderedFragmentFactory(fragment.ChildContent);
-				_renderedFragments.Add(id, result);
-				return result;
-			}
+
+			var fragment = fragmentSelector(id);
+			var result = renderedFragmentFactory(fragment.ChildContent);
+			renderedFragments.Add(id, result);
+			return result;
 		}
 
 		private Fragment SelectFirstFragment()
@@ -131,12 +132,13 @@ namespace Bunit
 			return TestData.OfType<Fragment>().Single(x => x.Id.Equals(id, StringComparison.Ordinal));
 		}
 
-		private ComponentUnderTest SelectComponentUnderTest(string _)
+		private ComponentUnderTest SelectComponentUnderTest(string name)
 		{
 			return TestData.OfType<ComponentUnderTest>().Single();
 		}
 
-		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment) where TComponent : IComponent
+		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment)
+		    where TComponent : IComponent
 		{
 			return this.RenderInsideRenderTree<TComponent>(fragment);
 		}
@@ -146,7 +148,8 @@ namespace Bunit
 			return this.RenderInsideRenderTree(fragment);
 		}
 
-		private static IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "") where TComponent : IComponent
+		private static IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "")
+		    where TComponent : IComponent
 		{
 			if (target is IRenderedComponent<TComponent> result)
 			{
@@ -164,9 +167,9 @@ namespace Bunit
 		}
 
 		/// <inheritdoc/>
-		protected override Task Run()
+		protected override Task RunAsync()
 		{
-			return base.Run(this);
+			return RunAsync(this);
 		}
 	}
 }

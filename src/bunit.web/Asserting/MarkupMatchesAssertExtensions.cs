@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Bunit
 {
 	/// <summary>
-	/// Assert helpers for comparing markup
+	/// Assert helpers for comparing markup.
 	/// </summary>
 	public static class MarkupMatchesAssertExtensions
 	{
@@ -137,7 +137,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> matches
-		/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> 
+		/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/>
 		/// type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -157,7 +157,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Verifies that the <paramref name="actual"/> <see cref="INode"/> matches
-		/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> 
+		/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/>
 		/// type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -177,7 +177,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Verifies that the <paramref name="actual"/> <see cref="INode"/> matches
-		/// the <paramref name="expected"/> markup, using the <see cref="HtmlComparer"/> 
+		/// the <paramref name="expected"/> markup, using the <see cref="HtmlComparer"/>
 		/// type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -198,7 +198,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> matches
-		/// the <paramref name="expected"/> markup, using the <see cref="HtmlComparer"/> 
+		/// the <paramref name="expected"/> markup, using the <see cref="HtmlComparer"/>
 		/// type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -219,7 +219,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> matches
-		/// the <paramref name="expected"/> <see cref="INodeList"/>, using the <see cref="HtmlComparer"/> 
+		/// the <paramref name="expected"/> <see cref="INodeList"/>, using the <see cref="HtmlComparer"/>
 		/// type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -242,7 +242,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> matches
-		/// the <paramref name="expected"/> <see cref="INode"/>, using the <see cref="HtmlComparer"/> 
+		/// the <paramref name="expected"/> <see cref="INode"/>, using the <see cref="HtmlComparer"/>
 		/// type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -265,7 +265,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Verifies that the <paramref name="actual"/> <see cref="INode"/> matches
-		/// the <paramref name="expected"/> <see cref="INodeList"/>, using the <see cref="HtmlComparer"/> 
+		/// the <paramref name="expected"/> <see cref="INodeList"/>, using the <see cref="HtmlComparer"/>
 		/// type.
 		/// </summary>
 		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -323,8 +323,8 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var testContext = actual.GetTestContext() ?? new TestContext();
-			var renderedFragment = testContext.RenderInsideRenderTree(expected);
+			var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected)
+				?? AdhocRenderRenderFragment(expected);
 			MarkupMatches(actual, renderedFragment, userMessage);
 		}
 
@@ -344,9 +344,15 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var testContext = actual.GetTestContext() ?? new TestContext();
-			var renderedFragment = testContext.RenderInsideRenderTree(expected);
+			var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected)
+				?? AdhocRenderRenderFragment(expected);
 			MarkupMatches(actual, renderedFragment, userMessage);
+		}
+
+		private static IRenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
+		{
+			using var ctx = new TestContext();
+			return ctx.RenderInsideRenderTree(renderFragment);
 		}
 
 		private static INodeList ToNodeList(this string markup, BunitHtmlParser? htmlParser)
@@ -356,10 +362,8 @@ namespace Bunit
 				using var newHtmlParser = new BunitHtmlParser();
 				return newHtmlParser.Parse(markup);
 			}
-			else
-			{
-				return htmlParser.Parse(markup);
-			}
+
+			return htmlParser.Parse(markup);
 		}
 	}
 }

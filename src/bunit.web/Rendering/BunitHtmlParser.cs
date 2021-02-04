@@ -17,25 +17,26 @@ namespace Bunit.Rendering
 	/// </summary>
 	public sealed class BunitHtmlParser : IDisposable
 	{
-		private static readonly string[] TABLE_SUB_ELEMENTS = { "CAPTION", "COLGROUP", "TBODY", "TFOOT", "THEAD", };
-		private const string TBODY_SUB_ELEMENT = "TR";
-		private static readonly string[] TR_SUB_ELEMENTS = { "TD", "TH" };
-		private const string COLGROUP_SUB_ELEMENT = "COL";
-		private static readonly string[] SPECIAL_HTML_ELEMENTS = { "HTML", "HEAD", "BODY" };
+		private const string TbodySubElements = "TR";
+		private const string ColgroupSubElement = "COL";
+		private static readonly string[] TableSubElements = { "CAPTION", "COLGROUP", "TBODY", "TFOOT", "THEAD", };
+		private static readonly string[] TrSubElements = { "TD", "TH" };
+		private static readonly string[] SpecialHtmlElements = { "HTML", "HEAD", "BODY" };
 
-		private readonly IBrowsingContext _context;
-		private readonly IHtmlParser _htmlParser;
-		private readonly List<IDocument> _documents = new();
+		private readonly IBrowsingContext context;
+		private readonly IHtmlParser htmlParser;
+		private readonly List<IDocument> documents = new();
 
 		/// <summary>
-		/// Creates an instance of the parser with a AngleSharp context 
-		/// without a <see cref="TestRenderer"/> registered.
+		/// Initializes a new instance of the <see cref="BunitHtmlParser"/> class
+		/// with a AngleSharp context without a <see cref="TestRenderer"/> registered.
 		/// </summary>
-		public BunitHtmlParser() : this(Configuration.Default.WithCss().With(new HtmlComparer())) { }
+		public BunitHtmlParser()
+			: this(Configuration.Default.WithCss().With(new HtmlComparer())) { }
 
 		/// <summary>
-		/// Creates an instance of the parser with a AngleSharp context 
-		/// with the <paramref name="testRenderer"/> registered.
+		/// Initializes a new instance of the <see cref="BunitHtmlParser"/> class
+		/// with a AngleSharp context that includes a the <paramref name="testRenderer"/> registered.
 		/// </summary>
 		public BunitHtmlParser(ITestRenderer testRenderer, HtmlComparer htmlComparer, TestContextBase testContext)
 			: this(Configuration.Default.WithCss()
@@ -47,8 +48,8 @@ namespace Bunit.Rendering
 		private BunitHtmlParser(IConfiguration angleSharpConfiguration)
 		{
 			var config = angleSharpConfiguration.With(this);
-			_context = BrowsingContext.New(config);
-			_htmlParser = _context.GetService<IHtmlParser>();
+			context = BrowsingContext.New(config);
+			htmlParser = context.GetService<IHtmlParser>();
 		}
 
 		/// <summary>
@@ -58,30 +59,31 @@ namespace Bunit.Rendering
 		/// <returns>The <see cref="INodeList"/>.</returns>
 		public INodeList Parse(string markup)
 		{
-			if (markup is null) throw new ArgumentNullException(nameof(markup));
-			var (ctx, matchedElement) = GetParseContext(markup).GetAwaiter().GetResult();
+			if (markup is null)
+				throw new ArgumentNullException(nameof(markup));
+			var (ctx, matchedElement) = GetParseContextAsync(markup).GetAwaiter().GetResult();
 
 			return ctx is null && matchedElement is not null
 				? ParseSpecial(markup, matchedElement)
-				: _htmlParser.ParseFragment(markup, ctx);
+				: htmlParser.ParseFragment(markup, ctx);
 		}
 
 		private INodeList ParseSpecial(string markup, string matchedElement)
 		{
-			var doc = _htmlParser.ParseDocument(markup);
+			var doc = htmlParser.ParseDocument(markup);
 
 			return matchedElement switch
 			{
 				"HTML" => new SingleNodeNodeList(doc.Body.ParentElement),
 				"HEAD" => new SingleNodeNodeList(doc.Head),
 				"BODY" => new SingleNodeNodeList(doc.Body),
-				_ => throw new InvalidOperationException($"{matchedElement} should not be parsed by {nameof(ParseSpecial)}.")
+				_ => throw new InvalidOperationException($"{matchedElement} should not be parsed by {nameof(ParseSpecial)}."),
 			};
 		}
 
-		private async Task<(IElement? ctx, string? matchedElement)> GetParseContext(string markup)
+		private async Task<(IElement? Context, string? MatchedElement)> GetParseContextAsync(string markup)
 		{
-			var document = await GetNewDocument().ConfigureAwait(false);
+			var document = await GetNewDocumentAsync().ConfigureAwait(false);
 			var startIndex = markup.IndexOfFirstNonWhitespaceChar();
 
 			// verify that first non-whitespace characters is a '<'
@@ -89,72 +91,67 @@ namespace Bunit.Rendering
 			{
 				return GetParseContextFromTag(markup, startIndex, document);
 			}
-			else
-			{
-				return (document.Body, null);
-			}
+
+			return (Context: document.Body, MatchedElement: null);
 		}
 
-		private static (IElement? ctx, string? matchedElement) GetParseContextFromTag(string markup, int startIndex, IDocument document)
+		private static (IElement? Context, string? MatchedElement) GetParseContextFromTag(string markup, int startIndex, IDocument document)
 		{
-			IElement? context = null;
-			string? matchedElement;
+			IElement? result = null;
 
-			if (markup.StartsWithElements(TABLE_SUB_ELEMENTS, startIndex, out matchedElement))
+			if (markup.StartsWithElements(TableSubElements, startIndex, out var matchedElement))
 			{
-				context = CreateTable();
+				result = CreateTable();
 			}
-			else if (markup.StartsWithElements(TR_SUB_ELEMENTS, startIndex, out matchedElement))
+			else if (markup.StartsWithElements(TrSubElements, startIndex, out matchedElement))
 			{
-				context = CreateTable().AppendElement(document.CreateElement("tr"));
+				result = CreateTable().AppendElement(document.CreateElement("tr"));
 			}
-			else if (markup.StartsWithElement(TBODY_SUB_ELEMENT, startIndex))
+			else if (markup.StartsWithElement(TbodySubElements, startIndex))
 			{
-				context = CreateTable().AppendElement(document.CreateElement("tbody"));
-				matchedElement = TBODY_SUB_ELEMENT;
+				result = CreateTable().AppendElement(document.CreateElement("tbody"));
+				matchedElement = TbodySubElements;
 			}
-			else if (markup.StartsWithElement(COLGROUP_SUB_ELEMENT, startIndex))
+			else if (markup.StartsWithElement(ColgroupSubElement, startIndex))
 			{
-				context = CreateTable().AppendElement(document.CreateElement("colgroup"));
-				matchedElement = COLGROUP_SUB_ELEMENT;
+				result = CreateTable().AppendElement(document.CreateElement("colgroup"));
+				matchedElement = ColgroupSubElement;
 			}
-			else if (markup.StartsWithElements(SPECIAL_HTML_ELEMENTS, startIndex, out matchedElement))
+			else if (markup.StartsWithElements(SpecialHtmlElements, startIndex, out matchedElement))
 			{
 				// default case, nothing to do.
 			}
 			else
 			{
-				context = document.Body;
+				result = document.Body;
 			}
 
-			return (context, matchedElement);
+			return (Context: result, MatchedElement: matchedElement);
 
 			IElement CreateTable() => document.Body.AppendElement(document.CreateElement("table"));
 		}
 
-		private async Task<IDocument> GetNewDocument()
+		private async Task<IDocument> GetNewDocumentAsync()
 		{
-			var result = await _context.OpenNewAsync().ConfigureAwait(false);
-			_documents.Add(result);
+			var result = await context.OpenNewAsync().ConfigureAwait(false);
+			documents.Add(result);
 			return result;
 		}
 
 		/// <inheritdoc/>
 		public void Dispose()
 		{
-			_context.Dispose();
-			foreach (var doc in _documents)
+			context.Dispose();
+			foreach (var doc in documents)
 			{
 				doc.Dispose();
 			}
 		}
 
-		private class SingleNodeNodeList : INodeList
+		private sealed class SingleNodeNodeList : INodeList, IReadOnlyList<INode>
 		{
 			private readonly INode node;
 
-			[SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown",
-							 Justification = "This is an indexer, thus it makes sense in to throw IndexOutOfRangeException here")]
 			public INode this[int index]
 			{
 				get
@@ -165,13 +162,20 @@ namespace Bunit.Rendering
 					return node;
 				}
 			}
+
 			public int Length { get; } = 1;
+
+			public int Count { get; } = 1;
+
 			public SingleNodeNodeList(INode node) => this.node = node ?? throw new ArgumentNullException(nameof(node));
+
 			public IEnumerator<INode> GetEnumerator()
 			{
 				yield return node;
 			}
+
 			public void ToHtml(TextWriter writer, IMarkupFormatter formatter) => node.ToHtml(writer, formatter);
+
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		}
 	}

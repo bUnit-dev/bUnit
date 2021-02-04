@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,21 +20,21 @@ namespace Bunit.Rendering
 	{
 		private static readonly ServiceProvider ServiceProvider = new ServiceCollection().BuildServiceProvider();
 		private static readonly Task CanceledRenderTask = Task.FromCanceled(new CancellationToken(canceled: true));
-		private Exception? _unhandledException;
+		private Exception? unhandledException;
 
 		/// <inheritdoc/>
 		public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
 
 		/// <summary>
-		/// Creates an instance of the <see cref="TestComponentRenderer"/>.
+		/// Initializes a new instance of the <see cref="TestComponentRenderer"/> class.
 		/// </summary>
 		public TestComponentRenderer() : this(ServiceProvider, NullLoggerFactory.Instance) { }
 
 		/// <summary>
-		/// Creates an instance of the <see cref="TestComponentRenderer"/>.
+		/// Initializes a new instance of the <see cref="TestComponentRenderer"/> class.
 		/// </summary>
-		public TestComponentRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory) : base(serviceProvider, loggerFactory) { }
-
+		public TestComponentRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+			: base(serviceProvider, loggerFactory) { }
 
 		/// <summary>
 		/// Renders an instance of the specified Razor-based test.
@@ -50,12 +51,17 @@ namespace Bunit.Rendering
 		{
 			int componentId = -1;
 
-			Dispatcher.InvokeAsync(() =>
+			var renderTask = Dispatcher.InvokeAsync(() =>
 			{
 				var component = InstantiateComponent(componentType);
 				componentId = AssignRootComponentId(component);
 				return RenderRootComponentAsync(componentId);
-			}).Wait();
+			});
+
+			if (!renderTask.IsCompleted)
+			{
+				renderTask.GetAwaiter().GetResult();
+			}
 
 			AssertNoUnhandledExceptions();
 
@@ -85,13 +91,13 @@ namespace Bunit.Rendering
 		protected override Task UpdateDisplayAsync(in RenderBatch renderBatch) => CanceledRenderTask;
 
 		/// <inheritdoc/>
-		protected override void HandleException(Exception exception) => _unhandledException = exception;
+		protected override void HandleException(Exception exception) => unhandledException = exception;
 
 		private void AssertNoUnhandledExceptions()
 		{
-			if (_unhandledException is Exception unhandled)
+			if (unhandledException is Exception unhandled)
 			{
-				_unhandledException = null;
+				unhandledException = null;
 				ExceptionDispatchInfo.Capture(unhandled).Throw();
 			}
 		}

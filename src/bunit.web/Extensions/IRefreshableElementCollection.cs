@@ -9,10 +9,11 @@ namespace Bunit
 	/// The collection can be refreshed either manually or automatically.
 	/// </summary>
 	/// <typeparam name="T">The type of <see cref="IElement"/> in the collection.</typeparam>
-	public interface IRefreshableElementCollection<out T> : IReadOnlyList<T> where T : IElement
+	public interface IRefreshableElementCollection<out T> : IReadOnlyList<T>
+	    where T : IElement
 	{
 		/// <summary>
-		/// Gets or sets whether the collection automatically refreshes when the 
+		/// Gets or sets a value indicating whether the collection automatically refreshes when the
 		/// <see cref="IRenderedFragmentBase"/> changes.
 		/// </summary>
 		bool EnableAutoRefresh { get; set; }

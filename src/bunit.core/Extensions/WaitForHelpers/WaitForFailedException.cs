@@ -10,12 +10,14 @@ namespace Bunit.Extensions.WaitForHelpers
 	public sealed class WaitForFailedException : Exception
 	{
 		/// <summary>
-		/// Creates an instance of the <see cref="WaitForFailedException"/>.
+		/// Initializes a new instance of the <see cref="WaitForFailedException"/> class.
 		/// </summary>
-		public WaitForFailedException(string? errorMessage, Exception? innerException = null) : base(errorMessage ?? string.Empty, innerException)
+		public WaitForFailedException(string? errorMessage, Exception? innerException = null)
+			: base(errorMessage ?? string.Empty, innerException)
 		{
 		}
 
-		private WaitForFailedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+		private WaitForFailedException(SerializationInfo info, StreamingContext context)
+			: base(info, context) { }
 	}
 }

@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Bunit.TestAssets.SampleComponents
 {
-	public class TriggerTester<TEventArgs> : ComponentBase where TEventArgs : EventArgs, new()
+	public class TriggerTester<TEventArgs> : ComponentBase
+	    where TEventArgs : EventArgs, new()
 	{
 		[Parameter] public string Element { get; set; } = "p";
 		[Parameter] public string EventName { get; set; } = "p";

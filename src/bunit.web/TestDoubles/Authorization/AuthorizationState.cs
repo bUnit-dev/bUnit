@@ -18,6 +18,6 @@ namespace Bunit.TestDoubles
 		/// <summary>
 		/// Represents authorizing user state.
 		/// </summary>
-		Authorizing
+		Authorizing,
 	}
 }

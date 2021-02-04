@@ -6,8 +6,8 @@ namespace Bunit.JSInterop
 	/// </summary>
 	public sealed class BunitJSModuleInterop : BunitJSInterop
 	{
-		private readonly BunitJSInterop _parent;
-		private JSRuntimeMode? _handlerMode;
+		private readonly BunitJSInterop parent;
+		private JSRuntimeMode? handlerMode;
 
 		/// <summary>
 		/// Gets or sets whether this <see cref="BunitJSInterop"/>
@@ -20,25 +20,26 @@ namespace Bunit.JSInterop
 		/// </remarks>
 		public override JSRuntimeMode Mode
 		{
-			get => _handlerMode ?? _parent.Mode;
-			set => _handlerMode = value;
+			get => handlerMode ?? parent.Mode;
+			set => handlerMode = value;
 		}
 
 		/// <summary>
-		/// Creates an instance of the <see cref="BunitJSModuleInterop"/>.
+		/// Initializes a new instance of the <see cref="BunitJSModuleInterop"/> class.
 		/// </summary>
 		/// <param name="parent">The parent <see cref="BunitJSInterop"/>.</param>
 		public BunitJSModuleInterop(BunitJSInterop parent)
+			: base()
 		{
-			_parent = parent;
-			_handlerMode = null;
+			this.parent = parent;
+			handlerMode = null;
 		}
 
 		/// <inheritdoc/>
 		internal override void RegisterInvocation(JSRuntimeInvocation invocation)
 		{
 			Invocations.RegisterInvocation(invocation);
-			_parent.RegisterInvocation(invocation);
+			parent.RegisterInvocation(invocation);
 		}
 	}
 }

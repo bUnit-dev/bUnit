@@ -43,7 +43,7 @@ namespace Bunit.JSInterop
 		[Fact(DisplayName = "Equals operator works as expected with non compatible types")]
 		public void Test003()
 		{
-			new JSRuntimeInvocation().Equals(new object()).ShouldBeFalse();
+			default(JSRuntimeInvocation).Equals(new object()).ShouldBeFalse();
 		}
 
 		[Theory(DisplayName = "GetHashCode returns same result for equal JSRuntimeInvocations")]

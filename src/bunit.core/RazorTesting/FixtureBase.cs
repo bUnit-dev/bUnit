@@ -69,8 +69,10 @@ namespace Bunit.RazorTesting
 				throw new ParameterException($"Only one of the '{nameof(Test)}' or '{nameof(TestAsync)}' actions can be provided to the {GetType().Name} component at the same time.", nameof(Test));
 		}
 
-		/// <inheritdoc/>
-		protected virtual async Task Run(TFixture self)
+		/// <summary>
+		/// Implements the logic for running the test.
+		/// </summary>
+		protected virtual async Task RunAsync(TFixture self)
 		{
 			Validate();
 			if (Setup is not null)
@@ -86,5 +88,4 @@ namespace Bunit.RazorTesting
 				await TryRunAsync(TestAsync, self).ConfigureAwait(false);
 		}
 	}
-
 }

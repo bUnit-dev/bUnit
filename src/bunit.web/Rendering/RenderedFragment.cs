@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
@@ -10,14 +11,15 @@ namespace Bunit.Rendering
 	/// <inheritdoc />
 	internal class RenderedFragment : IRenderedFragment
 	{
-		private readonly object _markupAccessLock = new();
-		private readonly BunitHtmlParser _htmlParser;
-		private string _markup = string.Empty;
-		private string? _snapshotMarkup;
+		[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Instance controlled by IOC container.")]
+		private readonly BunitHtmlParser htmlParser;
+		private readonly object markupAccessLock = new();
+		private string markup = string.Empty;
+		private string? snapshotMarkup;
 
-		private INodeList? _firstRenderNodes;
-		private INodeList? _latestRenderNodes;
-		private INodeList? _snapshotNodes;
+		private INodeList? firstRenderNodes;
+		private INodeList? latestRenderNodes;
+		private INodeList? snapshotNodes;
 
 		/// <summary>
 		/// Gets the first rendered markup.
@@ -25,10 +27,10 @@ namespace Bunit.Rendering
 		protected string FirstRenderMarkup { get; private set; } = string.Empty;
 
 		/// <inheritdoc/>
-		public event Action? OnAfterRender;
+		public event EventHandler? OnAfterRender;
 
 		/// <inheritdoc/>
-		public event Action? OnMarkupUpdated;
+		public event EventHandler? OnMarkupUpdated;
 
 		/// <inheritdoc/>
 		public bool IsDisposed { get; private set; }
@@ -46,13 +48,13 @@ namespace Bunit.Rendering
 				// The lock prevents a race condition between the renderers thread
 				// and the test frameworks thread, where one might be reading the Markup
 				// while the other is updating it due to async code in a rendered component.
-				lock (_markupAccessLock)
+				lock (markupAccessLock)
 				{
 					// Volatile read is necessary to ensure the updated markup
 					// is available across CPU cores. Without it, the pointer to the
 					// markup string can be stored in a CPUs register and not
 					// get updated when another CPU changes the string.
-					return Volatile.Read(ref _markup);
+					return Volatile.Read(ref markup);
 				}
 			}
 		}
@@ -68,12 +70,12 @@ namespace Bunit.Rendering
 				EnsureComponentNotDisposed();
 
 				// The lock ensures that latest nodes is always based on the latest rendered markup.
-				lock (_markupAccessLock)
+				lock (markupAccessLock)
 				{
-					if (_latestRenderNodes is null)
-						_latestRenderNodes = _htmlParser.Parse(Markup);
+					if (latestRenderNodes is null)
+						latestRenderNodes = htmlParser.Parse(Markup);
 
-					return _latestRenderNodes;
+					return latestRenderNodes;
 				}
 			}
 		}
@@ -85,35 +87,35 @@ namespace Bunit.Rendering
 		{
 			ComponentId = componentId;
 			Services = service;
-			_htmlParser = Services.GetRequiredService<BunitHtmlParser>();
+			htmlParser = Services.GetRequiredService<BunitHtmlParser>();
 		}
 
 		/// <inheritdoc/>
 		public IReadOnlyList<IDiff> GetChangesSinceFirstRender()
 		{
-			if (_firstRenderNodes is null)
-				_firstRenderNodes = _htmlParser.Parse(FirstRenderMarkup);
+			if (firstRenderNodes is null)
+				firstRenderNodes = htmlParser.Parse(FirstRenderMarkup);
 
-			return Nodes.CompareTo(_firstRenderNodes);
+			return Nodes.CompareTo(firstRenderNodes);
 		}
 
 		/// <inheritdoc/>
 		public IReadOnlyList<IDiff> GetChangesSinceSnapshot()
 		{
-			if (_snapshotMarkup is null)
+			if (snapshotMarkup is null)
 				throw new InvalidOperationException($"No snapshot exists to compare with. Call {nameof(SaveSnapshot)}() to create one.");
 
-			if (_snapshotNodes is null)
-				_snapshotNodes = _htmlParser.Parse(_snapshotMarkup);
+			if (snapshotNodes is null)
+				snapshotNodes = htmlParser.Parse(snapshotMarkup);
 
-			return Nodes.CompareTo(_snapshotNodes);
+			return Nodes.CompareTo(snapshotNodes);
 		}
 
 		/// <inheritdoc/>
 		public void SaveSnapshot()
 		{
-			_snapshotNodes = null;
-			_snapshotMarkup = Markup;
+			snapshotNodes = null;
+			snapshotMarkup = Markup;
 		}
 
 		void IRenderedFragmentBase.OnRender(RenderEvent renderEvent)
@@ -132,9 +134,8 @@ namespace Bunit.Rendering
 			// The lock prevents a race condition between the renderers thread
 			// and the test frameworks thread, where one might be reading the Markup
 			// while the other is updating it due to async code in a rendered component.
-			lock (_markupAccessLock)
+			lock (markupAccessLock)
 			{
-
 				if (rendered)
 				{
 					OnRender(renderEvent);
@@ -151,26 +152,27 @@ namespace Bunit.Rendering
 			// expect that markup has indeed changed when OnAfterRender is invoked
 			// (assuming there are markup changes)
 			if (changed)
-				OnMarkupUpdated?.Invoke();
+				OnMarkupUpdated?.Invoke(this, EventArgs.Empty);
+
 			if (rendered)
-				OnAfterRender?.Invoke();
+				OnAfterRender?.Invoke(this, EventArgs.Empty);
 		}
 
-		protected void UpdateMarkup(RenderTreeFrameCollection framesCollection)
+		protected void UpdateMarkup(RenderTreeFrameDictionary framesCollection)
 		{
 			// The lock prevents a race condition between the renderers thread
 			// and the test frameworks thread, where one might be reading the Markup
 			// while the other is updating it due to async code in a rendered component.
-			lock (_markupAccessLock)
+			lock (markupAccessLock)
 			{
-				_latestRenderNodes = null;
+				latestRenderNodes = null;
 				var newMarkup = Htmlizer.GetHtml(ComponentId, framesCollection);
 
 				// Volatile write is necessary to ensure the updated markup
 				// is available across CPU cores. Without it, the pointer to the
 				// markup string can be stored in a CPUs register and not
 				// get updated when another CPU changes the string.
-				Volatile.Write(ref _markup, newMarkup);
+				Volatile.Write(ref markup, newMarkup);
 
 				if (RenderCount == 1)
 					FirstRenderMarkup = newMarkup;
@@ -192,7 +194,7 @@ namespace Bunit.Rendering
 		/// <inheritdoc/>
 		public void Dispose()
 		{
-			Dispose(true);
+			Dispose(disposing: true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -203,14 +205,14 @@ namespace Bunit.Rendering
 		/// The disposing parameter should be false when called from a finalizer, and true when called from the
 		/// <see cref="Dispose()"/> method. In other words, it is true when deterministically called and false when non-deterministically called.
 		/// </remarks>
-		/// <param name="disposing">Set to true if called from <see cref="Dispose()"/>, false if called from a finalizer.f</param>
+		/// <param name="disposing">Set to true if called from <see cref="Dispose()"/>, false if called from a finalizer.f.</param>
 		protected virtual void Dispose(bool disposing)
 		{
 			if (IsDisposed || !disposing)
 				return;
 
 			IsDisposed = true;
-			_markup = string.Empty;
+			markup = string.Empty;
 			OnAfterRender = null;
 			FirstRenderMarkup = string.Empty;
 		}

@@ -6,15 +6,19 @@ using Microsoft.JSInterop;
 
 namespace Bunit.JSInterop
 {
+	/// <summary>
+	/// bUnit's implementation of the <see cref="IJSRuntime"/>
+	/// and <see cref="IJSInProcessRuntime"/> types.
+	/// </summary>
 	[SuppressMessage("Minor Code Smell", "S1939:Inheritance list should not be redundant", Justification = "By design. To make it obvious that both is implemented.")]
 	[SuppressMessage("Design", "CA2012:ValueTask instances should not have their result directly accessed unless the instance has already completed.", Justification = "The ValueTask always wraps a Task object.")]
 	internal sealed partial class BunitJSRuntime : IJSRuntime, IJSInProcessRuntime
 	{
-		private BunitJSInterop _jsInterop { get; }
+		private BunitJSInterop JSInterop { get; }
 
 		public BunitJSRuntime(BunitJSInterop jsInterop)
 		{
-			_jsInterop = jsInterop;
+			JSInterop = jsInterop;
 		}
 
 		/// <inheritdoc/>
@@ -26,7 +30,7 @@ namespace Bunit.JSInterop
 		{
 			var invocation = new JSRuntimeInvocation(identifier, cancellationToken, args);
 
-			_jsInterop.RegisterInvocation(invocation);
+			JSInterop.RegisterInvocation(invocation);
 
 			return TryHandlePlannedInvocation<TValue>(invocation)
 				?? new ValueTask<TValue>(default(TValue)!);
@@ -40,12 +44,12 @@ namespace Bunit.JSInterop
 		{
 			ValueTask<TValue>? result = default;
 
-			if (_jsInterop.TryGetHandlerFor<TValue>(invocation) is JSRuntimeInvocationHandlerBase<TValue> handler)
+			if (JSInterop.TryGetHandlerFor<TValue>(invocation) is JSRuntimeInvocationHandlerBase<TValue> handler)
 			{
-				var task = handler.Handle(invocation);
+				var task = handler.HandleAsync(invocation);
 				result = new ValueTask<TValue>(task);
 			}
-			else if (_jsInterop.Mode == JSRuntimeMode.Strict)
+			else if (JSInterop.Mode == JSRuntimeMode.Strict)
 			{
 				throw new JSRuntimeUnhandledInvocationException(invocation);
 			}

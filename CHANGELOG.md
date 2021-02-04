@@ -4,6 +4,20 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
+## [UNRELEASED]
+
+### Added
+List of new features.
+
+### Changed
+List of changes in existing functionality.
+
+### Removed
+List of now removed features.
+
+### Fixed
+List of any bug fixes.
+
 ## [1.0.0-preview-01] - 2020-12-24
 
 The following section list all changes in 1.0.0 preview 01.

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Bunit.JSInterop;
 using Bunit.JSInterop.InvocationHandlers;
@@ -15,7 +16,7 @@ namespace Bunit
 	/// </summary>
 	public class BunitJSInterop
 	{
-		private readonly Dictionary<string, List<object>> _handlers = new();
+		private readonly Dictionary<string, List<object>> handlers = new(StringComparer.Ordinal);
 
 		/// <summary>
 		/// Gets a dictionary of all <see cref="List{JSRuntimeInvocation}"/> this mock has observed.
@@ -23,7 +24,7 @@ namespace Bunit
 		public JSRuntimeInvocationDictionary Invocations { get; } = new();
 
 		/// <summary>
-		/// Gets or sets whether the mock is running in <see cref="JSRuntimeMode.Loose"/> or
+		/// Gets or sets whether the <see cref="BunitJSInterop"/> is running in <see cref="JSRuntimeMode.Loose"/> or
 		/// <see cref="JSRuntimeMode.Strict"/>.
 		/// </summary>
 		public virtual JSRuntimeMode Mode { get; set; }
@@ -31,12 +32,12 @@ namespace Bunit
 		/// <summary>
 		/// Gets the mocked <see cref="IJSRuntime"/> instance.
 		/// </summary>
-		/// <returns></returns>
 		public IJSRuntime JSRuntime { get; }
 
 		/// <summary>
-		/// Creates a <see cref="BunitJSInterop"/>.
+		/// Initializes a new instance of the <see cref="BunitJSInterop"/> class.
 		/// </summary>
+		[SuppressMessage("Design", "MA0056:Do not call overridable members in constructor", Justification = "By design. Derived classes should expect this.")]
 		public BunitJSInterop()
 		{
 			Mode = JSRuntimeMode.Strict;
@@ -52,13 +53,14 @@ namespace Bunit
 		/// </summary>
 		public void AddInvocationHandler<TResult>(JSRuntimeInvocationHandlerBase<TResult> handler)
 		{
-			if (!_handlers.ContainsKey(handler.Identifier))
-			{
-				_handlers.Add(handler.Identifier, new List<object>());
-			}
-			_handlers[handler.Identifier].Add(handler);
-		}
+			if (handler is null)
+				throw new ArgumentNullException(nameof(handler));
 
+			if (!handlers.ContainsKey(handler.Identifier))
+				handlers.Add(handler.Identifier, new List<object>());
+
+			handlers[handler.Identifier].Add(handler);
+		}
 
 		internal virtual void RegisterInvocation(JSRuntimeInvocation invocation)
 		{
@@ -70,13 +72,13 @@ namespace Bunit
 			handlerPredicate ??= _ => true;
 			JSRuntimeInvocationHandlerBase<TResult>? result = default;
 
-			if (_handlers.TryGetValue(invocation.Identifier, out var plannedInvocations))
+			if (handlers.TryGetValue(invocation.Identifier, out var plannedInvocations))
 			{
 				result = plannedInvocations.OfType<JSRuntimeInvocationHandlerBase<TResult>>()
 					.LastOrDefault(x => handlerPredicate(x) && x.CanHandle(invocation));
 			}
 
-			if (result is null && _handlers.TryGetValue(JSRuntimeInvocationHandler.CatchAllIdentifier, out var catchAllHandlers))
+			if (result is null && handlers.TryGetValue(JSRuntimeInvocationHandler.CatchAllIdentifier, out var catchAllHandlers))
 			{
 				result = catchAllHandlers.OfType<JSRuntimeInvocationHandlerBase<TResult>>()
 					.LastOrDefault(x => handlerPredicate(x) && x.CanHandle(invocation));

@@ -11,14 +11,15 @@ namespace Bunit
 	/// <summary>
 	/// A <see cref="ComponentParameterCollection"/> builder for a specific <typeparamref name="TComponent"/> component under test.
 	/// </summary>
-	/// <typeparam name="TComponent">The type of component under test to add the parameters</typeparam>
-	public sealed class ComponentParameterCollectionBuilder<TComponent> where TComponent : IComponent
+	/// <typeparam name="TComponent">The type of component under test to add the parameters.</typeparam>
+	public sealed class ComponentParameterCollectionBuilder<TComponent>
+	    where TComponent : IComponent
 	{
-		private static readonly Type TComponentType = typeof(TComponent);
 		private const string ChildContent = nameof(ChildContent);
+		private static readonly Type TComponentType = typeof(TComponent);
 
 		/// <summary>
-		/// Gets whether TComponent has a [Parameter(CaptureUnmatchedValues = true)] parameter.
+		/// Gets a value indicating whether <typeparamref name="TComponent"/> has a [Parameter(CaptureUnmatchedValues = true)] parameter.
 		/// </summary>
 		private static bool HasUnmatchedCaptureParameter { get; }
 			= typeof(TComponent).GetProperties(BindingFlags.Instance | BindingFlags.Public)
@@ -26,17 +27,17 @@ namespace Bunit
 				.OfType<ParameterAttribute>()
 				.Any(x => x.CaptureUnmatchedValues);
 
-		private readonly ComponentParameterCollection _parameters = new();
+		private readonly ComponentParameterCollection parameters = new();
 
 		/// <summary>
-		/// Creates an instance of the <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.
+		/// Initializes a new instance of the <see cref="ComponentParameterCollectionBuilder{TComponent}"/> class.
 		/// </summary>
 		public ComponentParameterCollectionBuilder() { }
 
 		/// <summary>
-		/// Creates an instance of the <see cref="ComponentParameterCollectionBuilder{TComponent}"/> and
-		/// invokes the <paramref name="parameterAdder"/> with it as the argument.
-		/// </summary>		
+		/// Initializes a new instance of the <see cref="ComponentParameterCollectionBuilder{TComponent}"/> class
+		/// and invokes the <paramref name="parameterAdder"/> with it as the argument.
+		/// </summary>
 		public ComponentParameterCollectionBuilder(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterAdder)
 		{
 			parameterAdder?.Invoke(this);
@@ -176,6 +177,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
 		/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
+		/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 		public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>>> parameterSelector, Action callback)
 			=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
@@ -186,6 +188,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
 		/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
+		/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 		public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>?>> parameterSelector, Action callback)
 			=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
@@ -196,6 +199,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
 		/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
+		/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 		public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>>> parameterSelector, Action<TValue> callback)
 			=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
@@ -206,6 +210,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
 		/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
+		/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 		public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>?>> parameterSelector, Action<TValue> callback)
 			=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
@@ -216,6 +221,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
 		/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
+		/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 		public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>>> parameterSelector, Func<Task> callback)
 			=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
@@ -226,6 +232,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
 		/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
+		/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 		public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>?>> parameterSelector, Func<Task> callback)
 			=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
@@ -240,7 +247,7 @@ namespace Bunit
 		public ComponentParameterCollectionBuilder<TComponent> AddChildContent(RenderFragment childContent)
 		{
 			if (!HasChildContentParameter())
-				throw new ArgumentException($"The component '{typeof(TComponent)}' does not have a {ChildContent} [Parameter] attribute.");
+				throw new ArgumentException($"The component '{typeof(TComponent)}' does not have a {ChildContent} [Parameter] attribute.", nameof(childContent));
 
 			return AddParameter(ChildContent, childContent);
 		}
@@ -263,8 +270,9 @@ namespace Bunit
 		/// <typeparam name="TChildComponent">Type of child component to pass to the ChildContent parameter.</typeparam>
 		/// <param name="childParameterBuilder">A parameter builder for the <typeparamref name="TChildComponent"/>.</param>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-		public ComponentParameterCollectionBuilder<TComponent> AddChildContent<TChildComponent>(Action<ComponentParameterCollectionBuilder<TChildComponent>>? childParameterBuilder = null) where TChildComponent : IComponent
-			=> AddChildContent(GetRenderFragment(childParameterBuilder));
+		public ComponentParameterCollectionBuilder<TComponent> AddChildContent<TChildComponent>(Action<ComponentParameterCollectionBuilder<TChildComponent>>? childParameterBuilder = null)
+		    where TChildComponent : IComponent
+		    => AddChildContent(GetRenderFragment(childParameterBuilder));
 
 		/// <summary>
 		/// Adds an UNNAMED cascading value around the <typeparamref name="TComponent"/> when it is rendered. Used to
@@ -273,8 +281,9 @@ namespace Bunit
 		/// <typeparam name="TValue">The type of cascading value.</typeparam>
 		/// <param name="cascadingValue">The cascading value.</param>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-		public ComponentParameterCollectionBuilder<TComponent> AddCascadingValue<TValue>(TValue cascadingValue) where TValue : notnull
-			=> AddCascadingValueParameter(null, cascadingValue);
+		public ComponentParameterCollectionBuilder<TComponent> AddCascadingValue<TValue>(TValue cascadingValue)
+		    where TValue : notnull
+		    => AddCascadingValueParameter(name: null, cascadingValue);
 
 		/// <summary>
 		/// Adds an NAMED cascading value around the <typeparamref name="TComponent"/> when it is rendered. Used to
@@ -284,8 +293,9 @@ namespace Bunit
 		/// <param name="name">The name of the cascading value.</param>
 		/// <param name="cascadingValue">The cascading value.</param>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-		public ComponentParameterCollectionBuilder<TComponent> AddCascadingValue<TValue>(string name, TValue cascadingValue) where TValue : notnull
-			=> AddCascadingValueParameter(name, cascadingValue);
+		public ComponentParameterCollectionBuilder<TComponent> AddCascadingValue<TValue>(string name, TValue cascadingValue)
+		    where TValue : notnull
+		    => AddCascadingValueParameter(name, cascadingValue);
 
 		/// <summary>
 		/// Adds an unmatched attribute value to <typeparamref name="TComponent"/>.
@@ -299,7 +309,7 @@ namespace Bunit
 				throw new ArgumentException("An unmatched parameter (attribute) cannot have an empty name.", nameof(name));
 
 			if (!HasUnmatchedCaptureParameter)
-				throw new ArgumentException($"The component '{typeof(TComponent)}' does not have an [Parameter(CaptureUnmatchedValues = true)] parameter.");
+				throw new ArgumentException($"The component '{typeof(TComponent)}' does not have an [Parameter(CaptureUnmatchedValues = true)] parameter.", nameof(name));
 
 			return AddParameter(name, value);
 		}
@@ -315,7 +325,7 @@ namespace Bunit
 		/// </remarks>
 		/// <typeparam name="TValue">Value type.</typeparam>
 		/// <param name="name">Name of the property for the parameter.</param>
-		/// <param name="value">Value to assign to the parameter</param>
+		/// <param name="value">Value to assign to the parameter.</param>
 		/// <returns>True if parameter with the name exists and value was set, false otherwise.</returns>
 		public bool TryAdd<TValue>(string name, [AllowNull] TValue value)
 		{
@@ -333,20 +343,22 @@ namespace Bunit
 					return true;
 				}
 			}
+
 			return false;
 		}
 
 		/// <summary>
 		/// Builds the <see cref="ComponentParameterCollection"/>.
 		/// </summary>
-		public ComponentParameterCollection Build() => _parameters;
+		/// <returns>The created <see cref="ComponentParameterCollection"/>.</returns>
+		public ComponentParameterCollection Build() => parameters;
 
-		private static (string paramName, string? cascadingValueName, bool isCascading) GetParameterInfo<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
+		private static (string Name, string? CascadingValueName, bool IsCascading) GetParameterInfo<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
 		{
 			if (parameterSelector is null) throw new ArgumentNullException(nameof(parameterSelector));
 
 			if (!(parameterSelector.Body is MemberExpression memberExpression) || !(memberExpression.Member is PropertyInfo propInfoCandidate))
-				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.");
+				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.", nameof(parameterSelector));
 
 			var propertyInfo = propInfoCandidate.DeclaringType != TComponentType
 				? TComponentType.GetProperty(propInfoCandidate.Name, propInfoCandidate.PropertyType)
@@ -355,10 +367,10 @@ namespace Bunit
 			var paramAttr = propertyInfo?.GetCustomAttribute<ParameterAttribute>(inherit: true);
 			var cascadingParamAttr = propertyInfo?.GetCustomAttribute<CascadingParameterAttribute>(inherit: true);
 
-			if (propertyInfo is null || paramAttr is null && cascadingParamAttr is null)
-				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter] attribute.");
+			if (propertyInfo is null || (paramAttr is null && cascadingParamAttr is null))
+				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter] attribute.", nameof(parameterSelector));
 
-			return (propertyInfo.Name, cascadingParamAttr?.Name, cascadingParamAttr is not null);
+			return (Name: propertyInfo.Name, CascadingValueName: cascadingParamAttr?.Name, IsCascading: cascadingParamAttr is not null);
 		}
 
 		private static bool HasChildContentParameter()
@@ -367,18 +379,19 @@ namespace Bunit
 
 		private ComponentParameterCollectionBuilder<TComponent> AddParameter<TValue>(string name, [AllowNull] TValue value)
 		{
-			_parameters.Add(ComponentParameter.CreateParameter(name, value));
+			parameters.Add(ComponentParameter.CreateParameter(name, value));
 			return this;
 		}
 
 		private ComponentParameterCollectionBuilder<TComponent> AddCascadingValueParameter(string? name, object? cascadingValue)
 		{
 			var value = cascadingValue ?? throw new ArgumentNullException(nameof(cascadingValue), "Passing null values to cascading value parameters is not allowed.");
-			_parameters.Add(ComponentParameter.CreateCascadingValue(name, value));
+			parameters.Add(ComponentParameter.CreateCascadingValue(name, value));
 			return this;
 		}
 
-		private static RenderFragment GetRenderFragment<TChildComponent>(Action<ComponentParameterCollectionBuilder<TChildComponent>>? childParameterBuilder) where TChildComponent : IComponent
+		private static RenderFragment GetRenderFragment<TChildComponent>(Action<ComponentParameterCollectionBuilder<TChildComponent>>? childParameterBuilder)
+		    where TChildComponent : IComponent
 		{
 			var childBuilder = new ComponentParameterCollectionBuilder<TChildComponent>(childParameterBuilder);
 			return childBuilder.Build().ToRenderFragment<TChildComponent>();

@@ -4,14 +4,14 @@ namespace Bunit.TestAssets.SampleComponents.Data
 {
 	public class AsyncNameDep : IAsyncTestDep
 	{
-		private TaskCompletionSource<string> _completionSource = new TaskCompletionSource<string>();
+		private TaskCompletionSource<string> completionSource = new TaskCompletionSource<string>();
 
-		public Task<string> GetData() => _completionSource.Task;
+		public Task<string> GetDataAsync() => completionSource.Task;
 
 		public void SetResult(string name)
 		{
-			var prevSource = _completionSource;
-			_completionSource = new TaskCompletionSource<string>();
+			var prevSource = completionSource;
+			completionSource = new TaskCompletionSource<string>();
 			prevSource.SetResult(name);
 		}
 	}

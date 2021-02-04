@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components.Web;
@@ -18,7 +19,7 @@ namespace Bunit
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
 		/// <param name="touches">A list of <see cref="TouchPoint"/> for every point of contact currently touching the surface.</param>
 		/// <param name="targetTouches">A list of <see cref="TouchPoint"/> for every point of contact that is touching the surface and started on the element that is the target of the current event.</param>
-		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event. 
+		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event.
 		/// For the touchstart event this must be a list of the touch points that just became
 		/// active with the current event. For the touchmove event this must be a list of
 		/// the touch points that have moved since the last event. For the touchend and touchcancel
@@ -46,8 +47,8 @@ namespace Bunit
 		/// Raises the <c>@ontouchcancel</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task TouchCancelAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchcancel", eventArgs);
@@ -60,7 +61,7 @@ namespace Bunit
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
 		/// <param name="touches">A list of <see cref="TouchPoint"/> for every point of contact currently touching the surface.</param>
 		/// <param name="targetTouches">A list of <see cref="TouchPoint"/> for every point of contact that is touching the surface and started on the element that is the target of the current event.</param>
-		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event. 
+		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event.
 		/// For the touchstart event this must be a list of the touch points that just became
 		/// active with the current event. For the touchmove event this must be a list of
 		/// the touch points that have moved since the last event. For the touchend and touchcancel
@@ -88,8 +89,8 @@ namespace Bunit
 		/// Raises the <c>@ontouchend</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task TouchEndAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchend", eventArgs);
@@ -102,7 +103,7 @@ namespace Bunit
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
 		/// <param name="touches">A list of <see cref="TouchPoint"/> for every point of contact currently touching the surface.</param>
 		/// <param name="targetTouches">A list of <see cref="TouchPoint"/> for every point of contact that is touching the surface and started on the element that is the target of the current event.</param>
-		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event. 
+		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event.
 		/// For the touchstart event this must be a list of the touch points that just became
 		/// active with the current event. For the touchmove event this must be a list of
 		/// the touch points that have moved since the last event. For the touchend and touchcancel
@@ -130,8 +131,8 @@ namespace Bunit
 		/// Raises the <c>@ontouchmove</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task TouchMoveAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchmove", eventArgs);
@@ -144,7 +145,7 @@ namespace Bunit
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
 		/// <param name="touches">A list of <see cref="TouchPoint"/> for every point of contact currently touching the surface.</param>
 		/// <param name="targetTouches">A list of <see cref="TouchPoint"/> for every point of contact that is touching the surface and started on the element that is the target of the current event.</param>
-		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event. 
+		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event.
 		/// For the touchstart event this must be a list of the touch points that just became
 		/// active with the current event. For the touchmove event this must be a list of
 		/// the touch points that have moved since the last event. For the touchend and touchcancel
@@ -172,8 +173,8 @@ namespace Bunit
 		/// Raises the <c>@ontouchstart</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task TouchStartAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchstart", eventArgs);
@@ -186,7 +187,7 @@ namespace Bunit
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
 		/// <param name="touches">A list of <see cref="TouchPoint"/> for every point of contact currently touching the surface.</param>
 		/// <param name="targetTouches">A list of <see cref="TouchPoint"/> for every point of contact that is touching the surface and started on the element that is the target of the current event.</param>
-		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event. 
+		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event.
 		/// For the touchstart event this must be a list of the touch points that just became
 		/// active with the current event. For the touchmove event this must be a list of
 		/// the touch points that have moved since the last event. For the touchend and touchcancel
@@ -214,8 +215,8 @@ namespace Bunit
 		/// Raises the <c>@ontouchenter</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task TouchEnterAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchenter", eventArgs);
@@ -228,7 +229,7 @@ namespace Bunit
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
 		/// <param name="touches">A list of <see cref="TouchPoint"/> for every point of contact currently touching the surface.</param>
 		/// <param name="targetTouches">A list of <see cref="TouchPoint"/> for every point of contact that is touching the surface and started on the element that is the target of the current event.</param>
-		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event. 
+		/// <param name="changedTouches">A list of Touches for every point of contact which contributed to the event.
 		/// For the touchstart event this must be a list of the touch points that just became
 		/// active with the current event. For the touchmove event this must be a list of
 		/// the touch points that have moved since the last event. For the touchend and touchcancel
@@ -256,8 +257,8 @@ namespace Bunit
 		/// Raises the <c>@ontouchleave</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
 		/// to the event handler.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task TouchLeaveAsync(this IElement element, TouchEventArgs eventArgs)
 			=> element.TriggerEventAsync("ontouchleave", eventArgs);

@@ -26,12 +26,10 @@ namespace Bunit
 				MetaKey = true,
 				ShiftKey = true,
 				Type = "TYPE",
-				DataTransfer = new DataTransfer()
+				DataTransfer = new DataTransfer(),
 			};
 
 			VerifyEventRaisesCorrectly(helper, expected);
 		}
 	}
-
 }
-

@@ -11,14 +11,14 @@ namespace Bunit.RazorTesting
 	public sealed class FragmentContainer : ComponentBase
 	{
 		/// <summary>
-		/// The content to wrap.
+		/// Gets or sets the content to wrap.
 		/// </summary>
 		[Parameter] public RenderFragment? ChildContent { get; set; }
 
 		/// <inheritdoc/>
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			builder.AddContent(0, ChildContent);
+			builder?.AddContent(0, ChildContent);
 		}
 
 		/// <summary>

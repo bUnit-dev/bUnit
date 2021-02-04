@@ -48,6 +48,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.xunit.tests", "tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.testassets", "tests\bunit.testassets\bunit.testassets.csproj", "{7972A80F-30DC-4EF4-9294-7D4DD2965882}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{90C94D37-04F6-47D9-B0E2-12D53B2777CD}"
+	ProjectSection(SolutionItems) = preProject
+		.build\code-analysis.props = .build\code-analysis.props
+		.build\stylecop.json = .build\stylecop.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

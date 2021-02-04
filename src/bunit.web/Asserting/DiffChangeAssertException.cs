@@ -12,12 +12,13 @@ namespace Bunit
 	public sealed class DiffChangeAssertException : ActualExpectedAssertException
 	{
 		/// <summary>
-		/// Creates an instance of the <see cref="DiffChangeAssertException"/>.
+		/// Initializes a new instance of the <see cref="DiffChangeAssertException"/> class.
 		/// </summary>
-		/// <param name="actual">The actual change</param>
-		/// <param name="expected">The expected change</param>
-		/// <param name="message">An error message explaining the context of the assertion</param>
-		public DiffChangeAssertException(DiffResult actual, DiffResult expected, string message) : base(PrintDiffResult(actual), PrintDiffResult(expected), "Actual change", "Expected change", message)
+		/// <param name="actual">The actual change.</param>
+		/// <param name="expected">The expected change.</param>
+		/// <param name="message">An error message explaining the context of the assertion.</param>
+		public DiffChangeAssertException(DiffResult actual, DiffResult expected, string message)
+			: base(PrintDiffResult(actual), PrintDiffResult(expected), "Actual change", "Expected change", message)
 		{
 		}
 
@@ -26,7 +27,7 @@ namespace Bunit
 			DiffResult.Different => "Changed",
 			DiffResult.Missing => "Removed",
 			DiffResult.Unexpected => "Added",
-			_ => throw new InvalidOperationException("Unknown DiffResult type")
+			_ => throw new InvalidOperationException("Unknown DiffResult type"),
 		};
 
 		private DiffChangeAssertException(SerializationInfo serializationInfo, StreamingContext streamingContext)

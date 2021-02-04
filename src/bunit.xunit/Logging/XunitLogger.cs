@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using Microsoft.Extensions.Logging;
@@ -11,25 +12,31 @@ namespace Bunit.Xunit.Logging
 	/// </summary>
 	public class XunitLogger : ILogger
 	{
-		private readonly ITestOutputHelper _output;
-		private readonly string _name;
-		private readonly LogLevel _minimumLogLevel;
+		private readonly ITestOutputHelper output;
+		private readonly string name;
+		private readonly LogLevel minimumLogLevel;
 
-		/// <inheritdoc/>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="XunitLogger"/> class.
+		/// </summary>
+		/// <param name="output">The <see cref="ITestOutputHelper" /> to log to.</param>
+		/// <param name="name">The name of the logger.</param>
+		/// <param name="minimumLogLevel">The minimum log level to log.</param>
 		public XunitLogger(ITestOutputHelper output, string name, LogLevel minimumLogLevel)
 		{
-			_output = output;
-			_name = name;
-			_minimumLogLevel = minimumLogLevel;
+			this.output = output;
+			this.name = name;
+			this.minimumLogLevel = minimumLogLevel;
 		}
 
 		/// <inheritdoc/>
 		public IDisposable BeginScope<TState>(TState state) => throw new NotImplementedException("Scoped logging is not supported by XunitLogger.");
 
 		/// <inheritdoc/>
-		public bool IsEnabled(LogLevel logLevel) => logLevel >= _minimumLogLevel;
+		public bool IsEnabled(LogLevel logLevel) => logLevel >= minimumLogLevel;
 
 		/// <inheritdoc/>
+		[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
 		{
 			if (!IsEnabled(logLevel))
@@ -39,7 +46,7 @@ namespace Bunit.Xunit.Logging
 
 			try
 			{
-				_output.WriteLine($"{logLevel} | {Thread.GetCurrentProcessorId()} - {Thread.CurrentThread.ManagedThreadId} | {DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture)} | {_name} | {eventId.Id}:{eventId.Name} | {formatter(state, exception)}");
+				output.WriteLine($"{logLevel} | {Thread.GetCurrentProcessorId()} - {Thread.CurrentThread.ManagedThreadId} | {DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture)} | {name} | {eventId.Id}:{eventId.Name} | {formatter(state, exception)}");
 			}
 			catch
 			{

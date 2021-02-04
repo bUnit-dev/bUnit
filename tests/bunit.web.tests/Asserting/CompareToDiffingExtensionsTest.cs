@@ -13,9 +13,8 @@ namespace Bunit
 	{
 		/// <summary>
 		/// Returns an array of arrays containing:
-		/// (MethodInfo methodInfo, string argName, object[] methodArgs)
+		/// (MethodInfo methodInfo, string argName, object[] methodArgs).
 		/// </summary>
-		/// <returns></returns>
 		public static IEnumerable<object[]> GetCompareToMethods()
 		{
 			var methods = typeof(CompareToExtensions)

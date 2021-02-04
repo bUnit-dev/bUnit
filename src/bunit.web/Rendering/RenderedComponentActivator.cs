@@ -8,27 +8,28 @@ namespace Bunit.Rendering
 	/// </summary>
 	public sealed class RenderedComponentActivator : IRenderedComponentActivator
 	{
-		private readonly IServiceProvider _services;
+		private readonly IServiceProvider services;
 
 		/// <summary>
-		/// Creates an instance of the activator.
+		/// Initializes a new instance of the <see cref="RenderedComponentActivator"/> class.
 		/// </summary>
 		public RenderedComponentActivator(IServiceProvider services)
 		{
-			_services = services;
+			this.services = services;
 		}
 
 		/// <inheritdoc/>
 		public IRenderedFragmentBase CreateRenderedFragment(int componentId)
-			=> new RenderedFragment(componentId, _services);
+			=> new RenderedFragment(componentId, services);
 
 		/// <inheritdoc/>
-		public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId) where TComponent : IComponent
-			=> new RenderedComponent<TComponent>(componentId, _services);
+		public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId)
+		    where TComponent : IComponent
+		    => new RenderedComponent<TComponent>(componentId, services);
 
 		/// <inheritdoc/>
-		public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId, TComponent component, RenderTreeFrameCollection componentFrames)
+		public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId, TComponent component, RenderTreeFrameDictionary componentFrames)
 			where TComponent : IComponent
-			=> new RenderedComponent<TComponent>(componentId, component, componentFrames, _services);
+			=> new RenderedComponent<TComponent>(componentId, component, componentFrames, services);
 	}
 }

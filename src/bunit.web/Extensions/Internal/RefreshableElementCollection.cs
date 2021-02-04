@@ -1,56 +1,59 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using AngleSharp.Dom;
 
 namespace Bunit
 {
-	internal class RefreshableElementCollection : IRefreshableElementCollection<IElement>
+	internal sealed class RefreshableElementCollection : IRefreshableElementCollection<IElement>
 	{
-		private readonly IRenderedFragment _renderedFragment;
-		private readonly string _cssSelector;
-		private IHtmlCollection<IElement> _elements;
-		private bool _enableAutoRefresh;
+		private readonly IRenderedFragment renderedFragment;
+		private readonly string cssSelector;
+		private IHtmlCollection<IElement> elements;
+		private bool enableAutoRefresh;
 
 		public bool EnableAutoRefresh
 		{
-			get => _enableAutoRefresh;
+			get => enableAutoRefresh;
 			set
 			{
 				if (ShouldEnable(value))
 				{
-					_renderedFragment.OnMarkupUpdated += Refresh;
+					renderedFragment.OnMarkupUpdated += RefreshInternal;
 				}
+
 				if (ShouldDisable(value))
 				{
-					_renderedFragment.OnMarkupUpdated -= Refresh;
+					renderedFragment.OnMarkupUpdated -= RefreshInternal;
 				}
-				_enableAutoRefresh = value;
+
+				enableAutoRefresh = value;
 			}
 		}
 
-		private bool ShouldDisable(bool value) => !value && _enableAutoRefresh;
-		private bool ShouldEnable(bool value) => value && !_enableAutoRefresh;
+		private bool ShouldDisable(bool value) => !value && enableAutoRefresh;
+		private bool ShouldEnable(bool value) => value && !enableAutoRefresh;
 
-		public RefreshableElementCollection(IRenderedFragment renderedFragment, string cssSelector)
+		internal RefreshableElementCollection(IRenderedFragment renderedFragment, string cssSelector)
 		{
-			_renderedFragment = renderedFragment;
-			_cssSelector = cssSelector;
-			_elements = RefreshInternal();
+			this.renderedFragment = renderedFragment;
+			this.cssSelector = cssSelector;
+			elements = renderedFragment.Nodes.QuerySelectorAll(cssSelector);
 		}
 
-		public void Refresh()
-		{
-			_elements = RefreshInternal();
-		}
+		public void Refresh() => RefreshInternal(this, EventArgs.Empty);
 
-		public IElement this[int index] => _elements[index];
+		public IElement this[int index] => elements[index];
 
-		public int Count => _elements.Length;
+		public int Count => elements.Length;
 
-		public IEnumerator<IElement> GetEnumerator() => _elements.GetEnumerator();
+		public IEnumerator<IElement> GetEnumerator() => elements.GetEnumerator();
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		private IHtmlCollection<IElement> RefreshInternal() => _renderedFragment.Nodes.QuerySelectorAll(_cssSelector);
+		private void RefreshInternal(object? sender, EventArgs args)
+		{
+			elements = renderedFragment.Nodes.QuerySelectorAll(cssSelector);
+		}
 	}
 }

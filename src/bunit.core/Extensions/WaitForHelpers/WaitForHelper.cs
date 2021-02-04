@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -11,13 +12,13 @@ namespace Bunit.Extensions.WaitForHelpers
 	/// </summary>
 	public abstract class WaitForHelper : IDisposable
 	{
-		private readonly Timer _timer;
-		private readonly TaskCompletionSource<object?> _completionSouce;
-		private readonly Func<bool> _completeChecker;
-		private readonly IRenderedFragmentBase _renderedFragment;
-		private readonly ILogger _logger;
-		private bool _isDisposed;
-		private Exception? _capturedException;
+		private readonly Timer timer;
+		private readonly TaskCompletionSource<object?> completionSouce;
+		private readonly Func<bool> completeChecker;
+		private readonly IRenderedFragmentBase renderedFragment;
+		private readonly ILogger logger;
+		private bool isDisposed;
+		private Exception? capturedException;
 
 		/// <summary>
 		/// Gets the error message passed to the user when the wait for helper times out.
@@ -31,7 +32,7 @@ namespace Bunit.Extensions.WaitForHelpers
 		protected virtual string? CheckThrowErrorMessage { get; }
 
 		/// <summary>
-		/// Gets whether to continue waiting if the wait condition checker throws.
+		/// Gets a value indicating whether to continue waiting if the wait condition checker throws.
 		/// </summary>
 		protected abstract bool StopWaitingOnCheckException { get; }
 
@@ -39,68 +40,71 @@ namespace Bunit.Extensions.WaitForHelpers
 		/// Gets the task that will complete successfully if the check passed before the timeout was reached.
 		/// The task will complete with an <see cref="WaitForFailedException"/> exception if the timeout was reached without the check passing.
 		/// </summary>
-		public Task WaitTask => _completionSouce.Task;
+		public Task WaitTask => completionSouce.Task;
 
 		/// <summary>
-		/// Creates an instance of the <see cref="WaitForHelper"/> type.
+		/// Initializes a new instance of the <see cref="WaitForHelper"/> class.
 		/// </summary>
 		protected WaitForHelper(IRenderedFragmentBase renderedFragment, Func<bool> completeChecker, TimeSpan? timeout = null)
 		{
-			_renderedFragment = renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment));
-			_completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
-			_logger = renderedFragment.Services.CreateLogger<WaitForHelper>();
-			_completionSouce = new TaskCompletionSource<object?>();
-			_timer = new Timer(OnTimeout, this, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+			this.renderedFragment = renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment));
+			this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
+			logger = renderedFragment.Services.CreateLogger<WaitForHelper>();
+			completionSouce = new TaskCompletionSource<object?>();
+			timer = new Timer(OnTimeout, this, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
 
-			_renderedFragment.OnAfterRender += OnAfterRender;
-			OnAfterRender();
+			this.renderedFragment.OnAfterRender += OnAfterRender;
+			OnAfterRender(this, EventArgs.Empty);
 			StartTimer(timeout);
 		}
 
 		private void StartTimer(TimeSpan? timeout)
 		{
-			if (_isDisposed)
+			if (isDisposed)
 				return;
 
-			lock (_completionSouce)
+			lock (completionSouce)
 			{
-				if (_isDisposed)
+				if (isDisposed)
 					return;
 
-				_timer.Change(GetRuntimeTimeout(timeout), Timeout.InfiniteTimeSpan);
+				timer.Change(GetRuntimeTimeout(timeout), Timeout.InfiniteTimeSpan);
 			}
 		}
 
-		private void OnAfterRender()
+		[SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "The user supplied code might throw any type of exception, thus we cannot catch a more specific one.")]
+		private void OnAfterRender(object? sender, EventArgs args)
 		{
-			if (_isDisposed)
+			if (isDisposed)
 				return;
 
-			lock (_completionSouce)
+			lock (completionSouce)
 			{
-				if (_isDisposed)
+				if (isDisposed)
 					return;
 
 				try
 				{
-					_logger.LogDebug(new EventId(1, nameof(OnAfterRender)), $"Checking the wait condition for component {_renderedFragment.ComponentId}");
-					if (_completeChecker())
+					logger.LogDebug(new EventId(1, nameof(OnAfterRender)), $"Checking the wait condition for component {renderedFragment.ComponentId}");
+					if (completeChecker())
 					{
-						_completionSouce.TrySetResult(null);
-						_logger.LogDebug(new EventId(2, nameof(OnAfterRender)), $"The check completed successfully for component {_renderedFragment.ComponentId}");
+						completionSouce.TrySetResult(null);
+						logger.LogDebug(new EventId(2, nameof(OnAfterRender)), $"The check completed successfully for component {renderedFragment.ComponentId}");
 						Dispose();
 					}
 					else
-						_logger.LogDebug(new EventId(3, nameof(OnAfterRender)), $"The check failed for component {_renderedFragment.ComponentId}");
+					{
+						logger.LogDebug(new EventId(3, nameof(OnAfterRender)), $"The check failed for component {renderedFragment.ComponentId}");
+					}
 				}
 				catch (Exception ex)
 				{
-					_capturedException = ex;
-					_logger.LogDebug(new EventId(4, nameof(OnAfterRender)), $"The checker of component {_renderedFragment.ComponentId} throw an exception with message '{ex.Message}'");
+					capturedException = ex;
+					logger.LogDebug(new EventId(4, nameof(OnAfterRender)), $"The checker of component {renderedFragment.ComponentId} throw an exception with message '{ex.Message}'");
 
 					if (StopWaitingOnCheckException)
 					{
-						_completionSouce.TrySetException(new WaitForFailedException(CheckThrowErrorMessage, _capturedException));
+						completionSouce.TrySetException(new WaitForFailedException(CheckThrowErrorMessage, capturedException));
 						Dispose();
 					}
 				}
@@ -109,29 +113,29 @@ namespace Bunit.Extensions.WaitForHelpers
 
 		private void OnTimeout(object? state)
 		{
-			if (_isDisposed)
+			if (isDisposed)
 				return;
 
-			lock (_completionSouce)
+			lock (completionSouce)
 			{
-				if (_isDisposed)
+				if (isDisposed)
 					return;
 
-				_logger.LogDebug(new EventId(5, nameof(OnTimeout)), $"The wait for helper for component {_renderedFragment.ComponentId} timed out");
+				logger.LogDebug(new EventId(5, nameof(OnTimeout)), $"The wait for helper for component {renderedFragment.ComponentId} timed out");
 
-				_completionSouce.TrySetException(new WaitForFailedException(TimeoutErrorMessage, _capturedException));
+				completionSouce.TrySetException(new WaitForFailedException(TimeoutErrorMessage, capturedException));
 
 				Dispose();
 			}
 		}
 
 		/// <summary>
-		/// Disposes the wait helper and sets the <see cref="WaitTask"/> to canceled, if it is not
+		/// Disposes the wait helper and cancels the any ongoing waiting, if it is not
 		/// already in one of the other completed states.
 		/// </summary>
 		public void Dispose()
 		{
-			Dispose(true);
+			Dispose(disposing: true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -142,22 +146,22 @@ namespace Bunit.Extensions.WaitForHelpers
 		/// The disposing parameter should be false when called from a finalizer, and true when called from the
 		/// <see cref="Dispose()"/> method. In other words, it is true when deterministically called and false when non-deterministically called.
 		/// </remarks>
-		/// <param name="disposing">Set to true if called from <see cref="Dispose()"/>, false if called from a finalizer.f</param>
+		/// <param name="disposing">Set to true if called from <see cref="Dispose()"/>, false if called from a finalizer.f.</param>
 		protected virtual void Dispose(bool disposing)
 		{
-			if (_isDisposed || !disposing)
+			if (isDisposed || !disposing)
 				return;
 
-			lock (_completionSouce)
+			lock (completionSouce)
 			{
-				if (_isDisposed)
+				if (isDisposed)
 					return;
 
-				_isDisposed = true;
-				_renderedFragment.OnAfterRender -= OnAfterRender;
-				_timer.Dispose();
-				_completionSouce.TrySetCanceled();
-				_logger.LogDebug(new EventId(6, nameof(Dispose)), $"The state wait helper for component {_renderedFragment.ComponentId} disposed");
+				isDisposed = true;
+				renderedFragment.OnAfterRender -= OnAfterRender;
+				timer.Dispose();
+				completionSouce.TrySetCanceled();
+				logger.LogDebug(new EventId(6, nameof(Dispose)), $"The state wait helper for component {renderedFragment.ComponentId} disposed");
 			}
 		}
 

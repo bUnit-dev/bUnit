@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Bunit.RazorTesting;
 using Bunit.Rendering;
 using Xunit.Abstractions;
@@ -8,17 +9,18 @@ namespace Xunit.Sdk
 {
 	internal sealed class RazorTestDiscoverer : IXunitTestCaseDiscoverer, IDisposable
 	{
-		private readonly RazorTestSourceInformationProvider _sourceInfoDiscoverer;
+		private readonly RazorTestSourceInformationProvider sourceInfoDiscoverer;
 
 		private IMessageSink DiagnosticMessageSink { get; }
 
 		public RazorTestDiscoverer(IMessageSink diagnosticMessageSink)
 		{
 			DiagnosticMessageSink = diagnosticMessageSink;
-			_sourceInfoDiscoverer = new RazorTestSourceInformationProvider(diagnosticMessageSink);
+			sourceInfoDiscoverer = new RazorTestSourceInformationProvider(diagnosticMessageSink);
 		}
 
 		/// <inheritdoc/>
+		[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 		public IEnumerable<IXunitTestCase> Discover(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo factAttribute)
 		{
 			try
@@ -28,13 +30,14 @@ namespace Xunit.Sdk
 			}
 			catch (Exception ex)
 			{
-				return new[] {
+				return new[]
+				{
 					new ExecutionErrorTestCase(
 						DiagnosticMessageSink,
 						discoveryOptions.MethodDisplayOrDefault(),
 						discoveryOptions.MethodDisplayOptionsOrDefault(),
 						testMethod,
-						$"Exception thrown during razor test discovery on '{testMethod.TestClass.Class.Name}'.{Environment.NewLine}{ex.Message}")
+						$"Exception thrown during razor test discovery on '{testMethod.TestClass.Class.Name}'.{Environment.NewLine}{ex.Message}"),
 				};
 			}
 		}
@@ -54,7 +57,7 @@ namespace Xunit.Sdk
 			{
 				var test = tests[index];
 				var testNumber = index + 1;
-				var sourceInfo = _sourceInfoDiscoverer.GetSourceInformation(testComponent, test, testNumber);
+				var sourceInfo = sourceInfoDiscoverer.GetSourceInformation(testComponent, test, testNumber);
 				result[index] = new RazorTestCase(GetDisplayName(test, testNumber), test.Timeout, test.Skip, testNumber, testMethod, sourceInfo);
 			}
 
@@ -63,6 +66,6 @@ namespace Xunit.Sdk
 
 		private static string GetDisplayName(RazorTestBase test, int testNumber) => test.DisplayName ?? $"{test.GetType().Name} #{testNumber}";
 
-		public void Dispose() => _sourceInfoDiscoverer?.Dispose();
+		public void Dispose() => sourceInfoDiscoverer?.Dispose();
 	}
 }

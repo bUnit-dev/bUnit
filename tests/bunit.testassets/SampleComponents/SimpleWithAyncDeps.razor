@@ -1,10 +1,10 @@
-﻿@inject IAsyncTestDep testDep
+@inject IAsyncTestDep testDep
 <p>@name</p>
 @code{
     string name = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        name = await testDep.GetData();
+        name = await testDep.GetDataAsync();
     }
 }

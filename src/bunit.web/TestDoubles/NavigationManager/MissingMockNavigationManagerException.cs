@@ -15,28 +15,24 @@ namespace Bunit.TestDoubles
 			$"The url that was requested was '{url}' with a force reload value of '{forceLoad}'.";
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="MissingMockNavigationManagerException"/>
+		/// Initializes a new instance of the <see cref="MissingMockNavigationManagerException"/> class
 		/// with the arguments used in the invocation.
 		/// </summary>
-		/// <param name="url">Uri to navigate to</param>
-		/// <param name="forceLoad">Whether to force load</param>
+		/// <param name="url">Uri to navigate to.</param>
+		/// <param name="forceLoad">Whether to force load.</param>
 		public MissingMockNavigationManagerException(string url, bool forceLoad)
 			: base(ExceptionMessage(url, forceLoad))
-		{
-
-		}
+		{ }
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="MissingMockNavigationManagerException"/>
+		/// Initializes a new instance of the <see cref="MissingMockNavigationManagerException"/> class
 		/// with the arguments used in the invocation.
 		/// </summary>
-		/// <param name="url">Uri to navigate to</param>
-		/// <param name="forceLoad">Whether to force load</param>
+		/// <param name="url">Uri to navigate to.</param>
+		/// <param name="forceLoad">Whether to force load.</param>
 		public MissingMockNavigationManagerException(Uri url, bool forceLoad)
 			: base(ExceptionMessage(url?.ToString() ?? string.Empty, forceLoad))
-		{
-
-		}
+		{ }
 
 		private MissingMockNavigationManagerException(SerializationInfo serializationInfo, StreamingContext streamingContext)
 			: base(serializationInfo, streamingContext) { }

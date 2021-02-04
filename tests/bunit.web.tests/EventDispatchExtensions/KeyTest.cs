@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Components.Web;
@@ -7,7 +8,7 @@ using Shouldly;
 using Xunit;
 
 namespace Bunit
-{	
+{
 	public class KeyTest
 	{
 		public static IEnumerable<object[]> KeyValueTestData { get; } = GetKeyValueTestData().Select(c => new object[] { c }).ToList();
@@ -15,11 +16,11 @@ namespace Bunit
 		public static IEnumerable<object[]> CharTestData { get; } = new[] { ' ', 'x', 'A', '2', '0', '&', (char)0 }
 			.Select(c => new object[] { c }).ToList();
 
-		public static IEnumerable<Key[]> EqualsTestData { get; } = GetEqualsTestData().Select(i => new[] { i.Item1, i.Item2 });
+		public static IEnumerable<Key[]> EqualsTestData { get; } = GetEqualsTestData().Select(i => new[] { i.First, i.Second });
 
-		public static IEnumerable<Key?[]> NonEqualsTestData { get; } = GetNonEqualsTestData().Select(i => new[] { i.Item1, i.Item2 });
+		public static IEnumerable<Key?[]> NonEqualsTestData { get; } = GetNonEqualsTestData().Select(i => new[] { i.First, i.Second });
 
-		public static IEnumerable<object[]> KeyAndObjectTestData { get; } = GetKeyAndObjectTestData().Select(i => new[] { i.Item1, i.Item2 });
+		public static IEnumerable<object[]> KeyAndObjectTestData { get; } = GetKeyAndObjectTestData().Select(i => new[] { i.First, i.Second });
 
 		public static IEnumerable<object[]> KeyWithModifiersTestData { get; } = GetKeyWithModifiersTestData().Select(k => new object[] { k, true })
 			.Concat(GetKeyWithModifiersTestData().Select(k => new object[] { k, false }))
@@ -29,7 +30,7 @@ namespace Bunit
 
 		public static IEnumerable<Key[]> MainKeyToCombineTestData { get; } = GetKeyWithModifiersTestData().Select(k => new[] { k }).ToList();
 
-		public static IEnumerable<Key[]> Combine2MainKeysTestData { get; } = Get2MainKeysTestData().Select(i => new[] { i.Item1, i.Item2 });
+		public static IEnumerable<Key[]> Combine2MainKeysTestData { get; } = Get2MainKeysTestData().Select(i => new[] { i.First, i.Second });
 
 		public static IEnumerable<object[]> KeyboardEventArgsTestData { get; } = GetKeyboardEventArgsTestData();
 
@@ -180,6 +181,7 @@ namespace Bunit
 		}
 
 		[Fact(DisplayName = "Null keys should be equal")]
+		[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "Point of test is to validate correctly implemented Equals")]
 		public void NullsAreEqual()
 		{
 			Key? key1 = default;
@@ -205,6 +207,7 @@ namespace Bunit
 				key2.Equals(key1).ShouldBeFalse();
 				key2.Equals((object?)key1).ShouldBeFalse();
 			}
+
 			(key1 == key2).ShouldBeFalse();
 			(key2 == key1).ShouldBeFalse();
 			(key1 != key2).ShouldBeTrue();
@@ -358,15 +361,16 @@ namespace Bunit
 				"&",
 				"Key",
 				"TEST_test$44",
-				"F5"
+				"F5",
 			};
 		}
 
-		private static IEnumerable<ValueTuple<Key, Key>> GetEqualsTestData()
+		private static IEnumerable<(Key First, Key Second)> GetEqualsTestData()
 		{
 			var xKey = Key.Get('x');
-			var DollarKey = Key.Get("$", "Dollar");
-			var CustomKey = Key.Get("Test", "12345");
+			var dollarKey = Key.Get("$", "Dollar");
+			var customKey = Key.Get("Test", "12345");
+
 			return new[]
 			{
 				(Key.Enter, Key.Enter),
@@ -386,27 +390,28 @@ namespace Bunit
 				(Key.Alt, Key.Get("Alt", "AltLeft") + Key.Alt),
 				(Key.Command, Key.Get("Meta", "MetaLeft") + Key.Command),
 				(xKey, xKey),
-				(DollarKey, DollarKey),
-				(CustomKey, CustomKey),
+				(dollarKey, dollarKey),
+				(customKey, customKey),
 				(xKey, Key.Get('x')),
-				(DollarKey, Key.Get("$", "Dollar")),
-				(CustomKey, Key.Get("Test", "12345")),
+				(dollarKey, Key.Get("$", "Dollar")),
+				(customKey, Key.Get("Test", "12345")),
 				(Key.Control + Key.Alt + Key.Shift, Key.Control + Key.Alt + Key.Shift),
 				(Key.Enter + Key.Command, Key.Enter + Key.Command),
 				(Key.F10 + Key.Control, Key.F10 + Key.Control),
 				(Key.Space + Key.Alt, Key.Get(" ", "Space") + Key.Alt),
 				(xKey + Key.Shift, xKey + Key.Shift),
-				(DollarKey + Key.Control + Key.Shift, Key.Get("$", "Dollar") + Key.Shift + Key.Control),
-				(CustomKey + Key.Alt + Key.Control, Key.Get("Test", "12345") + Key.Control + Key.Alt)
+				(dollarKey + Key.Control + Key.Shift, Key.Get("$", "Dollar") + Key.Shift + Key.Control),
+				(customKey + Key.Alt + Key.Control, Key.Get("Test", "12345") + Key.Control + Key.Alt),
 			};
 		}
 
-		private static IEnumerable<ValueTuple<Key?, Key?>> GetNonEqualsTestData()
+		private static IEnumerable<(Key? First, Key? Second)> GetNonEqualsTestData()
 		{
 			var xKey = Key.Get('x');
-			var DollarKey = Key.Get("$", "Dollar");
-			var CustomKey = Key.Get("Test", "12345");
-			return new ValueTuple<Key?, Key?>[]
+			var dollarKey = Key.Get("$", "Dollar");
+			var customKey = Key.Get("Test", "12345");
+
+			return new (Key?, Key?)[]
 			{
 				(Key.Enter, Key.Escape),
 				(Key.F1, Key.F2),
@@ -414,32 +419,32 @@ namespace Bunit
 				(Key.Space, Key.Control),
 				(Key.Alt, Key.Shift),
 				(xKey, Key.Get('y')),
-				(DollarKey, Key.Get("$", "Pound")),
-				(CustomKey, Key.Get("test", "12345")),
+				(dollarKey, Key.Get("$", "Pound")),
+				(customKey, Key.Get("test", "12345")),
 				(Key.Control + Key.Alt + Key.Shift, Key.Control + Key.Alt),
 				(Key.Enter + Key.Control, Key.Enter + Key.Alt),
 				(Key.F10 + Key.Alt, Key.F10 + Key.Shift),
 				(Key.NumberPad2 + Key.Command, Key.NumberPad3 + Key.Command),
 				(Key.Space + Key.Command, Key.Space + Key.Alt),
 				(xKey + Key.Control + Key.Alt, xKey + Key.Shift + Key.Alt),
-				(DollarKey + Key.Command + Key.Shift, DollarKey + Key.Command),
-				(CustomKey + Key.Control + Key.Alt + Key.Shift, CustomKey),
+				(dollarKey + Key.Command + Key.Shift, dollarKey + Key.Command),
+				(customKey + Key.Control + Key.Alt + Key.Shift, customKey),
 				(xKey, null),
 				(Key.Control, null),
 				(Key.Enter + Key.Command, null),
-				(Key.F10,null)
+				(Key.F10, null),
 			};
 		}
 
-		private static IEnumerable<ValueTuple<Key, object>> GetKeyAndObjectTestData()
+		private static IEnumerable<(Key First, object Second)> GetKeyAndObjectTestData()
 		{
-			return new ValueTuple<Key, object>[]
+			return new (Key, object)[]
 			{
 				(Key.Space, false),
 				(Key.Get('G'), 'G'),
 				(Key.Get("Test"), "Test"),
 				(Key.Control, 2),
-				(Key.Get("Event", "Args"), EventArgs.Empty)
+				(Key.Get("Event", "Args"), EventArgs.Empty),
 			};
 		}
 
@@ -456,7 +461,7 @@ namespace Bunit
 				Key.Get('c') + Key.Alt,
 				Key.Get("T", "Test") + Key.Command,
 				Key.Space + Key.Control + Key.Alt + Key.Shift,
-				Key.Get('0') + Key.Shift + Key.Control
+				Key.Get('0') + Key.Shift + Key.Control,
 			};
 		}
 
@@ -473,11 +478,11 @@ namespace Bunit
 				new object[] { Key.Multiply + Key.Command, Key.Command, false, false, false, true },
 				new object[] { Key.Enter + Key.Shift, Key.Shift + Key.Control, true, true, false, false },
 				new object[] { Key.Get('1') + Key.Command, Key.Shift + Key.Control + Key.Alt, true, true, true, true },
-				new object[] { Key.Enter + Key.Shift + Key.Alt, Key.Shift + Key.Control, true, true, true, false }
+				new object[] { Key.Enter + Key.Shift + Key.Alt, Key.Shift + Key.Control, true, true, true, false },
 			};
 		}
 
-		private static IEnumerable<ValueTuple<Key, Key>> Get2MainKeysTestData()
+		private static IEnumerable<(Key First, Key Second)> Get2MainKeysTestData()
 		{
 			return new[]
 			{

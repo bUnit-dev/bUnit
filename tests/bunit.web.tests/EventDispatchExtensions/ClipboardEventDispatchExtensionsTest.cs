@@ -14,11 +14,10 @@ namespace Bunit
 		{
 			var expected = new ClipboardEventArgs()
 			{
-				Type = "SOME TYPE"
+				Type = "SOME TYPE",
 			};
 
 			VerifyEventRaisesCorrectly(helper, expected);
 		}
 	}
 }
-

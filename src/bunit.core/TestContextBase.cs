@@ -9,8 +9,8 @@ namespace Bunit
 	/// </summary>
 	public abstract class TestContextBase : IDisposable
 	{
-		private bool _disposed;
-		private ITestRenderer? _testRenderer;
+		private bool disposed;
+		private ITestRenderer? testRenderer;
 
 		/// <summary>
 		/// Gets the renderer used by the test context.
@@ -19,16 +19,17 @@ namespace Bunit
 		{
 			get
 			{
-				if (_testRenderer is null)
+				if (testRenderer is null)
 				{
-					_testRenderer = Services.GetRequiredService<ITestRenderer>();
+					testRenderer = Services.GetRequiredService<ITestRenderer>();
 				}
-				return _testRenderer;
+
+				return testRenderer;
 			}
 		}
 
 		/// <summary>
-		/// Gets the service collection and service provider that is used when a 
+		/// Gets the service collection and service provider that is used when a
 		/// component is rendered by the test context.
 		/// </summary>
 		public TestServiceProvider Services { get; }
@@ -44,17 +45,17 @@ namespace Bunit
 		public RootRenderTree RenderTree { get; } = new RootRenderTree();
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="TestContextBase"/> class.
+		/// Initializes a new instance of the <see cref="TestContextBase"/> class.
 		/// </summary>
 		protected TestContextBase()
 		{
-			Services = new TestServiceProvider();			
+			Services = new TestServiceProvider();
 		}
 
 		/// <inheritdoc/>
 		public void Dispose()
 		{
-			Dispose(true);
+			Dispose(disposing: true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -65,13 +66,13 @@ namespace Bunit
 		/// The disposing parameter should be false when called from a finalizer, and true when called from the
 		/// <see cref="Dispose()"/> method. In other words, it is true when deterministically called and false when non-deterministically called.
 		/// </remarks>
-		/// <param name="disposing">Set to true if called from <see cref="Dispose()"/>, false if called from a finalizer.f</param>
+		/// <param name="disposing">Set to true if called from <see cref="Dispose()"/>, false if called from a finalizer.f.</param>
 		protected virtual void Dispose(bool disposing)
 		{
-			if (_disposed || !disposing)
+			if (disposed || !disposing)
 				return;
 
-			_disposed = true;
+			disposed = true;
 
 			// The service provider should dispose of any
 			// disposable object it has created, when it is disposed.

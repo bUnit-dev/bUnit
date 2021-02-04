@@ -7,6 +7,7 @@ namespace Bunit.Rendering
 		internal static bool StartsWithElements(this string markup, string[] tags, int startIndex, [NotNullWhen(true)] out string? matchedElement)
 		{
 			matchedElement = null;
+
 			for (int i = 0; i < tags.Length; i++)
 			{
 				if (markup.StartsWithElement(tags[i], startIndex))
@@ -15,6 +16,7 @@ namespace Bunit.Rendering
 					return true;
 				}
 			}
+
 			return false;
 		}
 
@@ -55,6 +57,7 @@ namespace Bunit.Rendering
 				if (!char.IsWhiteSpace(markup, i))
 					return i;
 			}
+
 			return 0;
 		}
 	}

@@ -36,7 +36,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Compare the rendered markup in the <paramref name="actual"/> <see cref = "IRenderedFragmentBase" /> to
-		/// the rendered markup in the <paramref name="expected"/> <see cref = "IRenderedFragmentBase" />
+		/// the rendered markup in the <paramref name="expected"/> <see cref = "IRenderedFragmentBase" />.
 		/// </summary>
 		/// <param name="actual">Source of rendered markup to check.</param>
 		/// <param name="expected">Source of rendered markup to compare with.</param>
@@ -56,7 +56,7 @@ namespace Bunit
 		/// <see cref="INodeList"/>.
 		/// </summary>
 		/// <param name="actual">The node to check.</param>
-		/// <param name="expected">The node list to compare with</param>
+		/// <param name="expected">The node list to compare with.</param>
 		/// <returns>Any differences found.</returns>
 		public static IReadOnlyList<IDiff> CompareTo(this INode actual, INodeList expected)
 		{
@@ -77,7 +77,7 @@ namespace Bunit
 		/// <see cref="INode"/>.
 		/// </summary>
 		/// <param name="actual">The node list to check.</param>
-		/// <param name="expected">The node to compare with</param>
+		/// <param name="expected">The node to compare with.</param>
 		/// <returns>Any differences found.</returns>
 		public static IReadOnlyList<IDiff> CompareTo(this INodeList actual, INode expected)
 		{
@@ -98,7 +98,7 @@ namespace Bunit
 		/// <see cref="INodeList"/>.
 		/// </summary>
 		/// <param name="actual">The node list to check.</param>
-		/// <param name="expected">The node list to compare with</param>
+		/// <param name="expected">The node list to compare with.</param>
 		/// <returns>Any differences found.</returns>
 		public static IReadOnlyList<IDiff> CompareTo(this INodeList actual, INodeList expected)
 		{

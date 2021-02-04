@@ -7,10 +7,9 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-
-	internal class RazorTestRunner : XunitTestRunner
+	internal sealed class RazorTestRunner : XunitTestRunner
 	{
-		private TestOutputHelper? _testOutputHelper;
+		private TestOutputHelper? testOutputHelper;
 
 		public RazorTestRunner(ITest test, IMessageBus messageBus, Type testClass, object[] constructorArguments, MethodInfo testMethod, object[] testMethodArguments, string skipReason, IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
 			: base(test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments, skipReason, beforeAfterAttributes, aggregator, cancellationTokenSource)
@@ -34,10 +33,10 @@ namespace Xunit.Sdk
 		{
 			string result = string.Empty;
 
-			if (_testOutputHelper is not null)
+			if (testOutputHelper is not null)
 			{
-				result = _testOutputHelper.Output;
-				_testOutputHelper.Uninitialize();
+				result = testOutputHelper.Output;
+				testOutputHelper.Uninitialize();
 			}
 
 			return result;
@@ -45,12 +44,13 @@ namespace Xunit.Sdk
 
 		private ITestOutputHelper CreateTestOutputHelper()
 		{
-			if (_testOutputHelper is null)
+			if (testOutputHelper is null)
 			{
-				_testOutputHelper = new TestOutputHelper();
-				_testOutputHelper.Initialize(MessageBus, Test);
+				testOutputHelper = new TestOutputHelper();
+				testOutputHelper.Initialize(MessageBus, Test);
 			}
-			return _testOutputHelper;
+
+			return testOutputHelper;
 		}
 	}
 }

@@ -12,12 +12,12 @@ namespace Bunit.RazorTesting
 {
 	public sealed class RazorTestSourceInformationProviderTest : IDisposable
 	{
-		private readonly TestComponentRenderer _renderer = new();
-		private readonly IMessageSink _messageBus = Mock.Of<IMessageSink>();
+		private readonly TestComponentRenderer renderer = new();
+		private readonly IMessageSink messageBus = Mock.Of<IMessageSink>();
 
 		private RazorTestBase GetTest(Type testComponent, int testIndex)
 		{
-			var tests = _renderer.GetRazorTestsFromComponent(testComponent);
+			var tests = renderer.GetRazorTestsFromComponent(testComponent);
 			return tests[testIndex - 1];
 		}
 
@@ -31,7 +31,7 @@ namespace Bunit.RazorTesting
 		[InlineData(typeof(TestCasesWithWeirdLineBreaks), 2, 7)]
 		public void Test001(Type target, int testNumber, int expectedLineNumber)
 		{
-			using var sut = new RazorTestSourceInformationProvider(_messageBus);
+			using var sut = new RazorTestSourceInformationProvider(messageBus);
 
 			var sourceInfo = sut.GetSourceInformation(target, GetTest(target, testNumber), testNumber);
 
@@ -40,6 +40,6 @@ namespace Bunit.RazorTesting
 			sourceInfo?.LineNumber.ShouldBe(expectedLineNumber);
 		}
 
-		public void Dispose() => _renderer.Dispose();
+		public void Dispose() => renderer.Dispose();
 	}
 }

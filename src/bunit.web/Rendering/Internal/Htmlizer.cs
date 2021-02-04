@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using Bunit.Rendering;
@@ -10,35 +11,49 @@ namespace Bunit
 {
 	/// <summary>
 	/// This file is based on
-	/// https://source.dot.net/#Microsoft.AspNetCore.Mvc.ViewFeatures/RazorComponents/HtmlRenderer.cs
+	/// https://source.dot.net/#Microsoft.AspNetCore.Mvc.ViewFeatures/RazorComponents/HtmlRenderer.cs.
 	/// </summary>
 	internal static class Htmlizer
 	{
+		private const string BlazorInternalAttrPrefix = "__internal_";
+		private const string BlazorCssScopeAttrPrefix = "b-";
+		internal const string BlazorAttrPrefix = "blazor:";
+		internal const string ElementReferenceAttrName = BlazorAttrPrefix + "elementReference";
+
 		private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
 
 		private static readonly HashSet<string> SelfClosingElements = new(StringComparer.OrdinalIgnoreCase)
 		{
-			"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"
+			"area",
+			"base",
+			"br",
+			"col",
+			"embed",
+			"hr",
+			"img",
+			"input",
+			"link",
+			"meta",
+			"param",
+			"source",
+			"track",
+			"wbr",
 		};
-
-		private const string BLAZOR_INTERNAL_ATTR_PREFIX = "__internal_";
-		private const string BLAZOR_CSS_SCOPE_ATTR_PREFIX = "b-";
-		internal const string BLAZOR_ATTR_PREFIX = "blazor:";
-		internal const string ELEMENT_REFERENCE_ATTR_NAME = BLAZOR_ATTR_PREFIX + "elementReference";
 
 		public static bool IsBlazorAttribute(string attributeName)
 		{
-			if (attributeName is null) throw new ArgumentNullException(nameof(attributeName));
-			return attributeName.StartsWith(BLAZOR_ATTR_PREFIX, StringComparison.Ordinal) ||
-						  attributeName.StartsWith(BLAZOR_CSS_SCOPE_ATTR_PREFIX, StringComparison.Ordinal);
+			if (attributeName is null)
+				throw new ArgumentNullException(nameof(attributeName));
+			return attributeName.StartsWith(BlazorAttrPrefix, StringComparison.Ordinal) ||
+						  attributeName.StartsWith(BlazorCssScopeAttrPrefix, StringComparison.Ordinal);
 		}
 
 		public static string ToBlazorAttribute(string attributeName)
 		{
-			return $"{BLAZOR_ATTR_PREFIX}{attributeName}";
+			return $"{BlazorAttrPrefix}{attributeName}";
 		}
 
-		public static string GetHtml(int componentId, RenderTreeFrameCollection framesCollection)
+		public static string GetHtml(int componentId, RenderTreeFrameDictionary framesCollection)
 		{
 			var context = new HtmlRenderingContext(framesCollection);
 			var frames = context.GetRenderTreeFrames(componentId);
@@ -51,6 +66,7 @@ namespace Bunit
 		{
 			var nextPosition = position;
 			var endPosition = position + maxElements;
+
 			while (position < endPosition)
 			{
 				nextPosition = RenderCore(context, frames, position);
@@ -58,6 +74,7 @@ namespace Bunit
 				{
 					throw new InvalidOperationException("We didn't consume any input.");
 				}
+
 				position = nextPosition;
 			}
 
@@ -105,6 +122,7 @@ namespace Bunit
 			return position + frame.ComponentSubtreeLength;
 		}
 
+		[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1405:Debug.Assert should provide message text", Justification = "Code based off of HtmlRenderer from Blazor")]
 		private static int RenderElement(
 			HtmlRenderingContext context,
 			ArrayRange<RenderTreeFrame> frames,
@@ -152,22 +170,21 @@ namespace Bunit
 				Debug.Assert(afterElement == position + frame.ElementSubtreeLength);
 				return afterElement;
 			}
+
+			if (SelfClosingElements.Contains(frame.ElementName))
+			{
+				result.Add(" />");
+			}
 			else
 			{
-				if (SelfClosingElements.Contains(frame.ElementName))
-				{
-					result.Add(" />");
-				}
-				else
-				{
-					result.Add(">");
-					result.Add("</");
-					result.Add(frame.ElementName);
-					result.Add(">");
-				}
-				Debug.Assert(afterAttributes == position + frame.ElementSubtreeLength, $"afterAttributes = {afterAttributes}. position = {position}. frame.ElementSubtreeLength = {frame.ElementSubtreeLength}");
-				return afterAttributes;
+				result.Add(">");
+				result.Add("</");
+				result.Add(frame.ElementName);
+				result.Add(">");
 			}
+
+			Debug.Assert(afterAttributes == position + frame.ElementSubtreeLength, $"afterAttributes = {afterAttributes}. position = {position}. frame.ElementSubtreeLength = {frame.ElementSubtreeLength}");
+			return afterAttributes;
 		}
 
 		private static int RenderChildren(HtmlRenderingContext context, ArrayRange<RenderTreeFrame> frames, int position, int maxElements)
@@ -180,9 +197,13 @@ namespace Bunit
 			return RenderFrames(context, frames, position, maxElements);
 		}
 
+		[SuppressMessage("Design", "MA0051:Method is too long", Justification = "Code based off of HtmlRenderer from Blazor")]
 		private static int RenderAttributes(
 			HtmlRenderingContext context,
-			ArrayRange<RenderTreeFrame> frames, int position, int maxElements, out string? capturedValueAttribute)
+			ArrayRange<RenderTreeFrame> frames,
+			int position,
+			int maxElements,
+			out string? capturedValueAttribute)
 		{
 			capturedValueAttribute = null;
 
@@ -201,7 +222,7 @@ namespace Bunit
 				// Added to write ElementReferenceCaptureId to DOM
 				if (frame.FrameType == RenderTreeFrameType.ElementReferenceCapture)
 				{
-					result.Add($" {ELEMENT_REFERENCE_ATTR_NAME}=\"{frame.ElementReferenceCaptureId}\"");
+					result.Add($" {ElementReferenceAttrName}=\"{frame.ElementReferenceCaptureId}\"");
 				}
 
 				if (frame.FrameType != RenderTreeFrameType.Attribute)
@@ -220,7 +241,7 @@ namespace Bunit
 					//       that this is a generated/special blazor attribute
 					//       used for tracking event handler id's
 					result.Add(" ");
-					result.Add(BLAZOR_ATTR_PREFIX);
+					result.Add(BlazorAttrPrefix);
 					result.Add(frame.AttributeName);
 					result.Add("=");
 					result.Add("\"");
@@ -231,13 +252,13 @@ namespace Bunit
 
 				switch (frame.AttributeValue)
 				{
-					case bool flag when flag && frame.AttributeName.StartsWith(BLAZOR_INTERNAL_ATTR_PREFIX, StringComparison.Ordinal):
+					case bool flag when flag && frame.AttributeName.StartsWith(BlazorInternalAttrPrefix, StringComparison.Ordinal):
 						// NOTE: This was added to make it more obvious
-						//       that this is a generated/special blazor attribute
-						//	     for internal usage
+						// that this is a generated/special blazor attribute
+						// for internal usage
 						var nameParts = frame.AttributeName.Split('_', StringSplitOptions.RemoveEmptyEntries);
 						result.Add(" ");
-						result.Add(BLAZOR_ATTR_PREFIX);
+						result.Add(BlazorAttrPrefix);
 						result.Add(nameParts[2]);
 						result.Add(":");
 						result.Add(nameParts[1]);
@@ -262,17 +283,17 @@ namespace Bunit
 			return position + maxElements;
 		}
 
-		private class HtmlRenderingContext
+		private sealed class HtmlRenderingContext
 		{
-			private readonly RenderTreeFrameCollection _frames;
+			private readonly RenderTreeFrameDictionary frames;
 
-			public HtmlRenderingContext(RenderTreeFrameCollection frames)
+			public HtmlRenderingContext(RenderTreeFrameDictionary frames)
 			{
-				_frames = frames;
+				this.frames = frames;
 			}
 
 			public ArrayRange<RenderTreeFrame> GetRenderTreeFrames(int componentId)
-				=> _frames[componentId];
+				=> frames[componentId];
 
 			public List<string> Result { get; } = new List<string>();
 

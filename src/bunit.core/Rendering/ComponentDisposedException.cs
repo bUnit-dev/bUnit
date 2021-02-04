@@ -5,13 +5,13 @@ namespace Bunit.Rendering
 {
 	/// <summary>
 	/// Represents an exception that is thrown when a <see cref="Bunit.IRenderedFragmentBase"/>'s
-	/// properties is accessed after the underlying component has been dispsoed by the renderer.
+	/// properties is accessed after the underlying component has been disposed by the renderer.
 	/// </summary>
 	[Serializable]
 	public sealed class ComponentDisposedException : Exception
 	{
 		/// <summary>
-		/// Creates an instance of the <see cref="ComponentDisposedException"/>.
+		/// Initializes a new instance of the <see cref="ComponentDisposedException"/> class.
 		/// </summary>
 		/// <param name="componentId">Id of the disposed component.</param>
 		public ComponentDisposedException(int componentId)

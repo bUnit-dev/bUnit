@@ -9,14 +9,14 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestInvoker : XunitTestInvoker
+	internal sealed class RazorTestInvoker : XunitTestInvoker
 	{
-		private readonly Func<ITestOutputHelper> _testOutputHelperFactory;
+		private readonly Func<ITestOutputHelper> testOutputHelperFactory;
 
 		public RazorTestInvoker(Func<ITestOutputHelper> testOutputHelperFactory, ITest test, IMessageBus messageBus, Type testClass, object[] constructorArguments, MethodInfo testMethod, object[] testMethodArguments, IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
 			: base(test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments, beforeAfterAttributes, aggregator, cancellationTokenSource)
 		{
-			_testOutputHelperFactory = testOutputHelperFactory;
+			this.testOutputHelperFactory = testOutputHelperFactory;
 		}
 
 		protected override object CreateTestClass()
@@ -40,15 +40,15 @@ namespace Xunit.Sdk
 			if (testClassInstance is RazorTestBase test)
 			{
 				RegisterXunitHelpersInTest(test);
-				return test.RunTest();
+				return test.RunTestAsync();
 			}
-			else
-				throw new InvalidOperationException($"The type of {nameof(testClassInstance)} is not an {typeof(Bunit.RazorTesting.RazorTestBase).FullName}. Cannot continue. #2");
+
+			throw new InvalidOperationException($"The type of {nameof(testClassInstance)} is not an {typeof(Bunit.RazorTesting.RazorTestBase).FullName}. Cannot continue. #2");
 		}
 
 		private void RegisterXunitHelpersInTest(RazorTestBase test)
 		{
-			test.Services.AddSingleton<ITestOutputHelper>(_ => _testOutputHelperFactory());
+			test.Services.AddSingleton<ITestOutputHelper>(_ => testOutputHelperFactory());
 		}
 	}
 }

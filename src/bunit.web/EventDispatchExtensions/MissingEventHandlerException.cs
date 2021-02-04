@@ -12,9 +12,10 @@ namespace Bunit
 	public sealed class MissingEventHandlerException : Exception
 	{
 		/// <summary>
-		/// Creates an instance of the <see cref="MissingEventHandlerException"/> type.
+		/// Initializes a new instance of the <see cref="MissingEventHandlerException"/> class.
 		/// </summary>
-		public MissingEventHandlerException(IElement element, string missingEventName) : base(CreateErrorMessage(element, missingEventName))
+		public MissingEventHandlerException(IElement element, string missingEventName)
+			: base(CreateErrorMessage(element, missingEventName))
 		{
 		}
 
@@ -22,8 +23,8 @@ namespace Bunit
 		{
 			var result = $"The element does not have an event handler for the event '{missingEventName}'";
 			var eventHandlers = element.Attributes?
-				.Where(x => x.Name.StartsWith(Htmlizer.BLAZOR_ATTR_PREFIX + "on", StringComparison.Ordinal))
-				.Select(x => $"'{x.Name.Remove(0, Htmlizer.BLAZOR_ATTR_PREFIX.Length)}'")
+				.Where(x => x.Name.StartsWith(Htmlizer.BlazorAttrPrefix + "on", StringComparison.Ordinal))
+				.Select(x => $"'{x.Name.Remove(0, Htmlizer.BlazorAttrPrefix.Length)}'")
 				.ToArray() ?? Array.Empty<string>();
 
 			var suggestAlternatives = ", nor any other events.";

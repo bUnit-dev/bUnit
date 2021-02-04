@@ -11,7 +11,7 @@ namespace Bunit
 	{
 		/// <summary>
 		/// Raises the <c>@onmouseover</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="MouseEventArgs"/> object
+		/// properties to the event handler via a <see cref="MouseEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
@@ -60,7 +60,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@onmouseout</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="MouseEventArgs"/> object
+		/// properties to the event handler via a <see cref="MouseEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
@@ -109,7 +109,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@onmousemove</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="MouseEventArgs"/> object
+		/// properties to the event handler via a <see cref="MouseEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
@@ -158,7 +158,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@onmousedown</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="MouseEventArgs"/> object
+		/// properties to the event handler via a <see cref="MouseEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
@@ -207,7 +207,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@onmouseup</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="MouseEventArgs"/> object
+		/// properties to the event handler via a <see cref="MouseEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
@@ -256,7 +256,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@onclick</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="MouseEventArgs"/> object
+		/// properties to the event handler via a <see cref="MouseEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
@@ -305,7 +305,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@ondblclick</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="MouseEventArgs"/> object
+		/// properties to the event handler via a <see cref="MouseEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
@@ -354,7 +354,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@onwheel</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="MouseEventArgs"/> object
+		/// properties to the event handler via a <see cref="MouseEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
@@ -407,7 +407,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@onmousewheel</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="MouseEventArgs"/> object
+		/// properties to the event handler via a <see cref="MouseEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
@@ -460,7 +460,7 @@ namespace Bunit
 
 		/// <summary>
 		/// Raises the <c>@oncontextmenu</c> event on <paramref name="element"/>,  passing the provided
-		/// properties to the event handler via a <see cref="MouseEventArgs"/> object
+		/// properties to the event handler via a <see cref="MouseEventArgs"/> object.
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>

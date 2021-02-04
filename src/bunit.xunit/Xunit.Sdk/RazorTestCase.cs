@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -11,9 +10,9 @@ using Xunit.Abstractions;
 
 namespace Xunit.Sdk
 {
-	internal class RazorTestCase : LongLivedMarshalByRefObject, IXunitTestCase
+	internal sealed class RazorTestCase : LongLivedMarshalByRefObject, IXunitTestCase
 	{
-		private string? _uniqueId;
+		private string? uniqueId;
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		[Obsolete("Called by the deserializer; should only be called by deriving classes for de-serialization purposes")]
@@ -28,7 +27,7 @@ namespace Xunit.Sdk
 			DisplayName = displayName;
 			Timeout = timeout is null
 				? 0
-				: Convert.ToInt32(timeout?.TotalMilliseconds, CultureInfo.InvariantCulture);
+				: Convert.ToInt32(timeout.Value.TotalMilliseconds, CultureInfo.InvariantCulture);
 			SkipReason = skipReason;
 			TestNumber = testNumber;
 			SourceInformation = sourceInformation;
@@ -71,9 +70,9 @@ namespace Xunit.Sdk
 		{
 			get
 			{
-				if (_uniqueId is null)
-					_uniqueId = GetUniqueID(TestMethod);
-				return _uniqueId;
+				if (uniqueId is null)
+					uniqueId = GetUniqueID(TestMethod);
+				return uniqueId;
 			}
 		}
 
@@ -113,29 +112,27 @@ namespace Xunit.Sdk
 			if (testMethod is null)
 				throw new ArgumentNullException(nameof(testMethod));
 
-			using (var stream = new MemoryStream())
-			{
-				var assemblyName = testMethod.TestClass.TestCollection.TestAssembly.Assembly.Name;
+			using var stream = new MemoryStream();
+			var assemblyName = testMethod.TestClass.TestCollection.TestAssembly.Assembly.Name;
 
-				// Get just the assembly name (without version info) when obtained by reflection
-				if (testMethod.TestClass.TestCollection.TestAssembly.Assembly is IReflectionAssemblyInfo assembly)
-					assemblyName = assembly.Assembly.GetName().Name ?? string.Empty;
+			// Get just the assembly name (without version info) when obtained by reflection
+			if (testMethod.TestClass.TestCollection.TestAssembly.Assembly is IReflectionAssemblyInfo assembly)
+				assemblyName = assembly.Assembly.GetName().Name ?? string.Empty;
 
-				Write(stream, assemblyName);
-				Write(stream, testMethod.TestClass.Class.Name);
-				Write(stream, TestNumber.ToString(CultureInfo.InvariantCulture));
+			Write(stream, assemblyName);
+			Write(stream, testMethod.TestClass.Class.Name);
+			Write(stream, TestNumber.ToString(CultureInfo.InvariantCulture));
 
-				stream.Position = 0;
+			stream.Position = 0;
 
-				var hash = new byte[20];
-				var data = stream.ToArray();
+			var hash = new byte[20];
+			var data = stream.ToArray();
 
-				var hasher = new Sha1Digest();
-				hasher.BlockUpdate(data, 0, data.Length);
-				hasher.DoFinal(hash, 0);
+			var hasher = new Sha1Digest();
+			hasher.BlockUpdate(data, 0, data.Length);
+			hasher.DoFinal(hash, 0);
 
-				return BytesToHexString(hash);
-			}
+			return BytesToHexString(hash);
 
 			static void Write(Stream stream, string value)
 			{
@@ -148,19 +145,18 @@ namespace Xunit.Sdk
 			{
 				var chars = new char[bytes.Length * 2];
 				var i = 0;
+
 				foreach (var b in bytes)
 				{
 					chars[i++] = NibbleToHexChar(b >> 4);
 					chars[i++] = NibbleToHexChar(b & 0xF);
 				}
+
 				return new string(chars);
 			}
 
 			static char NibbleToHexChar(int b)
-			{
-				Debug.Assert(b < 16);
-				return (char)(b < 10 ? b + '0' : b - 10 + 'a');
-			}
+				=> (char)(b < 10 ? b + '0' : b - 10 + 'a');
 		}
 	}
 }

@@ -13,12 +13,12 @@ namespace Bunit.TestDoubles
 	/// </summary>
 	public class TestAuthorizationContext
 	{
-		private readonly FakeAuthorizationService _authService = new();
-		private readonly FakeAuthorizationPolicyProvider _policyProvider = new();
-		private readonly FakeAuthenticationStateProvider _authProvider = new();
+		private readonly FakeAuthorizationService authService = new();
+		private readonly FakeAuthorizationPolicyProvider policyProvider = new();
+		private readonly FakeAuthenticationStateProvider authProvider = new();
 
 		/// <summary>
-		/// Gets whether user is authenticated.
+		/// Gets a value indicating whether user is authenticated.
 		/// </summary>
 		public bool IsAuthenticated { get; private set; }
 
@@ -59,9 +59,9 @@ namespace Bunit.TestDoubles
 		/// <param name="services">Service provider to use.</param>
 		public void RegisterAuthorizationServices(IServiceCollection services)
 		{
-			services.AddSingleton<IAuthorizationService>(_authService);
-			services.AddSingleton<IAuthorizationPolicyProvider>(_policyProvider);
-			services.AddSingleton<AuthenticationStateProvider>(_authProvider);
+			services.AddSingleton<IAuthorizationService>(authService);
+			services.AddSingleton<IAuthorizationPolicyProvider>(policyProvider);
+			services.AddSingleton<AuthenticationStateProvider>(authProvider);
 		}
 
 		/// <summary>
@@ -74,11 +74,11 @@ namespace Bunit.TestDoubles
 			IsAuthenticated = true;
 			UserName = userName;
 
-			_authProvider.TriggerAuthenticationStateChanged(userName, Roles, Claims);
+			authProvider.TriggerAuthenticationStateChanged(userName, Roles, Claims);
 
 			State = state;
-			_authService.SetAuthorizationState(state);
-			_authService.SetRoles(Roles);
+			authService.SetAuthorizationState(state);
+			authService.SetRoles(Roles);
 
 			return this;
 		}
@@ -91,10 +91,10 @@ namespace Bunit.TestDoubles
 			IsAuthenticated = false;
 			Roles = Array.Empty<string>();
 
-			_authProvider.TriggerAuthorizingStateChanged();
+			authProvider.TriggerAuthorizingStateChanged();
 
 			State = AuthorizationState.Authorizing;
-			_authService.SetAuthorizationState(AuthorizationState.Authorizing);
+			authService.SetAuthorizationState(AuthorizationState.Authorizing);
 
 			return this;
 		}
@@ -107,10 +107,10 @@ namespace Bunit.TestDoubles
 			IsAuthenticated = false;
 			Roles = Array.Empty<string>();
 
-			_authProvider.TriggerUnauthenticationStateChanged();
+			authProvider.TriggerUnauthenticationStateChanged();
 
 			State = AuthorizationState.Unauthorized;
-			_authService.SetAuthorizationState(AuthorizationState.Unauthorized);
+			authService.SetAuthorizationState(AuthorizationState.Unauthorized);
 
 			return this;
 		}
@@ -121,9 +121,9 @@ namespace Bunit.TestDoubles
 		/// <param name="roles">Roles for the claims principal.</param>
 		public TestAuthorizationContext SetRoles(params string[] roles)
 		{
-			Roles = roles ?? Array.Empty<string>();
-			_authService.SetRoles(Roles);
-			_authProvider.TriggerAuthenticationStateChanged(UserName, Roles);
+			Roles = roles;
+			authService.SetRoles(Roles);
+			authProvider.TriggerAuthenticationStateChanged(UserName, Roles);
 
 			return this;
 		}
@@ -134,9 +134,9 @@ namespace Bunit.TestDoubles
 		/// <param name="policies">Supported authorization policies.</param>
 		public TestAuthorizationContext SetPolicies(params string[] policies)
 		{
-			Policies = policies ?? Array.Empty<string>();
-			_policyProvider.SetPolicyScheme(PolicySchemeName);
-			_authService.SetPolicies(Policies);
+			Policies = policies;
+			policyProvider.SetPolicyScheme(PolicySchemeName);
+			authService.SetPolicies(Policies);
 
 			return this;
 		}
@@ -147,8 +147,8 @@ namespace Bunit.TestDoubles
 		/// <param name="claims">Claims to set.</param>
 		public TestAuthorizationContext SetClaims(params Claim[] claims)
 		{
-			Claims = claims ?? Array.Empty<Claim>();
-			_authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims);
+			Claims = claims;
+			authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims);
 
 			return this;
 		}
