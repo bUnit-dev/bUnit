@@ -47,7 +47,7 @@ bUnit is available on NuGet in various incarnations. If you are using xUnit as y
 | [bUnit.web](https://www.nuget.org/packages/bunit.web/) | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) | 
 | [bUnit.xUnit](https://www.nuget.org/packages/bunit.xunit/) | Adds additional support for using bUnit with xUnit, including support for Razor-based tests. | [![Nuget](https://img.shields.io/nuget/dt/bunit.xunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.xunit/) |
 | [bUnit.core](https://www.nuget.org/packages/bunit.core/) | Core library that enables rendering a Blazor component in a test context. | [![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.core/) | 
-| [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template, which currently creates an xUnit based bUnit test projects only | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) | 
+| [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template, which currently creates xUnit-based bUnit test projects only | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) | 
 
 ## Sponsors
 
@@ -86,6 +86,6 @@ Shout outs and a big thank you [to all the contributors](https://github.com/egil
 - Help write documentation.
 - Create blog posts, presentations or video tutorials. If you do, I will be happy to showcase them in the [related section](xref:external-resources) on this site.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1NjU0Mzg1NTQsLTEwNTI1Njk4NDAsMT
-k0NjU1NjA3N119
+eyJoaXN0b3J5IjpbLTYzNDk4MTQyNCwtMTU2NTQzODU1NCwtMT
+A1MjU2OTg0MCwxOTQ2NTU2MDc3XX0=
 -->
