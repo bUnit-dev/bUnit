@@ -5,7 +5,7 @@ title: Mocking HttpClient
 
 # Mocking `HttpClient`
 
-Mocking the `HttpClient` service in .NET Core is a bit more clumbersome than interface-based services like `IJSRuntime`. 
+Mocking the `HttpClient` service in .NET Core is a bit more cumbersome than interface-based services like `IJSRuntime`. 
 There is currently no built-in mock for `HttpClient` in bUnit, but with the use of 
 [RichardSzalay.MockHttp](https://www.nuget.org/packages/RichardSzalay.MockHttp/) we can easily add one that works
 with bUnit.
@@ -34,3 +34,6 @@ This registers the mock `HttpClient` in bUnit's test context's `Services` collec
 
 > [!TIP]
 > You can add additional `RespondXXX` methods to the `MockHttpClientBunitHelpers` class to fit your testing needs.
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbNDkzNTI2MzY3XX0=
+-->
