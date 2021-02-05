@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
@@ -72,21 +73,20 @@ namespace Bunit
 
 #if NETSTANDARD2_1
 		/// <inheritdoc/>
+		[return: MaybeNull]
 		public object GetService(Type serviceType)
 		{
-			if (serviceProvider is null)
-				serviceProvider = serviceCollection.BuildServiceProvider();
-
-			var result = serviceProvider.GetService(serviceType);
-
-			if (result is null && fallbackServiceProvider is not null)
-				result = fallbackServiceProvider.GetService(serviceType);
-
-			return result!;
+			return GetServiceInternal(serviceType);
 		}
 #elif NET5_0
 		/// <inheritdoc/>
 		public object? GetService(Type serviceType)
+		{
+			return GetServiceInternal(serviceType);
+		}
+#endif
+
+		private object? GetServiceInternal(Type serviceType)
 		{
 			if (serviceProvider is null)
 				serviceProvider = serviceCollection.BuildServiceProvider();
@@ -98,7 +98,6 @@ namespace Bunit
 
 			return result;
 		}
-#endif
 
 		/// <inheritdoc/>
 		public IEnumerator<ServiceDescriptor> GetEnumerator() => serviceCollection.GetEnumerator();
