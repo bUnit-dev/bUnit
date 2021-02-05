@@ -15,7 +15,7 @@ title: bUnit - a Testing Library for Blazor Components
 - Setup and define components under tests using C# or Razor syntax
 - Verify outcomes using semantic HTML comparer
 - Interact with and inspect components as well as trigger event handlers
-- Pass parameters, cascading values and inject services into components under test [__AP: __]
+- Pass parameters, cascading values and inject services into components under test [__AP: Are 'cascading values' things that are passed, like parameters, or should one say 'Pass parameters, cascade values and inject services...?__]
 - Mock `IJSRuntime` and Blazor authentication and authorization
 - Perform snapshot testing
 
@@ -86,5 +86,5 @@ Shout outs and a big thank you [to all the contributors](https://github.com/egil
 - Help write documentation.
 - Create blog posts, presentations or video tutorials. If you do, I will be happy to showcase them in the [related section](xref:external-resources) on this site.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU3NTI1MTkyNCwxOTQ2NTU2MDc3XX0=
+eyJoaXN0b3J5IjpbLTEwNTI1Njk4NDAsMTk0NjU1NjA3N119
 -->
