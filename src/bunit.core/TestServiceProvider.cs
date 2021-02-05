@@ -61,7 +61,7 @@ namespace Bunit
 		/// <param name="serviceProvider">The fallback service provider</param>
 		public void AddFallbackServiceProvider(IServiceProvider serviceProvider)
 		{
-			fallbackServiceProvider = serviceProvider;
+			fallbackServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 		}
 
 		/// <summary>
