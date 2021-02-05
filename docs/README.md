@@ -14,11 +14,11 @@ Here is a small getting started guide for contributing to the documentation...
   - `samples/tests/razor`: An xUnit-based test project where razor test samples are placed.
   - `samples/tests/xunit`: An xUnit project where xUnit C#-only test samples are placed.
   
-These sample components, source files, and tests source files are included in the documentation using [DocFx's Code Snippet syntax](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html?tabs=tabid-1%2Ctabid-a#code-snippet). They are created as real projects, making them runnable, which helps ensure that the code shown in the documentation pages are correct and in working order.  
+These sample components, source files, and tests source files are included in the documentation using [DocFx's Code Snippet syntax](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html?tabs=tabid-1%2Ctabid-a#code-snippet). They are created as real projects, making them runnable, which helps ensure that the code samples shown in the documentation pages are correct and in working order.  
 
 ## Building and Viewing Docs Locally
 
-To build and view the documentation locally, following a few steps is required:
+To build and view the documentation locally, follow these steps:
 
 1. From `docs/site` run `dotnet build`. If you get warnings from running `dotnet build`, try running it again.
 2. From `docs/` run `serve-docs.cmd`. This will start up a local web server, hosting the generated documentation site on http://localhost:8080, using the [`dotnet serve` tool](https://github.com/natemcmaster/dotnet-serve).
@@ -31,5 +31,5 @@ To build and view the documentation locally, following a few steps is required:
 -   By default, you should include code snippets as sample files in the `samples` projects, using the [code snippet syntax](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#code-snippet).
 - All code snippets should use 2 spaces as an indention unit (1 tab = 2 spaces).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTkzNjIxOTE1LC03MzUzNDQ3NDldfQ==
+eyJoaXN0b3J5IjpbLTE5OTQ3MTc1MTMsLTczNTM0NDc0OV19
 -->
