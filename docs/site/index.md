@@ -71,7 +71,7 @@ Going forward, we have a variety of milestones to reach. These are the current g
 - **Stabilize the APIs**, such that they work equally well with both xUnit, NUnit, and MSTest as the underlying test framework. The general goal is to make it easy for developers to create their required tests successfully.
 - **Get the Razor-based testing to stable**, e.g. make the discovery and running of tests defined in .razor files stable and efficient. This includes adding support for NUnit and MSTest as test runners.
 - **Improve the documentation**. It is a good idea to get an experienced technical editor to review the documentation, making sure it is clear and understandable. In addition to this, more ‘How to’ guides are planned in the [Update Docs](https://github.com/egil/bunit/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22updated+docs%22) milestone.
-- **Join the .NET Foundation.**. This project is too large for one person to act as the owner and sole maintainer of, so the plan is to apply for membership as soon as possible, most likely close to or after v1.0.0 ships, and get the needed support and guidance to ensure the project long term.
+- **Join the .NET Foundation.**. This project is too large for one person to act as owner and sole maintainer, so the plan is to apply for membership as soon as possible, most likely close to or after v1.0.0 ships, and get the support and guidance needed to ensure the project's long term future.
 
 In the post-v1.0.0 to v1.0.x time frame, focus will be on improving performance. In particular, it would be nice to reduce the spin-up time of about one second.
 
@@ -86,6 +86,6 @@ Shout outs and a big thank you [to all the contributors](https://github.com/egil
 - Help write documentation.
 - Create blog posts, presentations or video tutorials. If you do, I will be happy to showcase them in the [related section](xref:external-resources) on this site.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5NTA2NjM3LC0xNTY1NDM4NTU0LC0xMD
-UyNTY5ODQwLDE5NDY1NTYwNzddfQ==
+eyJoaXN0b3J5IjpbMTg1NzYyODc4MiwtMTU2NTQzODU1NCwtMT
+A1MjU2OTg0MCwxOTQ2NTU2MDc3XX0=
 -->
