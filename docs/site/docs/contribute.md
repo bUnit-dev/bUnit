@@ -21,7 +21,7 @@ bUnit accepts fixes and features. Here is what you should do when writing code f
 - Add, remove, or delete unit tests to cover your changes. Make sure tests are specific to the changes you are making. Tests need to be provided for every bug/feature that is completed.
 - All code changes should be done on the `DEV` branch, and pull requests should target it.
 - All updates to the documentation located under `./docs/` should be done on the `main` branch **if** they are general in nature and not tied to a specific version. Changes to the documentation related to changes on the `DEV` branch should be submitted to the `DEV` branch.
-- Any code or documentation you share with the bUnit projects should fall under the projects license agreement.
+- Any code or documentation you share with the bUnit projects should fall under the project's license agreement.
 
 Here are some resources to help you get started on how to contribute code or new content:
 
@@ -44,5 +44,6 @@ If you don't know what a pull request is, read this article: https://help.github
 
 See <xref:code-of-conduct>
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1MjI3NjM2OTBdfQ==
+eyJoaXN0b3J5IjpbLTEzNDI5MzA4OTEsLTE1MjI3NjM2OTBdfQ
+==
 -->
