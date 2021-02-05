@@ -7,7 +7,7 @@ title: Contributor Covenant Code of Conduct
 
 ## Our Pledge
 
-In the interest of fostering an open and welcoming environment, we as
+In the interests of fostering an open and welcoming environment, we as
 contributors and maintainers pledge to make our project and
 community a harassment-free experience for everyone, regardless of age, 
 size, disability, ethnicity, sexuality, gender identity and expression,
@@ -27,8 +27,7 @@ include:
 
 Examples of unacceptable behavior by participants include:
 
-* The use of sexualized language or imagery and unwelcome sexual attention or
-  advances
+* The use of sexualized language or imagery and unwelcome sexual attention or advances
 * Trolling, insulting/derogatory comments, and personal or political attacks
 * Public or private harassment
 * Publishing others' private information, such as a physical or electronic
@@ -79,3 +78,6 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 
 For answers to common questions about this code of conduct, see
 https://www.contributor-covenant.org/faq
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbMTcwMjM5ODU4M119
+-->
