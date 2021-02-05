@@ -9,12 +9,12 @@ Here is a small getting started guide for contributing to the documentation...
 1. The `site` folder contains the code for generating the documentation site, _and_ the documentation in markdown files, located in `site/docs`.
 2. The `samples` folder projects for the sample code that is displayed in the documentation. It has the following projects:  
   - `samples/components`: A Blazor component library project where components under test are placed.
-  - `samples/tests/mstest`: A MSTest project where MSTest test samples are placed.
-  - `samples/tests/nunit`: A NUnit project where NUnit test samples are placed.
-  - `samples/tests/razor`: A xUnit based test project where razor test samples are placed.
-  - `samples/tests/xunit`: A xUnit project where xUnit C# only test samples are placed.
+  - `samples/tests/mstest`: An MSTest project where MSTest test samples are placed.
+  - `samples/tests/nunit`: An NUnit project where NUnit test samples are placed.
+  - `samples/tests/razor`: An xUnit-based test project where razor test samples are placed.
+  - `samples/tests/xunit`: An xUnit project where xUnit C#-only test samples are placed.
   
-These sample components source files and tests source files are included in the documentation using [DocFx's Code Snippet syntax](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html?tabs=tabid-1%2Ctabid-a#code-snippet). They are created as real projects, making them runnable, which helps ensure that the code shown in the documentation pages are correct and in working order.  
+These sample components, source files, and tests source files are included in the documentation using [DocFx's Code Snippet syntax](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html?tabs=tabid-1%2Ctabid-a#code-snippet). They are created as real projects, making them runnable, which helps ensure that the code shown in the documentation pages are correct and in working order.  
 
 ## Building and Viewing Docs Locally
 
@@ -31,5 +31,5 @@ To build and view the documentation locally, following a few steps is required:
 -   By default, you should include code snippets as sample files in the `samples` projects, using the [code snippet syntax](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#code-snippet).
 - All code snippets should use 2 spaces as an indention unit (1 tab = 2 spaces).
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTczNTM0NDc0OV19
+eyJoaXN0b3J5IjpbOTkzNjIxOTE1LC03MzUzNDQ3NDldfQ==
 -->
