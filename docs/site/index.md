@@ -73,11 +73,11 @@ Going forward, we have a variety of milestones to reach. These are the current g
 - **Improve the documentation**. It is a good idea to get an experienced technical editor to review the documentation, making sure it is clear and understandable. In addition to this, more ‘How to’ guides are planned in the [Update Docs](https://github.com/egil/bunit/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22updated+docs%22) milestone.
 - **Join the .NET Foundation.**. This project is too large for one person to act as owner and sole maintainer, so the plan is to apply for membership as soon as possible, most likely close to or after v1.0.0 ships, and get the support and guidance needed to ensure the project's long term future.
 
-In the post-v1.0.0 to v1.0.x time frame, focus will be on improving performance. In particular, it would be nice to reduce the spin-up time of about one second.
+In the post-v1.0.0 to v1.0.x time frame, focus will be on improving performance. In particular, it would be nice to reduce the current spin-up time of about one second.
 
 ## Contributors
 
-Shout outs and a big thank you [to all the contributors](https://github.com/egil/bunit/graphs/contributors) to the library, both those that raise issues, provide input to issues, and those who send pull requests. 
+Shout outs and a big thank you [to all the contributors](https://github.com/egil/bunit/graphs/contributors) to the library, including those who raise issues, those who provide input to issues, and those who send pull requests. 
 
 **Want to help out? You can help in a number of ways:**
 
@@ -86,6 +86,6 @@ Shout outs and a big thank you [to all the contributors](https://github.com/egil
 - Help write documentation.
 - Create blog posts, presentations or video tutorials. If you do, I will be happy to showcase them in the [related section](xref:external-resources) on this site.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTg1NzYyODc4MiwtMTU2NTQzODU1NCwtMT
-A1MjU2OTg0MCwxOTQ2NTU2MDc3XX0=
+eyJoaXN0b3J5IjpbOTgyODMzNzA1LC0xNTY1NDM4NTU0LC0xMD
+UyNTY5ODQwLDE5NDY1NTYwNzddfQ==
 -->
