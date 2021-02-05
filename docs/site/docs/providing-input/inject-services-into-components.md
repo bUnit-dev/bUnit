@@ -47,13 +47,15 @@ The following example shows how to do this with `<SnapshotTest>` tests:
 > The `AddSingleton()` method is only available on the `Services` collection if you import the `Microsoft.Extensions.DependencyInjection` type.
 
 ##  Fallback Service Provider
+The fallback service provider can be used to automatically create services for your Blazor components. You could do this for example with AutoFixture and or Moq.
+
 Here is an example on how to implement and use a fallback service provider. This service provider gets used when the default service provider returns null for the requested type.
 
-[!code-csharp]([!code-cshtml[FallbackServiceProvider.cs](../../../samples/tests/razor/FallbackServiceProvider.cs)])
+[!code-csharp]([!code-cshtml[FallbackServiceProvider.cs](../../../samples/tests/xunit/FallbackServiceProvider.cs)])
 
 Even though you did not register the dummy service on the service provider, the fallback service provider will return a value for it.
 
-[!code-csharp]([!code-cshtml[Usage](../../../samples/tests/razor/FallBackServiceProviderUsage.cs?highlight=6-8)])
+[!code-csharp]([!code-cshtml[Usage](../../../samples/tests/xunit/FallBackServiceProviderUsage.cs?highlight=6-8)])
 
 > [!TIP]
 > A great use case to use the fallback service provider would be in combination with a library that automatically creates implementation/mocks for you such as AutoFixture in combination with Moq.
