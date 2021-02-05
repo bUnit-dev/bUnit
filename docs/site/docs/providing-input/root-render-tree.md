@@ -26,11 +26,11 @@ Here is the test that adds the `CascadingValue<string>` component to the render 
 
 ## Add Only if Not Already in Root Render Tree
 
-Sometimes common test setup logic exists outside the test class, perhaps abstracted away in other libraries. In those cases, the [`TryAdd`](xref:Bunit.Rendering.RootRenderTree.TryAdd``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) method [__AP: is method __] can be used add the component to the render tree, _only if_ it has not already been added. [`TryAdd`](xref:Bunit.Rendering.RootRenderTree.TryAdd``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) returns true if the component was added, false otherwise.
+Sometimes common test setup logic exists outside the test class, perhaps abstracted away in other libraries. In those cases, the [`TryAdd`](xref:Bunit.Rendering.RootRenderTree.TryAdd``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) method [__AP: is 'method' correct?__] can be used to add the component to the render tree, _only if_ it has not already been added. [`TryAdd`](xref:Bunit.Rendering.RootRenderTree.TryAdd``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) returns true if the component was added, false otherwise.
 
 [!code-csharp[](../../../samples/tests/xunit/RenderTreeTest.cs#L36-L38)]
 
-In the listing above, the cascading value `BAR?` is only added if there is not another `CascadingValue<string>` component added to the render tree already.
+In the listing above, the cascading value `BAR?` is added only if there is not another `CascadingValue<string>` component added to the render tree already.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjE0MTQ1MzI2NywxNzUyMTU0MzkyXX0=
+eyJoaXN0b3J5IjpbNTcyNTAwMjE5LDE3NTIxNTQzOTJdfQ==
 -->
