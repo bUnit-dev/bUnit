@@ -145,6 +145,7 @@ namespace Bunit
 		{
 			using var sut = new TestServiceProvider();
 			sut.AddFallbackServiceProvider(new FallbackServiceProvider());
+			
 			var result = sut.GetService<DummyService>();
 
 			Assert.NotNull(result);
