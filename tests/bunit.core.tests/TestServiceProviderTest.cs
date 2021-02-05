@@ -135,6 +135,7 @@ namespace Bunit
 		public void Test021()
 		{
 			using var sut = new TestServiceProvider();
+			
 			var result = sut.GetService<DummyService>();
 
 			Assert.Null(result);
@@ -145,6 +146,7 @@ namespace Bunit
 		{
 			using var sut = new TestServiceProvider();
 			sut.AddFallbackServiceProvider(new FallbackServiceProvider());
+			
 			var result = sut.GetService<DummyService>();
 
 			Assert.NotNull(result);

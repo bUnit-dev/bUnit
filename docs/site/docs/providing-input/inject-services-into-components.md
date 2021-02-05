@@ -46,7 +46,7 @@ The following example shows how to do this with `<SnapshotTest>` tests:
 > [!NOTE]
 > The `AddSingleton()` method is only available on the `Services` collection if you import the `Microsoft.Extensions.DependencyInjection` type.
 
-##  Custom Service Provider
+##  Fallback Service Provider
 Here is an example on how to implement and use a fallback service provider. This service provider gets used when the default service provider returns null for the requested type.
 
 [!code-csharp]([!code-cshtml[FallbackServiceProvider.cs](../../../samples/tests/razor/FallbackServiceProvider.cs)])
