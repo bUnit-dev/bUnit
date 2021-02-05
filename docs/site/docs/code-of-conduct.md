@@ -43,9 +43,8 @@ response to any instances of unacceptable behavior.
 
 Project maintainers have the right and responsibility to remove, edit, or
 reject comments, commits, code, wiki edits, issues, and other contributions
-that are not aligned to this Code of Conduct, or to temporarily or
-permanently ban any contributor for other behaviors that they deem inappropriate,
-threatening, offensive, or harmful.
+that are not aligned with this Code of Conduct, or to temporarily or
+permanently ban any contributor for other behaviors that they deem inappropriate, threatening, offensive, or harmful.
 
 ## Scope
 
@@ -79,5 +78,5 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 For answers to common questions about this code of conduct, see
 https://www.contributor-covenant.org/faq
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTcwMjM5ODU4M119
+eyJoaXN0b3J5IjpbLTE2MDE1NTg1MzJdfQ==
 -->
