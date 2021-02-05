@@ -10,7 +10,7 @@ One of the easiest ways to contribute is to participate in discussions on GitHub
 ## General Feedback and Discussions
 Start a discussion on the [bUnit discussion list](https://github.com/egil/bUnit/discussions).
 
-## Bugs and feature requests
+## Bugs and Feature Requests
 For bugs or feature requests, log a new issue on the [issues list](https://github.com/egil/bunit/issues). Be sure to use the right template.
 
 ## Contributing Code and Content
@@ -43,3 +43,6 @@ If you don't know what a pull request is, read this article: https://help.github
 ## Code of Conduct
 
 See <xref:code-of-conduct>
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbLTE1MjI3NjM2OTBdfQ==
+-->
