@@ -184,7 +184,7 @@ namespace Bunit
 			sut.AddFallbackServiceProvider(new AnotherFallbackServiceProvider());
 
 			var result = sut.GetService(typeof(object));
-			
+
 			Assert.IsType<AnotherDummyService>(result);
 		}
 	}
