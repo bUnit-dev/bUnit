@@ -16,7 +16,7 @@ title: bUnit - a Testing Library for Blazor Components
 - Verify outcome using semantic HTML comparer
 - Interact with and inspect components as well as triggering event handlers
 - Pass parameters, cascading values and inject services into components under test
-- Mock `IJSRuntime` and Blazors authentication and authorization
+- Mock `IJSRuntime` and Blazor authentication and authorization
 - Perform snapshot testing
 
 bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which runs the Blazor components tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests, where a test usually takes seconds to run. 
@@ -86,5 +86,5 @@ Shout outs and a big thank you [to all the contributors](https://github.com/egil
 - Help write documentation.
 - Create blog posts, presentations or video tutorials. If you do, I will be happy to showcase them in the [related section](xref:external-resources) on this site.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk0NjU1NjA3N119
+eyJoaXN0b3J5IjpbLTcyODE5NjUwLDE5NDY1NTYwNzddfQ==
 -->
