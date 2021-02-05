@@ -19,7 +19,7 @@ title: bUnit - a Testing Library for Blazor Components
 - Mock `IJSRuntime` and Blazor authentication and authorization
 - Perform snapshot testing
 
-bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which [__AP: What does this 'which' refer to -- bUnit or xUnit et al? If the former, then would be better to say 'and' rather than 'which'.__] runs [__AP: If the 'which' referred not to bUnit but to xUnit et al, then this 'runs' should be 'run'.__] the Blazor components tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests, where a test usually takes seconds to run. 
+bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which [__AP: What does this 'which' refer to -- bUnit or xUnit et al? If the former, then would be better to say 'and' rather than 'which'.__] runs [__AP: If the 'which' referred not to bUnit but to xUnit et al, then this 'runs' should be 'run'.__] the Blazor components tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run. 
 
 **Go to the [Documentation](xref:getting-started) pages to learn more.**
 
@@ -29,7 +29,7 @@ Let’s write a test for the `<Counter>` component listed below. This comes with
 
 [!code-cshtml[Counter.razor](../samples/components/Counter.razor)]
 
-To do this, you can do the following using bUnit and xUnit:
+To do this, you can carry out the following using bUnit and xUnit:
 
 [!code-csharp[CounterTest.cs](../samples/tests/xunit/CounterTestWithCtx.cs#L8-L21)]
 
@@ -86,6 +86,6 @@ Shout outs and a big thank you [to all the contributors](https://github.com/egil
 - Help write documentation.
 - Create blog posts, presentations or video tutorials. If you do, I will be happy to showcase them in the [related section](xref:external-resources) on this site.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQxMDk3NDY0MiwtMTA1MjU2OTg0MCwxOT
-Q2NTU2MDc3XX0=
+eyJoaXN0b3J5IjpbLTE1NjU0Mzg1NTQsLTEwNTI1Njk4NDAsMT
+k0NjU1NjA3N119
 -->
