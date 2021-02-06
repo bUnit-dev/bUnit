@@ -47,18 +47,29 @@ The following example shows how to do this with `<SnapshotTest>` tests:
 > The `AddSingleton()` method is only available on the `Services` collection if you import the `Microsoft.Extensions.DependencyInjection` type.
 
 ##  Fallback Service Provider
-The fallback service provider can be used to automatically create services for your Blazor components. You could do this for example with AutoFixture and or Moq. This advanced of this is that you don't have to register every service but let the fallback service provider handle it. 
 
-Here is an example on how to implement and use a fallback service provider. This service provider gets used when the default service provider returns null for the requested type.
+A fallback service provider can be registered with the built-in `TestServiceProvider`. This enables a few interesting use-cases, such as using an alternative IoC container, as long as they implement the `IServiceProvider` interface, or automatically create mock services for your Blazor components. The latter can be achieved by using a combination of [AutoFixture](https://github.com/AutoFixture/AutoFixture) and your favorite mocking framework, e.g. Moq, NSubsitute, or Telerik JustMock.
 
-[!code-csharp]([!code-cshtml[FallbackServiceProvider.cs](../../../samples/tests/xunit/FallbackServiceProvider.cs)])
+### When is the Fallback Service Provider Used?
 
-Even though you did not register the dummy service on the service provider, the fallback service provider will return a value for it.
+The logic inside the `TestServiceProvider` for using the fallback service provider is as follows:
 
-[!code-csharp]([!code-cshtml[Usage](../../../samples/tests/xunit/FallBackServiceProviderUsage.cs?highlight=6-8)])
+1. Try resolving the requested service from the standard service provider in bUnit.
+2. If that fails, try resolving from a fallback service proider, if one exists.
 
-> [!TIP]
-> A great use case to use the fallback service provider would be in combination with a library that automatically creates implementation/mocks for you such as AutoFixture in combination with Moq.
+In other words, the fallback service provider will always be tried after the default service provider has had a chance to fulfill a request for a service.
+
+### Registering a Fallback Service Provider
+
+This is an example of how to implement and use a fallback service provider:
+
+[!code-csharp[](../../../samples/tests/xunit/FallbackServiceProvider.cs?start=5&end=13)]
+
+Here is a test where the fallback service provider is used:
+
+[!code-csharp[](../../../samples/tests/xunit/FallBackServiceProviderUsage.cs?start=11&end=16)]
+
+In this example, the `DummyService` is provided by the fallback service provider, since it is not reigsted in the default service provider.
 
 ## Further Reading
 
