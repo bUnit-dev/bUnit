@@ -137,6 +137,7 @@ namespace Bunit
 		public void Test021()
 		{
 			using var sut = new TestServiceProvider();
+
 			var result = sut.GetService(typeof(DummyService));
 
 			Assert.Null(result);
