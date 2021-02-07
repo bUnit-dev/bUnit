@@ -77,7 +77,7 @@ namespace Bunit
 #else
 		/// <inheritdoc/>
 		public object? GetService(Type serviceType)
-			=> return GetServiceInternal(serviceType);
+			=> GetServiceInternal(serviceType);
 #endif
 
 		private object? GetServiceInternal(Type serviceType)
