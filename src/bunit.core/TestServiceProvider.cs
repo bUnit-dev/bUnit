@@ -73,15 +73,11 @@ namespace Bunit
 		/// <inheritdoc/>
 		[return: MaybeNull]
 		public object GetService(Type serviceType)
-		{
-			return GetServiceInternal(serviceType);
-		}
-#elif NET5_0
+			=> GetServiceInternal(serviceType);
+#else
 		/// <inheritdoc/>
 		public object? GetService(Type serviceType)
-		{
-			return GetServiceInternal(serviceType);
-		}
+			=> return GetServiceInternal(serviceType);
 #endif
 
 		private object? GetServiceInternal(Type serviceType)
