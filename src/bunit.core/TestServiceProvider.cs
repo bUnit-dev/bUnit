@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
@@ -15,6 +14,7 @@ namespace Bunit
 	{
 		private readonly IServiceCollection serviceCollection;
 		private ServiceProvider? serviceProvider;
+		private IServiceProvider? fallbackServiceProvider;
 
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="TestServiceProvider"/> has been initialized, and
@@ -56,19 +56,41 @@ namespace Bunit
 		}
 
 		/// <summary>
+		/// Add a fall back service provider that provides services when the default returns null
+		/// </summary>
+		/// <param name="serviceProvider">The fallback service provider</param>
+		public void AddFallbackServiceProvider(IServiceProvider serviceProvider)
+			=> fallbackServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+
+		/// <summary>
 		/// Get service of type T from the test provider.
 		/// </summary>
 		/// <typeparam name="TService">The type of service object to get.</typeparam>
 		/// <returns>A service object of type T or null if there is no such service.</returns>
-		public TService GetService<TService>() => (TService)GetService(typeof(TService));
+		public TService? GetService<TService>() => (TService?)GetService(typeof(TService))!;
 
+#if NETSTANDARD2_1
 		/// <inheritdoc/>
+		[return: MaybeNull]
 		public object GetService(Type serviceType)
+			=> GetServiceInternal(serviceType);
+#else
+		/// <inheritdoc/>
+		public object? GetService(Type serviceType)
+			=> GetServiceInternal(serviceType);
+#endif
+
+		private object? GetServiceInternal(Type serviceType)
 		{
 			if (serviceProvider is null)
 				serviceProvider = serviceCollection.BuildServiceProvider();
 
-			return serviceProvider.GetService(serviceType);
+			var result = serviceProvider.GetService(serviceType);
+
+			if (result is null && fallbackServiceProvider is not null)
+				result = fallbackServiceProvider.GetService(serviceType);
+
+			return result;
 		}
 
 		/// <inheritdoc/>

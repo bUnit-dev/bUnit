@@ -155,5 +155,3 @@ ctx.JSInterop.VerifyFocusAsyncInvoke() // Verifies that a FocusAsync call has ha
 ## Support for `IJSInProcessRuntime` and `IJSUnmarshalledRuntime`
 
 bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUnmarshalledRuntime` types, just like Blazors `IJSRuntime`. 
-
-To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.

@@ -15,6 +15,16 @@ namespace Bunit
 
 		private class OneMoreDummyService { }
 
+		private class FallbackServiceProvider : IServiceProvider
+		{
+			public object GetService(Type serviceType) => new DummyService();
+		}
+
+		private class AnotherFallbackServiceProvider : IServiceProvider
+		{
+			public object GetService(Type serviceType) => new AnotherDummyService();
+		}
+
 		[Fact(DisplayName = "Provider initialized without a service collection has zero services by default")]
 		public void Test001()
 		{
@@ -121,6 +131,63 @@ namespace Bunit
 			var actual = sut.GetService<DummyService>();
 
 			actual.ShouldBe(expected);
+		}
+
+		[Fact(DisplayName = "No registered service returns null")]
+		public void Test021()
+		{
+			using var sut = new TestServiceProvider();
+
+			var result = sut.GetService(typeof(DummyService));
+
+			Assert.Null(result);
+		}
+
+		[Fact(DisplayName= "Registered fallback service provider returns value")]
+		public void Test022()
+		{
+			using var sut = new TestServiceProvider();
+			sut.AddFallbackServiceProvider(new FallbackServiceProvider());
+
+			var result = sut.GetService(typeof(object));
+
+			Assert.NotNull(result);
+			Assert.IsType<DummyService>(result);
+		}
+
+		[Fact(DisplayName = "Register fallback service with null value")]
+		public void Test023()
+		{
+			using var sut = new TestServiceProvider();
+			Assert.Throws<ArgumentNullException>(() => sut.AddFallbackServiceProvider(null!));
+		}
+
+		[Fact(DisplayName = "Service provider returns value before fallback service provider")]
+		public void Test024()
+		{
+			const string exceptionStringResult = "exceptionStringResult";
+
+			using var sut = new TestServiceProvider();
+			sut.AddSingleton<string>(exceptionStringResult);
+			sut.AddFallbackServiceProvider(new FallbackServiceProvider());
+
+			var stringResult = sut.GetService(typeof(string));
+			Assert.Equal(exceptionStringResult, stringResult);
+
+			var fallbackResult = sut.GetService(typeof(DummyService));
+			Assert.IsType<DummyService>(fallbackResult);
+		}
+
+		[Fact(DisplayName = "Latest fallback provider is used")]
+		public void Test025()
+		{
+			using var sut = new TestServiceProvider();
+			sut.AddFallbackServiceProvider(new FallbackServiceProvider());
+			sut.AddFallbackServiceProvider(new AnotherFallbackServiceProvider());
+
+			var result = sut.GetService(typeof(object));
+
+			Assert.IsType<AnotherDummyService>(result);
 		}
 	}
 }
