@@ -9,6 +9,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Added
 List of new features.
 
+- Added the ability to pass a "fallback `IServiceProvider`" to the `TestServiceProvider`, available through the `Services` property on a `TestContext`. The fallback service provider enables a few interesting scenarios, such as using an alternative IoC container, or automatically generating mocks of services components under test depend on. See the [Injecting Services into Components Under Test page](https://bunit.egilhansen.com/docs/providing-input/inject-services-into-components) for more details on this feature. By [@thopdev](https://github.com/thopdev) in [#310](https://github.com/egil/bUnit/issues/310).
+
 ### Changed
 List of changes in existing functionality.
 
