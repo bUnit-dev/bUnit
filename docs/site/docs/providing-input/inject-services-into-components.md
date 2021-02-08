@@ -48,7 +48,7 @@ The following example shows how to do this with `<SnapshotTest>` tests:
 
 ##  Fallback Service Provider
 
-A fallback service provider can be registered with the built-in `TestServiceProvider`. This enables a few interesting use-cases, such as using an alternative IoC container, as long as they implement the `IServiceProvider` interface, or automatically create mock services for your Blazor components. The latter can be achieved by using a combination of [AutoFixture](https://github.com/AutoFixture/AutoFixture) and your favorite mocking framework, e.g. Moq, NSubsitute, or Telerik JustMock.
+A fallback service provider can be registered with the built-in `TestServiceProvider`. This enables a few interesting use cases, such as using an alternative IoC container (which should implement the `IServiceProvider` interface), or automatically creating mock services for your Blazor components. The latter can be achieved by using a combination of [AutoFixture](https://github.com/AutoFixture/AutoFixture) and your favorite mocking framework, e.g. Moq, NSubsitute, or Telerik JustMock.
 
 ### When is the Fallback Service Provider Used?
 
