@@ -58,8 +58,8 @@ var plannedInvocation = ctx.JSInterop.SetupVoid("startAnimation");
 // only completes or throws, it doesn’t return a value.
 // Any calls to InvokeVoidAsync(...) up till this point will
 // have received an incompleted Task which the component 
-// is likely waiting until the call to SetCompleted() below.
-plannedInvocation.SetCompleted();
+// is likely waiting until the call to SetVoidResult() below.
+plannedInvocation.SetVoidResult();
 ```
 
 ## Verifying invocations
