@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup Label="Configuration variables">
+    <DotNet3Version>3.1.1</DotNet3Version>
+    <DotNet5Version>5.0.0</DotNet5Version>
+  </PropertyGroup>
+
+  <!-- Solution wide properties -->
+  <PropertyGroup Label="Assembly Naming">
+    <Company>Egil Hansen</Company>
+    <Authors>Egil Hansen</Authors>
+    <NeutralLanguage>en</NeutralLanguage>
+    <DefaultLanguage>en-US</DefaultLanguage>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Compile settings">
+    <Nullable>enable</Nullable>
+    <LangVersion>9.0</LangVersion>
+		<NoWarn>CA1014</NoWarn>
+
+    <!-- Used by code coverage -->
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1' OR '$(TargetFramework)' == 'netcoreapp3.1'">
+		<RazorLangVersion>3.0</RazorLangVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Analyzer settings">
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <!-- Treat warnings as errors are always on when building in release -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- Shared code analyzers used for all projects in the solution -->
+  <ItemGroup Label="Code Analyzers">
+    <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
+    <PackageReference Include="Asyncify" Version="0.9.7" PrivateAssets="All" />
+    <PackageReference Include="Meziantou.Analyzer" Version="1.0.646" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.18.0.27296" PrivateAssets="All" />
+  </ItemGroup>
+
+	<ItemGroup Condition="('$(TargetFramework)' == 'netstandard2.1' OR '$(TargetFramework)' == 'netcoreapp3.1') AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet3Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet3Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet3Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet3Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet3Version)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0' AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet5Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet5Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet5Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet5Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet5Version)" />
+	</ItemGroup>
+
+</Project>

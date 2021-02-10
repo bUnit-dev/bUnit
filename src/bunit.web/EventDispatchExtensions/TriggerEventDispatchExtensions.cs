@@ -28,7 +28,7 @@ namespace Bunit
 		/// <param name="eventName">The name of the event to raise (using on-form, e.g. <c>onclick</c>).</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A <see cref="Task"/> that completes when the render caused by the triggering of the event finishes.</returns>
-		[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "Event names are stored as lowercase.")]
+		[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "HTML events are standardize to lower case and safe in this context.")]
 		public static Task TriggerEventAsync(this IElement element, string eventName, EventArgs eventArgs)
 		{
 			if (element is null)

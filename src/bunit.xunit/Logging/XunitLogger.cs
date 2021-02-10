@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using Microsoft.Extensions.Logging;
@@ -36,7 +35,6 @@ namespace Bunit.Xunit.Logging
 		public bool IsEnabled(LogLevel logLevel) => logLevel >= minimumLogLevel;
 
 		/// <inheritdoc/>
-		[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
 		{
 			if (!IsEnabled(logLevel))

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.AspNetCore.Components.Web;
@@ -8,7 +8,7 @@ namespace Bunit
 {
 	public class WheelEventDispatchExtensionsTest : EventDispatchExtensionsTest<WheelEventArgs>
 	{
-		public static IEnumerable<MethodInfo[]> Helpers { get; } = GetEventHelperMethods(typeof(MouseEventDispatchExtensions), x => x.Name.Contains("Wheel", StringComparison.OrdinalIgnoreCase));
+		public static IEnumerable<object[]> Helpers { get; } = GetEventHelperMethods(typeof(MouseEventDispatchExtensions), x => x.Name.Contains("Wheel", StringComparison.OrdinalIgnoreCase));
 
 		protected override string ElementName => "button";
 

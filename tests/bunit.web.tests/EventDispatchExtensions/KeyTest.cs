@@ -16,9 +16,9 @@ namespace Bunit
 		public static IEnumerable<object[]> CharTestData { get; } = new[] { ' ', 'x', 'A', '2', '0', '&', (char)0 }
 			.Select(c => new object[] { c }).ToList();
 
-		public static IEnumerable<Key[]> EqualsTestData { get; } = GetEqualsTestData().Select(i => new[] { i.First, i.Second });
+		public static IEnumerable<object[]> EqualsTestData { get; } = GetEqualsTestData().Select(i => new[] { i.First, i.Second });
 
-		public static IEnumerable<Key?[]> NonEqualsTestData { get; } = GetNonEqualsTestData().Select(i => new[] { i.First, i.Second });
+		public static IEnumerable<object[]> NonEqualsTestData { get; } = GetNonEqualsTestData().Select(i => new[] { i.First, i.Second });
 
 		public static IEnumerable<object[]> KeyAndObjectTestData { get; } = GetKeyAndObjectTestData().Select(i => new[] { i.First, i.Second });
 
@@ -28,9 +28,9 @@ namespace Bunit
 
 		public static IEnumerable<object[]> MainKeyAndModifierKeyTestData { get; } = GetMainKeyAndModifierKeyTestData();
 
-		public static IEnumerable<Key[]> MainKeyToCombineTestData { get; } = GetKeyWithModifiersTestData().Select(k => new[] { k }).ToList();
+		public static IEnumerable<object[]> MainKeyToCombineTestData { get; } = GetKeyWithModifiersTestData().Select(k => new[] { k }).ToList();
 
-		public static IEnumerable<Key[]> Combine2MainKeysTestData { get; } = Get2MainKeysTestData().Select(i => new[] { i.First, i.Second });
+		public static IEnumerable<object[]> Combine2MainKeysTestData { get; } = Get2MainKeysTestData().Select(i => new[] { i.First, i.Second });
 
 		public static IEnumerable<object[]> KeyboardEventArgsTestData { get; } = GetKeyboardEventArgsTestData();
 
@@ -181,7 +181,7 @@ namespace Bunit
 		}
 
 		[Fact(DisplayName = "Null keys should be equal")]
-		[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "Point of test is to validate correctly implemented Equals")]
+		[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "Test verifies that equals operator overloads behave correctly")]
 		public void NullsAreEqual()
 		{
 			Key? key1 = default;

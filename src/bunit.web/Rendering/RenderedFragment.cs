@@ -11,7 +11,7 @@ namespace Bunit.Rendering
 	/// <inheritdoc />
 	internal class RenderedFragment : IRenderedFragment
 	{
-		[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Instance controlled by IOC container.")]
+		[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by TestServiceProvider, disposed by it.")]
 		private readonly BunitHtmlParser htmlParser;
 		private readonly object markupAccessLock = new();
 		private string markup = string.Empty;

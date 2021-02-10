@@ -8,7 +8,7 @@ namespace Bunit
 {
 	public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<MouseEventArgs>
 	{
-		public static IEnumerable<MethodInfo[]> Helpers { get; } = GetEventHelperMethods(typeof(MouseEventDispatchExtensions), x => !x.Name.Contains("Wheel", StringComparison.OrdinalIgnoreCase));
+		public static IEnumerable<object[]> Helpers { get; } = GetEventHelperMethods(typeof(MouseEventDispatchExtensions), x => !x.Name.Contains("Wheel", StringComparison.OrdinalIgnoreCase));
 
 		protected override string ElementName => "button";
 

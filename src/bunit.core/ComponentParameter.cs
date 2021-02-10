@@ -7,6 +7,7 @@ namespace Bunit
 	/// Represents a single parameter supplied to an <see cref="Microsoft.AspNetCore.Components.IComponent"/>
 	/// component under test.
 	/// </summary>
+	[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "No need in this case.")]
 	public readonly struct ComponentParameter : IEquatable<ComponentParameter>
 	{
 		/// <summary>
@@ -66,7 +67,6 @@ namespace Bunit
 		/// </summary>
 		/// <param name="input">A name/value pair for the parameter.</param>
 		/// <returns>The created <see cref="ComponentParameter"/>.</returns>
-		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates")]
 		public static implicit operator ComponentParameter((string Name, object? Value) input)
 			=> CreateParameter(input.Name, input.Value);
 
@@ -75,7 +75,6 @@ namespace Bunit
 		/// </summary>
 		/// <param name="input">A name/value/isCascadingValue triple for the parameter.</param>
 		/// <returns>The created <see cref="ComponentParameter"/>.</returns>
-		[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates")]
 		public static implicit operator ComponentParameter((string? Name, object? Value, bool IsCascadingValue) input)
 			=> new ComponentParameter(input.Name, input.Value, input.IsCascadingValue);
 

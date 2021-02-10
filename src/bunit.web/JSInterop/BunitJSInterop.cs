@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Bunit.JSInterop;
 using Bunit.JSInterop.InvocationHandlers;
@@ -17,6 +16,7 @@ namespace Bunit
 	public class BunitJSInterop
 	{
 		private readonly Dictionary<string, List<object>> handlers = new(StringComparer.Ordinal);
+		private JSRuntimeMode mode;
 
 		/// <summary>
 		/// Gets a dictionary of all <see cref="List{JSRuntimeInvocation}"/> this mock has observed.
@@ -27,7 +27,7 @@ namespace Bunit
 		/// Gets or sets whether the <see cref="BunitJSInterop"/> is running in <see cref="JSRuntimeMode.Loose"/> or
 		/// <see cref="JSRuntimeMode.Strict"/>.
 		/// </summary>
-		public virtual JSRuntimeMode Mode { get; set; }
+		public virtual JSRuntimeMode Mode { get => mode; set => mode = value; }
 
 		/// <summary>
 		/// Gets the mocked <see cref="IJSRuntime"/> instance.
@@ -37,10 +37,9 @@ namespace Bunit
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BunitJSInterop"/> class.
 		/// </summary>
-		[SuppressMessage("Design", "MA0056:Do not call overridable members in constructor", Justification = "By design. Derived classes should expect this.")]
 		public BunitJSInterop()
 		{
-			Mode = JSRuntimeMode.Strict;
+			mode = JSRuntimeMode.Strict;
 			JSRuntime = new BunitJSRuntime(this);
 #if NET5_0
 			AddCustomHandlers();

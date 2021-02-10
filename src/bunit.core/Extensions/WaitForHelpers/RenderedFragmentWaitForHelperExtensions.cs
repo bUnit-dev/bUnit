@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Bunit.Extensions.WaitForHelpers;
 
 namespace Bunit

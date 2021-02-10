@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Shouldly;
 using Xunit;
 using Xunit.Sdk;
@@ -32,7 +31,6 @@ namespace Bunit
 
 		[Fact(DisplayName = "ShouldAllBe for Action<T> throws CollectionException if one of " +
 							"the element inspectors throws")]
-		[SuppressMessage("Minor Code Smell", "S3626:Jump statements should not be redundant", Justification = "Necessary for testing purposes.")]
 		public void Test002()
 		{
 			Exception? exception = null;
@@ -75,7 +73,6 @@ namespace Bunit
 
 		[Fact(DisplayName = "ShouldAllBe for Action<T, int> throws CollectionException if one of " +
 							"the element inspectors throws")]
-		[SuppressMessage("Minor Code Smell", "S3626:Jump statements should not be redundant", Justification = "Necessary for testing purposes.")]
 		public void Test004()
 		{
 			Exception? exception = null;

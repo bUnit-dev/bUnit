@@ -570,7 +570,7 @@ namespace Bunit
 
 		private class Params : ComponentBase
 		{
-			[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private")]
+			[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "Public for testing purposes")]
 			public int Field = -1;
 			[Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? Attributes { get; set; }
 			[Parameter] public int? NullableValueTypeParam { get; set; }

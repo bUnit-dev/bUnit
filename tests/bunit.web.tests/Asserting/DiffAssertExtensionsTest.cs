@@ -56,7 +56,7 @@ namespace Bunit
 			output.ShouldBe(input[0]);
 		}
 
-		internal static IEnumerable<object[]> GetDiffLists()
+		public static IEnumerable<object[]> GetDiffLists()
 		{
 			yield return new object[] { Array.Empty<IDiff>() };
 			yield return new object[]

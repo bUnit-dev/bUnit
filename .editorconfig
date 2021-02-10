@@ -14,7 +14,7 @@ tab_size = 4
 [*.{xml,config,*proj,nuspec,props,resx,targets,yml,tasks}]
 tab_size = 2
 
-[*.{htm,html,css,scss}]
+[*.{htm,html,js,jsm,ts,tsx,css,sass,scss,less,svg,vue}]
 tab_size = 2
 
 [*.json]
@@ -31,9 +31,18 @@ end_of_line = lf
 indent_style = space
 tab_size = 2
 
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{cmd,bat}]
+end_of_line = crlf
+
+[Makefile]
+indent_style = tab
+
 ##########################################
 # .NET Language Conventions
-# https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions
 ##########################################
 
 # Default Severity for .NET Code Style
@@ -68,10 +77,10 @@ dotnet_style_readonly_field = true                                              
 
 # Parentheses preferences
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#parentheses-preferences
-dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary    # IDE0047 and IDE0048
-dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary    # IDE0047 and IDE0048
-dotnet_style_parentheses_in_other_binary_operators = never_if_unnecessary         # IDE0047 and IDE0048
-dotnet_style_parentheses_in_other_operators = never_if_unnecessary                # IDE0047 and IDE0048
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity    # IDE0047 and IDE0048
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity    # IDE0047 and IDE0048
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity         # IDE0047 and IDE0048
+dotnet_style_parentheses_in_other_operators = always_for_clarity                # IDE0047 and IDE0048
 
 # Expression-level preferences
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#expression-level-preferences
@@ -246,12 +255,12 @@ dotnet_naming_style.prefix_type_parameters_with_t_style.capitalization = pascal_
 dotnet_naming_style.prefix_type_parameters_with_t_style.required_prefix = T
 # disallowed_style - Anything that has this style applied is marked as disallowed
 dotnet_naming_style.disallowed_style.capitalization  = pascal_case
-dotnet_naming_style.disallowed_style.required_prefix =
-dotnet_naming_style.disallowed_style.required_suffix =
+dotnet_naming_style.disallowed_style.required_prefix = 
+dotnet_naming_style.disallowed_style.required_suffix = 
 # internal_error_style - This style should never occur... if it does, it indicates a bug in file or in the parser using the file
 dotnet_naming_style.internal_error_style.capitalization  = pascal_case
-dotnet_naming_style.internal_error_style.required_prefix =
-dotnet_naming_style.internal_error_style.required_suffix =
+dotnet_naming_style.internal_error_style.required_prefix = 
+dotnet_naming_style.internal_error_style.required_suffix = 
 
 ##########################################
 # .NET Design Guideline Field Naming Rules
@@ -385,40 +394,56 @@ dotnet_naming_rule.parameters_rule.style                = camel_case_style
 dotnet_naming_rule.parameters_rule.severity             = warning
 
 ##########################################
+
+
+##########################################
 # Code Analyzers Rules
 ##########################################
 
 # AsyncFixer
 # http://www.asyncfixer.com
 
+
 # Asyncify
 # https://github.com/hvanbakel/Asyncify-CSharp
 
+
 # Meziantou
 # https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
+dotnet_diagnostic.MA0003.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0003.md
+dotnet_diagnostic.MA0004.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0004.md
 dotnet_diagnostic.MA0016.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0016.md
 dotnet_diagnostic.MA0025.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0025.md
 dotnet_diagnostic.MA0026.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0026.md
+dotnet_diagnostic.MA0028.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0028.md
+
 
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+dotnet_diagnostic.CA1707.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA1707.md
+dotnet_diagnostic.CA2007.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA2007.md
 
-# Microsoft - Threading
-# https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/index.md
 
 # SecurityCodeScan
 # https://security-code-scan.github.io/
+
 
 # StyleCop
 # https://github.com/DotNetAnalyzers/StyleCopAnalyzers
 dotnet_diagnostic.SA1009.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1009.md
 dotnet_diagnostic.SA1101.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1101.md
+dotnet_diagnostic.SA1122.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1122.md
+dotnet_diagnostic.SA1133.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1133.md
 dotnet_diagnostic.SA1200.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1200.md
+dotnet_diagnostic.SA1201.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1201.md
+dotnet_diagnostic.SA1204.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1204.md
 dotnet_diagnostic.SA1413.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1413.md
 dotnet_diagnostic.SA1600.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1600.md
 dotnet_diagnostic.SA1602.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1602.md
 dotnet_diagnostic.SA1604.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1604.md
+dotnet_diagnostic.SA1623.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1623.md
 dotnet_diagnostic.SA1633.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1633.md
+
 
 # SonarAnalyzer.CSharp
 # https://rules.sonarsource.com/csharp
@@ -444,11 +469,15 @@ dotnet_diagnostic.MA0018.severity = none # MA0018: Do not declare static members
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
 dotnet_diagnostic.CA1014.severity = none # CA1014: Mark assemblies with CLSCompliant
+dotnet_diagnostic.CA1031.severity = suggestion # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA1032.severity = none # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA2201.severity = suggestion # CA2201: Do not raise reserved exception types
 
 # StyleCop
 # https://github.com/DotNetAnalyzers/StyleCopAnalyzers
+dotnet_diagnostic.SA1000.severity = none # BUGGY with C#9 code
+dotnet_diagnostic.SA1011.severity = none # BUGGY with C#9 code
+
 dotnet_diagnostic.SA1027.severity = none # SA1027: Use Tabs Correctly
 dotnet_diagnostic.SA1107.severity = suggestion # SA1107: Code should not contain multiple statements on one line
 dotnet_diagnostic.SA1127.severity = suggestion # SA1127: Generic type constraints should be on their own line
@@ -474,6 +503,8 @@ dotnet_diagnostic.SA1629.severity = suggestion # SA1629: Documentation text shou
 dotnet_diagnostic.S112.severity = none # S112: General exceptions should never be thrown
 dotnet_diagnostic.S1075.severity = suggestion # S1075: URIs should not be hardcoded
 dotnet_diagnostic.S1186.severity = suggestion # S1186: Methods should not be empty
+dotnet_diagnostic.S2292.severity = suggestion # S2292: Trivial properties should be auto-implemented
+dotnet_diagnostic.S4158.severity = none # BUGGY with C#9 code - doesnt understand local methods
 
 # Razor specific rules
 [*.{cs,razor}]

@@ -29,7 +29,7 @@ namespace Bunit
 			return $"HTML comparison failed. {userMessage}{Environment.NewLine}{Environment.NewLine}The following errors were found:{Environment.NewLine}{PrintDiffs(diffs)}";
 		}
 
-		[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "Node types should be in lower case.")]
+		[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "We want to use lower case with node type names.")]
 		private static string PrintDiffs(IEnumerable<IDiff> diffs)
 		{
 			return string.Join(Environment.NewLine, diffs.Select((x, i) =>

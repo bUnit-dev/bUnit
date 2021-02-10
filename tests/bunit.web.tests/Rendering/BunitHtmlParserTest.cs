@@ -14,7 +14,7 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// All HTML5 elements according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element.
 		/// </summary>
-		public static readonly IEnumerable<string[]> BodyHtmlElements = new[]
+		public static readonly IEnumerable<object[]> BodyHtmlElements = new[]
 		{
 			"base", "link", "meta", "style", "title",
 			"address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4", "h5", "h6", "hgroup", "main", "nav", "section",
@@ -32,7 +32,7 @@ namespace Bunit.Rendering
 			// "frame","frameset","image","isindex" // not supported
 		}.Select(x => new[] { x });
 
-		public static readonly IEnumerable<string[]> BodyHtmlAndSpecialElements = BodyHtmlElements.Concat(
+		public static readonly IEnumerable<object[]> BodyHtmlAndSpecialElements = BodyHtmlElements.Concat(
 			new[] { "html", "head", "body", }.Select(x => new[] { x }));
 
 		[Fact(DisplayName = "Parse() called with null")]

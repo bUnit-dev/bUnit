@@ -8,7 +8,7 @@ namespace Bunit
 	/// <summary>
 	/// Representation of keyboard key that can be argument of keyboard events.
 	/// </summary>
-	[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "It seems unlikely that VB.NET would be used with this library, which might have issues with some of the overloads.")]
+	[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Ignored by design.")]
 	public sealed class Key : IEquatable<Key>
 	{
 		private Key(string value)

@@ -8,7 +8,7 @@ namespace Bunit.JSInterop
 	/// <summary>
 	/// Represents a dictionary of <see cref="JSRuntimeInvocation"/>, keyed by their identifier.
 	/// </summary>
-	[SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "Implementing IReadOnlyDictionary would require a different GetEnumerator implementation, which is less useful in testing scenarios. This is however a dictionary.")]
+	[SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "Name makes sense in this context.")]
 	public sealed class JSRuntimeInvocationDictionary : IReadOnlyCollection<JSRuntimeInvocation>
 	{
 		private readonly Dictionary<string, List<JSRuntimeInvocation>> invocations = new(StringComparer.Ordinal);

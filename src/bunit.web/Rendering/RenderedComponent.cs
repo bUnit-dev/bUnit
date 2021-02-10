@@ -7,12 +7,12 @@ namespace Bunit.Rendering
 {
 	/// <inheritdoc/>
 	internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent>
-	    where TComponent : IComponent
+		where TComponent : IComponent
 	{
 		private TComponent? instance;
 
 		/// <inheritdoc/>
-		[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "Pretty sure this is an analyzer bug.")]
+		[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "False positive. instance can be null.")]
 		public TComponent Instance
 		{
 			get

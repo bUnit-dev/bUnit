@@ -122,7 +122,6 @@ namespace Bunit
 			return position + frame.ComponentSubtreeLength;
 		}
 
-		[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1405:Debug.Assert should provide message text", Justification = "Code based off of HtmlRenderer from Blazor")]
 		private static int RenderElement(
 			HtmlRenderingContext context,
 			ArrayRange<RenderTreeFrame> frames,
@@ -167,7 +166,6 @@ namespace Bunit
 				result.Add("</");
 				result.Add(frame.ElementName);
 				result.Add(">");
-				Debug.Assert(afterElement == position + frame.ElementSubtreeLength);
 				return afterElement;
 			}
 
@@ -197,7 +195,7 @@ namespace Bunit
 			return RenderFrames(context, frames, position, maxElements);
 		}
 
-		[SuppressMessage("Design", "MA0051:Method is too long", Justification = "Code based off of HtmlRenderer from Blazor")]
+		[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
 		private static int RenderAttributes(
 			HtmlRenderingContext context,
 			ArrayRange<RenderTreeFrame> frames,

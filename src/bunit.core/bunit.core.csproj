@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RazorLangVersion>3.0</RazorLangVersion>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
 		<RootNamespace>Bunit</RootNamespace>
 		<AssemblyName>Bunit.Core</AssemblyName>
 	</PropertyGroup>
