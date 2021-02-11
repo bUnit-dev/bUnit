@@ -24,7 +24,6 @@ namespace Bunit
 			using var waiter = new WaitForStateHelper(renderedFragment, statePredicate, timeout);
 			try
 			{
-				//waiter.WaitTask.GetAwaiter().GetResult();
 				waiter.WaitTask.Wait();
 			}
 			catch (AggregateException e) when (e.InnerException is not null)
@@ -48,7 +47,7 @@ namespace Bunit
 			using var waiter = new WaitForAssertionHelper(renderedFragment, assertion, timeout);
 			try
 			{
-				waiter.WaitTask.Wait(); //.GetAwaiter().GetResult();
+				waiter.WaitTask.Wait();
 			}
 			catch (AggregateException e) when (e.InnerException is not null)
 			{
