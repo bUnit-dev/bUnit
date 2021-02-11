@@ -18,7 +18,7 @@ namespace Bunit.BlazorE2E
 	/// https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs.
 	/// </summary>
 	public class ComponentRenderingTest : TestContext
-	{		
+	{
 		public ComponentRenderingTest(ITestOutputHelper outputHelper)
 		{
 			Services.AddXunitLogger(outputHelper);

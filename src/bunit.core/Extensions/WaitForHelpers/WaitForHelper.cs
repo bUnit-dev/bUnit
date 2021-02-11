@@ -11,7 +11,7 @@ namespace Bunit.Extensions.WaitForHelpers
 	/// </summary>
 	public abstract class WaitForHelper : IDisposable
 	{
-		private readonly object lockObject = new object();
+		private readonly object lockObject = new();
 		private readonly Timer timer;
 		private readonly TaskCompletionSource<object?> completionSouce;
 		private readonly Func<bool> completeChecker;
