@@ -560,14 +560,9 @@ namespace Bunit.BlazorE2E
 
 			cut.Find("#run-async-with-dispatch").Click();
 
-			cut.WaitForAssertion(
-				() =>
-				{
-					// In some cases, the original assert wont work, since the sync context might not be idle,
-					// which results in this order: First Third Second Fourth Fifth
-					Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim());
-				},
-				timeout: TimeSpan.FromSeconds(2));
+			// In some cases, the original assert wont work, since the sync context might not be idle,
+			// which results in this order: First Third Second Fourth Fifth
+			cut.WaitForAssertion(() => Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim()));
 		}
 
 		// Test removed since it does not have any value in this context.

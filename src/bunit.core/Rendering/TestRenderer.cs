@@ -57,7 +57,7 @@ namespace Bunit.Rendering
 
 			var result = Dispatcher.InvokeAsync(() => base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs));
 
-			logger.LogDebug($"State of dispatched event is {result.Status}. ComponentId = {fieldInfo.ComponentId}, event = {fieldInfo.FieldValue}.");
+			logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"State of dispatched event is {result.Status}. ComponentId = {fieldInfo.ComponentId}, event = {fieldInfo.FieldValue}.");
 
 			AssertNoUnhandledExceptions();
 
@@ -89,6 +89,8 @@ namespace Bunit.Rendering
 			// render tree.
 			lock (renderTreeAccessLock)
 			{
+				logger.LogDebug(new EventId(6, nameof(ProcessPendingRender)),"Processing pending renders.");
+
 				base.ProcessPendingRender();
 			}
 		}
@@ -106,6 +108,7 @@ namespace Bunit.Rendering
 			for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
 			{
 				var id = renderBatch.DisposedComponentIDs.Array[i];
+				logger.LogDebug(new EventId(10, nameof(UpdateDisplayAsync)), $"Component with ID = {id} has been disposed.");
 				if (renderedComponents.TryGetValue(id, out var rc))
 				{
 					renderedComponents.Remove(id);
@@ -116,6 +119,7 @@ namespace Bunit.Rendering
 			// notify each rendered component about the render
 			foreach (var (key, rc) in renderedComponents.ToArray())
 			{
+				logger.LogDebug(new EventId(11, nameof(UpdateDisplayAsync)), $"Component with ID = {rc.ComponentId} has been rendered.");
 				LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
 
 				rc.OnRender(renderEvent);
@@ -164,8 +168,11 @@ namespace Bunit.Rendering
 
 			if (!renderTask.IsCompleted)
 			{
-				logger.LogDebug($"The render task for {renderedComponent.ComponentId} did not complete immediately.");
+				logger.LogDebug(new EventId(2, nameof(Render)), $"The initial render task for {renderedComponent.ComponentId} did not complete immediately.");
+				renderTask.GetAwaiter().GetResult();
 			}
+
+			logger.LogDebug(new EventId(5, nameof(Render)), $"The initial render of {renderedComponent.ComponentId} is completed.");
 
 			AssertNoUnhandledExceptions();
 
