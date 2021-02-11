@@ -89,7 +89,7 @@ namespace Bunit.Rendering
 			// render tree.
 			lock (renderTreeAccessLock)
 			{
-				logger.LogDebug(new EventId(6, nameof(ProcessPendingRender)),"Processing pending renders.");
+				logger.LogDebug(new EventId(6, nameof(ProcessPendingRender)), "Processing pending renders.");
 
 				base.ProcessPendingRender();
 			}
