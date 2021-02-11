@@ -11,6 +11,7 @@ namespace Bunit.Extensions.WaitForHelpers
 	/// </summary>
 	public abstract class WaitForHelper : IDisposable
 	{
+		private readonly object lockObject = new object();
 		private readonly Timer timer;
 		private readonly TaskCompletionSource<object?> completionSouce;
 		private readonly Func<bool> completeChecker;
@@ -52,6 +53,7 @@ namespace Bunit.Extensions.WaitForHelpers
 			completionSouce = new TaskCompletionSource<object?>();
 			timer = new Timer(OnTimeout, this, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
 
+			OnAfterRender(this, EventArgs.Empty);
 			this.renderedFragment.OnAfterRender += OnAfterRender;
 			OnAfterRender(this, EventArgs.Empty);
 			StartTimer(timeout);
@@ -62,7 +64,7 @@ namespace Bunit.Extensions.WaitForHelpers
 			if (isDisposed)
 				return;
 
-			lock (completionSouce)
+			lock (lockObject)
 			{
 				if (isDisposed)
 					return;
@@ -76,7 +78,7 @@ namespace Bunit.Extensions.WaitForHelpers
 			if (isDisposed)
 				return;
 
-			lock (completionSouce)
+			lock (lockObject)
 			{
 				if (isDisposed)
 					return;
@@ -114,7 +116,7 @@ namespace Bunit.Extensions.WaitForHelpers
 			if (isDisposed)
 				return;
 
-			lock (completionSouce)
+			lock (lockObject)
 			{
 				if (isDisposed)
 					return;
@@ -150,7 +152,7 @@ namespace Bunit.Extensions.WaitForHelpers
 			if (isDisposed || !disposing)
 				return;
 
-			lock (completionSouce)
+			lock (lockObject)
 			{
 				if (isDisposed)
 					return;

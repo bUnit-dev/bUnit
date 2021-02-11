@@ -7,6 +7,7 @@ using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Bunit.BlazorE2E
 {
@@ -17,9 +18,10 @@ namespace Bunit.BlazorE2E
 	/// https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs.
 	/// </summary>
 	public class ComponentRenderingTest : TestContext
-	{
-		public ComponentRenderingTest()
+	{		
+		public ComponentRenderingTest(ITestOutputHelper outputHelper)
 		{
+			Services.AddXunitLogger(outputHelper);
 			JSInterop.Mode = JSRuntimeMode.Loose;
 		}
 
@@ -564,12 +566,6 @@ namespace Bunit.BlazorE2E
 					// In some cases, the original assert wont work, since the sync context might not be idle,
 					// which results in this order: First Third Second Fourth Fifth
 					Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim());
-
-					Assert.Contains("First", result.TextContent, StringComparison.Ordinal);
-					Assert.Contains("Second", result.TextContent, StringComparison.Ordinal);
-					Assert.Contains("Third", result.TextContent, StringComparison.Ordinal);
-					Assert.Contains("Fourth", result.TextContent, StringComparison.Ordinal);
-					Assert.Contains("Fifth", result.TextContent, StringComparison.Ordinal);
 				},
 				timeout: TimeSpan.FromSeconds(2));
 		}

@@ -6,14 +6,21 @@ using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering
 {
 	public class TestRendererTest : TestContext
 	{
+		public TestRendererTest(ITestOutputHelper outputHelper)
+		{
+			Services.AddXunitLogger(outputHelper);
+		}
+
 		[Fact(DisplayName = "RenderFragment re-throws exception from component")]
 		public void Test004()
 		{
@@ -349,7 +356,6 @@ namespace Bunit.Rendering
 				parameters.Add(p => p.EitherOr, Task.Delay(1)));
 
 			var h1 = cut.Find("h1");
-
 			cut.WaitForAssertion(() => h1.TextContent.ShouldBe("SECOND"));
 		}
 
