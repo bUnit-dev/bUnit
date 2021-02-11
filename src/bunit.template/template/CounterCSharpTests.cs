@@ -1,7 +1,7 @@
-using System;
-using Xunit;
 using Bunit;
 using Bunit.TestDoubles;
+using System;
+using Xunit;
 
 namespace Company.BlazorTests1
 {
@@ -18,7 +18,7 @@ namespace Company.BlazorTests1
             var cut = RenderComponent<Counter>();
 
             // Assert that content of the paragraph shows counter at zero
-            cut.Find("p").MarkupMatches("<p>Current count: 0</p>"); 
+            cut.Find("p").MarkupMatches("<p>Current count: 0</p>");
         }
 
         [Fact]
