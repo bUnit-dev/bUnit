@@ -57,6 +57,8 @@ namespace Bunit.Rendering
 
 			var result = Dispatcher.InvokeAsync(() => base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs));
 
+			logger.LogDebug($"State of dispatched event is {result.Status}. ComponentId = {fieldInfo.ComponentId}, event = {fieldInfo.FieldValue}.");
+
 			AssertNoUnhandledExceptions();
 
 			return result;
@@ -64,7 +66,7 @@ namespace Bunit.Rendering
 
 		/// <inheritdoc/>
 		public IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			var foundComponents = FindComponents<TComponent>(parentComponent, 1);
 			return foundComponents.Count == 1
@@ -74,8 +76,8 @@ namespace Bunit.Rendering
 
 		/// <inheritdoc/>
 		public IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
-		    where TComponent : IComponent
-		    => FindComponents<TComponent>(parentComponent, int.MaxValue);
+			where TComponent : IComponent
+			=> FindComponents<TComponent>(parentComponent, int.MaxValue);
 
 		/// <inheritdoc/>
 		protected override void ProcessPendingRender()
@@ -162,7 +164,7 @@ namespace Bunit.Rendering
 
 			if (!renderTask.IsCompleted)
 			{
-				renderTask.GetAwaiter().GetResult();
+				logger.LogDebug($"The render task for {renderedComponent.ComponentId} did not complete immediately.");
 			}
 
 			AssertNoUnhandledExceptions();
