@@ -66,10 +66,11 @@ jobs:
         with:
           dotnet-version: '5.0.x'
 
-      - name: Running unit tests
+      - name: Running unit tests (linux, osx)
+        if: matrix.os != 'windows-latest'
         run: dotnet test -c Debug /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
 
-      - name: Running unit tests
+      - name: Running unit tests (windows only)
         if: matrix.os == 'windows-latest'
         run: |
           dotnet clean -c Debug && dotnet nuget locals all --clear
