@@ -552,6 +552,7 @@ namespace Bunit.BlazorE2E
 			cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 		}
 
+#if !NETCOREAPP3_1
 		[Fact]
 		public void CanDispatchAsyncWorkToSyncContext()
 		{
@@ -560,10 +561,9 @@ namespace Bunit.BlazorE2E
 
 			cut.Find("#run-async-with-dispatch").Click();
 
-			// In some cases, the original assert wont work, since the sync context might not be idle,
-			// which results in this order: First Third Second Fourth Fifth
 			cut.WaitForAssertion(() => Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim()));
 		}
+#endif
 
 		// Test removed since it does not have any value in this context.
 		// [Fact]
