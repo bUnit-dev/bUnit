@@ -68,10 +68,11 @@ jobs:
 
       - name: Running unit tests
         run: |
-          dotnet build -c Debug /nowarn:CS1591  /p:UseSourceLink=true
-          dotnet test -c Debug --no-build /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
+          dotnet clean -c Debug && dotnet nuget locals all --clear
+          dotnet test -c Debug /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
 
       - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v1
 
   verify-template:
