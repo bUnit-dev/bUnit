@@ -31,6 +31,3 @@ Sometimes common test setup logic exists outside the test class, perhaps abstrac
 [!code-csharp[](../../../samples/tests/xunit/RenderTreeTest.cs#L36-L38)]
 
 In the listing above, the cascading value `BAR?` is added only if there is not another `CascadingValue<string>` component added to the render tree already.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbNTcyNTAwMjE5LDE3NTIxNTQzOTJdfQ==
--->

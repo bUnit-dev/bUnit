@@ -112,7 +112,3 @@ In a Razor-based test, using the `<Fixture>` test type, the example looks like t
 In a Snapshot test, using the `<SnapshotTest>` test type, the example looks like this:
 
 [!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L32-L42)]
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwODgxMjk4OTQsLTE4Nzg5ODkzODddfQ
-==
--->

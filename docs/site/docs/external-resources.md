@@ -29,6 +29,3 @@ Here is a list of some web content that covers bUnit. If you produce something y
 
 - **[Unit Testing Blazor Components with bUnit and JustMock](https://www.telerik.com/blogs/unit-testing-blazor-components-bunit-justmock) by [Mihail Vladov](https://github.com/mihail-vladov)**  
   Content is based on beta-6 of bUnit.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMjAwMjU4Mzk5XX0=
--->

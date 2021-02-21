@@ -109,7 +109,3 @@ Let’s try to combine all the possibilities shown in the previous examples into
 [!code-csharp[UserRightsTest.cs](../../../samples/tests/xunit/UserRightsTest.cs?start=129&end=147&highlight=4-8)]
 
 With this example done, all auth-related test scenarios should be covered. If you find that one is missing, please let us know in the [bUnit discussion forum](https://github.com/egil/bUnit/discussions).
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM5MTk1MzU5LC0xNjczNzkxMzEwLDMzNT
-Q3NDY0MF19
--->

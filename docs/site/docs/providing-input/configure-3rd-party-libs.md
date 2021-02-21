@@ -24,6 +24,3 @@ This section contains a table of third-party component libraries that are known 
 > If you are a Blazor component vendor and have instructions on how to setup a bUnit test context for testing components that use your components, please add a link to your documentation and component library to the table above. 
 > 
 > Just submit a pull-request to this page with the relevant links added, share the relevant links in [bUnit's gitter chat](https://gitter.im/egil/bunit), or add an issue on [bUnit's github page](https://github.com/egil/razor-components-testing-library/issues) with the relevant links.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwMDQ4NjcyOTRdfQ==
--->

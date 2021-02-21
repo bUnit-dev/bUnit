@@ -103,7 +103,3 @@ Now that we have covered the basics of writing tests using Razor syntax, you can
 - <xref:verify-markup>
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbNzc4MzY2OTA5LC0yOTIyNDA3ODYsMTExNj
-Q5NzUxMl19
--->

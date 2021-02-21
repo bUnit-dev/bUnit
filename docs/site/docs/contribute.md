@@ -43,7 +43,3 @@ If you don't know what a pull request is, read this article: https://help.github
 ## Code of Conduct
 
 See <xref:code-of-conduct>
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzNDI5MzA4OTEsLTE1MjI3NjM2OTBdfQ
-==
--->

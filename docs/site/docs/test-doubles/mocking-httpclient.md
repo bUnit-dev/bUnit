@@ -34,6 +34,3 @@ This registers the mock `HttpClient` in bUnit's test context's `Services` collec
 
 > [!TIP]
 > You can add additional `RespondXXX` methods to the `MockHttpClientBunitHelpers` class to fit your testing needs.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbNDkzNTI2MzY3XX0=
--->

@@ -57,6 +57,3 @@ The highlighted line shows the call to [`InvokeAsync(...)`](xref:Bunit.RenderedC
 
 > [!TIP]
 > The instance of a component under test is available through the <xref:Bunit.IRenderedComponentBase`1.Instance> property.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ1MzY1NDUzMywxNDYyNjUyNzA4XX0=
--->

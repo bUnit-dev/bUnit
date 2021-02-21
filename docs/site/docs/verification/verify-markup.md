@@ -178,7 +178,3 @@ This is what happens in the test:
 8. Finally the last item in the list is found and clicked, and the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method is used to find the changes, a single diff, which is verified as a removal of the second item.
 
 As mentioned earlier, the `IDiff` assertion helpers are still experimental. Any feedback and suggestions for improvements should be directed to the [related issue](https://github.com/egil/bUnit/issues/84) on GitHub.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTgyNzgwNjUzNSwxNTc1MzY0MjQzLDM2OD
-E5NjgwOSw3NDQ0MDk0NDNdfQ==
--->

@@ -463,9 +463,3 @@ The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()`
 ## Further Reading
 
 - <xref:inject-services>
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1MjE4NjM3OTIsLTYzNjg4ODQzMCwtNj
-Q1NjY2NzA0LC0yMDkwMTk5Mzk4LDE5MTEyOTY0MjgsLTc2NTM0
-NzExMSw0MTg5ODA2ODQsMjExMzk5MTk0LC0xOTQ3NzE0Nzg2LD
-IyMTM4MjQ4MV19
--->

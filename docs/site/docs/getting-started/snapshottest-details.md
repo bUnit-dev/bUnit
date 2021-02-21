@@ -45,6 +45,3 @@ When a <xref:Bunit.SnapshotTest> runs, this happens:
 The semantic comparison in bUnit allows you to customize the snapshot verification  through _"comparison modifiers"_ in the `<ExpectedOutput>` markup. For example, if you want to tell the semantic comparer to ignore the case of the text content inside an element, you can add the `diff:ignoreCase` attribute to the element inside `<ExpectedOutput>`. 
 
 To learn more about semantic comparison modifiers, go to the <xref:semantic-html-comparison> page.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQxODE3NzE5NiwtNjUxNTg0NDg0XX0=
--->

@@ -30,6 +30,3 @@ To build and view the documentation locally, follow these steps:
 - All page and code references should be created using the [`xref:UID` cross reference syntax](https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html#using-cross-reference).
 -   By default, you should include code snippets as sample files in the `samples` projects, using the [code snippet syntax](https://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#code-snippet).
 - All code snippets should use 2 spaces as an indention unit (1 tab = 2 spaces).
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5OTQ3MTc1MTMsLTczNTM0NDc0OV19
--->

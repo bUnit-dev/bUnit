@@ -109,8 +109,3 @@ Let's look at what's going on in this test:
 This covers the “arrange”-steps in the test above and shows how you can easily access both the component under test and other fragments that you might need to write your test concisely. We will cover the details of the "act" and "assertion" steps in the <xref:interaction> and <xref:verification> pages. 
 
 Learn more about injecting services into components under test on the <xref:inject-services> page. 
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwNTQ2MTE0MTYsLTEyODc0NTI4MzEsLT
-E5OTE3NTMxMzAsLTE4NzkxMTEzMTksLTE4Mjk1OTMzMTRdfQ==
-
--->

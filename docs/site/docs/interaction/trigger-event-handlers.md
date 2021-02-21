@@ -55,6 +55,3 @@ This is what happens in the test:
    - The last invocation uses the [`Click`](xref:Bunit.MouseEventDispatchExtensions.Click(AngleSharp.Dom.IElement,Microsoft.AspNetCore.Components.Web.MouseEventArgs)) method. This takes an instance of the `MouseEventArgs` type, which is passed to the event handler if it has it as an argument.
 
 All the event dispatch helper methods have the same two overloads: one that takes a number of optional arguments, and one that takes one of the `EventArgs` types provided by Blazor.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MjgzMzQ2ODQsLTEzMzAzMjMyMV19
--->

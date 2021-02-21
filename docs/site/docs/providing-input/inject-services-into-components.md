@@ -49,6 +49,3 @@ The following example shows how to do this with `<SnapshotTest>` tests:
 ## Further Reading
 
 A closely related topic is mocking. To learn more about mocking in bUnit, go to the <xref:test-doubles> page.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbNzY2NTY2MjAzXX0=
--->

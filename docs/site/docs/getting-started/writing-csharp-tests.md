@@ -99,7 +99,4 @@ With the basics out of the way, next we will look at how to pass parameters and 
 - <xref:verify-markup>
 - <xref:verify-component-state>
 - <xref:trigger-event-handlers>
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTY2OTUyMjgxNCwtNjE5NzEyNjk3LDc3Nz
-g1NzE4Nl19
--->
+

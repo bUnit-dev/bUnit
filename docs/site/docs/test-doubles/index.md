@@ -13,6 +13,3 @@ The built-in test doubles are described on the following pages:
 
 - <xref:faking-auth>
 - <xref:emulating-ijsruntime>
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMTA3NDM0Mjc2XX0=
--->

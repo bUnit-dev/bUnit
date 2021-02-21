@@ -228,7 +228,3 @@ This will allow the test project to see and test the components in the component
 To start creating tests, continue reading the <xref:writing-csharp-tests> and <xref:writing-razor-tests> pages.
 
 For additional tips and tricks that will make writing tests easier, see the <xref:misc-test-tips> page.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyNDg0MjIyNDgsNTAzODE2MjQ1LDE3MT
-k4MDc5NzJdfQ==
--->

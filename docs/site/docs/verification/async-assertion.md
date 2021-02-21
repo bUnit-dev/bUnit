@@ -45,6 +45,3 @@ If the timeout is reached, a <xref:Bunit.Extensions.WaitForHelpers.WaitForFailed
 > The assertion did not pass within the timeout period.
 
 Setting the timeout to something less than one second does _not_ make tests run faster. The `WaitForAssertion()` method returns as soon as it observes the predicate assertion running without throwing. So, it is generally only useful to set a different timeout than the default if the asynchronous operation takes longer than one second to complete, which should only be an issue in end-2-end or integration-testing scenarios.
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3NjY3OTA0MzNdfQ==
--->
