@@ -53,6 +53,7 @@ namespace Bunit.Extensions.WaitForHelpers
 			completionSouce = new TaskCompletionSource<object?>();
 			timer = new Timer(OnTimeout, this, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
 
+			OnAfterRender(this, EventArgs.Empty);
 			this.renderedFragment.OnAfterRender += OnAfterRender;
 			OnAfterRender(this, EventArgs.Empty);
 			StartTimer(timeout);
