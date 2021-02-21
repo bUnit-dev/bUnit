@@ -57,8 +57,6 @@ namespace Bunit.Rendering
 
 			var result = Dispatcher.InvokeAsync(() => base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs));
 
-			logger.LogDebug(new EventId(1, nameof(DispatchEventAsync)), $"State of dispatched event is {result.Status}. ComponentId = {fieldInfo.ComponentId}, event = {fieldInfo.FieldValue}.");
-
 			AssertNoUnhandledExceptions();
 
 			return result;
@@ -102,6 +100,8 @@ namespace Bunit.Rendering
 		/// <inheritdoc/>
 		protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 		{
+			logger.LogDebug(new EventId(10, nameof(UpdateDisplayAsync)), $"New render batch received.");
+
 			var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
 
 			// removes disposed components
@@ -132,6 +132,8 @@ namespace Bunit.Rendering
 					renderedComponents.Add(rc.ComponentId, rc);
 				}
 			}
+
+			logger.LogDebug(new EventId(10, nameof(UpdateDisplayAsync)), $"Finished updating components markup.");
 
 			return Task.CompletedTask;
 		}

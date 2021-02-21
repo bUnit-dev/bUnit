@@ -53,29 +53,29 @@
 
     async Task RunAsyncWorkWithDispatch()
     {
-        Logger.LogDebug("Before first Task.Delay(1)");
+        Logger.LogDebug(new EventId(1), "Before first Task.Delay(1)");
 
         await Task.Delay(1).ConfigureAwait(false);
 
         result = "First";
 
-        Logger.LogDebug("Before InvokeAsync");
+        Logger.LogDebug(new EventId(2), "Before InvokeAsync");
 
         var invokeTask = InvokeAsync(async () =>
         {
             // When the sync context is idle, queued work items start synchronously
             result += " Second";
 
-            Logger.LogDebug("Inside InvokeAsync, before Task.Delay(250)");
+            Logger.LogDebug(new EventId(3), "Inside InvokeAsync, before Task.Delay(250)");
 
             await Task.Delay(250);
 
-            Logger.LogDebug("Inside InvokeAsync, after Task.Delay(250)");
+            Logger.LogDebug(new EventId(5), "Inside InvokeAsync, after Task.Delay(250)");
 
             result += " Fourth";
         });
 
-        Logger.LogDebug("After InvokeAsync");
+        Logger.LogDebug(new EventId(4), "After InvokeAsync");
 
         result += " Third";
         await invokeTask;
