@@ -448,7 +448,7 @@ It is possible to nest a component under tests inside other components, if that 
 
 [!code-csharp[](../../../samples/tests/xunit/NestedComponentTest.cs#L16-L28)]
 
-These examples do the same thing, i.e. render the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()`, which returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance.[__AP: The last clause is rather ambiguous. Is it that the IRenderedComponent\<HelloWorld\> gives access to two things - the \<HelloWorld\> components part of the render tree and the \<HelloWorld\> components instance - or that something (\<Wrapper\>?) returns (1) the IRenderedComponent\<HelloWorld\> and (2) the \<HelloWorld\> components instance?__]
+These examples do the same thing, i.e. render the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()` that returns a `IRenderedComponent<HelloWorld>`. This is needed because the `RenderComponent<Wrapper>` method call returns an `IRenderedComponent<Wrapper>` instance, that provides access to the instance of the `<Wrapper>` component, but not the `<HelloWorld>`-component instance.
 
 # [Razor test code](#tab/razor)
 
@@ -456,7 +456,7 @@ These examples do the same thing, i.e. render the `<HelloWorld>` component insid
 
 This is just regular Blazor child content parameter passing, where one component is rendered inside another, i.e. the `<HelloWorld>` component inside the `<Wrapper>` component. 
 
-The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()` method specifies the `<HelloWorld>` component as its target instead of the outer `<Wrapper>` component. This returns a `IRenderedComponent<HelloWorld>`, which gives access to only the `<HelloWorld>` components part of the render tree, and the `<HelloWorld>` components instance. [__AP: The last clause is rather ambiguous. Is it that the IRenderedComponent\<HelloWorld\> gives access to two things - the \<HelloWorld\> components part of the render tree and the \<HelloWorld\> components instance - or that something (\<Wrapper\>?) returns (1) the IRenderedComponent\<HelloWorld\> and (2) the \<HelloWorld\> components instance?__]
+The special thing in this case is that the `GetComponentUnderTest<HelloWorld>()` method specifies the `<HelloWorld>` component as its target instead of the outer `<Wrapper>` component. This returns a `IRenderedComponent<HelloWorld>`, the child of the `<Wrapper>` component, making it the component under test.
 
 ***
 
