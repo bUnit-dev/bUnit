@@ -169,7 +169,7 @@ namespace Bunit.Rendering
 			if (!renderTask.IsCompleted)
 			{
 				logger.LogDebug(new EventId(2, nameof(Render)), $"The initial render task for {renderedComponent.ComponentId} did not complete immediately.");
-				renderTask.Wait();
+				renderTask.GetAwaiter().GetResult();
 			}
 
 			logger.LogDebug(new EventId(5, nameof(Render)), $"The initial render of {renderedComponent.ComponentId} is completed.");
