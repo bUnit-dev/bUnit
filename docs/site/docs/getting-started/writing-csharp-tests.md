@@ -41,7 +41,7 @@ This is a simple example that tests the following `<HelloWorld>` component:
 The test above does the following:
 
 1. Creates a new instance of the disposable bUnit <xref:Bunit.TestContext>, and assigns it to `ctx` variable using the `using var` syntax to avoid unnecessary source code indention.
-2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
+2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.Extensions.TestRendererExtensions.RenderComponent``1(Bunit.Rendering.ITestRenderer,System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
 > [!TIP]
@@ -58,7 +58,7 @@ We can remove some boilerplate code from each test by making the <xref:Bunit.Tes
 
 [!code-csharp[HelloWorldImplicitContextTest.cs](../../../samples/tests/xunit/HelloWorldImplicitContextTest.cs)]
 
-Since xUnit instantiates test classes for each execution of the test methods inside them, and disposes of them after each test method has run, we simply inherit from <xref:Bunit.TestContext>, and methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> can then be called directly from each test. This is seen in the listing above. 
+Since xUnit instantiates test classes for each execution of the test methods inside them, and disposes of them after each test method has run, we simply inherit from <xref:Bunit.TestContext>, and methods like <xref:Bunit.Extensions.TestRendererExtensions.RenderComponent``1(Bunit.Rendering.ITestRenderer,System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> can then be called directly from each test. This is seen in the listing above. 
 
 # [NUnit](#tab/nunit)
 
@@ -68,7 +68,7 @@ Since xUnit instantiates test classes for each execution of the test methods ins
 
 Since NUnit instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed above, and use that to hook into NUnit's `[SetUp]` and `[TearDown]` methods, which runs before and after each test.
 
-Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> can be called directly from each test, as seen in the listing above.
+Then methods like <xref:Bunit.Extensions.TestRendererExtensions.RenderComponent``1(Bunit.Rendering.ITestRenderer,System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> can be called directly from each test, as seen in the listing above.
 
 # [MSTest](#tab/mstest)
 
@@ -78,7 +78,7 @@ Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.Com
 
 Since MSTest instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed above, and use that to hook into MSTest's `[TestInitialize]` and `[TestCleanup]` methods. This runs before and after each test.
 
-Then methods like <xref:Bunit.TestContext.RenderComponent``1(Bunit.Rendering.ComponentParameter[])> can be called directly from each test, as seen in the listing above.
+Then methods like <xref:Bunit.Extensions.TestRendererExtensions.RenderComponent``1(Bunit.Rendering.ITestRenderer,System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> can be called directly from each test, as seen in the listing above.
 
 ***
 

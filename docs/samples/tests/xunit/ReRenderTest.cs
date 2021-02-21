@@ -47,7 +47,7 @@ namespace Bunit.Docs.Samples
     {
       // Arrange - renders the Heading component
       using var ctx = new TestContext();
-      var cut = ctx.RenderComponent<ImparativeCalc>();
+      var cut = ctx.RenderComponent<Calc>();
 
       // Indirectly re-renders through the call to StateHasChanged 
       // in the Calculate(x, y) method.

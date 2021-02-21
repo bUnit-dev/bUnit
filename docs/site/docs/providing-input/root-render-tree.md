@@ -7,7 +7,7 @@ title: Controlling the Root Render Tree
 
 The root render tree, the render tree in which components under test are rendered, can be added to before components are rendered with bUnit's test context. This is mostly useful when a component under test, or a component it depends on, must be rendered inside another component, that provides a cascading value to it. 
 
-For example, when using Blazor’s authentication, it is common to add the `CascadingAuthenticationState` component higher up the render tree, such that it can provide authentication state to those components below it that need it. Adding this through the <xref:Bunit.TestContext.RenderTree> property on the <xref:Bunit.TestContext> type makes it possible to add it once in a shared setup method, and not have to do so in every test method during the call to [`RenderComponent()`](xref:Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})).
+For example, when using Blazor’s authentication, it is common to add the `CascadingAuthenticationState` component higher up the render tree, such that it can provide authentication state to those components below it that need it. Adding this through the <xref:Bunit.TestContextBase.RenderTree> property on the <xref:Bunit.TestContextBase> type makes it possible to add it once in a shared setup method, and not have to do so in every test method during the call to [`RenderComponent()`](xref:Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})).
 
 This can also be useful when writing tests that use a third-party component library, that require a special root component to be added to the render tree, but which otherwise don’t change between tests.
 

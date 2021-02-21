@@ -22,7 +22,7 @@ Let us start by looking at the parameters that take a method as input first [__A
 
 1. **<xref:Bunit.RazorTesting.FixtureBase`1.Setup>** and **<xref:Bunit.RazorTesting.FixtureBase`1.SetupAsync>:**  
 The `Setup` and `SetupAsync` methods are called first, and you can provide both if needed. If both are provided, `Setup` is called first.   
-These are usually used to configure the <xref:Bunit.ITestContext.Services> collection of the <xref:Bunit.Fixture> component before the component under test or any fragments are rendered.
+These are usually used to configure the <xref:Bunit.TestContextBase.Services> collection of the <xref:Bunit.Fixture> component before the component under test or any fragments are rendered.
 2. **<xref:Bunit.RazorTesting.FixtureBase`1.Test>** or **<xref:Bunit.RazorTesting.FixtureBase`1.TestAsync>:**  
  The `Test` or `TestAsync` method is called after the setup methods.   
   _One, and only one_ of the test methods can be specified per fixture. Use the test method to access the component under test and any fragments defined in the fixture, and interact and assert against them.
