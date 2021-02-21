@@ -10,7 +10,7 @@ namespace Bunit.Xunit.Logging
 		/// <summary>
 		/// Initializes a new instance of the <see cref="XunitLoggerFactory"/> class.
 		/// </summary>
-		public XunitLoggerFactory(XunitLoggerProvider xunitLoggerProvider)
+		public XunitLoggerFactory(ILoggerProvider xunitLoggerProvider)
 		{
 			AddProvider(xunitLoggerProvider);
 		}

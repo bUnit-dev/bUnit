@@ -17,8 +17,9 @@ namespace Bunit
 		/// </summary>
 		public static IServiceCollection AddXunitLogger(this IServiceCollection services, LogLevel minimumLogLevel = LogLevel.Debug)
 		{
-			services.AddSingleton(srv => new XunitLoggerProvider(srv.GetRequiredService<ITestOutputHelper>(), minimumLogLevel));
+			services.AddSingleton<ILoggerProvider>(srv => new XunitLoggerProvider(srv.GetRequiredService<ITestOutputHelper>(), minimumLogLevel));
 			services.AddSingleton<ILoggerFactory, XunitLoggerFactory>();
+			services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 			return services;
 		}
 

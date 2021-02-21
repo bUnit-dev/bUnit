@@ -552,8 +552,6 @@ namespace Bunit.BlazorE2E
 			cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 		}
 
-//#if !NETCOREAPP3_1
-
 		[Fact]
 		public void CanDispatchAsyncWorkToSyncContext()
 		{
@@ -564,8 +562,6 @@ namespace Bunit.BlazorE2E
 
 			cut.WaitForAssertion(() => Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim()));
 		}
-
-//#endif
 
 		// Test removed since it does not have any value in this context.
 		// [Fact]
