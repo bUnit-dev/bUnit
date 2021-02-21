@@ -34,7 +34,7 @@ Alert alert = cut.Instance;
 ## Finding Components in the Render Tree
 
 To get the instances of components nested inside the component under test, use the 
-[`FindComponent<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponent``1(Bunit.IRenderedFragment)) and [`FindComponents<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponents``1(Bunit.IRenderedFragment)) methods on the <xref:Bunit.IRenderedComponent`1> type. Suppose we have a `<TodoList>` component with `<Task>` components nested inside for each task in the todo list. [__AP: Could one say 'Suppose, for each task in the todo list, we have a `<TodoList>` component with `<Task>` components nested inside.'?__] In this case, the `<Task>` components can be found like this:
+[`FindComponent<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponent``1(Bunit.IRenderedFragment)) and [`FindComponents<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponents``1(Bunit.IRenderedFragment)) methods on the <xref:Bunit.IRenderedComponent`1> type. Suppose, for each task in the todo list, we have a `<TodoList>` component with `<Task>` components nested inside. In this case, the `<Task>` components can be found like this:
 
 ```csharp
 using var ctx = new TestContext();
@@ -48,4 +48,3 @@ Assert.Equal(2, tasks.Count);
 ```
 
 Both the [`FindComponent<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponent``1(Bunit.IRenderedFragment)) and [`FindComponents<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponents``1(Bunit.IRenderedFragment)) methods perform a **depth-first search** of the render tree, with the first method returning only the first matching component found, and the latter returning all matching components in the render tree.
-

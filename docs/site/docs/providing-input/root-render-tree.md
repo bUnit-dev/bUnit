@@ -26,7 +26,7 @@ Here is the test that adds the `CascadingValue<string>` component to the render 
 
 ## Add Only if Not Already in Root Render Tree
 
-Sometimes common test setup logic exists outside the test class, perhaps abstracted away in other libraries. In those cases, the [`TryAdd`](xref:Bunit.Rendering.RootRenderTree.TryAdd``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) method [__AP: is 'method' correct?__] can be used to add the component to the render tree, _only if_ it has not already been added. [`TryAdd`](xref:Bunit.Rendering.RootRenderTree.TryAdd``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) returns true if the component was added, false otherwise.
+Sometimes common test setup logic exists outside the test class, perhaps abstracted away in other libraries. In those cases, the [`TryAdd`](xref:Bunit.Rendering.RootRenderTree.TryAdd``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) method can be used to a components to the render tree, _only if_ it has not already been added. [`TryAdd`](xref:Bunit.Rendering.RootRenderTree.TryAdd``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) returns true if the component was added, false otherwise.
 
 [!code-csharp[](../../../samples/tests/xunit/RenderTreeTest.cs#L36-L38)]
 

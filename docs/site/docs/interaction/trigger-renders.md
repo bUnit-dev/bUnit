@@ -45,7 +45,7 @@ Invoking methods on a component under test, which causes a render, e.g. by calli
 
 If you receive this error, you need to invoke your method inside an `Action` delegate passed to the [`InvokeAsync(...)`](xref:Bunit.RenderedComponentInvokeAsyncExtensions.InvokeAsync``1(Bunit.IRenderedComponentBase{``0},System.Action)) method.
 
-Let’s look at an example of this, using the `<Calc>` component listed below: [__AP: Should this be ImperativeCalc?__]
+Let’s look at an example of this, using the `<Calc>` component listed below:
 
 [!code-cshtml[Calc.razor](../../../samples/components/Calc.razor)]
 

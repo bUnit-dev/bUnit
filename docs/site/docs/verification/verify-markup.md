@@ -158,7 +158,7 @@ This is what happens in the test:
 
 Testing a more **complex life cycle of a component** can be done more easily using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> and <xref:Bunit.IRenderedFragment.SaveSnapshot> methods along with a host of other assert helpers. 
 
-This example tests the `<CheckList>` component listed below. The component allows you to add new items to the checklist by typing into the input field and hitting the `enter` key. Items can be removed from the again list [__AP: Is 'again list' correct?__] by clicking on them.
+This example tests the `<CheckList>` component listed below. The component allows you to add new items to the checklist by typing into the input field and hitting the `enter` key. Items can be removed from the list again by clicking on them.
 
 [!code-razor[CheckList.razor](../../../samples/components/CheckList.razor)]
 

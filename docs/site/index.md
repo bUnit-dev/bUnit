@@ -15,11 +15,11 @@ title: bUnit - a Testing Library for Blazor Components
 - Setup and define components under tests using C# or Razor syntax
 - Verify outcomes using semantic HTML comparer
 - Interact with and inspect components as well as trigger event handlers
-- Pass parameters, cascading values and inject services into components under test [__AP: Are 'cascading values' things that are passed, like parameters, or should one say 'Pass parameters, cascade values and inject services...?__]
+- Pass parameters, cascading values and inject services into components under test
 - Mock `IJSRuntime` and Blazor authentication and authorization
 - Perform snapshot testing
 
-bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which [__AP: What does this 'which' refer to -- bUnit or xUnit et al? If the former, then would be better to say 'and' rather than 'which'.__] runs [__AP: If the 'which' referred not to bUnit but to xUnit et al, then this 'runs' should be 'run'.__] the Blazor components tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run. 
+bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which run the Blazor components tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run. 
 
 **Go to the [Documentation](xref:getting-started) pages to learn more.**
 
