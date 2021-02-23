@@ -102,7 +102,7 @@ If using Visual Studio, add the test project to your solution (`.sln`), and add 
 
 ```dotnetcli
 dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
-dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.csproj
+dotnet add <NAME OF TEST PROJECT>.csproj reference <NAME OF COMPONENT PROJECT>.csproj
 ```
 
 The result should be a test project with a `.csproj` that looks like this (non bUnit packages may have different version numbers):
@@ -127,6 +127,10 @@ The result should be a test project with a `.csproj` that looks like this (non b
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="<PATH TO COMPONENT LIB>.csproj" />
+  </ItemGroup>
+  
 </Project>
 ```
 
@@ -218,7 +222,7 @@ If using Visual Studio, add the test project to your solution (`.sln`), and add 
 
 ```dotnetcli
 dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
-dotnet add <NAME OF COMPONENT PROJECT>.csproj reference <NAME OF TEST PROJECT>.csproj
+dotnet add <NAME OF TEST PROJECT>.csproj reference <NAME OF COMPONENT PROJECT>.csproj
 ```
 
 This will allow the test project to see and test the components in the component project.
