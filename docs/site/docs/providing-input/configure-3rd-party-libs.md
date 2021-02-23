@@ -5,15 +5,15 @@ title: Configure 3rd Party Libraries for Testing
 
 # Configure 3rd Party Libraries for Testing
 
-Testing a component that is built using a 3rd party component library can require additional setup steps in each test to ensure that the 3rd party components work correctly in a test context.
+Testing a component that is built using a third-party component library can require additional setup steps in each test to ensure that the third-party components work correctly in a test context.
 
-For example, if a 3rd party component requires services to be registered in production code, it is likely that this is needed in a test context as well. See the <xref:inject-services> page for more info on this.
+For example, if a third-party component requires services to be registered in production code, it is likely that this is needed in a test context as well. See the <xref:inject-services> page for more info on this.
 
-Similarly, if a root component is needed to provide cascading values to the 3rd party components, that is likely to be needed as well. For more on this, see the <xref:passing-parameters-to-components#cascading-parameters-and-cascading-values> page.
+Similarly, if a root component is needed to provide cascading values to the third-party components, that is likely to be needed as well. For more on this, see the <xref:passing-parameters-to-components#cascading-parameters-and-cascading-values> page.
 
 ## bUnit Friendly Component Libraries
 
-This section contains a table of 3rd party component libraries that are known for allowing their users to test their components with bUnit. If additional setup or configuration is needed, a link is provided to the component library's own documentation which shows how to test a component that uses components from the library.
+This section contains a table of third-party component libraries that are known for allowing their users to test their components with bUnit. If additional setup or configuration is needed, a link is provided to the component library's own documentation which shows how to test a component that uses components from the library.
 
 | Component Library | bUnit compatibility notes | Test context setup guide |
 | ----------------- | ------------------------- | -------------------------|

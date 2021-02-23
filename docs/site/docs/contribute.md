@@ -10,7 +10,7 @@ One of the easiest ways to contribute is to participate in discussions on GitHub
 ## General Feedback and Discussions
 Start a discussion on the [bUnit discussion list](https://github.com/egil/bUnit/discussions).
 
-## Bugs and feature requests
+## Bugs and Feature Requests
 For bugs or feature requests, log a new issue on the [issues list](https://github.com/egil/bunit/issues). Be sure to use the right template.
 
 ## Contributing Code and Content
@@ -21,7 +21,7 @@ bUnit accepts fixes and features. Here is what you should do when writing code f
 - Add, remove, or delete unit tests to cover your changes. Make sure tests are specific to the changes you are making. Tests need to be provided for every bug/feature that is completed.
 - All code changes should be done on the `DEV` branch, and pull requests should target it.
 - All updates to the documentation located under `./docs/` should be done on the `main` branch **if** they are general in nature and not tied to a specific version. Changes to the documentation related to changes on the `DEV` branch should be submitted to the `DEV` branch.
-- Any code or documentation you share with the bUnit projects should fall under the projects license agreement.
+- Any code or documentation you share with the bUnit projects should fall under the project's license agreement.
 
 Here are some resources to help you get started on how to contribute code or new content:
 

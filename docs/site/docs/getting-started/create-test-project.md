@@ -11,7 +11,7 @@ To use bUnit with xUnit, the easiest approach is to use the bUnit project templa
 
 ## Creating a Test Project Manually
 
-This section will take you through the steps required to create a project for testing Blazor components using bUnit. Any of the three general purpose test frameworks shown in step 1 below can be used. Briefly, here is what we will do:
+This section will take you through the steps required to create a project for testing Blazor components using bUnit. Any of the three general-purpose test frameworks shown in step 1 below can be used. Briefly, here is what we will do:
 
 1. Create a new xUnit/NUnit/MSTest testing project
 2. Add bUnit to the test project
@@ -22,7 +22,7 @@ Let's look at these in more detail. These steps look like this from the 'dotnet'
 
 **1. Create a new test project**
 
-Use the following command (_click on the tab that for the test framework of choice_):
+Use the following command (_click on the tab for the test framework of choice_):
 
 # [xUnit](#tab/xunit)
 
@@ -98,7 +98,7 @@ To do so, change the first part of the test projects `.csproj` file to look like
 
 **4. Add the test project to your solution**
 
-If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and project containing the components that are to be tested:
+If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and the project containing the components that are to be tested:
 
 ```dotnetcli
 dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
@@ -211,9 +211,10 @@ dotnet new bunit -o <NAME OF TEST PROJECT>
 ```
 
 The `-o` option in the `dotnet new` command above is used to specify the name of the test project.
+
 **3. Add the test project to your solution**
 
-If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and project containing the components that should be tested:
+If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and the project containing the components that should be tested:
 
 ```dotnetcli
 dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
