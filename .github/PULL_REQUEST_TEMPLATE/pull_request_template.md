@@ -1,3 +1,9 @@
+---
+name: Standard code pull request
+about: 'Use this template for all code related pull requests  that should be part of future release of bUnit.'
+assignees: 'egil'
+---
+
 ## Pull request description
 <!--- 
     Describe the changes and motivation behind them here, if it is not obvious
