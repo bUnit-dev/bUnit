@@ -5,7 +5,8 @@
 -->
 
 ### PR meta checklist
-- [ ] Pull request is targeted at `DEV` branch for code or targeted at `main` branch for documentation that is live on bunit.egilhansen.com.
+- [ ] Pull request is targeted at `DEV` branch for code   
+  or targeted at `main` branch for documentation that is live on bunit.egilhansen.com.
 - [ ] Pull request is linked to all related issues, if any.
 - [ ] I have read the _CONTRIBUTING.md_ document.
 
