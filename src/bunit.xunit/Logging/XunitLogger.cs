@@ -29,10 +29,12 @@ namespace Bunit.Xunit.Logging
 		}
 
 		/// <inheritdoc/>
-		public IDisposable BeginScope<TState>(TState state) => throw new NotImplementedException("Scoped logging is not supported by XunitLogger.");
+		public IDisposable BeginScope<TState>(TState state)
+			=> throw new NotImplementedException("Scoped logging is not supported by XunitLogger.");
 
 		/// <inheritdoc/>
-		public bool IsEnabled(LogLevel logLevel) => logLevel >= minimumLogLevel;
+		public bool IsEnabled(LogLevel logLevel)
+			=> logLevel >= minimumLogLevel;
 
 		/// <inheritdoc/>
 		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)

@@ -3,7 +3,7 @@ using System.Linq;
 using Bunit.JSInterop.InvocationHandlers;
 using Microsoft.JSInterop;
 
-namespace Bunit.JSInterop
+namespace Bunit
 {
 	/// <summary>
 	/// Helper methods for creating invocation handlers and adding the to a <see cref="BunitJSInterop"/>.

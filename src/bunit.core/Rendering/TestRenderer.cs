@@ -64,7 +64,7 @@ namespace Bunit.Rendering
 
 		/// <inheritdoc/>
 		public IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			var foundComponents = FindComponents<TComponent>(parentComponent, 1);
 			return foundComponents.Count == 1
@@ -74,8 +74,8 @@ namespace Bunit.Rendering
 
 		/// <inheritdoc/>
 		public IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
-		    where TComponent : IComponent
-		    => FindComponents<TComponent>(parentComponent, int.MaxValue);
+			where TComponent : IComponent
+			=> FindComponents<TComponent>(parentComponent, int.MaxValue);
 
 		/// <inheritdoc/>
 		protected override void ProcessPendingRender()
@@ -87,6 +87,8 @@ namespace Bunit.Rendering
 			// render tree.
 			lock (renderTreeAccessLock)
 			{
+				logger.LogDebug(new EventId(6, nameof(ProcessPendingRender)), "Processing pending renders.");
+
 				base.ProcessPendingRender();
 			}
 		}
@@ -98,12 +100,15 @@ namespace Bunit.Rendering
 		/// <inheritdoc/>
 		protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 		{
+			logger.LogDebug(new EventId(10, nameof(UpdateDisplayAsync)), $"New render batch received.");
+
 			var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
 
 			// removes disposed components
 			for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
 			{
 				var id = renderBatch.DisposedComponentIDs.Array[i];
+				logger.LogDebug(new EventId(10, nameof(UpdateDisplayAsync)), $"Component with ID = {id} has been disposed.");
 				if (renderedComponents.TryGetValue(id, out var rc))
 				{
 					renderedComponents.Remove(id);
@@ -114,6 +119,7 @@ namespace Bunit.Rendering
 			// notify each rendered component about the render
 			foreach (var (key, rc) in renderedComponents.ToArray())
 			{
+				logger.LogDebug(new EventId(11, nameof(UpdateDisplayAsync)), $"Component with ID = {rc.ComponentId} has been rendered.");
 				LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
 
 				rc.OnRender(renderEvent);
@@ -126,6 +132,8 @@ namespace Bunit.Rendering
 					renderedComponents.Add(rc.ComponentId, rc);
 				}
 			}
+
+			logger.LogDebug(new EventId(10, nameof(UpdateDisplayAsync)), $"Finished updating components markup.");
 
 			return Task.CompletedTask;
 		}
@@ -162,8 +170,11 @@ namespace Bunit.Rendering
 
 			if (!renderTask.IsCompleted)
 			{
+				logger.LogDebug(new EventId(2, nameof(Render)), $"The initial render task for {renderedComponent.ComponentId} did not complete immediately.");
 				renderTask.GetAwaiter().GetResult();
 			}
+
+			logger.LogDebug(new EventId(5, nameof(Render)), $"The initial render of {renderedComponent.ComponentId} is completed.");
 
 			AssertNoUnhandledExceptions();
 

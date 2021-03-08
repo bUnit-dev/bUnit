@@ -49,7 +49,12 @@ jobs:
 
   dotnet-test:
     if: github.event_name != 'schedule'
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        framework: [netcoreapp3.1, net5.0]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -63,12 +68,18 @@ jobs:
         with:
           dotnet-version: '5.0.x'
 
-      - name: Running unit tests
+      - name: Running unit tests (linux, osx)
+        if: matrix.os != 'windows-latest'
+        run: dotnet test -c Debug --framework ${{ matrix.framework }} /p:UseSourceLink=true /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\"
+
+      - name: Running unit tests (windows only)
+        if: matrix.os == 'windows-latest'
         run: |
-          dotnet build -c Debug /nowarn:CS1591  /p:UseSourceLink=true
-          dotnet test -c Debug --no-build /nowarn:CS1591 /p:CollectCoverage=true /p:CoverletOutput=./coverage/ /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute=\"Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute\" /p:UseSourceLink=true
+          dotnet clean -c Debug && dotnet nuget locals all --clear
+          dotnet test -c Debug --framework ${{ matrix.framework }}
 
       - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v1
 
   verify-template:

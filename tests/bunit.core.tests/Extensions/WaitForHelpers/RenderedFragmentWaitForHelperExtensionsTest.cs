@@ -91,8 +91,6 @@ namespace Bunit.Extensions.WaitForHelpers
 			// This click causes two renders, thus something is needed to await here.
 			cut.Find("#tock").Click();
 			cut.WaitForState(() => cut.Find("#state").TextContent == "Stopped");
-
-			cut.Find("#state").TextContent.ShouldBe("Stopped");
 		}
 
 		[Fact(DisplayName = "WaitForState can detect async changes to properties in the CUT")]
