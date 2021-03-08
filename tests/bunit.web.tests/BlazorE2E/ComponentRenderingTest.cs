@@ -552,7 +552,10 @@ namespace Bunit.BlazorE2E
 			cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 		}
 
-		[Fact]
+		[Fact(Skip = "Skipping because this test relies on the dispatcher being " +
+					 "free after a specific time. With the current dispatcher/sync " +
+					 "context setup, this test will continue to fail from time to " +
+					 "time on Linux. See https://github.com/egil/bUnit/issues/329")]
 		public void CanDispatchAsyncWorkToSyncContext()
 		{
 			var cut = RenderComponent<DispatchingComponent>();
@@ -560,7 +563,8 @@ namespace Bunit.BlazorE2E
 
 			cut.Find("#run-async-with-dispatch").Click();
 
-			cut.WaitForAssertion(() => Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim()));
+			cut.WaitForAssertion(()
+				=> Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim()));
 		}
 
 		// Test removed since it does not have any value in this context.
