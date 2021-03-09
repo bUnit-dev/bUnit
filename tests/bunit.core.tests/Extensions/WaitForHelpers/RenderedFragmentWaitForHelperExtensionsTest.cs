@@ -80,8 +80,6 @@ namespace Bunit.Extensions.WaitForHelpers
 		{
 			// Initial state is stopped
 			var cut = RenderComponent<TwoRendersTwoChanges>();
-			var stateElement = cut.Find("#state");
-			stateElement.TextContent.ShouldBe("Stopped");
 
 			// Clicking 'tick' changes the state, and starts a task
 			cut.Find("#tick").Click();
