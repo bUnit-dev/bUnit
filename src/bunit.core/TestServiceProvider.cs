@@ -159,7 +159,14 @@ namespace Bunit
 		private void CheckInitializedAndThrow()
 		{
 			if (IsProviderInitialized)
-				throw new InvalidOperationException("Services cannot be added to provider after it has been initialized.");
+			{
+				throw new InvalidOperationException(
+					$"New services/implementations cannot be registered with the " +
+					$"Services provider in a TestContext, after the first services has been retrieved " +
+					$"from it using e.g. the GetService or GetRequiredService methods. " +
+					$"This typically happens when a component is rendered, so make " +
+					$"sure all services are added before that.");
+			}
 		}
 	}
 }
