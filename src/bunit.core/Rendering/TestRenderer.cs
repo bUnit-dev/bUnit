@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.ExceptionServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
@@ -19,6 +20,7 @@ namespace Bunit.Rendering
 		private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
 		private readonly ILogger logger;
 		private readonly IRenderedComponentActivator activator;
+		private readonly SynchronizationContext testSyncContext;
 		private Exception? unhandledException;
 
 		/// <inheritdoc/>
@@ -32,6 +34,7 @@ namespace Bunit.Rendering
 		{
 			logger = loggerFactory.CreateLogger<TestRenderer>();
 			this.activator = activator;
+			testSyncContext = SynchronizationContext.Current;
 		}
 
 		/// <inheritdoc/>
@@ -112,7 +115,7 @@ namespace Bunit.Rendering
 				if (renderedComponents.TryGetValue(id, out var rc))
 				{
 					renderedComponents.Remove(id);
-					rc.OnRender(renderEvent);
+					testSyncContext.Send(_ => rc.OnRender(renderEvent), null);
 				}
 			}
 
@@ -122,9 +125,9 @@ namespace Bunit.Rendering
 				logger.LogDebug(new EventId(11, nameof(UpdateDisplayAsync)), $"Component with ID = {rc.ComponentId} has been rendered.");
 				LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
 
-				rc.OnRender(renderEvent);
+				testSyncContext.Send(_ => rc.OnRender(renderEvent), null);
 
-				// RC can replace the instance of the component is bound
+				// RC can replace the instance of the component it is bound
 				// to while processing the update event.
 				if (key != rc.ComponentId)
 				{
