@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit
+namespace Bunit.Extensions
 {
 	/// <summary>
 	/// Extensions for Blazor types.

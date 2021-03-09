@@ -1,27 +1,30 @@
+@inject ILogger<AsyncRenderOfSubComponentDuringInit> log
 <Wrapper>
-	@if (_eitherOr)
-	{
-		<Wrapper>
-			<Simple1 Header="FIRST" />
-		</Wrapper>
-	}
-	else
-	{
-		<Wrapper>
-			<Simple1 Header="SECOND" />
-		</Wrapper>
-	}
+    @if (_eitherOr)
+    {
+        <Wrapper>
+            <Simple1 Header="FIRST" />
+        </Wrapper>
+    }
+    else
+    {
+        <Wrapper>
+            <Simple1 Header="SECOND" />
+        </Wrapper>
+    }
 </Wrapper>
 
 @code
 {
-	private bool _eitherOr = true;
+    private bool _eitherOr = true;
 
-	[Parameter] public Task EitherOr { get; set; } = Task.CompletedTask;
+    [Parameter] public Task EitherOr { get; set; } = Task.CompletedTask;
 
-	protected override async Task OnInitializedAsync()
-	{
-		await EitherOr;
-		_eitherOr = false;
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        log.LogDebug($"Before awaiting {nameof(EitherOr)}");
+        await EitherOr;
+        log.LogDebug($"After awaiting {nameof(EitherOr)}");
+        _eitherOr = false;
+    }
 }

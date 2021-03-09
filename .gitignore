@@ -336,3 +336,5 @@ bunit.docs/log.txt
 *coverage*.info
 .sonarqube
 tests/*/coverage
+
+bunit.v3.ncrunchsolution.user

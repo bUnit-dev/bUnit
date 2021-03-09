@@ -7,6 +7,7 @@ using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Bunit.BlazorE2E
 {
@@ -18,8 +19,9 @@ namespace Bunit.BlazorE2E
 	/// </summary>
 	public class ComponentRenderingTest : TestContext
 	{
-		public ComponentRenderingTest()
+		public ComponentRenderingTest(ITestOutputHelper outputHelper)
 		{
+			Services.AddXunitLogger(outputHelper);
 			JSInterop.Mode = JSRuntimeMode.Loose;
 		}
 
@@ -550,7 +552,10 @@ namespace Bunit.BlazorE2E
 			cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 		}
 
-		[Fact]
+		[Fact(Skip = "Skipping because this test relies on the dispatcher being " +
+					 "free after a specific time. With the current dispatcher/sync " +
+					 "context setup, this test will continue to fail from time to " +
+					 "time on Linux. See https://github.com/egil/bUnit/issues/329")]
 		public void CanDispatchAsyncWorkToSyncContext()
 		{
 			var cut = RenderComponent<DispatchingComponent>();
@@ -558,20 +563,8 @@ namespace Bunit.BlazorE2E
 
 			cut.Find("#run-async-with-dispatch").Click();
 
-			cut.WaitForAssertion(
-				() =>
-				{
-					// In some cases, the original assert wont work, since the sync context might not be idle,
-					// which results in this order: First Third Second Fourth Fifth
-					Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim());
-
-					Assert.Contains("First", result.TextContent, StringComparison.Ordinal);
-					Assert.Contains("Second", result.TextContent, StringComparison.Ordinal);
-					Assert.Contains("Third", result.TextContent, StringComparison.Ordinal);
-					Assert.Contains("Fourth", result.TextContent, StringComparison.Ordinal);
-					Assert.Contains("Fifth", result.TextContent, StringComparison.Ordinal);
-				},
-				timeout: TimeSpan.FromSeconds(2));
+			cut.WaitForAssertion(()
+				=> Assert.Equal("First Second Third Fourth Fifth", result.TextContent.Trim()));
 		}
 
 		// Test removed since it does not have any value in this context.

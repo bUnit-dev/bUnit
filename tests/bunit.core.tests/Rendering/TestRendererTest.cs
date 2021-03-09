@@ -8,12 +8,18 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering
 {
 	public class TestRendererTest : TestContext
 	{
+		public TestRendererTest(ITestOutputHelper outputHelper)
+		{
+			Services.AddXunitLogger(outputHelper);
+		}
+
 		[Fact(DisplayName = "RenderFragment re-throws exception from component")]
 		public void Test004()
 		{
@@ -331,10 +337,9 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "Can render component that awaits uncompleted task in OnInitializedAsync")]
 		public void Test100()
 		{
-			using var ctx = new TestContext();
 			var tcs = new TaskCompletionSource<object>();
 
-			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+			var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
 				parameters.Add(p => p.EitherOr, tcs.Task));
 
 			cut.Find("h1").TextContent.ShouldBe("FIRST");
@@ -343,22 +348,17 @@ namespace Bunit.Rendering
 		[Fact(DisplayName = "Can render component that awaits yielding task in OnInitializedAsync")]
 		public void Test101()
 		{
-			using var ctx = new TestContext();
-
-			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+			var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
 				parameters.Add(p => p.EitherOr, Task.Delay(1)));
 
 			var h1 = cut.Find("h1");
-
 			cut.WaitForAssertion(() => h1.TextContent.ShouldBe("SECOND"));
 		}
 
 		[Fact(DisplayName = "Can render component that awaits completed task in OnInitializedAsync")]
 		public void Test102()
 		{
-			using var ctx = new TestContext();
-
-			var cut = ctx.RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+			var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
 				parameters.Add(p => p.EitherOr, Task.CompletedTask));
 
 			cut.Find("h1").TextContent.ShouldBe("SECOND");
