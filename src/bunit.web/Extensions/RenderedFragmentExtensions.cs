@@ -25,9 +25,12 @@ namespace Bunit
 		{
 			if (renderedFragment is null)
 				throw new ArgumentNullException(nameof(renderedFragment));
+
 			var result = renderedFragment.Nodes.QuerySelector(cssSelector);
+
 			if (result is null)
 				throw new ElementNotFoundException(cssSelector);
+
 			return WrapperFactory.Create(new ElementFactory<IElement>(renderedFragment, result, cssSelector));
 		}
 
