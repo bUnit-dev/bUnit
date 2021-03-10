@@ -88,7 +88,11 @@ namespace Bunit.Extensions.WaitForHelpers
 			// Clicking 'tock' completes the task, which updates the state
 			// This click causes two renders, thus something is needed to await here.
 			cut.Find("#tock").Click();
-			cut.WaitForState(() => cut.Find("#state").TextContent == "Stopped");
+			cut.WaitForState(() =>
+			{
+				var elms = cut.FindAll("#state");
+				return elms.Count == 1 && elms[0].TextContent == "Stopped";
+			});
 		}
 
 		[Fact(DisplayName = "WaitForState can detect async changes to properties in the CUT")]
