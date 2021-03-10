@@ -1,4 +1,5 @@
 using System;
+using AngleSharp.Dom;
 using Bunit.TestAssets.SampleComponents;
 using Shouldly;
 using Xunit;
@@ -90,8 +91,8 @@ namespace Bunit.Extensions.WaitForHelpers
 			cut.Find("#tock").Click();
 			cut.WaitForState(() =>
 			{
-				var elms = cut.FindAll("#state");
-				return elms.Count == 1 && elms[0].TextContent == "Stopped";
+				var elm = cut.Nodes.QuerySelector("#state");
+				return elm?.TextContent == "Stopped";
 			});
 		}
 
