@@ -18,7 +18,7 @@ The test implementation of Blazor's authentication and authorization can be put 
 bUnit's authentication and authorization implementation is easily available by calling [`AddTestAuthorization()`](xref:Bunit.TestDoubles.FakeAuthorizationExtensions.AddTestAuthorization(Bunit.TestContextBase)) on a test context. This adds the necessary services to the `Services` collection and the `CascadingAuthenticationState` component to the [root render tree](xref:root-render-tree). The method returns an instance of the <xref:Bunit.TestDoubles.TestAuthorizationContext> type that allows you to control the authentication and authorization state for a test.
 
 > [!NOTE]
-> If your test class inherits directly from bUnit's <xref:Bunit.TestContext>, as described in <xref:writing-csharp-tests#remove-boilerplate-code-from-tests>, then you need to call the [`AddTestAuthorization()`](xref:Bunit.TestDoubles.FakeAuthorizationExtensions.AddTestAuthorization(Bunit.TestContextBase)) method like so: `this.AddTestAuthorization()`.
+> If your test class inherits directly from bUnit's <xref:Bunit.TestContext>, as described in <xref:writing-csharp-tests#remove-boilerplate-code-from-tests>, then you need to call the [`AddTestAuthorization()`](xref:Bunit.TestDoubles.FakeAuthorizationExtensions.AddTestAuthorization(Bunit.TestContextBase)) method on `this`, since `AddTestAuthorization()` is an extension method, otherwise it wont be available. E.g.: `this.AddTestAuthorization()`.
 
 The following sections show how to set each of these states in a test.
 
