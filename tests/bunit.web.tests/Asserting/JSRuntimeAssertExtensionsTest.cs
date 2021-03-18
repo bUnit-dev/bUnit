@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
-using Bunit.JSInterop;
 using Bunit.JSInterop.InvocationHandlers;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;

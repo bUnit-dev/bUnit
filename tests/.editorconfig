@@ -23,6 +23,7 @@ dotnet_diagnostic.MA0004.severity = none            # https://github.com/atc-net
 
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+dotnet_diagnostic.CA1064.severity = suggestion      # CA1064: Exceptions should be public
 dotnet_diagnostic.CA1707.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA1707.md
 dotnet_diagnostic.CA2007.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA2007.md
 
