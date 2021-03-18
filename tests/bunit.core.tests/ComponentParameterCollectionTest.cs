@@ -7,13 +7,11 @@ using Xunit;
 
 namespace Bunit
 {
-	public class ComponentParameterCollectionTest
+	public class ComponentParameterCollectionTest : TestContext
 	{
-		private static readonly TestContext Context = new();
-
-		private static IRenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
+		private IRenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
 		{
-			var res = (IRenderedFragment)Context.Renderer.RenderFragment(renderFragment);
+			var res = (IRenderedFragment)Renderer.RenderFragment(renderFragment);
 			return res.FindComponent<Params>();
 		}
 
