@@ -34,4 +34,8 @@
 		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="TestDoubles\NavigationManager\" />
+	</ItemGroup>
+
 </Project>
