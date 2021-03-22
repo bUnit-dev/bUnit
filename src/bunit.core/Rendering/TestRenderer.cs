@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.ExceptionServices;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
@@ -14,14 +13,17 @@ namespace Bunit.Rendering
 	/// <summary>
 	/// Represents a bUnit <see cref="ITestRenderer"/> used to render Blazor components and fragments during bUnit tests.
 	/// </summary>
-	public partial class TestRenderer : Renderer, ITestRenderer
+	public class TestRenderer : Renderer, ITestRenderer
 	{
 		private readonly object renderTreeAccessLock = new();
 		private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
 		private readonly ILogger logger;
 		private readonly IRenderedComponentActivator activator;
-		private readonly SynchronizationContext testSyncContext;
-		private Exception? unhandledException;
+		private TaskCompletionSource<Exception> unhandledExceptionTsc = new();
+		private Exception? capturedUnhandledException;
+
+		/// <inheritdoc/>
+		public Task<Exception> UnhandledException => unhandledExceptionTsc.Task;
 
 		/// <inheritdoc/>
 		public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
@@ -34,7 +36,6 @@ namespace Bunit.Rendering
 		{
 			logger = loggerFactory.CreateLogger<TestRenderer>();
 			this.activator = activator;
-			testSyncContext = SynchronizationContext.Current;
 		}
 
 		/// <inheritdoc/>
@@ -57,6 +58,8 @@ namespace Bunit.Rendering
 		{
 			if (fieldInfo is null)
 				throw new ArgumentNullException(nameof(fieldInfo));
+
+			ResetUnhandledException();
 
 			var result = Dispatcher.InvokeAsync(() => base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs));
 
@@ -98,7 +101,17 @@ namespace Bunit.Rendering
 
 		/// <inheritdoc/>
 		protected override void HandleException(Exception exception)
-			=> unhandledException = exception;
+		{
+			capturedUnhandledException = exception;
+
+			LogUnhandledException(capturedUnhandledException);
+
+			if (!unhandledExceptionTsc.TrySetResult(capturedUnhandledException))
+			{
+				unhandledExceptionTsc = new TaskCompletionSource<Exception>();
+				unhandledExceptionTsc.SetResult(capturedUnhandledException);
+			}
+		}
 
 		/// <inheritdoc/>
 		protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
@@ -115,7 +128,7 @@ namespace Bunit.Rendering
 				if (renderedComponents.TryGetValue(id, out var rc))
 				{
 					renderedComponents.Remove(id);
-					testSyncContext.Send(_ => rc.OnRender(renderEvent), null);
+					rc.OnRender(renderEvent);
 				}
 			}
 
@@ -125,7 +138,7 @@ namespace Bunit.Rendering
 				logger.LogDebug(new EventId(11, nameof(UpdateDisplayAsync)), $"Component with ID = {rc.ComponentId} has been rendered.");
 				LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
 
-				testSyncContext.Send(_ => rc.OnRender(renderEvent), null);
+				rc.OnRender(renderEvent);
 
 				// RC can replace the instance of the component it is bound
 				// to while processing the update event.
@@ -160,6 +173,8 @@ namespace Bunit.Rendering
 		private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
 			where TResult : IRenderedFragmentBase
 		{
+			ResetUnhandledException();
+
 			TResult renderedComponent = default!;
 
 			var renderTask = Dispatcher.InvokeAsync(() =>
@@ -283,12 +298,13 @@ namespace Bunit.Rendering
 			return framesCollection[componentId];
 		}
 
+		private void ResetUnhandledException() => capturedUnhandledException = null;
+
 		private void AssertNoUnhandledExceptions()
 		{
-			if (unhandledException is Exception unhandled)
+			if (capturedUnhandledException is Exception unhandled)
 			{
-				unhandledException = null;
-				LogUnhandledException(unhandled);
+				capturedUnhandledException = null;
 
 				if (unhandled is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
 				{

@@ -12,6 +12,12 @@ namespace Bunit.Rendering
 	public interface ITestRenderer
 	{
 		/// <summary>
+		/// Gets a <see cref="Task{Exception}"/>, which completes when an unhandled exception
+		/// is thrown during the rendering of a component, that is caught by the renderer.
+		/// </summary>
+		Task<Exception> UnhandledException { get; }
+
+		/// <summary>
 		/// Gets the <see cref="Dispatcher"/> associated with this <see cref="ITestRenderer"/>.
 		/// </summary>
 		Dispatcher Dispatcher { get; }

@@ -364,6 +364,50 @@ namespace Bunit.Rendering
 			cut.Find("h1").TextContent.ShouldBe("SECOND");
 		}
 
+		[Fact(DisplayName = "UnhandledException has a reference to the exception thrown by component synchronously")]
+		public async Task Test200()
+		{
+			var syncException = Should.Throw<SyncOperationThrows.SyncOperationThrowsException>(
+				() => RenderComponent<SyncOperationThrows>());
+
+			var capturedException = await Renderer.UnhandledException;
+			capturedException.ShouldBe(syncException);
+		}
+
+		[Fact(DisplayName = "UnhandledException has a reference to the exception thrown by an async operation in a component")]
+		public async Task Test201()
+		{
+			var tsc = new TaskCompletionSource<object>();
+			var expectedException = new AsyncOperationThrows.AsyncOperationThrowsException();
+			RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc.Task));
+
+			tsc.SetException(expectedException);
+
+			var actualException = await Renderer.UnhandledException;
+			actualException.ShouldBe(expectedException);
+		}
+
+		[Fact(DisplayName = "UnhandledException has a reference to latest unhandled exception thrown by a component")]
+		public async Task Test202()
+		{
+			var tsc1 = new TaskCompletionSource<object>();
+			RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc1.Task));
+			tsc1.SetException(new AsyncOperationThrows.AsyncOperationThrowsException());
+
+			var firstExceptionReported = await Renderer.UnhandledException;
+
+			var secondException = new AsyncOperationThrows.AsyncOperationThrowsException();
+			var tsc2 = new TaskCompletionSource<object>();
+			RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc2.Task));
+			tsc2.SetException(secondException);
+
+			await Task.Delay(1);
+
+			var secondExceptionReported = await Renderer.UnhandledException;
+			secondExceptionReported.ShouldBe(secondException);
+			firstExceptionReported.ShouldNotBe(secondException);
+		}
+
 		internal class NoChildNoParams : ComponentBase
 		{
 			public const string MARKUP = "hello world";
@@ -394,6 +438,7 @@ namespace Bunit.Rendering
 			[Parameter] public string? Value { get; set; }
 
 			public Task Trigger() => InvokeAsync(StateHasChanged);
+
 			public Task TriggerWithValue(string value)
 			{
 				Value = value;
@@ -423,6 +468,28 @@ namespace Bunit.Rendering
 				if (showing)
 					builder.AddContent(0, ChildContent);
 			}
+		}
+
+		internal class SyncOperationThrows : ComponentBase
+		{
+			public bool AwaitDone { get; private set; }
+
+			protected override void OnInitialized()
+				=> throw new SyncOperationThrowsException();
+
+			internal sealed class SyncOperationThrowsException : Exception { }
+		}
+
+		internal class AsyncOperationThrows : ComponentBase
+		{
+			[Parameter] public Task Awaitable { get; set; }
+
+			protected override async Task OnInitializedAsync()
+			{
+				await Awaitable;
+			}
+
+			internal sealed class AsyncOperationThrowsException : Exception { }
 		}
 	}
 }
