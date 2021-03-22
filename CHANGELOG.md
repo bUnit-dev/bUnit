@@ -28,7 +28,46 @@ List of new features.
 
   NOTE, a better approach is to use the `WaitForState` or `WaitForAssertion` methods, which now also throws unhandled exceptions. Using them, you do not need to set up a wait timeout explicitly.
 
-   By [@egil](https://github.com/egil) in [#310](https://github.com/egil/bUnit/issues/344).
+  By [@egil](https://github.com/egil) in [#344](https://github.com/egil/bUnit/issues/344).
+
+- Added a simple fake navigation manager, which is registered by default in bUnit's service provider. When the fake navigation manager's `NavigateTo` method is called, it does two things:  
+
+  1. Set the `Uri` property to the URI passed to the `NavigateTo` method (with the URI normalized to an absolute URI).
+  2. Raise the `LocationChanged` event with the URI passed to the `NavigateTo` method.
+
+  Lets look at an example: To verify that the `<GoesToFooOnInit>` component below calls the `NavigationManager.NavigateTo` method with the expected value, do the following:
+
+  `<GoesToFooOnInit>` component:
+
+  ```cshtml
+  @inject NavigationManager NavMan
+  @code {
+    protected override void OnInitialized()
+    {
+      NavMan.NavigateTo("foo");
+    }
+  }
+  ```
+
+  Test code:
+
+  ```csharp
+  // Arrange
+  using var ctx = new TestContext();
+  var navMan = ctx.Services.GetRequiredService<NavigationManager>();
+
+  // Act
+  var cut = ctx.RenderComponent<GoesToFooOnInit>();
+
+  // Assert
+  Assert.Equal($"{navMan.BaseUri}foo", navMan.Uri);
+  ```
+
+  Since the `foo` input argument is normalized to an absolute URI, we have to do the same normalization in our assertion. 
+  
+  The fake navigation manager's `BaseUri` is set to `http://localhost/`, but it is not recommended to use that URL directly in your code. Instead create an assertion by getting that value from the `BaseUri` property, like shown in the example above.
+
+  By [@egil](https://github.com/egil) in [#345](https://github.com/egil/bUnit/pull/345).
 
 ### Changed
 List of changes in existing functionality.
