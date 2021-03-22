@@ -11,8 +11,29 @@ List of new features.
 
 - Added the ability to pass a "fallback `IServiceProvider`" to the `TestServiceProvider`, available through the `Services` property on a `TestContext`. The fallback service provider enables a few interesting scenarios, such as using an alternative IoC container, or automatically generating mocks of services components under test depend on. See the [Injecting Services into Components Under Test page](https://bunit.egilhansen.com/docs/providing-input/inject-services-into-components) for more details on this feature. By [@thopdev](https://github.com/thopdev) in [#310](https://github.com/egil/bUnit/issues/310).
 
+- Added `Task<Expection> ITestRenderer.UnhandledException` property that returns a `Task<Exception>` that completes when the renderer captures an unhandled exception from a component under test. If a component is missing exception handling of asynchronous operations, e.g. in the `OnInitializedAsync` method, the exception will not break the test, because it happens on another thread. To have a test fail in this scenario, you can await the `UnhandledException` property on the `TestContext.Renderer` property, e.g.:
+  
+  ```csharp
+  using var ctx = new TestContext();
+
+  var cut = ctx.RenderComponent<ComponentThatThrowsDuringAsyncOperation>();
+
+  Task<Exception?> waitTimeout = Task.Delay(500).ContinueWith(_ => Task.FromResult<Exception?>(null)).Unwrap();
+  Exception? unhandledException = await Task.WhenAny<Exception?>(Renderer.UnhandledException, waitTimeout).Unwrap();
+  
+  Assert.Null(unhandledException);
+  ```
+
+  In this example, we await any unhandled exceptions from the renderer, or our wait timeout. The `waitTimeout` ensures that we will not wait forever, in case no unhandled exception is thrown.
+
+  NOTE, a better approach is to use the `WaitForState` or `WaitForAssertion` methods, which now also throws unhandled exceptions. Using them, you do not need to set up a wait timeout explicitly.
+
+   By [@egil](https://github.com/egil) in [#310](https://github.com/egil/bUnit/issues/344).
+
 ### Changed
 List of changes in existing functionality.
+
+- `WaitForAssertion` and `WaitForState` now throws unhandled exception caught by the renderer from a component under test. This can happen if a component is awaiting an asynchronous operation that throws, e.g. a API call using a misconfigured `HttpClient`. By [@egil](https://github.com/egil) in [#310](https://github.com/egil/bUnit/issues/344).
 
 ### Removed
 List of now removed features.
