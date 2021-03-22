@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.ExceptionServices;
 using Bunit.Extensions.WaitForHelpers;
 
 namespace Bunit
@@ -22,13 +23,21 @@ namespace Bunit
 		public static void WaitForState(this IRenderedFragmentBase renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
 		{
 			using var waiter = new WaitForStateHelper(renderedFragment, statePredicate, timeout);
+
 			try
 			{
 				waiter.WaitTask.GetAwaiter().GetResult();
 			}
-			catch (AggregateException e) when (e.InnerException is not null)
+			catch (Exception e)
 			{
-				throw e.InnerException;
+				if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
+				{
+					ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
+				}
+				else
+				{
+					ExceptionDispatchInfo.Capture(e).Throw();
+				}
 			}
 		}
 
@@ -45,13 +54,21 @@ namespace Bunit
 		public static void WaitForAssertion(this IRenderedFragmentBase renderedFragment, Action assertion, TimeSpan? timeout = null)
 		{
 			using var waiter = new WaitForAssertionHelper(renderedFragment, assertion, timeout);
+
 			try
 			{
 				waiter.WaitTask.GetAwaiter().GetResult();
 			}
-			catch (AggregateException e) when (e.InnerException is not null)
+			catch (Exception e)
 			{
-				throw e.InnerException;
+				if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
+				{
+					ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
+				}
+				else
+				{
+					ExceptionDispatchInfo.Capture(e).Throw();
+				}
 			}
 		}
 	}

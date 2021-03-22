@@ -1,6 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Bunit.Rendering;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.Extensions.WaitForHelpers
@@ -13,7 +15,7 @@ namespace Bunit.Extensions.WaitForHelpers
 	{
 		private readonly object lockObject = new();
 		private readonly Timer timer;
-		private readonly TaskCompletionSource<object?> completionSouce;
+		private readonly TaskCompletionSource<object?> checkPassedCompletionSouce;
 		private readonly Func<bool> completeChecker;
 		private readonly IRenderedFragmentBase renderedFragment;
 		private readonly ILogger logger;
@@ -40,7 +42,7 @@ namespace Bunit.Extensions.WaitForHelpers
 		/// Gets the task that will complete successfully if the check passed before the timeout was reached.
 		/// The task will complete with an <see cref="WaitForFailedException"/> exception if the timeout was reached without the check passing.
 		/// </summary>
-		public Task WaitTask => completionSouce.Task;
+		public Task WaitTask { get; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WaitForHelper"/> class.
@@ -50,13 +52,25 @@ namespace Bunit.Extensions.WaitForHelpers
 			this.renderedFragment = renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment));
 			this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
 			logger = renderedFragment.Services.CreateLogger<WaitForHelper>();
-			completionSouce = new TaskCompletionSource<object?>();
+
+			var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
+			var renderException = renderer
+				.UnhandledException
+				.ContinueWith(x => Task.FromException(x.Result), CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Current)
+				.Unwrap();
+
+			checkPassedCompletionSouce = new TaskCompletionSource<object?>();
+			WaitTask = Task.WhenAny(checkPassedCompletionSouce.Task, renderException).Unwrap();
+
 			timer = new Timer(OnTimeout, this, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
 
-			OnAfterRender(this, EventArgs.Empty);
-			this.renderedFragment.OnAfterRender += OnAfterRender;
-			OnAfterRender(this, EventArgs.Empty);
-			StartTimer(timeout);
+			if (!WaitTask.IsCompleted)
+			{
+				OnAfterRender(this, EventArgs.Empty);
+				this.renderedFragment.OnAfterRender += OnAfterRender;
+				OnAfterRender(this, EventArgs.Empty);
+				StartTimer(timeout);
+			}
 		}
 
 		private void StartTimer(TimeSpan? timeout)
@@ -88,7 +102,7 @@ namespace Bunit.Extensions.WaitForHelpers
 					logger.LogDebug(new EventId(1, nameof(OnAfterRender)), $"Checking the wait condition for component {renderedFragment.ComponentId}");
 					if (completeChecker())
 					{
-						completionSouce.TrySetResult(null);
+						checkPassedCompletionSouce.TrySetResult(null);
 						logger.LogDebug(new EventId(2, nameof(OnAfterRender)), $"The check completed successfully for component {renderedFragment.ComponentId}");
 						Dispose();
 					}
@@ -104,7 +118,7 @@ namespace Bunit.Extensions.WaitForHelpers
 
 					if (StopWaitingOnCheckException)
 					{
-						completionSouce.TrySetException(new WaitForFailedException(CheckThrowErrorMessage, capturedException));
+						checkPassedCompletionSouce.TrySetException(new WaitForFailedException(CheckThrowErrorMessage, capturedException));
 						Dispose();
 					}
 				}
@@ -123,7 +137,7 @@ namespace Bunit.Extensions.WaitForHelpers
 
 				logger.LogDebug(new EventId(5, nameof(OnTimeout)), $"The wait for helper for component {renderedFragment.ComponentId} timed out");
 
-				completionSouce.TrySetException(new WaitForFailedException(TimeoutErrorMessage, capturedException));
+				checkPassedCompletionSouce.TrySetException(new WaitForFailedException(TimeoutErrorMessage, capturedException));
 
 				Dispose();
 			}
@@ -160,7 +174,7 @@ namespace Bunit.Extensions.WaitForHelpers
 				isDisposed = true;
 				renderedFragment.OnAfterRender -= OnAfterRender;
 				timer.Dispose();
-				completionSouce.TrySetCanceled();
+				checkPassedCompletionSouce.TrySetCanceled();
 				logger.LogDebug(new EventId(6, nameof(Dispose)), $"The state wait helper for component {renderedFragment.ComponentId} disposed");
 			}
 		}
