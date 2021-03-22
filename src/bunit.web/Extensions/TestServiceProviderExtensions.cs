@@ -34,7 +34,6 @@ namespace Bunit.Extensions
 			services.AddSingleton<ILoggerFactory>(NullLoggerFactory.Instance);
 			services.AddSingleton<AuthenticationStateProvider, PlaceholderAuthenticationStateProvider>();
 			services.AddSingleton<IAuthorizationService, PlaceholderAuthorizationService>();
-			services.AddSingleton<NavigationManager, PlaceholderNavigationManager>();
 			services.AddSingleton<HttpClient, PlaceholderHttpClient>();
 			services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
 
