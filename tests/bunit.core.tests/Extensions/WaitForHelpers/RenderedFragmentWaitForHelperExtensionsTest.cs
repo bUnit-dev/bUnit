@@ -138,8 +138,11 @@ namespace Bunit.Extensions.WaitForHelpers
 		{
 			protected override async Task OnInitializedAsync()
 			{
-				await Task.Delay(1);
-				await InvokeAsync(() => throw new ThrowsAfterAsyncOperationException());
+				await InvokeAsync(async () =>
+				{
+					await Task.Delay(100);
+					throw new ThrowsAfterAsyncOperationException();
+				});
 			}
 
 			internal sealed class ThrowsAfterAsyncOperationException : Exception { }
