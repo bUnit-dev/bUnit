@@ -40,6 +40,9 @@ namespace Bunit.Extensions
 			// bUnits fake JSInterop
 			services.AddSingleton<IJSRuntime>(jsInterop.JSRuntime);
 
+			// bUnits fake Navigation Manager
+			services.AddSingleton<NavigationManager, FakeNavigationManager>();
+
 			// bUnit specific services
 			services.AddSingleton<TestContextBase>(testContext);
 			services.AddSingleton<ITestRenderer, WebTestRenderer>();
