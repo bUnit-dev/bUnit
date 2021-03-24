@@ -13,4 +13,8 @@
 		<ProjectReference Include="..\bunit.testassets\bunit.testassets.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="JSInterop\NewFolder\" />
+	</ItemGroup>
+
 </Project>
