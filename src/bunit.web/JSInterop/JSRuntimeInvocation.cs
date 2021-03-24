@@ -43,6 +43,20 @@ namespace Bunit
 		/// <summary>
 		/// Initializes a new instance of the <see cref="JSRuntimeInvocation"/> struct.
 		/// </summary>
+		public JSRuntimeInvocation(string identifier, Type resultType, string invocationMethodName)
+			: this(identifier, null, Array.Empty<object?>(), resultType, invocationMethodName)
+		{ }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="JSRuntimeInvocation"/> struct.
+		/// </summary>
+		public JSRuntimeInvocation(string identifier, object?[] args, Type resultType, string invocationMethodName)
+			: this(identifier, null, args, resultType, invocationMethodName)
+		{ }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="JSRuntimeInvocation"/> struct.
+		/// </summary>
 		public JSRuntimeInvocation(
 			string identifier,
 			CancellationToken? cancellationToken,
