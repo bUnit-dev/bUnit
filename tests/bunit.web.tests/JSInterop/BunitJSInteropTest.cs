@@ -108,6 +108,7 @@ namespace Bunit.JSInterop
 				x => x.Identifier.ShouldBe(identifier),
 				x => x.Arguments.ShouldBe(args));
 		}
+
 		[Fact(DisplayName = "All invocations received AFTER a invocation handler " +
 							"has a result set, receives the same result")]
 		public async Task Test005x()
