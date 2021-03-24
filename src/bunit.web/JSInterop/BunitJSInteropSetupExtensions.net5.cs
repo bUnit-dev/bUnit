@@ -138,12 +138,15 @@ namespace Bunit
 			if (jsInterop is null)
 				throw new ArgumentNullException(nameof(jsInterop));
 
-			var handler = jsInterop.TryGetHandlerFor<IJSObjectReference>(new JSRuntimeInvocation(identifier, default, arguments)) as JSObjectReferenceInvocationHandler;
+			var handler = jsInterop.TryGetHandlerFor<IJSObjectReference>(
+				new JSRuntimeInvocation(identifier, default, arguments, typeof(IJSObjectReference), string.Empty))
+				as JSObjectReferenceInvocationHandler;
+
 			return handler?.JSInterop;
 		}
 
 		private static JSObjectReferenceInvocationHandler CreateJSObjectReferenceInvocationHandler(BunitJSInterop parent, string identifier, InvocationMatcher invocationMatcher)
-			=> new JSObjectReferenceInvocationHandler(parent, identifier, invocationMatcher);
+			=> new(parent, identifier, invocationMatcher);
 	}
 }
 #endif

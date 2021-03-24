@@ -14,7 +14,7 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		internal LooseModeJSObjectReferenceInvocationHandler(BunitJSInterop parent)
 			: base(CatchAllIdentifier, _ => parent.Mode == JSRuntimeMode.Loose)
 		{
-			SetResult(new BunitJSObjectReference(parent.JSRuntime));
+			SetResult(new BunitJSObjectReference(parent));
 		}
 	}
 }
