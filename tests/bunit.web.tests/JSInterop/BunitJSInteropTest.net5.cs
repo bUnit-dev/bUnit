@@ -1,6 +1,7 @@
 #if NET5_0
 using System;
 using System.Linq;
+using AutoFixture.Xunit2;
 using Microsoft.JSInterop;
 using Shouldly;
 using Xunit;
@@ -54,73 +55,6 @@ namespace Bunit.JSInterop
 			var exception = Should.Throw<JSRuntimeUnhandledInvocationException>(() => ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<object>(identifier));
 			exception.Invocation.Identifier.ShouldBe(identifier);
 			exception.Invocation.Arguments.ShouldBeEmpty();
-		}
-
-		[Fact(DisplayName = "After IJSUnmarshalledRuntime invocation a invocation should be visible from the Invocations list when passed one arguments.")]
-		public void Test051()
-		{
-			var identifier = "fooFunc";
-			var args = new[] { "bar" };
-			var sut = CreateSut(JSRuntimeMode.Strict);
-
-			var planned = sut.Setup<Guid>("fooFunc", args);
-			planned.SetResult(Guid.NewGuid());
-
-			((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, Guid>(identifier, "bar");
-
-			var invocation = sut.Invocations[identifier].Single();
-			invocation.Identifier.ShouldBe(identifier);
-			invocation.Arguments.ShouldBe(args);
-		}
-
-		[Fact(DisplayName = "After IJSUnmarshalledRuntime invocation a invocation should be visible from the Invocations list when passed two arguments.")]
-		public void Test052()
-		{
-			var identifier = "fooFunc";
-			var args = new[] { "bar", "baz" };
-			var sut = CreateSut(JSRuntimeMode.Strict);
-
-			var planned = sut.Setup<Guid>("fooFunc", args);
-			planned.SetResult(Guid.NewGuid());
-
-			((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, string, Guid>(identifier, "bar", "baz");
-
-			var invocation = sut.Invocations[identifier].Single();
-			invocation.Identifier.ShouldBe(identifier);
-			invocation.Arguments.ShouldBe(args);
-		}
-
-		[Fact(DisplayName = "After IJSUnmarshalledRuntime invocation a invocation should be visible from the Invocations list when passed three arguments.")]
-		public void Test053()
-		{
-			var identifier = "fooFunc";
-			var args = new[] { "bar", "baz", "boa" };
-			var sut = CreateSut(JSRuntimeMode.Strict);
-
-			var planned = sut.Setup<Guid>("fooFunc", args);
-			planned.SetResult(Guid.NewGuid());
-
-			((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<string, string, string, Guid>(identifier, "bar", "baz", "boa");
-
-			var invocation = sut.Invocations[identifier].Single();
-			invocation.Identifier.ShouldBe(identifier);
-			invocation.Arguments.ShouldBe(args);
-		}
-
-		[Fact(DisplayName = "After IJSUnmarshalledRuntime invocation a invocation should be visible from the Invocations list when passed zero arguments.")]
-		public void Test054()
-		{
-			var identifier = "fooFunc";
-			var sut = CreateSut(JSRuntimeMode.Strict);
-
-			var planned = sut.Setup<Guid>("fooFunc");
-			planned.SetResult(Guid.NewGuid());
-
-			((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<Guid>(identifier);
-
-			var invocation = sut.Invocations[identifier].Single();
-			invocation.Identifier.ShouldBe(identifier);
-			invocation.Arguments.ShouldBeEmpty();
 		}
 
 		[Fact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when passed one arguments.")]
@@ -180,6 +114,79 @@ namespace Bunit.JSInterop
 
 			var actual = ((IJSUnmarshalledRuntime)sut.JSRuntime).InvokeUnmarshalled<Guid>(identifier);
 			actual.ShouldBe(expectedResult);
+		}
+
+		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier), then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test310(string identifier)
+		{
+			var sut = CreateSut(JSRuntimeMode.Loose);
+			var jsUnmarshalledRuntime = (IJSUnmarshalledRuntime)sut.JSRuntime;
+
+			jsUnmarshalledRuntime.InvokeUnmarshalled<string>(identifier);
+
+			sut.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					null,
+					Array.Empty<object>(),
+					typeof(string),
+					"InvokeUnmarshalled"));
+		}
+
+		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0), then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test306(string identifier, string arg0)
+		{
+			var sut = CreateSut(JSRuntimeMode.Loose);
+			var jsUnmarshalledRuntime = (IJSUnmarshalledRuntime)sut.JSRuntime;
+
+			jsUnmarshalledRuntime.InvokeUnmarshalled<string, string>(identifier, arg0);
+
+			sut.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					null,
+					new[] { arg0 },
+					typeof(string),
+					"InvokeUnmarshalled"));
+		}
+
+		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1), then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test307(string identifier, string arg0, string arg1)
+		{
+			var sut = CreateSut(JSRuntimeMode.Loose);
+			var jsUnmarshalledRuntime = (IJSUnmarshalledRuntime)sut.JSRuntime;
+
+			jsUnmarshalledRuntime.InvokeUnmarshalled<string, string, string>(identifier, arg0, arg1);
+
+			sut.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					null,
+					new[] { arg0, arg1 },
+					typeof(string),
+					"InvokeUnmarshalled"));
+		}
+
+		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1, arg2), then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test308(string identifier, string arg0, string arg1, string arg2)
+		{
+			var sut = CreateSut(JSRuntimeMode.Loose);
+			var jsUnmarshalledRuntime = (IJSUnmarshalledRuntime)sut.JSRuntime;
+
+			jsUnmarshalledRuntime.InvokeUnmarshalled<string, string, string, string>(
+				identifier, arg0, arg1, arg2);
+
+			sut.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					null,
+					new[] { arg0, arg1, arg2 },
+					typeof(string),
+					"InvokeUnmarshalled"));
 		}
 	}
 }

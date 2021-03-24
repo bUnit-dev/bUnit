@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace Bunit
@@ -16,9 +15,9 @@ namespace Bunit
 		public string Identifier { get; }
 
 		/// <summary>
-		/// Gets the cancellation token used in the invocation.
+		/// Gets the cancellation token used in the invocation, if any.
 		/// </summary>
-		public CancellationToken CancellationToken { get; }
+		public CancellationToken? CancellationToken { get; }
 
 		/// <summary>
 		/// Gets the arguments used in the invocation.
@@ -26,21 +25,46 @@ namespace Bunit
 		public IReadOnlyList<object?> Arguments { get; }
 
 		/// <summary>
+		/// Gets whether the invocation has a <c>void</c> return type.
+		/// </summary>
+		public bool IsVoidResultInvocation { get; }
+
+		/// <summary>
+		/// Gets the result type of the invocation. If <see cref="IsVoidResultInvocation"/> then
+		/// this will be of type <see cref="object"/>.
+		/// </summary>
+		public Type ResultType { get; }
+
+		/// <summary>
+		/// Gets the name of the method that initiated the invocation, e.g. <c>InvokeAsync</c> or <c>Invoke</c>.
+		/// </summary>
+		public string InvocationMethodName { get; }
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="JSRuntimeInvocation"/> struct.
 		/// </summary>
-		[SuppressMessage("Design", "CA1068:CancellationToken parameters must come last", Justification = "Parameters order is like this to match the IJSRuntime interface.")]
-		public JSRuntimeInvocation(string identifier, CancellationToken cancellationToken, object?[]? args)
+		public JSRuntimeInvocation(
+			string identifier,
+			CancellationToken? cancellationToken,
+			object?[]? args,
+			Type resultType,
+			string invocationMethodName)
 		{
 			Identifier = identifier;
 			CancellationToken = cancellationToken;
 			Arguments = args ?? Array.Empty<object?>();
+			ResultType = resultType;
+			InvocationMethodName = invocationMethodName;
+			IsVoidResultInvocation = resultType == typeof(object);
 		}
 
 		/// <inheritdoc/>
 		public bool Equals(JSRuntimeInvocation other)
 			=> Identifier.Equals(other.Identifier, StringComparison.Ordinal)
 			&& CancellationToken == other.CancellationToken
-			&& ArgumentsEqual(Arguments, other.Arguments);
+			&& ArgumentsEqual(Arguments, other.Arguments)
+			&& ResultType == other.ResultType
+			&& InvocationMethodName.Equals(other.InvocationMethodName, StringComparison.Ordinal);
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is JSRuntimeInvocation other && Equals(other);
@@ -51,6 +75,8 @@ namespace Bunit
 			var hash = default(HashCode);
 			hash.Add(Identifier);
 			hash.Add(CancellationToken);
+			hash.Add(ResultType);
+			hash.Add(InvocationMethodName);
 
 			for (var i = 0; i < Arguments.Count; i++)
 			{

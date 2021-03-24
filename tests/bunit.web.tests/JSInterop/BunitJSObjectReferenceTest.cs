@@ -2,7 +2,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using AutoFixture.Xunit2;
 using Bunit.JSInterop.InvocationHandlers.Implementation;
 using Microsoft.JSInterop;
 using Microsoft.JSInterop.Implementation;
@@ -256,21 +258,21 @@ namespace Bunit.JSInterop
 		}
 
 		[Fact(DisplayName = "IJSObjectReference can be cast to IJSInProcessObjectReference")]
-		public async Task Test070()
+		public void Test070()
 		{
 			JSInterop.Mode = JSRuntimeMode.Loose;
 
-			var jsRuntime = await JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("FOO.js");
+			var jsRuntime = GetBunitJSObjectReference();
 
 			jsRuntime.ShouldBeAssignableTo<IJSInProcessObjectReference>();
 		}
 
 		[Fact(DisplayName = "IJSObjectReference can be cast to IJSUnmarshalledObjectReference")]
-		public async Task Test071()
+		public void Test071()
 		{
 			JSInterop.Mode = JSRuntimeMode.Loose;
 
-			var jsRuntime = await JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("FOO.js");
+			var jsRuntime = GetBunitJSObjectReference();
 
 			jsRuntime.ShouldBeAssignableTo<IJSUnmarshalledObjectReference>();
 		}
@@ -279,7 +281,7 @@ namespace Bunit.JSInterop
 		public async Task Test080()
 		{
 			JSInterop.Mode = JSRuntimeMode.Loose;
-			var jsInProcess = (IJSInProcessObjectReference)(await JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("FOO.js"));
+			var jsInProcess = (IJSInProcessObjectReference)GetBunitJSObjectReference();
 
 			await jsInProcess.InvokeAsync<string>("bar1");
 			await jsInProcess.InvokeAsync<string>("bar2", "baz");
@@ -300,7 +302,7 @@ namespace Bunit.JSInterop
 		public async Task Test081()
 		{
 			JSInterop.Mode = JSRuntimeMode.Loose;
-			var jsUnmarshalled = (IJSUnmarshalledObjectReference)(await JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("FOO.js"));
+			var jsUnmarshalled = (IJSUnmarshalledObjectReference)GetBunitJSObjectReference();
 
 			await jsUnmarshalled.InvokeAsync<string>("bar1");
 			await jsUnmarshalled.InvokeAsync<string>("bar2", "baz");
@@ -324,6 +326,154 @@ namespace Bunit.JSInterop
 			JSInterop.VerifyInvoke("bar9").Arguments.ShouldBe(new[] { "baz", "boo" });
 			JSInterop.VerifyInvoke("bar10").Arguments.ShouldBe(new[] { "baz", "boo", "bah" });
 		}
+
+		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier), then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test310(string identifier)
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+			var jsUnmarshalledRuntime = (IJSUnmarshalledObjectReference)GetBunitJSObjectReference();
+
+			jsUnmarshalledRuntime.InvokeUnmarshalled<string>(identifier);
+
+			JSInterop.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					null,
+					Array.Empty<object>(),
+					typeof(string),
+					"InvokeUnmarshalled"));
+		}
+
+		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0), then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test306(string identifier, string arg0)
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+			var jsUnmarshalledRuntime = (IJSUnmarshalledObjectReference)GetBunitJSObjectReference();
+
+			jsUnmarshalledRuntime.InvokeUnmarshalled<string, string>(identifier, arg0);
+
+			JSInterop.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					null,
+					new[] { arg0 },
+					typeof(string),
+					"InvokeUnmarshalled"));
+		}
+
+		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1), then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test307(string identifier, string arg0, string arg1)
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+			var jsUnmarshalledRuntime = (IJSUnmarshalledObjectReference)GetBunitJSObjectReference();
+
+			jsUnmarshalledRuntime.InvokeUnmarshalled<string, string, string>(identifier, arg0, arg1);
+
+			JSInterop.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					null,
+					new[] { arg0, arg1 },
+					typeof(string),
+					"InvokeUnmarshalled"));
+		}
+
+		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1, arg2), then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test308(string identifier, string arg0, string arg1, string arg2)
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+			var jsUnmarshalledRuntime = (IJSUnmarshalledObjectReference)GetBunitJSObjectReference();
+
+			jsUnmarshalledRuntime.InvokeUnmarshalled<string, string, string, string>(
+				identifier, arg0, arg1, arg2);
+
+			JSInterop.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					null,
+					new[] { arg0, arg1, arg2 },
+					typeof(string),
+					"InvokeUnmarshalled"));
+		}
+
+		[Theory(DisplayName = "When calling InvokeVoidAsync, then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test302(string identifier, string[] args, CancellationToken cancellationToken)
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+			var sut = GetBunitJSObjectReference();
+
+			sut.InvokeVoidAsync(identifier, cancellationToken, args);
+
+			JSInterop.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					cancellationToken,
+					args,
+					typeof(object),
+					"InvokeVoidAsync"));
+		}
+
+		[Theory(DisplayName = "When calling InvokeAsync, then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test303(string identifier, string[] args, CancellationToken cancellationToken)
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+			var sut = GetBunitJSObjectReference();
+
+			sut.InvokeAsync<string>(identifier, cancellationToken, args);
+
+			JSInterop.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					cancellationToken,
+					args,
+					typeof(string),
+					"InvokeAsync"));
+		}
+
+		[Theory(DisplayName = "When calling InvokeVoid, then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test304(string identifier, string[] args)
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+			var sut = GetBunitJSObjectReference();
+
+			sut.InvokeVoid(identifier, args);
+
+			JSInterop.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					null,
+					args,
+					typeof(object),
+					"InvokeVoid"));
+		}
+
+		[Theory(DisplayName = "When calling Invoke, then the invocation should be visible from the Invocations list"), AutoData]
+		public void Test305(string identifier, string[] args)
+		{
+			JSInterop.Mode = JSRuntimeMode.Loose;
+			var sut = GetBunitJSObjectReference();
+
+			sut.Invoke<int>(identifier, args);
+
+			JSInterop.Invocations[identifier]
+				.ShouldHaveSingleItem()
+				.ShouldBe(new JSRuntimeInvocation(
+					identifier,
+					null,
+					args,
+					typeof(int),
+					"Invoke"));
+		}
+
+		private BunitJSObjectReference GetBunitJSObjectReference()
+			=> (BunitJSObjectReference)JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("FOO.js").Result;
 	}
 }
 #endif

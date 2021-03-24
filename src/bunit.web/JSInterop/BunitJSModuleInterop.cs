@@ -1,5 +1,5 @@
 #if NET5_0
-namespace Bunit.JSInterop
+namespace Bunit
 {
 	/// <summary>
 	/// Represents a bUnit JSInterop module.

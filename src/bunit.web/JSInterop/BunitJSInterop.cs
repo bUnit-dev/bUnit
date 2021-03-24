@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Bunit.JSInterop;
 using Bunit.JSInterop.InvocationHandlers;
 #if NET5_0
@@ -59,6 +60,30 @@ namespace Bunit
 				handlers.Add(handler.Identifier, new List<object>());
 
 			handlers[handler.Identifier].Add(handler);
+		}
+
+		internal ValueTask<TValue> HandleInvocation<TValue>(JSRuntimeInvocation invocation)
+		{
+			RegisterInvocation(invocation);
+			return TryHandlePlannedInvocation<TValue>(invocation)
+				?? new ValueTask<TValue>(default(TValue)!);
+		}
+
+		private ValueTask<TValue>? TryHandlePlannedInvocation<TValue>(JSRuntimeInvocation invocation)
+		{
+			ValueTask<TValue>? result = default;
+
+			if (TryGetHandlerFor<TValue>(invocation) is JSRuntimeInvocationHandlerBase<TValue> handler)
+			{
+				var task = handler.HandleAsync(invocation);
+				result = new ValueTask<TValue>(task);
+			}
+			else if (Mode == JSRuntimeMode.Strict)
+			{
+				throw new JSRuntimeUnhandledInvocationException(invocation);
+			}
+
+			return result;
 		}
 
 		internal virtual void RegisterInvocation(JSRuntimeInvocation invocation)

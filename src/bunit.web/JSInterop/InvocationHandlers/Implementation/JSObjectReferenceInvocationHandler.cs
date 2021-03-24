@@ -24,7 +24,7 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 			: base(identifier, invocationMatcher)
 		{
 			JSInterop = new BunitJSModuleInterop(parent);
-			SetResult(new BunitJSObjectReference(JSInterop.JSRuntime));
+			SetResult(new BunitJSObjectReference(JSInterop));
 		}
 	}
 }

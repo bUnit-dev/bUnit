@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Bunit.JSInterop
+namespace Bunit
 {
 	/// <summary>
 	/// Represents a dictionary of <see cref="JSRuntimeInvocation"/>, keyed by their identifier.

@@ -107,7 +107,13 @@ namespace Bunit
 			if (jsInterop is null)
 				throw new ArgumentNullException(nameof(jsInterop));
 
-			return jsInterop.TryGetHandlerFor<TResult>(new JSRuntimeInvocation(identifier, default, arguments)) as JSRuntimeInvocationHandler<TResult>;
+			return jsInterop.TryGetHandlerFor<TResult>(
+				new JSRuntimeInvocation(
+					identifier,
+					default,
+					arguments,
+					typeof(TResult),
+					string.Empty)) as JSRuntimeInvocationHandler<TResult>;
 		}
 
 		/// <summary>
@@ -123,7 +129,9 @@ namespace Bunit
 			if (jsInterop is null)
 				throw new ArgumentNullException(nameof(jsInterop));
 
-			return jsInterop.TryGetHandlerFor<object>(new JSRuntimeInvocation(identifier, default, arguments), x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
+			return jsInterop.TryGetHandlerFor<object>(
+				new JSRuntimeInvocation(identifier, default, arguments, typeof(object), string.Empty),
+				x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
 		}
 
 #if NET5_0

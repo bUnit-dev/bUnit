@@ -1,5 +1,6 @@
 #if NET5_0
 using System;
+using Bunit.JSInterop.Implementation;
 using Microsoft.JSInterop;
 
 namespace Bunit.JSInterop
@@ -11,31 +12,19 @@ namespace Bunit.JSInterop
 	{
 		/// <inheritdoc/>
 		public TResult InvokeUnmarshalled<TResult>(string identifier)
-		{
-			var resultTask = InvokeAsync<TResult>(identifier, Array.Empty<object?>()).AsTask();
-			return resultTask.GetAwaiter().GetResult();
-		}
+			=> JSInterop.HandleInvokeUnmarshalled<TResult>(identifier);
 
 		/// <inheritdoc/>
 		public TResult InvokeUnmarshalled<T0, TResult>(string identifier, T0 arg0)
-		{
-			var resultTask = InvokeAsync<TResult>(identifier, new object?[] { arg0 }).AsTask();
-			return resultTask.GetAwaiter().GetResult();
-		}
+			=> JSInterop.HandleInvokeUnmarshalled<T0, TResult>(identifier, arg0);
 
 		/// <inheritdoc/>
 		public TResult InvokeUnmarshalled<T0, T1, TResult>(string identifier, T0 arg0, T1 arg1)
-		{
-			var resultTask = InvokeAsync<TResult>(identifier, new object?[] { arg0, arg1 }).AsTask();
-			return resultTask.GetAwaiter().GetResult();
-		}
+			=> JSInterop.HandleInvokeUnmarshalled<T0, T1, TResult>(identifier, arg0, arg1);
 
 		/// <inheritdoc/>
 		public TResult InvokeUnmarshalled<T0, T1, T2, TResult>(string identifier, T0 arg0, T1 arg1, T2 arg2)
-		{
-			var resultTask = InvokeAsync<TResult>(identifier, new object?[] { arg0, arg1, arg2 }).AsTask();
-			return resultTask.GetAwaiter().GetResult();
-		}
+			=> JSInterop.HandleInvokeUnmarshalled<T0, T1, T2, TResult>(identifier, arg0, arg1, arg2);
 	}
 }
 #endif
