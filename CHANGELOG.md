@@ -74,6 +74,8 @@ List of changes in existing functionality.
 
 - `WaitForAssertion` and `WaitForState` now throws unhandled exception caught by the renderer from a component under test. This can happen if a component is awaiting an asynchronous operation that throws, e.g. a API call using a misconfigured `HttpClient`. By [@egil](https://github.com/egil) in [#310](https://github.com/egil/bUnit/issues/344).
 
+- Improvements to error message from bUnit's JSInterop when it receives an invocation that it has not been set up to handle. By [@egil](https://github.com/egil) in [#346](https://github.com/egil/bUnit/pull/346).
+
 ### Removed
 List of now removed features.
 
