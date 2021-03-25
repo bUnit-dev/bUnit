@@ -401,7 +401,7 @@ namespace Bunit.Rendering
 			RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc2.Task));
 			tsc2.SetException(secondException);
 
-			await Task.Delay(1);
+			await Task.Delay(50);
 
 			var secondExceptionReported = await Renderer.UnhandledException;
 			secondExceptionReported.ShouldBe(secondException);
