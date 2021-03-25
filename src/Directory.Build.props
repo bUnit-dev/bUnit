@@ -33,8 +33,13 @@
 		<Company>Egil Hansen</Company>
 		<Copyright>Egil Hansen</Copyright>
 		<Product>bUnit</Product>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>		
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageIcon>bunit-logo.png</PackageIcon>
 	</PropertyGroup>
+
+  <ItemGroup>
+      <None Include="..\..\bunit-logo.png" Pack="true" PackagePath="" />      
+  </ItemGroup>
 
   <ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
