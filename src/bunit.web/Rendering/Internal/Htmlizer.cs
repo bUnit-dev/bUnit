@@ -1,3 +1,7 @@
+// This code/file was originally copied from https://github.com/dotnet/aspnetcore/
+// It's content has been modified from the original.
+// See the NOTICE.md at the root of this repository for a copy
+// of the license from the aspnetcore repository.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
