@@ -37,8 +37,6 @@ namespace Bunit.JSInterop
 		public void Test003()
 		{
 			Should.Throw<ArgumentNullException>(() => default(BunitJSInterop)!.SetupModule("identifier", _ => true));
-			Should.Throw<ArgumentException>(() => JSInterop.SetupModule(string.Empty, _ => true));
-			Should.Throw<ArgumentNullException>(() => JSInterop.SetupModule("import", default(InvocationMatcher)!));
 		}
 
 		[Fact(DisplayName = "Calling SetupModule(uri) registers handler for module JS Interop")]
@@ -47,10 +45,7 @@ namespace Bunit.JSInterop
 			JSInterop.SetupModule("FOO.js");
 
 			JSInterop.TryGetInvokeHandler<IJSObjectReference>("import", "FOO.js")
-				.ShouldNotBeNull()
-				.ShouldSatisfyAllConditions(
-					x => x.Identifier.ShouldBe("import"),
-					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>());
+				.ShouldBeOfType<JSObjectReferenceInvocationHandler>();
 		}
 
 		[Fact(DisplayName = "Calling SetupModule(invocationMatcher) registers handler for module JS Interop")]
@@ -59,10 +54,7 @@ namespace Bunit.JSInterop
 			JSInterop.SetupModule(invocation => true);
 
 			JSInterop.TryGetInvokeHandler<IJSObjectReference>("import", "FOO.js")
-				.ShouldNotBeNull()
-				.ShouldSatisfyAllConditions(
-					x => x.Identifier.ShouldBe("import"),
-					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>());
+				.ShouldBeOfType<JSObjectReferenceInvocationHandler>();
 		}
 
 		[Fact(DisplayName = "Calling the catch-all SetupModule() registers handler for module JS Interop")]
@@ -71,10 +63,7 @@ namespace Bunit.JSInterop
 			JSInterop.SetupModule();
 
 			JSInterop.TryGetInvokeHandler<IJSObjectReference>("foo")
-				.ShouldNotBeNull()
-				.ShouldSatisfyAllConditions(
-					x => x.Identifier.ShouldBe(JSObjectReferenceInvocationHandler.CatchAllIdentifier),
-					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>());
+				.ShouldBeOfType<JSObjectReferenceInvocationHandler>();
 		}
 
 		[Fact(DisplayName = "Calling SetupModule(customImport, args) registers handler for module JS Interop")]
@@ -83,10 +72,7 @@ namespace Bunit.JSInterop
 			JSInterop.SetupModule("foo", Array.Empty<object>());
 
 			JSInterop.TryGetInvokeHandler<IJSObjectReference>("foo")
-				.ShouldNotBeNull()
-				.ShouldSatisfyAllConditions(
-					x => x.Identifier.ShouldBe("foo"),
-					x => x.ShouldBeOfType<JSObjectReferenceInvocationHandler>());
+				.ShouldBeOfType<JSObjectReferenceInvocationHandler>();
 		}
 
 		[Fact(DisplayName = "Handler for specific module name returns IJSObjectReference when receiving matching invocation")]

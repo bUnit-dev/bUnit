@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Bunit.JSInterop;
 using Bunit.JSInterop.InvocationHandlers;
@@ -16,7 +15,7 @@ namespace Bunit
 	/// </summary>
 	public class BunitJSInterop
 	{
-		private readonly Dictionary<string, List<object>> handlers = new(StringComparer.Ordinal);
+		private readonly Dictionary<Type, List<object>> handlers = new();
 		private JSRuntimeMode mode;
 
 		/// <summary>
@@ -56,10 +55,12 @@ namespace Bunit
 			if (handler is null)
 				throw new ArgumentNullException(nameof(handler));
 
-			if (!handlers.ContainsKey(handler.Identifier))
-				handlers.Add(handler.Identifier, new List<object>());
+			var resultType = typeof(TResult);
 
-			handlers[handler.Identifier].Add(handler);
+			if (!handlers.ContainsKey(resultType))
+				handlers.Add(resultType, new List<object>());
+
+			handlers[resultType].Add(handler);
 		}
 
 		internal ValueTask<TValue> HandleInvocation<TValue>(JSRuntimeInvocation invocation)
@@ -93,22 +94,40 @@ namespace Bunit
 
 		internal JSRuntimeInvocationHandlerBase<TResult>? TryGetHandlerFor<TResult>(JSRuntimeInvocation invocation, Predicate<JSRuntimeInvocationHandlerBase<TResult>>? handlerPredicate = null)
 		{
+			var resultType = typeof(TResult);
 			handlerPredicate ??= _ => true;
-			JSRuntimeInvocationHandlerBase<TResult>? result = default;
 
-			if (handlers.TryGetValue(invocation.Identifier, out var plannedInvocations))
+			if (!handlers.TryGetValue(resultType, out var plannedInvocations))
 			{
-				result = plannedInvocations.OfType<JSRuntimeInvocationHandlerBase<TResult>>()
-					.LastOrDefault(x => handlerPredicate(x) && x.CanHandle(invocation));
+				return default;
 			}
 
-			if (result is null && handlers.TryGetValue(JSRuntimeInvocationHandler.CatchAllIdentifier, out var catchAllHandlers))
+			// Search from the latest added handler for a result type
+			// and find the first handler that can handle an invocation
+			// and is not a catch all handler.
+			for (int i = plannedInvocations.Count - 1; i >= 0; i--)
 			{
-				result = catchAllHandlers.OfType<JSRuntimeInvocationHandlerBase<TResult>>()
-					.LastOrDefault(x => handlerPredicate(x) && x.CanHandle(invocation));
+				var candidate = (JSRuntimeInvocationHandlerBase<TResult>)plannedInvocations[i];
+
+				if (!candidate.IsCatchAllHandler && handlerPredicate(candidate) && candidate.CanHandle(invocation))
+				{
+					return candidate;
+				}
 			}
 
-			return result;
+			// If none of the non catch all handlers can handle,
+			// search for the latest added handler catch all handler that can, if any.
+			for (int i = plannedInvocations.Count - 1; i >= 0; i--)
+			{
+				var candidate = (JSRuntimeInvocationHandlerBase<TResult>)plannedInvocations[i];
+
+				if (candidate.IsCatchAllHandler && handlerPredicate(candidate) && candidate.CanHandle(invocation))
+				{
+					return candidate;
+				}
+			}
+
+			return default;
 		}
 
 #if NET5_0

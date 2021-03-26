@@ -17,6 +17,51 @@ namespace Bunit
 		private const string DefaultImportIdentifier = "import";
 
 		/// <summary>
+		/// Setup a handler for a <c>IJSRuntime.InvokeAsync&lt;IJSObjectReference&gt;()</c> call whose input parameters is matched by the provided
+		/// <paramref name="invocationMatcher"/>.
+		/// </summary>
+		/// <remarks>
+		/// The returned <see cref="BunitJSInterop"/> can be used to setup handlers for
+		/// <c>InvokeAsync&lt;TValue&gt;(string, object?[]?)"</c> calls to the module, using either
+		/// <see cref="SetupModule(BunitJSInterop, string)"/> or Setup calls.
+		/// </remarks>
+		/// <param name="jsInterop">The JSInterop to setup the handler for.</param>
+		/// <param name="invocationMatcher">The matcher to use to match <see cref="JSRuntimeInvocation"/>'s with.</param>
+		/// <param name="isCatchAllHandler">Set to true if the created handler is a catch all handler, that should only be used if there are no other non-catch all handlers available.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="jsInterop"/> is null.</exception>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="invocationMatcher"/> is null.</exception>
+		/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
+		public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher, bool isCatchAllHandler = false)
+		{
+			if (jsInterop is null)
+				throw new ArgumentNullException(nameof(jsInterop));
+			if (invocationMatcher is null)
+				throw new ArgumentNullException(nameof(invocationMatcher));
+
+			var result = new JSObjectReferenceInvocationHandler(jsInterop, invocationMatcher, isCatchAllHandler);
+			jsInterop.AddInvocationHandler(result);
+			return result.JSInterop;
+		}
+
+		/// <summary>
+		/// Setup a handler for a <c>IJSRuntime.InvokeAsync&lt;IJSObjectReference&gt;()</c> call whose input parameters is matched by the provided
+		/// <paramref name="invocationMatcher"/> and the <paramref name="identifier"/>.
+		/// </summary>
+		/// <remarks>
+		/// The returned <see cref="BunitJSInterop"/> can be used to setup handlers for
+		/// <c>InvokeAsync&lt;TValue&gt;(string, object?[]?)"</c> calls to the module, using either
+		/// <see cref="SetupModule(BunitJSInterop, string)"/> or Setup calls.
+		/// </remarks>
+		/// <param name="jsInterop">The JSInterop to setup the handler for.</param>
+		/// <param name="identifier">The identifier to setup a response for.</param>
+		/// <param name="invocationMatcher">The matcher to use to match <see cref="JSRuntimeInvocation"/>'s with.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="jsInterop"/> is null.</exception>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="invocationMatcher"/> is null.</exception>
+		/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
+		public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, string identifier, InvocationMatcher invocationMatcher)
+			=> SetupModule(jsInterop, inv => identifier.Equals(inv.Identifier, StringComparison.Ordinal) && invocationMatcher(inv));
+
+		/// <summary>
 		/// Setup a handler for a <c>IJSRuntime.InvokeAsync&lt;IJSObjectReference&gt;("import", <paramref name="moduleName"/>)</c>
 		/// call.
 		/// </summary>
@@ -32,9 +77,6 @@ namespace Bunit
 		/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
 		public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, string moduleName)
 		{
-			if (jsInterop is null)
-				throw new ArgumentNullException(nameof(jsInterop));
-
 			if (string.IsNullOrWhiteSpace(moduleName))
 				throw new ArgumentException($"'{nameof(moduleName)}' cannot be null or whitespace.", nameof(moduleName));
 
@@ -64,52 +106,6 @@ namespace Bunit
 			=> SetupModule(jsInterop, identifier, invocation => invocation.Arguments.SequenceEqual(arguments ?? Array.Empty<object?>()));
 
 		/// <summary>
-		/// Setup a handler for a <c>IJSRuntime.InvokeAsync&lt;IJSObjectReference&gt;()</c> call whose input parameters is matched by the provided
-		/// <paramref name="invocationMatcher"/>.
-		/// </summary>
-		/// <remarks>
-		/// The returned <see cref="BunitJSInterop"/> can be used to setup handlers for
-		/// <c>InvokeAsync&lt;TValue&gt;(string, object?[]?)"</c> calls to the module, using either
-		/// <see cref="SetupModule(BunitJSInterop, string)"/> or Setup calls.
-		/// </remarks>
-		/// <param name="jsInterop">The JSInterop to setup the handler for.</param>
-		/// <param name="invocationMatcher">The matcher to use to match <see cref="JSRuntimeInvocation"/>'s with.</param>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="jsInterop"/> is null.</exception>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="invocationMatcher"/> is null.</exception>
-		/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
-		public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher)
-			=> SetupModule(jsInterop, DefaultImportIdentifier, invocationMatcher);
-
-		/// <summary>
-		/// Setup a handler for a <c>IJSRuntime.InvokeAsync&lt;IJSObjectReference&gt;()</c> call whose input parameters is matched by the provided
-		/// <paramref name="invocationMatcher"/> and the <paramref name="identifier"/>.
-		/// </summary>
-		/// <remarks>
-		/// The returned <see cref="BunitJSInterop"/> can be used to setup handlers for
-		/// <c>InvokeAsync&lt;TValue&gt;(string, object?[]?)"</c> calls to the module, using either
-		/// <see cref="SetupModule(BunitJSInterop, string)"/> or Setup calls.
-		/// </remarks>
-		/// <param name="jsInterop">The JSInterop to setup the handler for.</param>
-		/// <param name="identifier">The identifier to setup a response for.</param>
-		/// <param name="invocationMatcher">The matcher to use to match <see cref="JSRuntimeInvocation"/>'s with.</param>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="jsInterop"/> is null.</exception>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="invocationMatcher"/> is null.</exception>
-		/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
-		public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, string identifier, InvocationMatcher invocationMatcher)
-		{
-			if (jsInterop is null)
-				throw new ArgumentNullException(nameof(jsInterop));
-			if (string.IsNullOrEmpty(identifier))
-				throw new ArgumentException($"'{nameof(identifier)}' cannot be null or empty.", nameof(identifier));
-			if (invocationMatcher is null)
-				throw new ArgumentNullException(nameof(invocationMatcher));
-
-			var result = CreateJSObjectReferenceInvocationHandler(jsInterop, identifier, invocationMatcher);
-			jsInterop.AddInvocationHandler(result);
-			return result.JSInterop;
-		}
-
-		/// <summary>
 		/// Configure a catch all JSObjectReferenceInvocationHandler invocation handler for any module load and invocations
 		/// on those modules.
 		/// </summary>
@@ -122,7 +118,7 @@ namespace Bunit
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="jsInterop"/> is null.</exception>
 		/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
 		public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop)
-			=> SetupModule(jsInterop, JSRuntimeInvocationHandlerBase<IJSObjectReference>.CatchAllIdentifier, _ => true);
+			=> SetupModule(jsInterop, _ => true, isCatchAllHandler: true);
 
 		/// <summary>
 		/// Looks through the registered handlers and returns the latest registered that can handle
@@ -138,15 +134,12 @@ namespace Bunit
 			if (jsInterop is null)
 				throw new ArgumentNullException(nameof(jsInterop));
 
-			var handler = jsInterop.TryGetHandlerFor<IJSObjectReference>(
-				new JSRuntimeInvocation(identifier, default, arguments, typeof(IJSObjectReference), string.Empty))
-				as JSObjectReferenceInvocationHandler;
+			var invocation = new JSRuntimeInvocation(identifier, default, arguments, typeof(IJSObjectReference), "InvokeAsync");
+
+			var handler = jsInterop.TryGetHandlerFor<IJSObjectReference>(invocation) as JSObjectReferenceInvocationHandler;
 
 			return handler?.JSInterop;
 		}
-
-		private static JSObjectReferenceInvocationHandler CreateJSObjectReferenceInvocationHandler(BunitJSInterop parent, string identifier, InvocationMatcher invocationMatcher)
-			=> new(parent, identifier, invocationMatcher);
 	}
 }
 #endif

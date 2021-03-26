@@ -11,6 +11,29 @@ namespace Bunit
 	public static partial class BunitJSInteropSetupExtensions
 	{
 		/// <summary>
+		/// Configure a JSInterop invocation handler for an <c>InvokeAsync&lt;TResult&gt;</c> call with arguments
+		/// passing the <paramref name="invocationMatcher"/> test.
+		/// </summary>
+		/// <typeparam name="TResult">The result type of the invocation.</typeparam>
+		/// <param name="jsInterop">The bUnit JSInterop to setup the invocation handling with.</param>
+		/// <param name="invocationMatcher">A matcher that is passed an <see cref="JSRuntimeInvocation"/>. If it returns true the invocation is matched.</param>
+		/// <param name="isCatchAllHandler">Set to true if the created handler is a catch all handler, that should only be used if there are no other non-catch all handlers available.</param>
+		/// <returns>A <see cref="JSRuntimeInvocationHandler{TResult}"/>.</returns>
+		public static JSRuntimeInvocationHandler<TResult> Setup<TResult>(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher, bool isCatchAllHandler = false)
+		{
+			if (jsInterop is null)
+				throw new ArgumentNullException(nameof(jsInterop));
+
+#if NET5_0
+			EnsureResultNotIJSObjectReference<TResult>();
+#endif
+
+			var result = new JSRuntimeInvocationHandler<TResult>(invocationMatcher, isCatchAllHandler);
+			jsInterop.AddInvocationHandler(result);
+			return result;
+		}
+
+		/// <summary>
 		/// Configure a JSInterop invocation handler with the <paramref name="identifier"/> and arguments
 		/// passing the <paramref name="invocationMatcher"/> test.
 		/// </summary>
@@ -20,18 +43,7 @@ namespace Bunit
 		/// <param name="invocationMatcher">A matcher that is passed an <see cref="JSRuntimeInvocation"/> associated with  the<paramref name="identifier"/>. If it returns true the invocation is matched.</param>
 		/// <returns>A <see cref="JSRuntimeInvocationHandler{TResult}"/>.</returns>
 		public static JSRuntimeInvocationHandler<TResult> Setup<TResult>(this BunitJSInterop jsInterop, string identifier, InvocationMatcher invocationMatcher)
-		{
-			if (jsInterop is null)
-				throw new ArgumentNullException(nameof(jsInterop));
-
-#if NET5_0
-			EnsureResultNotIJSObjectReference<TResult>();
-#endif
-
-			var result = new JSRuntimeInvocationHandler<TResult>(identifier, invocationMatcher);
-			jsInterop.AddInvocationHandler(result);
-			return result;
-		}
+			=> Setup<TResult>(jsInterop, inv => identifier.Equals(inv.Identifier, StringComparison.Ordinal) && invocationMatcher(inv));
 
 		/// <summary>
 		/// Configure a JSInterop invocation handler with the <paramref name="identifier"/> and <paramref name="arguments"/>.
@@ -53,7 +65,25 @@ namespace Bunit
 		/// <param name="jsInterop">The bUnit JSInterop to setup the invocation handling with.</param>
 		/// <returns>A <see cref="JSRuntimeInvocationHandler{TResult}"/>.</returns>
 		public static JSRuntimeInvocationHandler<TResult> Setup<TResult>(this BunitJSInterop jsInterop)
-			=> Setup<TResult>(jsInterop, JSRuntimeInvocationHandler<object>.CatchAllIdentifier, _ => true);
+			=> Setup<TResult>(jsInterop, _ => true, isCatchAllHandler: true);
+
+		/// <summary>
+		/// Configure a JSInterop invocation handler for an <c>InvokeVoidAsync</c> call with arguments
+		/// passing the <paramref name="invocationMatcher"/> test, that should not receive any result.
+		/// </summary>
+		/// <param name="jsInterop">The bUnit JSInterop to setup the invocation handling with.</param>
+		/// <param name="invocationMatcher">A matcher that is passed an <see cref="JSRuntimeInvocation"/>. If it returns true the invocation is matched.</param>
+		/// <param name="isCatchAllHandler">Set to true if the created handler is a catch all handler, that should only be used if there are no other non-catch all handlers available.</param>
+		/// <returns>A <see cref="JSRuntimeInvocationHandler"/>.</returns>
+		public static JSRuntimeInvocationHandler SetupVoid(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher, bool isCatchAllHandler = false)
+		{
+			if (jsInterop is null)
+				throw new ArgumentNullException(nameof(jsInterop));
+
+			var result = new JSRuntimeInvocationHandler(invocationMatcher, isCatchAllHandler);
+			jsInterop.AddInvocationHandler(result);
+			return result;
+		}
 
 		/// <summary>
 		/// Configure a JSInterop invocation handler with the <paramref name="identifier"/> and arguments
@@ -64,14 +94,7 @@ namespace Bunit
 		/// <param name="invocationMatcher">A matcher that is passed an <see cref="JSRuntimeInvocation"/> associated with  the<paramref name="identifier"/>. If it returns true the invocation is matched.</param>
 		/// <returns>A <see cref="JSRuntimeInvocationHandler"/>.</returns>
 		public static JSRuntimeInvocationHandler SetupVoid(this BunitJSInterop jsInterop, string identifier, InvocationMatcher invocationMatcher)
-		{
-			if (jsInterop is null)
-				throw new ArgumentNullException(nameof(jsInterop));
-
-			var result = new JSRuntimeInvocationHandler(identifier, invocationMatcher);
-			jsInterop.AddInvocationHandler(result);
-			return result;
-		}
+			=> SetupVoid(jsInterop, inv => identifier.Equals(inv.Identifier, StringComparison.Ordinal) && invocationMatcher(inv));
 
 		/// <summary>
 		/// Configure a JSInterop invocation handler with the <paramref name="identifier"/>
@@ -90,7 +113,7 @@ namespace Bunit
 		/// <param name="jsInterop">The bUnit JSInterop to setup the invocation handling with.</param>
 		/// <returns>A <see cref="JSRuntimeInvocationHandler"/>.</returns>
 		public static JSRuntimeInvocationHandler SetupVoid(this BunitJSInterop jsInterop)
-			=> SetupVoid(jsInterop, JSRuntimeInvocationHandler<object>.CatchAllIdentifier, _ => true);
+			=> SetupVoid(jsInterop, _ => true, isCatchAllHandler: true);
 
 		/// <summary>
 		/// Looks through the registered handlers and returns the latest registered that can handle
