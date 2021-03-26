@@ -13,10 +13,10 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// <summary>
 		/// Initializes a new instance of the <see cref="JSRuntimeInvocationHandler{TResult}"/> class.
 		/// </summary>
-		/// <param name="identifier">Identifier it matches. Set to "*" to match all identifiers.</param>
 		/// <param name="matcher">An invocation matcher used to determine if the handler should handle an invocation.</param>
-		protected internal JSRuntimeInvocationHandler(string identifier, InvocationMatcher matcher)
-			: base(identifier, matcher)
+		/// <param name="isCatchAllHandler">Set to true if this handler is a catch all handler, that should only be used if there are no other non-catch all handlers available.</param>
+		protected internal JSRuntimeInvocationHandler(InvocationMatcher matcher, bool isCatchAllHandler)
+			: base(matcher, isCatchAllHandler)
 		{ }
 
 		/// <summary>

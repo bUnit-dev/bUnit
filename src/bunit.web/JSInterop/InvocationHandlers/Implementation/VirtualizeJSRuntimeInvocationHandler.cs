@@ -35,7 +35,7 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		});
 
 		internal VirtualizeJSRuntimeInvocationHandler()
-			: base(CatchAllIdentifier, i => i.Identifier.StartsWith(JsFunctionsPrefix, StringComparison.Ordinal))
+			: base(i => i.Identifier.StartsWith(JsFunctionsPrefix, StringComparison.Ordinal), isCatchAllHandler: false)
 		{ }
 
 		/// <inheritdoc/>

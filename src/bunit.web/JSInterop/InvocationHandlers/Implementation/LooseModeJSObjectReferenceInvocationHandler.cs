@@ -12,7 +12,7 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 	{
 		[SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "BunitJSObjectReference doesn't have any disposable ressources, it just implements the methods to be compatible with the interfaces it implements.")]
 		internal LooseModeJSObjectReferenceInvocationHandler(BunitJSInterop parent)
-			: base(CatchAllIdentifier, _ => parent.Mode == JSRuntimeMode.Loose)
+			: base(_ => parent.Mode == JSRuntimeMode.Loose, isCatchAllHandler: true)
 		{
 			SetResult(new BunitJSObjectReference(parent));
 		}

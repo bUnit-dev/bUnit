@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoFixture.Xunit2;
 using Microsoft.JSInterop;
 using Shouldly;
 using Xunit;
@@ -11,9 +10,9 @@ namespace Bunit.JSInterop
 {
 	public partial class BunitJSInteropTest
 	{
-		private static BunitJSInterop CreateSut(JSRuntimeMode mode) => new() { Mode = mode };
+		private static BunitJSInterop CreateSut(JSRuntimeMode mode) => new BunitJSInterop { Mode = mode };
 
-		[Fact(DisplayName = "JSInterop returns default value in loose mode without invocation setup")]
+		[Fact(DisplayName = "Mock returns default value in loose mode without invocation setup")]
 		public async Task Test001()
 		{
 			var sut = CreateSut(JSRuntimeMode.Loose);
@@ -23,90 +22,38 @@ namespace Bunit.JSInterop
 			result.ShouldBe(default);
 		}
 
-		[Theory(DisplayName = "When calling InvokeVoidAsync, then the invocation should be visible from the Invocations list"), AutoData]
-		public void Test302(string identifier, string[] args, CancellationToken cancellationToken)
+		[Fact(DisplayName = "After invocation a invocation should be visible from the Invocations list")]
+		public void Test002()
 		{
+			var identifier = "fooFunc";
+			var args = new[] { "bar", "baz" };
+			using var cts = new CancellationTokenSource();
 			var sut = CreateSut(JSRuntimeMode.Loose);
 
-			sut.JSRuntime.InvokeVoidAsync(identifier, cancellationToken, args);
+			sut.JSRuntime.InvokeAsync<object>(identifier, cts.Token, args);
 
-			sut.Invocations[identifier]
-				.ShouldHaveSingleItem()
-				.ShouldBe(new JSRuntimeInvocation(
-					identifier,
-					cancellationToken,
-					args,
-					typeof(object),
-					"InvokeVoidAsync"));
+			var invocation = sut.Invocations[identifier].Single();
+			invocation.Identifier.ShouldBe(identifier);
+			invocation.Arguments.ShouldBe(args);
+			invocation.CancellationToken.ShouldBe(cts.Token);
 		}
 
-		[Theory(DisplayName = "When calling InvokeAsync, then the invocation should be visible from the Invocations list"), AutoData]
-		public void Test303(string identifier, string[] args, CancellationToken cancellationToken)
-		{
-			var sut = CreateSut(JSRuntimeMode.Loose);
-
-			sut.JSRuntime.InvokeAsync<string>(identifier, cancellationToken, args);
-
-			sut.Invocations[identifier]
-				.ShouldHaveSingleItem()
-				.ShouldBe(new JSRuntimeInvocation(
-					identifier,
-					cancellationToken,
-					args,
-					typeof(string),
-					"InvokeAsync"));
-		}
-
-		[Theory(DisplayName = "When calling InvokeVoid, then the invocation should be visible from the Invocations list"), AutoData]
-		public void Test304(string identifier, string[] args)
-		{
-			var sut = CreateSut(JSRuntimeMode.Loose);
-			var jsInProcessRuntime = (IJSInProcessRuntime)sut.JSRuntime;
-
-			jsInProcessRuntime.InvokeVoid(identifier, args);
-
-			sut.Invocations[identifier]
-				.ShouldHaveSingleItem()
-				.ShouldBe(new JSRuntimeInvocation(
-					identifier,
-					null,
-					args,
-					typeof(object),
-					"InvokeVoid"));
-		}
-
-		[Theory(DisplayName = "When calling Invoke, then the invocation should be visible from the Invocations list"), AutoData]
-		public void Test305(string identifier, string[] args)
-		{
-			var sut = CreateSut(JSRuntimeMode.Loose);
-			var jsInProcessRuntime = (IJSInProcessRuntime)sut.JSRuntime;
-
-			jsInProcessRuntime.Invoke<int>(identifier, args);
-
-			sut.Invocations[identifier]
-				.ShouldHaveSingleItem()
-				.ShouldBe(new JSRuntimeInvocation(
-					identifier,
-					null,
-					args,
-					typeof(int),
-					"Invoke"));
-		}
-
-		[Fact(DisplayName = "When an invocation has not been configured and JSInterop is in strict mode, " +
-							"the thrown JSRuntimeUnhandledInvocationException contains the failed invocation")]
-		public void Test101()
+		[Fact(DisplayName = "Mock throws exception when in strict mode and invocation has not been setup")]
+		public void Test003()
 		{
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var identifier = "func";
-			var args = new[] { "foo", "bar" };
+			var args = new[] { "bar", "baz" };
 
-			var actual = Should.Throw<JSRuntimeUnhandledInvocationException>(
-				async () => await sut.JSRuntime.InvokeVoidAsync(identifier, args));
+			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync(identifier, args))
+				.Invocation.ShouldSatisfyAllConditions(
+					x => x.Identifier.ShouldBe(identifier),
+					x => x.Arguments.ShouldBe(args));
 
-			actual.Invocation.ShouldSatisfyAllConditions(
-				x => x.Identifier.ShouldBe(identifier),
-				x => x.Arguments.ShouldBe(args));
+			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeAsync<object>(identifier, args))
+				.Invocation.ShouldSatisfyAllConditions(
+					x => x.Identifier.ShouldBe(identifier),
+					x => x.Arguments.ShouldBe(args));
 		}
 
 		[Fact(DisplayName = "All invocations received AFTER a invocation handler " +
@@ -446,22 +393,22 @@ namespace Bunit.JSInterop
 			Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("someFunc"));
 		}
 
-		[Fact(DisplayName = "SetupVoid is only used when there is no void handler")]
+		[Fact(DisplayName = "CatchAll handlers SetupVoid is only used when there is no void handler")]
 		public async Task Test022()
 		{
 			var identifier = "someFunc";
 			var sut = CreateSut(JSRuntimeMode.Strict);
 			var handler = sut.SetupVoid(identifier);
-			var plannedCatchall = sut.SetupVoid();
+			var plannedCatchall = sut.SetupVoid(); // should not be used, even if registered after more specific handler
 
 			var invocation = sut.JSRuntime.InvokeVoidAsync(identifier);
 			handler.SetVoidResult();
 
-			await invocation;
-
-			invocation.IsCompletedSuccessfully.ShouldBeTrue();
 			handler.Invocations.Count.ShouldBe(1);
 			plannedCatchall.Invocations.Count.ShouldBe(0);
+
+			await invocation;
+			invocation.IsCompletedSuccessfully.ShouldBeTrue();
 		}
 
 		[Fact(DisplayName = "The last handler matching an invocation receives the invocation")]

@@ -69,6 +69,8 @@ List of new features.
 
   By [@egil](https://github.com/egil) in [#345](https://github.com/egil/bUnit/pull/345).
 
+- Added additional bUnit JSInterop `Setup` methods, that makes it possible to get complete control of invocation matching for the created handler. By [@egil](https://github.com/egil).
+
 ### Changed
 List of changes in existing functionality.
 

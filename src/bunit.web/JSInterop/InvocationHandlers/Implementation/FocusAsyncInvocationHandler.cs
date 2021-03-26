@@ -1,4 +1,5 @@
 #if NET5_0
+using System;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit.JSInterop.InvocationHandlers.Implementation
@@ -19,7 +20,7 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		/// Initializes a new instance of the <see cref="FocusAsyncInvocationHandler"/> class.
 		/// </summary>
 		internal FocusAsyncInvocationHandler()
-			: base(FocusIdentifier, _ => true)
+			: base(inv => inv.Identifier.Equals(FocusIdentifier, StringComparison.Ordinal), isCatchAllHandler: false)
 		{ }
 	}
 }
