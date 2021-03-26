@@ -18,9 +18,9 @@ Let's start by taking a look at the ` WaitForAssertion` method in more detail.
 The [`WaitForAssertion(Action, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})) method can be used to block and wait in a test method until the provided assert action does not throw an exception, or until the timeout is reached (the default timeout is one second).
 
 > [!NOTE]
-> The `WaitForAssertion()` method will try the assert action pass to it when the `WaitForAssertion()` method is called and every time the component under test renders.
+> The `WaitForAssertion()` method will try the assert action passed to it when the `WaitForAssertion()` method is called and every time the component under test renders.
 
-Let us look at an example. Consider the following `<AsyncData>` component, who awaits an async `TextService` in its `OnInitializedAsync()` life-cycle method. When the service returns the data, the component will automatically re-render to update its rendered markup. 
+Let's look at an example. Consider the following `<AsyncData>` component, which awaits an async `TextService` in its `OnInitializedAsync()` life-cycle method. When the service returns the data, the component will automatically re-render to update its rendered markup. 
 
 [!code-cshtml[AsyncData.razor](../../../samples/components/AsyncData.razor)]
 
@@ -44,4 +44,4 @@ If the timeout is reached, a <xref:Bunit.Extensions.WaitForHelpers.WaitForFailed
 
 > The assertion did not pass within the timeout period.
 
-Setting the timeout to something less than one second does _not_ make tests run faster. The `WaitForAssertion()` method returns as soon as it observes the predicate assertion running without throwing. So, it is generally only useful to set a different timeout than the default if the asynchronous operations takes longer than one second to complete, which should only be an issue in end-2-end or integration-testing scenarios.
+Setting the timeout to something less than one second does _not_ make tests run faster. The `WaitForAssertion()` method returns as soon as it observes the predicate assertion running without throwing. So, it is generally only useful to set a different timeout than the default if the asynchronous operation takes longer than one second to complete, which should only be an issue in end-2-end or integration-testing scenarios.

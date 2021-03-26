@@ -5,18 +5,18 @@ title: Emulating Blazor's IJSRuntime
 
 # Emulating Blazor's `IJSRuntime`
 
-It is common for Blazor components to use `IJSRuntime` to call JavaScript, and since bUnit does not run JavaScript, emulating `IJSRuntime` is needed for components that uses it. In that regard, `IJSRuntime` is no different than other services that a component might depend on.
+It is common for Blazor components to use `IJSRuntime` to call JavaScript, and since bUnit does not run JavaScript, emulating `IJSRuntime` is needed for components that use it. In that regard, `IJSRuntime` is no different than other services that a component might depend on.
 
-bUnit comes with it's own JSInterop, a tailor built implementation of `IJSRuntime` that is _active by default_, allowing you to specify how JavaScript interop calls should be handled, what values they calls should return, and also allowing you to verify that they the calls have happened. The implementation is running in "strict mode", which means means it will throw an exception if it receives an invocation it has not been configured to handle. See more about strict vs loose mode in the following section.
+bUnit comes with it's own JSInterop, a tailor-made implementation of `IJSRuntime` that is _active by default_, allowing you to specify how JavaScript interop calls should be handled and what values the calls should return, and also allowing you to verify that they the calls have happened. The implementation runs in "strict mode", which means it will throw an exception if it receives an invocation it has not been configured to handle. See more about strict vs. loose mode in the following section.
 
-If you prefer to use the same mocking framework for all mocking in your tests to keep things consistent, general purpose mocking frameworks like [Moq](https://github.com/Moq), [JustMock Lite](https://github.com/telerik/JustMockLite), or [NSubstitute](https://nsubstitute.github.io/) all works nicely with bUnit and can be used to mock `IJSRuntime`. In general, registering an implementation of `IJSRuntime` with bUnit's `Services` collection replaces bUnit's implementation.
+If you prefer to use the same mocking framework for all mocking in your tests to keep things consistent, general-purpose mocking frameworks like [Moq](https://github.com/Moq), [JustMock Lite](https://github.com/telerik/JustMockLite), or [NSubstitute](https://nsubstitute.github.io/) all work nicely with bUnit and can be used to mock `IJSRuntime`. In general, registering an implementation of `IJSRuntime` with bUnit's `Services` collection replaces bUnit's implementation.
 
-The following sections shows how to use the built-in implementation of `IJSRuntime`.
+The following sections show how to use the built-in implementation of `IJSRuntime`.
 
 > [!NOTE] 
-> In the beta versions of bUnit, you had to explicitly add the mock JSRuntime by calling `Services.AddMockJSRuntime()`. That is no longer needed, and doesn't work any more.
+> In the beta versions of bUnit you had to explicitly add the mock JSRuntime by calling `Services.AddMockJSRuntime()`. That is no longer needed, and indeed doesn't work any more.
 
-## Strict vs loose mode
+## Strict vs. loose mode
 
 bUnit's JSInterop can run in two modes, **strict** or **loose**:
 
@@ -38,7 +38,7 @@ Use the parameterless `Setup<TResult>()` method to emulate any call to `InvokeAs
 
 When an invocation is set up through of the `Setup<TResult>(...)` and `SetupVoid(...)` methods, a `JSRuntimePlannedInvocation<TResult>` object is returned. This can be used to set a result or an exception, to emulate what can happen during a JavaScript interop call in Blazor.
 
-Similarly when the parameterless `Setup<TResult>()` and `SetupVoid()` methods are used a `JSRuntimeCatchAllPlannedInvocation<TResult>` object is returned which can be used to set the result of invocation.
+Similarly, when the parameterless `Setup<TResult>()` and `SetupVoid()` methods are used a `JSRuntimeCatchAllPlannedInvocation<TResult>` object is returned which can be used to set the result of invocation.
 
 Here are two examples:
 
@@ -57,16 +57,16 @@ var plannedInvocation = ctx.JSInterop.SetupVoid("startAnimation");
 // SetResult() is not used in this case since InvokeVoidAsync
 // only completes or throws, it doesn’t return a value.
 // Any calls to InvokeVoidAsync(...) up till this point will
-// have received an incompleted Task which the component 
-// is likely waiting until the call to SetCompleted() below.
-plannedInvocation.SetCompleted();
+// have received an incomplete Task which the component 
+// is awaiting until the call to SetVoidResult() below.
+plannedInvocation.SetVoidResult();
 ```
 
 ## Verifying invocations
 
-All calls to the `InvokeAsync<TResult>(...)` and `InvokeVoidAsync(...)` methods in bUnit's JSInterop are stored in its `Invocations` list, which can be inspected and asserted against. In addition to this, all planned invocations have their own `Invocations` list which only contain their invocations.
+All calls to the `InvokeAsync<TResult>(...)` and `InvokeVoidAsync(...)` methods in bUnit's JSInterop are stored in its `Invocations` list, which can be inspected and asserted against. In addition to this, all planned invocations have their own `Invocations` lists which only contain their invocations.
 
-Invocations are represented by the `JSRuntimeInvocation` type which has three properties of interest when verifying an invocation happened as expected: 
+Invocations are represented by the `JSRuntimeInvocation` type, which has three properties of interest when verifying an invocation happened as expected: 
 
 - `Identifier` - the name of the function name/identifier passed to the invoke method.
 - `Arguments` - a list of arguments passed to the invoke method.
@@ -76,15 +76,15 @@ To verify these, just use the assertion methods you normally use.
 
 ### Support for `IJSInProcessRuntime` and `IJSUnmarshalledRuntime`
 
-bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUnmarshalledRuntime` types, just like Blazors `IJSRuntime`. 
+bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUnmarshalledRuntime` types, just like Blazor's `IJSRuntime`. 
 
-To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
+To set up a handler for an `Invoke` or `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 
 ## Support for importing JavaScript Modules
 
-Since the .NET 5 release of Blazor, it has been possible to import JavaScript modules directly from components. This is supported by bUnit's JSInterop through the `SetupModule` methods, that setup calls to `InvokeAsync<IJSObjectReference>`.
+Since the .NET 5 release of Blazor, it has been possible to import JavaScript modules directly from components. This is supported by bUnit's JSInterop through the `SetupModule` methods, that sets up calls to `InvokeAsync<IJSObjectReference>`.
 
-The `SetupModule` methods return a module JSInterop, that can be configured to handle the any JavaScript calls using the `Setup` and `SetupVoid` methods. For example, to configure bUnit's JSInterop to handle an import of the JavaScript module `hello.js`, and a call to the function `world()` in that model, do the following:
+The `SetupModule` methods return a module JSInterop, which can be configured to handle JavaScript calls using the `Setup` and `SetupVoid` methods. For example, to configure bUnit's JSInterop to handle an import of the JavaScript module `hello.js`, and a call to the function `world()` in that model, do the following:
 
 ```csharp
 using var ctx = new TestContext();
@@ -95,7 +95,7 @@ moduleInterop.SetupVoid("world");
 
 ### Module Interop Mode
 
-By default, a module Interop inherits the `Mode` setting from the root JSInterop in bUnit. However, you can override it explicitly and have it in a different mode from other module Interop or the root JSInterop. Just set the `Mode` property, e.g.:
+By default, a module Interop inherits the `Mode` setting from the root JSInterop in bUnit. However, you can override it explicitly and have it in a different mode from another module's Interop or the root JSInterop. Just set the `Mode` property, e.g.:
 
 ```csharp
 var moduleInterop = ctx.JSInterop.SetupModule("hello.js");
@@ -104,23 +104,23 @@ moduleInterop.Mode = JSRuntimeMode.Loose;
 
 ### Support for `IJSInProcessObjectReference` and `IJSUnmarshalledObjectReference`
 
-bUnit's `IJSObjectReference` supports being cast to the `IJSInProcessObjectReference` and `IJSUnmarshalledObjectReference` types, just like Blazors `IJSObjectReference`. 
+bUnit's `IJSObjectReference` supports being cast to the `IJSInProcessObjectReference` and `IJSUnmarshalledObjectReference` types, just like Blazor's `IJSObjectReference`. 
 
-To set up a handler for a `Invoke` and `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
+To set up a handler for an `Invoke` or `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 
-## First Party JSInterop Component Emulation
+## First-Party JSInterop Component Emulation
 
-Blazor comes out of the box with a few components that requires a working JSInterop. bUnit's JSInterop is setup to emulate the JavaScript interactions of those components. The following sections describes how the interaction is emulated for the supported components.
+Blazor comes out of the box with a few components that require a working JSInterop. bUnit's JSInterop is setup to emulate the JavaScript interactions of those components. The following sections describe how the interaction is emulated for the supported components.
 
 ### <Virtualize> JSInterop Emulation
 
-The `<Virtualize>` component require JavaScript to notify it about the available screen space it is being rendered to, and when the users scrolls the viewport, to trigger the loading of new data. bUnit emulates this interaction by telling the `<Virtualize>` component that the viewport is `1,000,000,000` pixels large. That should ensure that all items is loaded, which makes sense in a testing scenario.
+The `<Virtualize>` component requires JavaScript to notify it about the available screen space it is being rendered to, and also when the users scrolls the viewport, to trigger the loading of new data. bUnit emulates this interaction by telling the `<Virtualize>` component that the viewport is `1,000,000,000` pixels large. That should ensure that all items are loaded, which makes sense in a testing scenario.
 
-To test the `<Placeholder>` template of the `<Virtualize>` component, create a items provider that doesn't return all items when queried.
+To test the `<Placeholder>` template of the `<Virtualize>` component, create an items provider that doesn't return all items when queried.
 
 ### FocusAsync JSInterop Emulation
 
-Support for the [`FocusAsync`](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/event-handling?view=aspnetcore-5.0#focus-an-element) method on `ElementReference` in Blazor's .NET 5 release works by simply registering the invocations, which can then be verified to have happened.
+Support for the [`FocusAsync`](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/event-handling?view=aspnetcore-5.0#focus-an-element) method on `ElementReference` in Blazor's .NET 5 release works by simply registering the invocations, which can then be verified to have occurred.
 
 To verify that the `FocusAsync` has been called in the `<ClickToFocus>` component:
 
@@ -147,11 +147,13 @@ var inputElement = cut.Find("input");
 
 cut.Find("button").Click(); // Triggers onclick handler that sets focus of input element
 
-ctx.JSInterop.VerifyFocusAsyncInvoke() // Verifies that a FocusAsync call has happenend
+ctx.JSInterop.VerifyFocusAsyncInvoke() // Verifies that a FocusAsync call has happened
    .Arguments[0] // gets the first argument passed to the FocusAsync method
    .ShouldBeElementReferenceTo(inputElement); // verify that it is an element reference to the input element.
 ```
 
 ## Support for `IJSInProcessRuntime` and `IJSUnmarshalledRuntime`
 
-bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUnmarshalledRuntime` types, just like Blazors `IJSRuntime`. 
+bUnit's `IJSRuntime` supports being cast to the `IJSInProcessRuntime` and `IJSUnmarshalledRuntime` types, just like Blazor's `IJSRuntime`. 
+
+To set up a handler for `Invoke` and `InvokeUnmarshalled` calls, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.

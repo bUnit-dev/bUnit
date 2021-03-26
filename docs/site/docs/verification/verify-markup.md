@@ -32,11 +32,11 @@ To get the markup as a string, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=16&end=21&highlight=5)]
 
-You can perform standard string assertions against the markup string, like checking whether it contains a value or whether it is empty.
+You can perform standard string assertions against the markup string, like checking whether it contains a value or is empty.
 
 ## Semantic Comparison of Markup
 
-Working with raw markup only works well with very simple output, and even then you have to sanitize it to get stable tests. A much better approach is to use the semantic HTML comparer that comes with bUnit.
+Working with raw markup only works well with very simple output, but even then you have to sanitize it to get stable tests. A much better approach is to use the semantic HTML comparer that comes with bUnit.
 
 ### How does the Semantic HTML Comparer Work?
 
@@ -62,7 +62,7 @@ bUnit's semantic HTML comparer safely ignores things like insignificant whitespa
 
 ### The MarkupMatches() Method
 
-The HTML comparer can be easily accessed through `MarkupMatches()` extension methods, available in places that represents HTML fragments in bUnit, i.e. on <xref:Bunit.IRenderedFragment> and the `INode` and `INodeList` types.
+The HTML comparer can be easily accessed through `MarkupMatches()` extension methods, available in places that represent HTML fragments in bUnit, i.e. on <xref:Bunit.IRenderedFragment> and the `INode` and `INodeList` types.
 
 In the following examples, the `<Heading>` component listed below will be used as the component under test.
 
@@ -72,7 +72,7 @@ To use the `MarkupMatches()` method to perform a semantic comparison of the outp
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=27&end=34&highlight=5-9)]
 
-The highlighted line shows the call to the `MarkupMatches()` method. This test passes even though the insignificant whitespace is not exactly the same between the expected HTML string and the raw markup produced by the `<Heading>` component. It even works when the CSS class-list is not in the same order on the `<small>` element.
+The highlighted line shows the call to the `MarkupMatches()` method. This test passes even though the insignificant whitespace is not exactly the same between the expected HTML string and the raw markup produced by the `<Heading>` component. It even works when the CSS class list is not in the same order on the `<small>` element.
 
 The `MarkupMatches()` method is also available on `INode` and `INodeList` types, for example:
 
@@ -89,15 +89,15 @@ Text content can also be verified with the `MarkupMatches()` method, e.g. the te
 
 The semantic HTML comparer can be customized to make a test case even more stable and easier to maintain. For example, it is possible to ignore an element or attribute during comparison, or provide a regular expression to the comparer when comparing a specific element or attribute to make the comparer work with generated data.
 
-Learn more about the customizations options on the <xref:semantic-html-comparison> page.
+Learn more about the customization options on the <xref:semantic-html-comparison> page.
 
 ## Inspecting DOM Nodes
 
 The rendered markup from a component is available as a DOM node through the <xref:Bunit.IRenderedFragment.Nodes> property on <xref:Bunit.IRenderedFragment>, as well as the `Find(string cssSelector)` and `FindAll(string cssSelector)` extension methods on <xref:Bunit.IRenderedFragment>.
 
-The <xref:Bunit.IRenderedFragment.Nodes> property and the `FindAll()` method returns an [AngleSharp](https://anglesharp.github.io/) `INodeList` type, and the `Find()` method returns an [AngleSharp](https://anglesharp.github.io/) `IElement` type. 
+The <xref:Bunit.IRenderedFragment.Nodes> property and the `FindAll()` method return an [AngleSharp](https://anglesharp.github.io/) `INodeList` type, and the `Find()` method returns an [AngleSharp](https://anglesharp.github.io/) `IElement` type. 
 
-The DOM API in AngleSharp follows the W3C DOM API specifications and gives you the same results as state-of-the-art browser’s implementation of the DOM API in JavaScript. Besides the official DOM API, AngleSharp and bUnit adds some useful extension methods on top. This makes working with DOM nodes convenient.
+The DOM API in AngleSharp follows the W3C DOM API specifications and gives you the same results as a state-of-the-art browser’s implementation of the DOM API in JavaScript. Besides the official DOM API, AngleSharp and bUnit add some useful extension methods on top. This makes working with DOM nodes convenient.
 
 ### Finding Nodes with the Find() and FindAll() methods
 
@@ -124,15 +124,15 @@ An element found with the [`Find(string cssSelector)`](xref:Bunit.RenderedFragme
 
 However, that does not apply to elements that are found by traversing the DOM tree via the <xref:Bunit.IRenderedFragment.Nodes> property on <xref:Bunit.IRenderedFragment>, for example, as those nodes do not know when their root component is re-rendered. Consequently, they don’t know when they should be updated.
 
-As a result of this, it is always recommended to use the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method when searching for a single element. Alternatively, always reissue the query whenever you need the element  .
+As a result of this, it is always recommended to use the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method when searching for a single element. Alternatively, always reissue the query whenever you need the element.
 
 #### Auto-refreshable FindAll() Queries
 
-The [`FindAll(string cssSelector, bool enableAutoRefresh = false)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) method has an optional parameter, `enableAutoRefresh`, which, when set to `true`, will return a collection of `IElement` which automatically refreshes itself when the component the elements came from is re-rendered.
+The [`FindAll(string cssSelector, bool enableAutoRefresh = false)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) method has an optional parameter, `enableAutoRefresh`, which when set to `true` will return a collection of `IElement`. This automatically refreshes itself when the component the elements came from is re-rendered.
 
 ## Finding Expected Differences
 
-It can sometimes be easier to verify that an expected change has happened in the rendered markup (and only that), than it can be to specify how all the rendered markup should look after re-render.
+It can sometimes be easier to verify that an expected change, and only that change, has occurred in the rendered markup than it can be to specify how all the rendered markup should look after re-rendering.
 
 bUnit comes with a number of ways for finding lists of `IDiff`; the representation of a difference between two HTML fragments. All of these are direct methods or extension methods on the <xref:Bunit.IRenderedFragment> type or on the `INode` or `INodeList` types:
 
@@ -158,7 +158,7 @@ This is what happens in the test:
 
 Testing a more **complex life cycle of a component** can be done more easily using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> and <xref:Bunit.IRenderedFragment.SaveSnapshot> methods along with a host of other assert helpers. 
 
-This example tests the `<CheckList>` component listed below. The component allows you to add new items to the checklist by typing into the input field and hitting the `enter` key. Items can be removed from the again list by clicking on them.
+This example tests the `<CheckList>` component listed below. The component allows you to add new items to the checklist by typing into the input field and hitting the `enter` key. Items can be removed from the list again by clicking on them.
 
 [!code-razor[CheckList.razor](../../../samples/components/CheckList.razor)]
 
@@ -173,7 +173,7 @@ This is what happens in the test:
 3. The <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender>, [`ShouldHaveSingleChange()`](xref:Bunit.DiffAssertExtensions.ShouldHaveSingleChange(System.Collections.Generic.IEnumerable{AngleSharp.Diffing.Core.IDiff})) and [`ShouldBeAddition()`](xref:Bunit.ShouldBeAdditionAssertExtensions.ShouldBeAddition(AngleSharp.Diffing.Core.IDiff,System.String,System.String)) methods are used to verify that the item was correctly added.
 4. The <xref:Bunit.IRenderedFragment.SaveSnapshot> is used to save a snapshot of current DOM nodes internally in the `cut`. This reduces the number of diffs found in the following steps, simplifying verification.
 5. A second item is added to the check list.
-6. Two verifications are performed at this point, one using the <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> method which finds two changes, and one using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method, that finds a single change. The first is only done for illustrative purposes.
+6. Two verifications are performed at this point, one using the <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> method which finds two changes, and one using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method, which finds a single change. The first is only done for illustrative purposes.
 7. A new snapshot is saved, replacing the previous one with another call to the <xref:Bunit.IRenderedFragment.SaveSnapshot> method.
 8. Finally the last item in the list is found and clicked, and the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method is used to find the changes, a single diff, which is verified as a removal of the second item.
 

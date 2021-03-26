@@ -13,14 +13,14 @@ A test for a Blazor component can be written in a Blazor _test_ component using 
 > However, they will _not_ show up before the Blazor test component has been compiled into C# by the Blazor compiler, and if there are compile-errors from the Blazor compiler, they might appear to come and go in the Test Explorer.
 
 > [!WARNING]
-> Razor tests are currently only compatible with using xUnit as the general purpose testing framework.
+> Razor tests are currently only compatible with using xUnit as the general-purpose testing framework.
 
 > [!IMPORTANT]
-> Make sure the project SDK type is set to `<Project Sdk="Microsoft.NET.Sdk.Razor">`, instead of the default `<Project Sdk="Microsoft.NET.Sdk">` that is used with standard testing projects. See <xref:create-test-project> for a guide on setting up bUnit test projects.
+> Make sure the project SDK type is set to `<Project Sdk="Microsoft.NET.Sdk.Razor">`, instead of the default `<Project Sdk="Microsoft.NET.Sdk">` that is used with standard testing projects. See <xref:create-test-project> for a guide to setting up bUnit test projects.
 
-## Creating a Test Specific `_Imports.razor` File
+## Creating a Test-Specific `_Imports.razor` File
 
-Razor tests are written in Blazor test components. To make our lives a little easier, let’s first set up a `_Imports.razor` file with the "using directives" we are going to be using throughout our tests. Simply add the following `_Imports.razor` to the root folder where you will be placing your Blazor test components:
+Razor tests are written in Blazor test components. To make life a little easier, let’s first set up an `_Imports.razor` file with the "using directives" we are going to be using throughout our tests. Simply add the following `_Imports.razor` to the root folder where you will be placing your Blazor test components:
 
 [!code-cshtml[_Imports.razor](../../../samples/tests/razor/_Imports.razor#L4-)]
 
@@ -30,11 +30,11 @@ With that created, we are ready to create our first Razor test.
 
 A Blazor test component is conceptually very similar to a regular test class in xUnit or NUnit, for example. You can define multiple tests inside a single test component as long as they are based on the special bUnit test components, currently either <xref:Bunit.Fixture> or <xref:Bunit.SnapshotTest>. 
 
-In addition to  that, Blazor test components has to inherit from <xref:Bunit.TestComponentBase>, e.g.:
+In addition to that, Blazor test components have to inherit from <xref:Bunit.TestComponentBase>, e.g.:
 
 [!code-cshtml[](../../../samples/tests/razor/HelloWorldTest.razor#L1)]
 
-The following two sections will show how to create tests using bUnit's <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
+The following two sections will show you how to create tests using bUnit's <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
 
 ### Creating a Test using the `<Fixture>` Component
 
@@ -42,7 +42,7 @@ Let's see a simple example where we test the following `<HelloWorld>` component 
 
 [!code-cshtml[HelloWorld.razor](../../../samples/components/HelloWorld.razor)]
 
-Here is the Razor code that tests the `<HelloWorld>` component:
+Here's the Razor code that tests the `<HelloWorld>` component:
 
 [!code-cshtml[HelloWorldTest.razor](../../../samples/tests/razor/HelloWorldTest.razor#L1-L19)]
 
@@ -50,7 +50,7 @@ Let's break down what is going on in this test:
 
 - The test component inherits from <xref:Bunit.TestComponentBase>. This is done in line 1 with `@inherits Bunit.TestComponentBase`.
 - The test is defined using the <xref:Bunit.Fixture> component. It orchestrates the test.
-- Inside the <xref:Bunit.Fixture> component, we add a <xref:Bunit.ComponentUnderTest> component where the component under test is declared using regular Razor syntax. In this case, it is a very simple `<HelloWorld />` declaration.
+- Inside the <xref:Bunit.Fixture> component, we add a <xref:Bunit.ComponentUnderTest> component where the component under test is declared using regular Razor syntax. In this case, it's a very simple `<HelloWorld />` declaration.
 - The <xref:Bunit.Fixture> component's `Test` parameter takes a method which is called when the test runs, and is passed  to the <xref:Bunit.Fixture> component.
 - In the test method, we use the <xref:Bunit.Fixture.GetComponentUnderTest``1> to get the `HelloWorld` declared in the <xref:Bunit.Fixture>. In addition, we verify the rendered markup from the `HelloWorld` component using the `MarkupMatches` method. This performs a semantic comparison of the expected markup with the rendered markup.
 
@@ -62,7 +62,7 @@ Let's break down what is going on in this test:
 
 ### Creating a Test using the `<SnapshotTest>` Component
 
-In snapshot testing, you declare your input (e.g. one or more component under test) and the expected output, and the library will automatically tell you if they do not match. With bUnit, this comparison is done using a smart built-in semantic HTML comparison logic.
+In snapshot testing, you declare your input (e.g. one or more components under test) and the expected output, and the library will automatically tell you if they do not match. With bUnit, this comparison is done using smart built-in semantic HTML comparison logic.
 
 Let's see a simple example where we test the following `<HelloWorld>` component using the bUnit <xref:Bunit.SnapshotTest> component:
 
@@ -74,20 +74,20 @@ Here is the Razor code that tests the `<HelloWorld>` component:
 
 Let's break down what is going on in this test with the <xref:Bunit.SnapshotTest> component:
 
-- We specify the `Description` parameter. The text in that will be shown when test runs and in the Test Explorer in Visual Studio, just like regular unit tests names.
-- Inside the `<TestInput>` child component of <xref:Bunit.SnapshotTest>, we declare the component under test. In this case, this is the `<HelloWorld>` component.
-- Inside the `<ExpectedOutput>` child component of <xref:Bunit.SnapshotTest>, we declare the expected rendered output from whatever is declared in the `<TestInput>` child component.
+- We specify the `Description` parameter. The text it contains will be shown when the test runs and in the Test Explorer in Visual Studio, just like regular unit tests names.
+- Inside the `<TestInput>` child component of <xref:Bunit.SnapshotTest> we declare the component under test. In this case, it is the `<HelloWorld>` component.
+- Inside the `<ExpectedOutput>` child component of <xref:Bunit.SnapshotTest> we declare the expected rendered output from whatever is declared in the `<TestInput>` child component.
 
 When the test runs, the <xref:Bunit.SnapshotTest> component will automatically compare the rendered output of the `<TestInput>` component with that of the `<ExpectedOutput>` component using the semantic HTML comparison logic in bUnit.
 
 > [!TIP]
-> Learn more about how the semantic HTML/markup comparison in bUnit work, and how to customize it on the <xref:semantic-html-comparison> page.
+> Learn more about how the semantic HTML/markup comparison in bUnit works, and how to customize it, on the <xref:semantic-html-comparison> page.
 
 ### Passing Parameters to Components Under Test
 
-Since we are declaring our component under test in Razor syntax, passing parameters to the component under test is the same as passing parameters in normal Blazor components. This is the same for tests created with both the <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
+Since we are declaring our component under test in Razor syntax, passing parameters to the component under test is the same as passing parameters into normal Blazor components. This is the same for tests created with both the <xref:Bunit.Fixture> and <xref:Bunit.SnapshotTest> components.
 
-In this example, we are passing both attribute parameters and child content to the component under test. In this case, this is a basic `<Alert>` component:
+In this example, we are passing both attribute parameters and child content to the component under test. In this case, it's a basic `<Alert>` component:
 
 [!code-cshtml[](../../../samples/tests/razor/PassingParametersToComponents.razor)]
 
