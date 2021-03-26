@@ -4,7 +4,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
-## [UNRELEASED]
+## [1.0.0-preview-02] - 2021-03-26
+
+The following section list all changes in 1.0.0 preview 02. 
+
+The plan is to make this the last preview release of bUnit. If no big blocking bugs show up the next two weeks, a non-preview release of bUnit will be pushed out to the world.
 
 ### Added
 List of new features.
