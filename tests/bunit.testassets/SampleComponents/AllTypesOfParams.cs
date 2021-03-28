@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -39,6 +40,7 @@ namespace Bunit.TestAssets.SampleComponents
 
 		public int? NoParameterProperty { get; set; }
 
+		[SuppressMessage("Minor Code Smell", "S3400:Methods should not return constants", Justification = "For testing purposes")]
 		public int DummyMethod()
 		{
 			return 42;

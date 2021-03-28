@@ -255,6 +255,7 @@ namespace Bunit
 			return CascadingValueType.MakeGenericType(cascadingValueType);
 		}
 
+		[SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Accesses private method in this type.")]
 		private static MethodInfo GetCreateTemplateWrapperMethod()
 		{
 			var result = typeof(ComponentParameterCollection).GetMethod(nameof(CreateTemplateWrapper), BindingFlags.NonPublic | BindingFlags.Static);
