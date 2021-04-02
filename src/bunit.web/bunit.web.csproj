@@ -8,7 +8,7 @@
 
 	<PropertyGroup>
 		<PackageId>bunit.web</PackageId>
-		<Title>bUnit.core</Title>
+		<Title>bUnit.web</Title>
 		<Description>
 			bUnit.web is a testing library for web/HTML-based Blazor components.
 
@@ -32,10 +32,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="TestDoubles\NavigationManager\" />
 	</ItemGroup>
 
 </Project>
