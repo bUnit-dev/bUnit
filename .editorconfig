@@ -479,7 +479,6 @@ dotnet_diagnostic.SA1000.severity = none # BUGGY with C#9 code
 dotnet_diagnostic.SA1005.severity = none # SA1005: Single line comments should begin with single space
 dotnet_diagnostic.SA1011.severity = none # BUGGY with C#9 code
 
-dotnet_diagnostic.SA1027.severity = none # SA1027: Use Tabs Correctly
 dotnet_diagnostic.SA1107.severity = suggestion # SA1107: Code should not contain multiple statements on one line
 dotnet_diagnostic.SA1127.severity = suggestion # SA1127: Generic type constraints should be on their own line
 dotnet_diagnostic.SA1128.severity = suggestion # SA1128: Put constructor initializers on their own line
