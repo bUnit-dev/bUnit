@@ -4,6 +4,117 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
+## [1.0.0]
+
+The following section list all changes since preview 02.
+
+### Changed
+
+List of changes in existing functionality.
+
+- _**BREAKING CHANGE:**_ Writing tests using the test components `<Fixture>` and `<SnapshotTest>` components inside .razor files has been moved to its own library, `bunit.web.testcomponents`. This was done for several reasons:  
+  
+  - The feature has been experimental since it was introduced, and it was introduced get a more natural way of specifying the component under test and any related markup used by test. 
+  - The feature is only supported with xUnit.
+  - There are some issues related to the `SourceFileFinder` library, which is used to discover the test components. 
+  - A better way of writing tests in .razor files has been added to bUnit, using *"inline render fragments"*. This method works with all general purpose test frameworks, e.g. MSTest, NUnit, and xUnit, is more flexible, and offer less boilerplate code than the test components. The bUnit documentation has been updated with a guide to this style.  
+  
+  The new package `bunit.web.testcomponents` is provided as is, without expectation of further development or enhancements. If you are using the test components currently for writing tests, it will continue to work for you. If you are starting a new project, or have few of these tests, consider switching to the "inline render fragments" style.
+  
+  Here is a quick comparison of the styles, using a very simple component.
+
+  First, the test component style:
+
+  ```razor
+  @inherits TestComponentBase
+
+  <Fixture Test="HelloWorldComponentRendersCorrectly">
+    <ComponentUnderTest>
+      <HelloWorld />
+    </ComponentUnderTest>
+
+    @code
+    {
+      void HelloWorldComponentRendersCorrectly(Fixture fixture)
+      {
+        // Act
+        var cut = fixture.GetComponentUnderTest<HelloWorld>();
+
+        // Assert
+        cut.MarkupMatches("<h1>Hello world from Blazor</h1>");
+      }
+    }
+  </Fixture>
+
+  <SnapshotTest Description="HelloWorld component renders correctly">
+    <TestInput>
+      <HelloWorld />
+    </TestInput>
+    <ExpectedOutput>
+      <h1>Hello world from Blazor</h1>
+    </ExpectedOutput>
+  </SnapshotTest>
+  ```
+
+  The a single test in "inline render fragments" style covers both cases:
+
+  ```
+  @inherits TestContext
+  @code {
+    [Fact]
+    public void HelloWorldComponentRendersCorrectly()
+    {
+      // Act
+      var cut = Render(@<HelloWorld />);
+
+      // Assert
+      cut.MarkupMatches(@<h1>Hello world from Blazor</h1>);
+    }  
+  }
+  ```
+
+  To make the snapshot test scenario even more compact, consider putting all code in one line, e.g. `Render(@<HelloWorld />).MarkupMatches(@<h1>Hello world from Blazor</h1>);`.
+
+  For a more complete snapshot testing experience, I recommend looking at Simon Cropp's [Verify](https://github.com/VerifyTests) library, in particular the [Verify.Blazor extension to bUnit](https://github.com/VerifyTests/Verify.Blazor#verifybunit). Verify comes with all the features you expect from a snapshot testing library.
+
+### Removed
+
+List of now removed features.
+
+- The `AddXunitLogger` method, which provided support for capturing `ILogger` messages and passing them to xUnit's `ITestOutputHelper`, has been removed. There were no need to keep xUnit specific code around in bUnit going forward, and there are many implementations on-line that supports this feature, so having it in bUnit made little sense. One such alternative, which bUnit has adopted internally, is to use Serilog. This looks as follows:  
+  
+  1. Add the following packages to your test project: `Serilog`, `Serilog.Extensions.Logging`, and `Serilog.Sinks.XUnit`.
+  2. Add the following class/extension method to your test project (which replicates the signature of the removed `AddXunitLogger` method):  
+	
+	```csharp
+	using Microsoft.Extensions.DependencyInjection;
+	using Microsoft.Extensions.Logging;
+	using Serilog;
+	using Serilog.Events;
+	using Xunit.Abstractions;
+
+	namespace Bunit
+	{
+		public static class ServiceCollectionLoggingExtensions
+		{
+			public static IServiceCollection AddXunitLogger(this IServiceCollection services, ITestOutputHelper outputHelper)
+			{
+				var serilogLogger = new LoggerConfiguration()
+					.MinimumLevel.Verbose()
+					.WriteTo.TestOutput(outputHelper, LogEventLevel.Verbose)
+					.CreateLogger();
+
+				services.AddSingleton<ILoggerFactory>(new LoggerFactory().AddSerilog(serilogLogger, dispose: true));
+				services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+
+				return services;
+			}
+		}
+	}
+	```
+
+- The `bunit.xunit` package has been removed, since it is no longer needed (there is no code left in it).
+
 ## [1.0.0-preview-02] - 2021-03-26
 
 The following section list all changes in 1.0.0 preview 02. 
