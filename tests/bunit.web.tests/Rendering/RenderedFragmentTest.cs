@@ -12,7 +12,7 @@ namespace Bunit
 	{
 		public RenderedFragmentTest(ITestOutputHelper output)
 		{
-			Services.AddXunitLogger(output, minimumLogLevel: LogLevel.Debug);
+			Services.AddXunitLogger(output);
 		}
 
 		[Fact(DisplayName = "Find throws an exception if no element matches the css selector")]
