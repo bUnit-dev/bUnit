@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
 		<RootNamespace>Bunit</RootNamespace>
-		<AssemblyName>Bunit.Xunit.Tests</AssemblyName>
+		<AssemblyName>Bunit.Web.TestComponents.Tests</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -14,9 +14,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\bunit.core\bunit.core.csproj" />
 		<ProjectReference Include="..\..\src\bunit.web\bunit.web.csproj" />
-		<ProjectReference Include="..\..\src\bunit.xunit\bunit.xunit.csproj" />
+		<ProjectReference Include="..\..\src\bunit.web.testcomponents\bunit.web.testcomponents.csproj" />
 		<ProjectReference Include="..\bunit.testassets\bunit.testassets.csproj" />
 	</ItemGroup>
 
