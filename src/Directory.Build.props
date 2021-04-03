@@ -38,7 +38,7 @@
 	</PropertyGroup>
 
   <ItemGroup>
-      <None Include="..\..\bunit-logo.png" Pack="true" PackagePath="" />      
+      <None Include="..\..\bunit-logo.png" Pack="true" PackagePath="" Visible="false" />      
   </ItemGroup>
 
   <ItemGroup>
