@@ -1,9 +1,13 @@
-using Bunit.RazorTesting;
+using System;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit.Extensions
 {
-	internal static class TestContextExtensions
+	/// <summary>
+	/// Extensions methods for <see cref="TestContextBase"/> types.
+	/// </summary>
+	public static class TestContextBaseExtensions
 	{
 		/// <summary>
 		/// Renders a component, declared in the <paramref name="renderFragment"/>, inside the <see cref="TestContextBase.RenderTree"/>.
@@ -12,9 +16,12 @@ namespace Bunit.Extensions
 		/// <param name="testContext">Test context to use to render with.</param>
 		/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> that contains a declaration of the component.</param>
 		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/>.</returns>
-		public static IRenderedComponent<TComponent> RenderInsideRenderTree<TComponent>(this TestContextBase testContext, RenderFragment renderFragment)
-		    where TComponent : IComponent
+		public static IRenderedComponentBase<TComponent> RenderInsideRenderTree<TComponent>(this TestContextBase testContext, RenderFragment renderFragment)
+			where TComponent : IComponent
 		{
+			if (testContext is null)
+				throw new ArgumentNullException(nameof(testContext));
+
 			// Wrap TComponent in any layout components added to the test context.
 			// If one of the layout components is the same type as TComponent,
 			// make sure to return the rendered component, not the layout component.
@@ -27,7 +34,7 @@ namespace Bunit.Extensions
 				? testContext.Renderer.FindComponents<TComponent>(resultBase)[renderTreeTComponentCount]
 				: testContext.Renderer.FindComponent<TComponent>(resultBase);
 
-			return (IRenderedComponent<TComponent>)result;
+			return result;
 		}
 
 		/// <summary>
@@ -36,8 +43,11 @@ namespace Bunit.Extensions
 		/// <param name="testContext">Test context to use to render with.</param>
 		/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> to render.</param>
 		/// <returns>A <see cref="IRenderedFragmentBase"/>.</returns>
-		public static IRenderedFragment RenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment)
+		public static IRenderedFragmentBase RenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment)
 		{
+			if (testContext is null)
+				throw new ArgumentNullException(nameof(testContext));
+
 			// Wrap fragment in a FragmentContainer so the start of the test supplied
 			// razor fragment can be found after, and then wrap in any layout components
 			// added to the test context.
@@ -45,7 +55,7 @@ namespace Bunit.Extensions
 			var wrappedInRenderTree = testContext.RenderTree.Wrap(wrappedInFragmentContainer);
 			var resultBase = testContext.Renderer.RenderFragment(wrappedInRenderTree);
 
-			return (IRenderedFragment)testContext.Renderer.FindComponent<FragmentContainer>(resultBase);
+			return testContext.Renderer.FindComponent<FragmentContainer>(resultBase);
 		}
 	}
 }
