@@ -12,18 +12,17 @@
 		<Description>
 			bUnit is a testing library for Blazor components.
 
-			You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect the component under test, trigger event handlers, provide cascading values, inject services, mock JavaScript interopt, and perform snapshot testing.
+			You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic.
+			You can interact with and inspect the component under test, trigger event handlers, provide cascading values, and inject services.
 
-			NOTE: This version includes support for xUnit as the general-purpose test framework. In other words, installing this package is equivalent to installing the packages "bunit.core", "bunit.web", and "bunit.xunit".
-
-			If you prefer Nunit or MSTest, just install the “bunit.core” and “bunit.web” packages.
+			bUnit also includes a complete fake implementation of Blazor's authentication and authorization logic, navigation manager, and
+			JSInterop.
 		</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\bunit.core\bunit.core.csproj" />
 	  <ProjectReference Include="..\bunit.web\bunit.web.csproj" />
-	  <ProjectReference Include="..\bunit.xunit\bunit.xunit.csproj" />
 	</ItemGroup>
 
 </Project>
