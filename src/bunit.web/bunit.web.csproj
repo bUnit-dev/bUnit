@@ -10,9 +10,7 @@
 		<PackageId>bunit.web</PackageId>
 		<Title>bUnit.web</Title>
 		<Description>
-			bUnit.web is a testing library for web/HTML-based Blazor components.
-
-			You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect the component under test, trigger event handlers, provide cascading values, inject services, mock JavaScript interopt, and perform snapshot testing.
+			bUnit.web is the web specific parts of bUnit, that enables you to easily test and verify the output of Blazor (web) component.		
 		</Description>
 	</PropertyGroup>
 
