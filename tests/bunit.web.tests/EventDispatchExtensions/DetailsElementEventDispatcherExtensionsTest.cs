@@ -5,8 +5,8 @@ using Xunit;
 
 namespace Bunit.EventDispatchExtensions
 {
-    public class DetailsElementEventDispatcherExtensionsTest : TestContext
-    {
+	public class DetailsElementEventDispatcherExtensionsTest : TestContext
+	{
 		[Fact(DisplayName = "Toggle raises ontoggle events")]
 		public void Test200()
 		{

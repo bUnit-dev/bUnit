@@ -303,7 +303,7 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(expected));
 
 			var testContext = actual.Services.GetRequiredService<TestContextBase>();
-			var renderedFragment = testContext.RenderInsideRenderTree(expected);
+			var renderedFragment = (IRenderedFragment)testContext.RenderInsideRenderTree(expected);
 			MarkupMatches(actual, renderedFragment, userMessage);
 		}
 
@@ -323,7 +323,7 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected)
+			var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as IRenderedFragment
 				?? AdhocRenderRenderFragment(expected);
 			MarkupMatches(actual, renderedFragment, userMessage);
 		}
@@ -344,7 +344,7 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected)
+			var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as IRenderedFragment
 				?? AdhocRenderRenderFragment(expected);
 			MarkupMatches(actual, renderedFragment, userMessage);
 		}
@@ -352,7 +352,7 @@ namespace Bunit
 		private static IRenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
 		{
 			using var ctx = new TestContext();
-			return ctx.RenderInsideRenderTree(renderFragment);
+			return (IRenderedFragment)ctx.RenderInsideRenderTree(renderFragment);
 		}
 
 		private static INodeList ToNodeList(this string markup, BunitHtmlParser? htmlParser)

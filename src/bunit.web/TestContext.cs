@@ -31,7 +31,7 @@ namespace Bunit
 		/// <param name="parameters">Parameters to pass to the component when it is rendered.</param>
 		/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			var renderFragment = new ComponentParameterCollection { parameters }.ToRenderFragment<TComponent>();
 			return Render<TComponent>(renderFragment);
@@ -44,7 +44,7 @@ namespace Bunit
 		/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered.</param>
 		/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder).Build().ToRenderFragment<TComponent>();
 			return Render<TComponent>(renderFragment);
@@ -61,7 +61,7 @@ namespace Bunit
 		/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
 		public virtual IRenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
 			where TComponent : IComponent
-			=> this.RenderInsideRenderTree<TComponent>(renderFragment);
+			=> (IRenderedComponent<TComponent>)this.RenderInsideRenderTree<TComponent>(renderFragment);
 
 		/// <summary>
 		/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="IRenderedFragment"/>.
@@ -69,7 +69,7 @@ namespace Bunit
 		/// <param name="renderFragment">The render fragment to render.</param>
 		/// <returns>The <see cref="IRenderedFragment"/>.</returns>
 		public virtual IRenderedFragment Render(RenderFragment renderFragment)
-			=> this.RenderInsideRenderTree(renderFragment);
+			=> (IRenderedFragment)this.RenderInsideRenderTree(renderFragment);
 
 		/// <summary>
 		/// Dummy method required to allow Blazor's compiler to generate
