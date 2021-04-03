@@ -61,7 +61,7 @@ namespace Bunit
 		/// <typeparam name="TComponent">The type of component to render.</typeparam>
 		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/>.</returns>
 		public IRenderedComponent<TComponent> GetComponentUnderTest<TComponent>()
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			var result = GetOrRenderFragment(nameof(GetComponentUnderTest), SelectComponentUnderTest, Factory<TComponent>);
 			return TryCastTo<TComponent>(result);
@@ -98,7 +98,7 @@ namespace Bunit
 		/// <param name="id">The id of the fragment where the component is defined in Razor syntax.</param>
 		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/>.</returns>
 		public IRenderedComponent<TComponent> GetFragment<TComponent>(string? id = null)
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			var key = id ?? SelectFirstFragment().Id;
 			var result = GetOrRenderFragment(key, SelectFragmentById, Factory<TComponent>);
@@ -138,18 +138,18 @@ namespace Bunit
 		}
 
 		private IRenderedComponent<TComponent> Factory<TComponent>(RenderFragment fragment)
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
-			return this.RenderInsideRenderTree<TComponent>(fragment);
+			return (IRenderedComponent<TComponent>)this.RenderInsideRenderTree<TComponent>(fragment);
 		}
 
 		private IRenderedFragment Factory(RenderFragment fragment)
 		{
-			return this.RenderInsideRenderTree(fragment);
+			return (IRenderedFragment)this.RenderInsideRenderTree(fragment);
 		}
 
 		private static IRenderedComponent<TComponent> TryCastTo<TComponent>(IRenderedFragment target, [System.Runtime.CompilerServices.CallerMemberName] string sourceMethod = "")
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			if (target is IRenderedComponent<TComponent> result)
 			{
