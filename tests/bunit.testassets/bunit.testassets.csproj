@@ -7,10 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10256" />
-		<PackageReference Include="xunit.abstractions" Version="2.0.3" />
 		<PackageReference Include="xunit.assert" Version="2.4.1" />
+		<PackageReference Include="xunit.abstractions" Version="2.0.3" />
 		<PackageReference Include="Serilog" Version="2.9.0" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
 		<PackageReference Include="Serilog.Sinks.XUnit" Version="2.0.4" />
 	</ItemGroup>
 
