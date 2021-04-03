@@ -26,7 +26,7 @@ namespace Bunit.Asserting
 		/// Initializes a new instance of the <see cref="ActualExpectedAssertException"/> class.
 		/// </summary>
 		protected ActualExpectedAssertException(SerializationInfo info, StreamingContext context)
-            : base(info, context) { }
+			: base(info, context) { }
 
 		private static string CreateMessage(string actual, string expected, string actualText, string expectedText, string message)
 		{

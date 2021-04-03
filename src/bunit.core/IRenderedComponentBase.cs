@@ -7,7 +7,7 @@ namespace Bunit
 	/// </summary>
 	/// <typeparam name="TComponent">The type of the component under test.</typeparam>
 	public interface IRenderedComponentBase<out TComponent> : IRenderedFragmentBase
-	    where TComponent : IComponent
+		where TComponent : IComponent
 	{
 		/// <summary>
 		/// Gets the component under test.

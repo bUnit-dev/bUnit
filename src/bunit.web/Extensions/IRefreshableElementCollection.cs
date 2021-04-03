@@ -10,7 +10,7 @@ namespace Bunit
 	/// </summary>
 	/// <typeparam name="T">The type of <see cref="IElement"/> in the collection.</typeparam>
 	public interface IRefreshableElementCollection<out T> : IReadOnlyList<T>
-	    where T : IElement
+		where T : IElement
 	{
 		/// <summary>
 		/// Gets or sets a value indicating whether the collection automatically refreshes when the
