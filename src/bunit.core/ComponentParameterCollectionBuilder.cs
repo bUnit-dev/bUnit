@@ -14,7 +14,7 @@ namespace Bunit
 	/// </summary>
 	/// <typeparam name="TComponent">The type of component under test to add the parameters.</typeparam>
 	public sealed class ComponentParameterCollectionBuilder<TComponent>
-	    where TComponent : IComponent
+		where TComponent : IComponent
 	{
 		private const string ChildContent = nameof(ChildContent);
 		private static readonly Type TComponentType = typeof(TComponent);
@@ -91,7 +91,8 @@ namespace Bunit
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 		public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, RenderFragment<TValue>?>> parameterSelector, Func<TValue, string> markupFactory)
 		{
-			if (markupFactory is null) throw new ArgumentNullException(nameof(markupFactory));
+			if (markupFactory is null)
+				throw new ArgumentNullException(nameof(markupFactory));
 			return Add(parameterSelector, v => b => b.AddMarkupContent(0, markupFactory(v)));
 		}
 
@@ -108,7 +109,8 @@ namespace Bunit
 		public ComponentParameterCollectionBuilder<TComponent> Add<TChildComponent, TValue>(Expression<Func<TComponent, RenderFragment<TValue>?>> parameterSelector, Func<TValue, Action<ComponentParameterCollectionBuilder<TChildComponent>>> templateFactory)
 			where TChildComponent : IComponent
 		{
-			if (templateFactory is null) throw new ArgumentNullException(nameof(templateFactory));
+			if (templateFactory is null)
+				throw new ArgumentNullException(nameof(templateFactory));
 			return Add(parameterSelector, value => GetRenderFragment(templateFactory(value)));
 		}
 
@@ -272,8 +274,8 @@ namespace Bunit
 		/// <param name="childParameterBuilder">A parameter builder for the <typeparamref name="TChildComponent"/>.</param>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 		public ComponentParameterCollectionBuilder<TComponent> AddChildContent<TChildComponent>(Action<ComponentParameterCollectionBuilder<TChildComponent>>? childParameterBuilder = null)
-		    where TChildComponent : IComponent
-		    => AddChildContent(GetRenderFragment(childParameterBuilder));
+			where TChildComponent : IComponent
+			=> AddChildContent(GetRenderFragment(childParameterBuilder));
 
 		/// <summary>
 		/// Adds an UNNAMED cascading value around the <typeparamref name="TComponent"/> when it is rendered. Used to
@@ -283,8 +285,8 @@ namespace Bunit
 		/// <param name="cascadingValue">The cascading value.</param>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 		public ComponentParameterCollectionBuilder<TComponent> AddCascadingValue<TValue>(TValue cascadingValue)
-		    where TValue : notnull
-		    => AddCascadingValueParameter(name: null, cascadingValue);
+			where TValue : notnull
+			=> AddCascadingValueParameter(name: null, cascadingValue);
 
 		/// <summary>
 		/// Adds an NAMED cascading value around the <typeparamref name="TComponent"/> when it is rendered. Used to
@@ -295,8 +297,8 @@ namespace Bunit
 		/// <param name="cascadingValue">The cascading value.</param>
 		/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 		public ComponentParameterCollectionBuilder<TComponent> AddCascadingValue<TValue>(string name, TValue cascadingValue)
-		    where TValue : notnull
-		    => AddCascadingValueParameter(name, cascadingValue);
+			where TValue : notnull
+			=> AddCascadingValueParameter(name, cascadingValue);
 
 		/// <summary>
 		/// Adds an unmatched attribute value to <typeparamref name="TComponent"/>.
@@ -356,7 +358,8 @@ namespace Bunit
 
 		private static (string Name, string? CascadingValueName, bool IsCascading) GetParameterInfo<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
 		{
-			if (parameterSelector is null) throw new ArgumentNullException(nameof(parameterSelector));
+			if (parameterSelector is null)
+				throw new ArgumentNullException(nameof(parameterSelector));
 
 			if (!(parameterSelector.Body is MemberExpression memberExpression) || !(memberExpression.Member is PropertyInfo propInfoCandidate))
 				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.", nameof(parameterSelector));
@@ -371,7 +374,7 @@ namespace Bunit
 			if (propertyInfo is null || (paramAttr is null && cascadingParamAttr is null))
 				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter] attribute.", nameof(parameterSelector));
 
-			return (Name: propertyInfo.Name, CascadingValueName: cascadingParamAttr?.Name, IsCascading: cascadingParamAttr is not null);
+			return (propertyInfo.Name, CascadingValueName: cascadingParamAttr?.Name, IsCascading: cascadingParamAttr is not null);
 		}
 
 		private static bool HasChildContentParameter()
@@ -392,7 +395,7 @@ namespace Bunit
 		}
 
 		private static RenderFragment GetRenderFragment<TChildComponent>(Action<ComponentParameterCollectionBuilder<TChildComponent>>? childParameterBuilder)
-		    where TChildComponent : IComponent
+			where TChildComponent : IComponent
 		{
 			var childBuilder = new ComponentParameterCollectionBuilder<TChildComponent>(childParameterBuilder);
 			return childBuilder.Build().ToRenderFragment<TChildComponent>();

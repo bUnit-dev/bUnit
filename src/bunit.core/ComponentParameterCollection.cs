@@ -79,7 +79,7 @@ namespace Bunit
 		/// <typeparam name="TComponent">Type of component to render.</typeparam>
 		[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
 		public RenderFragment ToRenderFragment<TComponent>()
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			var cascadingValues = GetCascadingValues();
 
@@ -116,7 +116,8 @@ namespace Bunit
 
 			void AddAttributes(RenderTreeBuilder builder)
 			{
-				if (parameters is null) return;
+				if (parameters is null)
+					return;
 
 				var attrCount = 100;
 

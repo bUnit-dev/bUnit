@@ -24,7 +24,7 @@ namespace Bunit.Rendering
 		/// <typeparam name="TComponent">The type of the component to add to the render tree.</typeparam>
 		/// <param name="parameterBuilder">An optional parameter builder, used to pass parameters to <typeparamref name="TComponent"/>.</param>
 		public void Add<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			var registration = new RootRenderTreeRegistration(typeof(TComponent), CreateRenderFragmentBuilder(parameterBuilder));
 			registrations.Add(registration);
@@ -45,7 +45,7 @@ namespace Bunit.Rendering
 		/// <param name="parameterBuilder">An optional parameter builder, used to pass parameters to <typeparamref name="TComponent"/>.</param>
 		/// <returns>True if component was added, false if it was previously added and not added again.</returns>
 		public bool TryAdd<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			var componentType = typeof(TComponent);
 			if (registrations.Any(x => x.ComponentType == componentType))
@@ -92,7 +92,7 @@ namespace Bunit.Rendering
 		/// <typeparam name="TComponent">Component type to count.</typeparam>
 		/// <returns>Number of components of type <typeparamref name="TComponent"/> in render tree.</returns>
 		public int GetCountOf<TComponent>()
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			var result = 0;
 			var countType = typeof(TComponent);
@@ -107,7 +107,7 @@ namespace Bunit.Rendering
 		}
 
 		private static RenderFragment<RenderFragment> CreateRenderFragmentBuilder<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder)
-		    where TComponent : IComponent
+			where TComponent : IComponent
 		{
 			return rc =>
 			{

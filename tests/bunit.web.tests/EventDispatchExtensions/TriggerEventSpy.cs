@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 namespace Bunit
 {
 	public class TriggerEventSpy<TEventArgs>
-	    where TEventArgs : EventArgs, new()
+		where TEventArgs : EventArgs, new()
 	{
 		private readonly IRenderedComponent<TriggerTester<TEventArgs>> renderedComponent;
 		private readonly string element;
