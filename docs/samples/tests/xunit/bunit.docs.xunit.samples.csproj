@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <RootNamespace>Bunit.Docs.Samples</RootNamespace>
@@ -15,9 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../../../src/bunit.core/bunit.core.csproj" />
     <ProjectReference Include="../../../../src/bunit.web/bunit.web.csproj" />
-    <ProjectReference Include="../../../../src/bunit.xunit/bunit.xunit.csproj" />
     <ProjectReference Include="../../components/bunit.docs.samples.csproj" />
   </ItemGroup>
 
