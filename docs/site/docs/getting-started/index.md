@@ -5,13 +5,12 @@ title: Getting Started with bUnit
 
 # Getting Started with bUnit
 
-To start writing tests for Blazor components, first set up a test project and then you can start adding tests using either C# or Razor syntax.
+To start writing tests for Blazor components, first set up a test project and then you can start adding tests.
 
 The *basic* getting started topics are as follows:
 
 1. **<xref:create-test-project>** covers setting up a bUnit test project.
-2. **<xref:writing-csharp-tests>** covers the basics of writing tests in C#, i.e. regular unit tests.
-3. **<xref:writing-razor-tests>** covers the basics of writing tests in `.razor` files using Razor and C# syntax.  
+2. **<xref:writing-tests>** covers the basics of writing tests for Blazor components.
 
 The *next level* topics are:
 

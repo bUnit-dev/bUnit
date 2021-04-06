@@ -1,6 +1,6 @@
 ---
 uid: home
-title: bUnit - a Testing Library for Blazor Components
+title: bUnit - a testing library for Blazor components
 ---
 
 [![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
@@ -8,7 +8,7 @@ title: bUnit - a Testing Library for Blazor Components
 [![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github)](https://github.com/egil/bunit/issues)
 [![Gitter](https://img.shields.io/gitter/room/egil/bunit?logo=gitter&style=flat-square)](https://gitter.im/egil/bunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-# bUnit: a Testing Library for Blazor Components
+# bUnit: a testing library for Blazor components
 
 **bUnit** is a testing library for Blazor Components. Its goal is to make it easy to write _comprehensive, stable_ unit tests. With bUnit, you can:
 
@@ -16,14 +16,13 @@ title: bUnit - a Testing Library for Blazor Components
 - Verify outcomes using semantic HTML comparer
 - Interact with and inspect components as well as trigger event handlers
 - Pass parameters, cascading values and inject services into components under test
-- Mock `IJSRuntime` and Blazor authentication and authorization
-- Perform snapshot testing
+- Mock `IJSRuntime`, Blazor authentication and authorization, and others
 
 bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which run the Blazor components tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run. 
 
 **Go to the [Documentation](xref:getting-started) pages to learn more.**
 
-### Test Example 
+### Test example 
 
 Let’s write a test for the `<Counter>` component listed below. This comes with the standard Blazor project template which verifies that the counter corrects increments when the button is clicked:
 
@@ -37,16 +36,15 @@ This test uses bUnit’s test context to render the ‘Counter’ component with
 
 **Go to the [Documentation](xref:getting-started) pages to learn more.**
 
+### NuGet downloads
 
-### NuGet Downloads
-
-bUnit is available on NuGet in various incarnations. If you are using xUnit as your general purpose testing framework, you can use `bunit`, which includes everything in one package. If you want to use NUnit or MStest, then pick `bunit.core` and `bunit.web`:
+bUnit is available on NuGet in various incarnations. Most should just pick the [bUnit](https://www.nuget.org/packages/bunit/) package:
 
 | Name | Description | NuGet Download Link |
 | ----- | ----- | ---- |
-| [bUnit.web](https://www.nuget.org/packages/bunit.web/) | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) | 
-| [bUnit.xUnit](https://www.nuget.org/packages/bunit.xunit/) | Adds additional support for using bUnit with xUnit, including support for Razor-based tests. | [![Nuget](https://img.shields.io/nuget/dt/bunit.xunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.xunit/) |
+| [bUnit](https://www.nuget.org/packages/bunit/) | Includes the bUnit.core and bUnit.web packages. | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) |
 | [bUnit.core](https://www.nuget.org/packages/bunit.core/) | Core library that enables rendering a Blazor component in a test context. | [![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.core/) | 
+| [bUnit.web](https://www.nuget.org/packages/bunit.web/) | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) | 
 | [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template, which currently creates xUnit-based bUnit test projects only | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) | 
 
 ## Sponsors
@@ -63,17 +61,6 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 		</td>
 	</tr>
 </table>
-
-## Milestones to v1.0.0
-
-Going forward, we have a variety of milestones to reach. These are the current goals that should be reached before v1.0.0 is ready:
-
-- **Stabilize the APIs**, such that they work equally well with both xUnit, NUnit, and MSTest as the underlying test framework. The general goal is to make it easy for developers to create their required tests successfully.
-- **Get the Razor-based testing to stable**, e.g. make the discovery and running of tests defined in .razor files stable and efficient. This includes adding support for NUnit and MSTest as test runners.
-- **Improve the documentation**. It is a good idea to get an experienced technical editor to review the documentation, making sure it is clear and understandable. In addition to this, more ‘How to’ guides are planned in the [Update Docs](https://github.com/egil/bunit/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22updated+docs%22) milestone.
-- **Join the .NET Foundation.**. This project is too large for one person to act as owner and sole maintainer, so the plan is to apply for membership as soon as possible, most likely close to or after v1.0.0 ships, and get the support and guidance needed to ensure the project's long term future.
-
-In the post-v1.0.0 to v1.0.x time frame, focus will be on improving performance. In particular, it would be nice to reduce the current spin-up time of about one second.
 
 ## Contributors
 

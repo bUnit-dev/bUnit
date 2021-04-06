@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.mstest.samples",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.nunit.samples", "tests\nunit\bunit.docs.nunit.samples.csproj", "{0BC8DBEB-500A-4DB2-9123-7617D24E5053}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.razor.samples", "tests\razor\bunit.docs.razor.samples.csproj", "{30518354-6437-4474-8198-870AA8B07A2D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.xunit.samples", "tests\xunit\bunit.docs.xunit.samples.csproj", "{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}"
 EndProject
 Global
@@ -61,18 +59,6 @@ Global
 		{0BC8DBEB-500A-4DB2-9123-7617D24E5053}.Release|x64.Build.0 = Release|Any CPU
 		{0BC8DBEB-500A-4DB2-9123-7617D24E5053}.Release|x86.ActiveCfg = Release|Any CPU
 		{0BC8DBEB-500A-4DB2-9123-7617D24E5053}.Release|x86.Build.0 = Release|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Debug|x64.Build.0 = Debug|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Debug|x86.Build.0 = Debug|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Release|x64.ActiveCfg = Release|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Release|x64.Build.0 = Release|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Release|x86.ActiveCfg = Release|Any CPU
-		{30518354-6437-4474-8198-870AA8B07A2D}.Release|x86.Build.0 = Release|Any CPU
 		{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -92,7 +78,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C2060A20-8C56-4678-B65C-DCF52D70223D} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
 		{0BC8DBEB-500A-4DB2-9123-7617D24E5053} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
-		{30518354-6437-4474-8198-870AA8B07A2D} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
 		{3B8B3B0E-CA33-4C76-901D-219F5FF848B3} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

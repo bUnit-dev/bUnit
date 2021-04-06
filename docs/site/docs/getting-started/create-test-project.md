@@ -1,15 +1,15 @@
 ---
 uid: create-test-project
-title: Creating a new bUnit Test Project
+title: Creating a new bUnit test project
 ---
 
-# Creating a new bUnit Test Project
+# Creating a new bUnit test project
 
 To write tests, you need a place to put them - a test project. bUnit is not a unit test runner, so a general-purpose test framework like xUnit, NUnit, or MSTest is needed in addition to bUnit in order to write and run tests. 
 
 To use bUnit with xUnit, the easiest approach is to use the bUnit project template described in the [Create a test project with bUnit template](#creating-a-test-project-with-bunit-template) section further down the page. To create a test project manually and in a general-purpose testing frameworks agnostic way, read the following section.
 
-## Creating a Test Project Manually
+## Creating a test project manually
 
 This section will take you through the steps required to create a project for testing Blazor components using bUnit. Any of the three general-purpose test frameworks shown in step 1 below can be used. Briefly, here is what we will do:
 
@@ -186,7 +186,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
 
 ***
 
-## Creating a Test Project with bUnit Template
+## Creating a test project with bUnit template
 
 To skip a few steps in the guide above, use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/). The bUnit project template currently only works with the xUnit general-purpose testing framework, but other frameworks will be supported in the future.
 
@@ -227,8 +227,6 @@ dotnet add <NAME OF TEST PROJECT>.csproj reference <NAME OF COMPONENT PROJECT>.c
 
 This will allow the test project to see and test the components in the component project.
 
-## Further Reading
+## Further reading
 
-To start creating tests, continue reading the <xref:writing-csharp-tests> and <xref:writing-razor-tests> pages.
-
-For additional tips and tricks that will make writing tests easier, see the <xref:misc-test-tips> page.
+To start creating tests, continue reading the <xref:writing-tests> page.
