@@ -1,0 +1,14 @@
+@code
+{
+  [Fact]
+  public void Test()
+  {
+    using var ctx = new TestContext();
+
+    var isDarkTheme = true;
+
+    var cut = ctx.Render(@<CascadingValue Value="isDarkTheme">
+                            <CascadingParams />
+                          </CascadingValue>);
+  }
+}

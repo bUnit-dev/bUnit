@@ -11,6 +11,11 @@ Use **bUnit** to render the component under test, pass in its parameters, inject
 
 Rendering a component happens through bUnit's <xref:Bunit.TestContext>. The result of the rendering is an `IRenderedComponent`, referred to as a "rendered component", that provides access to the component instance and the markup produced by the component.
 
+> [!NOTE]
+> The preview and beta versions of bUnit included an experimental feature for writing tests using two test components, `<Fixture>` and `<SnapshotTest>`. Since there is now a better way to write tests in `.razor` files, the old experimental feature has been moved into a separate project named `bunit.web.testcomponents`. It is kept around to not break early adopters, but _no additional features or improvements_ is planned to it.
+> 
+> To learn more, head over to the [bunit.web.testcomponents project](https://github.com/egil/bUnit/tree/main/src/bunit.web.testcomponents) on GitHub.
+
 ## Write tests in `.cs` or `.razor` files
 
 bUnit works with MSTest, NUnit, and xUnit, and it allows you to write the unit tests in either `.cs` or `.razor` files. 
@@ -28,17 +33,17 @@ Before writing tests in `.razor` files, a few things needs to be in place:
 1. Make sure the test project has the SDK type set to `Microsoft.NET.Sdk.Razor`. Otherwise the Blazor compiler will not translate your `.razor` files into runnable code.
 2. Add a `_Imports.razor` file to the test project. It serves the same purpose as `_Imports.razor` files in regular Blazor projects. These using statements are useful to add right away:   
    
-    ```cshtml
-    @using Microsoft.AspNetCore.Components.Forms
-    @using Microsoft.AspNetCore.Components.Web
-    @using Microsoft.JSInterop
-    @using Microsoft.Extensions.DependencyInjection
-    @using AngleSharp.Dom
-    @using Bunit
-    @using Bunit.TestDoubles
-    ```
-       
-    Also add a using statement for your general purpose testing framework, e.g. `@using Xunit` for xUnit.
+```cshtml
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@using Microsoft.Extensions.DependencyInjection
+@using AngleSharp.Dom
+@using Bunit
+@using Bunit.TestDoubles
+```
+    
+Also add a using statement for your general purpose testing framework, e.g. `@using Xunit` for xUnit.
 
 With that in place, lets look at a simple example that tests the following `<HelloWorld>` component:
 

@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.nunit.samples", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.xunit.samples", "tests\xunit\bunit.docs.xunit.samples.csproj", "{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.docs.razor.samples", "tests\razor\bunit.docs.razor.samples.csproj", "{C92CB47E-8A70-409C-9213-8D743BB29366}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,18 @@ Global
 		{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}.Release|x64.Build.0 = Release|Any CPU
 		{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}.Release|x86.Build.0 = Release|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Debug|x64.Build.0 = Debug|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Debug|x86.Build.0 = Debug|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Release|x64.ActiveCfg = Release|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Release|x64.Build.0 = Release|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Release|x86.ActiveCfg = Release|Any CPU
+		{C92CB47E-8A70-409C-9213-8D743BB29366}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +93,7 @@ Global
 		{C2060A20-8C56-4678-B65C-DCF52D70223D} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
 		{0BC8DBEB-500A-4DB2-9123-7617D24E5053} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
 		{3B8B3B0E-CA33-4C76-901D-219F5FF848B3} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
+		{C92CB47E-8A70-409C-9213-8D743BB29366} = {FC897929-3A4D-4276-9AF4-C77B0FAF221E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4CDEB3A4-44B9-4715-9082-28DA841514DB}

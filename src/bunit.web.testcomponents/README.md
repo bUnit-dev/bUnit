@@ -1,8 +1,10 @@
 # Writing Tests using in Razor Syntax for Blazor Components
 
-_**NOTE:** The `bunit.web.testcomponents` project contains an experimental feature that was part of the eariler beta and preview versions of bUnit. It is kept around to not break early adopters, but no additional features or improvements is planned to it. The following text is from the original documentation written for the feature._
+_**NOTE:** The `bunit.web.testcomponents` project contains an experimental feature that was part of the eariler beta and preview versions of bUnit. It is kept around to not break early adopters, but no additional features or improvements is planned to it._
 
----
+_To keep using this feature, add the [bunit.web.testcomponents](https://www.nuget.org/packages/bunit.web.testcomponents) package to your testing project._
+
+_The following text is from the original documentation written for the feature._
 
 ## Introduction
 

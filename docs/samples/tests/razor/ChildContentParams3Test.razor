@@ -1,0 +1,14 @@
+@code
+{
+  [Fact]
+  public void Test()
+  {
+    using var ctx = new TestContext();
+
+    var cut = ctx.Render(@<ChildContentParams>
+                            <Alert Heading="Alert heading" Type=@AlertType.Warning>
+                              <p>Hello World</p>
+                            </Alert>
+                          </ChildContentParams>);
+  }
+}
