@@ -1,0 +1,19 @@
+@code
+{
+  [Fact]
+  public void Test()
+  {
+    // Arrange
+    using var ctx = new TestContext();
+    var cut = ctx.Render(@<ClickMe />);
+    var buttonElement = cut.Find("button");
+
+    // Act
+    buttonElement.Click();
+    buttonElement.Click(detail: 3, ctrlKey: true);
+    buttonElement.Click(new MouseEventArgs());
+
+    // Assert
+    // ...
+  }
+}

@@ -3,17 +3,17 @@ uid: contribute
 title: Contribute
 ---
 
-# How to Contribute
+# How to contribute
 
 One of the easiest ways to contribute is to participate in discussions on GitHub issues. You can also contribute by submitting pull requests with code changes.
 
-## General Feedback and Discussions
+## General feedback and discussions
 Start a discussion on the [bUnit discussion list](https://github.com/egil/bUnit/discussions).
 
-## Bugs and Feature Requests
+## Bugs and feature requests
 For bugs or feature requests, log a new issue on the [issues list](https://github.com/egil/bunit/issues). Be sure to use the right template.
 
-## Contributing Code and Content
+## Contributing code and content
 
 bUnit accepts fixes and features. Here is what you should do when writing code for bUnit:
 
@@ -28,7 +28,7 @@ Here are some resources to help you get started on how to contribute code or new
 * ["Help wanted" issues](https://github.com/egil/bunit/labels/help%20wanted) - these issues are up for grabs if you want to create a fix. To do this, simply comment on the issue you want to fix.
 * ["Good first issue" issues](https://github.com/egil/bunit/labels/good%20first%20issue) - these are good for newcomers. Good first issues are small, usually require just a few hours of work, and do not require a deep technical knowledge of bUnit. This is a good place to start if you want to become familiar with bUnit’s inner workings and maybe take on bigger issues later.
 
-### Identifying the Scale of a Contribution
+### Identifying the scale of a contribution
 
 If you would like to contribute to bUnit, first identify the scale of what you would like to contribute. If it is small (grammar/spelling or a bug fix), feel free to start working on a fix. If you are submitting a feature or substantial code contribution, please discuss it with us first. 
 
@@ -36,10 +36,10 @@ You might also read these two blogs posts on contributing code: [Open Source Con
 
 All code submissions will be rigorously reviewed and tested, and only those that meet a high bar for both quality and design/roadmap appropriateness will be merged into the source.
 
-### Submitting a Pull Request
+### Submitting a pull request
 
 If you don't know what a pull request is, read this article: https://help.github.com/articles/using-pull-requests. Make sure the repository can build and all tests pass. It is also a good idea to familiarize yourself with the project workflow and our coding conventions.
 
-## Code of Conduct
+## Code of conduct
 
 See <xref:code-of-conduct>

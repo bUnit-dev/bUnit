@@ -7,7 +7,7 @@ namespace Bunit.Docs.Samples
   public class ClickMeTest
   {
     [Fact]
-    public void ClickingButtonWorks()
+    public void Test()
     {
       // Arrange
       using var ctx = new TestContext();

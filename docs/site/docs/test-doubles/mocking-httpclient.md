@@ -10,7 +10,7 @@ There is currently no built-in mock for `HttpClient` in bUnit, but with the use 
 [RichardSzalay.MockHttp](https://www.nuget.org/packages/RichardSzalay.MockHttp/) we can easily add one that works
 with bUnit.
 
-To use RichardSzalay.MockHttp, add the following package reference to your test project's .csproj file:
+To use RichardSzalay.MockHttp, add the following package reference to your test project's `.csproj` file:
 
 ```xml
 <PackageReference Include="RichardSzalay.MockHttp" Version="6.0.0" />

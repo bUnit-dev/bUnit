@@ -1,9 +1,9 @@
 ---
 uid: trigger-event-handlers
-title: Triggering Event Handlers in Components
+title: Triggering event handlers in components
 ---
 
-# Triggering Event Handlers in Components
+# Triggering event handlers in components
 
 Blazor makes it possible to bind many event handlers to elements in a Blazor component using the `@onXXXX` syntax, e.g. `@onclick="MyClickHandler"`. 
 
@@ -27,7 +27,7 @@ To use these, first find the element in the component under test where the event
 
 The following section demonstrates how to do this...
 
-## Invoking an Event Handler on an Element
+## Invoking an event handler on an element
 
 To invoke an event handler on an element, first find the element in the component under test, and then call the desired event dispatch helper method.
 
@@ -39,11 +39,11 @@ To trigger the `@onclick` `ClickHandler` event handler method in the `<ClickMe>`
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[ClickMeTest.cs](../../../samples/tests/xunit/ClickMeTest.cs?range=12-23&highlight=7-9)]
+[!code-csharp[ClickMeTest.cs](../../../samples/tests/xunit/ClickMeTest.cs?range=9-25&highlight=10-13)]
 
 # [Razor test code](#tab/razor)
 
-[!code-cshtml[ClickMeTest.razor](../../../samples/tests/razor/ClickMeTest.razor?highlight=17-19)]
+[!code-cshtml[ClickMeTest.razor](../../../samples/tests/razor/ClickMeTest.razor?highlight=12-14)]
 
 ***
 

@@ -1,17 +1,17 @@
 ---
 uid: trigger-renders
-title: Triggering a Render Life Cycle on a Component
+title: Triggering a render life cycle on a component
 ---
 
-# Triggering a Render Life Cycle on a Component
+# Triggering a render life cycle on a component
 
-When a component under test is rendered, an instance of the <xref:Bunit.IRenderedComponent`1> type is returned. Through that, it is possible to cause the component under test to render again directly through the [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponentBase{``0})) method or one of the [`SetParametersAndRender()`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods, or indirectly through the [`InvokeAsync()`](xref:Bunit.RenderedComponentInvokeAsyncExtensions.InvokeAsync``1(Bunit.IRenderedComponentBase{``0},System.Action)) method.
+To trigger a re-render of a component under test, a reference to it through a <xref:Bunit.IRenderedComponent`1> type is needed. When using the <xref:Bunit.TestContext>'s `RenderComponent<TComponent>()` method, this is the type returned.
 
-> [!WARNING]
-> The `Render()` and `SetParametersAndRender()` methods are not available in the <xref:Bunit.IRenderedFragment> type that is returned when calling the _non-generic_ version of `GetComponentUnderTest()` in `<Fixture>`-based Razor tests. Call the generic version of `GetComponentUnderTest<TComponent>()` to get a <xref:Bunit.IRenderedComponent`1>.
+In `.razor` based tests, using the <xref:Bunit.TestContext>'s <xref:Bunit.TestContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)> method also returns an <xref:Bunit.IRenderedComponent`1> (as opposed to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method which returns the more simple <xref:Bunit.IRenderedFragment>). 
 
-> [!NOTE]
-> These methods are available and work the same way in both C#- and Razor-based tests. The examples below are from C#-based tests only.
+If you have a <xref:Bunit.IRenderedFragment> or a <xref:Bunit.IRenderedComponent`1> in a test, but need a child component's <xref:Bunit.IRenderedComponent`1>, then use the `FindComponent<TComponent>()` or the `FindComponents<TComponent>()` methods, which traverses down the render tree and finds rendered components.
+
+With a <xref:Bunit.IRenderedComponent`1>, it is possible to cause the component to render again directly through the [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponentBase{``0})) method or one of the [`SetParametersAndRender()`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods, or indirectly through the [`InvokeAsync()`](xref:Bunit.IRenderedFragmentBase.Bunit.RenderedFragmentInvokeAsyncExtensions.InvokeAsync(System.Action)) method.
 
 Let's look at how to use each of these methods to cause a re-render.
 
@@ -41,9 +41,9 @@ The highlighted line shows the call to [`SetParametersAndRender()`](xref:Bunit.R
 
 Invoking methods on a component under test, which causes a render, e.g. by calling `StateHasChanged`, can result in the following error, if the caller is running on another thread than the renderer's thread:
 
-> The current thread is not associated with the Dispatcher. Use InvokeAsync() to switch execution to the Dispatcher when triggering rendering or component state.
+> The current thread is not associated with the Dispatcher. Use `InvokeAsync()` to switch execution to the Dispatcher when triggering rendering or component state.
 
-If you receive this error, you need to invoke your method inside an `Action` delegate passed to the [`InvokeAsync(...)`](xref:Bunit.RenderedComponentInvokeAsyncExtensions.InvokeAsync``1(Bunit.IRenderedComponentBase{``0},System.Action)) method.
+If you receive this error, you need to invoke your method inside an `Action` delegate passed to the `InvokeAsync()` method.
 
 Let’s look at an example of this, using the `<Calc>` component listed below:
 
@@ -53,7 +53,7 @@ To invoke the `Calculate()` method on the component instance, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=49&end=56&highlight=6)]
 
-The highlighted line shows the call to [`InvokeAsync(...)`](xref:Bunit.RenderedComponentInvokeAsyncExtensions.InvokeAsync``1(Bunit.IRenderedComponentBase{``0},System.Action)), which is passed an `Action` delegate that calls the `Calculate` method.
+The highlighted line shows the call to `InvokeAsync()`, which is passed an `Action` delegate that calls the `Calculate` method.
 
 > [!TIP]
 > The instance of a component under test is available through the <xref:Bunit.IRenderedComponentBase`1.Instance> property.
