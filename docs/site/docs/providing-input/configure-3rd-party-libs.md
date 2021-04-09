@@ -1,6 +1,6 @@
 ---
 uid: configure-3rd-party-libs
-title: Configure 3rd Party Libraries for Testing
+title: Configure 3rd party libraries for testing
 ---
 
 # Configure 3rd Party Libraries for Testing

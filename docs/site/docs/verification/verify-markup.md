@@ -1,9 +1,9 @@
 ---
 uid: verify-markup
-title: Verifying Markup from a Component
+title: Verifying markup from a component
 ---
 
-# Verifying Markup from a Component
+# Verifying markup from a component
 
 When a component is rendered in a test, the result is a <xref:Bunit.IRenderedFragment> or a <xref:Bunit.IRenderedComponent`1>. Through these, it is possible to access the rendered markup (HTML) of the component and, in the case of <xref:Bunit.IRenderedComponent`1>, the instance of the component. 
 
@@ -19,7 +19,7 @@ This page covers the following **verification approaches:**
 
 The following sections will cover each of these.
 
-## Basic Verification of Raw Markup
+## Basic verification of raw markup
 
 To access the rendered markup of a component, just use the <xref:Bunit.IRenderedFragment.Markup> property on <xref:Bunit.IRenderedFragment>. This holds the *raw* HTML from the component as a `string`. 
 
@@ -34,11 +34,11 @@ To get the markup as a string, do the following:
 
 You can perform standard string assertions against the markup string, like checking whether it contains a value or is empty.
 
-## Semantic Comparison of Markup
+## Semantic comparison of markup
 
 Working with raw markup only works well with very simple output, but even then you have to sanitize it to get stable tests. A much better approach is to use the semantic HTML comparer that comes with bUnit.
 
-### How does the Semantic HTML Comparer Work?
+### How does the semantic HTML comparer work?
 
 The comparer takes two HTML fragments (e.g. in the form of a C# string) as input, and returns `true` if both HTML fragments result in the same visual rendered output in a web browser. If not, it returns `false`.
 
@@ -60,7 +60,7 @@ This is why it makes sense to allow tests to pass, _even_ when the rendered HTML
 
 bUnit's semantic HTML comparer safely ignores things like insignificant whitespace and the order of attributes on elements, as well as many more things. **This leads to much more stable tests, as - for example - a reformatted component doesn't break its tests because of insignificant whitespace changes.** More details of the semantic comparer can be found on the <xref:semantic-html-comparison> page.
 
-### The MarkupMatches() Method
+### The MarkupMatches() method
 
 The HTML comparer can be easily accessed through `MarkupMatches()` extension methods, available in places that represent HTML fragments in bUnit, i.e. on <xref:Bunit.IRenderedFragment> and the `INode` and `INodeList` types.
 
@@ -91,7 +91,7 @@ The semantic HTML comparer can be customized to make a test case even more stabl
 
 Learn more about the customization options on the <xref:semantic-html-comparison> page.
 
-## Inspecting DOM Nodes
+## Inspecting DOM nodes
 
 The rendered markup from a component is available as a DOM node through the <xref:Bunit.IRenderedFragment.Nodes> property on <xref:Bunit.IRenderedFragment>, as well as the `Find(string cssSelector)` and `FindAll(string cssSelector)` extension methods on <xref:Bunit.IRenderedFragment>.
 
@@ -99,7 +99,7 @@ The <xref:Bunit.IRenderedFragment.Nodes> property and the `FindAll()` method ret
 
 The DOM API in AngleSharp follows the W3C DOM API specifications and gives you the same results as a state-of-the-art browser’s implementation of the DOM API in JavaScript. Besides the official DOM API, AngleSharp and bUnit add some useful extension methods on top. This makes working with DOM nodes convenient.
 
-### Finding Nodes with the Find() and FindAll() methods
+### Finding nodes with the Find() and FindAll() methods
 
 Users of the famous JavaScript framework [jQuery](https://jquery.com/) will recognize these two methods: 
 
@@ -118,7 +118,7 @@ Once you have one or more elements, you verify against them,  such as by  inspec
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=69&end=71)]
 
-#### Auto-refreshing Find() Queries
+#### Auto-refreshing Find() queries
 
 An element found with the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method will be updated if the component it came from is re-rendered. 
 
@@ -126,11 +126,11 @@ However, that does not apply to elements that are found by traversing the DOM tr
 
 As a result of this, it is always recommended to use the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method when searching for a single element. Alternatively, always reissue the query whenever you need the element.
 
-#### Auto-refreshable FindAll() Queries
+#### Auto-refreshable FindAll() queries
 
 The [`FindAll(string cssSelector, bool enableAutoRefresh = false)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) method has an optional parameter, `enableAutoRefresh`, which when set to `true` will return a collection of `IElement`. This automatically refreshes itself when the component the elements came from is re-rendered.
 
-## Finding Expected Differences
+## Finding expected differences
 
 It can sometimes be easier to verify that an expected change, and only that change, has occurred in the rendered markup than it can be to specify how all the rendered markup should look after re-rendering.
 

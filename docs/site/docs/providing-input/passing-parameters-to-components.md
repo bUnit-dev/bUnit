@@ -18,6 +18,7 @@ In the following sub sections, we will show both `.cs`- and `.razor`-based test 
 
 > [!NOTE]
 > The examples below are written using **xUnit**, but the code is the same with **NUnit** and **MSTest**. 
+> 
 > In addition to this, the example tests explicitly instantiates the bUnit `TestContext` in each test. If your test class is inheriting from the `TestContext` as described in the section "Remove boilerplate code from tests" on the <xref:writing-tests> page, then you should NOT instantiates the `TestContext` in your tests and skip that step.
 
 ## Regular parameters
@@ -30,7 +31,7 @@ Let's look at an example of passing parameters that takes types which are _not_ 
 
 [!code-csharp[NonBlazorTypesParams](../../../samples/components/NonBlazorTypesParams.cs#L10-L17)]
 
-Using either C# or Razor test code, this can be done like this:
+This can be done like this:
 
 # [C# test code](#tab/csharp)
 
@@ -52,7 +53,7 @@ This example will pass parameters to the following two `EventCallback` parameter
 
 [!code-csharp[EventCallbackParams](../../../samples/components/EventCallbackParams.cs#L10-L17)]
 
-Using either C# or Razor test code, this can be done like this:
+This can be done like this:
 
 # [C# test code](#tab/csharp)
 
@@ -300,7 +301,7 @@ The example passes a inline Razor template to the <xref:Bunit.TestContext.Render
 
 ## Cascading Parameters and Cascading Values
 
-Cascading parameters are properties with the `[CascadingParameter]` attribute. There are two variants: **named** and **unnamed** cascading parameters. In Blazor, the `<CascadingValue>` component is used to provide values to cascading parameters, which we also do in Razor-based tests. However, in C#-based tests we need to do it a little differently.
+Cascading parameters are properties with the `[CascadingParameter]` attribute. There are two variants: **named** and **unnamed** cascading parameters. In Blazor, the `<CascadingValue>` component is used to provide values to cascading parameters, which we also do in tests written in `.razor` files. However, for tests written in `.cs` files we need to do it a little differently.
 
 The following examples will pass cascading values to the `<CascadingParams>` component listed below:
 

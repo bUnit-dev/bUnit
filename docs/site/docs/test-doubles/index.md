@@ -1,9 +1,9 @@
 ---
 uid: test-doubles
-title: Mocking and Faking Component Dependencies
+title: Mocking and faking component dependencies
 ---
 
-# Mocking or Faking Component Dependencies
+# Mocking or faking component dependencies
 
 Mocking or faking a component under test's dependencies (services) can be the difference between being able to write a stable test that is easy to understand, and the opposite. bUnit does not have any particular preferences when it comes to mocking frameworks; all the usual suspects will work with bUnit. For example, Moq, JustMock and NSubstitute all work well with bUnit, so pick the one you are the most comfortable with and use it.
 

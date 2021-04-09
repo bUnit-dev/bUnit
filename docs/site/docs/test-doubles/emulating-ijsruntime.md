@@ -108,17 +108,17 @@ bUnit's `IJSObjectReference` supports being cast to the `IJSInProcessObjectRefer
 
 To set up a handler for an `Invoke` or `InvokeUnmarshalled` call, just use the regular `Setup` and `SetupVoid` methods on bUnit's JSInterop.
 
-## First-Party JSInterop Component Emulation
+## First-party JSInterop component emulation
 
 Blazor comes out of the box with a few components that require a working JSInterop. bUnit's JSInterop is setup to emulate the JavaScript interactions of those components. The following sections describe how the interaction is emulated for the supported components.
 
-### <Virtualize> JSInterop Emulation
+### <Virtualize> JSInterop emulation
 
 The `<Virtualize>` component requires JavaScript to notify it about the available screen space it is being rendered to, and also when the users scrolls the viewport, to trigger the loading of new data. bUnit emulates this interaction by telling the `<Virtualize>` component that the viewport is `1,000,000,000` pixels large. That should ensure that all items are loaded, which makes sense in a testing scenario.
 
 To test the `<Placeholder>` template of the `<Virtualize>` component, create an items provider that doesn't return all items when queried.
 
-### FocusAsync JSInterop Emulation
+### FocusAsync JSInterop emulation
 
 Support for the [`FocusAsync`](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/event-handling?view=aspnetcore-5.0#focus-an-element) method on `ElementReference` in Blazor's .NET 5 release works by simply registering the invocations, which can then be verified to have occurred.
 

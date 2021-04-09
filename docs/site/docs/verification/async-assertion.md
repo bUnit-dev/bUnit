@@ -1,9 +1,9 @@
 ---
 uid: async-assertion
-title: Assertion of Asynchronous Changes
+title: Assertion of asynchronous changes
 ---
 
-# Assertion of Asynchronous Changes
+# Assertion of asynchronous changes
 
 A test can fail if a component performs asynchronous renders. This may be due to a reason such as waiting for an asynchronous operation to complete before continuing its render life-cycle . For example, if a component is waiting for an async web service to return data to it in the `OnInitializedAsync()` life-cycle method before rendering it to the render tree.
 
@@ -13,7 +13,7 @@ bUnit comes with two methods that help to deal with this issue: the [`WaitForAss
 
 Let's start by taking a look at the ` WaitForAssertion` method in more detail.
 
-## Waiting for Assertion to Pass Using `WaitForAssertion`
+## Waiting for assertion to pass using `WaitForAssertion`
 
 The [`WaitForAssertion(Action, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})) method can be used to block and wait in a test method until the provided assert action does not throw an exception, or until the timeout is reached (the default timeout is one second).
 
@@ -34,7 +34,7 @@ This is what happens in the test:
 2. In the second highlighted line, the result is provided to the component through the `textService`. This causes the component to re-render.
 3. Finally, in the third highlighted line, the `WaitForAssertion()` method is used to block the test until the predicate assertion action runs without throwing an exception.
  
-### Controlling Wait Timeout
+### Controlling wait timeout
 
 The timeout, which defaults to one second, can be controlled by passing a `TimeSpan` as the second argument to the `WaitForAssertion()` method, e.g.:
 

@@ -1,9 +1,9 @@
 ---
 uid: awaiting-async-state
-title: Awaiting an Asynchronous State Change in a Component Under Test
+title: Awaiting an asynchronous state change in a component under test
 ---
 
-# Awaiting an Asynchronous State Change
+# Awaiting an asynchronous state change
 
 A test can fail if a component performs asynchronous renders. This may be due to a reason such as waiting for an asynchronous operation to complete before continuing its render life-cycle. For example, if a component is waiting for an async web service to return data to it in the `OnInitializedAsync()` life-cycle method before rendering it to the render tree.
 
@@ -13,7 +13,7 @@ bUnit comes with two methods that help to deal with this issue: the [`WaitForSta
 
 Let's start by taking a look at the `WaitForState` method in more detail.
 
-## Waiting for State Using `WaitForState`
+## Waiting for state using `WaitForState`
 
 The [`WaitForState(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) method can be used to block and wait in a test method, until the provided predicate returns true or the timeout is reached. (The default timeout is one second.)
 
@@ -38,7 +38,7 @@ This is what happens in the test:
 > [!WARNING]
 > The wait predicate and an assertion should not verify the same thing. Instead, use the `WaitForAssertion(...)` method covered on the <xref:async-assertion> page instead.
  
-### Controlling Wait Timeout
+### Controlling wait timeout
 
 The timeout, which defaults to one second, can be controlled by passing a `TimeSpan` as the second argument to the `WaitForState()` method, e.g.:
 

@@ -230,7 +230,7 @@ Then methods like <xref:Bunit.TestContext.RenderComponent``1(System.Action{Bunit
 > For example, `var cut = ctx.RenderComponent<HelloWorld>();`  
 > becomes `var cut = RenderComponent<HelloWorld>();`.
 
-## Further Reading
+## Further reading
 
 With the basics out of the way, next we will look at how to pass parameters and inject services into our component under test. After that, we will cover ways we can verify the outcome of a rendering in more detail
 

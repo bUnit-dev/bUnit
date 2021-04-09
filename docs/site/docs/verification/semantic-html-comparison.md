@@ -1,18 +1,15 @@
 ---
 uid: semantic-html-comparison
-title: Customizing the Semantic HTML Comparison
+title: Customizing the semantic HTML comparison
 ---
 
-# Customizing the Semantic HTML Comparison
+# Customizing the semantic HTML comparison
 
 This library includes comparison and assert helpers that use the [AngleSharp Diffing](https://github.com/AngleSharp/AngleSharp.Diffing/) library to perform semantic HTML comparison.
 
 On this page we will go through how the comparison works, and what options you have to affect the comparison process.
 
-> [!NOTE]
-> The semantic HTML comparison is available in both C# and Razor tests with the <xref:Bunit.Fixture> component, and is always used in Razor tests with the <xref:Bunit.SnapshotTest> component.
-
-## Why Semantic Comparison is Needed for Stable Tests
+## Why semantic comparison is needed for stable tests
 
 Just performing string comparison of two strings containing HTML markup can break quite easily, _even_ if the two markup strings are semantically equivalent. Some changes that can cause a regular string comparison to fail are as follows:
 
@@ -97,18 +94,10 @@ Here are the customization options you have available to you:
 
 ## Examples
 
-Let’s look at a few examples where we use the semantic comparison options listed above to modify the comparison. In C#-based tests, we have the `MarkupMatches()` methods we can use to perform semantic comparison of the output from a rendered component. For example, we may have a component, `<Heading>`, that renders the following markup:
+Let’s look at a few examples where we use the semantic comparison options listed above to modify the comparison. In tests, we have the `MarkupMatches()` methods we can use to perform semantic comparison of the output from a rendered component. For example, we may have a component, `<Heading>`, that renders the following markup:
 
 [!code-razor[Heading.razor](../../../samples/components/Heading.razor)]   
 
-In this case, we want to verify that the markup is rendered correctly, using something such as RegEx to verify the `id` attribute (it might be generated) and ignoring the `<small>` element.  In C#-based tests we can do this like so with the `MarkupMatches()` method:
+In this case, we want to verify that the markup is rendered correctly, using something such as RegEx to verify the `id` attribute (it might be generated) and ignoring the `<small>` element.  In tests we can do this like so with the `MarkupMatches()` method:
 
 [!code-csharp[SemanticHtmlTest.cs](../../../samples/tests/xunit/SemanticHtmlTest.cs#L16-L29)]
-
-In a Razor-based test, using the `<Fixture>` test type, the example looks like this:
-
-[!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L3-L30)]
-
-In a Snapshot test, using the `<SnapshotTest>` test type, the example looks like this:
-
-[!code-razor[SemanticHtmlTest.razor](../../../samples/tests/razor/SemanticHtmlTest.razor#L32-L42)]

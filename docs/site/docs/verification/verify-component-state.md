@@ -1,13 +1,13 @@
 ---
 uid: verify-component-state
-title: Verifying the State of a Component Under Test
+title: Verifying the state of a component under test
 ---
 
-# Verifying the State of a Component
+# Verifying the state of a component
 
-Calling [`RenderComponent<TComponent>()`](xref:Bunit.Extensions.TestRendererExtensions.RenderComponent``1(Bunit.Rendering.ITestRenderer,System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) on a <xref:Bunit.TestContext> or calling <xref:Bunit.Fixture.GetComponentUnderTest``1> on a <xref:Bunit.Fixture> returns an instance of the <xref:Bunit.IRenderedComponent`1> type. 
+The instance of a component under test is available through the <xref:Bunit.IRenderedComponentBase`1.Instance> property on the <xref:Bunit.IRenderedComponent`1> type. When using the <xref:Bunit.TestContext>'s `RenderComponent<TComponent>()` method, this is the type returned.
 
-The <xref:Bunit.IRenderedComponent`1> type makes it possible to inspect the instance of the component under test (`TComponent`), and trigger re-renders explicitly.
+In `.razor` based tests, using the <xref:Bunit.TestContext>'s <xref:Bunit.TestContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)> method also returns an <xref:Bunit.IRenderedComponent`1> (as opposed to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method which returns the more simple <xref:Bunit.IRenderedFragment>).
 
 > [!NOTE]
 > Since <xref:Bunit.IRenderedComponent`1> inherits from <xref:Bunit.IRenderedFragment>, all the markup verification techniques covered on the <xref:verify-markup> page also apply to the <xref:Bunit.IRenderedComponent`1> type.

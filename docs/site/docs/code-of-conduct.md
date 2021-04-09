@@ -1,11 +1,11 @@
 ---
 uid: code-of-conduct
-title: Contributor Covenant Code of Conduct
+title: Contributor covenant code of conduct
 ---
 
-# Contributor Covenant Code of Conduct 
+# Contributor covenant code of conduct 
 
-## Our Pledge
+## Our pledge
 
 In the interests of fostering an open and welcoming environment, we as
 contributors and maintainers pledge to make our project and
@@ -14,7 +14,7 @@ size, disability, ethnicity, sexuality, gender identity and expression,
 level of experience, education, socio-economic status, nationality, personal
 appearance, race, or religion.
 
-## Our Standards
+## Our standards
 
 Examples of behavior that contribute towards creating a positive environment
 include:
@@ -35,7 +35,7 @@ Examples of unacceptable behavior by participants include:
 * Other conduct which could reasonably be considered inappropriate in a
   professional setting
 
-## Our Responsibilities
+## Our responsibilities
 
 Project maintainers are responsible for clarifying the standards of acceptable
 behavior and are expected to take appropriate and fair corrective action in

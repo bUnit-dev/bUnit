@@ -1,13 +1,13 @@
 ---
 uid: misc-test-tips
-title: Miscellaneous Testing Tips
+title: Miscellaneous testing tips
 ---
 
-# Miscellaneous bUnit Testing Tips
+# Miscellaneous bUnit testing tips
 
 Here are a few testing tips and tricks that have proven useful to us. These don’t fit naturally on other pages but are useful enough to be highlighted here.
 
-## Projects Structure and Tips and Tricks
+## Projects structure and tips and tricks
 
 The recommended solution/project structure for a test and production code project set-up is as follows:
 
@@ -27,7 +27,7 @@ test
   | SubComponent1Test.cs
 ```
 
-## Using the same Root Namespace and Folder Structure
+## Using the same root namespace and folder structure
 
 A neat trick, which will limit the number of `import` statements needed in your test project, is to set the root namespace to the same as that of the production code project, _AND_ use the same folder structure as shown above. Following the example above, the `MyComponentLibTests.csproj` file should contain this:
 
@@ -39,10 +39,66 @@ A neat trick, which will limit the number of `import` statements needed in your 
 
 This makes the tooling in Visual Studio and other IDEs automatically assign the same namespaces to new test classes and test components when they are created.
 
-## Capturing Logs from ILogger in Test Output
+## Capturing logs from ILogger in test output
 
-TODO: Document XunitLogger and XunitLoggerFactory
+It can sometimes be helpful to capture log messages sent to `ILogger`'s in the components under test and/or the bUnit and Blazor internals. 
+
+With xUnit, this can be done as follows:
+
+1. Add the following packages to your test project: `Serilog`, `Serilog.Extensions.Logging`, and `Serilog.Sinks.XUnit`.
+2. Add the following class/extension method to your test project (which replicates the signature of the removed `AddXunitLogger` method):  
+  
+  ```csharp
+  using Microsoft.Extensions.DependencyInjection;
+  using Microsoft.Extensions.Logging;
+  using Serilog;
+  using Serilog.Events;
+  using Xunit.Abstractions;
+
+  namespace Bunit
+  {
+    public static class ServiceCollectionLoggingExtensions
+    {
+      public static IServiceCollection AddXunitLogger(this IServiceCollection services, ITestOutputHelper outputHelper)
+      {
+        var serilogLogger = new LoggerConfiguration()
+          .MinimumLevel.Verbose()
+          .WriteTo.TestOutput(outputHelper, LogEventLevel.Verbose)
+          .CreateLogger();
+
+        services.AddSingleton<ILoggerFactory>(new LoggerFactory().AddSerilog(serilogLogger, dispose: true));
+        services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+
+        return services;
+      }
+    }
+  }
+  ```
+
+3. In each test class whose tests should capture log messages, add a constructor that takes the `ITestOutputHelper` as input, and pass that to the `AddXunitLogger` extension method created in the previous step, e.g.:  
+  
+  ```csharp
+  using System;
+  using Microsoft.Extensions.DependencyInjection;
+  using Bunit;
+  using Xunit;
+  using Xunit.Abstractions;
+
+  namespace MyTests
+  {
+    public class MyComponenTest : TestContext
+    {
+      public MyComponenTest(ITestOutputHelper outputHelper)
+      {
+        Services.AddXunitLogger(outputHelper);
+      }
+
+      [Fact]
+      public void Test() ...
+    }
+  }
+  ```
 
 ## Easier HTML copying/pasting
 
-When writing C#-based tests, you may want to copy/paste HTML into C# strings from something like a Razor file, for example. This is tedious to do manually as you have to escape quotes and other special characters, for example `<div class="alert">` needs to be written as `"<div class=\"alert\">"`. The extension [SmartPaster2019](https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster2013) automatically escapes any characters that need to be escaped when it is used to copy strings.
+When writing tests in `.cs` files, you may want to copy/paste HTML into C# strings from something like a Razor file, for example. This is tedious to do manually as you have to escape quotes and other special characters, for example `<div class="alert">` needs to be written as `"<div class=\"alert\">"`. The extension [SmartPaster2019](https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster2013) automatically escapes any characters that need to be escaped when it is used to copy strings.

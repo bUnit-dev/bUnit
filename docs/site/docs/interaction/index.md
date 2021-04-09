@@ -1,9 +1,9 @@
 ---
 uid: interaction
-title: Interacting with a Component Under Test
+title: Interacting with a component under test
 ---
 
-# Interacting with a Component Under Test
+# Interacting with a component under test
 
 This section covers the various ways to interact with a component under test, e.g. trigger event handlers. This &mdash; and more &mdash; is covered in the following sub sections:
 

@@ -1,9 +1,9 @@
 ---
 uid: verification
-title: Verifying Output from a Component Under Test
+title: Verifying output from a component under test
 ---
 
-# Verifying Output from a Component Under Test
+# Verifying output from a component under test
 
 This section covers the different ways to verify the result of a test scenario:
 
