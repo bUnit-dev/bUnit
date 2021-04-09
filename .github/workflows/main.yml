@@ -75,7 +75,9 @@ jobs:
 
       - name: Running unit tests (windows only)
         if: matrix.os == 'windows-latest'
-        run: dotnet test -c Debug --framework ${{ matrix.framework }}
+        run: |
+          dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
+          dotnet test -c Debug --framework ${{ matrix.framework }}
 
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest'
