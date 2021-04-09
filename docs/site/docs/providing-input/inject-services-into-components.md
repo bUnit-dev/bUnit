@@ -14,7 +14,7 @@ In bUnit, you register the services in the `Services` collection _before_ you re
 > [!NOTE]
 > The `AddSingleton()` method is only available on the `Services` collection if you **import the `Microsoft.Extensions.DependencyInjection` namespace in your test class**.
 
-The following sections demonstrate how to do. The examples we will cover will test the `<WeatherForecasts>` component listed below, which depends on the `IWeatherForecastService` service, injected in line 1:
+The following sections demonstrate how to do this. The examples we will cover will test the `<WeatherForecasts>` component listed below, which depends on the `IWeatherForecastService` service, injected in line 1:
 
 [!code-cshtml[WeatherForecasts.razor](../../../samples/components/WeatherForecasts.razor?highlight=1)]
 
@@ -49,7 +49,7 @@ Here is a test where the fallback service provider is used:
 
 [!code-csharp[](../../../samples/tests/xunit/FallBackServiceProviderUsage.cs?start=11&end=16)]
 
-In this example, the `DummyService` is provided by the fallback service provider, since it is not register in the default service provider.
+In this example, the `DummyService` is provided by the fallback service provider, since it is not registered in the default service provider.
 
 ## Further reading
 
