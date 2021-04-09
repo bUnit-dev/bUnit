@@ -41,7 +41,7 @@ This makes the tooling in Visual Studio and other IDEs automatically assign the 
 
 ## Capturing logs from ILogger in test output
 
-It can sometimes be helpful to capture log messages sent to `ILogger`'s in the components under test and/or the bUnit and Blazor internals. 
+It can sometimes be helpful to capture log messages sent to `ILogger` types in the components under test and/or the bUnit and Blazor internals. 
 
 With xUnit, this can be done as follows:
 

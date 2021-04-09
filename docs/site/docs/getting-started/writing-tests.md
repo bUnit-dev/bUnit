@@ -12,7 +12,7 @@ Use **bUnit** to render the component under test, pass in its parameters, inject
 Rendering a component happens through bUnit's <xref:Bunit.TestContext>. The result of the rendering is an `IRenderedComponent`, referred to as a "rendered component", that provides access to the component instance and the markup produced by the component.
 
 > [!NOTE]
-> The preview and beta versions of bUnit included an experimental feature for writing tests using two test components, `<Fixture>` and `<SnapshotTest>`. Since there is now a better way to write tests in `.razor` files, the old experimental feature has been moved into a separate project named `bunit.web.testcomponents`. It is kept around to not break early adopters, but _no additional features or improvements_ is planned to it.
+> The preview and beta versions of bUnit included an experimental feature for writing tests using two test components, `<Fixture>` and `<SnapshotTest>`. Since there is now a better way to write tests in `.razor` files, the old experimental feature has been moved into a separate project named `bunit.web.testcomponents`. It is kept around to not break early adopters, but _no additional features or improvements_ are planned to it.
 > 
 > To learn more, head over to the [bunit.web.testcomponents project](https://github.com/egil/bUnit/tree/main/src/bunit.web.testcomponents) on GitHub.
 
@@ -20,18 +20,18 @@ Rendering a component happens through bUnit's <xref:Bunit.TestContext>. The resu
 
 bUnit works with MSTest, NUnit, and xUnit, and it allows you to write the unit tests in either `.cs` or `.razor` files. 
 
-The latter, writing tests in `.razor` files, provides an easier way to declare component- and HTML-markup in the tests, so it will most likely be the go to for many people in the future.
+The latter, writing tests in `.razor` files, provides an easier way to declare component markup and HTML markup in the tests, so it will most likely be the go-to for many people in the future.
 
 *However*, the current Razor editor in Visual Studio 2019 does not offer all the code editing features available in the C# editor, and has some formatting bugs on top of that, so that is something to consider if you choose to write tests in `.razor` files.
 
-The following sections will show how to get started writing tests in either `.cs` or `.razor` files.
+The following sections show how to get started writing tests in either `.cs` or `.razor` files.
 
 ## Creating basic tests in `.razor` files
 
 Before writing tests in `.razor` files, a few things needs to be in place:
 
 1. Make sure the test project has the SDK type set to `Microsoft.NET.Sdk.Razor`. Otherwise the Blazor compiler will not translate your `.razor` files into runnable code.
-2. Add a `_Imports.razor` file to the test project. It serves the same purpose as `_Imports.razor` files in regular Blazor projects. These using statements are useful to add right away:   
+2. Add an `_Imports.razor` file to the test project. It serves the same purpose as `_Imports.razor` files in regular Blazor projects. These using statements are useful to add right away:   
    
 ```cshtml
 @using Microsoft.AspNetCore.Components.Forms
@@ -43,7 +43,7 @@ Before writing tests in `.razor` files, a few things needs to be in place:
 @using Bunit.TestDoubles
 ```
     
-Also add a using statement for your general purpose testing framework, e.g. `@using Xunit` for xUnit.
+Also add an using statement for your general purpose testing framework, e.g. `@using Xunit` for xUnit.
 
 With that in place, lets look at a simple example that tests the following `<HelloWorld>` component:
 
@@ -71,7 +71,7 @@ With that in place, lets look at a simple example that tests the following `<Hel
 
 The test above does the following:
 
-1. Creates a new instance of the disposable bUnit <xref:Bunit.TestContext>, and assigns it to `ctx` variable using the `using var` syntax to avoid unnecessary source code indention.
+1. Creates a new instance of the disposable bUnit <xref:Bunit.TestContext>, and assigns it to `ctx` the variable using the `using var` syntax to avoid unnecessary source code indention.
 2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
@@ -83,7 +83,7 @@ The test above does the following:
 
 ### Secret sauce of '.razor' files tests
 
-The trick employed in these tests is the "[inline Razor templates syntax](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/?view=aspnetcore-5.0#razor-templates)", i.e. where a render fragment is simply created using the `@<{HTML tag}>...</{HTML tag}>` notation. In that notation there is no need to do any escaping of e.g. the quatation mark (`"`), that is usually associated with working with markup in C# code.
+The trick employed in these tests is the "[inline Razor templates syntax](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/?view=aspnetcore-5.0#razor-templates)", i.e. where a render fragment is simply created using the `@<{HTML tag}>...</{HTML tag}>` notation. In that notation there is no need to do any escaping of e.g. the quotation mark (`"`), that is usually associated with working with markup in C# code.
 
 One small caveat to be aware of is that the inline Razor templates syntax only supports one outer element, e.g. this is OK:
 
@@ -102,7 +102,7 @@ However, this will **not** work:
  <Bar></Bar>
 ```
 
-There is a simple workaround though. Wrap all elements in the special Blazor element `<text>`. The `<text>` element will not be part of the rendered output, but is provides a simple way to group multiple root elements into a single inline Razor templates. E.g.:
+There is a simple workaround though: wrap all elements in the special Blazor element `<text>`. The `<text>` element will not be part of the rendered output, but it provides a simple way to group multiple root elements into a single inline Razor template. E.g.:
 
 ```cshtml
 @<text>
@@ -113,7 +113,7 @@ There is a simple workaround though. Wrap all elements in the special Blazor ele
 
 ### Remove boilerplate code from tests
 
-We can remove some boilerplate code from each test by making the <xref:Bunit.TestContext> implicitly available to the test class, so we don't have to have `using var ctx = new Bunit.TestContext();` in every test. This can be done like this:
+We can remove some boilerplate code from each test by making the <xref:Bunit.TestContext> implicitly available to the test class, so we don't have to have `using var ctx = new Bunit.TestContext();` in every test. This can be done like so:
 
 # [xUnit](#tab/xunit)
 
@@ -146,7 +146,7 @@ Then methods like <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components
 > [!IMPORTANT]
 > All the examples in the documentation explicitly new up a `TestContext`, i.e. `using var ctx = new TestContext()`. If you are using the trick above and have your test class inherit from `TestContext`, you should **NOT** new up a `TestContext` in test methods also. 
 > 
-> Simply call the test contest's methods directly, as they are available in your test class. 
+> Simply call the test context's methods directly, as they are available in your test class. 
 > 
 > For example, `var cut = ctx.Render(@<HelloWorld/>);`  
 > becomes `var cut = Render(@<HelloWorld/>);`.
@@ -180,7 +180,7 @@ This is a simple example of writing tests in `.cs` files which tests the followi
 
 The test above does the following:
 
-1. Creates a new instance of the disposable bUnit <xref:Bunit.TestContext>, and assigns it to `ctx` variable using the `using var` syntax to avoid unnecessary source code indention.
+1. Creates a new instance of the disposable bUnit <xref:Bunit.TestContext>, and assigns it to the `ctx` variable using the `using var` syntax to avoid unnecessary source code indention.
 2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
@@ -192,7 +192,7 @@ The test above does the following:
 
 ### Remove boilerplate code from tests
 
-We can remove some boilerplate code from each test by making the <xref:Bunit.TestContext> implicitly available to the test class, so we don't have to have `using var ctx = new Bunit.TestContext();` in every test. This can be done like this:
+We can remove some boilerplate code from each test by making the <xref:Bunit.TestContext> implicitly available to the test class, so we don't have to have `using var ctx = new Bunit.TestContext();` in every test. This can be done like so:
 
 # [xUnit](#tab/xunit)
 
@@ -206,7 +206,7 @@ Since xUnit instantiates test classes for each execution of the test methods ins
 
 [!code-csharp[BunitTestContext.cs](../../../samples/tests/nunit/BunitTestContext.cs)]
 
-Since NUnit instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed above, and use that to hook into NUnit's `[SetUp]` and `[TearDown]` methods, which runs before and after each test.
+Since NUnit instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed above, and use that to hook into NUnit's `[SetUp]` and `[TearDown]` methods, which run before and after each test.
 
 Then methods like <xref:Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> can be called directly from each test, as seen in the listing above.
 
@@ -223,7 +223,7 @@ Then methods like <xref:Bunit.TestContext.RenderComponent``1(System.Action{Bunit
 ***
 
 > [!IMPORTANT]
-> All the examples in the documentation explicitly new up a `TestContext`, i.e. `using var ctx = new TestContext()`. If you are using the trick above and have your test class inherit from `TestContext`, you should **NOT** new up a `TestContext` in test methods also. 
+> All the examples in the documentation explicitly new up a `TestContext`, i.e. `using var ctx = new TestContext()`. If you are using the trick above and have your test class inherit from `TestContext`, you should **NOT** new up another `TestContext` in test methods also. 
 > 
 > Simply call the test contest's methods directly, as they are available in your test class. 
 > 
@@ -232,7 +232,7 @@ Then methods like <xref:Bunit.TestContext.RenderComponent``1(System.Action{Bunit
 
 ## Further reading
 
-With the basics out of the way, next we will look at how to pass parameters and inject services into our component under test. After that, we will cover ways we can verify the outcome of a rendering in more detail
+With the basics out of the way, next we will look at how to pass parameters and inject services into our component under test. After that, we will cover the ways in which we can verify the outcome of a rendering in more detail
 
 - <xref:passing-parameters-to-components>
 - <xref:inject-services>

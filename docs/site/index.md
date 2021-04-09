@@ -38,7 +38,7 @@ This test uses bUnit's test context to render the `Counter` component with the `
 
 ### NuGet downloads
 
-bUnit is available on NuGet in various incarnations. Most should just pick the [bUnit](https://www.nuget.org/packages/bunit/) package:
+bUnit is available on NuGet in various incarnations. Most users should just pick the [bUnit](https://www.nuget.org/packages/bunit/) package:
 
 | Name | Description | NuGet Download Link |
 | ----- | ----- | ---- |
