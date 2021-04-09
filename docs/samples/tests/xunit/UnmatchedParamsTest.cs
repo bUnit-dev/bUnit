@@ -1,24 +1,23 @@
 using Xunit;
 using Bunit;
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-
-using static Bunit.ComponentParameterFactory;
+using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples
 {
-  public class NestedComponentTest
+  public class UnmatchedParamsTest
   {
     [Fact]
     public void Test()
     {
       using var ctx = new TestContext();
 
-      var wrapper = ctx.RenderComponent<Wrapper>(parameters => parameters
-        .AddChildContent<HelloWorld>()
+      var cut = ctx.RenderComponent<UnmatchedParams>(parameters => parameters
+        .AddUnmatched("some-unknown-param", "a value")
       );
-      var cut = wrapper.FindComponent<HelloWorld>();
     }
   }
 }

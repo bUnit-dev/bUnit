@@ -1,0 +1,14 @@
+@code
+{
+  [Fact]
+  public void Test()
+  {
+    using var ctx = new TestContext();
+
+    var lines = new List<string> { "Hello", "World" };
+
+    var cut = ctx.Render(@<NonBlazorTypesParams
+                              Numbers="42"
+                              Lines="lines" />);
+  }
+}
