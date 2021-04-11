@@ -50,29 +50,10 @@ The `-o` option in the `dotnet new` command above is used to specify the name of
 
 To add bUnit to the test project, change to the newly created test projects folder and use the following command:
 
-# [xUnit](#tab/xunit)
-
 ```dotnetcli
 cd <NAME OF PROJECT>
-dotnet add package bunit.web --version #{NBGV_NuGetPackageVersion}#
-dotnet add package bunit.xunit --version #{NBGV_NuGetPackageVersion}#
+dotnet add package bunit --version #{NBGV_NuGetPackageVersion}#
 ```
-
-# [NUnit](#tab/nunit)
-
-```dotnetcli
-cd <NAME OF PROJECT>
-dotnet add package bunit.web --version #{NBGV_NuGetPackageVersion}#
-```
-
-# [MSTest](#tab/mstest)
-
-```dotnetcli
-cd <NAME OF PROJECT>
-dotnet add package bunit.web --version #{NBGV_NuGetPackageVersion}#
-```
-
-***
 
 **3. Configure project settings**
 
@@ -117,8 +98,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bunit.web" Version="#{NBGV_NuGetPackageVersion}#" />
-    <PackageReference Include="bunit.xunit" Version="#{NBGV_NuGetPackageVersion}#" />
+    <PackageReference Include="bunit" Version="#{NBGV_NuGetPackageVersion}#" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -144,7 +124,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
   </PropertyGroup>
 
   <ItemGroup>    
-    <PackageReference Include="bunit.web" Version="#{NBGV_NuGetPackageVersion}#" />
+    <PackageReference Include="bunit" Version="#{NBGV_NuGetPackageVersion}#" />
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
@@ -170,7 +150,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bunit.web" Version="#{NBGV_NuGetPackageVersion}#" />
+    <PackageReference Include="bunit" Version="#{NBGV_NuGetPackageVersion}#" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
