@@ -57,7 +57,7 @@ This can be done like this:
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[EventCallbackParamsTest.cs](../../../samples/tests/xunit/EventCallbackParamsTest.cs#L11-L27]
+[!code-csharp[EventCallbackParamsTest.cs](../../../samples/tests/xunit/EventCallbackParamsTest.cs#L11-L27)]
 
 The example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, which takes a parameter selector expression that selects the parameter using a lambda, and forces you to provide the correct type of callback method. This makes the builder's methods strongly typed and refactor-safe.
 
@@ -349,7 +349,7 @@ To pass all cascading parameters to the `<CascadingParams>` component, do the fo
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[CascadingParamsTest.cs](../../../samples/tests/xunit/CascadingParams2Test.cs#L11-L26)]
+[!code-csharp[CascadingParamsTest.cs](../../../samples/tests/xunit/CascadingParams3Test.cs#L11-L26)]
 
 The example passes both the unnamed `IsDarkTheme` cascading parameter and the two named cascading parameters (`LoggedInUser`, `LoggedInEmail`). It does this using the `Add` method on the <xref:Bunit.ComponentParameterCollectionBuilder`1> with the parameter selector to select both the named and unnamed cascading parameters and pass values to them that way.
 
