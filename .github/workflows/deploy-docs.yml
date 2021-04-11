@@ -37,17 +37,11 @@ jobs:
         with:
           dotnet-version: '5.0.x'
 
-      - run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
-
       - name: Building library
         run: dotnet build /p:PublicRelease=true
 
       - name: Verfiy docs samples
-        run: |
-          dotnet test docs/samples/tests/mstest/
-          dotnet test docs/samples/tests/nunit/
-          dotnet test docs/samples/tests/razor/
-          dotnet test docs/samples/tests/xunit/
+        run: dotnet test docs/samples/samples.sln
 
       - name: Building docs
         run: |
