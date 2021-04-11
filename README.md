@@ -47,18 +47,6 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 	</tr>
 </table>
 
-## Milestones to v1.0.0
-
-These are the current goals that should be reached before v1.0.0 is ready:
-
-- **Stabilize the APIs**, such that they work equally well with both xUnit, NUnit, and MSTest as the underlying test framework. The general goals are to make it easy for developers to create the tests they need, and to fall into the pit of success.
-- **Get the Razor-based testing to be stable**, e.g. make the discovery and running of tests defined in .razor files stable and efficient. This includes adding support for NUnit and MSTest as test runners.
-- **Improve the documentation**. It’s a good idea to get an experienced technical editor to review the documentation, making sure it is clear and understandable. In addition to this, more ‘How to’ guides are planned in the [Update Docs](https://github.com/egil/bunit/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22updated+docs%22) milestone.
-- **Join the .NET Foundation.**. This project is too large for one person to be the owner and the sole maintainer, so the plan is to apply for membership as soon as possible - most likely close to or after v1.0.0 ships - and to get the required support and guidance to ensure the project long term.
-
-In the post-v1.0.0 to v1.0.x time frame, focus will be on improving performance. 
-In particular, it would be nice to reduce the spin-up time of about one second.
-
 ## Contributors
 
 Shout outs and a big thank you [to all the contributors](https://github.com/egil/bunit/graphs/contributors) to the library, including those that raise issues, provide input to issues, and those who send pull requests. Thank you!

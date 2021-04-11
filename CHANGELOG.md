@@ -4,7 +4,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
-## [1.0.0]
+## [1.0.16]
 
 The following section list all changes since preview 02.
 
