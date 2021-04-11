@@ -98,7 +98,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bunit" Version="#{NBGV_NuGetPackageVersion}#" />
+    <PackageReference Include="bunit" Version="1.0.16" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -124,7 +124,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
   </PropertyGroup>
 
   <ItemGroup>    
-    <PackageReference Include="bunit" Version="#{NBGV_NuGetPackageVersion}#" />
+    <PackageReference Include="bunit" Version="1.0.16" />
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
@@ -150,7 +150,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bunit" Version="#{NBGV_NuGetPackageVersion}#" />
+    <PackageReference Include="bunit" Version="1.0.16" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
