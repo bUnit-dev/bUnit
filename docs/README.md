@@ -4,7 +4,7 @@ This folder contains the documentation site for bUnit.
 
 Here is a small getting started guide for contributing to the documentation...
 
-## Structure
+## Structures
 
 1. The `site` folder contains the code for generating the documentation site, _and_ the documentation in markdown files, located in `site/docs`.
 2. The `samples` folder projects for the sample code that is displayed in the documentation. It has the following projects:  
