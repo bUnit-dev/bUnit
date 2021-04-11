@@ -237,11 +237,11 @@ jobs:
           dotnet-version: '5.0.x'
 
       - name: Creating library package for pre-release
-        if: github.ref != 'refs/heads/main' && github.event_name != 'release'
+        if: github.event_name != 'release'
         run: |
-          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true
+          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=false
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=false
+          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:RepositoryBranch=$BRANCH -p:ContinuousIntegrationBuild=true /p:PublicRelease=false
 
       - name: Creating library package for release
         if: github.event_name == 'release'
@@ -254,5 +254,5 @@ jobs:
         run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/egil/index.json --skip-duplicate --no-symbols true
 
       - name: Push packages to NuGet
-        if: github.ref == 'refs/heads/main' || github.event_name == 'release'
+        if:  github.event_name == 'release'
         run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
