@@ -2,7 +2,7 @@ name: "Build and Deploy Docs"
 
 on:
   push:
-    branches: 
+    branches:
       - main
     paths-ignore:
       - '!docs/**'
@@ -14,7 +14,7 @@ jobs:
     env:
       VERSION: ''
     steps:
-      - uses: actions/checkout@v2   
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
 
@@ -29,14 +29,16 @@ jobs:
         uses: cschleiden/replace-tokens@v1
         with:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
-      
+
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.x'          
+          dotnet-version: '3.1.x'
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-      
+
+      - run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
+
       - name: Building library
         run: dotnet build /p:PublicRelease=true
 
@@ -48,15 +50,15 @@ jobs:
           dotnet test docs/samples/tests/xunit/
 
       - name: Building docs
-        run: |    
+        run: |
           dotnet build docs/site/
-          dotnet build docs/site/          
-          
+          dotnet build docs/site/
+
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
-          build_dir: docs/site/_site 
+          build_dir: docs/site/_site
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
