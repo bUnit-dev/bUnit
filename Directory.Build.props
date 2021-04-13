@@ -44,7 +44,7 @@
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
 		<PackageReference Include="Asyncify" Version="0.9.7" PrivateAssets="All" />
-		<PackageReference Include="Meziantou.Analyzer" Version="1.0.650" PrivateAssets="All" />
+		<PackageReference Include="Meziantou.Analyzer" Version="1.0.656" PrivateAssets="All" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
 		<AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json" Visible="false" />
 		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.20.0.28934" PrivateAssets="All" />
