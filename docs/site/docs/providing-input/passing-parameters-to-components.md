@@ -255,7 +255,11 @@ The delegate creates a simple markup string in the example.
 
 # [Razor test code](#tab/razor)
 
-> There is currently a bug in the Blazor compiler which means that a inline Razor template cannot be used.
+[!code-cshtml[TemplateParamsTest.razor](../../../samples/tests/razor/TemplateParams1Test.razor)]
+
+The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child template content, some HTML markup, is just passed like normal in Razor code.
+
+> 
 
 ***
 
@@ -273,7 +277,9 @@ The example creates a template with the `<Item>` component listed above.
 
 # [Razor test code](#tab/razor)
 
-> There is currently a bug in the Blazor compiler which means that a inline Razor template cannot be used.
+[!code-cshtml[TemplateParamsTest.razor](../../../samples/tests/razor/TemplateParams2Test.razor)]
+
+The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child template content, some HTML and Razor markup, is just passed like normal in Razor code.
 
 ***
 
@@ -319,9 +325,11 @@ The example pass the variable `isDarkTheme` to the cascading parameter `IsDarkTh
 
 # [Razor test code](#tab/razor)
 
-[!code-cshtml[CascadingParamsTest.razor](../../../samples/tests/razor/CascadingParams1Test.razor)]
+[!code-cshtml[CascadingParamsTest.razor](../../../samples/tests/razor/CascadingParams1Test.razor#L3-L14)]
 
 The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The cascading value is just passed like normal in Razor code.
+
+**NOTE:** Before the .NET 6 version of the Blazor compiler, this example does not work. 
 
 ***
 
@@ -337,9 +345,11 @@ The example pass in the value `Name of User` to the cascading parameter with the
 
 # [Razor test code](#tab/razor)
 
-[!code-cshtml[CascadingParamsTest.razor](../../../samples/tests/razor/CascadingParams2Test.razor)]
+[!code-cshtml[CascadingParamsTest.razor](../../../samples/tests/razor/CascadingParams2Test.razor#L3-L14)]
 
 The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The cascading value is just passed like normal in Razor code.
+
+**NOTE:** Before the .NET 6 version of the Blazor compiler, this example does not work. 
 
 ***
 
