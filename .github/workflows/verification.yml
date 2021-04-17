@@ -1,0 +1,75 @@
+name: verification
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+  workflow_dispatch:
+
+jobs:
+  verify:    
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - name: ⚙️ Setup dotnet 3.1.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+
+      - name: ⚙️ Setup dotnet 5.0.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+          
+      - name: ⚙️ Setup GIT versioning
+        uses: dotnet/nbgv@v0.4.0
+        with:
+          setAllVars: true
+      
+      - name: 🍥 Replace tokens in files
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
+      
+      - name: 🐜 Ensure nuget.org source on Windows
+        if: matrix.os == 'windows-latest'
+        run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
+        continue-on-error: true
+      
+      - name: 🔁 Restore packages
+        run: dotnet restore      
+
+      - name: 🛠️ Building library in release mode
+        run: dotnet build -c release --no-restore -p:ContinuousIntegrationBuild=true
+        
+      - name: 🧪 Run unit tests
+        run: dotnet test -c release --no-build
+        
+      - name: 🗳️ Create library packages
+        run: dotnet pack -c release --no-build -o ${GITHUB_WORKSPACE}/packages
+        
+      - name: ✔ Verify template
+        run: |
+          dotnet new --install ${GITHUB_WORKSPACE}/packages/bunit.template.$NBGV_NuGetPackageVersion.nupkg
+          dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTest
+          dotnet restore ${GITHUB_WORKSPACE}/TemplateTest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
+          dotnet test ${GITHUB_WORKSPACE}/TemplateTest
+      
+      - name: 📄 Build documentation
+        run: dotnet build docs/site/
