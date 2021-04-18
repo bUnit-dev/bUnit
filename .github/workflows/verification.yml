@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  verify:
+  verify-bunit:
     strategy:
       fail-fast: false
       matrix:
@@ -52,18 +52,16 @@ jobs:
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
         continue-on-error: true
 
-      - name: 🔁 Restore packages
-        run: dotnet restore
-
       - name: 🛠️ Building library in release mode
-        run: dotnet build -c release --no-restore -p:ContinuousIntegrationBuild=true
+        run: dotnet build -c release -p:ContinuousIntegrationBuild=true
 
       - name: 🧪 Run unit tests
         run: dotnet test -c release --no-build
 
       - name: 🗳️ Create library packages
         run: |
-          dotnet pack -c release --no-build -o ${GITHUB_WORKSPACE}/packages
+          dotnet pack src/bunit/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
           dotnet pack src/bunit.template/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
 
       - name: ✔ Verify template
@@ -74,4 +72,5 @@ jobs:
           dotnet test ${GITHUB_WORKSPACE}/TemplateTest
 
       - name: 📄 Build documentation
+        if: matrix.os == 'windows-latest'
         run: dotnet build docs/site/
