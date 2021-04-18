@@ -175,28 +175,33 @@ namespace Bunit.Rendering
 		{
 			ResetUnhandledException();
 
-			TResult renderedComponent = default!;
-
 			var renderTask = Dispatcher.InvokeAsync(() =>
 			{
 				var root = new WrapperComponent(renderFragment);
 				var rootComponentId = AssignRootComponentId(root);
-				renderedComponent = activator(rootComponentId);
-				renderedComponents.Add(rootComponentId, renderedComponent);
+				var result = activator(rootComponentId);
+				renderedComponents.Add(rootComponentId, result);
 				root.Render();
+				return result;
 			});
+
+			TResult result;
 
 			if (!renderTask.IsCompleted)
 			{
-				logger.LogDebug(new EventId(2, nameof(Render)), $"The initial render task for {renderedComponent.ComponentId} did not complete immediately.");
-				renderTask.GetAwaiter().GetResult();
+				logger.LogDebug(new EventId(2, nameof(Render)), $"The initial render task did not complete immediately.");
+				result = renderTask.GetAwaiter().GetResult();
+			}
+			else
+			{
+				result = renderTask.Result;
 			}
 
-			logger.LogDebug(new EventId(5, nameof(Render)), $"The initial render of {renderedComponent.ComponentId} is completed.");
+			logger.LogDebug(new EventId(5, nameof(Render)), $"The initial render of {result.ComponentId} is completed.");
 
 			AssertNoUnhandledExceptions();
 
-			return renderedComponent!;
+			return result;
 		}
 
 		[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
