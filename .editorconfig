@@ -404,10 +404,6 @@ dotnet_naming_rule.parameters_rule.severity             = warning
 # http://www.asyncfixer.com
 
 
-# Asyncify
-# https://github.com/hvanbakel/Asyncify-CSharp
-
-
 # Meziantou
 # https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
 dotnet_diagnostic.MA0003.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0003.md
@@ -457,8 +453,6 @@ dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net
 dotnet_diagnostic.IDE0079.severity = warning # IDE0079: Remove unnecessary suppression
 
 # AsyncFixer
-
-# Asyncify
 
 # Meziantou
 dotnet_diagnostic.MA0004.severity = none # MA0004: Use .ConfigureAwait(false)
@@ -526,9 +520,6 @@ csharp_style_pattern_local_over_anonymous_function = false # IDE0039: Use local 
 # AsyncFixer
 # http://www.asyncfixer.com
 dotnet_diagnostic.AsyncFixer01.severity = none # AsyncFixer01: Unnecessary async/await usage
-
-# Asyncify
-# https://github.com/hvanbakel/Asyncify-CSharp
 
 # Meziantou
 # https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
