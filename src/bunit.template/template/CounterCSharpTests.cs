@@ -1,6 +1,6 @@
+using System;
 using Bunit;
 using Bunit.TestDoubles;
-using System;
 using Xunit;
 
 namespace Company.BlazorTests1
