@@ -46,7 +46,7 @@
 		<PackageReference Include="Meziantou.Analyzer" Version="1.0.658" PrivateAssets="All" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
 		<AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json" Visible="false" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.20.0.28934" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.21.0.30542" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Condition="('$(TargetFramework)' == 'netstandard2.1' OR '$(TargetFramework)' == 'netcoreapp3.1') AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
