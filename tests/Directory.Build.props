@@ -14,7 +14,7 @@
 
 	<ItemGroup Condition="$(MSBuildProjectName) != 'bunit.testassets'">
 		<PackageReference Include="AutoFixture" Version="4.17.0" />
-		<PackageReference Include="AutoFixture.Xunit2" Version="4.15.0" />
+		<PackageReference Include="AutoFixture.Xunit2" Version="4.17.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
 		<PackageReference Include="GitHubActionsTestLogger" Version="1.2.0" />
 		<PackageReference Include="Moq" Version="4.16.1" />
