@@ -67,7 +67,7 @@ jobs:
       - name: ✔ Verify template
         if: matrix.os != 'windows-latest'
         run: |
-          dotnet new --install bunit.template --nuget-source ${GITHUB_WORKSPACE}/packages
+          dotnet new --install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${GITHUB_WORKSPACE}/packages
           dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTest
           dotnet restore ${GITHUB_WORKSPACE}/TemplateTest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
           dotnet test ${GITHUB_WORKSPACE}/TemplateTest
