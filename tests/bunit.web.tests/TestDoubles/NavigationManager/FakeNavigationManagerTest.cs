@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
@@ -57,6 +58,7 @@ namespace Bunit.TestDoubles
 		}
 
 		[Fact(DisplayName = "NavigateTo raises the NotifyLocationChanged")]
+		[SuppressMessage("Major Bug", "S2259:Null pointers should not be dereferenced", Justification = "BUG in analyzer - 'actualLocationChange' is NOT null on the execution path.")]
 		public void Test005()
 		{
 			// arrange
