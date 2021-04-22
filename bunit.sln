@@ -51,6 +51,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.testcomponents", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.testcomponents.tests", "tests\bunit.web.testcomponents.tests\bunit.web.testcomponents.tests.csproj", "{4CAB561E-0AFF-4516-AB9B-981F94EF1E86}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".workflows", ".workflows", "{3B2F3419-5336-4147-A212-E19091195203}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\verification.yml = .github\workflows\verification.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

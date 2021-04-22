@@ -55,7 +55,7 @@ jobs:
         run: dotnet build -c release -p:ContinuousIntegrationBuild=true
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c release --no-build
+        run: dotnet test -c release --no-build  --logger GitHubActions
 
       - name: 🗳️ Create library packages
         run: |
