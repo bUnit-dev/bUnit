@@ -36,13 +36,16 @@ To get started, head to the [getting started documentation](https://bunit.egilha
 
 A huge thank you to the [sponsors of my work with bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
 
-<table>
+<table border="0">
 	<tr>
 		<td align="center" width="120">
-			<a src="https://github.com/Progress-Telerik"><img src="https://avatars3.githubusercontent.com/u/57092419?s=460&u=fd421a2b423c3cad85866976935df3d4bec2ace3&v=4" alt="@Progress-Telerik" class="avatar" width="72" height="72" /></a><br/><a href="https://github.com/Progress-Telerik">Progress-Telerik</a>
+			<a href="https://github.com/syncfusion"><img class="avatar" src="https://avatars.githubusercontent.com/u/1699795?s=460&amp;v=4" width="72" height="72" alt="@syncfusion"></a><br><a href="https://github.com/syncfusion">Syncfusion</a>
+		</td>		
+		<td align="center" width="120">
+			<a src="https://github.com/Progress-Telerik"><img src="https://avatars.githubusercontent.com/u/57092419?s=460&amp;v=4" alt="@Progress-Telerik" class="avatar" width="72" height="72"></a><br><a src="https://github.com/Progress-Telerik">Progress-Telerik</a>
 		</td>
 		<td align="center" width="120">
-			<a src="https://github.com/hassanhabib"><img src="https://avatars0.githubusercontent.com/u/1453985?s=460&v=4" alt="Hassan Rezk Habib (@hassanhabib)" width="72" height="72" class="avatar" /></a><br/><a href="https://github.com/hassanhabib">Hassan Rezk Habib (@hassanhabib)</a>
+			<a src="https://github.com/hassanhabib"><img src="https://avatars.githubusercontent.com/u/1453985?s=460&amp;v=4" alt="Hassan Rezk Habib (@hassanhabib)" width="72" height="72" class="avatar"></a><br><a src="https://github.com/hassanhabib">Hassan Rezk Habib</a>
 		</td>
 	</tr>
 </table>
