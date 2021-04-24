@@ -17,7 +17,7 @@
 
 bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which run the Blazor component tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run. 
 
-**Go to [bUnit.egilhansen.com](https://bunit.egilhansen.com) to learn more.**
+**Go to [bUnit.dev](https://bunit.dev) to learn more.**
 
 ### NuGet Downloads
 
@@ -30,7 +30,7 @@ bUnit is available on NuGet in various incarnations. Most should just pick the [
 | [bUnit.web](https://www.nuget.org/packages/bunit.web/) | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) | 
 | [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template, which currently creates xUnit-based bUnit test projects only | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) | 
 
-To get started, head to the [getting started documentation](https://bunit.egilhansen.com/docs/getting-started) to learn more.
+To get started, head to the [getting started documentation](https://bunit.dev/docs/getting-started) to learn more.
 
 ## Sponsors
 
