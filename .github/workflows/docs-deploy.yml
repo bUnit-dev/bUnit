@@ -1,57 +1,57 @@
-name: "Build and Deploy Docs"
+# name: "Build and Deploy Docs"
 
-on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '!docs/**'
-      - '!.github/**'
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths-ignore:
+#       - '!docs/**'
+#       - '!.github/**'
 
-jobs:
-  build:
-    runs-on: windows-latest
-    env:
-      VERSION: ''
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+# jobs:
+#   build:
+#     runs-on: windows-latest
+#     env:
+#       VERSION: ''
+#     steps:
+#       - uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
 
-      - uses: dotnet/nbgv@master
-        with:
-          setAllVars: true
+#       - uses: dotnet/nbgv@master
+#         with:
+#           setAllVars: true
 
-      - name: Setting VERSION env
-        run: echo "VERSION=$NBGV_NuGetPackageVersion" >> $GITHUB_ENV
+#       - name: Setting VERSION env
+#         run: echo "VERSION=$NBGV_NuGetPackageVersion" >> $GITHUB_ENV
 
-      - name: Update tokens in project files
-        uses: cschleiden/replace-tokens@v1
-        with:
-          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
+#       - name: Update tokens in project files
+#         uses: cschleiden/replace-tokens@v1
+#         with:
+#           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
 
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.x'
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '5.0.x'
+#       - uses: actions/setup-dotnet@v1
+#         with:
+#           dotnet-version: '3.1.x'
+#       - uses: actions/setup-dotnet@v1
+#         with:
+#           dotnet-version: '5.0.x'
 
-      - name: Building library
-        run: dotnet build /p:PublicRelease=true
+#       - name: Building library
+#         run: dotnet build /p:PublicRelease=true
 
-      - name: Verfiy docs samples
-        run: dotnet test docs/samples/samples.sln
+#       - name: Verfiy docs samples
+#         run: dotnet test docs/samples/samples.sln
 
-      - name: Building docs
-        run: |
-          dotnet build docs/site/
-          dotnet build docs/site/
-      - name: Deploy to GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v2
-        with:
-          target_branch: gh-pages
-          build_dir: docs/site/_site
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Building docs
+#         run: |
+#           dotnet build docs/site/
+#           dotnet build docs/site/
+#       - name: Deploy to GitHub Pages
+#         if: success()
+#         uses: crazy-max/ghaction-github-pages@v2
+#         with:
+#           target_branch: gh-pages
+#           build_dir: docs/site/_site
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
