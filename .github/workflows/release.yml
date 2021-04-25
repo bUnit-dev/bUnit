@@ -86,7 +86,7 @@ jobs:
         with:
           files: '["*.csproj", "**/*.csproj"]'
 
-      - name: 🛠️ Building library in release mode
+      - name: 🛠️ Packing library in release mode
         run: |
           dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
           dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
