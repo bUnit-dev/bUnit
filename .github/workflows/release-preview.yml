@@ -40,4 +40,4 @@ jobs:
           dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
         
       - name: 🛠️ Upload library to GitHub Package Repository
-        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bUnit-dev/index.json --skip-duplicate --no-symbols true
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bunit-dev/index.json --skip-duplicate --no-symbols true
