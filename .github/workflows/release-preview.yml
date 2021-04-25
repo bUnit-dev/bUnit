@@ -1,0 +1,43 @@
+name: release-preview
+concurrency: 'release-preview'
+
+on:
+  workflow_run:
+    branches: [ main ]
+    workflows: [ 'verification' ]
+    types: [ completed ]
+
+  workflow_dispatch:
+
+jobs:
+  release-preview:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup GIT versioning
+        uses: dotnet/nbgv@v0.4.0
+           
+      - name: ⚙️ Setup dotnet 5.0.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+      
+      - name: 🛠️ Update tokens in project files
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["*.csproj", "**/*.csproj"]'
+
+      - name: 🛠️ Packing library in release mode
+        run: |
+          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+        
+      - name: 🛠️ Upload library to GitHub Package Repository
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/'*.nupkg' -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bUnit-dev/index.json --skip-duplicate --no-symbols true
