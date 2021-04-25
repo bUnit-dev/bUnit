@@ -13,6 +13,9 @@ on:
       - opened
       - synchronize
       - reopened
+    paths:
+      - 'src/**'
+      - 'tests/**'          
 
   workflow_dispatch:
 
