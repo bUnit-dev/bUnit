@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - 'docs/**'  
-      
+    paths:
+      - 'src/**'
+      - 'tests/**'    
+
   pull_request:
     types:
       - opened
