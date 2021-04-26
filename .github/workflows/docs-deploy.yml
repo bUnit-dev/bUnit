@@ -38,9 +38,17 @@ jobs:
         uses: dotnet/nbgv@v0.4.0
         with:
           setAllVars: true   
-          
+
+      - name: 🛠️ Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          path: ./CHANGELOG.md
+
       - name: 🛠️ Update tokens in project files
         uses: cschleiden/replace-tokens@v1
+        env:
+          RELEASE-VERSION: ${{ steps.changelog_reader.outputs.version }}
         with:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
           
@@ -71,11 +79,11 @@ jobs:
         with:
           build_dir: docs/site/_site
           fqdn: bunit.dev
-          repo: https://github.com/bUnit-dev/bUnit-dev.github.io
+          repo: bUnit-dev/bUnit-dev.github.io
           target_branch: main
           keep_history: false
           jekyll: false
           committer: "bUnit bot <bot@bunit.dev>"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_PAT: ${{ secret.BUNIT_BOT_TOKEN }}
+          GH_PAT: ${{ secrets.BUNIT_BOT_TOKEN }}
