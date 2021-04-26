@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!--
-    Add any shared properties you want for the projects under this directory that need to be set before the auto imported Directory.Build.props
-  -->
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory).., Directory.Build.props))\Directory.Build.props" />
+	<!--
+	Add any shared properties you want for the projects under this directory that need to be set before the auto imported Directory.Build.props
+	-->
+	<Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory).., Directory.Build.props))\Directory.Build.props" />
 
-  <PropertyGroup Label="Build instructions">
+	<PropertyGroup Label="Build instructions">
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <OutputType>Library</OutputType>
-    <!-- Creates a regular package and a symbols package -->
-    <IncludeSymbols>true</IncludeSymbols>
-    <!-- Creates symbol package in the new .snupkg format -->
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <!--
-      Instruct the build system to embed project source files that are not tracked by the source control
-      or imported from a source package to the generated PDB.
-    -->
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
-    <DebugType>embedded</DebugType>
+		<OutputType>Library</OutputType>
+		<!-- Creates a regular package and a symbols package -->
+		<IncludeSymbols>true</IncludeSymbols>
+		<!-- Creates symbol package in the new .snupkg format -->
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<!--
+		Instruct the build system to embed project source files that are not tracked by the source control
+		or imported from a source package to the generated PDB.
+		-->
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
+		<DebugType>embedded</DebugType>
 		<Deterministic>true</Deterministic>
-  </PropertyGroup>
+	</PropertyGroup>
 
 	<PropertyGroup Label="NuGet package information">
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<RepositoryUrl>https://github.com/egil/bunit</RepositoryUrl>
+		<RepositoryUrl>https://github.com/bUnit-dev/bUnit</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageProjectUrl>https://bunit.egilhansen.com</PackageProjectUrl>
 		<PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
@@ -34,16 +34,16 @@
 		<Copyright>Egil Hansen</Copyright>
 		<Product>bUnit</Product>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <PackageIcon>bunit-logo.png</PackageIcon>
+		<PackageIcon>bunit-logo.png</PackageIcon>
 	</PropertyGroup>
 
-  <ItemGroup>
-      <None Include="..\..\bunit-logo.png" Pack="true" PackagePath="" Visible="false" />      
-  </ItemGroup>
-
-  <ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\bunit-logo.png" Pack="true" PackagePath="" Visible="false" />      
+	</ItemGroup>
+	
+	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
 		<PackageReference Include="Nerdbank.GitVersioning" Version="3.4.194" PrivateAssets="All" />
 	</ItemGroup>
-
+	
 </Project>
