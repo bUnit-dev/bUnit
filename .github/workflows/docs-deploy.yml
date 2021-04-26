@@ -73,4 +73,4 @@ jobs:
           committer: "bUnit bot <bot@bunit.dev>"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_PAT: ${{ secret.BUNIT_BOT_TOKEN }}
+          GH_PAT: ${{ secrets.BUNIT_BOT_TOKEN }}
