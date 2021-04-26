@@ -44,6 +44,11 @@ jobs:
         with:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
           
+      - name: ⚙️ Setup dotnet 3.1.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+
       - name: ⚙️ Setup dotnet 5.0.x
         uses: actions/setup-dotnet@v1
         with:
