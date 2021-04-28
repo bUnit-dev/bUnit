@@ -19,7 +19,7 @@ NOTE: This package represents experimental features of bUnit that has been super
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SourceFileFinder" Version="1.0.1" />
+		<PackageReference Include="SourceFileFinder" Version="1.1.0" />
 		<PackageReference Include="System.Reflection.Metadata" Version="$(DotNet5Version)" />
 		<PackageReference Include="xunit.assert" Version="2.4.1" />
 		<PackageReference Include="xunit.extensibility.core" Version="2.4.1" />

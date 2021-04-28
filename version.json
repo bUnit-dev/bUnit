@@ -1,20 +1,26 @@
 {
-	"$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
-	"version": "1.0",
-	"publicReleaseRefSpec": [
-		"^refs/heads/main$",
-		"^refs/heads/v\\d+(?:\\.\\d+)?$"
-	],
+  "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
+  "version": "1.1-preview",
+  "assemblyVersion": {
+    "precision": "revision"
+  },
+  "nuGetPackageVersion": {
+    "semVer": 2.0
+  },
+  "publicReleaseRefSpec": [
+    "^refs/heads/stable$"
+  ],
 	"pathFilters": [
 		"./src"
 	],
-	"nugetPackageVersion": {
-		"semVer": 2 // optional. Set to either 1 or 2 to control how the NuGet package version string is generated. Default is 1.
-	},
-	"cloudBuild": {
+  "cloudBuild": {
 		"setVersionVariables": true,
 		"buildNumber": {
 			"enabled": true
 		}
-	}
+  },
+  "release": {
+    "branchName": "release/v{version}",
+    "firstUnstableTag": "preview"
+  }
 }

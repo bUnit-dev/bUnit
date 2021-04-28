@@ -22,6 +22,8 @@
 		<!-- Used by code coverage -->
 		<DebugType>full</DebugType>
 		<DebugSymbols>true</DebugSymbols>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>../../key.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1' OR '$(TargetFramework)' == 'netcoreapp3.1'">

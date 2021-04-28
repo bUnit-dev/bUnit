@@ -1,11 +1,11 @@
-[![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
-[![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
-[![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github)](https://github.com/egil/bunit/issues)
+[![GitHub tag](https://img.shields.io/github/v/tag/bUnit-dev/bUnit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
+[![NuGet](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
+[![Issues Open](https://img.shields.io/github/issues/bUnit-dev/bUnit.svg?style=flat-square&logo=github)](https://github.com/bUnit-dev/bUnit/issues)
 [![Gitter](https://img.shields.io/gitter/room/egil/bunit?logo=gitter&style=flat-square)](https://gitter.im/egil/bunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # bUnit - a testing library for Blazor components
 
-<a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message"><img align="right" width="200" src="https://raw.githubusercontent.com/egil/bUnit/main/docs/site/sponsors/telerik-ad-github.svg"  /></a>
+<a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message"><img align="right" width="200" src="https://raw.githubusercontent.com/bUnit-dev/bUnit/main/docs/site/sponsors/telerik-ad-github.svg"  /></a>
 
 **bUnit** is a testing library for Blazor Components. Its goal is to make it easy to write _comprehensive, stable_ unit tests. With bUnit, you can:
 
@@ -17,7 +17,7 @@
 
 bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which run the Blazor component tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run. 
 
-**Go to [bUnit.egilhansen.com](https://bunit.egilhansen.com) to learn more.**
+**Go to [bUnit.dev](https://bunit.dev) to learn more.**
 
 ### NuGet Downloads
 
@@ -30,7 +30,7 @@ bUnit is available on NuGet in various incarnations. Most should just pick the [
 | [bUnit.web](https://www.nuget.org/packages/bunit.web/) | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) | 
 | [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template, which currently creates xUnit-based bUnit test projects only | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) | 
 
-To get started, head to the [getting started documentation](https://bunit.egilhansen.com/docs/getting-started) to learn more.
+To get started, head to the [getting started documentation](https://bunit.dev/docs/getting-started) to learn more.
 
 ## Sponsors
 
@@ -52,4 +52,4 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 
 ## Contributors
 
-Shout outs and a big thank you [to all the contributors](https://github.com/egil/bunit/graphs/contributors) to the library, including those that raise issues, provide input to issues, and those who send pull requests. Thank you!
+Shout outs and a big thank you [to all the contributors](https://github.com/bUnit-dev/bUnit/graphs/contributors) to the library, including those that raise issues, provide input to issues, and those who send pull requests. Thank you!

@@ -1,0 +1,132 @@
+name: release
+concurrency: 'release'
+
+on:
+  pull_request:
+    branches:
+      - stable
+    types:
+      - closed
+    paths-ignore:
+      - 'docs/**'
+
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: 🎁 Publish new release
+    # Only run on manual dispatch or on merged 'release-' pull requests
+    if: github.ref == 'refs/heads/stable' ||
+        github.event.pull_request.merged == true && contains(github.head_ref, 'release/v') == true
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.BUNIT_BOT_TOKEN }}
+
+      - name: 🛠️ Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          version: Unreleased
+          path: ./CHANGELOG.md
+
+      - name: ☑ Check that release contains changes
+        if: steps.changelog_reader.outputs.changes == ''
+        run: |
+          echo "::error file=CHANGELOG.md::The unreleased section in the changelog is empty. Nothing to release."
+          exit 1
+
+      - name: ⚙️ Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.BUNIT_BOT_GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.BUNIT_BOT_GPG_KEY_PASSPHRASE }}
+
+      - name: ⚙️ Setup CI GIT
+        run: |
+          git config user.name "${{ steps.import_gpg.outputs.name }}"
+          git config user.email ${{ steps.import_gpg.outputs.email }}
+          git config --global user.signingkey ${{ steps.import_gpg.outputs.keyid }}
+          git config --global commit.gpgsign true
+
+      - name: ⚙️ Setup GIT versioning
+        uses: dotnet/nbgv@v0.4.0
+        with:
+          setAllVars: true
+
+      - name: ⚙️ Setup dotnet 5.0.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: 🛠️ Update changelog
+        uses: thomaseizinger/keep-a-changelog-new-release@1.2.1
+        with:
+          version: ${{ env.NBGV_SemVer2 }}
+
+      - name: 🛠️ Update changelog compare URLs
+        shell: bash
+        run: |
+          sed -i -E "s/compare\/([0-9]+\.[0-9]+\.[0-9]+)\.\.\.([0-9]+\.[0-9]+\.[0-9]+)/compare\/v\1...v\2/" CHANGELOG.md
+          sed -i -E "s/compare\/([0-9]+\.[0-9]+\.[0-9]+)\.\.\.HEAD/compare\/v\1...HEAD/" CHANGELOG.md
+
+      - name: 🛠️ Commit CHANGELOG.md to stable branch
+        run: |
+          git add CHANGELOG.md
+          git commit -S -m "Updated CHANGELOG.md for ${{ env.NBGV_SimpleVersion }} release"
+          echo "RELEASE_COMMIT_HASH=$(git rev-parse stable)" >> $GITHUB_ENV
+
+      - name: 🛠️ Update tokens in project files
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["*.csproj", "**/*.csproj"]'
+
+      - name: 🛠️ Packing library in release mode
+        run: |
+          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+
+      - name: 🛠️ Upload library to NuGet.org repository
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
+
+      - name: ⏩ Push stable branch
+        run: git push origin stable
+
+      - name: 🛠️ Create GitHub release
+        uses: thomaseizinger/create-release@1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.NBGV_SemVer2 }}
+          target_commitish: ${{ env.RELEASE_COMMIT_HASH }}
+          name: Release ${{ env.NBGV_SemVer2 }}
+          body: ${{ steps.changelog_reader.outputs.changes }}
+          draft: false
+          prerelease: ${{ env.NBGV_PublicRelease == 'False' }}
+
+      - name: ⏩ Merge stable with main, push to origin
+        run: |
+          git checkout main
+          git merge -S stable
+          git push origin main
+
+      - name: ⏭ Create pull request from stable to main when direct merge fails
+        if: ${{ failure() }}
+        uses: thomaseizinger/create-pull-request@1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.BUNIT_BOT_TOKEN }}
+        with:
+          head: stable
+          base: main
+          title: Update main with changes in stable after v${{ env.NBGV_SemVer2 }} release
+          reviewers: ${{ github.actor }} # By default, we request a review from the person who triggered the workflow.
+          body: |
+            Hi @${{ github.actor }}
+
+            This PR was created because the [release workflow](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed to automatically merge stable into main.
