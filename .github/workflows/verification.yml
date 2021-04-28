@@ -78,6 +78,7 @@ jobs:
         run: |
           dotnet new --install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${GITHUB_WORKSPACE}/packages
           dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTest
+          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${GITHUB_WORKSPACE}/TemplateTest/Directory.Build.props
           dotnet restore ${GITHUB_WORKSPACE}/TemplateTest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
           dotnet test ${GITHUB_WORKSPACE}/TemplateTest
 
