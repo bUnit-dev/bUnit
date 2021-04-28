@@ -1,4 +1,4 @@
-#if NET5_0
+#if !NETSTANDARD2_1
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -15,7 +15,7 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 	internal sealed class VirtualizeJSRuntimeInvocationHandler : JSRuntimeInvocationHandler
 	{
 		private const string JsFunctionsPrefix = "Blazor._internal.Virtualize.";
-		private static readonly Lazy<(PropertyInfo, MethodInfo)> VirtualizeReflection = new Lazy<(PropertyInfo, MethodInfo)>(() =>
+		private static readonly Lazy<(PropertyInfo, MethodInfo)> VirtualizeReflection = new(() =>
 		{
 			var virtualizeJsInteropType = typeof(Virtualize<>)
 				.Assembly
