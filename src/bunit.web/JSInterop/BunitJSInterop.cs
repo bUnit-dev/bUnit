@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bunit.JSInterop;
 using Bunit.JSInterop.InvocationHandlers;
-#if NET5_0
+#if !NETSTANDARD2_1
 using Bunit.JSInterop.InvocationHandlers.Implementation;
 #endif
 using Microsoft.JSInterop;
@@ -41,7 +41,7 @@ namespace Bunit
 		{
 			mode = JSRuntimeMode.Strict;
 			JSRuntime = new BunitJSRuntime(this);
-#if NET5_0
+#if !NETSTANDARD2_1
 			AddCustomHandlers();
 #endif
 		}
@@ -130,7 +130,7 @@ namespace Bunit
 			return default;
 		}
 
-#if NET5_0
+#if !NETSTANDARD2_1
 		private void AddCustomHandlers()
 		{
 			AddInvocationHandler(new FocusAsyncInvocationHandler());
