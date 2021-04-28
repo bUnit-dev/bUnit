@@ -1,11 +1,11 @@
-[![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/egil/bunit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
-[![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
-[![Issues Open](https://img.shields.io/github/issues/egil/bunit.svg?style=flat-square&logo=github)](https://github.com/egil/bunit/issues)
+[![GitHub tag](https://img.shields.io/github/v/tag/bUnit-dev/bUnit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
+[![NuGet](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
+[![Issues Open](https://img.shields.io/github/issues/bUnit-dev/bUnit.svg?style=flat-square&logo=github)](https://github.com/bUnit-dev/bUnit/issues)
 [![Gitter](https://img.shields.io/gitter/room/egil/bunit?logo=gitter&style=flat-square)](https://gitter.im/egil/bunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # bUnit - a testing library for Blazor components
 
-<a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message"><img align="right" width="200" src="https://raw.githubusercontent.com/egil/bUnit/main/docs/site/sponsors/telerik-ad-github.svg"  /></a>
+<a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message"><img align="right" width="200" src="https://raw.githubusercontent.com/bUnit-dev/bUnit/main/docs/site/sponsors/telerik-ad-github.svg"  /></a>
 
 **bUnit** is a testing library for Blazor Components. Its goal is to make it easy to write _comprehensive, stable_ unit tests. With bUnit, you can:
 
