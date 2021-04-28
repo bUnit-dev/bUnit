@@ -7,19 +7,13 @@ on:
       - stable
     paths:
       - 'src/**'
-      - 'tests/**'    
+      - 'tests/**'
 
   pull_request:
-    branches:
-      - main
-      - stable  
     types:
       - opened
       - synchronize
       - reopened
-    paths:
-      - 'src/**'
-      - 'tests/**'          
 
   workflow_dispatch:
 
@@ -67,7 +61,10 @@ jobs:
         run: dotnet build -c release -p:ContinuousIntegrationBuild=true
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c release --no-build  --logger GitHubActions
+        run: |
+          dotnet test tests/bunit.core.tests -c release --no-build --logger GitHubActions
+          dotnet test tests/bunit.web.tests -c release --no-build --logger GitHubActions
+          dotnet test tests/bunit.web.testcomponents.tests -c release --no-build --logger GitHubActions
 
       - name: 🗳️ Create library packages
         run: |

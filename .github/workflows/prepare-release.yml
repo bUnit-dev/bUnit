@@ -85,7 +85,7 @@ jobs:
       - name: ⏭ Create pull request for release branch
         uses: thomaseizinger/create-pull-request@1.0.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BUNIT_BOT_TOKEN }}
         with:
           head: release/v${{ env.NBGV_MajorMinorVersion }}
           base: stable

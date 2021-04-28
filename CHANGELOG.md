@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- All bUnit assemblies is now strong named signed.
+
 ### Changed
 
 - Changed bunit.template such that created projects only reference the bunit package. Bumped other referenced packages to latest version.
