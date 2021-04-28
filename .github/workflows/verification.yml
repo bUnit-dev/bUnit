@@ -57,14 +57,14 @@ jobs:
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
         continue-on-error: true
 
-      - name: 🛠️ Building library in release mode
+      - name: 🛠️ Build library in release mode
         run: dotnet build -c release -p:ContinuousIntegrationBuild=true
 
       - name: 🧪 Run unit tests
         run: |
-          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --no-build --logger GitHubActions
-          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --no-build --logger GitHubActions
-          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --no-build --logger GitHubActions
+          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions
+          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions
+          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions
 
       - name: 🗳️ Create library packages
         run: |
