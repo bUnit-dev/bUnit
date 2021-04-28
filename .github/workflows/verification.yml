@@ -10,16 +10,10 @@ on:
       - 'tests/**'    
 
   pull_request:
-    branches:
-      - main
-      - stable  
     types:
       - opened
       - synchronize
       - reopened
-    paths:
-      - 'src/**'
-      - 'tests/**'          
 
   workflow_dispatch:
 
