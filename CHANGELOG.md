@@ -9,6 +9,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Added
 
 - All bUnit assemblies is now strong named signed.
+- Added .NET 6 (preview 3) as a target framework for bUnit, bUnit.core and bUnit.web.
 
 ### Changed
 
