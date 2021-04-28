@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - stable
-    paths-ignore:
-      - '!docs/**'
+    paths:
+      - 'docs/**'
 
   workflow_dispatch:
 
