@@ -1,4 +1,4 @@
-#if NET5_0
+#if !NETCOREAPP3_1
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -325,10 +325,10 @@ namespace Bunit.JSInterop
 				.ShouldHaveSingleItem()
 				.ShouldBe(new JSRuntimeInvocation(
 					identifier,
-					null,
-					Array.Empty<object>(),
-					typeof(string),
-					"InvokeUnmarshalled"));
+					cancellationToken: null,
+					args: Array.Empty<object>(),
+					resultType: typeof(string),
+					invocationMethodName: "InvokeUnmarshalled"));
 		}
 
 		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0), then the invocation should be visible from the Invocations list"), AutoData]
@@ -343,10 +343,10 @@ namespace Bunit.JSInterop
 				.ShouldHaveSingleItem()
 				.ShouldBe(new JSRuntimeInvocation(
 					identifier,
-					null,
-					new[] { arg0 },
-					typeof(string),
-					"InvokeUnmarshalled"));
+					cancellationToken: null,
+					args: new[] { arg0 },
+					resultType: typeof(string),
+					invocationMethodName: "InvokeUnmarshalled"));
 		}
 
 		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1), then the invocation should be visible from the Invocations list"), AutoData]
@@ -361,10 +361,10 @@ namespace Bunit.JSInterop
 				.ShouldHaveSingleItem()
 				.ShouldBe(new JSRuntimeInvocation(
 					identifier,
-					null,
-					new[] { arg0, arg1 },
-					typeof(string),
-					"InvokeUnmarshalled"));
+					cancellationToken: null,
+					args: new[] { arg0, arg1 },
+					resultType: typeof(string),
+					invocationMethodName: "InvokeUnmarshalled"));
 		}
 
 		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1, arg2), then the invocation should be visible from the Invocations list"), AutoData]
@@ -380,10 +380,10 @@ namespace Bunit.JSInterop
 				.ShouldHaveSingleItem()
 				.ShouldBe(new JSRuntimeInvocation(
 					identifier,
-					null,
-					new[] { arg0, arg1, arg2 },
-					typeof(string),
-					"InvokeUnmarshalled"));
+					cancellationToken: null,
+					args: new[] { arg0, arg1, arg2 },
+					resultType: typeof(string),
+					invocationMethodName: "InvokeUnmarshalled"));
 		}
 
 		[Theory(DisplayName = "When calling InvokeVoidAsync, then the invocation should be visible from the Invocations list"), AutoData]
@@ -434,10 +434,10 @@ namespace Bunit.JSInterop
 				.ShouldHaveSingleItem()
 				.ShouldBe(new JSRuntimeInvocation(
 					identifier,
-					null,
-					args,
-					typeof(object),
-					"InvokeVoid"));
+					cancellationToken: null,
+					args: args,
+					resultType: typeof(object),
+					invocationMethodName: "InvokeVoid"));
 		}
 
 		[Theory(DisplayName = "When calling Invoke, then the invocation should be visible from the Invocations list"), AutoData]
@@ -452,10 +452,10 @@ namespace Bunit.JSInterop
 				.ShouldHaveSingleItem()
 				.ShouldBe(new JSRuntimeInvocation(
 					identifier,
-					null,
-					args,
-					typeof(int),
-					"Invoke"));
+					cancellationToken: null,
+					args: args,
+					resultType: typeof(int),
+					invocationMethodName: "Invoke"));
 		}
 
 		private BunitJSObjectReference GetBunitJSObjectReference()

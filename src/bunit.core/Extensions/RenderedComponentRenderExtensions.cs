@@ -49,6 +49,8 @@ namespace Bunit
 		{
 			if (renderedComponent is null)
 				throw new ArgumentNullException(nameof(renderedComponent));
+			if (parameters is null)
+				throw new ArgumentNullException(nameof(parameters));
 
 			SetParametersAndRender(renderedComponent, ToParameterView(parameters));
 		}
@@ -77,7 +79,7 @@ namespace Bunit
 
 			if (parameters.Count > 0)
 			{
-				var paramDict = new Dictionary<string, object>(StringComparer.Ordinal);
+				var paramDict = new Dictionary<string, object?>(StringComparer.Ordinal);
 
 				foreach (var param in parameters)
 				{
@@ -86,11 +88,14 @@ namespace Bunit
 					if (param.Name is null)
 						throw new InvalidOperationException($"A parameters name is required.");
 
-					// BANG: it should technically be allowed to pass null
-					paramDict.Add(param.Name, param.Value!);
+					paramDict.Add(param.Name, param.Value);
 				}
 
+				// Nullable is disabled to get around the issue with different annotations
+				// between .netstandard2.1 and net6.
+#nullable disable
 				parameterView = ParameterView.FromDictionary(paramDict);
+#nullable restore
 			}
 
 			return parameterView;

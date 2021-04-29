@@ -27,6 +27,11 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
+
+      - name: ⚙️ Setup dotnet 6.0.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.100-preview.3.21202.5'
       
       - name: 🛠️ Update tokens in project files
         uses: cschleiden/replace-tokens@v1

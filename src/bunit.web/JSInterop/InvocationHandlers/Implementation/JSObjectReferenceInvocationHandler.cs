@@ -1,4 +1,4 @@
-#if NET5_0
+#if !NETSTANDARD2_1
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
 
