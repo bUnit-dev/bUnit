@@ -121,8 +121,9 @@ namespace Bunit.Extensions.WaitForHelpers
 		{
 			var cut = RenderComponent<ThrowsAfterAsyncOperation>();
 
+			// Adding additional wait time to deal with tests sometimes failing for timeout on Windows.
 			Should.Throw<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(
-				() => cut.WaitForAssertion(() => false.ShouldBeTrue()));
+				() => cut.WaitForAssertion(() => false.ShouldBeTrue(), TimeSpan.FromSeconds(5)));
 		}
 
 		[Fact(DisplayName = "WaitForState rethrows unhandled exception from components async operation's methods")]
@@ -130,8 +131,9 @@ namespace Bunit.Extensions.WaitForHelpers
 		{
 			var cut = RenderComponent<ThrowsAfterAsyncOperation>();
 
+			// Adding additional wait time to deal with tests sometimes failing for timeout on Windows.
 			Should.Throw<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(
-				() => cut.WaitForState(() => false));
+				() => cut.WaitForState(() => false, TimeSpan.FromSeconds(5)));
 		}
 
 		internal class ThrowsAfterAsyncOperation : ComponentBase

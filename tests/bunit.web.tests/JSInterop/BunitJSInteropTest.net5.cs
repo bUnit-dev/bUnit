@@ -1,4 +1,4 @@
-#if NET5_0
+#if !NETCOREAPP3_1
 using System;
 using System.Linq;
 using AutoFixture.Xunit2;
@@ -128,10 +128,10 @@ namespace Bunit.JSInterop
 				.ShouldHaveSingleItem()
 				.ShouldBe(new JSRuntimeInvocation(
 					identifier,
-					null,
+					cancellationToken: null,
 					Array.Empty<object>(),
 					typeof(string),
-					"InvokeUnmarshalled"));
+					invocationMethodName: "InvokeUnmarshalled"));
 		}
 
 		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0), then the invocation should be visible from the Invocations list"), AutoData]
@@ -146,10 +146,10 @@ namespace Bunit.JSInterop
 				.ShouldHaveSingleItem()
 				.ShouldBe(new JSRuntimeInvocation(
 					identifier,
-					null,
-					new[] { arg0 },
-					typeof(string),
-					"InvokeUnmarshalled"));
+					cancellationToken: null,
+					args: new[] { arg0 },
+					resultType: typeof(string),
+					invocationMethodName: "InvokeUnmarshalled"));
 		}
 
 		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1), then the invocation should be visible from the Invocations list"), AutoData]
@@ -164,10 +164,10 @@ namespace Bunit.JSInterop
 				.ShouldHaveSingleItem()
 				.ShouldBe(new JSRuntimeInvocation(
 					identifier,
-					null,
-					new[] { arg0, arg1 },
-					typeof(string),
-					"InvokeUnmarshalled"));
+					cancellationToken: null,
+					args: new[] { arg0, arg1 },
+					resultType: typeof(string),
+					invocationMethodName: "InvokeUnmarshalled"));
 		}
 
 		[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1, arg2), then the invocation should be visible from the Invocations list"), AutoData]
@@ -183,10 +183,10 @@ namespace Bunit.JSInterop
 				.ShouldHaveSingleItem()
 				.ShouldBe(new JSRuntimeInvocation(
 					identifier,
-					null,
-					new[] { arg0, arg1, arg2 },
-					typeof(string),
-					"InvokeUnmarshalled"));
+					cancellationToken: null,
+					args: new[] { arg0, arg1, arg2 },
+					resultType: typeof(string),
+					invocationMethodName: "InvokeUnmarshalled"));
 		}
 	}
 }

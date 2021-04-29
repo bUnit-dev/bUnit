@@ -56,9 +56,9 @@ namespace Bunit
 		}
 
 		/// <summary>
-		/// Add a fall back service provider that provides services when the default returns null
+		/// Add a fall back service provider that provides services when the default returns null.
 		/// </summary>
-		/// <param name="serviceProvider">The fallback service provider</param>
+		/// <param name="serviceProvider">The fallback service provider.</param>
 		public void AddFallbackServiceProvider(IServiceProvider serviceProvider)
 			=> fallbackServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 

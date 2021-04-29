@@ -1,4 +1,4 @@
-#if NET5_0
+#if !NETCOREAPP3_1
 using System.Threading.Tasks;
 using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;

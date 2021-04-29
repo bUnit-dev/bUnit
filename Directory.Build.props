@@ -4,6 +4,7 @@
 	<PropertyGroup Label="Configuration variables">
 		<DotNet3Version>3.1.1</DotNet3Version>
 		<DotNet5Version>5.0.0</DotNet5Version>
+		<DotNet6Version>6.0.0-preview.3.*</DotNet6Version>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->
@@ -45,7 +46,7 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
-		<PackageReference Include="Meziantou.Analyzer" Version="1.0.658" PrivateAssets="All" />
+		<PackageReference Include="Meziantou.Analyzer" Version="1.0.660" PrivateAssets="All" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
 		<AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json" Visible="false" />
 		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.21.0.30542" PrivateAssets="All" />
@@ -65,6 +66,14 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet5Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet5Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet5Version)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet6Version)" />
 	</ItemGroup>
 
 </Project>
