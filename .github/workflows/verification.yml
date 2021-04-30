@@ -61,9 +61,6 @@ jobs:
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
         continue-on-error: true
 
-      - name: 🛠️ Build library in release mode
-        run: dotnet build -c release -p:ContinuousIntegrationBuild=true
-
       - name: 🧪 Run unit tests
         run: |
           dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions
@@ -81,7 +78,8 @@ jobs:
         if: matrix.os != 'windows-latest'
         run: |
           dotnet new --install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${GITHUB_WORKSPACE}/packages
-          dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTest          
+          dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTest
+          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${GITHUB_WORKSPACE}/TemplateTest/Directory.Build.props
           dotnet restore ${GITHUB_WORKSPACE}/TemplateTest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
           dotnet test ${GITHUB_WORKSPACE}/TemplateTest
 
