@@ -1,4 +1,5 @@
 name: "docs-deploy"
+concurrency: "docs-deploy"
 
 on:
   push:
@@ -7,11 +8,17 @@ on:
     paths:
       - 'docs/**'
 
+  workflow_run:
+    branches: [ main ]
+    workflows: [ 'release' ]
+    types: [ completed ]
+
   workflow_dispatch:
 
 jobs:
   deploy:
     name: 📃 Deploy new version bunit.dev
+    if: github.ref == 'refs/heads/stable' || ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: windows-latest
     steps:
 
