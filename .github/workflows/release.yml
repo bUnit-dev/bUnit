@@ -110,7 +110,7 @@ jobs:
         with:
           tag_name: v${{ env.NBGV_SemVer2 }}
           target_commitish: ${{ env.RELEASE_COMMIT_HASH }}
-          name: Release ${{ env.NBGV_SemVer2 }}
+          name: ${{ env.NBGV_SemVer2 }}
           body: ${{ steps.changelog_reader.outputs.changes }}
           draft: false
           prerelease: ${{ env.NBGV_PublicRelease == 'False' }}

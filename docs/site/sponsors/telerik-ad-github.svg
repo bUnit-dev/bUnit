@@ -12,7 +12,7 @@
   <style>
     <![CDATA[
     svg {
-      background-color: #fff;
+      background-color: inherit;
     }
     
     text {
