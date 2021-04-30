@@ -12,7 +12,7 @@
   <style>
     <![CDATA[
     svg {
-      background-color: #fff;
+      background-color: transparent;
     }
     
     text {
@@ -34,7 +34,7 @@
 
     @media (prefers-color-scheme: dark) {
       svg {
-        background-color: #0d1117;
+        background-color: transparent;
       }
 
       text {
