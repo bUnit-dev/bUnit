@@ -13,7 +13,7 @@ using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering
 {
-	public class TestRendererTest : TestContext
+	public partial class TestRendererTest : TestContext
 	{
 		public TestRendererTest(ITestOutputHelper outputHelper)
 		{
