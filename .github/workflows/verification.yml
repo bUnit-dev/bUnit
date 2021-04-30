@@ -72,9 +72,9 @@ jobs:
           dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions
 
       - name: 🗳️ Pack library
-        run: |
-          dotnet pack src/bunit/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:PublicRelease=true
+        run: |          
           dotnet pack -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:PublicRelease=true
+          dotnet pack src/bunit/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:PublicRelease=true
           dotnet pack src/bunit.template/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:PublicRelease=true
 
       # Excluding windows because the restore step doesnt seem to work correct.
@@ -82,9 +82,9 @@ jobs:
         if: matrix.os != 'windows-latest'
         run: |
           dotnet new --install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${GITHUB_WORKSPACE}/packages
-          dotnet new bunit --no-restore -o ${runner.temp}/TemplateTest          
-          dotnet restore ${runner.temp}/TemplateTest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
-          dotnet test ${runner.temp}/TemplateTest
+          dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTest          
+          dotnet restore ${GITHUB_WORKSPACE}/TemplateTest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
+          dotnet test ${GITHUB_WORKSPACE}/TemplateTest
 
       # DocFx only works well on Windows currently
       - name: 📄 Build documentation
