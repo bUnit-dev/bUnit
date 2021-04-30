@@ -31,12 +31,24 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TestRenderer"/> class.
 		/// </summary>
-		public TestRenderer(IRenderedComponentActivator activator, TestServiceProvider services, ILoggerFactory loggerFactory)
+		public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
 			: base(services, loggerFactory)
 		{
 			logger = loggerFactory.CreateLogger<TestRenderer>();
-			this.activator = activator;
+			this.activator = renderedComponentActivator;
 		}
+
+#if NET5_0_OR_GREATER
+		/// <summary>
+		/// Initializes a new instance of the <see cref="TestRenderer"/> class.
+		/// </summary>
+		public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+			: base(services, loggerFactory, componentActivator)
+		{
+			logger = loggerFactory.CreateLogger<TestRenderer>();
+			this.activator = renderedComponentActivator;
+		}
+#endif
 
 		/// <inheritdoc/>
 		public IRenderedFragmentBase RenderFragment(RenderFragment renderFragment)
