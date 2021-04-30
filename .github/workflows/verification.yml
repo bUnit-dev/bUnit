@@ -72,9 +72,9 @@ jobs:
 
       - name: 🗳️ Pack library
         run: |          
-          dotnet pack -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:PublicRelease=true
-          dotnet pack src/bunit/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:PublicRelease=true
-          dotnet pack src/bunit.template/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:PublicRelease=true
+          dotnet pack -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit.template/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
 
       # Excluding windows because the restore step doesnt seem to work correct.
       - name: ✔ Verify template
