@@ -82,10 +82,9 @@ jobs:
         if: matrix.os != 'windows-latest'
         run: |
           dotnet new --install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${GITHUB_WORKSPACE}/packages
-          dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTest
-          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${GITHUB_WORKSPACE}/TemplateTest/Directory.Build.props
-          dotnet restore ${GITHUB_WORKSPACE}/TemplateTest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
-          dotnet test ${GITHUB_WORKSPACE}/TemplateTest
+          dotnet new bunit --no-restore -o ${runner.temp}/TemplateTest          
+          dotnet restore ${runner.temp}/TemplateTest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
+          dotnet test ${runner.temp}/TemplateTest
 
       # DocFx only works well on Windows currently
       - name: 📄 Build documentation
