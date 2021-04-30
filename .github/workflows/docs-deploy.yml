@@ -95,13 +95,15 @@ jobs:
           GH_PAT: ${{ secrets.BUNIT_BOT_TOKEN }}
 
       - name: ⏩ Merge stable with main, push origin
+        id: mergeMainline
+        continue-on-error: true      
         run: |
           git checkout main
           git merge -S stable
           git push origin main
 
       - name: ⏭ Create pull request from stable to main when direct merge fails
-        if: ${{ failure() }}
+        if: steps.mergeMainline.outcome == 'failure'
         uses: thomaseizinger/create-pull-request@1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.BUNIT_BOT_TOKEN }}
