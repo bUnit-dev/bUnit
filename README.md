@@ -1,5 +1,5 @@
-[![GitHub tag](https://img.shields.io/github/v/tag/bUnit-dev/bUnit?include_prereleases&logo=github&style=flat-square)](https://github.com/egil/bunit/releases)
-[![NuGet](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
+[![GitHub tag](https://img.shields.io/github/v/tag/bUnit-dev/bUnit?include_prereleases&logo=github&style=flat-square)](https://github.com/bUnit-dev/bUnit/releases)
+[![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
 [![Issues Open](https://img.shields.io/github/issues/bUnit-dev/bUnit.svg?style=flat-square&logo=github)](https://github.com/bUnit-dev/bUnit/issues)
 [![Gitter](https://img.shields.io/gitter/room/egil/bunit?logo=gitter&style=flat-square)](https://gitter.im/egil/bunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
