@@ -6,6 +6,7 @@ namespace Bunit.TestAssets.SampleComponents
 	public class Simple1 : ComponentBase
 	{
 		[Parameter] public string Header { get; set; } = string.Empty;
+
 		[Parameter] public string AttrValue { get; set; } = string.Empty;
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
