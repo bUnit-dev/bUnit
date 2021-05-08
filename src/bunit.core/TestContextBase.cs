@@ -1,5 +1,6 @@
 using System;
 using Bunit.Rendering;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
@@ -42,7 +43,17 @@ namespace Bunit
 		/// Use this to add default layout- or root-components which a component under test
 		/// should be rendered under.
 		/// </remarks>
-		public RootRenderTree RenderTree { get; } = new RootRenderTree();
+		public RootRenderTree RenderTree { get; } = new();
+
+#if NET5_0_OR_GREATER
+		/// <summary>
+		/// Gets the <see cref="ComponentFactoryCollection"/>. Factories added to it
+		/// will be used to create components during testing, starting with the last added
+		/// factory. If no factories in the collection can create a requested component,
+		/// then the default Blazor factory is used.
+		/// </summary>
+		public ComponentFactoryCollection ComponentFactories { get; } = new();
+#endif
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TestContextBase"/> class.
@@ -50,6 +61,9 @@ namespace Bunit
 		protected TestContextBase()
 		{
 			Services = new TestServiceProvider();
+#if NET5_0_OR_GREATER
+			Services.AddSingleton<IComponentActivator>(new BunitComponentActivator(ComponentFactories));
+#endif
 		}
 
 		/// <inheritdoc/>
