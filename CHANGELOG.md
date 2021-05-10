@@ -10,12 +10,16 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Added
 
--   All bUnit assemblies is now strong named signed.
--   Added .NET 6 (preview 3) as a target framework for bUnit, bUnit.core and bUnit.web.
+-  All bUnit assemblies is now strong named signed.
+-  Added .NET 6 (preview 3) as a target framework for bUnit, bUnit.core and bUnit.web.
 
 ### Changed
 
--   Changed bunit.template such that created projects only reference the bunit package. Bumped other referenced packages to latest version.
+-  Changed bunit.template such that created projects only reference the bUnit package. Bumped other referenced packages to latest version.
+
+### Fixed
+
+- Fixed issue where a registered fallback service provider was not made available to resolve service dependencies of components under test. Thanks to [@dady8889](https://github.com/dady8889) for the reporting the issue.
 
 ## [1.0.16]
 

@@ -31,7 +31,7 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TestRenderer"/> class.
 		/// </summary>
-		public TestRenderer(IRenderedComponentActivator activator, IServiceProvider services, ILoggerFactory loggerFactory)
+		public TestRenderer(IRenderedComponentActivator activator, TestServiceProvider services, ILoggerFactory loggerFactory)
 			: base(services, loggerFactory)
 		{
 			logger = loggerFactory.CreateLogger<TestRenderer>();

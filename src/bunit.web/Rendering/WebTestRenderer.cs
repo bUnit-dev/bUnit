@@ -19,7 +19,7 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WebTestRenderer"/> class.
 		/// </summary>
-		public WebTestRenderer(IRenderedComponentActivator activator, IServiceProvider services, ILoggerFactory loggerFactory)
+		public WebTestRenderer(IRenderedComponentActivator activator, TestServiceProvider services, ILoggerFactory loggerFactory)
 			: base(activator, services, loggerFactory)
 		{
 #if !NETSTANDARD2_1

@@ -83,7 +83,10 @@ namespace Bunit
 		private object? GetServiceInternal(Type serviceType)
 		{
 			if (serviceProvider is null)
+			{
+				serviceCollection.AddSingleton<TestServiceProvider>(this);
 				serviceProvider = serviceCollection.BuildServiceProvider();
+			}
 
 			var result = serviceProvider.GetService(serviceType);
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
@@ -23,6 +24,11 @@ namespace Bunit
 		private class AnotherFallbackServiceProvider : IServiceProvider
 		{
 			public object GetService(Type serviceType) => new AnotherDummyService();
+		}
+
+		private class DummyComponentWhichRequiresDummyService : ComponentBase
+		{
+			[Inject] public DummyService Service { get; set; }
 		}
 
 		[Fact(DisplayName = "Provider initialized without a service collection has zero services by default")]
@@ -188,6 +194,20 @@ namespace Bunit
 			var result = sut.GetService(typeof(object));
 
 			Assert.IsType<AnotherDummyService>(result);
+		}
+
+		[Fact(DisplayName = "Fallback service provider can be used to resolve services required by components")]
+		public void Test030()
+		{
+			// Arrange
+			using var ctx = new TestContext();
+			var fallbackServiceProvider = new ServiceCollection()
+				.AddSingleton(new DummyService())
+				.BuildServiceProvider();
+			ctx.Services.AddFallbackServiceProvider(fallbackServiceProvider);
+
+			// Act and assert
+			Should.NotThrow(() => ctx.RenderComponent<DummyComponentWhichRequiresDummyService>());
 		}
 	}
 }
