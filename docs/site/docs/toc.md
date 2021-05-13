@@ -6,6 +6,7 @@
 ## [Parameters and Cascading Values](xref:passing-parameters-to-components)
 ## [Inject services into components](xref:inject-services)
 ## [Controlling the root render tree](xref:root-render-tree)
+## [Controlling component instantiation](xref:controlling-component-instantiation)
 ## [Configure 3rd party libraries](xref:configure-3rd-party-libs)
 
 # [Interaction](xref:interaction)
