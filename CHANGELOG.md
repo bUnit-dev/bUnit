@@ -10,13 +10,13 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 List of added functionality in this release.
 
-- Added `ComponentFactories` property to the `TestContextBase` Type. The `ComponentFactories` property is a `ComponentFactoryCollection` type that contains `IComponentFactory` types. These are used by bUnits component activator, whenever a component is be created during testing. If no component factories is added to the collection, the standard component activator mechanism from Blazor is used. This feature makes it possible to control what components are created normally during a test, and which should be e.g. replaced by a test dummy. More info is available in issue [#388](https://github.com/bUnit-dev/bUnit/issues/388).
+- Added `ComponentFactories` property to the `TestContextBase` type. The `ComponentFactories` property is a `ComponentFactoryCollection` type that contains `IComponentFactory` types. These are used by bUnits component activator, whenever a component is created during testing. If no component factories is added to the collection, the standard component activator mechanism from Blazor is used. This feature makes it possible to control what components are created normally during a test, and which should be e.g. replaced by a test dummy. More info is available in issue [#388](https://github.com/bUnit-dev/bUnit/issues/388).
 
 ### Fixed
 
 List of fixes in this release.
 
-- Fixed issue where a registered fallback service provider was not made available to resolve service dependencies of components under test. Thanks to [@dady8889](https://github.com/dady8889) for the reporting the issue.
+- Fixed issue where a registered fall-back service provider was not made available to resolve service dependencies of components under test. Thanks to [@dady8889](https://github.com/dady8889) for the reporting the issue.
 
 ## [1.1.5] - 2021-04-30
 
@@ -27,7 +27,7 @@ List of fixes in this release.
 
 ### Changed
 
-- Changed bunit.template such that created projects only reference the bunit package. Bumped other referenced packages to latest version.
+- Changed bunit.template such that created projects only reference the bUnit package. Bumped other referenced packages to latest version.
 
 ## [1.0.16]
 
