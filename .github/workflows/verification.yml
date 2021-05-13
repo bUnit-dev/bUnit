@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest] # macos-latest removed due to env error
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -69,7 +69,7 @@ jobs:
           dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions
 
       - name: 🗳️ Pack library
-        run: |          
+        run: |
           dotnet pack -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
           dotnet pack src/bunit/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
           dotnet pack src/bunit.template/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
