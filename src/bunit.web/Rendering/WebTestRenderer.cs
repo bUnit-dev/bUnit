@@ -19,8 +19,8 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WebTestRenderer"/> class.
 		/// </summary>
-		public WebTestRenderer(IRenderedComponentActivator activator, TestServiceProvider services, ILoggerFactory loggerFactory)
-			: base(activator, services, loggerFactory)
+		public WebTestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
+			: base(renderedComponentActivator, services, loggerFactory)
 		{
 #if NET5_0_OR_GREATER
 			ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
@@ -31,8 +31,8 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WebTestRenderer"/> class.
 		/// </summary>
-		public WebTestRenderer(IRenderedComponentActivator activator, IServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
-			: base(activator, services, loggerFactory, componentActivator)
+		public WebTestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+			: base(renderedComponentActivator, services, loggerFactory, componentActivator)
 		{
 			ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
 		}
