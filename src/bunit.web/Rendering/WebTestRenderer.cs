@@ -1,10 +1,10 @@
 using System;
-#if !NETSTANDARD2_1
+#if NET5_0_OR_GREATER
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 #endif
 using Microsoft.Extensions.Logging;
-#if !NETSTANDARD2_1
+#if NET5_0_OR_GREATER
 using Microsoft.JSInterop;
 #endif
 

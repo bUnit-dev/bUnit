@@ -1,4 +1,4 @@
-#if !NETSTANDARD2_1
+#if NET5_0_OR_GREATER
 using System.Collections.Generic;
 using Bunit.JSInterop.InvocationHandlers.Implementation;
 using Microsoft.AspNetCore.Components;

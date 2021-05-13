@@ -24,7 +24,7 @@ namespace Bunit
 			if (jsInterop is null)
 				throw new ArgumentNullException(nameof(jsInterop));
 
-#if !NETSTANDARD2_1
+#if NET5_0_OR_GREATER
 			EnsureResultNotIJSObjectReference<TResult>();
 #endif
 
@@ -157,7 +157,7 @@ namespace Bunit
 				x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
 		}
 
-#if !NETSTANDARD2_1
+#if NET5_0_OR_GREATER
 		private static void EnsureResultNotIJSObjectReference<TResult>()
 		{
 			const string UseSetupModuleErrorMessage = "Use one of the SetupModule() methods instead to set up an invocation handler that returns an IJSObjectReference.";
