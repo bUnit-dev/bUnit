@@ -1,4 +1,5 @@
 using System;
+using Bunit.ComponentFactories;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 
@@ -57,5 +58,23 @@ namespace Bunit.Extensions
 
 			return testContext.Renderer.FindComponent<FragmentContainer>(resultBase);
 		}
+
+#if NET5_0_OR_GREATER
+		/// <summary>
+		/// Renders the first component(root component) in the<paramref name="renderFragment"/>,
+		/// and stubs out all other components, both child components as well as sibling components.
+		/// </summary>
+		/// <param name="testContext">Test context to use to render with.</param>
+		/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> to render.</param>
+		/// <returns>A <see cref="IRenderedFragmentBase"/>.</returns>
+		public static IRenderedFragmentBase ShallowRenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment)
+		{
+			if (testContext is null)
+				throw new ArgumentNullException(nameof(testContext));
+
+			testContext.ComponentFactories.Add(new ShallowRenderComponentFactory());
+			return RenderInsideRenderTree(testContext, renderFragment);
+		}
+#endif
 	}
 }
