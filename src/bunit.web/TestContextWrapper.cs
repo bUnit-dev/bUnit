@@ -81,6 +81,31 @@ namespace Bunit
 		public virtual IRenderedFragment Render(RenderFragment renderFragment)
 			=> TestContext?.Render(renderFragment) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 
+#if NET5_0_OR_GREATER
+		/// <summary>
+		/// Renders the first component (root component) in the <paramref name="renderFragment"/>,
+		/// and stubs out all other components, both child components as well as sibling components.
+		/// </summary>
+		/// <remarks>
+		/// Calling this method is equivalent to calling <c>ShallowRender(renderFragment).FindComponent&lt;TComponent&gt;()</c>.
+		/// </remarks>
+		/// <typeparam name="TComponent">The type of component to find in the render tree.</typeparam>
+		/// <param name="renderFragment">The render fragment to render.</param>
+		/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
+		public virtual IRenderedComponent<TComponent> ShallowRender<TComponent>(RenderFragment renderFragment)
+			where TComponent : IComponent
+			=> TestContext?.ShallowRender<TComponent>(renderFragment) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
+
+		/// <summary>
+		/// Renders the first component (root component) in the <paramref name="renderFragment"/>,
+		/// and stubs out all other components, both child components as well as sibling components.
+		/// </summary>
+		/// <param name="renderFragment">The render fragment to render.</param>
+		/// <returns>The <see cref="IRenderedFragment"/>.</returns>
+		public virtual IRenderedFragment ShallowRender(RenderFragment renderFragment)
+			=> TestContext?.ShallowRender(renderFragment) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
+#endif
+
 		/// <summary>
 		/// Dummy method required to allow Blazor's compiler to generate
 		/// C# from .razor files.

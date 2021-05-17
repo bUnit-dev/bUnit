@@ -1,24 +1,30 @@
+#if NET5_0_OR_GREATER
 using System;
 using Bunit.Rendering;
+using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit.ComponentFactories
 {
+	/// <summary>
+	/// Represents a component factory that will stub out
+	/// all components using the <see cref="Stub{TComponent}"/>,
+	/// except the first child component of the <see cref="ShallowRenderContainer"/>.
+	/// </summary>
 	internal class ShallowRenderComponentFactory : IComponentFactory
 	{
-		private static readonly Type FragmentContainerType = typeof(FragmentContainer);
-		private bool fragmentContainerSeen;
+		private static readonly Type ShallowRenderContainerType = typeof(ShallowRenderContainer);
+		private bool shallowRenderContainerSeen;
 		private bool hasCreatedComponentUnderTest;
+
+		public bool HasShallowRendered => hasCreatedComponentUnderTest;
 
 		public bool CanCreate(Type componentType)
 		{
-			if (fragmentContainerSeen)
+			if (shallowRenderContainerSeen)
 				return true;
 
-			if (componentType == FragmentContainerType)
-			{
-				fragmentContainerSeen = true;
-			}
+			shallowRenderContainerSeen = componentType == ShallowRenderContainerType;
 
 			return false;
 		}
@@ -27,7 +33,6 @@ namespace Bunit.ComponentFactories
 		{
 			if (hasCreatedComponentUnderTest)
 			{
-				// create the stub component
 				var stubType = typeof(Stub<>).MakeGenericType(componentType);
 				return (IComponent)Activator.CreateInstance(stubType)!;
 			}
@@ -37,3 +42,4 @@ namespace Bunit.ComponentFactories
 		}
 	}
 }
+#endif

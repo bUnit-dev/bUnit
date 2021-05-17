@@ -1,8 +1,11 @@
 #if NET5_0_OR_GREATER
 using System;
 using AutoFixture.Xunit2;
+using Bunit.ComponentFactories;
 using Bunit.TestAssets.SampleComponents;
+using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components;
+using Shouldly;
 using Xunit;
 
 namespace Bunit.Rendering
@@ -53,6 +56,47 @@ namespace Bunit.Rendering
 			var cut = ShallowRender(CreateRenderFragment<PrintCascadingValue>());
 
 			cut.MarkupMatches($"<p>{cascadingValue}</p>");
+		}
+
+		[Fact(DisplayName = "given shallow rendered component, " +
+							"when a child component is added during a later render, " +
+							"then child component is stubbed")]
+		public void Test005()
+		{
+			var cut = ShallowRender(CreateRenderFragment<ToggleChildComponent>())
+				.FindComponent<ToggleChildComponent>();
+
+			cut.SetParametersAndRender(ps => ps.Add(p => p.ShowChild, true));
+
+			cut.FindComponents<Simple1>().ShouldBeEmpty();
+			cut.FindComponents<Stub<Simple1>>().ShouldHaveSingleItem();
+		}
+
+		[Fact(DisplayName = "calling ShallowRender twice on same test context throws")]
+		public void Test100()
+		{
+			ShallowRender(CreateRenderFragment<Wrapper>());
+
+			Should.Throw<InvalidOperationException>(() => ShallowRender(CreateRenderFragment<Wrapper>()))
+				.Message.ShouldStartWith("The test context has previously been used to perform a shallow render");
+		}
+
+		[Fact(DisplayName = "calling Render after ShallowRender on same test context throws")]
+		public void Test101()
+		{
+			ShallowRender(CreateRenderFragment<Wrapper>());
+
+			Should.Throw<InvalidOperationException>(() => Render(CreateRenderFragment<Wrapper>()))
+				.Message.ShouldStartWith("The test context has previously been used to perform a shallow render");
+		}
+
+		[Fact(DisplayName = "calling RenderComponent after ShallowRender on same test context throws")]
+		public void Test102()
+		{
+			ShallowRender(CreateRenderFragment<Wrapper>());
+
+			Should.Throw<InvalidOperationException>(() => RenderComponent<Wrapper>())
+				.Message.ShouldStartWith("The test context has previously been used to perform a shallow render");
 		}
 
 		private static RenderFragment CreateRenderFragment<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
