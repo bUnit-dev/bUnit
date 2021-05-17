@@ -1,4 +1,5 @@
 using System;
+using Bunit.ComponentFactories;
 using Bunit.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -70,6 +71,17 @@ namespace Bunit
 		/// <returns>The <see cref="IRenderedFragment"/>.</returns>
 		public virtual IRenderedFragment Render(RenderFragment renderFragment)
 			=> (IRenderedFragment)this.RenderInsideRenderTree(renderFragment);
+
+#if NET5_0_OR_GREATER
+		/// <summary>
+		/// Renders the first component (root component) in the <paramref name="renderFragment"/>,
+		/// and stubs out all other components, both child components as well as sibling components.
+		/// </summary>
+		/// <param name="renderFragment">The render fragment to render.</param>
+		/// <returns>The <see cref="IRenderedFragment"/>.</returns>
+		public virtual IRenderedFragment ShallowRender(RenderFragment renderFragment)
+			=> (IRenderedFragment)this.ShallowRenderInsideRenderTree(renderFragment);
+#endif
 
 		/// <summary>
 		/// Dummy method required to allow Blazor's compiler to generate
