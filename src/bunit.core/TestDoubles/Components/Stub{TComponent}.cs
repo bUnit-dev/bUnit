@@ -15,6 +15,7 @@ namespace Bunit.TestDoubles
 	public sealed class Stub<TComponent> : IComponent
 		where TComponent : IComponent
 	{
+		private readonly bool renderParameters;
 		private RenderHandle renderHandle;
 
 		/// <summary>
@@ -24,6 +25,14 @@ namespace Bunit.TestDoubles
 		[Parameter(CaptureUnmatchedValues = true)]
 		public IReadOnlyDictionary<string, object> Parameters { get; private set; } = ImmutableDictionary<string, object>.Empty;
 
+		public Stub() : this(renderParameters: true)
+		{ }
+
+		public Stub(bool renderParameters)
+		{
+			this.renderParameters = renderParameters;
+		}
+
 		/// <inheritdoc/>
 		void IComponent.Attach(RenderHandle renderHandle) => this.renderHandle = renderHandle;
 
@@ -31,21 +40,28 @@ namespace Bunit.TestDoubles
 		Task IComponent.SetParametersAsync(ParameterView parameters)
 		{
 			Parameters = parameters.ToDictionary();
-			renderHandle.Render(BuildRenderTree);
+			if (renderParameters)
+				renderHandle.Render(RenderSubbedComponentWithParameters);
+			else
+				renderHandle.Render(RenderSubbedComponent);
 			return Task.CompletedTask;
 		}
 
-		private void BuildRenderTree(RenderTreeBuilder builder)
+		private void RenderSubbedComponent(RenderTreeBuilder builder)
 		{
 			var stubbedType = typeof(TComponent);
-			var name = stubbedType.Name;
-			if (stubbedType.IsGenericType)
-			{
-				name = name[..name.IndexOf('`', StringComparison.OrdinalIgnoreCase)];
-			}
+			var name = GetComponentName(stubbedType);
 
 			builder.OpenElement(0, name);
+			builder.CloseElement();
+		}
 
+		private void RenderSubbedComponentWithParameters(RenderTreeBuilder builder)
+		{
+			var stubbedType = typeof(TComponent);
+			var name = GetComponentName(stubbedType);
+
+			builder.OpenElement(0, name);
 			builder.AddMultipleAttributes(1, Parameters);
 
 			if (stubbedType.IsGenericType)
@@ -59,6 +75,17 @@ namespace Bunit.TestDoubles
 			}
 
 			builder.CloseElement();
+		}
+
+		private static string GetComponentName(Type stubbedType)
+		{
+			var name = stubbedType.Name;
+			if (stubbedType.IsGenericType)
+			{
+				name = name[..name.IndexOf('`', StringComparison.OrdinalIgnoreCase)];
+			}
+
+			return name;
 		}
 	}
 }

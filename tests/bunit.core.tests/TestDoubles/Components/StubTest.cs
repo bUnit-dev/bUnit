@@ -1,9 +1,4 @@
 #if NET5_0_OR_GREATER
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoFixture.Xunit2;
 using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
@@ -47,7 +42,6 @@ namespace Bunit.TestDoubles.Components
 
 			cut.MarkupMatches(@$"<Simple1 Header=""{header}"" AttrValue=""{attrValue}""></Simple1>");
 		}
-
 
 		[Fact(DisplayName = "Stub<TComponent<T>> renders element with name of TComponent and T set to name of type")]
 		public void Test004()
