@@ -10,7 +10,13 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 List of added functionality in this release.
 
-- Added `ComponentFactories` property to the `TestContextBase` type. The `ComponentFactories` property is a `ComponentFactoryCollection` type that contains `IComponentFactory` types. These are used by bUnits component activator, whenever a component is created during testing. If no component factories is added to the collection, the standard component activator mechanism from Blazor is used. This feature makes it possible to control what components are created normally during a test, and which should be e.g. replaced by a test dummy. More info is available in issue [#388](https://github.com/bUnit-dev/bUnit/issues/388).
+- Added `ComponentFactories` property to the `TestContextBase` type. The `ComponentFactories` property is a `ComponentFactoryCollection` type that contains `IComponentFactory` types. These are used by bUnits component activator, whenever a component is created during testing. If no component factories is added to the collection, the standard component activator mechanism from Blazor is used. This feature makes it possible to control what components are created normally during a test, and which should be e.g. replaced by a test dummy. More info is available in issue [#388](https://github.com/bUnit-dev/bUnit/issues/388).  
+
+  Learn more about this feature on the [Controlling component instantiation](https://bunit.dev/docs/providing-input/controlling-component-instantiation) page.
+
+- Added the ability to perform shallow rendering of a component under test. Shallow rendering will essentially only render the first component in the render tree, and then replace all other components, both child components and sibling components, with "stub components". This makes it possible to isolate a component under test from its child components to make it easier to create stable tests.  
+
+  Learn more about this feature on the [Shallow rendering](https://bunit.dev/docs/test-doubles/shallow-rendering.html) page.
 
 ### Fixed
 
