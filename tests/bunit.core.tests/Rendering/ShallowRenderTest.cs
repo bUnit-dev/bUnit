@@ -72,6 +72,56 @@ namespace Bunit.Rendering
 			cut.FindComponents<Stub<Simple1>>().ShouldHaveSingleItem();
 		}
 
+		[Theory(DisplayName = "ShallowRender does render cascading values components added as parameters")]
+		[AutoData]
+		public void Test006(string cascadingValue)
+		{
+			var renderFragment = CreateRenderFragment<CascadingValue<string>>(ps => ps
+				.Add(p => p.Value, cascadingValue)
+				.AddChildContent<PrintCascadingValue>());
+
+			var cut = ShallowRender<PrintCascadingValue>(renderFragment);
+
+			cut.MarkupMatches($"<p>{cascadingValue}</p>");
+		}
+
+		[Theory(DisplayName = "ShallowRenderComponent only renders first component in render fragment, stubs child component")]
+		[AutoData]
+		public void Test010(string text)
+		{
+			var cut = ShallowRenderComponent<WrapperDiv>(ps => ps
+				.AddChildContent<PrintCascadingValue>()
+				.AddChildContent($"<header>{text}</header>")
+				.AddChildContent<Simple1>());
+
+			cut.MarkupMatches(@$"<div class='wrapper'>
+								  <PrintCascadingValue></PrintCascadingValue>
+								  <header>{text}</header>
+							      <Simple1></Simple1>
+								</div>");
+		}
+
+		[Theory(DisplayName = "ShallowRenderComponent does render components added to RenderTree")]
+		[AutoData]
+		public void Test011(string cascadingValue)
+		{
+			RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, cascadingValue));
+
+			var cut = ShallowRenderComponent<PrintCascadingValue>();
+
+			cut.MarkupMatches($"<p>{cascadingValue}</p>");
+		}
+
+		[Theory(DisplayName = "ShallowRenderComponent does render cascading values components added as parameters")]
+		[AutoData]
+		public void Test012(string cascadingValue)
+		{
+			var cut = ShallowRenderComponent<PrintCascadingValue>(ps => ps
+				.Add(p => p.Value, cascadingValue));
+
+			cut.MarkupMatches($"<p>{cascadingValue}</p>");
+		}
+
 		[Fact(DisplayName = "calling ShallowRender twice on same test context throws")]
 		public void Test100()
 		{

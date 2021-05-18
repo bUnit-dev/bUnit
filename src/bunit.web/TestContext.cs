@@ -78,11 +78,54 @@ namespace Bunit
 
 #if NET5_0_OR_GREATER
 		/// <summary>
+		/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>,
+		/// and stubs out all child components.
+		/// </summary>
+		/// <remarks>
+		/// If you pass child components to <typeparamref name="TComponent"/> through parameters,
+		/// these will be stubbed out as well.
+		/// </remarks>
+		/// <typeparam name="TComponent">Type of the component to render.</typeparam>
+		/// <param name="parameters">Parameters to pass to the component when it is rendered.</param>
+		/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
+		public virtual IRenderedComponent<TComponent> ShallowRenderComponent<TComponent>(params ComponentParameter[] parameters)
+			where TComponent : IComponent
+		{
+			var renderFragment = new ComponentParameterCollection { parameters }
+				.ToRenderFragment<TComponent>();
+
+			return ShallowRender<TComponent>(renderFragment);
+		}
+
+		/// <summary>
+		/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>,
+		/// and stubs out all child components.
+		/// </summary>
+		/// <remarks>
+		/// If you pass child components to <typeparamref name="TComponent"/> through parameters,
+		/// these will be stubbed out as well.
+		/// </remarks>
+		/// <typeparam name="TComponent">Type of the component to render.</typeparam>
+		/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters
+		/// to pass to the component when it is rendered.</param>
+		/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
+		public virtual IRenderedComponent<TComponent> ShallowRenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
+			where TComponent : IComponent
+		{
+			var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder)
+				.Build()
+				.ToRenderFragment<TComponent>();
+
+			return ShallowRender<TComponent>(renderFragment);
+		}
+
+		/// <summary>
 		/// Renders the first component (root component) in the <paramref name="renderFragment"/>,
 		/// and stubs out all other components, both child components as well as sibling components.
 		/// </summary>
 		/// <remarks>
-		/// Calling this method is equivalent to calling <c>ShallowRender(renderFragment).FindComponent&lt;TComponent&gt;()</c>.
+		/// The first component in the <paramref name="renderFragment"/> must be of type <typeparamref name="TComponent"/>
+		/// to use this method, since it is equivalent to calling <c>ShallowRender(renderFragment).FindComponent&lt;TComponent&gt;()</c>.
 		/// </remarks>
 		/// <typeparam name="TComponent">The type of component to find in the render tree.</typeparam>
 		/// <param name="renderFragment">The render fragment to render.</param>

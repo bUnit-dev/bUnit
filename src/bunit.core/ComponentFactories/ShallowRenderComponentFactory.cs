@@ -21,6 +21,9 @@ namespace Bunit.ComponentFactories
 
 		public bool CanCreate(Type componentType)
 		{
+			if (componentType.IsGenericType && componentType.GetGenericTypeDefinition() == typeof(CascadingValue<>))
+				return false;
+
 			if (shallowRenderContainerSeen)
 				return true;
 
