@@ -24,6 +24,7 @@
 ## [Emulating Blazor's IJSRuntime](xref:emulating-ijsruntime)
 ## [Faking authorization](xref:faking-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
+## [Shallow rendering](xref:shallow-rendering)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External resources](xref:external-resources)
