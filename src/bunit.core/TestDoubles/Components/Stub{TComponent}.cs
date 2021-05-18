@@ -1,4 +1,5 @@
 #if NET5_0_OR_GREATER
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
@@ -36,7 +37,28 @@ namespace Bunit.TestDoubles
 
 		private void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			builder?.AddMarkupContent(0, $"<{typeof(TComponent).Name}></{typeof(TComponent).Name}>");
+			var stubbedType = typeof(TComponent);
+			var name = stubbedType.Name;
+			if (stubbedType.IsGenericType)
+			{
+				name = name[..name.IndexOf('`', StringComparison.OrdinalIgnoreCase)];
+			}
+
+			builder.OpenElement(0, name);
+
+			builder.AddMultipleAttributes(1, Parameters);
+
+			if (stubbedType.IsGenericType)
+			{
+				var genericTypeValue = stubbedType.GetGenericArguments();
+				var genericArgs = stubbedType.GetGenericTypeDefinition().GetGenericArguments();
+				for (int i = 0; i < genericArgs.Length; i++)
+				{
+					builder.AddAttribute(2, genericArgs[i].Name, genericTypeValue[i].Name);
+				}
+			}
+
+			builder.CloseElement();
 		}
 	}
 }
