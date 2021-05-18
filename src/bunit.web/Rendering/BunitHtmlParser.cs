@@ -48,12 +48,11 @@ namespace Bunit.Rendering
 		{
 			var config = angleSharpConfiguration.With(this);
 			context = BrowsingContext.New(config);
-			htmlParser = new HtmlParser(
-				new HtmlParserOptions
-				{
-					IsKeepingSourceReferences = true,
-				},
-				context);
+			var parseOptions = new HtmlParserOptions
+			{
+				IsKeepingSourceReferences = true,
+			};
+			htmlParser = new HtmlParser(parseOptions, context);
 		}
 
 		/// <summary>
