@@ -40,10 +40,7 @@ namespace Bunit.TestDoubles
 		Task IComponent.SetParametersAsync(ParameterView parameters)
 		{
 			Parameters = parameters.ToDictionary();
-			if (renderParameters)
-				renderHandle.Render(RenderSubbedComponentWithParameters);
-			else
-				renderHandle.Render(RenderSubbedComponent);
+			renderHandle.Render(RenderSubbedComponent);
 			return Task.CompletedTask;
 		}
 
@@ -53,16 +50,19 @@ namespace Bunit.TestDoubles
 			var name = GetComponentName(stubbedType);
 
 			builder.OpenElement(0, name);
+			builder.AddAttribute(1, "diff:ignore");
+
+			if (renderParameters)
+			{
+				RenderParameters(builder, stubbedType);
+			}
+
 			builder.CloseElement();
 		}
 
-		private void RenderSubbedComponentWithParameters(RenderTreeBuilder builder)
+		private void RenderParameters(RenderTreeBuilder builder, Type stubbedType)
 		{
-			var stubbedType = typeof(TComponent);
-			var name = GetComponentName(stubbedType);
-
-			builder.OpenElement(0, name);
-			builder.AddMultipleAttributes(1, Parameters);
+			builder.AddMultipleAttributes(2, Parameters);
 
 			if (stubbedType.IsGenericType)
 			{
@@ -70,11 +70,9 @@ namespace Bunit.TestDoubles
 				var genericArgs = stubbedType.GetGenericTypeDefinition().GetGenericArguments();
 				for (int i = 0; i < genericArgs.Length; i++)
 				{
-					builder.AddAttribute(2, genericArgs[i].Name, genericTypeValue[i].Name);
+					builder.AddAttribute(3, genericArgs[i].Name, genericTypeValue[i].Name);
 				}
 			}
-
-			builder.CloseElement();
 		}
 
 		private static string GetComponentName(Type stubbedType)

@@ -9,12 +9,21 @@ namespace Bunit.TestDoubles.Components
 {
 	public class StubTest : TestContext
 	{
+		[Fact(DisplayName = "Stub<TComponent> renders element with diff:ignore attribute")]
+		public void Test000()
+		{
+			var cut = RenderComponent<Stub<Simple1>>();
+
+			cut.Find("Simple1")
+				.HasAttribute("diff:ignore")
+				.ShouldBeTrue();
+		}
 		[Fact(DisplayName = "Stub<TComponent> renders element with name of TComponent")]
 		public void Test001()
 		{
 			var cut = RenderComponent<Stub<Simple1>>();
 
-			cut.MarkupMatches("<Simple1></Simple1>");
+			Should.NotThrow(() => cut.Find("Simple1"));
 		}
 
 		[Theory(DisplayName = "Stub<TComponent> captures parameters passed to TComponent")]
@@ -40,7 +49,10 @@ namespace Bunit.TestDoubles.Components
 				(nameof(Simple1.Header), header),
 				(nameof(Simple1.AttrValue), attrValue));
 
-			cut.MarkupMatches(@$"<Simple1 Header=""{header}"" AttrValue=""{attrValue}""></Simple1>");
+			var simple1 = cut.Find("Simple1");
+
+			simple1.Attributes["header"].Value.ShouldBe(header);
+			simple1.Attributes["attrvalue"].Value.ShouldBe(attrValue);
 		}
 
 		[Fact(DisplayName = "Stub<TComponent<T>> renders element with name of TComponent and T set to name of type")]
@@ -48,7 +60,7 @@ namespace Bunit.TestDoubles.Components
 		{
 			var cut = RenderComponent<Stub<CascadingValue<string>>>();
 
-			cut.MarkupMatches(@"<CascadingValue TValue=""String""></CascadingValue>");
+			cut.Find("CascadingValue").Attributes["tvalue"].Value.ShouldBe(typeof(string).Name);
 		}
 	}
 }
