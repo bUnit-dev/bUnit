@@ -1,9 +1,10 @@
 #if NET5_0_OR_GREATER
 using System;
+using Bunit.ComponentFactories;
 using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit.ComponentFactories
+namespace Bunit
 {
 	/// <summary>
 	/// Extension methods for using component doubles.
