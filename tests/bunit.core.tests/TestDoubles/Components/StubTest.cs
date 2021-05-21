@@ -10,14 +10,6 @@ namespace Bunit.TestDoubles.Components
 {
 	public class StubTest : TestContext
 	{
-		class StubComponentFactory<TComponent> : IComponentFactory where TComponent : IComponent
-		{
-			private readonly Stub<TComponent> stub;
-			public StubComponentFactory(Stub<TComponent> stub) => this.stub = stub;
-			public bool CanCreate(Type componentType) => componentType == stub.GetType();
-			public IComponent Create(Type componentType) => stub;
-		}
-
 		[Fact(DisplayName = "Stub<TComponent> renders element with diff:ignore attribute with default options")]
 		public void Test000()
 		{
@@ -99,6 +91,14 @@ namespace Bunit.TestDoubles.Components
 			var cut = RenderComponent<Stub<CascadingValue<string>>>();
 
 			cut.Find("CascadingValue").Attributes["tvalue"].Value.ShouldBe(typeof(string).Name);
+		}
+
+		private class StubComponentFactory<TComponent> : IComponentFactory where TComponent : IComponent
+		{
+			private readonly Stub<TComponent> stub;
+			public StubComponentFactory(Stub<TComponent> stub) => this.stub = stub;
+			public bool CanCreate(Type componentType) => componentType == stub.GetType();
+			public IComponent Create(Type componentType) => stub;
 		}
 	}
 }
