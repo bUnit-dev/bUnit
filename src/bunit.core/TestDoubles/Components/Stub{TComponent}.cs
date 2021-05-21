@@ -15,6 +15,7 @@ namespace Bunit.TestDoubles
 	public sealed class Stub<TComponent> : IComponent
 		where TComponent : IComponent
 	{
+		private readonly Type stubbedType = typeof(TComponent);
 		private RenderHandle renderHandle;
 
 		/// <summary>
@@ -45,6 +46,9 @@ namespace Bunit.TestDoubles
 		}
 
 		/// <inheritdoc/>
+		public override string ToString() => $"Dummy<{stubbedType.Name}>";
+
+		/// <inheritdoc/>
 		void IComponent.Attach(RenderHandle renderHandle) => this.renderHandle = renderHandle;
 
 		/// <inheritdoc/>
@@ -57,7 +61,6 @@ namespace Bunit.TestDoubles
 
 		private void RenderSubbedComponent(RenderTreeBuilder builder)
 		{
-			var stubbedType = typeof(TComponent);
 			var name = GetComponentName(stubbedType);
 
 			builder.OpenElement(0, name);

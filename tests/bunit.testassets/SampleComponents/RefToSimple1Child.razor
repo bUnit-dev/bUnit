@@ -1,0 +1,14 @@
+<Simple1 @ref=simple1></Simple1>
+<div id="ref-status">Has ref = @(simple1 is not null)</div>
+@code
+{
+	Simple1? simple1;
+
+	protected override void OnAfterRender(bool firstRender)
+	{
+		if(firstRender && simple1 is not null)
+		{
+			StateHasChanged();
+		}
+	}
+}
