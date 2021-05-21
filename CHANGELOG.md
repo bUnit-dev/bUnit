@@ -18,6 +18,8 @@ List of added functionality in this release.
 
   Learn more about this feature on the [Shallow rendering](https://bunit.dev/docs/test-doubles/shallow-rendering.html) page.
 
+- Added `HasComponent<TComponent>()` to `IRenderedFragement`. Use it to check if the rendered fragment contains a component of type `TComponent`.
+
 ### Fixed
 
 List of fixes in this release.

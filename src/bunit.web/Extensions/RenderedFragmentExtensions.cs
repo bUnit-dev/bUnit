@@ -84,5 +84,15 @@ namespace Bunit
 
 			return components.OfType<IRenderedComponent<TComponent>>().ToArray();
 		}
+
+		/// <summary>
+		/// Checks whether the render tree the <paramref name="renderedFragment"/> is the root of
+		/// contains a component of type <typeparamref name="TComponent"/>.
+		/// </summary>
+		/// <typeparam name="TComponent">The type of component to look for in the render tree.</typeparam>
+		/// <param name="renderedFragment">The render tree to search.</param>
+		/// <returns>True if the <paramref name="renderedFragment"/> contains the <typeparamref name="TComponent"/>; otherwise false.</returns>
+		public static bool HasComponent<TComponent>(this IRenderedFragment renderedFragment)
+			where TComponent : IComponent => FindComponents<TComponent>(renderedFragment).Count > 0;
 	}
 }
