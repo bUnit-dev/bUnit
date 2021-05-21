@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components.Rendering;
 namespace Bunit.TestDoubles
 {
 	/// <summary>
-	/// Represents a stub of a component of type <typeparamref name="TComponent"/>.
+	/// Represents a test double stub of a component of type <typeparamref name="TComponent"/>.
 	/// </summary>
 	/// <typeparam name="TComponent">The stub type.</typeparam>
 	public sealed class Stub<TComponent> : IComponent
