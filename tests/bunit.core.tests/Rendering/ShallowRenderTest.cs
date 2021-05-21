@@ -21,7 +21,7 @@ namespace Bunit.Rendering
 				.AddChildContent($"<header>{text}</header>")
 				.AddChildContent<Simple1>());
 
-			var cut = ShallowRender(renderFragment);
+			var cut = ShallowRender(renderFragment, new() { AddDiffIgnore = false });			
 
 			cut.MarkupMatches(@$"<div class='wrapper'>
 								  <PrintCascadingValue></PrintCascadingValue>
@@ -41,7 +41,7 @@ namespace Bunit.Rendering
 				builder.CloseComponent();
 			};
 
-			var cut = ShallowRender(renderFragment);
+			var cut = ShallowRender(renderFragment, new() { AddDiffIgnore = false });
 
 			cut.MarkupMatches($"<div class='wrapper'></div>" +
 							  $"<Wrapper />");
@@ -92,7 +92,7 @@ namespace Bunit.Rendering
 			var cut = ShallowRenderComponent<WrapperDiv>(ps => ps
 				.AddChildContent<PrintCascadingValue>()
 				.AddChildContent($"<header>{text}</header>")
-				.AddChildContent<Simple1>());
+				.AddChildContent<Simple1>(), new() { AddDiffIgnore = false });
 
 			cut.MarkupMatches(@$"<div class='wrapper'>
 								  <PrintCascadingValue></PrintCascadingValue>

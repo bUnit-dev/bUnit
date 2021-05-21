@@ -1,5 +1,6 @@
 using System;
 using Bunit.Rendering;
+using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -108,10 +109,11 @@ namespace Bunit
 		/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 		/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters
 		/// to pass to the component when it is rendered.</param>
+		/// <param name="options">Render options for the <see cref="Stub{TComponent}"/> components.</param>
 		/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-		public virtual IRenderedComponent<TComponent> ShallowRenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
+		public virtual IRenderedComponent<TComponent> ShallowRenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder, StubOptions? options = null)
 			where TComponent : IComponent
-			=> TestContext?.ShallowRenderComponent<TComponent>(parameterBuilder) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
+			=> TestContext?.ShallowRenderComponent<TComponent>(parameterBuilder, options) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 
 		/// <summary>
 		/// Renders the first component (root component) in the <paramref name="renderFragment"/>,
@@ -122,19 +124,21 @@ namespace Bunit
 		/// </remarks>
 		/// <typeparam name="TComponent">The type of component to find in the render tree.</typeparam>
 		/// <param name="renderFragment">The render fragment to render.</param>
+		/// <param name="options">Render options for the <see cref="Stub{TComponent}"/> components.</param>
 		/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
-		public virtual IRenderedComponent<TComponent> ShallowRender<TComponent>(RenderFragment renderFragment)
+		public virtual IRenderedComponent<TComponent> ShallowRender<TComponent>(RenderFragment renderFragment, StubOptions? options = null)
 			where TComponent : IComponent
-			=> TestContext?.ShallowRender<TComponent>(renderFragment) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
+			=> TestContext?.ShallowRender<TComponent>(renderFragment, options) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 
 		/// <summary>
 		/// Renders the first component (root component) in the <paramref name="renderFragment"/>,
 		/// and stubs out all other components, both child components as well as sibling components.
 		/// </summary>
 		/// <param name="renderFragment">The render fragment to render.</param>
+		/// <param name="options">Render options for the <see cref="Stub{TComponent}"/> components.</param>
 		/// <returns>The <see cref="IRenderedFragment"/>.</returns>
-		public virtual IRenderedFragment ShallowRender(RenderFragment renderFragment)
-			=> TestContext?.ShallowRender(renderFragment) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
+		public virtual IRenderedFragment ShallowRender(RenderFragment renderFragment, StubOptions? options = null)
+			=> TestContext?.ShallowRender(renderFragment, options) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 #endif
 
 		/// <summary>

@@ -60,8 +60,9 @@ namespace Bunit.Extensions
 		/// <typeparam name="TComponent">The type of component to render.</typeparam>
 		/// <param name="testContext">Test context to use to render with.</param>
 		/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> that contains a declaration of the component.</param>
+		/// <param name="options">Render options for the <see cref="TestDoubles.Stub{TComponent}"/> components.</param>
 		/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/>.</returns>
-		public static IRenderedComponentBase<TComponent> ShallowRenderInsideRenderTree<TComponent>(this TestContextBase testContext, RenderFragment renderFragment)
+		public static IRenderedComponentBase<TComponent> ShallowRenderInsideRenderTree<TComponent>(this TestContextBase testContext, RenderFragment renderFragment, TestDoubles.StubOptions? options = null)
 			where TComponent : IComponent
 		{
 			if (testContext is null)
@@ -77,13 +78,14 @@ namespace Bunit.Extensions
 		/// </summary>
 		/// <param name="testContext">Test context to use to render with.</param>
 		/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> to render.</param>
+		/// <param name="options">Render options for the <see cref="TestDoubles.Stub{TComponent}"/> components.</param>
 		/// <returns>A <see cref="IRenderedFragmentBase"/>.</returns>
-		public static IRenderedFragmentBase ShallowRenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment)
+		public static IRenderedFragmentBase ShallowRenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment, TestDoubles.StubOptions? options = null)
 		{
 			if (testContext is null)
 				throw new ArgumentNullException(nameof(testContext));
 
-			testContext.ComponentFactories.Add(new ComponentFactories.ShallowRenderComponentFactory());
+			testContext.ComponentFactories.Add(new ComponentFactories.ShallowRenderComponentFactory(options));
 			var wrappedInShallowRenderContainer = ShallowRenderContainer.Wrap(renderFragment);
 			return RenderInsideRenderTree(testContext, wrappedInShallowRenderContainer);
 		}

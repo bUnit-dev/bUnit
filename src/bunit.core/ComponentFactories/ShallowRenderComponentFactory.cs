@@ -14,9 +14,14 @@ namespace Bunit.ComponentFactories
 	internal sealed class ShallowRenderComponentFactory : IComponentFactory
 	{
 		private static readonly Type ShallowRenderContainerType = typeof(ShallowRenderContainer);
-		private static readonly StubOptions DefaultStubOptions = StubOptions.Default;
+		private readonly StubOptions stubOptions;
 		private bool shallowRenderContainerSeen;
 		private bool hasCreatedComponentUnderTest;
+
+		public ShallowRenderComponentFactory(StubOptions? options)
+		{
+            stubOptions = options ?? StubOptions.Default;
+        }
 
 		public bool HasShallowRendered => hasCreatedComponentUnderTest;
 
@@ -37,7 +42,7 @@ namespace Bunit.ComponentFactories
 		{
 			if (hasCreatedComponentUnderTest)
 			{
-				return ComponentDoubleFactory.CreateStub(componentType, DefaultStubOptions);
+				return ComponentDoubleFactory.CreateStub(componentType, stubOptions);
 			}
 
 			hasCreatedComponentUnderTest = true;
