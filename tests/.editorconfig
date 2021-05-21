@@ -31,12 +31,6 @@ dotnet_diagnostic.CA2007.severity = none            # https://github.com/atc-net
 # https://security-code-scan.github.io/
 
 
-# StyleCop
-# https://github.com/DotNetAnalyzers/StyleCopAnalyzers
-dotnet_diagnostic.SA1122.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1122.md
-dotnet_diagnostic.SA1133.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1133.md
-
-
 # SonarAnalyzer.CSharp
 # https://rules.sonarsource.com/csharp
 

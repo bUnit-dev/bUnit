@@ -420,27 +420,6 @@ dotnet_diagnostic.CA1707.severity = error           # https://github.com/atc-net
 dotnet_diagnostic.CA2007.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA2007.md
 
 
-# SecurityCodeScan
-# https://security-code-scan.github.io/
-
-
-# StyleCop
-# https://github.com/DotNetAnalyzers/StyleCopAnalyzers
-dotnet_diagnostic.SA1009.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1009.md
-dotnet_diagnostic.SA1101.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1101.md
-dotnet_diagnostic.SA1122.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1122.md
-dotnet_diagnostic.SA1133.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1133.md
-dotnet_diagnostic.SA1200.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1200.md
-dotnet_diagnostic.SA1201.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1201.md
-dotnet_diagnostic.SA1204.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1204.md
-dotnet_diagnostic.SA1413.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1413.md
-dotnet_diagnostic.SA1600.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1600.md
-dotnet_diagnostic.SA1602.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1602.md
-dotnet_diagnostic.SA1604.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1604.md
-dotnet_diagnostic.SA1623.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1623.md
-dotnet_diagnostic.SA1633.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1633.md
-
-
 # SonarAnalyzer.CSharp
 # https://rules.sonarsource.com/csharp
 dotnet_diagnostic.S1135.severity = suggestion       # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/SonarAnalyzerCSharp/S1135.md
@@ -466,31 +445,6 @@ dotnet_diagnostic.CA1014.severity = none # CA1014: Mark assemblies with CLSCompl
 dotnet_diagnostic.CA1031.severity = suggestion # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA1032.severity = none # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA2201.severity = suggestion # CA2201: Do not raise reserved exception types
-
-# StyleCop
-# https://github.com/DotNetAnalyzers/StyleCopAnalyzers
-dotnet_diagnostic.SA1000.severity = none # BUGGY with C#9 code
-dotnet_diagnostic.SA1005.severity = none # SA1005: Single line comments should begin with single space
-dotnet_diagnostic.SA1011.severity = none # BUGGY with C#9 code
-
-dotnet_diagnostic.SA1107.severity = suggestion # SA1107: Code should not contain multiple statements on one line
-dotnet_diagnostic.SA1127.severity = suggestion # SA1127: Generic type constraints should be on their own line
-dotnet_diagnostic.SA1128.severity = suggestion # SA1128: Put constructor initializers on their own line
-dotnet_diagnostic.SA1133.severity = none # SA1133: Do not combine attributes
-dotnet_diagnostic.SA1134.severity = none # SA1134: Attributes should not share line
-dotnet_diagnostic.SA1202.severity = none # SA1202: Elements should be ordered by access
-dotnet_diagnostic.SA1204.severity = none # SA1204: Static elements should appear before instance elements
-dotnet_diagnostic.SA1201.severity = none # SA1201: Elements should appear in the correct order
-dotnet_diagnostic.SA1404.severity = none # SA1404: Code analysis suppression should have justification
-dotnet_diagnostic.SA1502.severity = none # SA1502: Element should not be on a single line
-dotnet_diagnostic.SA1503.severity = none # SA1503: Braces should not be omitted
-dotnet_diagnostic.SA1512.severity = none # SA1512: Single-line comments should not be followed by blank line
-dotnet_diagnostic.SA1611.severity = silent # SA1611: Element parameters should be documented
-dotnet_diagnostic.SA1515.severity = none # SA1515: Single-line comment should be preceded by blank line
-dotnet_diagnostic.SA1516.severity = none # SA1516: Elements should be separated by blank line
-dotnet_diagnostic.SA1615.severity = silent # SA1615: Element return value should be documented
-dotnet_diagnostic.SA1618.severity = silent # SA1618: Generic type parameters should be documented
-dotnet_diagnostic.SA1629.severity = suggestion # SA1629: Documentation text should end with a period
 
 # SonarAnalyzer.CSharp
 # https://rules.sonarsource.com/csharp
@@ -540,14 +494,6 @@ dotnet_diagnostic.CA2007.severity = none # CA2007: Consider calling ConfigureAwa
 dotnet_diagnostic.CA1031.severity = none # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA2012.severity = none # CA2012: Use ValueTasks correctly
 dotnet_diagnostic.CA2201.severity = none # CA2201: Do not raise reserved exception types
-
-# StyleCop
-# https://github.com/DotNetAnalyzers/StyleCopAnalyzers
-dotnet_diagnostic.SA0001.severity = none # SA0001: Xml Comment Analysis Disabled
-dotnet_diagnostic.SA1107.severity = none # SA1107: Code should not contain multiple statements on one line
-dotnet_diagnostic.SA1402.severity = none # SA1402: File may only contain a single type
-dotnet_diagnostic.SA1601.severity = none # SA1601: Partial elements should be documented
-dotnet_diagnostic.SA1649.severity = none # SA1649: File name should match first type name
 
 # SonarAnalyzer.CSharp
 # https://rules.sonarsource.com/csharp
