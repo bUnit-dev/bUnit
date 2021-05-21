@@ -12,7 +12,7 @@ namespace Bunit.ComponentFactories
 	{
 		[Fact(DisplayName = "UseStubFor throws if factories is null")]
 		public void Test100()
-			=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionStubExtensions.UseStubFor(null, null));
+			=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionExtensions.UseStubFor(null, null));
 
 		[Fact(DisplayName = "UseStubFor throws if predicate is null")]
 		public void Test101()

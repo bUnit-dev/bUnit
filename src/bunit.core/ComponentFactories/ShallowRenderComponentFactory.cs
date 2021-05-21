@@ -2,7 +2,6 @@
 using System;
 using Bunit.Rendering;
 using Bunit.TestDoubles;
-using Bunit.TestDoubles.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit.ComponentFactories

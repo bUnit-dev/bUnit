@@ -5,22 +5,18 @@ using Microsoft.AspNetCore.Components;
 
 namespace Bunit.ComponentFactories
 {
-	internal sealed class StubComponentFactory : IComponentFactory
+	internal sealed class DummyComponentFactory : IComponentFactory
 	{
 		private readonly Predicate<Type> componentTypePredicate;
-		private readonly StubOptions options;
 
-		public StubComponentFactory(Predicate<Type> componentTypePredicate, StubOptions options)
-		{
-			this.componentTypePredicate = componentTypePredicate;
-			this.options = options;
-		}
+		public DummyComponentFactory(Predicate<Type> componentTypePredicate)
+			=> this.componentTypePredicate = componentTypePredicate;
 
 		public bool CanCreate(Type componentType)
 			=> componentTypePredicate.Invoke(componentType);
 
 		public IComponent Create(Type componentType)
-			=> ComponentDoubleFactory.CreateStub(componentType, options);
+			=> ComponentDoubleFactory.CreateDummy(componentType);
 	}
 }
 #endif
