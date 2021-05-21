@@ -20,6 +20,8 @@ List of added functionality in this release.
 
 - Added `HasComponent<TComponent>()` to `IRenderedFragement`. Use it to check if the rendered fragment contains a component of type `TComponent`.
 
+- Added `UseStubFor` and `UseDummyFor` extension methods to `ComponentFactories` that makes it easy to configure bUnit to replace components in the render tree with stubs and dummies (aka. test doubles). Both methods have overloads that allow for fine grained selection of component types to "double" during testing. Added by @Egil in [#400](https://github.com/bUnit-dev/bUnit/pull/400).
+
 ### Fixed
 
 List of fixes in this release.
