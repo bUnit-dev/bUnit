@@ -15,7 +15,6 @@ namespace Bunit.TestDoubles
 	public sealed class Stub<TComponent> : IComponent
 		where TComponent : IComponent
 	{
-		private readonly bool renderParameters;
 		private RenderHandle renderHandle;
 
 		/// <summary>
@@ -25,12 +24,24 @@ namespace Bunit.TestDoubles
 		[Parameter(CaptureUnmatchedValues = true)]
 		public IReadOnlyDictionary<string, object> Parameters { get; private set; } = ImmutableDictionary<string, object>.Empty;
 
-		public Stub() : this(renderParameters: true)
+		/// <summary>
+		/// Gets the render options for this <see cref="Stub{TComponent}"/>.
+		/// </summary>
+		public StubOptions Options { get; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Stub{TComponent}"/> class.
+		/// </summary>
+		public Stub() : this(StubOptions.Default)
 		{ }
 
-		public Stub(bool renderParameters)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Stub{TComponent}"/> class.
+		/// </summary>
+		/// <param name="options">Render options for this <see cref="Stub{TComponent}"/>.</param>
+		public Stub(StubOptions options)
 		{
-			this.renderParameters = renderParameters;
+			Options = options;
 		}
 
 		/// <inheritdoc/>
@@ -50,12 +61,11 @@ namespace Bunit.TestDoubles
 			var name = GetComponentName(stubbedType);
 
 			builder.OpenElement(0, name);
-			builder.AddAttribute(1, "diff:ignore");
 
-			if (renderParameters)
-			{
+			if (Options.AddDiffIgnore)
+				builder.AddAttribute(1, "diff:ignore");
+			if (Options.AddParameters)
 				RenderParameters(builder, stubbedType);
-			}
 
 			builder.CloseElement();
 		}

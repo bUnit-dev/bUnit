@@ -1,10 +1,5 @@
 #if NET5_0_OR_GREATER
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components;
 
@@ -14,18 +9,18 @@ namespace Bunit.ComponentFactories
 		where TComponent : IComponent
 	{
 		private readonly Type componentTypeToStub = typeof(TComponent);
-		private readonly bool renderParameters;
+		private readonly StubOptions stubOptions;
 
-		public StubComponentFactory(bool renderParameters)
+		public StubComponentFactory(StubOptions stubOptions)
 		{
-			this.renderParameters = renderParameters;
+			this.stubOptions = stubOptions;
 		}
 
 		public bool CanCreate(Type componentType)
 			=> componentType == componentTypeToStub;
 
 		public IComponent Create(Type componentType)
-			=> new Stub<TComponent>(renderParameters);
+			=> new Stub<TComponent>(stubOptions);
 	}
 }
 #endif

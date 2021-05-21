@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoFixture.Xunit2;
 using Bunit.TestAssets.SampleComponents;
+using Shouldly;
 using Xunit;
 
 namespace Bunit.ComponentFactories
@@ -16,13 +17,13 @@ namespace Bunit.ComponentFactories
 		[AutoData]
 		public void Test005(string header)
 		{
-			ComponentFactories.UseStubFor<Simple1>(renderParameters: false);
+			ComponentFactories.UseStubFor<Simple1>(new() { AddParameters = false });
 
 			var cut = RenderComponent<Wrapper>(ps => ps
 				.AddChildContent<Simple1>(cps => cps
 					.Add(p => p.Header, header)));
 
-			cut.MarkupMatches(@$"<Simple1></Simple1>");
+			cut.Find("Simple1").HasAttribute("header").ShouldBeFalse();
 		}
 	}
 }
