@@ -7,7 +7,7 @@ title: Controlling component instantiation
 
 Components are, by default in bUnit, instantiated in the exact same way the regular Blazor runtime does it. For example, if the component under test has a `<Counter />` component inside it, an instance of the `Counter` class will be created at runtime and added to the render tree below the component under test.
 
-It is however possible to control how Blazor components build using .NET 5 or newer are instantiated by bUnit. This enables the possibility to replace one component during testing with another, e.g., to replace a 3rd party component during testing with a "[stub component]( https://en.wikipedia.org/wiki/Test_stub)", to make the test easier to write and maintain.
+It is however possible to control how Blazor components build using .NET 5 or newer are instantiated by bUnit. This enables the possibility to replace one component during testing with another, e.g., to replace a 3rd party component during testing with a "[stub component](https://en.wikipedia.org/wiki/Test_stub)", to make the test easier to write and maintain.
 
 The following sections will describe how to use component factories to control instantiation of components during testing.
 

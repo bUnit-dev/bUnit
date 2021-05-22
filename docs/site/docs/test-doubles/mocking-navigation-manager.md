@@ -1,6 +1,7 @@
 ---
-uid: mocking-navigation-manager
-title: Mocking Blazor's NavigationManager
+uid: fake-navigation-manager
+title: Faking Blazor's NavigationManager
 ---
 
-# Mocking Blazor's `NavigationManager`
+# Faking Blazor's `NavigationManager`
+

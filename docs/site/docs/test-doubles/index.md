@@ -13,3 +13,4 @@ The built-in test doubles are described on the following pages:
 
 - <xref:faking-auth>
 - <xref:emulating-ijsruntime>
+- <xref:mocking-httpclient>
