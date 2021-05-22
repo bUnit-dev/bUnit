@@ -1,8 +1,5 @@
 #if NET5_0_OR_GREATER
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -12,19 +9,9 @@ namespace Bunit.TestDoubles
 	/// Represents a test double stub of a component of type <typeparamref name="TComponent"/>.
 	/// </summary>
 	/// <typeparam name="TComponent">The stub type.</typeparam>
-	public sealed class Stub<TComponent> : IComponent
+	public sealed class Stub<TComponent> : ComponentDoubleBase<TComponent>
 		where TComponent : IComponent
 	{
-		private readonly Type stubbedType = typeof(TComponent);
-		private RenderHandle renderHandle;
-
-		/// <summary>
-		/// Gets the parameters that was passed to the <typeparamref name="TComponent"/>
-		/// that this stub replaced in the component tree.
-		/// </summary>
-		[Parameter(CaptureUnmatchedValues = true)]
-		public IReadOnlyDictionary<string, object> Parameters { get; private set; } = ImmutableDictionary<string, object>.Empty;
-
 		/// <summary>
 		/// Gets the render options for this <see cref="Stub{TComponent}"/>.
 		/// </summary>
@@ -46,29 +33,19 @@ namespace Bunit.TestDoubles
 		}
 
 		/// <inheritdoc/>
-		public override string ToString() => $"Dummy<{stubbedType.Name}>";
+		public override string ToString() => $"Dummy<{DoubledType.Name}>";
 
 		/// <inheritdoc/>
-		void IComponent.Attach(RenderHandle renderHandle) => this.renderHandle = renderHandle;
-
-		/// <inheritdoc/>
-		Task IComponent.SetParametersAsync(ParameterView parameters)
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			Parameters = parameters.ToDictionary();
-			renderHandle.Render(RenderSubbedComponent);
-			return Task.CompletedTask;
-		}
-
-		private void RenderSubbedComponent(RenderTreeBuilder builder)
-		{
-			var name = GetComponentName(stubbedType);
+			var name = GetComponentName(DoubledType);
 
 			builder.OpenElement(0, name);
 
 			if (Options.AddDiffIgnore)
 				builder.AddAttribute(1, "diff:ignore");
 			if (Options.AddParameters)
-				RenderParameters(builder, stubbedType);
+				RenderParameters(builder, DoubledType);
 
 			builder.CloseElement();
 		}
