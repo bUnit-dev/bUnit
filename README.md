@@ -53,3 +53,6 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 ## Contributors
 
 Shout outs and a big thank you [to all the contributors](https://github.com/bUnit-dev/bUnit/graphs/contributors) to the library, including those that raise issues, provide input to issues, and those who send pull requests. Thank you!
+
+## Code of conduct
+This project is part of the .NET Foundation and adheres to its code of conduct. You can read about it here: https://dotnetfoundation.org/about/code-of-conduct
