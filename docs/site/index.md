@@ -75,3 +75,9 @@ Shout outs and a big thank you [to all the contributors](https://github.com/egil
 - Help build the library. Just pick an issue and submit pull-requests.
 - Help write documentation.
 - Create blog posts, presentations or video tutorials. If you do, I'll be happy to showcase them in the [related section](xref:external-resources) on this site.
+
+## Code of conduct
+
+## Code of conduct
+This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.
+For more information see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct). 
