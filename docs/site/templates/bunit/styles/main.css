@@ -184,6 +184,11 @@ footer small {
   border-bottom: 1px solid #eee;
 }
 
+.supported > a {
+  display: block;
+  padding-top: 10px;
+}
+
 .supported p {
   padding: 5px 30px 0 30px;
 }

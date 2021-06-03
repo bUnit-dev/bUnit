@@ -13,6 +13,12 @@
       </a>
       <p>Editorial support provided by <a href="https://www.packtpub.com/" title="Packt">Packt</a>.</p>
     </div>
+    <div class="supported">
+      <a href="https://dotnetfoundation.org" title=".NET Foundation">
+        <img width="150" src="/sponsors/dotnetfoundation_v4_purple.svg" />
+      </a>
+      <p>Supported by the <a href="https://dotnetfoundation.org">.NET Foundation</a>.</p>
+    </div>    
     {{^_disableContribution}}
     <div class="contribution">
       <ul class="nav">
