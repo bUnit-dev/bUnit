@@ -8,18 +8,18 @@ namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Default implementation of an IErrorBoundaryLogger (needed for ErrorBoundary component).
-    /// It lays the LogErrorAsync logic to an existing ILoggerFactory instance.
+    /// It delegates the implementation of LogErrorAsync to an instance created from ILoggerFactory.
 	/// </summary>
-	public class DefaultBoundaryLogger : IErrorBoundaryLogger
+	public class DefaultErrorBoundaryLogger : IErrorBoundaryLogger
 	{
 		private readonly ILogger logger;
 
 		/// <summary>
-		/// Initializes the instance of the <see cref="DefaultBoundaryLogger"/> class.
+		/// Initializes the instance of the <see cref="DefaultErrorBoundaryLogger"/> class.
 		/// </summary>
-		public DefaultBoundaryLogger(ILoggerFactory loggerFactory)
+		public DefaultErrorBoundaryLogger(ILoggerFactory loggerFactory)
 		{
-            logger = loggerFactory.CreateLogger<DefaultBoundaryLogger>();
+            logger = loggerFactory.CreateLogger<DefaultErrorBoundaryLogger>();
         }
 
 		/// <summary>

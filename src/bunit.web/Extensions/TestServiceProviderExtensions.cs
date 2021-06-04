@@ -53,7 +53,7 @@ namespace Bunit.Extensions
 
 			// IErrorBoundaryLogger
 #if NET6_0_OR_GREATER
-			services.AddSingleton<IErrorBoundaryLogger, DefaultBoundaryLogger>();
+			services.AddSingleton<IErrorBoundaryLogger, DefaultErrorBoundaryLogger>();
 #endif
 			return services;
 		}
