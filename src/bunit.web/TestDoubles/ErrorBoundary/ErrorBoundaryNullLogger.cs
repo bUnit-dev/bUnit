@@ -8,7 +8,7 @@ namespace Bunit.TestDoubles
 	/// <summary>
 	/// Dummy implementation of an IErrorBoundaryLogger (needed for ErrorBoundary component).
 	/// </summary>
-	public class ErrorBoundaryNullLogger: IErrorBoundaryLogger
+	public class ErrorBoundaryNullLogger : IErrorBoundaryLogger
 	{
 		/// <summary>
 		/// Gets the default instance of ErrorBoundaryNullLogger.

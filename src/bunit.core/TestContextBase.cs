@@ -1,7 +1,6 @@
 using System;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit
@@ -64,10 +63,6 @@ namespace Bunit
 			Services = new TestServiceProvider();
 #if NET5_0_OR_GREATER
 			Services.AddSingleton<IComponentActivator>(new BunitComponentActivator(ComponentFactories));
-#endif
-
-#if NET6_0_OR_GREATER
-			Services.AddSingleton<IErrorBoundaryLogger>(TestDoubles.ErrorBoundaryNullLogger.Instance);
 #endif
 		}
 
