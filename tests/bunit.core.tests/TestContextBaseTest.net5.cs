@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Bunit
 {
-	public class TestContextBaseTest : TestContext
+	public partial class TestContextBaseTest : TestContext
 	{
 		[Fact(DisplayName = "ComponentFactories CanCreate() method are checked during component instantiation")]
 		public void Test0001()

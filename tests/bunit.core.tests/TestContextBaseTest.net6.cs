@@ -7,10 +7,10 @@ using Xunit;
 
 namespace Bunit.TestDoubles.ErrorBoundary
 {
-	public class ErrorBoundaryNullLoggerTest : TestContext
+	public partial class TestContextBaseTest : TestContext
 	{
 		[Fact(DisplayName = "TestContextBase should provide a default IErrorBoundaryLogger")]
-		public void Test001()
+		public void Test0004()
 		{
 			IErrorBoundaryLogger logger = Services.GetService<IErrorBoundaryLogger>();
 			logger.ShouldNotBe(null);
