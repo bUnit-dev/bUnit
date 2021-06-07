@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Bunit.TestDoubles.ErrorBoundary
 {
-	public partial class TestContextBaseTest : TestContext
+	public partial class TestContextTest : TestContext
 	{
 		[Fact(DisplayName = "TestContextBase should provide a default IErrorBoundaryLogger")]
 		public void Test0004()
