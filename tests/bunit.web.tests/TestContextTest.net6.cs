@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Shouldly;
 using Xunit;
 
-namespace Bunit.TestDoubles.ErrorBoundary
+namespace Bunit
 {
 	public partial class TestContextTest : TestContext
 	{
