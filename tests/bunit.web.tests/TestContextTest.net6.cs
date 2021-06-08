@@ -10,7 +10,7 @@ namespace Bunit.TestDoubles.ErrorBoundary
 	public partial class TestContextTest : TestContext
 	{
 		[Fact(DisplayName = "TestContextBase should provide a default IErrorBoundaryLogger")]
-		public void Test0004()
+		public void Test001()
 		{
 			IErrorBoundaryLogger logger = Services.GetService<IErrorBoundaryLogger>();
 			logger.ShouldNotBe(null);
