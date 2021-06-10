@@ -53,22 +53,29 @@ namespace Bunit
 			sb.AppendLine("Configure bUnit's JSInterop to handle the call with following:");
 			sb.AppendLine();
 
-			if (invocation.IsVoidResultInvocation)
+			if (invocation.Identifier == "import")
 			{
-				sb.AppendLine($"    SetupVoid({GetArguments(invocation)})");
+				sb.AppendLine($"    SetupModule({GetArguments(invocation, includeIdentifier: false)})");
 			}
 			else
 			{
-				sb.AppendLine($"    Setup<{GetReturnTypeName(invocation.ResultType)}>({GetArguments(invocation)})");
-			}
-
-			if (invocation.Arguments.Any())
-			{
-				sb.AppendLine("or the following, to match any arguments:");
 				if (invocation.IsVoidResultInvocation)
-					sb.AppendLine($"    SetupVoid(\"{invocation.Identifier}\", _ => true)");
+				{
+					sb.AppendLine($"    SetupVoid({GetArguments(invocation)})");
+				}
 				else
-					sb.AppendLine($"    Setup<{GetReturnTypeName(invocation.ResultType)}>(\"{invocation.Identifier}\", _ => true)");
+				{
+					sb.AppendLine($"    Setup<{GetReturnTypeName(invocation.ResultType)}>({GetArguments(invocation)})");
+				}
+
+				if (invocation.Arguments.Any())
+				{
+					sb.AppendLine("or the following, to match any arguments:");
+					if (invocation.IsVoidResultInvocation)
+						sb.AppendLine($"    SetupVoid(\"{invocation.Identifier}\", _ => true)");
+					else
+						sb.AppendLine($"    Setup<{GetReturnTypeName(invocation.ResultType)}>(\"{invocation.Identifier}\", _ => true)");
+				}
 			}
 
 			sb.AppendLine();
@@ -113,11 +120,14 @@ namespace Bunit
 			}
 		}
 
-		private static string GetArguments(JSRuntimeInvocation invocation)
+		private static string GetArguments(JSRuntimeInvocation invocation, bool includeIdentifier = true)
 		{
 			var args = invocation.Arguments
-				.Select(x => x is string s ? $"\"{s}\"" : x?.ToString() ?? "null")
-				.Prepend($"\"{invocation.Identifier}\"");
+				.Select(x => x is string s ? $"\"{s}\"" : x?.ToString() ?? "null");
+			if (includeIdentifier)
+			{
+				args = args.Prepend($"\"{invocation.Identifier}\"");
+			}
 
 			return string.Join(", ", args);
 		}
