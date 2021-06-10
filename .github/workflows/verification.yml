@@ -62,11 +62,23 @@ jobs:
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
         continue-on-error: true
 
-      - name: 🧪 Run unit tests
+      - name: 🧪 Run unit tests (dotnet 3.0)
         run: |
-          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions
-          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions
-          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions
+          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions -f net3.0
+          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions -f net3.0
+          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions -f net3.0
+
+      - name: 🧪 Run unit tests (dotnet 5.0)
+        run: |
+          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions -f net5.0
+          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions -f net5.0
+          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions -f net5.0
+
+      - name: 🧪 Run unit tests (dotnet 6.0)
+        run: |
+          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions -f net6.0
+          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions -f net6.0
+          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions -f net6.0
 
       - name: 🗳️ Pack library
         run: |
