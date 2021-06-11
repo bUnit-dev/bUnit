@@ -13,6 +13,8 @@ namespace Bunit
 	[Serializable]
 	public sealed class JSRuntimeUnhandledInvocationException : Exception
 	{
+		private const string DefaultImportIdentifier = "import";
+
 		/// <summary>
 		/// Gets the unplanned invocation.
 		/// </summary>
@@ -53,7 +55,7 @@ namespace Bunit
 			sb.AppendLine("Configure bUnit's JSInterop to handle the call with following:");
 			sb.AppendLine();
 
-			if (invocation.Identifier == "import")
+			if (invocation.Identifier == DefaultImportIdentifier)
 			{
 				sb.AppendLine($"    SetupModule({GetArguments(invocation, includeIdentifier: false)})");
 			}
