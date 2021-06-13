@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using AngleSharp.Dom;
 using Bunit.Asserting;
 using Bunit.Diffing;
@@ -347,6 +349,81 @@ namespace Bunit
 			var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as IRenderedFragment
 				?? AdhocRenderRenderFragment(expected);
 			MarkupMatches(actual, renderedFragment, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actualElements"/> elements
+		/// the <paramref name="expected"/> markup fragment, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actualElements"/> markup does not match the <paramref name="expected"/> markup.</exception>
+		/// <param name="actualElements">A enumerable of IElements to verifiy.</param>
+		/// <param name="expected">The expected markup fragment.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this IEnumerable<IElement> actualElements, string expected, string? userMessage = null)
+		{
+			if (actualElements is null)
+				throw new ArgumentNullException(nameof(actualElements));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			using var parser = new BunitHtmlParser();
+			var nodesStr = string.Join(
+				string.Empty,
+				actualElements.Select(s => s.OuterHtml));
+			var actualNodes = nodesStr.ToNodeList(parser);
+			var expectedNodes = parser.Parse(expected);
+			actualNodes.MarkupMatches(expectedNodes, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actualElements"/> elements
+		/// the <paramref name="expected"/> markup fragment, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actualElements"/> markup does not match the <paramref name="expected"/> markup.</exception>
+		/// <param name="actualElements">A enumerable of IElements to verifiy.</param>
+		/// <param name="expected">The render fragment whose output to compare against.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this IEnumerable<IElement> actualElements, IRenderedFragment expected, string? userMessage = null)
+		{
+			if (actualElements is null)
+				throw new ArgumentNullException(nameof(actualElements));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			using var parser = new BunitHtmlParser();
+			var nodesStr = string.Join(
+				string.Empty,
+				actualElements.Select(s => s.OuterHtml));
+			var actualNodes = nodesStr.ToNodeList(parser);
+			actualNodes.MarkupMatches(expected.Nodes, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actualElements"/> elements
+		/// the <paramref name="expected"/> markup fragment, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actualElements"/> markup does not match the <paramref name="expected"/> markup.</exception>
+		/// <param name="actualElements">A enumerable of IElements to verifiy.</param>
+		/// <param name="expected">The render fragment whose output to compare against.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this IEnumerable<IElement> actualElements, RenderFragment expected, string? userMessage = null)
+		{
+			if (actualElements is null)
+				throw new ArgumentNullException(nameof(actualElements));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			using var parser = new BunitHtmlParser();
+			var nodesStr = string.Join(
+				string.Empty,
+				actualElements.Select(s => s.OuterHtml));
+			var actualNodes = nodesStr.ToNodeList(parser);
+			var renderedFragment = actualNodes.GetTestContext()?.RenderInsideRenderTree(expected) as IRenderedFragment
+				?? AdhocRenderRenderFragment(expected);
+			actualNodes.MarkupMatches(renderedFragment, userMessage);
 		}
 
 		private static IRenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
