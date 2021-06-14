@@ -55,7 +55,7 @@ namespace Bunit
 			sb.AppendLine("Configure bUnit's JSInterop to handle the call with following:");
 			sb.AppendLine();
 
-			if (string.Equals(invocation.Identifier, DefaultImportIdentifier))
+			if (string.Equals(invocation.Identifier, DefaultImportIdentifier, StringComparison.InvariantCulture))
 			{
 				sb.AppendLine($"    SetupModule({GetArguments(invocation, includeIdentifier: false)})");
 			}
