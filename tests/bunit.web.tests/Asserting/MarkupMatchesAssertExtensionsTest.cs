@@ -1,5 +1,6 @@
 using System;
 using AngleSharp.Dom;
+using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
 using Xunit;
@@ -94,5 +95,22 @@ namespace Bunit.Asserting
 		[Fact(DisplayName = "MarkupMatches(INodeList, RenderFragment) correctly diffs markup")]
 		public void Test0010()
 			=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedRenderFragment));
+
+		private IRenderedFragment FindAllRenderedFragment => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
+		private string FindAllExpectedRenderFragment = "<p><strong>test</strong></p>";
+
+		[Fact(DisplayName = "MarkupMatches combination works with IRenderedFragment's FindAll extension method")]
+		public void Test011()
+		{
+			FindAllRenderedFragment.FindAll("p").MarkupMatches(FindAllExpectedRenderFragment);
+		}
+
+		[Fact(DisplayName = "MarkupMatches combination works with FindAll and FindComponents<T>")]
+		public void Test012()
+		{
+			var cut = RenderComponent<TwoChildren>();
+
+			cut.FindAll("p>*").MarkupMatches(cut.FindComponents<ClickCounter>());
+		}
 	}
 }
