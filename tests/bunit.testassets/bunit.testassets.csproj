@@ -24,4 +24,11 @@
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet6Version)" />
 	</ItemGroup>
 
+	<!-- https://github.com/dotnet/sdk/issues/18148#issuecomment-860957180 from @elion -->
+	<!-- Workaround for this bug (replace the analyzer name with the one you need to exclude (filename only, no extension) -->
+	<Target Name="RemoveLoggingAnalyzer" BeforeTargets="RazorCompileComponentDeclaration">
+		<ItemGroup>
+			<Analyzer Remove="@(Analyzer)" Condition="%(FileName) == 'Microsoft.Extensions.Logging.Generators'" />
+		</ItemGroup>
+	</Target>
 </Project>

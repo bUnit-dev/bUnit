@@ -23,7 +23,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest] # macos-latest removed due to env error
-        dotnet-version: [3.1.x, 5.0.x, 6.0.x]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -32,10 +31,21 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: ⚙️ Setup dotnet ${{ matrix.dotnet-version }}
+      - name: ⚙️ Setup dotnet 3.1.x
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          dotnet-version: '3.1.x'
+
+      - name: ⚙️ Setup dotnet 5.0.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: ⚙️ Setup dotnet 6.0.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+          include-prerelease: true
 
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.0
@@ -52,26 +62,11 @@ jobs:
         run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile $env:APPDATA\NuGet\NuGet.Config
         continue-on-error: true
 
-      - if: matrix.dotnet-version == '3.1.x'
-        name: 🧪 Run unit tests (dotnet ${{ matrix.dotnet-version }})
+      - name: 🧪 Run unit tests
         run: |
-          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions -f netcoreapp3.1
-          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions -f netcoreapp3.1
-          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions -f netcoreapp3.1
-
-      - if: matrix.dotnet-version == '5.0.x'
-        name: 🧪 Run unit tests (dotnet ${{ matrix.dotnet-version }})
-        run: |
-          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions -f net5.0
-          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions -f net5.0
-          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions -f net5.0
-
-      - if: matrix.dotnet-version == '6.0.x'
-        name: 🧪 Run unit tests (dotnet ${{ matrix.dotnet-version }})
-        run: |
-          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions -f net6.0
-          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions -f net6.0
-          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions -f net6.0
+          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions
+          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions
+          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions
 
       - name: 🗳️ Pack library
         run: |
