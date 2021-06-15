@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using AutoFixture.Xunit2;
+using Microsoft.JSInterop;
 using Xunit;
 
 namespace Bunit.JSInterop
@@ -300,7 +301,7 @@ namespace Bunit.JSInterop
 		public void Test036(string moduleName)
 		{
 			var identifier = "import";
-			var returnType = typeof(void);
+			var returnType = typeof(IJSObjectReference);
 			var invocationMethodName = "InvokeAsync";
 			var exectedErrorMessage = CreateExpectedErrorMessage(
 				$"{CodeIdent}{invocationMethodName}<{returnType.Name}>(\"{identifier}\", \"{moduleName}\")",
