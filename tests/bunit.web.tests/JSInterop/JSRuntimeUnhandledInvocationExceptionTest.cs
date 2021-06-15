@@ -295,7 +295,7 @@ namespace Bunit.JSInterop
 			Assert.Equal(exectedErrorMessage, sut.Message);
 		}
 
-		[Theory(DisplayName = "Message prints prints correctly when trying to import an unconfigured module")]
+		[Theory(DisplayName = "Message prints correctly when trying to import an unconfigured module")]
 		[AutoData]
 		public void Test036(string moduleName)
 		{
