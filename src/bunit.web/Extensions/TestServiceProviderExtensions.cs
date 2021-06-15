@@ -5,6 +5,7 @@ using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -50,6 +51,9 @@ namespace Bunit.Extensions
 			services.AddSingleton<BunitHtmlParser>();
 			services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
 
+#if NET6_0_OR_GREATER
+			services.AddSingleton<IErrorBoundaryLogger, BunitErrorBoundaryLogger>();
+#endif
 			return services;
 		}
 	}
