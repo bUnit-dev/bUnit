@@ -108,9 +108,9 @@ namespace Bunit.Asserting
 		[Fact(DisplayName = "MarkupMatches combination works with FindAll and FindComponents<T>")]
 		public void Test012()
 		{
-			var cut = RenderComponent<TwoChildren>();
+			var cut = RenderComponent<RefToSimple1Child>();
 
-			cut.FindAll("p>*").MarkupMatches(cut.FindComponents<ClickCounter>());
+			cut.FindAll("h1").MarkupMatches(cut.FindComponents<Simple1>());
 		}
 	}
 }
