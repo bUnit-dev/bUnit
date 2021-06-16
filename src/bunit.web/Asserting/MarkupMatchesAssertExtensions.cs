@@ -393,9 +393,30 @@ namespace Bunit
 
 		/// <summary>
 		/// Verifies that the rendered markup from the <paramref name="actual"/> elements matches
+		/// the <paramref name="expected"/> elements, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> element does not match the <paramref name="expected"/> elements.</exception>
+		/// <param name="actual">An element to verify.</param>
+		/// <param name="expected">A list of elements.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this IElement actual, IEnumerable<IElement> expected, string? userMessage = null)
+		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			var expectedNodes = expected.ToNodeList();
+
+			MarkupMatches(actual, expectedNodes, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actual"/> elements matches
 		/// the <paramref name="expected"/> fragment, using the <see cref="HtmlComparer"/> type.
 		/// </summary>
-		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> element does not match the <paramref name="expected"/> fragments.</exception>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> elements does not match the <paramref name="expected"/> fragment.</exception>
 		/// <param name="actual">A list of elements to verifiy.</param>
 		/// <param name="expected">The expected markup fragment.</param>
 		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>

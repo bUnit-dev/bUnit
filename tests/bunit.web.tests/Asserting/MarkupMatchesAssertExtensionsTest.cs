@@ -112,5 +112,21 @@ namespace Bunit.Asserting
 
 			cut.FindAll("h1").MarkupMatches(cut.FindComponents<Simple1>());
 		}
+
+		[Fact(DisplayName = "MarkupMatches combination works with FindAll and a markup string")]
+		public void Test013()
+		{
+			var cut = RenderComponent<NoArgs>();
+
+			cut.FindAll("h1").MarkupMatches("<h1>Hello world</h1>");
+		}
+
+		[Fact(DisplayName = "MarkupMatches combination works with Find and FindAll")]
+		public void Test014()
+		{
+			var cut = RenderComponent<TwoChildren>();
+
+			cut.Find("div").MarkupMatches(cut.FindAll("div"));
+		}
 	}
 }
