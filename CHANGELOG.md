@@ -9,6 +9,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Added
 
 List of added functionality in this release.
+- Added `BunitErrorBoundaryLogger` impl of Microsoft.AspNetCore.Components.Web.IErrorBoundaryLogger` (needed for Blazor ErrorBoundary component, from net6.0). By [@jgoday](https://github.com/jgoday).
 
 - Added `ComponentFactories` property to the `TestContextBase` type. The `ComponentFactories` property is a `ComponentFactoryCollection` type that contains `IComponentFactory` types. These are used by bUnits component activator, whenever a component is created during testing. If no component factories is added to the collection, the standard component activator mechanism from Blazor is used. This feature makes it possible to control what components are created normally during a test, and which should be e.g. replaced by a test dummy. More info is available in issue [#388](https://github.com/bUnit-dev/bUnit/issues/388).  
 

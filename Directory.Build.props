@@ -4,7 +4,7 @@
 	<PropertyGroup Label="Configuration variables">
 		<DotNet3Version>3.1.1</DotNet3Version>
 		<DotNet5Version>5.0.0</DotNet5Version>
-		<DotNet6Version>6.0.0-preview.3.*</DotNet6Version>
+		<DotNet6Version>6.0.0-preview.4.*</DotNet6Version>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->
@@ -46,8 +46,8 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
-		<PackageReference Include="Meziantou.Analyzer" Version="1.0.665" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.23.0.32424" PrivateAssets="All" />
+		<PackageReference Include="Meziantou.Analyzer" Version="1.0.666" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.24.0.32949" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Condition="('$(TargetFramework)' == 'netstandard2.1' OR '$(TargetFramework)' == 'netcoreapp3.1') AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
@@ -74,4 +74,11 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet6Version)" />
 	</ItemGroup>
 
+	<!-- https://github.com/dotnet/sdk/issues/18148#issuecomment-860957180 from @elion -->
+	<!-- Workaround for this bug (replace the analyzer name with the one you need to exclude (filename only, no extension) -->
+	<Target Name="RemoveLoggingAnalyzer" BeforeTargets="CoreCompile">
+		<ItemGroup>
+			<Analyzer Remove="@(Analyzer)" Condition="%(FileName) == 'Microsoft.Extensions.Logging.Generators'" />
+		</ItemGroup>
+	</Target>
 </Project>

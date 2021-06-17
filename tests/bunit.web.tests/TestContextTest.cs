@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Bunit
 {
-	public class TestContextTest : TestContext
+	public partial class TestContextTest : TestContext
 	{
 		[Fact(DisplayName = "The test service provider should register a placeholder HttpClient which throws exceptions")]
 		public void Test024()
