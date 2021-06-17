@@ -97,12 +97,12 @@ namespace Bunit.Asserting
 			=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedRenderFragment));
 
 		private IRenderedFragment FindAllRenderedFragment => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
-		private string FindAllExpectedRenderFragment = "<p><strong>test</strong></p>";
+		private readonly string findAllExpectedRenderFragment = "<p><strong>test</strong></p>";
 
 		[Fact(DisplayName = "MarkupMatches combination works with IRenderedFragment's FindAll extension method")]
 		public void Test011()
 		{
-			FindAllRenderedFragment.FindAll("p").MarkupMatches(FindAllExpectedRenderFragment);
+			FindAllRenderedFragment.FindAll("p").MarkupMatches(findAllExpectedRenderFragment);
 		}
 
 		[Fact(DisplayName = "MarkupMatches combination works with FindAll and FindComponents<T>")]
