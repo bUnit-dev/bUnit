@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using AngleSharp.Dom;
 using Bunit.Asserting;
 using Bunit.Diffing;
@@ -349,6 +351,107 @@ namespace Bunit
 			MarkupMatches(actual, renderedFragment, userMessage);
 		}
 
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actual"/> elements
+		/// the <paramref name="expected"/> markup fragment, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
+		/// <param name="actual">A enumerable of IElements to verifiy.</param>
+		/// <param name="expected">The expected markup fragment.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this IEnumerable<IElement> actual, string expected, string? userMessage = null)
+		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			MarkupMatches(actual.ToNodeList(), expected, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actual"/> element matches
+		/// the <paramref name="expected"/> fragments, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> element does not match the <paramref name="expected"/> fragments.</exception>
+		/// <param name="actual">An IElement to verifiy.</param>
+		/// <param name="expected">The expected markup fragments.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this IElement actual, IEnumerable<IRenderedFragment> expected, string? userMessage = null)
+		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			var expectedNodes = string.Join(string.Empty, expected.Select(e => e.Markup));
+
+			MarkupMatches(actual, expectedNodes, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actual"/> elements matches
+		/// the <paramref name="expected"/> elements, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> element does not match the <paramref name="expected"/> elements.</exception>
+		/// <param name="actual">An element to verify.</param>
+		/// <param name="expected">A list of elements.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this IElement actual, IEnumerable<IElement> expected, string? userMessage = null)
+		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			var expectedNodes = expected.ToNodeList();
+
+			MarkupMatches(actual, expectedNodes, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actual"/> elements matches
+		/// the <paramref name="expected"/> fragment, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> elements does not match the <paramref name="expected"/> fragment.</exception>
+		/// <param name="actual">A list of elements to verifiy.</param>
+		/// <param name="expected">The expected markup fragment.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this IEnumerable<IElement> actual, IRenderedFragment expected, string? userMessage = null)
+		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			MarkupMatches(actual.ToNodeList(), expected, userMessage);
+		}
+
+		/// <summary>
+		/// Verifies that the rendered markup from the <paramref name="actual"/> elements matches
+		/// the <paramref name="expected"/> fragments, using the <see cref="HtmlComparer"/> type.
+		/// </summary>
+		/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> elements does not match the <paramref name="expected"/> fragments.</exception>
+		/// <param name="actual">A list of elements to verify.</param>
+		/// <param name="expected">A list of fragments.</param>
+		/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+		[AssertionMethod]
+		public static void MarkupMatches(this IEnumerable<IElement> actual, IEnumerable<IRenderedFragment> expected, string? userMessage = null)
+		{
+			if (actual is null)
+				throw new ArgumentNullException(nameof(actual));
+			if (expected is null)
+				throw new ArgumentNullException(nameof(expected));
+
+			var expectedNodes = string.Join(string.Empty, expected.Select(e => e.Markup));
+
+			MarkupMatches(actual.ToNodeList(), expectedNodes, userMessage);
+		}
+
 		private static IRenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
 		{
 			using var ctx = new TestContext();
@@ -364,6 +467,21 @@ namespace Bunit
 			}
 
 			return htmlParser.Parse(markup);
+		}
+
+		private static INodeList ToNodeList(this IEnumerable<IElement> elements, BunitHtmlParser? htmlParser = null)
+		{
+			var nodesStr = string.Join(string.Empty, elements.Select(s => s.OuterHtml));
+
+			if (htmlParser is null)
+			{
+				using var parser = new BunitHtmlParser();
+				return nodesStr.ToNodeList(parser);
+			}
+			else
+			{
+				return nodesStr.ToNodeList(htmlParser);
+			}
 		}
 	}
 }
