@@ -123,7 +123,9 @@ namespace Bunit
 			}
 		}
 
+#pragma warning disable S1172 // Unused method parameters should be removed
 		private static bool IsImportModuleInvocation(JSRuntimeInvocation invocation)
+#pragma warning restore S1172 // Unused method parameters should be removed
 		{
 #if NET5_0_OR_GREATER
 			return string.Equals(invocation.Identifier, DefaultImportIdentifier, StringComparison.InvariantCulture)
