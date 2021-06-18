@@ -14,7 +14,9 @@ namespace Bunit
 	[Serializable]
 	public sealed class JSRuntimeUnhandledInvocationException : Exception
 	{
+#if NET5_0_OR_GREATER
 		private const string DefaultImportIdentifier = "import";
+#endif
 
 		/// <summary>
 		/// Gets the unplanned invocation.
