@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using Microsoft.JSInterop;
 
 namespace Bunit
 {
@@ -55,7 +56,7 @@ namespace Bunit
 			sb.AppendLine("Configure bUnit's JSInterop to handle the call with following:");
 			sb.AppendLine();
 
-			if (string.Equals(invocation.Identifier, DefaultImportIdentifier, StringComparison.InvariantCulture))
+			if (IsImportModuleInvocation(invocation))
 			{
 				sb.AppendLine($"    SetupModule({GetArguments(invocation, includeIdentifier: false)})");
 			}
@@ -120,6 +121,16 @@ namespace Bunit
 			{
 				return GetReturnTypeName(invocation.ResultType);
 			}
+		}
+
+		private static bool IsImportModuleInvocation(JSRuntimeInvocation invocation)
+		{
+#if NET5_0_OR_GREATER
+			return string.Equals(invocation.Identifier, DefaultImportIdentifier, StringComparison.InvariantCulture)
+				&& typeof(IJSObjectReference).IsAssignableFrom(invocation.ResultType);
+#else
+			return false;
+#endif
 		}
 
 		private static string GetArguments(JSRuntimeInvocation invocation, bool includeIdentifier = true)
