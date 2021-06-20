@@ -130,7 +130,7 @@ namespace Bunit
 #pragma warning restore S1172 // Unused method parameters should be removed
 		{
 #if NET5_0_OR_GREATER
-			return string.Equals(invocation.Identifier, DefaultImportIdentifier, StringComparison.InvariantCulture)
+			return string.Equals(invocation.Identifier, DefaultImportIdentifier, StringComparison.Ordinal)
 				&& typeof(IJSObjectReference).IsAssignableFrom(invocation.ResultType);
 #else
 			return false;
