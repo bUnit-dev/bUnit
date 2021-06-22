@@ -14,10 +14,6 @@ namespace Bunit
 	[Serializable]
 	public sealed class JSRuntimeUnhandledInvocationException : Exception
 	{
-#if NET5_0_OR_GREATER
-		private const string DefaultImportIdentifier = "import";
-#endif
-
 		/// <summary>
 		/// Gets the unplanned invocation.
 		/// </summary>
@@ -125,17 +121,17 @@ namespace Bunit
 			}
 		}
 
-#pragma warning disable S1172 // Unused method parameters should be removed
-		private static bool IsImportModuleInvocation(JSRuntimeInvocation invocation)
-#pragma warning restore S1172 // Unused method parameters should be removed
-		{
 #if NET5_0_OR_GREATER
+		private static bool IsImportModuleInvocation(JSRuntimeInvocation invocation)
+		{
+			const string DefaultImportIdentifier = "import";
 			return string.Equals(invocation.Identifier, DefaultImportIdentifier, StringComparison.Ordinal)
 				&& typeof(IJSObjectReference).IsAssignableFrom(invocation.ResultType);
-#else
-			return false;
-#endif
 		}
+#else
+		private static bool IsImportModuleInvocation(JSRuntimeInvocation _)
+			=> false;
+#endif
 
 		private static string GetArguments(JSRuntimeInvocation invocation, bool includeIdentifier = true)
 		{
