@@ -29,6 +29,8 @@ List of added functionality in this release.
 
 List of fixes in this release.
 
+- Fixed JSInterop error message when trying to import an unconfigured module (#398).
+
 - Fixed issue where a registered fall-back service provider was not made available to resolve service dependencies of components under test. Thanks to [@dady8889](https://github.com/dady8889) for the reporting the issue.
 
 ## [1.1.5] - 2021-04-30
