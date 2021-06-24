@@ -10,30 +10,6 @@ namespace Bunit.TestDoubles.Components
 {
 	public class StubTest : TestContext
 	{
-		[Fact(DisplayName = "Stub<TComponent> renders element with diff:ignore attribute with default options")]
-		public void Test000()
-		{
-			var cut = RenderComponent<Stub<Simple1>>();
-
-			cut.Find("Simple1")
-				.HasAttribute("diff:ignore")
-				.ShouldBeTrue();
-			cut.Instance.Options.AddDiffIgnore.ShouldBeTrue();
-		}
-
-		[Fact(DisplayName = "Stub<TComponent> does not renders diff:ignore attribute when StubOptions.AddDiffIgnore = false")]
-		public void Test000_1()
-		{
-			ComponentFactories.Add(new StubComponentFactory<Simple1>(new Stub<Simple1>(new() { AddDiffIgnore = false })));
-
-			var cut = RenderComponent<Stub<Simple1>>();
-
-			cut.Find("Simple1")
-				.HasAttribute("diff:ignore")
-				.ShouldBeFalse();
-			cut.Instance.Options.AddDiffIgnore.ShouldBeFalse();
-		}
-
 		[Fact(DisplayName = "Stub<TComponent> renders element with name of TComponent")]
 		public void Test001()
 		{

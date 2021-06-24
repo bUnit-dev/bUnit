@@ -42,8 +42,6 @@ namespace Bunit.TestDoubles
 
 			builder.OpenElement(0, name);
 
-			if (Options.AddDiffIgnore)
-				builder.AddAttribute(1, "diff:ignore");
 			if (Options.AddParameters)
 				RenderParameters(builder, DoubledType);
 
