@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using AngleSharp;
@@ -64,11 +65,12 @@ namespace Bunit.Rendering
 		{
 			if (markup is null)
 				throw new ArgumentNullException(nameof(markup));
+
 			var (ctx, matchedElement) = GetParseContextAsync(markup).GetAwaiter().GetResult();
 
 			return ctx is null && matchedElement is not null
 				? ParseSpecial(markup, matchedElement)
-				: htmlParser.ParseFragment(markup, ctx);
+				: htmlParser.ParseFragment(markup, ctx!);
 		}
 
 		private INodeList ParseSpecial(string markup, string matchedElement)
@@ -77,7 +79,7 @@ namespace Bunit.Rendering
 
 			return matchedElement switch
 			{
-				"HTML" => new SingleNodeNodeList(doc.Body.ParentElement),
+				"HTML" => new SingleNodeNodeList(doc.Body?.ParentElement),
 				"HEAD" => new SingleNodeNodeList(doc.Head),
 				"BODY" => new SingleNodeNodeList(doc.Body),
 				_ => throw new InvalidOperationException($"{matchedElement} should not be parsed by {nameof(ParseSpecial)}."),
@@ -100,6 +102,8 @@ namespace Bunit.Rendering
 
 		private static (IElement? Context, string? MatchedElement) GetParseContextFromTag(string markup, int startIndex, IDocument document)
 		{
+			Debug.Assert(document.Body is not null, "Body of the document should never be null at this point.");
+
 			IElement? result = null;
 
 			if (markup.StartsWithElements(TableSubElements, startIndex, out var matchedElement))
@@ -170,7 +174,7 @@ namespace Bunit.Rendering
 
 			public int Count { get; } = 1;
 
-			public SingleNodeNodeList(INode node) => this.node = node ?? throw new ArgumentNullException(nameof(node));
+			public SingleNodeNodeList(INode? node) => this.node = node ?? throw new ArgumentNullException(nameof(node));
 
 			public IEnumerator<INode> GetEnumerator()
 			{

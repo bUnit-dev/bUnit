@@ -9,6 +9,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Added
 
 List of added functionality in this release.
+
 - Added more extensions methods to MarkupMatchesAssertExtensions to allow asserting on MarkupMatches from IEnumerable and IElement. By [@jgoday](https://github.com/jgoday).
 
 - Added `BunitErrorBoundaryLogger` impl of Microsoft.AspNetCore.Components.Web.IErrorBoundaryLogger` (needed for Blazor ErrorBoundary component, from net6.0). By [@jgoday](https://github.com/jgoday).
@@ -24,6 +25,12 @@ List of added functionality in this release.
 - Added `HasComponent<TComponent>()` to `IRenderedFragement`. Use it to check if the rendered fragment contains a component of type `TComponent`.
 
 - Added `UseStubFor`, `UseDummyFor`, and `UseFor` extension methods to `ComponentFactories` that makes it easy to configure bUnit to replace components in the render tree with stubs and dummies (aka. test doubles). Both methods have overloads that allow for fine grained selection of component types to "double" during testing. Added by @Egil in [#400](https://github.com/bUnit-dev/bUnit/pull/400).
+
+### Changed
+
+List of changes in this release.
+
+- Updated AngleSharp and related libraries to 0.16.0. NOTE, the new version of AngleSharp includes nullable annotations, which might affect how your code compiles, if you have nullable checking enabled in your test project.
 
 ### Fixed
 
