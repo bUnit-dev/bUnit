@@ -35,7 +35,9 @@ namespace Bunit.Diffing
 		/// <inheritdoc/>
 		protected override string Attribute(IAttr attr)
 		{
-			return Htmlizer.IsBlazorAttribute(attr?.Name ?? string.Empty)
+			if(attr is null) throw new ArgumentNullException(nameof(attr));
+
+			return Htmlizer.IsBlazorAttribute(attr.Name ?? string.Empty)
 				? string.Empty
 				: base.Attribute(attr);
 		}
@@ -81,7 +83,7 @@ namespace Bunit.Diffing
 		{
 			originalName = null;
 
-			if (element is not null && element.SourceReference is not null && element.SourceReference.Position.Index != -1)
+			if (element is not null && element.SourceReference is not null && element.SourceReference.Position.Index != -1 && element.Owner is not null)
 			{
 				element.Owner.Source.Index = element.SourceReference.Position.Index + 1;
 				originalName = element.Owner.Source.ReadCharacters(element.LocalName.Length);

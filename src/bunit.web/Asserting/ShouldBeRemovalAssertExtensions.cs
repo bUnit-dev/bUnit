@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Bunit.Diffing;
 using Bunit.Rendering;
 
 namespace Bunit
@@ -75,8 +74,7 @@ namespace Bunit
 			if (actualChange is not MissingNodeDiff actual)
 				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Missing, "The change was not an removal.");
 
-			var comparer = actual.Control.Node.Owner.Context.GetService<HtmlComparer>();
-
+			var comparer = actual.Control.Node.GetHtmlComparer();
 			var diffs = comparer.Compare(expectedChange, new[] { actual.Control.Node }).ToList();
 
 			if (diffs.Count != 0)
