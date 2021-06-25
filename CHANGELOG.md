@@ -18,10 +18,6 @@ List of added functionality in this release.
 
   Learn more about this feature on the [Controlling component instantiation](https://bunit.dev/docs/providing-input/controlling-component-instantiation) page.
 
-- Added the ability to perform shallow rendering of a component under test. Shallow rendering will essentially only render the first component in the render tree, and then replace all other components, both child components and sibling components, with "stub components". This makes it possible to isolate a component under test from its child components to make it easier to create stable tests.  
-
-  Learn more about this feature on the [Shallow rendering](https://bunit.dev/docs/test-doubles/shallow-rendering.html) page.
-
 - Added `HasComponent<TComponent>()` to `IRenderedFragement`. Use it to check if the rendered fragment contains a component of type `TComponent`.
 
 - Added `UseStubFor`, `UseDummyFor`, and `UseFor` extension methods to `ComponentFactories` that makes it easy to configure bUnit to replace components in the render tree with stubs and dummies (aka. test doubles). Both methods have overloads that allow for fine grained selection of component types to "double" during testing. Added by @Egil in [#400](https://github.com/bUnit-dev/bUnit/pull/400).
