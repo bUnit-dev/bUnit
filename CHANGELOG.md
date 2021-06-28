@@ -10,29 +10,29 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 List of added functionality in this release.
 
-- Added more extensions methods to MarkupMatchesAssertExtensions to allow asserting on MarkupMatches from IEnumerable and IElement. By [@jgoday](https://github.com/jgoday).
+- Added more extensions methods to `MarkupMatchesAssertExtensions` to allow asserting with `MarkupMatches` on `IEnumerable` and `IElement`. By [@jgoday](https://github.com/jgoday).
 
-- Added `BunitErrorBoundaryLogger` impl of Microsoft.AspNetCore.Components.Web.IErrorBoundaryLogger` (needed for Blazor ErrorBoundary component, from net6.0). By [@jgoday](https://github.com/jgoday).
+- Added `BunitErrorBoundaryLogger` implementation of `IErrorBoundaryLogger` (needed for Blazor's ErrorBoundary component in .NET 6.0). By [@jgoday](https://github.com/jgoday).
 
 - Added `ComponentFactories` property to the `TestContextBase` type. The `ComponentFactories` property is a `ComponentFactoryCollection` type that contains `IComponentFactory` types. These are used by bUnits component activator, whenever a component is created during testing. If no component factories is added to the collection, the standard component activator mechanism from Blazor is used. This feature makes it possible to control what components are created normally during a test, and which should be e.g. replaced by a test dummy. More info is available in issue [#388](https://github.com/bUnit-dev/bUnit/issues/388).  
 
   Learn more about this feature on the [Controlling component instantiation](https://bunit.dev/docs/providing-input/controlling-component-instantiation) page.
 
-- Added `HasComponent<TComponent>()` to `IRenderedFragement`. Use it to check if the rendered fragment contains a component of type `TComponent`.
+- Added `HasComponent<TComponent>()` to `IRenderedFragement`. Use it to check if the rendered fragment contains a component of type `TComponent`. Added by [@egil](https://github.com/egil).
 
-- Added `UseStubFor`, `UseDummyFor`, and `UseFor` extension methods to `ComponentFactories` that makes it easy to configure bUnit to replace components in the render tree with stubs and dummies (aka. test doubles). Both methods have overloads that allow for fine grained selection of component types to "double" during testing. Added by @Egil in [#400](https://github.com/bUnit-dev/bUnit/pull/400).
+- Added `UseStubFor`, `UseDummyFor`, and `UseFor` extension methods to `ComponentFactories` that makes it easy to configure bUnit to replace components in the render tree with stubs and dummies (aka. test doubles). Both methods have overloads that allow for fine grained selection of component types to "double" during testing. Added by [@egil](https://github.com/egil) in [#400](https://github.com/bUnit-dev/bUnit/pull/400).
 
 ### Changed
 
 List of changes in this release.
 
-- Updated AngleSharp and related libraries to 0.16.0. NOTE, the new version of AngleSharp includes nullable annotations, which might affect how your code compiles, if you have nullable checking enabled in your test project.
+- Updated AngleSharp and related libraries to 0.16.0. _NOTE, the new version of AngleSharp includes nullable annotations, which might affect how your code compiles, if you have nullable checking enabled in your test project._
 
 ### Fixed
 
 List of fixes in this release.
 
-- Fixed JSInterop error message when trying to import an unconfigured module (#398).
+- Fixed JSInterop error message when trying to import an unconfigured module. By [@jgoday](https://github.com/jgoday) in [#425](https://github.com/bUnit-dev/bUnit/pull/425).
 
 - Fixed issue where a registered fall-back service provider was not made available to resolve service dependencies of components under test. Thanks to [@dady8889](https://github.com/dady8889) for the reporting the issue.
 
