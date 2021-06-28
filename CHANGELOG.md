@@ -26,7 +26,7 @@ List of added functionality in this release.
 
 List of changes in this release.
 
-- Updated AngleSharp and related libraries to 0.16.0. _NOTE, the new version of AngleSharp includes nullable annotations, which might affect how your code compiles, if you have nullable checking enabled in your test project._
+- Updated AngleSharp and related libraries to 0.16.0. _NOTE, the new version of AngleSharp includes nullable annotations, which might affect how your code compiles, if you have nullable checking enabled in your test project._ By [@egil](https://github.com/egil).
 
 ### Fixed
 
