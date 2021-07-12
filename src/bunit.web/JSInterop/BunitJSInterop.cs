@@ -16,7 +16,7 @@ namespace Bunit
 	public class BunitJSInterop
 	{
 		private readonly Dictionary<Type, List<object>> handlers = new();
-		private JSRuntimeInvocationHandler? genericHandler = null;
+		private JSRuntimeInvocationHandler? genericHandler;
 		private JSRuntimeMode mode;
 
 		/// <summary>
@@ -88,7 +88,7 @@ namespace Bunit
 
 			if (genericHandler != null && genericHandler.HandleAsync(invocation) is Task<object> res)
 			{
-				result = new ValueTask<TValue>(res.ContinueWith(r => (TValue) r.Result, TaskContinuationOptions.NotOnCanceled));
+				result = new ValueTask<TValue>(res.ContinueWith(r => (TValue) r.Result, System.Threading.CancellationToken.None, TaskContinuationOptions.NotOnCanceled, TaskScheduler.Default));
 			}
 			
 			return result;

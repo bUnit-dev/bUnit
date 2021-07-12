@@ -13,7 +13,7 @@ namespace Bunit.JSInterop.InvocationHandlers
 
 		private readonly BunitJSInterop jsInterop;
 
-		private JSRuntimeInvocation? currentInvocation = null;
+		private JSRuntimeInvocation? currentInvocation;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="UntypedJSRuntimeInvocationHandler"/> class.
@@ -37,6 +37,11 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// <returns>This handler to allow calls to be chained.</returns>
 		public JSRuntimeInvocationHandler SetResult<TReturnType>(Func<JSRuntimeInvocation, TReturnType> resultFactory)
 		{
+			if (resultFactory == null)
+			{
+				throw new ArgumentNullException(nameof(resultFactory));
+			}
+
 			if (currentInvocation != null && resultFactory.Invoke(currentInvocation.Value) is TReturnType res)
 			{
 				base.SetResultBase(res);
@@ -59,6 +64,11 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// <returns>This handler to allow calls to be chained.</returns>
 		public JSRuntimeInvocationHandler SetException<TReturnType, TException>(Func<JSRuntimeInvocation, TException> exceptionFactory) where TException : Exception
 		{
+			if (exceptionFactory == null)
+			{
+				throw new ArgumentNullException(nameof(exceptionFactory));
+			}
+
 			if (currentInvocation != null && exceptionFactory.Invoke(currentInvocation.Value) is TException excp)
 			{
 				base.SetException(excp);
