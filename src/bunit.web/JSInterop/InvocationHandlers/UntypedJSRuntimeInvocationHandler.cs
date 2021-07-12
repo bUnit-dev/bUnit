@@ -13,6 +13,8 @@ namespace Bunit.JSInterop.InvocationHandlers
 
 		private readonly BunitJSInterop jsInterop;
 
+		private JSRuntimeInvocation? currentInvocation = null;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="UntypedJSRuntimeInvocationHandler"/> class.
 		/// </summary>
@@ -24,6 +26,8 @@ namespace Bunit.JSInterop.InvocationHandlers
 		{
 			jsInterop = interop;
 			invocationMatcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
+
+			jsInterop.SetGenericInvocationHandler(this);
 		}
 
 		/// <summary>
@@ -31,27 +35,21 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// </summary>
 		/// <param name="resultFactory">The result factory function that creates the handler result.</param>
 		/// <returns>This handler to allow calls to be chained.</returns>
-		public JSRuntimeInvocationHandler<TReturnType> SetResult<TReturnType>(Func<JSRuntimeInvocation, TReturnType> resultFactory)
+		public JSRuntimeInvocationHandler SetResult<TReturnType>(Func<JSRuntimeInvocation, TReturnType> resultFactory)
 		{
-			var handler = new JSRuntimeInvocationHandlerFactory<TReturnType, Exception>(resultFactory, null, invocationMatcher, IsCatchAllHandler);
+			if (currentInvocation != null && resultFactory.Invoke(currentInvocation.Value) is TReturnType res)
+			{
+				base.SetResultBase(res);
+			}
+			else
+			{
+				var handler = new JSRuntimeInvocationHandlerFactory<TReturnType, Exception>(resultFactory, null, invocationMatcher, IsCatchAllHandler);
 
-			jsInterop.AddInvocationHandler<TReturnType>(handler);
+				jsInterop.AddInvocationHandler<TReturnType>(handler);
+				jsInterop.SetGenericInvocationHandler(null);
+			}
 
-			return handler;
-		}
-
-		/// <summary>
-		/// Marks the <see cref="Task"/> that invocations will receive as canceled.
-		/// </summary>
-		/// <returns>This handler to allow calls to be chained.</returns>
-		public JSRuntimeInvocationHandler<TReturnType> SetCanceled<TReturnType>()
-		{
-			var handler = new JSRuntimeInvocationHandler<TReturnType>(invocationMatcher, IsCatchAllHandler);
-			handler.SetCanceled();
-
-			jsInterop.AddInvocationHandler<TReturnType>(handler);
-
-			return handler;
+			return this;
 		}
 
 		/// <summary>
@@ -59,13 +57,31 @@ namespace Bunit.JSInterop.InvocationHandlers
 		/// </summary>
 		/// <param name="exceptionFactory">The exception function factory to set.</param>
 		/// <returns>This handler to allow calls to be chained.</returns>
-		public JSRuntimeInvocationHandler<TReturnType> SetException<TReturnType, TException>(Func<JSRuntimeInvocation, TException> exceptionFactory) where TException : Exception
+		public JSRuntimeInvocationHandler SetException<TReturnType, TException>(Func<JSRuntimeInvocation, TException> exceptionFactory) where TException : Exception
 		{
-			var handler = new JSRuntimeInvocationHandlerFactory<TReturnType, TException>(null, exceptionFactory, invocationMatcher, IsCatchAllHandler);
+			if (currentInvocation != null && exceptionFactory.Invoke(currentInvocation.Value) is TException excp)
+			{
+				base.SetException(excp);
+			}
+			else
+			{
+				var handler = new JSRuntimeInvocationHandlerFactory<TReturnType, TException>(null, exceptionFactory, invocationMatcher, IsCatchAllHandler);
 
-			jsInterop.AddInvocationHandler<TReturnType>(handler);
+				jsInterop.AddInvocationHandler<TReturnType>(handler);
+				jsInterop.SetGenericInvocationHandler(null);
+			}
 
-			return handler;
+			return this;
+		}
+
+		/// <summary>
+		/// Call this to have the this handler handle the <paramref name="invocation"/>.
+		/// </summary>
+		/// <param name="invocation">Invocation to handle.</param>
+		protected override internal Task<object> HandleAsync(JSRuntimeInvocation invocation)
+		{
+			currentInvocation = invocation;
+			return base.HandleAsync(invocation);
 		}
 	}
 }

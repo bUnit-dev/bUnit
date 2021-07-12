@@ -550,10 +550,26 @@ namespace Bunit.JSInterop
 			var jsRuntime = sut.JSRuntime;
 
 			var handler = sut.Setup(i => i.Identifier == identifier);
-			handler.SetCanceled<bool>();
+			handler.SetCanceled();
 
 			var res = jsRuntime.InvokeAsync<bool>(identifier);
 			res.IsCanceled.ShouldBeTrue();
+		}
+
+		[Fact(DisplayName = "Untyped supports setting result after invocation")]
+		public async Task Test062()
+		{
+			var sut = CreateSut(JSRuntimeMode.Strict);
+			var identifier = "func";
+			var jsRuntime = sut.JSRuntime;
+
+			var handler = sut.Setup(i => i.Identifier == identifier);
+
+			var i1 = jsRuntime.InvokeAsync<bool>(identifier);
+
+			handler.SetResult(_ => false);
+
+			(await i1).ShouldBe(false);
 		}
 	}
 }
