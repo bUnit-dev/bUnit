@@ -1,5 +1,6 @@
 #if NET5_0_OR_GREATER
 using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -33,16 +34,19 @@ namespace Bunit.TestDoubles
 		}
 
 		/// <inheritdoc/>
-		public override string ToString() => $"Dummy<{DoubledType.Name}>";
+		public override string ToString() => $"Stub<{DoubledType.Name}>";
 
 		/// <inheritdoc/>
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
-			var name = GetComponentName(DoubledType);
+			Debug.Assert(builder is not null);
 
-			builder.OpenElement(0, name);
+			if (!Options.RenderPlaceholder)
+				return;
 
-			if (Options.AddParameters)
+			builder.OpenElement(0, GetComponentName(DoubledType));
+
+			if (Options.RenderParameters)
 				RenderParameters(builder, DoubledType);
 
 			builder.CloseElement();

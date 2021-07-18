@@ -13,12 +13,12 @@ namespace Bunit.ComponentFactories
 	{
 		[Fact(DisplayName = "UseFor throws when factories is null")]
 		public void Test001()
-			=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionExtensions.UseFor<Simple1, FakeSimple1>(null));
+			=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionCoreExtensions.Add<Simple1, FakeSimple1>(null));
 
 		[Fact(DisplayName = "UseFor<TComponent, TReplacementComponent> replaces components of type TComponent with TReplacementComponent")]
 		public void Test002()
 		{
-			ComponentFactories.UseFor<Simple1, FakeSimple1>();
+			ComponentFactories.Add<Simple1, FakeSimple1>();
 
 			var cut = RenderComponent<RefToSimple1Child>();
 

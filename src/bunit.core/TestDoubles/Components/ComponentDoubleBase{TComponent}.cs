@@ -1,4 +1,4 @@
-﻿#if NET5_0_OR_GREATER
+#if NET5_0_OR_GREATER
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Components.Rendering;
 namespace Bunit.TestDoubles
 {
     /// <summary>
-    /// Represents a
+    /// Represents a component that doubles as another component in the render tree.
     /// </summary>
     /// <typeparam name="TComponent"></typeparam>
     public abstract class ComponentDoubleBase<TComponent> : IComponent
