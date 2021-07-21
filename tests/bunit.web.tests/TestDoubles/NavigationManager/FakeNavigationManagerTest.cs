@@ -91,5 +91,15 @@ namespace Bunit.TestDoubles
 
 			cut.Markup.ShouldBe($"{sut.BaseUri}foo");
 		}
+
+		[Fact(DisplayName = "Uri should not be unescaped")]
+		public void Test007()
+		{
+			var sut = CreateFakeNavigationMananger();
+
+			sut.NavigateTo("/with%20whitespace");
+
+			sut.Uri.ShouldEndWith("with%20whitespace");
+		}
 	}
 }
