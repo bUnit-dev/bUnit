@@ -43,7 +43,7 @@ namespace Bunit.TestDoubles
 			sut.Uri.ShouldBe(expectedUri.ToString());
 		}
 
-		[Theory(DisplayName = "NavigateTo with absolute URI sets the Uri property ")]
+		[Theory(DisplayName = "NavigateTo with absolute URI sets the Uri property")]
 		[InlineData("http://localhost")]
 		[InlineData("http://localhost/")]
 		[InlineData("http://localhost/foo")]
@@ -54,7 +54,7 @@ namespace Bunit.TestDoubles
 
 			sut.NavigateTo(uri);
 
-			sut.Uri.ShouldBe(expectedUri.ToString());
+			sut.Uri.ShouldBe(expectedUri.OriginalString);
 		}
 
 		[Fact(DisplayName = "NavigateTo raises the NotifyLocationChanged")]
