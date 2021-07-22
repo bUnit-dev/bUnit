@@ -38,6 +38,8 @@ List of fixes in this release.
 
 - Fixed issue where a registered fall-back service provider was not made available to resolve service dependencies of components under test. Thanks to [@dady8889](https://github.com/dady8889) for the reporting the issue.
 
+- Fixed handling of escaped uri's in FakeNavigationManager. By [@linkdotnet](https://github.com/linkdotnet) in [#460](https://github.com/bUnit-dev/bUnit/pull/460)
+
 ## [1.1.5] - 2021-04-30
 
 ### Added
