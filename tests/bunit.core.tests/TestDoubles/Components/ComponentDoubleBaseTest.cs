@@ -77,6 +77,15 @@ namespace Bunit.TestDoubles.Components
 
 			cut.Instance.GetParameter(x => x.UnnamedCascadingValue).ShouldBeNull();
 		}
+
+		[Theory(DisplayName = "Double captures unmatched parameters")]
+		[AutoData]
+		public void Test022(string attrName, string attrValue)
+		{
+			var cut = RenderComponent<ComponentDouble<AllTypesOfParams<string>>>((attrName, attrValue));
+
+			cut.Instance.Parameters[attrName].ShouldBe(attrValue);
+		}
 	}
 }
 #endif

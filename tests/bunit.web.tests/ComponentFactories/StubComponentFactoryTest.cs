@@ -10,38 +10,38 @@ namespace Bunit.ComponentFactories
 {
 	public class StubComponentFactoryTest : TestContext
 	{
-		[Fact(DisplayName = "UseStubFor throws if factories is null")]
+		[Fact(DisplayName = "AddStub throws if factories is null")]
 		public void Test100()
-			=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionExtensions.UseStubFor(null, null));
+			=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionWebExtensions.AddStub(null, null));
 
-		[Fact(DisplayName = "UseStubFor throws if predicate is null")]
+		[Fact(DisplayName = "AddStub throws if predicate is null")]
 		public void Test101()
-			=> Should.Throw<ArgumentNullException>(() => ComponentFactories.UseStubFor(null));
+			=> Should.Throw<ArgumentNullException>(() => ComponentFactories.AddStub(null));
 
-		[Fact(DisplayName = "UseStubFor<T> replaces T with Stub<T>")]
+		[Fact(DisplayName = "AddStub<T> replaces T with Stub<T>")]
 		public void Test001()
 		{
-			ComponentFactories.UseStubFor<CompA>();
+			ComponentFactories.AddStub<CompA>();
 
 			var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
 
 			cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
 		}
 
-		[Fact(DisplayName = "UseStubFor<T> replaces U:T with Stub<U>")]
+		[Fact(DisplayName = "AddStub<T> replaces U:T with Stub<U>")]
 		public void Test002()
 		{
-			ComponentFactories.UseStubFor<CompA>();
+			ComponentFactories.AddStub<CompA>();
 
 			var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
 
 			cut.HasComponent<Stub<CompDerivedA>>().ShouldBeTrue();
 		}
 
-		[Fact(DisplayName = "UseStubFor(predicate) replaces types that matches predicate")]
+		[Fact(DisplayName = "AddStub(predicate) replaces types that matches predicate")]
 		public void Test003()
 		{
-			ComponentFactories.UseStubFor(componentType => componentType == typeof(CompA));
+			ComponentFactories.AddStub(componentType => componentType == typeof(CompA));
 
 			var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
 

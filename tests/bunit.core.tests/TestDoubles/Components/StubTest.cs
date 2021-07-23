@@ -10,12 +10,12 @@ namespace Bunit.TestDoubles.Components
 {
 	public class StubTest : TestContext
 	{
-		[Fact(DisplayName = "Stub<TComponent> renders element with name of TComponent")]
+		[Fact(DisplayName = "Stub<TComponent> renders nothing with default options")]
 		public void Test001()
 		{
 			var cut = RenderComponent<Stub<Simple1>>();
 
-			Should.NotThrow(() => cut.Find("Simple1"));
+			cut.Nodes.Length.ShouldBe(0);
 		}
 
 		[Theory(DisplayName = "Stub<TComponent> captures parameters passed to TComponent")]
@@ -26,17 +26,19 @@ namespace Bunit.TestDoubles.Components
 				(nameof(Simple1.Header), header),
 				(nameof(Simple1.AttrValue), attrValue));
 
-			cut.Instance.Parameters
+			cut.Instance
+				.Parameters
 				.ShouldSatisfyAllConditions(
 					ps => ps.ShouldContain(x => x.Key == nameof(Simple1.Header) && header.Equals(x.Value)),
 					ps => ps.ShouldContain(x => x.Key == nameof(Simple1.AttrValue) && attrValue.Equals(x.Value)),
 					ps => ps.Count.ShouldBe(2));
 		}
 
-		[Theory(DisplayName = "Stub<TComponent> add parameters as attribute with default render options")]
+		[Theory(DisplayName = "Stub<TComponent> add parameters as attribute when StubOptions.RenderPlaceholder = true and StubOptions.RenderParameters = true")]
 		[AutoData]
 		public void Test003(string header, string attrValue)
 		{
+			ComponentFactories.Add(new StubComponentFactory<Simple1>(new Stub<Simple1>(new() { RenderPlaceholder = true, RenderParameters = true })));
 			var cut = RenderComponent<Stub<Simple1>>(
 				(nameof(Simple1.Header), header),
 				(nameof(Simple1.AttrValue), attrValue));
@@ -45,25 +47,26 @@ namespace Bunit.TestDoubles.Components
 
 			simple1.Attributes["header"].Value.ShouldBe(header);
 			simple1.Attributes["attrvalue"].Value.ShouldBe(attrValue);
-			cut.Instance.Options.AddParameters.ShouldBeTrue();
+			cut.Instance.Options.RenderParameters.ShouldBeTrue();
 		}
 
-		[Theory(DisplayName = "Stub<TComponent> does not add parameters as attribute when StubOptions.AddParameters = false")]
+		[Theory(DisplayName = "Stub<TComponent> does not add parameters as attribute when StubOptions.RenderParameters = false")]
 		[AutoData]
 		public void Test004(string header)
 		{
-			ComponentFactories.Add(new StubComponentFactory<Simple1>(new Stub<Simple1>(new() { AddParameters = false })));
+			ComponentFactories.Add(new StubComponentFactory<Simple1>(new Stub<Simple1>(new() { RenderPlaceholder = true, RenderParameters = false })));
 			var cut = RenderComponent<Stub<Simple1>>((nameof(Simple1.Header), header));
 
 			var simple1 = cut.Find("Simple1");
 
 			simple1.HasAttribute("header").ShouldBeFalse();
-			cut.Instance.Options.AddParameters.ShouldBeFalse();
+			cut.Instance.Options.RenderParameters.ShouldBeFalse();
 		}
 
-		[Fact(DisplayName = "Stub<TComponent<T>> renders element with name of TComponent and T set to name of type")]
+		[Fact(DisplayName = "Stub<TComponent<T>> renders element with name of TComponent and T set to name of type when StubOptions.RenderPlaceholder = true ")]
 		public void Test005()
 		{
+			ComponentFactories.Add(new StubComponentFactory<CascadingValue<string>>(new Stub<CascadingValue<string>>(new() { RenderPlaceholder = true })));
 			var cut = RenderComponent<Stub<CascadingValue<string>>>();
 
 			cut.Find("CascadingValue").Attributes["tvalue"].Value.ShouldBe(typeof(string).Name);
