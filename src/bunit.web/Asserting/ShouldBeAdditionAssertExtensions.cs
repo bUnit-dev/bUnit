@@ -75,7 +75,7 @@ namespace Bunit
 			if (actualChange is not UnexpectedNodeDiff actual)
 				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Unexpected, "The change was not an addition.");
 
-			var comparer = actual.Test.Node.GetHtmlComparer() ?? new HtmlComparer();
+			var comparer = actual.Test.Node.GetHtmlComparer();
 
 			var diffs = comparer.Compare(expectedChange, actual.Test.Node.AsEnumerable()).ToList();
 

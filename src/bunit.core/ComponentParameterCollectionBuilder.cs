@@ -25,8 +25,7 @@ namespace Bunit
 		private static bool HasUnmatchedCaptureParameter { get; }
 			= typeof(TComponent).GetProperties(BindingFlags.Instance | BindingFlags.Public)
 				.Select(x => x.GetCustomAttribute<ParameterAttribute>())
-				.OfType<ParameterAttribute>()
-				.Any(x => x.CaptureUnmatchedValues);
+				.Any(x => x is {CaptureUnmatchedValues: true});
 
 		private readonly ComponentParameterCollection parameters = new();
 
