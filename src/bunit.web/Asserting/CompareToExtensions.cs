@@ -65,9 +65,7 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var comparer = actual.GetHtmlComparer()
-				?? expected.GetHtmlComparer()
-				?? new HtmlComparer();
+			var comparer = actual.GetHtmlComparer();
 
 			return comparer.Compare(expected, actual.AsEnumerable()).ToArray();
 		}
@@ -86,9 +84,7 @@ namespace Bunit
 			if (expected is null)
 				throw new ArgumentNullException(nameof(expected));
 
-			var comparer = expected.GetHtmlComparer()
-				?? actual.GetHtmlComparer()
-				?? new HtmlComparer();
+			var comparer = expected.GetHtmlComparer();
 
 			return comparer.Compare(expected.AsEnumerable(), actual).ToArray();
 		}
@@ -110,9 +106,7 @@ namespace Bunit
 			if (actual.Length == 0 && expected.Length == 0)
 				return Array.Empty<IDiff>();
 
-			var comparer = actual.GetHtmlComparer()
-				?? expected.GetHtmlComparer()
-				?? new HtmlComparer();
+			var comparer = actual.GetHtmlComparer();
 
 			return comparer.Compare(expected, actual).ToArray();
 		}
