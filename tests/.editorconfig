@@ -19,6 +19,7 @@
 
 # Meziantou
 # https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
+dotnet_diagnostic.MA0002.severity = silent			# MA0002: IEqualityComparer<string> or IComparer<string> is missing
 dotnet_diagnostic.MA0004.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0004.md
 
 # Microsoft - Code Analysis
