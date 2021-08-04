@@ -1,4 +1,4 @@
-﻿#if NET5_0_OR_GREATER
+#if NET5_0_OR_GREATER
 using System;
 using System.Runtime.Serialization;
 
@@ -6,7 +6,7 @@ namespace Bunit.TestDoubles
 {
 	/// <summary>
 	/// Represents an exception which is thrown when the 
-	/// <see cref="ComponentDoubleBase{TComponent}.GetParameter{TValue}(System.Linq.Expressions.Expression{Func{TComponent, TValue}})"/>
+	/// <see cref="CapturedParameterView{TComponent}.Get{TValue}(System.Linq.Expressions.Expression{Func{TComponent, TValue}})"/>
 	/// is used to get a parameter that was not passed to the doubled component.
 	/// </summary>
 	[Serializable]
