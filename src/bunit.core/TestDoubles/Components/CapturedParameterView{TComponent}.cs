@@ -21,6 +21,7 @@ namespace Bunit.TestDoubles
 		/// <summary>
 		/// Gets a empty <see cref="CapturedParameterView{TComponent}"/>.
 		/// </summary>
+		[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "When following 'empty' pattern this is OK")]
 		public static CapturedParameterView<TComponent> Empty { get; } = new(ImmutableDictionary<string, object>.Empty);
 
 		private static readonly Type ComponentType = typeof(TComponent);
