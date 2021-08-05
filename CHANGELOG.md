@@ -50,6 +50,7 @@ List of fixes in this release.
 ### Changed
 
 - Changed bunit.template such that created projects only reference the bUnit package. Bumped other referenced packages to latest version.
+- Changed TestServiceProvider to validate scopes of registered services, such that it behaves like the service provider (default IoC container) in Blazor.
 
 ## [1.0.16]
 
