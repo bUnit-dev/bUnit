@@ -8,7 +8,7 @@ namespace Bunit
 	/// <summary>
 	/// General event dispatch helper extension methods.
 	/// </summary>
-	public static class DetailsElementEventDispatcherExtensions
+	public static class DetailsElementEventDispatchExtensions
 	{
 		/// <summary>
 		/// Raises the <c>@ontoggle</c> event on <paramref name="element"/>
