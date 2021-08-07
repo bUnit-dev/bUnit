@@ -38,18 +38,22 @@ List of fixes in this release.
 
 - Fixed issue where a registered fall-back service provider was not made available to resolve service dependencies of components under test. Thanks to [@dady8889](https://github.com/dady8889) for the reporting the issue.
 
-- Fixed handling of escaped uri's in FakeNavigationManager. By [@linkdotnet](https://github.com/linkdotnet) in [#460](https://github.com/bUnit-dev/bUnit/pull/460)
+- Fixed handling of escaped uri's in FakeNavigationManager. By [@linkdotnet](https://github.com/linkdotnet) in [#460](https://github.com/bUnit-dev/bUnit/pull/460).
+
+- Captured error message from event dispatcher in renderer that would previously be hidden from the user. Related to issue [#399](https://github.com/bUnit-dev/bUnit/issues/399).
 
 ## [1.1.5] - 2021-04-30
 
 ### Added
 
 - All bUnit assemblies is now strong named signed.
+
 - Added .NET 6 (preview 3) as a target framework for bUnit, bUnit.core and bUnit.web.
 
 ### Changed
 
 - Changed bunit.template such that created projects only reference the bUnit package. Bumped other referenced packages to latest version.
+
 - Changed TestServiceProvider to validate scopes of registered services, such that it behaves like the service provider (default IoC container) in Blazor.
 
 ## [1.0.16]

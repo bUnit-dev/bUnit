@@ -174,5 +174,18 @@ namespace Bunit
 			cut.Instance.ParentTriggerCount.ShouldBe(1);
 			cut.Instance.GrandParentTriggerCount.ShouldBe(1);
 		}
+
+
+		[Fact(DisplayName = "TriggerEventAsync throws when invoked with an unknown event handler ID")]
+		public void Test115()
+		{
+			var eventName = "onclick";
+			var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent("<div />"));
+			var div = cut.Find("div");
+			div.SetAttribute(Htmlizer.ToBlazorAttribute(eventName), "42");
+
+			Should.Throw<ArgumentException>(() => div.TriggerEventAsync(eventName, EventArgs.Empty));
+		}
+
 	}
 }
