@@ -28,8 +28,11 @@ namespace Bunit.TestDoubles
 		{
 			Uri = ToAbsoluteUri(uri).OriginalString;
 
-			renderer.Dispatcher.InvokeAsync(
-				() => NotifyLocationChanged(isInterceptedLink: false));
+			renderer.Dispatcher.InvokeAsync(() =>
+			{
+				Uri = ToAbsoluteUri(uri).OriginalString;
+				NotifyLocationChanged(isInterceptedLink: false);
+			});
 		}
 	}
 }
