@@ -142,7 +142,6 @@ namespace Bunit
 						builder.AddAttribute(
 							attrCount++,
 							group[0].Name!, // BANG: ComponentParameter does not allow a regular param to be created without a name
-#pragma warning disable SA1118 // Parameter should not span multiple lines
 							(RenderFragment)(ccBuilder =>
 							{
 								for (var i = 0; i < group.Length; i++)
@@ -151,7 +150,6 @@ namespace Bunit
 										ccBuilder.AddContent(i, rf);
 								}
 							}));
-#pragma warning restore SA1118 // Parameter should not span multiple lines
 
 						continue;
 					}
