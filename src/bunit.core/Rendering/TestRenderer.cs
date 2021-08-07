@@ -156,7 +156,9 @@ namespace Bunit.Rendering
 			for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
 			{
 				var id = renderBatch.DisposedComponentIDs.Array[i];
+
 				logger.LogDebug(new EventId(10, nameof(UpdateDisplayAsync)), $"Component with ID = {id} has been disposed.");
+
 				if (renderedComponents.TryGetValue(id, out var rc))
 				{
 					renderedComponents.Remove(id);
@@ -168,6 +170,7 @@ namespace Bunit.Rendering
 			foreach (var (key, rc) in renderedComponents.ToArray())
 			{
 				logger.LogDebug(new EventId(11, nameof(UpdateDisplayAsync)), $"Component with ID = {rc.ComponentId} has been rendered.");
+
 				LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
 
 				rc.OnRender(renderEvent);
@@ -236,7 +239,6 @@ namespace Bunit.Rendering
 			return result;
 		}
 
-		[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
 		private IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
 			where TComponent : IComponent
 		{
@@ -269,7 +271,7 @@ namespace Bunit.Rendering
 					{
 						if (frame.Component is TComponent component)
 						{
-							GetOrCreateRenderedComponent(frame.ComponentId, component);
+							result.Add(GetOrCreateRenderedComponent(framesCollection, frame.ComponentId, component));
 
 							if (result.Count == resultLimit)
 								return;
@@ -282,24 +284,25 @@ namespace Bunit.Rendering
 					}
 				}
 			}
+		}
 
-			void GetOrCreateRenderedComponent(int componentId, TComponent component)
+		IRenderedComponentBase<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
+			where TComponent : IComponent
+		{
+			IRenderedComponentBase<TComponent> result;
+
+			if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
 			{
-				IRenderedComponentBase<TComponent> rc;
-
-				if (renderedComponents.TryGetValue(componentId, out var rf))
-				{
-					rc = (IRenderedComponentBase<TComponent>)rf;
-				}
-				else
-				{
-					LoadRenderTreeFrames(componentId, framesCollection);
-					rc = activator.CreateRenderedComponent(componentId, component, framesCollection);
-					renderedComponents.Add(rc.ComponentId, rc);
-				}
-
-				result.Add(rc);
+				result = (IRenderedComponentBase<TComponent>)renderedComponent;
 			}
+			else
+			{
+				LoadRenderTreeFrames(componentId, framesCollection);
+				result = activator.CreateRenderedComponent(componentId, component, framesCollection);
+				renderedComponents.Add(result.ComponentId, result);
+			}
+
+			return result;
 		}
 
 		/// <summary>
