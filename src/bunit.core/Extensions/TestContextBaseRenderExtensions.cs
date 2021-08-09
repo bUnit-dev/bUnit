@@ -7,7 +7,7 @@ namespace Bunit.Extensions
 	/// <summary>
 	/// Extensions methods for <see cref="TestContextBase"/> types.
 	/// </summary>
-	public static class TestContextBaseExtensions
+	public static class TestContextBaseRenderExtensions
 	{
 		/// <summary>
 		/// Renders a component, declared in the <paramref name="renderFragment"/>, inside the <see cref="TestContextBase.RenderTree"/>.
@@ -22,19 +22,8 @@ namespace Bunit.Extensions
 			if (testContext is null)
 				throw new ArgumentNullException(nameof(testContext));
 
-			// Wrap TComponent in any layout components added to the test context.
-			// If one of the layout components is the same type as TComponent,
-			// make sure to return the rendered component, not the layout component.
-			var resultBase = testContext.Renderer.RenderFragment(testContext.RenderTree.Wrap(renderFragment));
-
-			// This ensures that the correct component is returned, in case an added layout component
-			// is of type TComponent.
-			var renderTreeTComponentCount = testContext.RenderTree.GetCountOf<TComponent>();
-			var result = renderTreeTComponentCount > 0
-				? testContext.Renderer.FindComponents<TComponent>(resultBase)[renderTreeTComponentCount]
-				: testContext.Renderer.FindComponent<TComponent>(resultBase);
-
-			return result;
+			var baseResult = RenderInsideRenderTree(testContext, renderFragment);
+			return testContext.Renderer.FindComponent<TComponent>(baseResult);
 		}
 
 		/// <summary>

@@ -6,7 +6,7 @@
           "files": [
             "bunit.core/bunit.core.csproj",
             "bunit.web/bunit.web.csproj",
-            "bunit.xunit/bunit.xunit.csproj"
+            "bunit.web.testcomponents/bunit.web.testcomponents.csproj"
           ],
           "exclude": [ "**/bin/**", "**/obj/**" ],
           "src": "../../src"
@@ -14,7 +14,7 @@
       ],
       "dest": "api",
       "properties": {
-        "TargetFramework": "netstandard2.1"
+        "TargetFramework": "net5.0"
       },
       "disableGitFeatures": false,
       "disableDefaultFilter": false

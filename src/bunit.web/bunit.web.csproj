@@ -15,10 +15,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AngleSharp" Version="0.15.0" />
-		<PackageReference Include="AngleSharp.Css" Version="0.15.0" />
-		<PackageReference Include="AngleSharp.Diffing" Version="0.15.0" />
-		<PackageReference Include="AngleSharp.Wrappers" Version="1.3.0" />
+		<PackageReference Include="AngleSharp" Version="0.16.0" />
+		<PackageReference Include="AngleSharp.Css" Version="0.16.0" />
+		<PackageReference Include="AngleSharp.Diffing" Version="0.16.0" />
+		<PackageReference Include="AngleSharp.Wrappers" Version="2.0.0" />
 	</ItemGroup>
 	
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">

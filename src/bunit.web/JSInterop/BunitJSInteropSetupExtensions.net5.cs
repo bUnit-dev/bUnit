@@ -1,4 +1,4 @@
-#if !NETSTANDARD2_1
+#if NET5_0_OR_GREATER
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;

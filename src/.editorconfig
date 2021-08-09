@@ -29,10 +29,6 @@
 # https://security-code-scan.github.io/
 
 
-# StyleCop
-# https://github.com/DotNetAnalyzers/StyleCopAnalyzers
-
-
 # SonarAnalyzer.CSharp
 # https://rules.sonarsource.com/csharp
 

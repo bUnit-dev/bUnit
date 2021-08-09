@@ -1,5 +1,6 @@
 using System;
 using AngleSharp.Dom;
+using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Shouldly;
 using Xunit;
@@ -94,5 +95,38 @@ namespace Bunit.Asserting
 		[Fact(DisplayName = "MarkupMatches(INodeList, RenderFragment) correctly diffs markup")]
 		public void Test0010()
 			=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedRenderFragment));
+
+		private IRenderedFragment FindAllRenderedFragment => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
+		private readonly string findAllExpectedRenderFragment = "<p><strong>test</strong></p>";
+
+		[Fact(DisplayName = "MarkupMatches combination works with IRenderedFragment's FindAll extension method")]
+		public void Test011()
+		{
+			FindAllRenderedFragment.FindAll("p").MarkupMatches(findAllExpectedRenderFragment);
+		}
+
+		[Fact(DisplayName = "MarkupMatches combination works with FindAll and FindComponents<T>")]
+		public void Test012()
+		{
+			var cut = RenderComponent<RefToSimple1Child>();
+
+			cut.FindAll("h1").MarkupMatches(cut.FindComponents<Simple1>());
+		}
+
+		[Fact(DisplayName = "MarkupMatches combination works with FindAll and a markup string")]
+		public void Test013()
+		{
+			var cut = RenderComponent<NoArgs>();
+
+			cut.FindAll("h1").MarkupMatches("<h1>Hello world</h1>");
+		}
+
+		[Fact(DisplayName = "MarkupMatches combination works with Find and FindAll")]
+		public void Test014()
+		{
+			var cut = RenderComponent<TwoChildren>();
+
+			cut.Find("div").MarkupMatches(cut.FindAll("div"));
+		}
 	}
 }

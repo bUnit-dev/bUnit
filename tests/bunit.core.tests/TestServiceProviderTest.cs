@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
@@ -23,6 +25,11 @@ namespace Bunit
 		private class AnotherFallbackServiceProvider : IServiceProvider
 		{
 			public object GetService(Type serviceType) => new AnotherDummyService();
+		}
+
+		private class DummyComponentWhichRequiresDummyService : ComponentBase
+		{
+			[Inject] public DummyService Service { get; set; }
 		}
 
 		[Fact(DisplayName = "Provider initialized without a service collection has zero services by default")]
@@ -188,6 +195,66 @@ namespace Bunit
 			var result = sut.GetService(typeof(object));
 
 			Assert.IsType<AnotherDummyService>(result);
+		}
+
+		[Fact(DisplayName = "Fallback service provider can be used to resolve services required by components")]
+		public void Test030()
+		{
+			// Arrange
+			using var ctx = new TestContext();
+			var fallbackServiceProvider = new ServiceCollection()
+				.AddSingleton(new DummyService())
+				.BuildServiceProvider();
+			ctx.Services.AddFallbackServiceProvider(fallbackServiceProvider);
+
+			// Act and assert
+			Should.NotThrow(() => ctx.RenderComponent<DummyComponentWhichRequiresDummyService>());
+		}
+
+		[Fact(DisplayName = "Can correctly resolve and dispose of scoped disposable service")]
+		public void Test031()
+		{
+			var sut = new TestServiceProvider();
+			sut.AddScoped<DisposableService>();
+			var disposable = sut.GetService<DisposableService>();
+
+			sut.Dispose();
+
+			disposable.IsDisposed.ShouldBeTrue();
+		}
+
+		[Fact(DisplayName = "Can correctly resolve and dispose of transient disposable service")]
+		public void Test032()
+		{
+			var sut = new TestServiceProvider();
+			sut.AddTransient<DisposableService>();
+			var disposable = sut.GetService<DisposableService>();
+
+			sut.Dispose();
+
+			disposable.IsDisposed.ShouldBeTrue();
+		}
+
+		[Fact(DisplayName = "Can correctly resolve and dispose of singleton disposable service")]
+		public void Test033()
+		{
+			var sut = new TestServiceProvider();
+			sut.AddSingleton<DisposableService>();
+			var disposable = sut.GetService<DisposableService>();
+
+			sut.Dispose();
+
+			disposable.IsDisposed.ShouldBeTrue();
+		}
+
+		private sealed class DisposableService : IDisposable
+		{
+			public bool IsDisposed { get; private set; }
+
+			public void Dispose()
+			{
+				IsDisposed = true;
+			}
 		}
 	}
 }

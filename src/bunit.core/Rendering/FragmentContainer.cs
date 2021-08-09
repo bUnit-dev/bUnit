@@ -1,5 +1,5 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Bunit.Rendering
 {
@@ -8,17 +8,22 @@ namespace Bunit.Rendering
 	/// when a fragment is rendered inside a test contexts render tree.
 	/// It is primarily used to be able to find the starting point to return.
 	/// </summary>
-	public sealed class FragmentContainer : ComponentBase
+	internal sealed class FragmentContainer : IComponent
 	{
-		/// <summary>
-		/// Gets or sets the content to wrap.
-		/// </summary>
-		[Parameter] public RenderFragment? ChildContent { get; set; }
+		private RenderHandle renderHandle;
 
 		/// <inheritdoc/>
-		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		public void Attach(RenderHandle renderHandle) => this.renderHandle = renderHandle;
+
+		/// <inheritdoc/>
+		public Task SetParametersAsync(ParameterView parameters)
 		{
-			builder?.AddContent(0, ChildContent);
+			if (parameters.TryGetValue<RenderFragment>("ChildContent", out var childContent))
+			{
+				renderHandle.Render(childContent);
+			}
+
+			return Task.CompletedTask;
 		}
 
 		/// <summary>
@@ -29,7 +34,7 @@ namespace Bunit.Rendering
 			return builder =>
 			{
 				builder.OpenComponent<FragmentContainer>(0);
-				builder.AddAttribute(1, nameof(ChildContent), wrappingTarget);
+				builder.AddAttribute(1, "ChildContent", wrappingTarget);
 				builder.CloseComponent();
 			};
 		}

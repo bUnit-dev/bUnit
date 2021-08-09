@@ -1,5 +1,6 @@
 using System;
 using Bunit.Extensions;
+using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -33,7 +34,9 @@ namespace Bunit
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)
 			where TComponent : IComponent
 		{
-			var renderFragment = new ComponentParameterCollection { parameters }.ToRenderFragment<TComponent>();
+			var renderFragment = new ComponentParameterCollection { parameters }
+				.ToRenderFragment<TComponent>();
+
 			return Render<TComponent>(renderFragment);
 		}
 
@@ -46,7 +49,10 @@ namespace Bunit
 		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
 			where TComponent : IComponent
 		{
-			var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder).Build().ToRenderFragment<TComponent>();
+			var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder)
+				.Build()
+				.ToRenderFragment<TComponent>();
+
 			return Render<TComponent>(renderFragment);
 		}
 

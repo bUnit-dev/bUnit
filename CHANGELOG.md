@@ -6,16 +6,55 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+List of added functionality in this release.
+
+- Added more extensions methods to `MarkupMatchesAssertExtensions` to allow asserting with `MarkupMatches` on `IEnumerable` and `IElement`. By [@jgoday](https://github.com/jgoday).
+
+- Added `BunitErrorBoundaryLogger` implementation of `IErrorBoundaryLogger` (needed for Blazor's ErrorBoundary component in .NET 6.0). By [@jgoday](https://github.com/jgoday).
+
+- Added `ComponentFactories` property to the `TestContextBase` type. The `ComponentFactories` property is a `ComponentFactoryCollection` type that contains `IComponentFactory` types. These are used by bUnits component activator, whenever a component is created during testing. If no component factories is added to the collection, the standard component activator mechanism from Blazor is used. This feature makes it possible to control what components are created normally during a test, and which should be e.g. replaced by a test dummy. More info is available in issue [#388](https://github.com/bUnit-dev/bUnit/issues/388).  
+
+  Learn more about this feature on the [Controlling component instantiation](https://bunit.dev/docs/providing-input/controlling-component-instantiation) page.
+
+- Added `HasComponent<TComponent>()` to `IRenderedFragement`. Use it to check if the rendered fragment contains a component of type `TComponent`. Added by [@egil](https://github.com/egil).
+
+- Added `UseStubFor` and `UseFor` extension methods to `ComponentFactories` that makes it easy to configure bUnit to replace components in the render tree with stubs. Both methods have overloads that allow for fine grained selection of component types to "double" during testing. Added by [@egil](https://github.com/egil) in [#400](https://github.com/bUnit-dev/bUnit/pull/400).
+
+### Changed
+
+List of changes in this release.
+
+- Updated AngleSharp and related libraries to 0.16.0. _NOTE, the new version of AngleSharp includes nullable annotations, which might affect how your code compiles, if you have nullable checking enabled in your test project._ By [@egil](https://github.com/egil).
+
+- Updated .NET 6 dependencies to preview 5. By [@egil](https://github.com/egil).
+
+### Fixed
+
+List of fixes in this release.
+
+- Fixed JSInterop error message when trying to import an unconfigured module. By [@jgoday](https://github.com/jgoday) in [#425](https://github.com/bUnit-dev/bUnit/pull/425).
+
+- Fixed issue where a registered fall-back service provider was not made available to resolve service dependencies of components under test. Thanks to [@dady8889](https://github.com/dady8889) for the reporting the issue.
+
+- Fixed handling of escaped uri's in FakeNavigationManager. By [@linkdotnet](https://github.com/linkdotnet) in [#460](https://github.com/bUnit-dev/bUnit/pull/460).
+
+- Captured error message from event dispatcher in renderer that would previously be hidden from the user. Related to issue [#399](https://github.com/bUnit-dev/bUnit/issues/399).
+
 ## [1.1.5] - 2021-04-30
 
 ### Added
 
--   All bUnit assemblies is now strong named signed.
--   Added .NET 6 (preview 3) as a target framework for bUnit, bUnit.core and bUnit.web.
+- All bUnit assemblies is now strong named signed.
+
+- Added .NET 6 (preview 3) as a target framework for bUnit, bUnit.core and bUnit.web.
 
 ### Changed
 
--   Changed bunit.template such that created projects only reference the bunit package. Bumped other referenced packages to latest version.
+- Changed bunit.template such that created projects only reference the bUnit package. Bumped other referenced packages to latest version.
+
+- Changed TestServiceProvider to validate scopes of registered services, such that it behaves like the service provider (default IoC container) in Blazor.
 
 ## [1.0.16]
 

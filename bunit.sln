@@ -28,8 +28,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".text", ".text", "{392FCD4E-356A-412A-A854-8EE197EA65B9}"
 	ProjectSection(SolutionItems) = preProject
 		CHANGELOG.md = CHANGELOG.md
-		CODE-OF-CONDUCT.md = CODE-OF-CONDUCT.md
-		CONTRIBUTING.md = CONTRIBUTING.md
 		README.md = README.md
 	EndProjectSection
 EndProject

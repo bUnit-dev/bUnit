@@ -4,7 +4,6 @@ using System.Linq;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Bunit.Asserting;
-using Bunit.Diffing;
 using Bunit.Rendering;
 
 namespace Bunit
@@ -40,9 +39,16 @@ namespace Bunit
 			if (actualChange is not NodeDiff actual)
 				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 
-			var parser = actual.Control.Node.Owner.Context.GetService<BunitHtmlParser>();
-			var expected = parser.Parse(expectedChange);
-
+			INodeList expected;
+			if (actual.Control.Node.GetHtmlParser() is BunitHtmlParser parser)
+			{
+				expected = parser.Parse(expectedChange);
+			}
+			else
+			{
+				using var newParser = new BunitHtmlParser();
+				expected = newParser.Parse(expectedChange);
+			}
 			ShouldBeTextChange(actualChange, expected, userMessage);
 		}
 
@@ -74,7 +80,7 @@ namespace Bunit
 			if (actualChange is not NodeDiff actual)
 				throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 
-			var comparer = actual.Control.Node.Owner.Context.GetService<HtmlComparer>();
+			var comparer = actual.Control.Node.GetHtmlComparer();
 
 			var diffs = comparer.Compare(expectedChange, new[] { actual.Test.Node }).ToList();
 

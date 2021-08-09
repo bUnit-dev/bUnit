@@ -35,9 +35,9 @@ namespace Bunit
 				throw new ArgumentNullException(nameof(element));
 			if (eventName is null)
 				throw new ArgumentNullException(nameof(eventName));
-			var renderer = element.Owner.Context.GetService<ITestRenderer>();
-			if (renderer is null)
-				throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(ITestRenderer)}'.");
+
+			var renderer = element.GetTestContext()?.Renderer
+				?? throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(ITestRenderer)}'.");
 
 			var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
 

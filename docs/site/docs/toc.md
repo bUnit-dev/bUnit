@@ -6,6 +6,7 @@
 ## [Parameters and Cascading Values](xref:passing-parameters-to-components)
 ## [Inject services into components](xref:inject-services)
 ## [Controlling the root render tree](xref:root-render-tree)
+## [Controlling component instantiation](xref:controlling-component-instantiation)
 ## [Configure 3rd party libraries](xref:configure-3rd-party-libs)
 
 # [Interaction](xref:interaction)
@@ -23,6 +24,7 @@
 ## [Emulating Blazor's IJSRuntime](xref:emulating-ijsruntime)
 ## [Faking authorization](xref:faking-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
+## [Shallow rendering](xref:shallow-rendering)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External resources](xref:external-resources)

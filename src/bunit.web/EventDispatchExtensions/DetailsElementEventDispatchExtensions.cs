@@ -1,4 +1,4 @@
-#if !NETSTANDARD2_1
+#if NET5_0_OR_GREATER
 using System;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
@@ -8,7 +8,7 @@ namespace Bunit
 	/// <summary>
 	/// General event dispatch helper extension methods.
 	/// </summary>
-	public static class DetailsElementEventDispatcherExtensions
+	public static class DetailsElementEventDispatchExtensions
 	{
 		/// <summary>
 		/// Raises the <c>@ontoggle</c> event on <paramref name="element"/>

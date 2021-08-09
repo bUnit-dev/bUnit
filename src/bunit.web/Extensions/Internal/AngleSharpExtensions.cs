@@ -28,7 +28,7 @@ namespace Bunit
 		/// <returns>The <see cref="BunitHtmlParser"/> or null if not found.</returns>
 		public static BunitHtmlParser? GetHtmlParser(this INode? node)
 		{
-			return node?.Owner.Context.GetService<BunitHtmlParser>();
+			return node?.Owner?.Context.GetService<BunitHtmlParser>();
 		}
 
 		/// <summary>
@@ -46,9 +46,9 @@ namespace Bunit
 		/// owning context, if one is available.
 		/// </summary>
 		/// <returns>The <see cref="HtmlComparer"/> or null if not found.</returns>
-		public static HtmlComparer? GetHtmlComparer(this INode? node)
+		public static HtmlComparer GetHtmlComparer(this INode? node)
 		{
-			return node?.Owner.Context.GetService<HtmlComparer>();
+			return node?.Owner?.Context.GetService<HtmlComparer>() ?? new HtmlComparer();
 		}
 
 		/// <summary>
@@ -56,9 +56,9 @@ namespace Bunit
 		/// owning context, if one is available.
 		/// </summary>
 		/// <returns>The <see cref="HtmlComparer"/> or null if not found.</returns>
-		public static HtmlComparer? GetHtmlComparer(this INodeList nodes)
+		public static HtmlComparer GetHtmlComparer(this INodeList nodes)
 		{
-			return nodes?.Length > 0 ? nodes[0].GetHtmlComparer() : null;
+			return nodes?.Length > 0 ? nodes[0].GetHtmlComparer() : new HtmlComparer();
 		}
 
 		/// <summary>
@@ -68,7 +68,7 @@ namespace Bunit
 		/// <returns>The <see cref="TestContext"/> or null if not found.</returns>
 		public static TestContextBase? GetTestContext(this INode? node)
 		{
-			return node?.Owner.Context.GetService<TestContextBase>();
+			return node?.Owner?.Context.GetService<TestContextBase>();
 		}
 
 		/// <summary>

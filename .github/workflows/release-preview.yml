@@ -8,10 +8,15 @@ on:
     types: [ completed ]
 
   workflow_dispatch:
+    inputs:
+      nugetRelease:
+        description: 'Release to NuGet? Set to "true" to release to NuGet.org as well as GPR.'     
+        required: true
+        default: 'false'
 
 jobs:
   release-preview:
-    if: github.ref == 'refs/heads/main' || ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' && ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
     
@@ -31,7 +36,8 @@ jobs:
       - name: ⚙️ Setup dotnet 6.0.x
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.100-preview.3.21202.5'
+          dotnet-version: 6.0.x
+          include-prerelease: true
       
       - name: 🛠️ Update tokens in project files
         uses: cschleiden/replace-tokens@v1
@@ -40,9 +46,13 @@ jobs:
 
       - name: 🛠️ Packing library in release mode
         run: |
-          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
         
       - name: 🛠️ Upload library to GitHub Package Repository
         run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bunit-dev/index.json --skip-duplicate --no-symbols true
+
+      - name: 🛠️ Upload library to NuGet.org repository
+        if: github.event.inputs.nugetRelease == 'true'
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true

@@ -31,12 +31,24 @@ namespace Bunit.Rendering
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TestRenderer"/> class.
 		/// </summary>
-		public TestRenderer(IRenderedComponentActivator activator, IServiceProvider services, ILoggerFactory loggerFactory)
+		public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
 			: base(services, loggerFactory)
 		{
 			logger = loggerFactory.CreateLogger<TestRenderer>();
-			this.activator = activator;
+			this.activator = renderedComponentActivator;
 		}
+
+#if NET5_0_OR_GREATER
+		/// <summary>
+		/// Initializes a new instance of the <see cref="TestRenderer"/> class.
+		/// </summary>
+		public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+			: base(services, loggerFactory, componentActivator)
+		{
+			logger = loggerFactory.CreateLogger<TestRenderer>();
+			this.activator = renderedComponentActivator;
+		}
+#endif
 
 		/// <inheritdoc/>
 		public IRenderedFragmentBase RenderFragment(RenderFragment renderFragment)
@@ -61,7 +73,27 @@ namespace Bunit.Rendering
 
 			ResetUnhandledException();
 
-			var result = Dispatcher.InvokeAsync(() => base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs));
+			var result = Dispatcher.InvokeAsync(() =>
+			{
+				try
+				{
+					return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
+				}
+				catch (ArgumentException ex) when (string.Equals(ex.Message, $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')", StringComparison.Ordinal))
+				{
+					var betterExceptionMsg = new ArgumentException($"There is no event handler with ID '{eventHandlerId}' associated with the '{fieldInfo.FieldValue}' event " +
+						"in the current render tree. This can happen, for example, when using cut.FindAll(), and calling event trigger methods " +
+						"on the found elements after a re-render of the render tree. The workaround is to use re-issue the cut.FindAll() after " +
+						"each render of a component, this ensures you have the latest version of the render tree and DOM tree available in your test code.", ex);
+
+					return Task.FromException(betterExceptionMsg);
+				}
+			});
+
+			if(result.IsFaulted && result.Exception is not null)
+			{
+				HandleException(result.Exception);
+			}
 
 			AssertNoUnhandledExceptions();
 
@@ -124,7 +156,9 @@ namespace Bunit.Rendering
 			for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
 			{
 				var id = renderBatch.DisposedComponentIDs.Array[i];
+
 				logger.LogDebug(new EventId(10, nameof(UpdateDisplayAsync)), $"Component with ID = {id} has been disposed.");
+
 				if (renderedComponents.TryGetValue(id, out var rc))
 				{
 					renderedComponents.Remove(id);
@@ -136,6 +170,7 @@ namespace Bunit.Rendering
 			foreach (var (key, rc) in renderedComponents.ToArray())
 			{
 				logger.LogDebug(new EventId(11, nameof(UpdateDisplayAsync)), $"Component with ID = {rc.ComponentId} has been rendered.");
+
 				LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
 
 				rc.OnRender(renderEvent);
@@ -204,7 +239,6 @@ namespace Bunit.Rendering
 			return result;
 		}
 
-		[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
 		private IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
 			where TComponent : IComponent
 		{
@@ -237,7 +271,7 @@ namespace Bunit.Rendering
 					{
 						if (frame.Component is TComponent component)
 						{
-							GetOrCreateRenderedComponent(frame.ComponentId, component);
+							result.Add(GetOrCreateRenderedComponent(framesCollection, frame.ComponentId, component));
 
 							if (result.Count == resultLimit)
 								return;
@@ -250,24 +284,25 @@ namespace Bunit.Rendering
 					}
 				}
 			}
+		}
 
-			void GetOrCreateRenderedComponent(int componentId, TComponent component)
+		IRenderedComponentBase<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
+			where TComponent : IComponent
+		{
+			IRenderedComponentBase<TComponent> result;
+
+			if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
 			{
-				IRenderedComponentBase<TComponent> rc;
-
-				if (renderedComponents.TryGetValue(componentId, out var rf))
-				{
-					rc = (IRenderedComponentBase<TComponent>)rf;
-				}
-				else
-				{
-					LoadRenderTreeFrames(componentId, framesCollection);
-					rc = activator.CreateRenderedComponent(componentId, component, framesCollection);
-					renderedComponents.Add(rc.ComponentId, rc);
-				}
-
-				result.Add(rc);
+				result = (IRenderedComponentBase<TComponent>)renderedComponent;
 			}
+			else
+			{
+				LoadRenderTreeFrames(componentId, framesCollection);
+				result = activator.CreateRenderedComponent(componentId, component, framesCollection);
+				renderedComponents.Add(result.ComponentId, result);
+			}
+
+			return result;
 		}
 
 		/// <summary>

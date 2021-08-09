@@ -26,10 +26,13 @@ namespace Bunit.TestDoubles
 		/// <inheritdoc/>
 		protected override void NavigateToCore(string uri, bool forceLoad)
 		{
-			Uri = ToAbsoluteUri(uri).ToString();
+			Uri = ToAbsoluteUri(uri).OriginalString;
 
-			renderer.Dispatcher.InvokeAsync(
-				() => NotifyLocationChanged(isInterceptedLink: false));
+			renderer.Dispatcher.InvokeAsync(() =>
+			{
+				Uri = ToAbsoluteUri(uri).OriginalString;
+				NotifyLocationChanged(isInterceptedLink: false);
+			});
 		}
 	}
 }

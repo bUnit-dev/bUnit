@@ -13,7 +13,9 @@ namespace Bunit
 	public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, IDisposable
 	{
 		private readonly IServiceCollection serviceCollection;
-		private ServiceProvider? serviceProvider;
+		private IServiceProvider? rootServiceProvider;
+		private IServiceScope? serviceScope;
+		private IServiceProvider? serviceProvider;
 		private IServiceProvider? fallbackServiceProvider;
 
 		/// <summary>
@@ -83,7 +85,12 @@ namespace Bunit
 		private object? GetServiceInternal(Type serviceType)
 		{
 			if (serviceProvider is null)
-				serviceProvider = serviceCollection.BuildServiceProvider();
+			{
+				serviceCollection.AddSingleton<TestServiceProvider>(this);
+				rootServiceProvider = serviceCollection.BuildServiceProvider(validateScopes: true);
+				serviceScope = rootServiceProvider.CreateScope();
+				serviceProvider = serviceScope.ServiceProvider;
+			}
 
 			var result = serviceProvider.GetService(serviceType);
 
@@ -101,15 +108,11 @@ namespace Bunit
 
 		/// <inheritdoc/>
 		public void Dispose()
-		{
-			if (serviceProvider is null) return;
-
-			var disposedTask = serviceProvider.DisposeAsync().AsTask();
-
-			if (!disposedTask.IsCompleted)
-				disposedTask.GetAwaiter().GetResult();
-
-			serviceProvider.Dispose();
+		{			
+			(serviceScope as IAsyncDisposable)?.DisposeAsync().AsTask().GetAwaiter().GetResult();
+			serviceScope?.Dispose();
+			(rootServiceProvider as IAsyncDisposable)?.DisposeAsync().AsTask().GetAwaiter().GetResult();
+			(rootServiceProvider as IDisposable)?.Dispose();
 		}
 
 		/// <inheritdoc/>
