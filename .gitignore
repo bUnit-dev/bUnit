@@ -338,3 +338,4 @@ bunit.docs/log.txt
 tests/*/coverage
 
 bunit.v3.ncrunchsolution.user
+watch.csproj

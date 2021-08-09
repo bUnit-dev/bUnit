@@ -4,7 +4,7 @@
 	<PropertyGroup Label="Configuration variables">
 		<DotNet3Version>3.1.1</DotNet3Version>
 		<DotNet5Version>5.0.0</DotNet5Version>
-		<DotNet6Version>6.0.0-preview.5.*</DotNet6Version>
+		<DotNet6Version>6.0.0-preview.6.*</DotNet6Version>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->
@@ -17,7 +17,7 @@
 
 	<PropertyGroup Label="Compile settings">
 		<Nullable>enable</Nullable>
-		<LangVersion>9.0</LangVersion>
+		<LangVersion>10.0</LangVersion>
 		<NoWarn>CA1014,NU5104</NoWarn>
 
 		<!-- Used by code coverage -->
