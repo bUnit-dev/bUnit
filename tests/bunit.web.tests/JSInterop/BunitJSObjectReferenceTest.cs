@@ -51,7 +51,7 @@ namespace Bunit.JSInterop
 		[Fact(DisplayName = "Calling SetupModule(invocationMatcher) registers handler for module JS Interop")]
 		public void Test011()
 		{
-			JSInterop.SetupModule(invocation => true);
+			JSInterop.SetupModule(_ => true);
 
 			JSInterop.TryGetInvokeHandler<IJSObjectReference>("import", "FOO.js")
 				.ShouldBeOfType<JSObjectReferenceInvocationHandler>();

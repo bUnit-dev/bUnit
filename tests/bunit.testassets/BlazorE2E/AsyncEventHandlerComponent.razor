@@ -18,7 +18,7 @@
             _tcs = new TaskCompletionSource<object>();
 
             state = "Started";
-            return _tcs.Task.ContinueWith((task) =>
+            return _tcs.Task.ContinueWith((_) =>
             {
                 state = "Stopped";
                 _tcs = null;

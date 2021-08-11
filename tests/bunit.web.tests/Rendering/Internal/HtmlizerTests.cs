@@ -15,7 +15,7 @@ namespace Bunit.Rendering.Internal
 		public void Test002(bool stopPropagation, bool preventDefault)
 		{
 			var component = RenderComponent<Htmlizer01Component>(parameters => parameters
-				.Add(p => p.OnClick, (MouseEventArgs e) => { })
+				.Add(p => p.OnClick, (MouseEventArgs _) => { })
 				.Add(p => p.OnClickStopPropagation, stopPropagation)
 				.Add(p => p.OnClickPreventDefault, preventDefault));
 
@@ -41,7 +41,7 @@ namespace Bunit.Rendering.Internal
 			var cut = RenderComponent<Htmlizer01Component>();
 			cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 
-			cut.SetParametersAndRender(parameters => parameters.Add(p => p.OnClick, (MouseEventArgs e) => { }));
+			cut.SetParametersAndRender(parameters => parameters.Add(p => p.OnClick, (MouseEventArgs _) => { }));
 
 			cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 		}

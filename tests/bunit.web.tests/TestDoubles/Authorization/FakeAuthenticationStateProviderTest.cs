@@ -43,7 +43,7 @@ namespace Bunit.TestDoubles.Authorization
 			// arrange
 			var authProvider = new FakeAuthenticationStateProvider();
 			var stateChangeHandled = false;
-			authProvider.AuthenticationStateChanged += e => stateChangeHandled = true;
+			authProvider.AuthenticationStateChanged += _ => stateChangeHandled = true;
 
 			// act
 			authProvider.TriggerAuthenticationStateChanged("NewUser");
