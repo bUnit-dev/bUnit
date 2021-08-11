@@ -43,11 +43,11 @@ namespace Bunit
 
 			if (invocation.IsVoidResultInvocation)
 			{
-				sb.AppendLine($"    {invocation.InvocationMethodName}({GetArguments(invocation)})");
+				sb.AppendLine(FormattableString.Invariant($"    {invocation.InvocationMethodName}({GetArguments(invocation)})"));
 			}
 			else
 			{
-				sb.AppendLine($"    {invocation.InvocationMethodName}<{GetGenericInvocationArguments(invocation)}>({GetArguments(invocation)})");
+				sb.AppendLine(FormattableString.Invariant($"    {invocation.InvocationMethodName}<{GetGenericInvocationArguments(invocation)}>({GetArguments(invocation)})"));
 			}
 
 			sb.AppendLine();
@@ -56,26 +56,26 @@ namespace Bunit
 
 			if (IsImportModuleInvocation(invocation))
 			{
-				sb.AppendLine($"    SetupModule({GetArguments(invocation, includeIdentifier: false)})");
+				sb.AppendLine(FormattableString.Invariant($"    SetupModule({GetArguments(invocation, includeIdentifier: false)})"));
 			}
 			else
 			{
 				if (invocation.IsVoidResultInvocation)
 				{
-					sb.AppendLine($"    SetupVoid({GetArguments(invocation)})");
+					sb.AppendLine(FormattableString.Invariant($"    SetupVoid({GetArguments(invocation)})"));
 				}
 				else
 				{
-					sb.AppendLine($"    Setup<{GetReturnTypeName(invocation.ResultType)}>({GetArguments(invocation)})");
+					sb.AppendLine(FormattableString.Invariant($"    Setup<{GetReturnTypeName(invocation.ResultType)}>({GetArguments(invocation)})"));
 				}
 
 				if (invocation.Arguments.Any())
 				{
 					sb.AppendLine("or the following, to match any arguments:");
 					if (invocation.IsVoidResultInvocation)
-						sb.AppendLine($"    SetupVoid(\"{invocation.Identifier}\", _ => true)");
+						sb.AppendLine(FormattableString.Invariant($"    SetupVoid(\"{invocation.Identifier}\", _ => true)"));
 					else
-						sb.AppendLine($"    Setup<{GetReturnTypeName(invocation.ResultType)}>(\"{invocation.Identifier}\", _ => true)");
+						sb.AppendLine(FormattableString.Invariant($"    Setup<{GetReturnTypeName(invocation.ResultType)}>(\"{invocation.Identifier}\", _ => true)"));
 				}
 			}
 
