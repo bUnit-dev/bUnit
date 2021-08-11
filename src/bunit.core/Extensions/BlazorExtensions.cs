@@ -15,7 +15,7 @@ namespace Bunit.Extensions
 		public static RenderFragment ToMarkupRenderFragment(this string? markup)
 		{
 			if (string.IsNullOrEmpty(markup))
-				return builder => { };
+				return _ => { };
 			return
 				builder => builder.AddMarkupContent(0, markup);
 		}

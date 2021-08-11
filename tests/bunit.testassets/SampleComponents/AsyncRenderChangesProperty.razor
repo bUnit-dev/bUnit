@@ -7,7 +7,7 @@
 	private Task Tick()
 	{
 		Counter++;
-		return _tcs.Task.ContinueWith(t => { Counter++; });
+		return _tcs.Task.ContinueWith(_ => { Counter++; });
 	}
 
 	private void Tock()

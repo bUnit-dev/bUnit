@@ -145,8 +145,8 @@ namespace Bunit
 			// arrange
 			var ec1 = EventCallback.Factory.Create(this, () => { });
 			var ec2 = EventCallback.Factory.Create(this, () => { });
-			var ec3 = EventCallback.Factory.Create<EventArgs>(this, (e) => { });
-			var ec4 = EventCallback.Factory.Create<EventArgs>(this, (e) => { });
+			var ec3 = EventCallback.Factory.Create<EventArgs>(this, (_) => { });
+			var ec4 = EventCallback.Factory.Create<EventArgs>(this, (_) => { });
 			var sut = new ComponentParameterCollection
 			{
 				ComponentParameter.CreateParameter(nameof(Params.NullableEC), ec1),

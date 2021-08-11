@@ -13,11 +13,11 @@ namespace Bunit.ComponentFactories
 	{
 		[Fact(DisplayName = "AddStub throws if factories is null")]
 		public void Test100()
-			=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionExtensions.AddStub(null, null, ps => ""));
+			=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionExtensions.AddStub(null, null, _ => ""));
 
 		[Fact(DisplayName = "AddStub throws if predicate is null")]
 		public void Test101()
-			=> Should.Throw<ArgumentNullException>(() => ComponentFactories.AddStub(null, ps => ""));
+			=> Should.Throw<ArgumentNullException>(() => ComponentFactories.AddStub(null, _ => ""));
 
 		[Fact(DisplayName = "AddStub<T> replaces T with Stub<T>")]
 		public void Test001()

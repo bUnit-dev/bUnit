@@ -91,14 +91,14 @@ namespace Bunit.JSInterop.ComponentSupport
 			var cut = RenderComponent<Virtualize<string>>(ps => ps
 				.Add(p => p.ItemsProvider, _ => ValueTask.FromResult(new ItemsProviderResult<string>(Array.Empty<string>(), itemsInDataSource)))
 				.Add(p => p.ItemContent, item => @$"<p class=""item"">{item}</p>")
-				.Add(p => p.Placeholder, item => @"<p class=""placeholder"" />"));
+				.Add(p => p.Placeholder, _ => @"<p class=""placeholder"" />"));
 
 			cut.FindAll(".placeholder").Count.ShouldBe(itemsInDataSource);
 			cut.FindAll(".item").Count.ShouldBe(0);
 		}
 
 		private static ICollection<string> CreateItems(int itemsToCreate)
-			=> Enumerable.Range(0, itemsToCreate).Select(x => Guid.NewGuid().ToString()).ToArray();
+			=> Enumerable.Range(0, itemsToCreate).Select(_ => Guid.NewGuid().ToString()).ToArray();
 
 		private static ItemsProviderDelegate<string> CreateItemsProvider(int itemsInCollection)
 		{

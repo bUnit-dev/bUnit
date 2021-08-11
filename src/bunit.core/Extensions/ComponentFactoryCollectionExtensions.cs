@@ -12,7 +12,7 @@ namespace Bunit
 	/// </summary>
 	public static class ComponentFactoryCollectionExtensions
 	{
-		private static readonly RenderFragment<IReadOnlyDictionary<string, object>> NoopReplacementTemplate = p => b => {};
+		private static readonly RenderFragment<IReadOnlyDictionary<string, object>> NoopReplacementTemplate = _ => _ => {};
 
 		/// <summary>
 		/// Configures bUnit to replace all components of type <typeparamref name="TComponent"/> with a component
