@@ -9,7 +9,7 @@ namespace Bunit.JSInterop.InvocationHandlers
 	public class JSRuntimeInvocationHandler : JSRuntimeInvocationHandlerBase<object>
 	{
 		/// <inheritdoc/>
-		public override sealed bool IsVoidResultHandler { get; } = true;
+		public override sealed bool IsVoidResultHandler => true;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="JSRuntimeInvocationHandler"/> class.

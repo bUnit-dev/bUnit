@@ -10,7 +10,7 @@ namespace Bunit.Extensions.WaitForHelpers
 		internal const string TimeoutMessage = "The assertion did not pass within the timeout period.";
 
 		/// <inheritdoc/>
-		protected override string? TimeoutErrorMessage { get; } = TimeoutMessage;
+		protected override string? TimeoutErrorMessage => TimeoutMessage;
 
 		/// <inheritdoc/>
 		protected override bool StopWaitingOnCheckException { get; }
