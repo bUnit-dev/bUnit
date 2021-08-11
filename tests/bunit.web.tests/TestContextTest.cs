@@ -20,7 +20,7 @@ namespace Bunit
 			Should.Throw<MissingMockStringLocalizationException>(() => RenderComponent<SimpleUsingLocalizer>());
 		}
 
-		[Fact(DisplayName = "Render() renders fragment inside RenderTreee")]
+		[Fact(DisplayName = "Render() renders fragment inside RenderTree")]
 		public void Test030()
 		{
 			RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
