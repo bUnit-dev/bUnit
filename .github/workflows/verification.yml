@@ -64,9 +64,9 @@ jobs:
 
       - name: 🧪 Run unit tests
         run: |
-          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions
-          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions
-          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions
+          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
 
       - name: 🗳️ Pack library
         run: |
@@ -82,7 +82,7 @@ jobs:
           dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTest
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${GITHUB_WORKSPACE}/TemplateTest/Directory.Build.props
           dotnet restore ${GITHUB_WORKSPACE}/TemplateTest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
-          dotnet test ${GITHUB_WORKSPACE}/TemplateTest
+          dotnet test ${GITHUB_WORKSPACE}/TemplateTest --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
 
       # DocFx only works well on Windows currently
       - name: 📄 Build documentation
