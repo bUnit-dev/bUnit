@@ -1,7 +1,7 @@
 @inherits TestComponentBase
 
 @code {
-	class Dep1 : ITestDep { public string Name { get; } = "FOO"; }
+	class Dep1 : ITestDep { public string Name => "FOO"; }
 	class Dep2 : IAsyncTestDep { public Task<string> GetDataAsync() => Task.FromResult("BAR"); }
 }
 

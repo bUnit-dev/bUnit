@@ -34,7 +34,7 @@ namespace Bunit
 		[Fact(DisplayName = "EventCallback(Action<object>) creates parameter with provided name and callback")]
 		public async Task Test002()
 		{
-			Action<object> action = args => Actual = EXPECTED;
+			Action<object> action = _ => Actual = EXPECTED;
 
 			var cp = EventCallback(NAME, action);
 
@@ -54,7 +54,7 @@ namespace Bunit
 		[Fact(DisplayName = "EventCallback(Func<object, Task>) creates parameter with provided name and callback")]
 		public async Task Test004()
 		{
-			Func<object, Task> action = args => { Actual = EXPECTED; return Task.CompletedTask; };
+			Func<object, Task> action = _ => { Actual = EXPECTED; return Task.CompletedTask; };
 
 			var cp = EventCallback(NAME, action);
 
@@ -74,7 +74,7 @@ namespace Bunit
 		[Fact(DisplayName = "EventCallback<TValue>(Action<TValue>) creates parameter with provided name and callback")]
 		public async Task Test012()
 		{
-			Action<EventArgs> action = args => Actual = EXPECTED;
+			Action<EventArgs> action = _ => Actual = EXPECTED;
 
 			var cp = EventCallback<EventArgs>(NAME, action);
 
@@ -94,7 +94,7 @@ namespace Bunit
 		[Fact(DisplayName = "EventCallback(Func<object, Task>) creates parameter with provided name and callback")]
 		public async Task Test014()
 		{
-			Func<EventArgs, Task> action = args => { Actual = EXPECTED; return Task.CompletedTask; };
+			Func<EventArgs, Task> action = _ => { Actual = EXPECTED; return Task.CompletedTask; };
 
 			var cp = EventCallback<EventArgs>(NAME, action);
 

@@ -140,7 +140,7 @@ namespace Bunit
 		[Fact(DisplayName = "Action<object> to EventCallback with parameter selector")]
 		public async Task Test013()
 		{
-			Builder.Add(x => x.EC, (x) => { EventCallbackCalled = true; });
+			Builder.Add(x => x.EC, (_) => { EventCallbackCalled = true; });
 			await VerifyEventCallbackAsync("EC");
 		}
 
@@ -161,7 +161,7 @@ namespace Bunit
 		[Fact(DisplayName = "Action<object> to EventCallback? with parameter selector")]
 		public async Task Test016()
 		{
-			Builder.Add(x => x.NullableEC, (x) => { EventCallbackCalled = true; });
+			Builder.Add(x => x.NullableEC, (_) => { EventCallbackCalled = true; });
 			await VerifyEventCallbackAsync("NullableEC");
 		}
 
@@ -190,7 +190,7 @@ namespace Bunit
 		[Fact(DisplayName = "Action<object> to EventCallback<T> with parameter selector")]
 		public async Task Test020()
 		{
-			Builder.Add(x => x.ECWithArgs, (x) => { EventCallbackCalled = true; });
+			Builder.Add(x => x.ECWithArgs, (_) => { EventCallbackCalled = true; });
 			await VerifyEventCallbackAsync<EventArgs>("ECWithArgs");
 		}
 
@@ -219,7 +219,7 @@ namespace Bunit
 		[Fact(DisplayName = "Action<object> to EventCallback<T> with parameter selector")]
 		public async Task Test024()
 		{
-			Builder.Add(x => x.NullableECWithArgs, (x) => { EventCallbackCalled = true; });
+			Builder.Add(x => x.NullableECWithArgs, (_) => { EventCallbackCalled = true; });
 			await VerifyEventCallbackAsync<EventArgs>("NullableECWithArgs");
 		}
 

@@ -8,6 +8,6 @@ namespace Bunit.ComponentFactories
 		where TReplacementComponent : IComponent
 	{
 		public bool CanCreate(Type componentType) => componentType == typeof(TComponent);
-		public IComponent Create(Type componentType) => (IComponent)Activator.CreateInstance(typeof(TReplacementComponent))!;
+		public IComponent Create(Type componentType) => Activator.CreateInstance<TReplacementComponent>()!;
 	}
 }

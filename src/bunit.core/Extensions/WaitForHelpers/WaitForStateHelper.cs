@@ -11,13 +11,13 @@ namespace Bunit.Extensions.WaitForHelpers
 		internal const string ExceptionInPredicateMessage = "The state predicate throw an unhandled exception.";
 
 		/// <inheritdoc/>
-		protected override string? TimeoutErrorMessage { get; } = TimeoutBeforePassMessage;
+		protected override string? TimeoutErrorMessage => TimeoutBeforePassMessage;
 
 		/// <inheritdoc/>
-		protected override string? CheckThrowErrorMessage { get; } = ExceptionInPredicateMessage;
+		protected override string? CheckThrowErrorMessage => ExceptionInPredicateMessage;
 
 		/// <inheritdoc/>
-		protected override bool StopWaitingOnCheckException { get; } = true;
+		protected override bool StopWaitingOnCheckException => true;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WaitForStateHelper"/> class,

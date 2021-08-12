@@ -1,5 +1,5 @@
 <PropertiesChangedHandlerChild SuppliedValue=@valueToSupply />
-<button @onclick=@(x => valueToSupply++)>Increment</button>
+<button @onclick=@(_ => valueToSupply++)>Increment</button>
 
 @code {
     private int valueToSupply = 100;

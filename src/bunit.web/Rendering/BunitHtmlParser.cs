@@ -170,9 +170,9 @@ namespace Bunit.Rendering
 				}
 			}
 
-			public int Length { get; } = 1;
+			public int Length => 1;
 
-			public int Count { get; } = 1;
+			public int Count => 1;
 
 			public SingleNodeNodeList(INode? node) => this.node = node ?? throw new ArgumentNullException(nameof(node));
 

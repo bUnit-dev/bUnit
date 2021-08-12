@@ -181,7 +181,7 @@ namespace Bunit.JSInterop
 		{
 			var identifier = "func";
 			var sut = new BunitJSInterop();
-			var handler = sut.Setup<Guid>(identifier, x => true);
+			var handler = sut.Setup<Guid>(identifier, _ => true);
 			sut.JSRuntime.InvokeAsync<Guid>(identifier, "first");
 			sut.JSRuntime.InvokeAsync<Guid>(identifier, "second");
 

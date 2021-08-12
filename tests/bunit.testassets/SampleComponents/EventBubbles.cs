@@ -22,18 +22,18 @@ namespace Bunit.TestAssets.SampleComponents
 			if (EventName is null) return;
 
 			builder.OpenElement(0, "div");
-			builder.AddAttribute(1, EventName, EventCallback.Factory.Create<EventArgs>(this, (evt) => GrandParentTriggerCount++));
+			builder.AddAttribute(1, EventName, EventCallback.Factory.Create<EventArgs>(this, (_) => GrandParentTriggerCount++));
 			builder.AddAttribute(2, "id", "grand-parent");
 			builder.AddEventStopPropagationAttribute(3, EventName, GrandParentStopPropergation);
 
 			builder.OpenElement(10, "div");
-			builder.AddAttribute(11, EventName, EventCallback.Factory.Create<EventArgs>(this, (evt) => ParentTriggerCount++));
+			builder.AddAttribute(11, EventName, EventCallback.Factory.Create<EventArgs>(this, (_) => ParentTriggerCount++));
 			builder.AddAttribute(12, "id", "parent");
 			builder.AddEventStopPropagationAttribute(13, EventName, ParentStopPropergation);
 
 			builder.OpenElement(20, ChildElementType);
 
-			builder.AddAttribute(21, EventName, EventCallback.Factory.Create<EventArgs>(this, (evt) => ChildTriggerCount++));
+			builder.AddAttribute(21, EventName, EventCallback.Factory.Create<EventArgs>(this, (_) => ChildTriggerCount++));
 			builder.AddAttribute(22, "id", "child");
 			builder.AddEventStopPropagationAttribute(23, EventName, ChildStopPropergation);
 			if (ChildElementDisabled)
