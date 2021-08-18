@@ -84,6 +84,7 @@ jobs:
 
       - name: 🛠️ Building docs
         run: |
+          dotnet build
           dotnet build docs/site/
           dotnet build docs/site/
 
