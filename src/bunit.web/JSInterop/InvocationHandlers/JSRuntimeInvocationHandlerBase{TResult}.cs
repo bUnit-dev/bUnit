@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Bunit.JSInterop.InvocationHandlers
+namespace Bunit
 {
 	/// <summary>
 	/// Represents an invocation handler for <see cref="JSRuntimeInvocation"/> instances.

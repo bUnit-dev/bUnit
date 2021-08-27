@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Bunit.JSInterop.InvocationHandlers
+namespace Bunit
 {
 	/// <summary>
 	/// Represents a handler for an invocation of a JavaScript function which returns nothing, with specific arguments.
