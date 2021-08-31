@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using AngleSharp.Dom;
 using Bunit.Asserting;
-using Bunit.JSInterop.InvocationHandlers;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit

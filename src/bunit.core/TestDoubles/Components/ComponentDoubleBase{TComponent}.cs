@@ -44,7 +44,6 @@ namespace Bunit.TestDoubles
 		protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
 
 		/// <inheritdoc/>
-		[SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "The IComponent.Attach method are only used by the Blazor renderer, and should not be called from other places.")]
 		void IComponent.Attach(RenderHandle renderHandle) => this.renderHandle = renderHandle;
 	}
 }

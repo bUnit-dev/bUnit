@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using AutoFixture.Xunit2;
-using Microsoft.JSInterop;
 using Xunit;
 
 namespace Bunit.JSInterop

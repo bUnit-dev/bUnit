@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bunit.JSInterop;
-using Bunit.JSInterop.InvocationHandlers;
 #if NET5_0_OR_GREATER
 using Bunit.JSInterop.InvocationHandlers.Implementation;
 #endif

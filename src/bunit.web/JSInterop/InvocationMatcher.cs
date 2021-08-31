@@ -1,5 +1,3 @@
-using Bunit.JSInterop.InvocationHandlers;
-
 namespace Bunit
 {
 	/// <summary>

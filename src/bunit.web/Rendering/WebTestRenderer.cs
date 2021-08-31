@@ -1,4 +1,3 @@
-using System;
 #if NET5_0_OR_GREATER
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;

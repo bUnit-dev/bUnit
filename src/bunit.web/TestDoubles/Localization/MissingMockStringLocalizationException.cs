@@ -32,14 +32,14 @@ namespace Bunit.TestDoubles
 			: base(serializationInfo, streamingContext)
 		{
 			if (serializationInfo is null) throw new ArgumentNullException(nameof(serializationInfo));
-			Arguments = serializationInfo.GetValue(nameof(Arguments), typeof(object?[])) as object?[] ?? Array.Empty<object?>();
+			Arguments = serializationInfo.GetValue(nameof(Arguments), Array.Empty<object?>().GetType()) as object?[] ?? Array.Empty<object?>();
 		}
 
 		/// <inheritdoc/>
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			if (info is null) throw new ArgumentNullException(nameof(info));
-			info.AddValue(nameof(Arguments), Arguments, typeof(object?[]));
+			info.AddValue(nameof(Arguments), Arguments, Array.Empty<object?>().GetType());
 			base.GetObjectData(info, context);
 		}
 	}

@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Bunit.Diffing;
 using Bunit.Rendering;
 
 namespace Bunit

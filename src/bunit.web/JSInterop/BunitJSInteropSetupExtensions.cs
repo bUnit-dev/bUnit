@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Bunit.JSInterop.InvocationHandlers;
 using Microsoft.JSInterop;
 
 namespace Bunit
