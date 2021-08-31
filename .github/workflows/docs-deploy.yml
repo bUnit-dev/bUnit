@@ -19,7 +19,7 @@ jobs:
   deploy:
     name: 📃 Deploy new version bunit.dev
     if: github.ref == 'refs/heads/stable' || ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
 
       - name: 🛒 Checkout repository
@@ -83,10 +83,9 @@ jobs:
         run: dotnet test docs/samples/samples.sln
 
       - name: 🛠️ Building docs
-        run: |
-          dotnet build
-          dotnet build docs/site/
-          dotnet build docs/site/
+        uses: nikeee/docfx-action@v1.0.0
+        with:
+          args: docs/site/docfx.json          
 
       - name: 🛠️ Deploy to GitHub Pages
         if: success()
