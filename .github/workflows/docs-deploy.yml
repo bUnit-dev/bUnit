@@ -77,7 +77,7 @@ jobs:
           include-prerelease: true
 
       - name: 🛠️ Building bUnit
-        run: dotnet build bUnit.sln /p:PublicRelease=true
+        run: dotnet build /p:PublicRelease=true
 
       - name: 🛠️ Verfiy docs samples
         run: dotnet test docs/samples/samples.sln
