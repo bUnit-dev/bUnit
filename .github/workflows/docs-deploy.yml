@@ -19,7 +19,7 @@ jobs:
   deploy:
     name: 📃 Deploy new version bunit.dev
     if: github.ref == 'refs/heads/stable' || ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
 
       - name: 🛒 Checkout repository
