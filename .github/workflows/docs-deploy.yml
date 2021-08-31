@@ -77,15 +77,15 @@ jobs:
           include-prerelease: true
 
       - name: 🛠️ Building bUnit
-        run: dotnet build /p:PublicRelease=true
+        run: dotnet build bUnit.sln /p:PublicRelease=true
 
       - name: 🛠️ Verfiy docs samples
         run: dotnet test docs/samples/samples.sln
 
       - name: 🛠️ Building docs
-        run: |
-          dotnet build docs/site/
-          dotnet build docs/site/
+        uses: nikeee/docfx-action@v1.0.0
+        with:
+          args: docs/site/docfx.json          
 
       - name: 🛠️ Deploy to GitHub Pages
         if: success()
