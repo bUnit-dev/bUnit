@@ -5,6 +5,7 @@ using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -43,6 +44,7 @@ namespace Bunit.Extensions
 
 			// bUnits fake Navigation Manager
 			services.AddSingleton<NavigationManager, FakeNavigationManager>();
+			services.AddSingleton<INavigationInterception, FakeNavigationInterception>();
 
 			// bUnit specific services
 			services.AddSingleton<TestContextBase>(testContext);

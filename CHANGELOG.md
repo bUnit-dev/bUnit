@@ -6,6 +6,25 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+List of added functionality in this release.
+
+- Added support for writing tests of components that use the `<FocusOnNavigate>` component included in .NET 6. This includes an assertion helper method `VerifyFocusOnNavigateInvoke` on bUnit's `JSInterop` that allow you to verify that `<FocusOnNavigate>` has set focus on an element during render. For example, to verify that `h1` selector was used to pick an element to focus on, do:  
+  
+  ```csharp
+  // <App /> component uses <FocusOnNavigate>
+  var cut = RenderComponent<App>();
+
+  // Verifies that <FocusOnNavigate> called it's JavaScript function
+  var invocation = JSInterop.VerifyFocusOnNavigateInvoke(); 
+
+  // Verify that the invocation of <FocusOnNavigate> JavaScript function included the "h1" as the selector
+  Assert.Equal("h1", invocation.Arguments[0]);
+  ```
+
+  By [@egil](https://github.com/egil).
+
 ## [1.2.49] - 2021-08-09
 
 ### Added

@@ -4,6 +4,7 @@
 		<TargetFrameworks>netstandard2.1;net5.0;net6.0</TargetFrameworks>
 		<RootNamespace>Bunit.TestAssets</RootNamespace>
 		<AssemblyName>Bunit.TestAssets</AssemblyName>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
 
 	<ItemGroup>
