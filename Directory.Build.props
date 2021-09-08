@@ -47,7 +47,7 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
-		<PackageReference Include="Meziantou.Analyzer" Version="1.0.668" PrivateAssets="All" />
+		<PackageReference Include="Meziantou.Analyzer" Version="1.0.670" PrivateAssets="All" />
 		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.27.0.35380" PrivateAssets="All" />
 	</ItemGroup>
 
