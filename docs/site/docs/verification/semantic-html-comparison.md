@@ -42,7 +42,7 @@ Here are the customization options you have available to you:
 
   ```html
   <header>
-    <h1 class:ignore="heading-1">Hello world</h1>
+    <h1 class:ignore>Hello world</h1>
   </header>
   ```
 
