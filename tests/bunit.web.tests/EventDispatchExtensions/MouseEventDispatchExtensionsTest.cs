@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.AspNetCore.Components.Web;
+using Shouldly;
 using Xunit;
 
 namespace Bunit
@@ -36,6 +37,26 @@ namespace Bunit
 				helper,
 				expected,
 				(nameof(MouseEventDispatchExtensions.DoubleClick), "ondblclick"));
+		}
+
+		[Fact(DisplayName = "Click sets MouseEventArgs.Detail to 1 by default")]
+		public void Test001()
+		{
+			var spy = CreateTriggerSpy<MouseEventArgs>("button", "onclick");
+
+			spy.Trigger(x => x.Click());
+
+			spy.RaisedEvent.Detail.ShouldBe(1);
+		}
+
+		[Fact(DisplayName = "DoubleClick sets MouseEventArgs.Detail to 2 by default")]
+		public void Test002()
+		{
+			var spy = CreateTriggerSpy<MouseEventArgs>("button", "ondblclick");
+
+			spy.Trigger(x => x.DoubleClick());
+
+			spy.RaisedEvent.Detail.ShouldBe(2);
 		}
 	}
 }
