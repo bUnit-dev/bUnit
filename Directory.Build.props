@@ -4,7 +4,7 @@
 	<PropertyGroup Label="Configuration variables">
 		<DotNet3Version>3.1.1</DotNet3Version>
 		<DotNet5Version>5.0.0</DotNet5Version>
-		<DotNet6Version>6.0.0-preview.7.*</DotNet6Version>
+		<DotNet6Version>6.0.0-rc.1.*</DotNet6Version>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->
