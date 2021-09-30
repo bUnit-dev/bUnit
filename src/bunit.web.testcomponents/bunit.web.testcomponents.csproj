@@ -26,6 +26,16 @@ NOTE: This package represents experimental features of bUnit that has been super
 		<PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet3Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet3Version)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet5Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet5Version)" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<ProjectReference Include="..\bunit.web\bunit.web.csproj" />
 	</ItemGroup>

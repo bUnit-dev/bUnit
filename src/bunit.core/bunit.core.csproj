@@ -14,4 +14,22 @@
 		</Description>
 	</PropertyGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet3Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet3Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet3Version)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet5Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet5Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet5Version)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet6Version)" />
+	</ItemGroup>
+
 </Project>
