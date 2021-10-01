@@ -12,7 +12,7 @@ namespace Bunit.TestDoubles
 	/// </summary>
 	internal class BunitErrorBoundaryLogger : IErrorBoundaryLogger
 	{
-		private static readonly Action<ILogger, string, Exception> exceptionCaughtByErrorBoundary = LoggerMessage.Define<string>(
+		private static readonly Action<ILogger, string, Exception> ExceptionCaughtByErrorBoundary = LoggerMessage.Define<string>(
 			LogLevel.Warning,
 			100,
 			"Unhandled exception rendering component: {Message}");
@@ -32,7 +32,7 @@ namespace Bunit.TestDoubles
 		/// </summary>
 		public ValueTask LogErrorAsync(Exception exception)
 		{
-			exceptionCaughtByErrorBoundary(logger, exception.Message, exception);
+			ExceptionCaughtByErrorBoundary(logger, exception.Message, exception);
 			return ValueTask.CompletedTask;
 		}
 	}
