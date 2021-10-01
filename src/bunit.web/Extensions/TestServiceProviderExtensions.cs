@@ -5,6 +5,7 @@ using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,7 +49,9 @@ namespace Bunit.Extensions
 
 			// bUnit specific services
 			services.AddSingleton<TestContextBase>(testContext);
-			services.AddSingleton<ITestRenderer, WebTestRenderer>();
+			services.AddSingleton<WebTestRenderer>();
+			services.AddSingleton<Renderer>(s => s.GetRequiredService<WebTestRenderer>());
+			services.AddSingleton<ITestRenderer>(s => s.GetRequiredService<WebTestRenderer>());
 			services.AddSingleton<HtmlComparer>();
 			services.AddSingleton<BunitHtmlParser>();
 			services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
