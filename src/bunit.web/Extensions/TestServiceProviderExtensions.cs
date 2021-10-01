@@ -33,7 +33,7 @@ namespace Bunit.Extensions
 				throw new System.ArgumentNullException(nameof(jsInterop));
 
 			// Placeholders and defaults for common Blazor services
-			services.AddSingleton<ILoggerFactory>(NullLoggerFactory.Instance);
+			services.AddLogging();
 			services.AddSingleton<AuthenticationStateProvider, PlaceholderAuthenticationStateProvider>();
 			services.AddSingleton<IAuthorizationService, PlaceholderAuthorizationService>();
 			services.AddSingleton<HttpClient, PlaceholderHttpClient>();
