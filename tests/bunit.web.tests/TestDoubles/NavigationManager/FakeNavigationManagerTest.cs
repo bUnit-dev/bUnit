@@ -11,14 +11,18 @@ namespace Bunit.TestDoubles
 {
 	public class FakeNavigationManagerTest : TestContext
 	{
-		private NavigationManager CreateFakeNavigationMananger()
-			=> Services.GetRequiredService<NavigationManager>();
+		private FakeNavigationManager CreateFakeNavigationMananger()
+			=> Services.GetRequiredService<FakeNavigationManager>();
 
 		[Fact(DisplayName = "TestContext.Services has NavigationManager registered by default as FakeNavigationManager")]
 		public void Test001()
 		{
-			Services.GetService<NavigationManager>()
-				.ShouldBeOfType<FakeNavigationManager>();
+			var nm = Services.GetService<NavigationManager>();
+			var fnm = Services.GetService<FakeNavigationManager>();
+
+			nm.ShouldNotBeNull();
+			fnm.ShouldNotBeNull();
+			nm.ShouldBe(fnm);
 		}
 
 		[Fact(DisplayName = "FakeNavigationManager.BaseUrl is set to http://localhost/")]
@@ -89,7 +93,7 @@ namespace Bunit.TestDoubles
 
 			sut.NavigateTo("foo");
 
-			cut.Markup.ShouldBe($"{sut.BaseUri}foo");
+			cut.Find("p").MarkupMatches($"<p>{sut.BaseUri}foo</p>");
 		}
 
 		[Fact(DisplayName = "Uri should not be unescaped")]
@@ -101,5 +105,47 @@ namespace Bunit.TestDoubles
 
 			sut.Uri.ShouldEndWith("with%20whitespace");
 		}
+
+#if !NET6_0_OR_GREATER
+		[Theory(DisplayName = "NavigateTo(uri, forceLoad) is saved in history")]
+		[InlineData("/uri", false)]
+		[InlineData("/anotherUri", true)]
+		public void Test100(string uri, bool forceLoad)
+		{
+			var sut = CreateFakeNavigationMananger();
+
+			sut.NavigateTo(uri, forceLoad);
+
+			sut.History.ShouldHaveSingleItem()
+				.ShouldBeEquivalentTo(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
+		}
+#endif
+#if NET6_0_OR_GREATER
+		[Theory(DisplayName = "NavigateTo(uri, forceLoad, replaceHistoryEntry) is saved in history")]
+		[InlineData("/uri", false, false)]
+		[InlineData("/uri", true, false)]
+		[InlineData("/uri", false, true)]
+		public void Test200(string uri, bool forceLoad, bool replaceHistoryEntry)
+		{
+			var sut = CreateFakeNavigationMananger();
+
+			sut.NavigateTo(uri, forceLoad, replaceHistoryEntry);
+
+			sut.History.ShouldHaveSingleItem()
+				.ShouldBeEquivalentTo(new NavigationHistory(uri, new NavigationOptions() { ForceLoad = forceLoad, ReplaceHistoryEntry = replaceHistoryEntry }));
+		}
+
+		[Fact(DisplayName = "NavigateTo with replaceHistoryEntry true replaces previous history entry")]
+		public void Test201()
+		{
+			var sut = CreateFakeNavigationMananger();
+
+			sut.NavigateTo("/firstUrl");
+			sut.NavigateTo("/secondUrl", new NavigationOptions { ReplaceHistoryEntry = true });
+
+			sut.History.ShouldHaveSingleItem()
+				.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl", new NavigationOptions() { ReplaceHistoryEntry = true }));
+		}
+#endif
 	}
 }

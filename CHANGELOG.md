@@ -29,6 +29,8 @@ List of added functionality in this release.
 
 - Added `TriggerEvent` method to make it easier to trigger custom events. By [@egil](https://github.com/egil).
 
+- Added `History` capture in the `FakeNavigationManager`. By [@egil](https://github.com/egil).
+
 ### Fixed
 
 - The `Click` and `DoubleClick` extension methods now set the `MouseEventArgs.Detail` property to `1` and `2` respectively by default, unless the user specifies something else. This makes the methods more correctly emulate how Blazor reports single or double clicks on an element in the browser. Thanks to [@David-Moreira](https://github.com/David-Moreira) for the help troubleshooting this issue. By [@egil](https://github.com/egil).
@@ -44,7 +46,6 @@ List of added functionality in this release.
 -   Added `BunitErrorBoundaryLogger` implementation of `IErrorBoundaryLogger` (needed for Blazor's ErrorBoundary component in .NET 6.0). By [@jgoday](https://github.com/jgoday).
 
 -   Added `ComponentFactories` property to the `TestContextBase` type. The `ComponentFactories` property is a `ComponentFactoryCollection` type that contains `IComponentFactory` types. These are used by bUnits component activator, whenever a component is created during testing. If no component factories is added to the collection, the standard component activator mechanism from Blazor is used. This feature makes it possible to control what components are created normally during a test, and which should be e.g. replaced by a test dummy. More info is available in issue [#388](https://github.com/bUnit-dev/bUnit/issues/388).  
-
     Learn more about this feature on the [Controlling component instantiation](https://bunit.dev/docs/providing-input/controlling-component-instantiation) page.
 
 -   Added `HasComponent<TComponent>()` to `IRenderedFragement`. Use it to check if the rendered fragment contains a component of type `TComponent`. Added by [@egil](https://github.com/egil).

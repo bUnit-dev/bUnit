@@ -44,7 +44,8 @@ namespace Bunit.Extensions
 			services.AddSingleton<IJSRuntime>(jsInterop.JSRuntime);
 
 			// bUnits fake Navigation Manager
-			services.AddSingleton<NavigationManager, FakeNavigationManager>();
+			services.AddSingleton<FakeNavigationManager>();
+			services.AddSingleton<NavigationManager>(s => s.GetRequiredService<FakeNavigationManager>());
 			services.AddSingleton<INavigationInterception, FakeNavigationInterception>();
 
 			// bUnit specific services
