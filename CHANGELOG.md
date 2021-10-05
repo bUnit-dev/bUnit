@@ -27,6 +27,8 @@ List of added functionality in this release.
 
 - Added fake version of the `PersistentComponentState` type in Blazor that makes it possible to test components that use the type. By [@egil](https://github.com/egil).
 
+- Added `TriggerEvent` method to make it easier to trigger custom events. By [@egil](https://github.com/egil).
+
 ### Fixed
 
 - The `Click` and `DoubleClick` extension methods now set the `MouseEventArgs.Detail` property to `1` and `2` respectively by default, unless the user specifies something else. This makes the methods more correctly emulate how Blazor reports single or double clicks on an element in the browser. Thanks to [@David-Moreira](https://github.com/David-Moreira) for the help troubleshooting this issue. By [@egil](https://github.com/egil).

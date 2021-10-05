@@ -187,5 +187,20 @@ namespace Bunit
 			Should.Throw<ArgumentException>(() => div.TriggerEventAsync(eventName, EventArgs.Empty));
 		}
 
+#if NET6_0_OR_GREATER
+		[Fact(DisplayName = "TriggerEvent can trigger custom events")]
+		public void Test201()
+		{
+var cut = RenderComponent<CustomPasteSample>();
+
+cut.Find("input").TriggerEvent("oncustompaste", new CustomPasteEventArgs
+{
+	EventTimestamp = DateTime.Now,
+	PastedData = "FOO"
+});
+
+cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
+		}
+#endif
 	}
 }

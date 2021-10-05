@@ -55,3 +55,60 @@ This is what happens in the test:
    - The last invocation uses the [`Click`](xref:Bunit.MouseEventDispatchExtensions.Click(AngleSharp.Dom.IElement,Microsoft.AspNetCore.Components.Web.MouseEventArgs)) method. This takes an instance of the `MouseEventArgs` type, which is passed to the event handler if it has it as an argument.
 
 All the event dispatch helper methods have the same two overloads: one that takes a number of optional arguments, and one that takes one of the `EventArgs` types provided by Blazor.
+
+## Triggering custom events
+
+bUnit support triggering custom events through the `TriggerEvent` method. 
+
+Lets try to test the `<CustomPasteSample>` component below:
+
+```cshtml
+<p>Try pasting into the following text box:</p>
+<input @oncustompaste="HandleCustomPaste" />
+<p>@message</p>
+
+@code {
+  string message = string.Empty;
+  void HandleCustomPaste(CustomPasteEventArgs eventArgs)
+  {
+    message = $"You pasted: {eventArgs.PastedData}";
+  }
+}
+```
+
+Here are the custom event types:
+
+```csharp
+[EventHandler("oncustompaste", typeof(CustomPasteEventArgs), enableStopPropagation: true, enablePreventDefault: true)]
+public static class EventHandlers
+{
+  // This static class doesn't need to contain any members. It's just a place where we can put
+  // [EventHandler] attributes to configure event types on the Razor compiler. This affects the
+  // compiler output as well as code completions in the editor.
+}
+
+public class CustomPasteEventArgs : EventArgs
+{
+  // Data for these properties will be supplied by custom JavaScript logic
+  public DateTime EventTimestamp { get; set; }
+  public string PastedData { get; set; }
+}
+```
+
+To trigger the `@oncustompaste` event callback, do the following:
+
+```csharp
+// Arrange
+using var ctx = new TestContext();
+var cut = ctxRenderComponent<CustomPasteSample>();
+
+// Atc - find the input element and trigger the oncustompaste event
+cut.Find("input").TriggerEvent("oncustompaste", new CustomPasteEventArgs
+{
+  EventTimestamp = DateTime.Now,
+  PastedData = "FOO"
+});
+
+// Assert that the custom event data was passed correctly
+cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
+```

@@ -26,6 +26,16 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventName">The name of the event to raise (using on-form, e.g. <c>onclick</c>).</param>
+		/// <param name="eventArgs">The event arguments to pass to the event handler. Use <see cref="EventArgs.Empty"/> to pass an empty <see cref="EventArgs"/>.</param>
+		public static void TriggerEvent(this IElement element, string eventName, EventArgs eventArgs)
+			=> _ = TriggerEventAsync(element, eventName, eventArgs);
+
+		/// <summary>
+		/// Raises the event <paramref name="eventName"/> on the element <paramref name="element"/>
+		/// passing the <paramref name="eventArgs"/> to the event handler.
+		/// </summary>
+		/// <param name="element">The element to raise the event on.</param>
+		/// <param name="eventName">The name of the event to raise (using on-form, e.g. <c>onclick</c>).</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A <see cref="Task"/> that completes when the render caused by the triggering of the event finishes.</returns>
 		[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "HTML events are standardize to lower case and safe in this context.")]
