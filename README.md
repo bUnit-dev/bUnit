@@ -39,13 +39,25 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 <table border="0">
 	<tr>
 		<td align="center" width="120">
-			<a href="https://github.com/syncfusion"><img class="avatar" src="https://avatars.githubusercontent.com/u/1699795?s=460&amp;v=4" width="72" height="72" alt="@syncfusion"></a><br><a href="https://github.com/syncfusion">Syncfusion</a>
-		</td>		
-		<td align="center" width="120">
-			<a src="https://github.com/Progress-Telerik"><img src="https://avatars.githubusercontent.com/u/57092419?s=460&amp;v=4" alt="@Progress-Telerik" class="avatar" width="72" height="72"></a><br><a src="https://github.com/Progress-Telerik">Progress-Telerik</a>
+			<a href="https://github.com/Progress-Telerik">
+				<img src="https://avatars.githubusercontent.com/u/57092419?s=460" alt="@Progress-Telerik" class="avatar" width="72" height="72" />
+				<br />
+				Progress Telerik
+			</a>
 		</td>
 		<td align="center" width="120">
-			<a src="https://github.com/hassanhabib"><img src="https://avatars.githubusercontent.com/u/1453985?s=460&amp;v=4" alt="Hassan Rezk Habib (@hassanhabib)" width="72" height="72" class="avatar"></a><br><a src="https://github.com/hassanhabib">Hassan Rezk Habib</a>
+			<a href="https://github.com/syncfusion">
+				<img class="avatar" src="https://avatars.githubusercontent.com/u/1699795?s=460" width="72" height="72" alt="@syncfusion" />
+				<br />
+				Syncfusion
+			</a>
+		</td>		
+		<td align="center" width="120">
+			<a href="https://github.com/hassanhabib">
+				<img src="https://avatars.githubusercontent.com/u/1453985?s=460" alt="Hassan Rezk Habib (@hassanhabib)" width="72" height="72" class="avatar" />
+				<br />
+				Hassan Rezk Habib
+			</a>
 		</td>
 	</tr>
 </table>
