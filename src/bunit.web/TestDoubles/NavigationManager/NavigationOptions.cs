@@ -21,10 +21,12 @@ namespace Bunit.TestDoubles
 		public NavigationOptions(bool forceLoad) => ForceLoad = forceLoad;
 
 		/// <inheritdoc/>
-		public bool Equals(NavigationOptions other) => ForceLoad == other.ForceLoad;
+		public bool Equals(NavigationOptions? other)
+			=> other is not null && ForceLoad == other.ForceLoad;
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is NavigationOptions other && Equals(other);
+		public override bool Equals(object? obj)
+			=> obj is NavigationOptions other && Equals(other);
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => ForceLoad.GetHashCode();

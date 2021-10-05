@@ -3,7 +3,7 @@ using System;
 namespace Bunit.TestDoubles
 {
 	/// <summary>
-	/// Represents a navigation to a <paramref name="Uri"/> with a set of specific navigation <paramref name="Options"/>.
+	/// Represents a navigation to a <seealso cref="Uri"/> with a set of specific navigation <seealso cref="Options"/>.
 	/// </summary>
 	public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	{
@@ -43,10 +43,21 @@ namespace Bunit.TestDoubles
 #endif
 
 		/// <inheritdoc/>
-		public bool Equals(NavigationHistory other) => string.Equals(Uri, other.Uri, StringComparison.Ordinal) && Options.Equals(other.Options);
+#if !NET6_0_OR_GREATER
+		public bool Equals(NavigationHistory? other)
+			=> other is not null && string.Equals(Uri, other.Uri, StringComparison.Ordinal) && Options.Equals(other.Options);
+#endif
+#if NET6_0_OR_GREATER
+		public bool Equals(NavigationHistory? other)
+			=> other is not null
+			&& string.Equals(Uri, other.Uri, StringComparison.Ordinal)
+			&& Options.ForceLoad == other.Options.ForceLoad
+			&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry;
+#endif
+
 
 		/// <inheritdoc/>
-		public override bool Equals(object obj) => obj is NavigationHistory other && Equals(other);
+		public override bool Equals(object? obj) => obj is NavigationHistory other && Equals(other);
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => HashCode.Combine(Uri, Options);
