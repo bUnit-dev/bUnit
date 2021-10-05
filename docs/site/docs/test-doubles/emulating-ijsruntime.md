@@ -1,9 +1,9 @@
 ---
 uid: emulating-ijsruntime
-title: Emulating Blazor's IJSRuntime
+title: Emulating IJSRuntime
 ---
 
-# Emulating Blazor's `IJSRuntime`
+# Emulating `IJSRuntime`
 
 It is common for Blazor components to use `IJSRuntime` to call JavaScript, and since bUnit does not run JavaScript, emulating `IJSRuntime` is needed for components that use it. In that regard, `IJSRuntime` is no different than other services that a component might depend on.
 
