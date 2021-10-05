@@ -15,3 +15,4 @@ The built-in test doubles are described on the following pages:
 - <xref:emulating-ijsruntime>
 - <xref:mocking-httpclient>
 - <xref:faking-persistentcomponentstate>
+- <xref:fake-navigation-manager>

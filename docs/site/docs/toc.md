@@ -24,8 +24,9 @@
 ## [Emulating IJSRuntime](xref:emulating-ijsruntime)
 ## [Faking authorization](xref:faking-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
+## [Faking PersistentComponentState](xref:faking-persistentcomponentstate)
+## [Faking NavigationManager](xref:fake-navigation-manager)
 ## [Shallow rendering](xref:shallow-rendering)
-## [Faking persistent component state](xref:faking-persistentcomponentstate)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External resources](xref:external-resources)
