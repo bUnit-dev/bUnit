@@ -25,6 +25,7 @@
 ## [Faking authorization](xref:faking-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
 ## [Shallow rendering](xref:shallow-rendering)
+## [Faking persistent component state](xref:faking-persistentcomponentstate)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External resources](xref:external-resources)
