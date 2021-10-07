@@ -21,21 +21,21 @@ In the examples, we'll use the following `<PrintCurrentUrl>` component:
 <p>@url</p>
 
 @code {
-	private string url;
+  private string url;
 
-	[Parameter] public string GoToUrl { get; set; } = string.Empty;
+  [Parameter] public string GoToUrl { get; set; } = string.Empty;
 
-    protected override void OnInitialized()
-		=> NavMan.LocationChanged += OnLocationChanged;
+  protected override void OnInitialized()
+    => NavMan.LocationChanged += OnLocationChanged;
 
-	public void Dispose()
-		=> NavMan.LocationChanged -= OnLocationChanged;
+  public void Dispose()
+    => NavMan.LocationChanged -= OnLocationChanged;
 
-    private	void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-	{
-        url = e.Location;
-        StateHasChanged();
-	}
+  private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+  {
+    url = e.Location;
+    StateHasChanged();
+  }
 }
 ```
 
