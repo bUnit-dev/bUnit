@@ -19,7 +19,7 @@ namespace Bunit.TestDoubles
 		public Bunit.TestDoubles.NavigationOptions Options { get; }
 #endif
 #if NET6_0_OR_GREATER
-	public Microsoft.AspNetCore.Components.NavigationOptions Options { get; }
+		public Microsoft.AspNetCore.Components.NavigationOptions Options { get; }
 #endif
 
 		/// <summary>
@@ -54,7 +54,6 @@ namespace Bunit.TestDoubles
 			&& Options.ForceLoad == other.Options.ForceLoad
 			&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry;
 #endif
-
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is NavigationHistory other && Equals(other);

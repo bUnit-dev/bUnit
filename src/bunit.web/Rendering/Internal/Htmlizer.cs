@@ -99,17 +99,17 @@ namespace Bunit
 					throw new InvalidOperationException($"Attributes should only be encountered within {nameof(RenderElement)}");
 				case RenderTreeFrameType.Text:
 					context.Result.Add(HtmlEncoder.Encode(frame.TextContent));
-					return ++position;
+					return position + 1;
 				case RenderTreeFrameType.Markup:
 					context.Result.Add(frame.MarkupContent);
-					return ++position;
+					return position + 1;
 				case RenderTreeFrameType.Component:
 					return RenderChildComponent(context, frames, position);
 				case RenderTreeFrameType.Region:
 					return RenderFrames(context, frames, position + 1, frame.RegionSubtreeLength - 1);
 				case RenderTreeFrameType.ElementReferenceCapture:
 				case RenderTreeFrameType.ComponentReferenceCapture:
-					return ++position;
+					return position + 1;
 				default:
 					throw new InvalidOperationException($"Invalid element frame type '{frame.FrameType}'.");
 			}

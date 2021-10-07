@@ -9,7 +9,7 @@ namespace Bunit
 	/// <summary>
 	/// Base test class/test runner, that runs Fixtures defined in razor files.
 	/// </summary>
-	[SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "Implemented like this by design")]
+	//[SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "Implemented like this by design")]
 	public abstract class TestComponentBase : IComponent
 	{
 		/// <summary>
@@ -22,7 +22,9 @@ namespace Bunit
 		/// Called by the XUnit test runner. Finds all Fixture components
 		/// in the file and runs their associated tests.
 		/// </summary>
-		[RazorTest] public virtual void RazorTests() { }
+		[SuppressMessage("Blocker Code Smell", "S2699:Tests should include assertions", Justification = "This is a placeholder for the sub classes to override, they should have assertions.")]
+		[RazorTest]
+		public virtual void RazorTests() { }
 
 		void IComponent.Attach(RenderHandle renderHandle) => renderHandle.Render(BuildRenderTree);
 
