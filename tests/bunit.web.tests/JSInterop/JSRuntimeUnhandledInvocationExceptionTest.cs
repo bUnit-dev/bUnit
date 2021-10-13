@@ -11,6 +11,13 @@ namespace Bunit.JSInterop
 	{
 		private const string CodeIdent = "    ";
 
+		private static readonly Type JSVoidResultType =
+#if !NET6_0_OR_GREATER
+			typeof(object);
+#else
+			typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult);
+#endif
+
 		private static string CreateExpectedErrorMessage(string invocationMethod, string suggestedSetup)
 		{
 			return $"bUnit's JSInterop has not been configured to handle the call:{Environment.NewLine}{Environment.NewLine}" +
@@ -32,7 +39,7 @@ namespace Bunit.JSInterop
 					$"{CodeIdent}{invocationMethodName}(\"{identifier}\")",
 					$"{CodeIdent}SetupVoid(\"{identifier}\")");
 
-			var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, typeof(object), invocationMethodName));
+			var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, JSVoidResultType, invocationMethodName));
 
 			Assert.Equal(exectedErrorMessage, sut.Message);
 		}
@@ -89,7 +96,7 @@ namespace Bunit.JSInterop
 				$"or the following, to match any arguments:{Environment.NewLine}" +
 				$"{CodeIdent}SetupVoid(\"{identifier}\", _ => true)");
 
-			var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0 }, typeof(object), invocationMethodName));
+			var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0 }, JSVoidResultType, invocationMethodName));
 
 			Assert.Equal(exectedErrorMessage, sut.Message);
 		}
@@ -105,7 +112,7 @@ namespace Bunit.JSInterop
 				$"or the following, to match any arguments:{Environment.NewLine}" +
 				$"{CodeIdent}SetupVoid(\"{identifier}\", _ => true)");
 
-			var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0, arg1 }, typeof(object), invocationMethodName));
+			var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0, arg1 }, JSVoidResultType, invocationMethodName));
 
 			Assert.Equal(exectedErrorMessage, sut.Message);
 		}
@@ -121,7 +128,7 @@ namespace Bunit.JSInterop
 				$"or the following, to match any arguments:{Environment.NewLine}" +
 				$"{CodeIdent}SetupVoid(\"{identifier}\", _ => true)");
 
-			var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0, arg1 }, typeof(object), invocationMethodName));
+			var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0, arg1 }, JSVoidResultType, invocationMethodName));
 
 			Assert.Equal(exectedErrorMessage, sut.Message);
 		}
@@ -137,7 +144,7 @@ namespace Bunit.JSInterop
 				$"or the following, to match any arguments:{Environment.NewLine}" +
 				$"{CodeIdent}SetupVoid(\"{identifier}\", _ => true)");
 
-			var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new object?[] { null }, typeof(object), invocationMethodName));
+			var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new object?[] { null }, JSVoidResultType, invocationMethodName));
 
 			Assert.Equal(exectedErrorMessage, sut.Message);
 		}

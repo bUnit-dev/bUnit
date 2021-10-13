@@ -39,7 +39,11 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		{ }
 
 		/// <inheritdoc/>
+#if !NET6_0_OR_GREATER
 		protected internal override Task<object> HandleAsync(JSRuntimeInvocation invocation)
+#else
+		protected internal override Task<Microsoft.JSInterop.Infrastructure.IJSVoidResult> HandleAsync(JSRuntimeInvocation invocation)
+#endif
 		{
 			if (!invocation.Identifier.Equals(JsFunctionsPrefix + "dispose", StringComparison.Ordinal))
 			{

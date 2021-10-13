@@ -90,14 +90,28 @@ namespace Bunit.JSInterop.Implementation
 				.GetResult();
 		}
 
+#if !NET6_0_OR_GREATER
 		private static string GetInvokeAsyncMethodName<TValue>()
 			=> typeof(TValue) == typeof(object)
 				? "InvokeVoidAsync"
 				: "InvokeAsync";
+#else
+		private static string GetInvokeAsyncMethodName<TValue>()
+			=> typeof(TValue) == typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult)
+				? "InvokeVoidAsync"
+				: "InvokeAsync";
+#endif
 
+#if !NET6_0_OR_GREATER
 		private static string GetInvokeMethodName<TValue>()
 			=> typeof(TValue) == typeof(object)
 				? "InvokeVoid"
 				: "Invoke";
+#else
+		private static string GetInvokeMethodName<TValue>()
+			=> typeof(TValue) == typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult)
+				? "InvokeVoid"
+				: "Invoke";
+#endif
 	}
 }

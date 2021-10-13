@@ -15,6 +15,13 @@ namespace Bunit.JSInterop
 {
 	public class BunitJSObjectReferenceTest : TestContext
 	{
+		private static readonly Type JSVoidResultType =
+#if !NET6_0_OR_GREATER
+			typeof(object);
+#else
+			typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult);
+#endif
+
 		[Theory(DisplayName = "Calling Setup<JSObjectReference> or Setup<IJSObjectReference> throws")]
 		[InlineData("import", null)]
 		[InlineData("import", "file.js")]
@@ -400,7 +407,7 @@ namespace Bunit.JSInterop
 					identifier,
 					cancellationToken,
 					args,
-					typeof(object),
+					JSVoidResultType,
 					"InvokeVoidAsync"));
 		}
 
@@ -422,7 +429,7 @@ namespace Bunit.JSInterop
 					"InvokeAsync"));
 		}
 
-		[Theory(DisplayName = "When calling InvokeVoid, then the invocation should be visible from the Invocations list"), AutoData]
+		[Theory(DisplayName = "When calling InvokeVoid, then the invocation should be visible from the Invocations list", Skip = "Awaiting https://github.com/dotnet/aspnetcore/issues/37528"), AutoData]
 		public void Test304(string identifier, string[] args)
 		{
 			JSInterop.Mode = JSRuntimeMode.Loose;
@@ -436,7 +443,7 @@ namespace Bunit.JSInterop
 					identifier,
 					cancellationToken: null,
 					args: args,
-					resultType: typeof(object),
+					resultType: JSVoidResultType,
 					invocationMethodName: "InvokeVoid"));
 		}
 

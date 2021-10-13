@@ -69,7 +69,11 @@ namespace Bunit
 			Arguments = args ?? Array.Empty<object?>();
 			ResultType = resultType;
 			InvocationMethodName = invocationMethodName;
+#if !NET6_0_OR_GREATER
 			IsVoidResultInvocation = resultType == typeof(object);
+#else
+			IsVoidResultInvocation = resultType == typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult);
+#endif
 		}
 
 		/// <inheritdoc/>

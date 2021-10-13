@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
 namespace Bunit
@@ -151,9 +152,13 @@ namespace Bunit
 			if (jsInterop is null)
 				throw new ArgumentNullException(nameof(jsInterop));
 
-			return jsInterop.TryGetHandlerFor<object>(
-				new JSRuntimeInvocation(identifier, default, arguments, typeof(object), string.Empty),
-				x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
+			var invocation = new JSRuntimeInvocation(identifier, default, arguments, typeof(object), string.Empty);
+
+#if !NET6_0_OR_GREATER
+			return jsInterop.TryGetHandlerFor<object>(invocation, x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
+#else
+			return jsInterop.TryGetHandlerFor<Microsoft.JSInterop.Infrastructure.IJSVoidResult>(invocation, x => x.IsVoidResultHandler) as JSRuntimeInvocationHandler;
+#endif
 		}
 
 #if NET5_0_OR_GREATER

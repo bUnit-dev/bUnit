@@ -9,6 +9,13 @@ namespace Bunit.JSInterop
 {
 	public class JSRuntimeInvocationTest
 	{
+		private static readonly Type JSVoidResultType =
+#if !NET6_0_OR_GREATER
+			typeof(object);
+#else
+			typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult);
+#endif
+
 		public static IEnumerable<object[]> GetEqualsTestData()
 		{
 			var token = new CancellationToken(true);
@@ -67,7 +74,7 @@ namespace Bunit.JSInterop
 				identifier,
 				CancellationToken.None,
 				Array.Empty<object?>(),
-				typeof(object),
+				JSVoidResultType,
 				string.Empty);
 
 			sut.IsVoidResultInvocation.ShouldBeTrue();
