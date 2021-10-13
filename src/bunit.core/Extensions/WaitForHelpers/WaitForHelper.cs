@@ -18,7 +18,7 @@ namespace Bunit.Extensions.WaitForHelpers
 		private readonly TaskCompletionSource<object?> checkPassedCompletionSource;
 		private readonly Func<bool> completeChecker;
 		private readonly IRenderedFragmentBase renderedFragment;
-		private readonly ILogger logger;
+		private readonly ILogger<WaitForHelper<T>> logger;
 		private bool isDisposed;
 		private Exception? capturedException;
 
@@ -103,18 +103,18 @@ namespace Bunit.Extensions.WaitForHelpers
 					if (completeChecker())
 					{
 						checkPassedCompletionSource.TrySetResult(null);
-						logger.LogDebug(new EventId(2, nameof(OnAfterRender)), $"The check completed successfully for component {renderedFragment.ComponentId}");
+						logger.LogCheckCompleted(renderedFragment.ComponentId);
 						Dispose();
 					}
 					else
 					{
-						logger.LogDebug(new EventId(3, nameof(OnAfterRender)), $"The check failed for component {renderedFragment.ComponentId}");
+						logger.LogCheckFailed(renderedFragment.ComponentId);
 					}
 				}
 				catch (Exception ex)
 				{
 					capturedException = ex;
-					logger.LogDebug(new EventId(4, nameof(OnAfterRender)), $"The checker of component {renderedFragment.ComponentId} throw an exception with message '{ex.Message}'");
+					logger.LogCheckThrow(renderedFragment.ComponentId, ex);
 
 					if (StopWaitingOnCheckException)
 					{
@@ -135,7 +135,7 @@ namespace Bunit.Extensions.WaitForHelpers
 				if (isDisposed)
 					return;
 
-				logger.LogDebug(new EventId(5, nameof(OnTimeout)), $"The wait for helper for component {renderedFragment.ComponentId} timed out");
+				logger.LogWaiterTimedOut(renderedFragment.ComponentId);
 
 				checkPassedCompletionSource.TrySetException(new WaitForFailedException(TimeoutErrorMessage, capturedException));
 
@@ -175,7 +175,7 @@ namespace Bunit.Extensions.WaitForHelpers
 				renderedFragment.OnAfterRender -= OnAfterRender;
 				timer.Dispose();
 				checkPassedCompletionSource.TrySetCanceled();
-				logger.LogDebug(new EventId(6, nameof(Dispose)), $"The state wait helper for component {renderedFragment.ComponentId} disposed");
+				logger.LogWaiterDisposed(renderedFragment.ComponentId);
 			}
 		}
 

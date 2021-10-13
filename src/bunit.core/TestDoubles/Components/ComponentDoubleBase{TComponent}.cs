@@ -43,7 +43,9 @@ namespace Bunit.TestDoubles
 		/// <param name="builder">A <see cref="RenderTreeBuilder"/> to build DOM tree.</param>
 		protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
 
+
 		/// <inheritdoc/>
+		[SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "This method is called by the Blazor runtime. Should not be called by inheriting types.")]
 		void IComponent.Attach(RenderHandle renderHandle) => this.renderHandle = renderHandle;
 	}
 }

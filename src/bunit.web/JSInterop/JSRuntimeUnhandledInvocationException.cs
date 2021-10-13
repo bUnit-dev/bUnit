@@ -129,7 +129,7 @@ namespace Bunit
 				&& typeof(IJSObjectReference).IsAssignableFrom(invocation.ResultType);
 		}
 #else
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "Method to allow compatibility with netstandard2.1")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Method to allow compatibility with netstandard2.1")]
 		private static bool IsImportModuleInvocation(JSRuntimeInvocation runtimeInvocation)
 			=> false;
 #endif

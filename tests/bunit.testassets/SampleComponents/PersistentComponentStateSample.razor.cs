@@ -6,6 +6,7 @@ namespace Bunit.TestAssets.SampleComponents
 	public partial class PersistentComponentStateSample
     {
 		public const string PersistanceKey = "fetchdata";
+
 		public WeatherForecast[] Forecasts { get; private set; }
 
 #if NET6_0_OR_GREATER

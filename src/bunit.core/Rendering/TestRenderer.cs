@@ -16,7 +16,7 @@ namespace Bunit.Rendering
 	{
 		private readonly object renderTreeAccessLock = new();
 		private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
-		private readonly ILogger logger;
+		private readonly ILogger<TestRenderer> logger;
 		private readonly IRenderedComponentActivator activator;
 		private TaskCompletionSource<Exception> unhandledExceptionTsc = new();
 		private Exception? capturedUnhandledException;
@@ -89,7 +89,7 @@ namespace Bunit.Rendering
 				}
 			});
 
-			if(result.IsFaulted && result.Exception is not null)
+			if (result.IsFaulted && result.Exception is not null)
 			{
 				HandleException(result.Exception);
 			}
@@ -124,7 +124,7 @@ namespace Bunit.Rendering
 			// render tree.
 			lock (renderTreeAccessLock)
 			{
-				logger.LogDebug(new EventId(6, nameof(ProcessPendingRender)), "Processing pending renders.");
+				logger.LogProcessingPendingRenders();
 
 				base.ProcessPendingRender();
 			}
@@ -135,7 +135,7 @@ namespace Bunit.Rendering
 		{
 			capturedUnhandledException = exception;
 
-			LogUnhandledException(capturedUnhandledException);
+			logger.LogUnhandledException(capturedUnhandledException);
 
 			if (!unhandledExceptionTsc.TrySetResult(capturedUnhandledException))
 			{
@@ -147,7 +147,7 @@ namespace Bunit.Rendering
 		/// <inheritdoc/>
 		protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 		{
-			logger.LogDebug(new EventId(10, nameof(UpdateDisplayAsync)), $"New render batch received.");
+			logger.LogNewRenderBatchReceived();
 
 			var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
 
@@ -156,7 +156,7 @@ namespace Bunit.Rendering
 			{
 				var id = renderBatch.DisposedComponentIDs.Array[i];
 
-				logger.LogDebug(new EventId(10, nameof(UpdateDisplayAsync)), $"Component with ID = {id} has been disposed.");
+				logger.LogComponentDisposed(id);
 
 				if (renderedComponents.TryGetValue(id, out var rc))
 				{
@@ -168,7 +168,7 @@ namespace Bunit.Rendering
 			// notify each rendered component about the render
 			foreach (var (key, rc) in renderedComponents.ToArray())
 			{
-				logger.LogDebug(new EventId(11, nameof(UpdateDisplayAsync)), $"Component with ID = {rc.ComponentId} has been rendered.");
+				logger.LogComponentRendered(rc.ComponentId);
 
 				LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
 
@@ -183,7 +183,7 @@ namespace Bunit.Rendering
 				}
 			}
 
-			logger.LogDebug(new EventId(10, nameof(UpdateDisplayAsync)), $"Finished updating components markup.");
+			logger.LogChangedComponentsMarkupUpdated();
 
 			return Task.CompletedTask;
 		}
@@ -223,7 +223,7 @@ namespace Bunit.Rendering
 
 			if (!renderTask.IsCompleted)
 			{
-				logger.LogDebug(new EventId(2, nameof(Render)), $"The initial render task did not complete immediately.");
+				logger.LogAsyncInitialRender();
 				result = renderTask.GetAwaiter().GetResult();
 			}
 			else
@@ -231,7 +231,7 @@ namespace Bunit.Rendering
 				result = renderTask.Result;
 			}
 
-			logger.LogDebug(new EventId(5, nameof(Render)), $"The initial render of {result.ComponentId} is completed.");
+			logger.LogInitialRenderCompleted(result.ComponentId);
 
 			AssertNoUnhandledExceptions();
 
@@ -354,12 +354,6 @@ namespace Bunit.Rendering
 					ExceptionDispatchInfo.Capture(unhandled).Throw();
 				}
 			}
-		}
-
-		private void LogUnhandledException(Exception unhandled)
-		{
-			var evt = new EventId(3, nameof(AssertNoUnhandledExceptions));
-			logger.LogError(evt, unhandled, $"An unhandled exception happened during rendering: {unhandled.Message}{Environment.NewLine}{unhandled.StackTrace}");
 		}
 	}
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Bunit.TestDoubles
 {
@@ -10,6 +11,7 @@ namespace Bunit.TestDoubles
 		/// <summary>
 		/// Gets the <see cref="Uri"/> that was navigated to.
 		/// </summary>
+		[SuppressMessage("Design", "CA1056:URI-like properties should not be strings", Justification = "Using string to align with NavigationManager")]
 		public string Uri { get; }
 
 		/// <summary>
@@ -27,6 +29,7 @@ namespace Bunit.TestDoubles
 		/// </summary>
 		/// <param name="uri"></param>
 		/// <param name="options"></param>
+		[SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "Using string to align with NavigationManager")]
 #if !NET6_0_OR_GREATER
 		public NavigationHistory(string uri, Bunit.TestDoubles.NavigationOptions options)
 		{

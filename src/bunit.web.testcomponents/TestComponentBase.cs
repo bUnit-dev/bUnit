@@ -9,7 +9,7 @@ namespace Bunit
 	/// <summary>
 	/// Base test class/test runner, that runs Fixtures defined in razor files.
 	/// </summary>
-	//[SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "Implemented like this by design")]
+	[SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "These interface methods should not be called by inheriting types.")]
 	public abstract class TestComponentBase : IComponent
 	{
 		/// <summary>

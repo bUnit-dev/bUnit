@@ -18,7 +18,8 @@ namespace Bunit.TestDoubles
 		[Fact(DisplayName = "FakeNavigationInterception is registered as the default INavigationInterception")]
 		public void Test002()
 		{
-			new TestContext().Services.GetService<INavigationInterception>()
+			using var ctx = new TestContext();
+			ctx.Services.GetService<INavigationInterception>()
 				.ShouldBeOfType<FakeNavigationInterception>();
 		}
     }
