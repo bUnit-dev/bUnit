@@ -5,7 +5,7 @@ namespace Bunit.Extensions.WaitForHelpers
 	/// <summary>
 	/// Represents an async wait helper, that will wait for a specified time for a state predicate to pass.
 	/// </summary>
-	public class WaitForStateHelper : WaitForHelper
+	public class WaitForStateHelper : WaitForHelper<object?>
 	{
 		internal const string TimeoutBeforePassMessage = "The state predicate did not pass before the timeout period passed.";
 		internal const string ExceptionInPredicateMessage = "The state predicate throw an unhandled exception.";
@@ -32,7 +32,7 @@ namespace Bunit.Extensions.WaitForHelpers
 		/// <param name="timeout">The maximum time to wait for the desired state.</param>
 		/// <exception cref="WaitForFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
 		public WaitForStateHelper(IRenderedFragmentBase renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
-			: base(renderedFragment, statePredicate, timeout)
+			: base(renderedFragment, () => (statePredicate(), default), timeout)
 		{
 		}
 	}

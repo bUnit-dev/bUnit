@@ -11,12 +11,12 @@ namespace Bunit.Extensions.WaitForHelpers
 	/// Represents a helper class that can wait for a render notifications from a <see cref="IRenderedFragmentBase"/> type,
 	/// until a specific timeout is reached.
 	/// </summary>
-	public abstract class WaitForHelper : IDisposable
+	public abstract class WaitForHelper<T> : IDisposable
 	{
 		private readonly object lockObject = new();
 		private readonly Timer timer;
-		private readonly TaskCompletionSource<object?> checkPassedCompletionSource;
-		private readonly Func<bool> completeChecker;
+		private readonly TaskCompletionSource<T> checkPassedCompletionSource;
+		private readonly Func<(bool CheckPassed, T Content)> completeChecker;
 		private readonly IRenderedFragmentBase renderedFragment;
 		private readonly ILogger<WaitForHelper<T>> logger;
 		private bool isDisposed;
@@ -42,24 +42,26 @@ namespace Bunit.Extensions.WaitForHelpers
 		/// Gets the task that will complete successfully if the check passed before the timeout was reached.
 		/// The task will complete with an <see cref="WaitForFailedException"/> exception if the timeout was reached without the check passing.
 		/// </summary>
-		public Task WaitTask { get; }
+		public Task<T> WaitTask { get; }
+
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="WaitForHelper"/> class.
+		/// Initializes a new instance of the <see cref="WaitForHelper{T}"/> class.
 		/// </summary>
-		protected WaitForHelper(IRenderedFragmentBase renderedFragment, Func<bool> completeChecker, TimeSpan? timeout = null)
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1849:Call async methods when in an async method", Justification = "Using x.Result inside a ContinueWith is safe.")]
+		protected WaitForHelper(IRenderedFragmentBase renderedFragment, Func<(bool CheckPassed, T Content)> completeChecker, TimeSpan? timeout = null)
 		{
 			this.renderedFragment = renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment));
 			this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
-			logger = renderedFragment.Services.CreateLogger<WaitForHelper>();
+			logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
 
 			var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
 			var renderException = renderer
 				.UnhandledException
-				.ContinueWith(x => Task.FromException(x.Result), CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Current)
+				.ContinueWith(x => Task.FromException<T>(x.Result), CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Current)
 				.Unwrap();
 
-			checkPassedCompletionSource = new TaskCompletionSource<object?>();
+			checkPassedCompletionSource = new TaskCompletionSource<T>();
 			WaitTask = Task.WhenAny(checkPassedCompletionSource.Task, renderException).Unwrap();
 
 			timer = new Timer(OnTimeout, this, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
@@ -99,10 +101,12 @@ namespace Bunit.Extensions.WaitForHelpers
 
 				try
 				{
-					logger.LogDebug(new EventId(1, nameof(OnAfterRender)), $"Checking the wait condition for component {renderedFragment.ComponentId}");
-					if (completeChecker())
+					logger.LogCheckingWaitCondition(renderedFragment.ComponentId);
+
+					var checkResult = completeChecker();
+					if (checkResult.CheckPassed)
 					{
-						checkPassedCompletionSource.TrySetResult(null);
+						checkPassedCompletionSource.TrySetResult(checkResult.Content);
 						logger.LogCheckCompleted(renderedFragment.ComponentId);
 						Dispose();
 					}

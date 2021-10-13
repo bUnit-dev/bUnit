@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Bunit.Extensions.WaitForHelpers
 {
 	/// <summary>
-	/// Represents an exception thrown when the <see cref="WaitForHelper"/> does not complete successfully.
+	/// Represents an exception thrown when the <see cref="WaitForHelper{T}"/> does not complete successfully.
 	/// </summary>
 	[Serializable]
 	public sealed class WaitForFailedException : Exception
