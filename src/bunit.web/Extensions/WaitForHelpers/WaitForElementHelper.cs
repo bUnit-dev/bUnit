@@ -5,18 +5,14 @@ using AngleSharp.Dom;
 namespace Bunit.Extensions.WaitForHelpers
 {
 	/// <summary>
-	/// Represents an async wait helper, that will wait for a specified time for element(s) to become available in the DOM.
+	/// Represents an async wait helper, that will wait for a specified time for an element to become available in the DOM.
 	/// </summary>
 	internal class WaitForElementHelper : WaitForHelper<IElement>
 	{
-		internal const string TimeoutBeforeFoundMessage = "The CSS selector and/or predicate did not result in matching element(s) before the timeout period passed.";
-		internal const string ExceptionInPredicateMessage = "The element(s) predicate throw an unhandled exception.";
+		internal const string TimeoutBeforeFoundMessage = "The CSS selector and/or predicate did not result in a matching element before the timeout period passed.";
 
 		/// <inheritdoc/>
 		protected override string? TimeoutErrorMessage => TimeoutBeforeFoundMessage;
-
-		/// <inheritdoc/>
-		protected override string? CheckThrowErrorMessage => ExceptionInPredicateMessage;
 
 		/// <inheritdoc/>
 		protected override bool StopWaitingOnCheckException => false;

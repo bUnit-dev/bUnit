@@ -1,0 +1,22 @@
+@code {
+	private int renderCountDown = 2;
+
+	[Parameter] public RenderFragment ChildContent { get; set; }
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (renderCountDown <= 0)
+			return;
+
+		await Task.Delay(1);
+		renderCountDown--;
+		StateHasChanged();
+	}
+}
+<p>RenderCountDown: @renderCountDown</p>
+@if(renderCountDown > 0)
+{
+	<main>
+		@ChildContent
+	</main>
+}
