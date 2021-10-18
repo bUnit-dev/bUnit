@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components;
 
@@ -19,11 +21,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="value">The new value.</param>
 		public static void Change<T>(this IElement element, T value)
-		{
-			var args = new ChangeEventArgs();
-			args.Value = BindConverter.FormatValue(value);
-			_ = ChangeAsync(element, args);
-		}
+			=> _ = ChangeAsync(element, CreateFrom(value));
 
 		/// <summary>
 		/// Raises the <c>@onchange</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -50,7 +48,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="value">The new value.</param>
 		public static void Input<T>(this IElement element, T value)
-			=> _ = InputAsync(element, new ChangeEventArgs { Value = BindConverter.FormatValue(value) });
+			=> _ = InputAsync(element, CreateFrom(value));
 
 		/// <summary>
 		/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -174,5 +172,44 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
 		private static Task SubmitAsync(this IElement element) => element.TriggerEventAsync("onsubmit", EventArgs.Empty);
+
+		private static ChangeEventArgs CreateFrom<T>(T value)
+		{
+			var result = new ChangeEventArgs();
+			result.Value = FormatValue(value);
+			return result;
+		}
+
+		private static object? FormatValue<T>(T value)
+			=> value switch
+			{
+				null => null,
+				bool _ => value,
+				String _ => value,
+				ICollection values => FormatValues(values),
+				IEnumerable values => FormatValues(values),
+				_ => BindConverter.FormatValue(value)
+			};
+
+		private static object?[] FormatValues(ICollection values)
+		{
+			var result = new object?[values.Count];
+
+			var index = 0;
+			foreach (var value in values)
+				result[index++] = FormatValue(value);
+
+			return result;
+		}
+
+		private static object?[] FormatValues(IEnumerable values)
+		{
+			var result = new List<object?>();
+
+			foreach (var value in values)
+				result.Add(FormatValue(value));
+
+			return result.ToArray();
+		}
 	}
 }

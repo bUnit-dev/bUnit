@@ -1,0 +1,25 @@
+@typeparam T
+@code {
+	[Parameter] public T[] Options { get; set; }
+	[Parameter] public T[] BindValues { get; set; } = Array.Empty<T>();
+	[Parameter] public object? OnChangeValue { get; set; }
+	[Parameter] public object? OnInputValue { get; set; }
+}
+<select id="bind" multiple @bind=@BindValues>
+	@foreach(var value in Options)
+	{
+		<option value=@value>@value</option>        
+	}
+</select>
+<select id="onChangeInput" multiple @onchange="args => OnChangeValue = args.Value">
+	@foreach(var value in Options)
+	{
+		<option value=@value>@value</option>        
+	}
+</select>
+<select id="onInputInput" multiple @oninput="args => OnInputValue = args.Value">
+	@foreach(var value in Options)
+	{
+		<option value=@value>@value</option>        
+	}
+</select>

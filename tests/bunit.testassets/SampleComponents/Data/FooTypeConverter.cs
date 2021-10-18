@@ -13,9 +13,9 @@ namespace Bunit.TestAssets.SampleComponents
 			return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 		}
 
-		public override bool CanConvertTo(ITypeDescriptorContext context, Type sourceType)
+		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
 		{
-			return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+			return destinationType == typeof(string) || base.CanConvertFrom(context, destinationType);
 		}
 
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)

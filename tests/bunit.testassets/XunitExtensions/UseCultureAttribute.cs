@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
@@ -12,6 +13,7 @@ namespace Xunit
 	/// <see cref="CultureInfo.CurrentUICulture" /> with another culture.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+	[SuppressMessage("Design", "CA1019:Define accessors for attribute arguments", Justification = "<Pending>")]
 	public sealed class UseCultureAttribute : BeforeAfterTestAttribute
 	{
 		readonly Lazy<CultureInfo> culture;
@@ -33,6 +35,7 @@ namespace Xunit
 		/// </remarks>
 		public UseCultureAttribute(string culture)
 			: this(culture, culture) { }
+
 
 		/// <summary>
 		/// Replaces the culture and UI culture of the current thread with
