@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components;
@@ -16,8 +18,12 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="value">The new value.</param>
-		public static void Change(this IElement element, object value)
-			=> _ = ChangeAsync(element, new ChangeEventArgs { Value = value });
+		public static void Change<T>(this IElement element, T value)
+		{
+			var args = new ChangeEventArgs();
+			args.Value = BindConverter.FormatValue(value);
+			_ = ChangeAsync(element, args);
+		}
 
 		/// <summary>
 		/// Raises the <c>@onchange</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -43,8 +49,8 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="value">The new value.</param>
-		public static void Input(this IElement element, string value)
-			=> _ = InputAsync(element, new ChangeEventArgs { Value = value });
+		public static void Input<T>(this IElement element, T value)
+			=> _ = InputAsync(element, new ChangeEventArgs { Value = BindConverter.FormatValue(value) });
 
 		/// <summary>
 		/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>

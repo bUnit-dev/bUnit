@@ -1,0 +1,10 @@
+<input @onchange="HandleChange" />
+@code {
+
+	public object? ReceivedValue { get; set; }
+
+	private void HandleChange(ChangeEventArgs args)
+	{
+		ReceivedValue = args.Value;
+	}
+}

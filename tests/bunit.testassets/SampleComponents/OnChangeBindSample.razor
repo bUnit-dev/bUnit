@@ -1,0 +1,9 @@
+@typeparam T
+@code {
+	[Parameter] public T BindValue { get; set; }
+	[Parameter] public object? OnChangeValue { get; set; }
+	[Parameter] public object? OnInputValue { get; set; }
+}
+<input id="bind" @bind="BindValue" />
+<input id="onChangeInput" @onchange="args => OnChangeValue = args.Value" />
+<input id="onInputInput" @oninput="args => OnInputValue = args.Value" />
