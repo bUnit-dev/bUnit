@@ -1,0 +1,9 @@
+<button id="first" @onclick="() => visible = false"></button>
+@if (visible)
+{
+	<button id="second" @onclick="() => SecondButtonClicked = true"></button>	
+}
+@code {
+	private bool visible = true;
+	public bool SecondButtonClicked { get; private set; }
+}

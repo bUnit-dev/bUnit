@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Dom;
+using AutoFixture.Xunit2;
 using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents;
 using Moq;
@@ -175,18 +177,6 @@ namespace Bunit
 			cut.Instance.GrandParentTriggerCount.ShouldBe(1);
 		}
 
-
-		[Fact(DisplayName = "TriggerEventAsync throws when invoked with an unknown event handler ID")]
-		public void Test115()
-		{
-			var eventName = "onclick";
-			var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent("<div />"));
-			var div = cut.Find("div");
-			div.SetAttribute(Htmlizer.ToBlazorAttribute(eventName), "42");
-
-			Should.Throw<ArgumentException>(() => div.TriggerEventAsync(eventName, EventArgs.Empty));
-		}
-
 #if NET6_0_OR_GREATER
 		[Fact(DisplayName = "TriggerEvent can trigger custom events")]
 		public void Test201()
@@ -202,5 +192,54 @@ cut.Find("input").TriggerEvent("oncustompaste", new CustomPasteEventArgs
 cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
 		}
 #endif
+
+		[Fact(DisplayName = "TriggerEventAsync throws NoEventHandlerException when invoked with an unknown event handler ID")]
+		public void Test300()
+		{
+			var cut = RenderComponent<ClickRemovesEventHandler>();
+			var buttons = cut.FindAll("button");
+			buttons[0].Click();
+
+			Should.Throw<UnknownEventHandlerIdException>(() => buttons[1].Click());
+		}
+
+		[Fact(DisplayName = "Removed bubbled event handled NoEventHandlerException are ignored")]
+		public void Test301()
+		{
+			var cut = RenderComponent<BubbleEventsRemoveTriggers>();
+
+			cut.Find("button").Click();
+
+			// When middle div clicked event handlers is disposed, the
+			// NoEventHandlerException is ignored and the top div clicked event
+			// handler is still invoked.
+			cut.Instance.BtnClicked.ShouldBeTrue();
+			cut.Instance.MiddleDivClicked.ShouldBeFalse();
+			cut.Instance.TopDivClicked.ShouldBeTrue();
+		}
+
+		[Theory(DisplayName = "When bubbling event throws, no other event handlers are triggered")]
+		[AutoData]
+		public void Test302(string exceptionMessage)
+		{
+			var cut = RenderComponent<BubbleEventsThrows>(ps => ps.Add(p => p.ExceptionMessage, exceptionMessage));
+
+			Should.Throw<Exception>(() => cut.Find("button").Click())
+				.Message.ShouldBe(exceptionMessage);
+
+			cut.Instance.BtnClicked.ShouldBeTrue();
+			cut.Instance.MiddleDivClicked.ShouldBeFalse();
+			cut.Instance.TopDivClicked.ShouldBeFalse();
+		}
+
+		[Theory(DisplayName = "When event handler throws, the exception is passed up to test")]
+		[AutoData]
+		public void Test303(string exceptionMessage)
+		{
+			var cut = RenderComponent<EventHandlerThrows>(ps => ps.Add(p => p.ExceptionMessage, exceptionMessage));
+
+			Should.Throw<Exception>(() => cut.Find("button").Click())
+				.Message.ShouldBe(exceptionMessage);
+		}
 	}
 }

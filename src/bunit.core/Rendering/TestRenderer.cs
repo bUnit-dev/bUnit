@@ -80,11 +80,7 @@ namespace Bunit.Rendering
 				}
 				catch (ArgumentException ex) when (string.Equals(ex.Message, $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')", StringComparison.Ordinal))
 				{
-					var betterExceptionMsg = new ArgumentException($"There is no event handler with ID '{eventHandlerId}' associated with the '{fieldInfo.FieldValue}' event " +
-						"in the current render tree. This can happen, for example, when using cut.FindAll(), and calling event trigger methods " +
-						"on the found elements after a re-render of the render tree. The workaround is to use re-issue the cut.FindAll() after " +
-						"each render of a component, this ensures you have the latest version of the render tree and DOM tree available in your test code.", ex);
-
+					var betterExceptionMsg = new UnknownEventHandlerIdException(eventHandlerId, fieldInfo, ex);
 					return Task.FromException(betterExceptionMsg);
 				}
 			});

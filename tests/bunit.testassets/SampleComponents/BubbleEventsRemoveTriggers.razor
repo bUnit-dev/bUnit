@@ -1,0 +1,13 @@
+<div @onclick="() => TopDivClicked = true">
+@if (!BtnClicked)
+{
+	<div @onclick="() => MiddleDivClicked = true">
+		<button @onclick="() => BtnClicked = true">Click me!</button>
+	</div>
+}
+</div>
+@code {
+	public bool BtnClicked { get; private set; } = false;
+	public bool MiddleDivClicked { get; private set; } = false;
+	public bool TopDivClicked { get; private set; } = false;
+}

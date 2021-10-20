@@ -1,0 +1,5 @@
+<button @onclick="Handler"></button>
+@code {
+	[Parameter] public string ExceptionMessage { get; set; }
+	private void Handler() => throw new Exception(ExceptionMessage);
+}

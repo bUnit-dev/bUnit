@@ -1,0 +1,19 @@
+<div @onclick="() => TopDivClicked = true">
+	<div @onclick=@MiddleDivHandler>
+		<button @onclick="() => BtnClicked = true">Click me!</button>
+	</div>
+</div>
+
+<p>@BtnClicked</p>
+<p>@MiddleDivClicked</p>
+<p>@TopDivClicked</p>
+
+@code {
+	[Parameter] public string ExceptionMessage { get; set; }
+
+	public bool BtnClicked { get; private set; } = false;
+	public bool MiddleDivClicked { get; private set; } = false;
+	public bool TopDivClicked { get; private set; } = false;
+
+	private void MiddleDivHandler() => throw new Exception(ExceptionMessage);
+}

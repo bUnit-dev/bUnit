@@ -61,12 +61,23 @@ namespace Bunit
 		{
 			var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
 			var eventStopPropergationAttrName = $"{eventAttrName}:stoppropagation";
-			var eventIds = new List<ulong>();
+			var eventTasks = new List<Task>();
 
 			foreach (var candidate in element.GetParentsAndSelf())
 			{
 				if (candidate.TryGetEventId(eventAttrName, out var id))
-					eventIds.Add(id);
+				{
+					try
+					{
+						var info = new EventFieldInfo() { FieldValue = eventName };
+						eventTasks.Add(renderer.DispatchEventAsync(id, info, eventArgs));
+					}
+					catch (UnknownEventHandlerIdException) when (eventTasks.Count > 0)
+					{
+						// Capture and ignore NoEventHandlerException for bubbling events
+						// if at least one event handler has been triggered without throwing.
+					}
+				}
 
 				if (candidate.HasAttribute(eventStopPropergationAttrName) || candidate.EventIsDisabled(eventName))
 				{
@@ -74,12 +85,10 @@ namespace Bunit
 				}
 			}
 
-			if (eventIds.Count == 0)
+			if (eventTasks.Count == 0)
 				throw new MissingEventHandlerException(element, eventName);
 
-			var triggerTasks = eventIds.Select(id => renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs));
-
-			return Task.WhenAll(triggerTasks.ToArray());
+			return Task.WhenAll(eventTasks);
 		}
 
 		private static Task TriggerNonBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
