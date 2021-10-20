@@ -37,6 +37,8 @@ List of added functionality in this release.
 
 - `FocusAsync()` method handler on `ElementReference` and `<FocusOnNavigate>` js handler return completed `Task`. By [@anddrzejb](https://github.com/anddrzejb).
 
+- Fixes handling of disposed event handlers of bubbling events. See issue [#518](https://github.com/bUnit-dev/bUnit/issues/518) for details. Thanks to [@David-Moreira](https://github.com/David-Moreira) for helping debug this issue.
+
 ## [1.2.49] - 2021-08-09
 
 ### Added
