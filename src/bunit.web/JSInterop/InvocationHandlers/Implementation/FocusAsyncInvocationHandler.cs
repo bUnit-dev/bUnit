@@ -1,3 +1,4 @@
+
 #if NET5_0_OR_GREATER
 using System;
 using Microsoft.AspNetCore.Components;
@@ -21,7 +22,9 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		/// </summary>
 		internal FocusAsyncInvocationHandler()
 			: base(inv => inv.Identifier.Equals(FocusIdentifier, StringComparison.Ordinal), isCatchAllHandler: false)
-		{ }
+		{
+			SetVoidResult();
+		}
 	}
 }
 #endif

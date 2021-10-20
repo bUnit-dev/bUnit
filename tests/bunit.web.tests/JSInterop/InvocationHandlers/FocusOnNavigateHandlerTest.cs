@@ -30,6 +30,31 @@ namespace Bunit.JSInterop.InvocationHandlers
 				.Arguments[0]
 				.ShouldBe(focusOnNavigateComponent.Instance.Selector);
 		}
+
+		[Fact(DisplayName = "Will return completed task")]
+		public void Test002()
+		{
+			var cut = RenderComponent<App>(ps => ps
+				.Add<FocusOnNavigateInternal, RouteData>(p => p.FoundTemplate, routeData => cps => cps
+					.Add(x => x.RouteData, routeData)
+					.Add(x => x.Selector, "h1")));
+
+			var focusOnNavigateComponent = cut.FindComponent<FocusOnNavigateInternal>();
+			Assert.True(focusOnNavigateComponent.Instance.AfterFirstRender);
+		}
+
+		private class FocusOnNavigateInternal : FocusOnNavigate
+		{
+			internal bool AfterFirstRender { get; private set; }
+			protected override async Task OnAfterRenderAsync(bool firstRender)
+			{
+				await base.OnAfterRenderAsync(firstRender);
+				if (firstRender)
+				{
+					AfterFirstRender = true;
+				}
+			}
+		}
 	}
 }
 #endif

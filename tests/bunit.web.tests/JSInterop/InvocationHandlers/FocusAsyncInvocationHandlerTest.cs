@@ -31,14 +31,23 @@ namespace Bunit.JSInterop.InvocationHandlers
 			invocations[1].Arguments[0].ShouldBeElementReferenceTo(inputs[1]);
 		}
 
+		[Fact(DisplayName = "Will return completed task")]
+		public void Test003()
+		{
+			var cut = RenderComponent<FocusingComponent>();
+			Assert.True(cut.Instance.AfterFirstRender);
+		}
+
 		private class FocusingComponent : ComponentBase
 		{
 			private ElementReference elmRef;
+			internal bool AfterFirstRender { get; private set; }
 			protected override async Task OnAfterRenderAsync(bool firstRender)
 			{
 				if (firstRender)
 				{
 					await elmRef.FocusAsync();
+					AfterFirstRender = true;
 				}
 			}
 
