@@ -20,7 +20,9 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		/// </summary>
 		internal FocusOnNavigateHandler()
 			: base(inv => inv.Identifier.Equals(Identifier, StringComparison.Ordinal), isCatchAllHandler: true)
-		{ }
+		{
+			SetVoidResult();
+		}
 	}
 }
 #endif
