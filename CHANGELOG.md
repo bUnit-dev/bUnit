@@ -35,7 +35,7 @@ List of added functionality in this release.
 
 - The `Click` and `DoubleClick` extension methods now set the `MouseEventArgs.Detail` property to `1` and `2` respectively by default, unless the user specifies something else. This makes the methods more correctly emulate how Blazor reports single or double clicks on an element in the browser. Thanks to [@David-Moreira](https://github.com/David-Moreira) for the help troubleshooting this issue. By [@egil](https://github.com/egil).
 
-- `FocusAsync()` method handler on `ElementReference` and `<FocusOnNavigate>` js handler return completed `Task`
+- `FocusAsync()` method handler on `ElementReference` and `<FocusOnNavigate>` js handler return completed `Task`. By [@anddrzejb](https://github.com/anddrzejb).
 
 ## [1.2.49] - 2021-08-09
 
