@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System;
 using System.Runtime.Serialization;
 
@@ -26,4 +25,3 @@ namespace Bunit.TestDoubles
 		}
 	}
 }
-#endif

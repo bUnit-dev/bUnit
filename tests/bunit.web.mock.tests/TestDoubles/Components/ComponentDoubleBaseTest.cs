@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using AutoFixture.Xunit2;
 using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
@@ -7,7 +6,6 @@ using Xunit;
 
 namespace Bunit.TestDoubles.Components
 {
-
 	public class ComponentDoubleBaseTest : TestContext
 	{
 		private class ComponentDouble<TComponent> : ComponentDoubleBase<TComponent>
@@ -24,4 +22,3 @@ namespace Bunit.TestDoubles.Components
 		}
 	}
 }
-#endif

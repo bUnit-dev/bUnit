@@ -478,6 +478,7 @@ dotnet_diagnostic.AsyncFixer01.severity = none # AsyncFixer01: Unnecessary async
 # Meziantou
 # https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
 dotnet_diagnostic.MA0006.severity = suggestion # MA0006: use String.Equals
+dotnet_diagnostic.MA0007.severity = none # MA0007: Add a comma after the last value
 dotnet_diagnostic.MA0048.severity = silent # MA0048: File name must match type name
 
 # Microsoft - Code Analysis

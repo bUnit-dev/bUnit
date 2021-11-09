@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -75,7 +74,7 @@ namespace Bunit.TestDoubles
 			if (parameterSelector is null)
 				throw new ArgumentNullException(nameof(parameterSelector));
 
-			if (!(parameterSelector.Body is MemberExpression memberExpression) || !(memberExpression.Member is PropertyInfo propInfoCandidate))
+			if (parameterSelector.Body is not MemberExpression memberExpression || memberExpression.Member is not PropertyInfo propInfoCandidate)
 				throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.", nameof(parameterSelector));
 
 			var propertyInfo = propInfoCandidate.DeclaringType != ComponentType
@@ -113,4 +112,3 @@ namespace Bunit.TestDoubles
 			=> new(parameters.ToDictionary());
 	}
 }
-#endif

@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -49,4 +48,3 @@ namespace Bunit.TestDoubles
 		void IComponent.Attach(RenderHandle renderHandle) => this.renderHandle = renderHandle;
 	}
 }
-#endif

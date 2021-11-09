@@ -1,4 +1,3 @@
-﻿#if NET5_0_OR_GREATER
 using System;
 using System.Collections.Generic;
 using AutoFixture.Xunit2;
@@ -15,7 +14,7 @@ namespace Bunit.TestDoubles.Components
 		public void Test010()
 		{
 			var sut = CapturedParameterView<AllTypesOfParams<string>>.Empty;
-			Should.Throw<ArgumentNullException>(() => sut.Get<string>(null));
+			Should.Throw<ArgumentNullException>(() => sut.Get<string>(parameterSelector: default));
 		}
 
 		[Fact(DisplayName = "Get(parameterSelector) throws if method is selected")]
@@ -75,4 +74,3 @@ namespace Bunit.TestDoubles.Components
 		}
 	}
 }
-#endif

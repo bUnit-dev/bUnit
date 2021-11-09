@@ -14,6 +14,10 @@
 		</Description>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.4.244" PrivateAssets="All" />
+	</ItemGroup>
+	
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet3Version)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet3Version)" />

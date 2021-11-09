@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+		<RootNamespace>Bunit</RootNamespace>
+		<AssemblyName>Bunit.Web.Mock.Tests</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\bunit.web.mock\bunit.web.mock.csproj" />
+		<ProjectReference Include="..\bunit.testassets\bunit.testassets.csproj" />
+	</ItemGroup>
+
+</Project>

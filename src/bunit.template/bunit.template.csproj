@@ -22,6 +22,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.4.244" PrivateAssets="All" />
+	</ItemGroup>
+	
+	<ItemGroup>
 		<Content Include="template\**\*" Exclude="template\**\bin\**;template\**\obj\**;template\**\.vs\**" />
 		<Compile Remove="**\*" />
 		<Compile Remove="template\obj\**" />

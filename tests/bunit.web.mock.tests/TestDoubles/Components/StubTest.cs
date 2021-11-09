@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using AutoFixture.Xunit2;
 using Bunit.TestAssets.SampleComponents;
 using Shouldly;
@@ -33,4 +32,3 @@ namespace Bunit.TestDoubles.Components
 		}		
 	}
 }
-#endif
