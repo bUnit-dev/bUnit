@@ -68,7 +68,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
-          include-prerelease: true
 
       - name: 🛠️ Update changelog
         uses: thomaseizinger/keep-a-changelog-new-release@1.2.1
