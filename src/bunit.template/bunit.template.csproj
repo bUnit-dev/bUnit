@@ -33,5 +33,9 @@
 		<EmbeddedResource Remove="template\obj\**" />
 		<None Remove="template\obj\**" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Remove="template\CounterRazorTests.razor" />
+	</ItemGroup>
 
 </Project>
