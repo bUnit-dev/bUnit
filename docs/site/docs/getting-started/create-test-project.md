@@ -60,10 +60,10 @@ dotnet add package bunit --version #{NBGV_NuGetPackageVersion}#
 The test projects setting needs to be set to the following: 
 
 - the project's SDK needs to be set to `Microsoft.NET.Sdk.Razor`
-- set the `<TargetFramework>` to `net5.0`
+- set the `<TargetFramework>` to `net6.0`
 
 > [!NOTE]
-> bUnit works with `netcoreapp3.1` and `netstandard2.1` test projects as well.
+> bUnit works with `net5.0` and `netcoreapp3.1`/`netstandard2.1` test projects as well.
 
 To do so, change the first part of the test projects `.csproj` file to look like this.:
 
@@ -71,7 +71,7 @@ To do so, change the first part of the test projects `.csproj` file to look like
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>  ...
 
 </Project>
@@ -94,16 +94,22 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-      <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
 
@@ -120,19 +126,19 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>    
-    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />
-    <PackageReference Include="nunit" Version="3.12.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+  <ItemGroup>
+    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />    
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+    <PackageReference Include="coverlet.collector" Version="3.1.0" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="<PATH TO COMPONENT LIB>.csproj" />
   </ItemGroup>
@@ -146,17 +152,19 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
-    <PackageReference Include="coverlet.collector" Version="1.2.0" />
-  </ItemGroup>
-
+    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />    
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
+    <PackageReference Include="coverlet.collector" Version="3.1.0" />
+  </ItemGroup>  
+  
   <ItemGroup>
     <ProjectReference Include="<PATH TO COMPONENT LIB>.csproj" />
   </ItemGroup>
