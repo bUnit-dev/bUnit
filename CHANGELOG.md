@@ -6,59 +6,61 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.3.42] - 2021-11-09
+
 This release includes support for .NET 6, with support for all new features in Blazor with that release. There are also a number of additions and fixes, all listed below.
 
 Big shout out to **bUnit's sponsors** who helped make this release happen.
 
 **The higher tier sponsors are:**
 
-- [Progress Telerik](https://github.com/Progress-Telerik)
-- [Syncfusion](https://github.com/syncfusion)
+-   [Progress Telerik](https://github.com/Progress-Telerik)
+-   [Syncfusion](https://github.com/syncfusion)
 
 **Other sponsors are:**
 
-- [Hassan Rezk Habib (@Garderoben)](https://github.com/hassanhabib)
-- [Jonny Larsson (@Garderoben)](https://github.com/Garderoben)
-- [Domn Werner (@domn1995)](https://github.com/domn1995)
-- [Mladen Macanović (@stsrki)](https://github.com/stsrki)
-- [@ChristopheDEBOVE](https://github.com/ChristopheDEBOVE)
+-   [Hassan Rezk Habib (@Garderoben)](https://github.com/hassanhabib)
+-   [Jonny Larsson (@Garderoben)](https://github.com/Garderoben)
+-   [Domn Werner (@domn1995)](https://github.com/domn1995)
+-   [Mladen Macanović (@stsrki)](https://github.com/stsrki)
+-   [@ChristopheDEBOVE](https://github.com/ChristopheDEBOVE)
 
 ### Added
 
 List of added functionality in this release.
 
-- Added support for writing tests of components that use the `<FocusOnNavigate>` component included in .NET 6. This includes an assertion helper method `VerifyFocusOnNavigateInvoke` on bUnit's `JSInterop` that allow you to verify that `<FocusOnNavigate>` has set focus on an element during render. For example, to verify that `h1` selector was used to pick an element to focus on, do:  
-  
-  ```csharp
-  // <App /> component uses <FocusOnNavigate>
-  var cut = RenderComponent<App>();
+-   Added support for writing tests of components that use the `<FocusOnNavigate>` component included in .NET 6. This includes an assertion helper method `VerifyFocusOnNavigateInvoke` on bUnit's `JSInterop` that allow you to verify that `<FocusOnNavigate>` has set focus on an element during render. For example, to verify that `h1` selector was used to pick an element to focus on, do:  
 
-  // Verifies that <FocusOnNavigate> called it's JavaScript function
-  var invocation = JSInterop.VerifyFocusOnNavigateInvoke(); 
+    ```csharp
+    // <App /> component uses <FocusOnNavigate>
+    var cut = RenderComponent<App>();
 
-  // Verify that the invocation of <FocusOnNavigate> JavaScript function included the "h1" as the selector
-  Assert.Equal("h1", invocation.Arguments[0]);
-  ```
+    // Verifies that <FocusOnNavigate> called it's JavaScript function
+    var invocation = JSInterop.VerifyFocusOnNavigateInvoke(); 
 
-  By [@egil](https://github.com/egil).
+    // Verify that the invocation of <FocusOnNavigate> JavaScript function included the "h1" as the selector
+    Assert.Equal("h1", invocation.Arguments[0]);
+    ```
 
-- Added fake version of the `PersistentComponentState` type in Blazor that makes it possible to test components that use the type. By [@egil](https://github.com/egil).
+    By [@egil](https://github.com/egil).
 
-- Added `TriggerEvent` method to make it easier to trigger custom events. By [@egil](https://github.com/egil).
+-   Added fake version of the `PersistentComponentState` type in Blazor that makes it possible to test components that use the type. By [@egil](https://github.com/egil).
 
-- Added `History` capture in the `FakeNavigationManager`. By [@egil](https://github.com/egil).
+-   Added `TriggerEvent` method to make it easier to trigger custom events. By [@egil](https://github.com/egil).
 
-- Added new bUnit component mocking library, available via NuGet as `bunit.web.mock`. It is currently in preview and the features/APIs of it will change!
+-   Added `History` capture in the `FakeNavigationManager`. By [@egil](https://github.com/egil).
+
+-   Added new bUnit component mocking library, available via NuGet as `bunit.web.mock`. It is currently in preview and the features/APIs of it will change!
 
 ### Fixed
 
-- The `Click` and `DoubleClick` extension methods now set the `MouseEventArgs.Detail` property to `1` and `2` respectively by default, unless the user specifies something else. This makes the methods more correctly emulate how Blazor reports single or double clicks on an element in the browser. Thanks to [@David-Moreira](https://github.com/David-Moreira) for the help troubleshooting this issue. By [@egil](https://github.com/egil).
+-   The `Click` and `DoubleClick` extension methods now set the `MouseEventArgs.Detail` property to `1` and `2` respectively by default, unless the user specifies something else. This makes the methods more correctly emulate how Blazor reports single or double clicks on an element in the browser. Thanks to [@David-Moreira](https://github.com/David-Moreira) for the help troubleshooting this issue. By [@egil](https://github.com/egil).
 
-- `FocusAsync()` method handler on `ElementReference` and `<FocusOnNavigate>` js handler return completed `Task`. By [@anddrzejb](https://github.com/anddrzejb).
+-   `FocusAsync()` method handler on `ElementReference` and `<FocusOnNavigate>` js handler return completed `Task`. By [@anddrzejb](https://github.com/anddrzejb).
 
-- Fixes handling of disposed event handlers of bubbling events. See issue [#518](https://github.com/bUnit-dev/bUnit/issues/518) for details. Thanks to [@David-Moreira](https://github.com/David-Moreira) for helping debug this issue.
+-   Fixes handling of disposed event handlers of bubbling events. See issue [#518](https://github.com/bUnit-dev/bUnit/issues/518) for details. Thanks to [@David-Moreira](https://github.com/David-Moreira) for helping debug this issue.
 
-- Async event trigger methods are not public. In most circumstances you do not need to use them, but if you have a scenario where you want to check that something has not happened after an event handler was triggered, then you can use the async methods and await them to know when they are completed. See [#552](https://github.com/bUnit-dev/bUnit/discussions/552) for details. By [@egil](https://github.com/egil).
+-   Async event trigger methods are not public. In most circumstances you do not need to use them, but if you have a scenario where you want to check that something has not happened after an event handler was triggered, then you can use the async methods and await them to know when they are completed. See [#552](https://github.com/bUnit-dev/bUnit/discussions/552) for details. By [@egil](https://github.com/egil).
 
 ## [1.2.49] - 2021-08-09
 
@@ -1044,7 +1046,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**  
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.2.49...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.3.42...HEAD
+
+[1.3.42]: https://github.com/bUnit-dev/bUnit/compare/v1.2.49...v1.3.42
 
 [1.2.49]: https://github.com/bUnit-dev/bUnit/compare/v1.1.5...v1.2.49
 
