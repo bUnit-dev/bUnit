@@ -17,11 +17,11 @@ namespace Bunit
 		protected abstract string ElementName { get; }
 
 		protected TriggerEventSpy<EventArgs> CreateTriggerSpy(string element, string eventName)
-			=> new TriggerEventSpy<EventArgs>(p => RenderComponent<TriggerTester<EventArgs>>(p), element, eventName);
+			=> new(p => RenderComponent<TriggerTester<EventArgs>>(p), element, eventName);
 
 		// This is a separate overload for useful in non-reflection based testing
 		protected TriggerEventSpy<T> CreateTriggerSpy<T>(string element, string eventName) where T : EventArgs, new()
-			=> new TriggerEventSpy<T>(p => RenderComponent<TriggerTester<T>>(p), element, eventName);
+			=> new(p => RenderComponent<TriggerTester<T>>(p), element, eventName);
 
 		protected void VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string MethodName, string EventName)[] methodNameEventMap)
 		{
@@ -55,7 +55,7 @@ namespace Bunit
 			else
 			{
 				// Matches methods like: public static void Xxxx(this IElement element, other params, goes here)
-				var args = EventArgsType.GetProperties().ToDictionary(x => x.Name.ToUpperInvariant(), x => x.GetValue(expected, null), StringComparer.Ordinal);
+				var args = EventArgsType.GetProperties().ToDictionary(x => x.Name.ToUpperInvariant(), x => x.GetValue(expected, index: null), StringComparer.Ordinal);
 
 				spy.Trigger(element =>
 				{
@@ -83,7 +83,7 @@ namespace Bunit
 				nameLength -= 5;
 			}
 
-			var eventName = $"on{helper.Name.Substring(0, nameLength).ToLowerInvariant()}";
+			var eventName = $"on{helper.Name[..nameLength].ToLowerInvariant()}";
 
 			return eventName;
 		}

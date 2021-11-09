@@ -25,7 +25,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task ToggleAsync(this IElement element, EventArgs eventArgs) => element.TriggerEventAsync("ontoggle", eventArgs);
+		public static Task ToggleAsync(this IElement element, EventArgs eventArgs) => element.TriggerEventAsync("ontoggle", eventArgs);
 	}
 }
 #endif

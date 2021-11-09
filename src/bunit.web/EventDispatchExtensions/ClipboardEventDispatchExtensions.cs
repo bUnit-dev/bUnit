@@ -23,7 +23,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task BeforeCopyAsync(this IElement element) => element.TriggerEventAsync("onbeforecopy", EventArgs.Empty);
+		public static Task BeforeCopyAsync(this IElement element) => element.TriggerEventAsync("onbeforecopy", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onbeforecut</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -38,7 +38,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task BeforeCutAsync(this IElement element) => element.TriggerEventAsync("onbeforecut", EventArgs.Empty);
+		public static Task BeforeCutAsync(this IElement element) => element.TriggerEventAsync("onbeforecut", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onbeforepaste</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -53,7 +53,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task BeforePasteAsync(this IElement element) => element.TriggerEventAsync("onbeforepaste", EventArgs.Empty);
+		public static Task BeforePasteAsync(this IElement element) => element.TriggerEventAsync("onbeforepaste", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@oncopy</c> event on <paramref name="element"/>, passing the provided
@@ -78,7 +78,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task CopyAsync(this IElement element, ClipboardEventArgs eventArgs) => element.TriggerEventAsync("oncopy", eventArgs);
+		public static Task CopyAsync(this IElement element, ClipboardEventArgs eventArgs) => element.TriggerEventAsync("oncopy", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@oncut</c> event on <paramref name="element"/>, passing the provided
@@ -103,7 +103,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task CutAsync(this IElement element, ClipboardEventArgs eventArgs) => element.TriggerEventAsync("oncut", eventArgs);
+		public static Task CutAsync(this IElement element, ClipboardEventArgs eventArgs) => element.TriggerEventAsync("oncut", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onpaste</c> event on <paramref name="element"/>, passing the provided
@@ -128,6 +128,6 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task PasteAsync(this IElement element, ClipboardEventArgs eventArgs) => element.TriggerEventAsync("onpaste", eventArgs);
+		public static Task PasteAsync(this IElement element, ClipboardEventArgs eventArgs) => element.TriggerEventAsync("onpaste", eventArgs);
 	}
 }

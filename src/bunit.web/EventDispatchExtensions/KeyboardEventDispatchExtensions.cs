@@ -66,7 +66,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task KeyDownAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeydown", eventArgs);
+		public static Task KeyDownAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeydown", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onkeyup</c> event on <paramref name="element"/>,  passing the provided
@@ -125,7 +125,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task KeyUpAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeyup", eventArgs);
+		public static Task KeyUpAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeyup", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onkeypress</c> event on <paramref name="element"/>,  passing the provided
@@ -184,6 +184,6 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task KeyPressAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeypress", eventArgs);
+		public static Task KeyPressAsync(this IElement element, KeyboardEventArgs eventArgs) => element.TriggerEventAsync("onkeypress", eventArgs);
 	}
 }

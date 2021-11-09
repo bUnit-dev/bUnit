@@ -22,7 +22,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task ActivateAsync(this IElement element) => element.TriggerEventAsync("onactivate", EventArgs.Empty);
+		public static Task ActivateAsync(this IElement element) => element.TriggerEventAsync("onactivate", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onbeforeactivate</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -37,7 +37,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task BeforeActivateAsync(this IElement element) => element.TriggerEventAsync("onbeforeactivate", EventArgs.Empty);
+		public static Task BeforeActivateAsync(this IElement element) => element.TriggerEventAsync("onbeforeactivate", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onbeforedeactivate</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -52,7 +52,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task BeforeDeactivateAsync(this IElement element) => element.TriggerEventAsync("onbeforedeactivate", EventArgs.Empty);
+		public static Task BeforeDeactivateAsync(this IElement element) => element.TriggerEventAsync("onbeforedeactivate", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@ondeactivate</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -67,7 +67,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task DeactivateAsync(this IElement element) => element.TriggerEventAsync("ondeactivate", EventArgs.Empty);
+		public static Task DeactivateAsync(this IElement element) => element.TriggerEventAsync("ondeactivate", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onended</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -82,7 +82,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task EndedAsync(this IElement element) => element.TriggerEventAsync("onended", EventArgs.Empty);
+		public static Task EndedAsync(this IElement element) => element.TriggerEventAsync("onended", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onfullscreenchange</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -97,7 +97,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task FullscreenChangeAsync(this IElement element) => element.TriggerEventAsync("onfullscreenchange", EventArgs.Empty);
+		public static Task FullscreenChangeAsync(this IElement element) => element.TriggerEventAsync("onfullscreenchange", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onfullscreenerror</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -112,7 +112,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task FullscreenErrorAsync(this IElement element) => element.TriggerEventAsync("onfullscreenerror", EventArgs.Empty);
+		public static Task FullscreenErrorAsync(this IElement element) => element.TriggerEventAsync("onfullscreenerror", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onloadeddata</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -127,7 +127,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task LoadedDataAsync(this IElement element) => element.TriggerEventAsync("onloadeddata", EventArgs.Empty);
+		public static Task LoadedDataAsync(this IElement element) => element.TriggerEventAsync("onloadeddata", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onloadedmetadata</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -142,7 +142,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task LoadedMetadataAsync(this IElement element) => element.TriggerEventAsync("onloadedmetadata", EventArgs.Empty);
+		public static Task LoadedMetadataAsync(this IElement element) => element.TriggerEventAsync("onloadedmetadata", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onpointerlockchange</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -157,7 +157,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task PointerlockChangeAsync(this IElement element) => element.TriggerEventAsync("onpointerlockchange", EventArgs.Empty);
+		public static Task PointerlockChangeAsync(this IElement element) => element.TriggerEventAsync("onpointerlockchange", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onpointerlockerror</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -172,7 +172,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task PointerlockErrorAsync(this IElement element) => element.TriggerEventAsync("onpointerlockerror", EventArgs.Empty);
+		public static Task PointerlockErrorAsync(this IElement element) => element.TriggerEventAsync("onpointerlockerror", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onreadystatechange</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -187,7 +187,7 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task ReadystateChangeAsync(this IElement element) => element.TriggerEventAsync("onreadystatechange", EventArgs.Empty);
+		public static Task ReadystateChangeAsync(this IElement element) => element.TriggerEventAsync("onreadystatechange", EventArgs.Empty);
 
 		/// <summary>
 		/// Raises the <c>@onscroll</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -202,6 +202,6 @@ namespace Bunit
 		/// </summary>
 		/// <param name="element">The element to raise the event on.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task ScrollAsync(this IElement element) => element.TriggerEventAsync("onscroll", EventArgs.Empty);
+		public static Task ScrollAsync(this IElement element) => element.TriggerEventAsync("onscroll", EventArgs.Empty);
 	}
 }

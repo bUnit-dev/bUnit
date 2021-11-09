@@ -89,7 +89,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task GotPointerCaptureAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("ongotpointercapture", eventArgs);
+		public static Task GotPointerCaptureAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("ongotpointercapture", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onlostpointercapture</c> event on <paramref name="element"/>, passing the provided
@@ -171,7 +171,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task LostPointerCaptureAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onlostpointercapture", eventArgs);
+		public static Task LostPointerCaptureAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onlostpointercapture", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onpointerdown</c> event on <paramref name="element"/>, passing the provided
@@ -253,7 +253,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task PointerDownAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerdown", eventArgs);
+		public static Task PointerDownAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerdown", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onpointercancel</c> event on <paramref name="element"/>, passing the provided
@@ -335,7 +335,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task PointerCancelAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointercancel", eventArgs);
+		public static Task PointerCancelAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointercancel", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onpointerenter</c> event on <paramref name="element"/>, passing the provided
@@ -417,7 +417,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task PointerEnterAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerenter", eventArgs);
+		public static Task PointerEnterAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerenter", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onpointerleave</c> event on <paramref name="element"/>, passing the provided
@@ -499,7 +499,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task PointerLeaveAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerleave", eventArgs);
+		public static Task PointerLeaveAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerleave", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onpointermove</c> event on <paramref name="element"/>, passing the provided
@@ -581,7 +581,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task PointerMoveAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointermove", eventArgs);
+		public static Task PointerMoveAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointermove", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onpointerout</c> event on <paramref name="element"/>, passing the provided
@@ -663,7 +663,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task PointerOutAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerout", eventArgs);
+		public static Task PointerOutAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerout", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onpointerover</c> event on <paramref name="element"/>, passing the provided
@@ -745,7 +745,7 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task PointerOverAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerover", eventArgs);
+		public static Task PointerOverAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerover", eventArgs);
 
 		/// <summary>
 		/// Raises the <c>@onpointerup</c> event on <paramref name="element"/>, passing the provided
@@ -827,6 +827,6 @@ namespace Bunit
 		/// <param name="element">The element to raise the event on.</param>
 		/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 		/// <returns>A task that completes when the event handler is done.</returns>
-		private static Task PointerUpAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerup", eventArgs);
+		public static Task PointerUpAsync(this IElement element, PointerEventArgs eventArgs) => element.TriggerEventAsync("onpointerup", eventArgs);
 	}
 }

@@ -9,7 +9,11 @@ namespace Bunit
 {
 	public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<MouseEventArgs>
 	{
-		public static IEnumerable<object[]> Helpers { get; } = GetEventHelperMethods(typeof(MouseEventDispatchExtensions), x => !x.Name.Contains("Wheel", StringComparison.OrdinalIgnoreCase));
+		public static IEnumerable<object[]> Helpers { get; }
+			= GetEventHelperMethods(
+				typeof(MouseEventDispatchExtensions),
+				x => !x.Name.Contains("Wheel", StringComparison.OrdinalIgnoreCase)
+				  && !x.Name.Contains("DoubleClick", StringComparison.OrdinalIgnoreCase));
 
 		protected override string ElementName => "button";
 
@@ -19,7 +23,7 @@ namespace Bunit
 		{
 			var expected = new MouseEventArgs
 			{
-				Detail = 2,
+				Detail = 123,
 				ScreenX = 3,
 				ScreenY = 4,
 				ClientX = 5,
@@ -33,10 +37,11 @@ namespace Bunit
 				Type = "TYPE",
 			};
 
-			VerifyEventRaisesCorrectly(
-				helper,
-				expected,
-				(nameof(MouseEventDispatchExtensions.DoubleClick), "ondblclick"));
+			VerifyEventRaisesCorrectly(helper, expected);
+			//VerifyEventRaisesCorrectly(
+			//	helper,
+			//	expected,
+			//	(nameof(MouseEventDispatchExtensions.DoubleClick), "ondblclick"));
 		}
 
 		[Fact(DisplayName = "Click sets MouseEventArgs.Detail to 1 by default")]
@@ -57,6 +62,56 @@ namespace Bunit
 			spy.Trigger(x => x.DoubleClick());
 
 			spy.RaisedEvent.Detail.ShouldBe(2);
+		}
+
+		[Fact(DisplayName = "DoubleClick events are raised correctly through helpers")]
+		public void Test003()
+		{
+			var expected = new MouseEventArgs
+			{
+				Detail = 2,
+				ScreenX = 3,
+				ScreenY = 4,
+				ClientX = 5,
+				ClientY = 6,
+				Button = 7,
+				Buttons = 8,
+				ShiftKey = true,
+				CtrlKey = true,
+				AltKey = true,
+				MetaKey = true,
+				Type = "TYPE",
+			};
+			var spy = CreateTriggerSpy<MouseEventArgs>("button", "ondblclick");
+
+			spy.Trigger(x => x.DoubleClick(expected));
+
+			spy.RaisedEvent.ShouldBe(expected);
+		}
+
+		[Fact(DisplayName = "DoubleClickAsync events are raised correctly through helpers")]
+		public void Test004()
+		{
+			var expected = new MouseEventArgs
+			{
+				Detail = 2,
+				ScreenX = 3,
+				ScreenY = 4,
+				ClientX = 5,
+				ClientY = 6,
+				Button = 7,
+				Buttons = 8,
+				ShiftKey = true,
+				CtrlKey = true,
+				AltKey = true,
+				MetaKey = true,
+				Type = "TYPE",
+			};
+			var spy = CreateTriggerSpy<MouseEventArgs>("button", "ondblclick");
+
+			spy.Trigger(x => x.DoubleClickAsync(expected));
+
+			spy.RaisedEvent.ShouldBe(expected);
 		}
 	}
 }
