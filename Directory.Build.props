@@ -48,7 +48,7 @@
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
 		<PackageReference Include="Meziantou.Analyzer" Version="1.0.675" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.30.0.37606" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.31.0.39249" PrivateAssets="All" />
 	</ItemGroup>
 
 	<!-- https://github.com/dotnet/sdk/issues/18148#issuecomment-860957180 from @elion -->
