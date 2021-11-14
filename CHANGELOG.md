@@ -29,7 +29,7 @@ Big shout out to **bUnit's sponsors** who helped make this release happen.
 
 List of added functionality in this release.
 
--   Added support for writing tests of components that use the `<FocusOnNavigate>` component included in .NET 6. This includes an assertion helper method `VerifyFocusOnNavigateInvoke` on bUnit's `JSInterop` that allow you to verify that `<FocusOnNavigate>` has set focus on an element during render. For example, to verify that `h1` selector was used to pick an element to focus on, do:  
+- Added support for writing tests of components that use the `<FocusOnNavigate>` component included in .NET 6. This includes an assertion helper method `VerifyFocusOnNavigateInvoke` on bUnit's `JSInterop` that allow you to verify that `<FocusOnNavigate>` has set focus on an element during render. For example, to verify that `h1` selector was used to pick an element to focus on, do:  
 
     ```csharp
     // <App /> component uses <FocusOnNavigate>
@@ -44,13 +44,19 @@ List of added functionality in this release.
 
     By [@egil](https://github.com/egil).
 
--   Added fake version of the `PersistentComponentState` type in Blazor that makes it possible to test components that use the type. By [@egil](https://github.com/egil).
+- Added fake version of the `PersistentComponentState` type in Blazor that makes it possible to test components that use the type. By [@egil](https://github.com/egil).
 
--   Added `TriggerEvent` method to make it easier to trigger custom events. By [@egil](https://github.com/egil).
+- Added `TriggerEvent` method to make it easier to trigger custom events. By [@egil](https://github.com/egil).
 
--   Added `History` capture in the `FakeNavigationManager`. By [@egil](https://github.com/egil).
+- Added `History` capture in the `FakeNavigationManager`. By [@egil](https://github.com/egil).
 
--   Added new bUnit component mocking library, available via NuGet as `bunit.web.mock`. It is currently in preview and the features/APIs of it will change!
+- Added new bUnit component mocking library, available via NuGet as `bunit.web.mock`. It is currently in preview and the features/APIs of it will change!
+
+- Added `WaitForElement` and `WaitForElements` methods. These makes it possible to wait for one or more elements to appear in the DOM before continuing a test, similar to how `WaitForAssertion` allows you to wait for an assertion to pass, or `WaitForState` allows you to wait for a predicate to pass. By [@egil](https://github.com/egil).
+
+### Changed
+
+- Added automatic conversion of values (types) passed to `Change()` and `Input()` event trigger methods. This means that e.g. a `DateTime` passed to `Change()` is automatically converted to a string format that Blazor expects. By [@egil](https://github.com/egil).
 
 ### Fixed
 
