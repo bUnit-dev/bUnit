@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- Changed `SetParametersAndRender` such that it rethrows any exceptions thrown by the component under tests `SetParametersAsync` method. Thanks to [@bonsall](https://github.com/bonsall) for reporting the issue. Fixed by [@egil](https://github.com/egil).
+
 ## [1.3.42] - 2021-11-09
 
 This release includes support for .NET 6, with support for all new features in Blazor with that release. There are also a number of additions and fixes, all listed below.

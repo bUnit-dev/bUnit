@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using Microsoft.AspNetCore.Components;
 
 namespace Bunit
@@ -30,9 +31,21 @@ namespace Bunit
 			if (renderedComponent is null)
 				throw new ArgumentNullException(nameof(renderedComponent));
 
-			var result = renderedComponent.InvokeAsync(() => renderedComponent.Instance.SetParametersAsync(parameters));
+			var result = renderedComponent.InvokeAsync(() =>
+				renderedComponent.Instance.SetParametersAsync(parameters));
 
-			if (!result.IsCompleted)
+			if (result.IsFaulted && result.Exception is not null)
+			{
+				if (result.Exception.InnerExceptions.Count == 1)
+				{
+					ExceptionDispatchInfo.Capture(result.Exception.InnerExceptions[0]).Throw();
+				}
+				else
+				{
+					ExceptionDispatchInfo.Capture(result.Exception).Throw();
+				}
+			}
+			else if (!result.IsCompleted)
 			{
 				result.GetAwaiter().GetResult();
 			}
