@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- Add `ComponentFactories` extensions method that makes it easy to register an instance of a replacement component. By [@egil](https://github.com/egil).
+
 ### Fixed
 
 - Changed `SetParametersAndRender` such that it rethrows any exceptions thrown by the component under tests `SetParametersAsync` method. Thanks to [@bonsall](https://github.com/bonsall) for reporting the issue. Fixed by [@egil](https://github.com/egil).
