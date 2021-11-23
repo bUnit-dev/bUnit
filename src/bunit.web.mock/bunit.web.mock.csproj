@@ -4,7 +4,7 @@
 		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
 		<RootNamespace>Bunit</RootNamespace>
 		<AssemblyName>Bunit.Web.Mock</AssemblyName>
-		<PackageVersion>0.1.1-preview</PackageVersion>
+		<PackageVersion>0.1.2-preview</PackageVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
