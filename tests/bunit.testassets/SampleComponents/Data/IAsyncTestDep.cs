@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
 
-namespace Bunit.TestAssets.SampleComponents.Data
+namespace Bunit.TestAssets.SampleComponents.Data;
+
+public interface IAsyncTestDep
 {
-	public interface IAsyncTestDep
-	{
-		Task<string> GetDataAsync();
-	}
+	Task<string> GetDataAsync();
 }

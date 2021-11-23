@@ -4,134 +4,133 @@ using System.Threading;
 using AngleSharp.Dom;
 using Bunit.Extensions.WaitForHelpers;
 
-namespace Bunit
+namespace Bunit;
+
+/// <summary>
+/// Helper methods dealing with async rendering during testing.
+/// </summary>
+public static class RenderedFragmentWaitForHelperExtensions
 {
 	/// <summary>
-	/// Helper methods dealing with async rendering during testing.
+	/// Wait until an element matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
+	/// or the timeout is reached (default is one second).
 	/// </summary>
-	public static class RenderedFragmentWaitForHelperExtensions
+	/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
+	/// <param name="cssSelector">The CSS selector to use to search for the element.</param>
+	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout. See the inner exception for details.</exception>
+	/// <returns>The <see cref="IElement"/>.</returns>
+	public static IElement WaitForElement(this IRenderedFragment renderedFragment, string cssSelector)
+		=> WaitForElementCore(renderedFragment, cssSelector, timeout: null);
+
+	/// <summary>
+	/// Wait until an element matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
+	/// or the <paramref name="timeout"/> is reached.
+	/// </summary>
+	/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
+	/// <param name="cssSelector">The CSS selector to use to search for the element.</param>
+	/// <param name="timeout">The maximum time to wait for the element to appear.</param>
+	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout. See the inner exception for details.</exception>
+	/// <returns>The <see cref="IElement"/>.</returns>
+	public static IElement WaitForElement(this IRenderedFragment renderedFragment, string cssSelector, TimeSpan timeout)
+		=> WaitForElementCore(renderedFragment, cssSelector, timeout: timeout);
+
+	/// <summary>
+	/// Wait until at least one element matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
+	/// or the timeout is reached (default is one second).
+	/// </summary>
+	/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
+	/// <param name="cssSelector">The CSS selector to use to search for elements.</param>
+	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
+	/// <returns>The <see cref="IRefreshableElementCollection{IElement}"/>.</returns>
+	public static IRefreshableElementCollection<IElement> WaitForElements(this IRenderedFragment renderedFragment, string cssSelector)
+		=> WaitForElementsCore(renderedFragment, cssSelector, matchElementCount: null, timeout: null);
+
+	/// <summary>
+	/// Wait until exactly <paramref name="matchElementCount"/> element(s) matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
+	/// or the timeout is reached (default is one second).
+	/// </summary>
+	/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
+	/// <param name="cssSelector">The CSS selector to use to search for elements.</param>
+	/// <param name="matchElementCount">The exact number of elements to that the <paramref name="cssSelector"/> should match.</param>
+	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
+	/// <returns>The <see cref="IRefreshableElementCollection{IElement}"/>.</returns>
+	public static IRefreshableElementCollection<IElement> WaitForElements(this IRenderedFragment renderedFragment, string cssSelector, int matchElementCount)
+		=> WaitForElementsCore(renderedFragment, cssSelector, matchElementCount: matchElementCount, timeout: null);
+
+	/// <summary>
+	/// Wait until at least one element matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
+	/// or the <paramref name="timeout"/> is reached.
+	/// </summary>
+	/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
+	/// <param name="cssSelector">The CSS selector to use to search for elements.</param>
+	/// <param name="timeout">The maximum time to wait for elements to appear.</param>
+	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
+	/// <returns>The <see cref="IRefreshableElementCollection{IElement}"/>.</returns>
+	public static IRefreshableElementCollection<IElement> WaitForElements(this IRenderedFragment renderedFragment, string cssSelector, TimeSpan timeout)
+		=> WaitForElementsCore(renderedFragment, cssSelector, matchElementCount: null, timeout: timeout);
+
+	/// <summary>
+	/// Wait until exactly <paramref name="matchElementCount"/> element(s) matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
+	/// or the <paramref name="timeout"/> is reached.
+	/// </summary>
+	/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
+	/// <param name="cssSelector">The CSS selector to use to search for elements.</param>
+	/// <param name="matchElementCount">The exact number of elements to that the <paramref name="cssSelector"/> should match.</param>
+	/// <param name="timeout">The maximum time to wait for elements to appear.</param>
+	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
+	/// <returns>The <see cref="IRefreshableElementCollection{IElement}"/>.</returns>
+	public static IRefreshableElementCollection<IElement> WaitForElements(this IRenderedFragment renderedFragment, string cssSelector, int matchElementCount, TimeSpan timeout)
+		=> WaitForElementsCore(renderedFragment, cssSelector, matchElementCount: matchElementCount, timeout: timeout);
+
+	private static IElement WaitForElementCore(this IRenderedFragment renderedFragment, string cssSelector, TimeSpan? timeout)
 	{
-		/// <summary>
-		/// Wait until an element matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
-		/// or the timeout is reached (default is one second).
-		/// </summary>
-		/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
-		/// <param name="cssSelector">The CSS selector to use to search for the element.</param>
-		/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout. See the inner exception for details.</exception>
-		/// <returns>The <see cref="IElement"/>.</returns>
-		public static IElement WaitForElement(this IRenderedFragment renderedFragment, string cssSelector)
-			=> WaitForElementCore(renderedFragment, cssSelector, timeout: null);
+		using var waiter = new WaitForElementHelper(renderedFragment, cssSelector, timeout);
 
-		/// <summary>
-		/// Wait until an element matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
-		/// or the <paramref name="timeout"/> is reached.
-		/// </summary>
-		/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
-		/// <param name="cssSelector">The CSS selector to use to search for the element.</param>
-		/// <param name="timeout">The maximum time to wait for the element to appear.</param>
-		/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout. See the inner exception for details.</exception>
-		/// <returns>The <see cref="IElement"/>.</returns>
-		public static IElement WaitForElement(this IRenderedFragment renderedFragment, string cssSelector, TimeSpan timeout)
-			=> WaitForElementCore(renderedFragment, cssSelector, timeout: timeout);
-
-		/// <summary>
-		/// Wait until at least one element matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
-		/// or the timeout is reached (default is one second).
-		/// </summary>
-		/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
-		/// <param name="cssSelector">The CSS selector to use to search for elements.</param>
-		/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
-		/// <returns>The <see cref="IRefreshableElementCollection{IElement}"/>.</returns>
-		public static IRefreshableElementCollection<IElement> WaitForElements(this IRenderedFragment renderedFragment, string cssSelector)
-			=> WaitForElementsCore(renderedFragment, cssSelector, matchElementCount: null, timeout: null);
-
-		/// <summary>
-		/// Wait until exactly <paramref name="matchElementCount"/> element(s) matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
-		/// or the timeout is reached (default is one second).
-		/// </summary>
-		/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
-		/// <param name="cssSelector">The CSS selector to use to search for elements.</param>
-		/// <param name="matchElementCount">The exact number of elements to that the <paramref name="cssSelector"/> should match.</param>
-		/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
-		/// <returns>The <see cref="IRefreshableElementCollection{IElement}"/>.</returns>
-		public static IRefreshableElementCollection<IElement> WaitForElements(this IRenderedFragment renderedFragment, string cssSelector, int matchElementCount)
-			=> WaitForElementsCore(renderedFragment, cssSelector, matchElementCount: matchElementCount, timeout: null);
-
-		/// <summary>
-		/// Wait until at least one element matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
-		/// or the <paramref name="timeout"/> is reached.
-		/// </summary>
-		/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
-		/// <param name="cssSelector">The CSS selector to use to search for elements.</param>
-		/// <param name="timeout">The maximum time to wait for elements to appear.</param>
-		/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
-		/// <returns>The <see cref="IRefreshableElementCollection{IElement}"/>.</returns>
-		public static IRefreshableElementCollection<IElement> WaitForElements(this IRenderedFragment renderedFragment, string cssSelector, TimeSpan timeout)
-			=> WaitForElementsCore(renderedFragment, cssSelector, matchElementCount: null, timeout: timeout);
-
-		/// <summary>
-		/// Wait until exactly <paramref name="matchElementCount"/> element(s) matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
-		/// or the <paramref name="timeout"/> is reached.
-		/// </summary>
-		/// <param name="renderedFragment">The render fragment or component find the matching element in.</param>
-		/// <param name="cssSelector">The CSS selector to use to search for elements.</param>
-		/// <param name="matchElementCount">The exact number of elements to that the <paramref name="cssSelector"/> should match.</param>
-		/// <param name="timeout">The maximum time to wait for elements to appear.</param>
-		/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
-		/// <returns>The <see cref="IRefreshableElementCollection{IElement}"/>.</returns>
-		public static IRefreshableElementCollection<IElement> WaitForElements(this IRenderedFragment renderedFragment, string cssSelector, int matchElementCount, TimeSpan timeout)
-			=> WaitForElementsCore(renderedFragment, cssSelector, matchElementCount: matchElementCount, timeout: timeout);
-
-		private static IElement WaitForElementCore(this IRenderedFragment renderedFragment, string cssSelector, TimeSpan? timeout)
+		try
 		{
-			using var waiter = new WaitForElementHelper(renderedFragment, cssSelector, timeout);
-
-			try
-			{
-				return waiter.WaitTask.GetAwaiter().GetResult();
-			}
-			catch (Exception e)
-			{
-				if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
-				{
-					ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-				}
-				else
-				{
-					ExceptionDispatchInfo.Capture(e).Throw();
-				}
-
-				// Unreachable code. Only here because compiler does not know that ExceptionDispatchInfo throws an exception
-				throw;
-			}
+			return waiter.WaitTask.GetAwaiter().GetResult();
 		}
-
-		private static IRefreshableElementCollection<IElement> WaitForElementsCore(
-			this IRenderedFragment renderedFragment,
-			string cssSelector,
-			int? matchElementCount,
-			TimeSpan? timeout)
+		catch (Exception e)
 		{
-			using var waiter = new WaitForElementsHelper(renderedFragment, cssSelector, matchElementCount, timeout);
-
-			try
+			if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
 			{
-				return waiter.WaitTask.GetAwaiter().GetResult();
+				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
 			}
-			catch (Exception e)
+			else
 			{
-				if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
-				{
-					ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-				}
-				else
-				{
-					ExceptionDispatchInfo.Capture(e).Throw();
-				}
-
-				// Unreachable code. Only here because compiler does not know that ExceptionDispatchInfo throws an exception
-				throw;
+				ExceptionDispatchInfo.Capture(e).Throw();
 			}
+
+			// Unreachable code. Only here because compiler does not know that ExceptionDispatchInfo throws an exception
+			throw;
+		}
+	}
+
+	private static IRefreshableElementCollection<IElement> WaitForElementsCore(
+		this IRenderedFragment renderedFragment,
+		string cssSelector,
+		int? matchElementCount,
+		TimeSpan? timeout)
+	{
+		using var waiter = new WaitForElementsHelper(renderedFragment, cssSelector, matchElementCount, timeout);
+
+		try
+		{
+			return waiter.WaitTask.GetAwaiter().GetResult();
+		}
+		catch (Exception e)
+		{
+			if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
+			{
+				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
+			}
+			else
+			{
+				ExceptionDispatchInfo.Capture(e).Throw();
+			}
+
+			// Unreachable code. Only here because compiler does not know that ExceptionDispatchInfo throws an exception
+			throw;
 		}
 	}
 }

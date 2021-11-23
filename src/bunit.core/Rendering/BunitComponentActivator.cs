@@ -3,44 +3,43 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit.Rendering
+namespace Bunit.Rendering;
+
+internal class BunitComponentActivator : IComponentActivator
 {
-	internal class BunitComponentActivator : IComponentActivator
+	private readonly ComponentFactoryCollection factories;
+
+	public BunitComponentActivator(ComponentFactoryCollection factories)
 	{
-		private readonly ComponentFactoryCollection factories;
+		this.factories = factories ?? throw new ArgumentNullException(nameof(factories));
+	}
 
-		public BunitComponentActivator(ComponentFactoryCollection factories)
+	public IComponent CreateInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type componentType)
+	{
+		if (!typeof(IComponent).IsAssignableFrom(componentType))
 		{
-			this.factories = factories ?? throw new ArgumentNullException(nameof(factories));
+			throw new ArgumentException($"The type {componentType.FullName} does not implement {nameof(IComponent)}.", nameof(componentType));
 		}
 
-		public IComponent CreateInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type componentType)
+		// The FragmentContainer is a bUnit component added to the
+		// render tree to separate the components from the TestContextBase.RenderTree
+		// and the components in the render fragment being rendered.
+		// It should never be replaced by another component, as
+		// this would break bUnits ability to detect the start
+		// of the component under test.
+		if (typeof(FragmentContainer) == componentType)
+			return new FragmentContainer();
+
+		for (int i = factories.Count - 1; i >= 0; i--)
 		{
-			if (!typeof(IComponent).IsAssignableFrom(componentType))
+			var factory = factories[i];
+			if (factory.CanCreate(componentType))
 			{
-				throw new ArgumentException($"The type {componentType.FullName} does not implement {nameof(IComponent)}.", nameof(componentType));
+				return factory.Create(componentType);
 			}
-
-			// The FragmentContainer is a bUnit component added to the
-			// render tree to separate the components from the TestContextBase.RenderTree
-			// and the components in the render fragment being rendered.
-			// It should never be replaced by another component, as
-			// this would break bUnits ability to detect the start
-			// of the component under test.
-			if (typeof(FragmentContainer) == componentType)
-				return new FragmentContainer();
-
-			for (int i = factories.Count - 1; i >= 0; i--)
-			{
-				var factory = factories[i];
-				if (factory.CanCreate(componentType))
-				{
-					return factory.Create(componentType);
-				}
-			}
-
-			return (IComponent)Activator.CreateInstance(componentType)!;
 		}
+
+		return (IComponent)Activator.CreateInstance(componentType)!;
 	}
 }
 #endif

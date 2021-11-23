@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit
+namespace Bunit;
+
+/// <inheritdoc/>
+public interface IRenderedComponent<out TComponent> : IRenderedComponentBase<TComponent>, IRenderedFragment
+	where TComponent : IComponent
 {
-	/// <inheritdoc/>
-	public interface IRenderedComponent<out TComponent> : IRenderedComponentBase<TComponent>, IRenderedFragment
-		where TComponent : IComponent
-	{
-	}
 }

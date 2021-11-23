@@ -18,7 +18,7 @@
 	<PropertyGroup Label="Compile settings">
 		<Nullable>enable</Nullable>
 		<LangVersion>10.0</LangVersion>
-		<ImplicitUsings>disable</ImplicitUsings>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<NoWarn>CA1014,NU5104</NoWarn>
 
 		<!-- Used by code coverage -->
@@ -47,7 +47,7 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
-		<PackageReference Include="Meziantou.Analyzer" Version="1.0.676" PrivateAssets="All" />
+		<PackageReference Include="Meziantou.Analyzer" Version="1.0.678" PrivateAssets="All" />
 		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.32.0.39516" PrivateAssets="All" />
 	</ItemGroup>
 

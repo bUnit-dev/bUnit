@@ -3,20 +3,19 @@ using Bunit.TestAssets.SampleComponents;
 using Shouldly;
 using Xunit;
 
-namespace Bunit.EventDispatchExtensions
+namespace Bunit.EventDispatchExtensions;
+
+public class DetailsElementEventDispatcherExtensionsTest : TestContext
 {
-	public class DetailsElementEventDispatcherExtensionsTest : TestContext
+	[Fact(DisplayName = "Toggle raises ontoggle events")]
+	public void Test200()
 	{
-		[Fact(DisplayName = "Toggle raises ontoggle events")]
-		public void Test200()
-		{
-			var cut = RenderComponent<ToggleableDetails>();
-			cut.FindAll("div > p").Count.ShouldBe(0);
+		var cut = RenderComponent<ToggleableDetails>();
+		cut.FindAll("div > p").Count.ShouldBe(0);
 
-			cut.Find("details").Toggle();
+		cut.Find("details").Toggle();
 
-			cut.FindAll("div > p").Count.ShouldBe(1);
-		}
+		cut.FindAll("div > p").Count.ShouldBe(1);
 	}
 }
 #endif

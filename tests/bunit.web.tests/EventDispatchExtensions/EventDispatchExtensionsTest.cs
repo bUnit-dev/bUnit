@@ -7,109 +7,108 @@ using AngleSharp.Dom;
 using Bunit.TestAssets.SampleComponents;
 using Shouldly;
 
-namespace Bunit
+namespace Bunit;
+
+public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
+	where TEventArgs : EventArgs, new()
 {
-	public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
-		where TEventArgs : EventArgs, new()
+	protected static readonly Type EventArgsType = typeof(TEventArgs);
+
+	protected abstract string ElementName { get; }
+
+	protected TriggerEventSpy<EventArgs> CreateTriggerSpy(string element, string eventName)
+		=> new(p => RenderComponent<TriggerTester<EventArgs>>(p), element, eventName);
+
+	// This is a separate overload for useful in non-reflection based testing
+	protected TriggerEventSpy<T> CreateTriggerSpy<T>(string element, string eventName) where T : EventArgs, new()
+		=> new(p => RenderComponent<TriggerTester<T>>(p), element, eventName);
+
+	protected void VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string MethodName, string EventName)[] methodNameEventMap)
 	{
-		protected static readonly Type EventArgsType = typeof(TEventArgs);
+		if (helper is null)
+			throw new ArgumentNullException(nameof(helper));
 
-		protected abstract string ElementName { get; }
+		var eventName = methodNameEventMap.SingleOrDefault(x => x.MethodName.Equals(helper.Name, StringComparison.Ordinal)).EventName
+			?? GetEventNameFromMethod(helper);
 
-		protected TriggerEventSpy<EventArgs> CreateTriggerSpy(string element, string eventName)
-			=> new(p => RenderComponent<TriggerTester<EventArgs>>(p), element, eventName);
+		var spy = CreateTriggerSpy(ElementName, eventName);
+		var evtArg = new TEventArgs();
 
-		// This is a separate overload for useful in non-reflection based testing
-		protected TriggerEventSpy<T> CreateTriggerSpy<T>(string element, string eventName) where T : EventArgs, new()
-			=> new(p => RenderComponent<TriggerTester<T>>(p), element, eventName);
-
-		protected void VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string MethodName, string EventName)[] methodNameEventMap)
+		if (helper.GetParameters().Any(p => p.ParameterType == EventArgsType))
 		{
-			if (helper is null)
-				throw new ArgumentNullException(nameof(helper));
-
-			var eventName = methodNameEventMap.SingleOrDefault(x => x.MethodName.Equals(helper.Name, StringComparison.Ordinal)).EventName
-				?? GetEventNameFromMethod(helper);
-
-			var spy = CreateTriggerSpy(ElementName, eventName);
-			var evtArg = new TEventArgs();
-
-			if (helper.GetParameters().Any(p => p.ParameterType == EventArgsType))
+			// Matches methods like: public static void Xxxx(this IElement element, TEventArgs args)
+			spy.Trigger(element =>
 			{
-				// Matches methods like: public static void Xxxx(this IElement element, TEventArgs args)
-				spy.Trigger(element =>
-				{
-					helper.Invoke(null, new object[] { element, evtArg });
-				});
-				spy.RaisedEvent.ShouldBe(evtArg);
-			}
-			else if (helper.GetParameters().Length == 1)
+				helper.Invoke(null, new object[] { element, evtArg });
+			});
+			spy.RaisedEvent.ShouldBe(evtArg);
+		}
+		else if (helper.GetParameters().Length == 1)
+		{
+			// Matches methods like: public static void Xxxx(this IElement element)
+			spy.Trigger(element =>
 			{
-				// Matches methods like: public static void Xxxx(this IElement element)
-				spy.Trigger(element =>
-				{
-					helper.Invoke(null, new object[] { element });
-				});
-				spy.RaisedEvent.ShouldBe(EventArgs.Empty);
-			}
-			else
+				helper.Invoke(null, new object[] { element });
+			});
+			spy.RaisedEvent.ShouldBe(EventArgs.Empty);
+		}
+		else
+		{
+			// Matches methods like: public static void Xxxx(this IElement element, other params, goes here)
+			var args = EventArgsType.GetProperties().ToDictionary(x => x.Name.ToUpperInvariant(), x => x.GetValue(expected, index: null), StringComparer.Ordinal);
+
+			spy.Trigger(element =>
 			{
-				// Matches methods like: public static void Xxxx(this IElement element, other params, goes here)
-				var args = EventArgsType.GetProperties().ToDictionary(x => x.Name.ToUpperInvariant(), x => x.GetValue(expected, index: null), StringComparer.Ordinal);
+				args.Add("ELEMENT", element);
 
-				spy.Trigger(element =>
-				{
-					args.Add("ELEMENT", element);
+				var helperArgs = helper.GetParameters().Select(x => args[x.Name!.ToUpperInvariant()]).ToArray();
 
-					var helperArgs = helper.GetParameters().Select(x => args[x.Name!.ToUpperInvariant()]).ToArray();
+				helper.Invoke(null, helperArgs);
+			});
 
-					helper.Invoke(null, helperArgs);
-				});
+			spy.RaisedEvent.ShouldBeOfType<TEventArgs>().ShouldBeEquivalentTo(expected);
+		}
+	}
 
-				spy.RaisedEvent.ShouldBeOfType<TEventArgs>().ShouldBeEquivalentTo(expected);
-			}
+	[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "Event names are used in lower case.")]
+	private static string GetEventNameFromMethod(MethodInfo helper)
+	{
+		if (helper is null)
+			throw new ArgumentNullException(nameof(helper));
+
+		var nameLength = helper.Name.Length;
+
+		if (helper.Name.EndsWith("Async", StringComparison.Ordinal))
+		{
+			nameLength -= 5;
 		}
 
-		[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "Event names are used in lower case.")]
-		private static string GetEventNameFromMethod(MethodInfo helper)
-		{
-			if (helper is null)
-				throw new ArgumentNullException(nameof(helper));
+		var eventName = $"on{helper.Name[..nameLength].ToLowerInvariant()}";
 
-			var nameLength = helper.Name.Length;
+		return eventName;
+	}
 
-			if (helper.Name.EndsWith("Async", StringComparison.Ordinal))
-			{
-				nameLength -= 5;
-			}
+	[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Can safely be shared")]
+	public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType)
+	{
+		if (helperClassType is null)
+			throw new ArgumentNullException(nameof(helperClassType));
 
-			var eventName = $"on{helper.Name[..nameLength].ToLowerInvariant()}";
+		return helperClassType.GetMethods()
+			.Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement))
+			.Select(x => new[] { x })
+			.ToArray();
+	}
 
-			return eventName;
-		}
+	[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Can safely be shared")]
+	public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType, Func<MethodInfo, bool> customFilter)
+	{
+		if (helperClassType is null)
+			throw new ArgumentNullException(nameof(helperClassType));
 
-		[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Can safely be shared")]
-		public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType)
-		{
-			if (helperClassType is null)
-				throw new ArgumentNullException(nameof(helperClassType));
-
-			return helperClassType.GetMethods()
-				.Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement))
-				.Select(x => new[] { x })
-				.ToArray();
-		}
-
-		[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Can safely be shared")]
-		public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType, Func<MethodInfo, bool> customFilter)
-		{
-			if (helperClassType is null)
-				throw new ArgumentNullException(nameof(helperClassType));
-
-			return helperClassType.GetMethods()
-				.Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement) && customFilter(x))
-				.Select(x => new[] { x })
-				.ToArray();
-		}
+		return helperClassType.GetMethods()
+			.Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement) && customFilter(x))
+			.Select(x => new[] { x })
+			.ToArray();
 	}
 }

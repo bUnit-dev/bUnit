@@ -1,23 +1,22 @@
-namespace Bunit.TestDoubles
+namespace Bunit.TestDoubles;
+
+/// <summary>
+/// Enumeration that represents the user's authorization state.
+/// </summary>
+public enum AuthorizationState
 {
 	/// <summary>
-	/// Enumeration that represents the user's authorization state.
+	/// Represents unauthorized user state.
 	/// </summary>
-	public enum AuthorizationState
-	{
-		/// <summary>
-		/// Represents unauthorized user state.
-		/// </summary>
-		Unauthorized,
+	Unauthorized,
 
-		/// <summary>
-		/// Represents authorized user state.
-		/// </summary>
-		Authorized,
+	/// <summary>
+	/// Represents authorized user state.
+	/// </summary>
+	Authorized,
 
-		/// <summary>
-		/// Represents authorizing user state.
-		/// </summary>
-		Authorizing,
-	}
+	/// <summary>
+	/// Represents authorizing user state.
+	/// </summary>
+	Authorizing,
 }
