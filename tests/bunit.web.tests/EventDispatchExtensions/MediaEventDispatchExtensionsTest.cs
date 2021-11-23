@@ -1,7 +1,3 @@
-using System;
-using System.Reflection;
-using Xunit;
-
 namespace Bunit;
 
 public class MediaEventDispatchExtensionsTest : EventDispatchExtensionsTest<EventArgs>

@@ -2,15 +2,9 @@
 // It's content has been modified from the original.
 // See the NOTICE.md at the root of this repository for a copy
 // of the license from the aspnetcore repository.
-using System;
-using System.Configuration.Assemblies;
-using System.Linq;
 using System.Numerics;
 using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
-using Microsoft.AspNetCore.Components;
-using Shouldly;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace Bunit.BlazorE2E;
@@ -296,7 +290,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Collection(
 			cut.FindAll("p"),
 			elem => Assert.Equal(typeof(Complex).FullName, elem.TextContent),
-			elem => Assert.Equal(typeof(AssemblyHashAlgorithm).FullName, elem.TextContent));
+			elem => Assert.Equal(typeof(System.Configuration.Assemblies.AssemblyHashAlgorithm).FullName, elem.TextContent));
 	}
 
 	[Fact]

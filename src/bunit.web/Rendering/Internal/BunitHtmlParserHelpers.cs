@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace Bunit.Rendering;
 
 internal static class BunitHtmlParserHelpers

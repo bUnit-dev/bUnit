@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace Bunit.TestDoubles.Authorization;
 
 public class TestAuthorizationContextTest : TestContext

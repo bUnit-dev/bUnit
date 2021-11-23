@@ -1,8 +1,4 @@
 using Bunit.Rendering;
-using Bunit.TestAssets.SampleComponents;
-using Microsoft.AspNetCore.Components;
-using Shouldly;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace Bunit;

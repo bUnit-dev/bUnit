@@ -104,8 +104,8 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 	{
 		return request =>
 		{
-				// Count can be very big, so avoid creating unnecessary items by taking the smallest of them.
-				var itemsToCreate = Math.Min(request.Count, itemsInCollection);
+			// Count can be very big, so avoid creating unnecessary items by taking the smallest of them.
+			var itemsToCreate = Math.Min(request.Count, itemsInCollection);
 			var result = CreateItems(itemsToCreate);
 			return ValueTask.FromResult(new ItemsProviderResult<string>(result, itemsInCollection));
 		};

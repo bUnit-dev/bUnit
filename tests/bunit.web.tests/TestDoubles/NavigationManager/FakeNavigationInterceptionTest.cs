@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Components.Routing;
-using Shouldly;
-using Xunit;
-
 namespace Bunit.TestDoubles;
 
 public class FakeNavigationInterceptionTest

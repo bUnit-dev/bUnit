@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using AngleSharp.Dom;
 
 namespace Bunit;

@@ -1,6 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Components;
-
 namespace Bunit.TestAssets.SampleComponents;
 
 public partial class CustomPasteSample

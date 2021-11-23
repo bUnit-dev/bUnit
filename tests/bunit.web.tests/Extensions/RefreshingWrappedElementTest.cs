@@ -1,9 +1,3 @@
-using Bunit.TestAssets.SampleComponents;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-using Shouldly;
-using Xunit;
-
 namespace Bunit.Extensions;
 
 public class RefreshingWrappedElementTest : TestContext

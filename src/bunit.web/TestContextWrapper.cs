@@ -1,7 +1,4 @@
-using System;
 using Bunit.Rendering;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace Bunit;
 

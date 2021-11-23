@@ -1,9 +1,4 @@
-using System;
-using System.Linq;
 using Bunit.SampleComponents;
-using Moq;
-using Shouldly;
-using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 

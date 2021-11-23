@@ -1,5 +1,3 @@
-using System;
-
 namespace Bunit.Extensions.WaitForHelpers;
 
 /// <summary>

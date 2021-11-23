@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit.Rendering;
 

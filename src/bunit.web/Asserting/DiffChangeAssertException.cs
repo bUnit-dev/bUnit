@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.Serialization;
 using AngleSharp.Diffing.Core;
 using Bunit.Asserting;
 

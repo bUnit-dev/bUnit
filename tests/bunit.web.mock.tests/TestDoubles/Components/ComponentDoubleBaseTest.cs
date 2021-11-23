@@ -1,9 +1,3 @@
-using AutoFixture.Xunit2;
-using Bunit.TestAssets.SampleComponents;
-using Microsoft.AspNetCore.Components;
-using Shouldly;
-using Xunit;
-
 namespace Bunit.TestDoubles.Components;
 
 public class ComponentDoubleBaseTest : TestContext

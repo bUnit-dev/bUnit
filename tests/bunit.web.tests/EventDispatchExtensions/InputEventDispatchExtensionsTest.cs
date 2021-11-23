@@ -1,15 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using AutoFixture;
-using AutoFixture.Xunit2;
-using Bunit.TestAssets.SampleComponents;
-using Bunit.TestAssets.SampleComponents.Data;
-using Microsoft.AspNetCore.Components;
-using Shouldly;
-using Xunit;
-
 namespace Bunit
 {
 	public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<ChangeEventArgs>

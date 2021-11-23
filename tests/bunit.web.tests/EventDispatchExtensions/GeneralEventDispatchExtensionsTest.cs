@@ -1,15 +1,6 @@
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Dom;
-using AutoFixture.Xunit2;
 using Bunit.Rendering;
-using Bunit.TestAssets.SampleComponents;
-using Moq;
-using Shouldly;
-using Xunit;
 
 namespace Bunit
 {
@@ -181,15 +172,15 @@ namespace Bunit
 		[Fact(DisplayName = "TriggerEvent can trigger custom events")]
 		public void Test201()
 		{
-var cut = RenderComponent<CustomPasteSample>();
+			var cut = RenderComponent<CustomPasteSample>();
 
-cut.Find("input").TriggerEvent("oncustompaste", new CustomPasteEventArgs
-{
-	EventTimestamp = DateTime.Now,
-	PastedData = "FOO"
-});
+			cut.Find("input").TriggerEvent("oncustompaste", new CustomPasteEventArgs
+			{
+				EventTimestamp = DateTime.Now,
+				PastedData = "FOO"
+			});
 
-cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
+			cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
 		}
 #endif
 

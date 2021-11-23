@@ -1,6 +1,3 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-
 namespace Bunit.TestAssets.SampleComponents;
 
 public class BasicComponent : IComponent

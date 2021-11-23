@@ -1,7 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-
 namespace Bunit.TestAssets.SampleComponents;
 
 public class TriggerTester<TEventArgs> : ComponentBase

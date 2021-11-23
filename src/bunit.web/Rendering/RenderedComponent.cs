@@ -1,8 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
-
 namespace Bunit.Rendering;
 
 /// <inheritdoc/>

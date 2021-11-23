@@ -1,7 +1,4 @@
-using System;
 using System.Security.Claims;
-using Bunit.TestAssets.SampleComponents;
-using Xunit;
 
 namespace Bunit.TestDoubles.Authorization;
 

@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Components.Web;
-using Shouldly;
-using Xunit;
-
 namespace Bunit.Rendering.Internal;
 
 public partial class HtmlizerTests : TestContext

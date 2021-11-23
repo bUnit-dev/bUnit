@@ -1,4 +1,3 @@
-using System;
 using Bunit;
 using Xunit.Sdk;
 

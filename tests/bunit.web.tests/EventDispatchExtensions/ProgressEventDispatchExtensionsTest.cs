@@ -1,7 +1,3 @@
-using System.Reflection;
-using Microsoft.AspNetCore.Components.Web;
-using Xunit;
-
 namespace Bunit;
 
 public class ProgressEventDispatchExtensionsTest : EventDispatchExtensionsTest<ProgressEventArgs>

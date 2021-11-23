@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Bunit.Rendering;
-using Microsoft.AspNetCore.Components;
 
 namespace Bunit.TestDoubles
 {
@@ -66,7 +62,7 @@ namespace Bunit.TestDoubles
 				Uri = ToAbsoluteUri(uri).OriginalString;
 				NotifyLocationChanged(isInterceptedLink: false);
 			});
-		}	
+		}
 #endif
 	}
 }

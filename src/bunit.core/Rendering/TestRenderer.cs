@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.ExceptionServices;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
@@ -38,15 +32,15 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 #if NET5_0_OR_GREATER
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TestRenderer"/> class.
-		/// </summary>
-		public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
-			: base(services, loggerFactory, componentActivator)
-		{
-			logger = loggerFactory.CreateLogger<TestRenderer>();
-			this.activator = renderedComponentActivator;
-		}
+	/// <summary>
+	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
+	/// </summary>
+	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+		: base(services, loggerFactory, componentActivator)
+	{
+		logger = loggerFactory.CreateLogger<TestRenderer>();
+		this.activator = renderedComponentActivator;
+	}
 #endif
 
 	/// <inheritdoc/>

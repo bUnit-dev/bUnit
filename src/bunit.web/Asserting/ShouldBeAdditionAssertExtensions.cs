@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using Bunit.Rendering;

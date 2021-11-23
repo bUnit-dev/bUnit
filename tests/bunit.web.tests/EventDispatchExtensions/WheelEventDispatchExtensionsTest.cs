@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Microsoft.AspNetCore.Components.Web;
-using Xunit;
-
 namespace Bunit;
 
 public class WheelEventDispatchExtensionsTest : EventDispatchExtensionsTest<WheelEventArgs>

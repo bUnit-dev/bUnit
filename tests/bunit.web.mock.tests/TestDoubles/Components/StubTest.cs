@@ -1,8 +1,3 @@
-using AutoFixture.Xunit2;
-using Bunit.TestAssets.SampleComponents;
-using Shouldly;
-using Xunit;
-
 namespace Bunit.TestDoubles.Components;
 
 public class StubTest : TestContext

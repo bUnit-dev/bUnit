@@ -1,7 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-
 namespace Bunit.SampleComponents;
 
 public class TimeoutRazorComponent : TestComponentBase

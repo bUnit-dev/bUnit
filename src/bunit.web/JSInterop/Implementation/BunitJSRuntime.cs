@@ -1,7 +1,4 @@
-using System.Threading;
-using System.Threading.Tasks;
 using Bunit.JSInterop.Implementation;
-using Microsoft.JSInterop;
 
 namespace Bunit.JSInterop;
 

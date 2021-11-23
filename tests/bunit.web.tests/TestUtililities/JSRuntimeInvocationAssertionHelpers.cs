@@ -1,6 +1,4 @@
-﻿using Shouldly;
-
-namespace Bunit.JSInterop;
+﻿namespace Bunit.JSInterop;
 
 public static class JSRuntimeInvocationAssertionHelpers
 {

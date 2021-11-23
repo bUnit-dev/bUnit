@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using AngleSharp.Diffing;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Diffing.Strategies;

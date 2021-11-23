@@ -1,8 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit;
 
@@ -77,9 +73,9 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	public object GetService(Type serviceType)
 		=> GetServiceInternal(serviceType);
 #else
-		/// <inheritdoc/>
-		public object? GetService(Type serviceType)
-			=> GetServiceInternal(serviceType);
+	/// <inheritdoc/>
+	public object? GetService(Type serviceType)
+		=> GetServiceInternal(serviceType);
 #endif
 
 	private object? GetServiceInternal(Type serviceType)

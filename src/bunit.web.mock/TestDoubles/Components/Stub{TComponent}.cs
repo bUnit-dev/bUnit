@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Bunit.TestDoubles;
 

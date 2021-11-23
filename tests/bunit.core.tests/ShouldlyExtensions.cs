@@ -1,8 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Shouldly;
-
 namespace Bunit;
 
 public static class ShouldlyExtensions

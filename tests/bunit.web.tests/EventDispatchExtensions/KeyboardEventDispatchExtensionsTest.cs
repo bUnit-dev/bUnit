@@ -1,10 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Microsoft.AspNetCore.Components.Web;
-using Shouldly;
-using Xunit;
-
 namespace Bunit;
 
 public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<KeyboardEventArgs>

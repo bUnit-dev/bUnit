@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharpWrappers;
 using Bunit.Rendering;
-using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Bunit;
 

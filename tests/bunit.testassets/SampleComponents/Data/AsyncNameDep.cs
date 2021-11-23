@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace Bunit.TestAssets.SampleComponents.Data;
 
 public class AsyncNameDep : IAsyncTestDep

@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Bunit.TestDoubles;

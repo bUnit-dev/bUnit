@@ -1,6 +1,4 @@
-using System;
 using System.Runtime.ExceptionServices;
-using System.Threading;
 using AngleSharp.Dom;
 using Bunit.Extensions.WaitForHelpers;
 

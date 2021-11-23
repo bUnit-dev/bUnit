@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.Serialization;
-
 namespace Bunit.Asserting;
 
 /// <summary>

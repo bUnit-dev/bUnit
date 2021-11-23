@@ -1,8 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-using AutoFixture.Xunit2;
-using Xunit;
-
 namespace Bunit.JSInterop;
 
 [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Makes error message easier to read.")]

@@ -1,7 +1,4 @@
-using System;
-using System.Threading.Tasks;
 using Bunit.Rendering;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit;
 

@@ -1,8 +1,5 @@
 #if NET5_0_OR_GREATER
-using System;
-using System.Collections.Generic;
 using Bunit.TestDoubles;
-using Microsoft.AspNetCore.Components;
 
 namespace Bunit.ComponentFactories;
 

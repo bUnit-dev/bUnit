@@ -1,12 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-using Bunit.TestAssets.SampleComponents;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.Extensions.DependencyInjection;
-using Shouldly;
-using Xunit;
-
 namespace Bunit.TestDoubles
 {
 	public class FakeNavigationManagerTest : TestContext

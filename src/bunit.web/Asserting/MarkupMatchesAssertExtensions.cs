@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AngleSharp.Dom;
 using Bunit.Asserting;
 using Bunit.Diffing;
 using Bunit.Extensions;
 using Bunit.Rendering;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit;
 

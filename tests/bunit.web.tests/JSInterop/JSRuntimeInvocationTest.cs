@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using AutoFixture.Xunit2;
-using Shouldly;
-using Xunit;
-
 namespace Bunit.JSInterop;
 
 public class JSRuntimeInvocationTest

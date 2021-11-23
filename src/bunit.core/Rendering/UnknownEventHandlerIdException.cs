@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.Serialization;
-using Microsoft.AspNetCore.Components.RenderTree;
-
 namespace Bunit.Rendering;
 
 /// <summary>

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-
 namespace Bunit.TestDoubles;
 
 /// <summary>

@@ -1,8 +1,4 @@
-using System;
-using System.Threading.Tasks;
 using Bunit.Extensions;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Bunit;
 

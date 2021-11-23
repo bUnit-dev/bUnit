@@ -1,11 +1,5 @@
 #if NET5_0_OR_GREATER
-using System;
-using AutoFixture.Xunit2;
-using Bunit.TestAssets.SampleComponents;
 using Bunit.TestDoubles;
-using Microsoft.AspNetCore.Components;
-using Shouldly;
-using Xunit;
 
 namespace Bunit.ComponentFactories;
 

@@ -1,7 +1,4 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Xunit;
 
 namespace Bunit.TestDoubles.Authorization;
 

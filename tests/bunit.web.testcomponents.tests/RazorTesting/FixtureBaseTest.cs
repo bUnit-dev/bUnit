@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Shouldly;
-using Xunit;
-
 namespace Bunit.RazorTesting;
 
 public class FixtureBaseTest : TestContext

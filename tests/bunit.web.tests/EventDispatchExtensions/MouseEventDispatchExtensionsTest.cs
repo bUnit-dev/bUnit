@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Microsoft.AspNetCore.Components.Web;
-using Shouldly;
-using Xunit;
-
 namespace Bunit;
 
 public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<MouseEventArgs>

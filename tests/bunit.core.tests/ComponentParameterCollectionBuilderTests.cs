@@ -1,11 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Shouldly;
-using Xunit;
-
 namespace Bunit;
 
 public class ComponentParameterCollectionBuilderTests : TestContext

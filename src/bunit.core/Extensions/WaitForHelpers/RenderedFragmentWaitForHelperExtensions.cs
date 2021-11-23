@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.ExceptionServices;
 using Bunit.Extensions.WaitForHelpers;
 
