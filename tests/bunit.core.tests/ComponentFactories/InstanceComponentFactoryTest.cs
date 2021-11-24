@@ -1,9 +1,4 @@
 #if NET5_0_OR_GREATER
-using System;
-using Bunit.TestAssets.SampleComponents;
-using Moq;
-using Shouldly;
-using Xunit;
 
 namespace Bunit.ComponentFactories;
 
@@ -11,11 +6,11 @@ public class InstanceComponentFactoryTest : TestContext
 {
 	[Fact(DisplayName = "Add throws when factories is null")]
 	public void Test001()
-		=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionExtensions.Add<Simple1>(default, default));
+		=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionExtensions.Add<Simple1>(default, default(Simple1)));
 
 	[Fact(DisplayName = "Add throws when instance is null")]
 	public void Test002()
-		=> Should.Throw<ArgumentNullException>(() => ComponentFactories.Add<Simple1>(default));
+		=> Should.Throw<ArgumentNullException>(() => ComponentFactories.Add<Simple1>(default(Simple1)));
 
 	[Fact(DisplayName = "Factory replaces one TComponent with instance in the render tree")]
 	public void Test010()
@@ -25,8 +20,8 @@ public class InstanceComponentFactoryTest : TestContext
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
-		cut.FindComponent<Simple1>().Instance
-			.ShouldBeSameAs(simple1Mock.Object);
+		cut.FindComponent<Simple1>()
+			.Instance.ShouldBeSameAs(simple1Mock.Object);
 	}
 
 	[Fact(DisplayName = "Factory throws if component instance is requested twice for TComponent that inherits from ComponentBase")]
