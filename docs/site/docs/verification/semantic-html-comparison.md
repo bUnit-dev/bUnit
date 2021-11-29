@@ -46,6 +46,22 @@ Here are the customization options you have available to you:
   </header>
   ```
 
+- **Ignore all child nodes:** Use the `diff:ignoreChildren` attribute to ignore all child nodes. For example, to ignore all child nodes of the `h1` element, do the following:
+
+  ```html
+  <header>
+    <h1 diff:ignoreChildren>Hello world</h1>
+  </header>
+  ```
+
+- **Ignore all attributes:** To ignore all attributes during comparison, add the `diff:ignoreAttributes` attribute (no value is needed). For example:
+
+  ```html
+  <header>
+    <h1 diff:ignoreAttributes>Hello world</h1>
+  </header>
+  ```
+
 - **Configure whitespace handling:** By default, all nodes and elements are compared using the `Normalize` whitespace handling option. The `Normalize` option will trim all text nodes and replace two or more whitespace characters with a single space character. The other options are `Preserve`, which will leave all whitespace unchanged, and `RemoveWhitespaceNodes`, which will only remove empty text nodes.
 
   To override the default option, use the `diff:whitespace` attribute, and pass one of the three options to it. For example:
