@@ -9,6 +9,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Added
 
 - Add `ComponentFactories` extensions method that makes it easy to register an instance of a replacement component. By [@egil](https://github.com/egil).
+- Add validation of all dependencies when building the service provider. Net 6 and above. By [@rodolfograve](https://github.com/rodolfograve).
 
 ### Fixed
 
