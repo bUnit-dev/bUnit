@@ -46,15 +46,15 @@ Here are the customization options you have available to you:
   </header>
   ```
 
-- **Ignore children:** Use the `diff:ignoreChildren` attribute (no value is needed) to ignore all child nodes of an element and **not** its attributes. For example, to ignore all child nodes of the `h1` element, do the following:
+- **Ignore children:** Use the `diff:ignoreChildren` attribute (no value is needed) to ignore all child nodes/elements of an element. This does not include attributes. For example, to ignore all child nodes of the `h1` element, do the following:
 
   ```html
   <header>
-    <h1 diff:ignoreChildren>Hello world</h1>
+    <h1 diff:ignoreChildren>Hello <span>world</span></h1>
   </header>
   ```
 
-- **Ignore all attributes:** Use the `diff:ignoreAttributes` attribute (no value is needed) to ignore all attributes of an element and **not** its child nodes. For example:
+- **Ignore all attributes:** Use the `diff:ignoreAttributes` attribute (no value is needed) to ignore all attributes of an element. For example:
 
   ```html
   <header>
@@ -63,13 +63,11 @@ Here are the customization options you have available to you:
   ```
 
   > [!NOTE]
-  > The `diff:ignoreChildren` and `diff:ignoreAttributes` attributes can be combined to **not** ignore an element, but to ignore all its attributes and its child nodes. For example:
-
+  > The `diff:ignoreChildren` and `diff:ignoreAttributes` attributes can be combined to ignore all child nodes/element *and* attributes of an element, but still verify that the element itself exists. For example:
   ```html
   <header>
     <h1 diff:ignoreChildren diff:ignoreAttributes>Hello world</h1>
   </header>
-  ```
 
 - **Configure whitespace handling:** By default, all nodes and elements are compared using the `Normalize` whitespace handling option. The `Normalize` option will trim all text nodes and replace two or more whitespace characters with a single space character. The other options are `Preserve`, which will leave all whitespace unchanged, and `RemoveWhitespaceNodes`, which will only remove empty text nodes.
 
