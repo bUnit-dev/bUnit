@@ -10,6 +10,16 @@ public partial class TestServiceProviderTest
 
 	private class OneMoreDummyService { }
 
+	private class DummyServiceWithDependencyOnAnotherDummyService
+	{
+		private readonly AnotherDummyService anotherDummyService;
+
+		public DummyServiceWithDependencyOnAnotherDummyService(AnotherDummyService anotherDummyService)
+		{
+			this.anotherDummyService = anotherDummyService;
+		}
+	}
+
 	private class FallbackServiceProvider : IServiceProvider
 	{
 		public object GetService(Type serviceType) => new DummyService();
@@ -239,6 +249,17 @@ public partial class TestServiceProviderTest
 
 		disposable.IsDisposed.ShouldBeTrue();
 	}
+
+#if (NET6_0_OR_GREATER)
+	[Fact(DisplayName = "Can validate all dependencies when the first service is requested (ValidateOnBuild)")]
+	public void Test034()
+	{
+		using var sut = new TestServiceProvider();
+		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
+		var action = () => sut.GetRequiredService<DummyServiceWithDependencyOnAnotherDummyService>();
+		action.ShouldThrow<AggregateException>("Some services are not able to be constructed (Error while validating the service descriptor");
+	}
+#endif
 
 	private sealed class DisposableService : IDisposable
 	{

@@ -83,7 +83,16 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 		if (serviceProvider is null)
 		{
 			serviceCollection.AddSingleton<TestServiceProvider>(this);
+#if (NET6_0_OR_GREATER)
+			rootServiceProvider = serviceCollection.BuildServiceProvider(new ServiceProviderOptions
+			{
+				ValidateOnBuild = true,
+				ValidateScopes = true
+			});
+
+#else
 			rootServiceProvider = serviceCollection.BuildServiceProvider(validateScopes: true);
+#endif
 			serviceScope = rootServiceProvider.CreateScope();
 			serviceProvider = serviceScope.ServiceProvider;
 		}
