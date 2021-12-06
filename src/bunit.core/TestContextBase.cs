@@ -55,9 +55,10 @@ namespace Bunit
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TestContextBase"/> class.
 		/// </summary>
-		protected TestContextBase()
+		/// <param name="serviceProviderOptions">The <see cref="ServiceProviderOptions"/> to be used to build the <see cref="TestServiceProvider"/></param>
+		protected TestContextBase(ServiceProviderOptions? serviceProviderOptions = null)
 		{
-			Services = new TestServiceProvider();
+			Services = new TestServiceProvider(serviceProviderOptions: serviceProviderOptions);
 #if NET5_0_OR_GREATER
 			Services.AddSingleton<IComponentActivator>(new BunitComponentActivator(ComponentFactories));
 #endif

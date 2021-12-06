@@ -8,11 +8,13 @@ namespace Bunit;
 /// </summary>
 public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, IDisposable
 {
+	private readonly static ServiceProviderOptions DefaultServiceProviderOptions = new ServiceProviderOptions { ValidateScopes = true };
 	private readonly IServiceCollection serviceCollection;
 	private IServiceProvider? rootServiceProvider;
 	private IServiceScope? serviceScope;
 	private IServiceProvider? serviceProvider;
 	private IServiceProvider? fallbackServiceProvider;
+	private readonly ServiceProviderOptions? serviceProviderOptions;
 
 	/// <summary>
 	/// Gets a value indicating whether this <see cref="TestServiceProvider"/> has been initialized, and
@@ -41,14 +43,15 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	/// Initializes a new instance of the <see cref="TestServiceProvider"/> class
 	/// and sets its service collection to the provided <paramref name="initialServiceCollection"/>, if any.
 	/// </summary>
-	public TestServiceProvider(IServiceCollection? initialServiceCollection = null)
-		: this(initialServiceCollection ?? new ServiceCollection(), initializeProvider: false)
+	public TestServiceProvider(IServiceCollection? initialServiceCollection = null, ServiceProviderOptions? serviceProviderOptions = null)
+		: this(initialServiceCollection ?? new ServiceCollection(), serviceProviderOptions ?? DefaultServiceProviderOptions, initializeProvider: false)
 	{
 	}
 
-	private TestServiceProvider(IServiceCollection initialServiceCollection, bool initializeProvider)
+	private TestServiceProvider(IServiceCollection initialServiceCollection, ServiceProviderOptions serviceProviderOptions, bool initializeProvider)
 	{
 		serviceCollection = initialServiceCollection;
+		this.serviceProviderOptions = serviceProviderOptions;
 		if (initializeProvider)
 			serviceProvider = serviceCollection.BuildServiceProvider();
 	}
@@ -83,16 +86,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 		if (serviceProvider is null)
 		{
 			serviceCollection.AddSingleton<TestServiceProvider>(this);
-#if (NET6_0_OR_GREATER)
-			rootServiceProvider = serviceCollection.BuildServiceProvider(new ServiceProviderOptions
-			{
-				ValidateOnBuild = true,
-				ValidateScopes = true
-			});
-
-#else
-			rootServiceProvider = serviceCollection.BuildServiceProvider(validateScopes: true);
-#endif
+			rootServiceProvider = serviceCollection.BuildServiceProvider(serviceProviderOptions);
 			serviceScope = rootServiceProvider.CreateScope();
 			serviceProvider = serviceScope.ServiceProvider;
 		}
