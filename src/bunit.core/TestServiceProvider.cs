@@ -14,7 +14,6 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	private IServiceScope? serviceScope;
 	private IServiceProvider? serviceProvider;
 	private IServiceProvider? fallbackServiceProvider;
-	private readonly ServiceProviderOptions? serviceProviderOptions;
 
 	/// <summary>
 	/// Gets a value indicating whether this <see cref="TestServiceProvider"/> has been initialized, and
@@ -40,18 +39,23 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	}
 
 	/// <summary>
+	/// The <see cref="Options"/> to use when creating the <see cref="IServiceProvider"/>.
+	/// </summary>
+	public ServiceProviderOptions Options { get; set; } = DefaultServiceProviderOptions;
+
+
+	/// <summary>
 	/// Initializes a new instance of the <see cref="TestServiceProvider"/> class
 	/// and sets its service collection to the provided <paramref name="initialServiceCollection"/>, if any.
 	/// </summary>
-	public TestServiceProvider(IServiceCollection? initialServiceCollection = null, ServiceProviderOptions? serviceProviderOptions = null)
-		: this(initialServiceCollection ?? new ServiceCollection(), serviceProviderOptions ?? DefaultServiceProviderOptions, initializeProvider: false)
+	public TestServiceProvider(IServiceCollection? initialServiceCollection = null)
+		: this(initialServiceCollection ?? new ServiceCollection(), initializeProvider: false)
 	{
 	}
 
-	private TestServiceProvider(IServiceCollection initialServiceCollection, ServiceProviderOptions serviceProviderOptions, bool initializeProvider)
+	private TestServiceProvider(IServiceCollection initialServiceCollection, bool initializeProvider)
 	{
 		serviceCollection = initialServiceCollection;
-		this.serviceProviderOptions = serviceProviderOptions;
 		if (initializeProvider)
 			serviceProvider = serviceCollection.BuildServiceProvider();
 	}
@@ -86,7 +90,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 		if (serviceProvider is null)
 		{
 			serviceCollection.AddSingleton<TestServiceProvider>(this);
-			rootServiceProvider = serviceCollection.BuildServiceProvider(serviceProviderOptions);
+			rootServiceProvider = serviceCollection.BuildServiceProvider(Options ?? DefaultServiceProviderOptions);
 			serviceScope = rootServiceProvider.CreateScope();
 			serviceProvider = serviceScope.ServiceProvider;
 		}

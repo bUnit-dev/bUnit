@@ -263,11 +263,12 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Validates that all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is true")]
 	public void Test035()
 	{
-		using var sut = new TestServiceProvider(serviceProviderOptions: new ServiceProviderOptions
+		using var sut = new TestServiceProvider();
+		sut.Options = new ServiceProviderOptions
 		{
 			ValidateOnBuild = true,
 			ValidateScopes = true
-		});
+		};
 		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
 		var action = () => sut.GetRequiredService<DummyServiceWithDependencyOnAnotherDummyService>();
 		action.ShouldThrow<AggregateException>("Some services are not able to be constructed (Error while validating the service descriptor");
@@ -276,11 +277,12 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName ="Does not validate all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is false")]
 	public void Test036()
 	{
-		using var sut = new TestServiceProvider(serviceProviderOptions: new ServiceProviderOptions
+		using var sut = new TestServiceProvider();
+		sut.Options = new ServiceProviderOptions
 		{
 			ValidateOnBuild = false,
 			ValidateScopes = true
-		});
+		};
 		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
 		var result = sut.GetRequiredService<DummyServiceWithDependencyOnAnotherDummyService>();
 		result.ShouldNotBeNull();

@@ -16,8 +16,8 @@ public class TestContext : TestContextBase
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TestContext"/> class.
 	/// </summary>
-	public TestContext(ServiceProviderOptions? serviceProviderOptions = null)
-		: base(serviceProviderOptions)
+	public TestContext()
+		: base()
 	{
 		Services.AddDefaultTestContextServices(this, JSInterop);
 	}
