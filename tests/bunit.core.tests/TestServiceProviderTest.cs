@@ -10,6 +10,13 @@ public partial class TestServiceProviderTest
 
 	private class OneMoreDummyService { }
 
+	private class DummyServiceWithDependencyOnAnotherDummyService
+	{
+		public DummyServiceWithDependencyOnAnotherDummyService(AnotherDummyService anotherDummyService)
+		{
+		}
+	}
+
 	private class FallbackServiceProvider : IServiceProvider
 	{
 		public object GetService(Type serviceType) => new DummyService();
@@ -23,6 +30,16 @@ public partial class TestServiceProviderTest
 	private class DummyComponentWhichRequiresDummyService : ComponentBase
 	{
 		[Inject] public DummyService Service { get; set; }
+	}
+
+	private sealed class DisposableService : IDisposable
+	{
+		public bool IsDisposed { get; private set; }
+
+		public void Dispose()
+		{
+			IsDisposed = true;
+		}
 	}
 
 	[Fact(DisplayName = "Provider initialized without a service collection has zero services by default")]
@@ -240,13 +257,48 @@ public partial class TestServiceProviderTest
 		disposable.IsDisposed.ShouldBeTrue();
 	}
 
-	private sealed class DisposableService : IDisposable
+	[Fact(DisplayName = "Validates that all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is true")]
+	public void Test035()
 	{
-		public bool IsDisposed { get; private set; }
-
-		public void Dispose()
+		using var sut = new TestServiceProvider();
+		sut.Options = new ServiceProviderOptions
 		{
-			IsDisposed = true;
-		}
+			ValidateOnBuild = true,
+			ValidateScopes = true
+		};
+		sut.AddSingleton<DummyService>();
+		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
+		var action = () => sut.GetRequiredService<DummyService>();
+
+		action.ShouldThrow<AggregateException>("Some services are not able to be constructed (Error while validating the service descriptor");
+	}
+
+	[Fact(DisplayName ="Does not validate all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is false")]
+	public void Test036()
+	{
+		using var sut = new TestServiceProvider();
+		sut.Options = new ServiceProviderOptions
+		{
+			ValidateOnBuild = false,
+			ValidateScopes = true
+		};
+		sut.AddSingleton<DummyService>();
+		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
+
+		var result = sut.GetRequiredService<DummyService>();
+
+		result.ShouldNotBeNull();
+	}
+
+	[Fact(DisplayName ="Does not validate all dependencies can be created when the first service is requested, if no ServiceProviderOptions is provided (backwards compatibility)")]
+	public void Test037()
+	{
+		using var sut = new TestServiceProvider();
+		sut.AddSingleton<DummyService>();
+		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
+
+		var result = sut.GetRequiredService<DummyService>();
+
+		result.ShouldNotBeNull();
 	}
 }

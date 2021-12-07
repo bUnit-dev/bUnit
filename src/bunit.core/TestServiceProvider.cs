@@ -8,11 +8,13 @@ namespace Bunit;
 /// </summary>
 public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, IDisposable
 {
+	private readonly static ServiceProviderOptions DefaultServiceProviderOptions = new() { ValidateScopes = true };
 	private readonly IServiceCollection serviceCollection;
 	private IServiceProvider? rootServiceProvider;
 	private IServiceScope? serviceScope;
 	private IServiceProvider? serviceProvider;
 	private IServiceProvider? fallbackServiceProvider;
+	private ServiceProviderOptions options = DefaultServiceProviderOptions;
 
 	/// <summary>
 	/// Gets a value indicating whether this <see cref="TestServiceProvider"/> has been initialized, and
@@ -35,6 +37,15 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 			CheckInitializedAndThrow();
 			serviceCollection[index] = value;
 		}
+	}
+
+	/// <summary>
+	/// Gets or sets the <see cref="ServiceProviderOptions"/> used when the <see cref="IServiceProvider"/> is created.
+	/// </summary>
+	public ServiceProviderOptions Options
+	{
+		get => options;
+		set => options = value ?? DefaultServiceProviderOptions;
 	}
 
 	/// <summary>
@@ -83,7 +94,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 		if (serviceProvider is null)
 		{
 			serviceCollection.AddSingleton<TestServiceProvider>(this);
-			rootServiceProvider = serviceCollection.BuildServiceProvider(validateScopes: true);
+			rootServiceProvider = serviceCollection.BuildServiceProvider(options);
 			serviceScope = rootServiceProvider.CreateScope();
 			serviceProvider = serviceScope.ServiceProvider;
 		}
