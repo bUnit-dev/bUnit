@@ -12,11 +12,8 @@ public partial class TestServiceProviderTest
 
 	private class DummyServiceWithDependencyOnAnotherDummyService
 	{
-		private readonly AnotherDummyService anotherDummyService;
-
 		public DummyServiceWithDependencyOnAnotherDummyService(AnotherDummyService anotherDummyService)
 		{
-			this.anotherDummyService = anotherDummyService;
 		}
 	}
 
@@ -32,15 +29,16 @@ public partial class TestServiceProviderTest
 
 	private class DummyComponentWhichRequiresDummyService : ComponentBase
 	{
-		public DummyComponentWhichRequiresDummyService()
-		{
-		}
+		[Inject] public DummyService Service { get; set; }
+	}
 
-		private DummyService service;
-		[Inject] public DummyService Service
+	private sealed class DisposableService : IDisposable
+	{
+		public bool IsDisposed { get; private set; }
+
+		public void Dispose()
 		{
-			get => service;
-			set => service = value;
+			IsDisposed = true;
 		}
 	}
 
@@ -271,6 +269,7 @@ public partial class TestServiceProviderTest
 		sut.AddSingleton<DummyService>();
 		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
 		var action = () => sut.GetRequiredService<DummyService>();
+
 		action.ShouldThrow<AggregateException>("Some services are not able to be constructed (Error while validating the service descriptor");
 	}
 
@@ -285,7 +284,9 @@ public partial class TestServiceProviderTest
 		};
 		sut.AddSingleton<DummyService>();
 		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
+
 		var result = sut.GetRequiredService<DummyService>();
+
 		result.ShouldNotBeNull();
 	}
 
@@ -295,17 +296,9 @@ public partial class TestServiceProviderTest
 		using var sut = new TestServiceProvider();
 		sut.AddSingleton<DummyService>();
 		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
+
 		var result = sut.GetRequiredService<DummyService>();
+
 		result.ShouldNotBeNull();
-	}
-
-	private sealed class DisposableService : IDisposable
-	{
-		public bool IsDisposed { get; private set; }
-
-		public void Dispose()
-		{
-			IsDisposed = true;
-		}
 	}
 }

@@ -1,10 +1,4 @@
 #if NET5_0_OR_GREATER
-using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Shouldly;
-using Xunit;
-
 namespace Bunit;
 
 public partial class TestServiceProviderTest
