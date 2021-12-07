@@ -49,8 +49,6 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 		set => options = value ?? DefaultServiceProviderOptions;
 	}
 
-
-
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TestServiceProvider"/> class
 	/// and sets its service collection to the provided <paramref name="initialServiceCollection"/>, if any.
