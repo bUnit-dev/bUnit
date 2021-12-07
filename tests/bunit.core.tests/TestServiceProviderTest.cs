@@ -259,7 +259,6 @@ public partial class TestServiceProviderTest
 		disposable.IsDisposed.ShouldBeTrue();
 	}
 
-#if (NET6_0_OR_GREATER)
 	[Fact(DisplayName = "Validates that all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is true")]
 	public void Test035()
 	{
@@ -269,8 +268,9 @@ public partial class TestServiceProviderTest
 			ValidateOnBuild = true,
 			ValidateScopes = true
 		};
+		sut.AddSingleton<DummyService>();
 		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
-		var action = () => sut.GetRequiredService<DummyServiceWithDependencyOnAnotherDummyService>();
+		var action = () => sut.GetRequiredService<DummyService>();
 		action.ShouldThrow<AggregateException>("Some services are not able to be constructed (Error while validating the service descriptor");
 	}
 
@@ -283,8 +283,9 @@ public partial class TestServiceProviderTest
 			ValidateOnBuild = false,
 			ValidateScopes = true
 		};
+		sut.AddSingleton<DummyService>();
 		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
-		var result = sut.GetRequiredService<DummyServiceWithDependencyOnAnotherDummyService>();
+		var result = sut.GetRequiredService<DummyService>();
 		result.ShouldNotBeNull();
 	}
 
@@ -292,12 +293,11 @@ public partial class TestServiceProviderTest
 	public void Test037()
 	{
 		using var sut = new TestServiceProvider();
+		sut.AddSingleton<DummyService>();
 		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
-		var result = sut.GetRequiredService<DummyServiceWithDependencyOnAnotherDummyService>();
+		var result = sut.GetRequiredService<DummyService>();
 		result.ShouldNotBeNull();
 	}
-
-#endif
 
 	private sealed class DisposableService : IDisposable
 	{
