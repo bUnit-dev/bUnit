@@ -40,7 +40,6 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	}
 
 	/// <summary>
-	/// The <see cref="Options"/> to use when creating the <see cref="IServiceProvider"/>.
 	/// Gets or sets the <see cref="ServiceProviderOptions"/> used when the <see cref="IServiceProvider"/> is created.
 	/// </summary>
 	public ServiceProviderOptions Options
