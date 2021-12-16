@@ -232,5 +232,27 @@ namespace Bunit
 			Should.Throw<Exception>(() => cut.Find("button").Click())
 				.Message.ShouldBe(exceptionMessage);
 		}
+
+		[Fact(DisplayName = "Should handle click event first and submit form afterwards for button")]
+		public void Test304()
+		{
+			var cut = RenderComponent<SubmitFormOnClick>();
+
+			cut.Find("button").Click();
+
+			cut.Find("p").TextContent.ShouldBe("True");
+			cut.Find("strong").TextContent.ShouldBe("True");
+		}
+
+		[Fact(DisplayName = "Should handle click event first and submit form afterwards for input when type button")]
+		public void Test305()
+		{
+			var cut = RenderComponent<SubmitFormOnClick>();
+
+			cut.Find("#inside-form-input").Click();
+
+			cut.Find("p").TextContent.ShouldBe("True");
+			cut.Find("strong").TextContent.ShouldBe("True");
+		}
 	}
 }
