@@ -90,7 +90,6 @@ namespace Bunit
 		[InlineData("onprogress")]
 		[InlineData("onreset")]
 		[InlineData("onscroll")]
-		[InlineData("onsubmit")]
 		[InlineData("onunload")]
 		[InlineData("ontoggle")]
 		[InlineData("onDOMNodeInsertedIntoDocument")]
@@ -253,6 +252,14 @@ namespace Bunit
 
 			cut.Find("p").TextContent.ShouldBe("True");
 			cut.Find("strong").TextContent.ShouldBe("True");
+		}
+
+		[Fact(DisplayName = "Should throw exception when invoking onsubmit from non form")]
+		public void Test306()
+		{
+			var cut = RenderComponent<OnsubmitButton>();
+
+			Should.Throw<InvalidOperationException>(() => cut.Find("button").Submit());
 		}
 	}
 }

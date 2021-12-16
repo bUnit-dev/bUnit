@@ -88,11 +88,6 @@ public static class TriggerEventDispatchExtensions
 		var eventStopPropagationAttrName = $"{eventAttrName}:stoppropagation";
 		var eventTasks = new List<Task>();
 
-		if (eventName == "onsubmit" && element is not IHtmlFormElement)
-		{
-			throw new InvalidOperationException("Only forms can have a onsubmit event");
-		}
-
 		foreach (var candidate in element.GetParentsAndSelf())
 		{
 			if (candidate.TryGetEventId(eventAttrName, out var id))
@@ -121,6 +116,9 @@ public static class TriggerEventDispatchExtensions
 	private static Task TriggerNonBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
+
+		if (eventName == "onsubmit" && element is not IHtmlFormElement)
+			throw new InvalidOperationException("Only forms can have a onsubmit event");
 
 		if (element.TryGetEventId(eventAttrName, out var id))
 			return renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs);
