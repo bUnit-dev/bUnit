@@ -117,7 +117,7 @@ public static class TriggerEventDispatchExtensions
 	{
 		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
 
-		if (eventName == "onsubmit" && element is not IHtmlFormElement)
+		if (string.Equals(eventName, "onsubmit", StringComparison.Ordinal) && element is not IHtmlFormElement)
 			throw new InvalidOperationException("Only forms can have a onsubmit event");
 
 		if (element.TryGetEventId(eventAttrName, out var id))
