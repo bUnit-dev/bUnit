@@ -1,0 +1,21 @@
+root = true
+
+[*]
+indent_style = space
+tab_size = 2
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = false
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{cs,razor}]
+tab_size = 2
+indent_style = space
+dotnet_diagnostic.BL0001.severity = none
+dotnet_diagnostic.BL0002.severity = none
+dotnet_diagnostic.BL0003.severity = none
+dotnet_diagnostic.BL0004.severity = none
+dotnet_diagnostic.BL0005.severity = none
+dotnet_diagnostic.BL0006.severity = none
