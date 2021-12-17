@@ -7,7 +7,7 @@ title: Triggering a render life cycle on a component
 
 To trigger a re-render of a component under test, a reference to it through a <xref:Bunit.IRenderedComponent`1> type is needed. When using the <xref:Bunit.TestContext>'s `RenderComponent<TComponent>()` method, this is the type returned.
 
-In `.razor` based tests, using the <xref:Bunit.TestContext>'s <xref:Bunit.TestContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)> method also returns an <xref:Bunit.IRenderedComponent`1> (as opposed to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method which returns the more simple <xref:Bunit.IRenderedFragment>). 
+In `.razor` based tests, using the <xref:Bunit.TestContext>'s <xref:Bunit.TestContext.Render``1(RenderFragment)> method also returns an <xref:Bunit.IRenderedComponent`1> (as opposed to the <xref:Bunit.TestContext.Render(RenderFragment)> method which returns the more simple <xref:Bunit.IRenderedFragment>). 
 
 If you have a <xref:Bunit.IRenderedFragment> or a <xref:Bunit.IRenderedComponent`1> in a test, but need a child component's <xref:Bunit.IRenderedComponent`1>, then use the `FindComponent<TComponent>()` or the `FindComponents<TComponent>()` methods, which traverse down the render tree and finds rendered components.
 
