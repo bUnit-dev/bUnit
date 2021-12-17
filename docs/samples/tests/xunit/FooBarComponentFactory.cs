@@ -1,3 +1,4 @@
+#if NET5_0_OR_GREATER
 namespace Bunit.Docs.Samples
 {
     using System;
@@ -13,3 +14,4 @@ namespace Bunit.Docs.Samples
             => new Bar();
     }
 }
+#endif

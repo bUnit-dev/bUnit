@@ -153,8 +153,8 @@ Here is an example of using the <xref:Bunit.IRenderedFragment.GetChangesSinceFir
 This is what happens in the test:
 
 - On line 8, <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> is used to get a list of differences.
-- On line 11, the [`ShouldHaveSingleChange()`](xref:Bunit.DiffAssertExtensions.ShouldHaveSingleChange(System.Collections.Generic.IEnumerable{AngleSharp.Diffing.Core.IDiff})) method is used to verify that there is only one change found.
-- On line 14, the [`ShouldBeTextChange()`](xref:Bunit.ShouldBeTextChangeAssertExtensions.ShouldBeTextChange(AngleSharp.Diffing.Core.IDiff,System.String,System.String)) method is used to verify that the single `IDiff` is a text change.
+- On line 11, the `ShouldHaveSingleChange()` method is used to verify that there is only one change found.
+- On line 14, the `ShouldBeTextChange()` method is used to verify that the single `IDiff` is a text change.
 
 Testing a more **complex life cycle of a component** can be done more easily using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> and <xref:Bunit.IRenderedFragment.SaveSnapshot> methods along with a host of other assert helpers. 
 
@@ -170,7 +170,7 @@ This is what happens in the test:
 
 1. First the component is rendered and the input field is found.
 2. The first item is added through the input field.
-3. The <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender>, [`ShouldHaveSingleChange()`](xref:Bunit.DiffAssertExtensions.ShouldHaveSingleChange(System.Collections.Generic.IEnumerable{AngleSharp.Diffing.Core.IDiff})) and [`ShouldBeAddition()`](xref:Bunit.ShouldBeAdditionAssertExtensions.ShouldBeAddition(AngleSharp.Diffing.Core.IDiff,System.String,System.String)) methods are used to verify that the item was correctly added.
+3. The <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender>, `ShouldHaveSingleChange()` and `ShouldBeAddition()` methods are used to verify that the item was correctly added.
 4. The <xref:Bunit.IRenderedFragment.SaveSnapshot> is used to save a snapshot of current DOM nodes internally in the `cut`. This reduces the number of diffs found in the following steps, simplifying verification.
 5. A second item is added to the check list.
 6. Two verifications are performed at this point, one using the <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> method which finds two changes, and one using the <xref:Bunit.IRenderedFragment.GetChangesSinceSnapshot> method, which finds a single change. The first is only done for illustrative purposes.

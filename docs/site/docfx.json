@@ -6,7 +6,6 @@
           "files": [
             "bunit.core/bunit.core.csproj",
             "bunit.web/bunit.web.csproj",
-            "bunit.web.testcomponents/bunit.web.testcomponents.csproj"
           ],
           "exclude": [ "**/bin/**", "**/obj/**" ],
           "src": "../../src"
