@@ -22,9 +22,7 @@ internal sealed class StubComponentFactory : IComponentFactory
 	public IComponent Create(Type componentType)
 	{
 		var typeToCreate = StubType.MakeGenericType(componentType);
-		return replacementContent is not null
-			? (IComponent)Activator.CreateInstance(typeToCreate, new object?[] { replacementContent })!
-			: (IComponent)Activator.CreateInstance(typeToCreate, Array.Empty<object?>())!;
+		return (IComponent)Activator.CreateInstance(typeToCreate, new object?[] { replacementContent })!;
 	}
 }
 #endif
