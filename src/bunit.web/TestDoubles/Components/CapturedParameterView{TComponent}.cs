@@ -1,3 +1,4 @@
+#if NET5_0_OR_GREATER
 using System.Collections;
 using System.Collections.Immutable;
 using System.Linq.Expressions;
@@ -107,3 +108,4 @@ public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, obj
 	public static CapturedParameterView<TComponent> From(ParameterView parameters)
 		=> new(parameters.ToDictionary());
 }
+#endif

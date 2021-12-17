@@ -1,3 +1,4 @@
+#if NET5_0_OR_GREATER
 namespace Bunit.TestDoubles;
 
 /// <summary>
@@ -21,3 +22,4 @@ public sealed class ParameterNotFoundException : Exception
 	{
 	}
 }
+#endif

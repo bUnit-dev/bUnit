@@ -1,3 +1,4 @@
+#if NET5_0_OR_GREATER
 namespace Bunit.TestDoubles.Components;
 
 public class CapturedParameterViewTest
@@ -65,3 +66,4 @@ public class CapturedParameterViewTest
 		sut.Get(x => x.UnnamedCascadingValue).ShouldBeNull();
 	}
 }
+#endif

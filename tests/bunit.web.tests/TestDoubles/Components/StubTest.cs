@@ -1,3 +1,4 @@
+#if NET5_0_OR_GREATER
 namespace Bunit.TestDoubles.Components;
 
 public class StubTest : TestContext
@@ -26,3 +27,4 @@ public class StubTest : TestContext
 				ps => ps.Count.ShouldBe(2));
 	}
 }
+#endif

@@ -8,12 +8,12 @@ internal sealed class StubComponentFactory : IComponentFactory
 	private static readonly Type StubType = typeof(Stub<>);
 
 	private readonly Predicate<Type> componentTypePredicate;
-	private readonly RenderFragment<IReadOnlyDictionary<string, object>>? replacementTemplate;
+	private readonly object? replacementContent;
 
-	public StubComponentFactory(Predicate<Type> componentTypePredicate, RenderFragment<IReadOnlyDictionary<string, object>>? replacementTemplate = null)
+	public StubComponentFactory(Predicate<Type> componentTypePredicate, object? replacementContent)
 	{
 		this.componentTypePredicate = componentTypePredicate;
-		this.replacementTemplate = replacementTemplate;
+		this.replacementContent = replacementContent;
 	}
 
 	public bool CanCreate(Type componentType)
@@ -22,7 +22,9 @@ internal sealed class StubComponentFactory : IComponentFactory
 	public IComponent Create(Type componentType)
 	{
 		var typeToCreate = StubType.MakeGenericType(componentType);
-		return (IComponent)Activator.CreateInstance(typeToCreate, new object?[] { replacementTemplate })!;
+		return replacementContent is not null
+			? (IComponent)Activator.CreateInstance(typeToCreate, new object?[] { replacementContent })!
+			: (IComponent)Activator.CreateInstance(typeToCreate, Array.Empty<object?>())!;
 	}
 }
 #endif
