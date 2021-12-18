@@ -1,18 +1,13 @@
-using System;
-using System.Reflection;
-using Xunit;
+namespace Bunit;
 
-namespace Bunit
+public class MediaEventDispatchExtensionsTest : EventDispatchExtensionsTest<EventArgs>
 {
-	public class MediaEventDispatchExtensionsTest : EventDispatchExtensionsTest<EventArgs>
-	{
-		protected override string ElementName => "audio";
+	protected override string ElementName => "audio";
 
-		[Theory(DisplayName = "Media events are raised correctly through helpers")]
-		[MemberData(nameof(GetEventHelperMethods), typeof(MediaEventDispatchExtensions))]
-		public void CanRaiseEvents(MethodInfo helper)
-		{
-			VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
-		}
+	[Theory(DisplayName = "Media events are raised correctly through helpers")]
+	[MemberData(nameof(GetEventHelperMethods), typeof(MediaEventDispatchExtensions))]
+	public void CanRaiseEvents(MethodInfo helper)
+	{
+		VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
 	}
 }

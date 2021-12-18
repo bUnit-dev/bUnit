@@ -1,23 +1,18 @@
-using System.Reflection;
-using Microsoft.AspNetCore.Components.Web;
-using Xunit;
+namespace Bunit;
 
-namespace Bunit
+public class ClipboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<ClipboardEventArgs>
 {
-	public class ClipboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<ClipboardEventArgs>
+	protected override string ElementName => "textarea";
+
+	[Theory(DisplayName = "Clipboard events are raised correctly through helpers")]
+	[MemberData(nameof(GetEventHelperMethods), typeof(ClipboardEventDispatchExtensions))]
+	public void CanRaiseEvents(MethodInfo helper)
 	{
-		protected override string ElementName => "textarea";
-
-		[Theory(DisplayName = "Clipboard events are raised correctly through helpers")]
-		[MemberData(nameof(GetEventHelperMethods), typeof(ClipboardEventDispatchExtensions))]
-		public void CanRaiseEvents(MethodInfo helper)
+		var expected = new ClipboardEventArgs()
 		{
-			var expected = new ClipboardEventArgs()
-			{
-				Type = "SOME TYPE",
-			};
+			Type = "SOME TYPE",
+		};
 
-			VerifyEventRaisesCorrectly(helper, expected);
-		}
+		VerifyEventRaisesCorrectly(helper, expected);
 	}
 }

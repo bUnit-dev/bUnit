@@ -1,0 +1,14 @@
+@code
+{
+	private string value = string.Empty;
+
+	[Parameter]
+	public string Value
+	{
+		get => value;
+		set
+		{
+			throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(value)} is invalid");
+		}
+	}
+}

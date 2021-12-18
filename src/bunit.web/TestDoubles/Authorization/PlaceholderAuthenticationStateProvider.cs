@@ -1,13 +1,11 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Bunit.TestDoubles
+namespace Bunit.TestDoubles;
+
+internal sealed class PlaceholderAuthenticationStateProvider : AuthenticationStateProvider
 {
-	internal sealed class PlaceholderAuthenticationStateProvider : AuthenticationStateProvider
+	public override Task<AuthenticationState> GetAuthenticationStateAsync()
 	{
-		public override Task<AuthenticationState> GetAuthenticationStateAsync()
-		{
-			throw new MissingFakeAuthorizationException(nameof(AuthenticationStateProvider));
-		}
+		throw new MissingFakeAuthorizationException(nameof(AuthenticationStateProvider));
 	}
 }

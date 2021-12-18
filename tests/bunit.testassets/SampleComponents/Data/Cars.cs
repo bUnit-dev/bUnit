@@ -1,11 +1,10 @@
-namespace Bunit.TestAssets.SampleComponents.Data
+namespace Bunit.TestAssets.SampleComponents.Data;
+
+public enum Cars
 {
-	public enum Cars
-	{
-		Audi,
-		Jeep,
-		Opel,
-		Saab,
-		Volvo
-	}
+	Audi,
+	Jeep,
+	Opel,
+	Saab,
+	Volvo
 }

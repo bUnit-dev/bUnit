@@ -1,0 +1,11 @@
+﻿<form id="my-form" @onsubmit="() => FormSubmitted = true">
+	<button id="inside-form-button" type="submit" @onclick="() => Clicked = true">Submit</button>
+	<input id="inside-form-input" type="submit" @onclick="() => Clicked = true" value="Submit" />
+</form>
+
+<button id="outside-form-button" form="my-form">Submit outside</button>
+
+@code {
+    public bool FormSubmitted;
+	public bool Clicked;
+}

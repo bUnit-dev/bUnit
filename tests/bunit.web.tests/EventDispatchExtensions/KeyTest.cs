@@ -1,358 +1,349 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using Microsoft.AspNetCore.Components.Web;
-using Shouldly;
-using Xunit;
+namespace Bunit;
 
-namespace Bunit
+public class KeyTest
 {
-	public class KeyTest
+	public static IEnumerable<object[]> KeyValueTestData { get; } = GetKeyValueTestData().Select(c => new object[] { c }).ToList();
+
+	public static IEnumerable<object[]> CharTestData { get; } = new[] { ' ', 'x', 'A', '2', '0', '&', (char)0 }
+		.Select(c => new object[] { c }).ToList();
+
+	public static IEnumerable<object[]> EqualsTestData { get; } = GetEqualsTestData().Select(i => new[] { i.First, i.Second });
+
+	public static IEnumerable<object[]> NonEqualsTestData { get; } = GetNonEqualsTestData().Select(i => new[] { i.First, i.Second });
+
+	public static IEnumerable<object[]> KeyAndObjectTestData { get; } = GetKeyAndObjectTestData().Select(i => new[] { i.First, i.Second });
+
+	public static IEnumerable<object[]> KeyWithModifiersTestData { get; } = GetKeyWithModifiersTestData().Select(k => new object[] { k, true })
+		.Concat(GetKeyWithModifiersTestData().Select(k => new object[] { k, false }))
+		.ToList();
+
+	public static IEnumerable<object[]> MainKeyAndModifierKeyTestData { get; } = GetMainKeyAndModifierKeyTestData();
+
+	public static IEnumerable<object[]> MainKeyToCombineTestData { get; } = GetKeyWithModifiersTestData().Select(k => new[] { k }).ToList();
+
+	public static IEnumerable<object[]> Combine2MainKeysTestData { get; } = Get2MainKeysTestData().Select(i => new[] { i.First, i.Second });
+
+	public static IEnumerable<object[]> KeyboardEventArgsTestData { get; } = GetKeyboardEventArgsTestData();
+
+	[Theory(DisplayName = "Get method with value parameter should return initialized Key object")]
+	[MemberData(nameof(KeyValueTestData))]
+	public void GetWithValue(string value)
 	{
-		public static IEnumerable<object[]> KeyValueTestData { get; } = GetKeyValueTestData().Select(c => new object[] { c }).ToList();
+		var key = Key.Get(value);
+		key.Value.ShouldBe(value);
+		key.Code.ShouldBe(value);
+		key.ControlKey.ShouldBeFalse();
+		key.ShiftKey.ShouldBeFalse();
+		key.AltKey.ShouldBeFalse();
+		key.CommandKey.ShouldBeFalse();
+	}
 
-		public static IEnumerable<object[]> CharTestData { get; } = new[] { ' ', 'x', 'A', '2', '0', '&', (char)0 }
-			.Select(c => new object[] { c }).ToList();
+	[Theory(DisplayName = "Get method with empty value parameter should throw exception")]
+	[InlineData(null)]
+	[InlineData("")]
+	public void GetWithNullValue(string value)
+	{
+		Should.Throw<ArgumentNullException>(() => Key.Get(value));
+	}
 
-		public static IEnumerable<object[]> EqualsTestData { get; } = GetEqualsTestData().Select(i => new[] { i.First, i.Second });
+	[Theory(DisplayName = "Casting from string should return initialized Key object")]
+	[MemberData(nameof(KeyValueTestData))]
+	public void CanCastFromString(string value)
+	{
+		Key key = value;
+		key.Value.ShouldBe(value);
+		key.Code.ShouldBe(value);
+		key.ControlKey.ShouldBeFalse();
+		key.ShiftKey.ShouldBeFalse();
+		key.AltKey.ShouldBeFalse();
+		key.CommandKey.ShouldBeFalse();
+	}
 
-		public static IEnumerable<object[]> NonEqualsTestData { get; } = GetNonEqualsTestData().Select(i => new[] { i.First, i.Second });
+	[Theory(DisplayName = "Casting from null or empty string throws ArgumentNullException")]
+	[InlineData(null)]
+	[InlineData("")]
+	public void CastingFromNullStringThrowsException(string value)
+	{
+		Should.Throw<ArgumentNullException>(() => (Key)value);
+	}
 
-		public static IEnumerable<object[]> KeyAndObjectTestData { get; } = GetKeyAndObjectTestData().Select(i => new[] { i.First, i.Second });
+	[Theory(DisplayName = "Get method with value and code parameters should return initialized Key object")]
+	[InlineData(" ", " ")]
+	[InlineData("x", "x")]
+	[InlineData("A", "A")]
+	[InlineData("2", "2")]
+	[InlineData("0", "0")]
+	[InlineData("&", "&")]
+	[InlineData("Key", "Key")]
+	[InlineData("TEST_test$44", "TEST_test$44")]
+	[InlineData(" ", "Space")]
+	[InlineData("x", "0")]
+	[InlineData("A", "a")]
+	[InlineData("2", "Code 2")]
+	[InlineData("0", "ABC")]
+	[InlineData("&", "amp")]
+	[InlineData("Key", "Test")]
+	[InlineData("TEST_test$44", "$44-test")]
+	public void GetWithValueAndCode(string value, string code)
+	{
+		var key = Key.Get(value, code);
+		key.Value.ShouldBe(value);
+		key.Code.ShouldBe(code);
+		key.ControlKey.ShouldBeFalse();
+		key.ShiftKey.ShouldBeFalse();
+		key.AltKey.ShouldBeFalse();
+		key.CommandKey.ShouldBeFalse();
+	}
 
-		public static IEnumerable<object[]> KeyWithModifiersTestData { get; } = GetKeyWithModifiersTestData().Select(k => new object[] { k, true })
-			.Concat(GetKeyWithModifiersTestData().Select(k => new object[] { k, false }))
-			.ToList();
+	[Theory(DisplayName = "Get method with empty value or code should throw exception")]
+	[InlineData(null, "")]
+	[InlineData("", null)]
+	[InlineData(null, "t")]
+	[InlineData("", "t")]
+	[InlineData("T", null)]
+	[InlineData("T", "")]
+	public void GetWithNullValueAndNonNullCode(string value, string code)
+	{
+		Should.Throw<ArgumentNullException>(() => Key.Get(value, code));
+	}
 
-		public static IEnumerable<object[]> MainKeyAndModifierKeyTestData { get; } = GetMainKeyAndModifierKeyTestData();
+	[Theory(DisplayName = "Get with char value should return initialized Key object")]
+	[MemberData(nameof(CharTestData))]
+	public void GetFromChar(char value)
+	{
+		var key = Key.Get(value);
+		key.Value.ShouldBe(value.ToString());
+		key.Code.ShouldBe(value.ToString());
+		key.ControlKey.ShouldBeFalse();
+		key.ShiftKey.ShouldBeFalse();
+		key.AltKey.ShouldBeFalse();
+		key.CommandKey.ShouldBeFalse();
+	}
 
-		public static IEnumerable<object[]> MainKeyToCombineTestData { get; } = GetKeyWithModifiersTestData().Select(k => new[] { k }).ToList();
+	[Theory(DisplayName = "Casting from char should return initialized Key object")]
+	[MemberData(nameof(CharTestData))]
+	public void CanCastFromChar(char value)
+	{
+		Key key = value;
+		key.Value.ShouldBe(value.ToString());
+		key.Code.ShouldBe(value.ToString());
+		key.ControlKey.ShouldBeFalse();
+		key.ShiftKey.ShouldBeFalse();
+		key.AltKey.ShouldBeFalse();
+		key.CommandKey.ShouldBeFalse();
+	}
 
-		public static IEnumerable<object[]> Combine2MainKeysTestData { get; } = Get2MainKeysTestData().Select(i => new[] { i.First, i.Second });
+	[Fact(DisplayName = "Get method returns same instances for predefined keys")]
+	public void GetPredefinedKeys()
+	{
+		var keyType = typeof(Key);
+		var predefinedKeyProperties = keyType.GetProperties(BindingFlags.Public | BindingFlags.Static)
+			.Where(p => p.CanRead && p.PropertyType == keyType);
 
-		public static IEnumerable<object[]> KeyboardEventArgsTestData { get; } = GetKeyboardEventArgsTestData();
-
-		[Theory(DisplayName = "Get method with value parameter should return initialized Key object")]
-		[MemberData(nameof(KeyValueTestData))]
-		public void GetWithValue(string value)
+		foreach (var predefinedKeyProperty in predefinedKeyProperties)
 		{
-			var key = Key.Get(value);
-			key.Value.ShouldBe(value);
-			key.Code.ShouldBe(value);
-			key.ControlKey.ShouldBeFalse();
-			key.ShiftKey.ShouldBeFalse();
-			key.AltKey.ShouldBeFalse();
-			key.CommandKey.ShouldBeFalse();
+			var predefinedKey = (Key)predefinedKeyProperty.GetValue(null)!;
+			var instanceKey = Key.Get(predefinedKey.Value, predefinedKey.Code);
+			instanceKey.ShouldBeSameAs(predefinedKey);
+		}
+	}
+
+	[Theory(DisplayName = "Keys with same values should be equal")]
+	[MemberData(nameof(EqualsTestData))]
+	public void EqualsShouldBeTrueForSameKeys(Key key1, Key key2)
+	{
+		key1.Equals(key2).ShouldBeTrue();
+		key2.Equals(key1).ShouldBeTrue();
+		key1.Equals((object)key2).ShouldBeTrue();
+		key2.Equals((object)key1).ShouldBeTrue();
+		(key1 == key2).ShouldBeTrue();
+		(key2 == key1).ShouldBeTrue();
+		(key1 != key2).ShouldBeFalse();
+		(key2 != key1).ShouldBeFalse();
+	}
+
+	[Theory(DisplayName = "Keys with same values should have same hash code")]
+	[MemberData(nameof(EqualsTestData))]
+	public void SameHashCode(Key key1, Key key2)
+	{
+		var hashCode1 = key1.GetHashCode();
+		var hashCode2 = key2.GetHashCode();
+		hashCode1.ShouldBe(hashCode2);
+	}
+
+	[Fact(DisplayName = "Null keys should be equal")]
+	[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "Test verifies that equals operator overloads behave correctly")]
+	public void NullsAreEqual()
+	{
+		Key? key1 = default;
+		Key? key2 = null;
+		(key1 == key2).ShouldBeTrue();
+		(key2 == key1).ShouldBeTrue();
+		(key1 != key2).ShouldBeFalse();
+		(key2 != key1).ShouldBeFalse();
+	}
+
+	[Theory(DisplayName = "Keys with different values should not be equal")]
+	[MemberData(nameof(NonEqualsTestData))]
+	public void EqualsShouldBeFalseForDifferentKeys(Key? key1, Key? key2)
+	{
+		if (key1 is not null)
+		{
+			key1.Equals(key2).ShouldBeFalse();
+			key1.Equals((object?)key2).ShouldBeFalse();
 		}
 
-		[Theory(DisplayName = "Get method with empty value parameter should throw exception")]
-		[InlineData(null)]
-		[InlineData("")]
-		public void GetWithNullValue(string value)
+		if (key2 is not null)
 		{
-			Should.Throw<ArgumentNullException>(() => Key.Get(value));
+			key2.Equals(key1).ShouldBeFalse();
+			key2.Equals((object?)key1).ShouldBeFalse();
 		}
 
-		[Theory(DisplayName = "Casting from string should return initialized Key object")]
-		[MemberData(nameof(KeyValueTestData))]
-		public void CanCastFromString(string value)
+		(key1 == key2).ShouldBeFalse();
+		(key2 == key1).ShouldBeFalse();
+		(key1 != key2).ShouldBeTrue();
+		(key2 != key1).ShouldBeTrue();
+	}
+
+	// This may be flaky test. Hash codes can have collisions.
+	[Theory(DisplayName = "Keys with different values should have different hash codes")]
+	[MemberData(nameof(NonEqualsTestData))]
+	public void DifferentHashCodes(Key? key1, Key? key2)
+	{
+		var hashCode1 = key1?.GetHashCode() ?? 0;
+		var hashCode2 = key2?.GetHashCode() ?? 0;
+		hashCode1.ShouldNotBe(hashCode2);
+	}
+
+	[Theory(DisplayName = "Key should not be equal to different object type")]
+	[MemberData(nameof(KeyAndObjectTestData))]
+	public void KeyShouldBeDifferentFromObject(Key key, object other)
+	{
+		key.Equals(other).ShouldBeFalse();
+	}
+
+	[Theory(DisplayName = "WithControlKey should set ControlKey flag")]
+	[MemberData(nameof(KeyWithModifiersTestData))]
+	public void WithControlKey(Key key, bool flag)
+	{
+		var result = key.WithControlKey(flag);
+		result.ShouldNotBeSameAs(key);
+		result.Value.ShouldBe(key.Value);
+		result.Code.ShouldBe(key.Code);
+		result.ControlKey.ShouldBe(flag);
+		result.AltKey.ShouldBe(key.AltKey);
+		result.ShiftKey.ShouldBe(key.ShiftKey);
+		result.CommandKey.ShouldBe(key.CommandKey);
+	}
+
+	[Theory(DisplayName = "WithShiftKey should set ShiftKey flag")]
+	[MemberData(nameof(KeyWithModifiersTestData))]
+	public void WithShiftKey(Key key, bool flag)
+	{
+		var result = key.WithShiftKey(flag);
+		result.ShouldNotBeSameAs(key);
+		result.Value.ShouldBe(key.Value);
+		result.Code.ShouldBe(key.Code);
+		result.ControlKey.ShouldBe(key.ControlKey);
+		result.AltKey.ShouldBe(key.AltKey);
+		result.ShiftKey.ShouldBe(flag);
+		result.CommandKey.ShouldBe(key.CommandKey);
+	}
+
+	[Theory(DisplayName = "WithAltKey should set AltKey flag")]
+	[MemberData(nameof(KeyWithModifiersTestData))]
+	public void WithAltKey(Key key, bool flag)
+	{
+		var result = key.WithAltKey(flag);
+		result.ShouldNotBeSameAs(key);
+		result.Value.ShouldBe(key.Value);
+		result.Code.ShouldBe(key.Code);
+		result.ControlKey.ShouldBe(key.ControlKey);
+		result.AltKey.ShouldBe(flag);
+		result.ShiftKey.ShouldBe(key.ShiftKey);
+		result.CommandKey.ShouldBe(key.CommandKey);
+	}
+
+	[Theory(DisplayName = "WithCommandKey should set CommandKey flag")]
+	[MemberData(nameof(KeyWithModifiersTestData))]
+	public void WithCommandKey(Key key, bool flag)
+	{
+		var result = key.WithCommandKey(flag);
+		result.ShouldNotBeSameAs(key);
+		result.Value.ShouldBe(key.Value);
+		result.Code.ShouldBe(key.Code);
+		result.ControlKey.ShouldBe(key.ControlKey);
+		result.AltKey.ShouldBe(key.AltKey);
+		result.ShiftKey.ShouldBe(key.ShiftKey);
+		result.CommandKey.ShouldBe(flag);
+	}
+
+	[Theory(DisplayName = "Combine key and key modifier should return key with modifier set")]
+	[MemberData(nameof(MainKeyAndModifierKeyTestData))]
+	public void Combine2Keys(Key mainKey, Key keyModifier, bool controlKey, bool shiftKey, bool altKey, bool commandKey)
+	{
+		AssertCombinedKey(mainKey.Combine(keyModifier));
+		AssertCombinedKey(keyModifier.Combine(mainKey));
+		AssertCombinedKey(mainKey + keyModifier);
+		AssertCombinedKey(keyModifier + mainKey);
+
+		void AssertCombinedKey(Key resultKey)
 		{
-			Key key = value;
-			key.Value.ShouldBe(value);
-			key.Code.ShouldBe(value);
-			key.ControlKey.ShouldBeFalse();
-			key.ShiftKey.ShouldBeFalse();
-			key.AltKey.ShouldBeFalse();
-			key.CommandKey.ShouldBeFalse();
+			resultKey.Value.ShouldBe(mainKey.Value);
+			resultKey.Code.ShouldBe(mainKey.Code);
+			resultKey.ControlKey.ShouldBe(controlKey);
+			resultKey.ShiftKey.ShouldBe(shiftKey);
+			resultKey.AltKey.ShouldBe(altKey);
+			resultKey.CommandKey.ShouldBe(commandKey);
 		}
+	}
 
-		[Theory(DisplayName = "Casting from null or empty string throws ArgumentNullException")]
-		[InlineData(null)]
-		[InlineData("")]
-		public void CastingFromNullStringThrowsException(string value)
+	[Theory(DisplayName = "Combine key with null should return the same key")]
+	[MemberData(nameof(MainKeyToCombineTestData))]
+	public void CombineKeyWithNull(Key key)
+	{
+		key.Combine(null).ShouldBeSameAs(key);
+		(key + null).ShouldBeSameAs(key);
+		(null! + key).ShouldBeSameAs(key);
+	}
+
+	[Theory(DisplayName = "Combine 2 main keys should throw ArgumentException")]
+	[MemberData(nameof(Combine2MainKeysTestData))]
+	public void Combine2MainKeys(Key key1, Key key2)
+	{
+		Should.Throw<ArgumentException>(() => key1.Combine(key2));
+		Should.Throw<ArgumentException>(() => key2.Combine(key1));
+		Should.Throw<ArgumentException>(() => key1 + key2);
+		Should.Throw<ArgumentException>(() => key2 + key1);
+	}
+
+	[Theory(DisplayName = "Can convert to KeyboardEventArgs")]
+	[MemberData(nameof(KeyboardEventArgsTestData))]
+	public void ToKeyboardEventArgs(Key key, string value, string code, bool ctrlKey, bool shiftKey, bool altKey, bool metaKey)
+	{
+		KeyboardEventArgs result = key;
+		result.Key.ShouldBe(value);
+		result.Code.ShouldBe(code);
+		result.CtrlKey.ShouldBe(ctrlKey);
+		result.ShiftKey.ShouldBe(shiftKey);
+		result.AltKey.ShouldBe(altKey);
+		result.MetaKey.ShouldBe(metaKey);
+		result.Location.ShouldBe(0);
+		result.Type.ShouldBe(null);
+	}
+
+	[Fact(DisplayName = "Can convert null to KeyboardEventArgs")]
+	public void NullToKeyboardEventArgs()
+	{
+		Key key = null!;
+		KeyboardEventArgs result = key;
+		result.ShouldBeNull();
+	}
+
+	private static IEnumerable<string> GetKeyValueTestData()
+	{
+		return new[]
 		{
-			Should.Throw<ArgumentNullException>(() => (Key)value);
-		}
-
-		[Theory(DisplayName = "Get method with value and code parameters should return initialized Key object")]
-		[InlineData(" ", " ")]
-		[InlineData("x", "x")]
-		[InlineData("A", "A")]
-		[InlineData("2", "2")]
-		[InlineData("0", "0")]
-		[InlineData("&", "&")]
-		[InlineData("Key", "Key")]
-		[InlineData("TEST_test$44", "TEST_test$44")]
-		[InlineData(" ", "Space")]
-		[InlineData("x", "0")]
-		[InlineData("A", "a")]
-		[InlineData("2", "Code 2")]
-		[InlineData("0", "ABC")]
-		[InlineData("&", "amp")]
-		[InlineData("Key", "Test")]
-		[InlineData("TEST_test$44", "$44-test")]
-		public void GetWithValueAndCode(string value, string code)
-		{
-			var key = Key.Get(value, code);
-			key.Value.ShouldBe(value);
-			key.Code.ShouldBe(code);
-			key.ControlKey.ShouldBeFalse();
-			key.ShiftKey.ShouldBeFalse();
-			key.AltKey.ShouldBeFalse();
-			key.CommandKey.ShouldBeFalse();
-		}
-
-		[Theory(DisplayName = "Get method with empty value or code should throw exception")]
-		[InlineData(null, "")]
-		[InlineData("", null)]
-		[InlineData(null, "t")]
-		[InlineData("", "t")]
-		[InlineData("T", null)]
-		[InlineData("T", "")]
-		public void GetWithNullValueAndNonNullCode(string value, string code)
-		{
-			Should.Throw<ArgumentNullException>(() => Key.Get(value, code));
-		}
-
-		[Theory(DisplayName = "Get with char value should return initialized Key object")]
-		[MemberData(nameof(CharTestData))]
-		public void GetFromChar(char value)
-		{
-			var key = Key.Get(value);
-			key.Value.ShouldBe(value.ToString());
-			key.Code.ShouldBe(value.ToString());
-			key.ControlKey.ShouldBeFalse();
-			key.ShiftKey.ShouldBeFalse();
-			key.AltKey.ShouldBeFalse();
-			key.CommandKey.ShouldBeFalse();
-		}
-
-		[Theory(DisplayName = "Casting from char should return initialized Key object")]
-		[MemberData(nameof(CharTestData))]
-		public void CanCastFromChar(char value)
-		{
-			Key key = value;
-			key.Value.ShouldBe(value.ToString());
-			key.Code.ShouldBe(value.ToString());
-			key.ControlKey.ShouldBeFalse();
-			key.ShiftKey.ShouldBeFalse();
-			key.AltKey.ShouldBeFalse();
-			key.CommandKey.ShouldBeFalse();
-		}
-
-		[Fact(DisplayName = "Get method returns same instances for predefined keys")]
-		public void GetPredefinedKeys()
-		{
-			var keyType = typeof(Key);
-			var predefinedKeyProperties = keyType.GetProperties(BindingFlags.Public | BindingFlags.Static)
-				.Where(p => p.CanRead && p.PropertyType == keyType);
-
-			foreach (var predefinedKeyProperty in predefinedKeyProperties)
-			{
-				var predefinedKey = (Key)predefinedKeyProperty.GetValue(null)!;
-				var instanceKey = Key.Get(predefinedKey.Value, predefinedKey.Code);
-				instanceKey.ShouldBeSameAs(predefinedKey);
-			}
-		}
-
-		[Theory(DisplayName = "Keys with same values should be equal")]
-		[MemberData(nameof(EqualsTestData))]
-		public void EqualsShouldBeTrueForSameKeys(Key key1, Key key2)
-		{
-			key1.Equals(key2).ShouldBeTrue();
-			key2.Equals(key1).ShouldBeTrue();
-			key1.Equals((object)key2).ShouldBeTrue();
-			key2.Equals((object)key1).ShouldBeTrue();
-			(key1 == key2).ShouldBeTrue();
-			(key2 == key1).ShouldBeTrue();
-			(key1 != key2).ShouldBeFalse();
-			(key2 != key1).ShouldBeFalse();
-		}
-
-		[Theory(DisplayName = "Keys with same values should have same hash code")]
-		[MemberData(nameof(EqualsTestData))]
-		public void SameHashCode(Key key1, Key key2)
-		{
-			var hashCode1 = key1.GetHashCode();
-			var hashCode2 = key2.GetHashCode();
-			hashCode1.ShouldBe(hashCode2);
-		}
-
-		[Fact(DisplayName = "Null keys should be equal")]
-		[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "Test verifies that equals operator overloads behave correctly")]
-		public void NullsAreEqual()
-		{
-			Key? key1 = default;
-			Key? key2 = null;
-			(key1 == key2).ShouldBeTrue();
-			(key2 == key1).ShouldBeTrue();
-			(key1 != key2).ShouldBeFalse();
-			(key2 != key1).ShouldBeFalse();
-		}
-
-		[Theory(DisplayName = "Keys with different values should not be equal")]
-		[MemberData(nameof(NonEqualsTestData))]
-		public void EqualsShouldBeFalseForDifferentKeys(Key? key1, Key? key2)
-		{
-			if (key1 is not null)
-			{
-				key1.Equals(key2).ShouldBeFalse();
-				key1.Equals((object?)key2).ShouldBeFalse();
-			}
-
-			if (key2 is not null)
-			{
-				key2.Equals(key1).ShouldBeFalse();
-				key2.Equals((object?)key1).ShouldBeFalse();
-			}
-
-			(key1 == key2).ShouldBeFalse();
-			(key2 == key1).ShouldBeFalse();
-			(key1 != key2).ShouldBeTrue();
-			(key2 != key1).ShouldBeTrue();
-		}
-
-		// This may be flaky test. Hash codes can have collisions.
-		[Theory(DisplayName = "Keys with different values should have different hash codes")]
-		[MemberData(nameof(NonEqualsTestData))]
-		public void DifferentHashCodes(Key? key1, Key? key2)
-		{
-			var hashCode1 = key1?.GetHashCode() ?? 0;
-			var hashCode2 = key2?.GetHashCode() ?? 0;
-			hashCode1.ShouldNotBe(hashCode2);
-		}
-
-		[Theory(DisplayName = "Key should not be equal to different object type")]
-		[MemberData(nameof(KeyAndObjectTestData))]
-		public void KeyShouldBeDifferentFromObject(Key key, object other)
-		{
-			key.Equals(other).ShouldBeFalse();
-		}
-
-		[Theory(DisplayName = "WithControlKey should set ControlKey flag")]
-		[MemberData(nameof(KeyWithModifiersTestData))]
-		public void WithControlKey(Key key, bool flag)
-		{
-			var result = key.WithControlKey(flag);
-			result.ShouldNotBeSameAs(key);
-			result.Value.ShouldBe(key.Value);
-			result.Code.ShouldBe(key.Code);
-			result.ControlKey.ShouldBe(flag);
-			result.AltKey.ShouldBe(key.AltKey);
-			result.ShiftKey.ShouldBe(key.ShiftKey);
-			result.CommandKey.ShouldBe(key.CommandKey);
-		}
-
-		[Theory(DisplayName = "WithShiftKey should set ShiftKey flag")]
-		[MemberData(nameof(KeyWithModifiersTestData))]
-		public void WithShiftKey(Key key, bool flag)
-		{
-			var result = key.WithShiftKey(flag);
-			result.ShouldNotBeSameAs(key);
-			result.Value.ShouldBe(key.Value);
-			result.Code.ShouldBe(key.Code);
-			result.ControlKey.ShouldBe(key.ControlKey);
-			result.AltKey.ShouldBe(key.AltKey);
-			result.ShiftKey.ShouldBe(flag);
-			result.CommandKey.ShouldBe(key.CommandKey);
-		}
-
-		[Theory(DisplayName = "WithAltKey should set AltKey flag")]
-		[MemberData(nameof(KeyWithModifiersTestData))]
-		public void WithAltKey(Key key, bool flag)
-		{
-			var result = key.WithAltKey(flag);
-			result.ShouldNotBeSameAs(key);
-			result.Value.ShouldBe(key.Value);
-			result.Code.ShouldBe(key.Code);
-			result.ControlKey.ShouldBe(key.ControlKey);
-			result.AltKey.ShouldBe(flag);
-			result.ShiftKey.ShouldBe(key.ShiftKey);
-			result.CommandKey.ShouldBe(key.CommandKey);
-		}
-
-		[Theory(DisplayName = "WithCommandKey should set CommandKey flag")]
-		[MemberData(nameof(KeyWithModifiersTestData))]
-		public void WithCommandKey(Key key, bool flag)
-		{
-			var result = key.WithCommandKey(flag);
-			result.ShouldNotBeSameAs(key);
-			result.Value.ShouldBe(key.Value);
-			result.Code.ShouldBe(key.Code);
-			result.ControlKey.ShouldBe(key.ControlKey);
-			result.AltKey.ShouldBe(key.AltKey);
-			result.ShiftKey.ShouldBe(key.ShiftKey);
-			result.CommandKey.ShouldBe(flag);
-		}
-
-		[Theory(DisplayName = "Combine key and key modifier should return key with modifier set")]
-		[MemberData(nameof(MainKeyAndModifierKeyTestData))]
-		public void Combine2Keys(Key mainKey, Key keyModifier, bool controlKey, bool shiftKey, bool altKey, bool commandKey)
-		{
-			AssertCombinedKey(mainKey.Combine(keyModifier));
-			AssertCombinedKey(keyModifier.Combine(mainKey));
-			AssertCombinedKey(mainKey + keyModifier);
-			AssertCombinedKey(keyModifier + mainKey);
-
-			void AssertCombinedKey(Key resultKey)
-			{
-				resultKey.Value.ShouldBe(mainKey.Value);
-				resultKey.Code.ShouldBe(mainKey.Code);
-				resultKey.ControlKey.ShouldBe(controlKey);
-				resultKey.ShiftKey.ShouldBe(shiftKey);
-				resultKey.AltKey.ShouldBe(altKey);
-				resultKey.CommandKey.ShouldBe(commandKey);
-			}
-		}
-
-		[Theory(DisplayName = "Combine key with null should return the same key")]
-		[MemberData(nameof(MainKeyToCombineTestData))]
-		public void CombineKeyWithNull(Key key)
-		{
-			key.Combine(null).ShouldBeSameAs(key);
-			(key + null).ShouldBeSameAs(key);
-			(null! + key).ShouldBeSameAs(key);
-		}
-
-		[Theory(DisplayName = "Combine 2 main keys should throw ArgumentException")]
-		[MemberData(nameof(Combine2MainKeysTestData))]
-		public void Combine2MainKeys(Key key1, Key key2)
-		{
-			Should.Throw<ArgumentException>(() => key1.Combine(key2));
-			Should.Throw<ArgumentException>(() => key2.Combine(key1));
-			Should.Throw<ArgumentException>(() => key1 + key2);
-			Should.Throw<ArgumentException>(() => key2 + key1);
-		}
-
-		[Theory(DisplayName = "Can convert to KeyboardEventArgs")]
-		[MemberData(nameof(KeyboardEventArgsTestData))]
-		public void ToKeyboardEventArgs(Key key, string value, string code, bool ctrlKey, bool shiftKey, bool altKey, bool metaKey)
-		{
-			KeyboardEventArgs result = key;
-			result.Key.ShouldBe(value);
-			result.Code.ShouldBe(code);
-			result.CtrlKey.ShouldBe(ctrlKey);
-			result.ShiftKey.ShouldBe(shiftKey);
-			result.AltKey.ShouldBe(altKey);
-			result.MetaKey.ShouldBe(metaKey);
-			result.Location.ShouldBe(0);
-			result.Type.ShouldBe(null);
-		}
-
-		[Fact(DisplayName = "Can convert null to KeyboardEventArgs")]
-		public void NullToKeyboardEventArgs()
-		{
-			Key key = null!;
-			KeyboardEventArgs result = key;
-			result.ShouldBeNull();
-		}
-
-		private static IEnumerable<string> GetKeyValueTestData()
-		{
-			return new[]
-			{
 				" ",
 				"x",
 				"A",
@@ -363,16 +354,16 @@ namespace Bunit
 				"TEST_test$44",
 				"F5",
 			};
-		}
+	}
 
-		private static IEnumerable<(Key First, Key Second)> GetEqualsTestData()
+	private static IEnumerable<(Key First, Key Second)> GetEqualsTestData()
+	{
+		var xKey = Key.Get('x');
+		var dollarKey = Key.Get("$", "Dollar");
+		var customKey = Key.Get("Test", "12345");
+
+		return new[]
 		{
-			var xKey = Key.Get('x');
-			var dollarKey = Key.Get("$", "Dollar");
-			var customKey = Key.Get("Test", "12345");
-
-			return new[]
-			{
 				(Key.Enter, Key.Enter),
 				(Key.F10, Key.F10),
 				(Key.NumberPad2, Key.NumberPad2),
@@ -403,16 +394,16 @@ namespace Bunit
 				(dollarKey + Key.Control + Key.Shift, Key.Get("$", "Dollar") + Key.Shift + Key.Control),
 				(customKey + Key.Alt + Key.Control, Key.Get("Test", "12345") + Key.Control + Key.Alt),
 			};
-		}
+	}
 
-		private static IEnumerable<(Key? First, Key? Second)> GetNonEqualsTestData()
+	private static IEnumerable<(Key? First, Key? Second)> GetNonEqualsTestData()
+	{
+		var xKey = Key.Get('x');
+		var dollarKey = Key.Get("$", "Dollar");
+		var customKey = Key.Get("Test", "12345");
+
+		return new (Key?, Key?)[]
 		{
-			var xKey = Key.Get('x');
-			var dollarKey = Key.Get("$", "Dollar");
-			var customKey = Key.Get("Test", "12345");
-
-			return new (Key?, Key?)[]
-			{
 				(Key.Enter, Key.Escape),
 				(Key.F1, Key.F2),
 				(Key.NumberPad2, Key.NumberPad8),
@@ -433,25 +424,25 @@ namespace Bunit
 				(Key.Control, null),
 				(Key.Enter + Key.Command, null),
 				(Key.F10, null),
-			};
-		}
+		};
+	}
 
-		private static IEnumerable<(Key First, object Second)> GetKeyAndObjectTestData()
+	private static IEnumerable<(Key First, object Second)> GetKeyAndObjectTestData()
+	{
+		return new (Key, object)[]
 		{
-			return new (Key, object)[]
-			{
 				(Key.Space, false),
 				(Key.Get('G'), 'G'),
 				(Key.Get("Test"), "Test"),
 				(Key.Control, 2),
 				(Key.Get("Event", "Args"), EventArgs.Empty),
-			};
-		}
+		};
+	}
 
-		private static IEnumerable<Key> GetKeyWithModifiersTestData()
+	private static IEnumerable<Key> GetKeyWithModifiersTestData()
+	{
+		return new[]
 		{
-			return new[]
-			{
 				Key.Enter,
 				Key.Add,
 				Key.Get('c'),
@@ -463,12 +454,12 @@ namespace Bunit
 				Key.Space + Key.Control + Key.Alt + Key.Shift,
 				Key.Get('0') + Key.Shift + Key.Control,
 			};
-		}
+	}
 
-		private static IEnumerable<object[]> GetMainKeyAndModifierKeyTestData()
+	private static IEnumerable<object[]> GetMainKeyAndModifierKeyTestData()
+	{
+		return new[]
 		{
-			return new[]
-			{
 				new object[] { Key.Enter, Key.Control, true, false, false, false },
 				new object[] { Key.Add, Key.Shift, false, true, false, false },
 				new object[] { Key.Get('c'), Key.Alt, false, false, true, false },
@@ -480,12 +471,12 @@ namespace Bunit
 				new object[] { Key.Get('1') + Key.Command, Key.Shift + Key.Control + Key.Alt, true, true, true, true },
 				new object[] { Key.Enter + Key.Shift + Key.Alt, Key.Shift + Key.Control, true, true, true, false },
 			};
-		}
+	}
 
-		private static IEnumerable<(Key First, Key Second)> Get2MainKeysTestData()
+	private static IEnumerable<(Key First, Key Second)> Get2MainKeysTestData()
+	{
+		return new[]
 		{
-			return new[]
-			{
 				(Key.Enter, Key.Enter),
 				(Key.Space, Key.Backspace),
 				(Key.Get('0'), Key.NumberPad0),
@@ -494,12 +485,12 @@ namespace Bunit
 				(Key.Get("T", "Test"), Key.Get("T", "Test")),
 				(Key.Get('0') + Key.Command, Key.NumberPad0 + Key.Command + Key.Alt),
 			};
-		}
+	}
 
-		private static IEnumerable<object[]> GetKeyboardEventArgsTestData()
+	private static IEnumerable<object[]> GetKeyboardEventArgsTestData()
+	{
+		return new[]
 		{
-			return new[]
-			{
 				new object[] { Key.Enter, "Enter", "Enter", false, false, false, false },
 				new object[] { Key.Add, "+", "NumpadAdd", false, false, false, false },
 				new object[] { Key.Get('c'), "c", "c", false, false, false, false },
@@ -514,6 +505,5 @@ namespace Bunit
 				new object[] { Key.Command, "Meta", "MetaLeft", false, false, false, true },
 				new object[] { Key.Space + Key.Control + Key.Alt + Key.Shift, " ", "Space", true, true, true, false },
 			};
-		}
 	}
 }

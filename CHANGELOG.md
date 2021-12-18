@@ -6,6 +6,19 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+This release reintroduces `Stub<TComponent>` and related back into the main library, so the "preview" library `bunit.web.mock` is already obsolete. 
+
+### Added
+
+- Add `ComponentFactories` extensions method that makes it easy to register an instance of a replacement component. By [@egil](https://github.com/egil).
+- Add ability to pass `ServiceProviderOptions` to `TestServiceProvider` through property to allow users to customize the service provider. By [@rodolfograve](https://github.com/rodolfograve).
+
+### Fixed
+
+- Changed `SetParametersAndRender` such that it rethrows any exceptions thrown by the component under tests `SetParametersAsync` method. Thanks to [@bonsall](https://github.com/bonsall) for reporting the issue. Fixed by [@egil](https://github.com/egil).
+- `onclick` on a button inside a form will raise the `onsubmit` event for the form itself. Reported by [@egil]. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+- Only forms are allowed to have a `onsubmit` event handler. When `onsubmit` is invoked from a non-form element results in an exception. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.3.42] - 2021-11-09
 
 This release includes support for .NET 6, with support for all new features in Blazor with that release. There are also a number of additions and fixes, all listed below.

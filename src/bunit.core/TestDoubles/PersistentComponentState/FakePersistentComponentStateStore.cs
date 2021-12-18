@@ -4,29 +4,28 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace Bunit.TestDoubles
+namespace Bunit.TestDoubles;
+
+internal class FakePersistentComponentStateStore : IPersistentComponentStateStore
 {
-	internal class FakePersistentComponentStateStore : IPersistentComponentStateStore
+	private readonly Dictionary<string, byte[]> state = new(StringComparer.Ordinal);
+
+	public void Add(string key, byte[] value)
 	{
-		private readonly Dictionary<string, byte[]> state = new(StringComparer.Ordinal);
+		state[key] = value;
+	}
 
-		public void Add(string key, byte[] value)
+	public Task<IDictionary<string, byte[]>> GetPersistedStateAsync()
+		=> Task.FromResult<IDictionary<string, byte[]>>(state);
+
+	public Task PersistStateAsync(IReadOnlyDictionary<string, byte[]> state)
+	{
+		foreach (var (key, value) in state)
 		{
-			state[key] = value;
+			Add(key, value);
 		}
 
-		public Task<IDictionary<string, byte[]>> GetPersistedStateAsync()
-			=> Task.FromResult<IDictionary<string, byte[]>>(state);
-
-		public Task PersistStateAsync(IReadOnlyDictionary<string, byte[]> state)
-		{
-			foreach (var (key, value) in state)
-			{
-				Add(key, value);
-			}
-
-			return Task.CompletedTask;
-		}
+		return Task.CompletedTask;
 	}
 }
 #endif

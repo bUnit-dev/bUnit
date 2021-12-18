@@ -1,89 +1,84 @@
-using Bunit.TestAssets.SampleComponents;
 using Bunit.TestDoubles;
-using Microsoft.AspNetCore.Components;
-using Shouldly;
-using Xunit;
 
-namespace Bunit
+namespace Bunit;
+
+public partial class TestContextTest : TestContext
 {
-	public partial class TestContextTest : TestContext
+	[Fact(DisplayName = "The test service provider should register a placeholder HttpClient which throws exceptions")]
+	public void Test024()
 	{
-		[Fact(DisplayName = "The test service provider should register a placeholder HttpClient which throws exceptions")]
-		public void Test024()
+		Should.Throw<MissingMockHttpClientException>(() => RenderComponent<SimpleWithHttpClient>());
+	}
+
+	[Fact(DisplayName = "The test service provider should register a placeholder IStringLocalizer which throws exceptions")]
+	public void Test026()
+	{
+		Should.Throw<MissingMockStringLocalizationException>(() => RenderComponent<SimpleUsingLocalizer>());
+	}
+
+	[Fact(DisplayName = "Render() renders fragment inside RenderTree")]
+	public void Test030()
+	{
+		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
+		var cut = Render(b =>
 		{
-			Should.Throw<MissingMockHttpClientException>(() => RenderComponent<SimpleWithHttpClient>());
-		}
+			b.OpenComponent<ReceivesCascadinValue>(0);
+			b.CloseComponent();
+		});
 
-		[Fact(DisplayName = "The test service provider should register a placeholder IStringLocalizer which throws exceptions")]
-		public void Test026()
+		cut.FindComponent<ReceivesCascadinValue>()
+			.Instance
+			.Value
+			.ShouldBe("FOO");
+	}
+
+	[Fact(DisplayName = "Render<TComponent>() renders fragment inside RenderTreee")]
+	public void Test031()
+	{
+		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
+		var cut = Render<ReceivesCascadinValue>(b =>
 		{
-			Should.Throw<MissingMockStringLocalizationException>(() => RenderComponent<SimpleUsingLocalizer>());
-		}
+			b.OpenComponent<ReceivesCascadinValue>(0);
+			b.CloseComponent();
+		});
 
-		[Fact(DisplayName = "Render() renders fragment inside RenderTree")]
-		public void Test030()
-		{
-			RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
-			var cut = Render(b =>
-			{
-				b.OpenComponent<ReceivesCascadinValue>(0);
-				b.CloseComponent();
-			});
+		cut.Instance
+			.Value
+			.ShouldBe("FOO");
+	}
 
-			cut.FindComponent<ReceivesCascadinValue>()
-				.Instance
-				.Value
-				.ShouldBe("FOO");
-		}
+	[Fact(DisplayName = "RenderComponent<TComponent>(builder) renders TComponent inside RenderTreee")]
+	public void Test032()
+	{
+		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
+		var cut = RenderComponent<ReceivesCascadinValue>(ps => ps.Add(p => p.Dummy, null));
 
-		[Fact(DisplayName = "Render<TComponent>() renders fragment inside RenderTreee")]
-		public void Test031()
-		{
-			RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
-			var cut = Render<ReceivesCascadinValue>(b =>
-			{
-				b.OpenComponent<ReceivesCascadinValue>(0);
-				b.CloseComponent();
-			});
+		cut.Instance
+			.Value
+			.ShouldBe("FOO");
+	}
 
-			cut.Instance
-				.Value
-				.ShouldBe("FOO");
-		}
+	[Fact(DisplayName = "RenderComponent<TComponent>(factories) renders TComponent inside RenderTreee")]
+	public void Test033()
+	{
+		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
+		var cut = RenderComponent<ReceivesCascadinValue>(("Dummy", null));
 
-		[Fact(DisplayName = "RenderComponent<TComponent>(builder) renders TComponent inside RenderTreee")]
-		public void Test032()
-		{
-			RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
-			var cut = RenderComponent<ReceivesCascadinValue>(ps => ps.Add(p => p.Dummy, null));
+		cut.Instance
+			.Value
+			.ShouldBe("FOO");
+	}
 
-			cut.Instance
-				.Value
-				.ShouldBe("FOO");
-		}
+	[Fact(DisplayName = "Can raise events from markup rendered with TestContext")]
+	public void Test040()
+	{
+		Should.NotThrow(() => RenderComponent<ClickCounter>().Find("button").Click());
+	}
 
-		[Fact(DisplayName = "RenderComponent<TComponent>(factories) renders TComponent inside RenderTreee")]
-		public void Test033()
-		{
-			RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
-			var cut = RenderComponent<ReceivesCascadinValue>(("Dummy", null));
+	private class ReceivesCascadinValue : ComponentBase
+	{
+		[CascadingParameter] public string? Value { get; set; }
 
-			cut.Instance
-				.Value
-				.ShouldBe("FOO");
-		}
-
-		[Fact(DisplayName = "Can raise events from markup rendered with TestContext")]
-		public void Test040()
-		{
-			Should.NotThrow(() => RenderComponent<ClickCounter>().Find("button").Click());
-		}
-
-		private class ReceivesCascadinValue : ComponentBase
-		{
-			[CascadingParameter] public string? Value { get; set; }
-
-			[Parameter] public object? Dummy { get; set; }
-		}
+		[Parameter] public object? Dummy { get; set; }
 	}
 }

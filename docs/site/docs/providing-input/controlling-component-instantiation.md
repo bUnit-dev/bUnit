@@ -31,7 +31,4 @@ Then, before rendering the component under test, add the `FooBarComponentFactory
 
 ## Built-in factories
 
-bUnit comes with several built-in factories that allow shallow rendering or replacing components with test dummies and test stubs. See the following pages for details:
-
-- <xref:shallow-rendering>
-- <xref:stubbing-components>
+bUnit comes with several built-in factories that allow shallow rendering or replacing components with test dummies and test stubs. See the <xref:substituting-components> page for details.

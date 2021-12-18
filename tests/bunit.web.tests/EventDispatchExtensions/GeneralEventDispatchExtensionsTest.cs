@@ -1,15 +1,6 @@
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Dom;
-using AutoFixture.Xunit2;
 using Bunit.Rendering;
-using Bunit.TestAssets.SampleComponents;
-using Moq;
-using Shouldly;
-using Xunit;
 
 namespace Bunit
 {
@@ -99,7 +90,6 @@ namespace Bunit
 		[InlineData("onprogress")]
 		[InlineData("onreset")]
 		[InlineData("onscroll")]
-		[InlineData("onsubmit")]
 		[InlineData("onunload")]
 		[InlineData("ontoggle")]
 		[InlineData("onDOMNodeInsertedIntoDocument")]
@@ -181,15 +171,15 @@ namespace Bunit
 		[Fact(DisplayName = "TriggerEvent can trigger custom events")]
 		public void Test201()
 		{
-var cut = RenderComponent<CustomPasteSample>();
+			var cut = RenderComponent<CustomPasteSample>();
 
-cut.Find("input").TriggerEvent("oncustompaste", new CustomPasteEventArgs
-{
-	EventTimestamp = DateTime.Now,
-	PastedData = "FOO"
-});
+			cut.Find("input").TriggerEvent("oncustompaste", new CustomPasteEventArgs
+			{
+				EventTimestamp = DateTime.Now,
+				PastedData = "FOO"
+			});
 
-cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
+			cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
 		}
 #endif
 
@@ -240,6 +230,36 @@ cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
 
 			Should.Throw<Exception>(() => cut.Find("button").Click())
 				.Message.ShouldBe(exceptionMessage);
+		}
+
+		[Fact(DisplayName = "Should handle click event first and submit form afterwards for button")]
+		public void Test304()
+		{
+			var cut = RenderComponent<SubmitFormOnClick>();
+
+			cut.Find("button").Click();
+
+			cut.Instance.FormSubmitted.ShouldBeTrue();
+			cut.Instance.Clicked.ShouldBeTrue();
+		}
+
+		[Fact(DisplayName = "Should handle click event first and submit form afterwards for input when type button")]
+		public void Test305()
+		{
+			var cut = RenderComponent<SubmitFormOnClick>();
+
+			cut.Find("#inside-form-input").Click();
+
+			cut.Instance.FormSubmitted.ShouldBeTrue();
+			cut.Instance.Clicked.ShouldBeTrue();
+		}
+
+		[Fact(DisplayName = "Should throw exception when invoking onsubmit from non form")]
+		public void Test306()
+		{
+			var cut = RenderComponent<OnsubmitButton>();
+
+			Should.Throw<InvalidOperationException>(() => cut.Find("button").Submit());
 		}
 	}
 }

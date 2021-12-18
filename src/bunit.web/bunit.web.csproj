@@ -44,4 +44,9 @@
 		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />
 	</ItemGroup>
 
+	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
+		<Using Include="Microsoft.AspNetCore.Components.Web" />
+		<Using Include="Microsoft.JSInterop" />
+	</ItemGroup>
+
 </Project>

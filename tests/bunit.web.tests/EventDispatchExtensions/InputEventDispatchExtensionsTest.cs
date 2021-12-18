@@ -1,22 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using AutoFixture;
-using AutoFixture.Xunit2;
-using Bunit.TestAssets.SampleComponents;
-using Bunit.TestAssets.SampleComponents.Data;
-using Microsoft.AspNetCore.Components;
-using Shouldly;
-using Xunit;
-
 namespace Bunit
 {
 	public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<ChangeEventArgs>
 	{
-		private static readonly string[] ExcludedMethodsFromGenericTests = new[] { "Change", "Input" };
-		public static IEnumerable<object[]> Helpers { get; }
-			= GetEventHelperMethods(typeof(InputEventDispatchExtensions), x => !ExcludedMethodsFromGenericTests.Contains(x.Name));
+		private static readonly string[] ExcludedMethodsFromGenericTests = new[] { "Change", "Input", "Submit" };
+        public static IEnumerable<object[]> Helpers { get; }
+        	= GetEventHelperMethods(typeof(InputEventDispatchExtensions), x => !ExcludedMethodsFromGenericTests
+        	.Contains(x.Name.Replace("Async", string.Empty, StringComparison.Ordinal)));
 
 		private static readonly Fixture Fixture = new();
 

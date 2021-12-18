@@ -1,20 +1,15 @@
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+namespace Bunit.Extensions;
 
-namespace Bunit.Extensions
+/// <summary>
+/// Helper methods for working with <see cref="IEnumerable{T}"/>.
+/// </summary>
+public static class EnumerableExtensions
 {
 	/// <summary>
-	/// Helper methods for working with <see cref="IEnumerable{T}"/>.
+	/// Returns true if the numerable is null or empty.
 	/// </summary>
-	public static class EnumerableExtensions
+	public static bool IsNullOrEmpty<T>([NotNullWhen(false)] this IEnumerable<T>? enumerable)
 	{
-		/// <summary>
-		/// Returns true if the numerable is null or empty.
-		/// </summary>
-		public static bool IsNullOrEmpty<T>([NotNullWhen(false)] this IEnumerable<T>? enumerable)
-		{
-			return enumerable is null || !enumerable.Any();
-		}
+		return enumerable is null || !enumerable.Any();
 	}
 }

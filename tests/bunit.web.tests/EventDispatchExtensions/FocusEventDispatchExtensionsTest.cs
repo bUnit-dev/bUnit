@@ -1,23 +1,18 @@
-using System.Reflection;
-using Microsoft.AspNetCore.Components.Web;
-using Xunit;
+namespace Bunit;
 
-namespace Bunit
+public class FocusEventDispatchExtensionsTest : EventDispatchExtensionsTest<FocusEventArgs>
 {
-	public class FocusEventDispatchExtensionsTest : EventDispatchExtensionsTest<FocusEventArgs>
+	protected override string ElementName => "p";
+
+	[Theory(DisplayName = "Focus events are raised correctly through helpers")]
+	[MemberData(nameof(GetEventHelperMethods), typeof(FocusEventDispatchExtensions))]
+	public void CanRaiseEvents(MethodInfo helper)
 	{
-		protected override string ElementName => "p";
-
-		[Theory(DisplayName = "Focus events are raised correctly through helpers")]
-		[MemberData(nameof(GetEventHelperMethods), typeof(FocusEventDispatchExtensions))]
-		public void CanRaiseEvents(MethodInfo helper)
+		var expected = new FocusEventArgs()
 		{
-			var expected = new FocusEventArgs()
-			{
-				Type = "SOME TYPE",
-			};
+			Type = "SOME TYPE",
+		};
 
-			VerifyEventRaisesCorrectly(helper, expected);
-		}
+		VerifyEventRaisesCorrectly(helper, expected);
 	}
 }

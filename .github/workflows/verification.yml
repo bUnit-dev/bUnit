@@ -65,7 +65,6 @@ jobs:
         run: |
           dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
           dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
-          dotnet test ./tests/bunit.web.mock.tests/bunit.web.mock.tests.csproj -c release --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
           dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
 
       - name: 🗳️ Pack library

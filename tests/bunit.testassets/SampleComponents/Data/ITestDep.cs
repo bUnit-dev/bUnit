@@ -1,7 +1,6 @@
-namespace Bunit.TestAssets.SampleComponents.Data
+namespace Bunit.TestAssets.SampleComponents.Data;
+
+public interface ITestDep
 {
-	public interface ITestDep
-	{
-		string Name { get; }
-	}
+	string Name { get; }
 }

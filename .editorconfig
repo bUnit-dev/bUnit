@@ -229,6 +229,7 @@ csharp_space_between_square_brackets = false
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-formatting-conventions#wrap-options
 csharp_preserve_single_line_statements = false
 csharp_preserve_single_line_blocks = true
+csharp_style_namespace_declarations = file_scoped:warning
 
 ##########################################
 # .NET Naming Conventions

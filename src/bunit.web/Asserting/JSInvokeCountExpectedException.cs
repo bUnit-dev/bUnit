@@ -1,73 +1,71 @@
-using System;
-using System.Runtime.Serialization;
+namespace Bunit;
 
-namespace Bunit
+/// <summary>
+/// Represents a number of unexpected invocation to a <see cref="BunitJSInterop"/>.
+/// </summary>
+[Serializable]
+public sealed class JSInvokeCountExpectedException : Exception
 {
 	/// <summary>
-	/// Represents a number of unexpected invocation to a <see cref="BunitJSInterop"/>.
+	/// Gets the expected invocation count.
 	/// </summary>
-	[Serializable]
-	public sealed class JSInvokeCountExpectedException : Exception
+	public int ExpectedInvocationCount { get; }
+
+	/// <summary>
+	/// Gets the actual invocation count.
+	/// </summary>
+	public int ActualInvocationCount { get; }
+
+	/// <summary>
+	/// Gets the identifier.
+	/// </summary>
+	public string Identifier { get; }
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="JSInvokeCountExpectedException"/> class.
+	/// </summary>
+	public JSInvokeCountExpectedException(string identifier, int expectedCount, int actualCount, string assertMethod, string? userMessage = null)
+		: base(CreateMessage(identifier, expectedCount, actualCount, assertMethod, userMessage))
 	{
-		/// <summary>
-		/// Gets the expected invocation count.
-		/// </summary>
-		public int ExpectedInvocationCount { get; }
+		ExpectedInvocationCount = expectedCount;
+		ActualInvocationCount = actualCount;
+		Identifier = identifier;
+	}
 
-		/// <summary>
-		/// Gets the actual invocation count.
-		/// </summary>
-		public int ActualInvocationCount { get; }
+	private JSInvokeCountExpectedException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+		: base(serializationInfo, streamingContext)
+	{
+		if (serializationInfo is null)
+			throw new ArgumentNullException(nameof(serializationInfo));
+		ExpectedInvocationCount = serializationInfo.GetInt32(nameof(ExpectedInvocationCount));
+		ActualInvocationCount = serializationInfo.GetInt32(nameof(ActualInvocationCount));
+		Identifier = serializationInfo.GetString(nameof(Identifier)) ?? string.Empty;
+	}
 
-		/// <summary>
-		/// Gets the identifier.
-		/// </summary>
-		public string Identifier { get; }
+	/// <inheritdoc/>
+	public override void GetObjectData(SerializationInfo info, StreamingContext context)
+	{
+		if (info is null)
+			throw new ArgumentNullException(nameof(info));
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="JSInvokeCountExpectedException"/> class.
-		/// </summary>
-		public JSInvokeCountExpectedException(string identifier, int expectedCount, int actualCount, string assertMethod, string? userMessage = null)
-			: base(CreateMessage(identifier, expectedCount, actualCount, assertMethod, userMessage))
-		{
-			ExpectedInvocationCount = expectedCount;
-			ActualInvocationCount = actualCount;
-			Identifier = identifier;
-		}
+		info.AddValue(nameof(ExpectedInvocationCount), ExpectedInvocationCount);
+		info.AddValue(nameof(ActualInvocationCount), ActualInvocationCount);
+		info.AddValue(nameof(Identifier), Identifier);
+		base.GetObjectData(info, context);
+	}
 
-		private JSInvokeCountExpectedException(SerializationInfo serializationInfo, StreamingContext streamingContext)
-			: base(serializationInfo, streamingContext)
-		{
-			if (serializationInfo is null) throw new ArgumentNullException(nameof(serializationInfo));
-			ExpectedInvocationCount = serializationInfo.GetInt32(nameof(ExpectedInvocationCount));
-			ActualInvocationCount = serializationInfo.GetInt32(nameof(ActualInvocationCount));
-			Identifier = serializationInfo.GetString(nameof(Identifier)) ?? string.Empty;
-		}
+	private static string CreateMessage(string identifier, int expectedCount, int actualCount, string assertMethod, string? userMessage = null)
+	{
+		var result = $"{assertMethod} failed: ";
+		result += userMessage is null
+				? $"\"{identifier}\" was not called the expected number of times."
+				: userMessage;
 
-		/// <inheritdoc/>
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			if (info is null) throw new ArgumentNullException(nameof(info));
+		result += Environment.NewLine;
+		result += Environment.NewLine;
+		result += $"Expected number of calls: {expectedCount}{Environment.NewLine}";
+		result += $"Actual number of calls:   {actualCount}{Environment.NewLine}";
 
-			info.AddValue(nameof(ExpectedInvocationCount), ExpectedInvocationCount);
-			info.AddValue(nameof(ActualInvocationCount), ActualInvocationCount);
-			info.AddValue(nameof(Identifier), Identifier);
-			base.GetObjectData(info, context);
-		}
-
-		private static string CreateMessage(string identifier, int expectedCount, int actualCount, string assertMethod, string? userMessage = null)
-		{
-			var result = $"{assertMethod} failed: ";
-			result += userMessage is null
-					? $"\"{identifier}\" was not called the expected number of times."
-					: userMessage;
-
-			result += Environment.NewLine;
-			result += Environment.NewLine;
-			result += $"Expected number of calls: {expectedCount}{Environment.NewLine}";
-			result += $"Actual number of calls:   {actualCount}{Environment.NewLine}";
-
-			return result;
-		}
+		return result;
 	}
 }
