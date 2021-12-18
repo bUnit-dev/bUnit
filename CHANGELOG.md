@@ -6,18 +6,20 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.4.15] - 2021-12-18
+
 This release reintroduces `Stub<TComponent>` and related back into the main library, so the "preview" library `bunit.web.mock` is already obsolete. 
 
 ### Added
 
-- Add `ComponentFactories` extensions method that makes it easy to register an instance of a replacement component. By [@egil](https://github.com/egil).
-- Add ability to pass `ServiceProviderOptions` to `TestServiceProvider` through property to allow users to customize the service provider. By [@rodolfograve](https://github.com/rodolfograve).
+-   Add `ComponentFactories` extensions method that makes it easy to register an instance of a replacement component. By [@egil](https://github.com/egil).
+-   Add ability to pass `ServiceProviderOptions` to `TestServiceProvider` through property to allow users to customize the service provider. By [@rodolfograve](https://github.com/rodolfograve).
 
 ### Fixed
 
-- Changed `SetParametersAndRender` such that it rethrows any exceptions thrown by the component under tests `SetParametersAsync` method. Thanks to [@bonsall](https://github.com/bonsall) for reporting the issue. Fixed by [@egil](https://github.com/egil).
-- `onclick` on a button inside a form will raise the `onsubmit` event for the form itself. Reported by [@egil]. Fixed by [@linkdotnet](https://github.com/linkdotnet).
-- Only forms are allowed to have a `onsubmit` event handler. When `onsubmit` is invoked from a non-form element results in an exception. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+-   Changed `SetParametersAndRender` such that it rethrows any exceptions thrown by the component under tests `SetParametersAsync` method. Thanks to [@bonsall](https://github.com/bonsall) for reporting the issue. Fixed by [@egil](https://github.com/egil).
+-   `onclick` on a button inside a form will raise the `onsubmit` event for the form itself. Reported by [@egil]. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+-   Only forms are allowed to have a `onsubmit` event handler. When `onsubmit` is invoked from a non-form element results in an exception. Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.3.42] - 2021-11-09
 
@@ -42,7 +44,7 @@ Big shout out to **bUnit's sponsors** who helped make this release happen.
 
 List of added functionality in this release.
 
-- Added support for writing tests of components that use the `<FocusOnNavigate>` component included in .NET 6. This includes an assertion helper method `VerifyFocusOnNavigateInvoke` on bUnit's `JSInterop` that allow you to verify that `<FocusOnNavigate>` has set focus on an element during render. For example, to verify that `h1` selector was used to pick an element to focus on, do:  
+-   Added support for writing tests of components that use the `<FocusOnNavigate>` component included in .NET 6. This includes an assertion helper method `VerifyFocusOnNavigateInvoke` on bUnit's `JSInterop` that allow you to verify that `<FocusOnNavigate>` has set focus on an element during render. For example, to verify that `h1` selector was used to pick an element to focus on, do:  
 
     ```csharp
     // <App /> component uses <FocusOnNavigate>
@@ -55,21 +57,21 @@ List of added functionality in this release.
     Assert.Equal("h1", invocation.Arguments[0]);
     ```
 
-    By [@egil](https://github.com/egil).
+      By [@egil](https://github.com/egil).
 
-- Added fake version of the `PersistentComponentState` type in Blazor that makes it possible to test components that use the type. By [@egil](https://github.com/egil).
+-   Added fake version of the `PersistentComponentState` type in Blazor that makes it possible to test components that use the type. By [@egil](https://github.com/egil).
 
-- Added `TriggerEvent` method to make it easier to trigger custom events. By [@egil](https://github.com/egil).
+-   Added `TriggerEvent` method to make it easier to trigger custom events. By [@egil](https://github.com/egil).
 
-- Added `History` capture in the `FakeNavigationManager`. By [@egil](https://github.com/egil).
+-   Added `History` capture in the `FakeNavigationManager`. By [@egil](https://github.com/egil).
 
-- Added new bUnit component mocking library, available via NuGet as `bunit.web.mock`. It is currently in preview and the features/APIs of it will change!
+-   Added new bUnit component mocking library, available via NuGet as `bunit.web.mock`. It is currently in preview and the features/APIs of it will change!
 
-- Added `WaitForElement` and `WaitForElements` methods. These makes it possible to wait for one or more elements to appear in the DOM before continuing a test, similar to how `WaitForAssertion` allows you to wait for an assertion to pass, or `WaitForState` allows you to wait for a predicate to pass. By [@egil](https://github.com/egil).
+-   Added `WaitForElement` and `WaitForElements` methods. These makes it possible to wait for one or more elements to appear in the DOM before continuing a test, similar to how `WaitForAssertion` allows you to wait for an assertion to pass, or `WaitForState` allows you to wait for a predicate to pass. By [@egil](https://github.com/egil).
 
 ### Changed
 
-- Added automatic conversion of values (types) passed to `Change()` and `Input()` event trigger methods. This means that e.g. a `DateTime` passed to `Change()` is automatically converted to a string format that Blazor expects. By [@egil](https://github.com/egil).
+-   Added automatic conversion of values (types) passed to `Change()` and `Input()` event trigger methods. This means that e.g. a `DateTime` passed to `Change()` is automatically converted to a string format that Blazor expects. By [@egil](https://github.com/egil).
 
 ### Fixed
 
@@ -1065,7 +1067,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**  
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.3.42...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.4.15...HEAD
+
+[1.4.15]: https://github.com/bUnit-dev/bUnit/compare/v1.3.42...v1.4.15
 
 [1.3.42]: https://github.com/bUnit-dev/bUnit/compare/v1.2.49...v1.3.42
 
