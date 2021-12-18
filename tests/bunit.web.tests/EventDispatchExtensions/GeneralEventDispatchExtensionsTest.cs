@@ -90,7 +90,6 @@ namespace Bunit
 		[InlineData("onprogress")]
 		[InlineData("onreset")]
 		[InlineData("onscroll")]
-		[InlineData("onsubmit")]
 		[InlineData("onunload")]
 		[InlineData("ontoggle")]
 		[InlineData("onDOMNodeInsertedIntoDocument")]
@@ -231,6 +230,36 @@ namespace Bunit
 
 			Should.Throw<Exception>(() => cut.Find("button").Click())
 				.Message.ShouldBe(exceptionMessage);
+		}
+
+		[Fact(DisplayName = "Should handle click event first and submit form afterwards for button")]
+		public void Test304()
+		{
+			var cut = RenderComponent<SubmitFormOnClick>();
+
+			cut.Find("button").Click();
+
+			cut.Instance.FormSubmitted.ShouldBeTrue();
+			cut.Instance.Clicked.ShouldBeTrue();
+		}
+
+		[Fact(DisplayName = "Should handle click event first and submit form afterwards for input when type button")]
+		public void Test305()
+		{
+			var cut = RenderComponent<SubmitFormOnClick>();
+
+			cut.Find("#inside-form-input").Click();
+
+			cut.Instance.FormSubmitted.ShouldBeTrue();
+			cut.Instance.Clicked.ShouldBeTrue();
+		}
+
+		[Fact(DisplayName = "Should throw exception when invoking onsubmit from non form")]
+		public void Test306()
+		{
+			var cut = RenderComponent<OnsubmitButton>();
+
+			Should.Throw<InvalidOperationException>(() => cut.Find("button").Submit());
 		}
 	}
 }

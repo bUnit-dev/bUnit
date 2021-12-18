@@ -45,16 +45,45 @@ public static class TriggerEventDispatchExtensions
 
 		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
 
+		var unwrappedElement = element.Unwrap();
 		if (isNonBubblingEvent)
-			return TriggerNonBubblingEventAsync(renderer, element.Unwrap(), eventName, eventArgs);
+			return TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
 
-		return TriggerBubblingEventAsync(renderer, element.Unwrap(), eventName, eventArgs);
+		return unwrappedElement switch
+		{
+			IHtmlInputElement { Type: "submit", Form: not null } input when eventName is "onclick" =>
+				TriggerFormSubmitBubblingEventAsync(renderer, input, eventArgs, input.Form),
+			IHtmlButtonElement { Type: "submit", Form: not null } button when eventName is "onclick" =>
+				TriggerFormSubmitBubblingEventAsync(renderer, button, eventArgs, button.Form),
+			_ => TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs)
+		};
+	}
+
+	private static Task TriggerFormSubmitBubblingEventAsync(ITestRenderer renderer, IElement element, EventArgs eventArgs, IHtmlFormElement form)
+	{
+		var events = GetDispatchEventTasks(renderer, element, "onclick", eventArgs);
+		events = events.Concat(GetDispatchEventTasks(renderer, form, "onsubmit", eventArgs)).ToList();
+
+		if (events.Count == 0)
+			throw new MissingEventHandlerException(element, "onclick");
+
+		return Task.WhenAll(events);
 	}
 
 	private static Task TriggerBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
+		var eventTasks = GetDispatchEventTasks(renderer, element, eventName, eventArgs);
+
+		if (eventTasks.Count == 0)
+			throw new MissingEventHandlerException(element, eventName);
+
+		return Task.WhenAll(eventTasks);
+	}
+
+	private static List<Task> GetDispatchEventTasks(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
+	{
 		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
-		var eventStopPropergationAttrName = $"{eventAttrName}:stoppropagation";
+		var eventStopPropagationAttrName = $"{eventAttrName}:stoppropagation";
 		var eventTasks = new List<Task>();
 
 		foreach (var candidate in element.GetParentsAndSelf())
@@ -73,21 +102,21 @@ public static class TriggerEventDispatchExtensions
 				}
 			}
 
-			if (candidate.HasAttribute(eventStopPropergationAttrName) || candidate.EventIsDisabled(eventName))
+			if (candidate.HasAttribute(eventStopPropagationAttrName) || candidate.EventIsDisabled(eventName))
 			{
 				break;
 			}
 		}
 
-		if (eventTasks.Count == 0)
-			throw new MissingEventHandlerException(element, eventName);
-
-		return Task.WhenAll(eventTasks);
+		return eventTasks;
 	}
 
 	private static Task TriggerNonBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
+
+		if (string.Equals(eventName, "onsubmit", StringComparison.Ordinal) && element is not IHtmlFormElement)
+			throw new InvalidOperationException("Only forms can have a onsubmit event");
 
 		if (element.TryGetEventId(eventAttrName, out var id))
 			return renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs);
