@@ -2,9 +2,10 @@ namespace Bunit
 {
 	public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<ChangeEventArgs>
 	{
-		private static readonly string[] ExcludedMethodsFromGenericTests = new[] { "Change", "Input" };
-		public static IEnumerable<object[]> Helpers { get; }
-			= GetEventHelperMethods(typeof(InputEventDispatchExtensions), x => !ExcludedMethodsFromGenericTests.Contains(x.Name));
+		private static readonly string[] ExcludedMethodsFromGenericTests = new[] { "Change", "Input", "Submit" };
+        public static IEnumerable<object[]> Helpers { get; }
+        	= GetEventHelperMethods(typeof(InputEventDispatchExtensions), x => !ExcludedMethodsFromGenericTests
+        	.Contains(x.Name.Replace("Async", string.Empty, StringComparison.Ordinal)));
 
 		private static readonly Fixture Fixture = new();
 
