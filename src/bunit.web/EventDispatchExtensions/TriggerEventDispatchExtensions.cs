@@ -59,10 +59,8 @@ public static class TriggerEventDispatchExtensions
 		};
 	}
 
-	private static Task TriggerFormSubmitBubblingEventAsync(ITestRenderer renderer, IElement element, EventArgs
-	eventArgs, IHtmlFormElement form)
+	private static Task TriggerFormSubmitBubblingEventAsync(ITestRenderer renderer, IElement element, EventArgs eventArgs, IHtmlFormElement form)
 	{
-
 		var events = GetDispatchEventTasks(renderer, element, "onclick", eventArgs);
 		events = events.Concat(GetDispatchEventTasks(renderer, form, "onsubmit", eventArgs)).ToList();
 
