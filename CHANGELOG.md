@@ -16,6 +16,8 @@ This release reintroduces `Stub<TComponent>` and related back into the main libr
 ### Fixed
 
 - Changed `SetParametersAndRender` such that it rethrows any exceptions thrown by the component under tests `SetParametersAsync` method. Thanks to [@bonsall](https://github.com/bonsall) for reporting the issue. Fixed by [@egil](https://github.com/egil).
+- `onclick` on a button inside a form will raise the `onsubmit` event for the form itself. Reported by [@egil]. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+- Only forms are allowed to have a `onsubmit` event handler. When `onsubmit` is invoked from a non-form element results in an exception. Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.3.42] - 2021-11-09
 
