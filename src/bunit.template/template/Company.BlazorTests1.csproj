@@ -10,6 +10,7 @@
 		<Using Include="Bunit" />
 		<Using Include="Bunit.TestDoubles" />
 		<Using Include="Xunit" />
+		<Using Include="Microsoft.Extensions.DependencyInjection" />
 	</ItemGroup>
 
 	<ItemGroup>
