@@ -52,7 +52,6 @@ internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRendere
 
 	private bool TryFindComponent(RenderTreeFrameDictionary framesCollection, int parentComponentId, out int componentId, out TComponent component)
 	{
-		var result = false;
 		componentId = -1;
 		component = default!;
 
@@ -67,18 +66,16 @@ internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRendere
 				{
 					componentId = frame.ComponentId;
 					component = c;
-					result = true;
-					break;
+					return true;
 				}
 
 				if (TryFindComponent(framesCollection, frame.ComponentId, out componentId, out component))
 				{
-					result = true;
-					break;
+					return true;
 				}
 			}
 		}
 
-		return result;
+		return false;
 	}
 }
