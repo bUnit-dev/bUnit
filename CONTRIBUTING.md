@@ -15,7 +15,8 @@ bUnit accepts fixes and features. Here is what you should do when writing code f
 
 - Follow the coding conventions used throughout the bUnit project. In general, they align with the AspNetCore teams [coding guidelines](https://github.com/dotnet/aspnetcore/wiki/Engineering-guidelines#coding-guidelines).
 - Add, remove, or delete unit tests to cover your changes. Make sure tests are specific to the changes you are making. Tests need to be provided for every bug/feature that is completed.
-- This repository follow the truck-based development approach, meaning changes should be based on the `main` branch
+- This repository follow the truck-based development approach, meaning changes should be based on the `main` branch.
+- Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) style commit messages.
 - Any code or documentation you share with the bUnit projects should fall under the projects license agreement.
 
 Here are some resources to help you get started on how to contribute code or new content:
