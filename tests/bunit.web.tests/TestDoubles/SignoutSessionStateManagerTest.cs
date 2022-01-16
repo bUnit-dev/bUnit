@@ -1,9 +1,9 @@
 ﻿namespace Bunit.TestDoubles;
 
-public class TEstTest : TestContext
+public class SignoutSessionStateManagerTest : TestContext
 {
 	[Fact]
-	public void ShouldDo()
+	public void ShouldSignOut()
 	{
 		this.AddTestAuthorization().SetAuthorized("egil");
 		var cut = RenderComponent<SignOutSessionManagerLoginDisplay>();
