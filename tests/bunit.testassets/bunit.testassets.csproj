@@ -17,12 +17,15 @@
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet3Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet3Version)" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet5Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet53Version)" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet6Version)" />
 	</ItemGroup>
 
 	<!-- https://github.com/dotnet/sdk/issues/18148#issuecomment-860957180 from @elion -->
