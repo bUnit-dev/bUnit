@@ -12,9 +12,8 @@ public class FakeSignOutSessionStateManager : SignOutSessionStateManager
 	/// <summary>
 	/// Initializes a new instance of <see cref="FakeSignOutSessionStateManager"/>
 	/// </summary>
-	public FakeSignOutSessionStateManager(IJSRuntime jsRuntime, BunitJSInterop jsInterop) : base(jsRuntime)
+	public FakeSignOutSessionStateManager(BunitJSInterop jsInterop) : base(jsInterop?.JSRuntime)
 	{
-		_ = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
 		this.jsInterop = jsInterop ?? throw new ArgumentNullException(nameof(jsInterop));
 		InitializeInvocations();
 	}
@@ -33,10 +32,6 @@ public class FakeSignOutSessionStateManager : SignOutSessionStateManager
 
 	private void InitializeInvocations()
 	{
-		jsInterop.SetupVoid(
-			"sessionStorage.setItem",
-			inv => Equals(inv.Arguments.FirstOrDefault(),
-				"Microsoft.AspNetCore.Components.WebAssembly.Authentication.SignOutState")
-		).SetVoidResult();
+		jsInterop.SetupVoid("sessionStorage.setItem", "Microsoft.AspNetCore.Components.WebAssembly.Authentication.SignOutState", "{\"local\":true}").SetVoidResult();
 	}
 }
