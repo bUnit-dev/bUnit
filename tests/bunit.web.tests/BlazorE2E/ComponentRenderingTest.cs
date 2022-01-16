@@ -587,4 +587,15 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal(2, completeLIs.Count);
 		Assert.True(completeLIs[0].QuerySelector(".item-isdone").HasAttribute("checked"));
 	}
+
+	[Fact]
+	public void CanHandleRemovedParentObjects()
+	{
+		var cut = RenderComponent<DispatcherException>();
+
+		cut.Find("[aria-label='Second']").Click();
+
+		cut.WaitForState(() => cut.FindAll("[aria-label='First']").Count == 1);
+		cut.FindAll("[aria-label='First']").Count.ShouldBe(1);
+	}
 }

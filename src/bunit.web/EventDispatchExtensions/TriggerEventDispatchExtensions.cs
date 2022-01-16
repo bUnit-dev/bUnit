@@ -97,6 +97,7 @@ public static class TriggerEventDispatchExtensions
 				}
 				catch (UnknownEventHandlerIdException) when (eventTasks.Count > 0)
 				{
+					renderer.ResetUnhandledExceptionState();
 					// Capture and ignore NoEventHandlerException for bubbling events
 					// if at least one event handler has been triggered without throwing.
 				}

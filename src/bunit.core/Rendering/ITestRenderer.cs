@@ -56,4 +56,9 @@ public interface ITestRenderer
 	/// <param name="parentComponent">Parent component to search.</param>
 	IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
 		where TComponent : IComponent;
+
+	/// <summary>
+	/// Resets all unhandled exceptions
+	/// </summary>
+	void ResetUnhandledExceptionState();
 }

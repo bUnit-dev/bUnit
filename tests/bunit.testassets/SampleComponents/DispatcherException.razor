@@ -1,0 +1,23 @@
+﻿<table>
+	<tbody>
+	@foreach (var item in entryList)
+	{
+		<tr>
+			<td @onclick="() => { }">
+				<button aria-label="@item" @onclick="() => DeleteButton(item)">@item</button>
+			</td>
+		</tr>
+	}
+	</tbody>
+</table>
+@code {
+	private readonly List<string> entryList = new()
+	{
+		"First", "Second"
+	};
+
+	private void DeleteButton(string toRemove)
+	{
+		entryList.Remove(toRemove);
+	}
+}

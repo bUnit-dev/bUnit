@@ -105,6 +105,9 @@ public class TestRenderer : Renderer, ITestRenderer
 		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
 
 	/// <inheritdoc/>
+	public void ResetUnhandledExceptionState() => unhandledExceptionTsc = new TaskCompletionSource<Exception>();
+
+	/// <inheritdoc/>
 	protected override void ProcessPendingRender()
 	{
 		// the lock is in place to avoid a race condition between
