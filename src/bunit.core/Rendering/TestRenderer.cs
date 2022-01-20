@@ -59,7 +59,11 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	public Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs, bool ignoreUnknownEventHandlers)
+	public Task DispatchEventAsync(
+		ulong eventHandlerId,
+		EventFieldInfo fieldInfo,
+		EventArgs eventArgs,
+		bool ignoreUnknownEventHandlers = false)
 	{
 		if (fieldInfo is null)
 			throw new ArgumentNullException(nameof(fieldInfo));

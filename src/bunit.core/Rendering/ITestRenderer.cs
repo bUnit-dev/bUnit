@@ -24,7 +24,11 @@ public interface ITestRenderer
 	/// <param name="eventArgs">Arguments to be passed to the event handler.</param>
 	/// <param name="ignoreUnknownEventHandlers">If set to true the method ignores <see cref="UnknownEventHandlerIdException"/> when at least one event of this type was dispatched</param>
 	/// <returns>A <see cref="Task"/> which will complete once all asynchronous processing related to the event has completed.</returns>
-	Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs, bool ignoreUnknownEventHandlers);
+	Task DispatchEventAsync(
+		ulong eventHandlerId,
+		EventFieldInfo fieldInfo,
+		EventArgs eventArgs,
+		bool ignoreUnknownEventHandlers = false);
 
 	/// <summary>
 	/// Renders the <paramref name="renderFragment"/>.
