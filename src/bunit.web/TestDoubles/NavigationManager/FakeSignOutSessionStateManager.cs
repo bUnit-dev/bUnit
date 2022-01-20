@@ -7,31 +7,25 @@ namespace Bunit.TestDoubles;
 /// </summary>
 public class FakeSignOutSessionStateManager : SignOutSessionStateManager
 {
-	private readonly BunitJSInterop jsInterop;
+	/// <summary>
+	/// Returns true when <see cref="SetSignOutState"/> was called, otherwise false
+	/// </summary>
+	public bool IsSignedOut { get; set; }
 
 	/// <summary>
 	/// Initializes a new instance of <see cref="FakeSignOutSessionStateManager"/>
 	/// </summary>
-	public FakeSignOutSessionStateManager(BunitJSInterop jsInterop) : base(jsInterop?.JSRuntime)
+	public FakeSignOutSessionStateManager(IJSRuntime jsRuntime) : base(jsRuntime)
 	{
-		this.jsInterop = jsInterop ?? throw new ArgumentNullException(nameof(jsInterop));
-		InitializeInvocations();
 	}
 
-	/// <summary>
-	/// Returns true when the user was signed out otherwise false
-	/// </summary>
-	public bool SignOutStateWasCalled =>
-		jsInterop.Invocations.Any(i =>
-			WasSessionStorageCalled(i) &&
-			WasSignOutStateSet(i));
-
-	private static bool WasSignOutStateSet(JSRuntimeInvocation i) => i.Arguments.Any(a => string.Equals(a?.ToString(), "Microsoft.AspNetCore.Components.WebAssembly.Authentication.SignOutState", StringComparison.Ordinal));
-
-	private static bool WasSessionStorageCalled(JSRuntimeInvocation invocation) => string.Equals(invocation.Identifier, "sessionStorage.setItem", StringComparison.Ordinal);
-
-	private void InitializeInvocations()
+	/// <inheritdoc />
+	public override ValueTask SetSignOutState()
 	{
-		jsInterop.SetupVoid("sessionStorage.setItem", "Microsoft.AspNetCore.Components.WebAssembly.Authentication.SignOutState", "{\"local\":true}").SetVoidResult();
+		IsSignedOut = true;
+		return new ValueTask();
 	}
+
+	/// <inheritdoc />
+	public override Task<bool> ValidateSignOutState() => Task.FromResult(IsSignedOut);
 }

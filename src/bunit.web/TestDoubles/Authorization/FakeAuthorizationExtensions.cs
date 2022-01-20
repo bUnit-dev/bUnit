@@ -20,7 +20,7 @@ public static class FakeAuthorizationExtensions
 			throw new ArgumentNullException(nameof(context));
 
 		context.RenderTree.TryAdd<CascadingAuthenticationState>();
-		context.Services.AddSingleton(_ => new FakeSignOutSessionStateManager(new BunitJSInterop()));
+		context.Services.AddSingleton<FakeSignOutSessionStateManager>();
 		context.Services.AddSingleton<SignOutSessionStateManager>(s => s.GetRequiredService<FakeSignOutSessionStateManager>());
 		var authCtx = new TestAuthorizationContext();
 		authCtx.SetNotAuthorized();
