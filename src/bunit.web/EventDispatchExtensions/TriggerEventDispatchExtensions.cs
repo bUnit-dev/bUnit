@@ -80,7 +80,8 @@ public static class TriggerEventDispatchExtensions
 		return Task.WhenAll(eventTasks);
 	}
 
-	private static List<Task> GetDispatchEventTasks(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
+	private static List<Task> GetDispatchEventTasks(ITestRenderer renderer, IElement element, string eventName,
+	EventArgs eventArgs)
 	{
 		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
 		var eventStopPropagationAttrName = $"{eventAttrName}:stoppropagation";
@@ -90,17 +91,8 @@ public static class TriggerEventDispatchExtensions
 		{
 			if (candidate.TryGetEventId(eventAttrName, out var id))
 			{
-				try
-				{
-					var info = new EventFieldInfo() { FieldValue = eventName };
-					eventTasks.Add(renderer.DispatchEventAsync(id, info, eventArgs));
-				}
-				catch (UnknownEventHandlerIdException) when (eventTasks.Count > 0)
-				{
-					renderer.ResetUnhandledExceptionState();
-					// Capture and ignore NoEventHandlerException for bubbling events
-					// if at least one event handler has been triggered without throwing.
-				}
+				var info = new EventFieldInfo() { FieldValue = eventName };
+				eventTasks.Add(renderer.DispatchEventAsync(id, info, eventArgs, ignoreUnknownEventHandlers: eventTasks.Count > 0));
 			}
 
 			if (candidate.HasAttribute(eventStopPropagationAttrName) || candidate.EventIsDisabled(eventName))
@@ -120,7 +112,7 @@ public static class TriggerEventDispatchExtensions
 			throw new InvalidOperationException("Only forms can have a onsubmit event");
 
 		if (element.TryGetEventId(eventAttrName, out var id))
-			return renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs);
+			return renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs, ignoreUnknownEventHandlers: false);
 
 		throw new MissingEventHandlerException(element, eventName);
 	}

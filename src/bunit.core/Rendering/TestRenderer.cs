@@ -59,12 +59,10 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
+	public Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs, bool ignoreUnknownEventHandlers)
 	{
 		if (fieldInfo is null)
 			throw new ArgumentNullException(nameof(fieldInfo));
-
-		ResetUnhandledException();
 
 		var result = Dispatcher.InvokeAsync(() =>
 		{
@@ -79,9 +77,11 @@ public class TestRenderer : Renderer, ITestRenderer
 			}
 		});
 
-		if (result.IsFaulted && result.Exception is not null)
+		var hasExceptions = result.IsFaulted && result.Exception is not null;
+		var hasUnhandledExceptions = hasExceptions && !ignoreUnknownEventHandlers && result.Exception!.InnerException is UnknownEventHandlerIdException;
+		if (hasUnhandledExceptions)
 		{
-			HandleException(result.Exception);
+			HandleException(result.Exception!);
 		}
 
 		AssertNoUnhandledExceptions();
@@ -103,9 +103,6 @@ public class TestRenderer : Renderer, ITestRenderer
 	public IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
 		where TComponent : IComponent
 		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
-
-	/// <inheritdoc/>
-	public void ResetUnhandledExceptionState() => unhandledExceptionTsc = new TaskCompletionSource<Exception>();
 
 	/// <inheritdoc/>
 	protected override void ProcessPendingRender()
