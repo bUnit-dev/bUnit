@@ -593,9 +593,9 @@ public class ComponentRenderingTest : TestContext
 	{
 		var cut = RenderComponent<DispatcherException>();
 
-		cut.Find("[aria-label='Second']").Click();
+		cut.Find("button").Click();
 
-		cut.WaitForState(() => cut.FindAll("[aria-label='First']").Count == 1);
-		cut.FindAll("[aria-label='First']").Count.ShouldBe(1);
+		cut.WaitForState(() => !cut.FindAll("div").Any());
+		cut.FindAll("div").Count.ShouldBe(0);
 	}
 }

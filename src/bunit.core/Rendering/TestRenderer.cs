@@ -59,11 +59,17 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
+	public new Task DispatchEventAsync(
+		ulong eventHandlerId,
+		EventFieldInfo fieldInfo,
+		EventArgs eventArgs) => DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
+
+	/// <inheritdoc/>
 	public Task DispatchEventAsync(
 		ulong eventHandlerId,
 		EventFieldInfo fieldInfo,
 		EventArgs eventArgs,
-		bool ignoreUnknownEventHandlers = false)
+		bool ignoreUnknownEventHandlers)
 	{
 		if (fieldInfo is null)
 			throw new ArgumentNullException(nameof(fieldInfo));
@@ -81,11 +87,9 @@ public class TestRenderer : Renderer, ITestRenderer
 			}
 		});
 
-		var hasExceptions = result.IsFaulted && result.Exception is not null;
-		var hasUnhandledExceptions = hasExceptions && !ignoreUnknownEventHandlers && result.Exception!.InnerException is UnknownEventHandlerIdException;
-		if (hasUnhandledExceptions)
+		if (result.IsFaulted && result.Exception is not null && !ignoreUnknownEventHandlers && result.Exception.InnerException is UnknownEventHandlerIdException)
 		{
-			HandleException(result.Exception!);
+			HandleException(result.Exception);
 		}
 
 		AssertNoUnhandledExceptions();

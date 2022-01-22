@@ -80,8 +80,11 @@ public static class TriggerEventDispatchExtensions
 		return Task.WhenAll(eventTasks);
 	}
 
-	private static List<Task> GetDispatchEventTasks(ITestRenderer renderer, IElement element, string eventName,
-	EventArgs eventArgs)
+	private static List<Task> GetDispatchEventTasks(
+		ITestRenderer renderer,
+		IElement element,
+		string eventName,
+		EventArgs eventArgs)
 	{
 		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
 		var eventStopPropagationAttrName = $"{eventAttrName}:stoppropagation";
@@ -112,7 +115,7 @@ public static class TriggerEventDispatchExtensions
 			throw new InvalidOperationException("Only forms can have a onsubmit event");
 
 		if (element.TryGetEventId(eventAttrName, out var id))
-			return renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs, ignoreUnknownEventHandlers: false);
+			return renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs);
 
 		throw new MissingEventHandlerException(element, eventName);
 	}

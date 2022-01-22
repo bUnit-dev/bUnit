@@ -22,13 +22,25 @@ public interface ITestRenderer
 	/// <param name="eventHandlerId">The <see cref="RenderTreeFrame.AttributeEventHandlerId"/> value from the original event attribute.</param>
 	/// <param name="fieldInfo">Information that the renderer can use to update the state of the existing render tree to match the UI.</param>
 	/// <param name="eventArgs">Arguments to be passed to the event handler.</param>
+	/// <returns>A <see cref="Task"/> which will complete once all asynchronous processing related to the event has completed.</returns>
+	Task DispatchEventAsync(
+		ulong eventHandlerId,
+		EventFieldInfo fieldInfo,
+		EventArgs eventArgs);
+
+	/// <summary>
+	/// Notifies the renderer that an event has occurred.
+	/// </summary>
+	/// <param name="eventHandlerId">The <see cref="RenderTreeFrame.AttributeEventHandlerId"/> value from the original event attribute.</param>
+	/// <param name="fieldInfo">Information that the renderer can use to update the state of the existing render tree to match the UI.</param>
+	/// <param name="eventArgs">Arguments to be passed to the event handler.</param>
 	/// <param name="ignoreUnknownEventHandlers">If set to true the method ignores <see cref="UnknownEventHandlerIdException"/> when at least one event of this type was dispatched</param>
 	/// <returns>A <see cref="Task"/> which will complete once all asynchronous processing related to the event has completed.</returns>
 	Task DispatchEventAsync(
 		ulong eventHandlerId,
 		EventFieldInfo fieldInfo,
 		EventArgs eventArgs,
-		bool ignoreUnknownEventHandlers = false);
+		bool ignoreUnknownEventHandlers);
 
 	/// <summary>
 	/// Renders the <paramref name="renderFragment"/>.
