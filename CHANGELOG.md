@@ -5,6 +5,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
 ## [Unreleased]
+-   Changed `GetDispatchEventTasks` for bubbling events such that handled exceptions are not rethrown later from WaitFor-Helpers.Reported by [@AndrewStrickland](https://github.com/AndrewStrickland). Fixed by [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet)
 
 ## [1.4.15] - 2021-12-18
 
