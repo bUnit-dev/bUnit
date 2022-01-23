@@ -3,7 +3,8 @@
 namespace Bunit.TestDoubles;
 
 /// <summary>
-/// Represents a fake <see cref="SignOutSessionStateManager"/> that captures calls to
+/// Represents a fake <see cref="SignOutSessionStateManager"/> that captures calls to <see cref="SetSignOutState"/>
+/// that will help later to assert if the user was logged out
 /// </summary>
 public class FakeSignOutSessionStateManager : SignOutSessionStateManager
 {
