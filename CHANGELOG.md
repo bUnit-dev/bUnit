@@ -6,7 +6,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
--   Added fake version of the `SignOutSessionStateManage` type in Blazor that makes it possible to test components that use the type. By [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
+- Added `FakeSignOutSessionStateManage` type in Blazor, that makes it it easy to test components that use the `SignOutSessionStateManage` type. By [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.4.15] - 2021-12-18
 
