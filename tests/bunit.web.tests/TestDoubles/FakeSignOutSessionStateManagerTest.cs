@@ -5,7 +5,7 @@ public class FakeSignOutSessionStateManagerTest : TestContext
 	[Theory, AutoData]
 	public void ShouldSignOut(string randomUserName)
 	{
-		this.AddTestAuthorization().SetAuthorized( randomUserName);
+		this.AddTestAuthorization().SetAuthorized(randomUserName);
 		var cut = RenderComponent<SignOutSessionManagerLoginDisplay>();
 
 		cut.Find("button").Click();
