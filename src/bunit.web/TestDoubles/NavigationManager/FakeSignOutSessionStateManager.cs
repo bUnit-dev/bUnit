@@ -28,5 +28,10 @@ public class FakeSignOutSessionStateManager : SignOutSessionStateManager
 	}
 
 	/// <inheritdoc />
-	public override Task<bool> ValidateSignOutState() => Task.FromResult(IsSignedOut);
+	public override Task<bool> ValidateSignOutState()
+	{
+		var wasSignedOut = IsSignedOut;
+		IsSignedOut = false;
+		return Task.FromResult(wasSignedOut);
+	}
 }
