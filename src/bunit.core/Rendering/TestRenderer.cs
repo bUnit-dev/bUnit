@@ -87,7 +87,7 @@ public class TestRenderer : Renderer, ITestRenderer
 			}
 		});
 
-		if (result.IsFaulted && result.Exception is not null && !(ignoreUnknownEventHandlers && result.Exception.InnerException is UnknownEventHandlerIdException))
+		if (result.IsFaulted && result.Exception is not null && !ignoreUnknownEventHandlers)
 		{
 			HandleException(result.Exception);
 		}
