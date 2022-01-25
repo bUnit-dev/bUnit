@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace Bunit.TestDoubles;
 
@@ -16,9 +17,11 @@ public static class FakeAuthorizationExtensions
 	public static TestAuthorizationContext AddTestAuthorization(this TestContextBase context)
 	{
 		if (context is null)
-			throw new System.ArgumentNullException(nameof(context));
+			throw new ArgumentNullException(nameof(context));
 
 		context.RenderTree.TryAdd<CascadingAuthenticationState>();
+		context.Services.AddSingleton<FakeSignOutSessionStateManager>();
+		context.Services.AddSingleton<SignOutSessionStateManager>(s => s.GetRequiredService<FakeSignOutSessionStateManager>());
 		var authCtx = new TestAuthorizationContext();
 		authCtx.SetNotAuthorized();
 		authCtx.RegisterAuthorizationServices(context.Services);

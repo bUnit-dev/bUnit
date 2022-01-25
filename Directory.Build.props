@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 	<PropertyGroup Label="Configuration variables">
-		<DotNet3Version>3.1.1</DotNet3Version>
+		<DotNet3Version>3.1.22</DotNet3Version>
 		<DotNet5Version>5.0.0</DotNet5Version>
 		<DotNet6Version>6.0.0</DotNet6Version>
 	</PropertyGroup>
@@ -54,7 +54,7 @@
 	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
 		<Using Include="Microsoft.AspNetCore.Components" />
 		<Using Include="Microsoft.AspNetCore.Components.RenderTree" />
-		<Using Include="Microsoft.AspNetCore.Components.Rendering" />		
+		<Using Include="Microsoft.AspNetCore.Components.Rendering" />
 		<Using Include="Microsoft.Extensions.DependencyInjection" />
 		<Using Include="System.Runtime.Serialization" />
 		<Using Include="System.Diagnostics.CodeAnalysis" />
