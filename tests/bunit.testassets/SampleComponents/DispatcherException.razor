@@ -1,0 +1,9 @@
+﻿@if(show)
+{
+	<div @onclick="() => { }">
+		<button  @onclick="() => show = false">Text</button>
+	</div>
+}
+@code {
+	bool show = true;
+}

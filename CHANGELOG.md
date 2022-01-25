@@ -5,6 +5,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
 ## [Unreleased]
+- Changed `GetDispatchEventTasks` for bubbling events such that handled exceptions are not rethrown later from `WaitFor...` helpers methods. Reported by [@AndrewStrickland](https://github.com/AndrewStrickland). Fixed by [@linkdotnet](https://github.com/linkdotnet)
 
 - Added `FakeSignOutSessionStateManage` type in Blazor, that makes it it easy to test components that use the `SignOutSessionStateManage` type. By [@linkdotnet](https://github.com/linkdotnet).
 
