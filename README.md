@@ -66,6 +66,12 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 
 Shout outs and a big thank you [to all the contributors](https://github.com/bUnit-dev/bUnit/graphs/contributors) to the library, including those that raise issues, provide input to issues, and those who send pull requests. Thank you!
 
+These good people have contributed code or documentation to bUnit:
+
+<a href="https://github.com/bUnit-dev/bUnit/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=bUnit-dev/bUnit" />
+</a>
+
 ## Code of conduct
 
 This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.
