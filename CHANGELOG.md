@@ -9,6 +9,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 - Added `FakeSignOutSessionStateManage` type in Blazor, that makes it it easy to test components that use the `SignOutSessionStateManage` type. By [@linkdotnet](https://github.com/linkdotnet).
 
+- Added more optional arguments for `Click` and `DoubleClick` extensions which were introduced in NET5 and NET6. Reported by [@egil](https://github.com/egil). Implemented by [@linkdotnet](https://github.com/linkdotnet).
 ## [1.4.15] - 2021-12-18
 
 This release reintroduces `Stub<TComponent>` and related back into the main library, so the "preview" library `bunit.web.mock` is already obsolete. 
