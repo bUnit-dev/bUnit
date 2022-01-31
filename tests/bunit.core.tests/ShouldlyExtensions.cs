@@ -2,13 +2,13 @@ namespace Bunit;
 
 public static class ShouldlyExtensions
 {
-	public static void ShouldSatisfyAllConditions<T>(this T actual, params Action<T>[] conditions)
+	public static void ShouldSatisfyAllConditions<TCondition>(this TCondition actual, params Action<TCondition>[] conditions)
 	{
 		var conds = conditions.Select(x => (Action)(() => x.Invoke(actual))).ToArray();
 		ShouldSatisfyAllConditionsTestExtensions.ShouldSatisfyAllConditions(actual, conds);
 	}
 
-	public static void ShouldBeParameter<T>(this ComponentParameter parameter, string? name, [AllowNull] T value, bool isCascadingValue)
+	public static void ShouldBeParameter<TValue>(this ComponentParameter parameter, string? name, [AllowNull] TValue value, bool isCascadingValue)
 	{
 		parameter.ShouldSatisfyAllConditions(
 			x => x.Name.ShouldBe(name),
@@ -16,13 +16,13 @@ public static class ShouldlyExtensions
 			x => x.IsCascadingValue.ShouldBe(isCascadingValue));
 	}
 
-	public static T ShouldBeParameter<T>(this ComponentParameter parameter, string? name, bool isCascadingValue)
+	public static TValue ShouldBeParameter<TValue>(this ComponentParameter parameter, string? name, bool isCascadingValue)
 	{
 		parameter.ShouldSatisfyAllConditions(
 			x => x.Name.ShouldBe(name),
-			x => x.Value.ShouldBeOfType<T>(),
+			x => x.Value.ShouldBeOfType<TValue>(),
 			x => x.Value.ShouldNotBeNull(),
 			x => x.IsCascadingValue.ShouldBe(isCascadingValue));
-		return (T)parameter.Value!;
+		return (TValue)parameter.Value!;
 	}
 }
