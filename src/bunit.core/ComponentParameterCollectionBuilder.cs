@@ -245,6 +245,8 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	{
 		if (!HasChildContentParameter())
 			throw new ArgumentException($"The component '{typeof(TComponent)}' does not have a {ChildContent} [Parameter] attribute.", nameof(childContent));
+		if (HasGenericChildContentParameter())
+			throw new ArgumentException($"Calling AddChildContent on component '{typeof(TComponent)}' with a generic {ChildContent} type is not allowed. Use the 'Add(p => p.ChildContent, p => {{content}})' method.", nameof(childContent));
 
 		return AddParameter(ChildContent, childContent);
 	}
@@ -374,6 +376,10 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	private static bool HasChildContentParameter()
 		=> TComponentType.GetProperty(ChildContent, BindingFlags.Public | BindingFlags.Instance) is PropertyInfo ccProp
 			&& ccProp.GetCustomAttribute<ParameterAttribute>(inherit: false) is not null;
+
+	private static bool HasGenericChildContentParameter()
+		=> TComponentType.GetProperty(ChildContent, BindingFlags.Public | BindingFlags.Instance) is PropertyInfo ccProp
+			&& ccProp.PropertyType.IsGenericType;
 
 	private ComponentParameterCollectionBuilder<TComponent> AddParameter<TValue>(string name, [AllowNull] TValue value)
 	{

@@ -560,6 +560,26 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter("Value", true, isCascadingValue: false);
 	}
 
+	[Fact(DisplayName = "AddChildContent on generic child content parameter throws")]
+	public void Test302()
+	{
+		Action addChildContent = () => new ComponentParameterCollectionBuilder<TemplatedChildContent>().AddChildContent("<p>item</p>");
+
+		addChildContent.ShouldThrow<ArgumentException>();
+	}
+
+	[Fact(DisplayName = "Add with generic child content works")]
+	public void Test303()
+	{
+		var sut = new ComponentParameterCollectionBuilder<TemplatedChildContent>();
+
+		sut.Add(p => p.ChildContent, p => "<p>item</p>");
+
+		sut.Build()
+			.ShouldHaveSingleItem()
+			.ShouldBeParameter<RenderFragment<string>?>(nameof(TemplatedChildContent.ChildContent), false);
+	}
+
 	private class Params : ComponentBase
 	{
 		[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "Public for testing purposes")]
@@ -600,4 +620,9 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 
 	private class InheritedParamsWithoutOverride : InheritedParamsWithOverride
 	{ }
+
+	private class TemplatedChildContent : ComponentBase
+	{
+		[Parameter] public RenderFragment<string>? ChildContent { get; set; }
+	}
 }
