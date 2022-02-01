@@ -245,8 +245,9 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	{
 		if (!HasChildContentParameter())
 			throw new ArgumentException($"The component '{typeof(TComponent)}' does not have a {ChildContent} [Parameter] attribute.", nameof(childContent));
+
 		if (HasGenericChildContentParameter())
-			throw new ArgumentException($"Calling AddChildContent on component '{typeof(TComponent)}' with a generic {ChildContent} type is not allowed. Use the 'Add(p => p.ChildContent, p => {{content}})' method.", nameof(childContent));
+			throw new ArgumentException($"Calling AddChildContent on component '{typeof(TComponent)}' with a generic {ChildContent} type (RenderFragment<T>) is not supported. Use the 'Add(p => p.ChildContent, p => {{content}})' method instead.", nameof(childContent));
 
 		return AddParameter(ChildContent, childContent);
 	}
