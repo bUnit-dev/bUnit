@@ -5,11 +5,17 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
 ## [Unreleased]
-- Changed `GetDispatchEventTasks` for bubbling events such that handled exceptions are not rethrown later from `WaitFor...` helpers methods. Reported by [@AndrewStrickland](https://github.com/AndrewStrickland). Fixed by [@linkdotnet](https://github.com/linkdotnet)
-- Added `FakeSignOutSessionStateManage` type in Blazor, that makes it it easy to test components that use the `SignOutSessionStateManage` type. By [@linkdotnet](https://github.com/linkdotnet).
-- Added a validation to `AddChildContent` method in `ComponentParameterCollectionBuilder` that will throw an exception if the component's `ChildContent` is a generic type. By [https://github.com/denisekart](@denisekart).
 
-- Added more optional arguments for `Click` and `DoubleClick` extensions which were introduced in NET5 and NET6. Reported by [@egil](https://github.com/egil). Implemented by [@linkdotnet](https://github.com/linkdotnet).
+### Added
+
+- Added `FakeSignOutSessionStateManage` type in Blazor, that makes it easy to test components that use the `SignOutSessionStateManage` type. By [@linkdotnet](https://github.com/linkdotnet).
+- Added a validation to `AddChildContent` method in `ComponentParameterCollectionBuilder` that will throw an exception if the component's `ChildContent` is a generic type. By [https://github.com/denisekart](@denisekart).
+- Added more optional arguments for `Click` and `DoubleClick` extensions which were introduced in .NET 5 and .NET 6. By [@linkdotnet](https://github.com/linkdotnet).
+
+### Fixed
+
+- Changed `GetDispatchEventTasks` for bubbling events such that handled exceptions are not rethrown later from the `WaitFor...` helpers methods. Reported by [@AndrewStrickland](https://github.com/AndrewStrickland). Fixed by [@linkdotnet](https://github.com/linkdotnet)
+
 ## [1.4.15] - 2021-12-18
 
 This release reintroduces `Stub<TComponent>` and related back into the main library, so the "preview" library `bunit.web.mock` is already obsolete. 
