@@ -399,6 +399,21 @@ public partial class TestRendererTest : TestContext
 		firstExceptionReported.ShouldNotBe(secondException);
 	}
 
+	[Fact(DisplayName = "UnhandledException has a reference to latest unhandled exception thrown by a component during OnAfterRenderAsync")]
+	public void Test203()
+	{
+		// Arrange
+		var planned = JSInterop.SetupVoid("foo");
+		RenderComponent<AsyncAfterRenderThrows>();
+
+		// Act
+		planned.SetVoidResult(); // <-- After here the `OnAfterRenderAsync` progresses and throws an exception.
+
+		// Assert
+		planned.VerifyInvoke("foo");
+		Renderer.UnhandledException.Result.ShouldBeOfType<InvalidOperationException>();
+	}
+
 	internal class NoChildNoParams : ComponentBase
 	{
 		public const string MARKUP = "hello world";
@@ -481,5 +496,16 @@ public partial class TestRendererTest : TestContext
 		}
 
 		internal sealed class AsyncOperationThrowsException : Exception { }
+	}
+
+	internal class AsyncAfterRenderThrows : ComponentBase
+	{
+		[Inject] private IJSRuntime JSRuntime { get; set; }
+
+		protected override async Task OnAfterRenderAsync(bool firstRender)
+		{
+			await JSRuntime.InvokeVoidAsync("foo");
+			throw new InvalidOperationException();
+		}
 	}
 }
