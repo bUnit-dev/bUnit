@@ -4,9 +4,19 @@ namespace Company.BlazorTests1;
 /// These tests are written entirely in C#.
 /// Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating-basic-tests-in-cs-files
 /// </summary>
+#if (testFramework_mstest)
+[TestClass]
+#endif
 public class CounterCSharpTests : TestContext
+
 {
+#if (testFramework_xunit)
 	[Fact]
+#elif (testFramework_nunit)
+	[Test]
+#elif (testFramework_mstest)
+	[TestMethod]
+#endif
 	public void CounterStartsAtZero()
 	{
 		// Arrange
@@ -16,7 +26,13 @@ public class CounterCSharpTests : TestContext
 		cut.Find("p").MarkupMatches("<p>Current count: 0</p>");
 	}
 
+#if (testFramework_xunit)
 	[Fact]
+#elif (testFramework_nunit)
+	[Test]
+#elif (testFramework_mstest)
+	[TestMethod]
+#endif
 	public void ClickingButtonIncrementsCounter()
 	{
 		// Arrange

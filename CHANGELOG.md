@@ -11,6 +11,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 - Added `FakeSignOutSessionStateManage` type in Blazor, that makes it easy to test components that use the `SignOutSessionStateManage` type. By [@linkdotnet](https://github.com/linkdotnet).
 - Added a validation to `AddChildContent` method in `ComponentParameterCollectionBuilder` that will throw an exception if the component's `ChildContent` is a generic type. By [@denisekart](https://github.com/denisekart).
 - Added more optional arguments for `Click` and `DoubleClick` extensions which were introduced in .NET 5 and .NET 6. By [@linkdotnet](https://github.com/linkdotnet).
+- Added template support for `Nunit` and `MSTest` unit test frameworks. By [@denisekart](https://github.com/denisekart).
 
 ### Fixed
 
