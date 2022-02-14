@@ -13,8 +13,6 @@
 		<Using Include="Xunit" Condition="'$(testFramework_xunit)' == 'true'"/>
 		<Using Include="NUnit.Framework" Condition="'$(testFramework_nunit)' == 'true'"/>
 		<Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" Condition="'$(testFramework_mstest)' == 'true'"/>
-
-		<Using Include="Bunit.TestContext" Alias="TestContext" />
 	</ItemGroup>
 
 	<ItemGroup>

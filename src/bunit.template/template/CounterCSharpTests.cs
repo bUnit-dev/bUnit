@@ -4,11 +4,14 @@ namespace Company.BlazorTests1;
 /// These tests are written entirely in C#.
 /// Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating-basic-tests-in-cs-files
 /// </summary>
-#if (testFramework_mstest)
-[TestClass]
-#endif
+#if (testFramework_xunit)
 public class CounterCSharpTests : TestContext
-
+#elif (testFramework_nunit)
+public class CounterCSharpTests : BunitTestContext
+#elif (testFramework_mstest)
+[TestClass]
+public class CounterCSharpTests : BunitTestContext
+#endif
 {
 #if (testFramework_xunit)
 	[Fact]
