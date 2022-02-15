@@ -6,6 +6,24 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+This first release of 2022 includes a one fix and four additions. A huge thank you to [Steven Giesel (@linkdotnet)](https://github.com/linkdotnet) and [Denis Ekart (@denisekart)](https://github.com/denisekart) for their contributions to this release.
+
+Also a big shout out to **bUnit's sponsors** who helped make this release happen.
+
+**The higher tier sponsors are:**
+
+-   [Progress Telerik](https://github.com/Progress-Telerik)
+-   [Syncfusion](https://github.com/syncfusion)
+-   [CTRL Informatique](https://github.com/CTRL-Informatique)
+
+**Other sponsors are:**
+
+-   [Hassan Rezk Habib (@Garderoben)](https://github.com/hassanhabib)
+-   [Jonny Larsson (@Garderoben)](https://github.com/Garderoben)
+-   [Domn Werner (@domn1995)](https://github.com/domn1995)
+-   [Mladen Macanović (@stsrki)](https://github.com/stsrki)
+-   [@ChristopheDEBOVE](https://github.com/ChristopheDEBOVE)
+
 ### Added
 
 - Added `FakeSignOutSessionStateManage` type in Blazor, that makes it easy to test components that use the `SignOutSessionStateManage` type. By [@linkdotnet](https://github.com/linkdotnet).
