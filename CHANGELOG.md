@@ -8,7 +8,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [1.5.12] - 2022-02-15
 
-This first release of 2022 includes a one fix and four additions. A huge thank you to [Steven Giesel (@linkdotnet)](https://github.com/linkdotnet) and [Denis Ekart (@denisekart)](https://github.com/denisekart) for their contributions to this release.
+This first release of 2022 includes one fix and four additions. A huge thank you to [Steven Giesel (@linkdotnet)](https://github.com/linkdotnet) and [Denis Ekart (@denisekart)](https://github.com/denisekart) for their contributions to this release.
 
 Also a big shout out to **bUnit's sponsors** who helped make this release happen.
 
