@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.5.12] - 2022-02-15
+
 This first release of 2022 includes a one fix and four additions. A huge thank you to [Steven Giesel (@linkdotnet)](https://github.com/linkdotnet) and [Denis Ekart (@denisekart)](https://github.com/denisekart) for their contributions to this release.
 
 Also a big shout out to **bUnit's sponsors** who helped make this release happen.
@@ -26,14 +28,14 @@ Also a big shout out to **bUnit's sponsors** who helped make this release happen
 
 ### Added
 
-- Added `FakeSignOutSessionStateManage` type in Blazor, that makes it easy to test components that use the `SignOutSessionStateManage` type. By [@linkdotnet](https://github.com/linkdotnet).
-- Added a validation to `AddChildContent` method in `ComponentParameterCollectionBuilder` that will throw an exception if the component's `ChildContent` is a generic type. By [@denisekart](https://github.com/denisekart).
-- Added more optional arguments for `Click` and `DoubleClick` extensions which were introduced in .NET 5 and .NET 6. By [@linkdotnet](https://github.com/linkdotnet).
-- Added template support for `Nunit` and `MSTest` unit test frameworks. By [@denisekart](https://github.com/denisekart).
+-   Added `FakeSignOutSessionStateManage` type in Blazor, that makes it easy to test components that use the `SignOutSessionStateManage` type. By [@linkdotnet](https://github.com/linkdotnet).
+-   Added a validation to `AddChildContent` method in `ComponentParameterCollectionBuilder` that will throw an exception if the component's `ChildContent` is a generic type. By [@denisekart](https://github.com/denisekart).
+-   Added more optional arguments for `Click` and `DoubleClick` extensions which were introduced in .NET 5 and .NET 6. By [@linkdotnet](https://github.com/linkdotnet).
+-   Added template support for `Nunit` and `MSTest` unit test frameworks. By [@denisekart](https://github.com/denisekart).
 
 ### Fixed
 
-- Changed `GetDispatchEventTasks` for bubbling events such that handled exceptions are not rethrown later from the `WaitFor...` helpers methods. Reported by [@AndrewStrickland](https://github.com/AndrewStrickland). Fixed by [@linkdotnet](https://github.com/linkdotnet)
+-   Changed `GetDispatchEventTasks` for bubbling events such that handled exceptions are not rethrown later from the `WaitFor...` helpers methods. Reported by [@AndrewStrickland](https://github.com/AndrewStrickland). Fixed by [@linkdotnet](https://github.com/linkdotnet)
 
 ## [1.4.15] - 2021-12-18
 
@@ -1096,7 +1098,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**  
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.4.15...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.5.12...HEAD
+
+[1.5.12]: https://github.com/bUnit-dev/bUnit/compare/v1.4.15...v1.5.12
 
 [1.4.15]: https://github.com/bUnit-dev/bUnit/compare/v1.3.42...v1.4.15
 
