@@ -3,6 +3,15 @@
 		"skipRestore": {
 			"longName": "no-restore",
 			"shortName": ""
+		},
+		"UnitTestFramework": {
+			"longName": "framework",
+			"shortName": ""
 		}
-	}
+	},
+	"usageExamples": [
+		"--framework xunit",
+		"--framework nunit",
+		"--framework mstest"
+	]
 }

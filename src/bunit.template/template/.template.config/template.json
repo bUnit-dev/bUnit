@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "http://json.schemastore.org/template",
   "author": "Egil Hansen",
   "classifications": [
@@ -18,75 +18,76 @@
   },
   "sourceName": "Company.BlazorTests1",
   "defaultName": "BlazorTestProject1",
-  "preferNameDirectory": true,
-  "symbols": {
-    "HostIdentifier": {
-      "type": "bind",
-      "binding": "HostIdentifier"
-    },
-    "skipRestore": {
-      "type": "parameter",
-      "datatype": "bool",
-      "description": "If specified, skips the automatic restore of the project on create.",
-      "defaultValue": "false"
-    }
-  },
+	"preferNameDirectory": true,
+	"sources": [
+		{
+			"modifiers": [
+				{
+					"exclude": [ "BunitTestContext.cs" ],
+					"condition": "(testFramework_xunit)"
+				}
+			]
+		}
+	],
+	"symbols": {
+		"HostIdentifier": {
+			"type": "bind",
+			"binding": "HostIdentifier"
+		},
+		"skipRestore": {
+			"type": "parameter",
+			"datatype": "bool",
+			"description": "If specified, skips the automatic restore of the project on create.",
+			"defaultValue": "false"
+		},
+		"UnitTestFramework": {
+			"type": "parameter",
+			"description": "The target unit testing framework for the project.",
+			"displayName": "Unit test framework",
+			"datatype": "choice",
+			"defaultValue": "xunit",
+			"replaces": "UnitTestFramework",
+			"choices": [
+				{
+					"choice": "nunit",
+					"description": "NUnit unit testing framework",
+					"displayName": "NUnit"
+				},
+				{
+					"choice": "xunit",
+					"description": "xUnit unit testing framework",
+					"displayName": "xUnit"
+				},
+				{
+					"choice": "mstest",
+					"description": "MSTest unit testing framework",
+					"displayName": "MSTest"
+				}
+			]
+		},
+		"testFramework_nunit": {
+			"type": "computed",
+			"value": "UnitTestFramework == \"nunit\""
+		},
+		"testFramework_xunit": {
+			"type": "computed",
+			"value": "UnitTestFramework == \"xunit\""
+		},
+		"testFramework_mstest": {
+			"type": "computed",
+			"value": "UnitTestFramework == \"mstest\""
+		}
+	},
   "primaryOutputs": [
     { "path": "Company.BlazorTests1.csproj" }
   ],
   "postActions": [
-    {
-      "condition": "(!skipRestore)",
-      "description": "Restore NuGet packages required by this project.",
-      "manualInstructions": [ { "text": "Run 'dotnet restore'" } ],
-      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
-      "continueOnError": true
-    }
-    //},
-    //{
-    //  "description": "Adding latests bUnit.Core reference",
-    //  "actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
-    //  "continueOnError": true,
-    //  "manualInstructions": [
-    //    {
-    //      "text": "Manually add the 'bunit.core' reference to your project file"
-    //    }
-    //  ],
-    //  "args": {
-    //    "referenceType": "package",
-    //    "reference": "bunit.core",
-    //    "projectFileExtensions": ".csproj"
-    //  }
-    //},
-    //{
-    //  "description": "Adding latests bUnit.Web reference",
-    //  "actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
-    //  "continueOnError": true,
-    //  "manualInstructions": [
-    //    {
-    //      "text": "Manually add the 'bunit.web' reference to your project file"
-    //    }
-    //  ],
-    //  "args": {
-    //    "referenceType": "package",
-    //    "reference": "bunit.web",
-    //    "projectFileExtensions": ".csproj"
-    //  }
-    //},
-    //{
-    //  "description": "Adding latests bUnit.xUnit reference",
-    //  "actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
-    //  "continueOnError": true,
-    //  "manualInstructions": [
-    //    {
-    //      "text": "Manually add the 'bunit.xunit' reference to your project file"
-    //    }
-    //  ],
-    //  "args": {
-    //    "referenceType": "package",
-    //    "reference": "bunit.xunit",
-    //    "projectFileExtensions": ".csproj"
-    //  }
-    //}
+		{
+			"condition": "(!skipRestore)",
+			"description": "Restore NuGet packages required by this project.",
+			"manualInstructions": [ { "text": "Run 'dotnet restore'" } ],
+			"actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+			"continueOnError": true
+		}
   ]
 }
