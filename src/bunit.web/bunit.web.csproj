@@ -10,34 +10,37 @@
 		<PackageId>bunit.web</PackageId>
 		<Title>bUnit.web</Title>
 		<Description>
-			bUnit.web is the web specific parts of bUnit, that enables you to easily test and verify the output of Blazor (web) component.		
+			bUnit.web is the web specific parts of bUnit, that enables you to easily test and verify the output of Blazor (web) component.
 		</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AngleSharp" Version="0.16.1" />
-		<PackageReference Include="AngleSharp.Css" Version="0.16.2" />
+		<PackageReference Include="AngleSharp.Css" Version="0.16.3" />
 		<PackageReference Include="AngleSharp.Diffing" Version="0.17.0" />
 		<PackageReference Include="AngleSharp.Wrappers" Version="2.0.0" />
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.4.244" PrivateAssets="All" />
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.4.255" PrivateAssets="All" />
 	</ItemGroup>
-	
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet3Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet3Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet3Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="3.2.1" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet5Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet5Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet5Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet5Version)" />
 	</ItemGroup>
-	
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet6Version)" />
 	</ItemGroup>
 
 	<ItemGroup>

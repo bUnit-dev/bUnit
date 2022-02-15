@@ -6,6 +6,35 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+This first release of 2022 includes a one fix and four additions. A huge thank you to [Steven Giesel (@linkdotnet)](https://github.com/linkdotnet) and [Denis Ekart (@denisekart)](https://github.com/denisekart) for their contributions to this release.
+
+Also a big shout out to **bUnit's sponsors** who helped make this release happen.
+
+**The higher tier sponsors are:**
+
+-   [Progress Telerik](https://github.com/Progress-Telerik)
+-   [Syncfusion](https://github.com/syncfusion)
+-   [CTRL Informatique](https://github.com/CTRL-Informatique)
+
+**Other sponsors are:**
+
+-   [Hassan Rezk Habib (@Garderoben)](https://github.com/hassanhabib)
+-   [Jonny Larsson (@Garderoben)](https://github.com/Garderoben)
+-   [Domn Werner (@domn1995)](https://github.com/domn1995)
+-   [Mladen Macanović (@stsrki)](https://github.com/stsrki)
+-   [@ChristopheDEBOVE](https://github.com/ChristopheDEBOVE)
+
+### Added
+
+- Added `FakeSignOutSessionStateManage` type in Blazor, that makes it easy to test components that use the `SignOutSessionStateManage` type. By [@linkdotnet](https://github.com/linkdotnet).
+- Added a validation to `AddChildContent` method in `ComponentParameterCollectionBuilder` that will throw an exception if the component's `ChildContent` is a generic type. By [@denisekart](https://github.com/denisekart).
+- Added more optional arguments for `Click` and `DoubleClick` extensions which were introduced in .NET 5 and .NET 6. By [@linkdotnet](https://github.com/linkdotnet).
+- Added template support for `Nunit` and `MSTest` unit test frameworks. By [@denisekart](https://github.com/denisekart).
+
+### Fixed
+
+- Changed `GetDispatchEventTasks` for bubbling events such that handled exceptions are not rethrown later from the `WaitFor...` helpers methods. Reported by [@AndrewStrickland](https://github.com/AndrewStrickland). Fixed by [@linkdotnet](https://github.com/linkdotnet)
+
 ## [1.4.15] - 2021-12-18
 
 This release reintroduces `Stub<TComponent>` and related back into the main library, so the "preview" library `bunit.web.mock` is already obsolete. 

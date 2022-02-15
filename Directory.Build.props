@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 	<PropertyGroup Label="Configuration variables">
-		<DotNet3Version>3.1.1</DotNet3Version>
+		<DotNet3Version>3.1.22</DotNet3Version>
 		<DotNet5Version>5.0.0</DotNet5Version>
 		<DotNet6Version>6.0.0</DotNet6Version>
 	</PropertyGroup>
@@ -47,14 +47,14 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
-		<PackageReference Include="Meziantou.Analyzer" Version="1.0.681" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.33.0.40503" PrivateAssets="All" />
+		<PackageReference Include="Meziantou.Analyzer" Version="1.0.694" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.35.0.42613" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
 		<Using Include="Microsoft.AspNetCore.Components" />
 		<Using Include="Microsoft.AspNetCore.Components.RenderTree" />
-		<Using Include="Microsoft.AspNetCore.Components.Rendering" />		
+		<Using Include="Microsoft.AspNetCore.Components.Rendering" />
 		<Using Include="Microsoft.Extensions.DependencyInjection" />
 		<Using Include="System.Runtime.Serialization" />
 		<Using Include="System.Diagnostics.CodeAnalysis" />

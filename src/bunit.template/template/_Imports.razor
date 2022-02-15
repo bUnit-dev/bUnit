@@ -3,4 +3,10 @@
 @using Microsoft.Extensions.DependencyInjection
 @using Bunit
 @using Bunit.TestDoubles
+@*#if (testFramework_xunit)*@
 @using Xunit
+@*#elif (testFramework_nunit)*@
+@using NUnit.Framework
+@*#elif (testFramework_mstest)*@
+@using Microsoft.VisualStudio.TestTools.UnitTesting
+@*#endif*@

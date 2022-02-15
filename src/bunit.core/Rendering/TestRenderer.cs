@@ -59,12 +59,20 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	public new Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo fieldInfo, EventArgs eventArgs)
+	public new Task DispatchEventAsync(
+		ulong eventHandlerId,
+		EventFieldInfo fieldInfo,
+		EventArgs eventArgs) => DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
+
+	/// <inheritdoc/>
+	public Task DispatchEventAsync(
+		ulong eventHandlerId,
+		EventFieldInfo fieldInfo,
+		EventArgs eventArgs,
+		bool ignoreUnknownEventHandlers)
 	{
 		if (fieldInfo is null)
 			throw new ArgumentNullException(nameof(fieldInfo));
-
-		ResetUnhandledException();
 
 		var result = Dispatcher.InvokeAsync(() =>
 		{
@@ -79,7 +87,7 @@ public class TestRenderer : Renderer, ITestRenderer
 			}
 		});
 
-		if (result.IsFaulted && result.Exception is not null)
+		if (result.IsFaulted && result.Exception is not null && !(ignoreUnknownEventHandlers && result.Exception.InnerException is UnknownEventHandlerIdException))
 		{
 			HandleException(result.Exception);
 		}

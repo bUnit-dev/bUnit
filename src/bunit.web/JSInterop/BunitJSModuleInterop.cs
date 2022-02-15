@@ -9,6 +9,7 @@ public sealed class BunitJSModuleInterop : BunitJSInterop
 	private readonly BunitJSInterop parent;
 	private JSRuntimeMode? handlerMode;
 
+
 	/// <summary>
 	/// Gets or sets whether this <see cref="BunitJSInterop"/>
 	/// is running in <see cref="JSRuntimeMode.Loose"/> or <see cref="JSRuntimeMode.Strict"/>.
@@ -18,6 +19,7 @@ public sealed class BunitJSModuleInterop : BunitJSInterop
 	/// As soon as this is set, the mode will no longer be changed when the <see cref="BunitJSInterop.Mode"/>
 	/// changes.
 	/// </remarks>
+	[SuppressMessage("Critical Bug", "S4275:Getters and setters should access the expected fields", Justification = "Analyzer bug. The property does correctly refer to the correct field(s).")]
 	public override JSRuntimeMode Mode
 	{
 		get => handlerMode ?? parent.Mode;

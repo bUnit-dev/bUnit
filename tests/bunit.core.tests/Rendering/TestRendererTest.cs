@@ -342,8 +342,7 @@ public partial class TestRendererTest : TestContext
 		var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
 			parameters.Add(p => p.EitherOr, Task.Delay(1)));
 
-		var h1 = cut.Find("h1");
-		cut.WaitForAssertion(() => h1.TextContent.ShouldBe("SECOND"));
+		cut.WaitForAssertion(() => cut.Find("h1").TextContent.ShouldBe("SECOND"));
 	}
 
 	[Fact(DisplayName = "Can render component that awaits completed task in OnInitializedAsync")]
@@ -397,6 +396,21 @@ public partial class TestRendererTest : TestContext
 		var secondExceptionReported = await Renderer.UnhandledException;
 		secondExceptionReported.ShouldBe(secondException);
 		firstExceptionReported.ShouldNotBe(secondException);
+	}
+
+	[Fact(DisplayName = "UnhandledException has a reference to latest unhandled exception thrown by a component during OnAfterRenderAsync")]
+	public void Test203()
+	{
+		// Arrange
+		var planned = JSInterop.SetupVoid("foo");
+		RenderComponent<AsyncAfterRenderThrows>();
+
+		// Act
+		planned.SetVoidResult(); // <-- After here the `OnAfterRenderAsync` progresses and throws an exception.
+
+		// Assert
+		planned.VerifyInvoke("foo");
+		Renderer.UnhandledException.Result.ShouldBeOfType<InvalidOperationException>();
 	}
 
 	internal class NoChildNoParams : ComponentBase
@@ -481,5 +495,16 @@ public partial class TestRendererTest : TestContext
 		}
 
 		internal sealed class AsyncOperationThrowsException : Exception { }
+	}
+
+	internal class AsyncAfterRenderThrows : ComponentBase
+	{
+		[Inject] private IJSRuntime JSRuntime { get; set; }
+
+		protected override async Task OnAfterRenderAsync(bool firstRender)
+		{
+			await JSRuntime.InvokeVoidAsync("foo");
+			throw new InvalidOperationException();
+		}
 	}
 }
