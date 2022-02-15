@@ -342,8 +342,7 @@ public partial class TestRendererTest : TestContext
 		var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
 			parameters.Add(p => p.EitherOr, Task.Delay(1)));
 
-		var h1 = cut.Find("h1");
-		cut.WaitForAssertion(() => h1.TextContent.ShouldBe("SECOND"));
+		cut.WaitForAssertion(() => cut.Find("h1").TextContent.ShouldBe("SECOND"));
 	}
 
 	[Fact(DisplayName = "Can render component that awaits completed task in OnInitializedAsync")]
