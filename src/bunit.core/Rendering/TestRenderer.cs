@@ -82,12 +82,17 @@ public class TestRenderer : Renderer, ITestRenderer
 			}
 			catch (ArgumentException ex) when (string.Equals(ex.Message, $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')", StringComparison.Ordinal))
 			{
+				if (ignoreUnknownEventHandlers)
+				{
+					return Task.CompletedTask;
+				}
+
 				var betterExceptionMsg = new UnknownEventHandlerIdException(eventHandlerId, fieldInfo, ex);
 				return Task.FromException(betterExceptionMsg);
 			}
 		});
 
-		if (result.IsFaulted && result.Exception is not null && !(ignoreUnknownEventHandlers && result.Exception.InnerException is UnknownEventHandlerIdException))
+		if (result.IsFaulted && result.Exception is not null)
 		{
 			HandleException(result.Exception);
 		}
