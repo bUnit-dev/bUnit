@@ -30,6 +30,7 @@ Also a big shout out to **bUnit's sponsors** who helped make this release happen
 -   [Domn Werner (@domn1995)](https://github.com/domn1995)
 -   [Mladen Macanović (@stsrki)](https://github.com/stsrki)
 -   [@ChristopheDEBOVE](https://github.com/ChristopheDEBOVE)
+-   [Steven Giesel (@linkdotnet)](https://github.com/linkdotnet)
 
 ### Added
 
