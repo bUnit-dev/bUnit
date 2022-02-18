@@ -47,6 +47,22 @@ Also a big shout out to **bUnit's sponsors** who helped make this release happen
 
 This release reintroduces `Stub<TComponent>` and related back into the main library, so the "preview" library `bunit.web.mock` is already obsolete. 
 
+A big shout out to **bUnit's sponsors** who helped make this release happen.
+
+**The higher tier sponsors are:**
+
+-   [Progress Telerik](https://github.com/Progress-Telerik)
+-   [Syncfusion](https://github.com/syncfusion)
+-   [CTRL Informatique](https://github.com/CTRL-Informatique)
+
+**Other sponsors are:**
+
+-   [Hassan Rezk Habib (@hassanhabib)](https://github.com/hassanhabib)
+-   [Jonny Larsson (@Garderoben)](https://github.com/Garderoben)
+-   [Domn Werner (@domn1995)](https://github.com/domn1995)
+-   [Mladen Macanović (@stsrki)](https://github.com/stsrki)
+-   [@ChristopheDEBOVE](https://github.com/ChristopheDEBOVE)
+
 ### Added
 
 -   Add `ComponentFactories` extensions method that makes it easy to register an instance of a replacement component. By [@egil](https://github.com/egil).
