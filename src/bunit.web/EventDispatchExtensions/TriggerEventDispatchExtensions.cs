@@ -11,7 +11,31 @@ namespace Bunit;
 /// </summary>
 public static class TriggerEventDispatchExtensions
 {
-	private static readonly HashSet<string> NonBubblingEvents = new(StringComparer.Ordinal) { "onabort", "onblur", "onchange", "onerror", "onfocus", "onload", "onloadend", "onloadstart", "onmouseenter", "onmouseleave", "onprogress", "onreset", "onscroll", "onsubmit", "onunload", "ontoggle", "ondomnodeinsertedintodocument", "ondomnoderemovedfromdocument" };
+	private static readonly HashSet<string> NonBubblingEvents = new(StringComparer.Ordinal)
+	{
+		"onabort",
+		"onblur",
+		"onchange",
+		"onerror",
+		"onfocus",
+		"onload",
+		"onloadend",
+		"onloadstart",
+		"onmouseenter",
+		"onmouseleave",
+		"onprogress",
+		"onreset",
+		"onscroll",
+		"onsubmit",
+		"onunload",
+		"ontoggle",
+		"ondomnodeinsertedintodocument",
+		"ondomnoderemovedfromdocument",
+		"oninvalid",
+		"onpointerleave",
+		"onpointerenter",
+		"onselectionchange",
+	};
 	private static readonly HashSet<string> DisabledEventNames = new(StringComparer.Ordinal) { "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup" };
 
 	/// <summary>
