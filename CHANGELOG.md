@@ -6,6 +6,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+-   `ClickAsync` could lead to bubbling exceptions from `GetDispatchEventTasks` even though they should be handled. Reported by [@aguacongas](aguacongas). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+  
+
 ## [1.5.12] - 2022-02-15
 
 This first release of 2022 includes one fix and four additions. A huge thank you to [Steven Giesel (@linkdotnet)](https://github.com/linkdotnet) and [Denis Ekart (@denisekart)](https://github.com/denisekart) for their contributions to this release.
@@ -20,11 +25,12 @@ Also a big shout out to **bUnit's sponsors** who helped make this release happen
 
 **Other sponsors are:**
 
--   [Hassan Rezk Habib (@Garderoben)](https://github.com/hassanhabib)
+-   [Hassan Rezk Habib (@hassanhabib)](https://github.com/hassanhabib)
 -   [Jonny Larsson (@Garderoben)](https://github.com/Garderoben)
 -   [Domn Werner (@domn1995)](https://github.com/domn1995)
 -   [Mladen Macanović (@stsrki)](https://github.com/stsrki)
 -   [@ChristopheDEBOVE](https://github.com/ChristopheDEBOVE)
+-   [Steven Giesel (@linkdotnet)](https://github.com/linkdotnet)
 
 ### Added
 
@@ -40,6 +46,22 @@ Also a big shout out to **bUnit's sponsors** who helped make this release happen
 ## [1.4.15] - 2021-12-18
 
 This release reintroduces `Stub<TComponent>` and related back into the main library, so the "preview" library `bunit.web.mock` is already obsolete. 
+
+A big shout out to **bUnit's sponsors** who helped make this release happen.
+
+**The higher tier sponsors are:**
+
+-   [Progress Telerik](https://github.com/Progress-Telerik)
+-   [Syncfusion](https://github.com/syncfusion)
+-   [CTRL Informatique](https://github.com/CTRL-Informatique)
+
+**Other sponsors are:**
+
+-   [Hassan Rezk Habib (@hassanhabib)](https://github.com/hassanhabib)
+-   [Jonny Larsson (@Garderoben)](https://github.com/Garderoben)
+-   [Domn Werner (@domn1995)](https://github.com/domn1995)
+-   [Mladen Macanović (@stsrki)](https://github.com/stsrki)
+-   [@ChristopheDEBOVE](https://github.com/ChristopheDEBOVE)
 
 ### Added
 
@@ -65,7 +87,7 @@ Big shout out to **bUnit's sponsors** who helped make this release happen.
 
 **Other sponsors are:**
 
--   [Hassan Rezk Habib (@Garderoben)](https://github.com/hassanhabib)
+-   [Hassan Rezk Habib (@hassanhabib)](https://github.com/hassanhabib)
 -   [Jonny Larsson (@Garderoben)](https://github.com/Garderoben)
 -   [Domn Werner (@domn1995)](https://github.com/domn1995)
 -   [Mladen Macanović (@stsrki)](https://github.com/stsrki)

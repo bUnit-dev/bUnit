@@ -598,4 +598,15 @@ public class ComponentRenderingTest : TestContext
 		cut.WaitForState(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
+
+	[Fact]
+	public async Task CanHandleRemovedParentObjectsAsync()
+	{
+		var cut = RenderComponent<DispatcherException>();
+
+		await cut.Find("button").ClickAsync(new MouseEventArgs());
+
+		cut.WaitForState(() => !cut.FindAll("div").Any());
+		cut.FindAll("div").Count.ShouldBe(0);
+	}
 }
