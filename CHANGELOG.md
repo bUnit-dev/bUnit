@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+-   Added more non bubbling events to bUnit so it behaves closer to the HTML specification. [@linkdotnet](https://github.com/linkdotnet). 
+
 ### Fixed
 
 -   `ClickAsync` could lead to bubbling exceptions from `GetDispatchEventTasks` even though they should be handled. Reported by [@aguacongas](aguacongas). Fixed by [@linkdotnet](https://github.com/linkdotnet).
