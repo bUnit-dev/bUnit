@@ -71,7 +71,7 @@ Big shout out to **bUnit's sponsors** who helped make this release happen.
 
 **Other sponsors are:**
 
--   [Hassan Rezk Habib (@Garderoben)](https://github.com/hassanhabib)
+-   [Hassan Rezk Habib (@hassanhabib)](https://github.com/hassanhabib)
 -   [Jonny Larsson (@Garderoben)](https://github.com/Garderoben)
 -   [Domn Werner (@domn1995)](https://github.com/domn1995)
 -   [Mladen Macanović (@stsrki)](https://github.com/stsrki)
