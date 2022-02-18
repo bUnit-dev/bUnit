@@ -94,6 +94,10 @@ namespace Bunit
 		[InlineData("ontoggle")]
 		[InlineData("onDOMNodeInsertedIntoDocument")]
 		[InlineData("onDOMNodeRemovedFromDocument")]
+		[InlineData("oninvalid")]
+		[InlineData("onpointerleave")]
+		[InlineData("onpointerenter")]
+		[InlineData("onselectionchange")]
 		public async Task Test110(string eventName)
 		{
 			var cut = RenderComponent<EventBubbles>(ps => ps.Add(p => p.EventName, eventName));
