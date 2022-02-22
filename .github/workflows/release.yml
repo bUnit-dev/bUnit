@@ -99,7 +99,7 @@ jobs:
 
       - name: 🛠️ Upload library to NuGet.org repository
         run: |
-          dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
 
       - name: ⏩ Push stable branch
         run: git push origin stable
