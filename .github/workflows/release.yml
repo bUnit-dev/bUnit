@@ -98,7 +98,11 @@ jobs:
           dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
 
       - name: 🛠️ Upload library to NuGet.org repository
-        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
+        run: |
+          dotnet nuget push ${GITHUB_WORKSPACE}/packages/bunit.web.testcomponents.${{ NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
+          dotnet nuget push ${GITHUB_WORKSPACE}/packages/bunit.web.${{ NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
+          dotnet nuget push ${GITHUB_WORKSPACE}/packages/bunit.core.${{ NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
+          dotnet nuget push ${GITHUB_WORKSPACE}/packages/bunit.template.${{ NBGV_NuGetPackageVersion }}.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
 
       - name: ⏩ Push stable branch
         run: git push origin stable
