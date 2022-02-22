@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+A quick minor release that primiarily fixes a regression in 1.5.12.
+
 ### Fixed
 
 -   `ClickAsync` could lead to bubbling exceptions from `GetDispatchEventTasks` even though they should be handled. Reported by [@aguacongas](aguacongas). Fixed by [@linkdotnet](https://github.com/linkdotnet).
