@@ -612,11 +612,13 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void WasCalled()
+	public void ShouldDisposeComponentsWhenDetached()
 	{
-		var a = RenderComponent<ChildDispose>();
-		a.Detach();
+		var cut = RenderComponent<ParentDispose>();
 
-		ChildDispose.WasDisposed.ShouldBeTrue();
+		cut.Detach();
+
+		ParentDispose.CallStack[0].ShouldBe("ParentDispose");
+		ParentDispose.CallStack[1].ShouldBe("ChildDispose");
 	}
 }
