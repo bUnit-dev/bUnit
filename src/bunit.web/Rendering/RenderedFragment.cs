@@ -115,9 +115,10 @@ internal class RenderedFragment : IRenderedFragment
 		snapshotMarkup = Markup;
 	}
 
+	/// <inheritdoc/>
 	public void Detach()
 	{
-		renderer.DetachRoot();
+		renderer.DetachFromParent(this);
 	}
 
 	void IRenderedFragmentBase.OnRender(RenderEvent renderEvent)

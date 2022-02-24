@@ -49,6 +49,7 @@ public interface IRenderedFragment : IRenderedFragmentBase
 
 	/// <summary>
 	/// Detaches the component from the render tree
+	/// TODO: Maybe we want this on a <see cref="TestContextBase" /> level and only allow all objects to be removed? />
 	/// </summary>
 	void Detach();
 }

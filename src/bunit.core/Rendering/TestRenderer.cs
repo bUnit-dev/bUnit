@@ -1,4 +1,5 @@
 using System.Runtime.ExceptionServices;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
@@ -119,10 +120,27 @@ public class TestRenderer : Renderer, ITestRenderer
 
 
 	/// <inheritdoc />
-	public void DetachRoot()
+	public void DetachFromParent(IRenderedFragmentBase child)
 	{
-		var root = renderedComponents[1] as IRenderedComponentBase<FragmentContainer>;
-		root?.Render();
+		if (child == null)
+			throw new ArgumentNullException(nameof(child));
+
+		var parentId = child.ComponentId - 1;
+
+		if (parentId == 1)
+		{
+			// Maybe this is enough at all?
+			var root = renderedComponents[1] as IRenderedComponentBase<FragmentContainer>;
+			root.Render();
+		}
+		else
+		{
+			// Do we really need this case?
+			// For starters we can always just detach the FragmentContainer and dispose everything
+			var root = renderedComponents[parentId] as IRenderedComponentBase<IComponent>;
+			renderedComponents.Remove(child.ComponentId);
+			root.Render();
+		}
 	}
 
 	/// <inheritdoc/>

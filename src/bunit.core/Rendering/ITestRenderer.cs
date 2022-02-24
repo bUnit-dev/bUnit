@@ -77,5 +77,5 @@ public interface ITestRenderer
 	/// <summary>
 	/// Detaches the root component from the component and renders again
 	/// </summary>
-	public void DetachRoot();
+	public void DetachFromParent(IRenderedFragmentBase child);
 }

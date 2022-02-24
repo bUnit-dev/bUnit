@@ -629,7 +629,8 @@ public class ComponentRenderingTest : TestContext
 		var parent = RenderComponent<ParentDispose>();
 		var cut2 = parent.FindComponent<ChildDispose>();
 
-		// This will fail as we always detach the root component no matter what
+		// This will fail as we detach ParentDispose but still we are living for some reason
+		// That makes sense as we are only resetting the "ChildComponent" which ChildDispose is not
 		cut2.Detach();
 
 		ParentDispose.CallStack.Count.ShouldBe(1);
