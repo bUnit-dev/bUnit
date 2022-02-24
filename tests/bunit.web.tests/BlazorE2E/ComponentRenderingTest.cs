@@ -618,7 +618,21 @@ public class ComponentRenderingTest : TestContext
 
 		cut.Detach();
 
+		ParentDispose.CallStack.Count.ShouldBe(2);
 		ParentDispose.CallStack[0].ShouldBe("ParentDispose");
 		ParentDispose.CallStack[1].ShouldBe("ChildDispose");
+	}
+
+	[Fact]
+	public void ShouldDisposeComponentsWhenDetached2()
+	{
+		var parent = RenderComponent<ParentDispose>();
+		var cut2 = parent.FindComponent<ChildDispose>();
+
+		// This will fail as we always detach the root component no matter what
+		cut2.Detach();
+
+		ParentDispose.CallStack.Count.ShouldBe(1);
+		ParentDispose.CallStack[0].ShouldBe("ChildDispose");
 	}
 }
