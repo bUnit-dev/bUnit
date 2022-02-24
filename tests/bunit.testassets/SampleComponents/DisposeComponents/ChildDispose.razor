@@ -1,0 +1,12 @@
+﻿@implements IDisposable
+<h2>Test</h2>
+@code {
+
+	[Parameter]
+	public string MessageToAdd { get; set; } = nameof(ChildDispose);
+
+	public void Dispose()
+	{
+		ParentDispose.CallStack.Add(MessageToAdd);
+	}
+}

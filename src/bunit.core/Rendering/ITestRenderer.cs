@@ -73,4 +73,9 @@ public interface ITestRenderer
 	/// <param name="parentComponent">Parent component to search.</param>
 	IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
 		where TComponent : IComponent;
+
+	/// <summary>
+	/// Disposes all components rendered by the <see cref="ITestRenderer" />.
+	/// </summary>
+	public void DisposeComponents();
 }

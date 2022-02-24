@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+- Added `TestContext.DetachAllComponents` to remove all components from the render tree. By  [@linkdotnet](https://github.com/linkdotnet).
+ 
 ### Fixed
 -   Fixed step by step guide for building and viewing the documentation locally. By [@linkdotnet](https://github.com/linkdotnet).
 

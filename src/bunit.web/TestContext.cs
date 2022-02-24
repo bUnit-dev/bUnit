@@ -74,6 +74,14 @@ public class TestContext : TestContextBase
 		=> (IRenderedFragment)this.RenderInsideRenderTree(renderFragment);
 
 	/// <summary>
+	/// Disposes all components rendered via this <see cref="TestContext"/>.
+	/// </summary>
+	public void DisposeComponents()
+	{
+		Renderer.DisposeComponents();
+	}
+
+	/// <summary>
 	/// Dummy method required to allow Blazor's compiler to generate
 	/// C# from .razor files.
 	/// </summary>

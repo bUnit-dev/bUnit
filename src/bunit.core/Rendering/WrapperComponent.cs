@@ -14,8 +14,7 @@ internal sealed class WrapperComponent : IComponent
 
 	public Task SetParametersAsync(ParameterView parameters) => throw new InvalidOperationException($"WrapperComponent shouldn't receive any parameters");
 
-	public void Render()
-	{
-		renderHandle.Render(renderFragment);
-	}
+	public void Render() => renderHandle.Render(renderFragment);
+
+	public void Detach() => renderHandle.Render(_ => { });
 }

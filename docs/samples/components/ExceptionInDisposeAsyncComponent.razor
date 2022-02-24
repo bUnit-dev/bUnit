@@ -1,0 +1,8 @@
+﻿@implements IAsyncDisposable
+@code {
+  public async ValueTask DisposeAsync()
+  {
+    await Task.Delay(10);
+    throw new NotSupportedException();
+  }
+}
