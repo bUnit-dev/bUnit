@@ -15,6 +15,7 @@ internal class RenderedFragment : IRenderedFragment
 	private INodeList? firstRenderNodes;
 	private INodeList? latestRenderNodes;
 	private INodeList? snapshotNodes;
+	private readonly ITestRenderer renderer;
 
 	/// <summary>
 	/// Gets the first rendered markup.
@@ -83,6 +84,7 @@ internal class RenderedFragment : IRenderedFragment
 		ComponentId = componentId;
 		Services = service;
 		htmlParser = Services.GetRequiredService<BunitHtmlParser>();
+		renderer = Services.GetRequiredService<ITestRenderer>();
 	}
 
 	/// <inheritdoc/>
@@ -111,6 +113,11 @@ internal class RenderedFragment : IRenderedFragment
 	{
 		snapshotNodes = null;
 		snapshotMarkup = Markup;
+	}
+
+	public void Detach()
+	{
+		renderer.DetachRoot();
 	}
 
 	void IRenderedFragmentBase.OnRender(RenderEvent renderEvent)

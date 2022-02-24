@@ -46,4 +46,9 @@ public interface IRenderedFragment : IRenderedFragmentBase
 	/// the snapshot and the rendered markup at that time.
 	/// </summary>
 	void SaveSnapshot();
+
+	/// <summary>
+	/// Detaches the component from the render tree
+	/// </summary>
+	void Detach();
 }

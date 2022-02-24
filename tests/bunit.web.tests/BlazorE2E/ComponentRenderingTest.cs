@@ -5,6 +5,7 @@
 using System.Numerics;
 using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
+using Bunit.TestAssets.SampleComponents.DisposeComponents;
 using Xunit.Abstractions;
 
 namespace Bunit.BlazorE2E;
@@ -608,5 +609,14 @@ public class ComponentRenderingTest : TestContext
 
 		cut.WaitForState(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
+	}
+
+	[Fact]
+	public void WasCalled()
+	{
+		var a = RenderComponent<ChildDispose>();
+		a.Detach();
+
+		ChildDispose.WasDisposed.ShouldBeTrue();
 	}
 }

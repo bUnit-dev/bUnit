@@ -73,4 +73,9 @@ public interface ITestRenderer
 	/// <param name="parentComponent">Parent component to search.</param>
 	IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
 		where TComponent : IComponent;
+
+	/// <summary>
+	/// Detaches the root component from the component and renders again
+	/// </summary>
+	public void DetachRoot();
 }

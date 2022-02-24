@@ -117,6 +117,12 @@ public class TestRenderer : Renderer, ITestRenderer
 		where TComponent : IComponent
 		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
 
+	public void DetachRoot(IRenderedFragmentBase renderedFragment)
+	{
+		var root = renderedComponents[1] as IRenderedComponentBase<FragmentContainer>;
+		root?.Render();
+	}
+
 	/// <inheritdoc/>
 	protected override void ProcessPendingRender()
 	{

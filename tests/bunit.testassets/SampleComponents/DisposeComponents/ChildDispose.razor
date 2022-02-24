@@ -1,0 +1,9 @@
+﻿@implements IDisposable
+<h1>Hello World</h1>
+@code {
+	public static bool WasDisposed;
+	public void Dispose()
+	{
+		WasDisposed = true;
+	}
+}
