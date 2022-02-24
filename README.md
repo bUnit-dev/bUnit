@@ -5,7 +5,12 @@
 
 # bUnit - a testing library for Blazor components
 
-<a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message"><img align="right" width="200" src="https://raw.githubusercontent.com/bUnit-dev/bUnit/main/docs/site/sponsors/telerik-ad-github.svg" /></a>
+<a href="https://www.telerik.com/blazor-ui?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message#gh-light-mode-only">
+<img align="right" width="300" src="https://raw.githubusercontent.com/bUnit-dev/bUnit/main/docs/site/sponsors/progress-ad-2022-light-mode.svg#gh-light-mode-only" />
+</a>
+<a href="https://www.telerik.com/blazor-ui?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message#gh-dark-mode-only">
+<img align="right" width="300" src="https://raw.githubusercontent.com/bUnit-dev/bUnit/main/docs/site/sponsors/progress-ad-2022-dark-mode.svg#gh-dark-mode-only" />
+</a>
 
 **bUnit** is a testing library for Blazor Components. Its goal is to make it easy to write _comprehensive, stable_ unit tests. With bUnit, you can:
 
