@@ -159,5 +159,4 @@ public class TestAuthorizationContext
         this.authProvider.TriggerAuthenticationStateChanged(this.UserName, this.Roles, this.Claims, authenticationType);
         return this;
     }
-  }
 }
