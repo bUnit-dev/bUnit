@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+- Added method `SetAuthenticationType` in `TestAuthorizationContext` to allow for custom authentication type checks. By [@TimPurdum](https://github.com/timpurdum).
+
 ## [1.6.4] - 2022-02-22
 
 A quick minor release that primiarily fixes a regression in 1.5.12.
