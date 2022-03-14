@@ -2,10 +2,11 @@
 
 <div class="hidden-sm col-md-2" role="complementary">
   <div class="sideaffix">
-    <div class="sponsor-highlight">
-      <a href="https://www.telerik.com/campaigns/blazor/free-trial-1?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-bunit-sponsored-message">
-        <img width="200" src="/sponsors/telerik-ad-site.svg" />
-      </a>      
+    <div class="sponsor-highlight supported">
+      <a href="https://www.telerik.com/blazor-ui?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message">
+        <img width="200" src="/sponsors/progress-blazor-2022-300x300.png" />
+      </a>
+      <p>Premium sponsor: <a href="https://www.telerik.com/blazor-ui?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message" title="Progress Telerik">Progress Telerik</a>.</p>
     </div>
     <div class="supported">
       <a href="https://www.packtpub.com/" title="Packt">
@@ -18,7 +19,7 @@
         <img width="150" src="/sponsors/dotnetfoundation_v4_purple.svg" />
       </a>
       <p>Supported by the <a href="https://dotnetfoundation.org">.NET Foundation</a>.</p>
-    </div>    
+    </div>
     {{^_disableContribution}}
     <div class="contribution">
       <ul class="nav">
