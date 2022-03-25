@@ -112,7 +112,7 @@ With this example done, all auth-related test scenarios should be covered. If yo
 
 ### Authentication Types
 
-To specify one or more authenticaty type for the authenticated and authorized user, do the following:
+To specify one or more authentication types for the authenticated and authorized user, do the following:
 
 [!code-csharp[UserRightsTest.cs](../../../samples/tests/xunit/UserRightsTest.cs?start=153&end=166&highlight=5)]
 
