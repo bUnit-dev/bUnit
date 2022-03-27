@@ -34,13 +34,23 @@ public sealed class FakeNavigationManager : NavigationManager
 	/// <inheritdoc/>
 	protected override void NavigateToCore(string uri, bool forceLoad)
 	{
+		var isExternalUri = IsExternalUri(uri);
+
+		if (isExternalUri)
+		{
+			BaseUri = GetBaseUri(uri);
+		}
+
 		Uri = ToAbsoluteUri(uri).OriginalString;
 		history.Push(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
 
 		renderer.Dispatcher.InvokeAsync(() =>
 		{
 			Uri = ToAbsoluteUri(uri).OriginalString;
-			NotifyLocationChanged(isInterceptedLink: false);
+			if (!isExternalUri)
+			{
+				NotifyLocationChanged(isInterceptedLink: false);
+			}
 		});
 	}
 #endif
@@ -50,6 +60,13 @@ public sealed class FakeNavigationManager : NavigationManager
 		/// <inheritdoc/>
 		protected override void NavigateToCore(string uri, NavigationOptions options)
 		{
+			var isExternalUri = IsExternalUri(uri);
+
+			if (isExternalUri)
+			{
+				BaseUri = GetBaseUri(uri);
+			}
+
 			Uri = ToAbsoluteUri(uri).OriginalString;
 
 			if (options.ReplaceHistoryEntry && history.Count > 0)
@@ -60,8 +77,27 @@ public sealed class FakeNavigationManager : NavigationManager
 			renderer.Dispatcher.InvokeAsync(() =>
 			{
 				Uri = ToAbsoluteUri(uri).OriginalString;
-				NotifyLocationChanged(isInterceptedLink: false);
+
+				if (!isExternalUri)
+				{
+					NotifyLocationChanged(isInterceptedLink: false);
+				}
 			});
 		}
 #endif
+
+	private static bool IsExternalUri(string? uri)
+	{
+		return uri != null &&
+		       IsAbsoluteUri(uri) &&
+		       !uri.StartsWith("http://localhost/", StringComparison.OrdinalIgnoreCase);
+	}
+
+	private static bool IsAbsoluteUri(string uri) => System.Uri.IsWellFormedUriString(uri, UriKind.Absolute);
+
+	private static string GetBaseUri(string uri)
+	{
+		var externalUri = new Uri(uri, UriKind.Absolute);
+		return externalUri.Scheme + "://" + externalUri.Authority + "/";
+	}
 }
