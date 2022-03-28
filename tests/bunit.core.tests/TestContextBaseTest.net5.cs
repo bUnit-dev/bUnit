@@ -1,9 +1,10 @@
-
 #if NET5_0_OR_GREATER
+
+using Bunit.TestAssets.SampleComponents.DisposeComponents;
 
 namespace Bunit;
 
-public class TestContextBaseTest : TestContext
+public partial class TestContextBaseTest : TestContext
 {
 	[Fact(DisplayName = "ComponentFactories CanCreate() method are checked during component instantiation")]
 	public void Test0001()
@@ -43,6 +44,70 @@ public class TestContextBaseTest : TestContext
 		firstMock.Verify(x => x.Create(It.IsAny<Type>()), Times.Never);
 		secondMock.Verify(x => x.CanCreate(typeof(Simple1)), Times.Once);
 		secondMock.Verify(x => x.Create(typeof(Simple1)), Times.Once);
+	}
+
+	[Fact(DisplayName = "DisposeComponents captures exceptions from DisposeAsync in Renderer.UnhandledException")]
+	public async Task Test201()
+	{
+		RenderComponent<AsyncThrowExceptionComponent>();
+
+		DisposeComponents();
+
+		var exception = await Renderer.UnhandledException;
+		exception.ShouldBeOfType<NotSupportedException>();
+	}
+
+	[Fact(DisplayName = "DisposeComponents calls DisposeAsync on rendered components")]
+	public void Test202()
+	{
+		var cut = RenderComponent<AsyncDisposableComponent>();
+		var instance = cut.Instance;
+
+		DisposeComponents();
+
+		cut.WaitForAssertion(() => instance.WasDisposed.ShouldBeTrue());
+	}
+
+	[Fact(DisplayName = "DisposeComponents should dispose components added via ComponentFactory")]
+	public void Test203()
+	{
+		ComponentFactories.Add<ChildDispose, MyChildDisposeStub>();
+		var cut = RenderComponent<ParentDispose>(ps => ps.Add(p => p.CallStack, new List<string>()));
+		var instance = cut.FindComponent<MyChildDisposeStub>().Instance;
+
+		DisposeComponents();
+
+		instance.WasDisposed.ShouldBeTrue();
+	}
+
+	private sealed class MyChildDisposeStub : ComponentBase, IDisposable
+	{
+		public bool WasDisposed { get; private set; }
+
+		public void Dispose()
+		{
+			WasDisposed = true;
+		}
+	}
+
+	private sealed class AsyncThrowExceptionComponent : ComponentBase, IAsyncDisposable
+	{
+		public async ValueTask DisposeAsync()
+		{
+			await Task.Delay(10);
+			throw new NotSupportedException();
+		}
+	}
+
+	private sealed class AsyncDisposableComponent : ComponentBase, IAsyncDisposable
+	{
+		public bool WasDisposed { get; private set; }
+
+		public async ValueTask DisposeAsync()
+		{
+			await Task.Delay(10);
+			WasDisposed = true;
+		}
 	}
 
 	private static Mock<IComponentFactory> CreateMockComponentFactory(Func<Type, bool> canCreate, Func<Type, IComponent> create)
