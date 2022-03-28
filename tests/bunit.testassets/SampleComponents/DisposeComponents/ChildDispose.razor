@@ -1,12 +1,14 @@
-﻿@implements IDisposable
+@implements IDisposable
 <h2>Test</h2>
 @code {
+	[CascadingParameter]
+	public ICollection<string> CallStack { get; set; } = Array.Empty<string>();
 
 	[Parameter]
 	public string MessageToAdd { get; set; } = nameof(ChildDispose);
 
 	public void Dispose()
 	{
-		ParentDispose.CallStack.Add(MessageToAdd);
+		CallStack.Add(MessageToAdd);
 	}
 }

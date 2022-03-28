@@ -1,9 +1,11 @@
-﻿@implements IDisposable
+@implements IDisposable
 
 <ChildDispose></ChildDispose>
 
 @code {
-	public static List<string> CallStack = new();
+	[CascadingParameter]
+	public ICollection<string> CallStack { get; set; } = Array.Empty<string>();
+
 	public void Dispose()
 	{
 		CallStack.Add(nameof(ParentDispose));
