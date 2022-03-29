@@ -4,11 +4,8 @@
 	[CascadingParameter]
 	public ICollection<string> CallStack { get; set; } = Array.Empty<string>();
 
-	[Parameter]
-	public string MessageToAdd { get; set; } = nameof(ChildDispose);
-
 	public void Dispose()
 	{
-		CallStack.Add(MessageToAdd);
+		CallStack.Add(nameof(ChildDispose));
 	}
 }
