@@ -122,6 +122,10 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc />
 	public void DisposeComponents()
 	{
+		// The dispatcher will always return a completed task,
+		// when dealing with an IAsyncDisposable.
+		// Therefore checking for a completed task and awaiting it
+		// will only work on IDisposable
 		var disposeTask = Dispatcher.InvokeAsync(() =>
 		{
 			foreach (var root in rootComponents)

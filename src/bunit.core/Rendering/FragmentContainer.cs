@@ -19,10 +19,6 @@ internal sealed class FragmentContainer : IComponent
 		{
 			renderHandle.Render(childContent);
 		}
-		else
-		{
-			renderHandle.Render(_ => {});
-		}
 
 		return Task.CompletedTask;
 	}
