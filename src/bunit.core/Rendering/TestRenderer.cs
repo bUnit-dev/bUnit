@@ -10,7 +10,7 @@ public class TestRenderer : Renderer, ITestRenderer
 {
 	private readonly object renderTreeAccessLock = new();
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
-	private readonly List<WrapperComponent> rootComponents = new();
+	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new();
@@ -240,7 +240,7 @@ public class TestRenderer : Renderer, ITestRenderer
 
 		var renderTask = Dispatcher.InvokeAsync(() =>
 		{
-			var root = new WrapperComponent(renderFragment);
+			var root = new RootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
 			var result = activator(rootComponentId);
 			renderedComponents.Add(rootComponentId, result);
