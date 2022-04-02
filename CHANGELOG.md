@@ -7,7 +7,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ## [Unreleased]
 
 ### Added
-- Added `DisposeComponents` to `TestContext`. It will dispose and remove all components rendered by via the `TestContext`. By  [@linkdotnet](https://github.com/linkdotnet).
+- Added `DisposeComponents` to `TestContextBase`. It will dispose and remove all components rendered by the `TestContextBase`. By  [@linkdotnet](https://github.com/linkdotnet).
  
 ### Fixed
 -   Fixed step by step guide for building and viewing the documentation locally. By [@linkdotnet](https://github.com/linkdotnet).
