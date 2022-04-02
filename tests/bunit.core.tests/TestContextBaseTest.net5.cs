@@ -58,14 +58,17 @@ public partial class TestContextBaseTest : TestContext
 	}
 
 	[Fact(DisplayName = "DisposeComponents calls DisposeAsync on rendered components")]
-	public void Test202()
+	public async Task Test202()
 	{
 		var cut = RenderComponent<AsyncDisposableComponent>();
 		var instance = cut.Instance;
 
 		DisposeComponents();
 
-		cut.WaitForAssertion(() => instance.WasDisposed.ShouldBeTrue());
+        // Windows timer resolution is around 15ms therefore we want to have a higher value than the test
+        // itself to prohibit flakiness
+		await Task.Delay(25);
+		instance.WasDisposed.ShouldBeTrue();
 	}
 
 	[Fact(DisplayName = "DisposeComponents should dispose components added via ComponentFactory")]
@@ -119,4 +122,3 @@ public partial class TestContextBaseTest : TestContext
 	}
 }
 #endif
-
