@@ -13,6 +13,7 @@
 ## [Trigger event handlers](xref:trigger-event-handlers)
 ## [Trigger renders](xref:trigger-renders)
 ## [Awaiting an async state change](xref:awaiting-async-state)
+## [Disposing components](xref:dispose-components)
 
 # [Verifying output](xref:verification)
 ## [Verify markup](xref:verify-markup)

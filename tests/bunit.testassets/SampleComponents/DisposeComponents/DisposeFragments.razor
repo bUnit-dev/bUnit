@@ -1,0 +1,8 @@
+@code {
+	public static RenderFragment ChildDisposeAsFragment(List<string> callStack)
+	{
+		return @<CascadingValue Value="callStack">
+					<ChildDispose />
+				</CascadingValue>;
+	}
+}

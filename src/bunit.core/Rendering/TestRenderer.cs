@@ -10,6 +10,7 @@ public class TestRenderer : Renderer, ITestRenderer
 {
 	private readonly object renderTreeAccessLock = new();
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
+	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new();
@@ -117,6 +118,31 @@ public class TestRenderer : Renderer, ITestRenderer
 		where TComponent : IComponent
 		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
 
+
+	/// <inheritdoc />
+	public void DisposeComponents()
+	{
+		// The dispatcher will always return a completed task,
+		// when dealing with an IAsyncDisposable.
+		// Therefore checking for a completed task and awaiting it
+		// will only work on IDisposable
+		var disposeTask = Dispatcher.InvokeAsync(() =>
+		{
+			foreach (var root in rootComponents)
+			{
+				root.Detach();
+			}
+		});
+
+		if (!disposeTask.IsCompleted)
+		{
+			disposeTask.GetAwaiter().GetResult();
+		}
+
+		rootComponents.Clear();
+		AssertNoUnhandledExceptions();
+	}
+
 	/// <inheritdoc/>
 	protected override void ProcessPendingRender()
 	{
@@ -214,10 +240,11 @@ public class TestRenderer : Renderer, ITestRenderer
 
 		var renderTask = Dispatcher.InvokeAsync(() =>
 		{
-			var root = new WrapperComponent(renderFragment);
+			var root = new RootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
 			var result = activator(rootComponentId);
 			renderedComponents.Add(rootComponentId, result);
+			rootComponents.Add(root);
 			root.Render();
 			return result;
 		});

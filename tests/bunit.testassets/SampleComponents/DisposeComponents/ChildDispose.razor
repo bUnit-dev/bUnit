@@ -1,0 +1,11 @@
+@implements IDisposable
+<h2>Test</h2>
+@code {
+	[CascadingParameter]
+	public ICollection<string> CallStack { get; set; } = Array.Empty<string>();
+
+	public void Dispose()
+	{
+		CallStack.Add(nameof(ChildDispose));
+	}
+}
