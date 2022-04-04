@@ -67,7 +67,7 @@ public partial class TestContextBaseTest : TestContext
 
         // Windows timer resolution is around 15ms therefore we want to have a higher value than the test
         // itself to prohibit flakiness
-		await Task.Delay(25);
+		await Task.Delay(50);
 		instance.WasDisposed.ShouldBeTrue();
 	}
 
@@ -97,7 +97,7 @@ public partial class TestContextBaseTest : TestContext
 	{
 		public async ValueTask DisposeAsync()
 		{
-			await Task.Delay(10);
+			await Task.Delay(30);
 			throw new NotSupportedException();
 		}
 	}
@@ -108,7 +108,7 @@ public partial class TestContextBaseTest : TestContext
 
 		public async ValueTask DisposeAsync()
 		{
-			await Task.Delay(10);
+			await Task.Delay(30);
 			WasDisposed = true;
 		}
 	}
