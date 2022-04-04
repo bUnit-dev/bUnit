@@ -1,0 +1,31 @@
+name: verification against nightly aspnet core builds 
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  verify-bunit:
+    name: 👌 Verify bUnit
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/dotnet/nightly/sdk:7.0
+
+    steps:
+      - name: 🌛 Show dotnet version
+        run: |
+          dotnet --info
+
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: 🧪 Run unit tests
+        run: |
+          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
