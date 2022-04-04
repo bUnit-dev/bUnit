@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;net5.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1;net5.0;net6.0;net7.0</TargetFrameworks>
 		<RootNamespace>Bunit.TestAssets</RootNamespace>
 		<AssemblyName>Bunit.TestAssets</AssemblyName>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
@@ -27,6 +27,10 @@
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet6Version)" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="7.0.0-preview.2.22153.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.0-preview.2.22153.2" />
 	</ItemGroup>
 
 	<!-- https://github.com/dotnet/sdk/issues/18148#issuecomment-860957180 from @elion -->
