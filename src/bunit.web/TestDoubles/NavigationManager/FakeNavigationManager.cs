@@ -2,6 +2,8 @@ using Bunit.Rendering;
 
 namespace Bunit.TestDoubles;
 
+using URI = Uri;
+
 /// <summary>
 /// Represents a fake <see cref="NavigationManager"/> that captures calls to
 /// <see cref="NavigationManager.NavigateTo(string, bool)"/> for testing purposes.
@@ -34,11 +36,12 @@ public sealed class FakeNavigationManager : NavigationManager
 	/// <inheritdoc/>
 	protected override void NavigateToCore(string uri, bool forceLoad)
 	{
-		var isExternalUri = IsExternalUri(uri);
+		var absoluteUri = GetNewAbsoluteUri(uri);
+		var changedBaseUri = HasDifferentBaseUri(absoluteUri);
 
-		if (isExternalUri)
+		if (changedBaseUri)
 		{
-			BaseUri = GetBaseUri(uri);
+			BaseUri = GetBaseUri(absoluteUri);
 		}
 
 		Uri = ToAbsoluteUri(uri).OriginalString;
@@ -47,7 +50,8 @@ public sealed class FakeNavigationManager : NavigationManager
 		renderer.Dispatcher.InvokeAsync(() =>
 		{
 			Uri = ToAbsoluteUri(uri).OriginalString;
-			if (!isExternalUri)
+
+			if (!changedBaseUri)
 			{
 				NotifyLocationChanged(isInterceptedLink: false);
 			}
@@ -60,11 +64,12 @@ public sealed class FakeNavigationManager : NavigationManager
 		/// <inheritdoc/>
 		protected override void NavigateToCore(string uri, NavigationOptions options)
 		{
-			var isExternalUri = IsExternalUri(uri);
+			var absoluteUri = GetNewAbsoluteUri(uri);
+			var changedBaseUri = HasDifferentBaseUri(absoluteUri);
 
-			if (isExternalUri)
+			if (changedBaseUri)
 			{
-				BaseUri = GetBaseUri(uri);
+				BaseUri = GetBaseUri(absoluteUri);
 			}
 
 			Uri = ToAbsoluteUri(uri).OriginalString;
@@ -78,7 +83,7 @@ public sealed class FakeNavigationManager : NavigationManager
 			{
 				Uri = ToAbsoluteUri(uri).OriginalString;
 
-				if (!isExternalUri)
+				if (!changedBaseUri)
 				{
 					NotifyLocationChanged(isInterceptedLink: false);
 				}
@@ -86,18 +91,21 @@ public sealed class FakeNavigationManager : NavigationManager
 		}
 #endif
 
-	private static bool IsExternalUri(string? uri)
-	{
-		return uri != null &&
-		       IsAbsoluteUri(uri) &&
-		       !uri.StartsWith("http://localhost/", StringComparison.OrdinalIgnoreCase);
-	}
+	private URI GetNewAbsoluteUri(string uri)
+		=> URI.IsWellFormedUriString(uri, UriKind.Relative)
+			? base.ToAbsoluteUri(uri)
+			: new URI(uri, UriKind.Absolute);
 
-	private static bool IsAbsoluteUri(string uri) => System.Uri.IsWellFormedUriString(uri, UriKind.Absolute);
+	private bool HasDifferentBaseUri(URI absoluteUri)
+		=> URI.Compare(
+			new URI(BaseUri, UriKind.Absolute),
+			absoluteUri,
+			UriComponents.SchemeAndServer,
+			UriFormat.Unescaped,
+			StringComparison.OrdinalIgnoreCase) != 0;
 
-	private static string GetBaseUri(string uri)
+	private static string GetBaseUri(URI uri)
 	{
-		var externalUri = new Uri(uri, UriKind.Absolute);
-		return externalUri.Scheme + "://" + externalUri.Authority + "/";
+		return uri.Scheme + "://" + uri.Authority + "/";
 	}
 }
