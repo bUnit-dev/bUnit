@@ -3,6 +3,7 @@
 	private string value = string.Empty;
 
 	[Parameter]
+#pragma warning disable BL0007 // Component parameter should be auto property
 	public string Value
 	{
 		get => value;
@@ -11,4 +12,5 @@
 			throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(value)} is invalid");
 		}
 	}
+#pragma warning restore BL0007 // Component parameter should be auto property
 }
