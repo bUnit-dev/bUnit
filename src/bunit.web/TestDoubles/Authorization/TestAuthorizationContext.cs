@@ -139,7 +139,7 @@ public class TestAuthorizationContext
 	}
 
 	/// <summary>
-	/// Sets the claims on the curren user/principal.
+	/// Sets the claims on the current user/principal.
 	/// </summary>
 	/// <param name="claims">Claims to set.</param>
 	public TestAuthorizationContext SetClaims(params Claim[] claims)
@@ -149,4 +149,14 @@ public class TestAuthorizationContext
 
 		return this;
 	}
+
+	/// <summary>
+	/// Sets the Identity.AuthenticationType for the current user/principa;.
+	/// </summary>
+	/// <param name="authenticationType">The authentication type to set.</param>
+	public TestAuthorizationContext SetAuthenticationType(string authenticationType)
+    {
+        this.authProvider.TriggerAuthenticationStateChanged(this.UserName, this.Roles, this.Claims, authenticationType);
+        return this;
+    }
 }

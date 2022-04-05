@@ -146,5 +146,24 @@ namespace Bunit.Docs.Samples
                             <li>You are a CONTENT EDITOR</li>
                           </ul>");
     }
+
+    [Fact(DisplayName = "Custom authentication type")]
+    public void Test007()
+    {
+      // Arrange
+      using var ctx = new TestContext();
+      var authContext = ctx.AddTestAuthorization();
+      authContext.SetAuthorized("TEST USER");
+      authContext.SetAuthenticationType("custom-auth-type");
+
+      // Act
+      var cut = ctx.RenderComponent<UserRights>();
+
+      // Assert
+      cut.MarkupMatches(@"<h1>Hi TEST USER, you have these claims and rights:</h1>
+                          <ul>
+                            <li>You have the authentication type CUSTOM AUTH TYPE</li>
+                          </ul>");
+    }
   }
 }

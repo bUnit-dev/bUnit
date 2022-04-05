@@ -240,4 +240,33 @@ public class AuthorizationTest : TestContext
 
 		cut.MarkupMatches("<p>True</p>");
 	}
+
+	[Fact(DisplayName = "SimpleAuthViewWithCustomAuthType with set auth type")]
+	public void Test021()
+	{
+		// arrange
+		var authContext = this.AddTestAuthorization();
+		authContext.SetAuthorized("TestUser");
+		authContext.SetAuthenticationType("custom-auth-type");
+
+		// act
+		var cut = RenderComponent<SimpleAuthViewWithCustomAuthType>();
+
+		// assert
+		cut.MarkupMatches("<p>Authorized content with custom auth type.</p>");
+	}
+
+	[Fact(DisplayName = "SimpleAuthViewWithCustomAuthType without set auth type")]
+	public void Test022()
+	{
+		// arrange
+		var authContext = this.AddTestAuthorization();
+		authContext.SetAuthorized("TestUser");
+
+		// act
+		var cut = RenderComponent<SimpleAuthViewWithCustomAuthType>();
+
+		// assert
+		cut.MarkupMatches(string.Empty);
+	}
 }
