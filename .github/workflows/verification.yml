@@ -2,6 +2,8 @@ name: verification
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'src/**'
       - 'tests/**'
