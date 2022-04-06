@@ -1,9 +1,6 @@
 name: verification against nightly aspnet core builds 
 
 on:
-  push:
-    branches:
-      - 'feature/*'
   schedule:
     - cron: "0 0 * * *"
 
