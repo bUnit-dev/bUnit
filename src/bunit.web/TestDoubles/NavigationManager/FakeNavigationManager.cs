@@ -49,11 +49,19 @@ public sealed class FakeNavigationManager : NavigationManager
 
 		renderer.Dispatcher.InvokeAsync(() =>
 		{
-			Uri = ToAbsoluteUri(uri).OriginalString;
+			Uri = absoluteUri.OriginalString;
 
+			// Only notify of changes if user navigates within the same
+			// base url (domain). Otherwise, the user navigated away
+			// from the app, and Blazor's NavigationManager would
+			// not notify of location changes.
 			if (!changedBaseUri)
 			{
 				NotifyLocationChanged(isInterceptedLink: false);
+			}
+			else
+			{
+				BaseUri = GetBaseUri(absoluteUri);
 			}
 		});
 	}
@@ -81,11 +89,19 @@ public sealed class FakeNavigationManager : NavigationManager
 
 			renderer.Dispatcher.InvokeAsync(() =>
 			{
-				Uri = ToAbsoluteUri(uri).OriginalString;
+				Uri = absoluteUri.OriginalString;
 
+				// Only notify of changes if user navigates within the same
+				// base url (domain). Otherwise, the user navigated away
+				// from the app, and Blazor's NavigationManager would
+				// not notify of location changes.
 				if (!changedBaseUri)
 				{
 					NotifyLocationChanged(isInterceptedLink: false);
+				}
+				else
+				{
+					BaseUri = GetBaseUri(absoluteUri);
 				}
 			});
 		}
