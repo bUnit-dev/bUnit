@@ -24,6 +24,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: 📦 Setup nuget nightly builds
+        run: |
+          dotnet nuget add source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json
+
       - name: 🧪 Run unit tests
         run: |
           dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release -f net7.0 --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
