@@ -18,6 +18,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 - Fixed step by step guide for building and viewing the documentation locally. By [@linkdotnet](https://github.com/linkdotnet).
 
+- `FakeNavigationManager.NavigateTo` could lead to exceptions when navigating to external url's. Reported by (@TDroogers)[https://github.com/TDroogers]. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.6.4] - 2022-02-22
 
 A quick minor release that primiarily fixes a regression in 1.5.12.

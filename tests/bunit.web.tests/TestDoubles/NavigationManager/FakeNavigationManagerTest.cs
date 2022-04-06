@@ -138,5 +138,30 @@ namespace Bunit.TestDoubles
 				.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl", new NavigationOptions() { ReplaceHistoryEntry = true }));
 		}
 #endif
+
+		[Fact(DisplayName = "Navigate to an external url should set BaseUri")]
+		public void Test008()
+		{
+			const string externalUri = "https://bunit.dev/docs/getting-started/index.html";
+			var sut = CreateFakeNavigationMananger();
+
+			sut.NavigateTo(externalUri);
+
+			sut.BaseUri.ShouldBe("https://bunit.dev/");
+			sut.Uri.ShouldBe(externalUri);
+		}
+
+		[Fact(DisplayName = "Navigate to external url should not invoke LocationChanged event")]
+		public void Test009()
+		{
+			var locationChangedInvoked = false;
+			const string externalUri = "https://bunit.dev/docs/getting-started/index.html";
+			var sut = CreateFakeNavigationMananger();
+			sut.LocationChanged += (s, e) => locationChangedInvoked = true;
+
+			sut.NavigateTo(externalUri);
+
+			locationChangedInvoked.ShouldBeFalse();
+		}
 	}
 }
