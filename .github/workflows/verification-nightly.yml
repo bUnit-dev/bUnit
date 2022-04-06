@@ -1,0 +1,48 @@
+name: verification against nightly aspnet core builds 
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  verify-bunit:
+    name: 👌 Verify bUnit
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/dotnet/nightly/sdk:7.0
+
+    steps:
+      - name: 🌛 Show dotnet version
+        run: |
+          dotnet --info
+
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: 📦 Setup nuget nightly builds
+        run: |
+          dotnet restore --verbosity detailed -s https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json -s https://api.nuget.org/v3/index.json
+
+      - name: 🧪 Run unit tests
+        run: |
+          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release -f net7.0 --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release -f net7.0 --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release -f net7.0 --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+
+      - name: 🧾 Collect dotnet information
+        if: failure()
+        run: |
+          echo "DOTNET_VERSION=$(dotnet --version)" >> $GITHUB_ENV
+          echo $DOTNET_VERSION
+
+      - name: ⚡ Create issue if failed
+        if: failure()
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ADJECTIVE: DOTNET_VERSION
+        with:
+          filename: .github/nightly-failed.md
+          update_existing: true

@@ -11,6 +11,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 - Added method `SetAuthenticationType` to `TestAuthorizationContext` to allow for custom authentication type checks. By [@TimPurdum](https://github.com/timpurdum).
 
 - Added `DisposeComponents` to `TestContextBase`. It will dispose and remove all components rendered by the `TestContextBase`. By [@linkdotnet](https://github.com/linkdotnet).
+
+- Added .NET 7 as a target framework for bUnit. By [@linkdotnet](https://github.com/linkdotnet).
  
 ### Fixed
 

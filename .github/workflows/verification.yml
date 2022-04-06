@@ -31,20 +31,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: ⚙️ Setup dotnet 3.1.x
-        uses: actions/setup-dotnet@v1
+      - name: ⚙️ Setup dotnet versions
+        uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '3.1.x'
-
-      - name: ⚙️ Setup dotnet 5.0.x
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '5.0.x'
-
-      - name: ⚙️ Setup dotnet 6.0.x
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.0.x
+          dotnet-version: |
+            3.1.x
+            5.0.x
+            6.0.x
+            7.0.x
+          include-prerelease: true
 
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.0
