@@ -2,6 +2,8 @@ using Bunit.Rendering;
 
 namespace Bunit.TestDoubles;
 
+using URI = Uri;
+
 /// <summary>
 /// Represents a fake <see cref="NavigationManager"/> that captures calls to
 /// <see cref="NavigationManager.NavigateTo(string, bool)"/> for testing purposes.
@@ -34,13 +36,33 @@ public sealed class FakeNavigationManager : NavigationManager
 	/// <inheritdoc/>
 	protected override void NavigateToCore(string uri, bool forceLoad)
 	{
+		var absoluteUri = GetNewAbsoluteUri(uri);
+		var changedBaseUri = HasDifferentBaseUri(absoluteUri);
+
+		if (changedBaseUri)
+		{
+			BaseUri = GetBaseUri(absoluteUri);
+		}
+
 		Uri = ToAbsoluteUri(uri).OriginalString;
 		history.Push(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
 
 		renderer.Dispatcher.InvokeAsync(() =>
 		{
-			Uri = ToAbsoluteUri(uri).OriginalString;
-			NotifyLocationChanged(isInterceptedLink: false);
+			Uri = absoluteUri.OriginalString;
+
+			// Only notify of changes if user navigates within the same
+			// base url (domain). Otherwise, the user navigated away
+			// from the app, and Blazor's NavigationManager would
+			// not notify of location changes.
+			if (!changedBaseUri)
+			{
+				NotifyLocationChanged(isInterceptedLink: false);
+			}
+			else
+			{
+				BaseUri = GetBaseUri(absoluteUri);
+			}
 		});
 	}
 #endif
@@ -50,6 +72,14 @@ public sealed class FakeNavigationManager : NavigationManager
 		/// <inheritdoc/>
 		protected override void NavigateToCore(string uri, NavigationOptions options)
 		{
+			var absoluteUri = GetNewAbsoluteUri(uri);
+			var changedBaseUri = HasDifferentBaseUri(absoluteUri);
+
+			if (changedBaseUri)
+			{
+				BaseUri = GetBaseUri(absoluteUri);
+			}
+
 			Uri = ToAbsoluteUri(uri).OriginalString;
 
 			if (options.ReplaceHistoryEntry && history.Count > 0)
@@ -59,9 +89,39 @@ public sealed class FakeNavigationManager : NavigationManager
 
 			renderer.Dispatcher.InvokeAsync(() =>
 			{
-				Uri = ToAbsoluteUri(uri).OriginalString;
-				NotifyLocationChanged(isInterceptedLink: false);
+				Uri = absoluteUri.OriginalString;
+
+				// Only notify of changes if user navigates within the same
+				// base url (domain). Otherwise, the user navigated away
+				// from the app, and Blazor's NavigationManager would
+				// not notify of location changes.
+				if (!changedBaseUri)
+				{
+					NotifyLocationChanged(isInterceptedLink: false);
+				}
+				else
+				{
+					BaseUri = GetBaseUri(absoluteUri);
+				}
 			});
 		}
 #endif
+
+	private URI GetNewAbsoluteUri(string uri)
+		=> URI.IsWellFormedUriString(uri, UriKind.Relative)
+			? ToAbsoluteUri(uri)
+			: new URI(uri, UriKind.Absolute);
+
+	private bool HasDifferentBaseUri(URI absoluteUri)
+		=> URI.Compare(
+			new URI(BaseUri, UriKind.Absolute),
+			absoluteUri,
+			UriComponents.SchemeAndServer,
+			UriFormat.Unescaped,
+			StringComparison.OrdinalIgnoreCase) != 0;
+
+	private static string GetBaseUri(URI uri)
+	{
+		return uri.Scheme + "://" + uri.Authority + "/";
+	}
 }

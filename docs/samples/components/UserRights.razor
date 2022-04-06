@@ -21,6 +21,12 @@
   <AuthorizeView Policy="content-editor">
     <li>You are a CONTENT EDITOR</li>
   </AuthorizeView>
+  <AuthorizeView>
+    @if(context.User.Identity?.AuthenticationType == "custom-auth-type")
+    {
+      <li>You have the authentication type CUSTOM AUTH TYPE</li>
+    }
+  </AuthorizeView>
 </ul>
 
 @code 
