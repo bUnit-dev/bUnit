@@ -43,8 +43,8 @@ NOTE: This package represents experimental features of bUnit that has been super
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.0-preview.2.22153.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0-preview.2.22153.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet7Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet7Version)" />
 	</ItemGroup>
 
 	<ItemGroup>
