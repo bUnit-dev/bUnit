@@ -30,7 +30,7 @@ jobs:
           dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release -f net7.0 --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
           dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release -f net7.0 --logger GitHubActions --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
 
-      - name: Create issue if failed
+      - name: ⚡ Create issue if failed
         if: failure()
         uses: JasonEtco/create-an-issue@v2
         env:
