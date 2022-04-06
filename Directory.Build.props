@@ -49,7 +49,7 @@
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
 		<PackageReference Include="Meziantou.Analyzer" Version="1.0.698" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.36.1.44192" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.37.0.45539" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
