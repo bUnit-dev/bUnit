@@ -5,7 +5,7 @@
 		<DotNet3Version>3.1.22</DotNet3Version>
 		<DotNet5Version>5.0.0</DotNet5Version>
 		<DotNet6Version>6.0.0</DotNet6Version>
-		<DotNet7Version>7.0.0</DotNet7Version>
+		<DotNet7Version>7.0.0-preview.2.*</DotNet7Version>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->
