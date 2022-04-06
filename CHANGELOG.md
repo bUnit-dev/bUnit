@@ -12,7 +12,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 - Added `DisposeComponents` to `TestContextBase`. It will dispose and remove all components rendered by the `TestContextBase`. By [@linkdotnet](https://github.com/linkdotnet).
 
-- Added .NET 7 (preview 2) as a target framework for bUnit, bUnit.core and bUnit.web. Enabled nightly build which verifies against .NET nightly builds. Reported by [@egil](https://github.com/egil). By [@linkdotnet](https://github.com/linkdotnet).
+- Added .NET 7 as a target framework for bUnit. By [@linkdotnet](https://github.com/linkdotnet).
  
 ### Fixed
 
