@@ -109,7 +109,7 @@ public sealed class FakeNavigationManager : NavigationManager
 
 	private URI GetNewAbsoluteUri(string uri)
 		=> URI.IsWellFormedUriString(uri, UriKind.Relative)
-			? base.ToAbsoluteUri(uri)
+			? ToAbsoluteUri(uri)
 			: new URI(uri, UriKind.Absolute);
 
 	private bool HasDifferentBaseUri(URI absoluteUri)
