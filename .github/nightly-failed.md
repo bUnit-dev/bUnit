@@ -1,5 +1,5 @@
 ---
-title: Nightly Build failed!
+title: Verification against .NET 7 nightly failed
 labels: input needed
 ---
 
