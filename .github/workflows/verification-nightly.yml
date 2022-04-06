@@ -26,7 +26,7 @@ jobs:
 
       - name: 📦 Setup nuget nightly builds
         run: |
-          dotnet nuget add source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json
+          dotnet restore --verbosity detailed -s https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json -s https://api.nuget.org/v3/index.json
 
       - name: 🧪 Run unit tests
         run: |
