@@ -1,4 +1,4 @@
-name: verification against nightly aspnet core builds 
+name: verification-dotnet-nightly
 
 on:
   schedule:
