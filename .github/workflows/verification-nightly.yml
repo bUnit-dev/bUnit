@@ -23,13 +23,13 @@ jobs:
 
       - name: 📦 Setup nuget nightly builds
         run: |
-          dotnet restore --verbosity detailed -s https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json -s https://api.nuget.org/v3/index.json
+          dotnet restore --verbosity normal -s https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json -s https://api.nuget.org/v3/index.json
 
       - name: 🧪 Run unit tests
         run: |
-          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release -f net7.0 --logger:"console;verbosity=normal" --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
-          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release -f net7.0 --logger:"console;verbosity=normal" --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
-          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release -f net7.0 --logger:"console;verbosity=normal" --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --no-restore -f net7.0 --logger:"console;verbosity=normal" --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --no-restore -f net7.0 --logger:"console;verbosity=normal" --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --no-restore -f net7.0 --logger:"console;verbosity=normal" --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
 
       - name: 🧾 Collect dotnet information
         if: failure()
