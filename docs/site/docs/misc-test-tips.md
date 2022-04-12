@@ -101,4 +101,4 @@ With xUnit, this can be done as follows:
 
 ## Easier HTML copying/pasting
 
-When writing tests in `.cs` files, you may want to copy/paste HTML into C# strings from something like a Razor file, for example. This is tedious to do manually as you have to escape quotes and other special characters, for example `<div class="alert">` needs to be written as `"<div class=\"alert\">"`. The extension [SmartPaster2019](https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster2013) automatically escapes any characters that need to be escaped when it is used to copy strings.
+When writing tests in `.cs` files, you may want to copy/paste HTML into C# strings from something like a Razor file, for example. This is tedious to do manually as you have to escape quotes and other special characters, for example `<div class="alert">` needs to be written as `"<div class=\"alert\">"`. The extension [SmartPaster](https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster) automatically escapes any characters that need to be escaped when it is used to copy strings.
