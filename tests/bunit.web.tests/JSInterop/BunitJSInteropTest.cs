@@ -238,8 +238,10 @@ public partial class BunitJSInteropTest
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
 		var planned = sut.SetupVoid("foo", "bar", 42);
-		// If we await here we run into a deadlock
+#pragma warning disable CS4014
+		//  If we await here we run into a deadlock
 		sut.JSRuntime.InvokeVoidAsync("foo", "bar", 42);
+#pragma warning restore CS4014
 
 		await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo", "bar", 41));
 
@@ -255,8 +257,10 @@ public partial class BunitJSInteropTest
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
 		var planned = sut.SetupVoid("foo", x => x.Arguments.Count == 2);
+#pragma warning disable CS4014
 		// If we await here we run into a deadlock
 		sut.JSRuntime.InvokeVoidAsync("foo", "bar", 42);
+#pragma warning restore CS4014
 
 		await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo", 42));
 		await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo"));
