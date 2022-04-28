@@ -41,6 +41,11 @@ jobs:
             7.0.x
           include-prerelease: true
 
+      - name: 🎨 Setup color
+        run: |
+          echo "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION=1" >> $GITHUB_ENV
+          echo "TERM=xterm" >> $GITHUB_ENV
+
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.0
         with:
