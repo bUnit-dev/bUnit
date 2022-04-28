@@ -31,18 +31,18 @@ public partial class BunitJSInteropTest
 	}
 
 	[Fact(DisplayName = "Mock throws exception when in strict mode and invocation has not been setup")]
-	public void Test003()
+	public async Task Test003()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
 		var identifier = "func";
 		var args = new[] { "bar", "baz" };
 
-		Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync(identifier, args))
+		(await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync(identifier, args)))
 			.Invocation.ShouldSatisfyAllConditions(
 				x => x.Identifier.ShouldBe(identifier),
 				x => x.Arguments.ShouldBe(args));
 
-		Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeAsync<object>(identifier, args))
+		(await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeAsync<object>(identifier, args)))
 			.Invocation.ShouldSatisfyAllConditions(
 				x => x.Identifier.ShouldBe(identifier),
 				x => x.Arguments.ShouldBe(args));
@@ -234,14 +234,14 @@ public partial class BunitJSInteropTest
 	}
 
 	[Fact(DisplayName = "Arguments used in SetupVoid are matched with invocations")]
-	public void Test013()
+	public async Task Test013()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
 		var planned = sut.SetupVoid("foo", "bar", 42);
-
+		// If we await here we run into a deadlock
 		sut.JSRuntime.InvokeVoidAsync("foo", "bar", 42);
 
-		Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo", "bar", 41));
+		await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo", "bar", 41));
 
 		planned.Invocations.Count.ShouldBe(1);
 		var invocation = planned.Invocations["foo"][0];
@@ -251,14 +251,15 @@ public partial class BunitJSInteropTest
 	}
 
 	[Fact(DisplayName = "Argument matcher used in SetupVoid are matched with invocations")]
-	public void Test014()
+	public async Task Test014()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
 		var planned = sut.SetupVoid("foo", x => x.Arguments.Count == 2);
+		// If we await here we run into a deadlock
 		sut.JSRuntime.InvokeVoidAsync("foo", "bar", 42);
 
-		Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo", 42));
-		Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo"));
+		await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo", 42));
+		await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("foo"));
 
 		planned.Invocations.Count.ShouldBe(1);
 		var invocation = planned.Invocations["foo"][0];
@@ -286,12 +287,12 @@ public partial class BunitJSInteropTest
 	}
 
 	[Fact(DisplayName = "Empty Setup only matches the configured return type")]
-	public void Test016()
+	public async Task Test016()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
 		var planned = sut.Setup<Guid>();
 
-		Should.Throw<JSRuntimeUnhandledInvocationException>(() => sut.JSRuntime.InvokeAsync<string>("foo"));
+		await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeAsync<string>("foo"));
 
 		planned.Invocations.Count.ShouldBe(0);
 	}
@@ -364,7 +365,7 @@ public partial class BunitJSInteropTest
 		var sut = CreateSut(JSRuntimeMode.Strict);
 		var handler = sut.SetupVoid();
 
-		Should.Throw<JSRuntimeUnhandledInvocationException>(() => sut.JSRuntime.InvokeAsync<string>(identifier));
+		await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeAsync<string>(identifier));
 
 		var invocation = sut.JSRuntime.InvokeVoidAsync(identifier);
 		handler.SetVoidResult();
@@ -376,13 +377,13 @@ public partial class BunitJSInteropTest
 	}
 
 	[Fact(DisplayName = "Empty Setup is not used for invocation with void return types")]
-	public void Test021()
+	public async Task Test021()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
 
 		sut.Setup<Guid>();
 
-		Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("someFunc"));
+		await Should.ThrowAsync<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("someFunc"));
 	}
 
 	[Fact(DisplayName = "CatchAll handlers SetupVoid is only used when there is no void handler")]
