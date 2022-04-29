@@ -1,0 +1,21 @@
+@using Microsoft.AspNetCore.Components.Routing
+@implements IDisposable
+@inject NavigationManager NavigationManager
+@code {
+  [Parameter] public Action<string> LocationChangedCallback { get; set; }
+
+  protected override void OnInitialized()
+  {
+    NavigationManager.LocationChanged += OnLocationChanged;
+  }
+
+  public void Dispose()
+  {
+    NavigationManager.LocationChanged -= OnLocationChanged;
+  }
+
+  private void OnLocationChanged(object sender, LocationChangedEventArgs e)
+  {
+    LocationChangedCallback(e.Location);
+  }
+}

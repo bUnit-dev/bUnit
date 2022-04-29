@@ -18,8 +18,13 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 	/// <param name="userName">Identity's user name.</param>
 	/// <param name="roles">Roles that this user principal has.</param>
 	/// <param name="claims">Claims to add to user principal.</param>
-	public FakeAuthenticationStateProvider(string userName, IEnumerable<string>? roles = null, IEnumerable<Claim>? claims = null)
-		=> SetAuthenticatedState(userName, roles, claims);
+	/// <param name="authenticationType">The authentication type for the user principal.</param>
+	public FakeAuthenticationStateProvider(
+		string userName, 
+		IEnumerable<string>? roles = null,
+		IEnumerable<Claim>? claims = null,
+		string? authenticationType = null)
+		=> SetAuthenticatedState(userName, roles, claims, authenticationType);
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="FakeAuthenticationStateProvider"/> class.
@@ -38,9 +43,14 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 	/// <param name="userName">Identity's user name.</param>
 	/// <param name="roles">Roles that this user principal has.</param>
 	/// <param name="claims">Claims to add to user principal.</param>
-	public void TriggerAuthenticationStateChanged(string userName, IEnumerable<string>? roles = null, IEnumerable<Claim>? claims = null)
+	/// <param name="authenticationType">The authentication type for the user principal.</param>
+	public void TriggerAuthenticationStateChanged(
+		string userName, 
+		IEnumerable<string>? roles = null, 
+		IEnumerable<Claim>? claims = null,
+		string? authenticationType = null)
 	{
-		SetAuthenticatedState(userName, roles, claims);
+		SetAuthenticatedState(userName, roles, claims, authenticationType);
 		NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 	}
 
@@ -76,12 +86,16 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 			authState = new TaskCompletionSource<AuthenticationState>();
 	}
 
-	private void SetAuthenticatedState(string userName, IEnumerable<string>? roles, IEnumerable<Claim>? claims)
+	private void SetAuthenticatedState(
+		string userName, 
+		IEnumerable<string>? roles, 
+		IEnumerable<Claim>? claims, 
+		string? authenticationType)
 	{
 		if (authState.Task.IsCompleted)
 			authState = new TaskCompletionSource<AuthenticationState>();
 
-		authState.SetResult(CreateAuthenticationState(userName, roles, claims));
+		authState.SetResult(CreateAuthenticationState(userName, roles, claims, authenticationType));
 	}
 
 	/// <summary>
@@ -90,20 +104,23 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 	/// <param name="username">Identity's user name.</param>
 	/// <param name="roles">Roles that this user principal has.</param>
 	/// <param name="claims">Claims to add to user principal.</param>
+	/// <param name="authenticationType">The authentication type for the user principal.</param>
 	/// <returns>Instance of AuthenticationState with user principal.</returns>
 	private static AuthenticationState CreateAuthenticationState(
 		string username,
 		IEnumerable<string>? roles = null,
-		IEnumerable<Claim>? claims = null)
+		IEnumerable<Claim>? claims = null,
+		string? authenticationType = null)
 	{
 		roles = roles ?? Array.Empty<string>();
 		claims = claims ?? Array.Empty<Claim>();
+		authenticationType = authenticationType ?? "bUnit Fake Authentication";
 
 		var usernameClaim = new Claim(ClaimsIdentity.DefaultNameClaimType, username);
 		var roleClaims = roles.Select(x => new Claim(ClaimsIdentity.DefaultRoleClaimType, x));
 		var allClaims = roleClaims.Concat(claims).Prepend(usernameClaim);
 
-		var identity = new ClaimsIdentity(claims: allClaims, authenticationType: "bUnit Fake Authentication");
+		var identity = new ClaimsIdentity(claims: allClaims, authenticationType: authenticationType);
 		var principal = new ClaimsPrincipal(identity);
 
 		return new AuthenticationState(principal);

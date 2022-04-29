@@ -79,6 +79,11 @@ public abstract class TestContextWrapper
 		=> TestContext?.Render(renderFragment) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 
 	/// <summary>
+	/// Disposes all components rendered via this <see cref="TestContext"/>.
+	/// </summary>
+	public virtual void DisposeComponents() => TestContext?.DisposeComponents();
+
+	/// <summary>
 	/// Dummy method required to allow Blazor's compiler to generate
 	/// C# from .razor files.
 	/// </summary>

@@ -28,15 +28,20 @@ jobs:
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.0
            
-      - name: ⚙️ Setup dotnet 5.0.x
-        uses: actions/setup-dotnet@v1
+      - name: ⚙️ Setup dotnet versions
+        uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '5.0.x'
-
-      - name: ⚙️ Setup dotnet 6.0.x
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.0.x
+          dotnet-version: |
+            3.1.x
+            5.0.x
+            6.0.x
+            7.0.x
+          include-prerelease: true
+          
+      - name: 🎨 Setup color
+        run: |
+          echo "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION=1" >> $GITHUB_ENV
+          echo "TERM=xterm" >> $GITHUB_ENV
       
       - name: 🛠️ Update tokens in project files
         uses: cschleiden/replace-tokens@v1
@@ -50,8 +55,8 @@ jobs:
           dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
         
       - name: 🛠️ Upload library to GitHub Package Repository
-        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bunit-dev/index.json --skip-duplicate --no-symbols true
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bunit-dev/index.json --skip-duplicate --no-symbols
 
       - name: 🛠️ Upload library to NuGet.org repository
         if: github.event.inputs.nugetRelease == 'true'
-        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols true
+        run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols

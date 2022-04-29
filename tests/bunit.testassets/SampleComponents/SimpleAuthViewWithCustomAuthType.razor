@@ -1,0 +1,8 @@
+@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+	@if (context.User.Identity?.AuthenticationType == "custom-auth-type")
+    {
+        <p>Authorized content with custom auth type.</p>
+    }
+</AuthorizeView>

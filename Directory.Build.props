@@ -5,6 +5,7 @@
 		<DotNet3Version>3.1.22</DotNet3Version>
 		<DotNet5Version>5.0.0</DotNet5Version>
 		<DotNet6Version>6.0.0</DotNet6Version>
+		<DotNet7Version>7.0.0-*</DotNet7Version>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->
@@ -47,8 +48,8 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
-		<PackageReference Include="Meziantou.Analyzer" Version="1.0.695" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.35.0.42613" PrivateAssets="All" />
+		<PackageReference Include="Meziantou.Analyzer" Version="1.0.701" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.38.0.46746" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">

@@ -5,6 +5,7 @@
 using System.Numerics;
 using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
+using Bunit.TestAssets.SampleComponents.DisposeComponents;
 using Xunit.Abstractions;
 
 namespace Bunit.BlazorE2E;
@@ -12,7 +13,7 @@ namespace Bunit.BlazorE2E;
 /// <summary>
 /// This tests are based on the tests from the following AspNetCore tests class.
 /// The aim is to only modify the original tests to not use Selenium, and instead use the
-/// <see cref="TextContext" />.
+/// <see cref="TestContext" />.
 /// https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs.
 /// </summary>
 public class ComponentRenderingTest : TestContext

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1;net5.0;net6.0;net7.0</TargetFrameworks>
 		<RootNamespace>Bunit</RootNamespace>
 		<AssemblyName>Bunit.Web.TestComponents</AssemblyName>
 	</PropertyGroup>
@@ -35,6 +35,16 @@ NOTE: This package represents experimental features of bUnit that has been super
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet5Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet5Version)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet6Version)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet7Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet7Version)" />
 	</ItemGroup>
 
 	<ItemGroup>

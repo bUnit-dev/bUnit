@@ -19,7 +19,7 @@ namespace Bunit.Docs.Samples
         .Add(p => p.Value, "FOO")
       );
 
-      // The component will be rendered as a chld of last 
+      // The component will be rendered as a child of last
       // component added to the RenderTree property.
       var cut = ctx.RenderComponent<PrintCascadingValue>();
 
@@ -37,7 +37,7 @@ namespace Bunit.Docs.Samples
         .Add(p => p.Value, "BAR?")
       );
 
-      // The component will be rendered as a chld of last 
+      // The component will be rendered as a child of last
       // component added to the RenderTree property.
       var cut = ctx.RenderComponent<PrintCascadingValue>();
 
