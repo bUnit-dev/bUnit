@@ -6,19 +6,21 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.7.7] - 2022-04-29
+
 ### Added
 
-- Added method `SetAuthenticationType` to `TestAuthorizationContext` to allow for custom authentication type checks. By [@TimPurdum](https://github.com/timpurdum).
+-   Added method `SetAuthenticationType` to `TestAuthorizationContext` to allow for custom authentication type checks. By [@TimPurdum](https://github.com/timpurdum).
 
-- Added `DisposeComponents` to `TestContextBase`. It will dispose and remove all components rendered by the `TestContextBase`. By [@linkdotnet](https://github.com/linkdotnet).
+-   Added `DisposeComponents` to `TestContextBase`. It will dispose and remove all components rendered by the `TestContextBase`. By [@linkdotnet](https://github.com/linkdotnet).
 
-- Added .NET 7 as a target framework for bUnit. By [@linkdotnet](https://github.com/linkdotnet).
- 
+-   Added .NET 7 as a target framework for bUnit. By [@linkdotnet](https://github.com/linkdotnet).
+
 ### Fixed
 
-- Fixed step by step guide for building and viewing the documentation locally. By [@linkdotnet](https://github.com/linkdotnet).
+-   Fixed step by step guide for building and viewing the documentation locally. By [@linkdotnet](https://github.com/linkdotnet).
 
-- `FakeNavigationManager.NavigateTo` could lead to exceptions when navigating to external url's. Reported by (@TDroogers)[https://github.com/TDroogers]. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+-   `FakeNavigationManager.NavigateTo` could lead to exceptions when navigating to external url's. Reported by (@TDroogers)[https://github.com/TDroogers]. Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.6.4] - 2022-02-22
 
@@ -1138,7 +1140,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**  
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.6.4...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.7.7...HEAD
+
+[1.7.7]: https://github.com/bUnit-dev/bUnit/compare/v1.6.4...v1.7.7
 
 [1.6.4]: https://github.com/bUnit-dev/bUnit/compare/v1.5.12...v1.6.4
 
