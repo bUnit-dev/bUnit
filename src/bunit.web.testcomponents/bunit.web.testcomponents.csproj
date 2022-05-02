@@ -24,7 +24,7 @@ NOTE: This package represents experimental features of bUnit that has been super
 		<PackageReference Include="xunit.assert" Version="2.4.1" />
 		<PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
 		<PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.4.255" PrivateAssets="All" />
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.5.103" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
