@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Changed
+ -   `Htmlizer` uses `StringBuilder` instead of `List<string>` to reduce allocations and improve render speed. By [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.7.7] - 2022-04-29
 
 ### Added
