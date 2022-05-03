@@ -59,6 +59,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".workflows", ".workflows", 
 		.github\workflows\verification.yml = .github\workflows\verification.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{F6084D31-2A92-4794-A47E-A8F2254E6970}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.benchmarks", "benchmark\bunit.benchmarks\bunit.benchmarks.csproj", "{9F7A0623-8294-4A5D-946F-70C481732AA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.benchmarks.assets", "benchmark\bunit.benchmarks.assets\bunit.benchmarks.assets.csproj", "{3619481F-DF6F-4399-9FED-450EE545A19E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +103,14 @@ Global
 		{4CAB561E-0AFF-4516-AB9B-981F94EF1E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CAB561E-0AFF-4516-AB9B-981F94EF1E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CAB561E-0AFF-4516-AB9B-981F94EF1E86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F7A0623-8294-4A5D-946F-70C481732AA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F7A0623-8294-4A5D-946F-70C481732AA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F7A0623-8294-4A5D-946F-70C481732AA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F7A0623-8294-4A5D-946F-70C481732AA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3619481F-DF6F-4399-9FED-450EE545A19E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3619481F-DF6F-4399-9FED-450EE545A19E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3619481F-DF6F-4399-9FED-450EE545A19E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3619481F-DF6F-4399-9FED-450EE545A19E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +125,8 @@ Global
 		{7972A80F-30DC-4EF4-9294-7D4DD2965882} = {6EA09ED4-B714-4E6F-B0E1-4D987F8AE520}
 		{F61B8A55-3B5B-45FB-8E38-DBF9296B35C7} = {9A2B3B34-D41C-43E8-BC7D-246BEBE48D59}
 		{4CAB561E-0AFF-4516-AB9B-981F94EF1E86} = {6EA09ED4-B714-4E6F-B0E1-4D987F8AE520}
+		{9F7A0623-8294-4A5D-946F-70C481732AA5} = {F6084D31-2A92-4794-A47E-A8F2254E6970}
+		{3619481F-DF6F-4399-9FED-450EE545A19E} = {F6084D31-2A92-4794-A47E-A8F2254E6970}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24106918-1C86-4769-BDA6-9C80E64CD260}
