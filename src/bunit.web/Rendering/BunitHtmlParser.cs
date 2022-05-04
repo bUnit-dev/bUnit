@@ -61,8 +61,10 @@ public sealed class BunitHtmlParser : IDisposable
 	{
 		if (markup is null)
 			throw new ArgumentNullException(nameof(markup));
+			
+		var document = GetNewDocumentAsync().GetAwaiter().GetResult();
 
-		var (ctx, matchedElement) = GetParseContextAsync(markup).GetAwaiter().GetResult();
+		var (ctx, matchedElement) = GetParseContext(markup, document);
 
 		return ctx is null && matchedElement is not null
 			? ParseSpecial(markup, matchedElement)
@@ -82,9 +84,10 @@ public sealed class BunitHtmlParser : IDisposable
 		};
 	}
 
-	private async Task<(IElement? Context, string? MatchedElement)> GetParseContextAsync(string markup)
+	private static (IElement? Context, string? MatchedElement) GetParseContext(
+		ReadOnlySpan<char> markup, 
+		IDocument document)
 	{
-		var document = await GetNewDocumentAsync().ConfigureAwait(false);
 		var startIndex = markup.IndexOfFirstNonWhitespaceChar();
 
 		// verify that first non-whitespace characters is a '<'
@@ -96,7 +99,10 @@ public sealed class BunitHtmlParser : IDisposable
 		return (Context: document.Body, MatchedElement: null);
 	}
 
-	private static (IElement? Context, string? MatchedElement) GetParseContextFromTag(string markup, int startIndex, IDocument document)
+	private static (IElement? Context, string? MatchedElement) GetParseContextFromTag(
+		ReadOnlySpan<char> markup,
+		int startIndex,
+		IDocument document)
 	{
 		Debug.Assert(document.Body is not null, "Body of the document should never be null at this point.");
 
