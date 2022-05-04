@@ -2,7 +2,11 @@ namespace Bunit.Rendering;
 
 internal static class BunitHtmlParserHelpers
 {
-	internal static bool StartsWithElements(this string markup, string[] tags, int startIndex, [NotNullWhen(true)] out string? matchedElement)
+	internal static bool StartsWithElements(
+		this ReadOnlySpan<char> markup,
+		string[] tags,
+		int startIndex,
+		[NotNullWhen(true)] out string? matchedElement)
 	{
 		matchedElement = null;
 
@@ -18,7 +22,7 @@ internal static class BunitHtmlParserHelpers
 		return false;
 	}
 
-	internal static bool StartsWithElement(this string markup, string tag, int startIndex)
+	internal static bool StartsWithElement(this ReadOnlySpan<char> markup, string tag, int startIndex)
 	{
 		var matchesTag = tag.Length + 1 < markup.Length - startIndex;
 		var charIndexAfterTag = tag.Length + startIndex + 1;
@@ -49,11 +53,11 @@ internal static class BunitHtmlParserHelpers
 
 	internal static bool IsTagStart(this char c) => c == '<';
 
-	internal static int IndexOfFirstNonWhitespaceChar(this string markup)
+	internal static int IndexOfFirstNonWhitespaceChar(this ReadOnlySpan<char> markup)
 	{
 		for (int i = 0; i < markup.Length; i++)
 		{
-			if (!char.IsWhiteSpace(markup, i))
+			if (!char.IsWhiteSpace(markup[i]))
 				return i;
 		}
 
