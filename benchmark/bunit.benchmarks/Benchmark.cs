@@ -4,10 +4,10 @@ using bunit.benchmarks.assets;
 namespace Bunit;
 
 [MemoryDiagnoser]
-public class Benchmark : TestContext
+public class Benchmark : BenchmarkBase
 {
     [Benchmark]
-    public IRenderedComponent<Counter> RenderCounter()
+    public IRenderedComponentBase<Counter> RenderCounter()
     {
         return RenderComponent<Counter>();
     }
