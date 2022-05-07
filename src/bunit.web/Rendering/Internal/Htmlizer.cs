@@ -58,12 +58,12 @@ internal static class Htmlizer
 	{
 		var context = new HtmlRenderingContext(framesCollection);
 		var frames = context.GetRenderTreeFrames(componentId);
-		var newPosition = RenderFrames(context, frames, 0, frames.Count);
-		Debug.Assert(newPosition == frames.Count, $"frames.Count = {frames.Count}. newPosition = {newPosition}");
+		var newPosition = RenderFrames(context, frames, 0, frames.Length);
+		Debug.Assert(newPosition == frames.Length, $"frames.Length = {frames.Length}. newPosition = {newPosition}");
 		return context.Result.ToString();
 	}
 
-	private static int RenderFrames(HtmlRenderingContext context, ArrayRange<RenderTreeFrame> frames, int position, int maxElements)
+	private static int RenderFrames(HtmlRenderingContext context, ReadOnlySpan<RenderTreeFrame> frames, int position, int maxElements)
 	{
 		var nextPosition = position;
 		var endPosition = position + maxElements;
@@ -84,10 +84,10 @@ internal static class Htmlizer
 
 	private static int RenderCore(
 		HtmlRenderingContext context,
-		ArrayRange<RenderTreeFrame> frames,
+		ReadOnlySpan<RenderTreeFrame> frames,
 		int position)
 	{
-		ref var frame = ref frames.Array[position];
+		var frame = frames[position];
 		switch (frame.FrameType)
 		{
 			case RenderTreeFrameType.Element:
@@ -114,21 +114,21 @@ internal static class Htmlizer
 
 	private static int RenderChildComponent(
 		HtmlRenderingContext context,
-		ArrayRange<RenderTreeFrame> frames,
+		ReadOnlySpan<RenderTreeFrame> frames,
 		int position)
 	{
-		ref var frame = ref frames.Array[position];
+		var frame = frames[position];
 		var childFrames = context.GetRenderTreeFrames(frame.ComponentId);
-		RenderFrames(context, childFrames, 0, childFrames.Count);
+		RenderFrames(context, childFrames, 0, childFrames.Length);
 		return position + frame.ComponentSubtreeLength;
 	}
 
 	private static int RenderElement(
 		HtmlRenderingContext context,
-		ArrayRange<RenderTreeFrame> frames,
+		ReadOnlySpan<RenderTreeFrame> frames,
 		int position)
 	{
-		ref var frame = ref frames.Array[position];
+		var frame = frames[position];
 		var result = context.Result;
 		result.Append('<');
 		result.Append(frame.ElementName);
@@ -186,7 +186,7 @@ internal static class Htmlizer
 		return afterAttributes;
 	}
 
-	private static int RenderChildren(HtmlRenderingContext context, ArrayRange<RenderTreeFrame> frames, int position, int maxElements)
+	private static int RenderChildren(HtmlRenderingContext context, ReadOnlySpan<RenderTreeFrame> frames, int position, int maxElements)
 	{
 		if (maxElements == 0)
 		{
@@ -199,7 +199,7 @@ internal static class Htmlizer
 	[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
 	private static int RenderAttributes(
 		HtmlRenderingContext context,
-		ArrayRange<RenderTreeFrame> frames,
+		ReadOnlySpan<RenderTreeFrame> frames,
 		int position,
 		int maxElements,
 		out string? capturedValueAttribute)
@@ -216,7 +216,7 @@ internal static class Htmlizer
 		for (var i = 0; i < maxElements; i++)
 		{
 			var candidateIndex = position + i;
-			ref var frame = ref frames.Array[candidateIndex];
+			var frame = frames[candidateIndex];
 
 			// Added to write ElementReferenceCaptureId to DOM
 			if (frame.FrameType == RenderTreeFrameType.ElementReferenceCapture)
@@ -292,8 +292,8 @@ internal static class Htmlizer
 			this.frames = frames;
 		}
 
-		public ArrayRange<RenderTreeFrame> GetRenderTreeFrames(int componentId)
-			=> frames[componentId];
+		public ReadOnlySpan<RenderTreeFrame> GetRenderTreeFrames(int componentId)
+			=> new(frames[componentId].Array, 0, frames[componentId].Count);
 
 		public StringBuilder Result { get; } = new ();
 
