@@ -3,29 +3,46 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace Bunit;
 
+/// <summary>
+/// Extensions for the <see cref="InputFile"/> component.
+/// </summary>
 public static class InputFileExtensions
 {
-    public static Task UploadFilesAsync(
-        this IRenderedComponent<InputFile> cut,
+    /// <summary>
+    /// Uploads multiple files and invokes the OnChange event.
+    /// </summary>
+    /// <param name="inputFileComponent">The <see cref="InputFile"/> component which will upload the files.</param>
+    /// <param name="files">Files to upload.</param>
+    public static void UploadFiles(
+        this IRenderedComponent<InputFile> inputFileComponent,
         params InputFileContent[] files)
     {
-        _ = cut ?? throw new ArgumentNullException(nameof(cut));
+        if (inputFileComponent == null)
+            throw new ArgumentNullException(nameof(inputFileComponent));
+
+        if (!files.Any())
+            return;
 
         var browserFiles = files.Select(f =>
         {
             var file = new BUnitBrowserFile
             {
-                Name = f.Filename,
-                ContentType = f.ContentType,
-                LastModified = f.LastModified,
+                Name = f.Filename ?? string.Empty,
+                ContentType = f.ContentType ?? string.Empty,
+                LastModified = f.LastModified ?? default,
                 Content = f.Content,
+                Size = f.Size,
             };
 
             return file;
         });
 
         var args = new InputFileChangeEventArgs(browserFiles.ToArray());
-		return cut.InvokeAsync(() => cut.Instance.OnChange.InvokeAsync(args));
-	}
+        var uploadTask = inputFileComponent.InvokeAsync(() => inputFileComponent.Instance.OnChange.InvokeAsync(args));
+        if (!uploadTask.IsCompleted)
+        {
+            uploadTask.GetAwaiter().GetResult();
+        }
+    }
 }
 #endif

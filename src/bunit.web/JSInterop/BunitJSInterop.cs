@@ -135,6 +135,7 @@ public class BunitJSInterop
 			AddInvocationHandler(new FocusAsyncInvocationHandler());
 			AddInvocationHandler(new VirtualizeJSRuntimeInvocationHandler());
 			AddInvocationHandler(new LooseModeJSObjectReferenceInvocationHandler(this));
+			AddInvocationHandler(new InputFileInvocationHandler());
 		}
 #endif
 

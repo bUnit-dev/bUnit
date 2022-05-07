@@ -10,10 +10,10 @@ internal class BUnitBrowserFile : IBrowserFile
         return new MemoryStream(Content);
     }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
     public DateTimeOffset LastModified { get; set; }
     public long Size { get; set; }
-    public string ContentType { get; set; }
-    public byte[] Content { get; set; }
+    public string ContentType { get; set; } = default!;
+    public byte[] Content { get; set; } = default!;
 }
 #endif
