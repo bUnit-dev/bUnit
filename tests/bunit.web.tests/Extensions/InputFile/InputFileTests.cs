@@ -1,4 +1,5 @@
 ﻿#if NET5_0_OR_GREATER
+using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Components.CompilerServices;
 using Microsoft.AspNetCore.Components.Forms;
@@ -101,8 +102,8 @@ public class InputFileTests : TestContext
         {
             var file = args.File;
             filename = file.Name;
-            lastChanged = file.LastModified.ToString("dd/MM/yyyy");
-            size = file.Size.ToString();
+            lastChanged = file.LastModified.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            size = file.Size.ToString(CultureInfo.InvariantCulture);
             using var stream = new StreamReader(file.OpenReadStream());
             content = stream.ReadToEnd();
         }
@@ -162,8 +163,10 @@ public class InputFileTests : TestContext
                 using var stream = new StreamReader(file.OpenReadStream());
                 var content = stream.ReadToEnd();
 
-                files.Add(new File(file.Name, content, file.LastModified.ToString("dd/MM/yyyy"), file.Size.ToString(),
-                    file.ContentType));
+                var lastChanged = file.LastModified.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                var fileSize = file.Size.ToString(CultureInfo.InvariantCulture);
+                var newFile = new File(file.Name, content, lastChanged, fileSize, file.ContentType);
+                files.Add(newFile);
             }
         }
 
