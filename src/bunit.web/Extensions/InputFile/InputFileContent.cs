@@ -1,6 +1,6 @@
+#if NET5_0_OR_GREATER
 using System.Text;
 
-#if NET5_0_OR_GREATER
 namespace Bunit;
 
 /// <summary>

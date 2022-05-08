@@ -57,6 +57,30 @@ public class InputFileTests : TestContext
         cut.Find("#item-1-size").TextContent.ShouldBe("9");
         cut.Find("#item-1-type").TextContent.ShouldBe("unit");
     }
+
+    [Fact(DisplayName = "UploadFile throws exception when InputFile is null")]
+    public void Test004()
+    {
+        Action action = () => ((IRenderedComponent<InputFile>)null).UploadFiles();
+
+        action.ShouldThrow<ArgumentNullException>();
+    }
+
+    [Fact(DisplayName = "Creating InputFileContent with null text throws exception")]
+    public void Test005()
+    {
+        Action action = () => InputFileContent.CreateFromText(null);
+        
+        action.ShouldThrow<ArgumentNullException>();
+    }
+    
+    [Fact(DisplayName = "Creating InputFileContent with null binary throws exception")]
+    public void Test006()
+    {
+        Action action = () => InputFileContent.CreateFromBinary(null);
+        
+        action.ShouldThrow<ArgumentNullException>();
+    }
     
     private class InputFileComponent : ComponentBase
     {
