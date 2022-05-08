@@ -81,6 +81,16 @@ public class InputFileTests : TestContext
         
         action.ShouldThrow<ArgumentNullException>();
     }
+
+    [Fact(DisplayName = "Upload no files will result in Exception")]
+    public void Test007()
+    {
+        var cut = RenderComponent<InputFileComponent>();
+        
+        Action act = () => cut.FindComponent<InputFile>().UploadFiles();
+
+        act.ShouldThrow<ArgumentException>();
+    }
     
     private class InputFileComponent : ComponentBase
     {

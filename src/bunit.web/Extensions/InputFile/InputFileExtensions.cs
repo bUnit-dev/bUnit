@@ -21,7 +21,7 @@ public static class InputFileExtensions
             throw new ArgumentNullException(nameof(inputFileComponent));
 
         if (!files.Any())
-            return;
+            throw new ArgumentException("No files were provided to be uploaded.", nameof(files));
 
         var browserFiles = files.Select(file => new BUnitBrowserFile
         {
