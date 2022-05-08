@@ -27,6 +27,7 @@
 ## [Mocking HttpClient](xref:mocking-httpclient)
 ## [Faking PersistentComponentState](xref:faking-persistentcomponentstate)
 ## [Faking NavigationManager](xref:fake-navigation-manager)
+## [InputFile](xref:input-file)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External resources](xref:external-resources)
