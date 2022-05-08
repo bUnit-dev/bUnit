@@ -1,5 +1,4 @@
 ﻿#if NET5_0_OR_GREATER
-using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Components.CompilerServices;
 using Microsoft.AspNetCore.Components.Forms;
@@ -19,10 +18,10 @@ public class InputFileTests : TestContext
         
         cut.FindComponent<InputFile>().UploadFiles(file);
         
-        cut.Find("#filename").TextContent.ShouldBe("Hey.txt");
-        cut.Find("#content").TextContent.ShouldBe("Hello World");
-        cut.Find("#changed").TextContent.ShouldBe("17/05/1991");
-        cut.Find("#size").TextContent.ShouldBe("11");
+        cut.Instance.Content.ShouldBe("Hello World");
+        cut.Instance.Filename.ShouldBe("Hey.txt");
+        cut.Instance.Size.ShouldBe(11);
+        cut.Instance.LastChanged.ShouldBe(lastModified);
     }
     
     [Fact(DisplayName = "InputFile can upload a single byte file")]
@@ -33,7 +32,7 @@ public class InputFileTests : TestContext
         
         cut.FindComponent<InputFile>().UploadFiles(file);
         
-        cut.Find("#content").TextContent.ShouldBe("Hello World");
+        cut.Instance.Content.ShouldBe("Hello World");
     }
 
     [Fact(DisplayName = "InputFile can upload multiple files")]
@@ -46,16 +45,17 @@ public class InputFileTests : TestContext
         
         cut.FindComponent<InputFile>().UploadFiles(file1, file2);
         
-        cut.Find("#item-0-filename").TextContent.ShouldBe("Hey.txt");
-        cut.Find("#item-0-content").TextContent.ShouldBe("Hello World");
-        cut.Find("#item-0-lastchanged").TextContent.ShouldBe("17/05/1991");
-        cut.Find("#item-0-size").TextContent.ShouldBe("11");
-        cut.Find("#item-0-type").TextContent.ShouldBe("test");
-        cut.Find("#item-1-filename").TextContent.ShouldBe("Test.txt");
-        cut.Find("#item-1-content").TextContent.ShouldBe("World Hey");
-        cut.Find("#item-1-lastchanged").TextContent.ShouldBe("17/05/1991");
-        cut.Find("#item-1-size").TextContent.ShouldBe("9");
-        cut.Find("#item-1-type").TextContent.ShouldBe("unit");
+        cut.Instance.Files.Count.ShouldBe(2);
+        cut.Instance.Files[0].FileContent.ShouldBe("Hello World");
+        cut.Instance.Files[0].Filename.ShouldBe("Hey.txt");
+        cut.Instance.Files[0].LastChanged.ShouldBe(lastModified);
+        cut.Instance.Files[0].Size.ShouldBe(11);
+        cut.Instance.Files[0].Type.ShouldBe("test");
+        cut.Instance.Files[1].FileContent.ShouldBe("World Hey");
+        cut.Instance.Files[1].Filename.ShouldBe("Test.txt");
+        cut.Instance.Files[1].LastChanged.ShouldBe(lastModified);
+        cut.Instance.Files[1].Size.ShouldBe(9);
+        cut.Instance.Files[1].Type.ShouldBe("unit");
     }
 
     [Fact(DisplayName = "UploadFile throws exception when InputFile is null")]
@@ -86,13 +86,13 @@ public class InputFileTests : TestContext
     {
         public string? Filename { get; private set; }
         public string? Content { get; private set; }
-        public DateTime? LastChanged { get; private set; }
-        public int? Size { get; private set;
+        public DateTimeOffset? LastChanged { get; private set; }
+        public long Size { get; private set; }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            builder.OpenComponent<InputFile>(1);
-            builder.AddAttribute(2, "OnChange", RuntimeHelpers.TypeCheck(
+            builder.OpenComponent<InputFile>(0);
+            builder.AddAttribute(1, "OnChange", RuntimeHelpers.TypeCheck(
                 EventCallback.Factory.Create<InputFileChangeEventArgs>(
                     this,
                     OnChange
@@ -113,50 +113,17 @@ public class InputFileTests : TestContext
     
     private class MultipleInputFileComponent : ComponentBase
     {
+        public readonly List<File> Files = new();
+
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            for (var i = 0; i < files.Count; i++)
-            {
-                builder.OpenElement(0, "p");
-                builder.AddAttribute(1, "id", "item-" + i + "-filename");
-                builder.AddContent(2, files[i].Filename);
-
-                builder.CloseElement();
-                builder.AddMarkupContent(3, "\r\n    ");
-                builder.OpenElement(4, "p");
-                builder.AddAttribute(5, "id", "item-" + i + "-content");
-                builder.AddContent(6, files[i].FileContent);
-
-                builder.CloseElement();
-                builder.AddMarkupContent(7, "\r\n    ");
-                builder.OpenElement(8, "p");
-                builder.AddAttribute(9, "id", "item-" + i + "-lastchanged");
-                builder.AddContent(10, files[i].LastChanged);
-
-                builder.CloseElement();
-                builder.AddMarkupContent(11, "\r\n    ");
-                builder.OpenElement(12, "p");
-                builder.AddAttribute(13, "id", "item-" + i + "-size");
-                builder.AddContent(14, files[i].Size);
-
-                builder.CloseElement();
-                builder.AddMarkupContent(15, "\r\n    ");
-                builder.OpenElement(16, "p");
-                builder.AddAttribute(17, "id", "item-" + i + "-type");
-                builder.AddContent(18, files[i].Type);
-
-                builder.CloseElement();
-            }
-
-            builder.OpenComponent<InputFile>(19);
-            builder.AddAttribute(20, "OnChange", RuntimeHelpers.TypeCheck(
+            builder.OpenComponent<InputFile>(0);
+            builder.AddAttribute(1, "OnChange", RuntimeHelpers.TypeCheck(
                 EventCallback.Factory.Create<InputFileChangeEventArgs>(this,
                     OnChange
                 )));
             builder.CloseComponent();
         }
-
-        private readonly List<File> files = new();
 
         private void OnChange(InputFileChangeEventArgs args)
         {
@@ -165,14 +132,12 @@ public class InputFileTests : TestContext
                 using var stream = new StreamReader(file.OpenReadStream());
                 var content = stream.ReadToEnd();
 
-                var lastChanged = file.LastModified.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                var fileSize = file.Size.ToString(CultureInfo.InvariantCulture);
-                var newFile = new File(file.Name, content, lastChanged, fileSize, file.ContentType);
-                files.Add(newFile);
+                var newFile = new File(file.Name, content, file.LastModified, file.Size, file.ContentType);
+                Files.Add(newFile);
             }
         }
 
-        private record File(string Filename, string FileContent, string LastChanged, string Size, string Type);
+        public record File(string Filename, string FileContent, DateTimeOffset LastChanged, long Size, string Type);
     }
 }
 #endif
