@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+ - Easy `InputFile` setup to upload a file. By [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
+
 ### Changed
  - `Htmlizer` uses `StringBuilder` instead of `List<string>` to reduce allocations and improve render speed. By [@linkdotnet](https://github.com/linkdotnet).
 
