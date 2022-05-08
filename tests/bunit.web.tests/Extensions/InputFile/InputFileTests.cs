@@ -91,6 +91,17 @@ public class InputFileTests : TestContext
 
         act.ShouldThrow<ArgumentException>();
     }
+
+    [Fact(DisplayName = "Setting up InputFile will not overwrite bUnit default")]
+    public void Test008()
+    {
+        JSInterop.SetupVoid("Blazor._internal.InputFile.init").SetException(new Exception());
+        var cut = RenderComponent<InputFileComponent>();
+        
+        Action act = () => cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("Hello"));
+        
+        act.ShouldNotThrow();
+    }
     
     private class InputFileComponent : ComponentBase
     {
