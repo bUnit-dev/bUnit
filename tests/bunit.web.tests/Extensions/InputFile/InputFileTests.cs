@@ -84,33 +84,15 @@ public class InputFileTests : TestContext
     
     private class InputFileComponent : ComponentBase
     {
+        public string? Filename { get; private set; }
+        public string? Content { get; private set; }
+        public DateTime? LastChanged { get; private set; }
+        public int? Size { get; private set;
+
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            builder.OpenElement(0, "p");
-            builder.AddAttribute(1, "id", "filename");
-            builder.AddContent(2, filename);
-            builder.CloseElement();
-            builder.AddMarkupContent(3, "\r\n");
-            builder.OpenElement(4, "p");
-            builder.AddAttribute(5, "id", "content");
-            builder.AddContent(6, content);
-            
-            builder.CloseElement();
-            builder.AddMarkupContent(7, "\r\n");
-            builder.OpenElement(8, "p");
-            builder.AddAttribute(9, "id", "changed");
-            builder.AddContent(10, lastChanged);
-            
-            builder.CloseElement();
-            builder.AddMarkupContent(11, "\r\n");
-            builder.OpenElement(12, "p");
-            builder.AddAttribute(13, "id", "size");
-            builder.AddContent(14, size);
-
-            builder.CloseElement();
-            builder.AddMarkupContent(15, "\r\n");
-            builder.OpenComponent<InputFile>(16);
-            builder.AddAttribute(17, "OnChange", RuntimeHelpers.TypeCheck(
+            builder.OpenComponent<InputFile>(1);
+            builder.AddAttribute(2, "OnChange", RuntimeHelpers.TypeCheck(
                 EventCallback.Factory.Create<InputFileChangeEventArgs>(
                     this,
                     OnChange
@@ -118,18 +100,14 @@ public class InputFileTests : TestContext
             builder.CloseComponent();
         }
 
-        private string filename = string.Empty;
-        private string content = string.Empty;
-        private string lastChanged = string.Empty;
-        private string size = string.Empty;
         private void OnChange(InputFileChangeEventArgs args)
         {
             var file = args.File;
-            filename = file.Name;
-            lastChanged = file.LastModified.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-            size = file.Size.ToString(CultureInfo.InvariantCulture);
+            Filename = file.Name;
+            LastChanged = file.LastModified;
+            Size = file.Size;
             using var stream = new StreamReader(file.OpenReadStream());
-            content = stream.ReadToEnd();
+            Content = stream.ReadToEnd();
         }
     }
     

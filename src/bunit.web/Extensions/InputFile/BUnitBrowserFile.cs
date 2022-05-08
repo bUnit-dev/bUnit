@@ -5,7 +5,7 @@ namespace Bunit;
 
 internal class BUnitBrowserFile : IBrowserFile
 {
-    public Stream OpenReadStream(long maxAllowedSize = 512000, CancellationToken cancellationToken = new())
+    public Stream OpenReadStream(long maxAllowedSize = 512000, CancellationToken cancellationToken = default)
     {
         return new MemoryStream(Content);
     }

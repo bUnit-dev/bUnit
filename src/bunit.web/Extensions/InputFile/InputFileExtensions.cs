@@ -23,18 +23,13 @@ public static class InputFileExtensions
         if (!files.Any())
             return;
 
-        var browserFiles = files.Select(f =>
+        var browserFiles = files.Select(file => new BUnitBrowserFile
         {
-            var file = new BUnitBrowserFile
-            {
-                Name = f.Filename ?? string.Empty,
-                ContentType = f.ContentType ?? string.Empty,
-                LastModified = f.LastModified ?? default,
-                Content = f.Content,
-                Size = f.Size,
-            };
-
-            return file;
+            Name = file .Filename ?? string.Empty,
+            ContentType = file.ContentType ?? string.Empty,
+            LastModified = file.LastModified ?? default,
+            Content = file.Content,
+            Size = file.Size,
         });
 
         var args = new InputFileChangeEventArgs(browserFiles.ToArray());
