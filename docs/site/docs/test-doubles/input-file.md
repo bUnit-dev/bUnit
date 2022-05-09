@@ -26,3 +26,6 @@ inputFile.UploadFile(fileToUpload);
 
 // Assertions...
 ```
+
+To upload binary content, create an `InputFileContent`  with the `InputFileContent.CreateFromBinary()` method.
+See all supported properties supported by the `InputFileContent` on its [reference page](xref:Bunit.InputFileContent).
