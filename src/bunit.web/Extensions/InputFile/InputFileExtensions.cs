@@ -25,7 +25,7 @@ public static class InputFileExtensions
 
         var browserFiles = files.Select(file => new BUnitBrowserFile
         {
-            Name = file .Filename ?? string.Empty,
+            Name = file.Filename ?? string.Empty,
             ContentType = file.ContentType ?? string.Empty,
             LastModified = file.LastModified ?? default,
             Content = file.Content,
