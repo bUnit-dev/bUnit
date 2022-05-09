@@ -25,3 +25,4 @@ IRenderedComponent<ComponentUnderTest> inputFile = cut.FindComponent<InputFile>(
 inputFile.UploadFile(fileToUpload);
 
 // Assertions...
+```

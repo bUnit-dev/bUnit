@@ -23,14 +23,12 @@ public static class InputFileExtensions
         if (!files.Any())
             throw new ArgumentException("No files were provided to be uploaded.", nameof(files));
 
-        var browserFiles = files.Select(file => new BUnitBrowserFile
-        {
-            Name = file.Filename ?? string.Empty,
-            ContentType = file.ContentType ?? string.Empty,
-            LastModified = file.LastModified ?? default,
-            Content = file.Content,
-            Size = file.Size,
-        });
+        var browserFiles = files.Select(file => new BUnitBrowserFile(
+            file.Filename ?? string.Empty,
+            file.LastModified ?? default,
+            file.Size,
+            file.ContentType ?? string.Empty,
+            file.Content));
 
         var args = new InputFileChangeEventArgs(browserFiles.ToArray());
         var uploadTask = inputFileComponent.InvokeAsync(() => inputFileComponent.Instance.OnChange.InvokeAsync(args));
