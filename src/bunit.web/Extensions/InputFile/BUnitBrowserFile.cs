@@ -5,6 +5,12 @@ namespace Bunit;
 
 internal class BUnitBrowserFile : IBrowserFile
 {
+    public string Name { get; }
+    public DateTimeOffset LastModified { get; }
+    public long Size { get; }
+    public string ContentType { get; }
+    public byte[] Content { get; }
+
     public BUnitBrowserFile(
         string name,
         DateTimeOffset lastModified,
@@ -18,12 +24,6 @@ internal class BUnitBrowserFile : IBrowserFile
         ContentType = contentType;
         Content = content;
     }
-
-    public string Name { get; set; }
-    public DateTimeOffset LastModified { get; set; }
-    public long Size { get; set; }
-    public string ContentType { get; set; }
-    public byte[] Content { get; set; }
 
     public Stream OpenReadStream(long maxAllowedSize = 512000, CancellationToken cancellationToken = default)
     {
