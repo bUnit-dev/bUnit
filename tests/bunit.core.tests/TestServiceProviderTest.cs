@@ -4,44 +4,6 @@ namespace Bunit;
 
 public partial class TestServiceProviderTest
 {
-	private class DummyService { }
-
-	private class AnotherDummyService { }
-
-	private class OneMoreDummyService { }
-
-	private class DummyServiceWithDependencyOnAnotherDummyService
-	{
-		public DummyServiceWithDependencyOnAnotherDummyService(AnotherDummyService anotherDummyService)
-		{
-		}
-	}
-
-	private class FallbackServiceProvider : IServiceProvider
-	{
-		public object GetService(Type serviceType) => new DummyService();
-	}
-
-	private class AnotherFallbackServiceProvider : IServiceProvider
-	{
-		public object GetService(Type serviceType) => new AnotherDummyService();
-	}
-
-	private class DummyComponentWhichRequiresDummyService : ComponentBase
-	{
-		[Inject] public DummyService Service { get; set; }
-	}
-
-	private sealed class DisposableService : IDisposable
-	{
-		public bool IsDisposed { get; private set; }
-
-		public void Dispose()
-		{
-			IsDisposed = true;
-		}
-	}
-
 	[Fact(DisplayName = "Provider initialized without a service collection has zero services by default")]
 	public void Test001()
 	{
@@ -300,5 +262,43 @@ public partial class TestServiceProviderTest
 		var result = sut.GetRequiredService<DummyService>();
 
 		result.ShouldNotBeNull();
+	}
+
+	private class DummyService { }
+
+	private class AnotherDummyService { }
+
+	private class OneMoreDummyService { }
+
+	private class DummyServiceWithDependencyOnAnotherDummyService
+	{
+		public DummyServiceWithDependencyOnAnotherDummyService(AnotherDummyService anotherDummyService)
+		{
+		}
+	}
+
+	private class FallbackServiceProvider : IServiceProvider
+	{
+		public object GetService(Type serviceType) => new DummyService();
+	}
+
+	private class AnotherFallbackServiceProvider : IServiceProvider
+	{
+		public object GetService(Type serviceType) => new AnotherDummyService();
+	}
+
+	private class DummyComponentWhichRequiresDummyService : ComponentBase
+	{
+		[Inject] public DummyService Service { get; set; }
+	}
+
+	private sealed class DisposableService : IDisposable
+	{
+		public bool IsDisposed { get; private set; }
+
+		public void Dispose()
+		{
+			IsDisposed = true;
+		}
 	}
 }
