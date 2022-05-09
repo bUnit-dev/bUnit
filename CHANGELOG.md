@@ -7,7 +7,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ## [Unreleased]
 
 ### Added
- - Easy `InputFile` setup to upload a file. By [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
+ - Added test helpers that make it much easier to pass files to the `InputFile` component. Learn more [in the documentation](https://bunit.dev/docs/test-doubles/input-file). By [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
 
 ### Changed
  - `Htmlizer` uses `StringBuilder` instead of `List<string>` to reduce allocations and improve render speed. By [@linkdotnet](https://github.com/linkdotnet).
