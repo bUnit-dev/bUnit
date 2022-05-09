@@ -10,7 +10,20 @@ All notable changes to **bUnit** will be documented in this file. The project ad
  - Added test helpers that make it much easier to pass files to the `InputFile` component. Learn more [in the documentation](https://bunit.dev/docs/test-doubles/input-file). By [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
 
 ### Changed
- - `Htmlizer` uses `StringBuilder` instead of `List<string>` to reduce allocations and improve render speed. By [@linkdotnet](https://github.com/linkdotnet).
+
+- `Htmlizer` uses `StringBuilder` instead of `List<string>` to reduce allocations and improve render speed. By [@linkdotnet](https://github.com/linkdotnet).
+
+### Fixes
+
+- `TestServiceProvider` now implements `IAsyncDisposable`. This means `TestContext.Dispose()` now calls the async disposable method as well as the non-async version on the service provider. It does however not block or await the task returned, since that can lead to deadlocks.   
+  
+  To await the disposal of async services registered in the `TestContext.Services` container, do the following:
+
+  1. Create a new type that derives from `TestContext` and which implement `IAsyncDisposable`.
+  2. In the `DisposeAsync()` method, call `Services.DisposeAsync()`.
+  3. Override the `Dispose` and have it only call `Services.Dispose()`.
+
+  Reported by [@vedion](https://github.com/vedion) and fixed by [@egil](https://github.com/egil).
 
 ## [1.7.7] - 2022-04-29
 

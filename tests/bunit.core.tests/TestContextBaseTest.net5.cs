@@ -83,6 +83,53 @@ public partial class TestContextBaseTest : TestContext
 		instance.WasDisposed.ShouldBeTrue();
 	}
 
+	[Fact(DisplayName = "Can correctly resolve and dispose of scoped disposable service")]
+	public void Net5Test001()
+	{
+		AsyncDisposableService asyncDisposable;
+		using (var sut = new TestContext())
+		{
+			sut.Services.AddScoped<AsyncDisposableService>();
+			asyncDisposable = sut.Services.GetService<AsyncDisposableService>();
+		}
+		asyncDisposable.IsDisposed.ShouldBeTrue();
+	}
+
+	[Fact(DisplayName = "Can correctly resolve and dispose of transient disposable service")]
+	public void Net5Test002()
+	{
+		AsyncDisposableService asyncDisposable;
+		using (var sut = new TestContext())
+		{
+			sut.Services.AddTransient<AsyncDisposableService>();
+			asyncDisposable = sut.Services.GetService<AsyncDisposableService>();
+		}
+		asyncDisposable.IsDisposed.ShouldBeTrue();
+	}
+
+	[Fact(DisplayName = "Can correctly resolve and dispose of singleton disposable service")]
+	public void Net5Test003()
+	{
+		AsyncDisposableService asyncDisposable;
+		using (var sut = new TestContext())
+		{
+			sut.Services.AddSingleton<AsyncDisposableService>();
+			asyncDisposable = sut.Services.GetService<AsyncDisposableService>();
+		}
+		asyncDisposable.IsDisposed.ShouldBeTrue();
+	}
+
+	private sealed class AsyncDisposableService : IAsyncDisposable
+	{
+		public bool IsDisposed { get; private set; }
+
+		public ValueTask DisposeAsync()
+		{
+			IsDisposed = true;
+			return ValueTask.CompletedTask;
+		}
+	}
+
 	private sealed class MyChildDisposeStub : ComponentBase, IDisposable
 	{
 		public bool WasDisposed { get; private set; }

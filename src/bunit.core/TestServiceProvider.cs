@@ -1,4 +1,5 @@
 using System.Collections;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit;
 
@@ -6,9 +7,9 @@ namespace Bunit;
 /// Represents a <see cref="IServiceProvider"/> and <see cref="IServiceCollection"/>
 /// as a single type used for test purposes.
 /// </summary>
-public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, IDisposable
+public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, IDisposable, IAsyncDisposable
 {
-	private readonly static ServiceProviderOptions DefaultServiceProviderOptions = new() { ValidateScopes = true };
+	private static readonly ServiceProviderOptions DefaultServiceProviderOptions = new() { ValidateScopes = true };
 	private readonly IServiceCollection serviceCollection;
 	private IServiceProvider? rootServiceProvider;
 	private IServiceScope? serviceScope;
@@ -113,13 +114,25 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+
 	/// <inheritdoc/>
 	public void Dispose()
 	{
-		(serviceScope as IAsyncDisposable)?.DisposeAsync().AsTask().GetAwaiter().GetResult();
-		serviceScope?.Dispose();
-		(rootServiceProvider as IAsyncDisposable)?.DisposeAsync().AsTask().GetAwaiter().GetResult();
-		(rootServiceProvider as IDisposable)?.Dispose();
+		if (serviceScope is IDisposable serviceScopeDisposable)
+			serviceScopeDisposable.Dispose();
+
+		if (rootServiceProvider is IDisposable rootServiceProviderDisposable)
+			rootServiceProviderDisposable.Dispose();
+	}
+
+	/// <inheritdoc/>
+	public async ValueTask DisposeAsync()
+	{
+		if (serviceScope is IAsyncDisposable serviceScopeAsync)
+			await serviceScopeAsync.DisposeAsync();
+
+		if (rootServiceProvider is IAsyncDisposable rootServiceProviderAsync)
+			await rootServiceProviderAsync.DisposeAsync();
 	}
 
 	/// <inheritdoc/>
