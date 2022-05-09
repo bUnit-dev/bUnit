@@ -4,6 +4,7 @@
 // of the license from the aspnetcore repository.
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using System.Text.Encodings.Web;
 using Bunit.Rendering;
 
@@ -57,12 +58,12 @@ internal static class Htmlizer
 	{
 		var context = new HtmlRenderingContext(framesCollection);
 		var frames = context.GetRenderTreeFrames(componentId);
-		var newPosition = RenderFrames(context, frames, 0, frames.Count);
-		Debug.Assert(newPosition == frames.Count, $"frames.Count = {frames.Count}. newPosition = {newPosition}");
-		return string.Join(string.Empty, context.Result);
+		var newPosition = RenderFrames(context, frames, 0, frames.Length);
+		Debug.Assert(newPosition == frames.Length, $"frames.Length = {frames.Length}. newPosition = {newPosition}");
+		return context.Result.ToString();
 	}
 
-	private static int RenderFrames(HtmlRenderingContext context, ArrayRange<RenderTreeFrame> frames, int position, int maxElements)
+	private static int RenderFrames(HtmlRenderingContext context, ReadOnlySpan<RenderTreeFrame> frames, int position, int maxElements)
 	{
 		var nextPosition = position;
 		var endPosition = position + maxElements;
@@ -83,10 +84,10 @@ internal static class Htmlizer
 
 	private static int RenderCore(
 		HtmlRenderingContext context,
-		ArrayRange<RenderTreeFrame> frames,
+		ReadOnlySpan<RenderTreeFrame> frames,
 		int position)
 	{
-		ref var frame = ref frames.Array[position];
+		var frame = frames[position];
 		switch (frame.FrameType)
 		{
 			case RenderTreeFrameType.Element:
@@ -94,10 +95,10 @@ internal static class Htmlizer
 			case RenderTreeFrameType.Attribute:
 				throw new InvalidOperationException($"Attributes should only be encountered within {nameof(RenderElement)}");
 			case RenderTreeFrameType.Text:
-				context.Result.Add(HtmlEncoder.Encode(frame.TextContent));
+				context.Result.Append(HtmlEncoder.Encode(frame.TextContent));
 				return position + 1;
 			case RenderTreeFrameType.Markup:
-				context.Result.Add(frame.MarkupContent);
+				context.Result.Append(frame.MarkupContent);
 				return position + 1;
 			case RenderTreeFrameType.Component:
 				return RenderChildComponent(context, frames, position);
@@ -113,24 +114,24 @@ internal static class Htmlizer
 
 	private static int RenderChildComponent(
 		HtmlRenderingContext context,
-		ArrayRange<RenderTreeFrame> frames,
+		ReadOnlySpan<RenderTreeFrame> frames,
 		int position)
 	{
-		ref var frame = ref frames.Array[position];
+		var frame = frames[position];
 		var childFrames = context.GetRenderTreeFrames(frame.ComponentId);
-		RenderFrames(context, childFrames, 0, childFrames.Count);
+		RenderFrames(context, childFrames, 0, childFrames.Length);
 		return position + frame.ComponentSubtreeLength;
 	}
 
 	private static int RenderElement(
 		HtmlRenderingContext context,
-		ArrayRange<RenderTreeFrame> frames,
+		ReadOnlySpan<RenderTreeFrame> frames,
 		int position)
 	{
-		ref var frame = ref frames.Array[position];
+		var frame = frames[position];
 		var result = context.Result;
-		result.Add("<");
-		result.Add(frame.ElementName);
+		result.Append('<');
+		result.Append(frame.ElementName);
 		var afterAttributes = RenderAttributes(context, frames, position + 1, frame.ElementSubtreeLength - 1, out var capturedValueAttribute);
 
 		// When we see an <option> as a descendant of a <select>, and the option's "value" attribute matches the
@@ -140,13 +141,13 @@ internal static class Htmlizer
 			&& string.Equals(frame.ElementName, "option", StringComparison.OrdinalIgnoreCase)
 			&& string.Equals(capturedValueAttribute, context.ClosestSelectValueAsString, StringComparison.Ordinal))
 		{
-			result.Add(" selected");
+			result.Append(" selected");
 		}
 
 		var remainingElements = frame.ElementSubtreeLength + position - afterAttributes;
 		if (remainingElements > 0)
 		{
-			result.Add(">");
+			result.Append('>');
 
 			var isSelect = string.Equals(frame.ElementName, "select", StringComparison.OrdinalIgnoreCase);
 			if (isSelect)
@@ -163,29 +164,29 @@ internal static class Htmlizer
 				context.ClosestSelectValueAsString = null;
 			}
 
-			result.Add("</");
-			result.Add(frame.ElementName);
-			result.Add(">");
+			result.Append("</");
+			result.Append(frame.ElementName);
+			result.Append('>');
 			return afterElement;
 		}
 
 		if (SelfClosingElements.Contains(frame.ElementName))
 		{
-			result.Add(" />");
+			result.Append(" />");
 		}
 		else
 		{
-			result.Add(">");
-			result.Add("</");
-			result.Add(frame.ElementName);
-			result.Add(">");
+			result.Append('>');
+			result.Append("</");
+			result.Append(frame.ElementName);
+			result.Append('>');
 		}
 
 		Debug.Assert(afterAttributes == position + frame.ElementSubtreeLength, $"afterAttributes = {afterAttributes}. position = {position}. frame.ElementSubtreeLength = {frame.ElementSubtreeLength}");
 		return afterAttributes;
 	}
 
-	private static int RenderChildren(HtmlRenderingContext context, ArrayRange<RenderTreeFrame> frames, int position, int maxElements)
+	private static int RenderChildren(HtmlRenderingContext context, ReadOnlySpan<RenderTreeFrame> frames, int position, int maxElements)
 	{
 		if (maxElements == 0)
 		{
@@ -198,7 +199,7 @@ internal static class Htmlizer
 	[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
 	private static int RenderAttributes(
 		HtmlRenderingContext context,
-		ArrayRange<RenderTreeFrame> frames,
+		ReadOnlySpan<RenderTreeFrame> frames,
 		int position,
 		int maxElements,
 		out string? capturedValueAttribute)
@@ -215,12 +216,13 @@ internal static class Htmlizer
 		for (var i = 0; i < maxElements; i++)
 		{
 			var candidateIndex = position + i;
-			ref var frame = ref frames.Array[candidateIndex];
+			var frame = frames[candidateIndex];
 
 			// Added to write ElementReferenceCaptureId to DOM
 			if (frame.FrameType == RenderTreeFrameType.ElementReferenceCapture)
 			{
-				result.Add($" {ElementReferenceAttrName}=\"{frame.ElementReferenceCaptureId}\"");
+				var value = $" {ElementReferenceAttrName}=\"{frame.ElementReferenceCaptureId}\"";
+				result.Append(value);
 			}
 
 			if (frame.FrameType != RenderTreeFrameType.Attribute)
@@ -238,13 +240,13 @@ internal static class Htmlizer
 				// NOTE: this was changed to make it more obvious
 				//       that this is a generated/special blazor attribute
 				//       used for tracking event handler id's
-				result.Add(" ");
-				result.Add(BlazorAttrPrefix);
-				result.Add(frame.AttributeName);
-				result.Add("=");
-				result.Add("\"");
-				result.Add(frame.AttributeEventHandlerId.ToString(CultureInfo.InvariantCulture));
-				result.Add("\"");
+				result.Append(' ');
+				result.Append(BlazorAttrPrefix);
+				result.Append(frame.AttributeName);
+				result.Append('=');
+				result.Append('"');
+				result.Append(frame.AttributeEventHandlerId.ToString(CultureInfo.InvariantCulture));
+				result.Append('"');
 				continue;
 			}
 
@@ -255,23 +257,23 @@ internal static class Htmlizer
 					// that this is a generated/special blazor attribute
 					// for internal usage
 					var nameParts = frame.AttributeName.Split('_', StringSplitOptions.RemoveEmptyEntries);
-					result.Add(" ");
-					result.Add(BlazorAttrPrefix);
-					result.Add(nameParts[2]);
-					result.Add(":");
-					result.Add(nameParts[1]);
+					result.Append(' ');
+					result.Append(BlazorAttrPrefix);
+					result.Append(nameParts[2]);
+					result.Append(':');
+					result.Append(nameParts[1]);
 					break;
-				case bool flag when flag:
-					result.Add(" ");
-					result.Add(frame.AttributeName);
+				case bool flag and true:
+					result.Append(' ');
+					result.Append(frame.AttributeName);
 					break;
 				case string value:
-					result.Add(" ");
-					result.Add(frame.AttributeName);
-					result.Add("=");
-					result.Add("\"");
-					result.Add(HtmlEncoder.Encode(value));
-					result.Add("\"");
+					result.Append(' ');
+					result.Append(frame.AttributeName);
+					result.Append('=');
+					result.Append('"');
+					result.Append(HtmlEncoder.Encode(value));
+					result.Append('"');
 					break;
 				default:
 					break;
@@ -290,10 +292,10 @@ internal static class Htmlizer
 			this.frames = frames;
 		}
 
-		public ArrayRange<RenderTreeFrame> GetRenderTreeFrames(int componentId)
-			=> frames[componentId];
+		public ReadOnlySpan<RenderTreeFrame> GetRenderTreeFrames(int componentId)
+			=> new(frames[componentId].Array, 0, frames[componentId].Count);
 
-		public List<string> Result { get; } = new List<string>();
+		public StringBuilder Result { get; } = new ();
 
 		public string? ClosestSelectValueAsString { get; set; }
 	}

@@ -16,3 +16,4 @@ The built-in test doubles are described on the following pages:
 - <xref:mocking-httpclient>
 - <xref:faking-persistentcomponentstate>
 - <xref:fake-navigation-manager>
+- <xref:input-file>
