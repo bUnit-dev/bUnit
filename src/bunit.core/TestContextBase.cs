@@ -71,19 +71,30 @@ public abstract class TestContextBase : IDisposable
 	}
 
 	/// <summary>
-	/// Disposes of the test context resources.
+	/// Disposes of the test context resources, in particular it disposes the <see cref="Services"/>
+	/// service provider. Any async services registered with the service provider will disposed first,
+	/// but their disposal will not be awaited..
 	/// </summary>
 	/// <remarks>
 	/// The disposing parameter should be false when called from a finalizer, and true when called from the
 	/// <see cref="Dispose()"/> method. In other words, it is true when deterministically called and false when non-deterministically called.
 	/// </remarks>
 	/// <param name="disposing">Set to true if called from <see cref="Dispose()"/>, false if called from a finalizer.f.</param>
+	[SuppressMessage("Reliability", "CA2012:Use ValueTasks correctly", Justification = "Explicitly ignoring DisposeAsync to avoid breaking changes to API surface.")]
 	protected virtual void Dispose(bool disposing)
 	{
 		if (disposed || !disposing)
 			return;
 
 		disposed = true;
+
+		// Ignore the async task as GetAwaiter().GetResult() can cause deadlock
+		// and implementing IAsyncDisposable in TestContext will be a breaking change.
+		// 
+		// NOTE: This has to be called before Services.Dispose().
+		// If there are IAsyncDisposable services registered, calling Dispose first
+		// causes the service provider to throw an exception.
+		_ = Services.DisposeAsync();
 
 		// The service provider should dispose of any
 		// disposable object it has created, when it is disposed.
