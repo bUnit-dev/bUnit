@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <SignAssembly>false</SignAssembly>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\bunit.core\bunit.core.csproj" />
+      <ProjectReference Include="..\..\src\bunit.web\bunit.web.csproj" />
+      <ProjectReference Include="..\bunit.benchmarks.assets\bunit.benchmarks.assets.csproj" />
+    </ItemGroup>
+
+</Project>

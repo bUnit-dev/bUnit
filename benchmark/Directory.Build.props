@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<PropertyGroup Label="Compile settings">
+		<Nullable>enable</Nullable>
+		<LangVersion>10.0</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<NoWarn>CA1014,NU5104</NoWarn>
+
+		<!-- Used by code coverage -->
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
+</Project>
