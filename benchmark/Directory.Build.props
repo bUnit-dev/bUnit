@@ -5,7 +5,7 @@
 		<LangVersion>10.0</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<NoWarn>CA1014,NU5104</NoWarn>
-	        <IsPackable>false</IsPackable>
+		<IsPackable>false</IsPackable>
 
 		<!-- Used by code coverage -->
 		<DebugType>full</DebugType>
