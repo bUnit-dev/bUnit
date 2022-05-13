@@ -6,10 +6,11 @@
   -->
 	<Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory).., Directory.Build.props))\Directory.Build.props" />
 
-	<PropertyGroup Label="Compile settings">
+	<PropertyGroup Label="Compile settings" Condition="$(MSBuildProjectName) != 'bunit.testassets'">
 		<Nullable>annotations</Nullable>
-		<IsPackable>false</IsPackable>
+		<IsPackable>false</IsPackable>		
 		<SonarQubeTestProject>true</SonarQubeTestProject>
+		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
 
 	<ItemGroup Condition="$(MSBuildProjectName) != 'bunit.testassets'">
