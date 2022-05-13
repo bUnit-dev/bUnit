@@ -18,7 +18,6 @@
 		<PackageReference Include="AngleSharp" Version="0.16.1" />
 		<PackageReference Include="AngleSharp.Css" Version="0.16.4" />
 		<PackageReference Include="AngleSharp.Diffing" Version="0.17.0" />
-		<PackageReference Include="AngleSharp.Wrappers" Version="2.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
@@ -50,6 +49,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\AngleSharpWrappers\AngleSharpWrappers.csproj" />
 		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />
 	</ItemGroup>
 
