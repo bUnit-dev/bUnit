@@ -52,7 +52,8 @@
 		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.39.0.47922" PrivateAssets="All" />
 	</ItemGroup>
 
-	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
+	<ItemGroup Label="Implicit usings"
+						 Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit' AND $(MSBuildProjectName) != 'AngleSharpWrappers.Tests'">
 		<Using Include="Microsoft.AspNetCore.Components" />
 		<Using Include="Microsoft.AspNetCore.Components.RenderTree" />
 		<Using Include="Microsoft.AspNetCore.Components.Rendering" />

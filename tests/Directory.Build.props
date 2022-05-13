@@ -21,44 +21,17 @@
 		<PackageReference Include="xunit" Version="2.4.1" />
 		<PackageReference Include="Xunit.Combinatorial" Version="1.4.1" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="All" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(Configuration)' != 'Release' AND $(MSBuildProjectName) != 'bunit.testassets'">
 		<PackageReference Include="coverlet.msbuild" Version="3.1.2" PrivateAssets="All" />
 	</ItemGroup>
 
-	<ItemGroup Condition="('$(TargetFramework)' == 'netstandard2.1' OR '$(TargetFramework)' == 'netcoreapp3.1')">
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet3Version)" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet3Version)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet3Version)" />
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet3Version)" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet3Version)" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet5Version)" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet5Version)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet5Version)" />
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet5Version)" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet5Version)" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet6Version)" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet6Version)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet6Version)" />
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet6Version)" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet6Version)" />
-	</ItemGroup>
-
-	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.testassets'">
+	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.testassets' AND $(MSBuildProjectName) != 'AngleSharpWrappers.Tests'">
 		<Using Include="AutoFixture" />
 		<Using Include="AutoFixture.Xunit2" />
 		<Using Include="Bunit.TestAssets.SampleComponents" />
 		<Using Include="Bunit.TestAssets.SampleComponents.Data" />
 		<Using Include="Microsoft.JSInterop" />
 		<Using Include="Microsoft.AspNetCore.Components.Web" />
-		<Using Include="Microsoft.AspNetCore.Components.Routing" />		
+		<Using Include="Microsoft.AspNetCore.Components.Routing" />
 		<Using Include="System.Reflection" />
 		<Using Include="Moq" />
 		<Using Include="Shouldly" />
