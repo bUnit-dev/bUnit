@@ -4,6 +4,8 @@
 		<TargetFrameworks>netstandard2.1;net5.0;net6.0;net7.0</TargetFrameworks>
 		<RootNamespace>Bunit.TestAssets</RootNamespace>
 		<AssemblyName>Bunit.TestAssets</AssemblyName>
+		<OutputType>Library</OutputType>
+		<IsPackable>false</IsPackable>
 		<Nullable>annotations</Nullable>
 		<SonarQubeTestProject>false</SonarQubeTestProject>
 		<IsTestProject>false</IsTestProject>
