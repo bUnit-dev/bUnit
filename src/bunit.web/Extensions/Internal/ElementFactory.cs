@@ -1,7 +1,8 @@
 using AngleSharp.Dom;
-using AngleSharpWrappers;
 
 namespace Bunit;
+
+using AngleSharpWrappers;
 
 internal sealed class ElementFactory<TElement> : IElementFactory<TElement>
 	where TElement : class, IElement

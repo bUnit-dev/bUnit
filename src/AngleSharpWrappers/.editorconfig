@@ -1,0 +1,7 @@
+# Added here to prevent inheriting from parent .editorconfig
+
+[*.cs]
+
+# TODO: fix this, but disabled for now, since it does not affect runtime.
+# CS8767: Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
+dotnet_diagnostic.CS8767.severity = suggestion
