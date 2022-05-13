@@ -429,7 +429,7 @@ public class BunitJSObjectReferenceTest : TestContext
 				"InvokeAsync"));
 	}
 
-	[Theory(DisplayName = "When calling InvokeVoid, then the invocation should be visible from the Invocations list", Skip = "Awaiting https://github.com/dotnet/aspnetcore/issues/37528"), AutoData]
+	[Theory(DisplayName = "When calling InvokeVoid, then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test304(string identifier, string[] args)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;

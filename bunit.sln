@@ -60,6 +60,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".workflows", ".workflows", 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{F6084D31-2A92-4794-A47E-A8F2254E6970}"
+	ProjectSection(SolutionItems) = preProject
+		benchmark\Directory.Build.props = benchmark\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.benchmarks", "benchmark\bunit.benchmarks\bunit.benchmarks.csproj", "{9F7A0623-8294-4A5D-946F-70C481732AA5}"
 EndProject
