@@ -18,13 +18,13 @@ public sealed class RazorTestSourceInformationProviderTest : IDisposable
 
 	// Ignored because file doesnt seem to be compile on Linux
 	// [InlineData(typeof(MixedCaseComponent), 1, 2)]
-	// [InlineData(typeof(TestCasesWithWeirdLineBreaks), 1, 2)]
-	// [InlineData(typeof(TestCasesWithWeirdLineBreaks), 2, 7)]
 	[Theory(DisplayName = "Can find source info")]
 	[InlineData(typeof(ComponentWithoutMethods), 1, 2)]
 	[InlineData(typeof(ComponentWithMethod), 1, 2)]
 	[InlineData(typeof(ComponentWithTwoTests), 1, 3)]
 	[InlineData(typeof(ComponentWithTwoTests), 2, 8)]
+	[InlineData(typeof(TestCasesWithWeirdLineBreaks), 1, 2)]
+	[InlineData(typeof(TestCasesWithWeirdLineBreaks), 2, 7)]
 	public void Test001(Type target, int testNumber, int expectedLineNumber)
 	{
 		using var sut = new RazorTestSourceInformationProvider(messageBus);
