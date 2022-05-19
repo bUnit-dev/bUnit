@@ -8,6 +8,9 @@ Here is a list of some web content that covers bUnit. If you produce something y
 
 ### Podcasts/Twitch/YouTube/Live coding
 
+- **[What’s new in bUnit for .NET 6](https://www.youtube.com/watch?v=0l88RIyseqE)**
+  Content is based on 1.3.42
+
 - **[Test Driving the Blazing Pizza Workshop with bUnit (multiple videos)](https://youtube.com/playlist?list=PL2LoDmbC1g20uJjUwPGQxpQjdnmpMqV0t)**  
   Content is based on 1.0.0 of bUnit.
 
@@ -32,3 +35,10 @@ Here is a list of some web content that covers bUnit. If you produce something y
 
 - **[Unit Testing Blazor Components with bUnit and JustMock](https://www.telerik.com/blogs/unit-testing-blazor-components-bunit-justmock) by [Mihail Vladov](https://github.com/mihail-vladov)**  
   Content is based on beta-6 of bUnit.
+
+### Books
+- **[Microsoft Blazor: Building Web Applications in .NET 6 and Beyond](https://www.amazon.com/Microsoft-Blazor-Building-Applications-Beyond/dp/1484278445/ref=sr_1_1?crid=HHEK6NOM4ZLI&amp&keywords=Peter+Himschoot&amp&qid=1641337370&amp&s=books&amp&sprefix=peter+himschoot,stripbooks,79&amp&sr=1-1)**
+- **[Blazor in Action](https://www.manning.com/books/blazor-in-action)**
+
+### Others
+- **[bUnit on Stackoverflow](https://stackoverflow.com/questions/tagged/bunit)**
