@@ -30,7 +30,6 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 			cut.WaitForElement("#notHereElm", TimeSpan.FromMilliseconds(10)));
 
 		expected.Message.ShouldBe(WaitForElementHelper.TimeoutBeforeFoundMessage);
-		expected.InnerException.ShouldBeOfType<ElementNotFoundException>();
 	}
 
 	[Fact(DisplayName = "WaitForElements waits until cssSelector returns at least one element")]

@@ -8,7 +8,6 @@ namespace Bunit.Rendering;
 /// </summary>
 public class TestRenderer : Renderer, ITestRenderer
 {
-	private readonly object renderTreeAccessLock = new();
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
@@ -144,22 +143,6 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	protected override void ProcessPendingRender()
-	{
-		// the lock is in place to avoid a race condition between
-		// the dispatchers thread and the test frameworks thread,
-		// where one will read the current render tree (find components)
-		// while the other thread (the renderer) updates the
-		// render tree.
-		lock (renderTreeAccessLock)
-		{
-			logger.LogProcessingPendingRenders();
-
-			base.ProcessPendingRender();
-		}
-	}
-
-	/// <inheritdoc/>
 	protected override void HandleException(Exception exception)
 	{
 		capturedUnhandledException = exception;
@@ -274,45 +257,45 @@ public class TestRenderer : Renderer, ITestRenderer
 		if (parentComponent is null)
 			throw new ArgumentNullException(nameof(parentComponent));
 
-		var result = new List<IRenderedComponentBase<TComponent>>();
-		var framesCollection = new RenderTreeFrameDictionary();
-
-		// the lock is in place to avoid a race condition between
-		// the dispatchers thread and the test frameworks thread,
-		// where one will read the current render tree (this method)
-		// while the other thread (the renderer) updates the
-		// render tree.
-		lock (renderTreeAccessLock)
+		// Ensure FindComponents runs on the same thread as the renderer,
+		// and that the renderer does not perform any renders while
+		// FindComponents is traversing the current render tree.
+		// Without this, the render tree could change while FindComponentsInternal
+		// is traversing down the render tree, with indeterministic as a results.
+		return Dispatcher.InvokeAsync(() =>
 		{
-			FindComponentsInternal(parentComponent.ComponentId);
-		}
+			var result = new List<IRenderedComponentBase<TComponent>>();
+			var framesCollection = new RenderTreeFrameDictionary();
 
-		return result;
+			FindComponentsInRenderTree(parentComponent.ComponentId);
 
-		void FindComponentsInternal(int componentId)
-		{
-			var frames = GetOrLoadRenderTreeFrame(framesCollection, componentId);
+			return result;
 
-			for (var i = 0; i < frames.Count; i++)
+			void FindComponentsInRenderTree(int componentId)
 			{
-				ref var frame = ref frames.Array[i];
-				if (frame.FrameType == RenderTreeFrameType.Component)
+				var frames = GetOrLoadRenderTreeFrame(framesCollection, componentId);
+
+				for (var i = 0; i < frames.Count; i++)
 				{
-					if (frame.Component is TComponent component)
+					ref var frame = ref frames.Array[i];
+					if (frame.FrameType == RenderTreeFrameType.Component)
 					{
-						result.Add(GetOrCreateRenderedComponent(framesCollection, frame.ComponentId, component));
+						if (frame.Component is TComponent component)
+						{
+							result.Add(GetOrCreateRenderedComponent(framesCollection, frame.ComponentId, component));
+
+							if (result.Count == resultLimit)
+								return;
+						}
+
+						FindComponentsInRenderTree(frame.ComponentId);
 
 						if (result.Count == resultLimit)
 							return;
 					}
-
-					FindComponentsInternal(frame.ComponentId);
-
-					if (result.Count == resultLimit)
-						return;
 				}
 			}
-		}
+		}).GetAwaiter().GetResult();
 	}
 
 	IRenderedComponentBase<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
