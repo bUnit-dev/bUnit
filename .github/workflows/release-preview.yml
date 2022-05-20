@@ -4,7 +4,8 @@ concurrency: 'release-preview'
 on:
   workflow_run:    
     workflows: [ 'verification' ]
-    types: [completed]   
+    types: [completed]
+    branches: [main]
 
   workflow_dispatch:
     inputs:
