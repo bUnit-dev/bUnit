@@ -37,7 +37,6 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 			cut.WaitForAssertion(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(10)));
 
 		expected.Message.ShouldBe(WaitForAssertionHelper.TimeoutMessage);
-		expected.InnerException.ShouldBeOfType<ShouldAssertException>();
 	}
 
 	[Fact(DisplayName = "WaitForState throws exception after timeout")]

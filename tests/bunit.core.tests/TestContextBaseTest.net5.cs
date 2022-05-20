@@ -1,5 +1,6 @@
 #if NET5_0_OR_GREATER
 
+using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents.DisposeComponents;
 
 namespace Bunit;
@@ -61,14 +62,11 @@ public partial class TestContextBaseTest : TestContext
 	public async Task Test202()
 	{
 		var cut = RenderComponent<AsyncDisposableComponent>();
-		var instance = cut.Instance;
+		var wasDisposedTask = cut.Instance.DisposedTask;
 
 		DisposeComponents();
 
-        // Windows timer resolution is around 15ms therefore we want to have a higher value than the test
-        // itself to prohibit flakiness
-		await Task.Delay(50);
-		instance.WasDisposed.ShouldBeTrue();
+		await wasDisposedTask.ShouldCompleteWithin(TimeSpan.FromMilliseconds(100));
 	}
 
 	[Fact(DisplayName = "DisposeComponents should dispose components added via ComponentFactory")]
@@ -151,12 +149,14 @@ public partial class TestContextBaseTest : TestContext
 
 	private sealed class AsyncDisposableComponent : ComponentBase, IAsyncDisposable
 	{
-		public bool WasDisposed { get; private set; }
+		private readonly TaskCompletionSource tsc = new();
+
+		public Task DisposedTask => tsc.Task;
 
 		public async ValueTask DisposeAsync()
 		{
-			await Task.Delay(30);
-			WasDisposed = true;
+			await Task.Delay(10);
+			tsc.SetResult();
 		}
 	}
 

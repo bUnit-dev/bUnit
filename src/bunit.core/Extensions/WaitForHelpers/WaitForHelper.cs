@@ -9,8 +9,6 @@ namespace Bunit.Extensions.WaitForHelpers;
 /// </summary>
 public abstract class WaitForHelper<T> : IDisposable
 {
-	private readonly object lockObject = new();
-	private readonly Timer timer;
 	private readonly TaskCompletionSource<T> checkPassedCompletionSource;
 	private readonly Func<(bool CheckPassed, T Content)> completeChecker;
 	private readonly IRenderedFragmentBase renderedFragment;
@@ -40,107 +38,22 @@ public abstract class WaitForHelper<T> : IDisposable
 	/// </summary>
 	public Task<T> WaitTask { get; }
 
-
 	/// <summary>
 	/// Initializes a new instance of the <see cref="WaitForHelper{T}"/> class.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1849:Call async methods when in an async method", Justification = "Using x.Result inside a ContinueWith is safe.")]
-	protected WaitForHelper(IRenderedFragmentBase renderedFragment, Func<(bool CheckPassed, T Content)> completeChecker, TimeSpan? timeout = null)
+	protected WaitForHelper(
+		IRenderedFragmentBase renderedFragment,
+		Func<(bool CheckPassed, T Content)> completeChecker,
+		TimeSpan? timeout = null)
 	{
 		this.renderedFragment = renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment));
 		this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
+
 		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
-
-		var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
-		var renderException = renderer
-			.UnhandledException
-			.ContinueWith(x => Task.FromException<T>(x.Result), CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Current)
-			.Unwrap();
-
 		checkPassedCompletionSource = new TaskCompletionSource<T>();
-		WaitTask = Task.WhenAny(checkPassedCompletionSource.Task, renderException).Unwrap();
+		WaitTask = CreateWaitTask(renderedFragment, timeout);
 
-		timer = new Timer(OnTimeout, this, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
-
-		if (!WaitTask.IsCompleted)
-		{
-			OnAfterRender(this, EventArgs.Empty);
-			this.renderedFragment.OnAfterRender += OnAfterRender;
-			OnAfterRender(this, EventArgs.Empty);
-			StartTimer(timeout);
-		}
-	}
-
-	private void StartTimer(TimeSpan? timeout)
-	{
-		if (isDisposed)
-			return;
-
-		lock (lockObject)
-		{
-			if (isDisposed)
-				return;
-
-			timer.Change(GetRuntimeTimeout(timeout), Timeout.InfiniteTimeSpan);
-		}
-	}
-
-	private void OnAfterRender(object? sender, EventArgs args)
-	{
-		if (isDisposed)
-			return;
-
-		lock (lockObject)
-		{
-			if (isDisposed)
-				return;
-
-			try
-			{
-				logger.LogCheckingWaitCondition(renderedFragment.ComponentId);
-
-				var checkResult = completeChecker();
-				if (checkResult.CheckPassed)
-				{
-					checkPassedCompletionSource.TrySetResult(checkResult.Content);
-					logger.LogCheckCompleted(renderedFragment.ComponentId);
-					Dispose();
-				}
-				else
-				{
-					logger.LogCheckFailed(renderedFragment.ComponentId);
-				}
-			}
-			catch (Exception ex)
-			{
-				capturedException = ex;
-				logger.LogCheckThrow(renderedFragment.ComponentId, ex);
-
-				if (StopWaitingOnCheckException)
-				{
-					checkPassedCompletionSource.TrySetException(new WaitForFailedException(CheckThrowErrorMessage, capturedException));
-					Dispose();
-				}
-			}
-		}
-	}
-
-	private void OnTimeout(object? state)
-	{
-		if (isDisposed)
-			return;
-
-		lock (lockObject)
-		{
-			if (isDisposed)
-				return;
-
-			logger.LogWaiterTimedOut(renderedFragment.ComponentId);
-
-			checkPassedCompletionSource.TrySetException(new WaitForFailedException(TimeoutErrorMessage, capturedException));
-
-			Dispose();
-		}
+		InitializeWaiting();
 	}
 
 	/// <summary>
@@ -166,17 +79,113 @@ public abstract class WaitForHelper<T> : IDisposable
 		if (isDisposed || !disposing)
 			return;
 
-		lock (lockObject)
-		{
-			if (isDisposed)
-				return;
+		isDisposed = true;
+		checkPassedCompletionSource.TrySetCanceled();
+		renderedFragment.OnAfterRender -= OnAfterRender;
+		logger.LogWaiterDisposed(renderedFragment.ComponentId);
+	}
 
-			isDisposed = true;
-			renderedFragment.OnAfterRender -= OnAfterRender;
-			timer.Dispose();
-			checkPassedCompletionSource.TrySetCanceled();
-			logger.LogWaiterDisposed(renderedFragment.ComponentId);
+	private void InitializeWaiting()
+	{
+		if (!WaitTask.IsCompleted)
+		{
+			var renderCountAtSubscribeTime = renderedFragment.RenderCount;
+
+			// Before subscribing to renderedFragment.OnAfterRender,
+			// we need to make sure that the desired state has not already been reached.
+			OnAfterRender(this, EventArgs.Empty);
+
+			SubscribeToOnAfterRender();
+
+			// If the render count from before subscribing has changes
+			// till now, we need to do trigger another check, since
+			// the render may have happened asynchronously and before
+			// the subscription was set up.
+			if (renderCountAtSubscribeTime < renderedFragment.RenderCount)
+			{
+				OnAfterRender(this, EventArgs.Empty);
+			}
 		}
+	}
+
+	private Task<T> CreateWaitTask(IRenderedFragmentBase renderedFragment, TimeSpan? timeout)
+	{
+		var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
+
+		// Two to failure conditions, that the renderer captures an unhandled
+		// exception from a component or itself, or that the timeout is reached,
+		// are executed on the renderes schedular, to ensure that OnAfterRender
+		// and the continuations does not happen at the same time.
+		var failureTask = renderer.Dispatcher.InvokeAsync(() =>
+		{
+			var taskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+
+			var renderException = renderer
+				.UnhandledException
+				.ContinueWith(
+					x => Task.FromException<T>(x.Result),
+					CancellationToken.None,
+					TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously,
+					taskScheduler);
+
+			var timeoutTask = Task.Delay(GetRuntimeTimeout(timeout))
+				.ContinueWith(
+					x =>
+					{
+						logger.LogWaiterTimedOut(renderedFragment.ComponentId);
+						return Task.FromException<T>(new WaitForFailedException(TimeoutErrorMessage, capturedException));
+					},
+					CancellationToken.None,
+					TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously,
+					taskScheduler);
+
+			return Task.WhenAny(renderException, timeoutTask).Unwrap();
+		}).Unwrap();
+
+		return Task.WhenAny(failureTask, checkPassedCompletionSource.Task).Unwrap();
+	}
+
+	private void OnAfterRender(object? sender, EventArgs args)
+	{
+		if (isDisposed || WaitTask.IsCompleted)
+			return;
+
+		try
+		{
+			logger.LogCheckingWaitCondition(renderedFragment.ComponentId);
+
+			var checkResult = completeChecker();
+			if (checkResult.CheckPassed)
+			{
+				checkPassedCompletionSource.TrySetResult(checkResult.Content);
+				logger.LogCheckCompleted(renderedFragment.ComponentId);
+				Dispose();
+			}
+			else
+			{
+				logger.LogCheckFailed(renderedFragment.ComponentId);
+			}
+		}
+		catch (Exception ex)
+		{
+			capturedException = ex;
+			logger.LogCheckThrow(renderedFragment.ComponentId, ex);
+
+			if (StopWaitingOnCheckException)
+			{
+				checkPassedCompletionSource.TrySetException(new WaitForFailedException(CheckThrowErrorMessage, capturedException));
+				Dispose();
+			}
+		}
+	}
+
+	private void SubscribeToOnAfterRender()
+	{
+		// There might not be a need to subscribe if the WaitTask has already
+		// been completed, perhaps due to an unhandled exception from the
+		// renderer or from the initial check by the checker.
+		if (!isDisposed && !WaitTask.IsCompleted)
+			renderedFragment.OnAfterRender += OnAfterRender;
 	}
 
 	private static TimeSpan GetRuntimeTimeout(TimeSpan? timeout)
