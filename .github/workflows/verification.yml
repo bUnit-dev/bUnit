@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest] # macos-latest removed due to env error
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -63,45 +63,37 @@ jobs:
 
       - name: 🧪 Run unit tests
         run: |
-          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
-          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
-          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type full
+          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type full
+          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type full
 
       - name: 🗳️ Pack library
         run: |
           dotnet pack -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
           dotnet pack src/bunit/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
           dotnet pack src/bunit.template/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
-
-      - name: ✳ Install bUnit template
-        if: matrix.os != 'windows-latest'
-        run: |
-          dotnet new --install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${GITHUB_WORKSPACE}/packages
           
       # Excluding windows because the restore step doesnt seem to work correct.
       - name: ✔ Verify xUnit template
-        if: matrix.os != 'windows-latest'
         run: |
           dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTestXunit
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${GITHUB_WORKSPACE}/TemplateTestXunit/Directory.Build.props
           dotnet restore ${GITHUB_WORKSPACE}/TemplateTestXunit --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
-          dotnet test ${GITHUB_WORKSPACE}/TemplateTestXunit --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ${GITHUB_WORKSPACE}/TemplateTestXunit --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type full
 
       - name: ✔ Verify NUnit template
-        if: matrix.os != 'windows-latest'
         run: |
           dotnet new bunit --framework nunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTestNunit
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${GITHUB_WORKSPACE}/TemplateTestNunit/Directory.Build.props
           dotnet restore ${GITHUB_WORKSPACE}/TemplateTestNunit --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
-          dotnet test ${GITHUB_WORKSPACE}/TemplateTestNunit --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ${GITHUB_WORKSPACE}/TemplateTestNunit --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type full
 
       - name: ✔ Verify MSTest template
-        if: matrix.os != 'windows-latest'
         run: |
           dotnet new bunit --framework mstest --no-restore -o ${GITHUB_WORKSPACE}/TemplateTestMstest
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${GITHUB_WORKSPACE}/TemplateTestMstest/Directory.Build.props
           dotnet restore ${GITHUB_WORKSPACE}/TemplateTestMstest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
-          dotnet test ${GITHUB_WORKSPACE}/TemplateTestMstest --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type none
+          dotnet test ${GITHUB_WORKSPACE}/TemplateTestMstest --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type full
 
       # DocFx only works well on Windows currently
       - name: 📄 Build documentation
