@@ -8,8 +8,10 @@ Here is a list of some web content that covers bUnit. If you produce something y
 
 ### Podcasts/Twitch/YouTube/Live coding
 
+- **[Best practices unit testing Blazor components with bUnit](https://www.youtube.com/watch?v=Co7QetPYiO4)**
+  Content is based on 1.3.42 of bUnit.
 - **[What’s new in bUnit for .NET 6](https://www.youtube.com/watch?v=0l88RIyseqE)**
-  Content is based on 1.3.42
+  Content is based on 1.3.42 of bUnit.
 
 - **[Test Driving the Blazing Pizza Workshop with bUnit (multiple videos)](https://youtube.com/playlist?list=PL2LoDmbC1g20uJjUwPGQxpQjdnmpMqV0t)**  
   Content is based on 1.0.0 of bUnit.
