@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Changed
+
+- `WaitForAssertion` method is now marked as an assertion method with the `[AssertionMethod]` attribute. This makes certain analyzers like SonarSource's [Tests should include assertions](https://rules.sonarsource.com/csharp/RSPEC-2699) happy. By [@egil](https://github.com/egil).
+
 ### Fixes
 
 - A race condition existed between `WaitForState` / `WaitForAssertion` and `FindComponents`, if the first used the latter. Reported by [@rmihael](https://github.com/rmihael), [@SviatoslavK](https://github.com/SviatoslavK), and [@RaphaelMarcouxCTRL](https://github.com/RaphaelMarcouxCTRL). Fixed by [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
