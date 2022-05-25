@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Runtime.ExceptionServices;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharpWrappers;
@@ -56,7 +57,6 @@ public static class TriggerEventDispatchExtensions
 	/// <param name="eventName">The name of the event to raise (using on-form, e.g. <c>onclick</c>).</param>
 	/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
 	/// <returns>A <see cref="Task"/> that completes when the render caused by the triggering of the event finishes.</returns>
-	[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "HTML events are standardize to lower case and safe in this context.")]
 	public static Task TriggerEventAsync(this IElement element, string eventName, EventArgs eventArgs)
 	{
 		if (element is null)
@@ -67,18 +67,32 @@ public static class TriggerEventDispatchExtensions
 		var renderer = element.GetTestContext()?.Renderer
 			?? throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(ITestRenderer)}'.");
 
-		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
+		// TriggerEventsAsync will traverse the DOM tree to find
+		// all event handlers that needs to be triggered. This is done
+		// in the renderes synchronization context to avoid a race condition
+		// between the DOM tree being updated and traversed.
+		var result = renderer.Dispatcher.InvokeAsync(
+			() => TriggerEventsAsync(renderer, element, eventName, eventArgs));
 
+		ThrowIfFailedSynchronously(result);
+
+		return result;
+	}
+
+	[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "HTML events are standardize to lower case and safe in this context.")]
+	private static Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
+	{
+		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
 		var unwrappedElement = element.Unwrap();
 		if (isNonBubblingEvent)
 			return TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
 
 		return unwrappedElement switch
 		{
-			IHtmlInputElement { Type: "submit", Form: not null } input when eventName is "onclick" =>
-				TriggerFormSubmitBubblingEventAsync(renderer, input, eventArgs, input.Form),
-			IHtmlButtonElement { Type: "submit", Form: not null } button when eventName is "onclick" =>
-				TriggerFormSubmitBubblingEventAsync(renderer, button, eventArgs, button.Form),
+			IHtmlInputElement { Type: "submit", Form: not null } input when eventName is "onclick"
+				=> TriggerFormSubmitBubblingEventAsync(renderer, input, eventArgs, input.Form),
+			IHtmlButtonElement { Type: "submit", Form: not null } button when eventName is "onclick"
+				=> TriggerFormSubmitBubblingEventAsync(renderer, button, eventArgs, button.Form),
 			_ => TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs)
 		};
 	}
@@ -165,5 +179,20 @@ public static class TriggerEventDispatchExtensions
 	{
 		var eventId = element.GetAttribute(blazorEventName);
 		return ulong.TryParse(eventId, NumberStyles.Integer, CultureInfo.InvariantCulture, out id);
+	}
+
+	private static void ThrowIfFailedSynchronously(Task result)
+	{
+		if (result.IsFaulted && result.Exception is not null)
+		{
+			if (result.Exception.InnerExceptions.Count == 1)
+			{
+				ExceptionDispatchInfo.Capture(result.Exception.InnerExceptions[0]).Throw();
+			}
+			else
+			{
+				ExceptionDispatchInfo.Capture(result.Exception).Throw();
+			}
+		}
 	}
 }
