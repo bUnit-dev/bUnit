@@ -76,6 +76,8 @@ public class TestRenderer : Renderer, ITestRenderer
 
 		var result = Dispatcher.InvokeAsync(() =>
 		{
+			ResetUnhandledException();
+
 			try
 			{
 				return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
@@ -127,6 +129,8 @@ public class TestRenderer : Renderer, ITestRenderer
 		// will only work on IDisposable
 		var disposeTask = Dispatcher.InvokeAsync(() =>
 		{
+			ResetUnhandledException();
+
 			foreach (var root in rootComponents)
 			{
 				root.Detach();
@@ -140,20 +144,6 @@ public class TestRenderer : Renderer, ITestRenderer
 
 		rootComponents.Clear();
 		AssertNoUnhandledExceptions();
-	}
-
-	/// <inheritdoc/>
-	protected override void HandleException(Exception exception)
-	{
-		capturedUnhandledException = exception;
-
-		logger.LogUnhandledException(capturedUnhandledException);
-
-		if (!unhandledExceptionTsc.TrySetResult(capturedUnhandledException))
-		{
-			unhandledExceptionTsc = new TaskCompletionSource<Exception>();
-			unhandledExceptionTsc.SetResult(capturedUnhandledException);
-		}
 	}
 
 	/// <inheritdoc/>
@@ -219,10 +209,10 @@ public class TestRenderer : Renderer, ITestRenderer
 	private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
 		where TResult : IRenderedFragmentBase
 	{
-		ResetUnhandledException();
-
 		var renderTask = Dispatcher.InvokeAsync(() =>
 		{
+			ResetUnhandledException();
+
 			var root = new RootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
 			var result = activator(rootComponentId);
@@ -350,7 +340,30 @@ public class TestRenderer : Renderer, ITestRenderer
 		return framesCollection[componentId];
 	}
 
-	private void ResetUnhandledException() => capturedUnhandledException = null;
+	/// <inheritdoc/>
+	protected override void HandleException(Exception exception)
+	{
+		if (exception is null)
+			return;
+
+		logger.LogUnhandledException(exception);
+
+		capturedUnhandledException = exception;
+
+		if (!unhandledExceptionTsc.TrySetResult(capturedUnhandledException))
+		{
+			unhandledExceptionTsc = new TaskCompletionSource<Exception>();
+			unhandledExceptionTsc.SetResult(capturedUnhandledException);
+		}
+	}
+
+	private void ResetUnhandledException()
+	{
+		capturedUnhandledException = null;
+
+		if (unhandledExceptionTsc.Task.IsCompleted)
+			unhandledExceptionTsc = new TaskCompletionSource<Exception>();
+	}
 
 	private void AssertNoUnhandledExceptions()
 	{
