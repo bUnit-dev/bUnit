@@ -14,6 +14,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 - A race condition existed between `WaitForState` / `WaitForAssertion` and `FindComponents`, if the first used the latter. Reported by [@rmihael](https://github.com/rmihael), [@SviatoslavK](https://github.com/SviatoslavK), and [@RaphaelMarcouxCTRL](https://github.com/RaphaelMarcouxCTRL). Fixed by [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
 
+- Triggering of event handlers now runs entirely inside the renderers synchronization context, avoiding race condition between elements in the DOM tree being updated by the renderer and the event triggering logic traversing the DOM tree to find event handlers to trigger. Reported by [@FlukeFan](https://github.com/FlukeFan). Fixed by [@egil](https://github.com/egil).
+
 ## [1.8.15] - 2022-05-19
 
 ### Added

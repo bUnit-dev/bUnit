@@ -1,0 +1,23 @@
+<h1>Counter Dynamic</h1>
+@foreach (var index in _values)
+{
+    <button
+		data-id=@index
+		@onclick="() => OnClick(index)">Click</button>
+}
+
+@code {	
+    private int[] _values = new int[0];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1);
+        _values = new[] { 1 };
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void OnClick(int index)
+    {
+        _values = Enumerable.Range(1, index + 1).ToArray();
+    }
+}
