@@ -266,8 +266,22 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		Should.Throw<InvalidOperationException>(() => cut.Find("button").Submit());
 	}
 
+	public static IEnumerable<object[]> GetTenNumbers() => Enumerable.Range(0, 10)
+		.Select(i => new object[] { i });
 
-			Should.Throw<InvalidOperationException>(() => cut.Find("button").Submit());
-		}
+	// Runs the test multiple times to trigger the race condition
+	// reliably.
+	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Needed to trigger multiple reruns of test.")]
+	[Theory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
+	[MemberData(nameof(GetTenNumbers))]
+	public void Test400(int i)
+	{
+		var cut = RenderComponent<CounterComponentDynamic>();
+
+		cut.WaitForAssertion(() => cut.Find("[data-id=1]"));
+
+		cut.InvokeAsync(() => cut.Find("[data-id=1]").Click());
+
+		cut.WaitForAssertion(() => cut.Find("[data-id=2]"));
 	}
 }

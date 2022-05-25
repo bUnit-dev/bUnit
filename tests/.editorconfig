@@ -42,3 +42,5 @@ dotnet_diagnostic.CA2007.severity = none            # https://github.com/atc-net
 
 dotnet_diagnostic.CA1819.severity = suggestion		# CA1819: Properties should not return arrays
 dotnet_diagnostic.CA1849.severity = suggestion		# CA1849: Call async methods when in an async method
+
+dotnet_diagnostic.xUnit1026.severity = none			# xUnit1026: Theory methods should use all of their parameters
