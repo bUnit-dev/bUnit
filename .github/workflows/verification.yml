@@ -15,6 +15,10 @@ on:
       - reopened
 
   workflow_dispatch:
+  
+concurrency:
+  group: verification-${{ github.ref }}-1
+  cancel-in-progress: true  
 
 jobs:
   verify-bunit:
