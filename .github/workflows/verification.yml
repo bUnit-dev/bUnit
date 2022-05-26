@@ -73,31 +73,34 @@ jobs:
 
       - name: 🗳️ Pack library
         run: |
-          dotnet pack -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit.template/ -c release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
-          
-      # Excluding windows because the restore step doesnt seem to work correct.
+          dotnet pack -c release -o ${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit/ -c release -o ${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit.template/ -c release -o ${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
+
+      - name: ✳ Install bUnit template
+        run: |
+          dotnet new --install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${{ github.workspace }}/packages
+
       - name: ✔ Verify xUnit template
         run: |
-          dotnet new bunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTestXunit
-          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${GITHUB_WORKSPACE}/TemplateTestXunit/Directory.Build.props
-          dotnet restore ${GITHUB_WORKSPACE}/TemplateTestXunit --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
-          dotnet test ${GITHUB_WORKSPACE}/TemplateTestXunit --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type full
+          dotnet new bunit --no-restore -o ${{ github.workspace }}/TemplateTestXunit
+          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestXunit/Directory.Build.props
+          dotnet restore ${{ github.workspace }}/TemplateTestXunit --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages
+          dotnet test ${{ github.workspace }}/TemplateTestXunit
 
       - name: ✔ Verify NUnit template
         run: |
-          dotnet new bunit --framework nunit --no-restore -o ${GITHUB_WORKSPACE}/TemplateTestNunit
-          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${GITHUB_WORKSPACE}/TemplateTestNunit/Directory.Build.props
-          dotnet restore ${GITHUB_WORKSPACE}/TemplateTestNunit --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
-          dotnet test ${GITHUB_WORKSPACE}/TemplateTestNunit --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type full
+          dotnet new bunit --framework nunit --no-restore -o ${{ github.workspace }}/TemplateTestNunit
+          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestNunit/Directory.Build.props
+          dotnet restore ${{ github.workspace }}/TemplateTestNunit --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages
+          dotnet test ${{ github.workspace }}/TemplateTestNunit
 
       - name: ✔ Verify MSTest template
         run: |
-          dotnet new bunit --framework mstest --no-restore -o ${GITHUB_WORKSPACE}/TemplateTestMstest
-          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${GITHUB_WORKSPACE}/TemplateTestMstest/Directory.Build.props
-          dotnet restore ${GITHUB_WORKSPACE}/TemplateTestMstest --source ${GITHUB_WORKSPACE}/packages --source https://api.nuget.org/v3/index.json
-          dotnet test ${GITHUB_WORKSPACE}/TemplateTestMstest --blame-hang --blame-hang-timeout 1m --blame-hang-dump-type full
+          dotnet new bunit --framework mstest --no-restore -o ${{ github.workspace }}/TemplateTestMstest
+          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestMstest/Directory.Build.props
+          dotnet restore ${{ github.workspace }}/TemplateTestMstest --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages
+          dotnet test ${{ github.workspace }}/TemplateTestMstest
 
       # DocFx only works well on Windows currently
       - name: 📄 Build documentation
