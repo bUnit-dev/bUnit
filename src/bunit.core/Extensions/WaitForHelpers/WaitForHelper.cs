@@ -89,22 +89,19 @@ public abstract class WaitForHelper<T> : IDisposable
 	{
 		if (!WaitTask.IsCompleted)
 		{
-			var renderCountAtSubscribeTime = renderedFragment.RenderCount;
-
-			// Before subscribing to renderedFragment.OnAfterRender,
-			// we need to make sure that the desired state has not already been reached.
-			OnAfterRender(this, EventArgs.Empty);
-
-			SubscribeToOnAfterRender();
-
-			// If the render count from before subscribing has changes
-			// till now, we need to do trigger another check, since
-			// the render may have happened asynchronously and before
-			// the subscription was set up.
-			if (renderCountAtSubscribeTime < renderedFragment.RenderCount)
+			// Subscribe inside the renderers synchronization context
+			// to ensure no renders happens between the
+			// initial OnAfterRender and subscribing.
+			// This also ensures that checks performed during OnAfterRender,
+			// which are usually not atomic, e.g. search the DOM tree,
+			// can be performed without the DOM tree changing.
+			renderedFragment.InvokeAsync(() =>
 			{
+				// Before subscribing to renderedFragment.OnAfterRender,
+				// we need to make sure that the desired state has not already been reached.
 				OnAfterRender(this, EventArgs.Empty);
-			}
+				SubscribeToOnAfterRender();
+			});
 		}
 	}
 
