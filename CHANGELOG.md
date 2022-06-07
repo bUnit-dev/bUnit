@@ -6,15 +6,17 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.9.8] - 2022-06-07
+
 ### Changed
 
-- `WaitForAssertion` method is now marked as an assertion method with the `[AssertionMethod]` attribute. This makes certain analyzers like SonarSource's [Tests should include assertions](https://rules.sonarsource.com/csharp/RSPEC-2699) happy. By [@egil](https://github.com/egil).
+-   `WaitForAssertion` method is now marked as an assertion method with the `[AssertionMethod]` attribute. This makes certain analyzers like SonarSource's [Tests should include assertions](https://rules.sonarsource.com/csharp/RSPEC-2699) happy. By [@egil](https://github.com/egil).
 
 ### Fixes
 
-- A race condition existed between `WaitForState` / `WaitForAssertion` and `FindComponents`, if the first used the latter. Reported by [@rmihael](https://github.com/rmihael), [@SviatoslavK](https://github.com/SviatoslavK), and [@RaphaelMarcouxCTRL](https://github.com/RaphaelMarcouxCTRL). Fixed by [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
+-   A race condition existed between `WaitForState` / `WaitForAssertion` and `FindComponents`, if the first used the latter. Reported by [@rmihael](https://github.com/rmihael), [@SviatoslavK](https://github.com/SviatoslavK), and [@RaphaelMarcouxCTRL](https://github.com/RaphaelMarcouxCTRL). Fixed by [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
 
-- Triggering of event handlers now runs entirely inside the renderers synchronization context, avoiding race condition between elements in the DOM tree being updated by the renderer and the event triggering logic traversing the DOM tree to find event handlers to trigger. Reported by [@FlukeFan](https://github.com/FlukeFan). Fixed by [@egil](https://github.com/egil).
+-   Triggering of event handlers now runs entirely inside the renderers synchronization context, avoiding race condition between elements in the DOM tree being updated by the renderer and the event triggering logic traversing the DOM tree to find event handlers to trigger. Reported by [@FlukeFan](https://github.com/FlukeFan). Fixed by [@egil](https://github.com/egil).
 
 ## [1.8.15] - 2022-05-19
 
@@ -1172,7 +1174,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**  
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.8.15...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.9.8...HEAD
+
+[1.9.8]: https://github.com/bUnit-dev/bUnit/compare/v1.8.15...v1.9.8
 
 [1.8.15]: https://github.com/bUnit-dev/bUnit/compare/v1.7.7...v1.8.15
 
