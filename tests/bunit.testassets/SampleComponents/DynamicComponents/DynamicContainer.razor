@@ -1,0 +1,14 @@
+@page "/dynamic"
+<h3 @ref="title">DynamicContainer</h3>
+<DynamicComponent Type="@pageType"></DynamicComponent>
+<button @onclick="@ChangeDynamic" @ref="button" id="button">ChangeDynamic</button>
+@code {
+    private Type pageType = typeof(ComponentA);
+    public ElementReference title;
+    public ElementReference button;
+
+    private void ChangeDynamic()
+    {
+        pageType = (pageType == typeof(ComponentA)) ? typeof(ComponentB) : typeof(ComponentA);
+    }
+}
