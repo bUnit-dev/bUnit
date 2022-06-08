@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace Bunit;
 
 public class ComponentParameterCollectionBuilderTests : TestContext
@@ -479,11 +481,9 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 	[Fact(DisplayName = "Can select parameters inherited from base component ")]
 	public void Test101()
 	{
-		var builder = new ComponentParameterCollectionBuilder<InhertedParams>();
+		Builder.Add(x => x.Param, new object());
 
-		builder.Add(x => x.Param, new object());
-
-		builder.Build().ShouldHaveSingleItem();
+		Builder.Build().ShouldHaveSingleItem();
 	}
 
 	[Fact(DisplayName = "TryAdd returns false when parameter does not exist on component")]
@@ -580,6 +580,61 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter<RenderFragment<string>?>(nameof(TemplatedChildContent.ChildContent), false);
 	}
 
+	[Fact(DisplayName = "Bind should add Value and ValueChanged event")]
+	public void Test304()
+	{
+		var sut = new ComponentParameterCollectionBuilder<SimpleBind>();
+
+		sut.Bind(p => p.Value, "init", s => { });
+
+		sut.Build().ShouldAllBe(
+			x => x.ShouldBeParameter("Value", "init", false),
+			x => x.ShouldBeParameter<EventCallback<string>>("ValueChanged", false));
+	}
+	
+	[Fact(DisplayName = "Bind should add Expression event when available")]
+	public void Test305()
+	{
+		var sut = new ComponentParameterCollectionBuilder<FullBind>();
+
+		sut.Bind(p => p.Foo, "init", s => { });
+
+		sut
+			.Build()
+			.Where(p => string.Equals(p.Name, "FooExpression", StringComparison.Ordinal))
+			.ShouldHaveSingleItem();
+	}
+
+	[Fact(DisplayName = "Throw an exception when no Changed event available")]
+	public void Test306()
+	{
+		var sut = new ComponentParameterCollectionBuilder<NoTwoWayBind>();
+		
+		Action action = () => sut.Bind(p => p.Value, "init", s => { });
+
+		action.ShouldThrow<InvalidOperationException>();
+	}
+
+	[Fact(DisplayName = "Throw an exception when cascading parameter")]
+	public void Test307()
+	{
+		var sut = new ComponentParameterCollectionBuilder<ComponentWithCascadingParameter>();
+		
+		Action action = () => sut.Bind(p => p.Value, "init", s => { });
+
+		action.ShouldThrow<ArgumentException>();
+	}
+	
+	[Fact(DisplayName = "Throw an exception when Changed event is not a public parameter")]
+	public void Test308()
+	{
+		var sut = new ComponentParameterCollectionBuilder<InvalidTwoWayBind>();
+		
+		Action action = () => sut.Bind(p => p.Value, "init", s => { });
+
+		action.ShouldThrow<InvalidOperationException>();
+	}
+
 	private class Params : ComponentBase
 	{
 		[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "Public for testing purposes")]
@@ -624,5 +679,38 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 	private class TemplatedChildContent : ComponentBase
 	{
 		[Parameter] public RenderFragment<string>? ChildContent { get; set; }
+	}
+
+	private class SimpleBind : ComponentBase
+	{
+		[Parameter] public string Value { get; set; } = string.Empty;
+		[Parameter] public EventCallback<string> ValueChanged { get; set; }
+	}
+	
+	private class FullBind : ComponentBase
+	{
+		[Parameter] public string Foo { get; set; } = string.Empty;
+		[Parameter] public EventCallback<string> FooChanged { get; set; }
+		[Parameter] public Expression<Func<string>> FooExpression { get; set; }
+	}
+
+	private class NoTwoWayBind : ComponentBase
+	{
+		[Parameter]
+		public string Value { get; set; }
+	}
+
+	private class InvalidTwoWayBind : ComponentBase
+	{
+		[Parameter]
+		public string Value { get; set; }
+		
+		public EventCallback<string> ValueChanged { get; set; }
+	}
+
+	private class ComponentWithCascadingParameter : ComponentBase
+	{
+		[CascadingParameter] public string Value { get; set; } = string.Empty;
+		[Parameter] public EventCallback<string> ValueChanged { get; set; }
 	}
 }

@@ -5,7 +5,6 @@
 using System.Numerics;
 using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
-using Bunit.TestAssets.SampleComponents.DisposeComponents;
 using Xunit.Abstractions;
 
 namespace Bunit.BlazorE2E;
@@ -146,7 +145,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("<p>Some-Static-Text</p>", cut.Find("#foo").InnerHtml);
 	}
 
-	[Fact(DisplayName = "Verifies we can rewite more complex HTML content into blocks")]
+	[Fact(DisplayName = "Verifies we can rewrite more complex HTML content into blocks")]
 	public void CanRenderChildContent_MixedHtmlBlock()
 	{
 		var cut = RenderComponent<HtmlMixedChildContent>();

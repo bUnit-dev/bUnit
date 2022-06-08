@@ -314,6 +314,47 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		return AddParameter(name, value);
 	}
 
+	/// <summary> Adds a two-way binding (@bind directive) to a given parameter. </summary>
+	/// <param name="parameterSelector">Parameter-selector for the two-way binding.</param>
+	/// <param name="initialValue">The value to pass to <typeparamref name="TComponent"/>.</param>
+	/// <param name="changedAction">Action which gets invoked when the value has changed.</param>
+	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
+	public ComponentParameterCollectionBuilder<TComponent> Bind<TValue>(
+		Expression<Func<TComponent, TValue>> parameterSelector,
+		TValue initialValue,
+		Action<TValue> changedAction)
+	{
+		var (parameterName, _, isCascading) = GetParameterInfo(parameterSelector);
+
+		if (isCascading)
+			throw new ArgumentException("Binding a cascading parameter is not allowed.", parameterName);
+
+		var changedName = $"{parameterName}Changed";
+		var expressionName = $"{parameterName}Expression";
+
+		if (!HasPublicParameterProperty(changedName))
+			throw new InvalidOperationException($"Could not find a public parameter with the name {changedName} which is required for the bind directive.");
+		
+		var parameter = AddParameter(parameterName, initialValue);
+
+		var eventCallback = EventCallback.Factory.Create(this, changedAction);
+		parameter.AddParameter(changedName, eventCallback);
+
+		Expression<Func<TValue>> expressionFunc = () => initialValue;
+
+		return !HasPublicParameterProperty(expressionName)
+			? parameter 
+			: parameter.AddParameter(expressionName, expressionFunc);
+
+		static bool HasPublicParameterProperty(string parameterName)
+		{
+			var type = typeof(TComponent);
+			var property = type.GetProperty(parameterName);
+
+			return property != null && property.GetCustomAttributes(inherit: true).Any(a => a is ParameterAttribute);
+		}
+	}
+
 	/// <summary>
 	/// Try to add a <paramref name="value"/> for a parameter with the <paramref name="name"/>, if
 	/// <typeparamref name="TComponent"/> has a property with that name, AND that property has a <see cref="ParameterAttribute"/>
