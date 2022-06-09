@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- `Bind` added so the `@bind` directive can be easier be setup in non razor syntax. Reported and fixed [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.9.8] - 2022-06-07
 
 ### Changed

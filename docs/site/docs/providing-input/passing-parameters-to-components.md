@@ -375,15 +375,35 @@ It is possible to nest a component under tests inside other components, if that 
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[](../../../samples/tests/xunit/NestedComponentTest.cs#L11-L23)]
+[!code-csharp[NestedComponentTest](../../../samples/tests/xunit/NestedComponentTest.cs#L11-L23)]
 
 The example renders the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()` that returns a `IRenderedComponent<HelloWorld>`. This is needed because the `RenderComponent<Wrapper>` method call returns an `IRenderedComponent<Wrapper>` instance, that provides access to the instance of the `<Wrapper>` component, but not the `<HelloWorld>`-component instance.
 
 # [Razor test code](#tab/razor)
 
-[!code-cshtml[](../../../samples/tests/razor/NestedComponentTest.razor)]
+[!code-cshtml[NestedComponentTest](../../../samples/tests/razor/NestedComponentTest.razor)]
 
 The example passes a inline Razor template to the `Render<TComponent>()` method. What is different here from the previous examples is that we use the generic version of the `Render<TComponent>` method, which is a shorthand for `Render(...).FindComponent<TComponent>()`.
+
+***
+
+## Setting up `@bind` directive
+There are two ways to setup a component with a two-way binding aka `@bind` directive. If the razor syntax is used the `@bind` directive can be defined as in a plain Blazor component. For the C# syntax the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Bind` method is used to setup a two-way binding.
+
+In the follow examples, a component with a two-way binding is setup
+[!code-csharp[TwoWayBinding.razor](../../../samples/components/TwoWayBinding.razor)]
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[TwoWayBindingTest.cs](../../../samples/tests/xunit/TwoWayBindingTest.cs#L5-L19)]
+
+The example uses the `Bind` method to setup a two-way binding between `Value` and the provided object.
+# [Razor test code](#tab/razor)
+
+[!code-cshtml[TwoWayBindingTest.razor](../../../samples/tests/razor/TwoWayBindingTest.razor)]
+
+The example uses the built-in `@bind-Value` directive to make a two way binding between `Value` and the provided object.
+
 
 ***
 
