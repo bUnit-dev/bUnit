@@ -324,6 +324,12 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		TValue initialValue,
 		Action<TValue> changedAction)
 	{
+		if (parameterSelector is null)
+			throw new ArgumentNullException(nameof(parameterSelector));
+
+		if (changedAction is null)
+			throw new ArgumentNullException(nameof(changedAction));
+		
 		var (parameterName, _, isCascading) = GetParameterInfo(parameterSelector);
 
 		if (isCascading)

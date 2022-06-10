@@ -634,6 +634,26 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 
 		action.ShouldThrow<InvalidOperationException>();
 	}
+	
+	[Fact(DisplayName = "Throw exception when parameter selector is null")]
+	public void Test309()
+	{
+		var sut = new ComponentParameterCollectionBuilder<SimpleBind>();
+
+		Action action = () => sut.Bind(null, "init", _ => { });
+
+		action.ShouldThrow<ArgumentNullException>();
+	}
+
+	[Fact(DisplayName = "Throw exception when changed action is null")]
+	public void Test310()
+	{
+		var sut = new ComponentParameterCollectionBuilder<SimpleBind>();
+
+		Action action = () => sut.Bind(p => p.Value, "init", null);
+
+		action.ShouldThrow<ArgumentNullException>();
+	}
 
 	private class Params : ComponentBase
 	{
