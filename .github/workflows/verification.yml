@@ -98,21 +98,21 @@ jobs:
         run: |
           dotnet new bunit --no-restore -o ${{ github.workspace }}/TemplateTestXunit
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestXunit/Directory.Build.props
-          dotnet restore ${{ github.workspace }}/TemplateTestXunit --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages
+          dotnet restore ${{ github.workspace }}/TemplateTestXunit --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages --locked-mode
           dotnet test ${{ github.workspace }}/TemplateTestXunit
 
       - name: ✔ Verify NUnit template
         run: |
           dotnet new bunit --framework nunit --no-restore -o ${{ github.workspace }}/TemplateTestNunit
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestNunit/Directory.Build.props
-          dotnet restore ${{ github.workspace }}/TemplateTestNunit --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages
+          dotnet restore ${{ github.workspace }}/TemplateTestNunit --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages --locked-mode
           dotnet test ${{ github.workspace }}/TemplateTestNunit
 
       - name: ✔ Verify MSTest template
         run: |
           dotnet new bunit --framework mstest --no-restore -o ${{ github.workspace }}/TemplateTestMstest
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestMstest/Directory.Build.props
-          dotnet restore ${{ github.workspace }}/TemplateTestMstest --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages
+          dotnet restore ${{ github.workspace }}/TemplateTestMstest --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages --locked-mode
           dotnet test ${{ github.workspace }}/TemplateTestMstest
 
       # DocFx only works well on Windows currently
