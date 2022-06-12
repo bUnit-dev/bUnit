@@ -1,0 +1,35 @@
+name: Dependabot update package.lock.json
+on: pull_request
+
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    steps:
+       - name: 🛒 Checkout repository
+         uses: actions/checkout@v3
+
+       - name: ⚙️ Setup dotnet versions
+         uses: actions/setup-dotnet@v2
+         with:
+           dotnet-version: |
+             3.1.x
+             5.0.x
+             6.0.x
+             7.0.x
+           include-prerelease: true
+
+       - name: 🛠️ Build solution
+         run: |
+           dotnet build -p:ContinuousIntegrationBuild=true
+
+       - name: 🛠️ Update package.lock.json
+         run: |
+           git add .
+           git diff --quiet && git diff --staged --quiet || git commit -m "Added updated package.lock.json files"
+           git push
