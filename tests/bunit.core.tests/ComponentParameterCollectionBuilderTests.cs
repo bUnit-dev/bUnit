@@ -676,6 +676,26 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldThrow<ArgumentException>();
 	}
 
+	[Fact(DisplayName = "Properties with Changed at the end, which are not of tpye EventCallback can be bound")]
+	public void Test313()
+	{
+		var sut = new ComponentParameterCollectionBuilder<ValidNamesComponent>();
+
+		Action action = () => sut.Bind(p => p.LastChanged, DateTime.Now, _ => { });
+		
+		action.ShouldNotThrow();
+	}
+	
+	[Fact(DisplayName = "Properties with Expression at the end, which are not of type expression can be bound")]
+	public void Test314()
+	{
+		var sut = new ComponentParameterCollectionBuilder<ValidNamesComponent>();
+
+		Action action = () => sut.Bind(p => p.FacialExpression, string.Empty, _ => { }, () => string.Empty);
+		
+		action.ShouldNotThrow();
+	}
+
 	private class Params : ComponentBase
 	{
 		[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "Public for testing purposes")]
@@ -753,5 +773,15 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		[CascadingParameter] public string Value { get; set; } = string.Empty;
 		[Parameter] public EventCallback<string> ValueChanged { get; set; }
+	}
+
+	private class ValidNamesComponent : ComponentBase
+	{
+		[Parameter] public DateTime LastChanged { get; set; }
+		[Parameter] public EventCallback<DateTime> LastChangedChanged { get; set; }
+		
+		[Parameter] public string FacialExpression { get; set; }
+		[Parameter] public EventCallback<string> FacialExpressionChanged { get; set; }
+		[Parameter] public Expression<Func<string>> FacialExpressionExpression { get; set; }
 	}
 }
