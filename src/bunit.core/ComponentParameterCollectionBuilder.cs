@@ -318,46 +318,67 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="parameterSelector">Parameter-selector for the two-way binding. </param>
 	/// <param name="initialValue">The value to pass to <typeparamref name="TComponent"/>.</param>
 	/// <param name="changedAction">Action which gets invoked when the value has changed.</param>
+	/// <param name="valueExpression">Optional value expression, which </param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
+	/// <remarks>
+	/// This function is a short-hand form for the following expression:
+	/// <code>p => p
+	/// .Add(c => c.Value, value)
+	/// .Add(c => c.ValueChanged, v => value = v)
+	/// .Add(c => c.ValueExpression, () => value)
+	/// </code>
+	/// With <see cref="Bind{TValue}"/> it looks like this:
+	/// <code>
+	/// p => p.Bind(c => c.Value, value, v => value = v, () => value);
+	/// </code>
+	/// </remarks>
 	public ComponentParameterCollectionBuilder<TComponent> Bind<TValue>(
 		Expression<Func<TComponent, TValue>> parameterSelector,
 		TValue initialValue,
-		Action<TValue> changedAction)
+		Action<TValue> changedAction,
+		Expression<Func<TValue>>? valueExpression = null)
 	{
-		if (parameterSelector is null)
-			throw new ArgumentNullException(nameof(parameterSelector));
-
-		if (changedAction is null)
-			throw new ArgumentNullException(nameof(changedAction));
-		
 		var (parameterName, _, isCascading) = GetParameterInfo(parameterSelector);
 
 		if (isCascading)
 			throw new ArgumentException("Using Bind with a cascading parameter is not allowed.", parameterName);
+		
+		if (changedAction is null)
+        	throw new ArgumentNullException(nameof(changedAction));
 
 		var changedName = $"{parameterName}Changed";
 		var expressionName = $"{parameterName}Expression";
 
+		AssertBindTargetIsCorrect(parameterName, parameterSelector);
+
 		if (!HasPublicParameterProperty(changedName))
 			throw new InvalidOperationException($"The parameter selector '{parameterSelector}' does not resolve to a parameter that has a related parameter with the name {changedName}. This is required for two way binding.");
-		
-		var parameter = AddParameter(parameterName, initialValue);
 
-		var eventCallback = EventCallback.Factory.Create(this, changedAction);
-		parameter.AddParameter(changedName, eventCallback);
-
-		Expression<Func<TValue>> expressionFunc = () => initialValue;
+		AddParameter(parameterName, initialValue);
+		AddParameter(changedName, EventCallback.Factory.Create(changedAction.Target!, changedAction));
 
 		return !HasPublicParameterProperty(expressionName)
-			? parameter 
-			: parameter.AddParameter(expressionName, expressionFunc);
+			? this 
+			: AddParameter(expressionName, valueExpression ?? (Expression<Func<TValue>>)(() => initialValue));
 
-		static bool HasPublicParameterProperty(string parameterName)
+		static void AssertBindTargetIsCorrect(string parameterName, Expression<Func<TComponent, TValue>> parameterSelector)
 		{
-			var type = typeof(TComponent);
-			var property = type.GetProperty(parameterName);
+			var isBindEventParameter = parameterName.EndsWith("Changed", StringComparison.Ordinal) || parameterName.EndsWith("Expression", StringComparison.Ordinal);
+			var isBindEventType = IsConcreteGenericOf(typeof(TValue), typeof(EventCallback<>)) || IsConcreteGenericOf(typeof(TValue), typeof(Expression<>));
+			if (isBindEventParameter && isBindEventType)
+			{
+				var selectorExpression = parameterSelector.ToString();
+				var possibleSelector = parameterName
+					.Replace("Changed", string.Empty, StringComparison.Ordinal)
+					.Replace("Expression", string.Empty, StringComparison.Ordinal);
+			
+				throw new ArgumentException(
+					$@"The parameter selector {selectorExpression} does not correspond to a valid target for a @bind expression
+If the structure of the component is <MyComponent @bind-Value=""value"" /> call Bind(p => p.Value, ""initial value"", p => p.ValueChanged, v => someVar = v);
 
-			return property != null && property.GetCustomAttributes(inherit: true).Any(a => a is ParameterAttribute);
+Try {selectorExpression.Replace(parameterName, possibleSelector, StringComparison.Ordinal)} instead.
+");
+			}
 		}
 	}
 
@@ -447,5 +468,21 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	{
 		var childBuilder = new ComponentParameterCollectionBuilder<TChildComponent>(childParameterBuilder);
 		return childBuilder.Build().ToRenderFragment<TChildComponent>();
+	}
+	
+	private static bool HasPublicParameterProperty(string parameterName)
+	{
+		var type = typeof(TComponent);
+		var property = type.GetProperty(parameterName);
+
+		return property != null && property.GetCustomAttributes(inherit: true).Any(a => a is ParameterAttribute);
+	}
+	
+	private static bool IsConcreteGenericOf(Type type, Type openGeneric)
+	{
+		if (!type.IsGenericType)
+			return false;
+
+		return type.GetGenericTypeDefinition() == openGeneric;
 	}
 }

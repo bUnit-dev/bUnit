@@ -654,6 +654,27 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 
 		action.ShouldThrow<ArgumentNullException>();
 	}
+	
+	[Fact(DisplayName = "Throw exception when wrong parameter is changed action")]
+	public void Test311()
+	{
+		var sut = new ComponentParameterCollectionBuilder<SimpleBind>();
+
+		Action action = () => sut.Bind(p => p.ValueChanged, new EventCallback<string>(), _ => { });
+
+		action.ShouldThrow<ArgumentException>();
+	}
+	
+	[Fact(DisplayName = "Throw exception when wrong parameter is expression")]
+	public void Test312()
+	{
+		const string value = "some string";
+		var sut = new ComponentParameterCollectionBuilder<FullBind>();
+
+		Action action = () => sut.Bind(p => p.FooExpression, () => value, _ => { });
+
+		action.ShouldThrow<ArgumentException>();
+	}
 
 	private class Params : ComponentBase
 	{
