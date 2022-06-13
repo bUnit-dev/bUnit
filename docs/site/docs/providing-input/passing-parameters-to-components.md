@@ -387,24 +387,23 @@ The example passes a inline Razor template to the `Render<TComponent>()` method.
 
 ***
 
-## Setting up `@bind` directive
-There are two ways to setup a component with a two-way binding aka `@bind` directive. If the razor syntax is used the `@bind` directive can be defined as in a plain Blazor component. For the C# syntax the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Bind` method is used to setup a two-way binding.
+## Configure two-way with component parameters (`@bind` directive)
 
-In the follow examples, a component with a two-way binding is setup
+To set up [two-way binding to a pair of component parameters](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/data-binding#binding-with-component-parameters) on a component under test, e.g. the `Value` and `ValueChanged` parameter pair on the component below, do the following:
+
 [!code-csharp[TwoWayBinding.razor](../../../samples/components/TwoWayBinding.razor)]
 
 # [C# test code](#tab/csharp)
 
 [!code-csharp[TwoWayBindingTest.cs](../../../samples/tests/xunit/TwoWayBindingTest.cs#L5-L19)]
 
-The example uses the `Bind` method to setup a two-way binding between `Value` and the provided object.
+The example uses the `Bind` method to setup two-way binding between the `Value` parameter and `ValueChanged` parameter, and the local variable in the test method (`value`). The `Bind` method is a shorthand for calling the the `Add` method for the `Value` parameter and `ValueChanged` parameter individually.
+
 # [Razor test code](#tab/razor)
 
 [!code-cshtml[TwoWayBindingTest.razor](../../../samples/tests/razor/TwoWayBindingTest.razor)]
 
-The example uses the built-in `@bind-Value` directive to make a two way binding between `Value` and the provided object.
-
-
+The example uses the standard `@bind-Value` directive in Blazor to set up two way binding between the `Value` parameter and `ValueChanged` parameter and the local variable in the test method (`value`).
 ***
 
 ## Further Reading

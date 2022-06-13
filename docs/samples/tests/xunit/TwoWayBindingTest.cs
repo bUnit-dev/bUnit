@@ -12,7 +12,7 @@ public class TwoWayBindingTest
 
     ctx.RenderComponent<TwoWayBinding>(parameters =>
       parameters.Bind(
-        component => component.Value,
+        p => p.Value,
         value,
         newValue => value = newValue));
   }

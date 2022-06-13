@@ -314,8 +314,8 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		return AddParameter(name, value);
 	}
 
-	/// <summary> Adds a two-way binding (@bind directive) to a given parameter. </summary>
-	/// <param name="parameterSelector">Parameter-selector for the two-way binding.</param>
+	/// <summary>Adds two-way binding, simulating the <c>@bind-Parameter</c> directive, to a given pair of parameters.</summary>
+	/// <param name="parameterSelector">Parameter-selector for the two-way binding. </param>
 	/// <param name="initialValue">The value to pass to <typeparamref name="TComponent"/>.</param>
 	/// <param name="changedAction">Action which gets invoked when the value has changed.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
@@ -333,13 +333,13 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		var (parameterName, _, isCascading) = GetParameterInfo(parameterSelector);
 
 		if (isCascading)
-			throw new ArgumentException("Binding a cascading parameter is not allowed.", parameterName);
+			throw new ArgumentException("Using Bind with a cascading parameter is not allowed.", parameterName);
 
 		var changedName = $"{parameterName}Changed";
 		var expressionName = $"{parameterName}Expression";
 
 		if (!HasPublicParameterProperty(changedName))
-			throw new InvalidOperationException($"Could not find a public parameter with the name {changedName} which is required for the bind directive.");
+			throw new InvalidOperationException($"The parameter selector '{parameterSelector}' does not resolve to a parameter that has a related parameter with the name {changedName}. This is required for two way binding.");
 		
 		var parameter = AddParameter(parameterName, initialValue);
 
