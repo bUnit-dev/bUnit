@@ -370,18 +370,21 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 			if (isBindEventParameter && isBindEventType)
 			{
 				var selectorExpression = parameterSelector.ToString();
-				var possibleSelector = parameterName
-					.Replace("Changed", string.Empty, StringComparison.Ordinal)
-					.Replace("Expression", string.Empty, StringComparison.Ordinal);
-			
+				var possibleSelector = TrimEnd(parameterName, "Changed");
+				possibleSelector = TrimEnd(possibleSelector, "Expression");
 				throw new ArgumentException($"The parameter selector {selectorExpression} does not correspond " +
-											$"to a valid target for a @bind expression. If the structure of the " +
+											$"to a valid target for a @bind expression.{Environment.NewLine}If the structure of the " +
 											$"component is <MyComponent @bind-Value=\"value\" /> call " +
 											$"Bind(p => p.Value, \"initial value\", p => p.ValueChanged, v => someVar = v);" +
 											Environment.NewLine +
 											$"Try {selectorExpression.Replace(parameterName, possibleSelector, StringComparison.Ordinal)} instead.");
 			}
 		}
+		
+		static string TrimEnd(string source, string value) 
+			=> source.EndsWith(value, StringComparison.Ordinal)
+			? source.Remove(source.LastIndexOf(value, StringComparison.Ordinal))
+			: source;
 	}
 
 	/// <summary>
