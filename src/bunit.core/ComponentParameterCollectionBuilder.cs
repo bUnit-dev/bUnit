@@ -315,21 +315,21 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	}
 
 	/// <summary>Adds two-way binding, simulating the <c>@bind-Parameter</c> directive, to a given pair of parameters.</summary>
-	/// <param name="parameterSelector">Parameter-selector for the two-way binding. </param>
-	/// <param name="initialValue">The value to pass to <typeparamref name="TComponent"/>.</param>
+	/// <param name="parameterSelector">Parameter-selector for the two-way binding.</param>
+	/// <param name="initialValue">The initial value to pass to <typeparamref name="TComponent"/>.</param>
 	/// <param name="changedAction">Action which gets invoked when the value has changed.</param>
-	/// <param name="valueExpression">Optional value expression, which </param>
+	/// <param name="valueExpression">Optional value expression.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	/// <remarks>
 	/// This function is a short-hand form for the following expression:
-	/// <code>p => p
-	/// .Add(c => c.Value, value)
-	/// .Add(c => c.ValueChanged, v => value = v)
-	/// .Add(c => c.ValueExpression, () => value)
+	/// <code>RenderComponent&lt;<typeparamref name="TComponent"/>&gt;(ps => ps
+	///   .Add(c => c.Value, value)
+	///   .Add(c => c.ValueChanged, newValue => value = newValue)
+	///   .Add(c => c.ValueExpression, () => value));
 	/// </code>
-	/// With <see cref="Bind{TValue}"/> it looks like this:
-	/// <code>
-	/// p => p.Bind(c => c.Value, value, v => value = v, () => value);
+	/// With <c>Bind</c>, it can be written like this:
+	/// <code>RenderComponent&lt;<typeparamref name="TComponent"/>&gt;(ps => ps
+	///   .Bind(c => c.Value, value, newValue => value = newValue, () => value));
 	/// </code>
 	/// </remarks>
 	public ComponentParameterCollectionBuilder<TComponent> Bind<TValue>(
@@ -352,14 +352,16 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		AssertBindTargetIsCorrect(parameterName, parameterSelector);
 
 		if (!HasPublicParameterProperty(changedName))
-			throw new InvalidOperationException($"The parameter selector '{parameterSelector}' does not resolve to a parameter that has a related parameter with the name {changedName}. This is required for two way binding.");
+			throw new InvalidOperationException($"The parameter selector '{parameterSelector}' does not resolve to a " +
+												$"parameter that has a related parameter with the name {changedName}. " +
+												$"This is required for two way binding.");
 
 		AddParameter(parameterName, initialValue);
 		AddParameter(changedName, EventCallback.Factory.Create(changedAction.Target!, changedAction));
 
 		return !HasPublicParameterProperty(expressionName)
 			? this 
-			: AddParameter(expressionName, valueExpression ?? (Expression<Func<TValue>>)(() => initialValue));
+			: AddParameter(expressionName, valueExpression ?? (() => initialValue));
 
 		static void AssertBindTargetIsCorrect(string parameterName, Expression<Func<TComponent, TValue>> parameterSelector)
 		{
@@ -372,12 +374,12 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 					.Replace("Changed", string.Empty, StringComparison.Ordinal)
 					.Replace("Expression", string.Empty, StringComparison.Ordinal);
 			
-				throw new ArgumentException(
-					$@"The parameter selector {selectorExpression} does not correspond to a valid target for a @bind expression
-If the structure of the component is <MyComponent @bind-Value=""value"" /> call Bind(p => p.Value, ""initial value"", p => p.ValueChanged, v => someVar = v);
-
-Try {selectorExpression.Replace(parameterName, possibleSelector, StringComparison.Ordinal)} instead.
-");
+				throw new ArgumentException($"The parameter selector {selectorExpression} does not correspond " +
+											$"to a valid target for a @bind expression. If the structure of the " +
+											$"component is <MyComponent @bind-Value=\"value\" /> call " +
+											$"Bind(p => p.Value, \"initial value\", p => p.ValueChanged, v => someVar = v);" +
+											Environment.NewLine +
+											$"Try {selectorExpression.Replace(parameterName, possibleSelector, StringComparison.Ordinal)} instead.");
 			}
 		}
 	}

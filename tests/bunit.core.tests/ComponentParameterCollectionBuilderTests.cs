@@ -676,7 +676,7 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldThrow<ArgumentException>();
 	}
 
-	[Fact(DisplayName = "Properties with Changed at the end, which are not of tpye EventCallback can be bound")]
+	[Fact(DisplayName = "Properties with Changed at the end, which are not of type EventCallback can be bound")]
 	public void Test313()
 	{
 		var sut = new ComponentParameterCollectionBuilder<ValidNamesComponent>();
@@ -698,7 +698,6 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 
 	private class Params : ComponentBase
 	{
-		[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "Public for testing purposes")]
 		public int Field = -1;
 		[Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? Attributes { get; set; }
 		[Parameter] public int? NullableValueTypeParam { get; set; }
