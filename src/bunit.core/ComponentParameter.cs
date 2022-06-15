@@ -4,7 +4,6 @@ namespace Bunit;
 /// Represents a single parameter supplied to an <see cref="Microsoft.AspNetCore.Components.IComponent"/>
 /// component under test.
 /// </summary>
-[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "No need in this case.")]
 public readonly struct ComponentParameter : IEquatable<ComponentParameter>
 {
 	/// <summary>

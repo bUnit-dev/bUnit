@@ -7,7 +7,6 @@ internal sealed class PlaceholderHttpClient : HttpClient
 {
 	private const string PlaceholderBaseAddress = "http://localhost";
 
-	[SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposed by base HttpClient.")]
 	public PlaceholderHttpClient()
 		: base(new PlaceholderHttpMessageHandler(), disposeHandler: true)
 	{

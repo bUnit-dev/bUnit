@@ -1,10 +1,11 @@
 using Bunit.Extensions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering;
 
-public partial class TestRendererTest : TestContext
+public class TestRendererTest : TestContext
 {
 	public TestRendererTest(ITestOutputHelper outputHelper)
 	{
@@ -422,6 +423,24 @@ public partial class TestRendererTest : TestContext
 		Renderer.UnhandledException.Result.ShouldBeOfType<InvalidOperationException>();
 	}
 
+	[Fact(DisplayName = "given a IComponentActivator, " +
+					"when passed to constructor," +
+					"then it used to create components")]
+	public void Test1000()
+	{
+		var activatorMock = new Mock<IComponentActivator>();
+		activatorMock.Setup(x => x.CreateInstance(typeof(Wrapper))).Returns(new Wrapper());
+		using var renderer = new TestRenderer(
+			Services.GetService<IRenderedComponentActivator>(),
+			Services,
+			NullLoggerFactory.Instance,
+			activatorMock.Object);
+
+		renderer.RenderComponent<Wrapper>(new ComponentParameterCollection());
+
+		activatorMock.Verify(x => x.CreateInstance(typeof(Wrapper)), Times.Once());
+	}
+	
 	internal sealed class NoChildNoParams : ComponentBase
 	{
 		public const string MARKUP = "hello world";

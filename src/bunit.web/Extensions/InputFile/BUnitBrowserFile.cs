@@ -1,4 +1,3 @@
-﻿#if NET5_0_OR_GREATER
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace Bunit;
@@ -30,4 +29,3 @@ internal class BUnitBrowserFile : IBrowserFile
 		return new MemoryStream(Content);
 	}
 }
-#endif

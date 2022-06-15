@@ -9,7 +9,6 @@ namespace Xunit;
 
 public static class ServiceCollectionLoggingExtensions
 {
-	[SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Serilog should dispose of its logger itself")]
 	public static IServiceCollection AddXunitLogger(this IServiceCollection services, ITestOutputHelper outputHelper)
 	{
 		var serilogLogger = new LoggerConfiguration()

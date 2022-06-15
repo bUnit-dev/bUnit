@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System;
 using System.Threading.Tasks;
 using Bunit.TestAssets.SampleComponents;
@@ -38,4 +37,3 @@ public class GenericComponentFactoryTest : TestContext
 		protected override Task OnAfterRenderAsync(bool firstRender) => Task.CompletedTask;
 	}
 }
-#endif

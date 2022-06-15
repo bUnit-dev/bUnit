@@ -2,8 +2,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 	<PropertyGroup Label="Configuration variables">
-		<DotNet3Version>3.1.22</DotNet3Version>
-		<DotNet5Version>5.0.0</DotNet5Version>
 		<DotNet6Version>6.0.0</DotNet6Version>
 		<DotNet7Version>7.0.0</DotNet7Version>
 	</PropertyGroup>

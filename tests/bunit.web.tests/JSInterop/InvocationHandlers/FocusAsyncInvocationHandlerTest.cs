@@ -1,4 +1,3 @@
-#if !NETCOREAPP3_1
 using System.Threading.Tasks;
 using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
@@ -59,4 +58,3 @@ public class FocusAsyncInvocationHandlerTest : TestContext
 		}
 	}
 }
-#endif

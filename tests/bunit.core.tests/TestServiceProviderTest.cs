@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace Bunit;
 
-public partial class TestServiceProviderTest
+public class TestServiceProviderTest
 {
 	[Fact(DisplayName = "Provider initialized without a service collection has zero services by default")]
 	public void Test001()
