@@ -58,8 +58,6 @@ public class FakeNavigationManagerTest : TestContext
 	}
 
 	[Fact(DisplayName = "NavigateTo raises the NotifyLocationChanged")]
-	[SuppressMessage("Major Bug", "S2259:Null pointers should not be dereferenced",
-		Justification = "BUG in analyzer - 'actualLocationChange' is NOT null on the execution path.")]
 	public void Test005()
 	{
 		// arrange
@@ -103,21 +101,6 @@ public class FakeNavigationManagerTest : TestContext
 		sut.Uri.ShouldEndWith("with%20whitespace");
 	}
 
-#if !NET6_0_OR_GREATER
-		[Theory(DisplayName = "NavigateTo(uri, forceLoad) is saved in history")]
-		[InlineData("/uri", false)]
-		[InlineData("/anotherUri", true)]
-		public void Test100(string uri, bool forceLoad)
-		{
-			var sut = CreateFakeNavigationManager();
-
-			sut.NavigateTo(uri, forceLoad);
-
-			sut.History.ShouldHaveSingleItem()
-				.ShouldBeEquivalentTo(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
-		}
-#endif
-#if NET6_0_OR_GREATER
 	[Theory(DisplayName = "NavigateTo(uri, forceLoad, replaceHistoryEntry) is saved in history")]
 	[InlineData("/uri", false, false)]
 	[InlineData("/uri", true, false)]
@@ -132,7 +115,7 @@ public class FakeNavigationManagerTest : TestContext
 		sut.History.ShouldHaveSingleItem()
 			.ShouldBeEquivalentTo(new NavigationHistory(uri,
 				new NavigationOptions { ForceLoad = forceLoad, ReplaceHistoryEntry = replaceHistoryEntry }));
-#elif NET7_0_OR_GREATER
+#else
 		var navigationOptions = new NavigationOptions { ForceLoad = forceLoad, ReplaceHistoryEntry =
  replaceHistoryEntry };
 		sut.History.ShouldHaveSingleItem()
@@ -152,13 +135,12 @@ public class FakeNavigationManagerTest : TestContext
 		sut.History.ShouldHaveSingleItem()
 			.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl",
 				new NavigationOptions { ReplaceHistoryEntry = true }));
-#elif NET7_0_OR_GREATER
+#else
 		sut.History.ShouldHaveSingleItem()
 			.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl",  new NavigationOptions { ReplaceHistoryEntry =
  true }, NavigationState.Succeeded));
 #endif
 	}
-#endif
 
 	[Fact(DisplayName = "Navigate to an external url should set BaseUri")]
 	public void Test008()

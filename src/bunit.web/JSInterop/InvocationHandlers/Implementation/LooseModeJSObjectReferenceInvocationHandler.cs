@@ -1,4 +1,5 @@
-#if NET5_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.JSInterop;
 
 namespace Bunit.JSInterop.InvocationHandlers.Implementation;
 
@@ -8,11 +9,9 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation;
 /// </summary>
 internal sealed class LooseModeJSObjectReferenceInvocationHandler : JSRuntimeInvocationHandler<IJSObjectReference>
 {
-	[SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "BunitJSObjectReference doesn't have any disposable resources, it just implements the methods to be compatible with the interfaces it implements.")]
 	internal LooseModeJSObjectReferenceInvocationHandler(BunitJSInterop parent)
 		: base(_ => parent.Mode == JSRuntimeMode.Loose, isCatchAllHandler: true)
 	{
 		SetResult(new BunitJSObjectReference(parent));
 	}
 }
-#endif

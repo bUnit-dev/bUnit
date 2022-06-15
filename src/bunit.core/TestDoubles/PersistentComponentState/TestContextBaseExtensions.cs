@@ -1,4 +1,3 @@
-#if NET6_0_OR_GREATER
 using System;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Infrastructure;
@@ -26,4 +25,3 @@ public static class TestContextBaseExtensions
 		return new FakePersistentComponentState(testContext.Services);
 	}
 }
-#endif

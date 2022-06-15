@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
@@ -42,4 +41,3 @@ internal class BunitComponentActivator : IComponentActivator
 		return (IComponent)Activator.CreateInstance(componentType)!;
 	}
 }
-#endif

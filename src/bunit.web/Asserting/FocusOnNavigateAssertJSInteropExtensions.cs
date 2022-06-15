@@ -1,4 +1,3 @@
-#if NET6_0_OR_GREATER
 using System.Collections.Generic;
 using Bunit.JSInterop.InvocationHandlers.Implementation;
 using Microsoft.AspNetCore.Components.Routing;
@@ -29,4 +28,3 @@ public static class FocusOnNavigateAssertJSInteropExtensions
 	public static IReadOnlyList<JSRuntimeInvocation> VerifyFocusOnNavigateInvoke(this BunitJSInterop handler, int calledTimes, string? userMessage = null)
 		=> handler.VerifyInvoke(FocusOnNavigateHandler.Identifier, calledTimes, userMessage);
 }
-#endif

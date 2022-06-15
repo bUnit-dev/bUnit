@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 namespace Bunit.ComponentFactories;
 
 internal sealed class ConditionalComponentFactory : IComponentFactory
@@ -18,4 +17,3 @@ internal sealed class ConditionalComponentFactory : IComponentFactory
 	public IComponent Create(Type componentType)
 		=> factory(componentType);
 }
-#endif

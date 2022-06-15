@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System.Collections;
 using System.Collections.Immutable;
 using System.Linq.Expressions;
@@ -10,14 +9,12 @@ namespace Bunit.TestDoubles;
 /// Represents a view of parameters captured by a <see cref="ComponentDoubleBase{TComponent}"/>.
 /// </summary>
 /// <typeparam name="TComponent"></typeparam>
-[SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "Using Blazor naming conventions.")]
 public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, object>
 	where TComponent : IComponent
 {
 	/// <summary>
 	/// Gets a empty <see cref="CapturedParameterView{TComponent}"/>.
 	/// </summary>
-	[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "When following 'empty' pattern this is OK")]
 	public static CapturedParameterView<TComponent> Empty { get; } = new(ImmutableDictionary<string, object>.Empty);
 
 	private static readonly Type ComponentType = typeof(TComponent);
@@ -104,8 +101,6 @@ public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, obj
 	/// </summary>
 	/// <param name="parameters">Parameters to create from.</param>
 	/// <returns>An instance of <see cref="CapturedParameterView{TComponent}"/>.</returns>
-	[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Following factory pattern used in .net")]
 	public static CapturedParameterView<TComponent> From(ParameterView parameters)
 		=> new(parameters.ToDictionary());
 }
-#endif

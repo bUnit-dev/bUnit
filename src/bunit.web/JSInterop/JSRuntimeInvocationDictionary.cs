@@ -5,7 +5,6 @@ namespace Bunit;
 /// <summary>
 /// Represents a dictionary of <see cref="JSRuntimeInvocation"/>, keyed by their identifier.
 /// </summary>
-[SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "Name makes sense in this context.")]
 public sealed class JSRuntimeInvocationDictionary : IReadOnlyCollection<JSRuntimeInvocation>
 {
 	private readonly Dictionary<string, List<JSRuntimeInvocation>> invocations = new(StringComparer.Ordinal);

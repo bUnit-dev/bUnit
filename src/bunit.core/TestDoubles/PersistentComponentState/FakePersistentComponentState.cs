@@ -1,4 +1,3 @@
-#if NET6_0_OR_GREATER
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -87,4 +86,3 @@ public sealed class FakePersistentComponentState
 	public bool TryTake<TValue>(string key, [MaybeNullWhen(false)] out TValue? instance)
 		=> manager.Value.State.TryTakeFromJson<TValue>(key, out instance);
 }
-#endif

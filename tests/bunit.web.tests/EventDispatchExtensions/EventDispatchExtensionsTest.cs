@@ -63,7 +63,6 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 		}
 	}
 
-	[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "Event names are used in lower case.")]
 	private static string GetEventNameFromMethod(MethodInfo helper)
 	{
 		if (helper is null)
@@ -81,7 +80,6 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 		return eventName;
 	}
 
-	[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Can safely be shared")]
 	public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType)
 	{
 		if (helperClassType is null)
@@ -93,7 +91,6 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 			.ToArray();
 	}
 
-	[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Can safely be shared")]
 	public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType, Func<MethodInfo, bool> customFilter)
 	{
 		if (helperClassType is null)

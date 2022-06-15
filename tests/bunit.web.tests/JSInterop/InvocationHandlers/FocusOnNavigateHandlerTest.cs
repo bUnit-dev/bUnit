@@ -1,4 +1,3 @@
-#if NET6_0_OR_GREATER
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,4 +55,3 @@ public class FocusOnNavigateHandlerTest : TestContext
 		}
 	}
 }
-#endif
