@@ -172,7 +172,6 @@ public class KeyTest
 	}
 
 	[Fact(DisplayName = "Null keys should be equal")]
-	[SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "Test verifies that equals operator overloads behave correctly")]
 	public void NullsAreEqual()
 	{
 		Key? key1 = default;

@@ -1,4 +1,3 @@
-﻿#if NET5_0_OR_GREATER
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace Bunit;
@@ -38,4 +37,3 @@ public static class InputFileExtensions
         }
     }
 }
-#endif

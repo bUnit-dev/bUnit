@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using Bunit.TestDoubles;
 
 namespace Bunit.ComponentFactories;
@@ -25,4 +24,3 @@ internal sealed class StubComponentFactory : IComponentFactory
 		return (IComponent)Activator.CreateInstance(typeToCreate, new object?[] { replacementContent })!;
 	}
 }
-#endif

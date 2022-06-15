@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
@@ -27,4 +26,3 @@ public static class DetailsElementEventDispatchExtensions
 	/// <returns>A task that completes when the event handler is done.</returns>
 	public static Task ToggleAsync(this IElement element, EventArgs eventArgs) => element.TriggerEventAsync("ontoggle", eventArgs);
 }
-#endif

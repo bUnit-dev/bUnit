@@ -1,4 +1,3 @@
-#if !NETCOREAPP3_1
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -16,11 +15,7 @@ namespace Bunit.JSInterop;
 public class BunitJSObjectReferenceTest : TestContext
 {
 	private static readonly Type JSVoidResultType =
-#if !NET6_0_OR_GREATER
-			typeof(object);
-#else
 			typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult);
-#endif
 
 	[Theory(DisplayName = "Calling Setup<JSObjectReference> or Setup<IJSObjectReference> throws")]
 	[InlineData("import", null)]
@@ -468,4 +463,3 @@ public class BunitJSObjectReferenceTest : TestContext
 	private BunitJSObjectReference GetBunitJSObjectReference()
 		=> (BunitJSObjectReference)JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("FOO.js").Result;
 }
-#endif

@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System.Collections;
 using System.Collections.Generic;
 
@@ -92,4 +91,3 @@ public sealed class ComponentFactoryCollection : IList<IComponentFactory>
 	/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the <see cref="ComponentFactoryCollection"/>.</returns>
 	IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)factories).GetEnumerator();
 }
-#endif

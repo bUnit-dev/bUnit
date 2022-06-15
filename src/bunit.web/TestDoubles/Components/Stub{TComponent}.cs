@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System.Diagnostics;
 
 namespace Bunit.TestDoubles;
@@ -51,4 +50,3 @@ public sealed class Stub<TComponent> : ComponentDoubleBase<TComponent>
 		}
 	}
 }
-#endif

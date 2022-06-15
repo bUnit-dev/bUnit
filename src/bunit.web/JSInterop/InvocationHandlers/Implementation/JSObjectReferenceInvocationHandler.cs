@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
 
@@ -19,7 +18,6 @@ internal sealed class JSObjectReferenceInvocationHandler : JSRuntimeInvocationHa
 	/// <summary>
 	/// Initializes a new instance of the <see cref="JSObjectReferenceInvocationHandler"/> class.
 	/// </summary>
-	[SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "BunitJSObjectReference doesn't have any disposable ressources, it just implements the methods to be compatible with the interfaces it implements.")]
 	public JSObjectReferenceInvocationHandler(BunitJSInterop parent, InvocationMatcher invocationMatcher, bool isCatchAllHandler)
 		: base(invocationMatcher, isCatchAllHandler)
 	{
@@ -27,4 +25,3 @@ internal sealed class JSObjectReferenceInvocationHandler : JSRuntimeInvocationHa
 		SetResult(new BunitJSObjectReference(JSInterop));
 	}
 }
-#endif

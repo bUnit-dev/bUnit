@@ -2,7 +2,7 @@ using AngleSharp.Dom;
 
 namespace Bunit.Asserting;
 
-public partial class MarkupMatchesAssertExtensionsTest : TestContext
+public class MarkupMatchesAssertExtensionsTest : TestContext
 {
 	private const string ActualMarkup = "<p>FOO</p>";
 	private const string ExpectedMarkup = "<div>BAR</div>";
@@ -122,5 +122,13 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 		var cut = RenderComponent<TwoChildren>();
 
 		cut.Find("div").MarkupMatches(cut.FindAll("div"));
+	}
+
+	[Fact(DisplayName = "MarkupMatches correctly ignores scoped CSS attributes")]
+	public void Test_net5_001()
+	{
+		var cut = RenderComponent<ScopedCssElements>();
+
+		cut.MarkupMatches("<h1>Hello Pink World!</h1>");
 	}
 }

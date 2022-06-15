@@ -1,4 +1,3 @@
-#if NET6_0_OR_GREATER
 using System.Threading.Tasks;
 using AutoFixture.Xunit2;
 using Bunit.TestAssets.SampleComponents;
@@ -87,4 +86,3 @@ public class FakePersistentComponentStateTest : TestContext
 		onPersistingCalledTimes.ShouldBe(1);
 	}
 }
-#endif

@@ -1,8 +1,8 @@
 ﻿using System;
 using AngleSharp.Dom;
 
-namespace AngleSharpWrappers
-{
+namespace AngleSharpWrappers;
+
     public class TestFactory<T> : IElementFactory<T>
             where T : class, IElement
     {
@@ -15,4 +15,3 @@ namespace AngleSharpWrappers
 
         public T GetElement() => _factory();
     }
-}
