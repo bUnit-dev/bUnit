@@ -1,6 +1,6 @@
 {
-  "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/main/src/NerdBank.GitVersioning/version.schema.json",
-  "version": "1.31-preview",
+  "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
+  "version": "2.0-alpha",
   "assemblyVersion": {
     "precision": "revision"
   },
@@ -17,7 +17,7 @@
   },
   "release": {
     "branchName": "release/v{version}",
-    "firstUnstableTag": "preview"
+    "firstUnstableTag": "alpha"
   },
   "pathFilters": [
     "./src"
