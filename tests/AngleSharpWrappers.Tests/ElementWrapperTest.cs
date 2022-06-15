@@ -8,44 +8,43 @@ using AngleSharp.Dom;
 using Shouldly;
 using Xunit;
 
-namespace AngleSharpWrappers
-{
-	public class ElementWrapperTest
-	{
-		private HtmlParser Parser { get; } = new HtmlParser();
+namespace AngleSharpWrappers;
 
-		[Fact(DisplayName = "QuerySelectorAll works the same with wrapped and non-wrapped element")]
-		public void Test001()
-		{
-			var elm = Parser.Parse(
-				"<div>" +
-				"<div id=\"foo\"></div>" +
-				"<div id=\"bar\"></div>" +
-				"</div>").OfType<IElement>().Single();
+    public class ElementWrapperTest
+    {
+        private HtmlParser Parser { get; } = new HtmlParser();
 
-			var sut = WrapperFactory.Create(new TestFactory<IElement>(() => elm));
+        [Fact(DisplayName = "QuerySelectorAll works the same with wrapped and non-wrapped element")]
+        public void Test001()
+        {
+            var elm = Parser.Parse(
+                "<div>" +
+                "<div id=\"foo\"></div>" +
+                "<div id=\"bar\"></div>" +
+                "</div>").OfType<IElement>().Single();
 
-			var sutQueryRes = sut.QuerySelectorAll("div");
-			var elmQueryRes = elm.QuerySelectorAll("div");
+            var sut = WrapperFactory.Create(new TestFactory<IElement>(() => elm));
 
-			sutQueryRes.ShouldBe(elmQueryRes);
-		}
+            var sutQueryRes = sut.QuerySelectorAll("div");
+            var elmQueryRes = elm.QuerySelectorAll("div");
 
-		[Fact(DisplayName = "QuerySelector works the same with wrapped and non-wrapped element")]
-		public void Test002()
-		{
-			var elm = Parser.Parse(
-				"<div>" +
-				"<div id=\"foo\"></div>" +
-				"<div id=\"bar\"></div>" +
-				"</div>").OfType<IElement>().Single();
+            sutQueryRes.ShouldBe(elmQueryRes);
+        }
 
-			var sut = WrapperFactory.Create(new TestFactory<IElement>(() => elm));
+        [Fact(DisplayName = "QuerySelector works the same with wrapped and non-wrapped element")]
+        public void Test002()
+        {
+            var elm = Parser.Parse(
+                "<div>" +
+                "<div id=\"foo\"></div>" +
+                "<div id=\"bar\"></div>" +
+                "</div>").OfType<IElement>().Single();
 
-			var sutQueryRes = sut.QuerySelector("#foo");
-			var elmQueryRes = elm.QuerySelector("#foo");
+            var sut = WrapperFactory.Create(new TestFactory<IElement>(() => elm));
 
-			sutQueryRes.ShouldBe(elmQueryRes);
-		}
-	}
-}
+            var sutQueryRes = sut.QuerySelector("#foo");
+            var elmQueryRes = elm.QuerySelector("#foo");
+
+            sutQueryRes.ShouldBe(elmQueryRes);
+        }
+    }

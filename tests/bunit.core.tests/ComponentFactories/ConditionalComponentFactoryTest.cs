@@ -1,5 +1,3 @@
-#if NET5_0_OR_GREATER
-
 namespace Bunit.ComponentFactories;
 
 public class ConditionalComponentFactoryTest : TestContext
@@ -68,5 +66,3 @@ internal static class MockRepositoryExtensions
 		return (IComponent)mock.Object;
 	}
 }
-
-#endif

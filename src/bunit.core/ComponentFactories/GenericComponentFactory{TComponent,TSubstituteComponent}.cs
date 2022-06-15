@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 namespace Bunit.ComponentFactories;
 
 internal sealed class GenericComponentFactory<TComponent, TSubstituteComponent> : IComponentFactory
@@ -9,4 +8,3 @@ internal sealed class GenericComponentFactory<TComponent, TSubstituteComponent> 
 
 	public IComponent Create(Type componentType) => Activator.CreateInstance<TSubstituteComponent>()!;
 }
-#endif

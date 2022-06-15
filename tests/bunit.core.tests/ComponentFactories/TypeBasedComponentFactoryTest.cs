@@ -1,5 +1,3 @@
-#if NET5_0_OR_GREATER
-
 namespace Bunit.ComponentFactories;
 
 public class TypeBasedComponentFactoryTest : TestContext
@@ -41,5 +39,3 @@ public class TypeBasedComponentFactoryTest : TestContext
 				x => Mock.Get(x.Instance));
 	}
 }
-
-#endif

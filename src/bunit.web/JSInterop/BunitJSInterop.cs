@@ -1,8 +1,5 @@
 using Bunit.JSInterop;
-
-#if NET5_0_OR_GREATER
 using Bunit.JSInterop.InvocationHandlers.Implementation;
-#endif
 
 namespace Bunit;
 
@@ -37,12 +34,7 @@ public class BunitJSInterop
 	{
 		mode = JSRuntimeMode.Strict;
 		JSRuntime = new BunitJSRuntime(this);
-#if NET5_0_OR_GREATER
-		AddCustomNet5Handlers();
-#endif
-#if NET6_0_OR_GREATER
-		AddCustomNet6Handlers();
-#endif
+		AddCustomHandlers();
 	}
 
 	/// <summary>
@@ -129,20 +121,12 @@ public class BunitJSInterop
 		return default;
 	}
 
-#if NET5_0_OR_GREATER
-	private void AddCustomNet5Handlers()
+	private void AddCustomHandlers()
 	{
 		AddInvocationHandler(new FocusAsyncInvocationHandler());
 		AddInvocationHandler(new VirtualizeJSRuntimeInvocationHandler());
 		AddInvocationHandler(new LooseModeJSObjectReferenceInvocationHandler(this));
 		AddInvocationHandler(new InputFileInvocationHandler());
-	}
-#endif
-
-#if NET6_0_OR_GREATER
-	private void AddCustomNet6Handlers()
-	{
 		AddInvocationHandler(new FocusOnNavigateHandler());
 	}
-#endif
 }

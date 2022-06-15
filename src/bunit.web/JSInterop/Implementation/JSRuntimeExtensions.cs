@@ -9,7 +9,6 @@ internal static class JSRuntimeExtensions
 		return jSInterop.HandleInvocation<TValue>(invocation);
 	}
 
-	[SuppressMessage("Design", "CA1068:CancellationToken parameters must come last", Justification = "Matching Blazor's JSRuntime design.")]
 	internal static ValueTask<TValue> HandleInvokeAsync<TValue>(this BunitJSInterop jSInterop, string identifier, CancellationToken cancellationToken, object?[]? args)
 	{
 		var invocationMethodName = GetInvokeAsyncMethodName<TValue>();
@@ -85,27 +84,13 @@ internal static class JSRuntimeExtensions
 			.GetResult();
 	}
 
-#if !NET6_0_OR_GREATER
-	private static string GetInvokeAsyncMethodName<TValue>()
-		=> typeof(TValue) == typeof(object)
-			? "InvokeVoidAsync"
-			: "InvokeAsync";
-#else
 	private static string GetInvokeAsyncMethodName<TValue>()
 		=> typeof(TValue) == typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult)
 			? "InvokeVoidAsync"
 			: "InvokeAsync";
-#endif
 
-#if !NET6_0_OR_GREATER
-	private static string GetInvokeMethodName<TValue>()
-		=> typeof(TValue) == typeof(object)
-			? "InvokeVoid"
-			: "Invoke";
-#else
 	private static string GetInvokeMethodName<TValue>()
 		=> typeof(TValue) == typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult)
 			? "InvokeVoid"
 			: "Invoke";
-#endif
 }

@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
@@ -8,8 +7,7 @@ using Microsoft.JSInterop;
 
 namespace Bunit;
 
-[SuppressMessage("Minor Code Smell", "S1939:Inheritance list should not be redundant", Justification = "By design. To make it obvious that both is implemented.")]
-internal sealed class BunitJSObjectReference : IJSObjectReference, IJSInProcessObjectReference, IJSUnmarshalledObjectReference
+internal sealed class BunitJSObjectReference : IJSUnmarshalledObjectReference
 {
 	private BunitJSInterop JSInterop { get; }
 
@@ -55,4 +53,3 @@ internal sealed class BunitJSObjectReference : IJSObjectReference, IJSInProcessO
 	/// <inheritdoc/>
 	public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 }
-#endif

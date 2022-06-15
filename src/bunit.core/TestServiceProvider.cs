@@ -79,16 +79,9 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	/// <returns>A service object of type T or null if there is no such service.</returns>
 	public TService? GetService<TService>() => (TService?)GetService(typeof(TService))!;
 
-#if NETSTANDARD2_1
-	/// <inheritdoc/>
-	[return: MaybeNull]
-	public object GetService(Type serviceType)
-		=> GetServiceInternal(serviceType);
-#else
 	/// <inheritdoc/>
 	public object? GetService(Type serviceType)
 		=> GetServiceInternal(serviceType);
-#endif
 
 	private object? GetServiceInternal(Type serviceType)
 	{

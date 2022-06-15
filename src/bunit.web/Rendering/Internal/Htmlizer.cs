@@ -196,7 +196,7 @@ internal static class Htmlizer
 		return RenderFrames(context, frames, position, maxElements);
 	}
 
-	[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
+	[SuppressMessage("Design", "MA0051:Method is too long", Justification = "Based on original code from Blazor team.")]
 	private static int RenderAttributes(
 		HtmlRenderingContext context,
 		ReadOnlySpan<RenderTreeFrame> frames,

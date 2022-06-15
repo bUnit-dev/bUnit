@@ -25,49 +25,11 @@ public sealed class FakeNavigationManager : NavigationManager
 	/// <summary>
 	/// Initializes a new instance of the <see cref="FakeNavigationManager"/> class.
 	/// </summary>
-	[SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "By design. Fake navigation manager defaults to local host as base URI.")]
 	public FakeNavigationManager(ITestRenderer renderer)
 	{
 		this.renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
 		Initialize("http://localhost/", "http://localhost/");
 	}
-
-#if !NET6_0_OR_GREATER
-	/// <inheritdoc/>
-	protected override void NavigateToCore(string uri, bool forceLoad)
-	{
-		var absoluteUri = GetNewAbsoluteUri(uri);
-		var changedBaseUri = HasDifferentBaseUri(absoluteUri);
-
-		if (changedBaseUri)
-		{
-			BaseUri = GetBaseUri(absoluteUri);
-		}
-
-		Uri = ToAbsoluteUri(uri).OriginalString;
-		history.Push(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
-
-		renderer.Dispatcher.InvokeAsync(() =>
-		{
-			Uri = absoluteUri.OriginalString;
-
-			// Only notify of changes if user navigates within the same
-			// base url (domain). Otherwise, the user navigated away
-			// from the app, and Blazor's NavigationManager would
-			// not notify of location changes.
-			if (!changedBaseUri)
-			{
-				NotifyLocationChanged(isInterceptedLink: false);
-			}
-			else
-			{
-				BaseUri = GetBaseUri(absoluteUri);
-			}
-		});
-	}
-#endif
-
-#if NET6_0_OR_GREATER
 
 	/// <inheritdoc/>
 	protected override void NavigateToCore(string uri, NavigationOptions options)
@@ -105,7 +67,6 @@ public sealed class FakeNavigationManager : NavigationManager
 			}
 		});
 	}
-#endif
 
 	private URI GetNewAbsoluteUri(string uri)
 		=> URI.IsWellFormedUriString(uri, UriKind.Relative)

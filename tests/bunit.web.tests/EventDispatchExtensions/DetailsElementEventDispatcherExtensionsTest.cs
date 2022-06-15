@@ -1,4 +1,3 @@
-#if !NETCOREAPP3_1
 using Bunit.TestAssets.SampleComponents;
 using Shouldly;
 using Xunit;
@@ -18,4 +17,3 @@ public class DetailsElementEventDispatcherExtensionsTest : TestContext
 		cut.FindAll("div > p").Count.ShouldBe(1);
 	}
 }
-#endif
