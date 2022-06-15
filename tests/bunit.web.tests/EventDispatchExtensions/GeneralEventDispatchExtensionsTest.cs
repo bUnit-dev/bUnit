@@ -171,7 +171,6 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.GrandParentTriggerCount.ShouldBe(1);
 	}
 
-#if NET6_0_OR_GREATER
 	[Fact(DisplayName = "TriggerEvent can trigger custom events")]
 	public void Test201()
 	{
@@ -185,7 +184,6 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
 	}
-#endif
 
 	[Fact(DisplayName = "TriggerEventAsync throws NoEventHandlerException when invoked with an unknown event handler ID")]
 	public void Test300()
@@ -271,7 +269,6 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 	// Runs the test multiple times to trigger the race condition
 	// reliably.
-	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Needed to trigger multiple reruns of test.")]
 	[Theory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
 	[MemberData(nameof(GetTenNumbers))]
 	public void Test400(int i)

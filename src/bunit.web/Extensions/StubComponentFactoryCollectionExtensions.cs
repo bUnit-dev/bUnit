@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using Bunit.ComponentFactories;
 using Bunit.TestDoubles;
 
@@ -162,4 +161,3 @@ public static class StubComponentFactoryCollectionExtensions
 		return factories;
 	}
 }
-#endif

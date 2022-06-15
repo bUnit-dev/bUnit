@@ -1,5 +1,3 @@
-
-#if NET5_0_OR_GREATER
 using System;
 using Microsoft.AspNetCore.Components;
 
@@ -26,4 +24,3 @@ internal sealed class FocusAsyncInvocationHandler : JSRuntimeInvocationHandler
 		SetVoidResult();
 	}
 }
-#endif

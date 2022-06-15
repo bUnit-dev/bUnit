@@ -79,7 +79,6 @@ public static class TriggerEventDispatchExtensions
 		return result;
 	}
 
-	[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "HTML events are standardize to lower case and safe in this context.")]
 	private static Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());

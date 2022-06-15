@@ -8,8 +8,8 @@ using AngleSharp.Dom;
 using Shouldly;
 using Xunit;
 
-namespace AngleSharpWrappers
-{
+namespace AngleSharpWrappers;
+
     public class ElementWrapperTest
     {
         private HtmlParser Parser { get; } = new HtmlParser();
@@ -48,4 +48,3 @@ namespace AngleSharpWrappers
             sutQueryRes.ShouldBe(elmQueryRes);
         }
     }
-}

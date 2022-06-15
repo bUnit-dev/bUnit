@@ -10,7 +10,6 @@ namespace Xunit;
 /// <see cref="CultureInfo.CurrentUICulture" /> with another culture.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-[SuppressMessage("Design", "CA1019:Define accessors for attribute arguments", Justification = "<Pending>")]
 public sealed class UseCultureAttribute : BeforeAfterTestAttribute
 {
 	readonly Lazy<CultureInfo> culture;

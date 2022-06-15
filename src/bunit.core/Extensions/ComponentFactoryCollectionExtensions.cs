@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using Bunit.ComponentFactories;
 
 namespace Bunit;
@@ -107,4 +106,3 @@ public static class ComponentFactoryCollectionExtensions
 		return factories;
 	}
 }
-#endif

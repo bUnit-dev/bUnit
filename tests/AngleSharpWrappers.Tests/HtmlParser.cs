@@ -3,8 +3,8 @@ using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html.Parser;
 
-namespace AngleSharpWrappers
-{
+namespace AngleSharpWrappers;
+
     public sealed class HtmlParser : IDisposable
     {
         private readonly IBrowsingContext _context;
@@ -30,4 +30,3 @@ namespace AngleSharpWrappers
             _document.Dispose();
         }
     }
-}

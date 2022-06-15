@@ -11,7 +11,7 @@ In `.razor` based tests, using the <xref:Bunit.TestContext>'s <xref:Bunit.TestCo
 
 If you have a <xref:Bunit.IRenderedFragment> or a <xref:Bunit.IRenderedComponent`1> in a test, but need a child component's <xref:Bunit.IRenderedComponent`1>, then use the `FindComponent<TComponent>()` or the `FindComponents<TComponent>()` methods, which traverse down the render tree and finds rendered components.
 
-With a <xref:Bunit.IRenderedComponent`1>, it is possible to cause the component to render again directly through the [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponentBase{``0})) method or one of the [`SetParametersAndRender()`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods, or indirectly through the [`InvokeAsync()`](xref:Bunit.IRenderedFragmentBase.Bunit.RenderedFragmentInvokeAsyncExtensions.InvokeAsync(System.Action)) method.
+With a <xref:Bunit.IRenderedComponent`1>, it is possible to cause the component to render again directly through the [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponentBase{``0})) method or one of the [`SetParametersAndRender()`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods, or indirectly through the [`InvokeAsync()`](xref:Bunit.RenderedFragmentInvokeAsyncExtensions.InvokeAsync(Bunit.IRenderedFragmentBase,Action)) method.
 
 Let's look at how to use each of these methods to cause a re-render.
 
@@ -28,14 +28,14 @@ The highlighted line shows the call to [`Render()`](xref:Bunit.RenderedComponent
 
 ## SetParametersAndRender
 
-The [`SetParametersAndRender(...)`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods tells the renderer to re-render the component with new parameters, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods), passing the new parameters &mdash; _but only the new parameters_ &mdash; to the `SetParametersAsync()` method. To use it, do the following:
+The [`SetParametersAndRender(...)`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods tells the renderer to re-render the component with new parameters, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods), passing the new parameters &mdash; _but only the new parameters_ &mdash; to the `SetParametersAsync()` method. To use it, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=31&end=42&highlight=8-10)]
 
-The highlighted line shows the call to [`SetParametersAndRender()`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})), which is also available as a version that takes the zero or more component parameters, e.g. created through the component parameter factory helper methods, if you prefer that method of passing parameters.
+The highlighted line shows the call to [`SetParametersAndRender()`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},Action{Bunit.ComponentParameterCollectionBuilder{``0}})), which is also available as a version that takes the zero or more component parameters, e.g. created through the component parameter factory helper methods, if you prefer that method of passing parameters.
 
 > [!NOTE]
-> Passing parameters to components through the [`SetParametersAndRender(...)`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods is identical to doing it with the `RenderComponent<TComponent>(...)` methods, described in detail on the <xref:passing-parameters-to-components> page.
+> Passing parameters to components through the [`SetParametersAndRender(...)`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods is identical to doing it with the `RenderComponent<TComponent>(...)` methods, described in detail on the <xref:passing-parameters-to-components> page.
 
 ## InvokeAsync
 
