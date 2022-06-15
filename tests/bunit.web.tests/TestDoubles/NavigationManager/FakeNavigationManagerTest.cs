@@ -111,16 +111,8 @@ public class FakeNavigationManagerTest : TestContext
 
 		sut.NavigateTo(uri, forceLoad, replaceHistoryEntry);
 
-#if NET6_0
 		sut.History.ShouldHaveSingleItem()
-			.ShouldBeEquivalentTo(new NavigationHistory(uri,
-				new NavigationOptions { ForceLoad = forceLoad, ReplaceHistoryEntry = replaceHistoryEntry }));
-#else
-		var navigationOptions = new NavigationOptions { ForceLoad = forceLoad, ReplaceHistoryEntry =
- replaceHistoryEntry };
-		sut.History.ShouldHaveSingleItem()
-			.ShouldBeEquivalentTo(new NavigationHistory(uri, navigationOptions, NavigationState.Succeeded));
-#endif
+			.ShouldBeEquivalentTo(new NavigationHistory(uri, new NavigationOptions() { ForceLoad = forceLoad, ReplaceHistoryEntry = replaceHistoryEntry }));
 	}
 
 	[Fact(DisplayName = "NavigateTo with replaceHistoryEntry true replaces previous history entry")]
@@ -131,15 +123,8 @@ public class FakeNavigationManagerTest : TestContext
 		sut.NavigateTo("/firstUrl");
 		sut.NavigateTo("/secondUrl", new NavigationOptions { ReplaceHistoryEntry = true });
 
-#if NET6_0
 		sut.History.ShouldHaveSingleItem()
-			.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl",
-				new NavigationOptions { ReplaceHistoryEntry = true }));
-#else
-		sut.History.ShouldHaveSingleItem()
-			.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl",  new NavigationOptions { ReplaceHistoryEntry =
- true }, NavigationState.Succeeded));
-#endif
+			.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl", new NavigationOptions() { ReplaceHistoryEntry = true }));
 	}
 
 	[Fact(DisplayName = "Navigate to an external url should set BaseUri")]
