@@ -2,7 +2,7 @@ using Bunit.TestDoubles;
 
 namespace Bunit;
 
-public partial class TestContextTest : TestContext
+public class TestContextTest : TestContext
 {
 	[Fact(DisplayName = "The test service provider should register a placeholder HttpClient which throws exceptions")]
 	public void Test024()
@@ -73,6 +73,13 @@ public partial class TestContextTest : TestContext
 	public void Test040()
 	{
 		Should.NotThrow(() => RenderComponent<ClickCounter>().Find("button").Click());
+	}
+
+	[Fact(DisplayName = "TestContext should provide a default IErrorBoundaryLogger")]
+	public void Test001()
+	{
+		IErrorBoundaryLogger logger = Services.GetService<IErrorBoundaryLogger>();
+		logger.ShouldNotBe(null);
 	}
 
 	private class ReceivesCascadinValue : ComponentBase

@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 namespace Bunit.ComponentFactories;
 
 internal sealed class InstanceComponentFactory<TComponent> : IComponentFactory
@@ -28,4 +27,3 @@ internal sealed class InstanceComponentFactory<TComponent> : IComponentFactory
 		return instance;
 	}
 }
-#endif

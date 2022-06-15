@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System.Text;
 
 namespace Bunit;
@@ -64,4 +63,3 @@ public class InputFileContent
         return new InputFileContent(fileContent, fileName, lastChanged, contentType);
     }
 }
-#endif

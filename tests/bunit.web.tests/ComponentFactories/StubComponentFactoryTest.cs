@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using Bunit.TestDoubles;
 
 namespace Bunit.ComponentFactories;
@@ -116,5 +115,3 @@ public class StubComponentFactoryTest : TestContext
 	private class CompA : ComponentBase { }
 	private class CompDerivedA : CompA { }
 }
-
-#endif

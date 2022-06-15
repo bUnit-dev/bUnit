@@ -1,4 +1,3 @@
-#if NET6_0_OR_GREATER
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
@@ -36,4 +35,3 @@ internal class BunitErrorBoundaryLogger : IErrorBoundaryLogger
 		return ValueTask.CompletedTask;
 	}
 }
-#endif

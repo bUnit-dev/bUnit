@@ -166,7 +166,7 @@ namespace AngleSharpWrappers
         public UInt32 Border { get => WrappedElement.Border; set => WrappedElement.Border = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
-        public IHtmlTableCaptionElement Caption { get => WrappedElement.Caption; set => WrappedElement.Caption = value;}
+        public IHtmlTableCaptionElement Caption { get => WrappedElement.Caption!; set => WrappedElement.Caption = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
         public Int32 ChildElementCount { get => WrappedElement.ChildElementCount; }
@@ -208,13 +208,13 @@ namespace AngleSharpWrappers
         public NodeFlags Flags { get => WrappedElement.Flags; }
         /// <inheritdoc/>
         [DebuggerHidden]
-        public IHtmlTableSectionElement Foot { get => WrappedElement.Foot; set => WrappedElement.Foot = value;}
+        public IHtmlTableSectionElement Foot { get => WrappedElement.Foot!; set => WrappedElement.Foot = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
         public Boolean HasChildNodes { get => WrappedElement.HasChildNodes; }
         /// <inheritdoc/>
         [DebuggerHidden]
-        public IHtmlTableSectionElement Head { get => WrappedElement.Head; set => WrappedElement.Head = value;}
+        public IHtmlTableSectionElement Head { get => WrappedElement.Head!; set => WrappedElement.Head = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
         public String? Id { get => WrappedElement.Id; set => WrappedElement.Id = value;}

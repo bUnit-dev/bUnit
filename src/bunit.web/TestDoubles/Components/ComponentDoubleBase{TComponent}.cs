@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 namespace Bunit.TestDoubles;
 
 /// <summary>
@@ -39,7 +38,5 @@ public abstract class ComponentDoubleBase<TComponent> : IComponent
 
 
 	/// <inheritdoc/>
-	[SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "This method is called by the Blazor runtime. Should not be called by inheriting types.")]
 	void IComponent.Attach(RenderHandle renderHandle) => this.renderHandle = renderHandle;
 }
-#endif

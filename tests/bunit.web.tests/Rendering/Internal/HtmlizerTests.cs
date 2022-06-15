@@ -1,6 +1,6 @@
 namespace Bunit.Rendering.Internal;
 
-public partial class HtmlizerTests : TestContext
+public class HtmlizerTests : TestContext
 {
 	[Theory(DisplayName = "Htmlizer correctly prefixed stopPropagation and preventDefault attributes")]
 	[InlineData(false, true)]
@@ -38,6 +38,16 @@ public partial class HtmlizerTests : TestContext
 		cut.SetParametersAndRender(parameters => parameters.Add(p => p.OnClick, (MouseEventArgs _) => { }));
 
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
+	}
+
+	[Theory(DisplayName = "IsBlazorAttribute correctly identifies Blazor attributes")]
+	[InlineData("b-twl12ishk1=\"\"")]
+	[InlineData("blazor:onclick=\"1\"")]
+	[InlineData("blazor:__internal_stopPropagation_onclick=\"\"")]
+	[InlineData("blazor:__internal_preventDefault_onclick=\"\"")]
+	public void TestNET5_001(string blazorAttribute)
+	{
+		Htmlizer.IsBlazorAttribute(blazorAttribute).ShouldBeTrue();
 	}
 
 	private class Htmlizer01Component : ComponentBase
