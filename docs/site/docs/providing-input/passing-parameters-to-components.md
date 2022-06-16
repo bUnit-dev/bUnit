@@ -397,13 +397,13 @@ To set up [two-way binding to a pair of component parameters](https://docs.micro
 
 [!code-csharp[TwoWayBindingTest.cs](../../../samples/tests/xunit/TwoWayBindingTest.cs#L5-L19)]
 
-The example uses the `Bind` method to setup two-way binding between the `Value` parameter and `ValueChanged` parameter, and the local variable in the test method (`value`). The `Bind` method is a shorthand for calling the the `Add` method for the `Value` parameter and `ValueChanged` parameter individually.
+The example uses the `Bind` method to setup two-way binding between the `Value` parameter and `ValueChanged` parameter, and the local variable in the test method (`currentValue`). The `Bind` method is a shorthand for calling the the `Add` method for the `Value` parameter and `ValueChanged` parameter individually.
 
 # [Razor test code](#tab/razor)
 
 [!code-cshtml[TwoWayBindingTest.razor](../../../samples/tests/razor/TwoWayBindingTest.razor)]
 
-The example uses the standard `@bind-Value` directive in Blazor to set up two way binding between the `Value` parameter and `ValueChanged` parameter and the local variable in the test method (`value`).
+The example uses the standard `@bind-Value` directive in Blazor to set up two way binding between the `Value` parameter and `ValueChanged` parameter and the local variable in the test method (`currentValue`).
 ***
 
 ## Further Reading

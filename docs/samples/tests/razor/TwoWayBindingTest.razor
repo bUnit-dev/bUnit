@@ -3,8 +3,8 @@
   public void Test()
   {
     using var ctx = new TestContext();
-    var value = string.Empty;
+    var currentValue = string.Empty;
 
-    var cut = ctx.Render(@<TwoWayBinding @bind-Value="value"></TwoWayBinding>);
+    var cut = ctx.Render(@<TwoWayBinding @bind-Value="currentValue"></TwoWayBinding>);
   }
 }
