@@ -16,7 +16,7 @@ namespace Bunit.Docs.Samples
 
       // Act
       buttonElement.Click();
-      buttonElement.Click(detail: 3, ctrlKey: true);
+      buttonElement.Click(new MouseEventArgs { Detail = 3, CtrlKey = true });
       buttonElement.Click(new MouseEventArgs());
 
       // Assert
