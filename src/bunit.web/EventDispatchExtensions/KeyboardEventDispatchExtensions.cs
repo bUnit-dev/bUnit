@@ -12,26 +12,8 @@ public static class KeyboardEventDispatchExtensions
 	/// properties to the event handler via a <see cref="KeyboardEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="key">
-	///     The key value of the key represented by the event. If the value has a printed
-	///     representation, this attribute's value is the same as the char attribute. Otherwise,
-	///     it's one of the key value strings specified in 'Key values'. If the key can't
-	///     be identified, this is the string "Unidentified".
-	/// </param>
-	/// <param name="code">
-	///     Holds a string that identifies the physical key being pressed. The value is not
-	///     affected by the current keyboard layout or modifier state, so a particular key
-	///     will always return the same value.
-	/// </param>
-	/// <param name="location">The location of the key on the device.</param>
-	/// <param name="repeat">true if a key has been depressed long enough to trigger key repetition, otherwise false.</param>
-	/// <param name="ctrlKey">true if the control key was down when the event was fired. false otherwise.</param>
-	/// <param name="shiftKey">true if the shift key was down when the event was fired. false otherwise.</param>
-	/// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
-	/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
-	/// <param name="type">The type of the event.</param>
-	public static void KeyDown(this IElement element, string key, string? code = default, float location = default, bool repeat = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-		=> _ = KeyDownAsync(element, new KeyboardEventArgs { Key = key, Code = code!, Location = location, Repeat = repeat, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
+	public static void KeyDown(this IElement element)
+		=> _ = KeyDownAsync(element, new KeyboardEventArgs());
 
 	/// <summary>
 	/// Raises the <c>@onkeydown</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -71,26 +53,8 @@ public static class KeyboardEventDispatchExtensions
 	/// properties to the event handler via a <see cref="KeyboardEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="key">
-	///     The key value of the key represented by the event. If the value has a printed
-	///     representation, this attribute's value is the same as the char attribute. Otherwise,
-	///     it's one of the key value strings specified in 'Key values'. If the key can't
-	///     be identified, this is the string "Unidentified".
-	/// </param>
-	/// <param name="code">
-	///     Holds a string that identifies the physical key being pressed. The value is not
-	///     affected by the current keyboard layout or modifier state, so a particular key
-	///     will always return the same value.
-	/// </param>
-	/// <param name="location">The location of the key on the device.</param>
-	/// <param name="repeat">true if a key has been depressed long enough to trigger key repetition, otherwise false.</param>
-	/// <param name="ctrlKey">true if the control key was down when the event was fired. false otherwise.</param>
-	/// <param name="shiftKey">true if the shift key was down when the event was fired. false otherwise.</param>
-	/// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
-	/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
-	/// <param name="type">The type of the event.</param>
-	public static void KeyUp(this IElement element, string key, string? code = default, float location = default, bool repeat = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-		=> _ = KeyUpAsync(element, new KeyboardEventArgs { Key = key, Code = code!, Location = location, Repeat = repeat, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
+	public static void KeyUp(this IElement element)
+		=> _ = KeyUpAsync(element, new KeyboardEventArgs());
 
 	/// <summary>
 	/// Raises the <c>@onkeyup</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -130,26 +94,8 @@ public static class KeyboardEventDispatchExtensions
 	/// properties to the event handler via a <see cref="KeyboardEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="key">
-	///     The key value of the key represented by the event. If the value has a printed
-	///     representation, this attribute's value is the same as the char attribute. Otherwise,
-	///     it's one of the key value strings specified in 'Key values'. If the key can't
-	///     be identified, this is the string "Unidentified".
-	/// </param>
-	/// <param name="code">
-	///     Holds a string that identifies the physical key being pressed. The value is not
-	///     affected by the current keyboard layout or modifier state, so a particular key
-	///     will always return the same value.
-	/// </param>
-	/// <param name="location">The location of the key on the device.</param>
-	/// <param name="repeat">true if a key has been depressed long enough to trigger key repetition, otherwise false.</param>
-	/// <param name="ctrlKey">true if the control key was down when the event was fired. false otherwise.</param>
-	/// <param name="shiftKey">true if the shift key was down when the event was fired. false otherwise.</param>
-	/// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
-	/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
-	/// <param name="type">The type of the event.</param>
-	public static void KeyPress(this IElement element, string key, string? code = default, float location = default, bool repeat = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-		=> _ = KeyPressAsync(element, new KeyboardEventArgs { Key = key, Code = code!, Location = location, Repeat = repeat, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
+	public static void KeyPress(this IElement element)
+		=> _ = KeyPressAsync(element, new KeyboardEventArgs());
 
 	/// <summary>
 	/// Raises the <c>@onkeypress</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>

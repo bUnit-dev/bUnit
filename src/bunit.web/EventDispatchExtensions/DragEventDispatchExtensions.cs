@@ -12,32 +12,8 @@ public static class DragEventDispatchExtensions
 	/// properties to the event handler via a <see cref="DragEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
-	/// <param name="screenX">The X coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="screenY">The Y coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="clientX">The X coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="clientY">The Y coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="button">
-	///     The button number that was pressed when the mouse event was fired: Left button=0,
-	///     middle button=1 (if present), right button=2. For mice configured for left handed
-	///     use in which the button actions are reversed the values are instead read from
-	///     right to left.
-	/// </param>
-	/// <param name="buttons">
-	///     The buttons being pressed when the mouse event was fired: Left button=1, Right
-	///     button=2, Middle (wheel) button=4, 4th button (typically, "Browser Back" button)=8,
-	///     5th button (typically, "Browser Forward" button)=16. If two or more buttons are
-	///     pressed, returns the logical sum of the values. E.g., if Left button and Right
-	///     button are pressed, returns 3 (=1 | 2).
-	/// </param>
-	/// <param name="ctrlKey">true if the control key was down when the event was fired. false otherwise.</param>
-	/// <param name="shiftKey">true if the shift key was down when the event was fired. false otherwise.</param>
-	/// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
-	/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
-	/// <param name="type">Gets or sets the type of the event.</param>
-	/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
-	public static void Drag(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string type = default!, DataTransfer dataTransfer = default!)
-		=> _ = DragAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type, DataTransfer = dataTransfer });
+	public static void Drag(this IElement element)
+		=> _ = DragAsync(element, new DragEventArgs());
 
 	/// <summary>
 	/// Raises the <c>@ondrag</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -61,32 +37,8 @@ public static class DragEventDispatchExtensions
 	/// properties to the event handler via a <see cref="DragEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
-	/// <param name="screenX">The X coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="screenY">The Y coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="clientX">The X coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="clientY">The Y coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="button">
-	///     The button number that was pressed when the mouse event was fired: Left button=0,
-	///     middle button=1 (if present), right button=2. For mice configured for left handed
-	///     use in which the button actions are reversed the values are instead read from
-	///     right to left.
-	/// </param>
-	/// <param name="buttons">
-	///     The buttons being pressed when the mouse event was fired: Left button=1, Right
-	///     button=2, Middle (wheel) button=4, 4th button (typically, "Browser Back" button)=8,
-	///     5th button (typically, "Browser Forward" button)=16. If two or more buttons are
-	///     pressed, returns the logical sum of the values. E.g., if Left button and Right
-	///     button are pressed, returns 3 (=1 | 2).
-	/// </param>
-	/// <param name="ctrlKey">true if the control key was down when the event was fired. false otherwise.</param>
-	/// <param name="shiftKey">true if the shift key was down when the event was fired. false otherwise.</param>
-	/// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
-	/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
-	/// <param name="type">Gets or sets the type of the event.</param>
-	/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
-	public static void DragEnd(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-		=> _ = DragEndAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
+	public static void DragEnd(this IElement element)
+		=> _ = DragEndAsync(element, new DragEventArgs());
 
 	/// <summary>
 	/// Raises the <c>@ondragend</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -110,32 +62,8 @@ public static class DragEventDispatchExtensions
 	/// properties to the event handler via a <see cref="DragEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
-	/// <param name="screenX">The X coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="screenY">The Y coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="clientX">The X coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="clientY">The Y coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="button">
-	///     The button number that was pressed when the mouse event was fired: Left button=0,
-	///     middle button=1 (if present), right button=2. For mice configured for left handed
-	///     use in which the button actions are reversed the values are instead read from
-	///     right to left.
-	/// </param>
-	/// <param name="buttons">
-	///     The buttons being pressed when the mouse event was fired: Left button=1, Right
-	///     button=2, Middle (wheel) button=4, 4th button (typically, "Browser Back" button)=8,
-	///     5th button (typically, "Browser Forward" button)=16. If two or more buttons are
-	///     pressed, returns the logical sum of the values. E.g., if Left button and Right
-	///     button are pressed, returns 3 (=1 | 2).
-	/// </param>
-	/// <param name="ctrlKey">true if the control key was down when the event was fired. false otherwise.</param>
-	/// <param name="shiftKey">true if the shift key was down when the event was fired. false otherwise.</param>
-	/// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
-	/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
-	/// <param name="type">Gets or sets the type of the event.</param>
-	/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
-	public static void DragEnter(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-		=> _ = DragEnterAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
+	public static void DragEnter(this IElement element)
+		=> _ = DragEnterAsync(element, new DragEventArgs());
 
 	/// <summary>
 	/// Raises the <c>@ondragenter</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -159,32 +87,8 @@ public static class DragEventDispatchExtensions
 	/// properties to the event handler via a <see cref="DragEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
-	/// <param name="screenX">The X coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="screenY">The Y coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="clientX">The X coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="clientY">The Y coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="button">
-	///     The button number that was pressed when the mouse event was fired: Left button=0,
-	///     middle button=1 (if present), right button=2. For mice configured for left handed
-	///     use in which the button actions are reversed the values are instead read from
-	///     right to left.
-	/// </param>
-	/// <param name="buttons">
-	///     The buttons being pressed when the mouse event was fired: Left button=1, Right
-	///     button=2, Middle (wheel) button=4, 4th button (typically, "Browser Back" button)=8,
-	///     5th button (typically, "Browser Forward" button)=16. If two or more buttons are
-	///     pressed, returns the logical sum of the values. E.g., if Left button and Right
-	///     button are pressed, returns 3 (=1 | 2).
-	/// </param>
-	/// <param name="ctrlKey">true if the control key was down when the event was fired. false otherwise.</param>
-	/// <param name="shiftKey">true if the shift key was down when the event was fired. false otherwise.</param>
-	/// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
-	/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
-	/// <param name="type">Gets or sets the type of the event.</param>
-	/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
-	public static void DragLeave(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-		=> _ = DragLeaveAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
+	public static void DragLeave(this IElement element)
+		=> _ = DragLeaveAsync(element, new DragEventArgs());
 
 	/// <summary>
 	/// Raises the <c>@ondragleave</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -208,32 +112,8 @@ public static class DragEventDispatchExtensions
 	/// properties to the event handler via a <see cref="DragEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
-	/// <param name="screenX">The X coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="screenY">The Y coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="clientX">The X coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="clientY">The Y coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="button">
-	///     The button number that was pressed when the mouse event was fired: Left button=0,
-	///     middle button=1 (if present), right button=2. For mice configured for left handed
-	///     use in which the button actions are reversed the values are instead read from
-	///     right to left.
-	/// </param>
-	/// <param name="buttons">
-	///     The buttons being pressed when the mouse event was fired: Left button=1, Right
-	///     button=2, Middle (wheel) button=4, 4th button (typically, "Browser Back" button)=8,
-	///     5th button (typically, "Browser Forward" button)=16. If two or more buttons are
-	///     pressed, returns the logical sum of the values. E.g., if Left button and Right
-	///     button are pressed, returns 3 (=1 | 2).
-	/// </param>
-	/// <param name="ctrlKey">true if the control key was down when the event was fired. false otherwise.</param>
-	/// <param name="shiftKey">true if the shift key was down when the event was fired. false otherwise.</param>
-	/// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
-	/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
-	/// <param name="type">Gets or sets the type of the event.</param>
-	/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
-	public static void DragOver(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-		=> _ = DragOverAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
+	public static void DragOver(this IElement element)
+		=> _ = DragOverAsync(element, new DragEventArgs());
 
 	/// <summary>
 	/// Raises the <c>@ondragover</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -257,32 +137,8 @@ public static class DragEventDispatchExtensions
 	/// properties to the event handler via a <see cref="DragEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
-	/// <param name="screenX">The X coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="screenY">The Y coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="clientX">The X coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="clientY">The Y coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="button">
-	///     The button number that was pressed when the mouse event was fired: Left button=0,
-	///     middle button=1 (if present), right button=2. For mice configured for left handed
-	///     use in which the button actions are reversed the values are instead read from
-	///     right to left.
-	/// </param>
-	/// <param name="buttons">
-	///     The buttons being pressed when the mouse event was fired: Left button=1, Right
-	///     button=2, Middle (wheel) button=4, 4th button (typically, "Browser Back" button)=8,
-	///     5th button (typically, "Browser Forward" button)=16. If two or more buttons are
-	///     pressed, returns the logical sum of the values. E.g., if Left button and Right
-	///     button are pressed, returns 3 (=1 | 2).
-	/// </param>
-	/// <param name="ctrlKey">true if the control key was down when the event was fired. false otherwise.</param>
-	/// <param name="shiftKey">true if the shift key was down when the event was fired. false otherwise.</param>
-	/// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
-	/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
-	/// <param name="type">Gets or sets the type of the event.</param>
-	/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
-	public static void DragStart(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-		=> _ = DragStartAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
+	public static void DragStart(this IElement element)
+		=> _ = DragStartAsync(element, new DragEventArgs());
 
 	/// <summary>
 	/// Raises the <c>@ondragstart</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
@@ -306,32 +162,8 @@ public static class DragEventDispatchExtensions
 	/// properties to the event handler via a <see cref="DragEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="detail">A count of consecutive clicks that happened in a short amount of time, incremented by one.</param>
-	/// <param name="screenX">The X coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="screenY">The Y coordinate of the mouse pointer in global (screen) coordinates.</param>
-	/// <param name="clientX">The X coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="clientY">The Y coordinate of the mouse pointer in local (DOM content) coordinates.</param>
-	/// <param name="button">
-	///     The button number that was pressed when the mouse event was fired: Left button=0,
-	///     middle button=1 (if present), right button=2. For mice configured for left handed
-	///     use in which the button actions are reversed the values are instead read from
-	///     right to left.
-	/// </param>
-	/// <param name="buttons">
-	///     The buttons being pressed when the mouse event was fired: Left button=1, Right
-	///     button=2, Middle (wheel) button=4, 4th button (typically, "Browser Back" button)=8,
-	///     5th button (typically, "Browser Forward" button)=16. If two or more buttons are
-	///     pressed, returns the logical sum of the values. E.g., if Left button and Right
-	///     button are pressed, returns 3 (=1 | 2).
-	/// </param>
-	/// <param name="ctrlKey">true if the control key was down when the event was fired. false otherwise.</param>
-	/// <param name="shiftKey">true if the shift key was down when the event was fired. false otherwise.</param>
-	/// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
-	/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
-	/// <param name="type">Gets or sets the type of the event.</param>
-	/// <param name="dataTransfer">The data that underlies a drag-and-drop operation, known as the drag data store. See <see cref="DataTransfer"/>.</param>
-	public static void Drop(this IElement element, long detail = default, double screenX = default, double screenY = default, double clientX = default, double clientY = default, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default, DataTransfer? dataTransfer = default)
-		=> _ = DropAsync(element, new DragEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type!, DataTransfer = dataTransfer! });
+	public static void Drop(this IElement element)
+		=> _ = DropAsync(element, new DragEventArgs());
 
 	/// <summary>
 	/// Raises the <c>@ondrop</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
