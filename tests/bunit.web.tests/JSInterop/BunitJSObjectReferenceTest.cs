@@ -226,8 +226,7 @@ public class BunitJSObjectReferenceTest : TestContext
 			.Identifier.ShouldBe("helloWorld");
 
 		JSInterop.Invocations
-			.Last()
-			.Identifier.ShouldBe("helloWorld");
+			.ShouldContain(x => x.Identifier == "helloWorld");
 	}
 
 	[Fact(DisplayName = "TryGetModuleJSInterop returns registered module handler when called with parameters that the handler matches with")]
