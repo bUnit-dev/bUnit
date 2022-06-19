@@ -1,0 +1,25 @@
+﻿<button @onclick="AddWorldToString">Click Me</button>
+
+@code {
+    [Parameter] public string Foo { get; set; }
+    [Parameter] public EventCallback<string> FooChanged { get; set; }
+
+    [Fact(DisplayName = "Bind method should behave like bind-directive")]
+    public void Test001()
+    {
+        var ctx = new TestContext();
+        var initialValue = string.Empty;
+        var bindMethod = ctx.RenderComponent<BindValueTest>(p => p
+            .Bind(v => v.Foo, "Hello ", s => initialValue = s));
+
+        bindMethod.Find("button").Click();
+        
+        initialValue.ShouldBe("Hello World");
+    }
+
+    private async Task AddWorldToString()
+    {
+        Foo += "World";
+        await FooChanged.InvokeAsync(Foo);
+    }
+}
