@@ -66,6 +66,7 @@ jobs:
           dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
           dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
           dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
+          dotnet test ./tests/AngleSharpWrappers.Tests/AngleSharpWrappers.Tests.csproj -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
