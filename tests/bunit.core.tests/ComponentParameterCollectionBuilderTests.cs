@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 namespace Bunit;
 
-public class ComponentParameterCollectionBuilderTests : TestContext
+public partial class ComponentParameterCollectionBuilderTests : TestContext
 {
 	private ComponentParameterCollectionBuilder<Params> Builder { get; } = new();
 
@@ -739,19 +739,6 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 	private class TemplatedChildContent : ComponentBase
 	{
 		[Parameter] public RenderFragment<string>? ChildContent { get; set; }
-	}
-
-	private class SimpleBind : ComponentBase
-	{
-		[Parameter] public string Value { get; set; } = string.Empty;
-		[Parameter] public EventCallback<string> ValueChanged { get; set; }
-	}
-	
-	private class FullBind : ComponentBase
-	{
-		[Parameter] public string Foo { get; set; } = string.Empty;
-		[Parameter] public EventCallback<string> FooChanged { get; set; }
-		[Parameter] public Expression<Func<string>> FooExpression { get; set; }
 	}
 
 	private class NoTwoWayBind : ComponentBase

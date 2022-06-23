@@ -1,0 +1,20 @@
+@inherits TestContext
+@code {
+    [Fact(DisplayName = "Bind method should behave like bind-directive")]
+    public void Test400()
+    {
+        var initialValue = "Hello";
+
+        var bindMethod = RenderComponent<FullBind>(ps => ps
+            .Bind(
+                p => p.Foo,
+                initialValue,
+                p => initialValue = p,
+                () => initialValue));
+        var bindDirective = Render<FullBind>(@<FullBind @bind-Foo="initialValue" />);
+
+        bindMethod.Instance.Foo.ShouldBe(bindDirective.Instance.Foo);
+        bindMethod.Instance.FooChanged.ShouldBe(bindDirective.Instance.FooChanged);
+        bindMethod.Instance.FooExpression.ShouldBe(bindDirective.Instance.FooExpression);
+    }
+}
