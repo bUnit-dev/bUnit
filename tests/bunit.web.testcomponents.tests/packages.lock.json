@@ -1768,8 +1768,8 @@
       },
       "System.Text.Json": {
         "type": "Transitive",
-        "resolved": "6.0.4",
-        "contentHash": "krM+rxZPl5MQqGmHbj/gLis58IqGrLQGm7CIvNJ72Wj1MCdXNu1uMco5wRr7PmPOL/ITF/uEkB/3S1nSGFNvHg==",
+        "resolved": "6.0.5",
+        "contentHash": "SSH+YYrMpvLcy7Orzb5K1tSyffnFacWahyxCCjYH1PbSHdAF4dekmIetBurFKgtTHDmwEe/J2Csi/7niRH6d/g==",
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "6.0.0",
           "System.Text.Encodings.Web": "6.0.0"
@@ -1917,7 +1917,7 @@
           "Microsoft.Extensions.Localization.Abstractions": "3.1.22",
           "Serilog": "2.11.0",
           "Serilog.Extensions.Logging": "3.1.0",
-          "System.Text.Json": "6.0.4",
+          "System.Text.Json": "6.0.5",
           "xunit.abstractions": "2.0.3",
           "xunit.assert": "2.4.1",
           "xunit.core": "2.4.1"
