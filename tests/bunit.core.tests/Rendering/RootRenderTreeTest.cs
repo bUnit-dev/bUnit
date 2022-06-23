@@ -29,12 +29,12 @@ public class RootRenderTreeTest : TestContext
 	}
 
 	[Fact(DisplayName = "RenderTree.Add<T> throws when T doesn't have a ChildContent or Body parameter")]
-	public void Test100()
+	public async Task Test100()
 	{
-		Should.Throw<ArgumentException>(() =>
+		await Should.ThrowAsync<ArgumentException>(async () =>
 		{
 			RenderTree.Add<Simple1>();
-			RenderComponent<InnerComponent>();
+			await RenderComponent<InnerComponent>();
 		});
 	}
 

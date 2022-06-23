@@ -397,11 +397,11 @@ public partial class TestRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "UnhandledException has a reference to latest unhandled exception thrown by a component during OnAfterRenderAsync")]
-	public void Test203()
+	public async Task Test203()
 	{
 		// Arrange
 		var planned = JSInterop.SetupVoid("foo");
-		RenderComponent<AsyncAfterRenderThrows>();
+		await RenderComponent<AsyncAfterRenderThrows>();
 
 		// Act
 		planned.SetVoidResult(); // <-- After here the `OnAfterRenderAsync` progresses and throws an exception.

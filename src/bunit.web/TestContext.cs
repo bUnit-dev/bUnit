@@ -63,7 +63,10 @@ public class TestContext : TestContextBase
 	/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
 	public virtual async Task<IRenderedComponent<TComponent>> Render<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
-		=> (IRenderedComponent<TComponent>)await this.RenderInsideRenderTree<TComponent>(renderFragment);
+	{
+		var renderInsideRenderTree = await this.RenderInsideRenderTree<TComponent>(renderFragment);
+		return (IRenderedComponent<TComponent>)renderInsideRenderTree;
+	}
 
 	/// <summary>
 	/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="IRenderedFragment"/>.
