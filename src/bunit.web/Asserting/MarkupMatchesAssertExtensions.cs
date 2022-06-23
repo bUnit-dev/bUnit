@@ -320,19 +320,15 @@ public static class MarkupMatchesAssertExtensions
 		if (expected is null)
 			throw new ArgumentNullException(nameof(expected));
 
-		IRenderedFragment? renderedFragment;
 		var testContext = actual.GetTestContext();
-		if (testContext == null)
+		IRenderedFragment? renderedFragment;
+		if (testContext is null)
 		{
-			renderedFragment = AdhocRenderRenderFragment(expected);
+			renderedFragment = await AdhocRenderRenderFragment(expected);
 		}
 		else
 		{
-			renderedFragment = await testContext.RenderInsideRenderTree(expected) as IRenderedFragment;
-			if (renderedFragment == null)
-			{
-				renderedFragment = AdhocRenderRenderFragment(expected);
-			}
+			renderedFragment = (IRenderedFragment) await testContext.RenderInsideRenderTree(expected);
 		}
 
 		MarkupMatches(actual, renderedFragment, userMessage);
@@ -347,15 +343,24 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The render fragment whose output to compare against.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this INodeList actual, RenderFragment expected, string? userMessage = null)
+	public static async Task MarkupMatches(this INodeList actual, RenderFragment expected, string? userMessage = null)
 	{
 		if (actual is null)
 			throw new ArgumentNullException(nameof(actual));
 		if (expected is null)
 			throw new ArgumentNullException(nameof(expected));
 
-		var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as IRenderedFragment
-			?? AdhocRenderRenderFragment(expected);
+		var testContext = actual.GetTestContext();
+		IRenderedFragment renderedFragment;
+		if (testContext is null)
+		{
+			renderedFragment = await AdhocRenderRenderFragment(expected);
+		}
+		else
+		{
+			renderedFragment = (IRenderedFragment) await testContext.RenderInsideRenderTree(expected);
+		}
+
 		MarkupMatches(actual, renderedFragment, userMessage);
 	}
 

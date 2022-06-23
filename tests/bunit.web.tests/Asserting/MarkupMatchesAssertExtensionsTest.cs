@@ -50,9 +50,9 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 		await Should.ThrowAsync<ArgumentNullException>(async () => await (await ActualNode()).MarkupMatches(default(RenderFragment)!));
 		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(default(RenderFragment)!));
 
-		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatches(ExpectedRenderFragment));
-		await Should.ThrowAsync<ArgumentNullException>(async () => (await ActualNodeList()).MarkupMatches(default(RenderFragment)!));
-		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatches(default(RenderFragment)!));
+		await Should.ThrowAsync<ArgumentNullException>(() => default(INodeList)!.MarkupMatches(ExpectedRenderFragment));
+		await Should.ThrowAsync<ArgumentNullException>(async () => await (await ActualNodeList()).MarkupMatches(default(RenderFragment)!));
+		await Should.ThrowAsync<ArgumentNullException>(async () => await default(INodeList)!.MarkupMatches(default(RenderFragment)!));
 	}
 
 	[Fact(DisplayName = "MarkupMatches(string, string) correctly diffs markup")]
@@ -89,7 +89,7 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 
 	[Fact(DisplayName = "MarkupMatches(INodeList, RenderFragment) correctly diffs markup")]
 	public Task Test0010()
-		=> Should.ThrowAsync<HtmlEqualException>(async () => (await ActualNodeList()).MarkupMatches(ExpectedRenderFragment));
+		=> Should.ThrowAsync<HtmlEqualException>(async () => await (await ActualNodeList()).MarkupMatches(ExpectedRenderFragment));
 
 	private Task<IRenderedFragment> FindAllRenderedFragment => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
 	private readonly string findAllExpectedRenderFragment = "<p><strong>test</strong></p>";
