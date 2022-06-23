@@ -10,14 +10,14 @@ public abstract class BenchmarkBase
 {
     private static readonly ComponentParameterCollection EmptyParameter = new();
     private readonly ServiceCollection services = new();
-    
+
     protected TestRenderer Renderer { get; private set; } = default!;
 
     [GlobalSetup]
     public void Setup()
     {
         RegisterServices(services);
-        
+
         var serviceProvider = services.BuildServiceProvider();
         Renderer = new TestRenderer(
             new RenderedComponentActivator(serviceProvider),
@@ -32,7 +32,7 @@ public abstract class BenchmarkBase
         Renderer.Dispose();
     }
 
-    protected IRenderedComponentBase<TComponent> RenderComponent<TComponent>()
+    protected Task<IRenderedComponentBase<TComponent>> RenderComponent<TComponent>()
         where TComponent : IComponent =>
         Renderer.RenderComponent<TComponent>(EmptyParameter);
 

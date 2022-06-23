@@ -7,7 +7,7 @@ namespace Bunit;
 public class Benchmark : BenchmarkBase
 {
     [Benchmark]
-    public IRenderedComponentBase<Counter> RenderCounter()
+    public Task<IRenderedComponentBase<Counter>> RenderCounter()
     {
         return RenderComponent<Counter>();
     }
