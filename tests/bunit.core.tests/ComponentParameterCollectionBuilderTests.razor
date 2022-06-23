@@ -1,10 +1,12 @@
 @inherits TestContext
 @code {
     [Fact(DisplayName = "Bind method should behave like bind-directive")]
-    public void Test400()
+    public async Task Test400()
     {
+        // arrange
         var initialValue = "Hello";
 
+        // act
         var bindMethod = RenderComponent<FullBind>(ps => ps
             .Bind(
                 p => p.Foo,
@@ -13,8 +15,16 @@
                 () => initialValue));
         var bindDirective = Render<FullBind>(@<FullBind @bind-Foo="initialValue" />);
 
+        // assert
         bindMethod.Instance.Foo.ShouldBe(bindDirective.Instance.Foo);
-        bindMethod.Instance.FooChanged.ShouldBe(bindDirective.Instance.FooChanged);
-        bindMethod.Instance.FooExpression.ShouldBe(bindDirective.Instance.FooExpression);
+
+        await bindMethod.Instance.FooChanged.InvokeAsync(nameof(bindMethod));
+        initialValue.ShouldBe(nameof(bindMethod));
+
+        await bindDirective.Instance.FooChanged.InvokeAsync(nameof(bindDirective));
+        initialValue.ShouldBe(nameof(bindDirective));
+
+        bindMethod.Instance.FooExpression.ToString()
+            .ShouldBe(bindDirective.Instance.FooExpression.ToString());
     }
 }
