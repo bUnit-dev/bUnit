@@ -13,12 +13,12 @@ public class InstanceComponentFactoryTest : TestContext
 		=> Should.Throw<ArgumentNullException>(() => ComponentFactories.Add<Simple1>(default(Simple1)));
 
 	[Fact(DisplayName = "Factory replaces one TComponent with instance in the render tree")]
-	public void Test010()
+	public async Task Test010()
 	{
 		var simple1Mock = new Mock<Simple1>();
 		ComponentFactories.Add<Simple1>(simple1Mock.Object);
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
+		var cut = await RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
 		cut.FindComponent<Simple1>()
 			.Instance.ShouldBeSameAs(simple1Mock.Object);
@@ -31,8 +31,8 @@ public class InstanceComponentFactoryTest : TestContext
 		ComponentFactories.Add<Simple1>(simple1Mock.Object);
 
 		Should.Throw<InvalidOperationException>(() => RenderComponent<TwoComponentWrapper>(ps => ps
-			   .Add<Simple1>(p => p.First)
-			   .Add<Simple1>(p => p.Second)));
+			.Add<Simple1>(p => p.First)
+			.Add<Simple1>(p => p.Second)));
 	}
 
 	[Fact(DisplayName = "Factory throws if component instance is requested twice for TComponent that implements from IComponent")]

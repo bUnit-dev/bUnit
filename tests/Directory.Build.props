@@ -9,7 +9,6 @@
 	<PropertyGroup Label="Compile settings" Condition="$(MSBuildProjectName) != 'bunit.testassets'">
 		<Nullable>annotations</Nullable>
 		<IsPackable>false</IsPackable>		
-		<SonarQubeTestProject>true</SonarQubeTestProject>
 		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
 

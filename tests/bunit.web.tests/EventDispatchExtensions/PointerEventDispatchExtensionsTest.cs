@@ -6,7 +6,7 @@ public class PointerEventDispatchExtensionsTest : EventDispatchExtensionsTest<Po
 
 	[Theory(DisplayName = "Pointer events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(PointerEventDispatchExtensions))]
-	public void CanRaiseEvents(MethodInfo helper)
+	public async Task CanRaiseEvents(MethodInfo helper)
 	{
 		var expected = new PointerEventArgs()
 		{
@@ -35,6 +35,6 @@ public class PointerEventDispatchExtensionsTest : EventDispatchExtensionsTest<Po
 			PointerType = "MOUSE",
 		};
 
-		VerifyEventRaisesCorrectly(helper, expected);
+		await VerifyEventRaisesCorrectly(helper, expected);
 	}
 }

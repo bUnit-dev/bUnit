@@ -25,27 +25,27 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanRenderTextOnlyComponent()
+	public async Task CanRenderTextOnlyComponent()
 	{
-		var cut = RenderComponent<TextOnlyComponent>();
+		var cut = await RenderComponent<TextOnlyComponent>();
 		Assert.Equal("Hello from TextOnlyComponent", cut.Markup);
 	}
 
 	// This verifies that we've correctly configured the Razor language version via MSBuild.
 	// See #974
 	[Fact]
-	public void CanRenderComponentWithDataDash()
+	public async Task CanRenderComponentWithDataDash()
 	{
-		var cut = RenderComponent<DataDashComponent>();
+		var cut = await RenderComponent<DataDashComponent>();
 		var element = cut.Find("#cool_beans");
 		Assert.Equal("17", element.GetAttribute("data-tab"));
 		Assert.Equal("17", element.TextContent);
 	}
 
 	[Fact]
-	public void CanRenderComponentWithAttributes()
+	public async Task CanRenderComponentWithAttributes()
 	{
-		var cut = RenderComponent<RedTextComponent>();
+		var cut = await RenderComponent<RedTextComponent>();
 		var styledElement = cut.Find("h1");
 		Assert.Equal("Hello, world!", styledElement.TextContent);
 		Assert.Equal("color: red;", styledElement.GetAttribute("style"));
@@ -53,10 +53,10 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanTriggerEvents()
+	public async Task CanTriggerEvents()
 	{
 		// Initial count is zero
-		var cut = RenderComponent<CounterComponent>();
+		var cut = await RenderComponent<CounterComponent>();
 		var countDisplayElement = cut.Find("p");
 		Assert.Equal("Current count: 0", countDisplayElement.TextContent);
 
@@ -66,10 +66,10 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanTriggerAsyncEventHandlers()
+	public async Task CanTriggerAsyncEventHandlers()
 	{
 		// Initial state is stopped
-		var cut = RenderComponent<AsyncEventHandlerComponent>();
+		var cut = await RenderComponent<AsyncEventHandlerComponent>();
 		var stateElement = cut.Find("#state");
 		Assert.Equal("Stopped", stateElement.TextContent);
 
@@ -82,10 +82,10 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanTriggerKeyPressEvents()
+	public async Task CanTriggerKeyPressEvents()
 	{
 		// List is initially empty
-		var cut = RenderComponent<KeyPressEventComponent>();
+		var cut = await RenderComponent<KeyPressEventComponent>();
 		var inputElement = cut.Find("input");
 		var liElements = cut.FindAll("li", enableAutoRefresh: true);
 		liElements.ShouldBeEmpty();
@@ -102,9 +102,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanAddAndRemoveEventHandlersDynamically()
+	public async Task CanAddAndRemoveEventHandlersDynamically()
 	{
-		var cut = RenderComponent<CounterComponent>();
+		var cut = await RenderComponent<CounterComponent>();
 		var countDisplayElement = cut.Find("p");
 		var incrementButton = cut.Find("button");
 		var toggleClickHandlerCheckbox = cut.Find("[type=checkbox]");
@@ -128,9 +128,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanRenderChildComponents()
+	public async Task CanRenderChildComponents()
 	{
-		var cut = RenderComponent<ParentChildComponent>();
+		var cut = await RenderComponent<ParentChildComponent>();
 		Assert.Equal("Parent component", cut.Find("fieldset > legend").TextContent);
 
 		var styledElement = cut.Find("fieldset > h1");
@@ -140,16 +140,16 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact(DisplayName = "Verifies we can render HTML content as a single block")]
-	public void CanRenderChildContent_StaticHtmlBlock()
+	public async Task CanRenderChildContent_StaticHtmlBlock()
 	{
-		var cut = RenderComponent<HtmlBlockChildContent>();
+		var cut = await RenderComponent<HtmlBlockChildContent>();
 		Assert.Equal("<p>Some-Static-Text</p>", cut.Find("#foo").InnerHtml);
 	}
 
 	[Fact(DisplayName = "Verifies we can rewite more complex HTML content into blocks")]
-	public void CanRenderChildContent_MixedHtmlBlock()
+	public async Task CanRenderChildContent_MixedHtmlBlock()
 	{
-		var cut = RenderComponent<HtmlMixedChildContent>();
+		var cut = await RenderComponent<HtmlMixedChildContent>();
 
 		var one = cut.Find("#one");
 		Assert.Equal("<p>Some-Static-Text</p>", one.InnerHtml);
@@ -165,9 +165,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact(DisplayName = "Verifies we can rewrite HTML blocks with encoded HTML")]
-	public void CanRenderChildContent_EncodedHtmlInBlock()
+	public async Task CanRenderChildContent_EncodedHtmlInBlock()
 	{
-		var cut = RenderComponent<HtmlEncodedChildContent>();
+		var cut = await RenderComponent<HtmlEncodedChildContent>();
 
 		var one = cut.Find("#one");
 		Assert.Equal("<p>Some-Static-Text</p>", one.InnerHtml);
@@ -183,10 +183,10 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanTriggerEventsOnChildComponents()
+	public async Task CanTriggerEventsOnChildComponents()
 	{
 		// Counter is displayed as child component. Initial count is zero.
-		var cut = RenderComponent<CounterComponentWrapper>();
+		var cut = await RenderComponent<CounterComponentWrapper>();
 
 		// Clicking increments count in child component
 		cut.Find("button").Click();
@@ -195,10 +195,10 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void ChildComponentsRerenderWhenPropertiesChanged()
+	public async Task ChildComponentsRerenderWhenPropertiesChanged()
 	{
 		// Count value is displayed in child component with initial value zero
-		var cut = RenderComponent<CounterComponentUsingChild>();
+		var cut = await RenderComponent<CounterComponentUsingChild>();
 		var wholeCounterElement = cut.Find("p");
 		var messageElementInChild = cut.Find("p .message");
 		Assert.Equal("Current count: 0", wholeCounterElement.TextContent);
@@ -210,10 +210,10 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanAddAndRemoveChildComponentsDynamically()
+	public async Task CanAddAndRemoveChildComponentsDynamically()
 	{
 		// Initially there are zero child components
-		var cut = RenderComponent<AddRemoveChildComponents>();
+		var cut = await RenderComponent<AddRemoveChildComponents>();
 		var addButton = cut.Find(".addChild");
 		var removeButton = cut.Find(".removeChild");
 		Assert.Empty(cut.FindAll("p"));
@@ -243,10 +243,10 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void ChildComponentsNotifiedWhenPropertiesChanged()
+	public async Task ChildComponentsNotifiedWhenPropertiesChanged()
 	{
 		// Child component receives notification that lets it compute a property before first render
-		var cut = RenderComponent<PropertiesChangedHandlerParent>();
+		var cut = await RenderComponent<PropertiesChangedHandlerParent>();
 		var suppliedValueElement = cut.Find(".supplied");
 		var computedValueElement = cut.Find(".computed");
 		var incrementButton = cut.Find("button");
@@ -260,10 +260,10 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanRenderFragmentsWhilePreservingSurroundingElements()
+	public async Task CanRenderFragmentsWhilePreservingSurroundingElements()
 	{
 		// Initially, the region isn't shown
-		var cut = RenderComponent<RenderFragmentToggler>();
+		var cut = await RenderComponent<RenderFragmentToggler>();
 		var originalButton = cut.Find("button");
 
 		var fragmentElements = cut.FindAll("p[name=fragment-element]", enableAutoRefresh: true);
@@ -283,11 +283,11 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanUseViewImportsHierarchically()
+	public async Task CanUseViewImportsHierarchically()
 	{
 		// The component is able to compile and output these type names only because
 		// of the _ViewImports.cshtml files at the same and ancestor levels
-		var cut = RenderComponent<ComponentUsingImports>();
+		var cut = await RenderComponent<ComponentUsingImports>();
 		Assert.Collection(
 			cut.FindAll("p"),
 			elem => Assert.Equal(typeof(Complex).FullName, elem.TextContent),
@@ -295,9 +295,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanRenderSvgWithCorrectNamespace()
+	public async Task CanRenderSvgWithCorrectNamespace()
 	{
-		var cut = RenderComponent<SvgComponent>();
+		var cut = await RenderComponent<SvgComponent>();
 
 		var svgElement = cut.Find("svg");
 		Assert.NotNull(svgElement);
@@ -311,9 +311,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanRenderSvgChildComponentWithCorrectNamespace()
+	public async Task CanRenderSvgChildComponentWithCorrectNamespace()
 	{
-		var cut = RenderComponent<SvgWithChildComponent>();
+		var cut = await RenderComponent<SvgWithChildComponent>();
 
 		var svgElement = cut.Find("svg");
 		Assert.NotNull(svgElement);
@@ -323,18 +323,18 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void LogicalElementInsertionWorksHierarchically()
+	public async Task LogicalElementInsertionWorksHierarchically()
 	{
-		var cut = RenderComponent<LogicalElementInsertionCases>();
+		var cut = await RenderComponent<LogicalElementInsertionCases>();
 		cut.MarkupMatches("First Second Third");
 	}
 
 	[Fact]
-	public void CanUseJSInteropToReferenceElements()
+	public async Task CanUseJSInteropToReferenceElements()
 	{
 		// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJSRuntime
 		//       The original test code is here:
-		// var cut = RenderComponent<ElementRefComponent>();
+		// var cut = await RenderComponent<ElementRefComponent>();
 		// var inputElement = cut.Find("#capturedElement");
 		// var buttonElement = cut.Find("button");
 
@@ -345,7 +345,7 @@ public class ComponentRenderingTest : TestContext
 		// buttonElement.Click();
 		// Assert.Equal("Clicks: 2", inputElement.GetAttribute("value"));
 
-		var cut = RenderComponent<ElementRefComponent>();
+		var cut = await RenderComponent<ElementRefComponent>();
 		var inputElement = cut.Find("#capturedElement");
 		var refId = inputElement.GetAttribute(Htmlizer.ElementReferenceAttrName);
 		var buttonElement = cut.Find("button");
@@ -358,11 +358,11 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanCaptureReferencesToDynamicallyAddedElements()
+	public async Task CanCaptureReferencesToDynamicallyAddedElements()
 	{
 		// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJSRuntime
 		//       The original test code is here:
-		// var cut = RenderComponent<ElementRefComponent>();
+		// var cut = await RenderComponent<ElementRefComponent>();
 		// var buttonElement = cut.Find("button");
 		// var checkbox = cut.Find("input[type=checkbox]");
 		//
@@ -383,7 +383,7 @@ public class ComponentRenderingTest : TestContext
 		// buttonElement.Click();
 		// Assert.Equal("Clicks: 1", () => inputElement.GetAttribute("value"));
 
-		var cut = RenderComponent<ElementRefComponent>();
+		var cut = await RenderComponent<ElementRefComponent>();
 		var buttonElement = cut.Find("button");
 		var checkbox = cut.Find("input[type=checkbox]");
 
@@ -410,9 +410,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanCaptureReferencesToDynamicallyAddedComponents()
+	public async Task CanCaptureReferencesToDynamicallyAddedComponents()
 	{
-		var cut = RenderComponent<ComponentRefComponent>();
+		var cut = await RenderComponent<ComponentRefComponent>();
 		var incrementButton = cut.Find("#child-component button");
 		var resetButton = cut.Find("#reset-child");
 		var toggleChildCheckbox = cut.Find("#toggle-child");
@@ -443,14 +443,14 @@ public class ComponentRenderingTest : TestContext
 	// [Fact]
 	// public void CanUseJSInteropForRefElementsDuringOnAfterRender()
 	// {
-	//     var cut = RenderComponent<AfterRenderInteropComponent>();
+	//     var cut = await RenderComponent<AfterRenderInteropComponent>();
 	//     Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));
 	// }
 
 	[Fact]
-	public void CanRenderMarkupBlocks()
+	public async Task CanRenderMarkupBlocks()
 	{
-		var cut = RenderComponent<MarkupBlockComponent>();
+		var cut = await RenderComponent<MarkupBlockComponent>();
 
 		// Static markup
 		Assert.Equal("attributes", cut.Find("p span#attribute-example").TextContent);
@@ -470,9 +470,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanRenderRazorTemplates()
+	public async Task CanRenderRazorTemplates()
 	{
-		var cut = RenderComponent<RazorTemplates>();
+		var cut = await RenderComponent<RazorTemplates>();
 
 		// code block template (component parameter)
 		var element = cut.Find("div#codeblocktemplate ol");
@@ -484,9 +484,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanRenderMultipleChildContent()
+	public async Task CanRenderMultipleChildContent()
 	{
-		var cut = RenderComponent<MultipleChildContent>();
+		var cut = await RenderComponent<MultipleChildContent>();
 
 		var table = cut.Find("table");
 
@@ -510,13 +510,13 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanAcceptSimultaneousRenderRequests()
+	public async Task CanAcceptSimultaneousRenderRequests()
 	{
 		var expectedOutput = string.Join(
 			string.Empty,
 			Enumerable.Range(0, 100).Select(_ => "😊"));
 
-		var cut = RenderComponent<ConcurrentRenderParent>();
+		var cut = await RenderComponent<ConcurrentRenderParent>();
 
 		// It's supposed to pause the rendering for this long. The WaitAssert below
 		// allows it to take up extra time if needed.
@@ -530,9 +530,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanDispatchRenderToSyncContext()
+	public async Task CanDispatchRenderToSyncContext()
 	{
-		var cut = RenderComponent<DispatchingComponent>();
+		var cut = await RenderComponent<DispatchingComponent>();
 		var result = cut.Find("#result");
 
 		cut.Find("#run-with-dispatch").Click();
@@ -541,9 +541,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanDoubleDispatchRenderToSyncContext()
+	public async Task CanDoubleDispatchRenderToSyncContext()
 	{
-		var cut = RenderComponent<DispatchingComponent>();
+		var cut = await RenderComponent<DispatchingComponent>();
 		var result = cut.Find("#result");
 
 		cut.Find("#run-with-double-dispatch").Click();
@@ -552,9 +552,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanUseAddMultipleAttributes()
+	public async Task CanUseAddMultipleAttributes()
 	{
-		var cut = RenderComponent<DuplicateAttributesComponent>();
+		var cut = await RenderComponent<DuplicateAttributesComponent>();
 
 		var element = cut.Find("#duplicate-on-element > div");
 		Assert.True(element.HasAttribute("bool")); // attribute is present
@@ -568,9 +568,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanPatchRenderTreeToMatchLatestDOMState()
+	public async Task CanPatchRenderTreeToMatchLatestDOMState()
 	{
-		var cut = RenderComponent<MovingCheckboxesComponent>();
+		var cut = await RenderComponent<MovingCheckboxesComponent>();
 		var incompleteItemsSelector = ".incomplete-items li";
 		var completeItemsSelector = ".complete-items li";
 
@@ -590,9 +590,9 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanHandleRemovedParentObjects()
+	public async Task CanHandleRemovedParentObjects()
 	{
-		var cut = RenderComponent<DispatcherException>();
+		var cut = await RenderComponent<DispatcherException>();
 
 		cut.Find("button").Click();
 
@@ -603,7 +603,7 @@ public class ComponentRenderingTest : TestContext
 	[Fact]
 	public async Task CanHandleRemovedParentObjectsAsync()
 	{
-		var cut = RenderComponent<DispatcherException>();
+		var cut = await RenderComponent<DispatcherException>();
 
 		await cut.Find("button").ClickAsync(new MouseEventArgs());
 

@@ -6,8 +6,8 @@ public class MediaEventDispatchExtensionsTest : EventDispatchExtensionsTest<Even
 
 	[Theory(DisplayName = "Media events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(MediaEventDispatchExtensions))]
-	public void CanRaiseEvents(MethodInfo helper)
+	public Task CanRaiseEvents(MethodInfo helper)
 	{
-		VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
+		return VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
 	}
 }

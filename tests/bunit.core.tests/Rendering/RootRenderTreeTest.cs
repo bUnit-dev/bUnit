@@ -39,79 +39,79 @@ public class RootRenderTreeTest : TestContext
 	}
 
 	[Fact(DisplayName = "RenderTree.Add<T> adds T to render tree which CUT is rendered as child of")]
-	public void Test110()
+	public async Task Test110()
 	{
 		RenderTree.Add<LayoutComponent>();
 
-		var cut = RenderComponent<InnerComponent>();
+		var cut = await RenderComponent<InnerComponent>();
 
 		cut.Markup.ShouldBe($"<div>LAYOUT VALUE</div>");
 	}
 
 	[Fact(DisplayName = "RenderTree.Add<T> allows passing parameters to render tree components")]
-	public void Test111()
+	public async Task Test111()
 	{
 		RenderTree.Add<LayoutComponent>(parameters => parameters.Add(p => p.Value, "ANOTHER VALUE"));
 
-		var cut = RenderComponent<InnerComponent>();
+		var cut = await RenderComponent<InnerComponent>();
 
 		cut.Markup.ShouldBe($"<div>ANOTHER VALUE</div>");
 	}
 
 	[Fact(DisplayName = "RenderTree.Add<T> can be called multiple times")]
-	public void Test112()
+	public async Task Test112()
 	{
 		RenderTree.Add<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "VALUE"));
 		RenderTree.Add<CascadingValue<int>>(parameters => parameters.Add(p => p.Value, 42));
 
-		var cut = RenderComponent<MultipleParametersInnerComponent>();
+		var cut = await RenderComponent<MultipleParametersInnerComponent>();
 
 		cut.Markup.ShouldBe($"<div>VALUE42</div>");
 	}
 
 	[Fact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
-	public void Test113()
+	public async Task Test113()
 	{
 		RenderTree.Add<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "VALUE"));
 		RenderTree.Add<MultipleParametersInnerComponent>();
 		RenderTree.Add<CascadingValue<int>>(parameters => parameters.Add(p => p.Value, 42));
 		RenderTree.Add<MultipleParametersInnerComponent>();
 
-		var cut = RenderComponent<MultipleParametersInnerComponent>();
+		var cut = await RenderComponent<MultipleParametersInnerComponent>();
 
 		cut.Markup.ShouldBe($"<div>VALUE42</div>");
 	}
 
 	[Fact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
-	public void Test113_2()
+	public async Task Test113_2()
 	{
 		RenderTree.Add<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "VALUE"));
 		RenderTree.Add<CascadingValue<int>>(parameters => parameters.Add(p => p.Value, 42));
 
-		var cut = RenderComponent<CascadingValue<string>>(parameters => parameters
+		var cut = await RenderComponent<CascadingValue<string>>(parameters => parameters
 			.Add(p => p.Value, "FOO"));
 
 		cut.Instance.Value.ShouldBe("FOO");
 	}
 
 	[Fact(DisplayName = "Multiple RenderTree.Add<T> calls are added to render tree in call order")]
-	public void Test114()
+	public async Task Test114()
 	{
 		RenderTree.Add<LayoutComponent>(parameters => parameters.Add(p => p.Value, "FOO"));
 		RenderTree.Add<LayoutComponent>(parameters => parameters.Add(p => p.Value, "BAR"));
 
-		var cut = RenderComponent<InnerComponent>();
+		var cut = await RenderComponent<InnerComponent>();
 
 		cut.Markup.ShouldBe($"<div>BAR</div>");
 	}
 
 	[Fact(DisplayName = "RenderTree.TryAdd<T> only adds T if it hasn't already been added")]
-	public void Test120()
+	public async Task Test120()
 	{
 		RenderTree.Add<LayoutComponent>(parameters => parameters.Add(p => p.Value, "FOO"));
 		RenderTree.TryAdd<LayoutComponent>(parameters => parameters.Add(p => p.Value, "BAR"));
 
-		var cut = RenderComponent<InnerComponent>();
+		var cut = await RenderComponent<InnerComponent>();
 
 		cut.Markup.ShouldBe($"<div>FOO</div>");
 	}

@@ -20,28 +20,28 @@ public class ConditionalComponentFactoryTest : TestContext
 		() => ComponentFactories.Add(t => true, default(Func<Type, IComponent>)));
 
 	[Fact(DisplayName = "Component is replaced in render tree with component from factory when matches returns true")]
-	public void Test010()
+	public async Task Test010()
 	{
 		var mockComponent = Mock.Of<Simple1>();
 		ComponentFactories.Add(type => type == typeof(Simple1), type => mockComponent);
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
+		var cut = await RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
 		cut.FindComponent<Simple1>()
 			.Instance.ShouldBeSameAs(mockComponent);
 	}
 
 	[Fact(DisplayName = "Component is replaced in render tree with component from factory when matches returns true")]
-	public void Test011()
+	public async Task Test011()
 	{
 		var mockRepo = new MockRepository(MockBehavior.Loose);
 		ComponentFactories.Add(
 			type => type != typeof(TwoComponentWrapper),
 			mockRepo.CreateComponent);
 
-		var cut = RenderComponent<TwoComponentWrapper>(ps => ps
-		   .Add<Simple1>(p => p.First)
-		   .Add<NoArgs>(p => p.Second));
+		var cut = await RenderComponent<TwoComponentWrapper>(ps => ps
+			.Add<Simple1>(p => p.First)
+			.Add<NoArgs>(p => p.Second));
 
 		cut.FindComponents<Simple1>().ShouldAllBe(x => Mock.Get(x.Instance));
 		cut.FindComponents<NoArgs>().ShouldAllBe(x => Mock.Get(x.Instance));

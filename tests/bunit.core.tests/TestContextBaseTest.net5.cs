@@ -50,7 +50,7 @@ public partial class TestContextBaseTest : TestContext
 	[Fact(DisplayName = "DisposeComponents captures exceptions from DisposeAsync in Renderer.UnhandledException")]
 	public async Task Test201()
 	{
-		RenderComponent<AsyncThrowExceptionComponent>();
+		await RenderComponent<AsyncThrowExceptionComponent>();
 
 		DisposeComponents();
 
@@ -61,7 +61,7 @@ public partial class TestContextBaseTest : TestContext
 	[Fact(DisplayName = "DisposeComponents calls DisposeAsync on rendered components")]
 	public async Task Test202()
 	{
-		var cut = RenderComponent<AsyncDisposableComponent>();
+		var cut = await RenderComponent<AsyncDisposableComponent>();
 		var wasDisposedTask = cut.Instance.DisposedTask;
 
 		DisposeComponents();
@@ -70,10 +70,10 @@ public partial class TestContextBaseTest : TestContext
 	}
 
 	[Fact(DisplayName = "DisposeComponents should dispose components added via ComponentFactory")]
-	public void Test203()
+	public async Task Test203()
 	{
 		ComponentFactories.Add<ChildDispose, MyChildDisposeStub>();
-		var cut = RenderComponent<ParentDispose>(ps => ps.Add(p => p.CallStack, new List<string>()));
+		var cut = await RenderComponent<ParentDispose>(ps => ps.Add(p => p.CallStack, new List<string>()));
 		var instance = cut.FindComponent<MyChildDisposeStub>().Instance;
 
 		DisposeComponents();

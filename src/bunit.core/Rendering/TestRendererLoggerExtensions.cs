@@ -43,9 +43,6 @@ internal static class TestRendererLoggerExtensions
 	internal static void LogChangedComponentsMarkupUpdated(this ILogger<TestRenderer> logger)
 		=> ChangedComponentsMarkupUpdated(logger, null);
 
-	internal static void LogAsyncInitialRender(this ILogger<TestRenderer> logger)
-		=> AsyncInitialRender(logger, null);
-
 	internal static void LogInitialRenderCompleted(this ILogger<TestRenderer> logger, int componentId)
 		=> InitialRenderCompleted(logger, componentId, null);
 

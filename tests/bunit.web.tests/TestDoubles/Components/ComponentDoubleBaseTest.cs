@@ -9,9 +9,9 @@ public class ComponentDoubleBaseTest : TestContext
 
 	[Theory(DisplayName = "Double captures unmatched parameters")]
 	[AutoData]
-	public void Test022(string attrName, string attrValue)
+	public async Task Test022(string attrName, string attrValue)
 	{
-		var cut = RenderComponent<ComponentDouble<AllTypesOfParams<string>>>((attrName, attrValue));
+		var cut = await RenderComponent<ComponentDouble<AllTypesOfParams<string>>>((attrName, attrValue));
 
 		cut.Instance.Parameters[attrName].ShouldBe(attrValue);
 	}

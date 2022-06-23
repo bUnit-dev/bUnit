@@ -44,11 +44,11 @@ public class TestRenderer : Renderer, ITestRenderer
 #endif
 
 	/// <inheritdoc/>
-	public IRenderedFragmentBase RenderFragment(RenderFragment renderFragment)
+	public Task<IRenderedFragmentBase> RenderFragment(RenderFragment renderFragment)
 		=> Render(renderFragment, id => activator.CreateRenderedFragment(id));
 
 	/// <inheritdoc/>
-	public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
+	public Task<IRenderedComponentBase<TComponent>> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent
 	{
 		if (parameters is null)
@@ -206,10 +206,10 @@ public class TestRenderer : Renderer, ITestRenderer
 		base.Dispose(disposing);
 	}
 
-	private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
+	private async Task<TResult> Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
 		where TResult : IRenderedFragmentBase
 	{
-		var renderTask = Dispatcher.InvokeAsync(() =>
+		var result = await Dispatcher.InvokeAsync(() =>
 		{
 			ResetUnhandledException();
 
@@ -221,18 +221,6 @@ public class TestRenderer : Renderer, ITestRenderer
 			root.Render();
 			return result;
 		});
-
-		TResult result;
-
-		if (!renderTask.IsCompleted)
-		{
-			logger.LogAsyncInitialRender();
-			result = renderTask.GetAwaiter().GetResult();
-		}
-		else
-		{
-			result = renderTask.Result;
-		}
 
 		logger.LogInitialRenderCompleted(result.ComponentId);
 

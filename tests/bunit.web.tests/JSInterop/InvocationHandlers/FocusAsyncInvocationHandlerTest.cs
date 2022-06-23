@@ -10,17 +10,17 @@ namespace Bunit.JSInterop.InvocationHandlers;
 public class FocusAsyncInvocationHandlerTest : TestContext
 {
 	[Fact(DisplayName = "Can render components that calls FocusAsync")]
-	public void Test001()
+	public async Task Test001()
 	{
-		var cut = RenderComponent<FocusingComponent>();
+		var cut = await RenderComponent<FocusingComponent>();
 		var input = cut.Find("input");
 		JSInterop.VerifyFocusAsyncInvoke().Arguments[0].ShouldBeElementReferenceTo(input);
 	}
 
 	[Fact(DisplayName = "Can capture two FocusAsync calls")]
-	public void Test002()
+	public async Task Test002()
 	{
-		var cut = RenderComponent<Wrapper>(ps => ps
+		var cut = await RenderComponent<Wrapper>(ps => ps
 			.AddChildContent<FocusingComponent>()
 			.AddChildContent<FocusingComponent>());
 
@@ -32,9 +32,9 @@ public class FocusAsyncInvocationHandlerTest : TestContext
 	}
 
 	[Fact(DisplayName = "Will return completed task")]
-	public void Test003()
+	public async Task Test003()
 	{
-		var cut = RenderComponent<FocusingComponent>();
+		var cut = await RenderComponent<FocusingComponent>();
 		Assert.True(cut.Instance.AfterFirstRender);
 	}
 

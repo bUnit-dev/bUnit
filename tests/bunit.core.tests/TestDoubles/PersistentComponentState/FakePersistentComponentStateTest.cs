@@ -27,11 +27,11 @@ public class FakePersistentComponentStateTest : TestContext
 	}
 
 	[Fact(DisplayName = "AddFakePersistentComponentState enables PersistentComponentState injection into components")]
-	public void Test002()
+	public async Task Test002()
 	{
 		this.AddFakePersistentComponentState();
 
-		var cut = RenderComponent<PersistentComponentStateSample>();
+		var cut = await RenderComponent<PersistentComponentStateSample>();
 
 		cut.Instance.State.ShouldNotBeNull();
 	}
@@ -50,10 +50,10 @@ public class FakePersistentComponentStateTest : TestContext
 	}
 
 	[Fact(DisplayName = "TryTake returns true if key contains data saved in store")]
-	public void Test012()
+	public async Task Test012()
 	{
 		var fakeState = this.AddFakePersistentComponentState();
-		var cut = RenderComponent<PersistentComponentStateSample>();
+		var cut = await RenderComponent<PersistentComponentStateSample>();
 
 		fakeState.TriggerOnPersisting();
 

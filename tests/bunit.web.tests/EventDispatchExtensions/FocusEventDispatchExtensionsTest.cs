@@ -6,13 +6,13 @@ public class FocusEventDispatchExtensionsTest : EventDispatchExtensionsTest<Focu
 
 	[Theory(DisplayName = "Focus events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(FocusEventDispatchExtensions))]
-	public void CanRaiseEvents(MethodInfo helper)
+	public async Task CanRaiseEvents(MethodInfo helper)
 	{
 		var expected = new FocusEventArgs()
 		{
 			Type = "SOME TYPE",
 		};
 
-		VerifyEventRaisesCorrectly(helper, expected);
+		await VerifyEventRaisesCorrectly(helper, expected);
 	}
 }

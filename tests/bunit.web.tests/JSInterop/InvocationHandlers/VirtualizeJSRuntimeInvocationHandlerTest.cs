@@ -18,9 +18,9 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 
 	[Theory(DisplayName = "Can render component using <Virtualize Items> with ChildContent")]
 	[MemberData(nameof(ItemsInCollection))]
-	public void Test001(int itemsInDataSource)
+	public async Task Test001(int itemsInDataSource)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = await RenderComponent<Virtualize<string>>(ps => ps
 			.Add(p => p.Items, CreateItems(itemsInDataSource))
 			.Add(p => p.ChildContent, item => $"<p>{item}</p>"));
 
@@ -29,9 +29,9 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 
 	[Theory(DisplayName = "Can render component using <Virtualize Items> with ItemContent")]
 	[MemberData(nameof(ItemsInCollection))]
-	public void Test002(int itemsInDataSource)
+	public async Task Test002(int itemsInDataSource)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = await RenderComponent<Virtualize<string>>(ps => ps
 			.Add(p => p.Items, CreateItems(itemsInDataSource))
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>"));
 
@@ -40,9 +40,9 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 
 	[Theory(DisplayName = "Can render component using <Virtualize ItemsProvider> with ChildContent")]
 	[MemberData(nameof(ItemsInCollection))]
-	public void Test010(int itemsInDataSource)
+	public async Task Test010(int itemsInDataSource)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = await RenderComponent<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
 			.Add(p => p.ChildContent, item => $"<p>{item}</p>"));
 
@@ -51,9 +51,9 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 
 	[Theory(DisplayName = "Can render component using <Virtualize ItemsProvider> with ItemContent")]
 	[MemberData(nameof(ItemsInCollection))]
-	public void Test011(int itemsInDataSource)
+	public async Task Test011(int itemsInDataSource)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = await RenderComponent<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>"));
 
@@ -73,9 +73,9 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 
 	[Theory(DisplayName = "Can render component using <Virtualize Items> and different ItemSize and OverscanCount")]
 	[MemberData(nameof(ItemCountItemSizeOverscanCount))]
-	public void Test030(int itemsInDataSource, float itemSize, int overscanCount)
+	public async Task Test030(int itemsInDataSource, float itemSize, int overscanCount)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = await RenderComponent<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>")
 			.Add(p => p.ItemSize, itemSize)
@@ -86,9 +86,9 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 
 	[Theory(DisplayName = "Can render placeholder from <Virtualize ItemsProvider, Placeholder>")]
 	[MemberData(nameof(ItemsInCollection))]
-	public void Test040(int itemsInDataSource)
+	public async Task Test040(int itemsInDataSource)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = await RenderComponent<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, _ => ValueTask.FromResult(new ItemsProviderResult<string>(Array.Empty<string>(), itemsInDataSource)))
 			.Add(p => p.ItemContent, item => @$"<p class=""item"">{item}</p>")
 			.Add(p => p.Placeholder, _ => @"<p class=""placeholder"" />"));

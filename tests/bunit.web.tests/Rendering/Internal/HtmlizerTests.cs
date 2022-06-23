@@ -6,9 +6,9 @@ public partial class HtmlizerTests : TestContext
 	[InlineData(false, true)]
 	[InlineData(true, false)]
 	[InlineData(true, true)]
-	public void Test002(bool stopPropagation, bool preventDefault)
+	public async Task Test002(bool stopPropagation, bool preventDefault)
 	{
-		var component = RenderComponent<Htmlizer01Component>(parameters => parameters
+		var component = await RenderComponent<Htmlizer01Component>(parameters => parameters
 			.Add(p => p.OnClick, (MouseEventArgs _) => { })
 			.Add(p => p.OnClickStopPropagation, stopPropagation)
 			.Add(p => p.OnClickPreventDefault, preventDefault));
@@ -20,9 +20,9 @@ public partial class HtmlizerTests : TestContext
 	}
 
 	[Fact(DisplayName = "Blazor ElementReferences are included in rendered markup")]
-	public void Test001()
+	public async Task Test001()
 	{
-		var cut = RenderComponent<Htmlizer01Component>();
+		var cut = await RenderComponent<Htmlizer01Component>();
 
 		var elmRefValue = cut.Find("button").GetAttribute("blazor:elementreference");
 
@@ -30,9 +30,9 @@ public partial class HtmlizerTests : TestContext
 	}
 
 	[Fact(DisplayName = "Blazor ElementReferences start in markup on rerenders")]
-	public void Test003()
+	public async Task Test003()
 	{
-		var cut = RenderComponent<Htmlizer01Component>();
+		var cut = await RenderComponent<Htmlizer01Component>();
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 
 		cut.SetParametersAndRender(parameters => parameters.Add(p => p.OnClick, (MouseEventArgs _) => { }));

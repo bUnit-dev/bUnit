@@ -15,10 +15,10 @@ namespace Bunit.JSInterop.InvocationHandlers;
 public class FocusOnNavigateHandlerTest : TestContext
 {
 	[Fact(DisplayName = "Can render components that calls FocusOnNavigate")]
-	public void Test001()
+	public async Task Test001()
 	{
 		// <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-		var cut = RenderComponent<App>(ps => ps
+		var cut = await RenderComponent<App>(ps => ps
 			.Add<FocusOnNavigate, RouteData>(p => p.FoundTemplate, routeData => cps => cps
 				.Add(x => x.RouteData, routeData)
 				.Add(x => x.Selector, "h1")));
@@ -32,9 +32,9 @@ public class FocusOnNavigateHandlerTest : TestContext
 	}
 
 	[Fact(DisplayName = "Will return completed task")]
-	public void Test002()
+	public async Task Test002()
 	{
-		var cut = RenderComponent<App>(ps => ps
+		var cut = await RenderComponent<App>(ps => ps
 			.Add<FocusOnNavigateInternal, RouteData>(p => p.FoundTemplate, routeData => cps => cps
 				.Add(x => x.RouteData, routeData)
 				.Add(x => x.Selector, "h1")));

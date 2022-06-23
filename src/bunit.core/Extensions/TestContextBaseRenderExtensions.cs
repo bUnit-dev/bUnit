@@ -14,13 +14,13 @@ public static class TestContextBaseRenderExtensions
 	/// <param name="testContext">Test context to use to render with.</param>
 	/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> that contains a declaration of the component.</param>
 	/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/>.</returns>
-	public static IRenderedComponentBase<TComponent> RenderInsideRenderTree<TComponent>(this TestContextBase testContext, RenderFragment renderFragment)
+	public static async Task<IRenderedComponentBase<TComponent>> RenderInsideRenderTree<TComponent>(this TestContextBase testContext, RenderFragment renderFragment)
 		where TComponent : IComponent
 	{
 		if (testContext is null)
 			throw new ArgumentNullException(nameof(testContext));
 
-		var baseResult = RenderInsideRenderTree(testContext, renderFragment);
+		var baseResult = await RenderInsideRenderTree(testContext, renderFragment);
 		return testContext.Renderer.FindComponent<TComponent>(baseResult);
 	}
 
@@ -30,7 +30,7 @@ public static class TestContextBaseRenderExtensions
 	/// <param name="testContext">Test context to use to render with.</param>
 	/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> to render.</param>
 	/// <returns>A <see cref="IRenderedFragmentBase"/>.</returns>
-	public static IRenderedFragmentBase RenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment)
+	public static async Task<IRenderedFragmentBase> RenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment)
 	{
 		if (testContext is null)
 			throw new ArgumentNullException(nameof(testContext));
@@ -40,7 +40,7 @@ public static class TestContextBaseRenderExtensions
 		// added to the test context.
 		var wrappedInFragmentContainer = FragmentContainer.Wrap(renderFragment);
 		var wrappedInRenderTree = testContext.RenderTree.Wrap(wrappedInFragmentContainer);
-		var resultBase = testContext.Renderer.RenderFragment(wrappedInRenderTree);
+		var resultBase = await testContext.Renderer.RenderFragment(wrappedInRenderTree);
 
 		return testContext.Renderer.FindComponent<FragmentContainer>(resultBase);
 	}

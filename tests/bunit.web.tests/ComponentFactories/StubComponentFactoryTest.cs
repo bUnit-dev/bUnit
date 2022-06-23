@@ -10,32 +10,32 @@ public class StubComponentFactoryTest : TestContext
 		=> Should.Throw<ArgumentNullException>(() => ComponentFactories.AddStub(componentTypePredicate: default, string.Empty));
 
 	[Fact(DisplayName = "AddStub<T> replaces T with Stub<T>")]
-	public void Test001()
+	public async Task Test001()
 	{
 		ComponentFactories.AddStub<CompA>();
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
+		var cut = await RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
 
 		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
 	}
 
 	[Fact(DisplayName = "AddStub<T> replaces U:T with Stub<U>")]
-	public void Test002()
+	public async Task Test002()
 	{
 		ComponentFactories.AddStub<CompA>();
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
+		var cut = await RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
 
 		cut.HasComponent<Stub<CompDerivedA>>().ShouldBeTrue();
 	}
 
 	[Theory(DisplayName = "AddStub(markup) replaces types with markup")]
 	[AutoData]
-	public void Test010(string randomText)
+	public async Task Test010(string randomText)
 	{
 		ComponentFactories.AddStub<CompA>($"<h1>{randomText}</h1>");
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
+		var cut = await RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
 
 		cut.HasComponent<Stub<CompDerivedA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");
@@ -43,11 +43,11 @@ public class StubComponentFactoryTest : TestContext
 
 	[Theory(DisplayName = "AddStub(renderFragment) replaces types with markup")]
 	[AutoData]
-	public void Test011(string randomText)
+	public async Task Test011(string randomText)
 	{
 		ComponentFactories.AddStub<CompA>(b => b.AddMarkupContent(0, $"<h1>{randomText}</h1>"));
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
+		var cut = await RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
 
 		cut.HasComponent<Stub<CompDerivedA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");
@@ -55,11 +55,11 @@ public class StubComponentFactoryTest : TestContext
 
 	[Theory(DisplayName = "AddStub<T>(Func<params, string>) replaces types with Stub that output from render fragment")]
 	[AutoData]
-	public void Test0042(string regularParamValue)
+	public async Task Test0042(string regularParamValue)
 	{
 		ComponentFactories.AddStub<AllTypesOfParams<string>>(ps => $"<div>{ps.Get(x => x.RegularParam)}</div>");
 
-		var cut = RenderComponent<Wrapper>(parameters => parameters
+		var cut = await RenderComponent<Wrapper>(parameters => parameters
 			.AddChildContent<AllTypesOfParams<string>>(ps => ps.Add(p => p.RegularParam, regularParamValue)));
 
 		cut.MarkupMatches($"<div>{regularParamValue}</div>");
@@ -67,35 +67,35 @@ public class StubComponentFactoryTest : TestContext
 
 	[Theory(DisplayName = "AddStub<T>(renderFragment<params>) replaces types with Stub that output from render fragment")]
 	[AutoData]
-	public void Test004(string regularParamValue)
+	public async Task Test004(string regularParamValue)
 	{
 		ComponentFactories.AddStub<AllTypesOfParams<string>>(ps
 			=> builder
 			=> builder.AddMarkupContent(0, $"<div>{ps.Get(x => x.RegularParam)}</div>"));
 
-		var cut = RenderComponent<Wrapper>(parameters => parameters
+		var cut = await RenderComponent<Wrapper>(parameters => parameters
 			.AddChildContent<AllTypesOfParams<string>>(ps => ps.Add(p => p.RegularParam, regularParamValue)));
 
 		cut.MarkupMatches($"<div>{regularParamValue}</div>");
 	}
 
 	[Fact(DisplayName = "AddStub(predicate) replaces types that matches predicate")]
-	public void Test003()
+	public async Task Test003()
 	{
 		ComponentFactories.AddStub(componentType => componentType == typeof(CompA));
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
+		var cut = await RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
 
 		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
 	}
 
 	[Theory(DisplayName = "AddStub(predicate, markup) replaces types that matches predicate with markup")]
 	[AutoData]
-	public void Test023(string randomText)
+	public async Task Test023(string randomText)
 	{
 		ComponentFactories.AddStub(componentType => componentType == typeof(CompA), $"<h1>{randomText}</h1>");
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
+		var cut = await RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
 
 		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");
@@ -103,11 +103,11 @@ public class StubComponentFactoryTest : TestContext
 
 	[Theory(DisplayName = "AddStub(predicate, markup) replaces types that matches predicate with markup")]
 	[AutoData]
-	public void Test024(string randomText)
+	public async Task Test024(string randomText)
 	{
 		ComponentFactories.AddStub(componentType => componentType == typeof(CompA), b => b.AddMarkupContent(1, $"<h1>{randomText}</h1>"));
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
+		var cut = await RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
 
 		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");

@@ -25,6 +25,6 @@ public class DragEventDispatchExtensionsTest : EventDispatchExtensionsTest<DragE
 			DataTransfer = new DataTransfer(),
 		};
 
-		VerifyEventRaisesCorrectly(helper, expected);
+		await VerifyEventRaisesCorrectly(helper, expected);
 	}
 }

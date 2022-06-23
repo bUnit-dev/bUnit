@@ -77,10 +77,10 @@ namespace Bunit.TestDoubles
 		}
 
 		[Fact(DisplayName = "LocationChanged is raised on the test renderer's dispatcher")]
-		public void Test006()
+		public async Task Test006()
 		{
 			var sut = CreateFakeNavigationMananger();
-			var cut = RenderComponent<PrintCurrentUrl>();
+			var cut = await RenderComponent<PrintCurrentUrl>();
 
 			sut.NavigateTo("foo");
 

@@ -6,7 +6,7 @@ public class RenderedComponentInvokeAsyncExtensionsTest : TestContext
 	public async Task Test003()
 	{
 		// Arrange
-		var cut = RenderComponent<Simple1>();
+		var cut = await RenderComponent<Simple1>();
 		bool delegateFinished = false;
 
 		async Task Callback()
@@ -26,7 +26,7 @@ public class RenderedComponentInvokeAsyncExtensionsTest : TestContext
 	public async Task Test004()
 	{
 		// Arrange
-		var cut = RenderComponent<Simple1>();
+		var cut = await RenderComponent<Simple1>();
 		bool delegateFinished = false;
 
 		async void Callback()

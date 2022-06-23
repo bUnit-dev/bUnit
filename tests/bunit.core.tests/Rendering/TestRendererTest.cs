@@ -12,13 +12,13 @@ public partial class TestRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "RenderFragment re-throws exception from component")]
-	public void Test004()
+	public async Task Test004()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 		RenderFragment thowingFragment = b => { b.OpenComponent<ThrowsDuringSetParams>(0); b.CloseComponent(); };
 
-		Should.Throw<InvalidOperationException>(() => sut.RenderFragment(thowingFragment))
-			.Message.ShouldBe(ThrowsDuringSetParams.EXCEPTION.Message);
+		var exception = await Should.ThrowAsync<InvalidOperationException>(() => sut.RenderFragment(thowingFragment));
+		exception.Message.ShouldBe(ThrowsDuringSetParams.EXCEPTION.Message);
 	}
 
 	[Fact(DisplayName = "RenderComponent re-throws exception from component")]
@@ -31,23 +31,23 @@ public partial class TestRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "Can render fragment without children and no parameters")]
-	public void Test001()
+	public async Task Test001()
 	{
 		const string MARKUP = "<h1>hello world</h1>";
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = (IRenderedFragment)sut.RenderFragment(builder => builder.AddMarkupContent(0, MARKUP));
+		var cut = (IRenderedFragment)await sut.RenderFragment(builder => builder.AddMarkupContent(0, MARKUP));
 
 		cut.RenderCount.ShouldBe(1);
 		cut.Markup.ShouldBe(MARKUP);
 	}
 
 	[Fact(DisplayName = "Can render component without children and no parameters")]
-	public void Test002()
+	public async Task Test002()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<NoChildNoParams>();
+		var cut = await sut.RenderComponent<NoChildNoParams>();
 
 		cut.RenderCount.ShouldBe(1);
 		cut.Markup.ShouldBe(NoChildNoParams.MARKUP);
@@ -55,25 +55,25 @@ public partial class TestRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "Can render component with parameters")]
-	public void Test005()
+	public async Task Test005()
 	{
 		const string VALUE = "FOO BAR";
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>((nameof(HasParams.Value), VALUE));
+		var cut = await sut.RenderComponent<HasParams>((nameof(HasParams.Value), VALUE));
 
 		cut.Instance.Value.ShouldBe(VALUE);
 	}
 
 	[Fact(DisplayName = "Can render component with child component")]
-	public void Test006()
+	public async Task Test006()
 	{
 		const string PARENT_VALUE = "PARENT";
 		const string CHILD_VALUE = "CHILD";
 
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = await sut.RenderComponent<HasParams>(
 			(nameof(HasParams.Value), PARENT_VALUE),
 			ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE)));
 
@@ -86,7 +86,7 @@ public partial class TestRendererTest : TestContext
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<RenderTrigger>();
+		var cut = await sut.RenderComponent<RenderTrigger>();
 
 		cut.RenderCount.ShouldBe(1);
 
@@ -101,7 +101,7 @@ public partial class TestRendererTest : TestContext
 		// arrange
 		const string EXPECTED = "NOW VALUE";
 		var sut = Services.GetRequiredService<ITestRenderer>();
-		var cut = sut.RenderComponent<RenderTrigger>();
+		var cut = await sut.RenderComponent<RenderTrigger>();
 
 		cut.RenderCount.ShouldBe(1);
 
@@ -114,7 +114,7 @@ public partial class TestRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "FindComponent returns first component nested inside another rendered component")]
-	public void Test020()
+	public async Task Test020()
 	{
 		// arrange
 		const string PARENT_VALUE = "PARENT";
@@ -122,7 +122,7 @@ public partial class TestRendererTest : TestContext
 
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = await sut.RenderComponent<HasParams>(
 			(nameof(HasParams.Value), PARENT_VALUE),
 			ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE)));
 
@@ -143,20 +143,20 @@ public partial class TestRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "FindComponent throws if component is not found")]
-	public void Test022()
+	public async Task Test022()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
-		var cut = sut.RenderComponent<HasParams>();
+		var cut = await sut.RenderComponent<HasParams>();
 
 		Should.Throw<ComponentNotFoundException>(() => sut.FindComponent<HasParams>(cut));
 	}
 
 	[Fact(DisplayName = "FindComponent returns same rendered component when called multiple times")]
-	public void Test023()
+	public async Task Test023()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = await sut.RenderComponent<HasParams>(
 			ChildContent<HasParams>());
 
 		var child1 = sut.FindComponent<HasParams>(cut);
@@ -166,7 +166,7 @@ public partial class TestRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "FindComponents returns all components nested inside another rendered component")]
-	public void Test030()
+	public async Task Test030()
 	{
 		// arrange
 		const string GRAND_PARENT_VALUE = nameof(GRAND_PARENT_VALUE);
@@ -175,7 +175,7 @@ public partial class TestRendererTest : TestContext
 
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = await sut.RenderComponent<HasParams>(
 			(nameof(HasParams.Value), GRAND_PARENT_VALUE),
 			ChildContent<HasParams>(
 				(nameof(HasParams.Value), PARENT_VALUE),
@@ -204,11 +204,11 @@ public partial class TestRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "FindComponents returns same rendered components when called multiple times")]
-	public void Test032()
+	public async Task Test032()
 	{
 		// arrange
 		var sut = Services.GetRequiredService<ITestRenderer>();
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = await sut.RenderComponent<HasParams>(
 			ChildContent<HasParams>(
 				ChildContent<HasParams>()));
 
@@ -225,7 +225,7 @@ public partial class TestRendererTest : TestContext
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var parent = sut.RenderComponent<HasParams>(
+		var parent = await sut.RenderComponent<HasParams>(
 			ChildContent<RenderTrigger>());
 
 		// act
@@ -244,7 +244,7 @@ public partial class TestRendererTest : TestContext
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var parent = sut.RenderComponent<HasParams>(
+		var parent = await sut.RenderComponent<HasParams>(
 			ChildContent<RenderTrigger>());
 
 		// act
@@ -264,7 +264,7 @@ public partial class TestRendererTest : TestContext
 		// arrange
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = await sut.RenderComponent<HasParams>(
 			ChildContent<RenderTrigger>());
 		var child = (IRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(cut);
 
@@ -282,7 +282,7 @@ public partial class TestRendererTest : TestContext
 		// arrange
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<ToggleChild>(
+		var cut = await sut.RenderComponent<ToggleChild>(
 			ChildContent<NoChildNoParams>());
 		var child = (IRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
 
@@ -300,7 +300,7 @@ public partial class TestRendererTest : TestContext
 		// arrange
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<ToggleChild>(
+		var cut = await sut.RenderComponent<ToggleChild>(
 			ChildContent<ToggleChild>(
 				ChildContent<NoChildNoParams>()));
 		var child = (IRenderedComponent<ToggleChild>)sut.FindComponent<ToggleChild>(cut);
@@ -315,10 +315,10 @@ public partial class TestRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "When test renderer is disposed, so is all rendered components")]
-	public void Test070()
+	public async Task Test070()
 	{
 		var sut = (TestRenderer)Services.GetRequiredService<ITestRenderer>();
-		var cut = sut.RenderComponent<NoChildNoParams>();
+		var cut = await sut.RenderComponent<NoChildNoParams>();
 
 		sut.Dispose();
 
@@ -326,29 +326,29 @@ public partial class TestRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "Can render component that awaits uncompleted task in OnInitializedAsync")]
-	public void Test100()
+	public async Task Test100()
 	{
 		var tcs = new TaskCompletionSource<object>();
 
-		var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+		var cut = await RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
 			parameters.Add(p => p.EitherOr, tcs.Task));
 
 		cut.Find("h1").TextContent.ShouldBe("FIRST");
 	}
 
 	[Fact(DisplayName = "Can render component that awaits yielding task in OnInitializedAsync")]
-	public void Test101()
+	public async Task Test101()
 	{
-		var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+		var cut = await RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
 			parameters.Add(p => p.EitherOr, Task.Delay(1)));
 
 		cut.WaitForAssertion(() => cut.Find("h1").TextContent.ShouldBe("SECOND"));
 	}
 
 	[Fact(DisplayName = "Can render component that awaits completed task in OnInitializedAsync")]
-	public void Test102()
+	public async Task Test102()
 	{
-		var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+		var cut = await RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
 			parameters.Add(p => p.EitherOr, Task.CompletedTask));
 
 		cut.Find("h1").TextContent.ShouldBe("SECOND");
@@ -369,7 +369,7 @@ public partial class TestRendererTest : TestContext
 	{
 		var tsc = new TaskCompletionSource<object>();
 		var expectedException = new AsyncOperationThrows.AsyncOperationThrowsException();
-		RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc.Task));
+		await RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc.Task));
 
 		tsc.SetException(expectedException);
 
@@ -381,14 +381,14 @@ public partial class TestRendererTest : TestContext
 	public async Task Test202()
 	{
 		var tsc1 = new TaskCompletionSource<object>();
-		RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc1.Task));
+		await RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc1.Task));
 		tsc1.SetException(new AsyncOperationThrows.AsyncOperationThrowsException());
 
 		var firstExceptionReported = await Renderer.UnhandledException;
 
 		var secondException = new AsyncOperationThrows.AsyncOperationThrowsException();
 		var tsc2 = new TaskCompletionSource<object>();
-		RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc2.Task));
+		await RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc2.Task));
 		tsc2.SetException(secondException);
 
 		var secondExceptionReported = await Renderer.UnhandledException;

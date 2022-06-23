@@ -155,7 +155,7 @@ List of added functionality in this release.
 
     ```csharp
     // <App /> component uses <FocusOnNavigate>
-    var cut = RenderComponent<App>();
+    var cut = await RenderComponent<App>();
 
     // Verifies that <FocusOnNavigate> called it's JavaScript function
     var invocation = JSInterop.VerifyFocusOnNavigateInvoke(); 
@@ -455,7 +455,7 @@ List of new features.
 -   Added support for components that call `ElementReference.FocusAsync`. These calls are handled by the bUnits JSInterop, that also allows you to verify that `FocusAsync` has been called for a specific element. For example, if a component has rendered an `<input>` element, then the following code will verify that it has been focused using `FocusAsync`:
 
     ```csharp
-    var cut = RenderComponent<FocusingComponent>();
+    var cut = await RenderComponent<FocusingComponent>();
 
     var input = cut.Find("input");
 
@@ -854,7 +854,7 @@ This has changed with the _bUnit.xUnit_ library, that now includes a way for it 
 If you prefer writing your tests in C# only, you will be happy to know that there is now a new strongly typed way to pass parameters to components, using a builder. E.g., to render a `ContactInfo` component:
 
 ```c#
-var cut = RenderComponent<ContactInfo>(parameters => parameters
+var cut = await RenderComponent<ContactInfo>(parameters => parameters
     .Add(p => p.Name, "Egil Hansen")
     .Add(p => p.Country, "Iceland")
 );
@@ -976,7 +976,7 @@ The latest version of the library is availble on NuGet:
     public void WaitForStateExample()
     {
         // Arrange
-        var cut = RenderComponent<DelayedRenderOnClick>();
+        var cut = await RenderComponent<DelayedRenderOnClick>();
 
         // Act
         cut.Find("button").Click();
@@ -999,7 +999,7 @@ The latest version of the library is availble on NuGet:
     public void WaitForAssertionExample()
     {
         // Arrange
-        var cut = RenderComponent<DelayedRenderOnClick>();
+        var cut = await RenderComponent<DelayedRenderOnClick>();
 
         // Act
         cut.Find("button").Click();
@@ -1071,7 +1071,7 @@ The latest version of the library is availble on NuGet:
     And the test code:
 
     ```csharp
-    var cut = RenderComponent<SimpleWithTemplate<int>>(
+    var cut = await RenderComponent<SimpleWithTemplate<int>>(
         ("Data", new int[] { 1, 2 }),
         Template<int>("Template", num => $"<p>{num}</p>")
     );
@@ -1082,7 +1082,7 @@ The latest version of the library is availble on NuGet:
     Using the more general `Template` helper methods, you need to write the `RenderTreeBuilder` logic yourself, e.g.:
 
     ```csharp
-    var cut = RenderComponent<SimpleWithTemplate<int>>(
+    var cut = await RenderComponent<SimpleWithTemplate<int>>(
         ("Data", new int[] { 1, 2 }),
         Template<int>("Template", num => builder => builder.AddMarkupContent(0, $"<p>{num}</p>"))
     );
@@ -1130,7 +1130,7 @@ The latest version of the library is availble on NuGet:
     ```csharp
     public void AutoRefreshQueriesForNewElementsAutomatically()
     {
-        var cut = RenderComponent<ClickAddsLi>();
+        var cut = await RenderComponent<ClickAddsLi>();
         var liElements = cut.FindAll("li", enableAutoRefresh: true);
         liElements.Count.ShouldBe(0);
 
@@ -1145,7 +1145,7 @@ The latest version of the library is availble on NuGet:
     ```csharp
     public void RefreshQueriesForNewElements()
     {
-        var cut = RenderComponent<ClickAddsLi>();
+        var cut = await RenderComponent<ClickAddsLi>();
         var liElements = cut.FindAll("li");
         liElements.Count.ShouldBe(0);
 

@@ -101,25 +101,25 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	}
 
 	[Fact(DisplayName = "MarkupMatches combination works with FindAll and FindComponents<T>")]
-	public void Test012()
+	public async Task Test012()
 	{
-		var cut = RenderComponent<RefToSimple1Child>();
+		var cut = await RenderComponent<RefToSimple1Child>();
 
 		cut.FindAll("h1").MarkupMatches(cut.FindComponents<Simple1>());
 	}
 
 	[Fact(DisplayName = "MarkupMatches combination works with FindAll and a markup string")]
-	public void Test013()
+	public async Task Test013()
 	{
-		var cut = RenderComponent<NoArgs>();
+		var cut = await RenderComponent<NoArgs>();
 
 		cut.FindAll("h1").MarkupMatches("<h1>Hello world</h1>");
 	}
 
 	[Fact(DisplayName = "MarkupMatches combination works with Find and FindAll")]
-	public void Test014()
+	public async Task Test014()
 	{
-		var cut = RenderComponent<TwoChildren>();
+		var cut = await RenderComponent<TwoChildren>();
 
 		cut.Find("div").MarkupMatches(cut.FindAll("div"));
 	}

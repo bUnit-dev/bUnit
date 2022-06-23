@@ -15,13 +15,13 @@ public static class TestRendererExtensions
 	/// <param name="renderer">The renderer to use.</param>
 	/// <param name="parameters">The parameters to pass to the component.</param>
 	/// <returns>A <see cref="IRenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
-	public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this ITestRenderer renderer, params ComponentParameter[] parameters)
+	public static async Task<IRenderedComponent<TComponent>> RenderComponent<TComponent>(this ITestRenderer renderer, params ComponentParameter[] parameters)
 		where TComponent : IComponent
 	{
 		if (renderer is null)
 			throw new ArgumentNullException(nameof(renderer));
 
-		var resultBase = renderer.RenderComponent<TComponent>(new ComponentParameterCollection { parameters });
+		var resultBase = await renderer.RenderComponent<TComponent>(new ComponentParameterCollection { parameters });
 		if (resultBase is IRenderedComponent<TComponent> result)
 			return result;
 
@@ -35,7 +35,7 @@ public static class TestRendererExtensions
 	/// <param name="renderer">The renderer to use.</param>
 	/// <param name="parameterBuilder">The a builder to create parameters to pass to the component.</param>
 	/// <returns>A <see cref="IRenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
-	public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this ITestRenderer renderer, Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
+	public static async Task<IRenderedComponent<TComponent>> RenderComponent<TComponent>(this ITestRenderer renderer, Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
 		where TComponent : IComponent
 	{
 		if (renderer is null)
@@ -44,7 +44,7 @@ public static class TestRendererExtensions
 			throw new ArgumentNullException(nameof(parameterBuilder));
 
 		var builder = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder);
-		var resultBase = renderer.RenderComponent<TComponent>(builder.Build());
+		var resultBase = await renderer.RenderComponent<TComponent>(builder.Build());
 		if (resultBase is IRenderedComponent<TComponent> result)
 			return result;
 

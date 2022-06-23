@@ -8,9 +8,9 @@ namespace Bunit.EventDispatchExtensions;
 public class DetailsElementEventDispatcherExtensionsTest : TestContext
 {
 	[Fact(DisplayName = "Toggle raises ontoggle events")]
-	public void Test200()
+	public async Task Test200()
 	{
-		var cut = RenderComponent<ToggleableDetails>();
+		var cut = await RenderComponent<ToggleableDetails>();
 		cut.FindAll("div > p").Count.ShouldBe(0);
 
 		cut.Find("details").Toggle();

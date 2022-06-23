@@ -16,7 +16,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 	protected TriggerEventSpy<T> CreateTriggerSpy<T>(string element, string eventName) where T : EventArgs, new()
 		=> new(p => RenderComponent<TriggerTester<T>>(p), element, eventName);
 
-	protected void VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string MethodName, string EventName)[] methodNameEventMap)
+	protected async Task VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string MethodName, string EventName)[] methodNameEventMap)
 	{
 		if (helper is null)
 			throw new ArgumentNullException(nameof(helper));
@@ -30,7 +30,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 		if (helper.GetParameters().Any(p => p.ParameterType == EventArgsType))
 		{
 			// Matches methods like: public static void Xxxx(this IElement element, TEventArgs args)
-			spy.Trigger(element =>
+			await spy.Trigger(element =>
 			{
 				helper.Invoke(null, new object[] { element, evtArg });
 			});
@@ -39,7 +39,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 		else if (helper.GetParameters().Length == 1)
 		{
 			// Matches methods like: public static void Xxxx(this IElement element)
-			spy.Trigger(element =>
+			await spy.Trigger(element =>
 			{
 				helper.Invoke(null, new object[] { element });
 			});
@@ -50,7 +50,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 			// Matches methods like: public static void Xxxx(this IElement element, other params, goes here)
 			var args = EventArgsType.GetProperties().ToDictionary(x => x.Name.ToUpperInvariant(), x => x.GetValue(expected, index: null), StringComparer.Ordinal);
 
-			spy.Trigger(element =>
+			await spy.Trigger(element =>
 			{
 				args.Add("ELEMENT", element);
 

@@ -17,7 +17,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "given a IComponentActivator, " +
 						"when passed to constructor," +
 						"then it used to create components")]
-	public void Test1000()
+	public async Task Test1000()
 	{
 		var activatorMock = new Mock<IComponentActivator>();
 		activatorMock.Setup(x => x.CreateInstance(typeof(Wrapper))).Returns(new Wrapper());
@@ -27,7 +27,7 @@ public partial class TestRendererTest : TestContext
 			NullLoggerFactory.Instance,
 			activatorMock.Object);
 
-		renderer.RenderComponent<Wrapper>(new ComponentParameterCollection());
+		await renderer.RenderComponent<Wrapper>(new ComponentParameterCollection());
 
 		activatorMock.Verify(x => x.CreateInstance(typeof(Wrapper)), Times.Once());
 	}

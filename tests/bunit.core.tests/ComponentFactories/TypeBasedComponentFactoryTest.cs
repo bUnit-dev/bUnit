@@ -14,26 +14,26 @@ public class TypeBasedComponentFactoryTest : TestContext
 		=> Should.Throw<ArgumentNullException>(() => ComponentFactories.Add<Simple1>(default(Func<Simple1>)));
 
 	[Fact(DisplayName = "TComponent replaced in render tree with component from factory method")]
-	public void Test010()
+	public async Task Test010()
 	{
 		var simple1Mock = Mock.Of<Simple1>();
 		ComponentFactories.Add<Simple1>(() => simple1Mock);
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
+		var cut = await RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
 		cut.FindComponent<Simple1>()
 			.Instance.ShouldBeSameAs(simple1Mock);
 	}
 
 	[Fact(DisplayName = "Multiple TComponent replaced in render tree with component from factory method")]
-	public void Test011()
+	public async Task Test011()
 	{
 		var mockRepo = new MockRepository(MockBehavior.Loose);
 		ComponentFactories.Add<Simple1>(() => mockRepo.Create<Simple1>().Object);
 
-		var cut = RenderComponent<TwoComponentWrapper>(ps => ps
-			   .Add<Simple1>(p => p.First)
-			   .Add<Simple1>(p => p.Second));
+		var cut = await RenderComponent<TwoComponentWrapper>(ps => ps
+			.Add<Simple1>(p => p.First)
+			.Add<Simple1>(p => p.Second));
 
 		cut.FindComponents<Simple1>()
 			.ShouldAllBe(

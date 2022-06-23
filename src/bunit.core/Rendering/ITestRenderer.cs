@@ -47,7 +47,7 @@ public interface ITestRenderer
 	/// </summary>
 	/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
 	/// <returns>A <see cref="IRenderedFragmentBase"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
-	IRenderedFragmentBase RenderFragment(RenderFragment renderFragment);
+	Task<IRenderedFragmentBase> RenderFragment(RenderFragment renderFragment);
 
 	/// <summary>
 	/// Renders a <typeparamref name="TComponent"/> with the <paramref name="parameters"/> passed to it.
@@ -55,7 +55,7 @@ public interface ITestRenderer
 	/// <typeparam name = "TComponent" > The type of component to render.</typeparam>
 	/// <param name="parameters">The parameters to pass to the component.</param>
 	/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/> that provides access to the rendered component.</returns>
-	IRenderedComponentBase<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
+	Task<IRenderedComponentBase<TComponent>> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent;
 
 	/// <summary>

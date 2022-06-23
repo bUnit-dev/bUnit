@@ -6,7 +6,7 @@ public class ProgressEventDispatchExtensionsTest : EventDispatchExtensionsTest<P
 
 	[Theory(DisplayName = "Progress events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(ProgressEventDispatchExtensions))]
-	public void CanRaiseEvents(MethodInfo helper)
+	public async Task CanRaiseEvents(MethodInfo helper)
 	{
 		var expected = new ProgressEventArgs()
 		{
@@ -16,6 +16,6 @@ public class ProgressEventDispatchExtensionsTest : EventDispatchExtensionsTest<P
 			Type = "FILE",
 		};
 
-		VerifyEventRaisesCorrectly(helper, expected);
+		await VerifyEventRaisesCorrectly(helper, expected);
 	}
 }

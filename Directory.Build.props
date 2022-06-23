@@ -6,6 +6,9 @@
 		<DotNet5Version>5.0.0</DotNet5Version>
 		<DotNet6Version>6.0.0</DotNet6Version>
 		<DotNet7Version>7.0.0-*</DotNet7Version>
+    <RunAnalyzers >false</RunAnalyzers>
+    <RunAnalyzersDuringBuild >false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->
@@ -44,13 +47,6 @@
 	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
-
-	<!-- Shared code analyzers used for all projects in the solution -->
-	<ItemGroup Label="Code Analyzers">
-		<PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
-		<PackageReference Include="Meziantou.Analyzer" Version="1.0.702" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.40.0.48530" PrivateAssets="All" />
-	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings"
 						 Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit' AND $(MSBuildProjectName) != 'AngleSharpWrappers.Tests'">

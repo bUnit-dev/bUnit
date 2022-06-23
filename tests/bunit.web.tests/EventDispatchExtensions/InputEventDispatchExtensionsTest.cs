@@ -24,255 +24,255 @@ namespace Bunit
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test000(string value) => VerifySingleBindValue(value);
+		public Task Test000(string value) => VerifySingleBindValue(value);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test001(string? value)
+		public async Task Test001(string? value)
 		{
-			VerifySingleBindValue(value);
-			VerifySingleBindValue(default(string));
+			await VerifySingleBindValue(value);
+			await VerifySingleBindValue(default(string));
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test002(bool value) => VerifySingleBindValue(value);
+		public Task Test002(bool value) => VerifySingleBindValue(value);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test003(bool? value)
+		public async Task Test003(bool? value)
 		{
-			VerifySingleBindValue(value);
-			VerifySingleBindValue(default(bool));
+			await VerifySingleBindValue(value);
+			await VerifySingleBindValue(default(bool));
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test004(int value) => VerifySingleBindValue(value);
+		public Task Test004(int value) => VerifySingleBindValue(value);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test005(int? value)
+		public async Task Test005(int? value)
 		{
-			VerifySingleBindValue(value);
-			VerifySingleBindValue(default(int));
+			await VerifySingleBindValue(value);
+			await VerifySingleBindValue(default(int));
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test006(long value) => VerifySingleBindValue(value);
+		public Task Test006(long value) => VerifySingleBindValue(value);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test007(long? value)
+		public async Task Test007(long? value)
 		{
-			VerifySingleBindValue(value);
-			VerifySingleBindValue(default(long));
+			await VerifySingleBindValue(value);
+			await VerifySingleBindValue(default(long));
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test008(short value) => VerifySingleBindValue(value);
+		public Task Test008(short value) => VerifySingleBindValue(value);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test009(short? value)
+		public async Task Test009(short? value)
 		{
-			VerifySingleBindValue(value);
-			VerifySingleBindValue(default(short));
+			await VerifySingleBindValue(value);
+			await VerifySingleBindValue(default(short));
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test010(float value) => VerifySingleBindValue(value);
+		public Task Test010(float value) => VerifySingleBindValue(value);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test011(float? value)
+		public async Task Test011(float? value)
 		{
-			VerifySingleBindValue(value);
-			VerifySingleBindValue(default(float));
+			await VerifySingleBindValue(value);
+			await VerifySingleBindValue(default(float));
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test012(double value) => VerifySingleBindValue(value);
+		public Task Test012(double value) => VerifySingleBindValue(value);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test013(double? value)
+		public async Task Test013(double? value)
 		{
-			VerifySingleBindValue(value);
-			VerifySingleBindValue(default(double));
+			await VerifySingleBindValue(value);
+			await VerifySingleBindValue(default(double));
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test014(decimal value) => VerifySingleBindValue(value);
+		public Task Test014(decimal value) => VerifySingleBindValue(value);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test015(decimal? value)
+		public async Task Test015(decimal? value)
 		{
-			VerifySingleBindValue(value);
-			VerifySingleBindValue(default(decimal));
+			await VerifySingleBindValue(value);
+			await VerifySingleBindValue(default(decimal));
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
 		[UseCulture("en-US")]
-		public void Test016(DateTime value) => VerifySingleBindValue(DateTimeWithoutMillisecond(value));
+		public Task Test016(DateTime value) => VerifySingleBindValue(DateTimeWithoutMillisecond(value));
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
 		[UseCulture("en-US")]
-		public void Test017(DateTime? value)
+		public async Task Test017(DateTime? value)
 		{
-			VerifySingleBindValue(DateTimeWithoutMillisecond(value));
-			VerifySingleBindValue(default(DateTime));
+			await VerifySingleBindValue(DateTimeWithoutMillisecond(value));
+			await VerifySingleBindValue(default(DateTime));
 		}
 
 #if NET6_0_OR_GREATER
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
 		[UseCulture("en-US")]
-		public void Test018(DateTimeOffset value) => VerifySingleBindValue(DateTimeWithoutMillisecond(value));
+		public Task Test018(DateTimeOffset value) => VerifySingleBindValue(DateTimeWithoutMillisecond(value));
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
 		[UseCulture("en-US")]
-		public void Test019(DateTimeOffset? value)
+		public async Task Test019(DateTimeOffset? value)
 		{
-			VerifySingleBindValue(DateTimeWithoutMillisecond(value));
-			VerifySingleBindValue(default(DateTimeOffset));
+			await VerifySingleBindValue(DateTimeWithoutMillisecond(value));
+			await VerifySingleBindValue(default(DateTimeOffset));
 		}
 #endif
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test020(Foo value) => VerifySingleBindValue(value);
+		public Task Test020(Foo value) => VerifySingleBindValue(value);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test021(Foo? value)
+		public Task Test021(Foo? value)
 			=> VerifySingleBindValue(value);
 
 #if NET6_0_OR_GREATER
 
 		[Fact(DisplayName = "Change and Input events are raised correctly for null object")]
-		public void Test022()
+		public Task Test022()
 			=> VerifySingleBindValue(default(Foo));
 
 #endif
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test023(Cars value) => VerifySingleBindValue(value);
+		public Task Test023(Cars value) => VerifySingleBindValue(value);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test024(Cars? value)
+		public async Task Test024(Cars? value)
 		{
-			VerifySingleBindValue(value);
-			VerifySingleBindValue(default(Cars));
+			await VerifySingleBindValue(value);
+			await VerifySingleBindValue(default(Cars));
 		}
 
 #if NET6_0_OR_GREATER
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test100(string[] values) => VerifyMultipleBindValue(values);
+		public Task Test100(string[] values) => VerifyMultipleBindValue(values);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test101(string?[] values)
+		public async Task Test101(string?[] values)
 		{
-			VerifyMultipleBindValue(values);
-			VerifyMultipleBindValue(new string?[] { default(string), default(string) });
+			await VerifyMultipleBindValue(values);
+			await VerifyMultipleBindValue(new string?[] { default(string), default(string) });
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test102(bool[] values) => VerifyMultipleBindValue(values);
+		public Task Test102(bool[] values) => VerifyMultipleBindValue(values);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test103(bool?[] values)
+		public async Task Test103(bool?[] values)
 		{
-			VerifyMultipleBindValue(values);
-			VerifyMultipleBindValue(new bool?[] { default(bool), default(bool) });
+			await VerifyMultipleBindValue(values);
+			await VerifyMultipleBindValue(new bool?[] { default(bool), default(bool) });
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test104(int[] value) => VerifyMultipleBindValue(value);
+		public Task Test104(int[] value) => VerifyMultipleBindValue(value);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test105(int?[] values)
+		public async Task Test105(int?[] values)
 		{
-			VerifyMultipleBindValue(values);
-			VerifyMultipleBindValue(new int?[] { default(int), default(int) });
+			await VerifyMultipleBindValue(values);
+			await VerifyMultipleBindValue(new int?[] { default(int), default(int) });
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test106(long[] values) => VerifyMultipleBindValue(values);
+		public Task Test106(long[] values) => VerifyMultipleBindValue(values);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test107(long?[] values)
+		public async Task Test107(long?[] values)
 		{
-			VerifyMultipleBindValue(values);
-			VerifyMultipleBindValue(new long?[] { default(long), default(long) });
+			await VerifyMultipleBindValue(values);
+			await VerifyMultipleBindValue(new long?[] { default(long), default(long) });
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test108(short[] values) => VerifyMultipleBindValue(values);
+		public Task Test108(short[] values) => VerifyMultipleBindValue(values);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test109(short?[] values)
+		public async Task Test109(short?[] values)
 		{
-			VerifyMultipleBindValue(values);
-			VerifyMultipleBindValue(new short?[] { default(short), default(short) });
+			await VerifyMultipleBindValue(values);
+			await VerifyMultipleBindValue(new short?[] { default(short), default(short) });
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test110(float[] values) => VerifyMultipleBindValue(values);
+		public Task Test110(float[] values) => VerifyMultipleBindValue(values);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test111(float?[] values)
+		public async Task Test111(float?[] values)
 		{
-			VerifyMultipleBindValue(values);
-			VerifyMultipleBindValue(new float?[] { default(float), default(float) });
+			await VerifyMultipleBindValue(values);
+			await VerifyMultipleBindValue(new float?[] { default(float), default(float) });
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test112(double[] values) => VerifyMultipleBindValue(values);
+		public Task Test112(double[] values) => VerifyMultipleBindValue(values);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test113(double?[] values)
+		public async Task Test113(double?[] values)
 		{
-			VerifyMultipleBindValue(values);
-			VerifyMultipleBindValue(new double?[] { default(double), default(double) });
+			await VerifyMultipleBindValue(values);
+			await VerifyMultipleBindValue(new double?[] { default(double), default(double) });
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test114(decimal[] values) => VerifyMultipleBindValue(values);
+		public Task Test114(decimal[] values) => VerifyMultipleBindValue(values);
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test115(decimal?[] values)
+		public async Task Test115(decimal?[] values)
 		{
-			VerifyMultipleBindValue(values);
-			VerifyMultipleBindValue(new decimal?[] { default(decimal), default(decimal) });
-		}
-
-		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		[UseCulture("en-US")]
-		public void Test116(DateTime[] values) => VerifyMultipleBindValue(DateTimeWithoutMillisecond(values));
-
-		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		[UseCulture("en-US")]
-		public void Test117(DateTime?[] values)
-		{
-			VerifyMultipleBindValue(DateTimeWithoutMillisecond(values));
-			VerifyMultipleBindValue(new DateTime?[] { default(DateTime), default(DateTime) });
+			await VerifyMultipleBindValue(values);
+			await VerifyMultipleBindValue(new decimal?[] { default(decimal), default(decimal) });
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
 		[UseCulture("en-US")]
-		public void Test118(DateTimeOffset[] values) => VerifyMultipleBindValue(DateTimeWithoutMillisecond(values));
+		public Task Test116(DateTime[] values) => VerifyMultipleBindValue(DateTimeWithoutMillisecond(values));
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
 		[UseCulture("en-US")]
-		public void Test119(DateTimeOffset?[] values)
+		public async Task Test117(DateTime?[] values)
 		{
-			VerifyMultipleBindValue(DateTimeWithoutMillisecond(values));
-			VerifyMultipleBindValue(new DateTimeOffset?[] { default(DateTimeOffset), default(DateTimeOffset) });
+			await VerifyMultipleBindValue(DateTimeWithoutMillisecond(values));
+			await VerifyMultipleBindValue(new DateTime?[] { default(DateTime), default(DateTime) });
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test123(Cars[] values) => VerifyMultipleBindValue(values);
+		[UseCulture("en-US")]
+		public Task Test118(DateTimeOffset[] values) => VerifyMultipleBindValue(DateTimeWithoutMillisecond(values));
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
-		public void Test124(Cars?[] values)
+		[UseCulture("en-US")]
+		public async Task Test119(DateTimeOffset?[] values)
 		{
-			VerifyMultipleBindValue(values);
-			VerifyMultipleBindValue(new Cars?[] { default(Cars), default(Cars) });
+			await VerifyMultipleBindValue(DateTimeWithoutMillisecond(values));
+			await VerifyMultipleBindValue(new DateTimeOffset?[] { default(DateTimeOffset), default(DateTimeOffset) });
 		}
 
-		private void VerifyMultipleBindValue<T>(T[] values)
+		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
+		public Task Test123(Cars[] values) => VerifyMultipleBindValue(values);
+
+		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
+		public async Task Test124(Cars?[] values)
 		{
-			var cut = RenderComponent<OnChangeMultipleBindSample<T>>(ps => ps
+			await VerifyMultipleBindValue(values);
+			await VerifyMultipleBindValue(new Cars?[] { default(Cars), default(Cars) });
+		}
+
+		private async Task VerifyMultipleBindValue<T>(T[] values)
+		{
+			var cut = await RenderComponent<OnChangeMultipleBindSample<T>>(ps => ps
 				.Add(p => p.Options, values));
 
 			cut.Find("#bind").Change(values);
@@ -285,11 +285,11 @@ namespace Bunit
 		}
 #endif
 
-		private void VerifySingleBindValue<T>(T value)
+		private async Task VerifySingleBindValue<T>(T value)
 		{
-			var cut = RenderComponent<OnChangeBindSample<T>>(ps => ps
+			var cut = await RenderComponent<OnChangeBindSample<T>>(ps => ps
 				.Add(p => p.BindValue, Fixture.Create<T>())
-			 	.Add(p => p.OnChangeValue, Fixture.Create<T>())
+				.Add(p => p.OnChangeValue, Fixture.Create<T>())
 				.Add(p => p.OnInputValue, Fixture.Create<T>()));
 
 			cut.Find("#bind").Change(value);

@@ -3,18 +3,18 @@ namespace Bunit.Extensions;
 public class RefreshingWrappedElementTest : TestContext
 {
 	[Fact(DisplayName = "Find() throws when element doesn't exist in DOM")]
-	public void Test001()
+	public async Task Test001()
 	{
-		var cut = RenderComponent<Markup>(ps => ps.Add(p => p.Base, "None"));
+		var cut = await RenderComponent<Markup>(ps => ps.Add(p => p.Base, "None"));
 
 		Should.Throw<ElementNotFoundException>(() => cut.Find("div"));
 	}
 
 	[Fact(DisplayName = "Find() returns the single matching element in DOM")]
-	public void Test010()
+	public async Task Test010()
 	{
 		var expected = "<div>foo</div>";
-		var cut = RenderComponent<Markup>(ps => ps.Add(p => p.Base, expected));
+		var cut = await RenderComponent<Markup>(ps => ps.Add(p => p.Base, expected));
 
 		var actual = cut.Find("div");
 
@@ -22,10 +22,10 @@ public class RefreshingWrappedElementTest : TestContext
 	}
 
 	[Fact(DisplayName = "Find() returns first matching element in DOM")]
-	public void Test011()
+	public async Task Test011()
 	{
 		var expected = "<div>foo</div>";
-		var cut = RenderComponent<Markup>(ps => ps
+		var cut = await RenderComponent<Markup>(ps => ps
 			.Add(p => p.Base, expected)
 			.Add(p => p.Optional, "<div>bar</div>")
 			.Add(p => p.ShowOptional, true));
@@ -36,9 +36,9 @@ public class RefreshingWrappedElementTest : TestContext
 	}
 
 	[Fact(DisplayName = "Find() refreshes the found element on re-renders")]
-	public void Test020()
+	public async Task Test020()
 	{
-		var cut = RenderComponent<Markup>(ps => ps
+		var cut = await RenderComponent<Markup>(ps => ps
 			.Add(p => p.Base, "<div>foo</div>")
 			.Add(p => p.Optional, "<div>bar</div>")
 			.Add(p => p.ShowOptional, false));
@@ -56,9 +56,9 @@ public class RefreshingWrappedElementTest : TestContext
 	}
 
 	[Fact(DisplayName = "Found element doesn't throw when it's removed from DOM")]
-	public void Test030()
+	public async Task Test030()
 	{
-		var cut = RenderComponent<HidesButton>();
+		var cut = await RenderComponent<HidesButton>();
 
 		var btn = cut.Find("button");
 
@@ -66,9 +66,9 @@ public class RefreshingWrappedElementTest : TestContext
 	}
 
 	[Fact(DisplayName = "Found element throws when its properties or methods are used after it's removed from DOM")]
-	public void Test031()
+	public async Task Test031()
 	{
-		var cut = RenderComponent<HidesButton>();
+		var cut = await RenderComponent<HidesButton>();
 		var btn = cut.Find("button");
 
 		btn.Click(); // remove from dom

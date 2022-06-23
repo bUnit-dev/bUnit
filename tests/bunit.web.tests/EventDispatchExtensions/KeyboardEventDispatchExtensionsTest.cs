@@ -62,10 +62,10 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 	}
 
 	[Fact(DisplayName = "KeyDown event is raised correctly through helper specifying repeat and type")]
-	public void CanRaiseKeyDownWithRepeatAndType()
+	public async Task CanRaiseKeyDownWithRepeatAndType()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeydown");
-		spy.Trigger(element =>
+		await spy.Trigger(element =>
 		{
 			element.KeyDown(Key.Up + Key.Command, true, "Test Down");
 		});
@@ -82,10 +82,10 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 	}
 
 	[Fact(DisplayName = "KeyUp event is raised correctly through helper using special key")]
-	public void CanRaiseKeyUpWithShiftSpace()
+	public async Task CanRaiseKeyUpWithShiftSpace()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeyup");
-		spy.Trigger(element =>
+		await spy.Trigger(element =>
 		{
 			element.KeyUp(Key.Space + Key.Shift + Key.Alt);
 		});
@@ -101,10 +101,10 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 	}
 
 	[Fact(DisplayName = "KeyUp event is raised correctly through helper using character key")]
-	public void CanRaiseKeyUpWithBKey()
+	public async Task CanRaiseKeyUpWithBKey()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeyup");
-		spy.Trigger(element =>
+		await spy.Trigger(element =>
 		{
 			element.KeyUp(Key.Alt + 'B');
 		});
@@ -119,10 +119,10 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 	}
 
 	[Fact(DisplayName = "KeyUp event is raised correctly through helper specifying repeat and type")]
-	public void CanRaiseKeyUpWithWithRepeatAndType()
+	public async Task CanRaiseKeyUpWithWithRepeatAndType()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeyup");
-		spy.Trigger(element =>
+		await spy.Trigger(element =>
 		{
 			element.KeyUp(Key.Down + Key.Shift + Key.Command, true, "Test Up");
 		});
@@ -140,10 +140,10 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 	}
 
 	[Fact(DisplayName = "KeyPress event is raised correctly through helper using special key")]
-	public void CanRaiseKeyPressWithNum8Key()
+	public async Task CanRaiseKeyPressWithNum8Key()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeypress");
-		spy.Trigger(element =>
+		await spy.Trigger(element =>
 		{
 			element.KeyPress(Key.NumberPad8);
 		});
@@ -157,10 +157,10 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 	}
 
 	[Fact(DisplayName = "KeyPress event is raised correctly through helper using character key")]
-	public void CanRaiseKeyPressWith8Key()
+	public async Task CanRaiseKeyPressWith8Key()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeypress");
-		spy.Trigger(element =>
+		await spy.Trigger(element =>
 		{
 			element.KeyPress('8');
 		});
@@ -174,10 +174,10 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 	}
 
 	[Fact(DisplayName = "KeyPress event is raised correctly through  specifying repeat and type")]
-	public void CanRaiseKeyPressWithRepeatAndType()
+	public async Task CanRaiseKeyPressWithRepeatAndType()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeypress");
-		spy.Trigger(element =>
+		await spy.Trigger(element =>
 		{
 			element.KeyPress(Key.Shift + "P", true, "Press Test");
 		});

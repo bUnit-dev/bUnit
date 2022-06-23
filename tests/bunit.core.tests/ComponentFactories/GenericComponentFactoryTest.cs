@@ -16,11 +16,11 @@ public class GenericComponentFactoryTest : TestContext
 		=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionExtensions.Add<Simple1, FakeSimple1>(factories: default));
 
 	[Fact(DisplayName = "Add<TComponent, TReplacementComponent> replaces components of type TComponent with TReplacementComponent")]
-	public void Test002()
+	public async Task Test002()
 	{
 		ComponentFactories.Add<Simple1, FakeSimple1>();
 
-		var cut = RenderComponent<RefToSimple1Child>();
+		var cut = await RenderComponent<RefToSimple1Child>();
 
 		cut.MarkupMatches(@"<div id=""ref-status"">Has ref = True</div>");
 	}

@@ -27,7 +27,7 @@ public class TestContext : TestContextBase
 	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 	/// <param name="parameters">Parameters to pass to the component when it is rendered.</param>
 	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)
+	public virtual Task<IRenderedComponent<TComponent>> RenderComponent<TComponent>(params ComponentParameter[] parameters)
 		where TComponent : IComponent
 	{
 		var renderFragment = new ComponentParameterCollection { parameters }
@@ -42,7 +42,7 @@ public class TestContext : TestContextBase
 	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 	/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered.</param>
 	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
+	public virtual Task<IRenderedComponent<TComponent>> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
 		where TComponent : IComponent
 	{
 		var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder)
@@ -61,17 +61,17 @@ public class TestContext : TestContextBase
 	/// <typeparam name="TComponent">The type of component to find in the render tree.</typeparam>
 	/// <param name="renderFragment">The render fragment to render.</param>
 	/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
-	public virtual IRenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
+	public virtual async Task<IRenderedComponent<TComponent>> Render<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
-		=> (IRenderedComponent<TComponent>)this.RenderInsideRenderTree<TComponent>(renderFragment);
+		=> (IRenderedComponent<TComponent>)await this.RenderInsideRenderTree<TComponent>(renderFragment);
 
 	/// <summary>
 	/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="IRenderedFragment"/>.
 	/// </summary>
 	/// <param name="renderFragment">The render fragment to render.</param>
 	/// <returns>The <see cref="IRenderedFragment"/>.</returns>
-	public virtual IRenderedFragment Render(RenderFragment renderFragment)
-		=> (IRenderedFragment)this.RenderInsideRenderTree(renderFragment);
+	public virtual async Task<IRenderedFragment> Render(RenderFragment renderFragment)
+		=> (IRenderedFragment)await this.RenderInsideRenderTree(renderFragment);
 
 	/// <summary>
 	/// Dummy method required to allow Blazor's compiler to generate

@@ -5,13 +5,13 @@ namespace Bunit;
 public class TriggerEventSpy<TEventArgs>
 	where TEventArgs : EventArgs, new()
 {
-	private readonly IRenderedComponent<TriggerTester<TEventArgs>> renderedComponent;
+	private readonly Task<IRenderedComponent<TriggerTester<TEventArgs>>> renderedComponent;
 	private readonly string element;
 	private TEventArgs? receivedEvent;
 
 	public TEventArgs RaisedEvent => receivedEvent!;
 
-	public TriggerEventSpy(Func<ComponentParameter[], IRenderedComponent<TriggerTester<TEventArgs>>> componentRenderer, string element, string eventName)
+	public TriggerEventSpy(Func<ComponentParameter[], Task<IRenderedComponent<TriggerTester<TEventArgs>>>> componentRenderer, string element, string eventName)
 	{
 		if (componentRenderer is null)
 			throw new ArgumentNullException(nameof(componentRenderer));
@@ -25,20 +25,20 @@ public class TriggerEventSpy<TEventArgs>
 		this.element = element;
 	}
 
-	public void Trigger(Action<IElement> trigger)
+	public async Task Trigger(Action<IElement> trigger)
 	{
 		if (trigger is null)
 			throw new ArgumentNullException(nameof(trigger));
 
-		trigger(renderedComponent.Find(element));
+		trigger((await renderedComponent).Find(element));
 	}
 
-	public Task Trigger(Func<IElement, Task> trigger)
+	public async Task Trigger(Func<IElement, Task> trigger)
 	{
 		if (trigger is null)
 			throw new ArgumentNullException(nameof(trigger));
 
-		return trigger(renderedComponent.Find(element));
+		await trigger((await renderedComponent).Find(element));
 	}
 
 	private void CallbackHandler(TEventArgs args) => receivedEvent = args;

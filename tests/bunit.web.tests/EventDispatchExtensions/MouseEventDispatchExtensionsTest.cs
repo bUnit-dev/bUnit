@@ -12,7 +12,7 @@ public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<Mous
 
 	[Theory(DisplayName = "Mouse events are raised correctly through helpers")]
 	[MemberData(nameof(Helpers))]
-	public void CanRaiseEvents(MethodInfo helper)
+	public async Task CanRaiseEvents(MethodInfo helper)
 	{
 		var expected = new MouseEventArgs
 		{
@@ -30,7 +30,7 @@ public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<Mous
 			Type = "TYPE",
 		};
 
-		VerifyEventRaisesCorrectly(helper, expected);
+		await VerifyEventRaisesCorrectly(helper, expected);
 		//VerifyEventRaisesCorrectly(
 		//	helper,
 		//	expected,
@@ -38,27 +38,27 @@ public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<Mous
 	}
 
 	[Fact(DisplayName = "Click sets MouseEventArgs.Detail to 1 by default")]
-	public void Test001()
+	public async Task Test001()
 	{
 		var spy = CreateTriggerSpy<MouseEventArgs>("button", "onclick");
 
-		spy.Trigger(x => x.Click());
+		await spy.Trigger(x => x.Click());
 
 		spy.RaisedEvent.Detail.ShouldBe(1);
 	}
 
 	[Fact(DisplayName = "DoubleClick sets MouseEventArgs.Detail to 2 by default")]
-	public void Test002()
+	public async Task Test002()
 	{
 		var spy = CreateTriggerSpy<MouseEventArgs>("button", "ondblclick");
 
-		spy.Trigger(x => x.DoubleClick());
+		await spy.Trigger(x => x.DoubleClick());
 
 		spy.RaisedEvent.Detail.ShouldBe(2);
 	}
 
 	[Fact(DisplayName = "DoubleClick events are raised correctly through helpers")]
-	public void Test003()
+	public async Task Test003()
 	{
 		var expected = new MouseEventArgs
 		{
@@ -77,13 +77,13 @@ public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<Mous
 		};
 		var spy = CreateTriggerSpy<MouseEventArgs>("button", "ondblclick");
 
-		spy.Trigger(x => x.DoubleClick(expected));
+		await spy.Trigger(x => x.DoubleClick(expected));
 
 		spy.RaisedEvent.ShouldBe(expected);
 	}
 
 	[Fact(DisplayName = "DoubleClickAsync events are raised correctly through helpers")]
-	public void Test004()
+	public async Task Test004()
 	{
 		var expected = new MouseEventArgs
 		{
@@ -102,7 +102,7 @@ public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<Mous
 		};
 		var spy = CreateTriggerSpy<MouseEventArgs>("button", "ondblclick");
 
-		spy.Trigger(x => x.DoubleClickAsync(expected));
+		await spy.Trigger(x => x.DoubleClickAsync(expected));
 
 		spy.RaisedEvent.ShouldBe(expected);
 	}
