@@ -6,7 +6,7 @@ public class DragEventDispatchExtensionsTest : EventDispatchExtensionsTest<DragE
 
 	[Theory(DisplayName = "Drag events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(DragEventDispatchExtensions))]
-	public void CanRaiseEvents(MethodInfo helper)
+	public async Task CanRaiseEvents(MethodInfo helper)
 	{
 		var expected = new DragEventArgs()
 		{

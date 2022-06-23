@@ -10,7 +10,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 	[Theory(DisplayName = "General events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(GeneralEventDispatchExtensions))]
-	public void CanRaiseEvents(MethodInfo helper)
+	public async Task CanRaiseEvents(MethodInfo helper)
 	{
 		if (helper is null)
 			throw new ArgumentNullException(nameof(helper));
@@ -18,7 +18,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		if (helper.Name == nameof(TriggerEventDispatchExtensions.TriggerEventAsync))
 			return;
 
-		VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
+		await VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
 	}
 
 	[Fact(DisplayName = "TriggerEventAsync throws element is null")]
@@ -173,7 +173,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 #if NET6_0_OR_GREATER
 	[Fact(DisplayName = "TriggerEvent can trigger custom events")]
-	public void Test201()
+	public async Task Test201()
 	{
 		var cut = await RenderComponent<CustomPasteSample>();
 

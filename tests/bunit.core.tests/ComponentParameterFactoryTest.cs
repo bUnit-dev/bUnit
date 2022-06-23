@@ -8,9 +8,9 @@ public class ComponentParameterFactoryTest
 	private const string EXPECTED = nameof(EXPECTED);
 	private static readonly TestContext Context = new();
 
-	private static IRenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
+	private static async Task<IRenderedFragment> RenderWithRenderFragment(RenderFragment renderFragment)
 	{
-		return (IRenderedFragment)Context.Renderer.RenderFragment(renderFragment);
+		return (IRenderedFragment)await Context.Renderer.RenderFragment(renderFragment);
 	}
 
 	private string? Actual { get; set; }
@@ -153,103 +153,103 @@ public class ComponentParameterFactoryTest
 	}
 
 	[Fact(DisplayName = "ChildContent(string markup) creates a parameter with a RenderFragment that renders the provided markup")]
-	public void Test040()
+	public async Task Test040()
 	{
 		var cp = ChildContent(EXPECTED);
 
 		cp.Name.ShouldBe("ChildContent");
 		cp.IsCascadingValue.ShouldBeFalse();
 		var renderFragment = cp.Value.ShouldBeOfType<RenderFragment>();
-		var renderedFragment = RenderWithRenderFragment(renderFragment);
+		var renderedFragment = await RenderWithRenderFragment(renderFragment);
 		renderedFragment.Markup.ShouldBe(EXPECTED);
 	}
 
 	[Fact(DisplayName = "ChildContent<TComponent>() creates a parameter with a RenderFragment that renders a component of type TComponent")]
-	public void Test041()
+	public async Task Test041()
 	{
 		var cp = ChildContent<TestComponent>();
 
 		cp.Name.ShouldBe("ChildContent");
 		cp.IsCascadingValue.ShouldBeFalse();
 		var renderFragment = cp.Value.ShouldBeOfType<RenderFragment>();
-		var renderedFragment = RenderWithRenderFragment(renderFragment);
+		var renderedFragment = await RenderWithRenderFragment(renderFragment);
 		renderedFragment.Markup.ShouldBe(nameof(TestComponent));
 	}
 
 	[Fact(DisplayName = "ChildContent<TComponent>(component parameters) creates a parameter with a RenderFragment that renders a component of type TComponent")]
-	public void Test042()
+	public async Task Test042()
 	{
 		var cp = ChildContent<TestComponent>((nameof(TestComponent.Input), EXPECTED));
 
 		cp.Name.ShouldBe("ChildContent");
 		cp.IsCascadingValue.ShouldBeFalse();
 		var renderFragment = cp.Value.ShouldBeOfType<RenderFragment>();
-		var renderedFragment = RenderWithRenderFragment(renderFragment);
+		var renderedFragment = await RenderWithRenderFragment(renderFragment);
 		renderedFragment.Markup.ShouldBe(nameof(TestComponent) + EXPECTED);
 	}
 
 	[Fact(DisplayName = "ChildContent(RenderFragment) creates a parameter with a RenderFragment passed to ChildContent")]
-	public void Test043()
+	public async Task Test043()
 	{
 		var cp = ChildContent(b => b.AddMarkupContent(0, EXPECTED));
 
 		cp.Name.ShouldBe("ChildContent");
 		cp.IsCascadingValue.ShouldBeFalse();
 		var renderFragment = cp.Value.ShouldBeOfType<RenderFragment>();
-		var renderedFragment = RenderWithRenderFragment(renderFragment);
+		var renderedFragment = await RenderWithRenderFragment(renderFragment);
 		renderedFragment.Markup.ShouldBe(EXPECTED);
 	}
 
 	[Fact(DisplayName = "RenderFragment(name, markup) creates a parameter with a RenderFragment that renders a component of type TComponent")]
-	public void Test051()
+	public async Task Test051()
 	{
 		var cp = RenderFragment(NAME, EXPECTED);
 
 		cp.Name.ShouldBe(NAME);
 		cp.IsCascadingValue.ShouldBeFalse();
 		var renderFragment = cp.Value.ShouldBeOfType<RenderFragment>();
-		var renderedFragment = RenderWithRenderFragment(renderFragment);
+		var renderedFragment = await RenderWithRenderFragment(renderFragment);
 		renderedFragment.Markup.ShouldBe(EXPECTED);
 	}
 
 	[Fact(DisplayName = "RenderFragment<TComponent>(name, component parameters) creates a parameter with a RenderFragment that renders a component of type TComponent")]
-	public void Test052()
+	public async Task Test052()
 	{
 		var cp = RenderFragment<TestComponent>(NAME, (nameof(TestComponent.Input), EXPECTED));
 
 		cp.Name.ShouldBe(NAME);
 		cp.IsCascadingValue.ShouldBeFalse();
 		var renderFragment = cp.Value.ShouldBeOfType<RenderFragment>();
-		var renderedFragment = RenderWithRenderFragment(renderFragment);
+		var renderedFragment = await RenderWithRenderFragment(renderFragment);
 		renderedFragment.Markup.ShouldBe(nameof(TestComponent) + EXPECTED);
 	}
 
 	[Fact(DisplayName = "Template<TValue>(string, RenderFragment<TValue>) creates a parameter with a Template")]
-	public void Test061()
+	public async Task Test061()
 	{
 		var cp = Template<string>(NAME, s => b => b.AddMarkupContent(0, s));
 
 		cp.Name.ShouldBe(NAME);
 		cp.IsCascadingValue.ShouldBeFalse();
 		var template = cp.Value.ShouldBeOfType<RenderFragment<string>>();
-		var renderedFragment = RenderWithRenderFragment(template(EXPECTED));
+		var renderedFragment = await RenderWithRenderFragment(template(EXPECTED));
 		renderedFragment.Markup.ShouldBe(EXPECTED);
 	}
 
 	[Fact(DisplayName = "Template<TValue>(string, Func<TValue, string>) creates a parameter with a Template")]
-	public void Test062()
+	public async Task Test062()
 	{
 		var cp = Template<string>(NAME, s => s);
 
 		cp.Name.ShouldBe(NAME);
 		cp.IsCascadingValue.ShouldBeFalse();
 		var template = cp.Value.ShouldBeOfType<RenderFragment<string>>();
-		var renderedFragment = RenderWithRenderFragment(template(EXPECTED));
+		var renderedFragment = await RenderWithRenderFragment(template(EXPECTED));
 		renderedFragment.Markup.ShouldBe(EXPECTED);
 	}
 
 	[Fact(DisplayName = "Template<TValue>(string, Func<TValue, string>) creates a parameter with a Template")]
-	public void Test063()
+	public async Task Test063()
 	{
 		var cp = Template<TestComponent, string>(NAME, value => new ComponentParameter[]
 		{
@@ -259,7 +259,7 @@ public class ComponentParameterFactoryTest
 		cp.Name.ShouldBe(NAME);
 		cp.IsCascadingValue.ShouldBeFalse();
 		var template = cp.Value.ShouldBeOfType<RenderFragment<string>>();
-		var renderedFragment = RenderWithRenderFragment(template(EXPECTED));
+		var renderedFragment = await RenderWithRenderFragment(template(EXPECTED));
 		renderedFragment.Markup.ShouldBe(nameof(TestComponent) + EXPECTED);
 	}
 

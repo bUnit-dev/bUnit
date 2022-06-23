@@ -8,7 +8,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 
 	[Theory(DisplayName = "Keyboard events are raised correctly through helpers")]
 	[MemberData(nameof(Helpers))]
-	public void CanRaiseEvents(MethodInfo helper)
+	public async Task CanRaiseEvents(MethodInfo helper)
 	{
 		var expected = new KeyboardEventArgs()
 		{
@@ -23,14 +23,14 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 			Type = "ASDF",
 		};
 
-		VerifyEventRaisesCorrectly(helper, expected);
+		await VerifyEventRaisesCorrectly(helper, expected);
 	}
 
 	[Fact(DisplayName = "KeyDown event is raised correctly through helper using special key")]
-	public void CanRaiseKeyDownWithCtrlEnter()
+	public async Task CanRaiseKeyDownWithCtrlEnter()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeydown");
-		spy.Trigger(element =>
+		await spy.Trigger(element =>
 		{
 			element.KeyDown(Key.Enter + Key.Control);
 		});
@@ -45,10 +45,10 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 	}
 
 	[Fact(DisplayName = "KeyDown event is raised correctly through helper using character key")]
-	public void CanRaiseKeyDownWithAKey()
+	public async Task CanRaiseKeyDownWithAKey()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeydown");
-		spy.Trigger(element =>
+		await spy.Trigger(element =>
 		{
 			element.KeyDown('A');
 		});

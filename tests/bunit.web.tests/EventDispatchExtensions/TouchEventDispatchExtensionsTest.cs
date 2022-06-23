@@ -6,7 +6,7 @@ public class TouchEventDispatchExtensionsTest : EventDispatchExtensionsTest<Touc
 
 	[Theory(DisplayName = "Touch events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(TouchEventDispatchExtensions))]
-	public void CanRaiseEvents(MethodInfo helper)
+	public async Task CanRaiseEvents(MethodInfo helper)
 	{
 		var expected = new TouchEventArgs
 		{
@@ -21,6 +21,6 @@ public class TouchEventDispatchExtensionsTest : EventDispatchExtensionsTest<Touc
 			Type = "TOUCH",
 		};
 
-		VerifyEventRaisesCorrectly(helper, expected);
+		await VerifyEventRaisesCorrectly(helper, expected);
 	}
 }

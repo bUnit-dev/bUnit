@@ -9,7 +9,7 @@ public class WheelEventDispatchExtensionsTest : EventDispatchExtensionsTest<Whee
 
 	[Theory(DisplayName = "Mouse wheel/wheel events are raised correctly through helpers")]
 	[MemberData(nameof(Helpers))]
-	public void CanRaiseEvents(MethodInfo helper)
+	public async Task CanRaiseEvents(MethodInfo helper)
 	{
 		var expected = new WheelEventArgs
 		{
@@ -30,6 +30,6 @@ public class WheelEventDispatchExtensionsTest : EventDispatchExtensionsTest<Whee
 			Type = "TYPE",
 		};
 
-		VerifyEventRaisesCorrectly(helper, expected);
+		await VerifyEventRaisesCorrectly(helper, expected);
 	}
 }

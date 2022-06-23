@@ -2,9 +2,9 @@ namespace Bunit;
 
 public class ComponentParameterCollectionTest : TestContext
 {
-	private IRenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
+	private async Task<IRenderedComponent<Params>> RenderWithRenderFragment(RenderFragment renderFragment)
 	{
-		var res = (IRenderedFragment)Renderer.RenderFragment(renderFragment);
+		var res = (IRenderedFragment)await Renderer.RenderFragment(renderFragment);
 		return res.FindComponent<Params>();
 	}
 
@@ -30,18 +30,18 @@ public class ComponentParameterCollectionTest : TestContext
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment creates RenderFragment for component when empty")]
-	public void Test010()
+	public async Task Test010()
 	{
 		var sut = new ComponentParameterCollection();
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
+		var c = (await RenderWithRenderFragment(rf)).Instance;
 		c.VerifyParamsHaveDefaultValues();
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes regular params to component in RenderFragment")]
-	public void Test011()
+	public async Task Test011()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -52,14 +52,14 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
+		var c = (await RenderWithRenderFragment(rf)).Instance;
 		c.Param.ShouldBe("FOO");
 		c.ValueTypeParam.ShouldBe(42);
 		c.NullableValueTypeParam.ShouldBe(1337);
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes single ChildContent param to component in RenderFragment")]
-	public void Test012()
+	public async Task Test012()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -68,12 +68,12 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var rc = RenderWithRenderFragment(rf);
+		var rc = await RenderWithRenderFragment(rf);
 		rc.Markup.ShouldBe("FOO");
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes multiple ChildContent params to component in RenderFragment")]
-	public void Test013()
+	public async Task Test013()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -84,12 +84,12 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var rc = RenderWithRenderFragment(rf);
+		var rc = await RenderWithRenderFragment(rf);
 		rc.Markup.ShouldBe("FOOBARBAZ");
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes single RenderFragment param to component in RenderFragment")]
-	public void Test014()
+	public async Task Test014()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -98,12 +98,12 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var rc = RenderWithRenderFragment(rf);
+		var rc = await RenderWithRenderFragment(rf);
 		rc.Markup.ShouldBe("FOO");
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes multiple RenderFragment params to component in RenderFragment")]
-	public void Test015()
+	public async Task Test015()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -114,12 +114,12 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var rc = RenderWithRenderFragment(rf);
+		var rc = await RenderWithRenderFragment(rf);
 		rc.Markup.ShouldBe("FOOBARBAZ");
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes unmatched attributes to component in RenderFragment")]
-	public void Test016()
+	public async Task Test016()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -128,12 +128,12 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
+		var c = (await RenderWithRenderFragment(rf)).Instance;
 		c.Attributes?.ContainsKey("attr").ShouldBeTrue();
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes EventCallback params to component in RenderFragment")]
-	public void Test017()
+	public async Task Test017()
 	{
 		// arrange
 		var ec1 = EventCallback.Factory.Create(this, () => { });
@@ -152,7 +152,7 @@ public class ComponentParameterCollectionTest : TestContext
 		var rf = sut.ToRenderFragment<Params>();
 
 		// assert
-		var c = RenderWithRenderFragment(rf).Instance;
+		var c = (await RenderWithRenderFragment(rf)).Instance;
 		c.NullableEC.ShouldBe(ec1);
 		c.EC.ShouldBe(ec2);
 		c.NullableECWithArgs.ShouldBe(ec3);
@@ -160,7 +160,7 @@ public class ComponentParameterCollectionTest : TestContext
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes single template param to component in RenderFragment")]
-	public void Test018()
+	public async Task Test018()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -169,12 +169,12 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var rc = RenderWithRenderFragment(rf);
+		var rc = await RenderWithRenderFragment(rf);
 		rc.Markup.ShouldBe(Params.TemplateContent);
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes multiple template params to component in RenderFragment")]
-	public void Test019()
+	public async Task Test019()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -184,7 +184,7 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var rc = RenderWithRenderFragment(rf);
+		var rc = await RenderWithRenderFragment(rf);
 		rc.Markup.ShouldBe($"{Params.TemplateContent}1{Params.TemplateContent}2");
 	}
 
@@ -203,7 +203,7 @@ public class ComponentParameterCollectionTest : TestContext
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes skips null RenderFragment params")]
-	public void Test030()
+	public async Task Test030()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -213,7 +213,7 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var rc = RenderWithRenderFragment(rf);
+		var rc = await RenderWithRenderFragment(rf);
 		rc.Markup.ShouldBe("BAR");
 	}
 
@@ -246,7 +246,7 @@ public class ComponentParameterCollectionTest : TestContext
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment wraps component in unnamed cascading values in RenderFragment")]
-	public void Test050()
+	public async Task Test050()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -255,12 +255,12 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
+		var c = (await RenderWithRenderFragment(rf)).Instance;
 		c.NullableCC.ShouldBe("FOO");
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment wraps component in multiple unnamed cascading values in RenderFragment")]
-	public void Test051()
+	public async Task Test051()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -270,7 +270,7 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
+		var c = (await RenderWithRenderFragment(rf)).Instance;
 		c.NullableCC.ShouldBe("FOO");
 		c.CC.ShouldBe(42);
 	}
@@ -290,7 +290,7 @@ public class ComponentParameterCollectionTest : TestContext
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment wraps component in named cascading values in RenderFragment")]
-	public void Test053()
+	public async Task Test053()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -299,12 +299,12 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
+		var c = (await RenderWithRenderFragment(rf)).Instance;
 		c.NullableNamedCC.ShouldBe("FOO");
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment wraps component in multiple named cascading values in RenderFragment")]
-	public void Test054()
+	public async Task Test054()
 	{
 		var sut = new ComponentParameterCollection
 			{
@@ -315,7 +315,7 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
+		var c = (await RenderWithRenderFragment(rf)).Instance;
 		c.NullableNamedCC.ShouldBe("FOO");
 		c.NamedCC.ShouldBe(42);
 		c.AnotherNamedCC.ShouldBe(1337);

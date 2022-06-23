@@ -13,14 +13,14 @@ namespace Bunit
 
 		[Theory(DisplayName = "Input events are raised correctly through helpers")]
 		[MemberData(nameof(Helpers))]
-		public void CanRaiseEvents(MethodInfo helper)
+		public async Task CanRaiseEvents(MethodInfo helper)
 		{
 			var expected = new ChangeEventArgs()
 			{
 				Value = "SOME VALUE",
 			};
 
-			VerifyEventRaisesCorrectly(helper, expected);
+			await VerifyEventRaisesCorrectly(helper, expected);
 		}
 
 		[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]

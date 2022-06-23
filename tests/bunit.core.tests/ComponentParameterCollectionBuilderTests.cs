@@ -35,15 +35,15 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 		EventCallbackCalled.ShouldBeTrue();
 	}
 
-	private IRenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
+	private async Task<IRenderedFragment> RenderWithRenderFragment(RenderFragment renderFragment)
 	{
-		return (IRenderedFragment)Renderer.RenderFragment(renderFragment);
+		return (IRenderedFragment)await Renderer.RenderFragment(renderFragment);
 	}
 
-	private IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
+	private async Task<IRenderedComponent<TComponent>> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
 	{
-		var res = (IRenderedFragment)Renderer.RenderFragment(renderFragment);
+		var res = (IRenderedFragment)await Renderer.RenderFragment(renderFragment);
 		return res.FindComponent<TComponent>();
 	}
 
@@ -239,70 +239,70 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 	}
 
 	[Fact(DisplayName = "ChildContent can be passed as a nested component parameter builder")]
-	public void Test032()
+	public async Task Test032()
 	{
 		Builder.AddChildContent<InhertedParams>(parameters => parameters.Add(p => p.ValueTypeParam, 42));
 
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment>("ChildContent", isCascadingValue: false);
-		var actualComponent = RenderWithRenderFragment<InhertedParams>(actual);
+		var actualComponent = await RenderWithRenderFragment<InhertedParams>(actual);
 		actualComponent.Instance.ValueTypeParam.ShouldBe(42);
 	}
 
 	[Fact(DisplayName = "ChildContent can be passed as a child component without parameters")]
-	public void Test033()
+	public async Task Test033()
 	{
 		Builder.AddChildContent<NoParams>();
 
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment>("ChildContent", isCascadingValue: false);
-		var actualComponent = RenderWithRenderFragment<NoParams>(actual);
+		var actualComponent = await RenderWithRenderFragment<NoParams>(actual);
 		actualComponent.Instance.ShouldBeOfType<NoParams>();
 	}
 
 	[Fact(DisplayName = "ChildContent can be passed as a markup string")]
-	public void Test034()
+	public async Task Test034()
 	{
 		var input = "<p>42</p>";
 		Builder.AddChildContent(input);
 
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment>("ChildContent", isCascadingValue: false);
-		var actualComponent = RenderWithRenderFragment(actual);
+		var actualComponent = await RenderWithRenderFragment(actual);
 		actualComponent.Markup.ShouldBe(input);
 	}
 
 	[Fact(DisplayName = "RenderFragment can be passed as a nested component parameter builder")]
-	public void Test040()
+	public async Task Test040()
 	{
 		Builder.Add<InhertedParams>(x => x.OtherFragment, parameters => parameters.Add(p => p.ValueTypeParam, 42));
 
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment>("OtherFragment", isCascadingValue: false);
-		var actualComponent = RenderWithRenderFragment<InhertedParams>(actual);
+		var actualComponent = await RenderWithRenderFragment<InhertedParams>(actual);
 		actualComponent.Instance.ValueTypeParam.ShouldBe(42);
 	}
 
 	[Fact(DisplayName = "RenderFragment can be passed as a child component without parameters")]
-	public void Test041()
+	public async Task Test041()
 	{
 		Builder.Add<NoParams>(x => x.OtherFragment);
 
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment>("OtherFragment", isCascadingValue: false);
-		var actualComponent = RenderWithRenderFragment<NoParams>(actual);
+		var actualComponent = await RenderWithRenderFragment<NoParams>(actual);
 		actualComponent.Instance.ShouldBeOfType<NoParams>();
 	}
 
 	[Fact(DisplayName = "RenderFragment can be passed as a markup string")]
-	public void Test042()
+	public async Task Test042()
 	{
 		var input = "<p>42</p>";
 		Builder.Add(x => x.OtherFragment, input);
 
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment>("OtherFragment", isCascadingValue: false);
-		var actualComponent = RenderWithRenderFragment(actual);
+		var actualComponent = await RenderWithRenderFragment(actual);
 		actualComponent.Markup.ShouldBe(input);
 	}
 
@@ -318,18 +318,22 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 	}
 
 	[Fact(DisplayName = "RenderFragment can be passed multiple times")]
-	public void Test044()
+	public async Task Test044()
 	{
 		var input = "FOO";
 		Builder.Add(x => x.OtherFragment, input);
 		Builder.Add(x => x.OtherFragment, b => b.AddMarkupContent(0, input));
 
-		Builder.Build().ShouldAllBe(VerifyTemplate, VerifyTemplate);
+		foreach (var item in Builder.Build())
+		{
+			await VerifyTemplate(item);
+			await VerifyTemplate(item);
+		}
 
-		void VerifyTemplate(ComponentParameter template)
+		async Task VerifyTemplate(ComponentParameter template)
 		{
 			var actual = template.ShouldBeParameter<RenderFragment>("OtherFragment", isCascadingValue: false);
-			var actualComponent = RenderWithRenderFragment(actual);
+			var actualComponent = await RenderWithRenderFragment(actual);
 			actualComponent.Markup.ShouldBe(input);
 		}
 	}
@@ -346,19 +350,19 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 	}
 
 	[Fact(DisplayName = "RenderFragment<T>? can be passed lambda builder")]
-	public void Test051()
+	public async Task Test051()
 	{
 		var input = "FOO";
 		Builder.Add(x => x.Template, value => value);
 
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment<string>>("Template", isCascadingValue: false);
-		var actualComponent = RenderWithRenderFragment(actual(input));
+		var actualComponent = await RenderWithRenderFragment(actual(input));
 		actualComponent.Markup.ShouldBe(input);
 	}
 
 	[Fact(DisplayName = "RenderFragment<T>? can be passed as nested object builder")]
-	public void Test052()
+	public async Task Test052()
 	{
 		var input = "FOO";
 		Builder.Add<InhertedParams, string>(
@@ -368,29 +372,32 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment<string>>("Template", isCascadingValue: false);
 
-		var actualComponent = RenderWithRenderFragment<InhertedParams>(actual(input));
+		var actualComponent = await RenderWithRenderFragment<InhertedParams>(actual(input));
 		actualComponent.Instance.Param.ShouldBe(input);
 	}
 
 	[Fact(DisplayName = "RenderFragment<T> can be passed multiple times")]
-	public void Test053()
+	public async Task Test053()
 	{
 		Builder.Add(x => x.Template, value => value);
 		Builder.Add(x => x.Template, s => b => b.AddMarkupContent(0, s));
 
-		Builder.Build().ShouldAllBe(VerifyTemplate, VerifyTemplate);
+		foreach (var item in Builder.Build())
+		{
+			await VerifyTemplate(item);
+		}
 
-		void VerifyTemplate(ComponentParameter template)
+		async Task VerifyTemplate(ComponentParameter template)
 		{
 			var input = "FOO";
 			var rf = template.ShouldBeParameter<RenderFragment<string>>("Template", isCascadingValue: false);
-			var actualComponent = RenderWithRenderFragment(rf(input));
+			var actualComponent = await RenderWithRenderFragment(rf(input));
 			actualComponent.Markup.ShouldBe(input);
 		}
 	}
 
 	[Fact(DisplayName = "Cascading values can be passed using Add and parameter selector")]
-	public void Test060()
+	public async Task Test060()
 	{
 		Builder.Add(p => p.NullableCC, "FOO");
 		Builder.Add(p => p.CC, 1);
@@ -399,17 +406,16 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 		Builder.Add(p => p.AnotherNamedCC, 3);
 		Builder.Add(p => p.RFCC, "BAZ");
 
-		Builder.Build().ShouldAllBe(
-			x => x.ShouldBeParameter(null, "FOO", isCascadingValue: true),
-			x => x.ShouldBeParameter(null, 1, isCascadingValue: true),
-			x => x.ShouldBeParameter("NullableNamedCCNAME", "BAR", isCascadingValue: true),
-			x => x.ShouldBeParameter("NamedCCNAME", 2, isCascadingValue: true),
-			x => x.ShouldBeParameter("AnotherNamedCCNAME", 3, isCascadingValue: true),
-			x =>
-			{
-				var rf = x.ShouldBeParameter<RenderFragment>(null, isCascadingValue: true);
-				RenderWithRenderFragment(rf).Markup.ShouldBe("BAZ");
-			});
+		foreach (var item in Builder.Build())
+		{
+			item.ShouldBeParameter(null, "FOO", isCascadingValue: true);
+			item.ShouldBeParameter(null, 1, isCascadingValue: true);
+			item.ShouldBeParameter("NullableNamedCCNAME", "BAR", isCascadingValue: true);
+			item.ShouldBeParameter("NamedCCNAME", 2, isCascadingValue: true);
+			item.ShouldBeParameter("AnotherNamedCCNAME", 3, isCascadingValue: true);
+			var rf = item.ShouldBeParameter<RenderFragment>(null, isCascadingValue: true);
+			(await RenderWithRenderFragment(rf)).Markup.ShouldBe("BAZ");
+		}
 	}
 
 	[Fact(DisplayName = "AddCascadingValue can add unnamed cascading values")]
