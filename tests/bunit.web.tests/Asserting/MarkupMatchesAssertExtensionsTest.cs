@@ -42,12 +42,12 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 		await Should.ThrowAsync<ArgumentNullException>(async () => (await ActualNode()).MarkupMatches(default(INodeList)!));
 		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(default(INodeList)!));
 
-		Should.Throw<ArgumentNullException>(() => default(IRenderedFragment)!.MarkupMatches(ExpectedRenderFragment));
-		await Should.ThrowAsync<ArgumentNullException>(async () => (await ActualRenderedFragment).MarkupMatches(default(RenderFragment)!));
-		Should.Throw<ArgumentNullException>(() => default(IRenderedFragment)!.MarkupMatches(default(RenderFragment)!));
+		await Should.ThrowAsync<ArgumentNullException>(async () => await default(IRenderedFragment)!.MarkupMatches(ExpectedRenderFragment));
+		await Should.ThrowAsync<ArgumentNullException>(async () => await (await ActualRenderedFragment).MarkupMatches(default(RenderFragment)!));
+		await Should.ThrowAsync<ArgumentNullException>(async () => await default(IRenderedFragment)!.MarkupMatches(default(RenderFragment)!));
 
 		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(ExpectedRenderFragment));
-		await Should.ThrowAsync<ArgumentNullException>(async () => (await ActualNode()).MarkupMatches(default(RenderFragment)!));
+		await Should.ThrowAsync<ArgumentNullException>(async () => await (await ActualNode()).MarkupMatches(default(RenderFragment)!));
 		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(default(RenderFragment)!));
 
 		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatches(ExpectedRenderFragment));
@@ -81,11 +81,11 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 
 	[Fact(DisplayName = "MarkupMatches(IRenderedFragment, RenderFragment) correctly diffs markup")]
 	public Task Test008()
-		=> Should.ThrowAsync<HtmlEqualException>(async () => (await ActualRenderedFragment).MarkupMatches(ExpectedRenderFragment));
+		=> Should.ThrowAsync<HtmlEqualException>(async () => await (await ActualRenderedFragment).MarkupMatches(ExpectedRenderFragment));
 
 	[Fact(DisplayName = "MarkupMatches(INode, RenderFragment) correctly diffs markup")]
 	public Task Test009()
-		=> Should.ThrowAsync<HtmlEqualException>(async () => (await ActualNode()).MarkupMatches(ExpectedRenderFragment));
+		=> Should.ThrowAsync<HtmlEqualException>(async () => await (await ActualNode()).MarkupMatches(ExpectedRenderFragment));
 
 	[Fact(DisplayName = "MarkupMatches(INodeList, RenderFragment) correctly diffs markup")]
 	public Task Test0010()
