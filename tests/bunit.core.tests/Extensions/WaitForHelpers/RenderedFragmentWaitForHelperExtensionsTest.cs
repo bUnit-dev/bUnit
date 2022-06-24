@@ -44,7 +44,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	{
 		var cut = await RenderComponent<Simple1>();
 
-		var expected = Should.Throw<WaitForFailedException>(() =>
+		var expected = await Should.ThrowAsync<WaitForFailedException>(() =>
 			cut.WaitForState(() => string.IsNullOrEmpty(cut.Markup), TimeSpan.FromMilliseconds(100)));
 
 		expected.Message.ShouldBe(WaitForStateHelper.TimeoutBeforePassMessage);
@@ -58,7 +58,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		cut.Find("#tick").Click();
 		cut.Find("#tock").Click();
 
-		var expected = Should.Throw<WaitForFailedException>(() =>
+		var expected = await Should.ThrowAsync<WaitForFailedException>(() =>
 			cut.WaitForState(() =>
 			{
 				if (cut.Find("#state").TextContent == "Stopped")
@@ -84,7 +84,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		// Clicking 'tock' completes the task, which updates the state
 		// This click causes two renders, thus something is needed to await here.
 		cut.Find("#tock").Click();
-		cut.WaitForState(() =>
+		await cut.WaitForState(() =>
 		{
 			var elm = cut.Nodes.QuerySelector("#state");
 			return elm?.TextContent == "Stopped";
@@ -104,7 +104,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		// Clicking 'tock' completes the task, which updates the counter
 		// This click causes two renders, thus something is needed to await here.
 		cut.Find("#tock").Click();
-		cut.WaitForState(() => cut.Instance.Counter == 2);
+		await cut.WaitForState(() => cut.Instance.Counter == 2);
 
 		cut.Instance.Counter.ShouldBe(2);
 	}
@@ -125,7 +125,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		var cut = await RenderComponent<ThrowsAfterAsyncOperation>();
 
 		// Adding additional wait time to deal with tests sometimes failing for timeout on Windows.
-		Should.Throw<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(
+		await Should.ThrowAsync<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(
 			() => cut.WaitForState(() => false, TimeSpan.FromSeconds(5)));
 	}
 

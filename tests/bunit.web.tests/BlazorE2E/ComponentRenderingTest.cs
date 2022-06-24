@@ -596,7 +596,7 @@ public class ComponentRenderingTest : TestContext
 
 		cut.Find("button").Click();
 
-		cut.WaitForState(() => !cut.FindAll("div").Any());
+		await cut.WaitForState(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
 
@@ -607,7 +607,7 @@ public class ComponentRenderingTest : TestContext
 
 		await cut.Find("button").ClickAsync(new MouseEventArgs());
 
-		cut.WaitForState(() => !cut.FindAll("div").Any());
+		await cut.WaitForState(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
 }
