@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<Using Include="Bunit" />
 		<Using Include="Bunit.TestDoubles" />
+		<Using Include="System.Threading.Tasks" />
 		<Using Include="Microsoft.Extensions.DependencyInjection" />
 		<Using Include="Xunit" Condition="'$(testFramework_xunit)' == 'true'"/>
 		<Using Include="NUnit.Framework" Condition="'$(testFramework_nunit)' == 'true'"/>
