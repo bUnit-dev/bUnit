@@ -16,7 +16,7 @@ public class InputFileTests : TestContext
         var lastModified = new DateTime(1991, 5, 17);
         var file = InputFileContent.CreateFromText("Hello World", "Hey.txt", lastModified);
 
-        cut.FindComponent<InputFile>().UploadFiles(file);
+        await cut.FindComponent<InputFile>().UploadFiles(file);
 
         cut.Instance.Content.ShouldBe("Hello World");
         cut.Instance.Filename.ShouldBe("Hey.txt");
@@ -30,7 +30,7 @@ public class InputFileTests : TestContext
         var cut = await RenderComponent<InputFileComponent>();
         var file = InputFileContent.CreateFromBinary(Encoding.Default.GetBytes("Hello World"));
 
-        cut.FindComponent<InputFile>().UploadFiles(file);
+        await cut.FindComponent<InputFile>().UploadFiles(file);
 
         cut.Instance.Content.ShouldBe("Hello World");
     }
@@ -43,7 +43,7 @@ public class InputFileTests : TestContext
         var file1 = InputFileContent.CreateFromText("Hello World", "Hey.txt", lastModified, "test");
         var file2 = InputFileContent.CreateFromText("World Hey", "Test.txt", lastModified, "unit");
 
-        cut.FindComponent<InputFile>().UploadFiles(file1, file2);
+        await cut.FindComponent<InputFile>().UploadFiles(file1, file2);
 
         cut.Instance.Files.Count.ShouldBe(2);
         cut.Instance.Files[0].FileContent.ShouldBe("Hello World");
@@ -59,11 +59,11 @@ public class InputFileTests : TestContext
     }
 
     [Fact(DisplayName = "UploadFile throws exception when InputFile is null")]
-    public void Test004()
+    public async Task Test004()
     {
-        Action action = () => ((IRenderedComponent<InputFile>)null).UploadFiles();
+        var action = () => ((IRenderedComponent<InputFile>)null).UploadFiles();
 
-        action.ShouldThrow<ArgumentNullException>();
+        await action.ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Fact(DisplayName = "Creating InputFileContent with null text throws exception")]
@@ -87,9 +87,9 @@ public class InputFileTests : TestContext
     {
         var cut = await RenderComponent<InputFileComponent>();
 
-        Action act = () => cut.FindComponent<InputFile>().UploadFiles();
+        var act = () => cut.FindComponent<InputFile>().UploadFiles();
 
-        act.ShouldThrow<ArgumentException>();
+        await act.ShouldThrowAsync<ArgumentException>();
     }
 
     [Fact(DisplayName = "Setting up InputFile will not overwrite bUnit default")]
@@ -98,9 +98,9 @@ public class InputFileTests : TestContext
         JSInterop.SetupVoid("Blazor._internal.InputFile.init").SetException(new Exception());
         var cut = await RenderComponent<InputFileComponent>();
 
-        Action act = () => cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("Hello"));
+        var act = () => cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("Hello"));
 
-        act.ShouldNotThrow();
+        await act.ShouldNotThrowAsync();
     }
 
     private class InputFileComponent : ComponentBase

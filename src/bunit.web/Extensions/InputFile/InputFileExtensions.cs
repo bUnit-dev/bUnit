@@ -13,7 +13,7 @@ public static class InputFileExtensions
     /// </summary>
     /// <param name="inputFileComponent">The <see cref="InputFile"/> component which will upload the files.</param>
     /// <param name="files">Files to upload.</param>
-    public static void UploadFiles(
+    public static async Task UploadFiles(
         this IRenderedComponent<InputFile> inputFileComponent,
         params InputFileContent[] files)
     {
@@ -31,11 +31,7 @@ public static class InputFileExtensions
             file.Content));
 
         var args = new InputFileChangeEventArgs(browserFiles.ToArray());
-        var uploadTask = inputFileComponent.InvokeAsync(() => inputFileComponent.Instance.OnChange.InvokeAsync(args));
-        if (!uploadTask.IsCompleted)
-        {
-            uploadTask.GetAwaiter().GetResult();
-        }
+        await inputFileComponent.InvokeAsync(() => inputFileComponent.Instance.OnChange.InvokeAsync(args));
     }
 }
 #endif
