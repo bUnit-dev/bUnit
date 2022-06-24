@@ -397,7 +397,7 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 	}
 
 	[Fact(DisplayName = "Cascading values can be passed using Add and parameter selector")]
-	public async Task Test060()
+	public void Test060()
 	{
 		Builder.Add(p => p.NullableCC, "FOO");
 		Builder.Add(p => p.CC, 1);
@@ -406,16 +406,17 @@ public class ComponentParameterCollectionBuilderTests : TestContext
 		Builder.Add(p => p.AnotherNamedCC, 3);
 		Builder.Add(p => p.RFCC, "BAZ");
 
-		foreach (var item in Builder.Build())
-		{
-			item.ShouldBeParameter(null, "FOO", isCascadingValue: true);
-			item.ShouldBeParameter(null, 1, isCascadingValue: true);
-			item.ShouldBeParameter("NullableNamedCCNAME", "BAR", isCascadingValue: true);
-			item.ShouldBeParameter("NamedCCNAME", 2, isCascadingValue: true);
-			item.ShouldBeParameter("AnotherNamedCCNAME", 3, isCascadingValue: true);
-			var rf = item.ShouldBeParameter<RenderFragment>(null, isCascadingValue: true);
-			(await RenderWithRenderFragment(rf)).Markup.ShouldBe("BAZ");
-		}
+		Builder.Build().ShouldAllBe(
+			x => x.ShouldBeParameter(null, "FOO", isCascadingValue: true),
+			x => x.ShouldBeParameter(null, 1, isCascadingValue: true),
+			x => x.ShouldBeParameter("NullableNamedCCNAME", "BAR", isCascadingValue: true),
+			x => x.ShouldBeParameter("NamedCCNAME", 2, isCascadingValue: true),
+			x => x.ShouldBeParameter("AnotherNamedCCNAME", 3, isCascadingValue: true),
+			x =>
+			{
+				var rf = x.ShouldBeParameter<RenderFragment>(null, isCascadingValue: true);
+				RenderWithRenderFragment(rf).GetAwaiter().GetResult().Markup.ShouldBe("BAZ");
+			});
 	}
 
 	[Fact(DisplayName = "AddCascadingValue can add unnamed cascading values")]
