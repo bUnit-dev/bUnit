@@ -10,7 +10,7 @@ public class RenderedComponentTest : TestContext
 		var cut = await RenderComponent<Wrapper>(parameters => parameters.AddChildContent("<div>"));
 		var initialRenderCount = cut.RenderCount;
 
-		cut.Render();
+		await cut.Render();
 
 		cut.RenderCount.ShouldBe(initialRenderCount + 1);
 	}
@@ -20,7 +20,7 @@ public class RenderedComponentTest : TestContext
 	{
 		var cut = await RenderComponent<Wrapper>(parameters => parameters.AddChildContent("<div>"));
 
-		cut.SetParametersAndRender(parameters => parameters.AddChildContent("<p>"));
+		await cut.SetParametersAndRender(parameters => parameters.AddChildContent("<p>"));
 
 		cut.Find("p").ShouldNotBeNull();
 	}
@@ -30,7 +30,7 @@ public class RenderedComponentTest : TestContext
 	{
 		var cut = await RenderComponent<Wrapper>(parameters => parameters.AddChildContent("<div>"));
 
-		cut.SetParametersAndRender(ComponentParameterFactory.ChildContent("<p>"));
+		await cut.SetParametersAndRender(ComponentParameterFactory.ChildContent("<p>"));
 
 		cut.Find("p").ShouldNotBeNull();
 	}
@@ -42,8 +42,8 @@ public class RenderedComponentTest : TestContext
 		var cut = await RenderComponent<AllTypesOfParams<string>>();
 
 		// assert
-		Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(ps => ps.Add(p => p.UnnamedCascadingValue, 42)));
-		Should.Throw<InvalidOperationException>(() => cut.SetParametersAndRender(ps => ps.Add(p => p.NamedCascadingValue, 1337)));
+		await Should.ThrowAsync<InvalidOperationException>(() => cut.SetParametersAndRender(ps => ps.Add(p => p.UnnamedCascadingValue, 42)));
+		await Should.ThrowAsync<InvalidOperationException>(() => cut.SetParametersAndRender(ps => ps.Add(p => p.NamedCascadingValue, 1337)));
 	}
 
 	[Fact(DisplayName = "Getting Instance from a RenderedComponent based on a disposed component throws")]
@@ -53,7 +53,7 @@ public class RenderedComponentTest : TestContext
 		var target = cut.FindComponent<Simple1>();
 
 		// Disposes of <Simple1 />
-		cut.SetParametersAndRender(ps => ps.Add(p => p.ShowChild, false));
+		await cut.SetParametersAndRender(ps => ps.Add(p => p.ShowChild, false));
 
 		Should.Throw<ComponentDisposedException>(() => target.Instance);
 	}

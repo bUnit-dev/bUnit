@@ -73,7 +73,7 @@ public class RenderedFragmentTest : TestContext
 
 		cut.Instance.Counter.ShouldBe(1);
 
-		cut.SetParametersAndRender((nameof(ToggleClickHandler.HandleClicks), false));
+		await cut.SetParametersAndRender((nameof(ToggleClickHandler.HandleClicks), false));
 
 		cut.Find("#btn").Click();
 
@@ -147,13 +147,13 @@ public class RenderedFragmentTest : TestContext
 		first.RenderCount.ShouldBe(1);
 		second.RenderCount.ShouldBe(1);
 
-		first.Render();
+		await first.Render();
 
 		wrapper.RenderCount.ShouldBe(2);
 		first.RenderCount.ShouldBe(2);
 		second.RenderCount.ShouldBe(1);
 
-		second.Render();
+		await second.Render();
 
 		wrapper.RenderCount.ShouldBe(3);
 		first.RenderCount.ShouldBe(2);
@@ -167,7 +167,7 @@ public class RenderedFragmentTest : TestContext
 		var target = cut.FindComponent<Simple1>();
 
 		// Disposes of <Simple1 />
-		cut.SetParametersAndRender(ps => ps.Add(p => p.ShowChild, false));
+		await cut.SetParametersAndRender(ps => ps.Add(p => p.ShowChild, false));
 
 		Should.Throw<ComponentDisposedException>(() => target.Markup);
 	}

@@ -35,7 +35,7 @@ public partial class HtmlizerTests : TestContext
 		var cut = await RenderComponent<Htmlizer01Component>();
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 
-		cut.SetParametersAndRender(parameters => parameters.Add(p => p.OnClick, (MouseEventArgs _) => { }));
+		await cut.SetParametersAndRender(parameters => parameters.Add(p => p.OnClick, (MouseEventArgs _) => { }));
 
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 	}

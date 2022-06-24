@@ -58,7 +58,7 @@ public class AuthorizationTest : TestContext
 		// act
 		authContext.SetAuthorized("TestUser004", AuthorizationState.Authorized);
 
-		cut.Render();
+		await cut.Render();
 
 		// assert
 		await cut.WaitForAssertion(() => cut.MarkupMatches("Authorized!"));
@@ -78,7 +78,7 @@ public class AuthorizationTest : TestContext
 		// act
 		authContext.SetNotAuthorized();
 
-		cut.Render();
+		await cut.Render();
 
 		// assert
 		cut.MarkupMatches("Not authorized?");

@@ -7,7 +7,7 @@ public class RenderedComponentRenderExtensionsTest : TestContext
 	{
 		var cut = await RenderComponent<ThrowsOnParameterSet>();
 
-		var exception = Should.Throw<InvalidOperationException>(
+		var exception = await Should.ThrowAsync<InvalidOperationException>(
 			() => cut.SetParametersAndRender(ps => ps.Add(qt => qt.Value, "something")));
 		exception.InnerException.ShouldBeOfType<ArgumentOutOfRangeException>();
 	}

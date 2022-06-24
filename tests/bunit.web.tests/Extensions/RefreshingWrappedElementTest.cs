@@ -48,7 +48,7 @@ public class RefreshingWrappedElementTest : TestContext
 		// initially only foo div is rendered
 		elm.TextContent.ShouldBe("foo");
 
-		cut.SetParametersAndRender(ps => ps.Add(p => p.ShowOptional, true));
+		await cut.SetParametersAndRender(ps => ps.Add(p => p.ShowOptional, true));
 
 		// after optional markup is included, the refreshed query
 		// returns new div as it is now last child
