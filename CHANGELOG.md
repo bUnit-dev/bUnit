@@ -8,21 +8,12 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Added
 
-- `Bind` added so the `@bind` directive can be easier be setup in non razor syntax. Reported and fixed [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).  
-    
-    When writing tests in razor files the `@bind` directive can be directly applied like this: `<MyComponent @bind-Value="myParam"></MyComponent>`. The same expression in C# syntax is more verbose like that
-    ```csharp
-    RenderComponent<MyComponent>(ps => ps
-	    .Add(c => c.Value, value)
-	    .Add(c => c.ValueChanged, newValue => value = newValue)
-        .Add(c => c.ValueExpression, () => value));
-    ```
-    With the new `Bind` method this can be done in one method
-    ```csharp
-    RenderComponent<MyComponent>(ps => ps
-	   .Bind(c => c.Value, value, newValue => value = newValue, () => value));
-    ```
-
+- Added `Bind` method to parameter builder that makes it easier to emulate the `@bind-Value` syntax in C#-based tests. 
+  
+  When writing tests in razor files, the `@bind-` directive can be directly applied like this: 
+	
+  ```razor
+  <MyComponent @bind-Value="myParam"></MyComponent>
 ## [1.9.8] - 2022-06-07
 
 ### Changed
