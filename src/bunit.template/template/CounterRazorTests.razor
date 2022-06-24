@@ -19,10 +19,10 @@ Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating
 @*#elif (testFramework_mstest)*@
     [TestMethod]
 @*#endif*@
-	public void CounterStartsAtZero()
+	public async Task CounterStartsAtZero()
 	{
 		// Arrange
-		var cut = Render(@<Counter />);
+		var cut = await Render(@<Counter />);
 
 		// Assert that content of the paragraph shows counter at zero
 		cut.Find("p").MarkupMatches(@<p>Current count: 0</p>);
@@ -34,10 +34,10 @@ Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating
 @*#elif (testFramework_mstest)*@
     [TestMethod]
 @*#endif*@
-	public void ClickingButtonIncrementsCounter()
+	public async Task ClickingButtonIncrementsCounter()
 	{
 		// Arrange
-		var cut = Render(@<Counter />);
+		var cut = await Render(@<Counter />);
 
 		// Act - click button to increment counter
 		cut.Find("button").Click();
