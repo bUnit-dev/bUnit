@@ -20,10 +20,10 @@ public class CounterCSharpTests : BunitTestContext
 #elif (testFramework_mstest)
 	[TestMethod]
 #endif
-	public void CounterStartsAtZero()
+	public async Task CounterStartsAtZero()
 	{
 		// Arrange
-		var cut = RenderComponent<Counter>();
+		var cut = await RenderComponent<Counter>();
 
 		// Assert that content of the paragraph shows counter at zero
 		cut.Find("p").MarkupMatches("<p>Current count: 0</p>");
@@ -36,10 +36,10 @@ public class CounterCSharpTests : BunitTestContext
 #elif (testFramework_mstest)
 	[TestMethod]
 #endif
-	public void ClickingButtonIncrementsCounter()
+	public async Task ClickingButtonIncrementsCounter()
 	{
 		// Arrange
-		var cut = RenderComponent<Counter>();
+		var cut = await RenderComponent<Counter>();
 
 		// Act - click button to increment counter
 		cut.Find("button").Click();
