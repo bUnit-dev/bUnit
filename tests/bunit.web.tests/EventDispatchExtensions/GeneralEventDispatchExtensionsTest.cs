@@ -278,10 +278,10 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	{
 		var cut = await RenderComponent<CounterComponentDynamic>();
 
-		cut.WaitForAssertion(() => cut.Find("[data-id=1]"));
+		await cut.WaitForAssertion(() => cut.Find("[data-id=1]"));
 
 		await cut.InvokeAsync(() => cut.Find("[data-id=1]").Click());
 
-		cut.WaitForAssertion(() => cut.Find("[data-id=2]"));
+		await cut.WaitForAssertion(() => cut.Find("[data-id=2]"));
 	}
 }

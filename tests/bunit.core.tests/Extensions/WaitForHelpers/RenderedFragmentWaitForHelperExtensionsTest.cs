@@ -25,7 +25,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		// Clicking 'tock' completes the task, which updates the state
 		// This click causes two renders, thus something is needed to await here.
 		cut.Find("#tock").Click();
-		cut.WaitForAssertion(() => cut.Find("#state").TextContent.ShouldBe("Stopped"));
+		await cut.WaitForAssertion(() => cut.Find("#state").TextContent.ShouldBe("Stopped"));
 	}
 
 	[Fact(DisplayName = "WaitForAssertion throws assertion exception after timeout")]
@@ -33,7 +33,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	{
 		var cut = await RenderComponent<Simple1>();
 
-		var expected = Should.Throw<WaitForFailedException>(() =>
+		var expected = await Should.ThrowAsync<WaitForFailedException>(() =>
 			cut.WaitForAssertion(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(10)));
 
 		expected.Message.ShouldBe(WaitForAssertionHelper.TimeoutMessage);
@@ -115,7 +115,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		var cut = await RenderComponent<ThrowsAfterAsyncOperation>();
 
 		// Adding additional wait time to deal with tests sometimes failing for timeout on Windows.
-		Should.Throw<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(
+		await Should.ThrowAsync<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(
 			() => cut.WaitForAssertion(() => false.ShouldBeTrue(), TimeSpan.FromSeconds(5)));
 	}
 

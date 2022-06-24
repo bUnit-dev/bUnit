@@ -61,7 +61,7 @@ public class AuthorizationTest : TestContext
 		cut.Render();
 
 		// assert
-		cut.WaitForAssertion(() => cut.MarkupMatches("Authorized!"));
+		await cut.WaitForAssertion(() => cut.MarkupMatches("Authorized!"));
 	}
 
 	[Fact(DisplayName = "AuthorizeView switch from authorized to unauthorized.")]

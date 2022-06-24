@@ -38,24 +38,10 @@ public static class RenderedFragmentWaitForHelperExtensions
 	/// <param name="timeout">The maximum time to attempt the verification.</param>
 	/// <exception cref="WaitForFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
 	[AssertionMethod]
-	public static void WaitForAssertion(this IRenderedFragmentBase renderedFragment, Action assertion, TimeSpan? timeout = null)
+	public static async Task WaitForAssertion(this IRenderedFragmentBase renderedFragment, Action assertion, TimeSpan? timeout = null)
 	{
 		using var waiter = new WaitForAssertionHelper(renderedFragment, assertion, timeout);
 
-		try
-		{
-			waiter.WaitTask.GetAwaiter().GetResult();
-		}
-		catch (Exception e)
-		{
-			if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
-			{
-				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-			}
-			else
-			{
-				ExceptionDispatchInfo.Capture(e).Throw();
-			}
-		}
+		await waiter.WaitTask;
 	}
 }

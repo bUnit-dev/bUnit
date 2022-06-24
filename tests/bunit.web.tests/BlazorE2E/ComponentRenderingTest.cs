@@ -78,7 +78,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("Started", stateElement.TextContent);
 
 		cut.Find("#tock").Click();
-		cut.WaitForAssertion(() => Assert.Equal("Stopped", stateElement.TextContent));
+		await cut.WaitForAssertion(() => Assert.Equal("Stopped", stateElement.TextContent));
 	}
 
 	[Fact]
@@ -524,7 +524,7 @@ public class ComponentRenderingTest : TestContext
 
 		var outputElement = cut.Find("#concurrent-render-output");
 
-		cut.WaitForAssertion(
+		await cut.WaitForAssertion(
 			() => Assert.Equal(expectedOutput, outputElement.TextContent.Trim()),
 			timeout: TimeSpan.FromMilliseconds(2000));
 	}
@@ -537,7 +537,7 @@ public class ComponentRenderingTest : TestContext
 
 		cut.Find("#run-with-dispatch").Click();
 
-		cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
+		await cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 	}
 
 	[Fact]
@@ -548,7 +548,7 @@ public class ComponentRenderingTest : TestContext
 
 		cut.Find("#run-with-double-dispatch").Click();
 
-		cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
+		await cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 	}
 
 	[Fact]
