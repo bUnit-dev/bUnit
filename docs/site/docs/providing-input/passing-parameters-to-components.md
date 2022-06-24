@@ -404,6 +404,9 @@ The example uses the `Bind` method to setup two-way binding between the `Value` 
 [!code-cshtml[TwoWayBindingTest.razor](../../../samples/tests/razor/TwoWayBindingTest.razor)]
 
 The example uses the standard `@bind-Value` directive in Blazor to set up two way binding between the `Value` parameter and `ValueChanged` parameter and the local variable in the test method (`currentValue`).
+
+> [!WARNING]
+> When using `@bind` in conjunction with razor test-files the razor component should **not** inherit from `ComponentBase` (which is the default). The simplest solution would be to inherit from `TestContext` (as seen in the example above) which also brings the benefits as described on top of this page. For **NUnit** and **MSTest** check out the section "Remove boilerplate code from tests" on the <xref:writing-tests> page.
 ***
 
 ## Further Reading
