@@ -61,10 +61,11 @@ public class SnapshotTest : RazorTestBase
 		if (SetupAsync is not null)
 			await TryRunAsync(SetupAsync, this).ConfigureAwait(false);
 
-		var renderedTestInput = (IRenderedFragment)this.RenderInsideRenderTree(TestInput!);
+		var fragmentBase = await this.RenderInsideRenderTree(TestInput!);
+		var renderedTestInput = (IRenderedFragment)fragmentBase;
 		var inputHtml = renderedTestInput.Markup;
 
-		var renderedExpectedRender = (IRenderedFragment)this.RenderInsideRenderTree(ExpectedOutput!);
+		var renderedExpectedRender = (IRenderedFragment)await this.RenderInsideRenderTree(ExpectedOutput!);
 		var expectedHtml = renderedExpectedRender.Markup;
 
 		VerifySnapshot(inputHtml, expectedHtml);

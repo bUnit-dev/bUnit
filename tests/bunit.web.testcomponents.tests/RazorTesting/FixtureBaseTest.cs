@@ -11,7 +11,7 @@ public class FixtureBaseTest : TestContext
 	public async Task Test001()
 	{
 		var callLog = new List<string>(3);
-		var cut = RenderComponent<FixtureComponent>(builder => builder
+		var cut = await RenderComponent<FixtureComponent>(builder => builder
 			.Add(p => p.Setup, Setup)
 			.Add(p => p.SetupAsync, SetupAsync)
 			.Add(p => p.Test, Test)
@@ -37,7 +37,7 @@ public class FixtureBaseTest : TestContext
 	public async Task Test002()
 	{
 		var callLog = new List<string>(3);
-		var cut = RenderComponent<FixtureComponent>(builder => builder
+		var cut = await RenderComponent<FixtureComponent>(builder => builder
 			.Add(p => p.Setup, Setup)
 			.Add(p => p.SetupAsync, SetupAsync)
 			.Add(p => p.TestAsync, TestAsync)
@@ -64,9 +64,9 @@ public class FixtureBaseTest : TestContext
 	}
 
 	[Fact(DisplayName = "Run fails when no ChildContent is provided")]
-	public void Test010()
+	public async Task Test010()
 	{
-		var cut = RenderComponent<FixtureComponent>(builder => builder
+		var cut = await RenderComponent<FixtureComponent>(builder => builder
 			.Add(p => p.Test, _ => { }));
 
 		Should.Throw<ArgumentException>(() => cut.Instance.RunTestAsync())
@@ -74,9 +74,9 @@ public class FixtureBaseTest : TestContext
 	}
 
 	[Fact(DisplayName = "Run fails when both Test or TestAsync is missing")]
-	public void Test011()
+	public async Task Test011()
 	{
-		var cut = RenderComponent<FixtureComponent>(builder => builder
+		var cut = await RenderComponent<FixtureComponent>(builder => builder
 			.AddChildContent("FOO"));
 
 		Should.Throw<ArgumentException>(() => cut.Instance.RunTestAsync())
@@ -84,9 +84,9 @@ public class FixtureBaseTest : TestContext
 	}
 
 	[Fact(DisplayName = "Run fails when both Test or TestAsync is missing")]
-	public void Test012()
+	public async Task Test012()
 	{
-		var cut = RenderComponent<FixtureComponent>(builder => builder
+		var cut = await RenderComponent<FixtureComponent>(builder => builder
 			.Add(p => p.Test, _ => { })
 			.Add(p => p.TestAsync, _ => Task.CompletedTask)
 			.AddChildContent("FOO"));

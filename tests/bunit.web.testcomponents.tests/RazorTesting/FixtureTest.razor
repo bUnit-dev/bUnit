@@ -1,6 +1,6 @@
 @inherits TestComponentBase
 
-<Fixture Test="CanGetComponentInsideCascadingValue" Description="GetComponentUnderTest can find component inside CascadingValue">
+<Fixture TestAsync="CanGetComponentInsideCascadingValue" Description="GetComponentUnderTest can find component inside CascadingValue">
 	<ComponentUnderTest>
 		<CascadingValue Value="true">
 			<ClickCounter />
@@ -9,41 +9,41 @@
 
 	@code
 	{
-		void CanGetComponentInsideCascadingValue(Fixture fixture)
+		async Task CanGetComponentInsideCascadingValue(Fixture fixture)
 		{
-			var cut = fixture.GetComponentUnderTest<ClickCounter>();
+			var cut = await fixture.GetComponentUnderTest<ClickCounter>();
 			cut.ShouldNotBeNull();
 		}
 	}
 </Fixture>
 
-<Fixture Test="Test004" Description="Calling GetComponentUnderTest multiple times returns same instance">
+<Fixture TestAsync="Test004" Description="Calling GetComponentUnderTest multiple times returns same instance">
 	<ComponentUnderTest>
 		<Wrapper>CUT</Wrapper>
 	</ComponentUnderTest>
 	@code
 	{
-		void Test004(Fixture f)
+		async Task Test004(Fixture f)
 		{
-			var cut1 = f.GetComponentUnderTest<Wrapper>();
-			var cut2 = f.GetComponentUnderTest<Wrapper>();
+			var cut1 = await f.GetComponentUnderTest<Wrapper>();
+			var cut2 = await f.GetComponentUnderTest<Wrapper>();
 
 			cut1.ShouldBe(cut2);
 		}
 	}
 </Fixture>
 
-<Fixture Test="Test005" Description="Calling GetFragment with same args multiple times returns same instance">
+<Fixture TestAsync="Test005" Description="Calling GetFragment with same args multiple times returns same instance">
 	<Fragment Id="first">first</Fragment>
 	<Fragment Id="second">second</Fragment>
 	@code
 	{
-		void Test005(Fixture f)
+		async Task Test005(Fixture f)
 		{
-			var firstFragmentNoId1 = f.GetFragment();
-			var firstFragmentNoId2 = f.GetFragment();
-			var firstFragmentId1 = f.GetFragment("first");
-			var firstFragmentId2 = f.GetFragment("first");
+			var firstFragmentNoId1 = await f.GetFragment();
+			var firstFragmentNoId2 = await f.GetFragment();
+			var firstFragmentId1 = await f.GetFragment("first");
+			var firstFragmentId2 = await f.GetFragment("first");
 
 			firstFragmentNoId1.ShouldBe(firstFragmentNoId2);
 			firstFragmentId1.ShouldBe(firstFragmentId2);
@@ -51,28 +51,28 @@
 	}
 </Fixture>
 
-<Fixture Test="Test006" Description="Getting first fragment with and without id should return the same instance">
+<Fixture TestAsync="Test006" Description="Getting first fragment with and without id should return the same instance">
 	<Fragment Id="first">first</Fragment>
 	<Fragment Id="second">second</Fragment>
 	@code
 	{
-		void Test006(Fixture f)
+		async Task Test006(Fixture f)
 		{
-			var firstFragmentNoId1 = f.GetFragment();
-			var firstFragmentId1 = f.GetFragment("first");
+			var firstFragmentNoId1 = await f.GetFragment();
+			var firstFragmentId1 = await f.GetFragment("first");
 
 			firstFragmentNoId1.ShouldBe(firstFragmentId1);
 		}
 	}
 </Fixture>
 
-<Fixture Test="Test007" Description="Using the generic GetFragment returns an IRenderedComponent with the component of the generic type">
+<Fixture TestAsync="Test007" Description="Using the generic GetFragment returns an IRenderedComponent with the component of the generic type">
 	<Fragment><Wrapper /></Fragment>
 	@code
 	{
-		void Test007(Fixture f)
+		async Task Test007(Fixture f)
 		{
-			var fragment = f.GetFragment<Wrapper>();
+			var fragment = await f.GetFragment<Wrapper>();
 
 			fragment.ShouldBeAssignableTo<IRenderedComponent<Wrapper>>()
 				.Instance.ShouldNotBeNull();
@@ -80,13 +80,13 @@
 	}
 </Fixture>
 
-<Fixture Test="Test008" Description="Using the generic GetComponentUnderTest returns an IRenderedComponent with the component of the generic type">
+<Fixture TestAsync="Test008" Description="Using the generic GetComponentUnderTest returns an IRenderedComponent with the component of the generic type">
 	<ComponentUnderTest><Wrapper /></ComponentUnderTest>
 	@code
 	{
-		void Test008(Fixture f)
+		async Task Test008(Fixture f)
 		{
-			var cut = f.GetComponentUnderTest<Wrapper>();
+			var cut = await f.GetComponentUnderTest<Wrapper>();
 
 			cut.ShouldBeAssignableTo<IRenderedComponent<Wrapper>>()
 				.Instance.ShouldNotBeNull();
@@ -94,26 +94,26 @@
 	}
 </Fixture>
 
-<Fixture Test="Test009" Description="Using the non-generic GetFragment returns an IRenderedFragment">
+<Fixture TestAsync="Test009" Description="Using the non-generic GetFragment returns an IRenderedFragment">
 	<Fragment><Wrapper /></Fragment>
 	@code
 	{
-		void Test009(Fixture f)
+		async Task Test009(Fixture f)
 		{
-			var fragment = f.GetFragment();
+			var fragment = await f.GetFragment();
 
 			fragment.ShouldBeAssignableTo<IRenderedFragment>();
 		}
 	}
 </Fixture>
 
-<Fixture Test="Test010" Description="Using the non-generic GetComponentUnderTest returns an IRenderedFragment">
+<Fixture TestAsync="Test010" Description="Using the non-generic GetComponentUnderTest returns an IRenderedFragment">
 	<ComponentUnderTest><Wrapper /></ComponentUnderTest>
 	@code
 	{
-		void Test010(Fixture f)
+		async Task Test010(Fixture f)
 		{
-			var cut = f.GetComponentUnderTest();
+			var cut = await f.GetComponentUnderTest();
 
 			cut.ShouldBeAssignableTo<IRenderedFragment>();
 		}
@@ -121,7 +121,7 @@
 
 </Fixture>
 
-<Fixture Test="Test011" Description="Calling generic get-methods after non-generic throws">
+<Fixture TestAsync="Test011" Description="Calling generic get-methods after non-generic throws">
 	<ComponentUnderTest>
 		<Wrapper>CUT</Wrapper>
 	</ComponentUnderTest>
@@ -130,22 +130,22 @@
 	</Fragment>
 	@code
 	{
-		void Test011(Fixture f)
+		async Task Test011(Fixture f)
 		{
-			f.GetComponentUnderTest();
+			await f.GetComponentUnderTest();
 
 			// It should not be possible to call the generic GetComponentUnderTest after the non-generic has been called
-			Assert.Throws<InvalidOperationException>(() => f.GetComponentUnderTest<Wrapper>());
+			await Assert.ThrowsAsync<InvalidOperationException>(() => f.GetComponentUnderTest<Wrapper>());
 
-			f.GetFragment();
+			await f.GetFragment();
 
 			// It should not be possible to call the generic GetFragment after the non-generic has been called
-			Assert.Throws<InvalidOperationException>(() => f.GetFragment<Wrapper>());
+			await Assert.ThrowsAsync<InvalidOperationException>(() => f.GetFragment<Wrapper>());
 		}
 	}
 </Fixture>
 
-<Fixture Test="Test012" Description="Calling get-methods with wrong generic type throws">
+<Fixture TestAsync="Test012" Description="Calling get-methods with wrong generic type throws">
 	<ComponentUnderTest>
 		<Wrapper></Wrapper>
 	</ComponentUnderTest>
@@ -154,15 +154,15 @@
 	</Fragment>
 	@code
 	{
-		void Test012(Fixture f)
+		async Task Test012(Fixture f)
 		{
-			Assert.Throws<ComponentNotFoundException>(() => f.GetComponentUnderTest<Simple1>());
-			Assert.Throws<ComponentNotFoundException>(() => f.GetFragment<Simple1>());
+			await Assert.ThrowsAsync<ComponentNotFoundException>(() => f.GetComponentUnderTest<Simple1>());
+			await Assert.ThrowsAsync<ComponentNotFoundException>(() => f.GetFragment<Simple1>());
 		}
 	}
 </Fixture>
 
-<Fixture Setup="Setup020" Test="Test020" Description="Renders CUT inside components added to RenderTree and returns correct CUT from GetComponentUnderTest">
+<Fixture Setup="Setup020" TestAsync="Test020" Description="Renders CUT inside components added to RenderTree and returns correct CUT from GetComponentUnderTest">
 	<ComponentUnderTest>
 		<PrintCascadingValue />
 	</ComponentUnderTest>
@@ -174,14 +174,15 @@
 			f.RenderTree.Add<WrapperDiv>();
 		}
 
-		void Test020(Fixture f)
+		async Task Test020(Fixture f)
 		{
-			f.GetComponentUnderTest().MarkupMatches("<p>FOO</p>");
+			var component = await f.GetComponentUnderTest();
+			component.MarkupMatches("<p>FOO</p>");
 		}
 	}
 </Fixture>
 
-<Fixture Setup="Setup021" Test="Test021" Description="Renders CUT inside components added to RenderTree and returns correct CUT from generic GetComponentUnderTest<T>">
+<Fixture Setup="Setup021" TestAsync="Test021" Description="Renders CUT inside components added to RenderTree and returns correct CUT from generic GetComponentUnderTest<T>">
 	<ComponentUnderTest>
 		<PrintCascadingValue />
 	</ComponentUnderTest>
@@ -193,22 +194,24 @@
 			f.RenderTree.Add<WrapperDiv>();
 		}
 
-		void Test021(Fixture f)
+		async Task Test021(Fixture f)
 		{
-			f.GetComponentUnderTest<PrintCascadingValue>().MarkupMatches("<p>FOO</p>");
+			var component = await f.GetComponentUnderTest<PrintCascadingValue>();
+			component.MarkupMatches("<p>FOO</p>");
 		}
 	}
 </Fixture>
 
-<Fixture Test="Test030" Description="Can raise events from markup rendered with Fixture">
+<Fixture TestAsync="Test030" Description="Can raise events from markup rendered with Fixture">
 	<ComponentUnderTest>
 		<ClickCounter></ClickCounter>
 	</ComponentUnderTest>
 	@code
 	{
-		void Test030(Fixture f)
+		async Task Test030(Fixture f)
 		{
-			f.GetComponentUnderTest()
+			var component = await f.GetComponentUnderTest();
+			component
 				.Find("button")
 				.Click();
 		}

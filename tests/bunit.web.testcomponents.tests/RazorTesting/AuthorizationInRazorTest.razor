@@ -1,18 +1,18 @@
 @inherits TestComponentBase
 
-<Fixture Test="CanAddFakeAuthToContext" Description="Fake Auth can be added to Fixture">
+<Fixture TestAsync="CanAddFakeAuthToContext" Description="Fake Auth can be added to Fixture">
 	<ComponentUnderTest>
 		<SimpleAuthView />
 	</ComponentUnderTest>
 
 	@code
 	{
-		void CanAddFakeAuthToContext(Fixture fixture)
+		async Task CanAddFakeAuthToContext(Fixture fixture)
 		{
 			var authContext = fixture.AddTestAuthorization();
 			authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
 
-			var cut = fixture.GetComponentUnderTest<SimpleAuthView>();
+			var cut = await fixture.GetComponentUnderTest<SimpleAuthView>();
 
 			cut.MarkupMatches("Authorized!");
 		}
