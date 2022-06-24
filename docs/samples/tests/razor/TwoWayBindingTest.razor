@@ -1,0 +1,10 @@
+﻿@code {
+  [Fact]
+  public void Test()
+  {
+    using var ctx = new TestContext();
+    var currentValue = string.Empty;
+
+    var cut = ctx.Render(@<TwoWayBinding @bind-Value="currentValue"></TwoWayBinding>);
+  }
+}
