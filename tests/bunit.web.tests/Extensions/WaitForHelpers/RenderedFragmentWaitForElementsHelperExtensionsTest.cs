@@ -16,7 +16,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		var expectedMarkup = "<p>child content</p>";
 		var cut = await RenderComponent<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
-		var elm = cut.WaitForElement("main > p");
+		var elm = await cut.WaitForElement("main > p");
 
 		elm.MarkupMatches(expectedMarkup);
 	}
@@ -26,7 +26,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	{
 		var cut = await RenderComponent<DelayRenderFragment>();
 
-		var expected = Should.Throw<WaitForFailedException>(() =>
+		var expected = await Should.ThrowAsync<WaitForFailedException>(() =>
 			cut.WaitForElement("#notHereElm", TimeSpan.FromMilliseconds(10)));
 
 		expected.Message.ShouldBe(WaitForElementHelper.TimeoutBeforeFoundMessage);
@@ -38,7 +38,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		var expectedMarkup = "<p>child content</p>";
 		var cut = await RenderComponent<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
-		var elms = cut.WaitForElements("main > p");
+		var elms = await cut.WaitForElements("main > p");
 
 		elms.MarkupMatches(expectedMarkup);
 	}
@@ -60,7 +60,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	{
 		var cut = await RenderComponent<DelayRenderFragment>();
 
-		var expected = Should.Throw<WaitForFailedException>(() =>
+		var expected = await Should.ThrowAsync<WaitForFailedException>(() =>
 			cut.WaitForElements("#notHereElm", 2, TimeSpan.FromMilliseconds(30)));
 
 		expected.Message.ShouldBe(string.Format(CultureInfo.InvariantCulture, WaitForElementsHelper.TimeoutBeforeFoundWithCountMessage, 2));
@@ -73,7 +73,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		var expectedMarkup = "<p>child content</p><p>child content</p><p>child content</p>";
 		var cut = await RenderComponent<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
-		var elms = cut.WaitForElements("main > p", matchElementCount: 3);
+		var elms = await cut.WaitForElements("main > p", matchElementCount: 3);
 
 		elms.MarkupMatches(expectedMarkup);
 	}
@@ -84,7 +84,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		var expectedMarkup = "<p>child content</p>";
 		var cut = await RenderComponent<DelayRemovedRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
-		var elms = cut.WaitForElements("main > p", matchElementCount: 0);
+		var elms = await cut.WaitForElements("main > p", matchElementCount: 0);
 
 		elms.ShouldBeEmpty();
 	}
