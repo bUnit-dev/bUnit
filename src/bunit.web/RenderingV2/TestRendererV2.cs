@@ -1,3 +1,7 @@
+using System.Diagnostics;
+using AngleSharp;
+using AngleSharp.Html.Dom;
+using AngleSharp.Html.Parser;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.RenderingV2;
@@ -5,7 +9,8 @@ namespace Bunit.RenderingV2;
 public partial class TestRendererV2 : Renderer
 {
 	private readonly ILogger logger;
-	private readonly Dictionary<int, IRenderedComponent<IComponent>> renderedComponents = new();
+	private readonly Dictionary<int, RenderedComponentV2<RootComponent>> rootComponents = new();
+	private readonly IHtmlParser htmlParser;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new();
 	private Exception? capturedUnhandledException;
 
@@ -17,53 +22,44 @@ public partial class TestRendererV2 : Renderer
 		: base(serviceProvider, loggerFactory)
 	{
 		logger = loggerFactory.CreateLogger<TestRendererV2>();
+		htmlParser = new HtmlParser(new HtmlParserOptions
+		{
+			IsAcceptingCustomElementsEverywhere = false,
+			IsKeepingSourceReferences = false,
+			IsNotConsumingCharacterReferences = false,
+			IsNotSupportingFrames = false,
+			IsPreservingAttributeNames = false,
+			IsScripting	= false,
+			IsSupportingProcessingInstructions = false,
+			IsEmbedded = true,
+			IsStrictMode = false,
+		});
 	}
 
-	public IRenderedComponent<RootComponent> Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> renderFragmentBuilder)
-		where TComponent : IComponent
-	{
-		var builder = new ComponentParameterCollectionBuilder<TComponent>();
-		renderFragmentBuilder(builder);
-		return Render(builder.Build().ToRenderFragment<TComponent>());
-	}
-
+	/// <summary>
+	/// Renders the <paramref name="renderFragment"/> inside a <see cref="RootComponent"/>.
+	/// This returns as soon all components in the <paramref name="renderFragment"/>
+	/// have finished their first render cycle. It does not await any async life cycle methods
+	/// in the components. To await life cycle methods, use <see cref="RenderAsync(RenderFragment)"/>.
+	/// </summary>
 	public IRenderedComponent<RootComponent> Render(RenderFragment renderFragment)
 	{
 		try
 		{
-			return Dispatcher.InvokeAsync(() =>
+			var renderTask = Dispatcher.InvokeAsync(() =>
 			{
-				var component = new RootComponent(renderFragment);
-				var componentId = AssignRootComponentId(component);
-				var rc = new RenderedComponentV2<RootComponent>(component);
-				renderedComponents[componentId] = rc;
-
-				// Do not await async life cycle methods of components in render fragment
-				_ = RenderRootComponentAsync(componentId);
-
+				var rc = InitializeRenderedRootComponent(renderFragment);
+				_ = RenderRootComponentAsync(rc.ComponentId);
 				return rc;
-			}).Result;
+			});
+			Debug.Assert(renderTask.IsCompletedSuccessfully, "There should not be any asynchronous code in the inside the lambda passed to Dispatcher.InvokeAsync.");
+			return renderTask.Result;
 		}
 		catch (Exception ex)
 		{
 			HandleException(ex);
 			throw;
 		}
-	}
-
-	/// <summary>
-	/// Creates a <see cref="RenderFragment"/> with the <paramref name="renderFragmentBuilder"/> and
-	/// renders it inside a <see cref="RootComponent"/>.
-	/// The returned task completes when all components in the render Fragment
-	/// have finished rendering completely. That includes waiting for any async operations
-	/// in life-cycle methods of the components in the render tree.
-	/// </summary>
-	public Task<IRenderedComponent<RootComponent>> RenderAsync<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> renderFragmentBuilder)
-		where TComponent : IComponent
-	{
-		var builder = new ComponentParameterCollectionBuilder<TComponent>();
-		renderFragmentBuilder(builder);
-		return RenderAsync(builder.Build().ToRenderFragment<TComponent>());
 	}
 
 	/// <summary>
@@ -78,11 +74,8 @@ public partial class TestRendererV2 : Renderer
 		{
 			return await Dispatcher.InvokeAsync(async () =>
 			{
-				var component = new RootComponent(renderFragment);
-				var componentId = AssignRootComponentId(component);
-				var rc = new RenderedComponentV2<RootComponent>(component);
-				renderedComponents[componentId] = rc;
-				await RenderRootComponentAsync(componentId).ConfigureAwait(false);
+				var rc = InitializeRenderedRootComponent(renderFragment);
+				await RenderRootComponentAsync(rc.ComponentId).ConfigureAwait(false);
 				return rc;
 			}).ConfigureAwait(false);
 		}
@@ -93,8 +86,58 @@ public partial class TestRendererV2 : Renderer
 		}
 	}
 
+	private RenderedComponentV2<RootComponent> InitializeRenderedRootComponent(RenderFragment renderFragment)
+	{
+		var component = new RootComponent(renderFragment);
+		var componentId = AssignRootComponentId(component);
+
+		var domRoot = htmlParser.ParseDocument(string.Empty).Body;
+		Debug.Assert(domRoot is not null, "Body in an empty document should not be null.");
+		var rc = new RenderedComponentV2<RootComponent>(componentId, component, htmlParser, domRoot);
+
+		rootComponents[componentId] = rc;
+
+		return rc;
+	}
+
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
-		=> Task.CompletedTask;
+	{
+		//HashSet<int> processedComponentIds = new HashSet<int>();
+
+		var numUpdatedComponents = renderBatch.UpdatedComponents.Count;
+		for (var componentIndex = 0; componentIndex < numUpdatedComponents; componentIndex++)
+		{
+			var updatedComponent = renderBatch.UpdatedComponents.Array[componentIndex];
+
+			if (updatedComponent.Edits.Count > 0)
+			{
+				var rc = rootComponents[updatedComponent.ComponentId];
+				rc.ApplyRender(in updatedComponent, in renderBatch);
+			}
+		}
+
+		//var numDisposedComponents = renderBatch.DisposedComponentIDs.Count;
+		//for (var i = 0; i < numDisposedComponents; i++)
+		//{
+		//	var disposedComponentId = renderBatch.DisposedComponentIDs.Array[i];
+		//	if (_componentIdToAdapter.TryGetValue(disposedComponentId, out var adapter))
+		//	{
+		//		_componentIdToAdapter.Remove(disposedComponentId);
+		//		(adapter as IDisposable)?.Dispose();
+		//	}
+		//}
+
+		//var numDisposeEventHandlers = renderBatch.DisposedEventHandlerIDs.Count;
+		//if (numDisposeEventHandlers != 0)
+		//{
+		//	for (var i = 0; i < numDisposeEventHandlers; i++)
+		//	{
+		//		DisposeEvent(renderBatch.DisposedEventHandlerIDs.Array[i]);
+		//	}
+		//}
+
+		return Task.CompletedTask;
+	}
 
 	/// <inheritdoc/>
 	protected override void HandleException(Exception exception)
