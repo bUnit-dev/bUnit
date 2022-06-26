@@ -2,9 +2,12 @@ using AngleSharp.Dom;
 
 namespace Bunit.RenderingV2;
 
-public interface IRenderedComponent<out TComponent>
-	where TComponent : IComponent
+public interface IRenderedComponent
 {
-	TComponent Instance { get; }
+	int ComponentId { get; }
+	int RenderCount { get; }
 	INodeList Nodes { get; }
+	IReadOnlyList<IRenderedComponent<IComponent>> Children { get; }
+
+	internal void ApplyEdits(RenderTreeDiff updatedComponent, RenderBatch renderBatch, int renderBatchId);
 }

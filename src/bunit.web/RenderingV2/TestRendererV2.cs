@@ -1,6 +1,5 @@
 using System.Diagnostics;
-using AngleSharp;
-using AngleSharp.Html.Dom;
+using AngleSharp.Dom;
 using AngleSharp.Html.Parser;
 using Microsoft.Extensions.Logging;
 
@@ -9,10 +8,14 @@ namespace Bunit.RenderingV2;
 public partial class TestRendererV2 : Renderer
 {
 	private readonly ILogger logger;
-	private readonly Dictionary<int, RenderedComponentV2<RootComponent>> rootComponents = new();
-	private readonly IHtmlParser htmlParser;
+	private readonly Dictionary<int, IRenderedComponent> rootComponents = new();
+	private readonly HtmlParser htmlParser;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new();
 	private Exception? capturedUnhandledException;
+
+	internal HtmlParser HtmlParser => htmlParser;
+
+	public int RenderCount { get; private set; }
 
 	public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
 
@@ -29,7 +32,7 @@ public partial class TestRendererV2 : Renderer
 			IsNotConsumingCharacterReferences = false,
 			IsNotSupportingFrames = false,
 			IsPreservingAttributeNames = false,
-			IsScripting	= false,
+			IsScripting = false,
 			IsSupportingProcessingInstructions = false,
 			IsEmbedded = true,
 			IsStrictMode = false,
@@ -86,14 +89,31 @@ public partial class TestRendererV2 : Renderer
 		}
 	}
 
-	private RenderedComponentV2<RootComponent> InitializeRenderedRootComponent(RenderFragment renderFragment)
+	private IRenderedComponent<RootComponent> InitializeRenderedRootComponent(RenderFragment renderFragment)
 	{
 		var component = new RootComponent(renderFragment);
 		var componentId = AssignRootComponentId(component);
+		return InitializeRenderedComponent<RootComponent>(componentId, component, default(IElement));
+	}
 
-		var domRoot = htmlParser.ParseDocument(string.Empty).Body;
-		Debug.Assert(domRoot is not null, "Body in an empty document should not be null.");
-		var rc = new RenderedComponentV2<RootComponent>(componentId, component, htmlParser, domRoot);
+	internal RenderedComponentV2<TComponent> InitializeRenderedComponent<TComponent>(int componentId, TComponent instance, IElement? parentElement)
+		where TComponent : IComponent
+	{
+		var rc = parentElement is null
+			? new RenderedComponentV2<TComponent>(componentId, instance, this)
+			: new RenderedComponentV2<TComponent>(componentId, instance, this, parentElement);
+
+		rootComponents[componentId] = rc;
+
+		return rc;
+	}
+
+	internal IRenderedComponent<IComponent> InitializeRenderedComponent(int componentId, IComponent instance, IElement? parentElement)
+	{
+		var rcGenType = typeof(RenderedComponentV2<>);
+		var componentType = instance.GetType();
+		var rcType = rcGenType.MakeGenericType(componentType);
+		var rc = (IRenderedComponent<IComponent>)Activator.CreateInstance(rcType, new object?[] { componentId, instance, this, parentElement })!;
 
 		rootComponents[componentId] = rc;
 
@@ -102,8 +122,7 @@ public partial class TestRendererV2 : Renderer
 
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
-		//HashSet<int> processedComponentIds = new HashSet<int>();
-
+		RenderCount++;
 		var numUpdatedComponents = renderBatch.UpdatedComponents.Count;
 		for (var componentIndex = 0; componentIndex < numUpdatedComponents; componentIndex++)
 		{
@@ -112,29 +131,9 @@ public partial class TestRendererV2 : Renderer
 			if (updatedComponent.Edits.Count > 0)
 			{
 				var rc = rootComponents[updatedComponent.ComponentId];
-				rc.ApplyRender(in updatedComponent, in renderBatch);
+				rc.ApplyEdits(updatedComponent, renderBatch, RenderCount);
 			}
 		}
-
-		//var numDisposedComponents = renderBatch.DisposedComponentIDs.Count;
-		//for (var i = 0; i < numDisposedComponents; i++)
-		//{
-		//	var disposedComponentId = renderBatch.DisposedComponentIDs.Array[i];
-		//	if (_componentIdToAdapter.TryGetValue(disposedComponentId, out var adapter))
-		//	{
-		//		_componentIdToAdapter.Remove(disposedComponentId);
-		//		(adapter as IDisposable)?.Dispose();
-		//	}
-		//}
-
-		//var numDisposeEventHandlers = renderBatch.DisposedEventHandlerIDs.Count;
-		//if (numDisposeEventHandlers != 0)
-		//{
-		//	for (var i = 0; i < numDisposeEventHandlers; i++)
-		//	{
-		//		DisposeEvent(renderBatch.DisposedEventHandlerIDs.Array[i]);
-		//	}
-		//}
 
 		return Task.CompletedTask;
 	}

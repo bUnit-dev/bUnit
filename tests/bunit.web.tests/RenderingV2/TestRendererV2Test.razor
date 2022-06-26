@@ -61,15 +61,29 @@
 		tcsOnAfterRender.Task.IsCompleted.ShouldBeFalse();
 	}
 
-	[Fact]
-	public void Render_with_raw_markup()
+	[Theory]
+	[InlineData("<h1>hello world</h1>")]
+	[InlineData("<p>")]
+	public void Render_with_raw_markup(string markup)
 	{
 		var sut = CreateSut();
 
-		var renderedComponent = sut.Render(@<h1>hello world</h1>);
+		var renderedComponent = sut.Render(markup.ToRenderFragment());
 
 		renderedComponent
 			.Nodes
-			.MarkupMatches("<h1>hello world</h1>");
+			.MarkupMatches(markup);
+	}
+
+	[Fact]
+	public void Render_component()
+	{
+		var sut = CreateSut();
+
+		var renderedComponent = sut.Render(@<Simple1 Header="foo" AttrValue="bar" />);
+
+		renderedComponent
+			.Nodes
+			.MarkupMatches(@"<h1 id=""header"" attr=""bar"">foo</h1>");
 	}
 }
