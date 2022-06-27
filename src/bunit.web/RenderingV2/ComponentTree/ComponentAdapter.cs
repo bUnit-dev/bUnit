@@ -1,4 +1,5 @@
 using AngleSharp.Dom;
+using AngleSharp.Dom.Events;
 using AngleSharp.Html.Parser;
 using Bunit.RenderingV2.AngleSharp;
 
@@ -204,7 +205,7 @@ internal class ComponentAdapter
 
 	private static void ApplySetAttribute(ref RenderTreeFrame attributeFrame, ComponentAdapter owner, IElement element)
 	{
-		if (attributeFrame.AttributeValue is Action callback)
+		if (attributeFrame.AttributeValue is Delegate)
 		{
 			var eventHandlerId = attributeFrame.AttributeEventHandlerId;
 
@@ -212,13 +213,26 @@ internal class ComponentAdapter
 			// TODO: Can we handle async event handlers via the AngleSharp event dispatch system?
 			element.AddEventListener(
 				attributeFrame.AttributeName,
-				(o, e) => owner.renderer.DispatchEventAsync(eventHandlerId, default(EventFieldInfo), e));
+				(o, e) => owner.renderer.DispatchEventAsync(eventHandlerId, default(EventFieldInfo), Map(e)));
 		}
 		else
 		{
 			element.SetAttribute(
 				attributeFrame.AttributeName,
 				attributeFrame.AttributeValue?.ToString() ?? string.Empty);
+		}
+
+		static EventArgs Map(Event e)
+		{
+			return e.Type switch
+			{
+				"onclick" => new MouseEventArgs()
+				{
+					Type = e.Type,
+					Detail = 1
+				},
+				_ => throw new NotImplementedException($"Mapping for {e.Type} not implemented.")
+			};
 		}
 	}
 }
