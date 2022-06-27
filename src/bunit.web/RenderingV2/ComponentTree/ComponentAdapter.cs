@@ -81,6 +81,8 @@ internal class ComponentAdapter
 					node.TextContent = frame.TextContent;
 					break;
 				}
+				// StepIn seems to be about going from the current containing element into a child
+				// element basedon the sibling index
 				case RenderTreeEditType.StepIn:
 				{
 					containingElement = (IElement)owner.ParentElement.ChildNodes[edit.SiblingIndex];
@@ -97,7 +99,9 @@ internal class ComponentAdapter
 		}
 	}
 
+#pragma warning disable MA0051 // Method is too long
 	private static void ApplyPrependFrame(int referenceFrameIndex, in RenderBatch renderBatch, in ComponentAdapter owner, IElement containingElement)
+#pragma warning restore MA0051 // Method is too long
 	{
 		ref var frame = ref renderBatch.ReferenceFrames.Array[referenceFrameIndex];
 		switch (frame.FrameType)
@@ -213,7 +217,25 @@ internal class ComponentAdapter
 			// TODO: Can we handle async event handlers via the AngleSharp event dispatch system?
 			element.AddEventListener(
 				attributeFrame.AttributeName,
-				(o, e) => owner.renderer.DispatchEventAsync(eventHandlerId, default(EventFieldInfo), Map(e)));
+				(o, e) =>
+				{
+					if (e is BunitEvent be)
+					{
+						var dispatchResult = owner.renderer.DispatchEventAsync(
+							eventHandlerId,
+							default(EventFieldInfo),
+							be.BlazorEventArgs);
+
+						be.AddEventHandlerTask(dispatchResult);
+					}
+					else
+					{
+						owner.renderer.DispatchEventAsync(
+							eventHandlerId,
+							default(EventFieldInfo),
+							Map(e));
+					}
+				});
 		}
 		else
 		{
@@ -224,6 +246,11 @@ internal class ComponentAdapter
 
 		static EventArgs Map(Event e)
 		{
+			if (e is BunitEvent be)
+			{
+				return be.BlazorEventArgs;
+			}
+
 			return e.Type switch
 			{
 				"onclick" => new MouseEventArgs()

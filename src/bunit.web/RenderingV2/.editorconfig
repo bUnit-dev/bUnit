@@ -1,4 +1,5 @@
-﻿[*.cs]
+[*.cs]
 
 # CS1591: Missing XML comment for publicly visible type or member
 dotnet_diagnostic.CS1591.severity = none
+dotnet_diagnostic.S125.severity = none # S125: Sections of code should not be commented out
