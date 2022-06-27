@@ -30,7 +30,6 @@ public class NodeSpanTest
 			IsStrictMode = false,
 		});
 		doc = htmlParser.ParseDocument(string.Empty);
-
 	}
 
 	[Fact]
