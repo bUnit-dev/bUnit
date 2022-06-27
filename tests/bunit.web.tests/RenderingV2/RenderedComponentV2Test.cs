@@ -64,4 +64,23 @@ public class RenderedComponentV2Test
 		cut.Find("button").InvokeEventListener(new Event("onclick"));
 		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 	}
+
+	[Fact]
+	public async Task CanTriggerAsyncEventHandlers()
+	{
+		// Initial state is stopped
+		var cut = Renderer.Render<AsyncEventHandlerComponent>();
+		var stateElement = cut.Find("#state");
+		Assert.Equal("Stopped", stateElement.TextContent);
+
+		// Clicking 'tick' changes the state, and starts a task
+		cut.Find("#tick").InvokeEventListener(new Event("onclick"));
+		await Task.Delay(1);
+		Assert.Equal("Started", stateElement.TextContent);
+
+		// Clicking 'tock' completes the task, which updates the state
+		cut.Find("#tock").InvokeEventListener(new Event("onclick"));
+		await Task.Delay(1);
+		Assert.Equal("Stopped", stateElement.TextContent);
+	}
 }
