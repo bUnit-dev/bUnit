@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using AngleSharp.Dom;
 using AngleSharp.Html.Parser;
+using Bunit.RenderingV2.ComponentTree;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.RenderingV2;
@@ -8,7 +9,7 @@ namespace Bunit.RenderingV2;
 public partial class TestRendererV2 : Renderer
 {
 	private readonly ILogger logger;
-	private readonly Dictionary<int, IRenderedComponent> rootComponents = new();
+	private readonly Dictionary<int, ComponentTreeManager> rootComponents = new();
 	private readonly HtmlParser htmlParser;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new();
 	private Exception? capturedUnhandledException;
@@ -89,10 +90,12 @@ public partial class TestRendererV2 : Renderer
 		}
 	}
 
-	private IRenderedComponent<RootComponent> InitializeRenderedRootComponent(RenderFragment renderFragment)
+	private IRenderedComponent<RootComponent> InitializeComponentTreeManager(RenderFragment renderFragment)
 	{
 		var component = new RootComponent(renderFragment);
 		var componentId = AssignRootComponentId(component);
+		var manager = new ComponentTreeManager(componentId, component, htmlParser);
+		rootComponents[componentId] = manager;
 		return InitializeRenderedComponent<RootComponent>(componentId, component, default(IElement));
 	}
 
@@ -113,7 +116,6 @@ public partial class TestRendererV2 : Renderer
 		var rcGenType = typeof(RenderedComponentV2<>);
 		var componentType = instance.GetType();
 		var rcType = rcGenType.MakeGenericType(componentType);
-		var rc = (IRenderedComponent<IComponent>)Activator.CreateInstance(rcType, new object?[] { componentId, instance, this, parentElement })!;
 
 		rootComponents[componentId] = rc;
 
