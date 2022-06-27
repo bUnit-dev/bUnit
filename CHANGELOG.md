@@ -34,6 +34,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
   
   By [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).
 
+### Fixed
+
+- `JSInterop.VerifyInvoke` reported the wrong number of actual invocations of a given identifier. Reported by [@otori](https://github.com/otori). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.9.8] - 2022-06-07
 
 ### Changed

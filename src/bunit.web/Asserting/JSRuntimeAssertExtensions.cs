@@ -114,7 +114,7 @@ public static class JSRuntimeAssertExtensions
 
 		if (invocations.Count != calledTimes)
 		{
-			throw new JSInvokeCountExpectedException(identifier, calledTimes, allInvocations.Count, nameof(VerifyInvoke), userMessage);
+			throw new JSInvokeCountExpectedException(identifier, calledTimes, invocations.Count, nameof(VerifyInvoke), userMessage);
 		}
 
 		return invocations;
