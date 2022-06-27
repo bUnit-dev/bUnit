@@ -1,3 +1,4 @@
+using AngleSharp.Dom.Events;
 using Bunit.TestAssets.BlazorE2E;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
@@ -60,7 +61,7 @@ public class RenderedComponentV2Test
 		Assert.Equal("Current count: 0", countDisplayElement.TextContent);
 
 		// Clicking button increments count
-		cut.Find("button").Click();
+		cut.Find("button").InvokeEventListener(new Event("onclick"));
 		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 	}
 }
