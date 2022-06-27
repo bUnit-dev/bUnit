@@ -61,7 +61,8 @@ public class RenderedComponentV2Test
 		Assert.Equal("Current count: 0", countDisplayElement.TextContent);
 
 		// Clicking button increments count
-		cut.Find("button").InvokeEventListener(new Event("onclick"));
+		cut.Find("button").Dispatch(new Event("onclick"));
+
 		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 	}
 
@@ -74,13 +75,17 @@ public class RenderedComponentV2Test
 		Assert.Equal("Stopped", stateElement.TextContent);
 
 		// Clicking 'tick' changes the state, and starts a task
-		cut.Find("#tick").InvokeEventListener(new Event("onclick"));
-		await Task.Delay(1);
+		var be1 = new BunitEvent(new MouseEventArgs(), "onclick");
+		cut.Find("#tick").Dispatch(be1);
 		Assert.Equal("Started", stateElement.TextContent);
 
 		// Clicking 'tock' completes the task, which updates the state
-		cut.Find("#tock").InvokeEventListener(new Event("onclick"));
-		await Task.Delay(1);
+		cut.Find("#tock").Dispatch(new Event("onclick"));
+
+		// Await the first 'tick' events completion here, since it is
+		// setting state to "Stopped".
+		await be1.EventDispatchResult;
+
 		Assert.Equal("Stopped", stateElement.TextContent);
 	}
 }
