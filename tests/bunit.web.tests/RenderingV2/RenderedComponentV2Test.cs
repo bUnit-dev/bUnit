@@ -1,4 +1,5 @@
 using AngleSharp.Dom.Events;
+using AngleSharp.Html.Dom.Events;
 using Bunit.TestAssets.BlazorE2E;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
@@ -87,5 +88,28 @@ public class RenderedComponentV2Test
 		await be1.EventDispatchResult;
 
 		Assert.Equal("Stopped", stateElement.TextContent);
+	}
+
+	[Fact]
+	public void CanTriggerKeyPressEvents()
+	{
+		// List is initially empty
+		var cut = Renderer.Render<KeyPressEventComponent>();
+		var inputElement = cut.Find("input");
+		Assert.Empty(cut.FindAll("li"));
+
+		// Typing adds element
+		inputElement.Dispatch(new KeyboardEvent("onkeypress", key: "a"));
+		Assert.Collection(cut.FindAll("li"),
+			li => Assert.Equal("a", li.TextContent));
+
+		// Typing again adds another element
+		inputElement.Dispatch(new KeyboardEvent("onkeypress", key: "b"));
+		Assert.Collection(cut.FindAll("li"),
+			li => Assert.Equal("a", li.TextContent),
+			li => Assert.Equal("b", li.TextContent));
+
+		// Textbox contains typed text
+		Assert.Equal("ab", inputElement.GetAttribute("value"));
 	}
 }

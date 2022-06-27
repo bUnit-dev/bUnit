@@ -6,4 +6,7 @@ internal static class RenderedComponentV2Extensions
 {
 	public static IElement Find(this IRenderedComponent rc, string cssSelector)
 		=> rc.Nodes.QuerySelector(cssSelector) ?? throw new ElementNotFoundException(cssSelector);
+
+	public static IHtmlCollection<IElement> FindAll(this IRenderedComponent rc, string cssSelector)
+		=> rc.Nodes.QuerySelectorAll(cssSelector);
 }

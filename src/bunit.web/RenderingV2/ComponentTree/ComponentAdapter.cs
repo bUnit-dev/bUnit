@@ -1,5 +1,7 @@
 using AngleSharp.Dom;
 using AngleSharp.Dom.Events;
+using AngleSharp.Html.Dom;
+using AngleSharp.Html.Dom.Events;
 using AngleSharp.Html.Parser;
 using Bunit.RenderingV2.AngleSharp;
 
@@ -207,7 +209,9 @@ internal class ComponentAdapter
 		_ => 0,
 	};
 
+#pragma warning disable MA0051 // Method is too long
 	private static void ApplySetAttribute(ref RenderTreeFrame attributeFrame, ComponentAdapter owner, IElement element)
+#pragma warning restore MA0051 // Method is too long
 	{
 		if (attributeFrame.AttributeValue is Delegate)
 		{
@@ -217,10 +221,12 @@ internal class ComponentAdapter
 			// TODO: Can we handle async event handlers via the AngleSharp event dispatch system?
 			element.AddEventListener(
 				attributeFrame.AttributeName,
-				(o, e) =>
+				(sender, ev) =>
 				{
-					if (e is BunitEvent be)
+					EventArgs blazorEvent;
+					if (ev is BunitEvent be)
 					{
+						blazorEvent = be.BlazorEventArgs;
 						var dispatchResult = owner.renderer.DispatchEventAsync(
 							eventHandlerId,
 							default(EventFieldInfo),
@@ -230,11 +236,13 @@ internal class ComponentAdapter
 					}
 					else
 					{
+						blazorEvent = Map(ev);
 						owner.renderer.DispatchEventAsync(
 							eventHandlerId,
 							default(EventFieldInfo),
-							Map(e));
+							blazorEvent);
 					}
+					ApplySideEffect(sender, blazorEvent);
 				});
 		}
 		else
@@ -244,22 +252,49 @@ internal class ComponentAdapter
 				attributeFrame.AttributeValue?.ToString() ?? string.Empty);
 		}
 
+		static void ApplySideEffect(object node, EventArgs e)
+		{
+			// This applies side effects to DOM elements.
+			// Is it a good idea? There is a related issue on this.
+			// Could this cause problems when the DOM tree is updated?
+			// Perhaps not, since a ApplySetAttribute would simply override the value.
+
+			// TODO: Is there a way to get AngleSharp to do this?
+			// TODO: Get all side effects implemented.
+			switch (node)
+			{
+				case IHtmlInputElement input when e is KeyboardEventArgs kb:
+				{
+					input.SetAttribute("value", input.GetAttribute("value") + kb.Key);
+					break;
+				}
+				default:
+					break;
+			}
+		}
+
 		static EventArgs Map(Event e)
 		{
-			if (e is BunitEvent be)
+			return e switch
 			{
-				return be.BlazorEventArgs;
-			}
-
-			return e.Type switch
-			{
-				"onclick" => new MouseEventArgs()
+				Event _ and { Type: "onclick" } or
+				MouseEvent _ and { Type: "onclick" } => new MouseEventArgs()
 				{
-					Type = e.Type,
+					Type = ToBlazorEventType(e.Type),
 					Detail = 1
 				},
+				KeyboardEvent ke => new KeyboardEventArgs
+				{
+					Type = ToBlazorEventType(ke.Type),
+					Key = ke.Key!,
+				},
+				Event _ => EventArgs.Empty,
 				_ => throw new NotImplementedException($"Mapping for {e.Type} not implemented.")
 			};
+
+			// Strip out "on" from start of event type since that is what
+			// Blazor expects. AngleSharp/HTML5 requires the "on" prefix.
+			static string ToBlazorEventType(string type) => type[2..];
 		}
 	}
 }
