@@ -76,7 +76,7 @@ ctx.ComponentFactories.AddStub<Bar>("<div>NOT FROM BAR</div>");
 
 // Add the markup specified in the render fragment to the rendered
 // output instead of that from <Bar>.
-ctx.ComponentFactories.AddStub<Bar>(@div>NOT FROM BAR</div>);
+ctx.ComponentFactories.AddStub<Bar>(@<div>NOT FROM BAR</div>);
 ```
 
 It is also possible to access the parameter that is passed to the substituted component, both when specifying alternative render output or when verifying the correct parameters was passed to the substituted component. For example, suppose `<Foo>` has a parameter named `Baz`:
@@ -88,7 +88,7 @@ ctx.ComponentFactories.AddStub<Bar>(parameters => $"<div>{parameters.Get(x => Ba
 
 // Add the markup produced by the render template to the rendered
 // output instead of that from <Bar>.
-ctx.ComponentFactories.AddStub<Bar>(parameters => @div>@(parameters.Get(x => Baz))</div>);
+ctx.ComponentFactories.AddStub<Bar>(parameters => @<div>@(parameters.Get(x => Baz))</div>);
 ```
 
 To verify that the expected value was passed to the `Baz` parameter of `<Foo>`, first find the substituted component in the render tree using the `FindComponent`/`FindComponents` methods, and then inspect the `Parameters` property. E.g.:
@@ -136,7 +136,7 @@ ctx.ComponentFactories.AddStub(type => type.Namespace == "Third.Party.Lib",
 // Add the markup produced by the render fragment to the rendered
 // output instead of the components that match the predicate.
 ctx.ComponentFactories.AddStub(type => type.Namespace == "Third.Party.Lib",
-                               @div>NOT FROM BAR</div>);
+                               @<div>NOT FROM BAR</div>);
 ```
 
 ### Creating a mock component with mocking libraries
