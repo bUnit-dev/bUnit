@@ -9,12 +9,10 @@ namespace Bunit.RenderingV2;
 public partial class TestRendererV2 : Renderer
 {
 	private readonly ILogger logger;
-	private readonly Dictionary<int, ComponentTreeManager> rootComponents = new();
+	private readonly Dictionary<int, ComponentAdapter> componentAdapters = new();
 	private readonly HtmlParser htmlParser;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new();
 	private Exception? capturedUnhandledException;
-
-	internal HtmlParser HtmlParser => htmlParser;
 
 	public int RenderCount { get; private set; }
 
@@ -90,36 +88,16 @@ public partial class TestRendererV2 : Renderer
 		}
 	}
 
-	private IRenderedComponent<RootComponent> InitializeComponentTreeManager(RenderFragment renderFragment)
+	private IRenderedComponent<RootComponent> InitializeRenderedRootComponent(RenderFragment renderFragment)
 	{
 		var component = new RootComponent(renderFragment);
 		var componentId = AssignRootComponentId(component);
-		var manager = new ComponentTreeManager(componentId, component, htmlParser);
-		rootComponents[componentId] = manager;
-		return InitializeRenderedComponent<RootComponent>(componentId, component, default(IElement));
-	}
-
-	internal RenderedComponentV2<TComponent> InitializeRenderedComponent<TComponent>(int componentId, TComponent instance, IElement? parentElement)
-		where TComponent : IComponent
-	{
-		var rc = parentElement is null
-			? new RenderedComponentV2<TComponent>(componentId, instance, this)
-			: new RenderedComponentV2<TComponent>(componentId, instance, this, parentElement);
-
-		rootComponents[componentId] = rc;
-
-		return rc;
-	}
-
-	internal IRenderedComponent<IComponent> InitializeRenderedComponent(int componentId, IComponent instance, IElement? parentElement)
-	{
-		var rcGenType = typeof(RenderedComponentV2<>);
-		var componentType = instance.GetType();
-		var rcType = rcGenType.MakeGenericType(componentType);
-
-		rootComponents[componentId] = rc;
-
-		return rc;
+		//var manager = new ComponentTreeManager(componentId, component, this, htmlParser);
+		//rootComponents[componentId] = manager;
+		var dom = htmlParser.ParseDocument(string.Empty);
+		var adapter = new ComponentAdapter(componentId, component, dom.Body!, new NodeSpan(dom.Body!), htmlParser, this);
+		componentAdapters[componentId] = adapter;
+		return new RenderedComponentV2<RootComponent>(adapter);
 	}
 
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
@@ -130,14 +108,19 @@ public partial class TestRendererV2 : Renderer
 		{
 			var updatedComponent = renderBatch.UpdatedComponents.Array[componentIndex];
 
-			if (updatedComponent.Edits.Count > 0)
+			if (updatedComponent.Edits.Count > 0
+				&& componentAdapters.TryGetValue(updatedComponent.ComponentId, out var adapter))
 			{
-				var rc = rootComponents[updatedComponent.ComponentId];
-				rc.ApplyEdits(updatedComponent, renderBatch, RenderCount);
+				adapter.ApplyEdits(updatedComponent, renderBatch, RenderCount);
 			}
 		}
 
 		return Task.CompletedTask;
+	}
+
+	public override Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo? fieldInfo, EventArgs eventArgs)
+	{
+		return Dispatcher.InvokeAsync(() => base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs));
 	}
 
 	/// <inheritdoc/>
@@ -155,5 +138,16 @@ public partial class TestRendererV2 : Renderer
 			unhandledExceptionTsc = new TaskCompletionSource<Exception>();
 			unhandledExceptionTsc.SetResult(capturedUnhandledException);
 		}
+	}
+
+	internal ComponentAdapter CreateComponentAdapter(
+		int componentId,
+		IComponent component,
+		IElement parentElement,
+		NodeSpan nodeSpan)
+	{
+		var adapter = new ComponentAdapter(componentId, component, parentElement, nodeSpan, htmlParser, this);
+		componentAdapters[componentId] = adapter;
+		return adapter;
 	}
 }
