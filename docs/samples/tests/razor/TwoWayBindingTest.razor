@@ -1,0 +1,11 @@
+﻿@inherits TestContext
+
+@code {
+  [Fact]
+  public void Test()
+  {
+    var currentValue = string.Empty;
+
+    var cut = Render(@<TwoWayBinding @bind-Value="currentValue"></TwoWayBinding>);
+  }
+}

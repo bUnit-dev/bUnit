@@ -210,4 +210,20 @@ public class JSRuntimeAssertExtensionsTest
 		var invocation = handler.VerifyInvoke(identifier);
 		invocation.ShouldBe(handler.Invocations[identifier][0]);
 	}
+	
+	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke reports the actual and expected amount")]	
+	public async Task Test309()
+	{
+		var sut = CreateSut();
+		const string identifier = "test";
+		const string unrelatedIdentifier = "not a test";
+		var handler = sut.SetupVoid().SetVoidResult();
+		await sut.JSRuntime.InvokeVoidAsync(unrelatedIdentifier);
+
+		await sut.JSRuntime.InvokeVoidAsync(identifier);
+
+		var actual = Should.Throw<JSInvokeCountExpectedException>(() => handler.VerifyInvoke(identifier, 2));
+		actual.Message.ShouldContain("Expected number of calls: 2");
+		actual.Message.ShouldContain("Actual number of calls:   1");
+	}	
 }

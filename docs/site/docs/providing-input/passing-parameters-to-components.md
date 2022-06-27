@@ -375,16 +375,38 @@ It is possible to nest a component under tests inside other components, if that 
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[](../../../samples/tests/xunit/NestedComponentTest.cs#L11-L23)]
+[!code-csharp[NestedComponentTest](../../../samples/tests/xunit/NestedComponentTest.cs#L11-L23)]
 
 The example renders the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()` that returns a `IRenderedComponent<HelloWorld>`. This is needed because the `RenderComponent<Wrapper>` method call returns an `IRenderedComponent<Wrapper>` instance, that provides access to the instance of the `<Wrapper>` component, but not the `<HelloWorld>`-component instance.
 
 # [Razor test code](#tab/razor)
 
-[!code-cshtml[](../../../samples/tests/razor/NestedComponentTest.razor)]
+[!code-cshtml[NestedComponentTest](../../../samples/tests/razor/NestedComponentTest.razor)]
 
 The example passes a inline Razor template to the `Render<TComponent>()` method. What is different here from the previous examples is that we use the generic version of the `Render<TComponent>` method, which is a shorthand for `Render(...).FindComponent<TComponent>()`.
 
+***
+
+## Configure two-way with component parameters (`@bind` directive)
+
+To set up [two-way binding to a pair of component parameters](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/data-binding#binding-with-component-parameters) on a component under test, e.g. the `Value` and `ValueChanged` parameter pair on the component below, do the following:
+
+[!code-csharp[TwoWayBinding.razor](../../../samples/components/TwoWayBinding.razor)]
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[TwoWayBindingTest.cs](../../../samples/tests/xunit/TwoWayBindingTest.cs#L5-L19)]
+
+The example uses the `Bind` method to setup two-way binding between the `Value` parameter and `ValueChanged` parameter, and the local variable in the test method (`currentValue`). The `Bind` method is a shorthand for calling the the `Add` method for the `Value` parameter and `ValueChanged` parameter individually.
+
+# [Razor test code](#tab/razor)
+
+[!code-cshtml[TwoWayBindingTest.razor](../../../samples/tests/razor/TwoWayBindingTest.razor)]
+
+The example uses the standard `@bind-Value` directive in Blazor to set up two way binding between the `Value` parameter and `ValueChanged` parameter and the local variable in the test method (`currentValue`).
+
+> [!WARNING]
+> When using `@bind` in conjunction with razor test-files the razor component should **not** inherit from `ComponentBase` (which is the default). The simplest solution would be to inherit from `TestContext` (as seen in the example above) which also brings the benefits as described on top of this page. For **NUnit** and **MSTest** check out the section "Remove boilerplate code from tests" on the <xref:writing-tests> page.
 ***
 
 ## Further Reading
