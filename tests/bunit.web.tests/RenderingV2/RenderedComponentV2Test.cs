@@ -1,4 +1,5 @@
 using AngleSharp.Dom.Events;
+using AngleSharp.Html.Dom;
 using AngleSharp.Html.Dom.Events;
 using Bunit.TestAssets.BlazorE2E;
 using Microsoft.Extensions.Logging;
@@ -95,7 +96,7 @@ public class RenderedComponentV2Test
 	{
 		// List is initially empty
 		var cut = Renderer.Render<KeyPressEventComponent>();
-		var inputElement = cut.Find("input");
+		var inputElement = cut.Find<IHtmlInputElement>("input");
 		Assert.Empty(cut.FindAll("li"));
 
 		// Typing adds element
@@ -111,5 +112,6 @@ public class RenderedComponentV2Test
 
 		// Textbox contains typed text
 		Assert.Equal("ab", inputElement.GetAttribute("value"));
+		Assert.Equal("ab", inputElement.Value);
 	}
 }
