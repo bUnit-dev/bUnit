@@ -84,12 +84,14 @@ internal class ComponentAdapter
 					break;
 				}
 				// StepIn seems to be about going from the current containing element into a child
-				// element basedon the sibling index
+				// element based on the sibling index
 				case RenderTreeEditType.StepIn:
 				{
 					containingElement = (IElement)owner.ParentElement.ChildNodes[edit.SiblingIndex];
 					break;
 				}
+				// StepOut seems to just ask us to step up/out to the parent element.
+				// TODO: Investigate if there can be multiple steps?
 				case RenderTreeEditType.StepOut:
 				{
 					containingElement = containingElement.ParentElement!;
