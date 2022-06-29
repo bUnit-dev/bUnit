@@ -151,4 +151,15 @@ public class RenderedComponentV2Test
 		Assert.Equal("color: red;", styledElement.GetAttribute("style"));
 		Assert.Equal("somevalue", styledElement.GetAttribute("customattribute"));
 	}
+
+	// Verifies we can render HTML content as a single block
+	[Fact]
+	public void CanRenderChildContent_StaticHtmlBlock()
+	{
+		var cut = Renderer.Render<HtmlBlockChildContent>();
+		Assert.Equal("<p>Some-Static-Text</p>", cut.Find("#foo").InnerHtml);
+
+		// TODO: confirm whether or not this should pass:
+		// Assert.Equal("<p>Some-Static-Text</p>", cut.Find("#foo").GetAttribute("InnerHtml"));
+	}
 }
