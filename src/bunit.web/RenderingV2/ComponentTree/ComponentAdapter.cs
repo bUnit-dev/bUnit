@@ -135,7 +135,7 @@ internal class ComponentAdapter
 		{
 			case RenderTreeFrameType.Component:
 			{
-				var child = owner.renderer.CreateComponentAdapter(frame.ComponentId, frame.Component, owner.ParentElement, new NodeSpan(containingElement));
+				var child = owner.renderer.CreateComponentAdapter(frame.ComponentId, frame.Component, containingElement, new NodeSpan(containingElement));
 				owner.AddChild(child);
 				for (var i = referenceFrameIndex + 1; i < renderBatch.UpdatedComponents.Count; i++)
 				{
