@@ -11,6 +11,7 @@ public partial class TestRendererV2 : Renderer
 	private readonly ILogger logger;
 	private readonly Dictionary<int, ComponentAdapter> componentAdapters = new();
 	private readonly HtmlParser htmlParser;
+	private readonly EventHandlerManager eventHandlerManager;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new();
 	private Exception? capturedUnhandledException;
 
@@ -36,6 +37,7 @@ public partial class TestRendererV2 : Renderer
 			IsEmbedded = true,
 			IsStrictMode = false,
 		});
+		eventHandlerManager = new();
 	}
 
 	/// <summary>
@@ -92,10 +94,8 @@ public partial class TestRendererV2 : Renderer
 	{
 		var component = new RootComponent(renderFragment);
 		var componentId = AssignRootComponentId(component);
-		//var manager = new ComponentTreeManager(componentId, component, this, htmlParser);
-		//rootComponents[componentId] = manager;
 		var dom = htmlParser.ParseDocument(string.Empty);
-		var adapter = new ComponentAdapter(componentId, component, dom.Body!, new NodeSpan(dom.Body!), htmlParser, this);
+		var adapter = new ComponentAdapter(componentId, component, dom.Body!, new NodeSpan(dom.Body!), htmlParser, this, eventHandlerManager);
 		componentAdapters[componentId] = adapter;
 		return new RenderedComponentV2<RootComponent>(adapter);
 	}
@@ -103,6 +103,7 @@ public partial class TestRendererV2 : Renderer
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
 		RenderCount++;
+
 		var numUpdatedComponents = renderBatch.UpdatedComponents.Count;
 		for (var componentIndex = 0; componentIndex < numUpdatedComponents; componentIndex++)
 		{
@@ -112,6 +113,15 @@ public partial class TestRendererV2 : Renderer
 				&& componentAdapters.TryGetValue(updatedComponent.ComponentId, out var adapter))
 			{
 				adapter.ApplyEdits(updatedComponent, renderBatch, RenderCount);
+			}
+
+			var numDisposeEventHandlers = renderBatch.DisposedEventHandlerIDs.Count;
+			if (renderBatch.DisposedEventHandlerIDs.Count != 0)
+			{
+				for (var i = 0; i < numDisposeEventHandlers; i++)
+				{
+					eventHandlerManager.DisposeHandler(renderBatch.DisposedEventHandlerIDs.Array[i]);
+				}
 			}
 		}
 
@@ -146,7 +156,7 @@ public partial class TestRendererV2 : Renderer
 		IElement parentElement,
 		NodeSpan nodeSpan)
 	{
-		var adapter = new ComponentAdapter(componentId, component, parentElement, nodeSpan, htmlParser, this);
+		var adapter = new ComponentAdapter(componentId, component, parentElement, nodeSpan, htmlParser, this, eventHandlerManager);
 		componentAdapters[componentId] = adapter;
 		return adapter;
 	}

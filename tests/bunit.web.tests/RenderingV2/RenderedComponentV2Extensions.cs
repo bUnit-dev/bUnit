@@ -24,7 +24,7 @@ internal static class RenderedComponentV2Extensions
 	private class HtmlCollection<TElement> : IHtmlCollection<TElement>
 		where TElement : class, IElement
 	{
-		private readonly List<TElement> elements = new();
+		private readonly List<TElement> elements;
 
 		public TElement this[int index] => elements[index];
 
