@@ -11,8 +11,8 @@ public sealed class ParameterException : ArgumentException
 	/// </summary>
 	/// <param name="messsage">Validation message.</param>
 	/// <param name="parameterName">Name of the Blazor parameter.</param>
-	public ParameterException(string messsage, string parameterName)
-		: base(messsage, parameterName)
+	public ParameterException(string message, string parameterName)
+		: base(message, parameterName)
 	{ }
 
 	private ParameterException(SerializationInfo serializationInfo, StreamingContext streamingContext)

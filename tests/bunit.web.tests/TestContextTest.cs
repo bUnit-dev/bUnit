@@ -62,7 +62,7 @@ public partial class TestContextTest : TestContext
 	public void Test033()
 	{
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
-		var cut = RenderComponent<ReceivesCascadinValue>(("Dummy", null));
+		var cut = RenderComponent<ReceivesCascadingValue>(("Dummy", null));
 
 		cut.Instance
 			.Value
@@ -75,7 +75,7 @@ public partial class TestContextTest : TestContext
 		Should.NotThrow(() => RenderComponent<ClickCounter>().Find("button").Click());
 	}
 
-	private class ReceivesCascadinValue : ComponentBase
+	private class ReceivesCascadingValue : ComponentBase
 	{
 		[CascadingParameter] public string? Value { get; set; }
 
