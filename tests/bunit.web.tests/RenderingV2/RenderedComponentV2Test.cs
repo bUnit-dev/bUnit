@@ -162,4 +162,23 @@ public class RenderedComponentV2Test
 		// TODO: confirm whether or not this should pass:
 		// Assert.Equal("<p>Some-Static-Text</p>", cut.Find("#foo").GetAttribute("InnerHtml"));
 	}
+
+	// Verifies we can rewite more complex HTML content into blocks
+	[Fact]
+	public void CanRenderChildContent_MixedHtmlBlock()
+	{
+		var cut = Renderer.Render<HtmlMixedChildContent>();
+
+		var one = cut.Find("#one");
+		Assert.Equal("<p>Some-Static-Text</p>", one.InnerHtml);
+
+		var two = cut.Find("#two");
+		Assert.Equal("<span>More-Static-Text</span>", two.InnerHtml);
+
+		var three = cut.Find("#three");
+		Assert.Equal("Some-Dynamic-Text", three.InnerHtml);
+
+		var four = cut.Find("#four");
+		Assert.Equal("But this is static", four.InnerHtml);
+	}
 }
