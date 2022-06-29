@@ -12,6 +12,12 @@ namespace Bunit.RenderingV2;
 /// The original tests are located here:
 /// https://github.dev/dotnet/aspnetcore/blob/e97323601c57c21c6a9c399c220d327e09271d85/src/Components/test/E2ETest/Tests/ComponentRenderingTestBase.cs
 /// </summary>
+/// <remarks>
+/// The tests here are converted from Selenium based tests, and
+/// are not following the usual coding standards for bUnit.
+/// This is on purpose, as we want to keep them as close to
+/// their original versions from the Blazor team.
+/// </remarks>
 public class RenderedComponentV2Test
 {
 	private ServiceProvider Services { get; }
@@ -179,6 +185,25 @@ public class RenderedComponentV2Test
 		Assert.Equal("Some-Dynamic-Text", three.InnerHtml);
 
 		var four = cut.Find("#four");
+		Assert.Equal("But this is static", four.InnerHtml);
+	}
+
+	// Verifies we can rewrite HTML blocks with encoded HTML
+	[Fact]
+	public void CanRenderChildContent_EncodedHtmlInBlock()
+	{
+		var appElement = Renderer.Render<HtmlEncodedChildContent>();
+
+		var one = appElement.Find("#one");
+		Assert.Equal("<p>Some-Static-Text</p>", one.InnerHtml);
+
+		var two = appElement.Find("#two");
+		Assert.Equal("&lt;span&gt;More-Static-Text&lt;/span&gt;", two.InnerHtml);
+
+		var three = appElement.Find("#three");
+		Assert.Equal("Some-Dynamic-Text", three.InnerHtml);
+
+		var four = appElement.Find("#four");
 		Assert.Equal("But this is static", four.InnerHtml);
 	}
 }
