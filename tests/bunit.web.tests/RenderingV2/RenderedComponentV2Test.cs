@@ -64,7 +64,6 @@ public class RenderedComponentV2Test
 
 		// Clicking button increments count
 		cut.Find("button").Dispatch(new Event("onclick"));
-
 		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 	}
 
@@ -113,5 +112,31 @@ public class RenderedComponentV2Test
 		// Textbox contains typed text
 		Assert.Equal("ab", inputElement.GetAttribute("value"));
 		Assert.Equal("ab", inputElement.Value);
+	}
+
+	[Fact]
+	public void CanAddAndRemoveEventHandlersDynamically()
+	{
+		var cut = Renderer.Render<CounterComponent>();
+		var countDisplayElement = cut.Find("p");
+		var incrementButton = cut.Find("button");
+		var toggleClickHandlerCheckbox = cut.Find("[type=checkbox]");
+
+		// Initial count is zero; clicking button increments count
+		Assert.Equal("Current count: 0", countDisplayElement.TextContent);
+		incrementButton.Dispatch(new Event("onclick"));
+		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
+
+		// We can remove an event handler
+		toggleClickHandlerCheckbox.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = false }, "onchange"));
+		Assert.Empty(cut.FindAll("#listening-message"));
+		incrementButton.Dispatch(new Event("onclick"));
+		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
+
+		// We can add an event handler
+		toggleClickHandlerCheckbox.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = true }, "onchange"));
+		cut.Find("#listening-message");
+		incrementButton.Dispatch(new Event("onclick"));
+		Assert.Equal("Current count: 2", countDisplayElement.TextContent);
 	}
 }

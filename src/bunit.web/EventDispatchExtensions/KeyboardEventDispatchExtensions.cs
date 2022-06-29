@@ -148,8 +148,8 @@ public static class KeyboardEventDispatchExtensions
 	/// <param name="altKey">true if the alt key was down when the event was fired. false otherwise.</param>
 	/// <param name="metaKey">true if the meta key was down when the event was fired. false otherwise.</param>
 	/// <param name="type">The type of the event.</param>
-	public static void KeyPress(this IElement element, string key, string? code = default, float location = default, bool repeat = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
-		=> _ = KeyPressAsync(element, new KeyboardEventArgs { Key = key, Code = code!, Location = location, Repeat = repeat, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
+	public static void KeyPress(this IElement element, string key, string? code = default, float location = default, bool repeat = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string type = "keypress")
+		=> _ = KeyPressAsync(element, new KeyboardEventArgs { Key = key, Code = code!, Location = location, Repeat = repeat, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type });
 
 	/// <summary>
 	/// Raises the <c>@onkeypress</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>

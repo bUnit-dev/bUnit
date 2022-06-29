@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using AngleSharp.Dom;
 using AngleSharp.Dom.Events;
 using AngleSharp.Html.Dom;
@@ -13,6 +14,7 @@ internal class ComponentAdapter
 	private readonly IDocument dom;
 	private readonly HtmlParser htmlParser;
 	private readonly TestRendererV2 renderer;
+	private readonly EventHandlerManager eventHandlerManager;
 	private int latestUpdateNumber;
 
 	public int ComponentId { get; }
@@ -31,7 +33,8 @@ internal class ComponentAdapter
 		IElement parentElement,
 		NodeSpan nodeSpan,
 		HtmlParser htmlParser,
-		TestRendererV2 renderer)
+		TestRendererV2 renderer,
+		EventHandlerManager eventHandlerManager)
 	{
 		ComponentId = componentId;
 		Component = component;
@@ -39,6 +42,7 @@ internal class ComponentAdapter
 		NodeSpan = nodeSpan;
 		this.htmlParser = htmlParser;
 		this.renderer = renderer;
+		this.eventHandlerManager = eventHandlerManager;
 		this.dom = parentElement.Owner!;
 		children = new List<ComponentAdapter>();
 	}
@@ -58,7 +62,7 @@ internal class ComponentAdapter
 		ApplyEdits(updatedComponent, renderBatch, this, this.ParentElement);
 	}
 
-	private static void ApplyEdits(in RenderTreeDiff updatedComponent, in RenderBatch renderBatch, in ComponentAdapter owner, IElement containingElement)
+	private void ApplyEdits(in RenderTreeDiff updatedComponent, in RenderBatch renderBatch, in ComponentAdapter owner, IElement containingElement)
 	{
 		foreach (var edit in updatedComponent.Edits)
 		{
@@ -69,18 +73,30 @@ internal class ComponentAdapter
 					ApplyPrependFrame(edit.ReferenceFrameIndex, renderBatch, owner, containingElement);
 					break;
 				}
+				case RenderTreeEditType.RemoveFrame:
+				{
+					var node = containingElement.ChildNodes[edit.SiblingIndex];
+					containingElement.RemoveChild(node);
+					// TODO: clean up event subscriptions? or does that happen later anyway?
+					// TODO: somehow let users know that the node is no longer in the DOM,
+					//       if they try to use it after it has been removed (e.g. assert based on it).
+					break;
+				}
+				case RenderTreeEditType.RemoveAttribute:
+				{
+					ApplyRemoveAttribute(edit, containingElement);
+					break;
+				}
 				case RenderTreeEditType.SetAttribute:
 				{
 					ref var frame = ref renderBatch.ReferenceFrames.Array[edit.ReferenceFrameIndex];
-					var node = (IElement)containingElement.ChildNodes[edit.SiblingIndex];
-					ApplySetAttribute(ref frame, owner, node);
+					var element = (IElement)containingElement.ChildNodes[edit.SiblingIndex];
+					ApplySetAttribute(ref frame, owner, element);
 					break;
 				}
 				case RenderTreeEditType.UpdateText:
 				{
-					ref var frame = ref renderBatch.ReferenceFrames.Array[edit.ReferenceFrameIndex];
-					var node = containingElement.ChildNodes[edit.SiblingIndex];
-					node.TextContent = frame.TextContent;
+					ApplyUpdateText(edit, renderBatch, containingElement);
 					break;
 				}
 				// StepIn seems to be about going from the current containing element into a child
@@ -103,8 +119,15 @@ internal class ComponentAdapter
 		}
 	}
 
+	private static void ApplyUpdateText(in RenderTreeEdit edit, in RenderBatch renderBatch, IElement containingElement)
+	{
+		ref var frame = ref renderBatch.ReferenceFrames.Array[edit.ReferenceFrameIndex];
+		var textNode = containingElement.ChildNodes[edit.SiblingIndex];
+		textNode.TextContent = frame.TextContent;
+	}
+
 #pragma warning disable MA0051 // Method is too long
-	private static void ApplyPrependFrame(int referenceFrameIndex, in RenderBatch renderBatch, in ComponentAdapter owner, IElement containingElement)
+	private void ApplyPrependFrame(int referenceFrameIndex, in RenderBatch renderBatch, in ComponentAdapter owner, IElement containingElement)
 #pragma warning restore MA0051 // Method is too long
 	{
 		ref var frame = ref renderBatch.ReferenceFrames.Array[referenceFrameIndex];
@@ -188,7 +211,7 @@ internal class ComponentAdapter
 		}
 	}
 
-	private static void InsertFrameRange(int startIndex, int endIndexExcl, in RenderBatch batch, in ComponentAdapter owner, IElement containingElement)
+	private void InsertFrameRange(int startIndex, int endIndexExcl, in RenderBatch batch, in ComponentAdapter owner, IElement containingElement)
 	{
 		for (var frameIndex = startIndex; frameIndex < endIndexExcl; frameIndex++)
 		{
@@ -212,18 +235,20 @@ internal class ComponentAdapter
 	};
 
 #pragma warning disable MA0051 // Method is too long
-	private static void ApplySetAttribute(ref RenderTreeFrame attributeFrame, ComponentAdapter owner, IElement element)
+	private void ApplySetAttribute(ref RenderTreeFrame frame, ComponentAdapter owner, IElement element)
 #pragma warning restore MA0051 // Method is too long
 	{
-		if (attributeFrame.AttributeValue is Delegate)
+		switch (frame.AttributeValue)
 		{
-			var eventHandlerId = attributeFrame.AttributeEventHandlerId;
+			case Delegate:
+			case EventCallback:
+			{
+				var eventHandlerId = frame.AttributeEventHandlerId;
+				var eventName = frame.AttributeName;
 
-			// TODO: Should we pass/create an EventFieldInfo in the event handler?
-			// TODO: Can we handle async event handlers via the AngleSharp event dispatch system?
-			element.AddEventListener(
-				attributeFrame.AttributeName,
-				(sender, ev) =>
+				// TODO: Should we pass/create an EventFieldInfo in the event handler?
+				// TODO: Can we handle async event handlers via the AngleSharp event dispatch system?
+				DomEventHandler eventHandler = (sender, ev) =>
 				{
 					EventArgs blazorEvent;
 					if (ev is BunitEvent be)
@@ -245,13 +270,22 @@ internal class ComponentAdapter
 							blazorEvent);
 					}
 					ApplySideEffect(sender, blazorEvent);
-				});
-		}
-		else
-		{
-			element.SetAttribute(
-				attributeFrame.AttributeName,
-				attributeFrame.AttributeValue?.ToString() ?? string.Empty);
+				};
+
+				element.AddEventListener(frame.AttributeName, eventHandler);
+				eventHandlerManager.RegisterHandler(
+					eventHandlerId,
+					() => element.RemoveEventListener(eventName, eventHandler));
+
+				break;
+			}
+			default:
+			{
+				element.SetAttribute(
+					frame.AttributeName,
+					frame.AttributeValue?.ToString() ?? string.Empty);
+				break;
+			}
 		}
 
 		static void ApplySideEffect(object node, EventArgs e)
@@ -290,6 +324,11 @@ internal class ComponentAdapter
 					Type = ToBlazorEventType(ke.Type),
 					Key = ke.Key!,
 				},
+				Event _ and { Type: "onchange"} => new ChangeEventArgs(),
+				InputEvent ie => new ChangeEventArgs
+				{
+					Value = ie.Data
+				},
 				Event _ => EventArgs.Empty,
 				_ => throw new NotImplementedException($"Mapping for {e.Type} not implemented.")
 			};
@@ -298,6 +337,13 @@ internal class ComponentAdapter
 			// Blazor expects. AngleSharp/HTML5 requires the "on" prefix.
 			static string ToBlazorEventType(string type) => type[2..];
 		}
+	}
+
+	private void ApplyRemoveAttribute(in RenderTreeEdit edit, IElement containingElement)
+	{
+		Debug.Assert(edit.RemovedAttributeName is not null);
+		var element = (IElement)containingElement.ChildNodes[edit.SiblingIndex];
+		element.RemoveAttribute(edit.RemovedAttributeName);
 	}
 }
 
