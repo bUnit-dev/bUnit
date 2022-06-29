@@ -139,4 +139,16 @@ public class RenderedComponentV2Test
 		incrementButton.Dispatch(new Event("onclick"));
 		Assert.Equal("Current count: 2", countDisplayElement.TextContent);
 	}
+
+	[Fact]
+	public void CanRenderChildComponents()
+	{
+		var cut = Renderer.Render<ParentChildComponent>();
+		Assert.Equal("Parent component", cut.Find("fieldset > legend").TextContent);
+
+		var styledElement = cut.Find("fieldset > h1");
+		Assert.Equal("Hello, world!", styledElement.TextContent);
+		Assert.Equal("color: red;", styledElement.GetAttribute("style"));
+		Assert.Equal("somevalue", styledElement.GetAttribute("customattribute"));
+	}
 }

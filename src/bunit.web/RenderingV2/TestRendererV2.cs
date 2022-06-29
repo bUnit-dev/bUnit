@@ -114,15 +114,12 @@ public partial class TestRendererV2 : Renderer
 			{
 				adapter.ApplyEdits(updatedComponent, renderBatch, RenderCount);
 			}
+		}
 
-			var numDisposeEventHandlers = renderBatch.DisposedEventHandlerIDs.Count;
-			if (renderBatch.DisposedEventHandlerIDs.Count != 0)
-			{
-				for (var i = 0; i < numDisposeEventHandlers; i++)
-				{
-					eventHandlerManager.DisposeHandler(renderBatch.DisposedEventHandlerIDs.Array[i]);
-				}
-			}
+		var numDisposeEventHandlers = renderBatch.DisposedEventHandlerIDs.Count;
+		for (var i = 0; i < numDisposeEventHandlers; i++)
+		{
+			eventHandlerManager.DisposeHandler(renderBatch.DisposedEventHandlerIDs.Array[i]);
 		}
 
 		return Task.CompletedTask;
