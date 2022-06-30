@@ -4,54 +4,111 @@ using AngleSharp.Dom;
 
 namespace Bunit.RenderingV2.ComponentTree;
 
-internal readonly record struct NodeSpan : IReadOnlyList<INode>, INodeList
+// This has pointers to the previous sibling and next sibling inside
+// the source, if the NodeSpan is limited to only parts of the source.
+// Unfortunately, there does not seem to be a way to detect when the
+// nodes to the source from here, which is why there is a index cache
+// for both siblings. The caches are checked and potentially updated
+// each time Count property, indexer property, or the GetEnumerator
+// method are used.
+//
+// This is probably not super inefficient, but its the best solution
+// for now.
+//
+// TODO: Can we optimize this further to make lookups, iterations,
+//       more effective.
+// TODO: Are there benefits making this a struct?
+internal class NodeSpan : IReadOnlyList<INode>, INodeList
 {
-	private readonly INode? first;
-	private readonly INode? last;
+	private readonly INode source;
+	private int previousSiblingIndexCache;
+	private int nextSiblingIndexCache;
 
-	private int Offset => 0;
+	internal INode? PreviousSibling { get; set; }
 
-	internal readonly IElement Source { get; }
+	internal INode? NextSibling { get; set; }
 
-	public INode? First => first;
+	int INodeList.Length => Count;
 
-	public INode? Last => last;
+	INode INodeList.this[int index] => this[index];
 
-	// TODO: INode.Index() searches through ChildNotes of parent to find the index of a node,
-	//       so perf on this is poor to say the least.
-	public int Count => Source.ChildNodes.Length;
+	public int Count
+		=> ReferenceEquals(PreviousSibling, NextSibling)
+			? 0
+			: CalculateLength() - CalculateOffset();
 
-	public int Length => Count;
 
 	public INode this[int index]
-		=> Source.ChildNodes[index + Offset];
-
-	public NodeSpan(IElement source)
 	{
-		Source = source;
+		get
+		{
+			var calculatedIndex = index + CalculateOffset();
+			if (calculatedIndex < CalculateLength())
+			{
+				return source.ChildNodes[calculatedIndex];
+			}
+			else
+			{
+				throw new ArgumentOutOfRangeException(nameof(index));
+			}
+		}
 	}
 
-	public NodeSpan(IElement source, INode? first, INode? last)
+	public NodeSpan(INode source, INode? previousSibling = null, INode? nextSibling = null)
 	{
-		Source = source;
-		this.first = first;
-		this.last = last;
+		this.source = source;
+		this.PreviousSibling = previousSibling;
+		this.NextSibling = nextSibling;
 	}
 
 	public IEnumerator<INode> GetEnumerator()
 	{
-		if (Source is null)
+		if (source is null || ReferenceEquals(PreviousSibling, NextSibling))
 			yield break;
 
-		for (int i = 0; i < Count; i++)
+		var length = CalculateLength();
+		for (int i = CalculateOffset(); i < length; i++)
 		{
-			yield return this[i];
+			yield return source.ChildNodes[i];
 		}
 	}
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	public void ToHtml(TextWriter writer, IMarkupFormatter formatter)
+	// Finds the offset in the source where the
+	// node span starts. Previous sibling points to the node
+	// that precedes this span's range.
+	private int CalculateOffset()
+	{
+		if (PreviousSibling is null)
+			return 0;
+
+		if (source.ChildNodes.Length <= previousSiblingIndexCache || !ReferenceEquals(source.ChildNodes[previousSiblingIndexCache], PreviousSibling))
+		{
+			previousSiblingIndexCache = source.ChildNodes.Index(PreviousSibling);
+		}
+
+		return previousSiblingIndexCache + 1;
+	}
+
+	// Find the index of the next sibling node, if present.
+	// This is used as the length of this node span, as
+	// next sibling represents the node just outside the
+	// span's range.
+	private int CalculateLength()
+	{
+		if (NextSibling is null)
+			return source.ChildNodes.Length;
+
+		if (source.ChildNodes.Length <= nextSiblingIndexCache || !ReferenceEquals(source.ChildNodes[nextSiblingIndexCache], NextSibling))
+		{
+			nextSiblingIndexCache = source.ChildNodes.Index(NextSibling);
+		}
+
+		return nextSiblingIndexCache;
+	}
+
+	void IMarkupFormattable.ToHtml(TextWriter writer, IMarkupFormatter formatter)
 	{
 		foreach (var item in this)
 		{
