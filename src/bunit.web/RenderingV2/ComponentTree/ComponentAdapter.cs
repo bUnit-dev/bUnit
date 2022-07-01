@@ -4,7 +4,6 @@ using AngleSharp.Dom.Events;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Dom.Events;
 using AngleSharp.Html.Parser;
-using Bunit.RenderingV2.AngleSharp;
 
 namespace Bunit.RenderingV2.ComponentTree;
 
@@ -13,7 +12,7 @@ internal class ComponentAdapter
 	private readonly List<ComponentAdapter> children;
 	private readonly IDocument dom;
 	private readonly HtmlParser htmlParser;
-	private readonly TestRendererV2 renderer;
+	private readonly BunitRenderer renderer;
 	private readonly EventHandlerManager eventHandlerManager;
 	private int latestUpdateNumber;
 
@@ -21,7 +20,7 @@ internal class ComponentAdapter
 
 	public IComponent Component { get; }
 
-	public IElement ParentElement { get; }
+	public INode ParentElement { get; }
 
 	public NodeSpan NodeSpan { get; private set; }
 
@@ -30,10 +29,9 @@ internal class ComponentAdapter
 	public ComponentAdapter(
 		int componentId,
 		IComponent component,
-		IElement parentElement,
-		NodeSpan nodeSpan,
+		INode parentElement,
 		HtmlParser htmlParser,
-		TestRendererV2 renderer,
+		BunitRenderer renderer,
 		EventHandlerManager eventHandlerManager)
 	{
 		ComponentId = componentId;
@@ -59,10 +57,10 @@ internal class ComponentAdapter
 
 		latestUpdateNumber = updateNumber;
 
-		ApplyEdits(updatedComponent, renderBatch, this, this.ParentElement);
+		ApplyEdits(in updatedComponent, in renderBatch, this, this.ParentElement);
 	}
 
-	private void ApplyEdits(in RenderTreeDiff updatedComponent, in RenderBatch renderBatch, in ComponentAdapter owner, IElement containingElement)
+	private void ApplyEdits(in RenderTreeDiff updatedComponent, in RenderBatch renderBatch, ComponentAdapter owner, INode parent)
 	{
 		foreach (var edit in updatedComponent.Edits)
 		{
@@ -70,13 +68,13 @@ internal class ComponentAdapter
 			{
 				case RenderTreeEditType.PrependFrame:
 				{
-					ApplyPrependFrame(edit.ReferenceFrameIndex, renderBatch, owner, containingElement);
+					ApplyPrependFrame(edit.ReferenceFrameIndex, in renderBatch, owner, parent);
 					break;
 				}
 				case RenderTreeEditType.RemoveFrame:
 				{
-					var node = containingElement.ChildNodes[edit.SiblingIndex];
-					containingElement.RemoveChild(node);
+					// TODO: What if sibling index pointed to Markup containing multiple elements?
+					owner.NodeSpan.RemoveAt(edit.SiblingIndex, parent);
 					// TODO: clean up event subscriptions? or does that happen later anyway?
 					// TODO: somehow let users know that the node is no longer in the DOM,
 					//       if they try to use it after it has been removed (e.g. assert based on it).
@@ -84,33 +82,37 @@ internal class ComponentAdapter
 				}
 				case RenderTreeEditType.RemoveAttribute:
 				{
-					ApplyRemoveAttribute(edit, containingElement);
+					ApplyRemoveAttribute(in edit, parent);
 					break;
 				}
 				case RenderTreeEditType.SetAttribute:
 				{
-					ref var frame = ref renderBatch.ReferenceFrames.Array[edit.ReferenceFrameIndex];
-					var element = (IElement)containingElement.ChildNodes[edit.SiblingIndex];
-					ApplySetAttribute(ref frame, owner, element);
+					ref readonly var frame = ref renderBatch.ReferenceFrames.Array[edit.ReferenceFrameIndex];
+
+					var element = ReferenceEquals(parent, owner.ParentElement)
+						? (IElement)owner.NodeSpan.GetNodeByFrameIndex(edit.SiblingIndex)
+						: (IElement)parent.ChildNodes[edit.SiblingIndex];
+
+					ApplySetAttribute(in frame, owner, element);
 					break;
 				}
 				case RenderTreeEditType.UpdateText:
 				{
-					ApplyUpdateText(edit, renderBatch, containingElement);
+					ApplyUpdateText(in edit, in renderBatch, parent);
 					break;
 				}
 				// StepIn seems to be about going from the current containing element into a child
 				// element based on the sibling index
 				case RenderTreeEditType.StepIn:
 				{
-					containingElement = (IElement)owner.ParentElement.ChildNodes[edit.SiblingIndex];
+					parent = owner.NodeSpan.GetNodeByFrameIndex(edit.SiblingIndex);
 					break;
 				}
 				// StepOut seems to just ask us to step up/out to the parent element.
 				// TODO: Investigate if there can be multiple steps?
 				case RenderTreeEditType.StepOut:
 				{
-					containingElement = containingElement.ParentElement!;
+					parent = parent.ParentElement!;
 					break;
 				}
 				default:
@@ -119,91 +121,37 @@ internal class ComponentAdapter
 		}
 	}
 
-	private static void ApplyUpdateText(in RenderTreeEdit edit, in RenderBatch renderBatch, IElement containingElement)
+	private static void ApplyUpdateText(in RenderTreeEdit edit, in RenderBatch renderBatch, INode parent)
 	{
 		ref var frame = ref renderBatch.ReferenceFrames.Array[edit.ReferenceFrameIndex];
-		var textNode = containingElement.ChildNodes[edit.SiblingIndex];
+		var textNode = parent.ChildNodes[edit.SiblingIndex];
 		textNode.TextContent = frame.TextContent;
 	}
 
-#pragma warning disable MA0051 // Method is too long
-	private void ApplyPrependFrame(int referenceFrameIndex, in RenderBatch renderBatch, in ComponentAdapter owner, IElement containingElement)
-#pragma warning restore MA0051 // Method is too long
+	private void ApplyPrependFrame(int referenceFrameIndex, in RenderBatch renderBatch, in ComponentAdapter owner, INode parent)
 	{
-		ref var frame = ref renderBatch.ReferenceFrames.Array[referenceFrameIndex];
+		ref readonly var frame = ref renderBatch.ReferenceFrames.Array[referenceFrameIndex];
 		switch (frame.FrameType)
 		{
 			case RenderTreeFrameType.Component:
 			{
-				var child = owner.renderer.CreateComponentAdapter(frame.ComponentId, frame.Component, containingElement, new NodeSpan(containingElement));
-				owner.AddChild(child);
-				for (var i = referenceFrameIndex + 1; i < renderBatch.UpdatedComponents.Count; i++)
-				{
-					var componentEdits = renderBatch.UpdatedComponents.Array[i];
-					if (componentEdits.ComponentId == frame.ComponentId && componentEdits.Edits.Count > 0)
-					{
-						child.ApplyEdits(componentEdits, renderBatch, owner.latestUpdateNumber);
-					}
-				}
+				ApplyComponent(referenceFrameIndex, in renderBatch, owner, parent);
 				break;
 			}
 			case RenderTreeFrameType.Element:
 			{
-				var newElement = owner.dom.CreateElement(frame.ElementName);
-
-				//if (ReferenceEquals(owner.NodeSpan.Source, containingElement) && owner.NodeSpan.Last is not null)
-				//{
-				//	newElement.InsertAfter(owner.NodeSpan.Last);
-				//	owner.NodeSpan = owner.NodeSpan with
-				//	{
-				//		Last = newElement
-				//	};
-				//}
-				//else
-				//{
-				containingElement.AppendChild(newElement);
-				//}
-
-				var endIndexExcl = referenceFrameIndex + frame.ElementSubtreeLength;
-				for (var descendantIndex = referenceFrameIndex + 1; descendantIndex < endIndexExcl; descendantIndex++)
-				{
-					ref var candidateFrame = ref renderBatch.ReferenceFrames.Array[descendantIndex];
-					if (candidateFrame.FrameType == RenderTreeFrameType.Attribute)
-					{
-						ApplySetAttribute(ref candidateFrame, owner, newElement);
-					}
-					else
-					{
-						// As soon as we see a non-attribute child, all the subsequent child frames are
-						// not attributes, so bail out and insert the remnants recursively
-						InsertFrameRange(descendantIndex, endIndexExcl, renderBatch, owner, newElement);
-						break;
-					}
-				}
+				ApplyElement(referenceFrameIndex, in renderBatch, owner, parent);
 				break;
 			}
 			case RenderTreeFrameType.Markup:
 			{
-				// TODO: should we detect whitespace/newlines/text only and skip using ParseFragment for speed?
-				var markupNodes = owner.htmlParser.ParseFragment(frame.MarkupContent, containingElement);
-				if (markupNodes.Length > 0)
-				{
-					//if (ReferenceEquals(owner.NodeSpan.Source, containingElement) && owner.NodeSpan.Last is not null)
-					//{
-					//	markupNodes.InsertAfter(owner.NodeSpan.Last);
-					//	owner.UpdateLastNode(markupNodes[^1]);
-					//}
-					//else
-					//{
-					containingElement.AppendNodes(markupNodes);
-					//}
-				}
+				ApplyMarkup(referenceFrameIndex, in renderBatch, owner, parent);
 				break;
 			}
 			case RenderTreeFrameType.Text:
 			{
 				var text = owner.dom.CreateTextNode(frame.TextContent);
-				containingElement.AppendChild(text);
+				parent.AppendChild(text);
 				break;
 			}
 			default:
@@ -211,31 +159,97 @@ internal class ComponentAdapter
 		}
 	}
 
+	private static void ApplyMarkup(int referenceFrameIndex, in RenderBatch renderBatch, ComponentAdapter owner, INode parent)
+	{
+		ref readonly var frame = ref renderBatch.ReferenceFrames.Array[referenceFrameIndex];
+
+		// TODO: should we detect whitespace/newlines/text only and skip using ParseFragment for speed?
+		//var text = string.IsNullOrWhiteSpace(frame.MarkupContent)
+		//	? frame.MarkupContent
+		//	: frame.MarkupContent.TrimEnd();
+
+		var text = frame.MarkupContent;
+
+		var markupNodes = owner.htmlParser.ParseFragment(text, (parent as IElement)!);
+		owner.NodeSpan.Append(markupNodes, parent);
+	}
+
+	private void ApplyElement(int referenceFrameIndex, in RenderBatch renderBatch, ComponentAdapter owner, INode parent)
+	{
+		ref readonly var frame = ref renderBatch.ReferenceFrames.Array[referenceFrameIndex];
+
+		var newElement = owner.dom.CreateElement(frame.ElementName);
+
+		owner.NodeSpan.Append(newElement, parent);
+
+		var endIndexExcl = referenceFrameIndex + frame.ElementSubtreeLength;
+		for (var descendantIndex = referenceFrameIndex + 1; descendantIndex < endIndexExcl; descendantIndex++)
+		{
+			ref readonly var candidateFrame = ref renderBatch.ReferenceFrames.Array[descendantIndex];
+			if (candidateFrame.FrameType == RenderTreeFrameType.Attribute)
+			{
+				ApplySetAttribute(in candidateFrame, owner, newElement);
+			}
+			else
+			{
+				// As soon as we see a non-attribute child, all the subsequent child frames are
+				// not attributes, so bail out and insert the remnants recursively
+				InsertFrameRange(descendantIndex, endIndexExcl, in renderBatch, owner, newElement);
+				break;
+			}
+		}
+	}
+
+	private static void ApplyComponent(int referenceFrameIndex, in RenderBatch renderBatch, ComponentAdapter owner, INode containingElement)
+	{
+		ref readonly var frame = ref renderBatch.ReferenceFrames.Array[referenceFrameIndex];
+
+		// TODO: figure out how to correct represent a components first and last node.
+		var nodeSpan = new NodeSpan(owner.NodeSpan);
+
+		var child = owner.renderer.CreateComponentAdapter(
+			frame.ComponentId,
+			frame.Component,
+			containingElement,
+			nodeSpan);
+
+		owner.AddChild(child);
+
+		for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
+		{
+			ref readonly var componentEdits = ref renderBatch.UpdatedComponents.Array[i];
+			if (componentEdits.ComponentId == frame.ComponentId && componentEdits.Edits.Count > 0)
+			{
+				child.ApplyEdits(in componentEdits, in renderBatch, owner.latestUpdateNumber);
+			}
+		}
+	}
+
 	private void InsertFrameRange(int startIndex, int endIndexExcl, in RenderBatch batch, in ComponentAdapter owner, IElement containingElement)
 	{
 		for (var frameIndex = startIndex; frameIndex < endIndexExcl; frameIndex++)
 		{
-			ApplyPrependFrame(frameIndex, batch, owner, containingElement);
+			ApplyPrependFrame(frameIndex, in batch, owner, containingElement);
 
 			// Skip over any descendants, since they are already dealt with recursively
-			ref var frame = ref batch.ReferenceFrames.Array[frameIndex];
-			frameIndex += CountDescendantFrames(frame);
+			ref readonly var frame = ref batch.ReferenceFrames.Array[frameIndex];
+			frameIndex += CountDescendantFrames(in frame);
 		}
+
+		static int CountDescendantFrames(in RenderTreeFrame frame) => frame.FrameType switch
+		{
+			// The following frame types have a subtree length. Other frames may use that memory slot
+			// to mean something else, so we must not read it. We should consider having nominal subtypes
+			// of RenderTreeFramePointer that prevent access to non-applicable fields.
+			RenderTreeFrameType.Component => frame.ComponentSubtreeLength - 1,
+			RenderTreeFrameType.Element => frame.ElementSubtreeLength - 1,
+			RenderTreeFrameType.Region => frame.RegionSubtreeLength - 1,
+			_ => 0,
+		};
 	}
 
-	private static int CountDescendantFrames(RenderTreeFrame frame) => frame.FrameType switch
-	{
-		// The following frame types have a subtree length. Other frames may use that memory slot
-		// to mean something else, so we must not read it. We should consider having nominal subtypes
-		// of RenderTreeFramePointer that prevent access to non-applicable fields.
-		RenderTreeFrameType.Component => frame.ComponentSubtreeLength - 1,
-		RenderTreeFrameType.Element => frame.ElementSubtreeLength - 1,
-		RenderTreeFrameType.Region => frame.RegionSubtreeLength - 1,
-		_ => 0,
-	};
-
 #pragma warning disable MA0051 // Method is too long
-	private void ApplySetAttribute(ref RenderTreeFrame frame, ComponentAdapter owner, IElement element)
+	private void ApplySetAttribute(in RenderTreeFrame frame, ComponentAdapter owner, IElement element)
 #pragma warning restore MA0051 // Method is too long
 	{
 		switch (frame.AttributeValue)
@@ -324,7 +338,7 @@ internal class ComponentAdapter
 					Type = ToBlazorEventType(ke.Type),
 					Key = ke.Key!,
 				},
-				Event _ and { Type: "onchange"} => new ChangeEventArgs(),
+				Event _ and { Type: "onchange" } => new ChangeEventArgs(),
 				InputEvent ie => new ChangeEventArgs
 				{
 					Value = ie.Data
@@ -339,10 +353,17 @@ internal class ComponentAdapter
 		}
 	}
 
-	private void ApplyRemoveAttribute(in RenderTreeEdit edit, IElement containingElement)
+	private void ApplyRemoveAttribute(in RenderTreeEdit edit, INode parent)
 	{
 		Debug.Assert(edit.RemovedAttributeName is not null);
-		var element = (IElement)containingElement.ChildNodes[edit.SiblingIndex];
+
+		var target = parent.ChildNodes[edit.SiblingIndex];
+
+		if (target is not IElement element)
+		{
+			throw new InvalidOperationException($"Cannot remove an attribute from an '{target.GetType()}'. It must be an '{typeof(IElement)}'.");
+		}
+
 		element.RemoveAttribute(edit.RemovedAttributeName);
 	}
 }

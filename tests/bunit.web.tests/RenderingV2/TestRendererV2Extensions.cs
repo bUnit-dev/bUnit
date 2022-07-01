@@ -2,7 +2,7 @@ namespace Bunit.RenderingV2;
 
 internal static class TestRendererV2Extensions
 {
-	public static IRenderedComponent<IComponent> Render<TComponent>(this TestRendererV2 renderer)
+	public static IRenderedComponent<IComponent> Render<TComponent>(this BunitRenderer renderer)
 		where TComponent : IComponent
 		=> renderer.Render(builder =>
 		{
@@ -10,7 +10,7 @@ internal static class TestRendererV2Extensions
 			builder.CloseComponent();
 		});
 
-	public static async Task<IRenderedComponent<IComponent>> RenderAsync<TComponent>(this TestRendererV2 renderer)
+	public static async Task<IRenderedComponent<IComponent>> RenderAsync<TComponent>(this BunitRenderer renderer)
 		where TComponent : IComponent
 	{
 		var rc = await renderer.RenderAsync(builder =>
