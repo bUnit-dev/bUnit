@@ -21,93 +21,121 @@ namespace Bunit.RenderingV2.ComponentTree;
 internal class NodeSpan : IReadOnlyList<INode>, INodeList
 {
 	private readonly INode source;
-	private int previousSiblingIndexCache;
-	private int nextSiblingIndexCache;
+	private int nextFrameIndex;
 
-	internal INode? PreviousSibling { get; set; }
+	private List<(INode Node, int FrameIndex)> Nodes { get; } = new();
 
-	internal INode? NextSibling { get; set; }
+	private int Offset => Head is not null
+		? Head.Index()
+		: 0;
 
-	int INodeList.Length => Count;
+	internal INode? Head { get; set; }
 
-	INode INodeList.this[int index] => this[index];
+	public int Count => source.ChildNodes.Length - Offset;
 
-	public int Count
-		=> ReferenceEquals(PreviousSibling, NextSibling)
-			? 0
-			: CalculateLength() - CalculateOffset();
+	public INode this[int index] => source.ChildNodes[index + Offset];
 
+	public NodeSpan(NodeSpan parent) => this.source = parent.source;
 
-	public INode this[int index]
+	public NodeSpan(INode source) => this.source = source;
+
+	internal void RemoveAt(int frameIndex, INode parent)
 	{
-		get
+		if (ReferenceEquals(source, parent))
 		{
-			var calculatedIndex = index + CalculateOffset();
-			if (calculatedIndex < CalculateLength())
+			int i = 0;
+			while (i < Nodes.Count && Nodes[i].FrameIndex < frameIndex)
 			{
-				return source.ChildNodes[calculatedIndex];
+				i++;
 			}
-			else
+
+			while (i < Nodes.Count && Nodes[i].FrameIndex == frameIndex)
 			{
-				throw new ArgumentOutOfRangeException(nameof(index));
+				Remove(Nodes[i].Node);
+				Nodes.Remove(Nodes[i]);
+			}
+
+			nextFrameIndex = frameIndex;
+			var oldFrameIndex = i < Nodes.Count
+				? Nodes[i].FrameIndex
+				: 0;
+			while (i < Nodes.Count)
+			{
+				var ni = Nodes[i];
+				if (ni.FrameIndex == oldFrameIndex)
+				{
+					ni.FrameIndex = nextFrameIndex;
+				}
+				else if (ni.FrameIndex != oldFrameIndex)
+				{
+					oldFrameIndex = ni.FrameIndex;
+					nextFrameIndex++;
+					ni.FrameIndex = nextFrameIndex;
+				}
+				i++;
 			}
 		}
 	}
 
-	public NodeSpan(INode source, INode? previousSibling = null, INode? nextSibling = null)
+	internal void Remove(INode node)
 	{
-		this.source = source;
-		this.PreviousSibling = previousSibling;
-		this.NextSibling = nextSibling;
+		if (ReferenceEquals(node, Head))
+		{
+			Head = node.NextSibling;
+		}
+
+		source.RemoveChild(node);
 	}
 
-	public IEnumerator<INode> GetEnumerator()
+	internal void Append(INode node, INode parent)
 	{
-		if (source is null || ReferenceEquals(PreviousSibling, NextSibling))
-			yield break;
-
-		var length = CalculateLength();
-		for (int i = CalculateOffset(); i < length; i++)
+		if (ReferenceEquals(source, parent))
 		{
-			yield return source.ChildNodes[i];
+			Nodes.Add((node, nextFrameIndex));
+			nextFrameIndex++;
+		}
+
+		parent.AppendChild(node);
+	}
+
+	internal void Append(INodeList nodes, INode parent)
+	{
+		if (nodes.Length > 1)
+		{
+			if (ReferenceEquals(source, parent))
+			{
+				foreach (var n in nodes)
+				{
+					Nodes.Add((n, nextFrameIndex));
+				}
+				nextFrameIndex++;
+			}
+
+			var node = source.Owner!.CreateDocumentFragment();
+
+			while (nodes.Length > 0)
+			{
+				node.AppendChild(nodes[0]);
+			}
+
+			parent.AppendChild(node);
+		}
+		else if (nodes.Length == 1)
+		{
+			Append(nodes[0], parent);
 		}
 	}
+
+	internal INode GetNodeByFrameIndex(int frameIndex)
+		=> Nodes.Single(x => x.FrameIndex == frameIndex).Node;
+
+	public IEnumerator<INode> GetEnumerator() => source.ChildNodes.GetEnumerator();
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	// Finds the offset in the source where the
-	// node span starts. Previous sibling points to the node
-	// that precedes this span's range.
-	private int CalculateOffset()
-	{
-		if (PreviousSibling is null)
-			return 0;
-
-		if (source.ChildNodes.Length <= previousSiblingIndexCache || !ReferenceEquals(source.ChildNodes[previousSiblingIndexCache], PreviousSibling))
-		{
-			previousSiblingIndexCache = source.ChildNodes.Index(PreviousSibling);
-		}
-
-		return previousSiblingIndexCache + 1;
-	}
-
-	// Find the index of the next sibling node, if present.
-	// This is used as the length of this node span, as
-	// next sibling represents the node just outside the
-	// span's range.
-	private int CalculateLength()
-	{
-		if (NextSibling is null)
-			return source.ChildNodes.Length;
-
-		if (source.ChildNodes.Length <= nextSiblingIndexCache || !ReferenceEquals(source.ChildNodes[nextSiblingIndexCache], NextSibling))
-		{
-			nextSiblingIndexCache = source.ChildNodes.Index(NextSibling);
-		}
-
-		return nextSiblingIndexCache;
-	}
-
+	#region INodeList / IMarkupFormattable
+	INode INodeList.this[int index] => this[index];
+	int INodeList.Length => Count;
 	void IMarkupFormattable.ToHtml(TextWriter writer, IMarkupFormatter formatter)
 	{
 		foreach (var item in this)
@@ -115,4 +143,24 @@ internal class NodeSpan : IReadOnlyList<INode>, INodeList
 			item.ToHtml(writer, formatter);
 		}
 	}
+	#endregion
+}
+
+internal class NodeSpan2 : IReadOnlyList<INode>
+{
+	private readonly IElement source;
+
+	public int Count { get; }
+
+	public INode this[int index] => throw new NotImplementedException();
+
+	public NodeSpan2(IElement source) => this.source = source;
+
+	public void Append(INode node)
+	{
+
+	}
+
+	public IEnumerator<INode> GetEnumerator() { yield break; }
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

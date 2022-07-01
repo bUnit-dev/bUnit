@@ -9,7 +9,9 @@ internal class RenderedComponentV2<TComponent> : IRenderedComponent<TComponent>
 	private readonly ComponentAdapter componentTreeNode;
 
 	public int ComponentId => componentTreeNode.ComponentId;
+
 	public TComponent Instance { get; }
+
 	public INodeList Nodes => componentTreeNode.NodeSpan;
 	
 	public RenderedComponentV2(in ComponentAdapter componentTreeNode)

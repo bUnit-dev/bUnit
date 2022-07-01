@@ -3,7 +3,7 @@ using System.Reflection.Emit;
 
 namespace Bunit.RenderingV2;
 
-public partial class TestRendererV2
+public partial class BunitRenderer
 {
 	[LoggerMessage(
 		EventId = 1,

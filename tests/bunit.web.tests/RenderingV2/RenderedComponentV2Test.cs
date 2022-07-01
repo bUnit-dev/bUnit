@@ -22,7 +22,7 @@ public class RenderedComponentV2Test
 {
 	private ServiceProvider Services { get; }
 	private ILoggerFactory LoggerFactory { get; }
-	private TestRendererV2 Renderer { get; }
+	private BunitRenderer Renderer { get; }
 
 	public RenderedComponentV2Test(ITestOutputHelper outputHelper)
 	{
@@ -31,7 +31,7 @@ public class RenderedComponentV2Test
 
 		Services = services.BuildServiceProvider();
 		LoggerFactory = Services.GetRequiredService<ILoggerFactory>();
-		Renderer = new TestRendererV2(Services, LoggerFactory);
+		Renderer = new BunitRenderer(Services, LoggerFactory);
 	}
 
 	[Fact]
@@ -147,6 +147,31 @@ public class RenderedComponentV2Test
 	}
 
 	[Fact]
+	public void CanAddAndRemoveNodesDynamically()
+	{
+		var cut = Renderer.Render<ToggleMarkup>();
+		var toggle1 = cut.Find("#toggle1");
+		var toggle2 = cut.Find("#toggle2");
+		var toggle3 = cut.Find("#toggle3");
+
+		// Remove nodes 
+		toggle1.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = false }, "onchange"));
+		Assert.Empty(cut.FindAll("markup-1"));
+
+		// Add nodes back
+		toggle1.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = true }, "onchange"));
+		Assert.Equal(2, cut.FindAll("markup-1").Length);
+
+		// Remove nodes 
+		toggle1.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = false }, "onchange"));
+		Assert.Empty(cut.FindAll("markup-1"));
+
+		// Add nodes back
+		toggle1.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = true }, "onchange"));
+		Assert.Equal(2, cut.FindAll("markup-1").Length);
+	}
+
+	[Fact]
 	public void CanRenderChildComponents()
 	{
 		var cut = Renderer.Render<ParentChildComponent>();
@@ -192,18 +217,32 @@ public class RenderedComponentV2Test
 	[Fact]
 	public void CanRenderChildContent_EncodedHtmlInBlock()
 	{
-		var appElement = Renderer.Render<HtmlEncodedChildContent>();
+		var cut = Renderer.Render<HtmlEncodedChildContent>();
 
-		var one = appElement.Find("#one");
+		var one = cut.Find("#one");
 		Assert.Equal("<p>Some-Static-Text</p>", one.InnerHtml);
 
-		var two = appElement.Find("#two");
+		var two = cut.Find("#two");
 		Assert.Equal("&lt;span&gt;More-Static-Text&lt;/span&gt;", two.InnerHtml);
 
-		var three = appElement.Find("#three");
+		var three = cut.Find("#three");
 		Assert.Equal("Some-Dynamic-Text", three.InnerHtml);
 
-		var four = appElement.Find("#four");
+		var four = cut.Find("#four");
 		Assert.Equal("But this is static", four.InnerHtml);
+	}
+
+	[Fact]
+	public void CanTriggerEventsOnChildComponents()
+	{
+		// Counter is displayed as child component. Initial count is zero.
+		var cut = Renderer.Render<CounterComponentWrapper>();
+		var counterDisplay = cut
+			.FindAll("p")
+			.Single(element => element.TextContent == "Current count: 0");
+
+		// Clicking increments count in child component
+		cut.Find("button").Dispatch(new Event("onclick"));
+		Assert.Equal("Current count: 1", counterDisplay.TextContent);
 	}
 }

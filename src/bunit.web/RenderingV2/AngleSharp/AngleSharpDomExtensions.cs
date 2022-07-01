@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AngleSharp.Dom;
 
 namespace Bunit.RenderingV2.AngleSharp;
@@ -16,15 +11,15 @@ public static class AngleSharpDomExtensions
 	/// <param name="parent">The parent, which invokes the algorithm.</param>
 	/// <param name="nodes">The nodes list to add.</param>
 	/// <returns>A (single) node.</returns>
-	internal static INode MutationMacro(this INode parent, INodeList nodes)
+	private static INode MutationMacro(this INode parent, INodeList nodes)
 	{
 		if (nodes.Length > 1)
 		{
 			var node = parent.Owner!.CreateDocumentFragment();
 
-			for (var i = 0; i < nodes.Length; i++)
+			while (nodes.Length > 0)
 			{
-				node.AppendChild(nodes[i]);
+				node.AppendChild(nodes[0]);
 			}
 
 			return node;
@@ -34,18 +29,41 @@ public static class AngleSharpDomExtensions
 	}
 
 	/// <summary>
+	/// Inserts nodes before the given child.
+	/// </summary>
+	/// <param name="nodes">The nodes to insert.</param>
+	/// <param name="child">The child node to insert before.</param>
+	/// <returns>The current element.</returns>
+	public static void InsertBefore(this INodeList nodes, INode child)
+	{
+		var parent = child.Parent;
+
+		if (parent is not null && nodes.Length > 0)
+		{
+			var node = nodes.Length == 1
+				? nodes[0]
+				: parent.MutationMacro(nodes);
+
+			parent.PreInsert(node, child);
+		}
+	}
+
+	/// <summary>
 	/// Inserts nodes after the given child.
 	/// </summary>
-	/// <param name="nodes">The nodes to insert after.</param>
-	/// <param name="child">The context object.</param>
+	/// <param name="nodes">The nodes to insert.</param>
+	/// <param name="child">The child node to insert after.</param>
 	/// <returns>The current element.</returns>
 	public static void InsertAfter(this INodeList nodes, INode child)
 	{
 		var parent = child.Parent;
 
-		if (parent != null && nodes.Length > 0)
+		if (parent is not null && nodes.Length > 0)
 		{
-			var node = parent.MutationMacro(nodes);
+			var node = nodes.Length == 1
+				? nodes[0]
+				: parent.MutationMacro(nodes);
+
 			parent.PreInsert(node, child.NextSibling);
 		}
 	}
@@ -59,9 +77,11 @@ public static class AngleSharpDomExtensions
 	{
 		if (nodes.Length > 0)
 		{
-			var node = parent.MutationMacro(nodes);
+			var node = nodes.Length == 1
+				? nodes[0]
+				: parent.MutationMacro(nodes);
+
 			parent.PreInsert(node, null);
 		}
 	}
-
 }

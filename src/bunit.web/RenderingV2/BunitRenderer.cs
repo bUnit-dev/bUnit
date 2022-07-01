@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using AngleSharp.Dom;
 using AngleSharp.Html.Parser;
 using Bunit.RenderingV2.ComponentTree;
@@ -6,8 +7,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Bunit.RenderingV2;
 
-public partial class TestRendererV2 : Renderer
+public partial class BunitRenderer : Renderer
 {
+	internal static readonly ConditionalWeakTable<INode, NodeMetadata> NodeMetadata
+		= new ConditionalWeakTable<INode, NodeMetadata>();
+
 	private readonly ILogger logger;
 	private readonly Dictionary<int, ComponentAdapter> componentAdapters = new();
 	private readonly HtmlParser htmlParser;
@@ -21,10 +25,10 @@ public partial class TestRendererV2 : Renderer
 
 	public Task<Exception> UnhandledException => unhandledExceptionTsc.Task;
 
-	public TestRendererV2(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+	public BunitRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
 		: base(serviceProvider, loggerFactory)
 	{
-		logger = loggerFactory.CreateLogger<TestRendererV2>();
+		logger = loggerFactory.CreateLogger<BunitRenderer>();
 		htmlParser = new HtmlParser(new HtmlParserOptions
 		{
 			IsAcceptingCustomElementsEverywhere = false,
@@ -150,7 +154,7 @@ public partial class TestRendererV2 : Renderer
 	internal ComponentAdapter CreateComponentAdapter(
 		int componentId,
 		IComponent component,
-		IElement parentElement,
+		INode parentElement,
 		NodeSpan nodeSpan)
 	{
 		var adapter = new ComponentAdapter(componentId, component, parentElement, nodeSpan, htmlParser, this, eventHandlerManager);

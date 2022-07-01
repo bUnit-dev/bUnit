@@ -3,7 +3,7 @@
 	public ServiceProvider Services { get; }
 	public ILoggerFactory LoggerFactory { get; }
 
-	public TestRendererV2Test(ITestOutputHelper outputHelper)
+    public BunitRendererTest(ITestOutputHelper outputHelper)
 	{
 		var services = new ServiceCollection();
 		services.AddXunitLogger(outputHelper);
@@ -12,7 +12,7 @@
 		LoggerFactory = Services.GetRequiredService<ILoggerFactory>();
 	}
 
-	private TestRendererV2 CreateSut() => new TestRendererV2(Services, LoggerFactory);
+    private BunitRenderer CreateSut() => new BunitRenderer(Services, LoggerFactory);
 
 	[Fact]
 	public void Renders_RenderFragment()
