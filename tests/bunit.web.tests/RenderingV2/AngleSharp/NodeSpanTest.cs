@@ -34,29 +34,4 @@ public class NodeSpanTest
 
 		sut.Count.ShouldBe(0);
 	}
-
-	[Fact]
-	public void NodeSpan_ctor_starts_empty()
-	{
-		var source = "<hr/> text <i>".ToNodesWithParent("div");
-
-		var sut = new NodeSpan2(source);
-
-		sut.Count.ShouldBe(0);
-		sut.ShouldBeEmpty();
-	}
-
-	//[Fact]
-	//public void NodeSpan_Append()
-	//{
-	//	var source = "<p>text</p>".ToNodesWithParent("div");
-	//	var span = "span".ToElement();
-	//	var sut = new NodeSpan2(source);
-
-	//	sut.Append(span);
-
-	//	sut[0].ShouldBeSameAs(span);
-	//	sut.Count.ShouldBe(1);
-	//	sut.ShouldContain(span);
-	//}
 }

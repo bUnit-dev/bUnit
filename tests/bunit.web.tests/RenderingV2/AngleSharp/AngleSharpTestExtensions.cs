@@ -20,18 +20,25 @@ internal static class AngleSharpTestExtensions
 		return htmlParser.ParseDocument(content);
 	}
 
-	public static INodeList ToHtmlFragment(this string sourceCode, IElement contextElement = null, IConfiguration configuration = null)
+	public static INodeList ToNodes(this string sourceCode, IConfiguration configuration = null)
 	{
-		var context = BrowsingContext.New(configuration);
+		var doc = ToHtmlDocument(sourceCode, configuration);
+		return doc.Body.ChildNodes;
+	}
+
+	public static INodeList ToNodes(this string sourceCode, IElement contextElement, IConfiguration configuration = null)
+	{
+		var context = BrowsingContext.New(configuration ?? Configuration.Default);
 		var htmlParser = context.GetService<IHtmlParser>();
 		return htmlParser.ParseFragment(sourceCode, contextElement);
 	}
 
-	public static INodeList ToHtmlFragment(this string sourceCode, string contextElement, IConfiguration configuration = null)
+	public static INodeList ToNodes(this string sourceCode, string contextElement, IConfiguration configuration = null)
 	{
 		var doc = string.Empty.ToHtmlDocument();
 		var element = doc.CreateElement(contextElement);
-		return sourceCode.ToHtmlFragment(element, configuration);
+		sourceCode.ToNodes(element, configuration);
+		return element.ChildNodes;
 	}
 
 	public static IElement ToElement(this string elementName, IConfiguration configuration = null)
@@ -44,7 +51,7 @@ internal static class AngleSharpTestExtensions
 	{
 		var doc = string.Empty.ToHtmlDocument();
 		var element = doc.CreateElement(parentElement);
-		element.AppendNodes(sourceCode.ToHtmlFragment(element, configuration));
+		element.AppendNodes(sourceCode.ToNodes(element, configuration));
 		return element;
 	}
 }

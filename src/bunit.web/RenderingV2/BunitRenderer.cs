@@ -8,14 +8,9 @@ using Microsoft.Extensions.Logging;
 namespace Bunit.RenderingV2;
 
 public partial class BunitRenderer : Renderer
-{
-	internal static readonly ConditionalWeakTable<INode, NodeMetadata> NodeMetadata
-		= new ConditionalWeakTable<INode, NodeMetadata>();
-
+{	
 	private readonly ILogger logger;
-	private readonly Dictionary<int, ComponentAdapter> componentAdapters = new();
-	private readonly HtmlParser htmlParser;
-	private readonly EventHandlerManager eventHandlerManager;
+	private readonly ComponentTreeManager componentTreeManager;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new();
 	private Exception? capturedUnhandledException;
 
@@ -29,19 +24,7 @@ public partial class BunitRenderer : Renderer
 		: base(serviceProvider, loggerFactory)
 	{
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
-		htmlParser = new HtmlParser(new HtmlParserOptions
-		{
-			IsAcceptingCustomElementsEverywhere = false,
-			IsKeepingSourceReferences = false,
-			IsNotConsumingCharacterReferences = false,
-			IsNotSupportingFrames = false,
-			IsPreservingAttributeNames = false,
-			IsScripting = false,
-			IsSupportingProcessingInstructions = false,
-			IsEmbedded = true,
-			IsStrictMode = false,
-		});
-		eventHandlerManager = new();
+		componentTreeManager = new(this);
 	}
 
 	/// <summary>
@@ -98,34 +81,14 @@ public partial class BunitRenderer : Renderer
 	{
 		var component = new RootComponent(renderFragment);
 		var componentId = AssignRootComponentId(component);
-		var dom = htmlParser.ParseDocument(string.Empty);
-		var adapter = new ComponentAdapter(componentId, component, dom.Body!, new NodeSpan(dom.Body!), htmlParser, this, eventHandlerManager);
-		componentAdapters[componentId] = adapter;
-		return new RenderedComponentV2<RootComponent>(adapter);
+		var treeRoot = componentTreeManager.CreateTreeRoot(componentId, component);
+		return new RenderedComponentV2<RootComponent>(treeRoot);
 	}
 
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
 		RenderCount++;
-
-		var numUpdatedComponents = renderBatch.UpdatedComponents.Count;
-		for (var componentIndex = 0; componentIndex < numUpdatedComponents; componentIndex++)
-		{
-			var updatedComponent = renderBatch.UpdatedComponents.Array[componentIndex];
-
-			if (updatedComponent.Edits.Count > 0
-				&& componentAdapters.TryGetValue(updatedComponent.ComponentId, out var adapter))
-			{
-				adapter.ApplyEdits(updatedComponent, renderBatch, RenderCount);
-			}
-		}
-
-		var numDisposeEventHandlers = renderBatch.DisposedEventHandlerIDs.Count;
-		for (var i = 0; i < numDisposeEventHandlers; i++)
-		{
-			eventHandlerManager.DisposeHandler(renderBatch.DisposedEventHandlerIDs.Array[i]);
-		}
-
+		componentTreeManager.UpdateComponentTrees(in renderBatch);
 		return Task.CompletedTask;
 	}
 
@@ -151,14 +114,9 @@ public partial class BunitRenderer : Renderer
 		}
 	}
 
-	internal ComponentAdapter CreateComponentAdapter(
-		int componentId,
-		IComponent component,
-		INode parentElement,
-		NodeSpan nodeSpan)
+	protected override void Dispose(bool disposing)
 	{
-		var adapter = new ComponentAdapter(componentId, component, parentElement, nodeSpan, htmlParser, this, eventHandlerManager);
-		componentAdapters[componentId] = adapter;
-		return adapter;
+		base.Dispose(disposing);
+		componentTreeManager.Dispose();
 	}
 }

@@ -53,6 +53,21 @@ public sealed class BunitHtmlParser : IDisposable
 	}
 
 	/// <summary>
+	/// Creates a new <see cref="IDocument"/>.
+	/// </summary>
+	/// <remarks>
+	/// When this <see cref="BunitHtmlParser"/> is disposed, the created
+	/// <see cref="IDocument"/> is also disposed.
+	/// </remarks>
+	/// <returns>The <see cref="IDocument"/>.</returns>
+	public IDocument CreateDocument()
+	{
+		var result = htmlParser.ParseDocument(string.Empty);
+		documents.Add(result);
+		return result;
+	}
+
+	/// <summary>
 	/// Parses a markup HTML string using AngleSharps HTML5 parser.
 	/// </summary>
 	/// <param name="markup">The markup to parse.</param>
@@ -61,15 +76,33 @@ public sealed class BunitHtmlParser : IDisposable
 	{
 		if (markup is null)
 			throw new ArgumentNullException(nameof(markup));
-			
-		var document = GetNewDocumentAsync().GetAwaiter().GetResult();
 
+		return ParseFragment(markup, CreateDocument());
+	}
+
+	/// <summary>
+	/// Parses a markup HTML string using AngleSharps HTML5 parser.
+	/// </summary>
+	/// <param name="markup">The markup to parse.</param>
+	/// <param name="document">The document to get a element from.</param>
+	/// <returns>The <see cref="INodeList"/>.</returns>
+	public INodeList ParseFragment(string markup, IDocument document)
+	{
 		var (ctx, matchedElement) = GetParseContext(markup, document);
 
 		return ctx is null && matchedElement is not null
 			? ParseSpecial(markup, matchedElement)
-			: htmlParser.ParseFragment(markup, ctx!);
+			: ParseFragment(markup, ctx!);
 	}
+
+	/// <summary>
+	/// Parses a markup HTML string using AngleSharps HTML5 parser.
+	/// </summary>
+	/// <param name="markup">The markup to parse.</param>
+	/// <param name="contextElement">The context to parse the markup in.</param>
+	/// <returns>The <see cref="INodeList"/>.</returns>
+	public INodeList ParseFragment(string markup, IElement contextElement)
+		=> htmlParser.ParseFragment(markup, contextElement);
 
 	private INodeList ParseSpecial(string markup, string matchedElement)
 	{
@@ -85,7 +118,7 @@ public sealed class BunitHtmlParser : IDisposable
 	}
 
 	private static (IElement? Context, string? MatchedElement) GetParseContext(
-		ReadOnlySpan<char> markup, 
+		ReadOnlySpan<char> markup,
 		IDocument document)
 	{
 		var startIndex = markup.IndexOfFirstNonWhitespaceChar();
@@ -138,13 +171,6 @@ public sealed class BunitHtmlParser : IDisposable
 		return (Context: result, MatchedElement: matchedElement);
 
 		IElement CreateTable() => document.Body.AppendElement(document.CreateElement("table"));
-	}
-
-	private async Task<IDocument> GetNewDocumentAsync()
-	{
-		var result = await context.OpenNewAsync().ConfigureAwait(false);
-		documents.Add(result);
-		return result;
 	}
 
 	/// <inheritdoc/>
