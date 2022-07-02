@@ -155,6 +155,31 @@ public class RenderedComponentV2Test
 		var toggle3 = cut.Find("#toggle3");
 
 		// Remove nodes 
+		toggle2.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = false }, "onchange"));
+		Assert.Empty(cut.FindAll("markup-2"));
+
+		// Add nodes back
+		toggle2.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = true }, "onchange"));
+		Assert.Equal(2, cut.FindAll("markup-2").Length);
+
+		// Remove nodes 
+		toggle1.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = false }, "onchange"));
+		Assert.Empty(cut.FindAll("markup-1"));
+
+		// Add nodes back
+		toggle1.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = true }, "onchange"));
+		Assert.Equal(2, cut.FindAll("markup-1").Length);
+	}
+
+	[Fact]
+	public void CanAddAndRemoveNestedNodesDynamically()
+	{
+		var cut = Renderer.Render<ToggleMarkupInParent>();
+		var toggle1 = cut.Find("#toggle1");
+		var toggle2 = cut.Find("#toggle2");
+		var toggle3 = cut.Find("#toggle3");
+
+		// Remove nodes 
 		toggle1.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = false }, "onchange"));
 		Assert.Empty(cut.FindAll("markup-1"));
 

@@ -1,0 +1,30 @@
+<div>
+    @if (markup1Visible)
+    {
+        <h1 class="markup-1">markup 1</h1>
+        <p class="markup-1">markup 1</p>
+    }
+
+    <input type="checkbox" id="toggle1" @bind="markup1Visible" />
+
+    @if (markup2Visible)
+    {
+        <h1 class="markup-2">markup 2</h1>
+        <p class="markup-2">markup 2</p>
+    }
+
+    <input type="checkbox" id="toggle2" @bind="markup2Visible" />
+    <input type="checkbox" id="toggle3" @bind="markup3Visible" />
+
+    @if (markup3Visible)
+    {
+        <h1 class="markup-3">markup 3</h1>
+        <p class="markup-3">markup 3</p>
+    }
+</div>
+
+@code {
+    bool markup1Visible = true;
+    bool markup2Visible = true;
+    bool markup3Visible = true;
+}

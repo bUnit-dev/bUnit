@@ -9,6 +9,14 @@ namespace Bunit;
 public static class CollectionAssertExtensions
 {
 	/// <summary>
+	/// Verifies that all elements in <paramref name="collection"/> satisfies the <paramref name="condition"/>.
+	/// </summary>
+	public static void ShouldAllSatisfyCondition<T>(this IEnumerable<T> collection, Action<T> condition)
+	{
+		Assert.All(collection, condition);
+	}
+
+	/// <summary>
 	/// Verifies that a collection contains exactly a given number of elements, which
 	/// meet the criteria provided by the element inspectors.
 	/// </summary>

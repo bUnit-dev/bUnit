@@ -145,22 +145,3 @@ internal class NodeSpan : IReadOnlyList<INode>, INodeList
 	}
 	#endregion
 }
-
-internal class NodeSpan2 : IReadOnlyList<INode>
-{
-	private readonly IElement source;
-
-	public int Count { get; }
-
-	public INode this[int index] => throw new NotImplementedException();
-
-	public NodeSpan2(IElement source) => this.source = source;
-
-	public void Append(INode node)
-	{
-
-	}
-
-	public IEnumerator<INode> GetEnumerator() { yield break; }
-	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-}

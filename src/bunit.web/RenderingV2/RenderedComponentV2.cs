@@ -6,19 +6,20 @@ namespace Bunit.RenderingV2;
 internal class RenderedComponentV2<TComponent> : IRenderedComponent<TComponent>
 	where TComponent : IComponent
 {
-	private readonly ComponentAdapter componentTreeNode;
+	private readonly ComponentTreeNode componentTreeNode;
 
 	public int ComponentId => componentTreeNode.ComponentId;
 
 	public TComponent Instance { get; }
 
-	public INodeList Nodes => componentTreeNode.NodeSpan;
+	// TOOD: update to only reference a range of child nodes
+	public INodeList Nodes => componentTreeNode.ParentElement.ChildNodes;
 	
-	public RenderedComponentV2(in ComponentAdapter componentTreeNode)
+	public RenderedComponentV2(ComponentTreeNode componentTreeNode)
 	{
 		if (componentTreeNode.Component is not TComponent instance)
 		{
-			throw new ArgumentException($"The {nameof(ComponentAdapter)} does not point to a component of type {typeof(TComponent)}", nameof(componentTreeNode));
+			throw new ArgumentException($"The {nameof(ComponentTreeNode)} does not point to a component of type {typeof(TComponent)}", nameof(componentTreeNode));
 		}
 
 		this.componentTreeNode = componentTreeNode;
