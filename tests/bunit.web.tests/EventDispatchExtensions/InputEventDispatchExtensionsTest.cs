@@ -15,7 +15,7 @@ namespace Bunit
 		[MemberData(nameof(Helpers))]
 		public void CanRaiseEvents(MethodInfo helper)
 		{
-			var expected = new ChangeEventArgs()
+			var expected = new ChangeEventArgs
 			{
 				Value = "SOME VALUE",
 			};

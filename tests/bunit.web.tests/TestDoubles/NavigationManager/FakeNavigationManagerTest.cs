@@ -123,7 +123,7 @@ namespace Bunit.TestDoubles
 			sut.NavigateTo(uri, forceLoad, replaceHistoryEntry);
 
 			sut.History.ShouldHaveSingleItem()
-				.ShouldBeEquivalentTo(new NavigationHistory(uri, new NavigationOptions() { ForceLoad = forceLoad, ReplaceHistoryEntry = replaceHistoryEntry }));
+				.ShouldBeEquivalentTo(new NavigationHistory(uri, new NavigationOptions { ForceLoad = forceLoad, ReplaceHistoryEntry = replaceHistoryEntry }));
 		}
 
 		[Fact(DisplayName = "NavigateTo with replaceHistoryEntry true replaces previous history entry")]
@@ -135,7 +135,7 @@ namespace Bunit.TestDoubles
 			sut.NavigateTo("/secondUrl", new NavigationOptions { ReplaceHistoryEntry = true });
 
 			sut.History.ShouldHaveSingleItem()
-				.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl", new NavigationOptions() { ReplaceHistoryEntry = true }));
+				.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl", new NavigationOptions { ReplaceHistoryEntry = true }));
 		}
 #endif
 
