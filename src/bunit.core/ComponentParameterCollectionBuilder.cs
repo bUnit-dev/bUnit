@@ -342,7 +342,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 
 		if (isCascading)
 			throw new ArgumentException("Using Bind with a cascading parameter is not allowed.", parameterName);
-		
+
 		if (changedAction is null)
         	throw new ArgumentNullException(nameof(changedAction));
 
@@ -360,7 +360,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		AddParameter(changedName, EventCallback.Factory.Create(changedAction.Target!, changedAction));
 
 		return !HasPublicParameterProperty(expressionName)
-			? this 
+			? this
 			: AddParameter(expressionName, valueExpression ?? (() => initialValue));
 
 		static void AssertBindTargetIsCorrect(string parameterName, Expression<Func<TComponent, TValue>> parameterSelector)
@@ -380,8 +380,8 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 											$"Try {selectorExpression.Replace(parameterName, possibleSelector, StringComparison.Ordinal)} instead.");
 			}
 		}
-		
-		static string TrimEnd(string source, string value) 
+
+		static string TrimEnd(string source, string value)
 			=> source.EndsWith(value, StringComparison.Ordinal)
 			? source.Remove(source.LastIndexOf(value, StringComparison.Ordinal))
 			: source;
@@ -431,7 +431,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		if (parameterSelector is null)
 			throw new ArgumentNullException(nameof(parameterSelector));
 
-		if (!(parameterSelector.Body is MemberExpression memberExpression) || !(memberExpression.Member is PropertyInfo propInfoCandidate))
+		if (parameterSelector.Body is not MemberExpression memberExpression || memberExpression.Member is not PropertyInfo propInfoCandidate)
 			throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.", nameof(parameterSelector));
 
 		var propertyInfo = propInfoCandidate.DeclaringType != TComponentType
@@ -474,7 +474,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		var childBuilder = new ComponentParameterCollectionBuilder<TChildComponent>(childParameterBuilder);
 		return childBuilder.Build().ToRenderFragment<TChildComponent>();
 	}
-	
+
 	private static bool HasPublicParameterProperty(string parameterName)
 	{
 		var type = typeof(TComponent);
@@ -482,7 +482,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 
 		return property != null && property.GetCustomAttributes(inherit: true).Any(a => a is ParameterAttribute);
 	}
-	
+
 	private static bool IsConcreteGenericOf(Type type, Type openGeneric)
 	{
 		if (!type.IsGenericType)
