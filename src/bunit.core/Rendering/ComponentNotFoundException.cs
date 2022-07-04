@@ -11,7 +11,7 @@ public sealed class ComponentNotFoundException : Exception
 	/// </summary>
 	/// <param name="componentType">The type of component that was not found.</param>
 	public ComponentNotFoundException(Type componentType)
-		: base($"A component of type {componentType?.Name} was not found in the render tree.")
+		: base($"A component of type {componentType.Name} was not found in the render tree.")
 	{
 	}
 

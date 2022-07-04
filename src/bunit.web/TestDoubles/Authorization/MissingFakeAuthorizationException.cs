@@ -27,6 +27,6 @@ public sealed class MissingFakeAuthorizationException : Exception
 	private MissingFakeAuthorizationException(SerializationInfo serializationInfo, StreamingContext streamingContext)
 		: base(serializationInfo, streamingContext)
 	{
-		ServiceName = serializationInfo?.GetString(nameof(ServiceName)) ?? string.Empty;
+		ServiceName = serializationInfo.GetString(nameof(ServiceName)) ?? string.Empty;
 	}
 }

@@ -116,7 +116,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback>> parameterSelector, Action callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a component parameter for a nullable <see cref="EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
@@ -126,7 +126,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback?>> parameterSelector, Action callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a component parameter for an <see cref="EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
@@ -136,7 +136,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback>> parameterSelector, Action<object> callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a component parameter for a nullable <see cref="EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
@@ -146,7 +146,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback?>> parameterSelector, Action<object> callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a component parameter for an <see cref="EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
@@ -156,7 +156,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback>> parameterSelector, Func<Task> callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a component parameter for a nullable <see cref="EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
@@ -166,7 +166,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback?>> parameterSelector, Func<Task> callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a component parameter for an <see cref="EventCallback{TValue}"/> parameter selected with <paramref name="parameterSelector"/>,
@@ -177,7 +177,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>>> parameterSelector, Action callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a component parameter for a nullable <see cref="EventCallback{TValue}"/> parameter selected with <paramref name="parameterSelector"/>,
@@ -188,7 +188,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>?>> parameterSelector, Action callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a component parameter for an <see cref="EventCallback{TValue}"/> parameter selected with <paramref name="parameterSelector"/>,
@@ -199,7 +199,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>>> parameterSelector, Action<TValue> callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a component parameter for a nullable <see cref="EventCallback{TValue}"/> parameter selected with <paramref name="parameterSelector"/>,
@@ -210,7 +210,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>?>> parameterSelector, Action<TValue> callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a component parameter for an <see cref="EventCallback{TValue}"/> parameter selected with <paramref name="parameterSelector"/>,
@@ -221,7 +221,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>>> parameterSelector, Func<Task> callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a component parameter for a nullable <see cref="EventCallback{TValue}"/> parameter selected with <paramref name="parameterSelector"/>,
@@ -232,7 +232,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>?>> parameterSelector, Func<Task> callback)
-		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
+		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback.Target!, callback));
 
 	/// <summary>
 	/// Adds a ChildContent <see cref="RenderFragment"/> type parameter with the <paramref name="childContent"/> as value.
@@ -342,7 +342,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 
 		if (isCascading)
 			throw new ArgumentException("Using Bind with a cascading parameter is not allowed.", parameterName);
-		
+
 		if (changedAction is null)
         	throw new ArgumentNullException(nameof(changedAction));
 
@@ -360,7 +360,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		AddParameter(changedName, EventCallback.Factory.Create(changedAction.Target!, changedAction));
 
 		return !HasPublicParameterProperty(expressionName)
-			? this 
+			? this
 			: AddParameter(expressionName, valueExpression ?? (() => initialValue));
 
 		static void AssertBindTargetIsCorrect(string parameterName, Expression<Func<TComponent, TValue>> parameterSelector)
@@ -380,8 +380,8 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 											$"Try {selectorExpression.Replace(parameterName, possibleSelector, StringComparison.Ordinal)} instead.");
 			}
 		}
-		
-		static string TrimEnd(string source, string value) 
+
+		static string TrimEnd(string source, string value)
 			=> source.EndsWith(value, StringComparison.Ordinal)
 			? source.Remove(source.LastIndexOf(value, StringComparison.Ordinal))
 			: source;
@@ -474,7 +474,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		var childBuilder = new ComponentParameterCollectionBuilder<TChildComponent>(childParameterBuilder);
 		return childBuilder.Build().ToRenderFragment<TChildComponent>();
 	}
-	
+
 	private static bool HasPublicParameterProperty(string parameterName)
 	{
 		var type = typeof(TComponent);
@@ -482,7 +482,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 
 		return property != null && property.GetCustomAttributes(inherit: true).Any(a => a is ParameterAttribute);
 	}
-	
+
 	private static bool IsConcreteGenericOf(Type type, Type openGeneric)
 	{
 		if (!type.IsGenericType)

@@ -36,7 +36,7 @@ public class ElementNotFoundException : Exception
 	protected ElementNotFoundException(SerializationInfo serializationInfo, StreamingContext streamingContext)
 		: base(serializationInfo, streamingContext)
 	{
-		CssSelector = serializationInfo?.GetString(nameof(CssSelector)) ?? string.Empty;
+		CssSelector = serializationInfo.GetString(nameof(CssSelector)) ?? string.Empty;
 	}
 
 	/// <inheritdoc/>

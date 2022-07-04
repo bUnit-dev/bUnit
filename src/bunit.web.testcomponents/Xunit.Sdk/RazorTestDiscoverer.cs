@@ -62,5 +62,5 @@ internal sealed class RazorTestDiscoverer : IXunitTestCaseDiscoverer, IDisposabl
 
 	private static string GetDisplayName(RazorTestBase test, int testNumber) => test.DisplayName ?? $"{test.GetType().Name} #{testNumber}";
 
-	public void Dispose() => sourceInfoDiscoverer?.Dispose();
+	public void Dispose() => sourceInfoDiscoverer.Dispose();
 }

@@ -28,7 +28,7 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 				.GetProperty("Value", BindingFlags.Public | BindingFlags.Instance)
 				?? throw new InvalidOperationException("Did not find the Value property on the DotNetObjectReference<VirtualizeJsInterop> type.");
 
-			var onSpacerBeforeVisibleMethodInfo = virtualizeJsInteropType?.GetMethod("OnSpacerBeforeVisible")
+			var onSpacerBeforeVisibleMethodInfo = virtualizeJsInteropType.GetMethod("OnSpacerBeforeVisible")
 				?? throw new InvalidOperationException("Did not find the OnSpacerBeforeVisible method on the VirtualizeJsInterop type.");
 
 			return (dotNetObjectReferenceValuePropertyInfo, onSpacerBeforeVisibleMethodInfo);
