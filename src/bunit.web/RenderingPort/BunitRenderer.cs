@@ -27,7 +27,7 @@ public partial class BunitRenderer : Renderer
 		: base(serviceProvider, loggerFactory)
 	{
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
-		anglesharpRenderer = new AngleSharpRenderer();
+		anglesharpRenderer = new AngleSharpRenderer(this);
 	}
 
 	/// <summary>

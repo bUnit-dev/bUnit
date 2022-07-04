@@ -1,9 +1,9 @@
 // This file is a port of the LogicalElements.ts in https://github.dev/dotnet/aspnetcore
 // Version ported: https://github.dev/dotnet/aspnetcore/blob/82eb6803e777e2e6c817b51ac6b3bcb5410b4236/src/Components/Web.JS/src/Rendering/LogicalElements.ts
+
 using System.Runtime.CompilerServices;
-using AngleSharp;
 using AngleSharp.Dom;
-using AngleSharp.Dom.Events;
+using Bunit.RenderingPort.Events;
 
 namespace Bunit.RenderingPort;
 
@@ -182,8 +182,10 @@ internal static class LogicalElements
 
 		public INode Node { get; }
 
+		public Dictionary<string, EventHandlerInfosForElement> EventsCollections { get; } = new();
+
 		public LogicalElement(INode node)
-			=> Node = node;		
+			=> Node = node;
 	}
 
 	internal record class PermutationListEntry(
