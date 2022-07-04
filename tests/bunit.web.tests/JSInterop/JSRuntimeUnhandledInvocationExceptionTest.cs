@@ -175,7 +175,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0, arg1 }, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(executedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints correctly with void return type and multiple non-string arguments")]

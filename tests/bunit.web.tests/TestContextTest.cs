@@ -22,11 +22,11 @@ public partial class TestContextTest : TestContext
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
 		var cut = Render(b =>
 		{
-			b.OpenComponent<ReceivesCascadinValue>(0);
+			b.OpenComponent<ReceivesCascadingValue>(0);
 			b.CloseComponent();
 		});
 
-		cut.FindComponent<ReceivesCascadinValue>()
+		cut.FindComponent<ReceivesCascadingValue>()
 			.Instance
 			.Value
 			.ShouldBe("FOO");
@@ -36,9 +36,9 @@ public partial class TestContextTest : TestContext
 	public void Test031()
 	{
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
-		var cut = Render<ReceivesCascadinValue>(b =>
+		var cut = Render<ReceivesCascadingValue>(b =>
 		{
-			b.OpenComponent<ReceivesCascadinValue>(0);
+			b.OpenComponent<ReceivesCascadingValue>(0);
 			b.CloseComponent();
 		});
 
@@ -51,7 +51,7 @@ public partial class TestContextTest : TestContext
 	public void Test032()
 	{
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
-		var cut = RenderComponent<ReceivesCascadinValue>(ps => ps.Add(p => p.Dummy, null));
+		var cut = RenderComponent<ReceivesCascadingValue>(ps => ps.Add(p => p.Dummy, null));
 
 		cut.Instance
 			.Value
