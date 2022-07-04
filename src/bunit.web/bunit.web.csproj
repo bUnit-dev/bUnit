@@ -64,12 +64,4 @@
 		<Using Include="Microsoft.JSInterop" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <EditorConfigFiles Remove="C:\dev\bUnit-dev\bUnit\src\.editorconfig" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="C:\dev\bUnit-dev\bUnit\src\.editorconfig" Link="RenderingV2\.editorconfig" />
-	</ItemGroup>
-
 </Project>
