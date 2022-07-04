@@ -66,7 +66,7 @@ public class RootRenderTreeTest : TestContext
 
 		var cut = RenderComponent<MultipleParametersInnerComponent>();
 
-		cut.Markup.ShouldBe("<iv>VALUE42</div>");
+		cut.Markup.ShouldBe("<div>VALUE42</div>");
 	}
 
 	[Fact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
