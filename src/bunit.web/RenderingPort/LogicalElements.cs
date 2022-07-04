@@ -124,11 +124,14 @@ internal static class LogicalElements
 		//}
 	}
 
-	private static List<LogicalElement> GetLogicalChildrenArray(LogicalElement element)
+	public static List<LogicalElement> GetLogicalChildrenArray(LogicalElement element)
 		=> element.LogicalChildren;
 
-	private static LogicalElement? GetLogicalParent(LogicalElement element)
+	public static LogicalElement? GetLogicalParent(LogicalElement element)
 		=> element.LogicalParent;
+
+	public static LogicalElement GetLogicalChild(LogicalElement parent, int childIndex)
+		=> GetLogicalChildrenArray(parent)[childIndex];
 
 	private static void AppendDomNode(INode child, LogicalElement parent)
 	{

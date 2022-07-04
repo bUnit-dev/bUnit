@@ -1,5 +1,6 @@
 using AngleSharp.Dom;
 using AngleSharp.Dom.Events;
+using AngleSharp.Html.Dom.Events;
 using Bunit.TestAssets.BlazorE2E;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
@@ -57,7 +58,7 @@ public class AngleSharpRendererTest
 		Assert.Equal("Current count: 0", countDisplayElement.TextContent);
 
 		// Clicking button increments count
-		cut.Find("button").Dispatch(new Event("onclick"));
+		cut.Find("button").Dispatch(new MouseEvent("click", bubbles: true));
 		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 	}
 }

@@ -50,6 +50,28 @@ internal class EventDelegator
 		}
 	}
 
+	public EventHandlerInfo GetHandler(ulong eventHandlerId)
+		=> eventInfoStore.Get(eventHandlerId);
+
+	internal void RemoveListener(ulong eventHandlerId)
+	{
+		// This method gets called whenever the .NET-side code reports that a certain event handler
+		// has been disposed. However we will already have disposed the info about that handler if
+		// the eventHandlerId for the (element,eventName) pair was replaced during diff application.
+		var info = eventInfoStore.Remove(eventHandlerId);
+		if (info is not null)
+		{
+			// Looks like this event handler wasn't already disposed
+			// Remove the associated data from the DOM element
+			var element = info.Element;
+			var elementEventInfos = GetEventHandlerInfosForElement(element, false);
+			if (elementEventInfos is not null)
+			{
+				elementEventInfos.RemoveHandler(info.EventName);
+			}
+		}
+	}
+
 	private EventHandlerInfosForElement? GetEventHandlerInfosForElement(IElement element, bool createIfNeeded)
 	{
 		var logicalElement = element.ToLogicalElement();
@@ -244,6 +266,7 @@ internal class EventDelegator
 			&& DisableableEventNames.Contains(rawBrowserEventName)
 			&& element.IsDisabled();
 	}
+
 }
 
 
@@ -341,6 +364,9 @@ internal class EventInfoStore
 		AddGlobalListener(info.EventName);
 	}
 
+	internal EventHandlerInfo Get(ulong eventHandlerId)
+		=> infosByEventHandlerId[eventHandlerId];
+
 	internal void AddGlobalListener(string eventName)
 	{
 		// If this event name is an alias, update the global listener for the corresponding browser event
@@ -418,4 +444,5 @@ internal class EventInfoStore
 			countByEventName[browserEventName] += countByAliasEventName - 1;
 		}
 	}
+
 }
