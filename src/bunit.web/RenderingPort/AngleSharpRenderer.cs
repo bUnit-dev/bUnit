@@ -4,17 +4,11 @@ using System.Xml.Linq;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Bunit.Rendering;
+using Bunit.RenderingPort.Events;
 using static Bunit.RenderingPort.LogicalElements;
 
 namespace Bunit.RenderingPort;
 
-/*
- * This implementation differs from BrowserRenderer in a few ways.
- * 
- * - In the browser, there is a single DOM which is already created.
- *   The AngleSharpRenderer must create DOM per "root component".
- * 
- */
 internal sealed class AngleSharpRenderer : IDisposable
 {
 	private const string InternalAttributeNamePrefix = "__internal_";
@@ -27,11 +21,18 @@ internal sealed class AngleSharpRenderer : IDisposable
 	private readonly BunitHtmlParser htmlParser;
 	private readonly EventDelegator eventDelegator;
 
-	public AngleSharpRenderer()
+	private readonly IDocument document;
+
+	public AngleSharpRenderer(BunitRenderer renderer)
 	{
 		htmlParser = new BunitHtmlParser();
-		eventDelegator = new EventDelegator();
-		var document = htmlParser.CreateDocument();
+		// NOTE: This means that AngleSharpRenderer can only be used for one call to BunitRenderer.Render,
+		//       since there will be a shared document for all rendered components, and multiple
+		//       root renderings are probably not supported/wont work.
+		//       This should be refactored once the port is complete! 
+		document = htmlParser.CreateDocument();
+		eventDelegator = new EventDelegator(document, renderer);
+
 		sharedTemplateElemForParsing = (IHtmlTemplateElement)document.CreateElement("template");
 		sharedSvgElemForParsing = document.CreateElement("http://www.w3.org/2000/svg", "g");
 	}
@@ -40,9 +41,8 @@ internal sealed class AngleSharpRenderer : IDisposable
 
 	internal RenderedComponent<RootComponent> InitializeRenderedComponent(int componentId, RootComponent component)
 	{
-		var doc = htmlParser.CreateDocument();
-		var result = new RenderedComponent<RootComponent>(component, doc.Body!.ChildNodes);
-		var logicalElement = doc.Body.ToLogicalElement();
+		var result = new RenderedComponent<RootComponent>(component, document.Body!.ChildNodes);
+		var logicalElement = document.Body.ToLogicalElement();
 		childComponentLocations.Add(componentId, logicalElement);
 		return result;
 	}
