@@ -61,15 +61,7 @@ internal sealed class RazorTestCase : LongLivedMarshalByRefObject, IXunitTestCas
 	public Dictionary<string, List<string>>? Traits { get; }
 
 	/// <inheritdoc/>
-	public string UniqueID
-	{
-		get
-		{
-			if (uniqueId is null)
-				uniqueId = GetUniqueID(TestMethod);
-			return uniqueId;
-		}
-	}
+	public string UniqueID => uniqueId ??= GetUniqueID(TestMethod);
 
 	/// <inheritdoc/>
 	public Task<RunSummary> RunAsync(IMessageSink diagnosticMessageSink, IMessageBus messageBus, object[] constructorArguments, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)

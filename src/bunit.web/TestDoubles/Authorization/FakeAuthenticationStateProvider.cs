@@ -20,7 +20,7 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 	/// <param name="claims">Claims to add to user principal.</param>
 	/// <param name="authenticationType">The authentication type for the user principal.</param>
 	public FakeAuthenticationStateProvider(
-		string userName, 
+		string userName,
 		IEnumerable<string>? roles = null,
 		IEnumerable<Claim>? claims = null,
 		string? authenticationType = null)
@@ -45,8 +45,8 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 	/// <param name="claims">Claims to add to user principal.</param>
 	/// <param name="authenticationType">The authentication type for the user principal.</param>
 	public void TriggerAuthenticationStateChanged(
-		string userName, 
-		IEnumerable<string>? roles = null, 
+		string userName,
+		IEnumerable<string>? roles = null,
 		IEnumerable<Claim>? claims = null,
 		string? authenticationType = null)
 	{
@@ -87,9 +87,9 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 	}
 
 	private void SetAuthenticatedState(
-		string userName, 
-		IEnumerable<string>? roles, 
-		IEnumerable<Claim>? claims, 
+		string userName,
+		IEnumerable<string>? roles,
+		IEnumerable<Claim>? claims,
 		string? authenticationType)
 	{
 		if (authState.Task.IsCompleted)
@@ -112,9 +112,9 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 		IEnumerable<Claim>? claims = null,
 		string? authenticationType = null)
 	{
-		roles = roles ?? Array.Empty<string>();
-		claims = claims ?? Array.Empty<Claim>();
-		authenticationType = authenticationType ?? "bUnit Fake Authentication";
+		roles ??= Array.Empty<string>();
+		claims ??= Array.Empty<Claim>();
+		authenticationType ??= "bUnit Fake Authentication";
 
 		var usernameClaim = new Claim(ClaimsIdentity.DefaultNameClaimType, username);
 		var roleClaims = roles.Select(x => new Claim(ClaimsIdentity.DefaultRoleClaimType, x));
