@@ -40,7 +40,7 @@ public static class StubComponentFactoryCollectionExtensions
 	/// <param name="replacementMarkup">Markup that will be used as render output instead of the stubbed out component.</param>
 	/// <returns>A <see cref="ComponentFactoryCollection"/>.</returns>
 	public static ComponentFactoryCollection AddStub<TComponent>(this ComponentFactoryCollection factories, string replacementMarkup) where TComponent : IComponent
-		=> AddStub<TComponent>(factories, (RenderTreeBuilder b) => b.AddMarkupContent(0, replacementMarkup));
+		=> AddStub<TComponent>(factories, b => b.AddMarkupContent(0, replacementMarkup));
 
 	/// <summary>
 	/// Configures bUnit to use replace all components of type <typeparamref name="TComponent"/> (including derived components)

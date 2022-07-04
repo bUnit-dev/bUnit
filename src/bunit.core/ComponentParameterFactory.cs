@@ -217,7 +217,7 @@ public static class ComponentParameterFactory
 	/// <returns>The <see cref="ComponentParameter"/>.</returns>
 	public static ComponentParameter Template<TValue>(string name, Func<TValue, string> markupFactory)
 	{
-		return Template<TValue>(name, value => (RenderTreeBuilder builder) => builder.AddMarkupContent(0, markupFactory(value)));
+		return Template<TValue>(name, value => builder => builder.AddMarkupContent(0, markupFactory(value)));
 	}
 
 	/// <summary>
