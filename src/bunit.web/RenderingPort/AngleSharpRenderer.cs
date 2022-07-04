@@ -13,6 +13,7 @@ internal sealed class AngleSharpRenderer : IDisposable
 	private const string InternalAttributeNamePrefix = "__internal_";
 	private const string EventStopPropagationAttributeNamePrefix = "stopPropagation_";
 	private const string EventPreventDefaultAttributeNamePrefix = "preventDefault_";
+	private const string BunitRootComponentTagName = "bunit-root-component";
 
 	private readonly IHtmlTemplateElement sharedTemplateElemForParsing;
 	private readonly IElement sharedSvgElemForParsing;
@@ -38,17 +39,37 @@ internal sealed class AngleSharpRenderer : IDisposable
 
 	public void Dispose() => htmlParser.Dispose();
 
+
 	internal RenderedComponent<RootComponent> InitializeRenderedComponent(int componentId, RootComponent component)
 	{
-		var result = new RenderedComponent<RootComponent>(component, document.Body!.ChildNodes);
-		var logicalElement = document.Body.ToLogicalElement();
-		childComponentLocations.Add(componentId, logicalElement);
-		return result;
+		// Since the AngleSharpRenderer reuses a single DOM (document),
+		// each time a new root component is rendered, it gets its own
+		// root component, which is added as a child to the document.
+		var parent = document.Body!.ToLogicalElement();
+		var parentChildren = GetLogicalChildrenArray(parent);
+		var childIndex = parentChildren.Count;
+
+		var newRootElementRaw = document.CreateElement("bunit-root-component");
+		newRootElementRaw.SetAttribute("componentId", componentId.ToString());
+		var rootElement = newRootElementRaw.ToLogicalElement();
+
+		childComponentLocations.Add(componentId, rootElement);
+		InsertLogicalChild(newRootElementRaw, parent, childIndex);
+
+		return new RenderedComponent<RootComponent>(component, newRootElementRaw.ChildNodes);
 	}
 
 	internal void DisposeComponent(int componentId)
 	{
-		// TODO clean up rendered component
+		if (childComponentLocations.TryGetValue(componentId, out var logicalElement))
+		{
+			childComponentLocations.Remove(componentId);
+
+			if (logicalElement.Node.NodeName.Equals(BunitRootComponentTagName, StringComparison.OrdinalIgnoreCase))
+			{
+				document.RemoveChild(logicalElement.Node);
+			}
+		}
 	}
 
 	internal void DisposeEventHandler(ulong eventHandlerId)

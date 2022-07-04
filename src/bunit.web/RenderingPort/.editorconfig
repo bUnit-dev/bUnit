@@ -6,4 +6,5 @@ dotnet_diagnostic.S125.severity = none # S125: Sections of code should not be co
 
 dotnet_diagnostic.MA0002.severity = suggestion
 dotnet_diagnostic.MA0006.severity = suggestion
+dotnet_diagnostic.MA0011.severity = suggestion
 dotnet_diagnostic.MA0074.severity = suggestion
