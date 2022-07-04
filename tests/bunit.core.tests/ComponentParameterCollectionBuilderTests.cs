@@ -573,7 +573,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		var sut = new ComponentParameterCollectionBuilder<TemplatedChildContent>();
 
-		sut.Add(p => p.ChildContent, p => "<p>item</p>");
+		sut.Add(p => p.ChildContent, _ => "<p>item</p>");
 
 		sut.Build()
 			.ShouldHaveSingleItem()
@@ -585,7 +585,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		var sut = new ComponentParameterCollectionBuilder<SimpleBind>();
 
-		sut.Bind(p => p.Value, "init", s => { });
+		sut.Bind(p => p.Value, "init", _ => { });
 
 		sut.Build().ShouldAllBe(
 			x => x.ShouldBeParameter("Value", "init", false),
@@ -597,7 +597,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		var sut = new ComponentParameterCollectionBuilder<FullBind>();
 
-		sut.Bind(p => p.Foo, "init", s => { });
+		sut.Bind(p => p.Foo, "init", _ => { });
 
 		sut
 			.Build()
@@ -610,7 +610,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		var sut = new ComponentParameterCollectionBuilder<NoTwoWayBind>();
 
-		Action action = () => sut.Bind(p => p.Value, "init", s => { });
+		Action action = () => sut.Bind(p => p.Value, "init", _ => { });
 
 		action.ShouldThrow<InvalidOperationException>();
 	}
@@ -620,7 +620,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		var sut = new ComponentParameterCollectionBuilder<ComponentWithCascadingParameter>();
 
-		Action action = () => sut.Bind(p => p.Value, "init", s => { });
+		Action action = () => sut.Bind(p => p.Value, "init", _ => { });
 
 		action.ShouldThrow<ArgumentException>();
 	}
@@ -630,7 +630,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		var sut = new ComponentParameterCollectionBuilder<InvalidTwoWayBind>();
 
-		Action action = () => sut.Bind(p => p.Value, "init", s => { });
+		Action action = () => sut.Bind(p => p.Value, "init", _ => { });
 
 		action.ShouldThrow<InvalidOperationException>();
 	}
