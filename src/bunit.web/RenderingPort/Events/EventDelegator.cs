@@ -121,11 +121,39 @@ internal class EventDelegator
 		}
 
 		// Special case for navigation interception
-		if (evt.Type == "click")
+		if (evt.Type == "click" && afterClickCallbacks.Count > 0)
 		{
+			MouseEvent? mouseEvent = evt as MouseEvent;
+
+			if (mouseEvent is null
+				&& evt is BunitEvent bunitEvent
+				&& bunitEvent.BlazorEventArgs is MouseEventArgs args)
+			{
+				mouseEvent = new MouseEvent(
+					args.Type,
+					bubbles: evt.IsBubbling,
+					cancelable: evt.IsCancelable,
+					detail: (int)args.Detail,
+					screenX: (int)args.ScreenX,
+					screenY: (int)args.ScreenY,
+					clientX: (int)args.ClientX,
+					clientY: (int)args.ClientY,
+					ctrlKey: args.CtrlKey,
+					altKey: args.AltKey,
+					shiftKey: args.ShiftKey,
+					metaKey: args.MetaKey,
+					button: (MouseButton)args.Button,
+					relatedTarget: evt.OriginalTarget);
+			}
+
+			if (mouseEvent is null)
+			{
+				throw new InvalidOperationException("An event with type 'click' was received, but it was a MouseEvent");
+			}
+
 			foreach (var callback in afterClickCallbacks)
 			{
-				callback((MouseEvent)evt);
+				callback(mouseEvent);
 			}
 		}
 	}
@@ -140,7 +168,8 @@ internal class EventDelegator
 		//const path = browserEvent.composedPath();
 		var path = EmulateComposedPath(browserEvent);
 
-		EventArgs? eventArgs = null;
+		BunitEvent? bunitEvent = browserEvent as BunitEvent;
+		EventArgs? eventArgs = bunitEvent?.BlazorEventArgs;
 		//var eventArgsIsPopulated = false;
 		var eventIsNonBubbling = NonBubblingEvents.Contains(eventName);
 		var stopPropagationWasRequested = false;
@@ -174,12 +203,15 @@ internal class EventDelegator
 						browserEvent.Cancel(); // preventDefault
 					}
 
-					// TODO: at some point we need to do something about providing the user with an
-					//       option to await this.
-					renderer.DispatchEventAsync(
+					// Dispatch directly to the native C# renderer and store
+					// the dispatch task in the browser event, if it is a
+					// BunitEvent. This allows the user to await async event handlers.
+					var dispatchTask = renderer.DispatchEventAsync(
 						handlerInfo.EventHandlerId,
 						FromEvent(handlerInfo.RenderingComponentId, browserEvent),
 						eventArgs);
+
+					bunitEvent?.AddEventHandlerTask(dispatchTask);
 				}
 
 				if (handlerInfos.StopPropagation(eventName))
@@ -266,7 +298,6 @@ internal class EventDelegator
 			&& DisableableEventNames.Contains(rawBrowserEventName)
 			&& element.IsDisabled();
 	}
-
 }
 
 

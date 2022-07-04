@@ -61,4 +61,27 @@ public class AngleSharpRendererTest
 		cut.Find("button").Dispatch(new MouseEvent("click", bubbles: true));
 		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 	}
+
+	[Fact]
+	public async Task CanTriggerAsyncEventHandlers()
+	{
+		// Initial state is stopped
+		var cut = Renderer.Render<AsyncEventHandlerComponent>();
+		var stateElement = cut.Find("#state");
+		Assert.Equal("Stopped", stateElement.TextContent);
+
+		// Clicking 'tick' changes the state, and starts a task
+		var be1 = new BunitEvent(new MouseEventArgs(), "click");
+		cut.Find("#tick").Dispatch(be1);
+		Assert.Equal("Started", stateElement.TextContent);
+
+		// Clicking 'tock' completes the task, which updates the state
+		cut.Find("#tock").Dispatch(new MouseEvent("click", bubbles: true));
+
+		// Await the first 'tick' events completion here, since it is
+		// setting state to "Stopped".
+		await be1.EventDispatchResult;
+
+		Assert.Equal("Stopped", stateElement.TextContent);
+	}
 }
