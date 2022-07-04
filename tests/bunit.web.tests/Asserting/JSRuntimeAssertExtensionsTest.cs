@@ -115,7 +115,7 @@ public class JSRuntimeAssertExtensionsTest
 
 		Should.Throw<ActualExpectedAssertException>(() => elmRef.ShouldBeElementReferenceTo(elm));
 
-		var elmWithoutRefAttr = (IElement)htmlParser.Parse($"<p />").First();
+		var elmWithoutRefAttr = (IElement)htmlParser.Parse("<p />").First();
 
 		Should.Throw<ActualExpectedAssertException>(() => elmRef.ShouldBeElementReferenceTo(elmWithoutRefAttr));
 	}
@@ -210,8 +210,8 @@ public class JSRuntimeAssertExtensionsTest
 		var invocation = handler.VerifyInvoke(identifier);
 		invocation.ShouldBe(handler.Invocations[identifier][0]);
 	}
-	
-	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke reports the actual and expected amount")]	
+
+	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke reports the actual and expected amount")]
 	public async Task Test309()
 	{
 		var sut = CreateSut();
@@ -225,5 +225,5 @@ public class JSRuntimeAssertExtensionsTest
 		var actual = Should.Throw<JSInvokeCountExpectedException>(() => handler.VerifyInvoke(identifier, 2));
 		actual.Message.ShouldContain("Expected number of calls: 2");
 		actual.Message.ShouldContain("Actual number of calls:   1");
-	}	
+	}
 }

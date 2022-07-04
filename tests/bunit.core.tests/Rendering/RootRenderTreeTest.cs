@@ -45,7 +45,7 @@ public class RootRenderTreeTest : TestContext
 
 		var cut = RenderComponent<InnerComponent>();
 
-		cut.Markup.ShouldBe($"<div>LAYOUT VALUE</div>");
+		cut.Markup.ShouldBe("<div>LAYOUT VALUE</div>");
 	}
 
 	[Fact(DisplayName = "RenderTree.Add<T> allows passing parameters to render tree components")]
@@ -55,7 +55,7 @@ public class RootRenderTreeTest : TestContext
 
 		var cut = RenderComponent<InnerComponent>();
 
-		cut.Markup.ShouldBe($"<div>ANOTHER VALUE</div>");
+		cut.Markup.ShouldBe("<div>ANOTHER VALUE</div>");
 	}
 
 	[Fact(DisplayName = "RenderTree.Add<T> can be called multiple times")]
@@ -66,7 +66,7 @@ public class RootRenderTreeTest : TestContext
 
 		var cut = RenderComponent<MultipleParametersInnerComponent>();
 
-		cut.Markup.ShouldBe($"<div>VALUE42</div>");
+		cut.Markup.ShouldBe("<iv>VALUE42</div>");
 	}
 
 	[Fact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
@@ -79,7 +79,7 @@ public class RootRenderTreeTest : TestContext
 
 		var cut = RenderComponent<MultipleParametersInnerComponent>();
 
-		cut.Markup.ShouldBe($"<div>VALUE42</div>");
+		cut.Markup.ShouldBe("<div>VALUE42</div>");
 	}
 
 	[Fact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
@@ -113,7 +113,7 @@ public class RootRenderTreeTest : TestContext
 
 		var cut = RenderComponent<InnerComponent>();
 
-		cut.Markup.ShouldBe($"<div>FOO</div>");
+		cut.Markup.ShouldBe("<div>FOO</div>");
 	}
 
 	[Fact(DisplayName = "RenderTree.TryAdd<T> returns true if T was added")]

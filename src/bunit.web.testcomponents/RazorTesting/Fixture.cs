@@ -158,7 +158,7 @@ public class Fixture : FixtureBase<Fixture>
 		}
 
 		throw new InvalidOperationException($"It is not possible to call the generic version of {sourceMethod} after " +
-			$"the non-generic version has been called on the same test context. Change all calls to the same generic version and try again.");
+			"the non-generic version has been called on the same test context. Change all calls to the same generic version and try again.");
 	}
 
 	/// <inheritdoc/>
