@@ -1,6 +1,5 @@
 // This file is a port of the BrowserRenderer.ts in https://github.dev/dotnet/aspnetcore
 // Version ported: https://github.dev/dotnet/aspnetcore/blob/8c5a59ac18d0d2d1ced5e247f5d0880650ef1ad8/src/Components/Web.JS/src/Rendering/BrowserRenderer.ts#L480
-using System.Xml.Linq;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Bunit.Rendering;
@@ -48,10 +47,12 @@ internal sealed class AngleSharpRenderer : IDisposable
 	}
 
 	internal void DisposeComponent(int componentId)
-		=> throw new NotImplementedException();
+	{
+		// TODO clean up rendered component
+	}
 
 	internal void DisposeEventHandler(ulong eventHandlerId)
-		=> throw new NotImplementedException();
+		=> eventDelegator.RemoveListener(eventHandlerId);
 
 	internal void UpdateComponent(in RenderBatch batch, int componentId, in ArrayBuilderSegment<RenderTreeEdit> edits, in RenderTreeFrame[] referenceFrames)
 	{
@@ -72,7 +73,7 @@ internal sealed class AngleSharpRenderer : IDisposable
 
 	private void ApplyEdits(in RenderBatch batch, int componentId, LogicalElement parent, int childIndex, in ArrayBuilderSegment<RenderTreeEdit> edits, in RenderTreeFrame[] referenceFrames)
 	{
-		var currnetDepth = 0;
+		var currentDepth = 0;
 		var childIndexAtCurrentDepth = childIndex;
 		var permutationList = default(List<PermutationListEntry>);
 
@@ -95,7 +96,53 @@ internal sealed class AngleSharpRenderer : IDisposable
 					InsertFrame(in batch, componentId, parent, childIndexAtCurrentDepth + siblingIndex, in referenceFrames, in frame, frameIndex);
 					break;
 				}
-
+				case RenderTreeEditType.SetAttribute:
+				{
+					var frameIndex = edit.ReferenceFrameIndex;
+					ref readonly var frame = ref referenceFrames[frameIndex];
+					var siblingIndex = edit.SiblingIndex;
+					var logicalElement = GetLogicalChild(parent, childIndexAtCurrentDepth + siblingIndex);
+					if (logicalElement.Node is IElement element)
+					{
+						ApplyAttribute(in batch, componentId, element, in frame);
+					}
+					else
+					{
+						throw new InvalidOperationException("Cannot set attribute on non-element child");
+					}
+					break;
+				}
+				case RenderTreeEditType.UpdateText:
+				{
+					var frameIndex = edit.ReferenceFrameIndex;
+					ref readonly var frame = ref referenceFrames[frameIndex];
+					var siblingIndex = edit.SiblingIndex;
+					var textNode = GetLogicalChild(parent, childIndexAtCurrentDepth + siblingIndex);
+					if (textNode.Node is IText text)
+					{
+						text.TextContent = frame.TextContent;
+					}
+					else
+					{
+						throw new InvalidOperationException("Cannot set text content on non-text child");
+					}
+					break;
+				}
+				case RenderTreeEditType.StepIn:
+				{
+					var siblingIndex = edit.SiblingIndex;
+					parent = GetLogicalChild(parent, childIndexAtCurrentDepth + siblingIndex);
+					currentDepth++;
+					childIndexAtCurrentDepth = 0;
+					break;
+				}
+				case RenderTreeEditType.StepOut:
+				{
+					parent = GetLogicalParent(parent)!;
+					currentDepth--;
+					childIndexAtCurrentDepth = currentDepth == 0 ? childIndex : 0; // The childIndex is only ever nonzero at zero depth
+					break;
+				}
 				default:
 				{
 					throw new InvalidOperationException($"Unknown edit type: {editType}");
