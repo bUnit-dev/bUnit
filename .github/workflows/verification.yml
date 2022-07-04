@@ -47,6 +47,7 @@ jobs:
           include-prerelease: true
 
       - name: 🎨 Setup color
+        if: matrix.os != 'windows-latest'
         run: |
           echo "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION=1" >> $GITHUB_ENV
           echo "TERM=xterm" >> $GITHUB_ENV
@@ -63,11 +64,7 @@ jobs:
 
       - name: 🧪 Run unit tests
         run: |
-          dotnet test ./tests/bunit.core.tests/bunit.core.tests.csproj -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
-          dotnet test ./tests/bunit.web.tests/bunit.web.tests.csproj -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
-          dotnet test ./tests/bunit.web.testcomponents.tests/bunit.web.testcomponents.tests.csproj -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
-          dotnet test ./tests/AngleSharpWrappers.Tests/AngleSharpWrappers.Tests.csproj -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
-
+          dotnet test -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
         uses: actions/upload-artifact@v3
