@@ -26,10 +26,6 @@ internal sealed class AngleSharpRenderer : IDisposable
 	public AngleSharpRenderer(BunitRenderer renderer)
 	{
 		htmlParser = new BunitHtmlParser();
-		// NOTE: This means that AngleSharpRenderer can only be used for one call to BunitRenderer.Render,
-		//       since there will be a shared document for all rendered components, and multiple
-		//       root renderings are probably not supported/wont work.
-		//       This should be refactored once the port is complete! 
 		document = htmlParser.CreateDocument();
 		eventDelegator = new EventDelegator(document, renderer);
 
@@ -305,7 +301,6 @@ internal sealed class AngleSharpRenderer : IDisposable
 
 	private void InsertElement(in RenderBatch batch, int componentId, LogicalElement parent, int childIndex, in RenderTreeFrame[] frames, in RenderTreeFrame frame, int frameIndex)
 	{
-		var document = parent.GetDocument();
 		var tagName = frame.ElementName;
 
 		var newDomElementRaw = tagName == "svg" || IsSvgElement(parent)
