@@ -117,6 +117,12 @@ internal sealed class AngleSharpRenderer : IDisposable
 					InsertFrame(in batch, componentId, parent, childIndexAtCurrentDepth + siblingIndex, in referenceFrames, in frame, frameIndex);
 					break;
 				}
+				case RenderTreeEditType.RemoveFrame:
+				{
+					var siblingIndex = edit.SiblingIndex;
+					RemoveLogicalChild(parent, childIndexAtCurrentDepth + siblingIndex);
+					break;
+				}
 				case RenderTreeEditType.SetAttribute:
 				{
 					var frameIndex = edit.ReferenceFrameIndex;
@@ -130,6 +136,29 @@ internal sealed class AngleSharpRenderer : IDisposable
 					else
 					{
 						throw new InvalidOperationException("Cannot set attribute on non-element child");
+					}
+					break;
+				}
+				case RenderTreeEditType.RemoveAttribute:
+				{
+					// Note that we don't have to dispose the info we track about event handlers here, because the
+					// disposed event handler IDs are delivered separately (in the 'disposedEventHandlerIds' array)
+					var siblingIndex = edit.SiblingIndex;
+					var element = GetLogicalChild(parent, childIndexAtCurrentDepth + siblingIndex);
+					if (element.Node is IElement htmlElm)
+					{
+						var attributeName = edit.RemovedAttributeName!;
+
+						// First try to remove any special property we use for this attribute
+						if (!TryApplySpecialProperty(in batch, htmlElm, attributeName, default))
+						{
+							// If that's not applicable, it's a regular DOM attribute so remove that
+							htmlElm.RemoveAttribute(attributeName);
+						}
+					}
+					else
+					{
+						throw new InvalidOperationException("Cannot remove attribute from non-element child");
 					}
 					break;
 				}
@@ -147,6 +176,15 @@ internal sealed class AngleSharpRenderer : IDisposable
 					{
 						throw new InvalidOperationException("Cannot set text content on non-text child");
 					}
+					break;
+				}
+				case RenderTreeEditType.UpdateMarkup:
+				{
+					var frameIndex = edit.ReferenceFrameIndex;
+					ref readonly var frame = ref referenceFrames[frameIndex];
+					var siblingIndex = edit.SiblingIndex;
+					RemoveLogicalChild(parent, childIndexAtCurrentDepth + siblingIndex);
+					InsertMarkup(in batch, parent, childIndexAtCurrentDepth + siblingIndex, in frame);
 					break;
 				}
 				case RenderTreeEditType.StepIn:
@@ -177,17 +215,32 @@ internal sealed class AngleSharpRenderer : IDisposable
 		var frameType = frame.FrameType;
 		switch (frameType)
 		{
-			case RenderTreeFrameType.Component:
-				InsertComponent(in batch, parent, childIndex, in frame);
-				return 1;
 			case RenderTreeFrameType.Element:
 				InsertElement(in batch, componentId, parent, childIndex, in frames, in frame, frameIndex);
 				return 1;
-			case RenderTreeFrameType.Markup:
-				InsertMarkup(in batch, parent, childIndex, in frame);
-				return 1;
 			case RenderTreeFrameType.Text:
 				InsertText(in batch, parent, childIndex, in frame);
+				return 1;
+			case RenderTreeFrameType.Attribute:
+				throw new InvalidOperationException("Attribute frames should only be present as leading children of element frames.");
+			case RenderTreeFrameType.Component:
+				InsertComponent(in batch, parent, childIndex, in frame);
+				return 1;
+			case RenderTreeFrameType.Region:
+				return InsertFrameRange(in batch, componentId, parent, childIndex, in frames, frameIndex + 1, frameIndex + frame.RegionSubtreeLength);
+			case RenderTreeFrameType.ElementReferenceCapture:
+				if (parent.Node is IElement element)
+				{
+					// this is what applyCaptureIdToElement does.
+					element.SetAttribute($"_bl_{frame.ElementReferenceCaptureId}", string.Empty);
+					return 0; // A "capture" is a child in the diff, but has no node in the DOM
+				}
+				else
+				{
+					throw new InvalidOperationException("Reference capture frames can only be children of element frames.");
+				}
+			case RenderTreeFrameType.Markup:
+				InsertMarkup(in batch, parent, childIndex, in frame);
 				return 1;
 			default:
 				throw new InvalidOperationException($"Unknown frame type: {frameType}");

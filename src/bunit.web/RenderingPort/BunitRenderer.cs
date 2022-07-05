@@ -130,7 +130,20 @@ public partial class BunitRenderer : Renderer
 
 	public override Task DispatchEventAsync(ulong eventHandlerId, EventFieldInfo? fieldInfo, EventArgs eventArgs)
 	{
-		return Dispatcher.InvokeAsync(() => base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs));
+		var result = Dispatcher.InvokeAsync(() =>
+		{
+			try
+			{
+				return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
+			}
+			catch (Exception ex)
+			{
+				HandleException(ex);
+				throw;
+			}
+		});
+		AssertNoUnhandledExceptions();
+		return result;
 	}
 
 	/// <inheritdoc/>
@@ -141,7 +154,7 @@ public partial class BunitRenderer : Renderer
 
 		capturedUnhandledException = exception;
 
-		LogUnhandledException(logger, exception);		
+		LogUnhandledException(logger, exception);
 	}
 
 	private void AssertNoUnhandledExceptions()

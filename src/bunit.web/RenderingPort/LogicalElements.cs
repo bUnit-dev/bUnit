@@ -124,6 +124,30 @@ internal static class LogicalElements
 		//}
 	}
 
+	public static void RemoveLogicalChild(LogicalElement parent, int childIndex)
+	{
+		var childrenArray = GetLogicalChildrenArray(parent);
+		var childToRemove = childrenArray[childIndex];
+		childrenArray.RemoveAt(childIndex);
+
+		// If it's a logical container, also remove its descendants
+		if (childToRemove.Node is IComment)
+		{
+			var grandchildrenArray = GetLogicalChildrenArray(childToRemove);
+			if (grandchildrenArray is not null)
+			{
+				while (grandchildrenArray.Count > 0)
+				{
+					RemoveLogicalChild(childToRemove, 0);
+				}
+			}
+		}
+
+		// Finally, remove the node itself
+		var domNodeToRemove = childToRemove.Node;
+		domNodeToRemove.Parent!.RemoveChild(domNodeToRemove);
+	}
+
 	public static List<LogicalElement> GetLogicalChildrenArray(LogicalElement element)
 		=> element.LogicalChildren;
 

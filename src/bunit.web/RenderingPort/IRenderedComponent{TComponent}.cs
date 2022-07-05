@@ -2,10 +2,8 @@ using AngleSharp.Dom;
 
 namespace Bunit.RenderingPort;
 
-public interface IRenderedComponent<out TComponent>
+public interface IRenderedComponent<out TComponent> : IRenderedComponent
 	where TComponent : IComponent
 {
-	INodeList Nodes { get; }
-
 	TComponent Instance { get; }
 }
