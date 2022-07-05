@@ -58,7 +58,7 @@ public class AngleSharpRendererTest
 		Assert.Equal("Current count: 0", countDisplayElement.TextContent);
 
 		// Clicking button increments count
-		cut.Find("button").Dispatch(new MouseEvent("click", bubbles: true));
+		cut.Find("button").Click();
 		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 	}
 
@@ -71,16 +71,15 @@ public class AngleSharpRendererTest
 		Assert.Equal("Stopped", stateElement.TextContent);
 
 		// Clicking 'tick' changes the state, and starts a task
-		var be1 = new BunitEvent(new MouseEventArgs(), "click");
-		cut.Find("#tick").Dispatch(be1);
+		var tickClick = cut.Find("#tick").ClickAsync();
 		Assert.Equal("Started", stateElement.TextContent);
 
 		// Clicking 'tock' completes the task, which updates the state
-		cut.Find("#tock").Dispatch(new MouseEvent("click", bubbles: true));
+		cut.Find("#tock").Click();
 
 		// Await the first 'tick' events completion here, since it is
 		// setting state to "Stopped".
-		await be1.EventDispatchResult;
+		await tickClick;
 
 		Assert.Equal("Stopped", stateElement.TextContent);
 	}
@@ -90,16 +89,16 @@ public class AngleSharpRendererTest
 	{
 		// List is initially empty
 		var cut = Renderer.Render<KeyPressEventComponent>();
-		var inputElement = cut.Find<IHtmlInputElement>("input");
+		var inputElement = cut.Find("input");
 		Assert.Empty(cut.FindAll("li"));
 
 		// Typing adds element
-		inputElement.Dispatch(new KeyboardEvent("keypress", key: "a", bubbles: true));
+		inputElement.KeyPress(new KeyboardEventArgs { Key = "a" });
 		Assert.Collection(cut.FindAll("li"),
 			li => Assert.Equal("a", li.TextContent));
 
 		// Typing again adds another element
-		inputElement.Dispatch(new KeyboardEvent("keypress", key: "b", bubbles: true));
+		inputElement.KeyPress(new KeyboardEventArgs { Key = "b" });
 		Assert.Collection(cut.FindAll("li"),
 			li => Assert.Equal("a", li.TextContent),
 			li => Assert.Equal("b", li.TextContent));
@@ -110,7 +109,7 @@ public class AngleSharpRendererTest
 		//       thus each KeyboardEvent will override whatever
 		//       value is currently in the input element.
 		Assert.Equal("b", inputElement.GetAttribute("value"));
-		Assert.Equal("b", inputElement.Value);
+		Assert.Equal("b", ((IHtmlInputElement)inputElement).Value);
 	}
 
 	[Fact]
@@ -123,21 +122,21 @@ public class AngleSharpRendererTest
 
 		// Initial count is zero; clicking button increments count
 		Assert.Equal("Current count: 0", countDisplayElement.TextContent);
-		incrementButton.Dispatch(new MouseEvent("click", bubbles: true));
+		incrementButton.Click();
 		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 
 		// We can remove an event handler
-		toggleClickHandlerCheckbox.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = false }, "change"));
+		toggleClickHandlerCheckbox.Change(false);
 		Assert.Empty(cut.FindAll("#listening-message"));
-		incrementButton.Dispatch(new MouseEvent("click", bubbles: true));
+		incrementButton.Click();
 		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 
 		// We can add an event handler
-		toggleClickHandlerCheckbox.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = true }, "change"));
+		toggleClickHandlerCheckbox.Change(true);
 		cut.Find("#listening-message");
-		incrementButton.Dispatch(new MouseEvent("click", bubbles: true));
+		incrementButton.Click();
 		Assert.Equal("Current count: 2", countDisplayElement.TextContent);
-	}
+	}	
 
 	[Fact]
 	public void CanRenderChildComponents()
@@ -211,7 +210,22 @@ public class AngleSharpRendererTest
 			.Single(element => element.TextContent == "Current count: 0");
 
 		// Clicking increments count in child component
-		cut.Find("button").Dispatch(new MouseEvent("click", bubbles: true));
+		cut.Find("button").Click();
 		Assert.Equal("Current count: 1", counterDisplay.TextContent);
+	}
+
+	[Fact]
+	public void ChildComponentsRerenderWhenPropertiesChanged()
+	{
+		// Count value is displayed in child component with initial value zero
+		var cut = Renderer.Render<CounterComponentUsingChild>();
+		var wholeCounterElement = cut.Find("p");
+		var messageElementInChild = wholeCounterElement.Find(".message");
+		Assert.Equal("Current count: 0", wholeCounterElement.TextContent);
+		Assert.Equal("0", messageElementInChild.TextContent);
+
+		// Clicking increments count in child element
+		cut.Find("button").Click();
+		Assert.Equal("1", messageElementInChild.TextContent);
 	}
 }

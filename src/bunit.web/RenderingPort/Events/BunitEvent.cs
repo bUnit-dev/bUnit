@@ -2,12 +2,12 @@ using AngleSharp.Dom.Events;
 
 namespace Bunit.RenderingPort;
 
-public class BunitEvent : Event
+public class BunitEvent : Event, IEventDispatchResult
 {
 	private List<Task>? eventDispatchResults;
 	private Task? eventDispatchResult;
 
-	public Task EventDispatchResult
+	internal Task EventDispatchResult
 	{
 		get
 		{
@@ -22,15 +22,15 @@ public class BunitEvent : Event
 		}
 	}
 
-	public EventArgs BlazorEventArgs { get; }
+	internal EventArgs BlazorEventArgs { get; }
 
-	public BunitEvent(EventArgs blazorEvent, string type)
+	internal BunitEvent(EventArgs blazorEvent, string type)
 		: base(type, bubbles: true, cancelable: true)
 	{
 		BlazorEventArgs = blazorEvent;
 	}
 
-	public BunitEvent(EventArgs blazorEvent, string type, bool bubbles, bool cancelable)
+	internal BunitEvent(EventArgs blazorEvent, string type, bool bubbles, bool cancelable)
 		: base(type, bubbles, cancelable)
 	{
 		BlazorEventArgs = blazorEvent;
@@ -41,4 +41,8 @@ public class BunitEvent : Event
 		eventDispatchResults ??= new();
 		eventDispatchResults.Add(task);
 	}
+
+	bool IEventDispatchResult.DefaultPrevented => IsDefaultPrevented;
+
+	Task IEventDispatchResult.DispatchCompleted => EventDispatchResult;
 }
