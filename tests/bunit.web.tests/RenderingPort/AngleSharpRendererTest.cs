@@ -228,4 +228,73 @@ public class AngleSharpRendererTest
 		cut.Find("button").Click();
 		Assert.Equal("1", messageElementInChild.TextContent);
 	}
+
+	[Fact]
+	public void CanAddAndRemoveChildComponentsDynamically()
+	{
+		// Initially there are zero child components
+		var cut = Renderer.Render<AddRemoveChildComponents>();
+		var addButton = cut.Find(".addChild");
+		var removeButton = cut.Find(".removeChild");
+		var childComponentWrappers = () => cut.FindAll("p");
+		Assert.Empty(childComponentWrappers());
+
+		// Click to add/remove some child components
+		addButton.Click();
+		Assert.Collection(childComponentWrappers(),
+			elem => Assert.Equal("Child 1", elem.Find(".message").TextContent));
+
+		addButton.Click();
+		Assert.Collection(childComponentWrappers(),
+			elem => Assert.Equal("Child 1", elem.Find(".message").TextContent),
+			elem => Assert.Equal("Child 2", elem.Find(".message").TextContent));
+
+		removeButton.Click();
+		Assert.Collection(childComponentWrappers(),
+			elem => Assert.Equal("Child 1", elem.Find(".message").TextContent));
+
+		addButton.Click();
+		Assert.Collection(childComponentWrappers(),
+			elem => Assert.Equal("Child 1", elem.Find(".message").TextContent),
+			elem => Assert.Equal("Child 3", elem.Find(".message").TextContent));
+	}
+
+	[Fact]
+	public void ChildComponentsNotifiedWhenPropertiesChanged()
+	{
+		// Child component receives notification that lets it compute a property before first render
+		var cut = Renderer.Render<PropertiesChangedHandlerParent>();
+		var suppliedValueElement = cut.Find(".supplied");
+		var computedValueElement = cut.Find(".computed");
+		var incrementButton = cut.Find("button");
+		Assert.Equal("You supplied: 100", suppliedValueElement.TextContent);
+		Assert.Equal("I computed: 200", computedValueElement.TextContent);
+
+		// When property changes, child is renotified before rerender
+		incrementButton.Click();
+		Assert.Equal("You supplied: 101", suppliedValueElement.TextContent);
+		Assert.Equal("I computed: 202", computedValueElement.TextContent);
+	}
+
+	[Fact]
+	public void CanRenderFragmentsWhilePreservingSurroundingElements()
+	{
+		// Initially, the region isn't shown
+		var cut = Renderer.Render<RenderFragmentToggler>();
+		var originalButton = cut.Find("button");
+		var fragmentElements = () => cut.FindAll("p[name=fragment-element]");
+		Assert.Empty(fragmentElements());
+
+		// The JS-side DOM builder handles regions correctly, placing elements
+		// after the region after the corresponding elements
+		Assert.Equal("The end", cut.FindAll("div > *:last-child").Single().TextContent);
+
+		// When we click the button, the region is shown
+		originalButton.Click();
+		Assert.Single(fragmentElements());
+
+		// The button itself was preserved, so we can click it again and see the effect
+		originalButton.Click();
+		Assert.Empty(fragmentElements());
+	}
 }
