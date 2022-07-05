@@ -1,4 +1,3 @@
-using AngleSharp.Dom;
 using AngleSharp.Dom.Events;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Dom.Events;
@@ -138,5 +137,81 @@ public class AngleSharpRendererTest
 		cut.Find("#listening-message");
 		incrementButton.Dispatch(new MouseEvent("click", bubbles: true));
 		Assert.Equal("Current count: 2", countDisplayElement.TextContent);
+	}
+
+	[Fact]
+	public void CanRenderChildComponents()
+	{
+		var cut = Renderer.Render<ParentChildComponent>();
+		Assert.Equal("Parent component", cut.Find("fieldset > legend").TextContent);
+
+		var styledElement = cut.Find("fieldset > h1");
+		Assert.Equal("Hello, world!", styledElement.TextContent);
+		Assert.Equal("color: red;", styledElement.GetAttribute("style"));
+		Assert.Equal("somevalue", styledElement.GetAttribute("customattribute"));
+	}
+
+	// Verifies we can render HTML content as a single block
+	[Fact]
+	public void CanRenderChildContent_StaticHtmlBlock()
+	{
+		var cut = Renderer.Render<HtmlBlockChildContent>();
+		Assert.Equal("<p>Some-Static-Text</p>", cut.Find("#foo").InnerHtml);
+
+		// Original test included this assertion. Its does not make sense in AngleSharp,
+		// where InnerHtml is a property, not an attribute.
+		//Assert.Equal("<p>Some-Static-Text</p>", cut.Find("#foo").GetAttribute("InnerHtml"));
+	}
+
+	// Verifies we can rewite more complex HTML content into blocks
+	[Fact]
+	public void CanRenderChildContent_MixedHtmlBlock()
+	{
+		var cut = Renderer.Render<HtmlMixedChildContent>();
+
+		var one = cut.Find("#one");
+		Assert.Equal("<p>Some-Static-Text</p>", one.InnerHtml);
+
+		var two = cut.Find("#two");
+		Assert.Equal("<span>More-Static-Text</span>", two.InnerHtml);
+
+		var three = cut.Find("#three");
+		Assert.Equal("Some-Dynamic-Text", three.InnerHtml);
+
+		var four = cut.Find("#four");
+		Assert.Equal("But this is static", four.InnerHtml);
+	}
+
+	// Verifies we can rewrite HTML blocks with encoded HTML
+	[Fact]
+	public void CanRenderChildContent_EncodedHtmlInBlock()
+	{
+		var cut = Renderer.Render<HtmlEncodedChildContent>();
+
+		var one = cut.Find("#one");
+		Assert.Equal("<p>Some-Static-Text</p>", one.InnerHtml);
+
+		var two = cut.Find("#two");
+		Assert.Equal("&lt;span&gt;More-Static-Text&lt;/span&gt;", two.InnerHtml);
+
+		var three = cut.Find("#three");
+		Assert.Equal("Some-Dynamic-Text", three.InnerHtml);
+
+		var four = cut.Find("#four");
+		Assert.Equal("But this is static", four.InnerHtml);
+	}
+
+	[Fact]
+	public void CanTriggerEventsOnChildComponents()
+	{
+		// Counter is displayed as child component. Initial count is zero.
+		var cut = Renderer.Render<CounterComponentWrapper>();
+		var counterDisplay = cut
+			.FindAll("p")
+			.Single(element => element.TextContent == "Current count: 0");
+
+		// Clicking increments count in child component
+		cut.Find("button").Dispatch(new MouseEvent("click", bubbles: true));
+		Assert.Equal("Current count: 1", counterDisplay.TextContent);
 	}
 }
