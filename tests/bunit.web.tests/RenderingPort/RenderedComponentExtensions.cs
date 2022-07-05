@@ -5,19 +5,19 @@ namespace Bunit.RenderingPort;
 
 internal static class RenderedComponentExtensions
 {
-	public static IElement Find<TComponent>(this IRenderedComponent<TComponent> rc, string cssSelector) where TComponent: IComponent
+	public static IElement Find(this IRenderedComponent rc, string cssSelector)
 		=> rc.Nodes.QuerySelector(cssSelector) ?? throw new ElementNotFoundException(cssSelector);
 
-	public static TElement Find<TComponent, TElement>(this IRenderedComponent<TComponent> rc, string cssSelector) where TComponent : IComponent
+	public static TElement Find<TElement>(this IRenderedComponent rc, string cssSelector)
 		where TElement : class, IElement
 		=> Find(rc, cssSelector) is TElement result
 			? result
 			: throw new ElementNotFoundException(cssSelector);
 
-	public static IHtmlCollection<IElement> FindAll<TComponent>(this IRenderedComponent<TComponent> rc, string cssSelector) where TComponent : IComponent
+	public static IHtmlCollection<IElement> FindAll(this IRenderedComponent rc, string cssSelector)
 		=> rc.Nodes.QuerySelectorAll(cssSelector);
 
-	public static IHtmlCollection<TElement> FindAll<TComponent, TElement>(this IRenderedComponent<TComponent> rc, string cssSelector) where TComponent : IComponent
+	public static IHtmlCollection<TElement> FindAll<TElement>(this IRenderedComponent rc, string cssSelector)
 		where TElement : class, IElement
 		=> new HtmlCollection<TElement>(FindAll(rc, cssSelector).OfType<TElement>());
 

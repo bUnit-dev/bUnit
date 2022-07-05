@@ -203,6 +203,14 @@ internal class EventDelegator
 						browserEvent.Cancel(); // preventDefault
 					}
 
+					// Apply side effects to DOM. AngleSharp does not
+					// set of some input elements during events like keyboard events,
+					// that would normally otherwise do so.
+					// We apply the side effects before the event is dispatched
+					// to its event handler, since that event handler might
+					// override the value set by the side effect.
+					ApplySideEffect(handlerInfo.Element, eventArgs);
+
 					// Dispatch directly to the native C# renderer and store
 					// the dispatch task in the browser event, if it is a
 					// BunitEvent. This allows the user to await async event handlers.
@@ -298,6 +306,24 @@ internal class EventDelegator
 			&& DisableableEventNames.Contains(rawBrowserEventName)
 			&& element.IsDisabled();
 	}
+
+	static void ApplySideEffect(object node, EventArgs e)
+	{
+		// This applies side effects to DOM elements.
+		// TODO: Get all side effects implemented.
+		switch (node)
+		{
+			case IHtmlInputElement input when e is KeyboardEventArgs kb:
+			{
+				// This will override current value, since we do not
+				// track text cursor positions in the input field.
+				input.SetAttribute("value", kb.Key);
+				break;
+			}
+			default:
+				break;
+		}
+	}
 }
 
 
@@ -359,14 +385,24 @@ internal sealed class EventHandlerInfosForElement
 	}
 }
 
-internal sealed record class EventHandlerInfo(
-	IElement Element,
-	string EventName,
-	ulong EventHandlerId,
+internal sealed class EventHandlerInfo
+{
+	public IElement Element { get; }
+	public string EventName { get; }
+	public ulong EventHandlerId { get; set; }
 	// The component whose tree includes the event handler attribute frame, *not* necessarily the
 	// same component that will be re-rendered after the event is handled (since we re-render the
 	// component that supplied the delegate, not the one that rendered the event handler frame)
-	int RenderingComponentId);
+	public int RenderingComponentId { get; }
+
+	public EventHandlerInfo(IElement element, string eventName, ulong eventHandlerId, int renderingComponentId)
+	{
+		Element = element;
+		EventName = eventName;
+		EventHandlerId = eventHandlerId;
+		RenderingComponentId = renderingComponentId;
+	}
+}
 
 internal class EventInfoStore
 {
@@ -429,7 +465,7 @@ internal class EventInfoStore
 		// Since we're just updating the event handler ID, there's no need to update the global counts
 		var info = infosByEventHandlerId[oldEventHandlerId];
 		infosByEventHandlerId.Remove(oldEventHandlerId);
-		info = info with { EventHandlerId = newEventHandlerId };
+		info.EventHandlerId = newEventHandlerId;
 		infosByEventHandlerId[newEventHandlerId] = info;
 	}
 

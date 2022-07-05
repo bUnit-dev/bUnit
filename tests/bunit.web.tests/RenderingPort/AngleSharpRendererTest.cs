@@ -1,5 +1,6 @@
 using AngleSharp.Dom;
 using AngleSharp.Dom.Events;
+using AngleSharp.Html.Dom;
 using AngleSharp.Html.Dom.Events;
 using Bunit.TestAssets.BlazorE2E;
 using Microsoft.Extensions.Logging;
@@ -83,5 +84,59 @@ public class AngleSharpRendererTest
 		await be1.EventDispatchResult;
 
 		Assert.Equal("Stopped", stateElement.TextContent);
+	}
+
+	[Fact]
+	public void CanTriggerKeyPressEvents()
+	{
+		// List is initially empty
+		var cut = Renderer.Render<KeyPressEventComponent>();
+		var inputElement = cut.Find<IHtmlInputElement>("input");
+		Assert.Empty(cut.FindAll("li"));
+
+		// Typing adds element
+		inputElement.Dispatch(new KeyboardEvent("keypress", key: "a", bubbles: true));
+		Assert.Collection(cut.FindAll("li"),
+			li => Assert.Equal("a", li.TextContent));
+
+		// Typing again adds another element
+		inputElement.Dispatch(new KeyboardEvent("keypress", key: "b", bubbles: true));
+		Assert.Collection(cut.FindAll("li"),
+			li => Assert.Equal("a", li.TextContent),
+			li => Assert.Equal("b", li.TextContent));
+
+		// Textbox contains typed text
+		// NOTE: these assertions differ from the original
+		//       because we do not track text cursor position,
+		//       thus each KeyboardEvent will override whatever
+		//       value is currently in the input element.
+		Assert.Equal("b", inputElement.GetAttribute("value"));
+		Assert.Equal("b", inputElement.Value);
+	}
+
+	[Fact]
+	public void CanAddAndRemoveEventHandlersDynamically()
+	{
+		var cut = Renderer.Render<CounterComponent>();
+		var countDisplayElement = cut.Find("p");
+		var incrementButton = cut.Find("button");
+		var toggleClickHandlerCheckbox = cut.Find("[type=checkbox]");
+
+		// Initial count is zero; clicking button increments count
+		Assert.Equal("Current count: 0", countDisplayElement.TextContent);
+		incrementButton.Dispatch(new MouseEvent("click", bubbles: true));
+		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
+
+		// We can remove an event handler
+		toggleClickHandlerCheckbox.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = false }, "change"));
+		Assert.Empty(cut.FindAll("#listening-message"));
+		incrementButton.Dispatch(new MouseEvent("click", bubbles: true));
+		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
+
+		// We can add an event handler
+		toggleClickHandlerCheckbox.Dispatch(new BunitEvent(new ChangeEventArgs() { Value = true }, "change"));
+		cut.Find("#listening-message");
+		incrementButton.Dispatch(new MouseEvent("click", bubbles: true));
+		Assert.Equal("Current count: 2", countDisplayElement.TextContent);
 	}
 }
