@@ -30,13 +30,13 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	[InlineAutoData("InvokeVoid")]
 	public void Test001(string identifier, string invocationMethodName)
 	{
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 				$"{CodeIdent}{invocationMethodName}(\"{identifier}\")",
 				$"{CodeIdent}SetupVoid(\"{identifier}\")");
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, JSVoidResultType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints correctly with non-primitive return type")]
@@ -45,13 +45,13 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	public void Test002(string identifier, string invocationMethodName)
 	{
 		var returnType = typeof(JSRuntimeUnhandledInvocationExceptionTest);
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 				$"{CodeIdent}{invocationMethodName}<{returnType.Name}>(\"{identifier}\")",
 				$"{CodeIdent}Setup<{returnType.Name}>(\"{identifier}\")");
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints correctly with primitive return type")]
@@ -71,13 +71,13 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	{
 		var identifier = "func";
 		var invocationMethodName = "InvokeAsync";
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 				$"{CodeIdent}{invocationMethodName}<{returnTypeName}>(\"{identifier}\")",
 				$"{CodeIdent}Setup<{returnTypeName}>(\"{identifier}\")");
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints correctly with void return type and string argument")]
@@ -85,7 +85,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	[InlineAutoData("InvokeVoid")]
 	public void Test011(string identifier, string arg0, string invocationMethodName)
 	{
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}(\"{identifier}\", \"{arg0}\")",
 			$"{CodeIdent}SetupVoid(\"{identifier}\", \"{arg0}\"){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -93,7 +93,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0 }, JSVoidResultType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints correctly with void return type and multiple string arguments")]
@@ -101,7 +101,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	[InlineAutoData("InvokeVoid")]
 	public void Test012(string identifier, string arg0, string arg1, string invocationMethodName)
 	{
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}(\"{identifier}\", \"{arg0}\", \"{arg1}\")",
 			$"{CodeIdent}SetupVoid(\"{identifier}\", \"{arg0}\", \"{arg1}\"){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -109,7 +109,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0, arg1 }, JSVoidResultType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints correctly with void return type and multiple non-string arguments")]
@@ -117,7 +117,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	[InlineAutoData("InvokeVoid")]
 	public void Test013(string identifier, bool arg0, object arg1, string invocationMethodName)
 	{
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}(\"{identifier}\", {arg0}, {arg1})",
 			$"{CodeIdent}SetupVoid(\"{identifier}\", {arg0}, {arg1}){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -125,7 +125,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0, arg1 }, JSVoidResultType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints correctly with void return type and null argument")]
@@ -133,7 +133,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	[InlineAutoData("InvokeVoid")]
 	public void Test014(string identifier, string invocationMethodName)
 	{
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}(\"{identifier}\", null)",
 			$"{CodeIdent}SetupVoid(\"{identifier}\", null){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -141,7 +141,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new object?[] { null }, JSVoidResultType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints correctly with return type and string argument")]
@@ -150,7 +150,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	{
 		var returnType = typeof(JSRuntimeUnhandledInvocationExceptionTest);
 		var invocationMethodName = "InvokeAsync";
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}<{returnType.Name}>(\"{identifier}\", \"{arg0}\")",
 			$"{CodeIdent}Setup<{returnType.Name}>(\"{identifier}\", \"{arg0}\"){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -158,7 +158,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0 }, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints correctly with void return type and multiple string arguments")]
@@ -167,7 +167,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	{
 		var returnType = typeof(JSRuntimeUnhandledInvocationExceptionTest);
 		var invocationMethodName = "InvokeAsync";
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}<{returnType.Name}>(\"{identifier}\", \"{arg0}\", \"{arg1}\")",
 			$"{CodeIdent}Setup<{returnType.Name}>(\"{identifier}\", \"{arg0}\", \"{arg1}\"){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -175,7 +175,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0, arg1 }, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints correctly with void return type and multiple non-string arguments")]
@@ -184,7 +184,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	{
 		var returnType = typeof(JSRuntimeUnhandledInvocationExceptionTest);
 		var invocationMethodName = "InvokeAsync";
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}<{returnType.Name}>(\"{identifier}\", {arg0}, {arg1})",
 			$"{CodeIdent}Setup<{returnType.Name}>(\"{identifier}\", {arg0}, {arg1}){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -192,7 +192,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0, arg1 }, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints correctly with void return type and null argument")]
@@ -201,7 +201,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	{
 		var returnType = typeof(JSRuntimeUnhandledInvocationExceptionTest);
 		var invocationMethodName = "InvokeAsync";
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}<{returnType.Name}>(\"{identifier}\", null)",
 			$"{CodeIdent}Setup<{returnType.Name}>(\"{identifier}\", null){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -209,7 +209,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new object?[] { null }, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with one argument correctly")]
@@ -218,7 +218,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	{
 		var returnType = typeof(JSRuntimeUnhandledInvocationExceptionTest);
 		var invocationMethodName = "InvokeUnmarshalled";
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}<Dummy1, {returnType.Name}>(\"{identifier}\", {arg0})",
 			$"{CodeIdent}Setup<{returnType.Name}>(\"{identifier}\", {arg0}){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -226,7 +226,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new[] { arg0 }, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with two arguments correctly")]
@@ -235,7 +235,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	{
 		var returnType = typeof(JSRuntimeUnhandledInvocationExceptionTest);
 		var invocationMethodName = "InvokeUnmarshalled";
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}<Dummy1, Dummy2, {returnType.Name}>(\"{identifier}\", {arg0}, {arg1})",
 			$"{CodeIdent}Setup<{returnType.Name}>(\"{identifier}\", {arg0}, {arg1}){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -243,7 +243,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new object[] { arg0, arg1 }, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with three arguments correctly")]
@@ -252,7 +252,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	{
 		var returnType = typeof(JSRuntimeUnhandledInvocationExceptionTest);
 		var invocationMethodName = "InvokeUnmarshalled";
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}<Dummy1, Dummy2, Dummy3, {returnType.Name}>(\"{identifier}\", {arg0}, {arg1}, {arg2})",
 			$"{CodeIdent}Setup<{returnType.Name}>(\"{identifier}\", {arg0}, {arg1}, {arg2}){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -260,7 +260,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new object[] { arg0, arg1, arg2 }, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with primitive arguments correctly")]
@@ -269,7 +269,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	{
 		var returnType = typeof(JSRuntimeUnhandledInvocationExceptionTest);
 		var invocationMethodName = "InvokeUnmarshalled";
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}<int, {returnType.Name}>(\"{identifier}\", {arg0})",
 			$"{CodeIdent}Setup<{returnType.Name}>(\"{identifier}\", {arg0}){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -277,7 +277,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new object?[] { arg0 }, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	[Theory(DisplayName = "Message prints generic arguments as '?' of InvokeUnmarshalled when matching argument is null")]
@@ -286,7 +286,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	{
 		var returnType = typeof(JSRuntimeUnhandledInvocationExceptionTest);
 		var invocationMethodName = "InvokeUnmarshalled";
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}<?, {returnType.Name}>(\"{identifier}\", null)",
 			$"{CodeIdent}Setup<{returnType.Name}>(\"{identifier}\", null){Environment.NewLine}" +
 			$"or the following, to match any arguments:{Environment.NewLine}" +
@@ -294,7 +294,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new object?[] { null }, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
 	public class Dummy1 { }

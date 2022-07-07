@@ -213,13 +213,13 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 	/// <inheritdoc/>
 	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
-	private static object WrapTemplates(Type templateParamterType, ComponentParameter[] templateParameters)
+	private static object WrapTemplates(Type templateParameterType, ComponentParameter[] templateParameters)
 	{
 		// gets the generic argument to RenderFragment<>, e.g. string with RenderFragment<string>
-		var templateType = templateParamterType.GetGenericArguments()[0];
+		var templateType = templateParameterType.GetGenericArguments()[0];
 
 		// this creates an invokable version of CreateTemplateWrapper with the
-		// generic type set to tmeplateType, e.g. CreateTemplateWrapper<string>
+		// generic type set to templateType, e.g. CreateTemplateWrapper<string>
 		var templateWrapper = CreateTemplateWrapperMethod.MakeGenericMethod(templateType);
 
 		// BANG: since CreateTemplateWrapper<T> will never return null BANG (!) is safe here

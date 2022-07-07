@@ -111,7 +111,7 @@ public abstract class WaitForHelper<T> : IDisposable
 
 		// Two to failure conditions, that the renderer captures an unhandled
 		// exception from a component or itself, or that the timeout is reached,
-		// are executed on the renderes schedular, to ensure that OnAfterRender
+		// are executed on the renderes scheduler, to ensure that OnAfterRender
 		// and the continuations does not happen at the same time.
 		var failureTask = renderer.Dispatcher.InvokeAsync(() =>
 		{

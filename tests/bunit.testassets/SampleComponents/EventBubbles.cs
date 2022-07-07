@@ -7,9 +7,9 @@ public class EventBubbles : ComponentBase
 	[Parameter] public string ChildElementType { get; set; } = "div";
 	[Parameter] public bool ChildElementDisabled { get; set; }
 	[Parameter] public string? EventName { get; set; }
-	[Parameter] public bool GrandParentStopPropergation { get; set; }
-	[Parameter] public bool ParentStopPropergation { get; set; }
-	[Parameter] public bool ChildStopPropergation { get; set; }
+	[Parameter] public bool GrandParentStopPropagation { get; set; }
+	[Parameter] public bool ParentStopPropagation { get; set; }
+	[Parameter] public bool ChildStopPropagation { get; set; }
 	public int GrandParentTriggerCount { get; private set; }
 	public int ParentTriggerCount { get; private set; }
 	public int ChildTriggerCount { get; private set; }
@@ -22,18 +22,18 @@ public class EventBubbles : ComponentBase
 		builder.OpenElement(0, "div");
 		builder.AddAttribute(1, EventName, EventCallback.Factory.Create<EventArgs>(this, (_) => GrandParentTriggerCount++));
 		builder.AddAttribute(2, "id", "grand-parent");
-		builder.AddEventStopPropagationAttribute(3, EventName, GrandParentStopPropergation);
+		builder.AddEventStopPropagationAttribute(3, EventName, GrandParentStopPropagation);
 
 		builder.OpenElement(10, "div");
 		builder.AddAttribute(11, EventName, EventCallback.Factory.Create<EventArgs>(this, (_) => ParentTriggerCount++));
 		builder.AddAttribute(12, "id", "parent");
-		builder.AddEventStopPropagationAttribute(13, EventName, ParentStopPropergation);
+		builder.AddEventStopPropagationAttribute(13, EventName, ParentStopPropagation);
 
 		builder.OpenElement(20, ChildElementType);
 
 		builder.AddAttribute(21, EventName, EventCallback.Factory.Create<EventArgs>(this, (_) => ChildTriggerCount++));
 		builder.AddAttribute(22, "id", "child");
-		builder.AddEventStopPropagationAttribute(23, EventName, ChildStopPropergation);
+		builder.AddEventStopPropagationAttribute(23, EventName, ChildStopPropagation);
 		if (ChildElementDisabled)
 		{
 			builder.AddAttribute(24, "disabled", "disabled");

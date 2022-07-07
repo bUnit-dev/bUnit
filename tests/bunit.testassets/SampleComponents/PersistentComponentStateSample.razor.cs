@@ -2,7 +2,7 @@ namespace Bunit.TestAssets.SampleComponents
 {
 	public partial class PersistentComponentStateSample
 	{
-		public const string PersistanceKey = "fetchdata";
+		public const string PersistenceKey = "fetchdata";
 
 		public WeatherForecast[] Forecasts { get; private set; }
 
@@ -12,7 +12,7 @@ namespace Bunit.TestAssets.SampleComponents
 		protected override void OnInitialized()
 		{
 			State.RegisterOnPersisting(PersistForecasts);
-			if (!State.TryTakeFromJson<WeatherForecast[]>(PersistanceKey, out var data))
+			if (!State.TryTakeFromJson<WeatherForecast[]>(PersistenceKey, out var data))
 			{
 				Forecasts = CreateForecasts();
 			}
@@ -24,7 +24,7 @@ namespace Bunit.TestAssets.SampleComponents
 
 		private Task PersistForecasts()
 		{
-			State.PersistAsJson(PersistanceKey, Forecasts);
+			State.PersistAsJson(PersistenceKey, Forecasts);
 			return Task.CompletedTask;
 		}
 
