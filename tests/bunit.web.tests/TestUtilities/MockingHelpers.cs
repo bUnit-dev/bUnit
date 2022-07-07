@@ -1,4 +1,4 @@
-namespace Bunit.TestUtililities;
+namespace Bunit.TestUtilities;
 
 /// <summary>
 /// Helper methods for creating mocks.

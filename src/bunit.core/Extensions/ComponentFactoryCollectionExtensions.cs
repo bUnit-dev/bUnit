@@ -8,8 +8,8 @@ namespace Bunit;
 /// </summary>
 public static class ComponentFactoryCollectionExtensions
 {
-	/// <summary>	
-	/// Configures bUunit to substitute all components of type <typeparamref name="TComponent"/>
+	/// <summary>
+	/// Configures bUnit to substitute all components of type <typeparamref name="TComponent"/>
 	/// with components of type <typeparamref name="TSubstituteComponent"/>.
 	/// </summary>
 	/// <typeparam name="TComponent">Type of component to replace.</typeparam>
@@ -81,7 +81,7 @@ public static class ComponentFactoryCollectionExtensions
 	}
 
 	/// <summary>
-	/// Configures bUnit to substitute components whose type matches the <paramref name="condition"/>, 
+	/// Configures bUnit to substitute components whose type matches the <paramref name="condition"/>,
 	/// with components created by the provided component <paramref name="factory"/>.
 	/// </summary>
 	/// <remarks>

@@ -57,7 +57,7 @@ public class FakePersistentComponentStateTest : TestContext
 
 		fakeState.TriggerOnPersisting();
 
-		fakeState.TryTake<WeatherForecast[]>(PersistentComponentStateSample.PersistanceKey, out var actual).ShouldBeTrue();
+		fakeState.TryTake<WeatherForecast[]>(PersistentComponentStateSample.PersistenceKey, out var actual).ShouldBeTrue();
 		actual.ShouldBeEquivalentTo(cut.Instance.Forecasts);
 	}
 

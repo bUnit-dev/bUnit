@@ -15,9 +15,9 @@ public partial class TestRendererTest : TestContext
 	public void Test004()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
-		RenderFragment thowingFragment = b => { b.OpenComponent<ThrowsDuringSetParams>(0); b.CloseComponent(); };
+		RenderFragment throwingFragment = b => { b.OpenComponent<ThrowsDuringSetParams>(0); b.CloseComponent(); };
 
-		Should.Throw<InvalidOperationException>(() => sut.RenderFragment(thowingFragment))
+		Should.Throw<InvalidOperationException>(() => sut.RenderFragment(throwingFragment))
 			.Message.ShouldBe(ThrowsDuringSetParams.EXCEPTION.Message);
 	}
 

@@ -1,4 +1,4 @@
-using Bunit.TestUtililities;
+using Bunit.TestUtilities;
 
 namespace Bunit;
 
