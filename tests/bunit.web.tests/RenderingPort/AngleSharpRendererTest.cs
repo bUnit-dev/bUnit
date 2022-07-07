@@ -1,8 +1,10 @@
 // Tests in this file is ported from ComponentRenderingTestBase.cs in the ASP.NET core repo.
 // Version ported: https://github.dev/dotnet/aspnetcore/blob/e97323601c57c21c6a9c399c220d327e09271d85/src/Components/test/E2ETest/Tests/ComponentRenderingTestBase.cs
 
+using System.Numerics;
 using AngleSharp.Html.Dom;
 using Bunit.TestAssets.BlazorE2E;
+using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
@@ -297,5 +299,17 @@ public class AngleSharpRendererTest
 		// The button itself was preserved, so we can click it again and see the effect
 		originalButton.Click();
 		Assert.Empty(fragmentElements());
+	}
+
+	[Fact]
+	public void CanUseViewImportsHierarchically()
+	{
+		// The component is able to compile and output these type names only because
+		// of the _ViewImports.cshtml files at the same and ancestor levels
+		var cut = Renderer.Render<ComponentUsingImports>();
+
+		Assert.Collection(cut.FindAll("p"),
+			elem => Assert.Equal(typeof(Complex).FullName, elem.TextContent),
+			elem => Assert.Equal(typeof(System.Configuration.Assemblies.AssemblyHashAlgorithm).FullName, elem.TextContent));
 	}
 }
