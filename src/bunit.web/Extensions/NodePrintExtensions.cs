@@ -71,7 +71,7 @@ public static class NodePrintExtensions
 			throw new ArgumentNullException(nameof(nodes));
 
 		using var sw = new StringWriter();
-		var formatter = new PrettyMarkupFormatter()
+		var formatter = new PrettyMarkupFormatter
 		{
 			NewLine = Environment.NewLine,
 			Indentation = "  ",
@@ -90,7 +90,7 @@ public static class NodePrintExtensions
 			throw new ArgumentNullException(nameof(markupFormattable));
 
 		using var sw = new StringWriter();
-		var formatter = new PrettyMarkupFormatter()
+		var formatter = new PrettyMarkupFormatter
 		{
 			NewLine = Environment.NewLine,
 			Indentation = "  ",

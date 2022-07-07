@@ -9,7 +9,7 @@ public partial class HtmlizerTests : TestContext
 	public void Test002(bool stopPropagation, bool preventDefault)
 	{
 		var component = RenderComponent<Htmlizer01Component>(parameters => parameters
-			.Add(p => p.OnClick, (MouseEventArgs _) => { })
+			.Add(p => p.OnClick, _ => { })
 			.Add(p => p.OnClickStopPropagation, stopPropagation)
 			.Add(p => p.OnClickPreventDefault, preventDefault));
 
@@ -35,7 +35,7 @@ public partial class HtmlizerTests : TestContext
 		var cut = RenderComponent<Htmlizer01Component>();
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 
-		cut.SetParametersAndRender(parameters => parameters.Add(p => p.OnClick, (MouseEventArgs _) => { }));
+		cut.SetParametersAndRender(parameters => parameters.Add(p => p.OnClick, _ => { }));
 
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 	}

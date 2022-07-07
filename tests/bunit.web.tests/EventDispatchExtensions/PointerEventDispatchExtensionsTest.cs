@@ -8,7 +8,7 @@ public class PointerEventDispatchExtensionsTest : EventDispatchExtensionsTest<Po
 	[MemberData(nameof(GetEventHelperMethods), typeof(PointerEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
-		var expected = new PointerEventArgs()
+		var expected = new PointerEventArgs
 		{
 			// mouse specific
 			Detail = 2,

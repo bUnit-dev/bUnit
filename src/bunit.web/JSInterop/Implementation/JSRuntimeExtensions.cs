@@ -91,10 +91,10 @@ internal static class JSRuntimeExtensions
 			? "InvokeVoidAsync"
 			: "InvokeAsync";
 #else
-		private static string GetInvokeAsyncMethodName<TValue>()
-			=> typeof(TValue) == typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult)
-				? "InvokeVoidAsync"
-				: "InvokeAsync";
+	private static string GetInvokeAsyncMethodName<TValue>()
+		=> typeof(TValue) == typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult)
+			? "InvokeVoidAsync"
+			: "InvokeAsync";
 #endif
 
 #if !NET6_0_OR_GREATER
@@ -103,9 +103,9 @@ internal static class JSRuntimeExtensions
 			? "InvokeVoid"
 			: "Invoke";
 #else
-		private static string GetInvokeMethodName<TValue>()
-			=> typeof(TValue) == typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult)
-				? "InvokeVoid"
-				: "Invoke";
+	private static string GetInvokeMethodName<TValue>()
+		=> typeof(TValue) == typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult)
+			? "InvokeVoid"
+			: "Invoke";
 #endif
 }

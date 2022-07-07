@@ -344,7 +344,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 			throw new ArgumentException("Using Bind with a cascading parameter is not allowed.", parameterName);
 
 		if (changedAction is null)
-        	throw new ArgumentNullException(nameof(changedAction));
+			throw new ArgumentNullException(nameof(changedAction));
 
 		var changedName = $"{parameterName}Changed";
 		var expressionName = $"{parameterName}Expression";
@@ -431,7 +431,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		if (parameterSelector is null)
 			throw new ArgumentNullException(nameof(parameterSelector));
 
-		if (!(parameterSelector.Body is MemberExpression memberExpression) || !(memberExpression.Member is PropertyInfo propInfoCandidate))
+		if (parameterSelector.Body is not MemberExpression { Member: PropertyInfo propInfoCandidate })
 			throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.", nameof(parameterSelector));
 
 		var propertyInfo = propInfoCandidate.DeclaringType != TComponentType

@@ -17,13 +17,13 @@ public class ConditionalComponentFactoryTest : TestContext
 	[Fact(DisplayName = "Add throws when factory is null")]
 	public void Test003()
 	=> Should.Throw<ArgumentNullException>(
-		() => ComponentFactories.Add(t => true, default(Func<Type, IComponent>)));
+		() => ComponentFactories.Add(_ => true, default(Func<Type, IComponent>)));
 
 	[Fact(DisplayName = "Component is replaced in render tree with component from factory when matches returns true")]
 	public void Test010()
 	{
 		var mockComponent = Mock.Of<Simple1>();
-		ComponentFactories.Add(type => type == typeof(Simple1), type => mockComponent);
+		ComponentFactories.Add(type => type == typeof(Simple1), _ => mockComponent);
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
@@ -50,7 +50,7 @@ public class ConditionalComponentFactoryTest : TestContext
 	[Fact(DisplayName = "When matches returns false, factory is never called")]
 	public void Test012()
 	{
-		ComponentFactories.Add(type => false, type => throw new NotImplementedException("DONT CALL FACTORY"));
+		ComponentFactories.Add(_ => false, _ => throw new NotImplementedException("DONT CALL FACTORY"));
 
 		Should.NotThrow(() => RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>()));
 	}

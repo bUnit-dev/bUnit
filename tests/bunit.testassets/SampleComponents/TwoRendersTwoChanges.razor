@@ -20,7 +20,7 @@
 
 			state = "Started";
 			tockEnabled = true;
-			return _tcs.Task.ContinueWith((_) =>
+			return _tcs.Task.ContinueWith(_ =>
 			{
 				state = "Stopped";
 				_tcs = null;

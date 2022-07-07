@@ -189,7 +189,7 @@ public static class ComponentParameterFactory
 	public static ComponentParameter RenderFragment<TComponent>(string name, params ComponentParameter[] parameters)
 		where TComponent : class, IComponent
 	{
-		var cpc = new ComponentParameterCollection() { parameters };
+		var cpc = new ComponentParameterCollection { parameters };
 		return ComponentParameter.CreateParameter(name, cpc.ToRenderFragment<TComponent>());
 	}
 
@@ -217,7 +217,7 @@ public static class ComponentParameterFactory
 	/// <returns>The <see cref="ComponentParameter"/>.</returns>
 	public static ComponentParameter Template<TValue>(string name, Func<TValue, string> markupFactory)
 	{
-		return Template<TValue>(name, value => (RenderTreeBuilder builder) => builder.AddMarkupContent(0, markupFactory(value)));
+		return Template<TValue>(name, value => builder => builder.AddMarkupContent(0, markupFactory(value)));
 	}
 
 	/// <summary>
@@ -235,7 +235,7 @@ public static class ComponentParameterFactory
 	{
 		return Template<TValue>(name, value =>
 		{
-			var cpc = new ComponentParameterCollection() { parameterCollectionBuilder(value) };
+			var cpc = new ComponentParameterCollection { parameterCollectionBuilder(value) };
 			return cpc.ToRenderFragment<TComponent>();
 		});
 	}

@@ -134,7 +134,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	[Fact(DisplayName = "Action<object> to EventCallback with parameter selector")]
 	public async Task Test013()
 	{
-		Builder.Add(x => x.EC, (_) => { EventCallbackCalled = true; });
+		Builder.Add(x => x.EC, _ => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync("EC");
 	}
 
@@ -155,7 +155,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	[Fact(DisplayName = "Action<object> to EventCallback? with parameter selector")]
 	public async Task Test016()
 	{
-		Builder.Add(x => x.NullableEC, (_) => { EventCallbackCalled = true; });
+		Builder.Add(x => x.NullableEC, _ => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync("NullableEC");
 	}
 
@@ -184,7 +184,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	[Fact(DisplayName = "Action<object> to EventCallback<T> with parameter selector")]
 	public async Task Test020()
 	{
-		Builder.Add(x => x.ECWithArgs, (_) => { EventCallbackCalled = true; });
+		Builder.Add(x => x.ECWithArgs, _ => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync<EventArgs>("ECWithArgs");
 	}
 
@@ -213,7 +213,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	[Fact(DisplayName = "Action<object> to EventCallback<T> with parameter selector")]
 	public async Task Test024()
 	{
-		Builder.Add(x => x.NullableECWithArgs, (_) => { EventCallbackCalled = true; });
+		Builder.Add(x => x.NullableECWithArgs, _ => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync<EventArgs>("NullableECWithArgs");
 	}
 
@@ -573,7 +573,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		var sut = new ComponentParameterCollectionBuilder<TemplatedChildContent>();
 
-		sut.Add(p => p.ChildContent, p => "<p>item</p>");
+		sut.Add(p => p.ChildContent, _ => "<p>item</p>");
 
 		sut.Build()
 			.ShouldHaveSingleItem()
@@ -585,19 +585,19 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		var sut = new ComponentParameterCollectionBuilder<SimpleBind>();
 
-		sut.Bind(p => p.Value, "init", s => { });
+		sut.Bind(p => p.Value, "init", _ => { });
 
 		sut.Build().ShouldAllBe(
 			x => x.ShouldBeParameter("Value", "init", false),
 			x => x.ShouldBeParameter<EventCallback<string>>("ValueChanged", false));
 	}
-	
+
 	[Fact(DisplayName = "Bind should add Expression event when available")]
 	public void Test305()
 	{
 		var sut = new ComponentParameterCollectionBuilder<FullBind>();
 
-		sut.Bind(p => p.Foo, "init", s => { });
+		sut.Bind(p => p.Foo, "init", _ => { });
 
 		sut
 			.Build()
@@ -609,8 +609,8 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	public void Test306()
 	{
 		var sut = new ComponentParameterCollectionBuilder<NoTwoWayBind>();
-		
-		Action action = () => sut.Bind(p => p.Value, "init", s => { });
+
+		Action action = () => sut.Bind(p => p.Value, "init", _ => { });
 
 		action.ShouldThrow<InvalidOperationException>();
 	}
@@ -619,22 +619,22 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	public void Test307()
 	{
 		var sut = new ComponentParameterCollectionBuilder<ComponentWithCascadingParameter>();
-		
-		Action action = () => sut.Bind(p => p.Value, "init", s => { });
+
+		Action action = () => sut.Bind(p => p.Value, "init", _ => { });
 
 		action.ShouldThrow<ArgumentException>();
 	}
-	
+
 	[Fact(DisplayName = "Throw an exception when Changed event is not a public parameter")]
 	public void Test308()
 	{
 		var sut = new ComponentParameterCollectionBuilder<InvalidTwoWayBind>();
-		
-		Action action = () => sut.Bind(p => p.Value, "init", s => { });
+
+		Action action = () => sut.Bind(p => p.Value, "init", _ => { });
 
 		action.ShouldThrow<InvalidOperationException>();
 	}
-	
+
 	[Fact(DisplayName = "Throw exception when parameter selector is null")]
 	public void Test309()
 	{
@@ -654,7 +654,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 
 		action.ShouldThrow<ArgumentNullException>();
 	}
-	
+
 	[Fact(DisplayName = "Throw exception when wrong parameter is changed action")]
 	public void Test311()
 	{
@@ -664,7 +664,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 
 		action.ShouldThrow<ArgumentException>();
 	}
-	
+
 	[Fact(DisplayName = "Throw exception when wrong parameter is expression")]
 	public void Test312()
 	{
@@ -682,17 +682,17 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		var sut = new ComponentParameterCollectionBuilder<ValidNamesComponent>();
 
 		Action action = () => sut.Bind(p => p.LastChanged, DateTime.Now, _ => { });
-		
+
 		action.ShouldNotThrow();
 	}
-	
+
 	[Fact(DisplayName = "Properties with Expression at the end, which are not of type expression can be bound")]
 	public void Test314()
 	{
 		var sut = new ComponentParameterCollectionBuilder<ValidNamesComponent>();
 
 		Action action = () => sut.Bind(p => p.FacialExpression, string.Empty, _ => { }, () => string.Empty);
-		
+
 		action.ShouldNotThrow();
 	}
 
@@ -751,7 +751,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		[Parameter]
 		public string Value { get; set; }
-		
+
 		public EventCallback<string> ValueChanged { get; set; }
 	}
 
@@ -765,7 +765,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	{
 		[Parameter] public DateTime LastChanged { get; set; }
 		[Parameter] public EventCallback<DateTime> LastChangedChanged { get; set; }
-		
+
 		[Parameter] public string FacialExpression { get; set; }
 		[Parameter] public EventCallback<string> FacialExpressionChanged { get; set; }
 		[Parameter] public Expression<Func<string>> FacialExpressionExpression { get; set; }

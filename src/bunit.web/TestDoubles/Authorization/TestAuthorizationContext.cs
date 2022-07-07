@@ -155,8 +155,8 @@ public class TestAuthorizationContext
 	/// </summary>
 	/// <param name="authenticationType">The authentication type to set.</param>
 	public TestAuthorizationContext SetAuthenticationType(string authenticationType)
-    {
-        this.authProvider.TriggerAuthenticationStateChanged(this.UserName, this.Roles, this.Claims, authenticationType);
-        return this;
-    }
+	{
+		this.authProvider.TriggerAuthenticationStateChanged(this.UserName, this.Roles, this.Claims, authenticationType);
+		return this;
+	}
 }

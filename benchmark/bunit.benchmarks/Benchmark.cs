@@ -6,9 +6,9 @@ namespace Bunit;
 [MemoryDiagnoser]
 public class Benchmark : BenchmarkBase
 {
-    [Benchmark]
-    public IRenderedComponentBase<Counter> RenderCounter()
-    {
-        return RenderComponent<Counter>();
-    }
+	[Benchmark]
+	public IRenderedComponentBase<Counter> RenderCounter()
+	{
+		return RenderComponent<Counter>();
+	}
 }

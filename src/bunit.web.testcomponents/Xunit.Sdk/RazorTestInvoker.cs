@@ -17,7 +17,7 @@ internal sealed class RazorTestInvoker : XunitTestInvoker
 
 	protected override object CreateTestClass()
 	{
-		if (!(Test is RazorTest razorTest))
+		if (Test is not RazorTest razorTest)
 			throw new InvalidOperationException($"The type of {nameof(Test)} is not a {nameof(RazorTest)}. Cannot continue. #1");
 
 		using var razorRenderer = new TestComponentRenderer();
