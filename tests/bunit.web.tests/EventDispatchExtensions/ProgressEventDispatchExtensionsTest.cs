@@ -8,7 +8,7 @@ public class ProgressEventDispatchExtensionsTest : EventDispatchExtensionsTest<P
 	[MemberData(nameof(GetEventHelperMethods), typeof(ProgressEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
-		var expected = new ProgressEventArgs()
+		var expected = new ProgressEventArgs
 		{
 			LengthComputable = true,
 			Loaded = 42L,

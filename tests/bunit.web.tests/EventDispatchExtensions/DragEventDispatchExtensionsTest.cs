@@ -8,7 +8,7 @@ public class DragEventDispatchExtensionsTest : EventDispatchExtensionsTest<DragE
 	[MemberData(nameof(GetEventHelperMethods), typeof(DragEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
-		var expected = new DragEventArgs()
+		var expected = new DragEventArgs
 		{
 			Detail = 2,
 			ScreenX = 3,

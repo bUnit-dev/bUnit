@@ -8,7 +8,7 @@ public class ClipboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<
 	[MemberData(nameof(GetEventHelperMethods), typeof(ClipboardEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
-		var expected = new ClipboardEventArgs()
+		var expected = new ClipboardEventArgs
 		{
 			Type = "SOME TYPE",
 		};

@@ -18,7 +18,7 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	public Bunit.TestDoubles.NavigationOptions Options { get; }
 #endif
 #if NET6_0_OR_GREATER
-		public Microsoft.AspNetCore.Components.NavigationOptions Options { get; }
+	public Microsoft.AspNetCore.Components.NavigationOptions Options { get; }
 #endif
 
 	/// <summary>
@@ -35,11 +35,11 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	}
 #endif
 #if NET6_0_OR_GREATER
-		public NavigationHistory(string uri, Microsoft.AspNetCore.Components.NavigationOptions options)
-		{
-			Uri = uri;
-			Options = options;
-		}
+	public NavigationHistory(string uri, Microsoft.AspNetCore.Components.NavigationOptions options)
+	{
+		Uri = uri;
+		Options = options;
+	}
 #endif
 
 	/// <inheritdoc/>
@@ -48,11 +48,11 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 		=> other is not null && string.Equals(Uri, other.Uri, StringComparison.Ordinal) && Options.Equals(other.Options);
 #endif
 #if NET6_0_OR_GREATER
-		public bool Equals(NavigationHistory? other)
-			=> other is not null
-			&& string.Equals(Uri, other.Uri, StringComparison.Ordinal)
-			&& Options.ForceLoad == other.Options.ForceLoad
-			&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry;
+	public bool Equals(NavigationHistory? other)
+		=> other is not null
+		&& string.Equals(Uri, other.Uri, StringComparison.Ordinal)
+		&& Options.ForceLoad == other.Options.ForceLoad
+		&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry;
 #endif
 
 	/// <inheritdoc/>

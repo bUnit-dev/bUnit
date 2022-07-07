@@ -10,7 +10,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 	[MemberData(nameof(Helpers))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
-		var expected = new KeyboardEventArgs()
+		var expected = new KeyboardEventArgs
 		{
 			AltKey = true,
 			CtrlKey = true,

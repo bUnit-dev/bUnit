@@ -235,7 +235,7 @@ public partial class TestServiceProviderTest
 		action.ShouldThrow<AggregateException>("Some services are not able to be constructed (Error while validating the service descriptor");
 	}
 
-	[Fact(DisplayName ="Does not validate all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is false")]
+	[Fact(DisplayName = "Does not validate all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is false")]
 	public void Test036()
 	{
 		using var sut = new TestServiceProvider();
@@ -252,7 +252,7 @@ public partial class TestServiceProviderTest
 		result.ShouldNotBeNull();
 	}
 
-	[Fact(DisplayName ="Does not validate all dependencies can be created when the first service is requested, if no ServiceProviderOptions is provided (backwards compatibility)")]
+	[Fact(DisplayName = "Does not validate all dependencies can be created when the first service is requested, if no ServiceProviderOptions is provided (backwards compatibility)")]
 	public void Test037()
 	{
 		using var sut = new TestServiceProvider();

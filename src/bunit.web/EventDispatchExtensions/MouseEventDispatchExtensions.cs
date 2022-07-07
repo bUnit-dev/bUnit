@@ -321,7 +321,7 @@ public static class MouseEventDispatchExtensions
 	public static void Click(this IElement element, long detail = 1, double screenX = default, double screenY = default, double clientX = default, double clientY = default, double offsetX = 0, double offsetY = 0, long button = default, long buttons = default, bool ctrlKey = default, bool shiftKey = default, bool altKey = default, bool metaKey = default, string? type = default)
 		=> _ = ClickAsync(element, new MouseEventArgs { Detail = detail, ScreenX = screenX, ScreenY = screenY, ClientX = clientX, OffsetX = offsetX, OffsetY = offsetY, ClientY = clientY, Button = button, Buttons = buttons, CtrlKey = ctrlKey, ShiftKey = shiftKey, AltKey = altKey, MetaKey = metaKey, Type = type! });
 #else
-		/// <summary>
+	/// <summary>
 	/// Raises the <c>@onclick</c> event on <paramref name="element"/>,  passing the provided
 	/// properties to the event handler via a <see cref="MouseEventArgs"/> object.
 	/// </summary>
