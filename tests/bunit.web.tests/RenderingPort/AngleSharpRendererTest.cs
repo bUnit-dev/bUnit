@@ -1,6 +1,7 @@
-using AngleSharp.Dom.Events;
+// Tests in this file is ported from ComponentRenderingTestBase.cs in the ASP.NET core repo.
+// Version ported: https://github.dev/dotnet/aspnetcore/blob/e97323601c57c21c6a9c399c220d327e09271d85/src/Components/test/E2ETest/Tests/ComponentRenderingTestBase.cs
+
 using AngleSharp.Html.Dom;
-using AngleSharp.Html.Dom.Events;
 using Bunit.TestAssets.BlazorE2E;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
@@ -136,7 +137,7 @@ public class AngleSharpRendererTest
 		cut.Find("#listening-message");
 		incrementButton.Click();
 		Assert.Equal("Current count: 2", countDisplayElement.TextContent);
-	}	
+	}
 
 	[Fact]
 	public void CanRenderChildComponents()
