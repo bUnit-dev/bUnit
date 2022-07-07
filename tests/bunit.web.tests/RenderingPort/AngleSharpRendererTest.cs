@@ -312,4 +312,11 @@ public class AngleSharpRendererTest
 			elem => Assert.Equal(typeof(Complex).FullName, elem.TextContent),
 			elem => Assert.Equal(typeof(System.Configuration.Assemblies.AssemblyHashAlgorithm).FullName, elem.TextContent));
 	}
+
+	[Fact]
+	public void LogicalElementInsertionWorksHierarchically()
+	{
+		var cut = Renderer.Render<LogicalElementInsertionCases>();
+		Assert.Equal("First Second Third", cut.Markup);
+	}
 }

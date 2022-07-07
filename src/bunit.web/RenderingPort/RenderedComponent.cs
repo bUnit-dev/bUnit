@@ -13,6 +13,8 @@ internal class RenderedComponent<TComponent> : IRenderedComponent<TComponent>
 
 	public INodeList Nodes { get; }
 
+	public string Markup => ((IMarkupFormattable)Nodes).ToMarkup();
+
 	public RenderedComponent(IComponent component, INodeList nodes)
 	{
 		if (component is not TComponent instance)
