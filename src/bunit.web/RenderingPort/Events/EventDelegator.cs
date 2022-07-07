@@ -25,7 +25,9 @@ internal class EventDelegator
 	public EventDelegator(IDocument document, BunitRenderer renderer)
 	{
 		this.renderer = renderer;
+#pragma warning disable S3010 // Static fields should not be updated in constructors
 		var eventDelegatorId = ++nextEventDelegatorId;
+#pragma warning restore S3010 // Static fields should not be updated in constructors
 		eventsCollectionKey = $"_blazorEvents_{eventDelegatorId}";
 		eventInfoStore = new EventInfoStore(OnGlobalEvent, document);
 	}
@@ -158,7 +160,9 @@ internal class EventDelegator
 		}
 	}
 
+#pragma warning disable MA0051 // Method is too long
 	private void DispatchGlobalEventToAllElements(string eventName, Event browserEvent)
+#pragma warning restore MA0051 // Method is too long
 	{
 		// Note that 'eventName' can be an alias. For example, eventName may be 'click.special'
 		// while browserEvent.type may be 'click'.

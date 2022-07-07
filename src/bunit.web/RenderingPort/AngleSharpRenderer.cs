@@ -88,11 +88,19 @@ internal sealed class AngleSharpRenderer : IDisposable
 		// skipping logic that sets focus back to element
 	}
 
+#pragma warning disable MA0051 // Method is too long
 	private void ApplyEdits(in RenderBatch batch, int componentId, LogicalElement parent, int childIndex, in ArrayBuilderSegment<RenderTreeEdit> edits, in RenderTreeFrame[] referenceFrames)
+#pragma warning restore MA0051 // Method is too long
 	{
 		var currentDepth = 0;
 		var childIndexAtCurrentDepth = childIndex;
+#pragma warning disable CS0219 // Variable is assigned but its value is never used
+#pragma warning disable S1481 // Unused local variables should be removed
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
 		var permutationList = default(List<PermutationListEntry>);
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+#pragma warning restore S1481 // Unused local variables should be removed
+#pragma warning restore CS0219 // Variable is assigned but its value is never used
 
 		// EGH: all this offset/count logic is built into ArrayBuilderSegment
 		// var editsOffset = edits.Offset;
@@ -243,14 +251,18 @@ internal sealed class AngleSharpRenderer : IDisposable
 		}
 	}
 
+#pragma warning disable S1172 // Unused method parameters should be removed
 	private void InsertText(in RenderBatch batch, LogicalElement parent, int childIndex, in RenderTreeFrame frame)
+#pragma warning restore S1172 // Unused method parameters should be removed
 	{
 		var textContent = frame.TextContent;
 		var newTextNode = parent.GetDocument().CreateTextNode(textContent);
 		InsertLogicalChild(newTextNode, parent, childIndex);
 	}
 
+#pragma warning disable S1172 // Unused method parameters should be removed
 	private void InsertComponent(in RenderBatch batch, LogicalElement parent, int childIndex, in RenderTreeFrame frame)
+#pragma warning restore S1172 // Unused method parameters should be removed
 	{
 		var containerElement = CreateAndInsertLogicalContainer(parent, childIndex);
 
@@ -265,7 +277,9 @@ internal sealed class AngleSharpRenderer : IDisposable
 		childComponentLocations.Add(componentId, element);
 	}
 
+#pragma warning disable S1172 // Unused method parameters should be removed
 	private void InsertMarkup(in RenderBatch batch, LogicalElement parent, int childIndex, in RenderTreeFrame frame)
+#pragma warning restore S1172 // Unused method parameters should be removed
 	{
 		var markupContainer = CreateAndInsertLogicalContainer(parent, childIndex);
 
@@ -435,7 +449,9 @@ internal sealed class AngleSharpRenderer : IDisposable
 		}
 	}
 
+#pragma warning disable S1172 // Unused method parameters should be removed
 	private bool TryApplyValueProperty(in RenderBatch batch, IElement element, in RenderTreeFrame attributeFrame)
+#pragma warning restore S1172 // Unused method parameters should be removed
 	{
 		var value = attributeFrame.AttributeValue;
 
@@ -496,7 +512,9 @@ internal sealed class AngleSharpRenderer : IDisposable
 		}
 	}
 
+#pragma warning disable S3241 // Methods should not return values that are never used
 	private bool TrySetSelectValueFromOptionElement(IHtmlOptionElement optionElement)
+#pragma warning restore S3241 // Methods should not return values that are never used
 	{
 		var selectElem = FindClosestAncestorSelectElement(optionElement);
 
@@ -587,7 +605,9 @@ internal sealed class AngleSharpRenderer : IDisposable
 		}
 	}
 
+#pragma warning disable S1172 // Unused method parameters should be removed
 	private bool TryApplyCheckedProperty(in RenderBatch batch, IElement element, in RenderTreeFrame attributeFrame)
+#pragma warning restore S1172 // Unused method parameters should be removed
 	{
 		if (element.TagName == "INPUT" && element is IHtmlInputElement inputElement)
 		{
@@ -598,7 +618,9 @@ internal sealed class AngleSharpRenderer : IDisposable
 		return false;
 	}
 
+#pragma warning disable S1172 // Unused method parameters should be removed
 	private void ApplyInternalAttribute(in RenderBatch batch, IElement element, string internalAttributeName, in RenderTreeFrame attributeFrame)
+#pragma warning restore S1172 // Unused method parameters should be removed
 	{
 		var attributeValue = attributeFrame.AttributeValue;
 

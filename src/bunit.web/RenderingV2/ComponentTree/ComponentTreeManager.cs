@@ -86,7 +86,9 @@ internal sealed class ComponentTreeManager : IDisposable
 	private void DisposeComponent(int componentId)
 		=> throw new NotImplementedException();
 
+#pragma warning disable MA0051 // Method is too long
 	private void ApplyEdits(in RenderTreeDiff updatedComponent, in RenderBatch renderBatch, ComponentTreeNode owner, INode parent)
+#pragma warning restore MA0051 // Method is too long
 	{
 		foreach (var edit in updatedComponent.Edits)
 		{

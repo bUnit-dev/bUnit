@@ -1,4 +1,4 @@
-﻿// This file is a port of the EventDelegator.ts in https://github.dev/dotnet/aspnetcore
+// This file is a port of the EventDelegator.ts in https://github.dev/dotnet/aspnetcore
 // Version ported: https://github.dev/dotnet/aspnetcore/blob/8a95ee9b8b1bbd41357cd756375d78cec6936116/src/Components/Web.JS/src/Rendering/Events/EventDelegator.ts
 
 namespace Bunit.RenderingPort.Events;
@@ -43,9 +43,11 @@ internal sealed class EventHandlerInfosForElement
 			preventDefaultFlags[eventName] = setValue.Value;
 		}
 
+#pragma warning disable S1125 // Boolean literals should not be redundant
 		return preventDefaultFlags.ContainsKey(eventName)
 			? preventDefaultFlags[eventName]
 			: false;
+#pragma warning restore S1125 // Boolean literals should not be redundant
 	}
 
 	internal bool StopPropagation(string eventName, bool? setValue = null)
@@ -55,8 +57,10 @@ internal sealed class EventHandlerInfosForElement
 			stopPropagationFlags[eventName] = setValue.Value;
 		}
 
+#pragma warning disable S1125 // Boolean literals should not be redundant
 		return stopPropagationFlags.ContainsKey(eventName)
 			? stopPropagationFlags[eventName]
 			: false;
+#pragma warning restore S1125 // Boolean literals should not be redundant
 	}
 }
