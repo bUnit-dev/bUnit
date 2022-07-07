@@ -77,7 +77,7 @@ public static class NodePrintExtensions
 			Indentation = "  ",
 		};
 		nodes.ToHtml(sw, formatter);
-		return sw.ToString();
+		return sw.ToString().Trim();
 	}
 
 	/// <summary>
@@ -96,7 +96,7 @@ public static class NodePrintExtensions
 			Indentation = "  ",
 		};
 		markupFormattable.ToHtml(sw, formatter);
-		return sw.ToString();
+		return sw.ToString().Trim();
 	}
 
 	/// <summary>
