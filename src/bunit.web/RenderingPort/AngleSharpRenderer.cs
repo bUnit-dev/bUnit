@@ -73,7 +73,7 @@ internal sealed class AngleSharpRenderer : IDisposable
 
 	internal void UpdateComponent(in RenderBatch batch, int componentId, in ArrayBuilderSegment<RenderTreeEdit> edits, in RenderTreeFrame[] referenceFrames)
 	{
-		// Is this even possible here? 
+		// Is this even possible here?
 		if (!childComponentLocations.TryGetValue(componentId, out var element))
 		{
 			throw new InvalidOperationException($"No element is currently associated with component {componentId}");
@@ -204,6 +204,12 @@ internal sealed class AngleSharpRenderer : IDisposable
 					parent = GetLogicalParent(parent)!;
 					currentDepth--;
 					childIndexAtCurrentDepth = currentDepth == 0 ? childIndex : 0; // The childIndex is only ever nonzero at zero depth
+					break;
+				}
+				case RenderTreeEditType.PermutationListEnd:
+				{
+					PermuteLogicalChildren(parent, permutationList!);
+					permutationList = null;
 					break;
 				}
 				default:

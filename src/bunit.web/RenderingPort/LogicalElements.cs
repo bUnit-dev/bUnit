@@ -154,6 +154,63 @@ internal static class LogicalElements
 	public static LogicalElement? GetLogicalParent(LogicalElement element)
 		=> element.LogicalParent;
 
+	public static void PermuteLogicalChildren(LogicalElement parent, List<PermutationListEntry> permutationList)
+	{
+		// The permutationList must represent a valid permutation, i.e., the list of 'from' indices
+		// is distinct, and the list of 'to' indices is a permutation of it. The algorithm here
+		// relies on that assumption.
+
+		// Each of the phases here has to happen separately, because each one is designed not to
+		// interfere with the indices or DOM entries used by subsequent phases.
+
+		// Phase 1: track which nodes we will move
+		var siblings = GetLogicalChildrenArray(parent);
+		var permutationListWithTrackingData = permutationList.OfType<PermutationListEntryWithTrackingData>().ToList();
+		permutationListWithTrackingData.ForEach(listEntry =>
+		{
+			listEntry.MoveRangeStart = siblings[listEntry.FromSiblingIndex];
+			listEntry.MoveRangeEnd = FindLastDomNodeInRange(listEntry.MoveRangeStart);
+		});
+
+		// Phase 2: insert markers
+		permutationListWithTrackingData.ForEach(listEntry => {
+			var marker = listEntry.MoveToBeforeMarker = parent.GetDocument().CreateComment("marker");
+			var insertBeforeNode = siblings[listEntry.ToSiblingIndex + 1];
+			if (insertBeforeNode != null) {
+				insertBeforeNode.LogicalParent.Node.InsertBefore(marker, insertBeforeNode.Node);
+			} else {
+				AppendDomNode(marker, parent);
+			}
+		});
+
+		// Phase 3: move descendants & remove markers
+		permutationListWithTrackingData.ForEach(listEntry =>
+		{
+			var insertBefore = listEntry.MoveToBeforeMarker!;
+			var parentDomNode = insertBefore.Parent!;
+			var elementToMove = listEntry.MoveRangeStart!;
+			var moveEndNode = listEntry.MoveRangeEnd!;
+			var nextToMove = elementToMove.Node;
+			while (nextToMove != null) {
+				var nextNext = nextToMove.NextSibling;
+				parentDomNode.InsertBefore(nextToMove, insertBefore);
+
+				if (nextToMove == moveEndNode) {
+					break;
+				} else {
+					nextToMove = nextNext;
+				}
+			}
+
+			parentDomNode.RemoveChild(insertBefore);
+		});
+
+		// Phase 4: update siblings index
+		permutationListWithTrackingData.ForEach(listEntry => {
+			siblings[listEntry.ToSiblingIndex] = listEntry.MoveRangeStart!;
+		});
+	}
+
 	public static LogicalElement GetLogicalChild(LogicalElement parent, int childIndex)
 		=> GetLogicalChildrenArray(parent)[childIndex];
 
@@ -196,6 +253,32 @@ internal static class LogicalElements
 			: null;
 	}
 
+	// Returns the final node (in depth-first evaluation order) that is a descendant of the logical element.
+	// As such, the entire subtree is between 'element' and 'findLastDomNodeInRange(element)' inclusive.
+	private static INode FindLastDomNodeInRange(LogicalElement element)
+	{
+		if (element.Node is IElement || element.Node is IDocumentFragment)
+		{
+			return element.Node;
+		}
+
+		var nextSibling = GetLogicalNextSibling(element);
+		if (nextSibling != null)
+		{
+			// Simple case: not the last logical sibling, so take the node before the next sibling
+			return nextSibling.Node.PreviousSibling;
+		}
+		else {
+			// Harder case: there's no logical next-sibling, so recurse upwards until we find
+			// a logical ancestor that does have one, or a physical element
+			var logicalParent = GetLogicalParent(element)!;
+			return logicalParent.Node is IElement || logicalParent.Node is IDocumentFragment
+				? logicalParent.Node.LastChild
+				: FindLastDomNodeInRange(logicalParent);
+		}
+
+	}
+
 	public static IDocument GetDocument(this LogicalElement logicalElement)
 		=> logicalElement.Node.Owner!; // we know that there is a document at this point.
 
@@ -215,16 +298,37 @@ internal static class LogicalElements
 			=> Node = node;
 	}
 
-	internal record class PermutationListEntry(
-		int FromSiblingIndex,
-		int ToSiblingIndex);
+	internal class PermutationListEntry
+	{
+		public PermutationListEntry(
+			int fromSiblingIndex,
+			int toSiblingIndex)
+		{
+			FromSiblingIndex = fromSiblingIndex;
+			ToSiblingIndex = toSiblingIndex;
+		}
 
-	internal record class PermutationListEntryWithTrackingData(
-		int FromSiblingIndex,
-		int ToSiblingIndex,
-		// These extra properties are used internally when processing the permutation list
-		LogicalElement? MoveRangeStart,
-		INode? MoveRangeEnd,
-		INode? MoveToBeforeMarker)
-		: PermutationListEntry(FromSiblingIndex, ToSiblingIndex);
+		public int FromSiblingIndex { get; set; }
+		public int ToSiblingIndex { get; set; }
+	}
+
+	internal class PermutationListEntryWithTrackingData : PermutationListEntry
+	{
+		public PermutationListEntryWithTrackingData(
+			int fromSiblingIndex,
+			int toSiblingIndex,
+			// These extra properties are used internally when processing the permutation list
+			LogicalElement? moveRangeStart,
+			INode? moveRangeEnd,
+			INode? moveToBeforeMarker) : base(fromSiblingIndex, toSiblingIndex)
+		{
+			MoveRangeStart = moveRangeStart;
+			MoveRangeEnd = moveRangeEnd;
+			MoveToBeforeMarker = moveToBeforeMarker;
+		}
+
+		public LogicalElement? MoveRangeStart { get; set; }
+		public INode? MoveRangeEnd { get; set; }
+		public INode? MoveToBeforeMarker { get; set; }
+	}
 }
