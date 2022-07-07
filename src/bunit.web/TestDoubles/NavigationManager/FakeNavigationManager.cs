@@ -69,42 +69,42 @@ public sealed class FakeNavigationManager : NavigationManager
 
 #if NET6_0_OR_GREATER
 
-		/// <inheritdoc/>
-		protected override void NavigateToCore(string uri, NavigationOptions options)
-		{
-			var absoluteUri = GetNewAbsoluteUri(uri);
-			var changedBaseUri = HasDifferentBaseUri(absoluteUri);
+	/// <inheritdoc/>
+	protected override void NavigateToCore(string uri, NavigationOptions options)
+	{
+		var absoluteUri = GetNewAbsoluteUri(uri);
+		var changedBaseUri = HasDifferentBaseUri(absoluteUri);
 
-			if (changedBaseUri)
+		if (changedBaseUri)
+		{
+			BaseUri = GetBaseUri(absoluteUri);
+		}
+
+		Uri = ToAbsoluteUri(uri).OriginalString;
+
+		if (options.ReplaceHistoryEntry && history.Count > 0)
+			history.Pop();
+
+		history.Push(new NavigationHistory(uri, options));
+
+		renderer.Dispatcher.InvokeAsync(() =>
+		{
+			Uri = absoluteUri.OriginalString;
+
+			// Only notify of changes if user navigates within the same
+			// base url (domain). Otherwise, the user navigated away
+			// from the app, and Blazor's NavigationManager would
+			// not notify of location changes.
+			if (!changedBaseUri)
+			{
+				NotifyLocationChanged(isInterceptedLink: false);
+			}
+			else
 			{
 				BaseUri = GetBaseUri(absoluteUri);
 			}
-
-			Uri = ToAbsoluteUri(uri).OriginalString;
-
-			if (options.ReplaceHistoryEntry && history.Count > 0)
-				history.Pop();
-
-			history.Push(new NavigationHistory(uri, options));
-
-			renderer.Dispatcher.InvokeAsync(() =>
-			{
-				Uri = absoluteUri.OriginalString;
-
-				// Only notify of changes if user navigates within the same
-				// base url (domain). Otherwise, the user navigated away
-				// from the app, and Blazor's NavigationManager would
-				// not notify of location changes.
-				if (!changedBaseUri)
-				{
-					NotifyLocationChanged(isInterceptedLink: false);
-				}
-				else
-				{
-					BaseUri = GetBaseUri(absoluteUri);
-				}
-			});
-		}
+		});
+	}
 #endif
 
 	private URI GetNewAbsoluteUri(string uri)

@@ -132,7 +132,7 @@ public static class TriggerEventDispatchExtensions
 		{
 			if (candidate.TryGetEventId(eventAttrName, out var id))
 			{
-				var info = new EventFieldInfo() { FieldValue = eventName };
+				var info = new EventFieldInfo { FieldValue = eventName };
 				eventTasks.Add(renderer.DispatchEventAsync(id, info, eventArgs, ignoreUnknownEventHandlers: eventTasks.Count > 0));
 			}
 
@@ -153,7 +153,7 @@ public static class TriggerEventDispatchExtensions
 			throw new InvalidOperationException("Only forms can have a onsubmit event");
 
 		if (element.TryGetEventId(eventAttrName, out var id))
-			return renderer.DispatchEventAsync(id, new EventFieldInfo() { FieldValue = eventName }, eventArgs);
+			return renderer.DispatchEventAsync(id, new EventFieldInfo { FieldValue = eventName }, eventArgs);
 
 		throw new MissingEventHandlerException(element, eventName);
 	}

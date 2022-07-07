@@ -8,7 +8,7 @@ public class FocusEventDispatchExtensionsTest : EventDispatchExtensionsTest<Focu
 	[MemberData(nameof(GetEventHelperMethods), typeof(FocusEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
-		var expected = new FocusEventArgs()
+		var expected = new FocusEventArgs
 		{
 			Type = "SOME TYPE",
 		};

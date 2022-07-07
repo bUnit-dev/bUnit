@@ -8,40 +8,40 @@ namespace Bunit;
 
 public abstract class BenchmarkBase
 {
-    private static readonly ComponentParameterCollection EmptyParameter = new();
-    private readonly ServiceCollection services = new();
-    
-    protected TestRenderer Renderer { get; private set; } = default!;
+	private static readonly ComponentParameterCollection EmptyParameter = new();
+	private readonly ServiceCollection services = new();
 
-    [GlobalSetup]
-    public void Setup()
-    {
-        RegisterServices(services);
-        
-        var serviceProvider = services.BuildServiceProvider();
-        Renderer = new TestRenderer(
-            new RenderedComponentActivator(serviceProvider),
-            new TestServiceProvider(services),
-            new NullLoggerFactory());
-    }
+	protected TestRenderer Renderer { get; private set; } = default!;
 
-    [GlobalCleanup]
-    public void Cleanup()
-    {
-        InternalCleanup();
-        Renderer.Dispose();
-    }
+	[GlobalSetup]
+	public void Setup()
+	{
+		RegisterServices(services);
 
-    protected IRenderedComponentBase<TComponent> RenderComponent<TComponent>()
-        where TComponent : IComponent =>
-        Renderer.RenderComponent<TComponent>(EmptyParameter);
+		var serviceProvider = services.BuildServiceProvider();
+		Renderer = new TestRenderer(
+			new RenderedComponentActivator(serviceProvider),
+			new TestServiceProvider(services),
+			new NullLoggerFactory());
+	}
 
-    protected virtual void InternalCleanup()
-    {
-    }
+	[GlobalCleanup]
+	public void Cleanup()
+	{
+		InternalCleanup();
+		Renderer.Dispose();
+	}
 
-    protected virtual void RegisterServices(IServiceCollection serviceCollection)
-    {
-        services.AddSingleton<BunitHtmlParser>();
-    }
+	protected IRenderedComponentBase<TComponent> RenderComponent<TComponent>()
+		where TComponent : IComponent =>
+		Renderer.RenderComponent<TComponent>(EmptyParameter);
+
+	protected virtual void InternalCleanup()
+	{
+	}
+
+	protected virtual void RegisterServices(IServiceCollection serviceCollection)
+	{
+		services.AddSingleton<BunitHtmlParser>();
+	}
 }

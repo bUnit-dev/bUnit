@@ -61,7 +61,7 @@ public sealed class BunitHtmlParser : IDisposable
 	{
 		if (markup is null)
 			throw new ArgumentNullException(nameof(markup));
-			
+
 		var document = GetNewDocumentAsync().GetAwaiter().GetResult();
 
 		var (ctx, matchedElement) = GetParseContext(markup, document);
@@ -85,7 +85,7 @@ public sealed class BunitHtmlParser : IDisposable
 	}
 
 	private static (IElement? Context, string? MatchedElement) GetParseContext(
-		ReadOnlySpan<char> markup, 
+		ReadOnlySpan<char> markup,
 		IDocument document)
 	{
 		var startIndex = markup.IndexOfFirstNonWhitespaceChar();

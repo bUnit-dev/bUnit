@@ -96,7 +96,7 @@ public static class RenderedComponentRenderExtensions
 				if (param.IsCascadingValue)
 					throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(SetParametersAndRender)} method.");
 				if (param.Name is null)
-					throw new InvalidOperationException($"A parameters name is required.");
+					throw new InvalidOperationException("A parameters name is required.");
 
 				paramDict.Add(param.Name, param.Value);
 			}

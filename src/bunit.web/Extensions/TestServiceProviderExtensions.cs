@@ -50,7 +50,7 @@ public static class TestServiceProviderExtensions
 		services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
 
 #if NET6_0_OR_GREATER
-			services.AddSingleton<IErrorBoundaryLogger, BunitErrorBoundaryLogger>();
+		services.AddSingleton<IErrorBoundaryLogger, BunitErrorBoundaryLogger>();
 #endif
 		return services;
 	}

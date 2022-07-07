@@ -224,7 +224,7 @@ public class AuthorizationTest : TestContext
 		var cut = RenderComponent<SimpleAuthViewWithClaims>();
 
 		// assert
-		cut.MarkupMatches(@$"<div>Authorized!</div>
+		cut.MarkupMatches(@"<div>Authorized!</div>
 								<div>Name: TestUser</div>");
 	}
 

@@ -295,7 +295,7 @@ internal static class Htmlizer
 		public ReadOnlySpan<RenderTreeFrame> GetRenderTreeFrames(int componentId)
 			=> new(frames[componentId].Array, 0, frames[componentId].Count);
 
-		public StringBuilder Result { get; } = new ();
+		public StringBuilder Result { get; } = new();
 
 		public string? ClosestSelectValueAsString { get; set; }
 	}
