@@ -114,7 +114,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	{
 		var cut = RenderComponent<EventBubbles>(ps => ps
 			.Add(p => p.EventName, "onclick")
-			.Add(p => p.ChildStopPropergation, true));
+			.Add(p => p.ChildStopPropagation, true));
 
 		await cut.Find("#child").TriggerEventAsync("onclick", EventArgs.Empty);
 
@@ -128,7 +128,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	{
 		var cut = RenderComponent<EventBubbles>(ps => ps
 			.Add(p => p.EventName, "onclick")
-			.Add(p => p.ParentStopPropergation, true));
+			.Add(p => p.ParentStopPropagation, true));
 
 		await cut.Find("#child").TriggerEventAsync("onclick", EventArgs.Empty);
 

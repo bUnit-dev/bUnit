@@ -16,13 +16,13 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 		var identifier = "import";
 		var returnType = typeof(IJSObjectReference);
 		var invocationMethodName = "InvokeAsync";
-		var exectedErrorMessage = CreateExpectedErrorMessage(
+		var expectedErrorMessage = CreateExpectedErrorMessage(
 			$"{CodeIdent}{invocationMethodName}<{returnType.Name}>(\"{identifier}\", \"{moduleName}\")",
 			$"{CodeIdent}SetupModule(\"{moduleName}\")");
 
 		var sut = new JSRuntimeUnhandledInvocationException(new JSRuntimeInvocation(identifier, new object?[] { moduleName }, returnType, invocationMethodName));
 
-		Assert.Equal(exectedErrorMessage, sut.Message);
+		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 }
 #endif

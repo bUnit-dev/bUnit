@@ -30,7 +30,7 @@ internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRendere
 	protected override void OnRender(RenderEvent renderEvent)
 	{
 		// checks if this is the first render, and if it is
-		// tries to find the TCompoent in the render event
+		// tries to find the TComponent in the render event
 		if (instance is null)
 		{
 			SetComponentAndID(renderEvent);

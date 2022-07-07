@@ -2,7 +2,7 @@ namespace Bunit.TestDoubles
 {
 	public class FakeNavigationManagerTest : TestContext
 	{
-		private FakeNavigationManager CreateFakeNavigationMananger()
+		private FakeNavigationManager CreateFakeNavigationManager()
 			=> Services.GetRequiredService<FakeNavigationManager>();
 
 		[Fact(DisplayName = "TestContext.Services has NavigationManager registered by default as FakeNavigationManager")]
@@ -19,7 +19,7 @@ namespace Bunit.TestDoubles
 		[Fact(DisplayName = "FakeNavigationManager.BaseUrl is set to http://localhost/")]
 		public void Test002()
 		{
-			var sut = CreateFakeNavigationMananger();
+			var sut = CreateFakeNavigationManager();
 
 			sut.BaseUri.ShouldBe("http://localhost/");
 		}
@@ -30,7 +30,7 @@ namespace Bunit.TestDoubles
 		[InlineData("/foo")]
 		public void Test003(string uri)
 		{
-			var sut = CreateFakeNavigationMananger();
+			var sut = CreateFakeNavigationManager();
 			var expectedUri = new Uri(new Uri(sut.BaseUri, UriKind.Absolute), new Uri(uri, UriKind.Relative));
 
 			sut.NavigateTo(uri);
@@ -44,7 +44,7 @@ namespace Bunit.TestDoubles
 		[InlineData("http://localhost/foo")]
 		public void Test004(string uri)
 		{
-			var sut = CreateFakeNavigationMananger();
+			var sut = CreateFakeNavigationManager();
 			var expectedUri = new Uri(uri, UriKind.Absolute);
 
 			sut.NavigateTo(uri);
@@ -59,7 +59,7 @@ namespace Bunit.TestDoubles
 			// arrange
 			LocationChangedEventArgs actualLocationChange = default;
 			var navigationUri = "foo";
-			var sut = CreateFakeNavigationMananger();
+			var sut = CreateFakeNavigationManager();
 			sut.LocationChanged += Sut_LocationChanged;
 
 			// act
@@ -79,7 +79,7 @@ namespace Bunit.TestDoubles
 		[Fact(DisplayName = "LocationChanged is raised on the test renderer's dispatcher")]
 		public void Test006()
 		{
-			var sut = CreateFakeNavigationMananger();
+			var sut = CreateFakeNavigationManager();
 			var cut = RenderComponent<PrintCurrentUrl>();
 
 			sut.NavigateTo("foo");
@@ -90,7 +90,7 @@ namespace Bunit.TestDoubles
 		[Fact(DisplayName = "Uri should not be unescaped")]
 		public void Test007()
 		{
-			var sut = CreateFakeNavigationMananger();
+			var sut = CreateFakeNavigationManager();
 
 			sut.NavigateTo("/with%20whitespace");
 
@@ -103,7 +103,7 @@ namespace Bunit.TestDoubles
 		[InlineData("/anotherUri", true)]
 		public void Test100(string uri, bool forceLoad)
 		{
-			var sut = CreateFakeNavigationMananger();
+			var sut = CreateFakeNavigationManager();
 
 			sut.NavigateTo(uri, forceLoad);
 
@@ -118,7 +118,7 @@ namespace Bunit.TestDoubles
 		[InlineData("/uri", false, true)]
 		public void Test200(string uri, bool forceLoad, bool replaceHistoryEntry)
 		{
-			var sut = CreateFakeNavigationMananger();
+			var sut = CreateFakeNavigationManager();
 
 			sut.NavigateTo(uri, forceLoad, replaceHistoryEntry);
 
@@ -129,7 +129,7 @@ namespace Bunit.TestDoubles
 		[Fact(DisplayName = "NavigateTo with replaceHistoryEntry true replaces previous history entry")]
 		public void Test201()
 		{
-			var sut = CreateFakeNavigationMananger();
+			var sut = CreateFakeNavigationManager();
 
 			sut.NavigateTo("/firstUrl");
 			sut.NavigateTo("/secondUrl", new NavigationOptions { ReplaceHistoryEntry = true });
@@ -143,7 +143,7 @@ namespace Bunit.TestDoubles
 		public void Test008()
 		{
 			const string externalUri = "https://bunit.dev/docs/getting-started/index.html";
-			var sut = CreateFakeNavigationMananger();
+			var sut = CreateFakeNavigationManager();
 
 			sut.NavigateTo(externalUri);
 
@@ -156,7 +156,7 @@ namespace Bunit.TestDoubles
 		{
 			var locationChangedInvoked = false;
 			const string externalUri = "https://bunit.dev/docs/getting-started/index.html";
-			var sut = CreateFakeNavigationMananger();
+			var sut = CreateFakeNavigationManager();
 			sut.LocationChanged += (s, e) => locationChangedInvoked = true;
 
 			sut.NavigateTo(externalUri);
