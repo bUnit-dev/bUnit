@@ -2,7 +2,7 @@ using AngleSharp.Dom.Events;
 
 namespace Bunit.RenderingPort;
 
-public class BunitEvent : Event, IEventDispatchResult
+internal class BunitEvent : Event, IEventDispatchResult
 {
 	private List<Task>? eventDispatchResults;
 	private Task? eventDispatchResult;
@@ -42,7 +42,10 @@ public class BunitEvent : Event, IEventDispatchResult
 		eventDispatchResults.Add(task);
 	}
 
-	bool IEventDispatchResult.DefaultPrevented => IsDefaultPrevented;
+	public int InvokedHandlerCount => eventDispatchResults?.Count ?? 0;
 
-	Task IEventDispatchResult.DispatchCompleted => EventDispatchResult;
+	public bool DefaultPrevented => IsDefaultPrevented;
+
+	public Task DispatchCompleted => EventDispatchResult;
+
 }

@@ -319,4 +319,46 @@ public class AngleSharpRendererTest
 		var cut = Renderer.Render<LogicalElementInsertionCases>();
 		Assert.Equal("First Second Third", cut.Markup);
 	}
+
+	// ######### COMMIT SEPARATOR ##########
+
+	[Fact]
+	public void CanPatchRenderTreeToMatchLatestDOMState()
+	{
+		var cut = Renderer.Render<MovingCheckboxesComponent>();
+		var incompleteItemsSelector = ".incomplete-items li";
+		var completeItemsSelector = ".complete-items li";
+		cut.Find(incompleteItemsSelector); // throws if not exists
+
+		// Mark first item as done; observe the remaining incomplete item appears unchecked
+		// because the diff algorithm explicitly unchecks it
+		cut.Find(".incomplete-items .item-isdone").Change(true);
+		var incompleteLIs = cut.FindAll(incompleteItemsSelector);
+		Assert.Equal(1, incompleteLIs.Length);
+		Assert.False(incompleteLIs[0].Find<IHtmlInputElement>(".item-isdone").IsChecked);
+
+		// Mark first done item as not done; observe the remaining complete item appears checked
+		// because the diff algorithm explicitly re-checks it
+		cut.Find(".complete-items .item-isdone").Change(false);
+		var completeLIs = cut.FindAll(completeItemsSelector);
+		Assert.Equal(2, completeLIs.Length);
+		Assert.True(completeLIs[0].Find<IHtmlInputElement>(".item-isdone").IsChecked);
+	}
+
+	// The test does rely on a real browser to use the contenteditable attribute
+	//[Fact]
+	//public void CanHandleClearedChild()
+	//{
+	//	var cut = Renderer.Render<ContentEditable>();
+	//	var input = cut.Find("#editable-div");
+	//	var clickable = cut.Find("#clickable");
+
+	//	input.TextContent = "";
+	//	clickable.Click();
+
+	//	// Original test checked browser logs
+	//	// var log = Browser.Manage().Logs.GetLog(LogType.Browser);
+	//	// Assert.DoesNotContain(log, entry => entry.Level == LogLevel.Severe);
+	//	Assert.Equal("", input.TextContent);
+	//}
 }

@@ -709,21 +709,4 @@ public class ComponentRenderingTest : TestContext
 		cut.WaitForState(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
-
-	// The test does rely on a real browser to use the contenteditable attribute
-	// [Fact]
-	// public void CanHandleClearedChild()
-	// {
-	// 	var appElement = RenderComponent<ContentEditable>();
-	// 	var input = appElement.Find("#editable-div");
-	// 	var clickable = appElement.Find("#clickable");
-	//
-	// 	input.TextContent = "";
-	// 	clickable.Click();
-	//
-	// 	// Original test checked browser logs
-	// 	// var log = Browser.Manage().Logs.GetLog(LogType.Browser);
-	// 	// Assert.DoesNotContain(log, entry => entry.Level == LogLevel.Severe);
-	// 	Assert.Equal("", input.TextContent);
-	// }
 }

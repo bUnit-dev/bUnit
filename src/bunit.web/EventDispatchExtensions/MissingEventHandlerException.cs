@@ -11,15 +11,16 @@ public sealed class MissingEventHandlerException : Exception
 	/// <summary>
 	/// Initializes a new instance of the <see cref="MissingEventHandlerException"/> class.
 	/// </summary>
-	public MissingEventHandlerException(IElement element, string missingEventName)
-		: base(CreateErrorMessage(element, missingEventName))
+	public MissingEventHandlerException(INode node, string missingEventName)
+		: base(CreateErrorMessage(node, missingEventName))
 	{
 	}
 
-	private static string CreateErrorMessage(IElement element, string missingEventName)
+	private static string CreateErrorMessage(INode node, string missingEventName)
 	{
+		var element = node as IElement;
 		var result = $"The element does not have an event handler for the event '{missingEventName}'";
-		var eventHandlers = element.Attributes?
+		var eventHandlers = element?.Attributes?
 			.Where(x => x.Name.StartsWith(Htmlizer.BlazorAttrPrefix + "on", StringComparison.Ordinal))
 			.Select(x => $"'{x.Name.Remove(0, Htmlizer.BlazorAttrPrefix.Length)}'")
 			.ToArray() ?? Array.Empty<string>();

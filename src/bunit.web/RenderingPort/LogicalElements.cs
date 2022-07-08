@@ -176,8 +176,8 @@ internal static class LogicalElements
 		permutationListWithTrackingData.ForEach(listEntry => {
 			var marker = listEntry.MoveToBeforeMarker = parent.GetDocument().CreateComment("marker");
 			var insertBeforeNode = siblings[listEntry.ToSiblingIndex + 1];
-			if (insertBeforeNode != null) {
-				insertBeforeNode.LogicalParent.Node.InsertBefore(marker, insertBeforeNode.Node);
+			if (insertBeforeNode is not null) {
+				insertBeforeNode.LogicalParent!.Node.InsertBefore(marker, insertBeforeNode.Node);
 			} else {
 				AppendDomNode(marker, parent);
 			}
@@ -255,7 +255,7 @@ internal static class LogicalElements
 
 	// Returns the final node (in depth-first evaluation order) that is a descendant of the logical element.
 	// As such, the entire subtree is between 'element' and 'findLastDomNodeInRange(element)' inclusive.
-	private static INode FindLastDomNodeInRange(LogicalElement element)
+	private static INode? FindLastDomNodeInRange(LogicalElement element)
 	{
 		if (element.Node is IElement || element.Node is IDocumentFragment)
 		{
@@ -263,7 +263,7 @@ internal static class LogicalElements
 		}
 
 		var nextSibling = GetLogicalNextSibling(element);
-		if (nextSibling != null)
+		if (nextSibling is not null)
 		{
 			// Simple case: not the last logical sibling, so take the node before the next sibling
 			return nextSibling.Node.PreviousSibling;

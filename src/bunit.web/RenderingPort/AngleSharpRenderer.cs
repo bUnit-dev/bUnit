@@ -94,13 +94,7 @@ internal sealed class AngleSharpRenderer : IDisposable
 	{
 		var currentDepth = 0;
 		var childIndexAtCurrentDepth = childIndex;
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-#pragma warning disable S1481 // Unused local variables should be removed
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
 		var permutationList = default(List<PermutationListEntry>);
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-#pragma warning restore S1481 // Unused local variables should be removed
-#pragma warning restore CS0219 // Variable is assigned but its value is never used
 
 		// EGH: all this offset/count logic is built into ArrayBuilderSegment
 		// var editsOffset = edits.Offset;
