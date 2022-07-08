@@ -2,7 +2,7 @@ using AngleSharp.Dom;
 
 namespace Bunit.RenderingPort;
 
-public static class EventDispatchExtensios
+public static class EventDispatchExtensions
 {
 	public static IEventDispatchResult Click(this INode node, MouseEventArgs? eventArgs = null)
 	{
