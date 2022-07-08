@@ -323,6 +323,25 @@ public class AngleSharpRendererTest
 	// ######### COMMIT SEPARATOR ##########
 
 	[Fact]
+	public void CanUseAddMultipleAttributes()
+	{
+		var cut = Renderer.Render<DuplicateAttributesComponent>();
+
+		var selector = "#duplicate-on-element > div";
+
+		var element = cut.Find(selector);
+		Assert.Equal(string.Empty, element.GetAttribute("bool")); // attribute is present
+		Assert.Equal("middle-value", element.GetAttribute("string"));
+		Assert.Equal("unmatched-value", element.GetAttribute("unmatched"));
+
+		selector = "#duplicate-on-element-override > div";
+		element = cut.Find(selector);
+		Assert.Null(element.GetAttribute("bool")); // attribute is not present
+		Assert.Equal("other-text", element.GetAttribute("string"));
+		Assert.Equal("unmatched-value", element.GetAttribute("unmatched"));
+	}
+
+	[Fact]
 	public void CanPatchRenderTreeToMatchLatestDOMState()
 	{
 		var cut = Renderer.Render<MovingCheckboxesComponent>();

@@ -439,6 +439,21 @@ internal sealed class AngleSharpRenderer : IDisposable
 				return TryApplyCheckedProperty(in batch, element, in attributeFrame);
 			default:
 			{
+				// The renderer in the browser does not set a value for an attribute
+				// if the value is a boolean and its "true".
+				// In Blazor the BrowserRenderer does not receive the boolean value,
+				// it receives an empty string when the boolean is true.
+				// If the boolean value is false, no attribute is set at all.
+				if (attributeFrame.AttributeValue is bool value)
+				{
+					if (value)
+					{
+						element.SetAttribute(attributeName, string.Empty);
+					}
+
+					return true;
+				}
+
 				if (attributeName.StartsWith(InternalAttributeNamePrefix))
 				{
 					ApplyInternalAttribute(in batch, element, attributeName.Substring(InternalAttributeNamePrefix.Length), in attributeFrame);
