@@ -200,6 +200,13 @@ internal sealed class AngleSharpRenderer : IDisposable
 					childIndexAtCurrentDepth = currentDepth == 0 ? childIndex : 0; // The childIndex is only ever nonzero at zero depth
 					break;
 				}
+				case RenderTreeEditType.PermutationListEntry:
+				{
+					permutationList ??= new List<PermutationListEntry>();
+					permutationList.Add(new(childIndexAtCurrentDepth + edit.SiblingIndex,
+						childIndexAtCurrentDepth + edit.MoveToSiblingIndex));
+					break;
+				}
 				case RenderTreeEditType.PermutationListEnd:
 				{
 					PermuteLogicalChildren(parent, permutationList!);
