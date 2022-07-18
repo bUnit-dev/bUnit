@@ -25,10 +25,10 @@ public sealed class Stub<TComponent> : ComponentDoubleBase<TComponent>
 	/// <param name="replacement">The replacement template to use when rendering.</param>
 	public Stub(object? replacement)
 	{
-		if (replacement is RenderFragment<CapturedParameterView<TComponent>> replacementTemplate)
-			this.replacementTemplate = replacementTemplate;
-		else if (replacement is RenderFragment replacementFragment)
-			this.replacementFragment = replacementFragment;
+		if (replacement is RenderFragment<CapturedParameterView<TComponent>> replacementRenderTemplate)
+			replacementTemplate = replacementRenderTemplate;
+		else if (replacement is RenderFragment replacementRenderFragment)
+			replacementFragment = replacementRenderFragment;
 		else if (replacement is not null)
 			throw new ArgumentException($"The type of replacement is not supported. Replacement type = {replacement.GetType()}", nameof(replacement));
 	}
