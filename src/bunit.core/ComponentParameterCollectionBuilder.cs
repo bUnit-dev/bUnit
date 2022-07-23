@@ -46,7 +46,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
 	/// <param name="value">The value to pass to <typeparamref name="TComponent"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, TValue>> parameterSelector, [AllowNull] TValue value)
+	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, TValue>> parameterSelector, TValue? value)
 	{
 		var (name, cascadingValueName, isCascading) = GetParameterInfo(parameterSelector);
 		return isCascading
@@ -400,7 +400,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="name">Name of the property for the parameter.</param>
 	/// <param name="value">Value to assign to the parameter.</param>
 	/// <returns>True if parameter with the name exists and value was set, false otherwise.</returns>
-	public bool TryAdd<TValue>(string name, [AllowNull] TValue value)
+	public bool TryAdd<TValue>(string name, TValue? value)
 	{
 		if (TComponentType.GetProperty(name, BindingFlags.Public | BindingFlags.Instance) is PropertyInfo ccProp)
 		{
@@ -455,7 +455,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		=> TComponentType.GetProperty(ChildContent, BindingFlags.Public | BindingFlags.Instance) is PropertyInfo ccProp
 			&& ccProp.PropertyType.IsGenericType;
 
-	private ComponentParameterCollectionBuilder<TComponent> AddParameter<TValue>(string name, [AllowNull] TValue value)
+	private ComponentParameterCollectionBuilder<TComponent> AddParameter<TValue>(string name, TValue? value)
 	{
 		parameters.Add(ComponentParameter.CreateParameter(name, value));
 		return this;
