@@ -8,7 +8,7 @@ public static class ShouldlyExtensions
 		ShouldSatisfyAllConditionsTestExtensions.ShouldSatisfyAllConditions(actual, conds);
 	}
 
-	public static void ShouldBeParameter<TValue>(this ComponentParameter parameter, string? name, [AllowNull] TValue value, bool isCascadingValue)
+	public static void ShouldBeParameter<TValue>(this ComponentParameter parameter, string? name, TValue? value, bool isCascadingValue)
 	{
 		parameter.ShouldSatisfyAllConditions(
 			x => x.Name.ShouldBe(name),

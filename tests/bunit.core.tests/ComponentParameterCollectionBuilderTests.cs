@@ -8,7 +8,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 
 	private bool EventCallbackCalled { get; set; }
 
-	private void VerifyParameter<T>(string expectedName, [AllowNull] T expectedInput)
+	private void VerifyParameter<T>(string expectedName, T? expectedInput)
 	{
 		Builder.Build()
 			.ShouldHaveSingleItem()
