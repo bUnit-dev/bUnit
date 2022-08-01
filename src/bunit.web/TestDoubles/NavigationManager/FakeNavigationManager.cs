@@ -85,11 +85,23 @@ public sealed class FakeNavigationManager : NavigationManager
 		if (options.ReplaceHistoryEntry && history.Count > 0)
 			history.Pop();
 
-		history.Push(new NavigationHistory(uri, options));
-
-		renderer.Dispatcher.InvokeAsync(() =>
+#if NET7_0_OR_GREATER
+		renderer.Dispatcher.InvokeAsync(async () =>
+#else
+		renderer.Dispatcher.InvokeAsync( () =>
+#endif
 		{
 			Uri = absoluteUri.OriginalString;
+
+#if NET7_0_OR_GREATER
+			var shouldContinueNavigation = await NotifyLocationChangingAsync(uri, options.HistoryEntryState, isNavigationIntercepted: false).ConfigureAwait(false);
+			if (!shouldContinueNavigation)
+			{
+				return;
+			}
+#endif
+
+			history.Push(new NavigationHistory(uri, options));
 
 			// Only notify of changes if user navigates within the same
 			// base url (domain). Otherwise, the user navigated away
@@ -105,6 +117,11 @@ public sealed class FakeNavigationManager : NavigationManager
 			}
 		});
 	}
+#endif
+
+#if NET7_0_OR_GREATER
+	/// <inheritdoc/>
+	protected override void SetNavigationLockState(bool value) {}
 #endif
 
 	private URI GetNewAbsoluteUri(string uri)
