@@ -339,3 +339,6 @@ tests/*/coverage
 
 bunit.v3.ncrunchsolution.user
 watch.csproj
+
+# MacOS
+.DS_Store
