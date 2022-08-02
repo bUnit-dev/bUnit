@@ -6,10 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.Xunit2;
 using Bunit.JSInterop.InvocationHandlers.Implementation;
-using Microsoft.JSInterop;
 using Microsoft.JSInterop.Implementation;
-using Shouldly;
-using Xunit;
+
+#pragma warning disable CS0618 // This method is obsolete.
 
 namespace Bunit.JSInterop;
 
