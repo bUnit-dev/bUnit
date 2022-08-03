@@ -1,3 +1,4 @@
+#pragma warning disable CS0618 // This method is obsolete.
 namespace Bunit.JSInterop;
 
 public partial class BunitJSInteropTest
