@@ -1,4 +1,5 @@
 #if !NETCOREAPP3_1
+#pragma warning disable CS0618 // This method is obsolete.
 using System;
 using System.Linq;
 using AutoFixture.Xunit2;
