@@ -1,4 +1,8 @@
-namespace Bunit.TestDoubles
+namespace Bunit.TestDoubles;
+
+using static Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers;
+
+public class FakeNavigationManagerTest : TestContext
 {
 	public class FakeNavigationManagerTest : TestContext
 	{
@@ -273,7 +277,7 @@ namespace Bunit.TestDoubles
 			builder.CloseElement();
 			builder.AddMarkupContent(3, "\n\n");
 			builder.OpenComponent<NavigationLock>(4);
-			builder.AddAttribute(5, "OnBeforeInternalNavigation", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck(EventCallback.Factory.Create<LocationChangingContext>(this,
+			builder.AddAttribute(5, "OnBeforeInternalNavigation", TypeCheck(EventCallback.Factory.Create<LocationChangingContext>(this,
 					InterceptNavigation
 				)));
 			builder.CloseComponent();
@@ -303,9 +307,7 @@ namespace Bunit.TestDoubles
 			builder.CloseElement();
 			builder.AddMarkupContent(3, "\n");
 			builder.OpenComponent<NavigationLock>(4);
-			builder.AddAttribute(5, "ConfirmExternalNavigation", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Boolean>(
-				true
-			));
+			builder.AddAttribute(5, "ConfirmExternalNavigation", TypeCheck(true));
 			builder.CloseComponent();
 		}
 
