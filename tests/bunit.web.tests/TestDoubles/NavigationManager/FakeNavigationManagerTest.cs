@@ -279,7 +279,7 @@ namespace Bunit.TestDoubles
 			builder.CloseComponent();
 		}
 
-		public bool NavigationIntercepted;
+		public bool NavigationIntercepted { get; set; }
 
 		private void InterceptNavigation(LocationChangingContext context)
 		{
