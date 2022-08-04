@@ -298,7 +298,6 @@ namespace Bunit.TestDoubles
 			builder.OpenElement(0, "button");
 			builder.AddAttribute(1, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this,
 				() => NavigationManager.NavigateTo("https://bunit.dev")
-
 			));
 			builder.AddContent(2, "bunit");
 			builder.CloseElement();
