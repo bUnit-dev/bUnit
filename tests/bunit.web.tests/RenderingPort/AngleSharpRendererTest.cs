@@ -749,4 +749,15 @@ public class AngleSharpRendererTest
 	//	// Assert.DoesNotContain(log, entry => entry.Level == LogLevel.Severe);
 	//	Assert.Equal("", input.TextContent);
 	//}
+
+	[Fact]
+	public async Task CanDispatchAsyncWorkToSyncContext()
+	{
+		var cut = Renderer.Render<DispatchingComponent>();
+		var result = cut.Find("#result");
+
+		await cut.Find("#run-async-with-dispatch").ClickAsync();
+
+		Assert.Equal("First Second Third Fourth Fifth", result.TextContent);
+	}
 }
