@@ -243,7 +243,9 @@ internal sealed class AngleSharpRenderer : IDisposable
 				if (parent.Node is IElement element)
 				{
 					// this is what applyCaptureIdToElement does.
-					element.SetAttribute($"_bl_{frame.ElementReferenceCaptureId}", string.Empty);
+					// Original, changed to match current impl:
+					// element.SetAttribute($"_bl_{frame.ElementReferenceCaptureId}", string.Empty);
+					element.SetAttribute(Htmlizer.ElementReferenceAttrName, frame.ElementReferenceCaptureId);
 					return 0; // A "capture" is a child in the diff, but has no node in the DOM
 				}
 				else

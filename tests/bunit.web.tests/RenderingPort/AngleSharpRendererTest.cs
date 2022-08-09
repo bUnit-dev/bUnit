@@ -15,12 +15,13 @@ public class AngleSharpRendererTest
 	private ServiceProvider Services { get; }
 	private ILoggerFactory LoggerFactory { get; }
 	private BunitRenderer Renderer { get; }
+	private BunitJSInterop JSInterop { get; } = new() { Mode = JSRuntimeMode.Loose };
 
 	public AngleSharpRendererTest(ITestOutputHelper outputHelper)
 	{
 		var services = new ServiceCollection();
 		services.AddXunitLogger(outputHelper);
-
+		services.AddSingleton<IJSRuntime>(JSInterop.JSRuntime);
 		Services = services.BuildServiceProvider();
 		LoggerFactory = Services.GetRequiredService<ILoggerFactory>();
 		Renderer = new BunitRenderer(Services, LoggerFactory);
@@ -313,6 +314,41 @@ public class AngleSharpRendererTest
 			elem => Assert.Equal(typeof(System.Configuration.Assemblies.AssemblyHashAlgorithm).FullName, elem.TextContent));
 	}
 
+	// Not relevant in a bUnit context.
+	//[Fact]
+	//public void CanUseComponentAndStaticContentFromExternalNuGetPackage()
+	//{
+	//	var appElement = Browser.MountTestComponent<ExternalContentPackage>();
+
+	//	// NuGet packages can use JS interop features to provide
+	//	// .NET code access to browser APIs
+	//	var showPromptButton = appElement.FindElements(By.TagName("button")).First();
+	//	showPromptButton.Click();
+
+	//	var modal = Browser.Exists(() => Browser.SwitchTo().Alert(), TimeSpan.FromSeconds(3));
+	//	modal.SendKeys("Some value from test");
+	//	modal.Accept();
+	//	var promptResult = appElement.FindElement(By.TagName("strong"));
+	//	Browser.Equal("Some value from test", () => promptResult.Text);
+
+	//	// NuGet packages can also embed entire components (themselves
+	//	// authored as Razor files), including static content. The CSS value
+	//	// here is in a .css file, so if it's correct we know that static content
+	//	// file was loaded.
+	//	var specialStyleDiv = appElement.FindElement(By.ClassName("special-style"));
+	//	Assert.Equal("50px", specialStyleDiv.GetCssValue("padding"));
+
+	//	// This style is isolated to the component and comes from the bundle that gets generated for BasicTestApp
+	//	// and that includes the @import for the TestContentPackage.bundle.scp.css file
+	//	Assert.Equal("20px", specialStyleDiv.GetCssValue("font-size"));
+
+	//	// The external components are fully functional, not just static HTML
+	//	var externalComponentButton = specialStyleDiv.FindElement(By.TagName("button"));
+	//	Assert.Equal("Click me", externalComponentButton.Text);
+	//	externalComponentButton.Click();
+	//	Browser.Equal("It works", () => externalComponentButton.Text);
+	//}
+
 	[Fact]
 	public void LogicalElementInsertionWorksHierarchically()
 	{
@@ -320,7 +356,340 @@ public class AngleSharpRendererTest
 		Assert.Equal("First Second Third", cut.Markup);
 	}
 
-	// ######### COMMIT SEPARATOR ##########
+	[Fact]
+	public void CanUseJsInteropToReferenceElements()
+	{
+		var cut = Renderer.Render<ElementRefComponent>();
+		var inputElement = cut.Find<IHtmlInputElement>("#capturedElement");
+		var buttonElement = cut.Find("button");
+
+		Assert.Equal(string.Empty, inputElement.Value);
+
+		buttonElement.Click();
+
+		// Changed to verify correct element reference is passed to JSInterop
+		//Assert.Equal("Clicks: 1", inputElement.Value);
+		//buttonElement.Click();
+		//Assert.Equal("Clicks: 2", inputElement.Value);
+		JSInterop.VerifyInvoke("setElementValue")
+			.Arguments[0]
+			.ShouldBeElementReferenceTo(inputElement);
+	}
+
+	// Test not relevant in bUnit context.
+	//[Fact]
+	//public void CanUseFocusExtensionToFocusElement()
+	//{
+	//	Browser.Manage().Window.Size = new System.Drawing.Size(100, 300);
+	//	var appElement = Browser.MountTestComponent<ElementFocusComponent>();
+
+	//	// y scroll position before click
+	//	var pageYOffsetBefore = getPageYOffset();
+
+	//	var buttonElement = appElement.FindElement(By.Id("focus-button"));
+
+	//	// Make sure the input element isn't focused when the test begins; we don't want
+	//	// the test to pass just because the input started as the focused element
+	//	Browser.NotEqual("focus-input", getFocusedElementId);
+
+	//	// Click the button whose callback focuses the input element
+	//	buttonElement.Click();
+
+	//	// Verify that the input element is focused
+	//	Browser.Equal("focus-input", getFocusedElementId);
+
+	//	// y scroll position ater click
+	//	var pageYOffsetAfter = getPageYOffset();
+
+	//	//  Verify that scroll became
+	//	Assert.True(pageYOffsetAfter > pageYOffsetBefore);
+
+	//	// A local helper that gets the ID of the focused element.
+	//	string getFocusedElementId() => Browser.SwitchTo().ActiveElement().GetAttribute("id");
+
+	//	// A local helper that gets window.PageYOffset
+	//	long getPageYOffset() => (long)((IJavaScriptExecutor)Browser).ExecuteScript("return window.pageYOffset");
+	//}
+
+	// Test not relevant in bUnit context.
+	//[Fact]
+	//public void CanUseFocusExtensionToFocusSvgElement()
+	//{
+	//	Browser.Manage().Window.Size = new System.Drawing.Size(100, 300);
+	//	var appElement = Browser.MountTestComponent<SvgFocusComponent>();
+
+	//	var buttonElement = appElement.FindElement(By.Id("focus-button"));
+
+	//	// Make sure the circle isn't focused when the test begins; we don't want
+	//	// the test to pass just because the circle started as the focused element
+	//	Browser.NotEqual("focus-circle", getFocusedElementId);
+
+	//	// Click the button whose callback focuses the SVG element
+	//	buttonElement.Click();
+
+	//	// Verify that the circle is focused
+	//	Browser.Equal("focus-circle", getFocusedElementId);
+
+	//	// A local helper that gets the ID of the focused element.
+	//	string getFocusedElementId() => Browser.SwitchTo().ActiveElement().GetAttribute("id");
+	//}
+
+	// Test not relevant in bUnit context.
+	//[Fact]
+	//public void CanUseFocusExtensionToFocusElementPreventScroll()
+	//{
+	//	Browser.Manage().Window.Size = new System.Drawing.Size(100, 300);
+	//	var appElement = Browser.MountTestComponent<ElementFocusComponent>();
+
+	//	// y scroll position before click
+	//	var pageYOffsetBefore = getPageYOffset();
+
+	//	var buttonElement = appElement.FindElement(By.Id("focus-button-prevented"));
+
+	//	// Make sure the input element isn't focused when the test begins; we don't want
+	//	// the test to pass just because the input started as the focused element
+	//	Browser.NotEqual("focus-input", getFocusedElementId);
+
+	//	// Click the button whose callback focuses the input element
+	//	buttonElement.Click();
+
+	//	// Verify that the input element is focused
+	//	Browser.Equal("focus-input", getFocusedElementId);
+
+	//	// y scroll position ater click
+	//	var pageYOffsetAfter = getPageYOffset();
+
+	//	//  Verify that not scrolled
+	//	Assert.Equal(pageYOffsetAfter, pageYOffsetBefore);
+
+	//	// A local helper that gets the ID of the focused element.
+	//	string getFocusedElementId() => Browser.SwitchTo().ActiveElement().GetAttribute("id");
+
+	//	// A local helper that gets window.PageYOffset
+	//	long getPageYOffset() => (long)((IJavaScriptExecutor)Browser).ExecuteScript("return Math.round(window.pageYOffset)");
+	//}
+
+	// Test not relevant in bUnit context.
+	//[Theory]
+	//[InlineData("focus-button-onafterrender-invoke")]
+	//[InlineData("focus-button-onafterrender-await")]
+	//public void CanFocusDuringOnAfterRenderAsyncWithFocusInEvent(string triggerButton)
+	//{
+	//	// Represents https://github.com/dotnet/aspnetcore/issues/30070, plus a more complicated
+	//	// variant where the initial rendering doesn't start from a JS interop call and hence
+	//	// isn't automatically part of the WebAssemblyCallQueue.
+
+	//	var appElement = Renderer.Render<ElementFocusComponent>();
+	//	var didReceiveFocusLabel = appElement.FindElement(By.Id("focus-event-received"));
+	//	Browser.Equal("False", () => didReceiveFocusLabel.Text);
+
+	//	appElement.FindElement(By.Id(triggerButton)).Click();
+	//	Browser.Equal("True", () => didReceiveFocusLabel.Text);
+	//	Browser.Equal("focus-input-onafterrender", () => Browser.SwitchTo().ActiveElement().GetAttribute("id"));
+
+	//	// As well as actually focusing and triggering the onfocusin event, we should not be seeing any errors
+	//	var log = Browser.Manage().Logs.GetLog(LogType.Browser).ToArray();
+	//	Assert.DoesNotContain(log, entry => entry.Level == LogLevel.Severe);
+	//}
+
+	// Test depends on JavaScript changing the DOM.
+	// Could be changed to verify that that correct node was
+	// referenced via JSInterop call capture.
+	//[Fact]
+	//public void CanCaptureReferencesToDynamicallyAddedElements()
+	//{
+	//	var cut = Renderer.Render<ElementRefComponent>();
+	//	var buttonElement = cut.Find("button");
+	//	var checkbox = cut.Find("input[type=checkbox]");
+
+	//	// We're going to remove the input. But first, put in some contents
+	//	// so we can observe it's not the same instance later
+	//	cut.Find<IHtmlInputElement>("#capturedElement").Value = "some text";
+
+	//	// Remove the captured element
+	//	checkbox.Change(false);
+	//	Assert.Empty(cut.FindAll("capturedElement"));
+
+	//	// Re-add it; observe it starts empty again
+	//	checkbox.Change(true);
+	//	var inputElement = cut.Find<IHtmlInputElement>("#capturedElement");
+	//	Assert.Equal(string.Empty, inputElement.Value);
+
+	//	// See that the capture variable was automatically updated to reference the new instance
+	//	buttonElement.Click();
+	//	Assert.Equal("Clicks: 1", inputElement.GetAttribute("value"));
+	//}
+
+	[Fact]
+	public void CanCaptureReferencesToDynamicallyAddedComponents()
+	{
+		var cut = Renderer.Render<ComponentRefComponent>();
+		var incrementButtonSelector = "#child-component button";
+		var currentCountTextSelector = "#child-component p:first-of-type";
+		var resetButton = cut.Find("#reset-child");
+		var toggleChildCheckbox = cut.Find("#toggle-child");
+		Func<string> currentCountText = () => cut.Find(currentCountTextSelector).TextContent;
+
+		// Verify the reference was captured initially
+		cut.Find(incrementButtonSelector).Click();
+		Assert.Equal("Current count: 1", currentCountText());
+		resetButton.Click();
+		Assert.Equal("Current count: 0", currentCountText());
+		cut.Find(incrementButtonSelector).Click();
+		Assert.Equal("Current count: 1", currentCountText());
+
+		// Remove and re-add a new instance of the child, checking the text was reset
+		toggleChildCheckbox.Change(false);
+		Assert.Empty(cut.FindAll(incrementButtonSelector));
+		toggleChildCheckbox.Change(true);
+		Assert.Equal("Current count: 0", currentCountText());
+
+		// Verify we have a new working reference
+		cut.Find(incrementButtonSelector).Click();
+		Assert.Equal("Current count: 1", currentCountText());
+		resetButton.Click();
+		Assert.Equal("Current count: 0", currentCountText());
+	}
+
+	//// Test not relevant in a bUnit context
+	//[Fact]
+	//public void CanUseJsInteropForRefElementsDuringOnAfterRender()
+	//{
+	//	var appElement = Browser.MountTestComponent<AfterRenderInteropComponent>();
+	//	Browser.Equal("Value set after render", () => Browser.Exists(By.TagName("input")).GetAttribute("value"));
+	//}
+
+	[Fact]
+	public void CanRenderMarkupBlocks()
+	{
+		var cut = Renderer.Render<MarkupBlockComponent>();
+
+		// Static markup
+		Assert.Equal(
+			"attributes",
+			cut.Find("p span#attribute-example").TextContent);
+
+		// Dynamic markup (from a custom RenderFragment)
+		Assert.Equal(
+			"[Here is an example. We support multiple-top-level nodes.]",
+			cut.Find("#dynamic-markup-block").TextContent.Trim());
+		Assert.Equal(
+			"example",
+			cut.Find("#dynamic-markup-block strong#dynamic-element em").TextContent);
+
+		// Dynamic markup (from a MarkupString)
+		Assert.Equal(
+			"This is a markup string.",
+			cut.Find(".markup-string-value").TextContent);
+		Assert.Equal(
+			"markup string",
+			cut.Find(".markup-string-value em").TextContent);
+
+		// Updating markup blocks
+		cut.Find("button").Click();
+		Assert.Equal(
+			"[The output was changed completely.]",
+			cut.Find("#dynamic-markup-block").TextContent.Trim());
+		Assert.Equal(
+			"changed",
+			cut.Find("#dynamic-markup-block span em").TextContent);
+	}
+
+	[Fact]
+	public void CanRenderRazorTemplates()
+	{
+		var cut = Renderer.Render<RazorTemplates>();
+
+		// code block template (component parameter)
+		var element = cut.Find("div#codeblocktemplate ol");
+		Assert.Collection(
+			element.FindAll("li"),
+			e => Assert.Equal("#1 - a", e.TextContent),
+			e => Assert.Equal("#2 - b", e.TextContent),
+			e => Assert.Equal("#3 - c", e.TextContent));
+	}
+
+	[Fact]
+	public void CanRenderMultipleChildContent()
+	{
+		var cut = Renderer.Render<MultipleChildContent>();
+
+		var table = cut.Find("table");
+
+		var thead = table.Find("thead");
+		Assert.Collection(
+			thead.FindAll("th"),
+			e => Assert.Equal("Col1", e.TextContent),
+			e => Assert.Equal("Col2", e.TextContent),
+			e => Assert.Equal("Col3", e.TextContent));
+
+		var tfoot = table.Find("tfoot");
+		Assert.Empty(tfoot.FindAll("td"));
+
+		var toggle = cut.Find("#toggle");
+		toggle.Change(true);
+
+		Assert.Collection(
+			tfoot.FindAll("td"),
+			e => Assert.Equal("The", e.TextContent),
+			e => Assert.Equal("", e.TextContent),
+			e => Assert.Equal("End", e.TextContent));
+	}
+
+	[Fact]
+	public async Task CanAcceptSimultaneousRenderRequests()
+	{
+		var expectedOutput = string.Join(
+			string.Empty,
+			Enumerable.Range(0, 100).Select(_ => "😊"));
+
+		// NOTE: Awaiting the render completion makes the Task.Delay
+		//       below unnecessary since RenderAsync only completes
+		//       when the life cycle methods of the CUT is done initially.
+		var cut = await Renderer.RenderAsync<ConcurrentRenderParent>();
+
+		// It's supposed to pause the rendering for this long. The WaitAssert below
+		// allows it to take up extra time if needed.
+		//await Task.Delay(1000);
+
+		var outputElement = cut.Find("#concurrent-render-output");
+		Assert.Equal(expectedOutput, outputElement.TextContent);
+	}
+
+	[Fact]
+	public async Task CanDispatchRenderToSyncContext()
+	{
+		var cut = Renderer.Render<DispatchingComponent>();
+		var result = cut.Find("#result");
+
+		// NOTE: awaiting the click handler ensures the test does not
+		//       continue before the click handler has completed.
+		await cut.Find("#run-with-dispatch").ClickAsync();
+
+		Assert.Equal("Success (completed synchronously)", result.TextContent);
+	}
+
+	[Fact]
+	public async Task CanDoubleDispatchRenderToSyncContext()
+	{
+		var cut = Renderer.Render<DispatchingComponent>();
+		var result = cut.Find("#result");
+
+		// NOTE: awaiting the click handler ensures the test does not
+		//       continue before the click handler has completed.
+		await cut.Find("#run-with-double-dispatch").ClickAsync();
+
+		Assert.Equal("Success (completed synchronously)", result.TextContent);
+	}
+
+	// This test does not make sense in a bUnit context
+	//[Fact]
+	//public void CanPerformInteropImmediatelyOnComponentInsertion()
+	//{
+	//	var cut = Renderer.Render<InteropOnInitializationComponent>();
+	//	Assert.Equal("Hello from interop call", () => cut.FindElement(By.Id("val-get-by-interop")).Text);
+	//	Assert.Equal("Hello from interop call", () => cut.FindElement(By.Id("val-set-by-interop")).GetAttribute("value"));
+	//}
 
 	[Fact]
 	public void CanUseAddMultipleAttributes()

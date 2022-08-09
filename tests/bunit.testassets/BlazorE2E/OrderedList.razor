@@ -6,12 +6,11 @@
     }
     @foreach (var item in Items)
     {
-        @Template(new Context { Index = index++, Item = item, });
+        @Template(new Context() { Index = index++, Item = item, });
     }
 </ol>
 
 @code{
-    #nullable disable
     [Parameter] public IEnumerable<TItem> Items { get; set; }
 
     [Parameter] public RenderFragment<Context> Template { get; set; }
