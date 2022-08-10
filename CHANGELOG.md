@@ -13,6 +13,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Fixed
 
 - When the `TestContext` was disposed, the Blazor Renderer itself didn't dispose components under test. By [@linkdotnet](https://github.com/linkdotnet).
+- When navigating, the `HistoryEntryState` on `NavigationManager` will be populated. By [@linkdotnet](https://github.com/linkdotnet).
 
 ### Added
 
