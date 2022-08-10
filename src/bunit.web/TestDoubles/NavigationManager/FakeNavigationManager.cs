@@ -86,6 +86,7 @@ public sealed class FakeNavigationManager : NavigationManager
 			history.Pop();
 
 #if NET7_0_OR_GREATER
+		HistoryEntryState = options.ForceLoad ? null : options.HistoryEntryState;
 		renderer.Dispatcher.InvokeAsync(async () =>
 #else
 		renderer.Dispatcher.InvokeAsync(() =>
