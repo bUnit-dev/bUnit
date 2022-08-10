@@ -1,4 +1,5 @@
 using Bunit.Rendering;
+using Microsoft.AspNetCore.Components.Routing;
 
 namespace Bunit.TestDoubles;
 
@@ -94,14 +95,27 @@ public sealed class FakeNavigationManager : NavigationManager
 			Uri = absoluteUri.OriginalString;
 
 #if NET7_0_OR_GREATER
-			var shouldContinueNavigation = await NotifyLocationChangingAsync(uri, options.HistoryEntryState, isNavigationIntercepted: false).ConfigureAwait(false);
+			var shouldContinueNavigation = false;
+			try
+			{
+				shouldContinueNavigation = await NotifyLocationChangingAsync(uri, options.HistoryEntryState, isNavigationIntercepted: false).ConfigureAwait(false);
+			}
+			catch (Exception exception)
+			{
+				history.Push(new NavigationHistory(uri, options, NavigationState.Failed, exception));
+				return;
+			}
+
+			history.Push(new NavigationHistory(uri, options, shouldContinueNavigation ? NavigationState.Succeeded : NavigationState.Prevented));
+
 			if (!shouldContinueNavigation)
 			{
 				return;
 			}
+#else
+			history.Push(new NavigationHistory(uri, options));
 #endif
 
-			history.Push(new NavigationHistory(uri, options));
 
 			// Only notify of changes if user navigates within the same
 			// base url (domain). Otherwise, the user navigated away
@@ -122,6 +136,9 @@ public sealed class FakeNavigationManager : NavigationManager
 #if NET7_0_OR_GREATER
 	/// <inheritdoc/>
 	protected override void SetNavigationLockState(bool value) {}
+
+	/// <inheritdoc/>
+	protected override void HandleLocationChangingHandlerException(Exception ex, LocationChangingContext context) => throw ex;
 #endif
 
 	private URI GetNewAbsoluteUri(string uri)
