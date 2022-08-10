@@ -163,5 +163,18 @@ namespace Bunit.TestDoubles
 
 			locationChangedInvoked.ShouldBeFalse();
 		}
+
+#if NET7_0_OR_GREATER
+		[Fact(DisplayName = "Navigate to url with state should set that state on the NavigationManager")]
+		public void Test010()
+		{
+			const string State = "State";
+			var sut = CreateFakeNavigationManager();
+
+			sut.NavigateTo("/internal", new NavigationOptions { HistoryEntryState = State });
+
+			sut.HistoryEntryState.ShouldBe(State);
+		}
+#endif
 	}
 }

@@ -87,6 +87,10 @@ public sealed class FakeNavigationManager : NavigationManager
 
 		history.Push(new NavigationHistory(uri, options));
 
+#if NET7_0_OR_GREATER
+		HistoryEntryState = options.HistoryEntryState;
+#endif
+
 		renderer.Dispatcher.InvokeAsync(() =>
 		{
 			Uri = absoluteUri.OriginalString;
