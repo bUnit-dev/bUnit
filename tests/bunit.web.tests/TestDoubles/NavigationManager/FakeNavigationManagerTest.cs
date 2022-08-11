@@ -288,8 +288,6 @@ public class FakeNavigationManagerTest : TestContext
 			builder.CloseComponent();
 		}
 
-		public bool NavigationIntercepted { get; set; }
-
 		private void InterceptNavigation(LocationChangingContext context)
 		{
 			throw new NotSupportedException("Don't intercept");
