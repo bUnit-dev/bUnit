@@ -17,8 +17,8 @@ public enum NavigationState
 	Prevented,
 
 	/// <summary>
-	/// An exception was thrown
+	/// Indicates, that an exception was thrown.
 	/// </summary>
-	Failed
+	Faulted
 }
 #endif

@@ -130,6 +130,6 @@ navMan.NavigateTo("/counter");
 
 // Assert that the navigation was prevented
 var navigationHistory = navMan.History.Single();
-Assert.Equal(NavigationState.Failed, navigationHistory.NavigationState);
+Assert.Equal(NavigationState.Faulted, navigationHistory.NavigationState);
 Assert.NotNull(navigationHistory.Exception);
 ```

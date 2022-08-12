@@ -216,7 +216,7 @@ public class FakeNavigationManagerTest : TestContext
 
 		var entry = fakeNavigationManager.History.Single();
 		entry.Exception.ShouldBeOfType<NotSupportedException>();
-		entry.NavigationState.ShouldBe(NavigationState.Failed);
+		entry.NavigationState.ShouldBe(NavigationState.Faulted);
 	}
 
 	private class InterceptNavigateToCounterComponent : ComponentBase
