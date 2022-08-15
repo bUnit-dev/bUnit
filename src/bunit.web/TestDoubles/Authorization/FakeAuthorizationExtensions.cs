@@ -21,7 +21,9 @@ public static class FakeAuthorizationExtensions
 
 		context.RenderTree.TryAdd<CascadingAuthenticationState>();
 		context.Services.AddSingleton<FakeSignOutSessionStateManager>();
+#pragma warning disable CS0618
 		context.Services.AddSingleton<SignOutSessionStateManager>(s => s.GetRequiredService<FakeSignOutSessionStateManager>());
+#pragma warning restore CS0618
 		var authCtx = new TestAuthorizationContext();
 		authCtx.SetNotAuthorized();
 		authCtx.RegisterAuthorizationServices(context.Services);
