@@ -73,7 +73,8 @@ Assert.Equal("http://localhost/foo", navMan.Uri);
 If a component issues multiple `NavigateTo` calls, then it is possible to inspect the navigation history by accessing the <xref:Bunit.TestDoubles.FakeNavigationManager.History> property. It's a stack based structure, meaning the latest navigations will be first in the collection at index 0.
 
 ## Asserting that a navigation was prevented with the `NavigationLock` component
-The `NavigationLock` component, which was introduced with .net 7, gives the possibility to intercept the navigation and can even prevent it. bUnit will always create a history entry for prevented or even failed interceptions. This gets reflected in the <xref:Bunit.TestDoubles.NavigationHistory.NavigationState> property, as well as in case of an exception on the <xref:Bunit.TestDoubles.NavigationHistory.Exception> property.
+
+The `NavigationLock` component, which was introduced with .NET 7, gives the possibility to intercept the navigation and can even prevent it. bUnit will always create a history entry for prevented or even failed interceptions. This gets reflected in the <xref:Bunit.TestDoubles.NavigationHistory.NavigationState> property, as well as in case of an exception on the <xref:Bunit.TestDoubles.NavigationHistory.Exception> property.
 
 A component can look like this:
 ```razor
@@ -92,6 +93,7 @@ A component can look like this:
 ```
 
 A typical test, which asserts that the navigation got prevented, would look like this:
+
 ```csharp
 using var ctx = new TestContext();
 var navMan = ctx.Services.GetRequiredService<FakeNavigationManager>();
@@ -105,6 +107,7 @@ Assert.Equal(NavigationState.Prevented, navigationHistory.NavigationState);
 ```
 
 ## Simulate preventing navigation from a `<a href>` with the `NavigationLock` component
+
 As `<a href>` navigation is not natively supported in bUnit, the `NavigationManager` can be used to simulate the exact behavior.
 
 ```razor
@@ -121,6 +124,7 @@ As `<a href>` navigation is not natively supported in bUnit, the `NavigationMana
 ```
 
 The test utilizes the `NavigationManager` itself to achieve the same:
+
 ```csharp
 using var ctx = new TestContext();
 var navMan = ctx.Services.GetRequiredService<FakeNavigationManager>();

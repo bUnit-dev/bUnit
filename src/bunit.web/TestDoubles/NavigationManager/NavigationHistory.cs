@@ -22,15 +22,19 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 #if NET6_0_OR_GREATER
 	public NavigationOptions Options { get; }
 #endif
+
 #if NET7_0_OR_GREATER
 	/// <summary>
 	/// Gets the <see cref="NavigationState"/> associated with this history entry.
 	/// </summary>
-	public NavigationState NavigationState { get; }
+	public NavigationState State { get; }
 
 	/// <summary>
-	/// Gets the possible exception, which was thrown in a <see cref="LocationChangingContext"/> event.
+	/// Gets the exception thrown from the <see cref="NavigationLock.OnBeforeInternalNavigation"/> handler, if any.
 	/// </summary>
+	/// <remarks>
+	/// Will not be null when <see cref="State"/> is <see cref="NavigationState.Faulted"/>.
+	/// </remarks>
 	public Exception? Exception { get; }
 #endif
 
@@ -60,6 +64,7 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 		Options = options;
 	}
 #endif
+
 #if NET7_0_OR_GREATER
 	/// <summary>
 	/// Initializes a new instance of the <see cref="NavigationHistory"/> class.
@@ -73,7 +78,7 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	{
 		Uri = uri;
 		Options = options;
-		NavigationState = navigationState;
+		State = navigationState;
 		Exception = exception;
 	}
 #endif

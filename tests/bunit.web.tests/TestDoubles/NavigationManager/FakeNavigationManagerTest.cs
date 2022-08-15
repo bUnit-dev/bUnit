@@ -192,7 +192,7 @@ public class FakeNavigationManagerTest : TestContext
 		cut.Find("button").Click();
 
 		cut.Instance.NavigationIntercepted.ShouldBeTrue();
-		fakeNavigationManager.History.Single().NavigationState.ShouldBe(NavigationState.Prevented);
+		fakeNavigationManager.History.Single().State.ShouldBe(NavigationState.Prevented);
 	}
 
 	[Fact(DisplayName = "Intercepting external url's should work")]
@@ -216,7 +216,7 @@ public class FakeNavigationManagerTest : TestContext
 
 		var entry = fakeNavigationManager.History.Single();
 		entry.Exception.ShouldBeOfType<NotSupportedException>();
-		entry.NavigationState.ShouldBe(NavigationState.Faulted);
+		entry.State.ShouldBe(NavigationState.Faulted);
 	}
 
 	private class InterceptNavigateToCounterComponent : ComponentBase

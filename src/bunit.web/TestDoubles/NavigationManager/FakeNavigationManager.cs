@@ -69,7 +69,6 @@ public sealed class FakeNavigationManager : NavigationManager
 #endif
 
 #if NET6_0_OR_GREATER
-
 	/// <inheritdoc/>
 	protected override void NavigateToCore(string uri, NavigationOptions options)
 	{
@@ -89,7 +88,7 @@ public sealed class FakeNavigationManager : NavigationManager
 #if NET7_0_OR_GREATER
 		renderer.Dispatcher.InvokeAsync(async () =>
 #else
-		renderer.Dispatcher.InvokeAsync( () =>
+		renderer.Dispatcher.InvokeAsync(() =>
 #endif
 		{
 			Uri = absoluteUri.OriginalString;
@@ -102,7 +101,7 @@ public sealed class FakeNavigationManager : NavigationManager
 			}
 			catch (Exception exception)
 			{
-				history.Push(new NavigationHistory(uri, options, NavigationState.Failed, exception));
+				history.Push(new NavigationHistory(uri, options, NavigationState.Faulted, exception));
 				return;
 			}
 
@@ -138,7 +137,8 @@ public sealed class FakeNavigationManager : NavigationManager
 	protected override void SetNavigationLockState(bool value) {}
 
 	/// <inheritdoc/>
-	protected override void HandleLocationChangingHandlerException(Exception ex, LocationChangingContext context) => throw ex;
+	protected override void HandleLocationChangingHandlerException(Exception ex, LocationChangingContext context)
+		=> throw ex;
 #endif
 
 	private URI GetNewAbsoluteUri(string uri)
