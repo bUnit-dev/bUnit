@@ -17,7 +17,7 @@ public enum NavigationState
 	Prevented,
 
 	/// <summary>
-	/// The OnBeforeInternalNavigation event handler throw an exception and the navigation did not complete.
+	/// The OnBeforeInternalNavigation event handler threw an exception and the navigation did not complete.
 	/// </summary>
 	Faulted
 }
