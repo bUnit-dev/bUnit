@@ -1,9 +1,12 @@
 using Bunit.Diffing;
 using Bunit.Rendering;
 using Bunit.TestDoubles;
+using Bunit.TestDoubles.WebAssemblyHostEnvironment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 
 namespace Bunit.Extensions;
@@ -39,6 +42,10 @@ public static class TestServiceProviderExtensions
 		services.AddSingleton<FakeNavigationManager>();
 		services.AddSingleton<NavigationManager>(s => s.GetRequiredService<FakeNavigationManager>());
 		services.AddSingleton<INavigationInterception, FakeNavigationInterception>();
+
+		// bUnits fake WebAssemblyHostEnvironment
+		services.AddSingleton<FakeWebAssemblyHostEnvironment>();
+		services.AddSingleton<IWebAssemblyHostEnvironment>(s => s.GetRequiredService<FakeWebAssemblyHostEnvironment>());
 
 		// bUnit specific services
 		services.AddSingleton<TestContextBase>(testContext);

@@ -27,6 +27,7 @@
 ## [Mocking HttpClient](xref:mocking-httpclient)
 ## [Faking PersistentComponentState](xref:faking-persistentcomponentstate)
 ## [Faking NavigationManager](xref:fake-navigation-manager)
+## [Faking IWebAssemblyHostEnvironment](xref:fake-webassemblyhostenvironment)
 ## [Testing with InputFile component](xref:input-file)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)

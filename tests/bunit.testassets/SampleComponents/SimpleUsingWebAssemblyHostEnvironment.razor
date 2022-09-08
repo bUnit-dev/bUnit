@@ -1,0 +1,3 @@
+@inject IWebAssemblyHostEnvironment HostEnvironment
+
+<p>Hello @(HostEnvironment.IsDevelopment() ? "Developers" : "World"). The base URL is: @HostEnvironment.BaseAddress</p>

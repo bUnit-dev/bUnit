@@ -24,6 +24,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet3Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet3Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet3Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="3.2.1" />
 	</ItemGroup>
 
@@ -31,6 +32,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet5Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet5Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet5Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet5Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet5Version)" />
 	</ItemGroup>
 
@@ -38,6 +40,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet6Version)" />
 	</ItemGroup>
 
@@ -45,6 +48,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet7Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet7Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet7Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet7Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet7Version)" />
 	</ItemGroup>
 
@@ -61,7 +65,7 @@
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
 		<ItemGroup>
 			<!-- Filter out unnecessary files -->
-			<_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')->WithMetadataValue('PrivateAssets', 'All'))"/>
+			<_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
 		</ItemGroup>
 
 		<!-- Print batches for debug purposes -->
@@ -69,7 +73,7 @@
 
 		<ItemGroup>
 			<!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
-			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)"/>
+			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
 		</ItemGroup>
 	</Target>
 
