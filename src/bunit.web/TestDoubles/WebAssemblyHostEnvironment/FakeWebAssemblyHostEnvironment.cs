@@ -41,7 +41,8 @@ public class FakeWebAssemblyHostEnvironment : IWebAssemblyHostEnvironment
 	/// <summary>
 	/// Method for setting the <see cref="Environment"/> to "Production".
 	/// </summary>
-	public void SetEnvironmentToProduction() {
+	public void SetEnvironmentToProduction()
+	{
 		Environment = "Production";
 	}
 
