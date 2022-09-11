@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-namespace Bunit.TestDoubles.WebAssemblyHostEnvironment;
+namespace Bunit.TestDoubles;
 
 /// <summary>
 /// Represents a fake <see cref="IWebAssemblyHostEnvironment"/> that makes the <see cref="Environment"/> and <see cref="BaseAddress"/> settable.
@@ -23,7 +23,7 @@ public class FakeWebAssemblyHostEnvironment : IWebAssemblyHostEnvironment
 	public string BaseAddress { get; set; } = "/";
 
 	/// <summary>
-	/// Method for setting the <see cref="Environment"/> to "Development".
+	/// Sets the <see cref="Environment"/> property to "Development".
 	/// </summary>
 	public void SetEnvironmentToDevelopment()
 	{
@@ -31,7 +31,7 @@ public class FakeWebAssemblyHostEnvironment : IWebAssemblyHostEnvironment
 	}
 
 	/// <summary>
-	/// Method for setting the <see cref="Environment"/> to "Staging".
+	/// Sets the <see cref="Environment"/> property to "Staging".
 	/// </summary>
 	public void SetEnvironmentToStaging()
 	{
@@ -39,7 +39,7 @@ public class FakeWebAssemblyHostEnvironment : IWebAssemblyHostEnvironment
 	}
 
 	/// <summary>
-	/// Method for setting the <see cref="Environment"/> to "Production".
+	/// Sets the <see cref="Environment"/> property to "Production".
 	/// </summary>
 	public void SetEnvironmentToProduction()
 	{
