@@ -7,16 +7,23 @@ title: Faking IWebAssemblyHostEnvironment
 
 bUnit has a fake implementation of Blazor's `IWebAssemblyHostEnvironment` built-in, which is added by default to bUnit's `TestContext.Services` service provider. That means nothing special is needed to test components that depend on `IWebAssemblyHostEnvironment`, as it is already available by default.
 
-## Verify `IWebAssemblyHostEnvironment` interactions
+Out of the box, the fake implementation has its `Environment` property set to `production`, and its `BaseAddress` set to `/`.
 
-Lets look at a few examples that show how to verify that a component correctly uses the `IWebAssemblyHostEnvironment` in various ways.
+## Setting `Environment` and `BaseAddress`
+
+Lets look at a few examples of how to set the two `IWebAssemblyHostEnvironment` properties `Environment` and `BaseAddress` via the built-in fake.
 
 In the examples, we'll use the following `<HelloWorld>` component:
 
 ```cshtml
 @inject IWebAssemblyHostEnvironment HostEnvironment
 
-<p>Hello @(HostEnvironment.IsDevelopment() ? "Developers" : "World"). The base URL is: @HostEnvironment.BaseAddress</p>
+<p id="message">
+  Hello @(HostEnvironment.IsDevelopment() ? "Developers" : "World"). 
+</p>
+<p id="address">
+  The base URL is: @HostEnvironment.BaseAddress
+</p>
 ```
 
 To verify that the `<HelloWorld>` component correctly says hello to the developers, do the following:
@@ -25,12 +32,17 @@ To verify that the `<HelloWorld>` component correctly says hello to the develope
 // Arrange
 using var ctx = new TestContext();
 var hostEnvironment = ctx.Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();
+
+// Sets the environment to "Development". There are two other helper 
+// methods available as well, SetEnvironmentToProduction() and 
+// set SetEnvironmentToStaging(), or environment can also be changed
+// directly through the hostEnvironment.Environment property.
 hostEnvironment.SetEnvironmentToDevelopment();
 
 var cut = ctx.RenderComponent<SimpleUsingWebAssemblyHostEnvironment>();
 
 // Assert - inspects markup to verify the message
-cut.Find("p").MarkupMatches($"<p>Hello Developers. The base URL is: /</p>");
+cut.Find("#message").MarkupMatches($"<p>Hello Developers.</p>");
 ```
 
 To verify that the `<HelloWorld>` component correctly uses the current `BaseAddress`, do the following:
@@ -39,9 +51,13 @@ To verify that the `<HelloWorld>` component correctly uses the current `BaseAddr
 // Arrange
 using var ctx = new TestContext();
 var hostEnvironment = ctx.Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();
+
+// Sets a new base address directly on the BaseAddress property.
 hostEnvironment.BaseAddress = "myBaseUrl/";
+
+// Act
 var cut = ctx.RenderComponent<SimpleUsingWebAssemblyHostEnvironment>();
 
 // Assert - inspect markup to verify that the BaseAddress is used correctly.
-cut.Find("p").MarkupMatches($"<p>Hello World. The base URL is: myBaseUrl/</p>");
+cut.Find("#address").MarkupMatches($"<p>The base URL is: myBaseUrl/</p>");
 ```

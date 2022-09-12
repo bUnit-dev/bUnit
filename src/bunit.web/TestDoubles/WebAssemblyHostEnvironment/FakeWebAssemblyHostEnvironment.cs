@@ -8,22 +8,17 @@ namespace Bunit.TestDoubles;
 public class FakeWebAssemblyHostEnvironment : IWebAssemblyHostEnvironment
 {
 	/// <summary>
-	/// Gets the name of the environment. This is configured to use the environment of
-	/// the application hosting the Blazor WebAssembly application. Configured to "Production"
-	/// when not specified by the host.
-	/// In the <see cref="FakeWebAssemblyHostEnvironment"/> it can also be set.
+	/// Gets or sets the name of the environment. Default is <c>Production</c>.
 	/// </summary>
 	public string Environment { get; set; } = "Production";
 
 	/// <summary>
-	/// Gets the base address for the application. This is typically derived from the
-	/// >base href&lt; value in the host page.
-	/// In the <see cref="FakeWebAssemblyHostEnvironment"/> it can also be set.
+	/// Gets or sets the base address. Default is <c>/</c>.
 	/// </summary>
 	public string BaseAddress { get; set; } = "/";
 
 	/// <summary>
-	/// Sets the <see cref="Environment"/> property to "Development".
+	/// Sets the <see cref="Environment"/> property to <c>Development</c>.
 	/// </summary>
 	public void SetEnvironmentToDevelopment()
 	{
@@ -31,7 +26,7 @@ public class FakeWebAssemblyHostEnvironment : IWebAssemblyHostEnvironment
 	}
 
 	/// <summary>
-	/// Sets the <see cref="Environment"/> property to "Staging".
+	/// Sets the <see cref="Environment"/> property to <c>Staging</c>.
 	/// </summary>
 	public void SetEnvironmentToStaging()
 	{
@@ -39,7 +34,7 @@ public class FakeWebAssemblyHostEnvironment : IWebAssemblyHostEnvironment
 	}
 
 	/// <summary>
-	/// Sets the <see cref="Environment"/> property to "Production".
+	/// Sets the <see cref="Environment"/> property to <c>Production</c>.
 	/// </summary>
 	public void SetEnvironmentToProduction()
 	{

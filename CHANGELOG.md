@@ -8,7 +8,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Added
 
-- Added `FakeWebAssemblyHostEnvironment` that implements `IWebAssemblyHostEnvironment` so that components that inject it can use this in tests. By [@KristofferStrube](https://github.com/KristofferStrube).
+- Added new test double `FakeWebAssemblyHostEnvironment` that implements `IWebAssemblyHostEnvironment`. By [@KristofferStrube](https://github.com/KristofferStrube).
 
 - Added `Bind` method to parameter builder that makes it easier to emulate the `@bind-Value` syntax in C#-based tests. 
   
