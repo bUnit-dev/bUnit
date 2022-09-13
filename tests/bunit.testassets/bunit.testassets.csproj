@@ -16,7 +16,7 @@
 		<PackageReference Include="xunit.core" Version="2.4.2" />
 		<PackageReference Include="xunit.assert" Version="2.4.2" />
 		<PackageReference Include="xunit.abstractions" Version="2.0.3" />
-		<PackageReference Include="Serilog" Version="2.11.0" />
+		<PackageReference Include="Serilog" Version="2.12.0" />
 		<PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
 	</ItemGroup>
 
@@ -41,12 +41,5 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet7Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet7Version)" />
 	</ItemGroup>
-
-	<!-- https://github.com/dotnet/sdk/issues/18148#issuecomment-860957180 from @elion -->
-	<!-- Workaround for this bug (replace the analyzer name with the one you need to exclude (filename only, no extension) -->
-	<Target Name="RemoveLoggingAnalyzer" BeforeTargets="RazorCompileComponentDeclaration">
-		<ItemGroup>
-			<Analyzer Remove="@(Analyzer)" Condition="%(FileName) == 'Microsoft.Extensions.Logging.Generators'" />
-		</ItemGroup>
-	</Target>
+	
 </Project>
