@@ -8,6 +8,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Added
 
+- Added new test double `FakeWebAssemblyHostEnvironment` that implements `IWebAssemblyHostEnvironment`. By [@KristofferStrube](https://github.com/KristofferStrube).
+
 - Added `Bind` method to parameter builder that makes it easier to emulate the `@bind-Value` syntax in C#-based tests. 
   
   When writing tests in razor files, the `@bind-` directive can be directly applied like this: 

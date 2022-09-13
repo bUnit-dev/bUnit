@@ -22,19 +22,23 @@
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet3Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="3.2.1" />
 		<PackageReference Include="System.Text.Json" Version="6.0.5" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet5Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet5Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet5Version)" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet6Version)" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet7Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet7Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet7Version)" />
 	</ItemGroup>
 
