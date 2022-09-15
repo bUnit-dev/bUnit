@@ -36,6 +36,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
   
   By [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).
 
+- Added support for `NavigationLock`, which allows user code to intercept and prevent navigation. By [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).
+
 ### Fixed
 
 - `JSInterop.VerifyInvoke` reported the wrong number of actual invocations of a given identifier. Reported by [@otori](https://github.com/otori). Fixed by [@linkdotnet](https://github.com/linkdotnet).

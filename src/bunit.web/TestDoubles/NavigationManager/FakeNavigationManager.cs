@@ -1,4 +1,5 @@
 using Bunit.Rendering;
+using Microsoft.AspNetCore.Components.Routing;
 
 namespace Bunit.TestDoubles;
 
@@ -68,7 +69,6 @@ public sealed class FakeNavigationManager : NavigationManager
 #endif
 
 #if NET6_0_OR_GREATER
-
 	/// <inheritdoc/>
 	protected override void NavigateToCore(string uri, NavigationOptions options)
 	{
@@ -85,11 +85,36 @@ public sealed class FakeNavigationManager : NavigationManager
 		if (options.ReplaceHistoryEntry && history.Count > 0)
 			history.Pop();
 
-		history.Push(new NavigationHistory(uri, options));
-
+#if NET7_0_OR_GREATER
+		renderer.Dispatcher.InvokeAsync(async () =>
+#else
 		renderer.Dispatcher.InvokeAsync(() =>
+#endif
 		{
 			Uri = absoluteUri.OriginalString;
+
+#if NET7_0_OR_GREATER
+			var shouldContinueNavigation = false;
+			try
+			{
+				shouldContinueNavigation = await NotifyLocationChangingAsync(uri, options.HistoryEntryState, isNavigationIntercepted: false).ConfigureAwait(false);
+			}
+			catch (Exception exception)
+			{
+				history.Push(new NavigationHistory(uri, options, NavigationState.Faulted, exception));
+				return;
+			}
+
+			history.Push(new NavigationHistory(uri, options, shouldContinueNavigation ? NavigationState.Succeeded : NavigationState.Prevented));
+
+			if (!shouldContinueNavigation)
+			{
+				return;
+			}
+#else
+			history.Push(new NavigationHistory(uri, options));
+#endif
+
 
 			// Only notify of changes if user navigates within the same
 			// base url (domain). Otherwise, the user navigated away
@@ -105,6 +130,15 @@ public sealed class FakeNavigationManager : NavigationManager
 			}
 		});
 	}
+#endif
+
+#if NET7_0_OR_GREATER
+	/// <inheritdoc/>
+	protected override void SetNavigationLockState(bool value) {}
+
+	/// <inheritdoc/>
+	protected override void HandleLocationChangingHandlerException(Exception ex, LocationChangingContext context)
+		=> throw ex;
 #endif
 
 	private URI GetNewAbsoluteUri(string uri)

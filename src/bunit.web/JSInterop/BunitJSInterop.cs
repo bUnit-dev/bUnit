@@ -143,6 +143,10 @@ public class BunitJSInterop
 	private void AddCustomNet6Handlers()
 	{
 		AddInvocationHandler(new FocusOnNavigateHandler());
+#if NET7_0_OR_GREATER
+		AddInvocationHandler(new NavigationLockDisableNavigationPromptInvocationHandler());
+		AddInvocationHandler(new NavigationLockEnableNavigationPromptInvocationHandler());
+#endif
 	}
 #endif
 }
