@@ -166,7 +166,7 @@ namespace AngleSharpWrappers
         public UInt32 Border { get => WrappedElement.Border; set => WrappedElement.Border = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
-        public IHtmlTableCaptionElement Caption { get => WrappedElement.Caption; set => WrappedElement.Caption = value;}
+        public IHtmlTableCaptionElement? Caption { get => WrappedElement.Caption; set => WrappedElement.Caption = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
         public Int32 ChildElementCount { get => WrappedElement.ChildElementCount; }
@@ -208,13 +208,13 @@ namespace AngleSharpWrappers
         public NodeFlags Flags { get => WrappedElement.Flags; }
         /// <inheritdoc/>
         [DebuggerHidden]
-        public IHtmlTableSectionElement Foot { get => WrappedElement.Foot; set => WrappedElement.Foot = value;}
+        public IHtmlTableSectionElement? Foot { get => WrappedElement.Foot; set => WrappedElement.Foot = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
         public Boolean HasChildNodes { get => WrappedElement.HasChildNodes; }
         /// <inheritdoc/>
         [DebuggerHidden]
-        public IHtmlTableSectionElement Head { get => WrappedElement.Head; set => WrappedElement.Head = value;}
+        public IHtmlTableSectionElement? Head { get => WrappedElement.Head; set => WrappedElement.Head = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
         public String? Id { get => WrappedElement.Id; set => WrappedElement.Id = value;}
@@ -400,7 +400,7 @@ namespace AngleSharpWrappers
         public IHtmlCollection<IElement> GetElementsByTagName(String tagName) => WrappedElement.GetElementsByTagName(tagName);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public IHtmlCollection<IElement> GetElementsByTagNameNS(String namespaceUri, String tagName) => WrappedElement.GetElementsByTagNameNS(namespaceUri, tagName);
+        public IHtmlCollection<IElement> GetElementsByTagNameNS(String? namespaceUri, String tagName) => WrappedElement.GetElementsByTagNameNS(namespaceUri, tagName);
         /// <inheritdoc/>
         [DebuggerHidden]
         public Boolean HasAttribute(String name) => WrappedElement.HasAttribute(name);
@@ -427,7 +427,7 @@ namespace AngleSharpWrappers
         public String? LookupNamespaceUri(String prefix) => WrappedElement.LookupNamespaceUri(prefix);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public String? LookupPrefix(String namespaceUri) => WrappedElement.LookupPrefix(namespaceUri);
+        public String? LookupPrefix(String? namespaceUri) => WrappedElement.LookupPrefix(namespaceUri);
         /// <inheritdoc/>
         [DebuggerHidden]
         public Boolean Matches(String selectors) => WrappedElement.Matches(selectors);
@@ -451,7 +451,7 @@ namespace AngleSharpWrappers
         public Boolean RemoveAttribute(String name) => WrappedElement.RemoveAttribute(name);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public Boolean RemoveAttribute(String namespaceUri, String localName) => WrappedElement.RemoveAttribute(namespaceUri, localName);
+        public Boolean RemoveAttribute(String? namespaceUri, String localName) => WrappedElement.RemoveAttribute(namespaceUri, localName);
         /// <inheritdoc/>
         [DebuggerHidden]
         public INode RemoveChild(INode child) => WrappedElement.RemoveChild(child);
@@ -472,7 +472,7 @@ namespace AngleSharpWrappers
         public void SetAttribute(String name, String value) => WrappedElement.SetAttribute(name, value);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public void SetAttribute(String namespaceUri, String name, String value) => WrappedElement.SetAttribute(namespaceUri, name, value);
+        public void SetAttribute(String? namespaceUri, String name, String value) => WrappedElement.SetAttribute(namespaceUri, name, value);
         /// <inheritdoc/>
         [DebuggerHidden]
         public void ToHtml(TextWriter writer, IMarkupFormatter formatter) => WrappedElement.ToHtml(writer, formatter);
