@@ -6,41 +6,43 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.10.14] - 2022-09-16
+
 ### Added
 
-- Added new test double `FakeWebAssemblyHostEnvironment` that implements `IWebAssemblyHostEnvironment`. By [@KristofferStrube](https://github.com/KristofferStrube).
+-   Added new test double `FakeWebAssemblyHostEnvironment` that implements `IWebAssemblyHostEnvironment`. By [@KristofferStrube](https://github.com/KristofferStrube).
 
-- Added `Bind` method to parameter builder that makes it easier to emulate the `@bind-Value` syntax in C#-based tests. 
-  
-  When writing tests in razor files, the `@bind-` directive can be directly applied like this: 
-	
-  ```razor
-  <MyComponent @bind-Value="myParam"></MyComponent>
-  ```
-	
-  The same expression in C# syntax is more verbose like this:  
- 
-  ```csharp
-  RenderComponent<MyComponent>(ps => ps
-    .Add(c => c.Value, value)
-    .Add(c => c.ValueChanged, newValue => value = newValue)
-    .Add(c => c.ValueExpression, () => value));
-  ```
-    
-  With the new `Bind` method this can be done in one method:
-    
-  ```csharp
-  RenderComponent<MyComponent>(ps => ps
-    .Bind(c => c.Value, value, newValue => value = newValue, () => value));
-  ```
-  
-  By [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).
+-   Added `Bind` method to parameter builder that makes it easier to emulate the `@bind-Value` syntax in C#-based tests. 
 
-- Added support for `NavigationLock`, which allows user code to intercept and prevent navigation. By [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).
+    When writing tests in razor files, the `@bind-` directive can be directly applied like this: 
+
+    ```razor
+    <MyComponent @bind-Value="myParam"></MyComponent>
+    ```
+
+    The same expression in C# syntax is more verbose like this:  
+
+    ```csharp
+    RenderComponent<MyComponent>(ps => ps
+      .Add(c => c.Value, value)
+      .Add(c => c.ValueChanged, newValue => value = newValue)
+      .Add(c => c.ValueExpression, () => value));
+    ```
+
+    With the new `Bind` method this can be done in one method:
+
+    ```csharp
+    RenderComponent<MyComponent>(ps => ps
+      .Bind(c => c.Value, value, newValue => value = newValue, () => value));
+    ```
+
+    By [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).
+
+-   Added support for `NavigationLock`, which allows user code to intercept and prevent navigation. By [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).
 
 ### Fixed
 
-- `JSInterop.VerifyInvoke` reported the wrong number of actual invocations of a given identifier. Reported by [@otori](https://github.com/otori). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+-   `JSInterop.VerifyInvoke` reported the wrong number of actual invocations of a given identifier. Reported by [@otori](https://github.com/otori). Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.9.8] - 2022-06-07
 
@@ -1210,7 +1212,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**  
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.9.8...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.10.14...HEAD
+
+[1.10.14]: https://github.com/bUnit-dev/bUnit/compare/v1.9.8...v1.10.14
 
 [1.9.8]: https://github.com/bUnit-dev/bUnit/compare/v1.8.15...v1.9.8
 
