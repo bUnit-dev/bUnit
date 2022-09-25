@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+
 namespace Bunit.TestDoubles;
 
 using static Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers;
@@ -217,6 +219,49 @@ public class FakeNavigationManagerTest : TestContext
 		var entry = fakeNavigationManager.History.Single();
 		entry.Exception.ShouldBeOfType<NotSupportedException>();
 		entry.State.ShouldBe(NavigationState.Faulted);
+	}
+
+	[Fact(DisplayName = "Should deserialize InteractiveRequestOptions when using NavigateToLogin")]
+	public void Test013()
+	{
+		var fakeNavigationManager = CreateFakeNavigationManager();
+		var requestOptions = new InteractiveRequestOptions
+		{
+			ReturnUrl = "return", Interaction = InteractionType.SignIn,
+		};
+		requestOptions.TryAddAdditionalParameter("library", "bunit");
+
+		fakeNavigationManager.NavigateToLogin("/some-url", requestOptions);
+
+		var couldDeserialize = fakeNavigationManager.History.Last().TryGetInteractiveRequestOptions(out var options);
+		couldDeserialize.ShouldBeTrue();
+		options.ShouldNotBeNull();
+		options.Interaction.ShouldBe(InteractionType.SignIn);
+		options.ReturnUrl.ShouldBe("return");
+		options.TryGetAdditionalParameter("library", out string libraryName).ShouldBeTrue();
+		libraryName.ShouldBe("bunit");
+	}
+
+	[Fact(DisplayName = "Given no InteractiveRequestOptions then TryGetInteractiveRequestOptions returns false")]
+	public void Test014()
+	{
+		var fakeNavigationManager = CreateFakeNavigationManager();
+		fakeNavigationManager.NavigateTo("/some-url");
+
+		var couldDeserialize = fakeNavigationManager.History.Last().TryGetInteractiveRequestOptions(out _);
+
+		couldDeserialize.ShouldBeFalse();
+	}
+
+	[Fact(DisplayName = "Given invalid json when calling TryGetInteractiveRequestOptions returns false")]
+	public void Test015()
+	{
+		var fakeNavigationManager = CreateFakeNavigationManager();
+
+		fakeNavigationManager.NavigateTo("/login", new NavigationOptions { HistoryEntryState = "<invalidjson>" });
+
+		var couldDeserialize = fakeNavigationManager.History.Last().TryGetInteractiveRequestOptions(out _);
+		couldDeserialize.ShouldBeFalse();
 	}
 
 	private class InterceptNavigateToCounterComponent : ComponentBase

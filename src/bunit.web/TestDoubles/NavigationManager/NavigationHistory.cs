@@ -1,4 +1,8 @@
+#if NET7_0_OR_GREATER
+using System.Text.Json;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+#endif
 
 namespace Bunit.TestDoubles;
 
@@ -81,6 +85,29 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 		State = navigationState;
 		Exception = exception;
 	}
+
+	/// <summary>
+	/// Tries to retrieve the <see cref="InteractiveRequestOptions"/>. This property is set,
+	/// when calling <code>NavigationManager.NavigateToLogin</code>.
+	/// </summary>
+	/// <param name="requestOptions">The object, which was passed to <code>NavigationManager.NavigateToLogin</code></param>
+	/// <returns>True, if the <see cref="InteractiveRequestOptions"/> could be parsed, otherwise false.</returns>
+	public bool TryGetInteractiveRequestOptions([NotNullWhen(true)] out InteractiveRequestOptions? requestOptions)
+	{
+		requestOptions = null;
+		if (string.IsNullOrEmpty(Options.HistoryEntryState))
+			return false;
+
+		try
+		{
+			requestOptions = JsonSerializer.Deserialize<InteractiveRequestOptions>(Options.HistoryEntryState)!;
+			return true;
+		}
+		catch
+		{
+			return false;
+		}
+	}
 #endif
 
 	/// <inheritdoc/>
@@ -88,12 +115,21 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	public bool Equals(NavigationHistory? other)
 		=> other is not null && string.Equals(Uri, other.Uri, StringComparison.Ordinal) && Options.Equals(other.Options);
 #endif
-#if NET6_0_OR_GREATER
+#if NET6_0
 	public bool Equals(NavigationHistory? other)
 		=> other is not null
 		&& string.Equals(Uri, other.Uri, StringComparison.Ordinal)
 		&& Options.ForceLoad == other.Options.ForceLoad
 		&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry;
+#endif
+#if NET7_0_OR_GREATER
+		public bool Equals(NavigationHistory? other)
+		=> other is not null
+		&& string.Equals(Uri, other.Uri, StringComparison.Ordinal)
+		&& Options.ForceLoad == other.Options.ForceLoad
+		&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry
+		&& State == other.State
+		&& Exception == other.Exception;
 #endif
 
 	/// <inheritdoc/>

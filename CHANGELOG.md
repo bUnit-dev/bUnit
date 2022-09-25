@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+- Added method to easily deserialize `InteractiveRequestOptions` via `TryGetInteractiveRequestOptions`, which is used by `NavigationManager.NavigateToLogin`. [@linkdotnet](https://github.com/linkdotnet). 
+
 ## [1.10.14] - 2022-09-16
 
 ### Added
