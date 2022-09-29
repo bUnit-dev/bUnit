@@ -191,7 +191,7 @@ These steps look like this from the `dotnet` CLI:
 Install the template from NuGet using this command:
 
 ```dotnetcli
-dotnet new --install bunit.template::#{NBGV_NuGetPackageVersion}#
+dotnet new install bunit.template::#{NBGV_NuGetPackageVersion}#
 ```
 
 **2. Create a new test project**
