@@ -9,6 +9,67 @@ To write tests, you need a place to put them - a test project. bUnit is not a un
 
 To use bUnit, the easiest approach is to use the bUnit project template described in the [Create a test project with bUnit template](#creating-a-test-project-with-bunit-template) section further down the page. To create a test project manually and in a general-purpose testing frameworks agnostic way, read the following section.
 
+## Creating a test project with bUnit template
+
+To skip a few steps in the guide above, use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/).
+
+The steps  for creating a test project with the bUnit template are as follows:
+
+1. Install the template (only needed the first time)
+2. Create a new test project
+3. Add the test project to your solution
+
+These steps look like this from the `dotnet` CLI:
+
+**1. Install the template**
+
+Install the template from NuGet using this command:
+
+```dotnetcli
+dotnet new --install bunit.template
+```
+
+**2. Create a new test project**
+
+Use the following command to create a bUnit with xUnit test project:
+
+# [xUnit](#tab/xunit)
+
+```dotnetcli
+dotnet new bunit --framework xunit -o <NAME OF TEST PROJECT>
+```
+
+# [NUnit](#tab/nunit)
+
+```dotnetcli
+dotnet new bunit --framework nunit -o <NAME OF TEST PROJECT>
+```
+
+# [MSTest](#tab/mstest)
+
+```dotnetcli
+dotnet new bunit --framework mstest -o <NAME OF TEST PROJECT>
+```
+
+***
+
+The `--framework` option in the `dotnet new` command above is used to specify the unit testing framework used by the test project. If the `--framework` option is omitted, the default test framework `xunit` will be configured. Currently supported options are the following:
+
+- `xunit` - [xUnit](https://xunit.net/),
+- `nunit` - [NUnit](https://nunit.org/),
+- `mstest` - [MSTest](https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest)
+
+**3. Add the test project to your solution**
+
+If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and the project containing the components that should be tested:
+
+```dotnetcli
+dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
+dotnet add <NAME OF TEST PROJECT>.csproj reference <NAME OF COMPONENT PROJECT>.csproj
+```
+
+This will allow the test project to see and test the components in the component project.
+
 ## Creating a test project manually
 
 This section will take you through the steps required to create a project for testing Blazor components using bUnit. Any of the three general-purpose test frameworks shown in step 1 below can be used. Briefly, here is what we will do:
@@ -116,7 +177,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
   <ItemGroup>
     <ProjectReference Include="<PATH TO COMPONENT LIB>.csproj" />
   </ItemGroup>
-  
+
 </Project>
 ```
 
@@ -132,13 +193,13 @@ The result should be a test project with a `.csproj` that looks like this (non b
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />    
+    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
     <PackageReference Include="coverlet.collector" Version="3.1.0" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="<PATH TO COMPONENT LIB>.csproj" />
   </ItemGroup>
@@ -158,82 +219,19 @@ The result should be a test project with a `.csproj` that looks like this (non b
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />    
+    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
     <PackageReference Include="coverlet.collector" Version="3.1.0" />
-  </ItemGroup>  
-  
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="<PATH TO COMPONENT LIB>.csproj" />
   </ItemGroup>
 
 </Project>
 ```
-
-***
-
-## Creating a test project with bUnit template
-
-To skip a few steps in the guide above, use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/).
-
-The steps  for creating a test project with the bUnit template are as follows:
-
-1. Install the template (only needed the first time)
-2. Create a new test project
-3. Add the test project to your solution
-
-These steps look like this from the `dotnet` CLI:
-
-**1. Install the template**
-
-Install the template from NuGet using this command:
-
-```dotnetcli
-dotnet new install bunit.template::#{NBGV_NuGetPackageVersion}#
-```
-
-**2. Create a new test project**
-
-Use the following command to create a bUnit with xUnit test project:
-
-# [xUnit](#tab/xunit)
-
-```dotnetcli
-dotnet new bunit --framework xunit -o <NAME OF TEST PROJECT>
-```
-
-# [NUnit](#tab/nunit)
-
-```dotnetcli
-dotnet new bunit --framework nunit -o <NAME OF TEST PROJECT>
-```
-
-# [MSTest](#tab/mstest)
-
-```dotnetcli
-dotnet new bunit --framework mstest -o <NAME OF TEST PROJECT>
-```
-
-***
-
-The `--framework` option in the `dotnet new` command above is used to specify the unit testing framework used by the test project. If the `--framework` option is omitted, the default test framework `xunit` will be configured. Currently supported options are the following:
-
-- `xunit` - [xUnit](https://xunit.net/),
-- `nunit` - [NUnit](https://nunit.org/),
-- `mstest` - [MSTest](https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest)
-
-**3. Add the test project to your solution**
-
-If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and the project containing the components that should be tested:
-
-```dotnetcli
-dotnet sln <NAME OF PROJECT>.sln add <NAME OF TEST PROJECT>
-dotnet add <NAME OF TEST PROJECT>.csproj reference <NAME OF COMPONENT PROJECT>.csproj
-```
-
-This will allow the test project to see and test the components in the component project.
 
 ## Further reading
 
