@@ -177,7 +177,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
   <ItemGroup>
     <ProjectReference Include="<PATH TO COMPONENT LIB>.csproj" />
   </ItemGroup>
-  
+
 </Project>
 ```
 
@@ -193,13 +193,13 @@ The result should be a test project with a `.csproj` that looks like this (non b
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />    
+    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
     <PackageReference Include="coverlet.collector" Version="3.1.0" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="<PATH TO COMPONENT LIB>.csproj" />
   </ItemGroup>
@@ -219,13 +219,13 @@ The result should be a test project with a `.csproj` that looks like this (non b
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />    
+    <PackageReference Include="bunit" Version="#{RELEASE-VERSION}#" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
     <PackageReference Include="coverlet.collector" Version="3.1.0" />
-  </ItemGroup>  
-  
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="<PATH TO COMPONENT LIB>.csproj" />
   </ItemGroup>
