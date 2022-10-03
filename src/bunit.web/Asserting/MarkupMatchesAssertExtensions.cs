@@ -20,7 +20,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected markup fragment.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this string actual, string expected, string? userMessage = null)
+	public static void MarkupMatches([StringSyntax("Html")]this string actual, [StringSyntax("Html")]string expected, string? userMessage = null)
 	{
 		if (actual is null)
 			throw new ArgumentNullException(nameof(actual));
@@ -42,7 +42,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected <see cref="IRenderedFragment"/>.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this string actual, IRenderedFragment expected, string? userMessage = null)
+	public static void MarkupMatches([StringSyntax("Html")]this string actual, IRenderedFragment expected, string? userMessage = null)
 	{
 		if (actual is null)
 			throw new ArgumentNullException(nameof(actual));
@@ -62,7 +62,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected <see cref="INodeList"/>.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this string actual, INodeList expected, string? userMessage = null)
+	public static void MarkupMatches([StringSyntax("Html")]this string actual, INodeList expected, string? userMessage = null)
 	{
 		if (actual is null)
 			throw new ArgumentNullException(nameof(actual));
@@ -82,7 +82,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected <see cref="INode"/>.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this string actual, INode expected, string? userMessage = null)
+	public static void MarkupMatches([StringSyntax("Html")]this string actual, INode expected, string? userMessage = null)
 	{
 		if (actual is null)
 			throw new ArgumentNullException(nameof(actual));
@@ -102,7 +102,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected markup.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this IRenderedFragment actual, string expected, string? userMessage = null)
+	public static void MarkupMatches(this IRenderedFragment actual, [StringSyntax("Html")]string expected, string? userMessage = null)
 	{
 		if (actual is null)
 			throw new ArgumentNullException(nameof(actual));
@@ -182,7 +182,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected markup.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this INode actual, string expected, string? userMessage = null)
+	public static void MarkupMatches(this INode actual, [StringSyntax("Html")]string expected, string? userMessage = null)
 	{
 		if (actual is null)
 			throw new ArgumentNullException(nameof(actual));
@@ -203,7 +203,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected markup.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this INodeList actual, string expected, string? userMessage = null)
+	public static void MarkupMatches(this INodeList actual, [StringSyntax("Html")]string expected, string? userMessage = null)
 	{
 		if (actual is null)
 			throw new ArgumentNullException(nameof(actual));
@@ -355,7 +355,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected markup fragment.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this IEnumerable<IElement> actual, string expected, string? userMessage = null)
+	public static void MarkupMatches(this IEnumerable<IElement> actual, [StringSyntax("Html")]string expected, string? userMessage = null)
 	{
 		if (actual is null)
 			throw new ArgumentNullException(nameof(actual));
@@ -473,9 +473,7 @@ public static class MarkupMatchesAssertExtensions
 			using var parser = new BunitHtmlParser();
 			return nodesStr.ToNodeList(parser);
 		}
-		else
-		{
-			return nodesStr.ToNodeList(htmlParser);
-		}
+
+		return nodesStr.ToNodeList(htmlParser);
 	}
 }
