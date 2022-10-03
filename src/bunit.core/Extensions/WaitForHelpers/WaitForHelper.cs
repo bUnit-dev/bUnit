@@ -16,6 +16,7 @@ public abstract class WaitForHelper<T> : IDisposable
 	private readonly ILogger<WaitForHelper<T>> logger;
 	private bool isDisposed;
 	private Exception? capturedException;
+	private Task<T>? failureTask;
 
 	/// <summary>
 	/// Gets the error message passed to the user when the wait for helper times out.
@@ -91,6 +92,8 @@ public abstract class WaitForHelper<T> : IDisposable
 		checkPassedCompletionSource.TrySetCanceled();
 		renderedFragment.OnAfterRender -= OnAfterRender;
 		logger.LogWaiterDisposed(renderedFragment.ComponentId);
+		WaitTask.Dispose();
+		failureTask?.Dispose();
 	}
 
 	private void InitializeWaiting()
@@ -123,7 +126,7 @@ public abstract class WaitForHelper<T> : IDisposable
 		// exception from a component or itself, or that the timeout is reached,
 		// are executed on the renderes scheduler, to ensure that OnAfterRender
 		// and the continuations does not happen at the same time.
-		var failureTask = renderer.Dispatcher.InvokeAsync(() =>
+		failureTask = renderer.Dispatcher.InvokeAsync(() =>
 		{
 			return renderer
 				.UnhandledException
