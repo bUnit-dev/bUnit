@@ -16,7 +16,7 @@ To quickly get started with bUnit, install and use the [bUnit test project templ
 The steps  for creating a test project with the bUnit template are as follows:
 
 1. Install the template (only needed the first time)
-2. Create a new test project
+2. Create a new bUnit test project
 3. Add the test project to your solution
 
 These steps look like this from the `dotnet` CLI:
