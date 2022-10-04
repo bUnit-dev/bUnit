@@ -11,7 +11,7 @@ To use bUnit, the easiest approach is to use the bUnit project template describe
 
 ## Creating a test project with bUnit template
 
-To skip a few steps in the guide above, use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/).
+To quickly get started with bUnit, install and use the [bUnit test project template](https://www.nuget.org/packages/bunit.template/).
 
 The steps  for creating a test project with the bUnit template are as follows:
 
