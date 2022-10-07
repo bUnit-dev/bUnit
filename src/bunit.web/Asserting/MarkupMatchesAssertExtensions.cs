@@ -351,7 +351,7 @@ public static class MarkupMatchesAssertExtensions
 	/// the <paramref name="expected"/> markup fragment, using the <see cref="HtmlComparer"/> type.
 	/// </summary>
 	/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
-	/// <param name="actual">A enumerable of IElements to verifiy.</param>
+	/// <param name="actual">A enumerable of IElements to verify.</param>
 	/// <param name="expected">The expected markup fragment.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
@@ -370,7 +370,7 @@ public static class MarkupMatchesAssertExtensions
 	/// the <paramref name="expected"/> fragments, using the <see cref="HtmlComparer"/> type.
 	/// </summary>
 	/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> element does not match the <paramref name="expected"/> fragments.</exception>
-	/// <param name="actual">An IElement to verifiy.</param>
+	/// <param name="actual">An IElement to verify.</param>
 	/// <param name="expected">The expected markup fragments.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
@@ -412,7 +412,7 @@ public static class MarkupMatchesAssertExtensions
 	/// the <paramref name="expected"/> fragment, using the <see cref="HtmlComparer"/> type.
 	/// </summary>
 	/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> elements does not match the <paramref name="expected"/> fragment.</exception>
-	/// <param name="actual">A list of elements to verifiy.</param>
+	/// <param name="actual">A list of elements to verify.</param>
 	/// <param name="expected">The expected markup fragment.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
