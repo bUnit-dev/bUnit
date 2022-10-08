@@ -29,9 +29,19 @@ Install the template from NuGet using this command:
 dotnet new --install bunit.template
 ```
 
+Or, since .NET 7 onwards:
+
+```dotnetcli
+dotnet new install bunit.template
+```
+
 **2. Create a new test project**
 
-Use the following command to create a bUnit with xUnit test project:
+If you successfully installed the template listed in the previous section, you
+can create a new project directly from the "Create new project" wizard in Visual Studio (or Rider), where the bUnit project type will also show up.
+
+Otherwise, use one of the following command to create a bUnit test project with
+the framework of your choice:
 
 # [xUnit](#tab/xunit)
 
