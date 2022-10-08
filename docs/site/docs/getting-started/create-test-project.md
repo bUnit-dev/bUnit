@@ -7,7 +7,7 @@ title: Creating a new bUnit test project
 
 To write tests, you need a place to put them - a test project. bUnit is not a unit test runner, so a general-purpose test framework like xUnit, NUnit, or MSTest is needed in addition to bUnit in order to write and run tests.
 
-To use bUnit, the easiest approach is to use the bUnit project template described in the [Create a test project with bUnit template](#creating-a-test-project-with-bunit-template) section further down the page. To create a test project manually and in a general-purpose testing frameworks agnostic way, read the following section.
+To use bUnit, the easiest approach is to use the bUnit project template described in the following section. To create a test project manually and in a general-purpose testing frameworks agnostic way, read the section [Create a new test project](#create-a-new-test-project) section further down the page.
 
 ## Creating a test project with bUnit template
 
