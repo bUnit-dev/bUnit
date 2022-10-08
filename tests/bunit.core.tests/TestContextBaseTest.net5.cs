@@ -149,7 +149,7 @@ public partial class TestContextBaseTest : TestContext
 
 	private sealed class AsyncDisposableComponent : ComponentBase, IAsyncDisposable
 	{
-		private readonly TaskCompletionSource tsc = new();
+		private readonly TaskCompletionSource tsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
 		public Task DisposedTask => tsc.Task;
 

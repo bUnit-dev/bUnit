@@ -352,7 +352,7 @@ public class TestRenderer : Renderer, ITestRenderer
 
 		if (!unhandledExceptionTsc.TrySetResult(capturedUnhandledException))
 		{
-			unhandledExceptionTsc = new TaskCompletionSource<Exception>();
+			unhandledExceptionTsc = new TaskCompletionSource<Exception>(TaskCreationOptions.RunContinuationsAsynchronously);
 			unhandledExceptionTsc.SetResult(capturedUnhandledException);
 		}
 	}
@@ -362,7 +362,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		capturedUnhandledException = null;
 
 		if (unhandledExceptionTsc.Task.IsCompleted)
-			unhandledExceptionTsc = new TaskCompletionSource<Exception>();
+			unhandledExceptionTsc = new TaskCompletionSource<Exception>(TaskCreationOptions.RunContinuationsAsynchronously);
 	}
 
 	private void AssertNoUnhandledExceptions()

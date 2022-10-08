@@ -328,7 +328,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "Can render component that awaits uncompleted task in OnInitializedAsync")]
 	public void Test100()
 	{
-		var tcs = new TaskCompletionSource<object>();
+		var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
 
 		var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
 			parameters.Add(p => p.EitherOr, tcs.Task));
@@ -367,7 +367,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "UnhandledException has a reference to the exception thrown by an async operation in a component")]
 	public async Task Test201()
 	{
-		var tsc = new TaskCompletionSource<object>();
+		var tsc = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
 		var expectedException = new AsyncOperationThrows.AsyncOperationThrowsException();
 		RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc.Task));
 
@@ -380,14 +380,14 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "UnhandledException has a reference to latest unhandled exception thrown by a component")]
 	public async Task Test202()
 	{
-		var tsc1 = new TaskCompletionSource<object>();
+		var tsc1 = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
 		RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc1.Task));
 		tsc1.SetException(new AsyncOperationThrows.AsyncOperationThrowsException());
 
 		var firstExceptionReported = await Renderer.UnhandledException;
 
 		var secondException = new AsyncOperationThrows.AsyncOperationThrowsException();
-		var tsc2 = new TaskCompletionSource<object>();
+		var tsc2 = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
 		RenderComponent<AsyncOperationThrows>(ps => ps.Add(p => p.Awaitable, tsc2.Task));
 		tsc2.SetException(secondException);
 

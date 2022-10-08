@@ -15,7 +15,7 @@
     {
         if (_tcs == null)
         {
-            _tcs = new TaskCompletionSource<object>();
+            _tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             state = "Started";
             return _tcs.Task.ContinueWith((_) =>

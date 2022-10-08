@@ -16,7 +16,7 @@
 	{
 		if (_tcs is null)
 		{
-			_tcs = new TaskCompletionSource<object?>();
+			_tcs = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
 
 			state = "Started";
 			tockEnabled = true;

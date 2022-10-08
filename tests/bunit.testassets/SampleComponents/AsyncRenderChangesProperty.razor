@@ -1,7 +1,7 @@
 <button id="tick" @onclick="Tick">Tick</button>
 <button id="tock" @onclick="Tock">Tock</button>
 @code {
-	private TaskCompletionSource<object?> _tcs = new TaskCompletionSource<object?>();
+	private TaskCompletionSource<object?> _tcs = new TaskCompletionSource<object?>(TaskCreationOptions.RunContinuationsAsynchronously);
 	public int Counter;
 
 	private Task Tick()

@@ -51,7 +51,7 @@ public abstract class WaitForHelper<T> : IDisposable
 		this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
 
 		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
-		checkPassedCompletionSource = new TaskCompletionSource<T>();
+		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
 		timer = new Timer(_ =>
 		{
 			logger.LogWaiterTimedOut(renderedFragment.ComponentId);
