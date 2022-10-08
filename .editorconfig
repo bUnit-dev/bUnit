@@ -489,6 +489,7 @@ dotnet_diagnostic.CA1054.severity = none # CA1054: URI-like parameters should no
 dotnet_diagnostic.CA1062.severity = none # CA1062: Validate arguments of public methods
 dotnet_diagnostic.CA1707.severity = none # CA1707: Identifiers should not contain underscores
 dotnet_diagnostic.CA1812.severity = none # CA1812: Avoid uninstantiated internal classes - components under test are never instantiated directly.
+dotnet_diagnostic.CA1816.severity = none # CA1816: Call GC.SuppressFinalize correctly
 dotnet_diagnostic.CA1822.severity = suggestion # CA1822: Mark members as static
 dotnet_diagnostic.CA2007.severity = none # CA2007: Consider calling ConfigureAwait on the awaited task
 
@@ -503,4 +504,5 @@ dotnet_diagnostic.CA2201.severity = none # CA2201: Do not raise reserved excepti
 dotnet_diagnostic.S125.severity = none # S125: Sections of code should not be commented out
 dotnet_diagnostic.S3459.severity = none # S3459: Unassigned members should be removed
 dotnet_diagnostic.S3871.severity = none # S3871: Exception types should be "public"
+dotnet_diagnostic.S3881.severity = none # S3881: Implement IDisposable correctly
 dotnet_diagnostic.S1186.severity = none # S1186: Methods should not be empty

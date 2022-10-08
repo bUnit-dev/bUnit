@@ -67,7 +67,6 @@ public abstract class TestContextBase : IDisposable
 	public void Dispose()
 	{
 		Dispose(disposing: true);
-		GC.SuppressFinalize(this);
 	}
 
 	/// <summary>
@@ -90,7 +89,7 @@ public abstract class TestContextBase : IDisposable
 
 		// Ignore the async task as GetAwaiter().GetResult() can cause deadlock
 		// and implementing IAsyncDisposable in TestContext will be a breaking change.
-		// 
+		//
 		// NOTE: This has to be called before Services.Dispose().
 		// If there are IAsyncDisposable services registered, calling Dispose first
 		// causes the service provider to throw an exception.
