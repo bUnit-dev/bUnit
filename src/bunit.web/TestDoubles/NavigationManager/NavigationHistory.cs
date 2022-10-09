@@ -96,13 +96,13 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// </summary>
 	/// <typeparam name="T">The type to deserialize the content of <see cref="Options"/>.<see cref="NavigationOptions.HistoryEntryState"/> to.</typeparam>
 	/// <param name="options">The <see cref="JsonSerializerOptions" /> used when deserializing. If not provided, <see cref="JsonSerializerOptions.Default"/> is used.</param>
-	/// <returns>The <typeparamref name="T"/>.</returns>
+	/// <returns>The target type of the JSON value.</returns>
 	/// <exception cref="InvalidOperationException">When <see cref="Options"/>.<see cref="NavigationOptions.HistoryEntryState"/> is null.</exception>
 	public T? StateFromJson<T>(JsonSerializerOptions? options = null)
 	{
 		if (Options.HistoryEntryState is null)
 		{
-			throw new InvalidOperationException($"No {nameof(Options.HistoryEntryState)} has not been set.");
+			throw new InvalidOperationException($"No {nameof(Options.HistoryEntryState)} has been set.");
 		}
 
 		return JsonSerializer.Deserialize<T>(
