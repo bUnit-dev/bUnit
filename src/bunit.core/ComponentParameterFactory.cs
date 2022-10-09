@@ -137,7 +137,7 @@ public static class ComponentParameterFactory
 	/// </summary>
 	/// <param name="markup">Markup to pass to the child content parameter.</param>
 	/// <returns>The <see cref="ComponentParameter"/>.</returns>
-	public static ComponentParameter ChildContent(string markup)
+	public static ComponentParameter ChildContent([StringSyntax("Html")]string markup)
 	{
 		return RenderFragment(nameof(ChildContent), markup);
 	}
@@ -173,7 +173,7 @@ public static class ComponentParameterFactory
 	/// <param name="name">Parameter name.</param>
 	/// <param name="markup">Markup to pass to the render fragment parameter.</param>
 	/// <returns>The <see cref="ComponentParameter"/>.</returns>
-	public static ComponentParameter RenderFragment(string name, string markup)
+	public static ComponentParameter RenderFragment(string name, [StringSyntax("Html")]string markup)
 	{
 		return ComponentParameter.CreateParameter(name, markup.ToMarkupRenderFragment());
 	}

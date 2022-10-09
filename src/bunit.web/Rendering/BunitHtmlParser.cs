@@ -57,7 +57,7 @@ public sealed class BunitHtmlParser : IDisposable
 	/// </summary>
 	/// <param name="markup">The markup to parse.</param>
 	/// <returns>The <see cref="INodeList"/>.</returns>
-	public INodeList Parse(string markup)
+	public INodeList Parse([StringSyntax("Html")]string markup)
 	{
 		if (markup is null)
 			throw new ArgumentNullException(nameof(markup));
