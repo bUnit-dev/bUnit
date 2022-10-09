@@ -10,7 +10,7 @@ public static class BlazorExtensions
 	/// </summary>
 	/// <param name="markup">Markup to render.</param>
 	/// <returns>The <see cref="RenderFragment"/>.</returns>
-	public static RenderFragment ToMarkupRenderFragment(this string? markup)
+	public static RenderFragment ToMarkupRenderFragment([StringSyntax("Html")]this string? markup)
 	{
 		if (string.IsNullOrEmpty(markup))
 			return _ => { };

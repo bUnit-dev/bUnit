@@ -49,7 +49,7 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// <param name="uri"></param>
 	/// <param name="options"></param>
 	[SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "Using string to align with NavigationManager")]
-	public NavigationHistory(string uri, Bunit.TestDoubles.NavigationOptions options)
+	public NavigationHistory([StringSyntax(StringSyntaxAttribute.Uri)]string uri, Bunit.TestDoubles.NavigationOptions options)
 	{
 		Uri = uri;
 		Options = options;
@@ -62,7 +62,7 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// <param name="uri"></param>
 	/// <param name="options"></param>
 	[SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "Using string to align with NavigationManager")]
-	public NavigationHistory(string uri, NavigationOptions options)
+	public NavigationHistory([StringSyntax(StringSyntaxAttribute.Uri)]string uri, NavigationOptions options)
 	{
 		Uri = uri;
 		Options = options;
@@ -78,7 +78,11 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// <param name="navigationState"></param>
 	/// <param name="exception"></param>
 	[SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "Using string to align with NavigationManager")]
-	public NavigationHistory(string uri, NavigationOptions options, NavigationState navigationState, Exception? exception = null)
+	public NavigationHistory(
+		[StringSyntax(StringSyntaxAttribute.Uri)]string uri,
+		NavigationOptions options,
+		NavigationState navigationState,
+		Exception? exception = null)
 	{
 		Uri = uri;
 		Options = options;

@@ -72,7 +72,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
 	/// <param name="markup">The markup string to pass to the <see cref="RenderFragment"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, RenderFragment?>> parameterSelector, string markup)
+	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, RenderFragment?>> parameterSelector, [StringSyntax("Html")]string markup)
 		=> Add(parameterSelector, markup.ToMarkupRenderFragment());
 
 	/// <summary>
@@ -260,7 +260,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// </summary>
 	/// <param name="markup">The markup string to pass the ChildContent parameter wrapped in a <see cref="RenderFragment"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-	public ComponentParameterCollectionBuilder<TComponent> AddChildContent(string markup)
+	public ComponentParameterCollectionBuilder<TComponent> AddChildContent([StringSyntax("Html")]string markup)
 		=> AddChildContent(markup.ToMarkupRenderFragment());
 
 	/// <summary>
