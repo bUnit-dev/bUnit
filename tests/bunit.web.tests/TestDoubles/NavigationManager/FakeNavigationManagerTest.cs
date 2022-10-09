@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace Bunit.TestDoubles;
@@ -221,7 +222,7 @@ public class FakeNavigationManagerTest : TestContext
 		entry.State.ShouldBe(NavigationState.Faulted);
 	}
 
-	[Fact(DisplayName = "Should deserialize InteractiveRequestOptions when using NavigateToLogin")]
+	[Fact(DisplayName = "StateFromJson deserialize InteractiveRequestOptions")]
 	public void Test013()
 	{
 		var fakeNavigationManager = CreateFakeNavigationManager();
@@ -233,8 +234,7 @@ public class FakeNavigationManagerTest : TestContext
 
 		fakeNavigationManager.NavigateToLogin("/some-url", requestOptions);
 
-		var couldDeserialize = fakeNavigationManager.History.Last().TryGetInteractiveRequestOptions(out var options);
-		couldDeserialize.ShouldBeTrue();
+		var options = fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>();
 		options.ShouldNotBeNull();
 		options.Interaction.ShouldBe(InteractionType.SignIn);
 		options.ReturnUrl.ShouldBe("return");
@@ -242,26 +242,25 @@ public class FakeNavigationManagerTest : TestContext
 		libraryName.ShouldBe("bunit");
 	}
 
-	[Fact(DisplayName = "Given no InteractiveRequestOptions then TryGetInteractiveRequestOptions returns false")]
+	[Fact(DisplayName = "Given no content in state then StateFromJson throws")]
 	public void Test014()
 	{
 		var fakeNavigationManager = CreateFakeNavigationManager();
 		fakeNavigationManager.NavigateTo("/some-url");
 
-		var couldDeserialize = fakeNavigationManager.History.Last().TryGetInteractiveRequestOptions(out _);
-
-		couldDeserialize.ShouldBeFalse();
+		Should.Throw<InvalidOperationException>(
+			() => fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>());
 	}
 
-	[Fact(DisplayName = "Given invalid json when calling TryGetInteractiveRequestOptions returns false")]
+	[Fact(DisplayName = "StateFromJson with invalid json throws")]
 	public void Test015()
 	{
 		var fakeNavigationManager = CreateFakeNavigationManager();
 
 		fakeNavigationManager.NavigateTo("/login", new NavigationOptions { HistoryEntryState = "<invalidjson>" });
 
-		var couldDeserialize = fakeNavigationManager.History.Last().TryGetInteractiveRequestOptions(out _);
-		couldDeserialize.ShouldBeFalse();
+		Should.Throw<JsonException>(
+			() => fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>());
 	}
 
 	private class InterceptNavigateToCounterComponent : ComponentBase
@@ -296,7 +295,6 @@ public class FakeNavigationManagerTest : TestContext
 
 	public class GotoExternalResourceComponent : ComponentBase
 	{
-#pragma warning disable 1998
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
 			builder.OpenElement(0, "button");

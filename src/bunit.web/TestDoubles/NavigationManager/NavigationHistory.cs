@@ -87,26 +87,23 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	}
 
 	/// <summary>
-	/// Tries to retrieve the <see cref="InteractiveRequestOptions"/>. This property is set,
-	/// when calling <code>NavigationManager.NavigateToLogin</code>.
+	/// Deserialize the content of <see cref="Options"/>.<see cref="NavigationOptions.HistoryEntryState"/>
+	/// into <typeparamref name="T"/> if it is not null.
 	/// </summary>
-	/// <param name="requestOptions">The object, which was passed to <code>NavigationManager.NavigateToLogin</code></param>
-	/// <returns>True, if the <see cref="InteractiveRequestOptions"/> could be parsed, otherwise false.</returns>
-	public bool TryGetInteractiveRequestOptions([NotNullWhen(true)] out InteractiveRequestOptions? requestOptions)
+	/// <typeparam name="T">The type to deserialize the content of <see cref="Options"/>.<see cref="NavigationOptions.HistoryEntryState"/> to.</typeparam>
+	/// <param name="options">The <see cref="JsonSerializerOptions" /> used when deserializing. If not provided, <see cref="JsonSerializerOptions.Default"/> is used.</param>
+	/// <returns>The <typeparamref name="T"/>.</returns>
+	/// <exception cref="InvalidOperationException">When <see cref="Options"/>.<see cref="NavigationOptions.HistoryEntryState"/> is null.</exception>
+	public T? StateFromJson<T>(JsonSerializerOptions? options = null)
 	{
-		requestOptions = null;
-		if (string.IsNullOrEmpty(Options.HistoryEntryState))
-			return false;
+		if (Options.HistoryEntryState is null)
+		{
+			throw new InvalidOperationException($"No {nameof(Options.HistoryEntryState)} has not been set.");
+		}
 
-		try
-		{
-			requestOptions = JsonSerializer.Deserialize<InteractiveRequestOptions>(Options.HistoryEntryState)!;
-			return true;
-		}
-		catch
-		{
-			return false;
-		}
+		return JsonSerializer.Deserialize<T>(
+			Options.HistoryEntryState,
+			options ?? JsonSerializerOptions.Default);
 	}
 #endif
 
@@ -123,13 +120,13 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 		&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry;
 #endif
 #if NET7_0_OR_GREATER
-		public bool Equals(NavigationHistory? other)
-		=> other is not null
-		&& string.Equals(Uri, other.Uri, StringComparison.Ordinal)
-		&& Options.ForceLoad == other.Options.ForceLoad
-		&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry
-		&& State == other.State
-		&& Exception == other.Exception;
+	public bool Equals(NavigationHistory? other)
+	=> other is not null
+	&& string.Equals(Uri, other.Uri, StringComparison.Ordinal)
+	&& Options.ForceLoad == other.Options.ForceLoad
+	&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry
+	&& State == other.State
+	&& Exception == other.Exception;
 #endif
 
 	/// <inheritdoc/>
