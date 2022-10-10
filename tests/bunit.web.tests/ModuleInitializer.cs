@@ -6,7 +6,6 @@ namespace Bunit;
 internal static class ModuleInitializer
 {
 	[ModuleInitializer]
-
 	public static void Init()
 	{
 		ThreadPool.SetMinThreads(100, 100);
