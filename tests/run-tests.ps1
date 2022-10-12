@@ -10,14 +10,10 @@ for ($num = 1 ; $num -le $maxRuns ; $num++)
 	
 	if($filter)
 	{
-		dotnet test .\bunit.core.tests\bunit.core.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s --nologo --filter $filter --logger:"console;verbosity=normal"
-		dotnet test .\bunit.web.tests\bunit.web.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s --nologo --filter $filter --logger:"console;verbosity=normal"
-		dotnet test .\bunit.web.testcomponents.tests\bunit.web.testcomponents.teststests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s --nologo --filter $filter --logger:"console;verbosity=normal"
+		dotnet test ..\bunit.sln -c $mode --no-restore --no-build --blame --nologo --filter $filter
 	}
 	else
 	{
-		dotnet test .\bunit.core.tests\bunit.core.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s --nologo
-		dotnet test .\bunit.web.tests\bunit.web.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s --nologo
-		dotnet test .\bunit.web.testcomponents.tests\bunit.web.testcomponents.tests.csproj -c $mode --no-restore --no-build --blame-hang --blame-hang-timeout 100s --nologo
+		dotnet test ..\bunit.sln -c $mode --no-restore --no-build --blame --nologo
 	}
 }
