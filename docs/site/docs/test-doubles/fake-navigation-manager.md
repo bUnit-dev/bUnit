@@ -159,7 +159,7 @@ var navigationManager = ctx.Services.GetRequiredService<FakeNavigationManager>()
 ActionToTriggerTheNavigationManager();
 
 // This helper method retrieves the InteractiveRequestOptions object
-var requestOptions = navigationManager.History.Last().StateFromJson();
+var requestOptions = navigationManager.History.Last().StateFromJson<InteractiveRequestOptions>();
 Asser.NotNull(requestOptions);
 Assert.Equal(requestOptions.Interaction, InteractionType.SignIn);
 options.TryGetAdditionalParameter("prompt", out string prompt);
