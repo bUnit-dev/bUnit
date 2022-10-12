@@ -1,3 +1,6 @@
+using System.Text.Json;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+
 namespace Bunit.TestDoubles;
 
 using static Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers;
@@ -219,6 +222,47 @@ public class FakeNavigationManagerTest : TestContext
 		entry.State.ShouldBe(NavigationState.Faulted);
 	}
 
+	[Fact(DisplayName = "StateFromJson deserialize InteractiveRequestOptions")]
+	public void Test013()
+	{
+		var fakeNavigationManager = CreateFakeNavigationManager();
+		var requestOptions = new InteractiveRequestOptions
+		{
+			ReturnUrl = "return", Interaction = InteractionType.SignIn,
+		};
+		requestOptions.TryAddAdditionalParameter("library", "bunit");
+
+		fakeNavigationManager.NavigateToLogin("/some-url", requestOptions);
+
+		var options = fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>();
+		options.ShouldNotBeNull();
+		options.Interaction.ShouldBe(InteractionType.SignIn);
+		options.ReturnUrl.ShouldBe("return");
+		options.TryGetAdditionalParameter("library", out string libraryName).ShouldBeTrue();
+		libraryName.ShouldBe("bunit");
+	}
+
+	[Fact(DisplayName = "Given no content in state then StateFromJson throws")]
+	public void Test014()
+	{
+		var fakeNavigationManager = CreateFakeNavigationManager();
+		fakeNavigationManager.NavigateTo("/some-url");
+
+		Should.Throw<InvalidOperationException>(
+			() => fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>());
+	}
+
+	[Fact(DisplayName = "StateFromJson with invalid json throws")]
+	public void Test015()
+	{
+		var fakeNavigationManager = CreateFakeNavigationManager();
+
+		fakeNavigationManager.NavigateTo("/login", new NavigationOptions { HistoryEntryState = "<invalidjson>" });
+
+		Should.Throw<JsonException>(
+			() => fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>());
+	}
+
 	private class InterceptNavigateToCounterComponent : ComponentBase
 	{
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
@@ -251,7 +295,6 @@ public class FakeNavigationManagerTest : TestContext
 
 	public class GotoExternalResourceComponent : ComponentBase
 	{
-#pragma warning disable 1998
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
 			builder.OpenElement(0, "button");

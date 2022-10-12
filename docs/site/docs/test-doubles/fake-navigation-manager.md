@@ -137,3 +137,31 @@ var navigationHistory = navMan.History.Single();
 Assert.Equal(NavigationState.Faulted, navigationHistory.NavigationState);
 Assert.NotNull(navigationHistory.Exception);
 ```
+
+## Getting the result of `NavigationManager.NavigateToLogin`
+[`NavigationManager.NavigateToLogin`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.navigationmanager.navigateto?view=aspnetcore-7.0) is a function, which was introduced with .NET 7, which allows to login dynamically. The function can also retrieve an `InteractiveRequestOptions` object, which can hold additional parameter.
+
+```csharp
+InteractiveRequestOptions requestOptions = new()
+{
+    Interaction = InteractionType.SignIn,
+    ReturnUrl = NavigationManager.Uri,
+};
+requestOptions.TryAddAdditionalParameter("prompt", "login");
+NavigationManager.NavigateToLogin("authentication/login", requestOptions);
+```
+
+A test could look like this:
+```csharp
+using var ctx = new TestContext();
+var navigationManager = ctx.Services.GetRequiredService<FakeNavigationManager>();
+
+ActionToTriggerTheNavigationManager();
+
+// This helper method retrieves the InteractiveRequestOptions object
+var requestOptions = navigationManager.History.Last().StateFromJson<InteractiveRequestOptions>();
+Asser.NotNull(requestOptions);
+Assert.Equal(requestOptions.Interaction, InteractionType.SignIn);
+options.TryGetAdditionalParameter("prompt", out string prompt);
+Assert.Equal(prompt, "login");
+```

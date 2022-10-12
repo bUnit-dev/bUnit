@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+- Added the `StateFromJson` method to the `NavigationHistory` type, to make it easy to deserialize navigation state stored as JSON during a call to `NavigationManager.NavigateTo`, e.g. as seen with the new `InteractiveRequestOptions` type available in .NET 7. By [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).
+
 ## [1.10.14] - 2022-09-16
 
 ### Added
