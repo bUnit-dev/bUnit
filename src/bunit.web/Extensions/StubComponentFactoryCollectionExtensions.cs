@@ -39,7 +39,7 @@ public static class StubComponentFactoryCollectionExtensions
 	/// <param name="factories">The bUnit <see cref="ComponentFactoryCollection"/> to configure.</param>
 	/// <param name="replacementMarkup">Markup that will be used as render output instead of the stubbed out component.</param>
 	/// <returns>A <see cref="ComponentFactoryCollection"/>.</returns>
-	public static ComponentFactoryCollection AddStub<TComponent>(this ComponentFactoryCollection factories, string replacementMarkup) where TComponent : IComponent
+	public static ComponentFactoryCollection AddStub<TComponent>(this ComponentFactoryCollection factories, [StringSyntax("Html")]string replacementMarkup) where TComponent : IComponent
 		=> AddStub<TComponent>(factories, b => b.AddMarkupContent(0, replacementMarkup));
 
 	/// <summary>

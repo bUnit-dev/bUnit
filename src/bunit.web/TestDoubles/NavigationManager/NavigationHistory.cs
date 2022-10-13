@@ -1,4 +1,8 @@
+#if NET7_0_OR_GREATER
+using System.Text.Json;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+#endif
 
 namespace Bunit.TestDoubles;
 
@@ -45,7 +49,7 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// <param name="uri"></param>
 	/// <param name="options"></param>
 	[SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "Using string to align with NavigationManager")]
-	public NavigationHistory(string uri, Bunit.TestDoubles.NavigationOptions options)
+	public NavigationHistory([StringSyntax(StringSyntaxAttribute.Uri)]string uri, Bunit.TestDoubles.NavigationOptions options)
 	{
 		Uri = uri;
 		Options = options;
@@ -58,7 +62,7 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// <param name="uri"></param>
 	/// <param name="options"></param>
 	[SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "Using string to align with NavigationManager")]
-	public NavigationHistory(string uri, NavigationOptions options)
+	public NavigationHistory([StringSyntax(StringSyntaxAttribute.Uri)]string uri, NavigationOptions options)
 	{
 		Uri = uri;
 		Options = options;
@@ -74,12 +78,36 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// <param name="navigationState"></param>
 	/// <param name="exception"></param>
 	[SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "Using string to align with NavigationManager")]
-	public NavigationHistory(string uri, NavigationOptions options, NavigationState navigationState, Exception? exception = null)
+	public NavigationHistory(
+		[StringSyntax(StringSyntaxAttribute.Uri)]string uri,
+		NavigationOptions options,
+		NavigationState navigationState,
+		Exception? exception = null)
 	{
 		Uri = uri;
 		Options = options;
 		State = navigationState;
 		Exception = exception;
+	}
+
+	/// <summary>
+	/// Deserialize the content of <see cref="Options"/>.<see cref="NavigationOptions.HistoryEntryState"/>
+	/// into <typeparamref name="T"/> if it is not null.
+	/// </summary>
+	/// <typeparam name="T">The type to deserialize the content of <see cref="Options"/>.<see cref="NavigationOptions.HistoryEntryState"/> to.</typeparam>
+	/// <param name="options">The <see cref="JsonSerializerOptions" /> used when deserializing. If not provided, <see cref="JsonSerializerOptions.Default"/> is used.</param>
+	/// <returns>The target type of the JSON value.</returns>
+	/// <exception cref="InvalidOperationException">When <see cref="Options"/>.<see cref="NavigationOptions.HistoryEntryState"/> is null.</exception>
+	public T? StateFromJson<T>(JsonSerializerOptions? options = null)
+	{
+		if (Options.HistoryEntryState is null)
+		{
+			throw new InvalidOperationException($"No {nameof(Options.HistoryEntryState)} has been set.");
+		}
+
+		return JsonSerializer.Deserialize<T>(
+			Options.HistoryEntryState,
+			options ?? JsonSerializerOptions.Default);
 	}
 #endif
 
@@ -88,12 +116,21 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	public bool Equals(NavigationHistory? other)
 		=> other is not null && string.Equals(Uri, other.Uri, StringComparison.Ordinal) && Options.Equals(other.Options);
 #endif
-#if NET6_0_OR_GREATER
+#if NET6_0
 	public bool Equals(NavigationHistory? other)
 		=> other is not null
 		&& string.Equals(Uri, other.Uri, StringComparison.Ordinal)
 		&& Options.ForceLoad == other.Options.ForceLoad
 		&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry;
+#endif
+#if NET7_0_OR_GREATER
+	public bool Equals(NavigationHistory? other)
+	=> other is not null
+	&& string.Equals(Uri, other.Uri, StringComparison.Ordinal)
+	&& Options.ForceLoad == other.Options.ForceLoad
+	&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry
+	&& State == other.State
+	&& Exception == other.Exception;
 #endif
 
 	/// <inheritdoc/>

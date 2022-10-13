@@ -9,6 +9,7 @@ namespace Bunit.Extensions.WaitForHelpers;
 /// </summary>
 public abstract class WaitForHelper<T> : IDisposable
 {
+	private readonly Timer timer;
 	private readonly TaskCompletionSource<T> checkPassedCompletionSource;
 	private readonly Func<(bool CheckPassed, T Content)> completeChecker;
 	private readonly IRenderedFragmentBase renderedFragment;
@@ -51,7 +52,13 @@ public abstract class WaitForHelper<T> : IDisposable
 
 		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
 		checkPassedCompletionSource = new TaskCompletionSource<T>();
-		WaitTask = CreateWaitTask(renderedFragment, timeout);
+		timer = new Timer(_ =>
+		{
+			logger.LogWaiterTimedOut(renderedFragment.ComponentId);
+			checkPassedCompletionSource.TrySetException(new WaitForFailedException(TimeoutErrorMessage, capturedException));
+		});
+		WaitTask = CreateWaitTask(renderedFragment);
+		timer.Change(GetRuntimeTimeout(timeout), Timeout.InfiniteTimeSpan);
 
 		InitializeWaiting();
 	}
@@ -80,6 +87,7 @@ public abstract class WaitForHelper<T> : IDisposable
 			return;
 
 		isDisposed = true;
+		timer.Dispose();
 		checkPassedCompletionSource.TrySetCanceled();
 		renderedFragment.OnAfterRender -= OnAfterRender;
 		logger.LogWaiterDisposed(renderedFragment.ComponentId);
@@ -105,9 +113,11 @@ public abstract class WaitForHelper<T> : IDisposable
 		}
 	}
 
-	private Task<T> CreateWaitTask(IRenderedFragmentBase renderedFragment, TimeSpan? timeout)
+	private Task<T> CreateWaitTask(IRenderedFragmentBase renderedFragment)
 	{
-		var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
+		var renderer = renderedFragment
+			.Services
+			.GetRequiredService<ITestRenderer>();
 
 		// Two to failure conditions, that the renderer captures an unhandled
 		// exception from a component or itself, or that the timeout is reached,
@@ -115,31 +125,18 @@ public abstract class WaitForHelper<T> : IDisposable
 		// and the continuations does not happen at the same time.
 		var failureTask = renderer.Dispatcher.InvokeAsync(() =>
 		{
-			var taskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-
-			var renderException = renderer
+			return renderer
 				.UnhandledException
 				.ContinueWith(
 					x => Task.FromException<T>(x.Result),
 					CancellationToken.None,
 					TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously,
-					taskScheduler);
-
-			var timeoutTask = Task.Delay(GetRuntimeTimeout(timeout))
-				.ContinueWith(
-					x =>
-					{
-						logger.LogWaiterTimedOut(renderedFragment.ComponentId);
-						return Task.FromException<T>(new WaitForFailedException(TimeoutErrorMessage, capturedException));
-					},
-					CancellationToken.None,
-					TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously,
-					taskScheduler);
-
-			return Task.WhenAny(renderException, timeoutTask).Unwrap();
+					TaskScheduler.FromCurrentSynchronizationContext());
 		}).Unwrap();
 
-		return Task.WhenAny(failureTask, checkPassedCompletionSource.Task).Unwrap();
+		return Task
+			.WhenAny(checkPassedCompletionSource.Task, failureTask)
+			.Unwrap();
 	}
 
 	private void OnAfterRender(object? sender, EventArgs args)
@@ -170,7 +167,8 @@ public abstract class WaitForHelper<T> : IDisposable
 
 			if (StopWaitingOnCheckException)
 			{
-				checkPassedCompletionSource.TrySetException(new WaitForFailedException(CheckThrowErrorMessage, capturedException));
+				checkPassedCompletionSource.TrySetException(
+					new WaitForFailedException(CheckThrowErrorMessage, capturedException));
 				Dispose();
 			}
 		}
