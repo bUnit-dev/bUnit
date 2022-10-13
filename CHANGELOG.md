@@ -6,8 +6,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.11.7] - 2022-10-13
+
 ### Added
-- Added the `StateFromJson` method to the `NavigationHistory` type, to make it easy to deserialize navigation state stored as JSON during a call to `NavigationManager.NavigateTo`, e.g. as seen with the new `InteractiveRequestOptions` type available in .NET 7. By [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).
+
+-   Added the `StateFromJson` method to the `NavigationHistory` type, to make it easy to deserialize navigation state stored as JSON during a call to `NavigationManager.NavigateTo`, e.g. as seen with the new `InteractiveRequestOptions` type available in .NET 7. By [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).
 
 ## [1.10.14] - 2022-09-16
 
@@ -1215,7 +1218,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**  
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.10.14...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.11.7...HEAD
+
+[1.11.7]: https://github.com/bUnit-dev/bUnit/compare/v1.10.14...v1.11.7
 
 [1.10.14]: https://github.com/bUnit-dev/bUnit/compare/v1.9.8...v1.10.14
 
