@@ -65,7 +65,7 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanTriggerAsyncEventHandlers()
+	public async Task CanTriggerAsyncEventHandlers()
 	{
 		// Initial state is stopped
 		var cut = RenderComponent<AsyncEventHandlerComponent>();
@@ -77,7 +77,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("Started", stateElement.TextContent);
 
 		cut.Find("#tock").Click();
-		cut.WaitForAssertion(() => Assert.Equal("Stopped", stateElement.TextContent));
+		await cut.WaitForAssertionAsync(() => Assert.Equal("Stopped", stateElement.TextContent));
 	}
 
 	[Fact]
@@ -509,7 +509,7 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanAcceptSimultaneousRenderRequests()
+	public async Task CanAcceptSimultaneousRenderRequests()
 	{
 		var expectedOutput = string.Join(
 			string.Empty,
@@ -523,31 +523,31 @@ public class ComponentRenderingTest : TestContext
 
 		var outputElement = cut.Find("#concurrent-render-output");
 
-		cut.WaitForAssertion(
+		await cut.WaitForAssertionAsync(
 			() => Assert.Equal(expectedOutput, outputElement.TextContent.Trim()),
 			timeout: TimeSpan.FromMilliseconds(2000));
 	}
 
 	[Fact]
-	public void CanDispatchRenderToSyncContext()
+	public async Task CanDispatchRenderToSyncContext()
 	{
 		var cut = RenderComponent<DispatchingComponent>();
 		var result = cut.Find("#result");
 
 		cut.Find("#run-with-dispatch").Click();
 
-		cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
+		await cut.WaitForAssertionAsync(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 	}
 
 	[Fact]
-	public void CanDoubleDispatchRenderToSyncContext()
+	public async Task CanDoubleDispatchRenderToSyncContext()
 	{
 		var cut = RenderComponent<DispatchingComponent>();
 		var result = cut.Find("#result");
 
 		cut.Find("#run-with-double-dispatch").Click();
 
-		cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
+		await cut.WaitForAssertionAsync(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 	}
 
 	[Fact]
@@ -589,13 +589,13 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void CanHandleRemovedParentObjects()
+	public async Task CanHandleRemovedParentObjects()
 	{
 		var cut = RenderComponent<DispatcherException>();
 
 		cut.Find("button").Click();
 
-		cut.WaitForState(() => !cut.FindAll("div").Any());
+		await cut.WaitForStateAsync(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
 
@@ -606,7 +606,7 @@ public class ComponentRenderingTest : TestContext
 
 		await cut.Find("button").ClickAsync(new MouseEventArgs());
 
-		cut.WaitForState(() => !cut.FindAll("div").Any());
+		await cut.WaitForStateAsync(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
 

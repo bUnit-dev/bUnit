@@ -104,6 +104,23 @@ public static class RenderedFragmentWaitForHelperExtensions
 		}
 	}
 
+	private static async Task<IElement> WaitForElementCoreAsync(this IRenderedFragment renderedFragment, string cssSelector, TimeSpan? timeout)
+	{
+		using var waiter = new WaitForElementHelper(renderedFragment, cssSelector, timeout);
+
+		try
+		{
+			return await waiter.WaitTask;
+		}
+		catch (Exception e)
+		{
+			ExceptionDispatchInfo.Capture(e).Throw();
+
+			// Unreachable code. Only here because compiler does not know that ExceptionDispatchInfo throws an exception
+			throw;
+		}
+	}
+
 	private static IRefreshableElementCollection<IElement> WaitForElementsCore(
 		this IRenderedFragment renderedFragment,
 		string cssSelector,
@@ -126,6 +143,27 @@ public static class RenderedFragmentWaitForHelperExtensions
 			{
 				ExceptionDispatchInfo.Capture(e).Throw();
 			}
+
+			// Unreachable code. Only here because compiler does not know that ExceptionDispatchInfo throws an exception
+			throw;
+		}
+	}
+
+	private static async Task<IRefreshableElementCollection<IElement>> WaitForElementsCoreAsync(
+		this IRenderedFragment renderedFragment,
+		string cssSelector,
+		int? matchElementCount,
+		TimeSpan? timeout)
+	{
+		using var waiter = new WaitForElementsHelper(renderedFragment, cssSelector, matchElementCount, timeout);
+
+		try
+		{
+			return await waiter.WaitTask;
+		}
+		catch (Exception e)
+		{
+			ExceptionDispatchInfo.Capture(e).Throw();
 
 			// Unreachable code. Only here because compiler does not know that ExceptionDispatchInfo throws an exception
 			throw;
