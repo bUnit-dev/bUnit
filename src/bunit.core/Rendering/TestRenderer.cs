@@ -12,7 +12,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
-	private TaskCompletionSource<Exception> unhandledExceptionTsc = new();
+	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
 
 	/// <inheritdoc/>
@@ -352,7 +352,7 @@ public class TestRenderer : Renderer, ITestRenderer
 
 		if (!unhandledExceptionTsc.TrySetResult(capturedUnhandledException))
 		{
-			unhandledExceptionTsc = new TaskCompletionSource<Exception>();
+			unhandledExceptionTsc = new TaskCompletionSource<Exception>(TaskCreationOptions.RunContinuationsAsynchronously);
 			unhandledExceptionTsc.SetResult(capturedUnhandledException);
 		}
 	}
@@ -362,7 +362,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		capturedUnhandledException = null;
 
 		if (unhandledExceptionTsc.Task.IsCompleted)
-			unhandledExceptionTsc = new TaskCompletionSource<Exception>();
+			unhandledExceptionTsc = new TaskCompletionSource<Exception>(TaskCreationOptions.RunContinuationsAsynchronously);
 	}
 
 	private void AssertNoUnhandledExceptions()

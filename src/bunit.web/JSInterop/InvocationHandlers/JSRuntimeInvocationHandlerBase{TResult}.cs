@@ -31,7 +31,7 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult>
 	protected JSRuntimeInvocationHandlerBase(InvocationMatcher matcher, bool isCatchAllHandler)
 	{
 		invocationMatcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
-		completionSource = new TaskCompletionSource<TResult>();
+		completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 		IsCatchAllHandler = isCatchAllHandler;
 	}
 
@@ -41,7 +41,7 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult>
 	protected void SetCanceledBase()
 	{
 		if (completionSource.Task.IsCompleted)
-			completionSource = new TaskCompletionSource<TResult>();
+			completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 
 		completionSource.SetCanceled();
 	}
@@ -54,7 +54,7 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult>
 		where TException : Exception
 	{
 		if (completionSource.Task.IsCompleted)
-			completionSource = new TaskCompletionSource<TResult>();
+			completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 
 		completionSource.SetException(exception);
 	}
@@ -66,7 +66,7 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult>
 	protected void SetResultBase(TResult result)
 	{
 		if (completionSource.Task.IsCompleted)
-			completionSource = new TaskCompletionSource<TResult>();
+			completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 
 		completionSource.SetResult(result);
 	}

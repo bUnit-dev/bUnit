@@ -75,7 +75,7 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 	private void SetUnauthenticatedState()
 	{
 		if (authState.Task.IsCompleted)
-			authState = new TaskCompletionSource<AuthenticationState>();
+			authState = new TaskCompletionSource<AuthenticationState>(TaskCreationOptions.RunContinuationsAsynchronously);
 
 		authState.SetResult(CreateUnauthenticationState());
 	}
@@ -83,7 +83,7 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 	private void SetAuthorizingState()
 	{
 		if (authState.Task.IsCompleted)
-			authState = new TaskCompletionSource<AuthenticationState>();
+			authState = new TaskCompletionSource<AuthenticationState>(TaskCreationOptions.RunContinuationsAsynchronously);
 	}
 
 	private void SetAuthenticatedState(
@@ -93,7 +93,7 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 		string? authenticationType)
 	{
 		if (authState.Task.IsCompleted)
-			authState = new TaskCompletionSource<AuthenticationState>();
+			authState = new TaskCompletionSource<AuthenticationState>(TaskCreationOptions.RunContinuationsAsynchronously);
 
 		authState.SetResult(CreateAuthenticationState(userName, roles, claims, authenticationType));
 	}
