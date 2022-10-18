@@ -51,7 +51,7 @@ public abstract class WaitForHelper<T> : IDisposable
 		this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
 
 		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
-		checkPassedCompletionSource = new TaskCompletionSource<T>();
+		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
 		timer = new Timer(_ =>
 		{
 			logger.LogWaiterTimedOut(renderedFragment.ComponentId);
@@ -121,17 +121,12 @@ public abstract class WaitForHelper<T> : IDisposable
 
 		// Two to failure conditions, that the renderer captures an unhandled
 		// exception from a component or itself, or that the timeout is reached,
-		// are executed on the renderes scheduler, to ensure that OnAfterRender
+		// are executed on the renderers scheduler, to ensure that OnAfterRender
 		// and the continuations does not happen at the same time.
-		var failureTask = renderer.Dispatcher.InvokeAsync(() =>
+		var failureTask = renderer.Dispatcher.InvokeAsync(async () =>
 		{
-			return renderer
-				.UnhandledException
-				.ContinueWith(
-					x => Task.FromException<T>(x.Result),
-					CancellationToken.None,
-					TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously,
-					TaskScheduler.FromCurrentSynchronizationContext());
+			var exception = await renderer.UnhandledException;
+			return Task.FromException<T>(exception);
 		}).Unwrap();
 
 		return Task
