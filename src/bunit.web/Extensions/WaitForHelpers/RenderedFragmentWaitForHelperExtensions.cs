@@ -92,14 +92,9 @@ public static class RenderedFragmentWaitForHelperExtensions
 		{
 			if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
 			{
-				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-			}
-			else
-			{
-				ExceptionDispatchInfo.Capture(e).Throw();
+				throw aggregateException.InnerExceptions[0];
 			}
 
-			// Unreachable code. Only here because compiler does not know that ExceptionDispatchInfo throws an exception
 			throw;
 		}
 	}
@@ -127,14 +122,9 @@ public static class RenderedFragmentWaitForHelperExtensions
 		{
 			if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
 			{
-				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-			}
-			else
-			{
-				ExceptionDispatchInfo.Capture(e).Throw();
+				throw aggregateException.InnerExceptions[0];
 			}
 
-			// Unreachable code. Only here because compiler does not know that ExceptionDispatchInfo throws an exception
 			throw;
 		}
 	}
