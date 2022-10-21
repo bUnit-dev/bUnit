@@ -56,14 +56,7 @@ public static class RenderedFragmentWaitForHelperExtensions
 	{
 		using var waiter = new WaitForStateHelper(renderedFragment, statePredicate, timeout);
 
-		try
-		{
-			await waiter.WaitTask;
-		}
-		catch (Exception e)
-		{
-			ExceptionDispatchInfo.Capture(e).Throw();
-		}
+		await waiter.WaitTask;
 	}
 
 	/// <summary>
@@ -113,13 +106,6 @@ public static class RenderedFragmentWaitForHelperExtensions
 	{
 		using var waiter = new WaitForAssertionHelper(renderedFragment, assertion, timeout);
 
-		try
-		{
-			await waiter.WaitTask;
-		}
-		catch (Exception e)
-		{
-			ExceptionDispatchInfo.Capture(e).Throw();
-		}
+		await waiter.WaitTask;
 	}
 }

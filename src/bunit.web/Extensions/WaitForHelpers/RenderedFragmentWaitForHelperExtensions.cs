@@ -108,17 +108,7 @@ public static class RenderedFragmentWaitForHelperExtensions
 	{
 		using var waiter = new WaitForElementHelper(renderedFragment, cssSelector, timeout);
 
-		try
-		{
-			return await waiter.WaitTask;
-		}
-		catch (Exception e)
-		{
-			ExceptionDispatchInfo.Capture(e).Throw();
-
-			// Unreachable code. Only here because compiler does not know that ExceptionDispatchInfo throws an exception
-			throw;
-		}
+		return await waiter.WaitTask;
 	}
 
 	private static IRefreshableElementCollection<IElement> WaitForElementsCore(
@@ -157,16 +147,6 @@ public static class RenderedFragmentWaitForHelperExtensions
 	{
 		using var waiter = new WaitForElementsHelper(renderedFragment, cssSelector, matchElementCount, timeout);
 
-		try
-		{
-			return await waiter.WaitTask;
-		}
-		catch (Exception e)
-		{
-			ExceptionDispatchInfo.Capture(e).Throw();
-
-			// Unreachable code. Only here because compiler does not know that ExceptionDispatchInfo throws an exception
-			throw;
-		}
+		return await waiter.WaitTask;
 	}
 }
