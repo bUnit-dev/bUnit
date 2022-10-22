@@ -50,7 +50,7 @@ public static class RenderedFragmentWaitForHelperExtensions
 	/// <param name="statePredicate">The predicate to invoke after each render, which must returns <c>true</c> when the desired state has been reached.</param>
 	/// <param name="timeout">The maximum time to wait for the desired state.</param>
 	/// <exception cref="WaitForFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
-	public static async Task WaitForStateAsync(this IRenderedFragmentBase renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
+	internal static async Task WaitForStateAsync(this IRenderedFragmentBase renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
 	{
 		using var waiter = new WaitForStateHelper(renderedFragment, statePredicate, timeout);
 
@@ -98,7 +98,7 @@ public static class RenderedFragmentWaitForHelperExtensions
 	/// <param name="timeout">The maximum time to attempt the verification.</param>
 	/// <exception cref="WaitForFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
 	[AssertionMethod]
-	public static async Task WaitForAssertionAsync(this IRenderedFragmentBase renderedFragment, Action assertion, TimeSpan? timeout = null)
+	internal static async Task WaitForAssertionAsync(this IRenderedFragmentBase renderedFragment, Action assertion, TimeSpan? timeout = null)
 	{
 		using var waiter = new WaitForAssertionHelper(renderedFragment, assertion, timeout);
 
