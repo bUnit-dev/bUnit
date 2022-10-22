@@ -46,7 +46,7 @@ public class AuthorizationTest : TestContext
 	}
 
 	[Fact(DisplayName = "AuthorizeView switch from unauthorized to authorized.")]
-	public void Test004()
+	public async Task Test004()
 	{
 		// arrange
 		var authContext = this.AddTestAuthorization();
@@ -61,7 +61,7 @@ public class AuthorizationTest : TestContext
 		cut.Render();
 
 		// assert
-		cut.WaitForAssertion(() => cut.MarkupMatches("Authorized!"));
+		await cut.WaitForAssertionAsync(() => cut.MarkupMatches("Authorized!"));
 	}
 
 	[Fact(DisplayName = "AuthorizeView switch from authorized to unauthorized.")]
