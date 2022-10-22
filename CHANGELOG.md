@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+- Added `DisposeComponentsAsync` as awaitable version of `DisposeComponents`. By [@linkdotnet](https://github.com/linkdotnet). 
+
 ## [1.11.7] - 2022-10-13
 
 ### Added

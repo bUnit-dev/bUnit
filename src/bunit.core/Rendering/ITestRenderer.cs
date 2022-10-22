@@ -83,10 +83,9 @@ public interface ITestRenderer
 	/// Disposes all components rendered by the <see cref="ITestRenderer" />.
 	/// </summary>
 	/// <remarks>
-	/// The dispatcher will always return a completed task,
-	/// when dealing with an IAsyncDisposable.<br/>
-	/// Therefore checking for a completed task and awaiting it
-	/// will only work on IDisposable
+	/// Blazor will always return a completed task, when dealing with components which implement <see cref="IAsyncDisposable"/>.<br/>
+	/// Therefore checking or awaiting the returned task will only work on <see cref="IDisposable"/>.<br/>
+	/// If you want await asynchronous logic inside <see cref="IAsyncDisposable.DisposeAsync"/>, use the <see cref="RenderedFragmentWaitForHelperExtensions"/>.
 	/// </remarks>
 	public Task DisposeComponentsAsync();
 }

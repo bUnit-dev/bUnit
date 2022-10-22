@@ -12,6 +12,10 @@ The following example of this:
 
 [!code-csharp[](../../../samples/tests/xunit/DisposeComponentsTest.cs#L13-L23)]
 
+There is also an asynchronous version of the API.
+
+[!code-csharp[](../../../samples/tests/xunit/DisposeComponentsTest.cs#L53-L63)]
+
 > [!WARNING]
 > For `IAsyncDisposable` (since .net5) relying on [`WaitForState()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragmentBase,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) or [`WaitForAssertion()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragmentBase,System.Action,System.Nullable{System.TimeSpan})) will not work as a disposed component will not trigger a new render cycle.
 

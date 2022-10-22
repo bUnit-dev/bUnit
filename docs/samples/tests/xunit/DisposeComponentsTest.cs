@@ -46,4 +46,20 @@ public class DisposeComponentsTest
     Assert.IsType<NotSupportedException>(exception);
   }
 #endif
+
+  [Fact]
+  public async Task DisposeElementsAsync()
+  {
+    using var ctx = new TestContext();
+    var calledTimes = 0;
+    var cut = ctx.RenderComponent<DisposableComponent>(parameters => parameters
+      .Add(p => p.LocationChangedCallback, url => calledTimes++)
+    );
+    
+    await ctx.DisposeComponentsAsync();
+
+    ctx.Services.GetRequiredService<NavigationManager>().NavigateTo("newurl");
+
+    Assert.Equal(0, calledTimes);
+  }
 }
