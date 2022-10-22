@@ -121,13 +121,16 @@ public class TestRenderer : Renderer, ITestRenderer
 
 
 	/// <inheritdoc />
-	public void DisposeComponents()
+	public void DisposeComponents() => DisposeComponentsAsync().GetAwaiter().GetResult();
+
+	/// <inheritdoc />
+	public async Task DisposeComponentsAsync()
 	{
 		// The dispatcher will always return a completed task,
 		// when dealing with an IAsyncDisposable.
 		// Therefore checking for a completed task and awaiting it
 		// will only work on IDisposable
-		var disposeTask = Dispatcher.InvokeAsync(() =>
+		await Dispatcher.InvokeAsync(() =>
 		{
 			ResetUnhandledException();
 
@@ -136,11 +139,6 @@ public class TestRenderer : Renderer, ITestRenderer
 				root.Detach();
 			}
 		});
-
-		if (!disposeTask.IsCompleted)
-		{
-			disposeTask.GetAwaiter().GetResult();
-		}
 
 		rootComponents.Clear();
 		AssertNoUnhandledExceptions();

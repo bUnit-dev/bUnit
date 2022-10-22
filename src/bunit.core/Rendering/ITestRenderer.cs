@@ -78,4 +78,15 @@ public interface ITestRenderer
 	/// Disposes all components rendered by the <see cref="ITestRenderer" />.
 	/// </summary>
 	public void DisposeComponents();
+
+	/// <summary>
+	/// Disposes all components rendered by the <see cref="ITestRenderer" />.
+	/// </summary>
+	/// <remarks>
+	/// The dispatcher will always return a completed task,
+	/// when dealing with an IAsyncDisposable.<br/>
+	/// Therefore checking for a completed task and awaiting it
+	/// will only work on IDisposable
+	/// </remarks>
+	public Task DisposeComponentsAsync();
 }
