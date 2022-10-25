@@ -86,7 +86,8 @@ public interface ITestRenderer
 	/// If a component (or any of the children) implements <see cref="IDisposable.Dispose"/>, awaiting this <see cref="Task"/> will wait until Dispose has finished.<br/>
 	/// In contrast to that, if a component (or any of the children) implements <see cref="IAsyncDisposable.DisposeAsync"/> <code>await DisposeComponentsAsync</code> will
 	/// does not wait until the underlying <see cref="ValueTask"/> is completed.<br/>
-	/// If you want to wait until all asynchronous disposables are completed, use the WaitFor-helpers.
+	/// As Blazor doesn't trigger another render cycle after DisposeAsync, you have to use Task.Delay or
+	/// other, from the outside, observable state-changes.
 	/// </remarks>
 	public Task DisposeComponentsAsync();
 }
