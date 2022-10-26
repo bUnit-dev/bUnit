@@ -609,4 +609,12 @@ public class ComponentRenderingTest : TestContext
 		cut.WaitForState(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
+
+	[Fact]
+	public void EscapableCharactersDontGetEncoded()
+	{
+		var cut = RenderComponent<ComponentWithEscapableCharacters>();
+
+		cut.Markup.ShouldBe("<p style=\"url('')\">url('')</p>");
+	}
 }
