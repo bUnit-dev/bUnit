@@ -21,8 +21,6 @@ internal static class Htmlizer
 	internal const string BlazorAttrPrefix = "blazor:";
 	internal const string ElementReferenceAttrName = BlazorAttrPrefix + "elementReference";
 
-	private static readonly HtmlEncoder HtmlEncoder = HtmlEncoder.Default;
-
 	private static readonly HashSet<string> SelfClosingElements = new(StringComparer.OrdinalIgnoreCase)
 	{
 		"area",
@@ -95,7 +93,7 @@ internal static class Htmlizer
 			case RenderTreeFrameType.Attribute:
 				throw new InvalidOperationException($"Attributes should only be encountered within {nameof(RenderElement)}");
 			case RenderTreeFrameType.Text:
-				context.Result.Append(HtmlEncoder.Encode(frame.TextContent));
+				context.Result.Append(frame.TextContent);
 				return position + 1;
 			case RenderTreeFrameType.Markup:
 				context.Result.Append(frame.MarkupContent);
@@ -272,7 +270,7 @@ internal static class Htmlizer
 					result.Append(frame.AttributeName);
 					result.Append('=');
 					result.Append('"');
-					result.Append(HtmlEncoder.Encode(value));
+					result.Append(value);
 					result.Append('"');
 					break;
 				default:
