@@ -10,7 +10,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
  - The created HTML contained encoded strings. Reported by [@tobiasbrandstaedter](https://github.com/tobiasbrandstaedter). Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
 ### Added
-- Added `UploadFilesAsync` as awaitable version of `UploadFiles`. By [@linkdotnet](https://github.com/linkdotnet).
+- Added awaitable `UploadFilesAsync` helper method that makes it easy to upload files to a `<InputFile>` component during testing. By [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.11.7] - 2022-10-13
 
