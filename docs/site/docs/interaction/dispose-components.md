@@ -12,7 +12,7 @@ The following example of this:
 
 [!code-csharp[](../../../samples/tests/xunit/DisposeComponentsTest.cs#L13-L23)]
 
-There is also an asynchronous version of the API.
+There is also an asynchronous version of the `DisposeComponents`, i.e., `DisposeComponentsAsync`. The `Task` returned from the `DisposeComponentsAsync` method completes when all components that implement `IDisposable` has finished running their `Dispose()`. However, due to how Blazor's runtime work, `IAsyncDisposable.DisposeAsync` methods on components will *not* be awaited, and the returned `Task` may complete before the `IAsyncDisposable.DisposeAsync` methods has finished running. Instead use e.g., `Task.Delay` with an appropriate wait time to pause test execution until `IAsyncDisposable.DisposeAsync` methods finish running.
 
 [!code-csharp[](../../../samples/tests/xunit/DisposeComponentsTest.cs#L53-L63)]
 
