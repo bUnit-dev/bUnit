@@ -16,7 +16,13 @@ public static class InputFileExtensions
 	public static void UploadFiles(
 		this IRenderedComponent<InputFile> inputFileComponent,
 		params InputFileContent[] files)
-		=> UploadFilesAsync(inputFileComponent, files).GetAwaiter().GetResult();
+		{
+			var uploadTask = UploadFilesAsync(inputFileComponent, files);
+			if(!uploadTask.IsCompleted)
+			{
+				throw new SomeGoodExceptionName("Upload did not complete synchronously. Use `UploadFilesAsync` instead.");
+			}
+		}
 
 	/// <summary>
 	/// Uploads multiple files and invokes the OnChange event.
