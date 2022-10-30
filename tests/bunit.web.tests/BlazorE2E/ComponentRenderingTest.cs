@@ -691,13 +691,14 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-<<<<<<< HEAD
 	public void EscapableCharactersDontGetEncoded()
 	{
 		var cut = RenderComponent<ComponentWithEscapableCharacters>();
 
 		cut.Markup.ShouldBe("<p style=\"url('')\">url('')</p>");
-=======
+	}
+
+	[Fact]
 	[Trait("Category", "sync")]
 	public async Task CanHandleRemovedParentObjectsAsync_Sync()
 	{
@@ -707,6 +708,5 @@ public class ComponentRenderingTest : TestContext
 
 		cut.WaitForState(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
->>>>>>> 4415bbb1 (Added sync & async variation of test and seperated them in testrun)
 	}
 }
