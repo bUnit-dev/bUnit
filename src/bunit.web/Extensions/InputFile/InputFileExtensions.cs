@@ -18,9 +18,9 @@ public static class InputFileExtensions
 		params InputFileContent[] files)
 		{
 			var uploadTask = UploadFilesAsync(inputFileComponent, files);
-			if(!uploadTask.IsCompleted)
+			if (!uploadTask.IsCompleted)
 			{
-				throw new SomeGoodExceptionName("Upload did not complete synchronously. Use `UploadFilesAsync` instead.");
+				throw new TaskNotCompletedException($"Upload did not complete synchronously. Use `{nameof(UploadFilesAsync)}` instead.");
 			}
 		}
 
