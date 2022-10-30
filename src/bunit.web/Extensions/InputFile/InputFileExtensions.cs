@@ -13,6 +13,9 @@ public static class InputFileExtensions
 	/// </summary>
 	/// <param name="inputFileComponent">The <see cref="InputFile"/> component which will upload the files.</param>
 	/// <param name="files">Files to upload.</param>
+	/// <exception cref="TaskNotCompletedException">
+	/// Thrown if the <see cref="InputFile.OnChange"/> event is not completed synchronously.
+	/// </exception>
 	public static void UploadFiles(
 		this IRenderedComponent<InputFile> inputFileComponent,
 		params InputFileContent[] files)
