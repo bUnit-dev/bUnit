@@ -16,10 +16,10 @@ on:
       - reopened
 
   workflow_dispatch:
-  
+
 concurrency:
   group: verification-${{ github.ref }}-1
-  cancel-in-progress: true  
+  cancel-in-progress: true
 
 jobs:
   verify-bunit:
@@ -62,9 +62,12 @@ jobs:
         with:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
 
-      - name: 🧪 Run unit tests
+      - name: 🧪 Run unit tests (async)
         run: |
-          dotnet test -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
+          dotnet test --filter Category!=sync -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
+      - name: 🧪 Run unit tests (sync)
+        run: |
+          dotnet test --filter Category!=async -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
         uses: actions/upload-artifact@v3
