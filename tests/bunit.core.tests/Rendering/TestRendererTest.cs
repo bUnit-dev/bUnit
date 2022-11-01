@@ -337,7 +337,18 @@ public partial class TestRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "Can render component that awaits yielding task in OnInitializedAsync")]
-	public void Test101()
+	[Trait("Category", "async")]
+	public async Task Test101()
+	{
+		var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
+			parameters.Add(p => p.EitherOr, Task.Delay(1)));
+
+		await cut.WaitForAssertionAsync(() => cut.Find("h1").TextContent.ShouldBe("SECOND"));
+	}
+
+	[Fact(DisplayName = "Can render component that awaits yielding task in OnInitializedAsync")]
+	[Trait("Category", "sync")]
+	public void Test101_Sync()
 	{
 		var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
 			parameters.Add(p => p.EitherOr, Task.Delay(1)));

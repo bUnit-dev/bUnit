@@ -46,7 +46,28 @@ public class AuthorizationTest : TestContext
 	}
 
 	[Fact(DisplayName = "AuthorizeView switch from unauthorized to authorized.")]
-	public void Test004()
+	[Trait("Category", "async")]
+	public async Task Test004()
+	{
+		// arrange
+		var authContext = this.AddTestAuthorization();
+
+		// start off unauthenticated.
+		var cut = RenderComponent<SimpleAuthView>();
+		cut.MarkupMatches("Not authorized?");
+
+		// act
+		authContext.SetAuthorized("TestUser004", AuthorizationState.Authorized);
+
+		cut.Render();
+
+		// assert
+		await cut.WaitForAssertionAsync(() => cut.MarkupMatches("Authorized!"));
+	}
+
+	[Fact(DisplayName = "AuthorizeView switch from unauthorized to authorized.")]
+	[Trait("Category", "sync")]
+	public void Test004_Sync()
 	{
 		// arrange
 		var authContext = this.AddTestAuthorization();
