@@ -109,6 +109,17 @@ public class InputFileTests : TestContext
 		cut.Instance.Content.ShouldNotBeNull();
 	}
 
+	[Fact(DisplayName = "Setting up InputFile will not overwrite bUnit default")]
+	[Trait("Category", "sync")]
+	public void Test009()
+	{
+		var cut = RenderComponent<AsyncOnChangeFileComponent>();
+
+		Action act = () => cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("Hello"));
+
+		act.ShouldThrow<TaskNotCompletedException>();
+	}
+
 	private class InputFileComponent : ComponentBase
 	{
 		public string? Filename { get; private set; }
@@ -165,6 +176,25 @@ public class InputFileTests : TestContext
 		}
 
 		public record File(string Filename, string FileContent, DateTimeOffset LastChanged, long Size, string Type);
+	}
+
+	private class AsyncOnChangeFileComponent : ComponentBase
+	{
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.OpenComponent<InputFile>(0);
+			builder.AddAttribute(1, "OnChange", RuntimeHelpers.TypeCheck(
+				EventCallback.Factory.Create<InputFileChangeEventArgs>(
+					this,
+					OnChange
+				)));
+			builder.CloseComponent();
+		}
+
+		private async Task OnChange(InputFileChangeEventArgs args)
+		{
+			await Task.Delay(100);
+		}
 	}
 }
 #endif
