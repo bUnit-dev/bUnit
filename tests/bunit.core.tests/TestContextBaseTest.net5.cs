@@ -48,7 +48,8 @@ public partial class TestContextBaseTest : TestContext
 	}
 
 	[Fact(DisplayName = "DisposeComponents captures exceptions from DisposeAsync in Renderer.UnhandledException")]
-	public async Task Test201()
+	[Trait("Category", "sync")]
+	public async Task Test201_Sync()
 	{
 		RenderComponent<AsyncThrowExceptionComponent>();
 
@@ -58,8 +59,21 @@ public partial class TestContextBaseTest : TestContext
 		exception.ShouldBeOfType<NotSupportedException>();
 	}
 
+	[Fact(DisplayName = "DisposeComponents captures exceptions from DisposeAsync in Renderer.UnhandledException")]
+	[Trait("Category", "async")]
+	public async Task Test201()
+	{
+		RenderComponent<AsyncThrowExceptionComponent>();
+
+		await DisposeComponentsAsync();
+
+		var exception = await Renderer.UnhandledException;
+		exception.ShouldBeOfType<NotSupportedException>();
+	}
+
 	[Fact(DisplayName = "DisposeComponents calls DisposeAsync on rendered components")]
-	public async Task Test202()
+	[Trait("Category", "sync")]
+	public async Task Test202_Sync()
 	{
 		var cut = RenderComponent<AsyncDisposableComponent>();
 		var wasDisposedTask = cut.Instance.DisposedTask;
@@ -69,14 +83,40 @@ public partial class TestContextBaseTest : TestContext
 		await wasDisposedTask.ShouldCompleteWithin(TimeSpan.FromMilliseconds(100));
 	}
 
+	[Fact(DisplayName = "DisposeComponents calls DisposeAsync on rendered components")]
+	[Trait("Category", "async")]
+	public async Task Test202()
+	{
+		var cut = RenderComponent<AsyncDisposableComponent>();
+		var wasDisposedTask = cut.Instance.DisposedTask;
+
+		await DisposeComponentsAsync();
+
+		await wasDisposedTask.ShouldCompleteWithin(TimeSpan.FromMilliseconds(100));
+	}
+
 	[Fact(DisplayName = "DisposeComponents should dispose components added via ComponentFactory")]
-	public void Test203()
+	[Trait("Category", "sync")]
+	public void Test203_Sync()
 	{
 		ComponentFactories.Add<ChildDispose, MyChildDisposeStub>();
 		var cut = RenderComponent<ParentDispose>(ps => ps.Add(p => p.CallStack, new List<string>()));
 		var instance = cut.FindComponent<MyChildDisposeStub>().Instance;
 
 		DisposeComponents();
+
+		instance.WasDisposed.ShouldBeTrue();
+	}
+
+	[Fact(DisplayName = "DisposeComponents should dispose components added via ComponentFactory")]
+	[Trait("Category", "sync")]
+	public async Task Test203()
+	{
+		ComponentFactories.Add<ChildDispose, MyChildDisposeStub>();
+		var cut = RenderComponent<ParentDispose>(ps => ps.Add(p => p.CallStack, new List<string>()));
+		var instance = cut.FindComponent<MyChildDisposeStub>().Instance;
+
+		await DisposeComponentsAsync();
 
 		instance.WasDisposed.ShouldBeTrue();
 	}
