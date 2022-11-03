@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Components.CompilerServices;
 using Microsoft.AspNetCore.Components.Forms;
+#pragma warning disable CA2252
 
 namespace Bunit.Extensions.InputFile;
 

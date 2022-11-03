@@ -1,4 +1,7 @@
 ﻿#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
+using System.Runtime.Versioning;
+#endif
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace Bunit;
@@ -20,7 +23,9 @@ public static class InputFileExtensions
 		this IRenderedComponent<InputFile> inputFileComponent,
 		params InputFileContent[] files)
 		{
+#pragma warning disable CA2252
 			var uploadTask = UploadFilesAsync(inputFileComponent, files);
+#pragma warning restore CA2252
 			if (!uploadTask.IsCompleted)
 			{
 				throw new TaskNotCompletedException($"Upload did not complete synchronously. Use `{nameof(UploadFilesAsync)}` instead.");
@@ -32,6 +37,9 @@ public static class InputFileExtensions
 	/// </summary>
 	/// <param name="inputFileComponent">The <see cref="InputFile"/> component which will upload the files.</param>
 	/// <param name="files">Files to upload.</param>
+#if NET6_0_OR_GREATER
+	[RequiresPreviewFeatures("This is an experimental API, which might change in a future release.")]
+#endif
 	public static Task UploadFilesAsync(
 		this IRenderedComponent<InputFile> inputFileComponent,
 		params InputFileContent[] files)

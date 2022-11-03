@@ -7,7 +7,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ## [Unreleased]
 
 ### Added
- - Added the `UploadFilesAsync` extension method to `IRenderedComponent<InputFile>`, which makes it easy to upload files to a `<InputFile>` component during testing and wait for asynchronous processing of the uploaded files to complete before continuing the test. By [@linkdotnet](https://github.com/linkdotnet).
+ - Added the experimental `UploadFilesAsync` extension method to `IRenderedComponent<InputFile>`, which makes it easy to upload files to a `<InputFile>` component during testing and wait for asynchronous processing of the uploaded files to complete before continuing the test. By [@linkdotnet](https://github.com/linkdotnet).
 
 ### Fixed
  - The created HTML contained encoded strings. Reported by [@tobiasbrandstaedter](https://github.com/tobiasbrandstaedter). Fixed by [@linkdotnet](https://github.com/linkdotnet).
