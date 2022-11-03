@@ -44,10 +44,10 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 <table border="0">
 	<tr>
 		<td align="center" width="120">
-			<a href="https://github.com/Progress-Telerik">
-				<img src="https://avatars.githubusercontent.com/u/57092419?s=460" alt="@Progress-Telerik" class="avatar" width="72" height="72" />
+			<a href="https://github.com/telerik">
+				<img src="https://avatars.githubusercontent.com/u/568561?s=200&v=4" alt="@Telerik" class="avatar" width="72" height="72" />
 				<br />
-				Progress Telerik
+				Telerik
 			</a>
 		</td>
 		<td align="center" width="120">
