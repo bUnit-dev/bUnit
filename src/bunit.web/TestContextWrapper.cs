@@ -1,3 +1,6 @@
+#if NET6_0_OR_GREATER
+using System.Runtime.Versioning;
+#endif
 using Bunit.Rendering;
 
 namespace Bunit;
@@ -86,6 +89,9 @@ public abstract class TestContextWrapper
 	/// <summary>
 	/// Disposes all components rendered via this <see cref="TestContext"/>.
 	/// </summary>
+#if NET6_0_OR_GREATER
+	[RequiresPreviewFeatures("This is an experimental API, which might change in a future release.")]
+#endif
 	public virtual Task DisposeComponentsAsync() => TestContext?.DisposeComponentsAsync() ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 
 	/// <summary>

@@ -1,3 +1,7 @@
+#if NET6_0_OR_GREATER
+using System.Runtime.Versioning;
+#endif
+
 namespace Bunit.Rendering;
 
 /// <summary>
@@ -95,5 +99,8 @@ public interface ITestRenderer
 	/// A <see cref="Task" /> that will be completed when all components that implements <see cref="IDisposable" />
 	/// has finished running their <see cref="IDisposable.Dispose" /> methods.
 	/// </returns>
+#if NET6_0_OR_GREATER
+	[RequiresPreviewFeatures("This is an experimental API, which might change in a future release.")]
+#endif
 	public Task DisposeComponentsAsync();
 }

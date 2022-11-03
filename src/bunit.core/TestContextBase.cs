@@ -1,3 +1,6 @@
+#if NET6_0_OR_GREATER
+using System.Runtime.Versioning;
+#endif
 using Bunit.Rendering;
 
 namespace Bunit;
@@ -109,5 +112,8 @@ public abstract class TestContextBase : IDisposable
 	/// <summary>
 	/// Disposes all components rendered via this <see cref="TestContextBase"/>.
 	/// </summary>
+#if NET6_0_OR_GREATER
+	[RequiresPreviewFeatures("This is an experimental API, which might change in a future release.")]
+#endif
 	public Task DisposeComponentsAsync() => Renderer.DisposeComponentsAsync();
 }

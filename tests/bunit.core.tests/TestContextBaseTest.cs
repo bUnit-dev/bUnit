@@ -1,4 +1,5 @@
 using Bunit.TestAssets.SampleComponents.DisposeComponents;
+#pragma warning disable CA2252
 
 namespace Bunit;
 

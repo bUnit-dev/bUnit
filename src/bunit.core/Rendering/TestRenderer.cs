@@ -1,4 +1,7 @@
 using System.Runtime.ExceptionServices;
+#if NET6_0_OR_GREATER
+using System.Runtime.Versioning;
+#endif
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
@@ -121,9 +124,14 @@ public class TestRenderer : Renderer, ITestRenderer
 
 
 	/// <inheritdoc />
+#pragma warning disable CA2252
 	public void DisposeComponents() => DisposeComponentsAsync().GetAwaiter().GetResult();
+#pragma warning restore CA2252
 
 	/// <inheritdoc />
+#if NET6_0_OR_GREATER
+	[RequiresPreviewFeatures("This is an experimental API, which might change in a future release.")]
+#endif
 	public async Task DisposeComponentsAsync()
 	{
 		// The dispatcher will always return a completed task,

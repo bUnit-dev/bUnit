@@ -7,7 +7,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ## [Unreleased]
 
 ### Added
- - Added `DisposeComponentsAsync` to `TestContext` and `ITestRenderer`, that disposes all components rendered during a test. The `Task` returned from the method completes when all components that implement `IDisposable` has finished running their `Dispose()`. Due to how Blazor's runtime work, `IAsyncDisposable.DisposeAsync` methods on components will NOT be awaited, and the returned `Task` may complete before the `IAsyncDisposable.DisposeAsync` methods has finished running. Instead use e.g., `Task.Delay` with an appropriate wait time to pause test execution until `IAsyncDisposable.DisposeAsync` methods finish running. By [@linkdotnet](https://github.com/linkdotnet). 
+ - Added experimental `DisposeComponentsAsync` to `TestContext` and `ITestRenderer`, that disposes all components rendered during a test. The `Task` returned from the method completes when all components that implement `IDisposable` has finished running their `Dispose()`. Due to how Blazor's runtime work, `IAsyncDisposable.DisposeAsync` methods on components will NOT be awaited, and the returned `Task` may complete before the `IAsyncDisposable.DisposeAsync` methods has finished running. Instead use e.g., `Task.Delay` with an appropriate wait time to pause test execution until `IAsyncDisposable.DisposeAsync` methods finish running. By [@linkdotnet](https://github.com/linkdotnet). 
 
 ### Fixed
  - The created HTML contained encoded strings. Reported by [@tobiasbrandstaedter](https://github.com/tobiasbrandstaedter). Fixed by [@linkdotnet](https://github.com/linkdotnet).
