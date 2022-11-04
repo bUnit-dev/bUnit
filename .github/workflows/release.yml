@@ -22,7 +22,7 @@ jobs:
     steps:
 
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           token: ${{ secrets.BUNIT_BOT_TOKEN }}
@@ -60,7 +60,7 @@ jobs:
           setAllVars: true
 
       - name: ⚙️ Setup dotnet versions
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
             3.1.x
@@ -118,7 +118,7 @@ jobs:
 
       - name: ⏩ Merge stable with main, push to origin
         id: mergeMainline
-        continue-on-error: true      
+        continue-on-error: true
         run: |
           git checkout main
           git merge -S stable

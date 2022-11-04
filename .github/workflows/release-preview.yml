@@ -2,7 +2,7 @@ name: release-preview
 concurrency: 'release-preview'
 
 on:
-  workflow_run:    
+  workflow_run:
     workflows: [ 'verification' ]
     types: [completed]
     branches: [main, v2]
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       nugetRelease:
-        description: 'Release to NuGet? Set to "true" to release to NuGet.org as well as GPR.'     
+        description: 'Release to NuGet? Set to "true" to release to NuGet.org as well as GPR.'
         required: true
         default: 'false'
 
@@ -19,7 +19,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && ${{ github.event.workflow_run.conclusion == 'success' }}) || (github.ref == 'refs/heads/v2' && ${{ github.event.workflow_run.conclusion == 'success' }})
     runs-on: ubuntu-latest
     steps:
-    
+
       - name: 🛒 Checkout repository
         uses: actions/checkout@v2
         with:
@@ -27,9 +27,9 @@ jobs:
 
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.0
-           
+
       - name: ⚙️ Setup dotnet versions
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
             3.1.x
@@ -37,12 +37,12 @@ jobs:
             6.0.x
             7.0.x
           include-prerelease: true
-          
+
       - name: 🎨 Setup color
         run: |
           echo "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION=1" >> $GITHUB_ENV
           echo "TERM=xterm" >> $GITHUB_ENV
-      
+
       - name: 🛠️ Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
@@ -53,7 +53,7 @@ jobs:
           dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
           dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
           dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-        
+
       - name: 🛠️ Upload library to GitHub Package Repository
         run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bunit-dev/index.json --skip-duplicate --no-symbols
 

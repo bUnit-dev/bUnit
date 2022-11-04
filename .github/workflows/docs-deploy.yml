@@ -61,7 +61,7 @@ jobs:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
 
       - name: ⚙️ Setup dotnet versions
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
             3.1.x
@@ -69,7 +69,7 @@ jobs:
             6.0.x
             7.0.x
           include-prerelease: true
-      
+
       - name: 🎨 Setup color
         run: |
           echo "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION=1" >> $GITHUB_ENV
@@ -84,7 +84,7 @@ jobs:
       - name: 🛠️ Building docs
         uses: nikeee/docfx-action@v1.0.0
         with:
-          args: docs/site/docfx.json          
+          args: docs/site/docfx.json
 
       - name: 🛠️ Deploy to GitHub Pages
         if: success()
@@ -103,7 +103,7 @@ jobs:
 
       - name: ⏩ Merge stable with main, push origin
         id: mergeMainline
-        continue-on-error: true      
+        continue-on-error: true
         run: |
           git checkout main
           git merge -S stable
