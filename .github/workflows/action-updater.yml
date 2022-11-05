@@ -1,0 +1,30 @@
+name: GitHub Actions Version Updater
+
+on:
+  schedule:
+    - cron:  '0 1 * * *' # Everday 1 o'clock
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.1.0
+        with:
+          token: ${{ secrets.BUNIT_BOT_TOKEN }}
+
+      - name: ⚙️ Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.BUNIT_BOT_GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.BUNIT_BOT_GPG_KEY_PASSPHRASE }}
+
+      - name: Run GitHub Actions Version Updater
+        uses: saadmk11/github-actions-version-updater@v0.7.1
+        with:
+          token: ${{ secrets.BUNIT_BOT_TOKEN }}
+          committer_username: "${{ steps.import_gpg.outputs.name }}"
+          committer_email: ${{ steps.import_gpg.outputs.email }}
