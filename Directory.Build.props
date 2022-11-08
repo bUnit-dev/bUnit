@@ -5,7 +5,7 @@
 		<DotNet3Version>3.1.22</DotNet3Version>
 		<DotNet5Version>5.0.0</DotNet5Version>
 		<DotNet6Version>6.0.0</DotNet6Version>
-		<DotNet7Version>7.0.0-*</DotNet7Version>
+		<DotNet7Version>7.0.0</DotNet7Version>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->
@@ -48,7 +48,7 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.46.0.54807" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.47.0.55603" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings"
