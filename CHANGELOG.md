@@ -6,8 +6,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.12.6] - 2022-11-08
+
 ### Fixed
- - The created HTML contained encoded strings. Reported by [@tobiasbrandstaedter](https://github.com/tobiasbrandstaedter). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
+-   The created HTML contained encoded strings. Reported by [@tobiasbrandstaedter](https://github.com/tobiasbrandstaedter). Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.11.7] - 2022-10-13
 
@@ -1221,7 +1224,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**  
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.11.7...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.12.6...HEAD
+
+[1.12.6]: https://github.com/bUnit-dev/bUnit/compare/v1.11.7...v1.12.6
 
 [1.11.7]: https://github.com/bUnit-dev/bUnit/compare/v1.10.14...v1.11.7
 
