@@ -110,7 +110,7 @@ jobs:
 
       - name: ⏭ Create pull request from stable to main when direct merge fails
         if: steps.mergeMainline.outcome == 'failure'
-        uses: thomaseizinger/create-pull-request@1.0.0
+        uses: thomaseizinger/create-pull-request@1.2.2
         env:
           GITHUB_TOKEN: ${{ secrets.BUNIT_BOT_TOKEN }}
         with:
