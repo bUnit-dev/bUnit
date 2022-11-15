@@ -16,7 +16,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && contains(fromJson('["major","minor"]'), github.event.inputs.versionIncrement)
     steps:   
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           token: ${{ secrets.BUNIT_BOT_TOKEN }}
@@ -35,9 +35,9 @@ jobs:
           exit 1
       - name: ⚙️ Import GPG key
         id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v3
+        uses: crazy-max/ghaction-import-gpg@v5
         with:
-          gpg-private-key: ${{ secrets.BUNIT_BOT_GPG_PRIVATE_KEY }}
+          gpg_private_key: ${{ secrets.BUNIT_BOT_GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.BUNIT_BOT_GPG_KEY_PASSPHRASE }}
       
       - name: ⚙️ Setup CI GIT
@@ -83,7 +83,7 @@ jobs:
         run: git push origin release/v$NBGV_MajorMinorVersion
 
       - name: ⏭ Create pull request for release branch
-        uses: thomaseizinger/create-pull-request@1.0.0
+        uses: thomaseizinger/create-pull-request@1.2.2
         env:
           GITHUB_TOKEN: ${{ secrets.BUNIT_BOT_TOKEN }}
         with:
