@@ -42,18 +42,18 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	public IRenderedFragmentBase RenderFragment(RenderFragment renderFragment)
-		=> Render(renderFragment, id => activator.CreateRenderedFragment(id));
+	public Task<IRenderedFragmentBase> RenderFragmentAsync(RenderFragment renderFragment)
+		=> RenderAsync(renderFragment, id => activator.CreateRenderedFragment(id));
 
 	/// <inheritdoc/>
-	public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
+	public Task<IRenderedComponentBase<TComponent>> RenderComponentAsync<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent
 	{
 		if (parameters is null)
 			throw new ArgumentNullException(nameof(parameters));
 
 		var renderFragment = parameters.ToRenderFragment<TComponent>();
-		return Render(renderFragment, id => activator.CreateRenderedComponent<TComponent>(id));
+		return RenderAsync(renderFragment, id => activator.CreateRenderedComponent<TComponent>(id));
 	}
 
 	/// <inheritdoc/>
@@ -103,19 +103,19 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	public IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)
+	public async Task<IRenderedComponentBase<TComponent>> FindComponentAsync<TComponent>(IRenderedFragmentBase parentComponent)
 		where TComponent : IComponent
 	{
-		var foundComponents = FindComponents<TComponent>(parentComponent, 1);
+		var foundComponents = await FindComponentsAsync<TComponent>(parentComponent, 1);
 		return foundComponents.Count == 1
 			? foundComponents[0]
 			: throw new ComponentNotFoundException(typeof(TComponent));
 	}
 
 	/// <inheritdoc/>
-	public IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
+	public Task<IReadOnlyList<IRenderedComponentBase<TComponent>>> FindComponentsAsync<TComponent>(IRenderedFragmentBase parentComponent)
 		where TComponent : IComponent
-		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
+		=> FindComponentsAsync<TComponent>(parentComponent, int.MaxValue);
 
 
 	/// <inheritdoc />
@@ -199,7 +199,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		base.Dispose(disposing);
 	}
 
-	private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
+	private async Task<TResult> RenderAsync<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
 		where TResult : IRenderedFragmentBase
 	{
 		var renderTask = Dispatcher.InvokeAsync(() =>
@@ -215,17 +215,7 @@ public class TestRenderer : Renderer, ITestRenderer
 			return result;
 		});
 
-		TResult result;
-
-		if (!renderTask.IsCompleted)
-		{
-			logger.LogAsyncInitialRender();
-			result = renderTask.GetAwaiter().GetResult();
-		}
-		else
-		{
-			result = renderTask.Result;
-		}
+		var result = await renderTask;
 
 		logger.LogInitialRenderCompleted(result.ComponentId);
 
@@ -234,7 +224,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		return result;
 	}
 
-	private IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
+	private Task<IReadOnlyList<IRenderedComponentBase<TComponent>>> FindComponentsAsync<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
 		where TComponent : IComponent
 	{
 		if (parentComponent is null)
@@ -252,7 +242,7 @@ public class TestRenderer : Renderer, ITestRenderer
 
 			FindComponentsInRenderTree(parentComponent.ComponentId);
 
-			return result;
+			return (IReadOnlyList<IRenderedComponentBase<TComponent>>)result;
 
 			void FindComponentsInRenderTree(int componentId)
 			{
@@ -278,7 +268,7 @@ public class TestRenderer : Renderer, ITestRenderer
 					}
 				}
 			}
-		}).GetAwaiter().GetResult();
+		});
 	}
 
 	IRenderedComponentBase<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)

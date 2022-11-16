@@ -90,7 +90,7 @@ public class RenderedFragmentTest : TestContext
 			.Add<Simple1>(p => p.Second, simple1 => simple1
 				.Add(p => p.Header, "Second")));
 
-		var cut = wrapper.FindComponent<Simple1>();
+		var cut = wrapper.FindComponentAsync<Simple1>();
 
 		cut.Instance.Header.ShouldBe("First");
 	}
@@ -103,7 +103,7 @@ public class RenderedFragmentTest : TestContext
 			.Add<Simple1>(p => p.Second, simple1 => simple1
 				.Add(p => p.Header, "Second")));
 
-		var cut = wrapper.FindComponent<Simple1>();
+		var cut = wrapper.FindComponentAsync<Simple1>();
 
 		cut.Instance.Header.ShouldBe("Second");
 	}
@@ -113,7 +113,7 @@ public class RenderedFragmentTest : TestContext
 	{
 		var wrapper = RenderComponent<Wrapper>();
 
-		Should.Throw<ComponentNotFoundException>(() => wrapper.FindComponent<Simple1>());
+		Should.Throw<ComponentNotFoundException>(() => wrapper.FindComponentAsync<Simple1>());
 	}
 
 	[Fact(DisplayName = "GetComponents returns all components of requested type using a depth first order")]
@@ -126,7 +126,7 @@ public class RenderedFragmentTest : TestContext
 			.Add<Simple1>(p => p.Second, simple1 => simple1
 				.Add(p => p.Header, "Second")));
 
-		var cuts = wrapper.FindComponents<Simple1>();
+		var cuts = wrapper.FindComponentsAsync<Simple1>();
 
 		cuts.Count.ShouldBe(2);
 		cuts[0].Instance.Header.ShouldBe("First");
@@ -139,7 +139,7 @@ public class RenderedFragmentTest : TestContext
 		var wrapper = RenderComponent<TwoComponentWrapper>(parameters => parameters
 			.Add<Simple1>(p => p.First)
 			.Add<Simple1>(p => p.Second));
-		var cuts = wrapper.FindComponents<Simple1>();
+		var cuts = wrapper.FindComponentsAsync<Simple1>();
 		var first = cuts[0];
 		var second = cuts[1];
 
@@ -164,7 +164,7 @@ public class RenderedFragmentTest : TestContext
 	public void Test020()
 	{
 		var cut = RenderComponent<ToggleChildComponent>(ps => ps.Add(p => p.ShowChild, true));
-		var target = cut.FindComponent<Simple1>();
+		var target = cut.FindComponentAsync<Simple1>();
 
 		// Disposes of <Simple1 />
 		cut.SetParametersAndRender(ps => ps.Add(p => p.ShowChild, false));

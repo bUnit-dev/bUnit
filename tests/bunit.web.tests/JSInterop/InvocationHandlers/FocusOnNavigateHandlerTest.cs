@@ -22,7 +22,7 @@ public class FocusOnNavigateHandlerTest : TestContext
 				.Add(x => x.RouteData, routeData)
 				.Add(x => x.Selector, "h1")));
 
-		var focusOnNavigateComponent = cut.FindComponent<FocusOnNavigate>();
+		var focusOnNavigateComponent = cut.FindComponentAsync<FocusOnNavigate>();
 
 		Assert.Equal("h1", JSInterop.VerifyFocusOnNavigateInvoke().Arguments[0]);
 		JSInterop.VerifyFocusOnNavigateInvoke()
@@ -38,7 +38,7 @@ public class FocusOnNavigateHandlerTest : TestContext
 				.Add(x => x.RouteData, routeData)
 				.Add(x => x.Selector, "h1")));
 
-		var focusOnNavigateComponent = cut.FindComponent<FocusOnNavigateInternal>();
+		var focusOnNavigateComponent = cut.FindComponentAsync<FocusOnNavigateInternal>();
 		Assert.True(focusOnNavigateComponent.Instance.AfterFirstRender);
 	}
 

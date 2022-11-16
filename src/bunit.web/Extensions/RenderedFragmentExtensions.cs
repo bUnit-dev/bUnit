@@ -52,14 +52,19 @@ public static class RenderedFragmentExtensions
 	/// <typeparam name="TComponent">Type of component to find.</typeparam>
 	/// <exception cref="ComponentNotFoundException">Thrown if a component of type <typeparamref name="TComponent"/> was not found in the render tree.</exception>
 	/// <returns>The <see cref="IRenderedComponent{T}"/>.</returns>
-	public static IRenderedComponent<TComponent> FindComponent<TComponent>(this IRenderedFragment renderedFragment)
+	public static Task<IRenderedComponent<TComponent>> FindComponentAsync<TComponent>(this IRenderedFragment renderedFragment)
 		where TComponent : IComponent
 	{
 		if (renderedFragment is null)
 			throw new ArgumentNullException(nameof(renderedFragment));
 
-		var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
-		return (IRenderedComponent<TComponent>)renderer.FindComponent<TComponent>(renderedFragment);
+		return FindComponentInternalAsync();
+
+		async Task<IRenderedComponent<TComponent>> FindComponentInternalAsync()
+		{
+			var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
+			return (IRenderedComponent<TComponent>)await renderer.FindComponentAsync<TComponent>(renderedFragment);
+		}
 	}
 
 	/// <summary>
@@ -68,16 +73,21 @@ public static class RenderedFragmentExtensions
 	/// </summary>
 	/// <typeparam name="TComponent">Type of components to find.</typeparam>
 	/// <returns>The <see cref="IRenderedComponent{T}"/>s.</returns>
-	public static IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(this IRenderedFragment renderedFragment)
+	public static Task<IReadOnlyList<IRenderedComponent<TComponent>>> FindComponentsAsync<TComponent>(this IRenderedFragment renderedFragment)
 		where TComponent : IComponent
 	{
 		if (renderedFragment is null)
 			throw new ArgumentNullException(nameof(renderedFragment));
 
-		var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
-		var components = renderer.FindComponents<TComponent>(renderedFragment);
+		return FindComponentsInternalAsync();
 
-		return components.OfType<IRenderedComponent<TComponent>>().ToArray();
+		async Task<IReadOnlyList<IRenderedComponent<TComponent>>> FindComponentsInternalAsync()
+		{
+			var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
+			var components = await renderer.FindComponentsAsync<TComponent>(renderedFragment);
+
+			return components.OfType<IRenderedComponent<TComponent>>().ToArray();
+		}
 	}
 
 	/// <summary>
@@ -87,6 +97,6 @@ public static class RenderedFragmentExtensions
 	/// <typeparam name="TComponent">The type of component to look for in the render tree.</typeparam>
 	/// <param name="renderedFragment">The render tree to search.</param>
 	/// <returns>True if the <paramref name="renderedFragment"/> contains the <typeparamref name="TComponent"/>; otherwise false.</returns>
-	public static bool HasComponent<TComponent>(this IRenderedFragment renderedFragment)
-		where TComponent : IComponent => FindComponents<TComponent>(renderedFragment).Count > 0;
+	public static async Task<bool> HasComponentAsync<TComponent>(this IRenderedFragment renderedFragment)
+		where TComponent : IComponent => (await FindComponentsAsync<TComponent>(renderedFragment)).Any();
 }

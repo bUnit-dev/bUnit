@@ -27,7 +27,7 @@ public class TestRendererTest : TestContext
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		Should.Throw<InvalidOperationException>(() => sut.RenderComponent<ThrowsDuringSetParams>())
+		Should.Throw<InvalidOperationException>(() => sut.RenderComponentAsync<ThrowsDuringSetParams>())
 			.Message.ShouldBe(ThrowsDuringSetParams.EXCEPTION.Message);
 	}
 
@@ -48,7 +48,7 @@ public class TestRendererTest : TestContext
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<NoChildNoParams>();
+		var cut = sut.RenderComponentAsync<NoChildNoParams>();
 
 		cut.RenderCount.ShouldBe(1);
 		cut.Markup.ShouldBe(NoChildNoParams.MARKUP);
@@ -61,7 +61,7 @@ public class TestRendererTest : TestContext
 		const string VALUE = "FOO BAR";
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>((nameof(HasParams.Value), VALUE));
+		var cut = sut.RenderComponentAsync<HasParams>((nameof(HasParams.Value), VALUE));
 
 		cut.Instance.Value.ShouldBe(VALUE);
 	}
@@ -74,7 +74,7 @@ public class TestRendererTest : TestContext
 
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = sut.RenderComponentAsync<HasParams>(
 			(nameof(HasParams.Value), PARENT_VALUE),
 			ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE)));
 
@@ -87,7 +87,7 @@ public class TestRendererTest : TestContext
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<RenderTrigger>();
+		var cut = sut.RenderComponentAsync<RenderTrigger>();
 
 		cut.RenderCount.ShouldBe(1);
 
@@ -102,7 +102,7 @@ public class TestRendererTest : TestContext
 		// arrange
 		const string EXPECTED = "NOW VALUE";
 		var sut = Services.GetRequiredService<ITestRenderer>();
-		var cut = sut.RenderComponent<RenderTrigger>();
+		var cut = sut.RenderComponentAsync<RenderTrigger>();
 
 		cut.RenderCount.ShouldBe(1);
 
@@ -123,7 +123,7 @@ public class TestRendererTest : TestContext
 
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = sut.RenderComponentAsync<HasParams>(
 			(nameof(HasParams.Value), PARENT_VALUE),
 			ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE)));
 
@@ -147,7 +147,7 @@ public class TestRendererTest : TestContext
 	public void Test022()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
-		var cut = sut.RenderComponent<HasParams>();
+		var cut = sut.RenderComponentAsync<HasParams>();
 
 		Should.Throw<ComponentNotFoundException>(() => sut.FindComponent<HasParams>(cut));
 	}
@@ -157,7 +157,7 @@ public class TestRendererTest : TestContext
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = sut.RenderComponentAsync<HasParams>(
 			ChildContent<HasParams>());
 
 		var child1 = sut.FindComponent<HasParams>(cut);
@@ -176,7 +176,7 @@ public class TestRendererTest : TestContext
 
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = sut.RenderComponentAsync<HasParams>(
 			(nameof(HasParams.Value), GRAND_PARENT_VALUE),
 			ChildContent<HasParams>(
 				(nameof(HasParams.Value), PARENT_VALUE),
@@ -209,7 +209,7 @@ public class TestRendererTest : TestContext
 	{
 		// arrange
 		var sut = Services.GetRequiredService<ITestRenderer>();
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = sut.RenderComponentAsync<HasParams>(
 			ChildContent<HasParams>(
 				ChildContent<HasParams>()));
 
@@ -226,7 +226,7 @@ public class TestRendererTest : TestContext
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var parent = sut.RenderComponent<HasParams>(
+		var parent = sut.RenderComponentAsync<HasParams>(
 			ChildContent<RenderTrigger>());
 
 		// act
@@ -245,7 +245,7 @@ public class TestRendererTest : TestContext
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var parent = sut.RenderComponent<HasParams>(
+		var parent = sut.RenderComponentAsync<HasParams>(
 			ChildContent<RenderTrigger>());
 
 		// act
@@ -265,7 +265,7 @@ public class TestRendererTest : TestContext
 		// arrange
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
+		var cut = sut.RenderComponentAsync<HasParams>(
 			ChildContent<RenderTrigger>());
 		var child = (IRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(cut);
 
@@ -283,7 +283,7 @@ public class TestRendererTest : TestContext
 		// arrange
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<ToggleChild>(
+		var cut = sut.RenderComponentAsync<ToggleChild>(
 			ChildContent<NoChildNoParams>());
 		var child = (IRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
 
@@ -301,7 +301,7 @@ public class TestRendererTest : TestContext
 		// arrange
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = sut.RenderComponent<ToggleChild>(
+		var cut = sut.RenderComponentAsync<ToggleChild>(
 			ChildContent<ToggleChild>(
 				ChildContent<NoChildNoParams>()));
 		var child = (IRenderedComponent<ToggleChild>)sut.FindComponent<ToggleChild>(cut);
@@ -319,7 +319,7 @@ public class TestRendererTest : TestContext
 	public void Test070()
 	{
 		var sut = (TestRenderer)Services.GetRequiredService<ITestRenderer>();
-		var cut = sut.RenderComponent<NoChildNoParams>();
+		var cut = sut.RenderComponentAsync<NoChildNoParams>();
 
 		sut.Dispose();
 

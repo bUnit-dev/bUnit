@@ -18,7 +18,7 @@ public class InstanceComponentFactoryTest : TestContext
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
-		cut.FindComponent<Simple1>()
+		cut.FindComponentAsync<Simple1>()
 			.Instance.ShouldBeSameAs(simple1Mock.Object);
 	}
 

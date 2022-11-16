@@ -15,7 +15,7 @@ public class StubComponentFactoryTest : TestContext
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
 
-		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
+		cut.HasComponentAsync<Stub<CompA>>().ShouldBeTrue();
 	}
 
 	[Fact(DisplayName = "AddStub<T> replaces U:T with Stub<U>")]
@@ -25,7 +25,7 @@ public class StubComponentFactoryTest : TestContext
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
 
-		cut.HasComponent<Stub<CompDerivedA>>().ShouldBeTrue();
+		cut.HasComponentAsync<Stub<CompDerivedA>>().ShouldBeTrue();
 	}
 
 	[Theory(DisplayName = "AddStub(markup) replaces types with markup")]
@@ -36,7 +36,7 @@ public class StubComponentFactoryTest : TestContext
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
 
-		cut.HasComponent<Stub<CompDerivedA>>().ShouldBeTrue();
+		cut.HasComponentAsync<Stub<CompDerivedA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");
 	}
 
@@ -48,7 +48,7 @@ public class StubComponentFactoryTest : TestContext
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
 
-		cut.HasComponent<Stub<CompDerivedA>>().ShouldBeTrue();
+		cut.HasComponentAsync<Stub<CompDerivedA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");
 	}
 
@@ -85,7 +85,7 @@ public class StubComponentFactoryTest : TestContext
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
 
-		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
+		cut.HasComponentAsync<Stub<CompA>>().ShouldBeTrue();
 	}
 
 	[Theory(DisplayName = "AddStub(predicate, markup) replaces types that matches predicate with markup")]
@@ -96,7 +96,7 @@ public class StubComponentFactoryTest : TestContext
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
 
-		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
+		cut.HasComponentAsync<Stub<CompA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");
 	}
 
@@ -108,7 +108,7 @@ public class StubComponentFactoryTest : TestContext
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
 
-		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
+		cut.HasComponentAsync<Stub<CompA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");
 	}
 

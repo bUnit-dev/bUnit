@@ -15,7 +15,7 @@ public class InputFileTests : TestContext
 		var lastModified = new DateTime(1991, 5, 17);
 		var file = InputFileContent.CreateFromText("Hello World", "Hey.txt", lastModified);
 
-		await cut.FindComponent<InputFile>().UploadFilesAsync(file);
+		await cut.FindComponentAsync<InputFile>().UploadFilesAsync(file);
 
 		cut.Instance.Content.ShouldBe("Hello World");
 		cut.Instance.Filename.ShouldBe("Hey.txt");
@@ -29,7 +29,7 @@ public class InputFileTests : TestContext
 		var cut = RenderComponent<InputFileComponent>();
 		var file = InputFileContent.CreateFromBinary(Encoding.Default.GetBytes("Hello World"));
 
-		await cut.FindComponent<InputFile>().UploadFilesAsync(file);
+		await cut.FindComponentAsync<InputFile>().UploadFilesAsync(file);
 
 		cut.Instance.Content.ShouldBe("Hello World");
 	}
@@ -42,7 +42,7 @@ public class InputFileTests : TestContext
 		var file1 = InputFileContent.CreateFromText("Hello World", "Hey.txt", lastModified, "test");
 		var file2 = InputFileContent.CreateFromText("World Hey", "Test.txt", lastModified, "unit");
 
-		await cut.FindComponent<InputFile>().UploadFilesAsync(file1, file2);
+		await cut.FindComponentAsync<InputFile>().UploadFilesAsync(file1, file2);
 
 		cut.Instance.Files.Count.ShouldBe(2);
 		cut.Instance.Files[0].FileContent.ShouldBe("Hello World");
@@ -86,7 +86,7 @@ public class InputFileTests : TestContext
 	{
 		var cut = RenderComponent<InputFileComponent>();
 
-		Func<Task> act = () => cut.FindComponent<InputFile>().UploadFilesAsync();
+		Func<Task> act = () => cut.FindComponentAsync<InputFile>().UploadFilesAsync();
 
 		await act.ShouldThrowAsync<ArgumentException>();
 	}
@@ -97,7 +97,7 @@ public class InputFileTests : TestContext
 		JSInterop.SetupVoid("Blazor._internal.InputFile.init").SetException(new Exception());
 		var cut = RenderComponent<InputFileComponent>();
 
-		Func<Task> act = () => cut.FindComponent<InputFile>().UploadFilesAsync(InputFileContent.CreateFromText("Hello"));
+		Func<Task> act = () => cut.FindComponentAsync<InputFile>().UploadFilesAsync(InputFileContent.CreateFromText("Hello"));
 
 		await act.ShouldNotThrowAsync();
 	}

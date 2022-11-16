@@ -46,7 +46,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		where TComponent : IComponent
 	{
 		var res = (IRenderedFragment)Renderer.RenderFragment(renderFragment);
-		return res.FindComponent<TComponent>();
+		return res.FindComponentAsync<TComponent>();
 	}
 
 	[Fact(DisplayName = "Null for parameter selector throws")]

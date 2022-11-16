@@ -12,9 +12,9 @@ public static class RenderedComponentRenderExtensions
 	/// </summary>
 	/// <param name="renderedComponent">The rendered component to re-render.</param>
 	/// <typeparam name="TComponent">The type of the component.</typeparam>
-	public static void Render<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent)
+	public static Task RenderAsync<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent)
 		where TComponent : IComponent
-		=> SetParametersAndRender(renderedComponent, ParameterView.Empty);
+		=> SetParametersAndRenderAsync(renderedComponent, ParameterView.Empty);
 
 	/// <summary>
 	/// Render the component under test again with the provided <paramref name="parameters"/>.
@@ -22,30 +22,14 @@ public static class RenderedComponentRenderExtensions
 	/// <param name="renderedComponent">The rendered component to re-render with new parameters.</param>
 	/// <param name="parameters">Parameters to pass to the component upon rendered.</param>
 	/// <typeparam name="TComponent">The type of the component.</typeparam>
-	public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, ParameterView parameters)
+	public static Task SetParametersAndRenderAsync<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, ParameterView parameters)
 		where TComponent : IComponent
 	{
 		if (renderedComponent is null)
 			throw new ArgumentNullException(nameof(renderedComponent));
 
-		var result = renderedComponent.InvokeAsync(() =>
+		return renderedComponent.InvokeAsync(() =>
 			renderedComponent.Instance.SetParametersAsync(parameters));
-
-		if (result.IsFaulted && result.Exception is not null)
-		{
-			if (result.Exception.InnerExceptions.Count == 1)
-			{
-				ExceptionDispatchInfo.Capture(result.Exception.InnerExceptions[0]).Throw();
-			}
-			else
-			{
-				ExceptionDispatchInfo.Capture(result.Exception).Throw();
-			}
-		}
-		else if (!result.IsCompleted)
-		{
-			result.GetAwaiter().GetResult();
-		}
 	}
 
 	/// <summary>
@@ -54,7 +38,7 @@ public static class RenderedComponentRenderExtensions
 	/// <param name="renderedComponent">The rendered component to re-render with new parameters.</param>
 	/// <param name="parameters">Parameters to pass to the component upon rendered.</param>
 	/// <typeparam name="TComponent">The type of the component.</typeparam>
-	public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, params ComponentParameter[] parameters)
+	public static Task SetParametersAndRenderAsync<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, params ComponentParameter[] parameters)
 		where TComponent : IComponent
 	{
 		if (renderedComponent is null)
@@ -62,7 +46,7 @@ public static class RenderedComponentRenderExtensions
 		if (parameters is null)
 			throw new ArgumentNullException(nameof(parameters));
 
-		SetParametersAndRender(renderedComponent, ToParameterView(parameters));
+		return SetParametersAndRenderAsync(renderedComponent, ToParameterView(parameters));
 	}
 
 	/// <summary>
@@ -71,7 +55,7 @@ public static class RenderedComponentRenderExtensions
 	/// <param name="renderedComponent">The rendered component to re-render with new parameters.</param>
 	/// <param name="parameterBuilder">An action that receives a <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</param>
 	/// <typeparam name="TComponent">The type of the component.</typeparam>
-	public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
+	public static Task SetParametersAndRenderAsync<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
 		where TComponent : IComponent
 	{
 		if (renderedComponent is null)
@@ -80,7 +64,7 @@ public static class RenderedComponentRenderExtensions
 			throw new ArgumentNullException(nameof(parameterBuilder));
 
 		var builder = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder);
-		SetParametersAndRender(renderedComponent, ToParameterView(builder.Build()));
+		return SetParametersAndRenderAsync(renderedComponent, ToParameterView(builder.Build()));
 	}
 
 	private static ParameterView ToParameterView(IReadOnlyCollection<ComponentParameter> parameters)
@@ -94,7 +78,7 @@ public static class RenderedComponentRenderExtensions
 			foreach (var param in parameters)
 			{
 				if (param.IsCascadingValue)
-					throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(SetParametersAndRender)} method.");
+					throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(SetParametersAndRenderAsync)} method.");
 				if (param.Name is null)
 					throw new InvalidOperationException("A parameters name is required.");
 

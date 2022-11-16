@@ -50,7 +50,7 @@ public class RenderedComponentTest : TestContext
 	public void Test020()
 	{
 		var cut = RenderComponent<ToggleChildComponent>(ps => ps.Add(p => p.ShowChild, true));
-		var target = cut.FindComponent<Simple1>();
+		var target = cut.FindComponentAsync<Simple1>();
 
 		// Disposes of <Simple1 />
 		cut.SetParametersAndRender(ps => ps.Add(p => p.ShowChild, false));

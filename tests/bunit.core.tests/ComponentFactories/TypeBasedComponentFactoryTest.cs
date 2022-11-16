@@ -19,7 +19,7 @@ public class TypeBasedComponentFactoryTest : TestContext
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
-		cut.FindComponent<Simple1>()
+		cut.FindComponentAsync<Simple1>()
 			.Instance.ShouldBeSameAs(simple1Mock);
 	}
 
@@ -33,7 +33,7 @@ public class TypeBasedComponentFactoryTest : TestContext
 			   .Add<Simple1>(p => p.First)
 			   .Add<Simple1>(p => p.Second));
 
-		cut.FindComponents<Simple1>()
+		cut.FindComponentsAsync<Simple1>()
 			.ShouldAllBe(
 				x => Mock.Get(x.Instance),
 				x => Mock.Get(x.Instance));

@@ -5,7 +5,7 @@ public class ComponentParameterCollectionTest : TestContext
 	private IRenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
 	{
 		var res = (IRenderedFragment)Renderer.RenderFragment(renderFragment);
-		return res.FindComponent<Params>();
+		return res.FindComponentAsync<Params>();
 	}
 
 	[Fact(DisplayName = "ComponentParameters can be added to collection")]

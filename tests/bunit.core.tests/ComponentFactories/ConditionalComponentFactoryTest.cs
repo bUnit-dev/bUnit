@@ -25,7 +25,7 @@ public class ConditionalComponentFactoryTest : TestContext
 
 		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
-		cut.FindComponent<Simple1>()
+		cut.FindComponentAsync<Simple1>()
 			.Instance.ShouldBeSameAs(mockComponent);
 	}
 
@@ -41,8 +41,8 @@ public class ConditionalComponentFactoryTest : TestContext
 		   .Add<Simple1>(p => p.First)
 		   .Add<NoArgs>(p => p.Second));
 
-		cut.FindComponents<Simple1>().ShouldAllBe(x => Mock.Get(x.Instance));
-		cut.FindComponents<NoArgs>().ShouldAllBe(x => Mock.Get(x.Instance));
+		cut.FindComponentsAsync<Simple1>().ShouldAllBe(x => Mock.Get(x.Instance));
+		cut.FindComponentsAsync<NoArgs>().ShouldAllBe(x => Mock.Get(x.Instance));
 	}
 
 	[Fact(DisplayName = "When matches returns false, factory is never called")]

@@ -18,78 +18,78 @@ public class MarkupMatchesAssertExtensionsTest : TestContext
 	[Fact(DisplayName = "MarkupMatches with null arguments throws ArgumentNullException")]
 	public void Test001()
 	{
-		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(ExpectedMarkup));
-		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatches(default(string)!));
-		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(default(string)!));
+		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatchesAsync(ExpectedMarkup));
+		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatchesAsync(default(string)!));
+		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatchesAsync(default(string)!));
 
-		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(ExpectedRenderedFragment));
-		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatches(default(IRenderedFragment)!));
-		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(default(IRenderedFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatchesAsync(ExpectedRenderedFragment));
+		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatchesAsync(default(IRenderedFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatchesAsync(default(IRenderedFragment)!));
 
-		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(ExpectedNodeList));
-		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatches(default(INodeList)!));
-		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(default(INodeList)!));
+		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatchesAsync(ExpectedNodeList));
+		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatchesAsync(default(INodeList)!));
+		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatchesAsync(default(INodeList)!));
 
-		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatches(ExpectedNodeList));
-		Should.Throw<ArgumentNullException>(() => ActualNodeList.MarkupMatches(default(INodeList)!));
-		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatches(default(INodeList)!));
+		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatchesAsync(ExpectedNodeList));
+		Should.Throw<ArgumentNullException>(() => ActualNodeList.MarkupMatchesAsync(default(INodeList)!));
+		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatchesAsync(default(INodeList)!));
 
-		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatches(ExpectedNode));
-		Should.Throw<ArgumentNullException>(() => ActualNodeList.MarkupMatches(default(INode)!));
-		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatches(default(INode)!));
+		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatchesAsync(ExpectedNode));
+		Should.Throw<ArgumentNullException>(() => ActualNodeList.MarkupMatchesAsync(default(INode)!));
+		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatchesAsync(default(INode)!));
 
-		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(ExpectedNodeList));
-		Should.Throw<ArgumentNullException>(() => ActualNode.MarkupMatches(default(INodeList)!));
-		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(default(INodeList)!));
+		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatchesAsync(ExpectedNodeList));
+		Should.Throw<ArgumentNullException>(() => ActualNode.MarkupMatchesAsync(default(INodeList)!));
+		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatchesAsync(default(INodeList)!));
 
-		Should.Throw<ArgumentNullException>(() => default(IRenderedFragment)!.MarkupMatches(ExpectedRenderFragment));
-		Should.Throw<ArgumentNullException>(() => ActualRenderedFragment.MarkupMatches(default(RenderFragment)!));
-		Should.Throw<ArgumentNullException>(() => default(IRenderedFragment)!.MarkupMatches(default(RenderFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(IRenderedFragment)!.MarkupMatchesAsync(ExpectedRenderFragment));
+		Should.Throw<ArgumentNullException>(() => ActualRenderedFragment.MarkupMatchesAsync(default(RenderFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(IRenderedFragment)!.MarkupMatchesAsync(default(RenderFragment)!));
 
-		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(ExpectedRenderFragment));
-		Should.Throw<ArgumentNullException>(() => ActualNode.MarkupMatches(default(RenderFragment)!));
-		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(default(RenderFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatchesAsync(ExpectedRenderFragment));
+		Should.Throw<ArgumentNullException>(() => ActualNode.MarkupMatchesAsync(default(RenderFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatchesAsync(default(RenderFragment)!));
 
-		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatches(ExpectedRenderFragment));
-		Should.Throw<ArgumentNullException>(() => ActualNodeList.MarkupMatches(default(RenderFragment)!));
-		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatches(default(RenderFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatchesAsync(ExpectedRenderFragment));
+		Should.Throw<ArgumentNullException>(() => ActualNodeList.MarkupMatchesAsync(default(RenderFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatchesAsync(default(RenderFragment)!));
 	}
 
 	[Fact(DisplayName = "MarkupMatches(string, string) correctly diffs markup")]
 	public void Test002()
-		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatches(ExpectedMarkup));
+		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatchesAsync(ExpectedMarkup));
 
 	[Fact(DisplayName = "MarkupMatches(string, IRenderedFragment) correctly diffs markup")]
 	public void Test003()
-		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatches(ExpectedRenderedFragment));
+		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatchesAsync(ExpectedRenderedFragment));
 
 	[Fact(DisplayName = "MarkupMatches(string, INodeList) correctly diffs markup")]
 	public void Test004()
-		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatches(ExpectedNodeList));
+		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatchesAsync(ExpectedNodeList));
 
 	[Fact(DisplayName = "MarkupMatches(INodeList, INodeList) correctly diffs markup")]
 	public void Test005()
-		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedNodeList));
+		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatchesAsync(ExpectedNodeList));
 
 	[Fact(DisplayName = "MarkupMatches(INodeList, INode) correctly diffs markup")]
 	public void Test006()
-		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedNode));
+		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatchesAsync(ExpectedNode));
 
 	[Fact(DisplayName = "MarkupMatches(INode, INodeList) correctly diffs markup")]
 	public void Test007()
-		=> Should.Throw<HtmlEqualException>(() => ActualNode.MarkupMatches(ExpectedNodeList));
+		=> Should.Throw<HtmlEqualException>(() => ActualNode.MarkupMatchesAsync(ExpectedNodeList));
 
 	[Fact(DisplayName = "MarkupMatches(IRenderedFragment, RenderFragment) correctly diffs markup")]
 	public void Test008()
-		=> Should.Throw<HtmlEqualException>(() => ActualRenderedFragment.MarkupMatches(ExpectedRenderFragment));
+		=> Should.Throw<HtmlEqualException>(() => ActualRenderedFragment.MarkupMatchesAsync(ExpectedRenderFragment));
 
 	[Fact(DisplayName = "MarkupMatches(INode, RenderFragment) correctly diffs markup")]
 	public void Test009()
-		=> Should.Throw<HtmlEqualException>(() => ActualNode.MarkupMatches(ExpectedRenderFragment));
+		=> Should.Throw<HtmlEqualException>(() => ActualNode.MarkupMatchesAsync(ExpectedRenderFragment));
 
 	[Fact(DisplayName = "MarkupMatches(INodeList, RenderFragment) correctly diffs markup")]
 	public void Test0010()
-		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedRenderFragment));
+		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatchesAsync(ExpectedRenderFragment));
 
 	private IRenderedFragment FindAllRenderedFragment => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
 	private readonly string findAllExpectedRenderFragment = "<p><strong>test</strong></p>";
@@ -97,7 +97,7 @@ public class MarkupMatchesAssertExtensionsTest : TestContext
 	[Fact(DisplayName = "MarkupMatches combination works with IRenderedFragment's FindAll extension method")]
 	public void Test011()
 	{
-		FindAllRenderedFragment.FindAll("p").MarkupMatches(findAllExpectedRenderFragment);
+		FindAllRenderedFragment.FindAll("p").MarkupMatchesAsync(findAllExpectedRenderFragment);
 	}
 
 	[Fact(DisplayName = "MarkupMatches combination works with FindAll and FindComponents<T>")]
@@ -105,7 +105,7 @@ public class MarkupMatchesAssertExtensionsTest : TestContext
 	{
 		var cut = RenderComponent<RefToSimple1Child>();
 
-		cut.FindAll("h1").MarkupMatches(cut.FindComponents<Simple1>());
+		cut.FindAll("h1").MarkupMatches(cut.FindComponentsAsync<Simple1>());
 	}
 
 	[Fact(DisplayName = "MarkupMatches combination works with FindAll and a markup string")]

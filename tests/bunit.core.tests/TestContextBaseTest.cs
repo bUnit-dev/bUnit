@@ -116,7 +116,7 @@ public class TestContextBaseTest : TestContext
 	{
 		ComponentFactories.Add<ChildDispose, MyChildDisposeStub>();
 		var cut = RenderComponent<ParentDispose>(ps => ps.Add(p => p.CallStack, new List<string>()));
-		var instance = cut.FindComponent<MyChildDisposeStub>().Instance;
+		var instance = cut.FindComponentAsync<MyChildDisposeStub>().Instance;
 
 		DisposeComponentsAsync();
 

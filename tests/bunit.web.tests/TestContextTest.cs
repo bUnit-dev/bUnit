@@ -26,7 +26,7 @@ public class TestContextTest : TestContext
 			b.CloseComponent();
 		});
 
-		cut.FindComponent<ReceivesCascadingValue>()
+		cut.FindComponentAsync<ReceivesCascadingValue>()
 			.Instance
 			.Value
 			.ShouldBe("FOO");
