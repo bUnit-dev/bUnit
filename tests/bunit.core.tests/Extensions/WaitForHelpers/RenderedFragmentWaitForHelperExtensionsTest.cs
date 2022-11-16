@@ -11,7 +11,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	}
 
 	[Fact(DisplayName = "WaitForAssertion can wait for multiple renders and changes to occur")]
-	public void Test110()
+	public async Task Test110()
 	{
 		// Initial state is stopped
 		var cut = RenderComponent<TwoRendersTwoChanges>();
@@ -25,41 +25,41 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		// Clicking 'tock' completes the task, which updates the state
 		// This click causes two renders, thus something is needed to await here.
 		cut.Find("#tock").Click();
-		cut.WaitForAssertion(() => cut.Find("#state").TextContent.ShouldBe("Stopped"));
+		await cut.WaitForAssertionAsync(() => cut.Find("#state").TextContent.ShouldBe("Stopped"));
 	}
 
 	[Fact(DisplayName = "WaitForAssertion throws assertion exception after timeout")]
-	public void Test011()
+	public async Task Test011()
 	{
 		var cut = RenderComponent<Simple1>();
 
-		var expected = Should.Throw<WaitForFailedException>(() =>
-			cut.WaitForAssertion(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(10)));
+		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
+			await cut.WaitForAssertionAsync(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(10)));
 
 		expected.Message.ShouldBe(WaitForAssertionHelper.TimeoutMessage);
 	}
 
 	[Fact(DisplayName = "WaitForState throws exception after timeout")]
-	public void Test012()
+	public async Task Test012()
 	{
 		var cut = RenderComponent<Simple1>();
 
-		var expected = Should.Throw<WaitForFailedException>(() =>
-			cut.WaitForState(() => string.IsNullOrEmpty(cut.Markup), TimeSpan.FromMilliseconds(100)));
+		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
+			await cut.WaitForStateAsync(() => string.IsNullOrEmpty(cut.Markup), TimeSpan.FromMilliseconds(100)));
 
 		expected.Message.ShouldBe(WaitForStateHelper.TimeoutBeforePassMessage);
 	}
 
 	[Fact(DisplayName = "WaitForState throws exception if statePredicate throws on a later render")]
-	public void Test013()
+	public async Task Test013()
 	{
 		const string expectedInnerMessage = "INNER MESSAGE";
 		var cut = RenderComponent<TwoRendersTwoChanges>();
 		cut.Find("#tick").Click();
 		cut.Find("#tock").Click();
 
-		var expected = Should.Throw<WaitForFailedException>(() =>
-			cut.WaitForState(() =>
+		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
+			await cut.WaitForStateAsync(() =>
 			{
 				if (cut.Find("#state").TextContent == "Stopped")
 					throw new InvalidOperationException(expectedInnerMessage);
@@ -72,7 +72,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	}
 
 	[Fact(DisplayName = "WaitForState can wait for multiple renders and changes to occur")]
-	public void Test100()
+	public async Task Test100()
 	{
 		// Initial state is stopped
 		var cut = RenderComponent<TwoRendersTwoChanges>();
@@ -84,7 +84,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		// Clicking 'tock' completes the task, which updates the state
 		// This click causes two renders, thus something is needed to await here.
 		cut.Find("#tock").Click();
-		cut.WaitForState(() =>
+		await cut.WaitForStateAsync(() =>
 		{
 			var elm = cut.Nodes.QuerySelector("#state");
 			return elm?.TextContent == "Stopped";
@@ -92,7 +92,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	}
 
 	[Fact(DisplayName = "WaitForState can detect async changes to properties in the CUT")]
-	public void Test200()
+	public async Task Test200()
 	{
 		var cut = RenderComponent<AsyncRenderChangesProperty>();
 		cut.Instance.Counter.ShouldBe(0);
@@ -104,29 +104,29 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		// Clicking 'tock' completes the task, which updates the counter
 		// This click causes two renders, thus something is needed to await here.
 		cut.Find("#tock").Click();
-		cut.WaitForState(() => cut.Instance.Counter == 2);
+		await cut.WaitForStateAsync(() => cut.Instance.Counter == 2);
 
 		cut.Instance.Counter.ShouldBe(2);
 	}
 
 	[Fact(DisplayName = "WaitForAssertion rethrows unhandled exception from a components async operation's methods")]
-	public void Test300()
+	public async Task Test300()
 	{
 		var cut = RenderComponent<ThrowsAfterAsyncOperation>();
 
 		// Adding additional wait time to deal with tests sometimes failing for timeout on Windows.
-		Should.Throw<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(
-			() => cut.WaitForAssertion(() => false.ShouldBeTrue(), TimeSpan.FromSeconds(5)));
+		await Should.ThrowAsync<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(async
+			() => await cut.WaitForAssertionAsync(() => false.ShouldBeTrue(), TimeSpan.FromSeconds(5)));
 	}
 
 	[Fact(DisplayName = "WaitForState rethrows unhandled exception from components async operation's methods")]
-	public void Test301()
+	public async Task Test301()
 	{
 		var cut = RenderComponent<ThrowsAfterAsyncOperation>();
 
 		// Adding additional wait time to deal with tests sometimes failing for timeout on Windows.
-		Should.Throw<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(
-			() => cut.WaitForState(() => false, TimeSpan.FromSeconds(5)));
+		await Should.ThrowAsync<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(async
+			() => await cut.WaitForStateAsync(() => false, TimeSpan.FromSeconds(5)));
 	}
 
 	internal class ThrowsAfterAsyncOperation : ComponentBase

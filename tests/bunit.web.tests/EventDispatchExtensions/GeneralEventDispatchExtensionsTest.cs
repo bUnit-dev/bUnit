@@ -271,7 +271,6 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	// reliably.
 	[Theory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
 	[MemberData(nameof(GetTenNumbers))]
-	[Trait("Category", "async")]
 	public async Task Test400(int i)
 	{
 		var cut = RenderComponent<CounterComponentDynamic>();
@@ -281,22 +280,5 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		await cut.InvokeAsync(() => cut.Find("[data-id=1]").Click());
 
 		await cut.WaitForAssertionAsync(() => cut.Find("[data-id=2]"));
-	}
-
-	// Runs the test multiple times to trigger the race condition
-	// reliably.
-	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Needed to trigger multiple reruns of test.")]
-	[Theory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
-	[MemberData(nameof(GetTenNumbers))]
-	[Trait("Category", "sync")]
-	public async Task Test400_Sync(int i)
-	{
-		var cut = RenderComponent<CounterComponentDynamic>();
-
-		cut.WaitForAssertion(() => cut.Find("[data-id=1]"));
-
-		await cut.InvokeAsync(() => cut.Find("[data-id=1]").Click());
-
-		cut.WaitForAssertion(() => cut.Find("[data-id=2]"));
 	}
 }
