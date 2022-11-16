@@ -59,9 +59,9 @@ jobs:
         with:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
 
-      - name: 🧪 Run unit tests (async)
+      - name: 🧪 Run unit tests
         run: |
-          dotnet test --filter -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
+          dotnet test -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()

@@ -81,7 +81,7 @@ public abstract class TestContextWrapper
 	/// <summary>
 	/// Disposes all components rendered via this <see cref="TestContext"/>.
 	/// </summary>
-	public virtual void DisposeComponents() => TestContext?.DisposeComponents();
+	public virtual Task DisposeComponentsAsync() => TestContext?.DisposeComponentsAsync() ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 
 	/// <summary>
 	/// Dummy method required to allow Blazor's compiler to generate

@@ -77,5 +77,5 @@ public interface ITestRenderer
 	/// <summary>
 	/// Disposes all components rendered by the <see cref="ITestRenderer" />.
 	/// </summary>
-	public void DisposeComponents();
+	public Task DisposeComponentsAsync();
 }

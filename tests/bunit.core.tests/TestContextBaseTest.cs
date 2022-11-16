@@ -10,7 +10,7 @@ public class TestContextBaseTest : TestContext
 		var callStack = new List<string>();
 		RenderComponent<ParentDispose>(ps => ps.Add(p => p.CallStack, callStack));
 
-		DisposeComponents();
+		DisposeComponentsAsync();
 
 		callStack.Count.ShouldBe(2);
 		callStack[0].ShouldBe("ParentDispose");
@@ -24,7 +24,7 @@ public class TestContextBaseTest : TestContext
 		RenderComponent<ChildDispose>(ps => ps.Add(p => p.CallStack, callStack));
 		RenderComponent<ChildDispose>(ps => ps.Add(p => p.CallStack, callStack));
 
-		DisposeComponents();
+		DisposeComponentsAsync();
 
 		callStack.Count.ShouldBe(2);
 	}
@@ -33,7 +33,7 @@ public class TestContextBaseTest : TestContext
 	public void Test103()
 	{
 		RenderComponent<ThrowExceptionComponent>();
-		var action = () => DisposeComponents();
+		var action = () => DisposeComponentsAsync();
 
 		action.ShouldThrow<NotSupportedException>();
 	}
@@ -44,7 +44,7 @@ public class TestContextBaseTest : TestContext
 		var callStack = new List<string>();
 		Render(DisposeFragments.ChildDisposeAsFragment(callStack));
 
-		DisposeComponents();
+		DisposeComponentsAsync();
 
 		callStack.Count.ShouldBe(1);
 	}
@@ -94,7 +94,7 @@ public class TestContextBaseTest : TestContext
 	{
 		RenderComponent<AsyncThrowExceptionComponent>();
 
-		DisposeComponents();
+		await DisposeComponentsAsync();
 
 		var exception = await Renderer.UnhandledException;
 		exception.ShouldBeOfType<NotSupportedException>();
@@ -106,7 +106,7 @@ public class TestContextBaseTest : TestContext
 		var cut = RenderComponent<AsyncDisposableComponent>();
 		var wasDisposedTask = cut.Instance.DisposedTask;
 
-		DisposeComponents();
+		await DisposeComponentsAsync();
 
 		await wasDisposedTask.ShouldCompleteWithin(TimeSpan.FromMilliseconds(100));
 	}
@@ -118,7 +118,7 @@ public class TestContextBaseTest : TestContext
 		var cut = RenderComponent<ParentDispose>(ps => ps.Add(p => p.CallStack, new List<string>()));
 		var instance = cut.FindComponent<MyChildDisposeStub>().Instance;
 
-		DisposeComponents();
+		DisposeComponentsAsync();
 
 		instance.WasDisposed.ShouldBeTrue();
 	}

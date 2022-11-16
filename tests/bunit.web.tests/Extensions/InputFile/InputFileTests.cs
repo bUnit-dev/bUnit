@@ -9,13 +9,13 @@ using InputFile = Microsoft.AspNetCore.Components.Forms.InputFile;
 public class InputFileTests : TestContext
 {
 	[Fact(DisplayName = "InputFile can upload a single string file")]
-	public void Test001()
+	public async Task Test001()
 	{
 		var cut = RenderComponent<InputFileComponent>();
 		var lastModified = new DateTime(1991, 5, 17);
 		var file = InputFileContent.CreateFromText("Hello World", "Hey.txt", lastModified);
 
-		cut.FindComponent<InputFile>().UploadFiles(file);
+		await cut.FindComponent<InputFile>().UploadFilesAsync(file);
 
 		cut.Instance.Content.ShouldBe("Hello World");
 		cut.Instance.Filename.ShouldBe("Hey.txt");
@@ -24,25 +24,25 @@ public class InputFileTests : TestContext
 	}
 
 	[Fact(DisplayName = "InputFile can upload a single byte file")]
-	public void Test002()
+	public async Task Test002()
 	{
 		var cut = RenderComponent<InputFileComponent>();
 		var file = InputFileContent.CreateFromBinary(Encoding.Default.GetBytes("Hello World"));
 
-		cut.FindComponent<InputFile>().UploadFiles(file);
+		await cut.FindComponent<InputFile>().UploadFilesAsync(file);
 
 		cut.Instance.Content.ShouldBe("Hello World");
 	}
 
 	[Fact(DisplayName = "InputFile can upload multiple files")]
-	public void Test003()
+	public async Task Test003()
 	{
 		var cut = RenderComponent<MultipleInputFileComponent>();
 		var lastModified = new DateTime(1991, 5, 17);
 		var file1 = InputFileContent.CreateFromText("Hello World", "Hey.txt", lastModified, "test");
 		var file2 = InputFileContent.CreateFromText("World Hey", "Test.txt", lastModified, "unit");
 
-		cut.FindComponent<InputFile>().UploadFiles(file1, file2);
+		await cut.FindComponent<InputFile>().UploadFilesAsync(file1, file2);
 
 		cut.Instance.Files.Count.ShouldBe(2);
 		cut.Instance.Files[0].FileContent.ShouldBe("Hello World");
@@ -58,11 +58,11 @@ public class InputFileTests : TestContext
 	}
 
 	[Fact(DisplayName = "UploadFile throws exception when InputFile is null")]
-	public void Test004()
+	public async Task Test004()
 	{
-		Action action = () => ((IRenderedComponent<InputFile>)null).UploadFiles();
+		Func<Task> action = () => ((IRenderedComponent<InputFile>)null).UploadFilesAsync();
 
-		action.ShouldThrow<ArgumentNullException>();
+		await action.ShouldThrowAsync<ArgumentNullException>();
 	}
 
 	[Fact(DisplayName = "Creating InputFileContent with null text throws exception")]
@@ -82,24 +82,24 @@ public class InputFileTests : TestContext
 	}
 
 	[Fact(DisplayName = "Upload no files will result in Exception")]
-	public void Test007()
+	public async Task Test007()
 	{
 		var cut = RenderComponent<InputFileComponent>();
 
-		Action act = () => cut.FindComponent<InputFile>().UploadFiles();
+		Func<Task> act = () => cut.FindComponent<InputFile>().UploadFilesAsync();
 
-		act.ShouldThrow<ArgumentException>();
+		await act.ShouldThrowAsync<ArgumentException>();
 	}
 
 	[Fact(DisplayName = "Setting up InputFile will not overwrite bUnit default")]
-	public void Test008()
+	public async Task Test008()
 	{
 		JSInterop.SetupVoid("Blazor._internal.InputFile.init").SetException(new Exception());
 		var cut = RenderComponent<InputFileComponent>();
 
-		Action act = () => cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("Hello"));
+		Func<Task> act = () => cut.FindComponent<InputFile>().UploadFilesAsync(InputFileContent.CreateFromText("Hello"));
 
-		act.ShouldNotThrow();
+		await act.ShouldNotThrowAsync();
 	}
 
 	private class InputFileComponent : ComponentBase
