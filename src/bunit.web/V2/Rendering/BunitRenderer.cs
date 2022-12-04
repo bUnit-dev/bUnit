@@ -6,7 +6,6 @@ namespace Bunit.V2.Rendering;
 
 public partial class BunitRenderer : Renderer
 {
-	private readonly SynchronizationContext callerSyncContext;
 	private readonly ILogger<BunitRenderer> logger;
 	private readonly RootComponent root;
 	private readonly int rootComponentId;
@@ -27,7 +26,6 @@ public partial class BunitRenderer : Renderer
 		ILoggerFactory loggerFactory)
 		: base(serviceProvider, loggerFactory)
 	{
-		callerSyncContext = SynchronizationContext.Current ?? throw new ArgumentException("No current SynchronizationContext");
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
 		renderedFragment = new RenderedFragment(loggerFactory.CreateLogger<RenderedFragment>());
 		root = new RootComponent();
@@ -60,10 +58,10 @@ public partial class BunitRenderer : Renderer
 	{
 		LogNewRenderBatchReceived(logger);
 		RenderCount++;
+		Dispatcher.AssertAccess();
 		var frames = new RenderTreeFrameDictionary();
 		LoadRenderTreeFrames(rootComponentId, frames);
-		var state = (this, frames);
-		callerSyncContext.Send(UpdateRenderedFragmentState, state);
+		UpdateRenderedFragmentState(frames);
 		return Task.CompletedTask;
 	}
 
@@ -100,14 +98,13 @@ public partial class BunitRenderer : Renderer
 		return framesCollection[componentId];
 	}
 
-	private static void UpdateRenderedFragmentState(object? state)
+	private void UpdateRenderedFragmentState(RenderTreeFrameDictionary frames)
 	{
-		var (renderer, frames) = (ValueTuple<BunitRenderer, RenderTreeFrameDictionary>)state!;
-		var markup = Htmlizer.GetHtml(renderer.rootComponentId, frames);
-		renderer.renderedFragment.Markup = markup;
-		renderer.renderedFragment.Nodes = renderer.htmlParser.Parse(markup);
-		LogChangedComponentsMarkupUpdated(renderer.logger);
-		renderer.renderedFragment.NotifyRenderComplete();
+		var markup = Htmlizer.GetHtml(rootComponentId, frames);
+		renderedFragment.Markup = markup;
+		renderedFragment.Nodes = htmlParser.Parse(markup);
+		LogChangedComponentsMarkupUpdated(logger);
+		renderedFragment.NotifyRenderComplete();
 	}
 
 	/// <inheritdoc/>

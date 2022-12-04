@@ -5,7 +5,7 @@ namespace Bunit.Rendering;
 /// </summary>
 public sealed class RenderEvent
 {
-	internal readonly RenderBatch RenderBatch;
+	private readonly RenderBatch RenderBatch;
 
 	/// <summary>
 	/// Gets a collection of <see cref="ArrayRange{RenderTreeFrame}"/>, accessible via the ID

@@ -13,7 +13,6 @@ public class TestRenderer : Renderer, ITestRenderer
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
-	private readonly SynchronizationContext callerSyncContext;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
 
@@ -36,7 +35,6 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
 		this.activator = renderedComponentActivator;
-		callerSyncContext = SynchronizationContext.Current ?? throw new ArgumentException("No current SynchronizationContext");
 	}
 
 	/// <summary>
@@ -47,7 +45,6 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
 		this.activator = renderedComponentActivator;
-		callerSyncContext = SynchronizationContext.Current ?? throw new ArgumentException("No current SynchronizationContext");
 	}
 
 	/// <inheritdoc/>
@@ -157,16 +154,14 @@ public class TestRenderer : Renderer, ITestRenderer
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
 		logger.LogNewRenderBatchReceived();
+		Dispatcher.AssertAccess();
 		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
-		callerSyncContext.Send(UpdateRenderedComponents, renderEvent);
+		UpdateRenderedComponents(renderEvent, in renderBatch);
 		return Task.CompletedTask;
 	}
 
-	private void UpdateRenderedComponents(object? state)
+	private void UpdateRenderedComponents(RenderEvent renderEvent, in RenderBatch renderBatch)
 	{
-		var renderEvent = (RenderEvent)state!;
-		var renderBatch = renderEvent.RenderBatch;
-
 		// removes disposed components
 		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
 		{
