@@ -63,10 +63,10 @@ jobs:
         run: |
           dotnet test --filter Category!=sync -c release
       - name: 🧪 Run unit tests (sync)
+        if: always()
         run: |
           dotnet test --filter Category!=async -c release
       - name: 📛 Upload hang- and crash-dumps on test failure
-        if: failure()
         uses: actions/upload-artifact@v3
         with:
           if-no-files-found: ignore
@@ -85,7 +85,7 @@ jobs:
         run: |
           dotnet new --install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${{ github.workspace }}/packages
 
-      - name: ✔ Verify xUnit template
+      - name: ✔ Verify xUnit template        
         run: |
           dotnet new bunit --no-restore -o ${{ github.workspace }}/TemplateTestXunit
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestXunit/Directory.Build.props
