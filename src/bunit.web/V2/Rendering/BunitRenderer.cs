@@ -1,4 +1,6 @@
+using System.Globalization;
 using System.Runtime.ExceptionServices;
+using AngleSharp.Dom;
 using Bunit.Rendering;
 using Microsoft.Extensions.Logging;
 
@@ -27,7 +29,7 @@ public partial class BunitRenderer : Renderer
 		: base(serviceProvider, loggerFactory)
 	{
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
-		renderedFragment = new RenderedFragment(loggerFactory.CreateLogger<RenderedFragment>());
+		renderedFragment = new RenderedFragment(this, loggerFactory.CreateLogger<RenderedFragment>());
 		root = new RootComponent();
 		rootComponentId = AssignRootComponentId(root);
 		htmlParser = new BunitHtmlParser();
@@ -105,6 +107,23 @@ public partial class BunitRenderer : Renderer
 		renderedFragment.Nodes = htmlParser.Parse(markup);
 		LogChangedComponentsMarkupUpdated(logger);
 		renderedFragment.NotifyRenderComplete();
+	}
+
+	public Task DispatchEventAsync(IElement element, string eventName, EventArgs? eventArgs = null)
+	{
+		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
+		if (TryGetEventId(element, eventAttrName, out var id))
+		{
+			return DispatchEventAsync(id, new EventFieldInfo { FieldValue = eventName }, eventArgs ?? EventArgs.Empty);
+		}
+
+		throw new MissingEventHandlerException(element, eventName);
+
+		static bool TryGetEventId(IElement element, string eventName, out ulong id)
+		{
+			var eventId = element.GetAttribute(eventName);
+			return ulong.TryParse(eventId, NumberStyles.Integer, CultureInfo.InvariantCulture, out id);
+		}
 	}
 
 	/// <inheritdoc/>

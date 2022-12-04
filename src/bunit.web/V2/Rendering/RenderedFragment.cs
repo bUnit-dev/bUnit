@@ -14,14 +14,20 @@ public partial class RenderedFragment
 
 	public INodeList Nodes { get; internal set; }
 
-	public RenderedFragment(ILogger<RenderedFragment> logger)
+	public BunitRenderer Renderer { get; }
+
+	internal RenderedFragment(BunitRenderer renderer, ILogger<RenderedFragment> logger)
 	{
+		Renderer = renderer;
 		this.logger = logger;
 		Markup = string.Empty;
 		Nodes = EmptyNodeList.Empty;
 	}
 
-	public async Task OnAfterRenderAsync(Action afterRenderAction, TimeSpan? timeout = null)
+	public IElement? Find(string cssSelector)
+		=> Nodes.QuerySelector(cssSelector);
+
+	public async Task AssertAfterRenderAsync(Action afterRenderAction, TimeSpan? timeout = null)
 	{
 		onAfterRenderAction = afterRenderAction;
 		onAfterRenderTask = new TaskCompletionSource();

@@ -1,3 +1,4 @@
+using System;
 using AngleSharp.Dom;
 using Bunit.TestAssets.BlazorE2E;
 using Microsoft.Extensions.Logging;
@@ -29,7 +30,7 @@ public class BunitContextTests : BunitContext
 	}
 
 	[Fact]
-	public async Task CanAcceptSimultaneousRenderRequests()
+	public async Task Can_accept_simultaneous_render_requests()
 	{
 		var expectedOutput = string.Join(
 			string.Empty,
@@ -37,12 +38,35 @@ public class BunitContextTests : BunitContext
 
 		var cut = await RenderAsync<ConcurrentRenderParent>();
 
-		await cut.OnAfterRenderAsync(
+		await cut.AssertAfterRenderAsync(
 			() =>
 			{
 				Logger.LogInformation("Checking concurrent-render-output");
 				Assert.Equal(expectedOutput, cut.Nodes.GetElementById("concurrent-render-output").TextContent.Trim());
 			},
 			timeout: TimeSpan.FromMilliseconds(2000));
+	}
+
+	[Theory]
+	[InlineData(0)]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
+	[InlineData(4)]
+	[InlineData(5)]
+	[InlineData(6)]
+	[InlineData(7)]
+	[InlineData(8)]
+	[InlineData(9)]
+	[InlineData(10)]
+	public async Task TriggerEventAsync_avoids_race_condition_with_DOM_tree_updates(int i)
+	{
+		var cut = await RenderAsync<CounterComponentDynamic>();
+
+		await cut.AssertAfterRenderAsync(() => cut.Find("[data-id=1]"));
+
+		await cut.Renderer.DispatchEventAsync(cut.Find("[data-id=1]"), "onclick");
+
+		await cut.AssertAfterRenderAsync(() => cut.Find("[data-id=2]"));
 	}
 }
