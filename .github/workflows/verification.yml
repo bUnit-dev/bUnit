@@ -93,6 +93,7 @@ jobs:
           dotnet test ${{ github.workspace }}/TemplateTestXunit
 
       - name: ✔ Verify NUnit template
+        if: matrix.os == 'windows-latest'
         run: |
           dotnet new bunit --framework nunit --no-restore -o ${{ github.workspace }}/TemplateTestNunit
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestNunit/Directory.Build.props
@@ -100,6 +101,7 @@ jobs:
           dotnet test ${{ github.workspace }}/TemplateTestNunit
 
       - name: ✔ Verify MSTest template
+        if: matrix.os == 'windows-latest'
         run: |
           dotnet new bunit --framework mstest --no-restore -o ${{ github.workspace }}/TemplateTestMstest
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestMstest/Directory.Build.props
