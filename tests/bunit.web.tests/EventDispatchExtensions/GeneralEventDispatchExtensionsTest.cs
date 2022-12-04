@@ -1,12 +1,18 @@
 using AngleSharp;
 using AngleSharp.Dom;
 using Bunit.Rendering;
+using Xunit.Abstractions;
 
 namespace Bunit;
 
 public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<EventArgs>
 {
 	protected override string ElementName => "p";
+
+	public GeneralEventDispatchExtensionsTest(ITestOutputHelper outputHelper)
+	{
+		Services.AddXunitLogger(outputHelper);
+	}
 
 	[Theory(DisplayName = "General events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(GeneralEventDispatchExtensions))]
