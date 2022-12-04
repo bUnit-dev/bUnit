@@ -5,7 +5,7 @@ namespace Bunit.Rendering;
 /// </summary>
 public sealed class RenderEvent
 {
-	private readonly RenderBatch renderBatch;
+	internal readonly RenderBatch RenderBatch;
 
 	/// <summary>
 	/// Gets a collection of <see cref="ArrayRange{RenderTreeFrame}"/>, accessible via the ID
@@ -16,11 +16,11 @@ public sealed class RenderEvent
 	/// <summary>
 	/// Initializes a new instance of the <see cref="RenderEvent"/> class.
 	/// </summary>
-	/// <param name="renderBatch">The <see cref="RenderBatch"/> update from the render event.</param>
+	/// <param name="renderBatch">The <see cref="Microsoft.AspNetCore.Components.RenderTree.RenderBatch"/> update from the render event.</param>
 	/// <param name="frames">The <see cref="RenderTreeFrameDictionary"/> from the current render.</param>
-	internal RenderEvent(RenderBatch renderBatch, RenderTreeFrameDictionary frames)
+	public RenderEvent(in RenderBatch renderBatch, RenderTreeFrameDictionary frames)
 	{
-		this.renderBatch = renderBatch;
+		this.RenderBatch = renderBatch;
 		Frames = frames;
 	}
 
@@ -50,9 +50,9 @@ public sealed class RenderEvent
 
 	private bool DidComponentDispose(IRenderedFragmentBase renderedComponent)
 	{
-		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
+		for (var i = 0; i < RenderBatch.DisposedComponentIDs.Count; i++)
 		{
-			if (renderBatch.DisposedComponentIDs.Array[i].Equals(renderedComponent.ComponentId))
+			if (RenderBatch.DisposedComponentIDs.Array[i].Equals(renderedComponent.ComponentId))
 			{
 				return true;
 			}
@@ -63,7 +63,7 @@ public sealed class RenderEvent
 
 	/// <summary>
 	/// This method determines if the <paramref name="renderedComponent"/> or any of the
-	/// components underneath it in the render tree rendered and whether they they changed
+	/// components underneath it in the render tree rendered and whether they changed
 	/// their render tree during render.
 	///
 	/// It does this by getting the status from the <paramref name="renderedComponent"/>,
@@ -81,9 +81,9 @@ public sealed class RenderEvent
 
 		void GetStatus(int componentId)
 		{
-			for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
+			for (var i = 0; i < RenderBatch.UpdatedComponents.Count; i++)
 			{
-				ref var update = ref renderBatch.UpdatedComponents.Array[i];
+				ref var update = ref RenderBatch.UpdatedComponents.Array[i];
 				if (update.ComponentId == componentId)
 				{
 					result.Rendered = true;

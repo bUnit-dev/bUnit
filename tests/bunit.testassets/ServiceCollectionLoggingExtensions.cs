@@ -26,14 +26,15 @@ public static class ServiceCollectionLoggingExtensions
 		return services;
 	}
 
-	private sealed class ThreadIDEnricher : ILogEventEnricher
-	{
-		internal const string DefaultConsoleOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss} ({ThreadID}) [{Level}] {Message}{NewLine}{Exception}";
+}
 
-		public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
-		{
-			logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty(
-			  "ThreadID", Environment.CurrentManagedThreadId.ToString("D4", CultureInfo.InvariantCulture)));
-		}
+public class ThreadIDEnricher : ILogEventEnricher
+{
+	public const string DefaultConsoleOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss} ({ThreadID}) [{Level}] {Properties} {Message}{NewLine}{Exception}";
+
+	public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
+	{
+		logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty(
+		  "ThreadID", Environment.CurrentManagedThreadId.ToString("D4", CultureInfo.InvariantCulture)));
 	}
 }

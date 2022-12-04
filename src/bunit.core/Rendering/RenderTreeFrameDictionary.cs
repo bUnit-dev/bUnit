@@ -28,7 +28,7 @@ public sealed class RenderTreeFrameDictionary : IReadOnlyDictionary<int, ArrayRa
 	/// <summary>
 	/// Initializes a new instance of the <see cref="RenderTreeFrameDictionary"/> class.
 	/// </summary>
-	internal RenderTreeFrameDictionary() { }
+	public RenderTreeFrameDictionary() { }
 
 	/// <summary>
 	/// Checks whether the collection contains a <see cref="ArrayRange{RenderTreeFrame}"/> for the <paramref name="componentId"/>.
@@ -47,5 +47,5 @@ public sealed class RenderTreeFrameDictionary : IReadOnlyDictionary<int, ArrayRa
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => currentRenderTree.GetEnumerator();
 
-	internal void Add(int componentId, ArrayRange<RenderTreeFrame> frames) => currentRenderTree.Add(componentId, frames);
+	public void Add(int componentId, ArrayRange<RenderTreeFrame> frames) => currentRenderTree.Add(componentId, frames);
 }

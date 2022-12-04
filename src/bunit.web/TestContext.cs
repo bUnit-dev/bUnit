@@ -42,15 +42,15 @@ public class TestContext : TestContextBase
 	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 	/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered.</param>
 	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
-		where TComponent : IComponent
-	{
-		var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder)
-			.Build()
-			.ToRenderFragment<TComponent>();
+		public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
+			where TComponent : IComponent
+		{
+			var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder)
+				.Build()
+				.ToRenderFragment<TComponent>();
 
-		return Render<TComponent>(renderFragment);
-	}
+			return Render<TComponent>(renderFragment);
+		}
 
 	/// <summary>
 	/// Renders the <paramref name="renderFragment"/> and returns the first <typeparamref name="TComponent"/> in the resulting render tree.

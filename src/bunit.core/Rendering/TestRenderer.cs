@@ -1,4 +1,5 @@
 using System.Runtime.ExceptionServices;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
@@ -12,6 +13,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
+	private readonly SynchronizationContext callerSyncContext;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
 
@@ -34,6 +36,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
 		this.activator = renderedComponentActivator;
+		callerSyncContext = SynchronizationContext.Current ?? throw new ArgumentException("No current SynchronizationContext");
 	}
 
 	/// <summary>
@@ -44,6 +47,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
 		this.activator = renderedComponentActivator;
+		callerSyncContext = SynchronizationContext.Current ?? throw new ArgumentException("No current SynchronizationContext");
 	}
 
 	/// <inheritdoc/>
@@ -153,10 +157,15 @@ public class TestRenderer : Renderer, ITestRenderer
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
 		logger.LogNewRenderBatchReceived();
-
-		RenderCount++;
-		
 		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
+		callerSyncContext.Send(UpdateRenderedComponents, renderEvent);
+		return Task.CompletedTask;
+	}
+
+	private void UpdateRenderedComponents(object? state)
+	{
+		var renderEvent = (RenderEvent)state!;
+		var renderBatch = renderEvent.RenderBatch;
 
 		// removes disposed components
 		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
@@ -191,8 +200,6 @@ public class TestRenderer : Renderer, ITestRenderer
 		}
 
 		logger.LogChangedComponentsMarkupUpdated();
-
-		return Task.CompletedTask;
 	}
 
 	/// <inheritdoc/>
