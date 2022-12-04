@@ -47,5 +47,8 @@ public sealed class RenderTreeFrameDictionary : IReadOnlyDictionary<int, ArrayRa
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => currentRenderTree.GetEnumerator();
 
+	/// <summary>
+	/// TODO
+	/// </summary>
 	public void Add(int componentId, ArrayRange<RenderTreeFrame> frames) => currentRenderTree.Add(componentId, frames);
 }
