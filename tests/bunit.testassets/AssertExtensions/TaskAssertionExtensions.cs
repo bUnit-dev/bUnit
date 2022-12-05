@@ -4,7 +4,15 @@ public static class TaskAssertionExtensions
 {
 	public static async Task ShouldCompleteWithin(this Task task, TimeSpan timeout)
 	{
-		if (task != await Task.WhenAny(task, Task.Delay(timeout)))
-			throw new TimeoutException();
+#if NET6_0_OR_GREATER
+		await task.WaitAsync(timeout);
+#else
+		var cts = new CancellationTokenSource();
+        var delayTask = Task.Delay(timeout, cts.Token);
+        if (task != await Task.WhenAny(task, delayTask))
+            throw new TimeoutException();
+
+        cts.Cancel();
+#endif
 	}
 }
