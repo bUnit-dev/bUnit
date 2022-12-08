@@ -261,7 +261,7 @@ internal static class Htmlizer
 					result.Append(':');
 					result.Append(nameParts[1]);
 					break;
-				case bool flag and true:
+				case true:
 					result.Append(' ');
 					result.Append(frame.AttributeName);
 					break;
