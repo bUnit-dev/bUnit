@@ -10,7 +10,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		Services.AddXunitLogger(testOutput);
 	}
 
-	[Fact(DisplayName = "WaitForAssertion can wait for multiple renders and changes to occur")]
+	[UIFact(DisplayName = "WaitForAssertion can wait for multiple renders and changes to occur")]
 	public void Test110()
 	{
 		// Initial state is stopped
@@ -28,7 +28,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		cut.WaitForAssertion(() => cut.Find("#state").TextContent.ShouldBe("Stopped"));
 	}
 
-	[Fact(DisplayName = "WaitForAssertion throws assertion exception after timeout")]
+	[UIFact(DisplayName = "WaitForAssertion throws assertion exception after timeout")]
 	public void Test011()
 	{
 		var cut = RenderComponent<Simple1>();
@@ -39,7 +39,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		expected.Message.ShouldStartWith(WaitForAssertionHelper.TimeoutMessage);
 	}
 
-	[Fact(DisplayName = "WaitForState throws exception after timeout")]
+	[UIFact(DisplayName = "WaitForState throws exception after timeout")]
 	public void Test012()
 	{
 		var cut = RenderComponent<Simple1>();
@@ -50,7 +50,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		expected.Message.ShouldStartWith(WaitForStateHelper.TimeoutBeforePassMessage);
 	}
 
-	[Fact(DisplayName = "WaitForState throws exception if statePredicate throws on a later render")]
+	[UIFact(DisplayName = "WaitForState throws exception if statePredicate throws on a later render")]
 	public void Test013()
 	{
 		const string expectedInnerMessage = "INNER MESSAGE";
@@ -71,7 +71,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 			.Message.ShouldBe(expectedInnerMessage);
 	}
 
-	[Fact(DisplayName = "WaitForState can wait for multiple renders and changes to occur")]
+	[UIFact(DisplayName = "WaitForState can wait for multiple renders and changes to occur")]
 	public void Test100()
 	{
 		// Initial state is stopped
@@ -91,7 +91,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		});
 	}
 
-	[Fact(DisplayName = "WaitForState can detect async changes to properties in the CUT")]
+	[UIFact(DisplayName = "WaitForState can detect async changes to properties in the CUT")]
 	public void Test200()
 	{
 		var cut = RenderComponent<AsyncRenderChangesProperty>();
@@ -109,7 +109,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		cut.Instance.Counter.ShouldBe(2);
 	}
 
-	[Fact(DisplayName = "WaitForAssertion rethrows unhandled exception from a components async operation's methods")]
+	[UIFact(DisplayName = "WaitForAssertion rethrows unhandled exception from a components async operation's methods")]
 	public void Test300()
 	{
 		var cut = RenderComponent<ThrowsAfterAsyncOperation>();
@@ -119,7 +119,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 			() => cut.WaitForAssertion(() => false.ShouldBeTrue(), TimeSpan.FromSeconds(5)));
 	}
 
-	[Fact(DisplayName = "WaitForState rethrows unhandled exception from components async operation's methods")]
+	[UIFact(DisplayName = "WaitForState rethrows unhandled exception from components async operation's methods")]
 	public void Test301()
 	{
 		var cut = RenderComponent<ThrowsAfterAsyncOperation>();

@@ -4,7 +4,7 @@ namespace Bunit;
 
 public class TestContextBaseTest : TestContext
 {
-	[Fact(DisplayName = "DisposeComponents disposes rendered components in parent to child order")]
+	[UIFact(DisplayName = "DisposeComponents disposes rendered components in parent to child order")]
 	public void Test101()
 	{
 		var callStack = new List<string>();
@@ -17,7 +17,7 @@ public class TestContextBaseTest : TestContext
 		callStack[1].ShouldBe("ChildDispose");
 	}
 
-	[Fact(DisplayName = "DisposeComponents disposes multiple rendered components")]
+	[UIFact(DisplayName = "DisposeComponents disposes multiple rendered components")]
 	public void Test102()
 	{
 		var callStack = new List<string>();
@@ -29,7 +29,7 @@ public class TestContextBaseTest : TestContext
 		callStack.Count.ShouldBe(2);
 	}
 
-	[Fact(DisplayName = "DisposeComponents rethrows exceptions from Dispose methods in components")]
+	[UIFact(DisplayName = "DisposeComponents rethrows exceptions from Dispose methods in components")]
 	public void Test103()
 	{
 		RenderComponent<ThrowExceptionComponent>();
@@ -38,7 +38,7 @@ public class TestContextBaseTest : TestContext
 		action.ShouldThrow<NotSupportedException>();
 	}
 
-	[Fact(DisplayName = "DisposeComponents disposes components nested in render fragments")]
+	[UIFact(DisplayName = "DisposeComponents disposes components nested in render fragments")]
 	public void Test104()
 	{
 		var callStack = new List<string>();
@@ -49,7 +49,7 @@ public class TestContextBaseTest : TestContext
 		callStack.Count.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "ComponentFactories CanCreate() method are checked during component instantiation")]
+	[UIFact(DisplayName = "ComponentFactories CanCreate() method are checked during component instantiation")]
 	public void Test0001()
 	{
 		var mock = CreateMockComponentFactory(canCreate: _ => false, create: _ => null);
@@ -61,7 +61,7 @@ public class TestContextBaseTest : TestContext
 		mock.Verify(x => x.Create(It.IsAny<Type>()), Times.Never);
 	}
 
-	[Fact(DisplayName = "ComponentFactories Create() method is called when their CanCreate() method returns true")]
+	[UIFact(DisplayName = "ComponentFactories Create() method is called when their CanCreate() method returns true")]
 	public void Test0002()
 	{
 		var mock = CreateMockComponentFactory(canCreate: _ => true, create: _ => new Simple1());
@@ -73,7 +73,7 @@ public class TestContextBaseTest : TestContext
 		mock.Verify(x => x.Create(typeof(Simple1)), Times.Once);
 	}
 
-	[Fact(DisplayName = "ComponentFactories is used in last added order")]
+	[UIFact(DisplayName = "ComponentFactories is used in last added order")]
 	public void Test0003()
 	{
 		var firstMock = CreateMockComponentFactory(canCreate: _ => true, create: _ => new Simple1());
@@ -89,7 +89,7 @@ public class TestContextBaseTest : TestContext
 		secondMock.Verify(x => x.Create(typeof(Simple1)), Times.Once);
 	}
 
-	[Fact(DisplayName = "DisposeComponents captures exceptions from DisposeAsync in Renderer.UnhandledException")]
+	[UIFact(DisplayName = "DisposeComponents captures exceptions from DisposeAsync in Renderer.UnhandledException")]
 	public async Task Test201()
 	{
 		RenderComponent<AsyncThrowExceptionComponent>();
@@ -100,7 +100,7 @@ public class TestContextBaseTest : TestContext
 		exception.ShouldBeOfType<NotSupportedException>();
 	}
 
-	[Fact(DisplayName = "DisposeComponents calls DisposeAsync on rendered components")]
+	[UIFact(DisplayName = "DisposeComponents calls DisposeAsync on rendered components")]
 	public async Task Test202()
 	{
 		var cut = RenderComponent<AsyncDisposableComponent>();
@@ -111,7 +111,7 @@ public class TestContextBaseTest : TestContext
 		await wasDisposedTask.ShouldCompleteWithin(TimeSpan.FromMilliseconds(100));
 	}
 
-	[Fact(DisplayName = "DisposeComponents should dispose components added via ComponentFactory")]
+	[UIFact(DisplayName = "DisposeComponents should dispose components added via ComponentFactory")]
 	public void Test203()
 	{
 		ComponentFactories.Add<ChildDispose, MyChildDisposeStub>();
@@ -123,7 +123,7 @@ public class TestContextBaseTest : TestContext
 		instance.WasDisposed.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Can correctly resolve and dispose of scoped disposable service")]
+	[UIFact(DisplayName = "Can correctly resolve and dispose of scoped disposable service")]
 	public void Net5Test001()
 	{
 		AsyncDisposableService asyncDisposable;
@@ -135,7 +135,7 @@ public class TestContextBaseTest : TestContext
 		asyncDisposable.IsDisposed.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Can correctly resolve and dispose of transient disposable service")]
+	[UIFact(DisplayName = "Can correctly resolve and dispose of transient disposable service")]
 	public void Net5Test002()
 	{
 		AsyncDisposableService asyncDisposable;
@@ -147,7 +147,7 @@ public class TestContextBaseTest : TestContext
 		asyncDisposable.IsDisposed.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Can correctly resolve and dispose of singleton disposable service")]
+	[UIFact(DisplayName = "Can correctly resolve and dispose of singleton disposable service")]
 	public void Net5Test003()
 	{
 		AsyncDisposableService asyncDisposable;

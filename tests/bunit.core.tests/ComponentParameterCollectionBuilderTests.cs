@@ -49,46 +49,46 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		return res.FindComponent<TComponent>();
 	}
 
-	[Fact(DisplayName = "Null for parameter selector throws")]
+	[UIFact(DisplayName = "Null for parameter selector throws")]
 	public void Test000()
 	{
 		Should.Throw<ArgumentNullException>(() => Builder.Add(default!, 42));
 	}
 
-	[Fact(DisplayName = "Selecting a non property with parameter selector throws")]
+	[UIFact(DisplayName = "Selecting a non property with parameter selector throws")]
 	public void Test0000()
 	{
 		Should.Throw<ArgumentException>(() => Builder.Add(x => x.Field, 42));
 	}
 
-	[Fact(DisplayName = "Selecting a non parameter property with parameter selector throws")]
+	[UIFact(DisplayName = "Selecting a non parameter property with parameter selector throws")]
 	public void Test00000()
 	{
 		Should.Throw<ArgumentException>(() => Builder.Add(x => x.NonParamProp, new object()));
 	}
 
-	[Fact(DisplayName = "Value type with parameter selector")]
+	[UIFact(DisplayName = "Value type with parameter selector")]
 	public void Test001()
 	{
 		Builder.Add(x => x.ValueTypeParam, 42);
 		VerifyParameter("ValueTypeParam", 42);
 	}
 
-	[Fact(DisplayName = "Null for struct? with parameter selector")]
+	[UIFact(DisplayName = "Null for struct? with parameter selector")]
 	public void Test002()
 	{
 		Builder.Add(x => x.NullableValueTypeParam, null);
 		VerifyParameter<int?>("NullableValueTypeParam", null);
 	}
 
-	[Fact(DisplayName = "Struct? with parameter selector")]
+	[UIFact(DisplayName = "Struct? with parameter selector")]
 	public void Test003()
 	{
 		Builder.Add(x => x.NullableValueTypeParam, 1234);
 		VerifyParameter("NullableValueTypeParam", 1234);
 	}
 
-	[Fact(DisplayName = "Object with parameter selector")]
+	[UIFact(DisplayName = "Object with parameter selector")]
 	public void Test004()
 	{
 		var input = new object();
@@ -96,14 +96,14 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		VerifyParameter("Param", input);
 	}
 
-	[Fact(DisplayName = "Null for object with parameter selector")]
+	[UIFact(DisplayName = "Null for object with parameter selector")]
 	public void Test005()
 	{
 		Builder.Add(x => x.Param, null);
 		VerifyParameter<object>("Param", null);
 	}
 
-	[Fact(DisplayName = "EventCallback with parameter selector")]
+	[UIFact(DisplayName = "EventCallback with parameter selector")]
 	public void Test010()
 	{
 		var input = EventCallback.Empty;
@@ -111,62 +111,62 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		VerifyParameter("EC", input);
 	}
 
-	[Fact(DisplayName = "Null to EventCallback throws")]
+	[UIFact(DisplayName = "Null to EventCallback throws")]
 	public void Test011()
 	{
 		Should.Throw<ArgumentNullException>(() => Builder.Add(x => x.EC, null!));
 	}
 
-	[Fact(DisplayName = "Null for EventCallback? with parameter selector")]
+	[UIFact(DisplayName = "Null for EventCallback? with parameter selector")]
 	public void Test011_2()
 	{
 		Builder.Add<EventCallback?>(x => x.NullableEC, null);
 		VerifyParameter<EventCallback?>("NullableEC", null);
 	}
 
-	[Fact(DisplayName = "Action to EventCallback with parameter selector")]
+	[UIFact(DisplayName = "Action to EventCallback with parameter selector")]
 	public async Task Test012()
 	{
 		Builder.Add(x => x.EC, () => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync("EC");
 	}
 
-	[Fact(DisplayName = "Action<object> to EventCallback with parameter selector")]
+	[UIFact(DisplayName = "Action<object> to EventCallback with parameter selector")]
 	public async Task Test013()
 	{
 		Builder.Add(x => x.EC, _ => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync("EC");
 	}
 
-	[Fact(DisplayName = "Func<Task> to EventCallback with parameter selector")]
+	[UIFact(DisplayName = "Func<Task> to EventCallback with parameter selector")]
 	public async Task Test014()
 	{
 		Builder.Add(x => x.EC, () => { EventCallbackCalled = true; return Task.CompletedTask; });
 		await VerifyEventCallbackAsync("EC");
 	}
 
-	[Fact(DisplayName = "Action to EventCallback? with parameter selector")]
+	[UIFact(DisplayName = "Action to EventCallback? with parameter selector")]
 	public async Task Test015()
 	{
 		Builder.Add(x => x.NullableEC, () => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync("NullableEC");
 	}
 
-	[Fact(DisplayName = "Action<object> to EventCallback? with parameter selector")]
+	[UIFact(DisplayName = "Action<object> to EventCallback? with parameter selector")]
 	public async Task Test016()
 	{
 		Builder.Add(x => x.NullableEC, _ => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync("NullableEC");
 	}
 
-	[Fact(DisplayName = "Func<Task> to EventCallback? with parameter selector")]
+	[UIFact(DisplayName = "Func<Task> to EventCallback? with parameter selector")]
 	public async Task Test017()
 	{
 		Builder.Add(x => x.NullableEC, () => { EventCallbackCalled = true; return Task.CompletedTask; });
 		await VerifyEventCallbackAsync("NullableEC");
 	}
 
-	[Fact(DisplayName = "EventCallback<T> with parameter selector")]
+	[UIFact(DisplayName = "EventCallback<T> with parameter selector")]
 	public void Test018()
 	{
 		var input = EventCallback<EventArgs>.Empty;
@@ -174,28 +174,28 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		VerifyParameter("ECWithArgs", input);
 	}
 
-	[Fact(DisplayName = "Action to EventCallback<T> with parameter selector")]
+	[UIFact(DisplayName = "Action to EventCallback<T> with parameter selector")]
 	public async Task Test019()
 	{
 		Builder.Add(x => x.ECWithArgs, () => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync<EventArgs>("ECWithArgs");
 	}
 
-	[Fact(DisplayName = "Action<object> to EventCallback<T> with parameter selector")]
+	[UIFact(DisplayName = "Action<object> to EventCallback<T> with parameter selector")]
 	public async Task Test020()
 	{
 		Builder.Add(x => x.ECWithArgs, _ => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync<EventArgs>("ECWithArgs");
 	}
 
-	[Fact(DisplayName = "Func<Task> to EventCallback<T> with parameter selector")]
+	[UIFact(DisplayName = "Func<Task> to EventCallback<T> with parameter selector")]
 	public async Task Test021()
 	{
 		Builder.Add(x => x.ECWithArgs, () => { EventCallbackCalled = true; return Task.CompletedTask; });
 		await VerifyEventCallbackAsync<EventArgs>("ECWithArgs");
 	}
 
-	[Fact(DisplayName = "EventCallback<T> with parameter selector")]
+	[UIFact(DisplayName = "EventCallback<T> with parameter selector")]
 	public void Test022()
 	{
 		var input = EventCallback<EventArgs>.Empty;
@@ -203,28 +203,28 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		VerifyParameter("NullableECWithArgs", input);
 	}
 
-	[Fact(DisplayName = "Action to EventCallback<T> with parameter selector")]
+	[UIFact(DisplayName = "Action to EventCallback<T> with parameter selector")]
 	public async Task Test023()
 	{
 		Builder.Add(x => x.NullableECWithArgs, () => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync<EventArgs>("NullableECWithArgs");
 	}
 
-	[Fact(DisplayName = "Action<object> to EventCallback<T> with parameter selector")]
+	[UIFact(DisplayName = "Action<object> to EventCallback<T> with parameter selector")]
 	public async Task Test024()
 	{
 		Builder.Add(x => x.NullableECWithArgs, _ => { EventCallbackCalled = true; });
 		await VerifyEventCallbackAsync<EventArgs>("NullableECWithArgs");
 	}
 
-	[Fact(DisplayName = "Func<Task> to EventCallback<T> with parameter selector")]
+	[UIFact(DisplayName = "Func<Task> to EventCallback<T> with parameter selector")]
 	public async Task Test025()
 	{
 		Builder.Add(x => x.NullableECWithArgs, () => { EventCallbackCalled = true; return Task.CompletedTask; });
 		await VerifyEventCallbackAsync<EventArgs>("NullableECWithArgs");
 	}
 
-	[Fact(DisplayName = "ChildContent can be passed as RenderFragment")]
+	[UIFact(DisplayName = "ChildContent can be passed as RenderFragment")]
 	public void Test030()
 	{
 		RenderFragment input = b => b.AddMarkupContent(0, string.Empty);
@@ -232,7 +232,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		VerifyParameter<RenderFragment>("ChildContent", input);
 	}
 
-	[Fact(DisplayName = "Calling AddChildContent when TCompnent does not have a parameter named ChildContent throws")]
+	[UIFact(DisplayName = "Calling AddChildContent when TCompnent does not have a parameter named ChildContent throws")]
 	public void Test031()
 	{
 		RenderFragment input = b => b.AddMarkupContent(0, string.Empty);
@@ -240,7 +240,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		Assert.Throws<ArgumentException>(() => new ComponentParameterCollectionBuilder<NonChildContentParameter>().AddChildContent(input));
 	}
 
-	[Fact(DisplayName = "ChildContent can be passed as a nested component parameter builder")]
+	[UIFact(DisplayName = "ChildContent can be passed as a nested component parameter builder")]
 	public void Test032()
 	{
 		Builder.AddChildContent<InhertedParams>(parameters => parameters.Add(p => p.ValueTypeParam, 42));
@@ -251,7 +251,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		actualComponent.Instance.ValueTypeParam.ShouldBe(42);
 	}
 
-	[Fact(DisplayName = "ChildContent can be passed as a child component without parameters")]
+	[UIFact(DisplayName = "ChildContent can be passed as a child component without parameters")]
 	public void Test033()
 	{
 		Builder.AddChildContent<NoParams>();
@@ -262,7 +262,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		actualComponent.Instance.ShouldBeOfType<NoParams>();
 	}
 
-	[Fact(DisplayName = "ChildContent can be passed as a markup string")]
+	[UIFact(DisplayName = "ChildContent can be passed as a markup string")]
 	public void Test034()
 	{
 		var input = "<p>42</p>";
@@ -274,7 +274,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		actualComponent.Markup.ShouldBe(input);
 	}
 
-	[Fact(DisplayName = "RenderFragment can be passed as a nested component parameter builder")]
+	[UIFact(DisplayName = "RenderFragment can be passed as a nested component parameter builder")]
 	public void Test040()
 	{
 		Builder.Add<InhertedParams>(x => x.OtherFragment, parameters => parameters.Add(p => p.ValueTypeParam, 42));
@@ -285,7 +285,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		actualComponent.Instance.ValueTypeParam.ShouldBe(42);
 	}
 
-	[Fact(DisplayName = "RenderFragment can be passed as a child component without parameters")]
+	[UIFact(DisplayName = "RenderFragment can be passed as a child component without parameters")]
 	public void Test041()
 	{
 		Builder.Add<NoParams>(x => x.OtherFragment);
@@ -296,7 +296,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		actualComponent.Instance.ShouldBeOfType<NoParams>();
 	}
 
-	[Fact(DisplayName = "RenderFragment can be passed as a markup string")]
+	[UIFact(DisplayName = "RenderFragment can be passed as a markup string")]
 	public void Test042()
 	{
 		var input = "<p>42</p>";
@@ -308,7 +308,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		actualComponent.Markup.ShouldBe(input);
 	}
 
-	[Fact(DisplayName = "RenderFragment can be passed RenderFragment")]
+	[UIFact(DisplayName = "RenderFragment can be passed RenderFragment")]
 	public void Test043()
 	{
 		RenderFragment input = b => b.AddMarkupContent(0, string.Empty);
@@ -319,7 +319,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter("OtherFragment", input, isCascadingValue: false);
 	}
 
-	[Fact(DisplayName = "RenderFragment can be passed multiple times")]
+	[UIFact(DisplayName = "RenderFragment can be passed multiple times")]
 	public void Test044()
 	{
 		var input = "FOO";
@@ -336,7 +336,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		}
 	}
 
-	[Fact(DisplayName = "RenderFragment<T>? can be passed as RenderFragment")]
+	[UIFact(DisplayName = "RenderFragment<T>? can be passed as RenderFragment")]
 	public void Test050()
 	{
 		RenderFragment<string> input = s => b => b.AddMarkupContent(0, s);
@@ -347,7 +347,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter("Template", input, isCascadingValue: false);
 	}
 
-	[Fact(DisplayName = "RenderFragment<T>? can be passed lambda builder")]
+	[UIFact(DisplayName = "RenderFragment<T>? can be passed lambda builder")]
 	public void Test051()
 	{
 		var input = "FOO";
@@ -359,7 +359,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		actualComponent.Markup.ShouldBe(input);
 	}
 
-	[Fact(DisplayName = "RenderFragment<T>? can be passed as nested object builder")]
+	[UIFact(DisplayName = "RenderFragment<T>? can be passed as nested object builder")]
 	public void Test052()
 	{
 		var input = "FOO";
@@ -374,7 +374,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		actualComponent.Instance.Param.ShouldBe(input);
 	}
 
-	[Fact(DisplayName = "RenderFragment<T> can be passed multiple times")]
+	[UIFact(DisplayName = "RenderFragment<T> can be passed multiple times")]
 	public void Test053()
 	{
 		Builder.Add(x => x.Template, value => value);
@@ -391,7 +391,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		}
 	}
 
-	[Fact(DisplayName = "Cascading values can be passed using Add and parameter selector")]
+	[UIFact(DisplayName = "Cascading values can be passed using Add and parameter selector")]
 	public void Test060()
 	{
 		Builder.Add(p => p.NullableCC, "FOO");
@@ -414,7 +414,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			});
 	}
 
-	[Fact(DisplayName = "AddCascadingValue can add unnamed cascading values")]
+	[UIFact(DisplayName = "AddCascadingValue can add unnamed cascading values")]
 	public void Test061()
 	{
 		var input = "FOO";
@@ -425,7 +425,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter(null, input, isCascadingValue: true);
 	}
 
-	[Fact(DisplayName = "AddCascadingValue can add named cascading values")]
+	[UIFact(DisplayName = "AddCascadingValue can add named cascading values")]
 	public void Test062()
 	{
 		var name = "NAME";
@@ -437,7 +437,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter(name, input, isCascadingValue: true);
 	}
 
-	[Fact(DisplayName = "AddUnmatched can add unmatched empty value attributes as parameters")]
+	[UIFact(DisplayName = "AddUnmatched can add unmatched empty value attributes as parameters")]
 	public void Test070()
 	{
 		var name = "NAME";
@@ -449,7 +449,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter<object>(name, null, isCascadingValue: false);
 	}
 
-	[Fact(DisplayName = "AddUnmatched can add unmatched value attributes as parameters")]
+	[UIFact(DisplayName = "AddUnmatched can add unmatched value attributes as parameters")]
 	public void Test071()
 	{
 		var name = "NAME";
@@ -462,7 +462,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter(name, value, isCascadingValue: false);
 	}
 
-	[Theory(DisplayName = "AddUnmatched throws if name is null or whitespace")]
+	[UITheory(DisplayName = "AddUnmatched throws if name is null or whitespace")]
 	[InlineData("")]
 	[InlineData(" ")]
 	public void Test072(string emptyName)
@@ -470,7 +470,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		Should.Throw<ArgumentException>(() => Builder.AddUnmatched(emptyName));
 	}
 
-	[Fact(DisplayName = "AddUnmatched throws if component doesnt have an Parameter(CaptureUnmatchedValues = true)")]
+	[UIFact(DisplayName = "AddUnmatched throws if component doesnt have an Parameter(CaptureUnmatchedValues = true)")]
 	public void Test073()
 	{
 		var sut = new ComponentParameterCollectionBuilder<NoParams>();
@@ -478,7 +478,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		Should.Throw<ArgumentException>(() => sut.AddUnmatched("foo"));
 	}
 
-	[Fact(DisplayName = "Can select parameters inherited from base component ")]
+	[UIFact(DisplayName = "Can select parameters inherited from base component ")]
 	public void Test101()
 	{
 		Builder.Add(x => x.Param, new object());
@@ -486,7 +486,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		Builder.Build().ShouldHaveSingleItem();
 	}
 
-	[Fact(DisplayName = "TryAdd returns false when parameter does not exist on component")]
+	[UIFact(DisplayName = "TryAdd returns false when parameter does not exist on component")]
 	public void Test200()
 	{
 		var sut = new ComponentParameterCollectionBuilder<NoParams>();
@@ -497,7 +497,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		sut.Build().Count.ShouldBe(0);
 	}
 
-	[Fact(DisplayName = "TryAdd returns true when parameter exists on component")]
+	[UIFact(DisplayName = "TryAdd returns true when parameter exists on component")]
 	public void Test201()
 	{
 		var name = nameof(Params.ValueTypeParam);
@@ -510,7 +510,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter(name, input, isCascadingValue: false);
 	}
 
-	[Fact(DisplayName = "TryAdd returns true when unnamed cascading parameter exists on component")]
+	[UIFact(DisplayName = "TryAdd returns true when unnamed cascading parameter exists on component")]
 	public void Test202()
 	{
 		var name = nameof(Params.CC);
@@ -523,7 +523,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter(null, input, isCascadingValue: true);
 	}
 
-	[Fact(DisplayName = "TryAdd returns true when named cascading parameter exists on component")]
+	[UIFact(DisplayName = "TryAdd returns true when named cascading parameter exists on component")]
 	public void Test203()
 	{
 		var name = nameof(Params.NamedCC);
@@ -536,7 +536,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter(name + "NAME", input, isCascadingValue: true);
 	}
 
-	[Fact(DisplayName = "Add of inherited overriden parameter works")]
+	[UIFact(DisplayName = "Add of inherited overriden parameter works")]
 	public void Test300()
 	{
 		var sut = new ComponentParameterCollectionBuilder<InheritedParamsWithOverride>();
@@ -548,7 +548,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter("Value", true, isCascadingValue: false);
 	}
 
-	[Fact(DisplayName = "Add of inherited parameter works")]
+	[UIFact(DisplayName = "Add of inherited parameter works")]
 	public void Test301()
 	{
 		var sut = new ComponentParameterCollectionBuilder<InheritedParamsWithoutOverride>();
@@ -560,7 +560,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter("Value", true, isCascadingValue: false);
 	}
 
-	[Fact(DisplayName = "AddChildContent on generic child content parameter throws")]
+	[UIFact(DisplayName = "AddChildContent on generic child content parameter throws")]
 	public void Test302()
 	{
 		Action addChildContent = () => new ComponentParameterCollectionBuilder<TemplatedChildContent>().AddChildContent("<p>item</p>");
@@ -568,7 +568,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		addChildContent.ShouldThrow<ArgumentException>();
 	}
 
-	[Fact(DisplayName = "Add with generic child content works")]
+	[UIFact(DisplayName = "Add with generic child content works")]
 	public void Test303()
 	{
 		var sut = new ComponentParameterCollectionBuilder<TemplatedChildContent>();
@@ -580,7 +580,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter<RenderFragment<string>?>(nameof(TemplatedChildContent.ChildContent), false);
 	}
 
-	[Fact(DisplayName = "Bind should add Value and ValueChanged event")]
+	[UIFact(DisplayName = "Bind should add Value and ValueChanged event")]
 	public void Test304()
 	{
 		var sut = new ComponentParameterCollectionBuilder<SimpleBind>();
@@ -592,7 +592,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			x => x.ShouldBeParameter<EventCallback<string>>("ValueChanged", false));
 	}
 
-	[Fact(DisplayName = "Bind should add Expression event when available")]
+	[UIFact(DisplayName = "Bind should add Expression event when available")]
 	public void Test305()
 	{
 		var sut = new ComponentParameterCollectionBuilder<FullBind>();
@@ -605,7 +605,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldHaveSingleItem();
 	}
 
-	[Fact(DisplayName = "Throw an exception when no Changed event available")]
+	[UIFact(DisplayName = "Throw an exception when no Changed event available")]
 	public void Test306()
 	{
 		var sut = new ComponentParameterCollectionBuilder<NoTwoWayBind>();
@@ -615,7 +615,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldThrow<InvalidOperationException>();
 	}
 
-	[Fact(DisplayName = "Throw an exception when cascading parameter")]
+	[UIFact(DisplayName = "Throw an exception when cascading parameter")]
 	public void Test307()
 	{
 		var sut = new ComponentParameterCollectionBuilder<ComponentWithCascadingParameter>();
@@ -625,7 +625,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldThrow<ArgumentException>();
 	}
 
-	[Fact(DisplayName = "Throw an exception when Changed event is not a public parameter")]
+	[UIFact(DisplayName = "Throw an exception when Changed event is not a public parameter")]
 	public void Test308()
 	{
 		var sut = new ComponentParameterCollectionBuilder<InvalidTwoWayBind>();
@@ -635,7 +635,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldThrow<InvalidOperationException>();
 	}
 
-	[Fact(DisplayName = "Throw exception when parameter selector is null")]
+	[UIFact(DisplayName = "Throw exception when parameter selector is null")]
 	public void Test309()
 	{
 		var sut = new ComponentParameterCollectionBuilder<SimpleBind>();
@@ -645,7 +645,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldThrow<ArgumentNullException>();
 	}
 
-	[Fact(DisplayName = "Throw exception when changed action is null")]
+	[UIFact(DisplayName = "Throw exception when changed action is null")]
 	public void Test310()
 	{
 		var sut = new ComponentParameterCollectionBuilder<SimpleBind>();
@@ -655,7 +655,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldThrow<ArgumentNullException>();
 	}
 
-	[Fact(DisplayName = "Throw exception when wrong parameter is changed action")]
+	[UIFact(DisplayName = "Throw exception when wrong parameter is changed action")]
 	public void Test311()
 	{
 		var sut = new ComponentParameterCollectionBuilder<SimpleBind>();
@@ -665,7 +665,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldThrow<ArgumentException>();
 	}
 
-	[Fact(DisplayName = "Throw exception when wrong parameter is expression")]
+	[UIFact(DisplayName = "Throw exception when wrong parameter is expression")]
 	public void Test312()
 	{
 		const string value = "some string";
@@ -676,7 +676,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldThrow<ArgumentException>();
 	}
 
-	[Fact(DisplayName = "Properties with Changed at the end, which are not of type EventCallback can be bound")]
+	[UIFact(DisplayName = "Properties with Changed at the end, which are not of type EventCallback can be bound")]
 	public void Test313()
 	{
 		var sut = new ComponentParameterCollectionBuilder<ValidNamesComponent>();
@@ -686,7 +686,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldNotThrow();
 	}
 
-	[Fact(DisplayName = "Properties with Expression at the end, which are not of type expression can be bound")]
+	[UIFact(DisplayName = "Properties with Expression at the end, which are not of type expression can be bound")]
 	public void Test314()
 	{
 		var sut = new ComponentParameterCollectionBuilder<ValidNamesComponent>();

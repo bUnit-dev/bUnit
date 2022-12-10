@@ -10,7 +10,7 @@ public class FakeNavigationManagerTest : TestContext
 	private FakeNavigationManager CreateFakeNavigationManager()
 		=> Services.GetRequiredService<FakeNavigationManager>();
 
-	[Fact(DisplayName = "TestContext.Services has NavigationManager registered by default as FakeNavigationManager")]
+	[UIFact(DisplayName = "TestContext.Services has NavigationManager registered by default as FakeNavigationManager")]
 	public void Test001()
 	{
 		var nm = Services.GetService<NavigationManager>();
@@ -21,7 +21,7 @@ public class FakeNavigationManagerTest : TestContext
 		nm.ShouldBe(fnm);
 	}
 
-	[Fact(DisplayName = "FakeNavigationManager.BaseUrl is set to http://localhost/")]
+	[UIFact(DisplayName = "FakeNavigationManager.BaseUrl is set to http://localhost/")]
 	public void Test002()
 	{
 		var sut = CreateFakeNavigationManager();
@@ -29,7 +29,7 @@ public class FakeNavigationManagerTest : TestContext
 		sut.BaseUri.ShouldBe("http://localhost/");
 	}
 
-	[Theory(DisplayName = "NavigateTo with relative URI converts it to absolute and sets the Uri property ")]
+	[UITheory(DisplayName = "NavigateTo with relative URI converts it to absolute and sets the Uri property ")]
 	[InlineData("")]
 	[InlineData("/")]
 	[InlineData("/foo")]
@@ -43,7 +43,7 @@ public class FakeNavigationManagerTest : TestContext
 		sut.Uri.ShouldBe(expectedUri.ToString());
 	}
 
-	[Theory(DisplayName = "NavigateTo with absolute URI sets the Uri property")]
+	[UITheory(DisplayName = "NavigateTo with absolute URI sets the Uri property")]
 	[InlineData("http://localhost")]
 	[InlineData("http://localhost/")]
 	[InlineData("http://localhost/foo")]
@@ -57,7 +57,7 @@ public class FakeNavigationManagerTest : TestContext
 		sut.Uri.ShouldBe(expectedUri.OriginalString);
 	}
 
-	[Fact(DisplayName = "NavigateTo raises the NotifyLocationChanged")]
+	[UIFact(DisplayName = "NavigateTo raises the NotifyLocationChanged")]
 	public void Test005()
 	{
 		// arrange
@@ -80,7 +80,7 @@ public class FakeNavigationManagerTest : TestContext
 		}
 	}
 
-	[Fact(DisplayName = "LocationChanged is raised on the test renderer's dispatcher")]
+	[UIFact(DisplayName = "LocationChanged is raised on the test renderer's dispatcher")]
 	public void Test006()
 	{
 		var sut = CreateFakeNavigationManager();
@@ -91,7 +91,7 @@ public class FakeNavigationManagerTest : TestContext
 		cut.Find("p").MarkupMatches($"<p>{sut.BaseUri}foo</p>");
 	}
 
-	[Fact(DisplayName = "Uri should not be unescaped")]
+	[UIFact(DisplayName = "Uri should not be unescaped")]
 	public void Test007()
 	{
 		var sut = CreateFakeNavigationManager();
@@ -101,7 +101,7 @@ public class FakeNavigationManagerTest : TestContext
 		sut.Uri.ShouldEndWith("with%20whitespace");
 	}
 
-	[Theory(DisplayName = "NavigateTo(uri, forceLoad, replaceHistoryEntry) is saved in history")]
+	[UITheory(DisplayName = "NavigateTo(uri, forceLoad, replaceHistoryEntry) is saved in history")]
 	[InlineData("/uri", false, false)]
 	[InlineData("/uri", true, false)]
 	[InlineData("/uri", false, true)]
@@ -123,7 +123,7 @@ public class FakeNavigationManagerTest : TestContext
 #endif
 	}
 
-	[Fact(DisplayName = "NavigateTo with replaceHistoryEntry true replaces previous history entry")]
+	[UIFact(DisplayName = "NavigateTo with replaceHistoryEntry true replaces previous history entry")]
 	public void Test201()
 	{
 		var sut = CreateFakeNavigationManager();
@@ -142,7 +142,7 @@ public class FakeNavigationManagerTest : TestContext
 #endif
 	}
 
-	[Fact(DisplayName = "Navigate to an external url should set BaseUri")]
+	[UIFact(DisplayName = "Navigate to an external url should set BaseUri")]
 	public void Test008()
 	{
 		const string externalUri = "https://bunit.dev/docs/getting-started/index.html";
@@ -154,7 +154,7 @@ public class FakeNavigationManagerTest : TestContext
 		sut.Uri.ShouldBe(externalUri);
 	}
 
-	[Fact(DisplayName = "Navigate to external url should not invoke LocationChanged event")]
+	[UIFact(DisplayName = "Navigate to external url should not invoke LocationChanged event")]
 	public void Test009()
 	{
 		var locationChangedInvoked = false;
@@ -168,7 +168,7 @@ public class FakeNavigationManagerTest : TestContext
 	}
 
 #if NET7_0_OR_GREATER
-	[Fact(DisplayName = "When component provides NavigationLock, FakeNavigationManager should intercept calls")]
+	[UIFact(DisplayName = "When component provides NavigationLock, FakeNavigationManager should intercept calls")]
 	public void Test010()
 	{
 		var fakeNavigationManager = CreateFakeNavigationManager();
@@ -180,7 +180,7 @@ public class FakeNavigationManagerTest : TestContext
 		fakeNavigationManager.History.Single().State.ShouldBe(NavigationState.Prevented);
 	}
 
-	[Fact(DisplayName = "Intercepting external url's should work")]
+	[UIFact(DisplayName = "Intercepting external url's should work")]
 	public void Test011()
 	{
 		var fakeNavigationManager = CreateFakeNavigationManager();
@@ -191,7 +191,7 @@ public class FakeNavigationManagerTest : TestContext
 		fakeNavigationManager.History.ShouldNotBeEmpty();
 	}
 
-	[Fact(DisplayName = "Exception while intercepting is set on FakeNaviationManager")]
+	[UIFact(DisplayName = "Exception while intercepting is set on FakeNaviationManager")]
 	public void Test012()
 	{
 		var fakeNavigationManager = CreateFakeNavigationManager();
@@ -204,7 +204,7 @@ public class FakeNavigationManagerTest : TestContext
 		entry.State.ShouldBe(NavigationState.Faulted);
 	}
 
-	[Fact(DisplayName = "StateFromJson deserialize InteractiveRequestOptions")]
+	[UIFact(DisplayName = "StateFromJson deserialize InteractiveRequestOptions")]
 	public void Test013()
 	{
 		var fakeNavigationManager = CreateFakeNavigationManager();
@@ -224,7 +224,7 @@ public class FakeNavigationManagerTest : TestContext
 		libraryName.ShouldBe("bunit");
 	}
 
-	[Fact(DisplayName = "Given no content in state then StateFromJson throws")]
+	[UIFact(DisplayName = "Given no content in state then StateFromJson throws")]
 	public void Test014()
 	{
 		var fakeNavigationManager = CreateFakeNavigationManager();
@@ -234,7 +234,7 @@ public class FakeNavigationManagerTest : TestContext
 			() => fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>());
 	}
 
-	[Fact(DisplayName = "StateFromJson with invalid json throws")]
+	[UIFact(DisplayName = "StateFromJson with invalid json throws")]
 	public void Test015()
 	{
 		var fakeNavigationManager = CreateFakeNavigationManager();

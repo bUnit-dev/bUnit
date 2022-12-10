@@ -7,13 +7,13 @@ public class JSRuntimeAssertExtensionsTest
 {
 	private static BunitJSInterop CreateSut(JSRuntimeMode mode = JSRuntimeMode.Loose) => new() { Mode = mode };
 
-	[Fact(DisplayName = "BunitJSInterop.VerifyNotInvoke throws if handler is null")]
+	[UIFact(DisplayName = "BunitJSInterop.VerifyNotInvoke throws if handler is null")]
 	public void Test001()
 	{
 		Should.Throw<ArgumentNullException>(() => default(BunitJSInterop)!.VerifyNotInvoke(string.Empty));
 	}
 
-	[Fact(DisplayName = "BunitJSInterop.VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
+	[UIFact(DisplayName = "BunitJSInterop.VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
 						"has been invoked one or more times")]
 	public async Task Test002()
 	{
@@ -25,7 +25,7 @@ public class JSRuntimeAssertExtensionsTest
 		Should.Throw<JSInvokeCountExpectedException>(() => sut.VerifyNotInvoke(identifier));
 	}
 
-	[Fact(DisplayName = "BunitJSInterop.VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
+	[UIFact(DisplayName = "BunitJSInterop.VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
 						"has been invoked one or more times, with custom error message")]
 	public async Task Test003()
 	{
@@ -39,14 +39,14 @@ public class JSRuntimeAssertExtensionsTest
 			.Message.ShouldContain(errMsg);
 	}
 
-	[Fact(DisplayName = "BunitJSInterop.VerifyNotInvoke does not throw if identifier has not been invoked")]
+	[UIFact(DisplayName = "BunitJSInterop.VerifyNotInvoke does not throw if identifier has not been invoked")]
 	public void Test004()
 	{
 		var sut = CreateSut();
 		sut.VerifyNotInvoke("FOOBAR");
 	}
 
-	[Fact(DisplayName = "BunitJSInterop.VerifyInvoke throws if handler is null")]
+	[UIFact(DisplayName = "BunitJSInterop.VerifyInvoke throws if handler is null")]
 	public void Test100()
 	{
 		BunitJSInterop? sut = null;
@@ -54,7 +54,7 @@ public class JSRuntimeAssertExtensionsTest
 		Should.Throw<ArgumentNullException>(() => (sut!).VerifyInvoke(string.Empty, 42));
 	}
 
-	[Fact(DisplayName = "BunitJSInterop.VerifyInvoke throws invokeCount is less than 1")]
+	[UIFact(DisplayName = "BunitJSInterop.VerifyInvoke throws invokeCount is less than 1")]
 	public void Test101()
 	{
 		var sut = CreateSut();
@@ -62,7 +62,7 @@ public class JSRuntimeAssertExtensionsTest
 		Should.Throw<ArgumentException>(() => sut.VerifyInvoke(string.Empty, 0));
 	}
 
-	[Fact(DisplayName = "BunitJSInterop.VerifyInvoke throws JSInvokeCountExpectedException when " +
+	[UIFact(DisplayName = "BunitJSInterop.VerifyInvoke throws JSInvokeCountExpectedException when " +
 						"invocation count doesn't match the expected")]
 	public async Task Test103()
 	{
@@ -76,7 +76,7 @@ public class JSRuntimeAssertExtensionsTest
 		actual.Identifier.ShouldBe(identifier);
 	}
 
-	[Fact(DisplayName = "BunitJSInterop.VerifyInvoke returns the invocation(s) if the expected count matched")]
+	[UIFact(DisplayName = "BunitJSInterop.VerifyInvoke returns the invocation(s) if the expected count matched")]
 	public async Task Test104()
 	{
 		var sut = CreateSut();
@@ -90,7 +90,7 @@ public class JSRuntimeAssertExtensionsTest
 		invocation.ShouldBe(sut.Invocations[identifier][0]);
 	}
 
-	[Fact(DisplayName = "ShouldBeElementReferenceTo throws if actualArgument or targeted element is null")]
+	[UIFact(DisplayName = "ShouldBeElementReferenceTo throws if actualArgument or targeted element is null")]
 	public void Test200()
 	{
 		Should.Throw<ArgumentNullException>(() => JSRuntimeAssertExtensions.ShouldBeElementReferenceTo(null!, null!))
@@ -99,14 +99,14 @@ public class JSRuntimeAssertExtensionsTest
 			.ParamName.ShouldBe("expectedTargetElement");
 	}
 
-	[Fact(DisplayName = "ShouldBeElementReferenceTo throws if actualArgument is not a ElementReference")]
+	[UIFact(DisplayName = "ShouldBeElementReferenceTo throws if actualArgument is not a ElementReference")]
 	public void Test201()
 	{
 		var obj = new object();
 		Should.Throw<ActualExpectedAssertException>(() => obj.ShouldBeElementReferenceTo(Mock.Of<IElement>()));
 	}
 
-	[Fact(DisplayName = "ShouldBeElementReferenceTo throws if element reference does not point to the provided element")]
+	[UIFact(DisplayName = "ShouldBeElementReferenceTo throws if element reference does not point to the provided element")]
 	public void Test202()
 	{
 		using var htmlParser = new BunitHtmlParser();
@@ -120,13 +120,13 @@ public class JSRuntimeAssertExtensionsTest
 		Should.Throw<ActualExpectedAssertException>(() => elmRef.ShouldBeElementReferenceTo(elmWithoutRefAttr));
 	}
 
-	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyNotInvoke throws if handler is null")]
+	[UIFact(DisplayName = "JSRuntimeInvocationHandler.VerifyNotInvoke throws if handler is null")]
 	public void Test301()
 	{
 		Should.Throw<ArgumentNullException>(() => default(JSRuntimeInvocationHandler)!.VerifyNotInvoke(string.Empty));
 	}
 
-	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
+	[UIFact(DisplayName = "JSRuntimeInvocationHandler.VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
 				"has been invoked one or more times")]
 	public async Task Test302()
 	{
@@ -139,7 +139,7 @@ public class JSRuntimeAssertExtensionsTest
 		Should.Throw<JSInvokeCountExpectedException>(() => handler.VerifyNotInvoke(identifier));
 	}
 
-	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
+	[UIFact(DisplayName = "JSRuntimeInvocationHandler.VerifyNotInvoke throws JSInvokeCountExpectedException if identifier " +
 				"has been invoked one or more times, with custom error message")]
 	public async Task Test303()
 	{
@@ -154,7 +154,7 @@ public class JSRuntimeAssertExtensionsTest
 			.Message.ShouldContain(errMsg);
 	}
 
-	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyNotInvoke does not throw if identifier has not been invoked")]
+	[UIFact(DisplayName = "JSRuntimeInvocationHandler.VerifyNotInvoke does not throw if identifier has not been invoked")]
 	public void Test304()
 	{
 		var sut = CreateSut();
@@ -163,14 +163,14 @@ public class JSRuntimeAssertExtensionsTest
 		handler.VerifyNotInvoke("FOOBAR");
 	}
 
-	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke throws if handler is null")]
+	[UIFact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke throws if handler is null")]
 	public void Test305()
 	{
 		Should.Throw<ArgumentNullException>(() => default(JSRuntimeInvocationHandler)!.VerifyInvoke(string.Empty));
 		Should.Throw<ArgumentNullException>(() => default(JSRuntimeInvocationHandler)!.VerifyInvoke(string.Empty, 42));
 	}
 
-	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke throws invokeCount is less than 1")]
+	[UIFact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke throws invokeCount is less than 1")]
 	public void Test306()
 	{
 		var sut = CreateSut();
@@ -179,7 +179,7 @@ public class JSRuntimeAssertExtensionsTest
 		Should.Throw<ArgumentException>(() => handler.VerifyInvoke(string.Empty, 0));
 	}
 
-	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke throws JSInvokeCountExpectedException when " +
+	[UIFact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke throws JSInvokeCountExpectedException when " +
 						"invocation count doesn't match the expected")]
 	public async Task Test307()
 	{
@@ -195,7 +195,7 @@ public class JSRuntimeAssertExtensionsTest
 		actual.Identifier.ShouldBe(identifier);
 	}
 
-	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke returns the invocation(s) if the expected count matched")]
+	[UIFact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke returns the invocation(s) if the expected count matched")]
 	public async Task Test308()
 	{
 		var sut = CreateSut();
@@ -211,7 +211,7 @@ public class JSRuntimeAssertExtensionsTest
 		invocation.ShouldBe(handler.Invocations[identifier][0]);
 	}
 
-	[Fact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke reports the actual and expected amount")]
+	[UIFact(DisplayName = "JSRuntimeInvocationHandler.VerifyInvoke reports the actual and expected amount")]
 	public async Task Test309()
 	{
 		var sut = CreateSut();

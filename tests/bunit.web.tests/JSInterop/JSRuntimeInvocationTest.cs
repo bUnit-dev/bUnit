@@ -31,7 +31,7 @@ public class JSRuntimeInvocationTest
 		yield return new object[] { i1, i9, false };
 	}
 
-	[Theory(DisplayName = "Equals operator works as expected")]
+	[UITheory(DisplayName = "Equals operator works as expected")]
 	[MemberData(nameof(GetEqualsTestData))]
 	public void Test002(JSRuntimeInvocation left, JSRuntimeInvocation right, bool expectedResult)
 	{
@@ -43,20 +43,20 @@ public class JSRuntimeInvocationTest
 		right.Equals((object)left).ShouldBe(expectedResult);
 	}
 
-	[Fact(DisplayName = "Equals operator works as expected with non compatible types")]
+	[UIFact(DisplayName = "Equals operator works as expected with non compatible types")]
 	public void Test003()
 	{
 		default(JSRuntimeInvocation).Equals(new object()).ShouldBeFalse();
 	}
 
-	[Theory(DisplayName = "GetHashCode returns same result for equal JSRuntimeInvocations")]
+	[UITheory(DisplayName = "GetHashCode returns same result for equal JSRuntimeInvocations")]
 	[MemberData(nameof(GetEqualsTestData))]
 	public void Test004(JSRuntimeInvocation left, JSRuntimeInvocation right, bool expectedResult)
 	{
 		left.GetHashCode().Equals(right.GetHashCode()).ShouldBe(expectedResult);
 	}
 
-	[Theory(DisplayName = "When result type is object, then IsVoidResultInvocation is true"), AutoData]
+	[UITheory(DisplayName = "When result type is object, then IsVoidResultInvocation is true"), AutoData]
 	public void Test005(string identifier)
 	{
 		var sut = new JSRuntimeInvocation(
@@ -69,7 +69,7 @@ public class JSRuntimeInvocationTest
 		sut.IsVoidResultInvocation.ShouldBeTrue();
 	}
 
-	[Theory(DisplayName = "When result type is not object, then IsVoidResultInvocation is false"), AutoData]
+	[UITheory(DisplayName = "When result type is not object, then IsVoidResultInvocation is false"), AutoData]
 	public void Test006(string identifier)
 	{
 		var sut = new JSRuntimeInvocation(

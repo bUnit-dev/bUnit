@@ -23,7 +23,7 @@ public class ComponentRenderingTest : TestContext
 		JSInterop.Mode = JSRuntimeMode.Loose;
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanRenderTextOnlyComponent()
 	{
 		var cut = RenderComponent<TextOnlyComponent>();
@@ -32,7 +32,7 @@ public class ComponentRenderingTest : TestContext
 
 	// This verifies that we've correctly configured the Razor language version via MSBuild.
 	// See #974
-	[Fact]
+	[UIFact]
 	public void CanRenderComponentWithDataDash()
 	{
 		var cut = RenderComponent<DataDashComponent>();
@@ -41,7 +41,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("17", element.TextContent);
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanRenderComponentWithAttributes()
 	{
 		var cut = RenderComponent<RedTextComponent>();
@@ -51,7 +51,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("somevalue", styledElement.GetAttribute("customattribute"));
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanTriggerEvents()
 	{
 		// Initial count is zero
@@ -64,7 +64,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "async")]
 	public async Task CanTriggerAsyncEventHandlers()
 	{
@@ -81,7 +81,7 @@ public class ComponentRenderingTest : TestContext
 		await cut.WaitForAssertionAsync(() => Assert.Equal("Stopped", stateElement.TextContent));
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "sync")]
 	public void CanTriggerAsyncEventHandlers_Sync()
 	{
@@ -98,7 +98,7 @@ public class ComponentRenderingTest : TestContext
 		cut.WaitForAssertion(() => Assert.Equal("Stopped", stateElement.TextContent));
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanTriggerKeyPressEvents()
 	{
 		// List is initially empty
@@ -118,7 +118,7 @@ public class ComponentRenderingTest : TestContext
 			li => Assert.Equal("b", li.TextContent));
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanAddAndRemoveEventHandlersDynamically()
 	{
 		var cut = RenderComponent<CounterComponent>();
@@ -144,7 +144,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("Current count: 2", countDisplayElement.TextContent);
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanRenderChildComponents()
 	{
 		var cut = RenderComponent<ParentChildComponent>();
@@ -156,14 +156,14 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("somevalue", styledElement.GetAttribute("customattribute"));
 	}
 
-	[Fact(DisplayName = "Verifies we can render HTML content as a single block")]
+	[UIFact(DisplayName = "Verifies we can render HTML content as a single block")]
 	public void CanRenderChildContent_StaticHtmlBlock()
 	{
 		var cut = RenderComponent<HtmlBlockChildContent>();
 		Assert.Equal("<p>Some-Static-Text</p>", cut.Find("#foo").InnerHtml);
 	}
 
-	[Fact(DisplayName = "Verifies we can rewrite more complex HTML content into blocks")]
+	[UIFact(DisplayName = "Verifies we can rewrite more complex HTML content into blocks")]
 	public void CanRenderChildContent_MixedHtmlBlock()
 	{
 		var cut = RenderComponent<HtmlMixedChildContent>();
@@ -181,7 +181,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("But this is static", four.InnerHtml);
 	}
 
-	[Fact(DisplayName = "Verifies we can rewrite HTML blocks with encoded HTML")]
+	[UIFact(DisplayName = "Verifies we can rewrite HTML blocks with encoded HTML")]
 	public void CanRenderChildContent_EncodedHtmlInBlock()
 	{
 		var cut = RenderComponent<HtmlEncodedChildContent>();
@@ -199,7 +199,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("But this is static", four.InnerHtml);
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanTriggerEventsOnChildComponents()
 	{
 		// Counter is displayed as child component. Initial count is zero.
@@ -211,7 +211,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("Current count: 1", cut.Find("h1+p").TextContent);
 	}
 
-	[Fact]
+	[UIFact]
 	public void ChildComponentsRerenderWhenPropertiesChanged()
 	{
 		// Count value is displayed in child component with initial value zero
@@ -226,7 +226,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("1", messageElementInChild.TextContent);
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanAddAndRemoveChildComponentsDynamically()
 	{
 		// Initially there are zero child components
@@ -259,7 +259,7 @@ public class ComponentRenderingTest : TestContext
 			msg => Assert.Equal("Child 3", msg.TextContent));
 	}
 
-	[Fact]
+	[UIFact]
 	public void ChildComponentsNotifiedWhenPropertiesChanged()
 	{
 		// Child component receives notification that lets it compute a property before first render
@@ -276,7 +276,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("I computed: 202", computedValueElement.TextContent);
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanRenderFragmentsWhilePreservingSurroundingElements()
 	{
 		// Initially, the region isn't shown
@@ -299,7 +299,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Empty(fragmentElements);
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanUseViewImportsHierarchically()
 	{
 		// The component is able to compile and output these type names only because
@@ -311,7 +311,7 @@ public class ComponentRenderingTest : TestContext
 			elem => Assert.Equal(typeof(System.Configuration.Assemblies.AssemblyHashAlgorithm).FullName, elem.TextContent));
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanRenderSvgWithCorrectNamespace()
 	{
 		var cut = RenderComponent<SvgComponent>();
@@ -327,7 +327,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("20", svgCircleElement.GetAttribute("r"));
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanRenderSvgChildComponentWithCorrectNamespace()
 	{
 		var cut = RenderComponent<SvgWithChildComponent>();
@@ -339,14 +339,14 @@ public class ComponentRenderingTest : TestContext
 		Assert.NotNull(svgCircleElement);
 	}
 
-	[Fact]
+	[UIFact]
 	public void LogicalElementInsertionWorksHierarchically()
 	{
 		var cut = RenderComponent<LogicalElementInsertionCases>();
 		cut.MarkupMatches("First Second Third");
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanUseJSInteropToReferenceElements()
 	{
 		// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJSRuntime
@@ -374,7 +374,7 @@ public class ComponentRenderingTest : TestContext
 			.Id.ShouldBe(refId);
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanCaptureReferencesToDynamicallyAddedElements()
 	{
 		// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJSRuntime
@@ -426,7 +426,7 @@ public class ComponentRenderingTest : TestContext
 			.Id.ShouldBe(refId);
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanCaptureReferencesToDynamicallyAddedComponents()
 	{
 		var cut = RenderComponent<ComponentRefComponent>();
@@ -457,14 +457,14 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	// Test depends on javascript changing the DOM, thus doesnt make sense in this context.
-	// [Fact]
+	// [UIFact]
 	// public void CanUseJSInteropForRefElementsDuringOnAfterRender()
 	// {
 	//     var cut = RenderComponent<AfterRenderInteropComponent>();
 	//     Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));
 	// }
 
-	[Fact]
+	[UIFact]
 	public void CanRenderMarkupBlocks()
 	{
 		var cut = RenderComponent<MarkupBlockComponent>();
@@ -486,7 +486,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("changed", cut.Find("#dynamic-markup-block span em").TextContent);
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanRenderRazorTemplates()
 	{
 		var cut = RenderComponent<RazorTemplates>();
@@ -500,7 +500,7 @@ public class ComponentRenderingTest : TestContext
 			e => Assert.Equal("#3 - c", e.TextContent));
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanRenderMultipleChildContent()
 	{
 		var cut = RenderComponent<MultipleChildContent>();
@@ -526,7 +526,7 @@ public class ComponentRenderingTest : TestContext
 			e => Assert.Equal("End", e.TextContent));
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "async")]
 	public async Task CanAcceptSimultaneousRenderRequests()
 	{
@@ -547,7 +547,7 @@ public class ComponentRenderingTest : TestContext
 			timeout: TimeSpan.FromSeconds(10));
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "sync")]
 	public void CanAcceptSimultaneousRenderRequests_Sync()
 	{
@@ -568,7 +568,7 @@ public class ComponentRenderingTest : TestContext
 			timeout: TimeSpan.FromSeconds(10));
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "async")]
 	public async Task CanDispatchRenderToSyncContext()
 	{
@@ -580,7 +580,7 @@ public class ComponentRenderingTest : TestContext
 		await cut.WaitForAssertionAsync(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "sync")]
 	public void CanDispatchRenderToSyncContext_Sync()
 	{
@@ -592,7 +592,7 @@ public class ComponentRenderingTest : TestContext
 		cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "async")]
 	public async Task CanDoubleDispatchRenderToSyncContext()
 	{
@@ -604,7 +604,7 @@ public class ComponentRenderingTest : TestContext
 		await cut.WaitForAssertionAsync(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "sync")]
 	public void CanDoubleDispatchRenderToSyncContext_Sync()
 	{
@@ -616,7 +616,7 @@ public class ComponentRenderingTest : TestContext
 		cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanUseAddMultipleAttributes()
 	{
 		var cut = RenderComponent<DuplicateAttributesComponent>();
@@ -632,7 +632,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.Equal("unmatched-value", element.GetAttribute("unmatched"));
 	}
 
-	[Fact]
+	[UIFact]
 	public void CanPatchRenderTreeToMatchLatestDOMState()
 	{
 		var cut = RenderComponent<MovingCheckboxesComponent>();
@@ -654,7 +654,7 @@ public class ComponentRenderingTest : TestContext
 		Assert.True(completeLIs[0].QuerySelector(".item-isdone").HasAttribute("checked"));
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "async")]
 	public async Task CanHandleRemovedParentObjects()
 	{
@@ -666,7 +666,7 @@ public class ComponentRenderingTest : TestContext
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "sync")]
 	public void CanHandleRemovedParentObjects_Sync()
 	{
@@ -678,7 +678,7 @@ public class ComponentRenderingTest : TestContext
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "async")]
 	public async Task CanHandleRemovedParentObjectsAsync()
 	{
@@ -690,7 +690,7 @@ public class ComponentRenderingTest : TestContext
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
 
-	[Fact]
+	[UIFact]
 	public void EscapableCharactersDontGetEncoded()
 	{
 		var cut = RenderComponent<ComponentWithEscapableCharacters>();
@@ -698,7 +698,7 @@ public class ComponentRenderingTest : TestContext
 		cut.Markup.ShouldBe("<p style=\"url('')\">url('')</p>");
 	}
 
-	[Fact]
+	[UIFact]
 	[Trait("Category", "sync")]
 	public async Task CanHandleRemovedParentObjectsAsync_Sync()
 	{

@@ -6,7 +6,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 
 	protected override string ElementName => "input";
 
-	[Theory(DisplayName = "Keyboard events are raised correctly through helpers")]
+	[UITheory(DisplayName = "Keyboard events are raised correctly through helpers")]
 	[MemberData(nameof(Helpers))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
@@ -26,7 +26,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 		VerifyEventRaisesCorrectly(helper, expected);
 	}
 
-	[Fact(DisplayName = "KeyDown event is raised correctly through helper using special key")]
+	[UIFact(DisplayName = "KeyDown event is raised correctly through helper using special key")]
 	public void CanRaiseKeyDownWithCtrlEnter()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeydown");
@@ -44,7 +44,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 		spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 	}
 
-	[Fact(DisplayName = "KeyDown event is raised correctly through helper using character key")]
+	[UIFact(DisplayName = "KeyDown event is raised correctly through helper using character key")]
 	public void CanRaiseKeyDownWithAKey()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeydown");
@@ -61,7 +61,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 		spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 	}
 
-	[Fact(DisplayName = "KeyDown event is raised correctly through helper specifying repeat and type")]
+	[UIFact(DisplayName = "KeyDown event is raised correctly through helper specifying repeat and type")]
 	public void CanRaiseKeyDownWithRepeatAndType()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeydown");
@@ -81,7 +81,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 		spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 	}
 
-	[Fact(DisplayName = "KeyUp event is raised correctly through helper using special key")]
+	[UIFact(DisplayName = "KeyUp event is raised correctly through helper using special key")]
 	public void CanRaiseKeyUpWithShiftSpace()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeyup");
@@ -100,7 +100,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 		spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 	}
 
-	[Fact(DisplayName = "KeyUp event is raised correctly through helper using character key")]
+	[UIFact(DisplayName = "KeyUp event is raised correctly through helper using character key")]
 	public void CanRaiseKeyUpWithBKey()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeyup");
@@ -118,7 +118,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 		spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 	}
 
-	[Fact(DisplayName = "KeyUp event is raised correctly through helper specifying repeat and type")]
+	[UIFact(DisplayName = "KeyUp event is raised correctly through helper specifying repeat and type")]
 	public void CanRaiseKeyUpWithWithRepeatAndType()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeyup");
@@ -139,7 +139,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 		spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 	}
 
-	[Fact(DisplayName = "KeyPress event is raised correctly through helper using special key")]
+	[UIFact(DisplayName = "KeyPress event is raised correctly through helper using special key")]
 	public void CanRaiseKeyPressWithNum8Key()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeypress");
@@ -156,7 +156,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 		spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 	}
 
-	[Fact(DisplayName = "KeyPress event is raised correctly through helper using character key")]
+	[UIFact(DisplayName = "KeyPress event is raised correctly through helper using character key")]
 	public void CanRaiseKeyPressWith8Key()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeypress");
@@ -173,7 +173,7 @@ public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<K
 		spy.RaisedEvent.ShouldBeEquivalentTo(expected);
 	}
 
-	[Fact(DisplayName = "KeyPress event is raised correctly through  specifying repeat and type")]
+	[UIFact(DisplayName = "KeyPress event is raised correctly through  specifying repeat and type")]
 	public void CanRaiseKeyPressWithRepeatAndType()
 	{
 		var spy = CreateTriggerSpy(ElementName, "onkeypress");

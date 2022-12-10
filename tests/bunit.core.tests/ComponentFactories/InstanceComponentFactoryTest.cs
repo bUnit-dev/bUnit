@@ -2,15 +2,15 @@ namespace Bunit.ComponentFactories;
 
 public class InstanceComponentFactoryTest : TestContext
 {
-	[Fact(DisplayName = "Add throws when factories is null")]
+	[UIFact(DisplayName = "Add throws when factories is null")]
 	public void Test001()
 		=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionExtensions.Add<Simple1>(default, default(Simple1)));
 
-	[Fact(DisplayName = "Add throws when instance is null")]
+	[UIFact(DisplayName = "Add throws when instance is null")]
 	public void Test002()
 		=> Should.Throw<ArgumentNullException>(() => ComponentFactories.Add<Simple1>(default(Simple1)));
 
-	[Fact(DisplayName = "Factory replaces one TComponent with instance in the render tree")]
+	[UIFact(DisplayName = "Factory replaces one TComponent with instance in the render tree")]
 	public void Test010()
 	{
 		var simple1Mock = new Mock<Simple1>();
@@ -22,7 +22,7 @@ public class InstanceComponentFactoryTest : TestContext
 			.Instance.ShouldBeSameAs(simple1Mock.Object);
 	}
 
-	[Fact(DisplayName = "Factory throws if component instance is requested twice for TComponent that inherits from ComponentBase")]
+	[UIFact(DisplayName = "Factory throws if component instance is requested twice for TComponent that inherits from ComponentBase")]
 	public void Test020()
 	{
 		var simple1Mock = new Mock<Simple1>();
@@ -33,7 +33,7 @@ public class InstanceComponentFactoryTest : TestContext
 			   .Add<Simple1>(p => p.Second)));
 	}
 
-	[Fact(DisplayName = "Factory throws if component instance is requested twice for TComponent that implements from IComponent")]
+	[UIFact(DisplayName = "Factory throws if component instance is requested twice for TComponent that implements from IComponent")]
 	public void Test021()
 	{
 		var simple1Mock = new Mock<BasicComponent>();

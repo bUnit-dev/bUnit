@@ -5,7 +5,7 @@ namespace Bunit;
 
 public class DiffAssertExtensionsTest
 {
-	[Fact(DisplayName = "ShouldHaveSingleChange throws when input is null")]
+	[UIFact(DisplayName = "ShouldHaveSingleChange throws when input is null")]
 	public void Test001()
 	{
 		IReadOnlyList<IDiff>? diffs = null;
@@ -23,7 +23,7 @@ public class DiffAssertExtensionsTest
 		exception.ShouldBeOfType<ArgumentNullException>();
 	}
 
-	[Theory(DisplayName = "ShouldHaveSingleChange throws when input length not exactly 1")]
+	[UITheory(DisplayName = "ShouldHaveSingleChange throws when input length not exactly 1")]
 	[MemberData(nameof(GetDiffLists))]
 	public void Test002(IReadOnlyList<IDiff> diffs)
 	{
@@ -41,7 +41,7 @@ public class DiffAssertExtensionsTest
 		exception.ShouldBeOfType<ActualExpectedAssertException>();
 	}
 
-	[Fact(DisplayName = "ShouldHaveSingleChange returns the single diff in input when there is only one")]
+	[UIFact(DisplayName = "ShouldHaveSingleChange returns the single diff in input when there is only one")]
 	public void Test003()
 	{
 		var input = new IDiff[] { Mock.Of<IDiff>() };

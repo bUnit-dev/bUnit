@@ -14,7 +14,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		Services.AddXunitLogger(outputHelper);
 	}
 
-	[Theory(DisplayName = "General events are raised correctly through helpers")]
+	[UITheory(DisplayName = "General events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(GeneralEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
@@ -27,7 +27,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
 	}
 
-	[Fact(DisplayName = "TriggerEventAsync throws element is null")]
+	[UIFact(DisplayName = "TriggerEventAsync throws element is null")]
 	public void Test001()
 	{
 		IElement elm = default!;
@@ -35,7 +35,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 			.ParamName.ShouldBe("element");
 	}
 
-	[Fact(DisplayName = "TriggerEventAsync throws if element does not contain an attribute with the blazor event-name")]
+	[UIFact(DisplayName = "TriggerEventAsync throws if element does not contain an attribute with the blazor event-name")]
 	public void Test002()
 	{
 		var cut = RenderComponent<Simple1>();
@@ -43,7 +43,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		Should.Throw<MissingEventHandlerException>(() => cut.Find("h1").Click());
 	}
 
-	[Fact(DisplayName = "TriggerEventAsync throws if element was not rendered through blazor (has a TestRendere in its context)")]
+	[UIFact(DisplayName = "TriggerEventAsync throws if element was not rendered through blazor (has a TestRendere in its context)")]
 	public void Test003()
 	{
 		var elmMock = new Mock<IElement>();
@@ -58,7 +58,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		Should.Throw<InvalidOperationException>(() => elmMock.Object.TriggerEventAsync("click", EventArgs.Empty));
 	}
 
-	[Fact(DisplayName = "When clicking on an element with an event handler, " +
+	[UIFact(DisplayName = "When clicking on an element with an event handler, " +
 						"event handlers higher up the DOM tree is also triggered")]
 	public void Test100()
 	{
@@ -70,7 +70,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.HeaderClickCount.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "When clicking on an element without an event handler attached, " +
+	[UIFact(DisplayName = "When clicking on an element without an event handler attached, " +
 						"event handlers higher up the DOM tree is triggered")]
 	public void Test101()
 	{
@@ -82,7 +82,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.HeaderClickCount.ShouldBe(1);
 	}
 
-	[Theory(DisplayName = "When clicking element with non-bubbling events, the event does not bubble")]
+	[UITheory(DisplayName = "When clicking element with non-bubbling events, the event does not bubble")]
 	[InlineData("onabort")]
 	[InlineData("onblur")]
 	[InlineData("onchange")]
@@ -115,7 +115,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.GrandParentTriggerCount.ShouldBe(0);
 	}
 
-	[Fact(DisplayName = "When event has StopPropergation modifier, events does not bubble from target")]
+	[UIFact(DisplayName = "When event has StopPropergation modifier, events does not bubble from target")]
 	public async Task Test111()
 	{
 		var cut = RenderComponent<EventBubbles>(ps => ps
@@ -129,7 +129,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.GrandParentTriggerCount.ShouldBe(0);
 	}
 
-	[Fact(DisplayName = "When event has StopPropergation modifier, events does not bubble from parent of target")]
+	[UIFact(DisplayName = "When event has StopPropergation modifier, events does not bubble from parent of target")]
 	public async Task Test112()
 	{
 		var cut = RenderComponent<EventBubbles>(ps => ps
@@ -143,7 +143,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.GrandParentTriggerCount.ShouldBe(0);
 	}
 
-	[Theory(DisplayName = "Disabled input elements does not bubble for event type"), PairwiseData]
+	[UITheory(DisplayName = "Disabled input elements does not bubble for event type"), PairwiseData]
 	public async Task Test113(
 		[CombinatorialValues("onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup")] string eventName,
 		[CombinatorialValues("button", "input", "textarea", "select")] string elementType)
@@ -160,7 +160,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.GrandParentTriggerCount.ShouldBe(0);
 	}
 
-	[Theory(DisplayName = "Enabled input elements does not bubble for event type"), PairwiseData]
+	[UITheory(DisplayName = "Enabled input elements does not bubble for event type"), PairwiseData]
 	public async Task Test114(
 		[CombinatorialValues("onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup")] string eventName,
 		[CombinatorialValues("button", "input", "textarea", "select")] string elementType)
@@ -177,7 +177,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.GrandParentTriggerCount.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "TriggerEvent can trigger custom events")]
+	[UIFact(DisplayName = "TriggerEvent can trigger custom events")]
 	public void Test201()
 	{
 		var cut = RenderComponent<CustomPasteSample>();
@@ -191,7 +191,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
 	}
 
-	[Fact(DisplayName = "TriggerEventAsync throws NoEventHandlerException when invoked with an unknown event handler ID")]
+	[UIFact(DisplayName = "TriggerEventAsync throws NoEventHandlerException when invoked with an unknown event handler ID")]
 	public void Test300()
 	{
 		var cut = RenderComponent<ClickRemovesEventHandler>();
@@ -201,7 +201,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		Should.Throw<UnknownEventHandlerIdException>(() => buttons[1].Click());
 	}
 
-	[Fact(DisplayName = "Removed bubbled event handled NoEventHandlerException are ignored")]
+	[UIFact(DisplayName = "Removed bubbled event handled NoEventHandlerException are ignored")]
 	public void Test301()
 	{
 		var cut = RenderComponent<BubbleEventsRemoveTriggers>();
@@ -216,7 +216,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.TopDivClicked.ShouldBeTrue();
 	}
 
-	[Theory(DisplayName = "When bubbling event throws, no other event handlers are triggered")]
+	[UITheory(DisplayName = "When bubbling event throws, no other event handlers are triggered")]
 	[AutoData]
 	public void Test302(string exceptionMessage)
 	{
@@ -230,7 +230,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.TopDivClicked.ShouldBeFalse();
 	}
 
-	[Theory(DisplayName = "When event handler throws, the exception is passed up to test")]
+	[UITheory(DisplayName = "When event handler throws, the exception is passed up to test")]
 	[AutoData]
 	public void Test303(string exceptionMessage)
 	{
@@ -240,7 +240,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 			.Message.ShouldBe(exceptionMessage);
 	}
 
-	[Fact(DisplayName = "Should handle click event first and submit form afterwards for button")]
+	[UIFact(DisplayName = "Should handle click event first and submit form afterwards for button")]
 	public void Test304()
 	{
 		var cut = RenderComponent<SubmitFormOnClick>();
@@ -251,7 +251,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.Clicked.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Should handle click event first and submit form afterwards for input when type button")]
+	[UIFact(DisplayName = "Should handle click event first and submit form afterwards for input when type button")]
 	public void Test305()
 	{
 		var cut = RenderComponent<SubmitFormOnClick>();
@@ -262,7 +262,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.Clicked.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Should throw exception when invoking onsubmit from non form")]
+	[UIFact(DisplayName = "Should throw exception when invoking onsubmit from non form")]
 	public void Test306()
 	{
 		var cut = RenderComponent<OnsubmitButton>();
@@ -275,7 +275,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 	// Runs the test multiple times to trigger the race condition
 	// reliably.
-	[Theory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
+	[UITheory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
 	[MemberData(nameof(GetTenNumbers))]
 	[Trait("Category", "async")]
 	public async Task Test400(int i)
@@ -292,7 +292,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	// Runs the test multiple times to trigger the race condition
 	// reliably.
 	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Needed to trigger multiple reruns of test.")]
-	[Theory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
+	[UITheory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
 	[MemberData(nameof(GetTenNumbers))]
 	[Trait("Category", "sync")]
 	public async Task Test400_Sync(int i)

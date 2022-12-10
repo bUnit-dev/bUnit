@@ -4,7 +4,7 @@ namespace Bunit.TestDoubles.Authorization;
 
 public class AuthorizationTest : TestContext
 {
-	[Fact(DisplayName = "AuthorizeView with unauthenticated user")]
+	[UIFact(DisplayName = "AuthorizeView with unauthenticated user")]
 	public void Test001()
 	{
 		// Arrange
@@ -17,7 +17,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches("Not authorized?");
 	}
 
-	[Fact(DisplayName = "AuthorizeView with authenticated and authorized user")]
+	[UIFact(DisplayName = "AuthorizeView with authenticated and authorized user")]
 	public void Test002()
 	{
 		// arrange
@@ -31,7 +31,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches("Authorized!");
 	}
 
-	[Fact(DisplayName = "AuthorizeView with authenticated but unauthorized user")]
+	[UIFact(DisplayName = "AuthorizeView with authenticated but unauthorized user")]
 	public void Test003()
 	{
 		// arrange
@@ -45,7 +45,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches("Not authorized?");
 	}
 
-	[Fact(DisplayName = "AuthorizeView switch from unauthorized to authorized.")]
+	[UIFact(DisplayName = "AuthorizeView switch from unauthorized to authorized.")]
 	[Trait("Category", "async")]
 	public async Task Test004()
 	{
@@ -65,7 +65,7 @@ public class AuthorizationTest : TestContext
 		await cut.WaitForAssertionAsync(() => cut.MarkupMatches("Authorized!"));
 	}
 
-	[Fact(DisplayName = "AuthorizeView switch from unauthorized to authorized.")]
+	[UIFact(DisplayName = "AuthorizeView switch from unauthorized to authorized.")]
 	[Trait("Category", "sync")]
 	public void Test004_Sync()
 	{
@@ -85,7 +85,7 @@ public class AuthorizationTest : TestContext
 		cut.WaitForAssertion(() => cut.MarkupMatches("Authorized!"));
 	}
 
-	[Fact(DisplayName = "AuthorizeView switch from authorized to unauthorized.")]
+	[UIFact(DisplayName = "AuthorizeView switch from authorized to unauthorized.")]
 	public void Test005()
 	{
 		// arrange
@@ -105,7 +105,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches("Not authorized?");
 	}
 
-	[Fact(DisplayName = "AuthorizeView rendering without authorization services registered")]
+	[UIFact(DisplayName = "AuthorizeView rendering without authorization services registered")]
 	public void Test006()
 	{
 		// act
@@ -116,7 +116,7 @@ public class AuthorizationTest : TestContext
 		Assert.Equal("https://bunit.egilhansen.com/docs/test-doubles/faking-auth", ex.HelpLink);
 	}
 
-	[Fact(DisplayName = "AuthorizeView with set policy with authenticated and authorized user")]
+	[UIFact(DisplayName = "AuthorizeView with set policy with authenticated and authorized user")]
 	public void Test007()
 	{
 		// arrange
@@ -130,7 +130,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches("Authorized for content viewers.");
 	}
 
-	[Fact(DisplayName = "AuthorizeView without policy set")]
+	[UIFact(DisplayName = "AuthorizeView without policy set")]
 	public void Test008()
 	{
 		// arrange
@@ -144,7 +144,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches(string.Empty);
 	}
 
-	[Fact(DisplayName = "AuthorizeView with wrong policy set")]
+	[UIFact(DisplayName = "AuthorizeView with wrong policy set")]
 	public void Test0081()
 	{
 		// arrange
@@ -158,7 +158,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches(string.Empty);
 	}
 
-	[Fact(DisplayName = "SimpleAuthViewWithRole with set role")]
+	[UIFact(DisplayName = "SimpleAuthViewWithRole with set role")]
 	public void Test009()
 	{
 		// arrange
@@ -172,7 +172,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches("Authorized content for admins.");
 	}
 
-	[Fact(DisplayName = "AuthorizeView without set role")]
+	[UIFact(DisplayName = "AuthorizeView without set role")]
 	public void Test010()
 	{
 		// arrange
@@ -186,7 +186,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches(string.Empty);
 	}
 
-	[Fact(DisplayName = "AuthorizeView with wrong role set")]
+	[UIFact(DisplayName = "AuthorizeView with wrong role set")]
 	public void Test011()
 	{
 		// arrange
@@ -200,7 +200,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches(string.Empty);
 	}
 
-	[Fact(DisplayName = "AuthorizeView in authorizing state")]
+	[UIFact(DisplayName = "AuthorizeView in authorizing state")]
 	public void Test012()
 	{
 		// arrange
@@ -214,7 +214,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches("Authorizing...");
 	}
 
-	[Fact(DisplayName = "AuthorizeView with claims")]
+	[UIFact(DisplayName = "AuthorizeView with claims")]
 	public void Test013()
 	{
 		// arrange
@@ -234,7 +234,7 @@ public class AuthorizationTest : TestContext
 								<div>Id: {userId}</div>");
 	}
 
-	[Fact(DisplayName = "AuthorizeView without defined claims")]
+	[UIFact(DisplayName = "AuthorizeView without defined claims")]
 	public void Test014()
 	{
 		// arrange
@@ -249,7 +249,7 @@ public class AuthorizationTest : TestContext
 								<div>Name: TestUser</div>");
 	}
 
-	[Fact(DisplayName = "IsInRole can resolve role assigned to auth context")]
+	[UIFact(DisplayName = "IsInRole can resolve role assigned to auth context")]
 	public void Test020()
 	{
 		var role = "myTestRole";
@@ -262,7 +262,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches("<p>True</p>");
 	}
 
-	[Fact(DisplayName = "SimpleAuthViewWithCustomAuthType with set auth type")]
+	[UIFact(DisplayName = "SimpleAuthViewWithCustomAuthType with set auth type")]
 	public void Test021()
 	{
 		// arrange
@@ -277,7 +277,7 @@ public class AuthorizationTest : TestContext
 		cut.MarkupMatches("<p>Authorized content with custom auth type.</p>");
 	}
 
-	[Fact(DisplayName = "SimpleAuthViewWithCustomAuthType without set auth type")]
+	[UIFact(DisplayName = "SimpleAuthViewWithCustomAuthType without set auth type")]
 	public void Test022()
 	{
 		// arrange

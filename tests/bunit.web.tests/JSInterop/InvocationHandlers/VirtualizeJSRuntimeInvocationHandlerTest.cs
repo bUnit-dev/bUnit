@@ -15,7 +15,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 			new object[] { 0 }, new object[] { 7 }, new object[] { 30 }, new object[] { 60 }, new object[] { 100 }, new object[] { 300 }, new object[] { 500 },
 	};
 
-	[Theory(DisplayName = "Can render component using <Virtualize Items> with ChildContent")]
+	[UITheory(DisplayName = "Can render component using <Virtualize Items> with ChildContent")]
 	[MemberData(nameof(ItemsInCollection))]
 	public void Test001(int itemsInDataSource)
 	{
@@ -26,7 +26,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
 	}
 
-	[Theory(DisplayName = "Can render component using <Virtualize Items> with ItemContent")]
+	[UITheory(DisplayName = "Can render component using <Virtualize Items> with ItemContent")]
 	[MemberData(nameof(ItemsInCollection))]
 	public void Test002(int itemsInDataSource)
 	{
@@ -37,7 +37,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
 	}
 
-	[Theory(DisplayName = "Can render component using <Virtualize ItemsProvider> with ChildContent")]
+	[UITheory(DisplayName = "Can render component using <Virtualize ItemsProvider> with ChildContent")]
 	[MemberData(nameof(ItemsInCollection))]
 	public void Test010(int itemsInDataSource)
 	{
@@ -48,7 +48,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
 	}
 
-	[Theory(DisplayName = "Can render component using <Virtualize ItemsProvider> with ItemContent")]
+	[UITheory(DisplayName = "Can render component using <Virtualize ItemsProvider> with ItemContent")]
 	[MemberData(nameof(ItemsInCollection))]
 	public void Test011(int itemsInDataSource)
 	{
@@ -70,7 +70,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 				new object[] { x[0], 1_000_000, 1_000_000 },
 		}).SelectMany(x => x);
 
-	[Theory(DisplayName = "Can render component using <Virtualize Items> and different ItemSize and OverscanCount")]
+	[UITheory(DisplayName = "Can render component using <Virtualize Items> and different ItemSize and OverscanCount")]
 	[MemberData(nameof(ItemCountItemSizeOverscanCount))]
 	public void Test030(int itemsInDataSource, float itemSize, int overscanCount)
 	{
@@ -83,7 +83,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
 	}
 
-	[Theory(DisplayName = "Can render placeholder from <Virtualize ItemsProvider, Placeholder>")]
+	[UITheory(DisplayName = "Can render placeholder from <Virtualize ItemsProvider, Placeholder>")]
 	[MemberData(nameof(ItemsInCollection))]
 	public void Test040(int itemsInDataSource)
 	{

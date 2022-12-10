@@ -10,11 +10,11 @@ namespace Bunit.ComponentFactories;
 
 public class GenericComponentFactoryTest : TestContext
 {
-	[Fact(DisplayName = "Add throws when factories is null")]
+	[UIFact(DisplayName = "Add throws when factories is null")]
 	public void Test001()
 		=> Should.Throw<ArgumentNullException>(() => ComponentFactoryCollectionExtensions.Add<Simple1, FakeSimple1>(factories: default));
 
-	[Fact(DisplayName = "Add<TComponent, TReplacementComponent> replaces components of type TComponent with TReplacementComponent")]
+	[UIFact(DisplayName = "Add<TComponent, TReplacementComponent> replaces components of type TComponent with TReplacementComponent")]
 	public void Test002()
 	{
 		ComponentFactories.Add<Simple1, FakeSimple1>();

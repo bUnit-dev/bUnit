@@ -10,14 +10,14 @@ public class RenderedFragmentTest : TestContext
 		Services.AddXunitLogger(output);
 	}
 
-	[Fact(DisplayName = "Find throws an exception if no element matches the css selector")]
+	[UIFact(DisplayName = "Find throws an exception if no element matches the css selector")]
 	public void Test001()
 	{
 		var cut = RenderComponent<Wrapper>();
 		Should.Throw<ElementNotFoundException>(() => cut.Find("div"));
 	}
 
-	[Fact(DisplayName = "Find returns expected element that matches the css selector")]
+	[UIFact(DisplayName = "Find returns expected element that matches the css selector")]
 	public void Test002()
 	{
 		var cut = RenderComponent<Wrapper>(x => x.AddChildContent("<div>"));
@@ -25,7 +25,7 @@ public class RenderedFragmentTest : TestContext
 		result.ShouldNotBeNull();
 	}
 
-	[Fact(DisplayName = "Nodes should return new instance " +
+	[UIFact(DisplayName = "Nodes should return new instance " +
 						"when a event handler trigger has caused changes to DOM tree")]
 	public void Test006()
 	{
@@ -37,7 +37,7 @@ public class RenderedFragmentTest : TestContext
 		Assert.NotSame(initialNodes, cut.Nodes);
 	}
 
-	[Fact(DisplayName = "Nodes should return new instance " +
+	[UIFact(DisplayName = "Nodes should return new instance " +
 						"when a nested component has caused the DOM tree to change")]
 	public void Test007()
 	{
@@ -52,7 +52,7 @@ public class RenderedFragmentTest : TestContext
 		Assert.NotSame(initialNodes, cut.Nodes);
 	}
 
-	[Fact(DisplayName = "Nodes should return the same instance " +
+	[UIFact(DisplayName = "Nodes should return the same instance " +
 						"when a re-render does not causes the DOM to change")]
 	public void Test008()
 	{
@@ -65,7 +65,7 @@ public class RenderedFragmentTest : TestContext
 		Assert.Same(initialNodes, cut.Nodes);
 	}
 
-	[Fact(DisplayName = "Changes to event handler should return a new instance of DOM tree")]
+	[UIFact(DisplayName = "Changes to event handler should return a new instance of DOM tree")]
 	public void Test009()
 	{
 		var cut = RenderComponent<ToggleClickHandler>();
@@ -80,7 +80,7 @@ public class RenderedFragmentTest : TestContext
 		cut.Instance.Counter.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "FindComponent<TComponent> returns component from first branch of tree in first depth first search")]
+	[UIFact(DisplayName = "FindComponent<TComponent> returns component from first branch of tree in first depth first search")]
 	public void Test100()
 	{
 		var wrapper = RenderComponent<TwoComponentWrapper>(builder => builder
@@ -95,7 +95,7 @@ public class RenderedFragmentTest : TestContext
 		cut.Instance.Header.ShouldBe("First");
 	}
 
-	[Fact(DisplayName = "FindComponent<TComponent> finds components when first tree branch is empty")]
+	[UIFact(DisplayName = "FindComponent<TComponent> finds components when first tree branch is empty")]
 	public void Test101()
 	{
 		var wrapper = RenderComponent<TwoComponentWrapper>(builder => builder
@@ -108,7 +108,7 @@ public class RenderedFragmentTest : TestContext
 		cut.Instance.Header.ShouldBe("Second");
 	}
 
-	[Fact(DisplayName = "GetComponent throws when component of requested type is not in the render tree")]
+	[UIFact(DisplayName = "GetComponent throws when component of requested type is not in the render tree")]
 	public void Test102()
 	{
 		var wrapper = RenderComponent<Wrapper>();
@@ -116,7 +116,7 @@ public class RenderedFragmentTest : TestContext
 		Should.Throw<ComponentNotFoundException>(() => wrapper.FindComponent<Simple1>());
 	}
 
-	[Fact(DisplayName = "GetComponents returns all components of requested type using a depth first order")]
+	[UIFact(DisplayName = "GetComponents returns all components of requested type using a depth first order")]
 	public void Test103()
 	{
 		var wrapper = RenderComponent<TwoComponentWrapper>(builder => builder
@@ -133,7 +133,7 @@ public class RenderedFragmentTest : TestContext
 		cuts[1].Instance.Header.ShouldBe("Second");
 	}
 
-	[Fact(DisplayName = "Render events for non-rendered sub components are not emitted")]
+	[UIFact(DisplayName = "Render events for non-rendered sub components are not emitted")]
 	public void Test010()
 	{
 		var wrapper = RenderComponent<TwoComponentWrapper>(parameters => parameters
@@ -160,7 +160,7 @@ public class RenderedFragmentTest : TestContext
 		second.RenderCount.ShouldBe(2);
 	}
 
-	[Fact(DisplayName = "Getting Markup from a RenderedFragment based on a disposed component throws")]
+	[UIFact(DisplayName = "Getting Markup from a RenderedFragment based on a disposed component throws")]
 	public void Test020()
 	{
 		var cut = RenderComponent<ToggleChildComponent>(ps => ps.Add(p => p.ShowChild, true));

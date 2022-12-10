@@ -2,7 +2,7 @@ namespace Bunit.Extensions;
 
 public class RenderedComponentInvokeAsyncExtensionsTest : TestContext
 {
-	[Fact(DisplayName = "Dispatcher awaits Task-returning callback")]
+	[UIFact(DisplayName = "Dispatcher awaits Task-returning callback")]
 	public async Task Test003()
 	{
 		// Arrange
@@ -22,7 +22,7 @@ public class RenderedComponentInvokeAsyncExtensionsTest : TestContext
 		delegateFinished.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Dispatcher does not await void-returning callback")]
+	[UIFact(DisplayName = "Dispatcher does not await void-returning callback")]
 	public async Task Test004()
 	{
 		// Arrange

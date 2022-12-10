@@ -4,7 +4,7 @@ public class ClipboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<
 {
 	protected override string ElementName => "textarea";
 
-	[Theory(DisplayName = "Clipboard events are raised correctly through helpers")]
+	[UITheory(DisplayName = "Clipboard events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(ClipboardEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{

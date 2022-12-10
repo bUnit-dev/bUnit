@@ -4,7 +4,7 @@ public class ProgressEventDispatchExtensionsTest : EventDispatchExtensionsTest<P
 {
 	protected override string ElementName => "div";
 
-	[Theory(DisplayName = "Progress events are raised correctly through helpers")]
+	[UITheory(DisplayName = "Progress events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(ProgressEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{

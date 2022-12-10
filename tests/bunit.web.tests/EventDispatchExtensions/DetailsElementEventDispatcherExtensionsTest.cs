@@ -6,7 +6,7 @@ namespace Bunit.EventDispatchExtensions;
 
 public class DetailsElementEventDispatcherExtensionsTest : TestContext
 {
-	[Fact(DisplayName = "Toggle raises ontoggle events")]
+	[UIFact(DisplayName = "Toggle raises ontoggle events")]
 	public void Test200()
 	{
 		var cut = RenderComponent<ToggleableDetails>();

@@ -2,7 +2,7 @@ namespace Bunit.TestDoubles;
 
 public class FakeWebAssemblyHostEnvironmentTest : TestContext
 {
-	[Fact]
+	[UIFact]
 	public void ShouldSayHelloToDevelopers()
 	{
 		var hostEnvironment = Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();
@@ -14,7 +14,7 @@ public class FakeWebAssemblyHostEnvironmentTest : TestContext
 		cut.Find("p").MarkupMatches($"<p>Hello Developers. The base URL is: /</p>");
 	}
 
-	[Fact]
+	[UIFact]
 	public void ShouldUseCorrectBaseAddress()
 	{
 		var hostEnvironment = Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();

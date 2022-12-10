@@ -15,7 +15,7 @@ public class MarkupMatchesAssertExtensionsTest : TestContext
 	private INode ActualNode => ActualNodeList[0];
 	private INode ExpectedNode => ExpectedNodeList[0];
 
-	[Fact(DisplayName = "MarkupMatches with null arguments throws ArgumentNullException")]
+	[UIFact(DisplayName = "MarkupMatches with null arguments throws ArgumentNullException")]
 	public void Test001()
 	{
 		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(ExpectedMarkup));
@@ -55,52 +55,52 @@ public class MarkupMatchesAssertExtensionsTest : TestContext
 		Should.Throw<ArgumentNullException>(() => default(INodeList)!.MarkupMatches(default(RenderFragment)!));
 	}
 
-	[Fact(DisplayName = "MarkupMatches(string, string) correctly diffs markup")]
+	[UIFact(DisplayName = "MarkupMatches(string, string) correctly diffs markup")]
 	public void Test002()
 		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatches(ExpectedMarkup));
 
-	[Fact(DisplayName = "MarkupMatches(string, IRenderedFragment) correctly diffs markup")]
+	[UIFact(DisplayName = "MarkupMatches(string, IRenderedFragment) correctly diffs markup")]
 	public void Test003()
 		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatches(ExpectedRenderedFragment));
 
-	[Fact(DisplayName = "MarkupMatches(string, INodeList) correctly diffs markup")]
+	[UIFact(DisplayName = "MarkupMatches(string, INodeList) correctly diffs markup")]
 	public void Test004()
 		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatches(ExpectedNodeList));
 
-	[Fact(DisplayName = "MarkupMatches(INodeList, INodeList) correctly diffs markup")]
+	[UIFact(DisplayName = "MarkupMatches(INodeList, INodeList) correctly diffs markup")]
 	public void Test005()
 		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedNodeList));
 
-	[Fact(DisplayName = "MarkupMatches(INodeList, INode) correctly diffs markup")]
+	[UIFact(DisplayName = "MarkupMatches(INodeList, INode) correctly diffs markup")]
 	public void Test006()
 		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedNode));
 
-	[Fact(DisplayName = "MarkupMatches(INode, INodeList) correctly diffs markup")]
+	[UIFact(DisplayName = "MarkupMatches(INode, INodeList) correctly diffs markup")]
 	public void Test007()
 		=> Should.Throw<HtmlEqualException>(() => ActualNode.MarkupMatches(ExpectedNodeList));
 
-	[Fact(DisplayName = "MarkupMatches(IRenderedFragment, RenderFragment) correctly diffs markup")]
+	[UIFact(DisplayName = "MarkupMatches(IRenderedFragment, RenderFragment) correctly diffs markup")]
 	public void Test008()
 		=> Should.Throw<HtmlEqualException>(() => ActualRenderedFragment.MarkupMatches(ExpectedRenderFragment));
 
-	[Fact(DisplayName = "MarkupMatches(INode, RenderFragment) correctly diffs markup")]
+	[UIFact(DisplayName = "MarkupMatches(INode, RenderFragment) correctly diffs markup")]
 	public void Test009()
 		=> Should.Throw<HtmlEqualException>(() => ActualNode.MarkupMatches(ExpectedRenderFragment));
 
-	[Fact(DisplayName = "MarkupMatches(INodeList, RenderFragment) correctly diffs markup")]
+	[UIFact(DisplayName = "MarkupMatches(INodeList, RenderFragment) correctly diffs markup")]
 	public void Test0010()
 		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedRenderFragment));
 
 	private IRenderedFragment FindAllRenderedFragment => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
 	private readonly string findAllExpectedRenderFragment = "<p><strong>test</strong></p>";
 
-	[Fact(DisplayName = "MarkupMatches combination works with IRenderedFragment's FindAll extension method")]
+	[UIFact(DisplayName = "MarkupMatches combination works with IRenderedFragment's FindAll extension method")]
 	public void Test011()
 	{
 		FindAllRenderedFragment.FindAll("p").MarkupMatches(findAllExpectedRenderFragment);
 	}
 
-	[Fact(DisplayName = "MarkupMatches combination works with FindAll and FindComponents<T>")]
+	[UIFact(DisplayName = "MarkupMatches combination works with FindAll and FindComponents<T>")]
 	public void Test012()
 	{
 		var cut = RenderComponent<RefToSimple1Child>();
@@ -108,7 +108,7 @@ public class MarkupMatchesAssertExtensionsTest : TestContext
 		cut.FindAll("h1").MarkupMatches(cut.FindComponents<Simple1>());
 	}
 
-	[Fact(DisplayName = "MarkupMatches combination works with FindAll and a markup string")]
+	[UIFact(DisplayName = "MarkupMatches combination works with FindAll and a markup string")]
 	public void Test013()
 	{
 		var cut = RenderComponent<NoArgs>();
@@ -116,7 +116,7 @@ public class MarkupMatchesAssertExtensionsTest : TestContext
 		cut.FindAll("h1").MarkupMatches("<h1>Hello world</h1>");
 	}
 
-	[Fact(DisplayName = "MarkupMatches combination works with Find and FindAll")]
+	[UIFact(DisplayName = "MarkupMatches combination works with Find and FindAll")]
 	public void Test014()
 	{
 		var cut = RenderComponent<TwoChildren>();
@@ -124,7 +124,7 @@ public class MarkupMatchesAssertExtensionsTest : TestContext
 		cut.Find("div").MarkupMatches(cut.FindAll("div"));
 	}
 
-	[Fact(DisplayName = "MarkupMatches correctly ignores scoped CSS attributes")]
+	[UIFact(DisplayName = "MarkupMatches correctly ignores scoped CSS attributes")]
 	public void Test_net5_001()
 	{
 		var cut = RenderComponent<ScopedCssElements>();

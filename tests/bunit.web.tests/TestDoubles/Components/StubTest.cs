@@ -2,7 +2,7 @@ namespace Bunit.TestDoubles.Components;
 
 public class StubTest : TestContext
 {
-	[Fact(DisplayName = "Stub<TComponent> renders nothing without a replacement template")]
+	[UIFact(DisplayName = "Stub<TComponent> renders nothing without a replacement template")]
 	public void Test001()
 	{
 		var cut = RenderComponent<Stub<Simple1>>();
@@ -10,7 +10,7 @@ public class StubTest : TestContext
 		cut.Nodes.Length.ShouldBe(0);
 	}
 
-	[Theory(DisplayName = "Stub<TComponent> captures parameters passed to TComponent")]
+	[UITheory(DisplayName = "Stub<TComponent> captures parameters passed to TComponent")]
 	[AutoData]
 	public void Test002(string header, string attrValue)
 	{

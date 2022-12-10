@@ -15,7 +15,7 @@ public class FakePersistentComponentStateTest : TestContext
 		Services.AddXunitLogger(outputHelper);
 	}
 
-	[Fact(DisplayName = "AddFakePersistentComponentState is registers PersistentComponentState in services")]
+	[UIFact(DisplayName = "AddFakePersistentComponentState is registers PersistentComponentState in services")]
 	public void Test001()
 	{
 		_ = this.AddFakePersistentComponentState();
@@ -25,7 +25,7 @@ public class FakePersistentComponentStateTest : TestContext
 		actual.ShouldNotBeNull();
 	}
 
-	[Fact(DisplayName = "AddFakePersistentComponentState enables PersistentComponentState injection into components")]
+	[UIFact(DisplayName = "AddFakePersistentComponentState enables PersistentComponentState injection into components")]
 	public void Test002()
 	{
 		this.AddFakePersistentComponentState();
@@ -35,7 +35,7 @@ public class FakePersistentComponentStateTest : TestContext
 		cut.Instance.State.ShouldNotBeNull();
 	}
 
-	[Theory(DisplayName = "Persist stores state in store for components to consume")]
+	[UITheory(DisplayName = "Persist stores state in store for components to consume")]
 	[AutoData]
 	public void Test011(string key, string data)
 	{
@@ -48,7 +48,7 @@ public class FakePersistentComponentStateTest : TestContext
 		actual.ShouldBe(data);
 	}
 
-	[Fact(DisplayName = "TryTake returns true if key contains data saved in store")]
+	[UIFact(DisplayName = "TryTake returns true if key contains data saved in store")]
 	public void Test012()
 	{
 		var fakeState = this.AddFakePersistentComponentState();
@@ -60,7 +60,7 @@ public class FakePersistentComponentStateTest : TestContext
 		actual.ShouldBeEquivalentTo(cut.Instance.Forecasts);
 	}
 
-	[Theory(DisplayName = "TryTake returns false if key is not in store")]
+	[UITheory(DisplayName = "TryTake returns false if key is not in store")]
 	[AutoData]
 	public void Test013(string key)
 	{
@@ -69,7 +69,7 @@ public class FakePersistentComponentStateTest : TestContext
 		fakeState.TryTake<string>(key, out var actual).ShouldBeFalse();
 	}
 
-	[Fact(DisplayName = "TriggerOnPersisting triggers OnPersisting callbacks added to store")]
+	[UIFact(DisplayName = "TriggerOnPersisting triggers OnPersisting callbacks added to store")]
 	public void Test014()
 	{
 		var onPersistingCalledTimes = 0;

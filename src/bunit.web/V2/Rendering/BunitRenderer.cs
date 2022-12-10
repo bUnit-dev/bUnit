@@ -13,6 +13,7 @@ public partial class BunitRenderer : Renderer
 	private readonly int rootComponentId;
 	private readonly RenderedFragment renderedFragment;
 	private readonly BunitHtmlParser htmlParser;
+	private readonly SynchronizationContext? syncContext;
 	private Exception? capturedUnhandledException;
 
 	/// <summary>
@@ -33,6 +34,7 @@ public partial class BunitRenderer : Renderer
 		root = new RootComponent();
 		rootComponentId = AssignRootComponentId(root);
 		htmlParser = new BunitHtmlParser();
+		syncContext = SynchronizationContext.Current;
 	}
 
 	public async Task<RenderedFragment> RenderAsync(RenderFragment renderFragment)
@@ -43,9 +45,9 @@ public partial class BunitRenderer : Renderer
 			await Dispatcher.InvokeAsync(async () =>
 			{
 				await RenderRootComponentAsync(rootComponentId)
-					.ConfigureAwait(false);
+					.ConfigureAwait(true);
 				AssertNoUnhandledExceptions();
-			}).ConfigureAwait(false);
+			}).ConfigureAwait(true);
 		}
 		catch (Exception ex)
 		{
@@ -63,9 +65,19 @@ public partial class BunitRenderer : Renderer
 		Dispatcher.AssertAccess();
 		var frames = new RenderTreeFrameDictionary();
 		LoadRenderTreeFrames(rootComponentId, frames);
-		UpdateRenderedFragmentState(frames);
+
+		if (syncContext is not null)
+		{
+			syncContext.Send(_ => UpdateRenderedFragmentState(frames), null);
+		}
+		else
+		{
+			UpdateRenderedFragmentState(frames);
+		}
+
 		return Task.CompletedTask;
 	}
+
 
 	/// <summary>
 	/// Populates the <paramref name="framesCollection"/> with <see cref="ArrayRange{RenderTreeFrame}"/>
@@ -135,14 +147,14 @@ public partial class BunitRenderer : Renderer
 			{
 				await base
 					.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs)
-					.ConfigureAwait(false);
+					.ConfigureAwait(true);
 			}
 			catch (Exception ex)
 			{
 				HandleException(ex);
 				throw;
 			}
-		}).ConfigureAwait(false);
+		}).ConfigureAwait(true);
 
 		AssertNoUnhandledExceptions();
 	}

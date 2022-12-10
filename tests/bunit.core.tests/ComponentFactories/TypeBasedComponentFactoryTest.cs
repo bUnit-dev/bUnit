@@ -2,16 +2,16 @@ namespace Bunit.ComponentFactories;
 
 public class TypeBasedComponentFactoryTest : TestContext
 {
-	[Fact(DisplayName = "Add throws when factories is null")]
+	[UIFact(DisplayName = "Add throws when factories is null")]
 	public void Test001()
 		=> Should.Throw<ArgumentNullException>(
 			() => ComponentFactoryCollectionExtensions.Add<Simple1>(default, default(Func<Simple1>)));
 
-	[Fact(DisplayName = "Add throws when instance is null")]
+	[UIFact(DisplayName = "Add throws when instance is null")]
 	public void Test002()
 		=> Should.Throw<ArgumentNullException>(() => ComponentFactories.Add<Simple1>(default(Func<Simple1>)));
 
-	[Fact(DisplayName = "TComponent replaced in render tree with component from factory method")]
+	[UIFact(DisplayName = "TComponent replaced in render tree with component from factory method")]
 	public void Test010()
 	{
 		var simple1Mock = Mock.Of<Simple1>();
@@ -23,7 +23,7 @@ public class TypeBasedComponentFactoryTest : TestContext
 			.Instance.ShouldBeSameAs(simple1Mock);
 	}
 
-	[Fact(DisplayName = "Multiple TComponent replaced in render tree with component from factory method")]
+	[UIFact(DisplayName = "Multiple TComponent replaced in render tree with component from factory method")]
 	public void Test011()
 	{
 		var mockRepo = new MockRepository(MockBehavior.Loose);

@@ -4,7 +4,7 @@ public class TouchEventDispatchExtensionsTest : EventDispatchExtensionsTest<Touc
 {
 	protected override string ElementName => "p";
 
-	[Theory(DisplayName = "Touch events are raised correctly through helpers")]
+	[UITheory(DisplayName = "Touch events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(TouchEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{

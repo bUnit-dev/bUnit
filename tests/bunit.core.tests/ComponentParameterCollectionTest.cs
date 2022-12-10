@@ -8,7 +8,7 @@ public class ComponentParameterCollectionTest : TestContext
 		return res.FindComponent<Params>();
 	}
 
-	[Fact(DisplayName = "ComponentParameters can be added to collection")]
+	[UIFact(DisplayName = "ComponentParameters can be added to collection")]
 	public void Test001()
 	{
 		var sut = new ComponentParameterCollection();
@@ -20,7 +20,7 @@ public class ComponentParameterCollectionTest : TestContext
 		sut.Contains(p).ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Add() throws if invalid parameter is passed to it")]
+	[UIFact(DisplayName = "Add() throws if invalid parameter is passed to it")]
 	public void Test002()
 	{
 		var sut = new ComponentParameterCollection();
@@ -29,7 +29,7 @@ public class ComponentParameterCollectionTest : TestContext
 		Should.Throw<ArgumentException>(() => sut.Add(p));
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment creates RenderFragment for component when empty")]
+	[UIFact(DisplayName = "ToComponentRenderFragment creates RenderFragment for component when empty")]
 	public void Test010()
 	{
 		var sut = new ComponentParameterCollection();
@@ -40,7 +40,7 @@ public class ComponentParameterCollectionTest : TestContext
 		c.VerifyParamsHaveDefaultValues();
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment passes regular params to component in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment passes regular params to component in RenderFragment")]
 	public void Test011()
 	{
 		var sut = new ComponentParameterCollection
@@ -58,7 +58,7 @@ public class ComponentParameterCollectionTest : TestContext
 		c.NullableValueTypeParam.ShouldBe(1337);
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment passes single ChildContent param to component in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment passes single ChildContent param to component in RenderFragment")]
 	public void Test012()
 	{
 		var sut = new ComponentParameterCollection
@@ -72,7 +72,7 @@ public class ComponentParameterCollectionTest : TestContext
 		rc.Markup.ShouldBe("FOO");
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment passes multiple ChildContent params to component in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment passes multiple ChildContent params to component in RenderFragment")]
 	public void Test013()
 	{
 		var sut = new ComponentParameterCollection
@@ -88,7 +88,7 @@ public class ComponentParameterCollectionTest : TestContext
 		rc.Markup.ShouldBe("FOOBARBAZ");
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment passes single RenderFragment param to component in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment passes single RenderFragment param to component in RenderFragment")]
 	public void Test014()
 	{
 		var sut = new ComponentParameterCollection
@@ -102,7 +102,7 @@ public class ComponentParameterCollectionTest : TestContext
 		rc.Markup.ShouldBe("FOO");
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment passes multiple RenderFragment params to component in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment passes multiple RenderFragment params to component in RenderFragment")]
 	public void Test015()
 	{
 		var sut = new ComponentParameterCollection
@@ -118,7 +118,7 @@ public class ComponentParameterCollectionTest : TestContext
 		rc.Markup.ShouldBe("FOOBARBAZ");
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment passes unmatched attributes to component in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment passes unmatched attributes to component in RenderFragment")]
 	public void Test016()
 	{
 		var sut = new ComponentParameterCollection
@@ -132,7 +132,7 @@ public class ComponentParameterCollectionTest : TestContext
 		c.Attributes?.ContainsKey("attr").ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment passes EventCallback params to component in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment passes EventCallback params to component in RenderFragment")]
 	public void Test017()
 	{
 		// arrange
@@ -159,7 +159,7 @@ public class ComponentParameterCollectionTest : TestContext
 		c.ECWithArgs.ShouldBe(ec4);
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment passes single template param to component in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment passes single template param to component in RenderFragment")]
 	public void Test018()
 	{
 		var sut = new ComponentParameterCollection
@@ -173,7 +173,7 @@ public class ComponentParameterCollectionTest : TestContext
 		rc.Markup.ShouldBe(Params.TemplateContent);
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment passes multiple template params to component in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment passes multiple template params to component in RenderFragment")]
 	public void Test019()
 	{
 		var sut = new ComponentParameterCollection
@@ -188,7 +188,7 @@ public class ComponentParameterCollectionTest : TestContext
 		rc.Markup.ShouldBe($"{Params.TemplateContent}1{Params.TemplateContent}2");
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment with different template types to same param throws")]
+	[UIFact(DisplayName = "ToComponentRenderFragment with different template types to same param throws")]
 	public void Test020()
 	{
 		var sut = new ComponentParameterCollection
@@ -202,7 +202,7 @@ public class ComponentParameterCollectionTest : TestContext
 		Should.Throw<ArgumentException>(() => RenderWithRenderFragment(rf));
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment passes skips null RenderFragment params")]
+	[UIFact(DisplayName = "ToComponentRenderFragment passes skips null RenderFragment params")]
 	public void Test030()
 	{
 		var sut = new ComponentParameterCollection
@@ -217,7 +217,7 @@ public class ComponentParameterCollectionTest : TestContext
 		rc.Markup.ShouldBe("BAR");
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment throws if same regular param is added twice")]
+	[UIFact(DisplayName = "ToComponentRenderFragment throws if same regular param is added twice")]
 	public void Test040()
 	{
 		var sut = new ComponentParameterCollection
@@ -231,7 +231,7 @@ public class ComponentParameterCollectionTest : TestContext
 		Should.Throw<ArgumentException>(() => RenderWithRenderFragment(rf));
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment throws if same regular null value param is added twice")]
+	[UIFact(DisplayName = "ToComponentRenderFragment throws if same regular null value param is added twice")]
 	public void Test041()
 	{
 		var sut = new ComponentParameterCollection
@@ -245,7 +245,7 @@ public class ComponentParameterCollectionTest : TestContext
 		Should.Throw<ArgumentException>(() => RenderWithRenderFragment(rf));
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment wraps component in unnamed cascading values in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment wraps component in unnamed cascading values in RenderFragment")]
 	public void Test050()
 	{
 		var sut = new ComponentParameterCollection
@@ -259,7 +259,7 @@ public class ComponentParameterCollectionTest : TestContext
 		c.NullableCC.ShouldBe("FOO");
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment wraps component in multiple unnamed cascading values in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment wraps component in multiple unnamed cascading values in RenderFragment")]
 	public void Test051()
 	{
 		var sut = new ComponentParameterCollection
@@ -275,7 +275,7 @@ public class ComponentParameterCollectionTest : TestContext
 		c.CC.ShouldBe(42);
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment throws when multiple unnamed cascading values with same type is added")]
+	[UIFact(DisplayName = "ToComponentRenderFragment throws when multiple unnamed cascading values with same type is added")]
 	public void Test052()
 	{
 		var sut = new ComponentParameterCollection
@@ -289,7 +289,7 @@ public class ComponentParameterCollectionTest : TestContext
 		Should.Throw<ArgumentException>(() => sut.ToRenderFragment<Params>());
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment wraps component in named cascading values in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment wraps component in named cascading values in RenderFragment")]
 	public void Test053()
 	{
 		var sut = new ComponentParameterCollection
@@ -303,7 +303,7 @@ public class ComponentParameterCollectionTest : TestContext
 		c.NullableNamedCC.ShouldBe("FOO");
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment wraps component in multiple named cascading values in RenderFragment")]
+	[UIFact(DisplayName = "ToComponentRenderFragment wraps component in multiple named cascading values in RenderFragment")]
 	public void Test054()
 	{
 		var sut = new ComponentParameterCollection
@@ -321,7 +321,7 @@ public class ComponentParameterCollectionTest : TestContext
 		c.AnotherNamedCC.ShouldBe(1337);
 	}
 
-	[Fact(DisplayName = "ToComponentRenderFragment throws when multiple named cascading values with same name and type is added")]
+	[UIFact(DisplayName = "ToComponentRenderFragment throws when multiple named cascading values with same name and type is added")]
 	public void Test055()
 	{
 		var sut = new ComponentParameterCollection

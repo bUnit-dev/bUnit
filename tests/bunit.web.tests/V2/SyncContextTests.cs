@@ -24,12 +24,12 @@ public class BunitContextTests : BunitContext
 		return new LoggerFactory().AddSerilog(serilogLogger, dispose: true);
 	}
 
-	public BunitContextTests(ITestOutputHelper outputHelper)
-		: base(CreateXunitLoggerFactory(outputHelper))
-	{
-	}
+	////public BunitContextTests(ITestOutputHelper outputHelper)
+	////	: base(CreateXunitLoggerFactory(outputHelper))
+	////{
+	////}
 
-	[Fact]
+	[UIFact]
 	public async Task Can_accept_simultaneous_render_requests()
 	{
 		var expectedOutput = string.Join(
@@ -47,7 +47,7 @@ public class BunitContextTests : BunitContext
 			timeout: TimeSpan.FromMilliseconds(2000));
 	}
 
-	[Theory]
+	[UITheory]
 	[InlineData(0)]
 	[InlineData(1)]
 	[InlineData(2)]

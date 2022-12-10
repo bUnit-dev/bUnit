@@ -4,7 +4,7 @@ public class PointerEventDispatchExtensionsTest : EventDispatchExtensionsTest<Po
 {
 	protected override string ElementName => "div";
 
-	[Theory(DisplayName = "Pointer events are raised correctly through helpers")]
+	[UITheory(DisplayName = "Pointer events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(PointerEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{

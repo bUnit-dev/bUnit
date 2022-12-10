@@ -2,7 +2,7 @@ namespace Bunit.TestDoubles;
 
 public class FakeNavigationInterceptionTest
 {
-	[Fact(DisplayName = "EnableNavigationInterceptionAsync returns completed task")]
+	[UIFact(DisplayName = "EnableNavigationInterceptionAsync returns completed task")]
 	public void Test001()
 	{
 		new FakeNavigationInterception()
@@ -11,7 +11,7 @@ public class FakeNavigationInterceptionTest
 			.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "FakeNavigationInterception is registered as the default INavigationInterception")]
+	[UIFact(DisplayName = "FakeNavigationInterception is registered as the default INavigationInterception")]
 	public void Test002()
 	{
 		using var ctx = new TestContext();

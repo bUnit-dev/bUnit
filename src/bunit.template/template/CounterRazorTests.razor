@@ -13,7 +13,7 @@ Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating
 
 @code {
 @*#if (testFramework_xunit)*@
-    [Fact]
+    [UIFact]
 @*#elif (testFramework_nunit)*@
     [Test]
 @*#elif (testFramework_mstest)*@
@@ -28,7 +28,7 @@ Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating
 		cut.Find("p").MarkupMatches(@<p>Current count: 0</p>);
 	}
 @*#if (testFramework_xunit)*@
-    [Fact]
+    [UIFact]
 @*#elif (testFramework_nunit)*@
     [Test]
 @*#elif (testFramework_mstest)*@

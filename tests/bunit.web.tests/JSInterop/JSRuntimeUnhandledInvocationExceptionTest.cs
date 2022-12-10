@@ -19,7 +19,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 			$"instance is returned from calling SetupModule on a BunitJSInterop instance.{Environment.NewLine}";
 	}
 
-	[Theory(DisplayName = "Message prints correctly with void return type")]
+	[UITheory(DisplayName = "Message prints correctly with void return type")]
 	[InlineAutoData("InvokeVoidAsync")]
 	[InlineAutoData("InvokeVoid")]
 	public void Test001(string identifier, string invocationMethodName)
@@ -33,7 +33,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints correctly with non-primitive return type")]
+	[UITheory(DisplayName = "Message prints correctly with non-primitive return type")]
 	[InlineAutoData("InvokeAsync")]
 	[InlineAutoData("InvokeUnmarshalled")]
 	public void Test002(string identifier, string invocationMethodName)
@@ -48,7 +48,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints correctly with primitive return type")]
+	[UITheory(DisplayName = "Message prints correctly with primitive return type")]
 	[InlineData(typeof(bool), "bool")]
 	[InlineData(typeof(byte), "byte")]
 	[InlineData(typeof(sbyte), "sbyte")]
@@ -74,7 +74,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints correctly with void return type and string argument")]
+	[UITheory(DisplayName = "Message prints correctly with void return type and string argument")]
 	[InlineAutoData("InvokeVoidAsync")]
 	[InlineAutoData("InvokeVoid")]
 	public void Test011(string identifier, string arg0, string invocationMethodName)
@@ -90,7 +90,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints correctly with void return type and multiple string arguments")]
+	[UITheory(DisplayName = "Message prints correctly with void return type and multiple string arguments")]
 	[InlineAutoData("InvokeVoidAsync")]
 	[InlineAutoData("InvokeVoid")]
 	public void Test012(string identifier, string arg0, string arg1, string invocationMethodName)
@@ -106,7 +106,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints correctly with void return type and multiple non-string arguments")]
+	[UITheory(DisplayName = "Message prints correctly with void return type and multiple non-string arguments")]
 	[InlineAutoData("InvokeVoidAsync")]
 	[InlineAutoData("InvokeVoid")]
 	public void Test013(string identifier, bool arg0, object arg1, string invocationMethodName)
@@ -122,7 +122,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints correctly with void return type and null argument")]
+	[UITheory(DisplayName = "Message prints correctly with void return type and null argument")]
 	[InlineAutoData("InvokeVoidAsync")]
 	[InlineAutoData("InvokeVoid")]
 	public void Test014(string identifier, string invocationMethodName)
@@ -138,7 +138,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints correctly with return type and string argument")]
+	[UITheory(DisplayName = "Message prints correctly with return type and string argument")]
 	[AutoData]
 	public void Test021(string identifier, string arg0)
 	{
@@ -155,7 +155,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints correctly with void return type and multiple string arguments")]
+	[UITheory(DisplayName = "Message prints correctly with void return type and multiple string arguments")]
 	[AutoData]
 	public void Test022(string identifier, string arg0, string arg1)
 	{
@@ -172,7 +172,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints correctly with void return type and multiple non-string arguments")]
+	[UITheory(DisplayName = "Message prints correctly with void return type and multiple non-string arguments")]
 	[AutoData]
 	public void Test023(string identifier, bool arg0, object arg1)
 	{
@@ -189,7 +189,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints correctly with void return type and null argument")]
+	[UITheory(DisplayName = "Message prints correctly with void return type and null argument")]
 	[AutoData]
 	public void Test024(string identifier)
 	{
@@ -206,7 +206,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with one argument correctly")]
+	[UITheory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with one argument correctly")]
 	[AutoData]
 	public void Test031(string identifier, Dummy1 arg0)
 	{
@@ -223,7 +223,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with two arguments correctly")]
+	[UITheory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with two arguments correctly")]
 	[AutoData]
 	public void Test032(string identifier, Dummy1 arg0, Dummy2 arg1)
 	{
@@ -240,7 +240,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with three arguments correctly")]
+	[UITheory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with three arguments correctly")]
 	[AutoData]
 	public void Test033(string identifier, Dummy1 arg0, Dummy2 arg1, Dummy3 arg2)
 	{
@@ -257,7 +257,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with primitive arguments correctly")]
+	[UITheory(DisplayName = "Message prints generic arguments of InvokeUnmarshalled with primitive arguments correctly")]
 	[AutoData]
 	public void Test034(string identifier, int arg0)
 	{
@@ -274,7 +274,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints generic arguments as '?' of InvokeUnmarshalled when matching argument is null")]
+	[UITheory(DisplayName = "Message prints generic arguments as '?' of InvokeUnmarshalled when matching argument is null")]
 	[AutoData]
 	public void Test035(string identifier)
 	{
@@ -291,7 +291,7 @@ public class JSRuntimeUnhandledInvocationExceptionTest
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
 
-	[Theory(DisplayName = "Message prints correctly when trying to import an unconfigured module")]
+	[UITheory(DisplayName = "Message prints correctly when trying to import an unconfigured module")]
 	[AutoData]
 	public void Test036(string moduleName)
 	{

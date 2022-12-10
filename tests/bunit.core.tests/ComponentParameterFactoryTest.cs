@@ -15,7 +15,7 @@ public class ComponentParameterFactoryTest
 
 	private string? Actual { get; set; }
 
-	[Fact(DisplayName = "EventCallback(Action) creates parameter with provided name and callback")]
+	[UIFact(DisplayName = "EventCallback(Action) creates parameter with provided name and callback")]
 	public async Task Test001()
 	{
 		Action action = () => Actual = EXPECTED;
@@ -25,7 +25,7 @@ public class ComponentParameterFactoryTest
 		await VerifyEventCallbackParameter(cp);
 	}
 
-	[Fact(DisplayName = "EventCallback(Action<object>) creates parameter with provided name and callback")]
+	[UIFact(DisplayName = "EventCallback(Action<object>) creates parameter with provided name and callback")]
 	public async Task Test002()
 	{
 		Action<object> action = _ => Actual = EXPECTED;
@@ -35,7 +35,7 @@ public class ComponentParameterFactoryTest
 		await VerifyEventCallbackParameter(cp);
 	}
 
-	[Fact(DisplayName = "EventCallback(Func<Task>) creates parameter with provided name and callback")]
+	[UIFact(DisplayName = "EventCallback(Func<Task>) creates parameter with provided name and callback")]
 	public async Task Test003()
 	{
 		Func<Task> action = () => { Actual = EXPECTED; return Task.CompletedTask; };
@@ -45,7 +45,7 @@ public class ComponentParameterFactoryTest
 		await VerifyEventCallbackParameter(cp);
 	}
 
-	[Fact(DisplayName = "EventCallback(Func<object, Task>) creates parameter with provided name and callback")]
+	[UIFact(DisplayName = "EventCallback(Func<object, Task>) creates parameter with provided name and callback")]
 	public async Task Test004()
 	{
 		Func<object, Task> action = _ => { Actual = EXPECTED; return Task.CompletedTask; };
@@ -55,7 +55,7 @@ public class ComponentParameterFactoryTest
 		await VerifyEventCallbackParameter(cp);
 	}
 
-	[Fact(DisplayName = "EventCallback<TValue>(Action) creates parameter with provided name and callback")]
+	[UIFact(DisplayName = "EventCallback<TValue>(Action) creates parameter with provided name and callback")]
 	public async Task Test011()
 	{
 		Action action = () => Actual = EXPECTED;
@@ -65,7 +65,7 @@ public class ComponentParameterFactoryTest
 		await VerifyEventCallbackParameter<EventArgs>(cp);
 	}
 
-	[Fact(DisplayName = "EventCallback<TValue>(Action<TValue>) creates parameter with provided name and callback")]
+	[UIFact(DisplayName = "EventCallback<TValue>(Action<TValue>) creates parameter with provided name and callback")]
 	public async Task Test012()
 	{
 		Action<EventArgs> action = _ => Actual = EXPECTED;
@@ -75,7 +75,7 @@ public class ComponentParameterFactoryTest
 		await VerifyEventCallbackParameter<EventArgs>(cp);
 	}
 
-	[Fact(DisplayName = "EventCallback(Func<Task>) creates parameter with provided name and callback")]
+	[UIFact(DisplayName = "EventCallback(Func<Task>) creates parameter with provided name and callback")]
 	public async Task Test013()
 	{
 		Func<Task> action = () => { Actual = EXPECTED; return Task.CompletedTask; };
@@ -85,7 +85,7 @@ public class ComponentParameterFactoryTest
 		await VerifyEventCallbackParameter<EventArgs>(cp);
 	}
 
-	[Fact(DisplayName = "EventCallback(Func<object, Task>) creates parameter with provided name and callback")]
+	[UIFact(DisplayName = "EventCallback(Func<object, Task>) creates parameter with provided name and callback")]
 	public async Task Test014()
 	{
 		Func<EventArgs, Task> action = _ => { Actual = EXPECTED; return Task.CompletedTask; };
@@ -112,7 +112,7 @@ public class ComponentParameterFactoryTest
 		Actual.ShouldBe(EXPECTED);
 	}
 
-	[Fact(DisplayName = "Parameter creates a parameter with provided name and value")]
+	[UIFact(DisplayName = "Parameter creates a parameter with provided name and value")]
 	public void Test020()
 	{
 		var cp = Parameter(NAME, EXPECTED);
@@ -122,7 +122,7 @@ public class ComponentParameterFactoryTest
 		cp.IsCascadingValue.ShouldBeFalse();
 	}
 
-	[Fact(DisplayName = "Parameter creates a parameter with provided name and null value")]
+	[UIFact(DisplayName = "Parameter creates a parameter with provided name and null value")]
 	public void Test021()
 	{
 		var cp = Parameter(NAME, null);
@@ -132,7 +132,7 @@ public class ComponentParameterFactoryTest
 		cp.IsCascadingValue.ShouldBeFalse();
 	}
 
-	[Fact(DisplayName = "CascadingValue(name, value) creates a named cascading value parameter with provided name and value")]
+	[UIFact(DisplayName = "CascadingValue(name, value) creates a named cascading value parameter with provided name and value")]
 	public void Test030()
 	{
 		var cp = CascadingValue(NAME, EXPECTED);
@@ -142,7 +142,7 @@ public class ComponentParameterFactoryTest
 		cp.IsCascadingValue.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "CascadingValue(name, value) creates a unnamed cascading value parameter with provided name and value")]
+	[UIFact(DisplayName = "CascadingValue(name, value) creates a unnamed cascading value parameter with provided name and value")]
 	public void Test031()
 	{
 		var cp = CascadingValue(EXPECTED);
@@ -152,7 +152,7 @@ public class ComponentParameterFactoryTest
 		cp.IsCascadingValue.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "ChildContent(string markup) creates a parameter with a RenderFragment that renders the provided markup")]
+	[UIFact(DisplayName = "ChildContent(string markup) creates a parameter with a RenderFragment that renders the provided markup")]
 	public void Test040()
 	{
 		var cp = ChildContent(EXPECTED);
@@ -164,7 +164,7 @@ public class ComponentParameterFactoryTest
 		renderedFragment.Markup.ShouldBe(EXPECTED);
 	}
 
-	[Fact(DisplayName = "ChildContent<TComponent>() creates a parameter with a RenderFragment that renders a component of type TComponent")]
+	[UIFact(DisplayName = "ChildContent<TComponent>() creates a parameter with a RenderFragment that renders a component of type TComponent")]
 	public void Test041()
 	{
 		var cp = ChildContent<TestComponent>();
@@ -176,7 +176,7 @@ public class ComponentParameterFactoryTest
 		renderedFragment.Markup.ShouldBe(nameof(TestComponent));
 	}
 
-	[Fact(DisplayName = "ChildContent<TComponent>(component parameters) creates a parameter with a RenderFragment that renders a component of type TComponent")]
+	[UIFact(DisplayName = "ChildContent<TComponent>(component parameters) creates a parameter with a RenderFragment that renders a component of type TComponent")]
 	public void Test042()
 	{
 		var cp = ChildContent<TestComponent>((nameof(TestComponent.Input), EXPECTED));
@@ -188,7 +188,7 @@ public class ComponentParameterFactoryTest
 		renderedFragment.Markup.ShouldBe(nameof(TestComponent) + EXPECTED);
 	}
 
-	[Fact(DisplayName = "ChildContent(RenderFragment) creates a parameter with a RenderFragment passed to ChildContent")]
+	[UIFact(DisplayName = "ChildContent(RenderFragment) creates a parameter with a RenderFragment passed to ChildContent")]
 	public void Test043()
 	{
 		var cp = ChildContent(b => b.AddMarkupContent(0, EXPECTED));
@@ -200,7 +200,7 @@ public class ComponentParameterFactoryTest
 		renderedFragment.Markup.ShouldBe(EXPECTED);
 	}
 
-	[Fact(DisplayName = "RenderFragment(name, markup) creates a parameter with a RenderFragment that renders a component of type TComponent")]
+	[UIFact(DisplayName = "RenderFragment(name, markup) creates a parameter with a RenderFragment that renders a component of type TComponent")]
 	public void Test051()
 	{
 		var cp = RenderFragment(NAME, EXPECTED);
@@ -212,7 +212,7 @@ public class ComponentParameterFactoryTest
 		renderedFragment.Markup.ShouldBe(EXPECTED);
 	}
 
-	[Fact(DisplayName = "RenderFragment<TComponent>(name, component parameters) creates a parameter with a RenderFragment that renders a component of type TComponent")]
+	[UIFact(DisplayName = "RenderFragment<TComponent>(name, component parameters) creates a parameter with a RenderFragment that renders a component of type TComponent")]
 	public void Test052()
 	{
 		var cp = RenderFragment<TestComponent>(NAME, (nameof(TestComponent.Input), EXPECTED));
@@ -224,7 +224,7 @@ public class ComponentParameterFactoryTest
 		renderedFragment.Markup.ShouldBe(nameof(TestComponent) + EXPECTED);
 	}
 
-	[Fact(DisplayName = "Template<TValue>(string, RenderFragment<TValue>) creates a parameter with a Template")]
+	[UIFact(DisplayName = "Template<TValue>(string, RenderFragment<TValue>) creates a parameter with a Template")]
 	public void Test061()
 	{
 		var cp = Template<string>(NAME, s => b => b.AddMarkupContent(0, s));
@@ -236,7 +236,7 @@ public class ComponentParameterFactoryTest
 		renderedFragment.Markup.ShouldBe(EXPECTED);
 	}
 
-	[Fact(DisplayName = "Template<TValue>(string, Func<TValue, string>) creates a parameter with a Template")]
+	[UIFact(DisplayName = "Template<TValue>(string, Func<TValue, string>) creates a parameter with a Template")]
 	public void Test062()
 	{
 		var cp = Template<string>(NAME, s => s);
@@ -248,7 +248,7 @@ public class ComponentParameterFactoryTest
 		renderedFragment.Markup.ShouldBe(EXPECTED);
 	}
 
-	[Fact(DisplayName = "Template<TValue>(string, Func<TValue, string>) creates a parameter with a Template")]
+	[UIFact(DisplayName = "Template<TValue>(string, Func<TValue, string>) creates a parameter with a Template")]
 	public void Test063()
 	{
 		var cp = Template<TestComponent, string>(NAME, value => new ComponentParameter[]

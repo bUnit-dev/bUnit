@@ -2,7 +2,7 @@ namespace Bunit.Rendering.Internal;
 
 public class HtmlizerTests : TestContext
 {
-	[Theory(DisplayName = "Htmlizer correctly prefixed stopPropagation and preventDefault attributes")]
+	[UITheory(DisplayName = "Htmlizer correctly prefixed stopPropagation and preventDefault attributes")]
 	[InlineData(false, true)]
 	[InlineData(true, false)]
 	[InlineData(true, true)]
@@ -19,7 +19,7 @@ public class HtmlizerTests : TestContext
 		button.HasAttribute(Htmlizer.ToBlazorAttribute("onclick:preventDefault")).ShouldBe(preventDefault);
 	}
 
-	[Fact(DisplayName = "Blazor ElementReferences are included in rendered markup")]
+	[UIFact(DisplayName = "Blazor ElementReferences are included in rendered markup")]
 	public void Test001()
 	{
 		var cut = RenderComponent<Htmlizer01Component>();
@@ -29,7 +29,7 @@ public class HtmlizerTests : TestContext
 		elmRefValue.ShouldBe(cut.Instance.ButtomElmRef.Id);
 	}
 
-	[Fact(DisplayName = "Blazor ElementReferences start in markup on rerenders")]
+	[UIFact(DisplayName = "Blazor ElementReferences start in markup on rerenders")]
 	public void Test003()
 	{
 		var cut = RenderComponent<Htmlizer01Component>();
@@ -40,7 +40,7 @@ public class HtmlizerTests : TestContext
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 	}
 
-	[Theory(DisplayName = "IsBlazorAttribute correctly identifies Blazor attributes")]
+	[UITheory(DisplayName = "IsBlazorAttribute correctly identifies Blazor attributes")]
 	[InlineData("b-twl12ishk1=\"\"")]
 	[InlineData("blazor:onclick=\"1\"")]
 	[InlineData("blazor:__internal_stopPropagation_onclick=\"\"")]

@@ -2,7 +2,7 @@ namespace Bunit;
 
 public class RefreshableQueryCollectionTest : TestContext
 {
-	[Fact(DisplayName = "When the query returns no elements, the collection is empty")]
+	[UIFact(DisplayName = "When the query returns no elements, the collection is empty")]
 	public void Test001()
 	{
 		var cut = RenderComponent<Simple1>();
@@ -12,7 +12,7 @@ public class RefreshableQueryCollectionTest : TestContext
 		sut.ShouldBeEmpty();
 	}
 
-	[Fact(DisplayName = "When the query returns elements, the collection contains those elements")]
+	[UIFact(DisplayName = "When the query returns elements, the collection contains those elements")]
 	public void Test002()
 	{
 		var cut = RenderComponent<Simple1>();
@@ -23,7 +23,7 @@ public class RefreshableQueryCollectionTest : TestContext
 		sut[0].TagName.ShouldBe("H1");
 	}
 
-	[Fact(DisplayName = "When Refresh is called, the query is run again and new elements are made available")]
+	[UIFact(DisplayName = "When Refresh is called, the query is run again and new elements are made available")]
 	public void Test003()
 	{
 		var cut = RenderComponent<ClickAddsLi>();
@@ -36,7 +36,7 @@ public class RefreshableQueryCollectionTest : TestContext
 		sut.Count.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "Enabling auto refresh automatically refreshes query when the rendered fragment renders and has changes")]
+	[UIFact(DisplayName = "Enabling auto refresh automatically refreshes query when the rendered fragment renders and has changes")]
 	public void Test004()
 	{
 		var cut = RenderComponent<ClickAddsLi>();
@@ -48,7 +48,7 @@ public class RefreshableQueryCollectionTest : TestContext
 		sut.Count.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "Disabling auto refresh turns off automatic refreshing queries on when rendered fragment changes")]
+	[UIFact(DisplayName = "Disabling auto refresh turns off automatic refreshing queries on when rendered fragment changes")]
 	public void Test005()
 	{
 		var cut = RenderComponent<ClickAddsLi>();

@@ -14,7 +14,7 @@ public class CounterCSharpTests : BunitTestContext
 #endif
 {
 #if (testFramework_xunit)
-	[Fact]
+	[UIFact]
 #elif (testFramework_nunit)
 	[Test]
 #elif (testFramework_mstest)
@@ -30,7 +30,7 @@ public class CounterCSharpTests : BunitTestContext
 	}
 
 #if (testFramework_xunit)
-	[Fact]
+	[UIFact]
 #elif (testFramework_nunit)
 	[Test]
 #elif (testFramework_mstest)

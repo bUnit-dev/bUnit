@@ -5,7 +5,7 @@ public class BunitJSInteropTest
 {
 	private static BunitJSInterop CreateSut(JSRuntimeMode mode) => new BunitJSInterop { Mode = mode };
 
-	[Fact(DisplayName = "Mock returns default value in loose mode without invocation setup")]
+	[UIFact(DisplayName = "Mock returns default value in loose mode without invocation setup")]
 	public async Task Test001()
 	{
 		var sut = CreateSut(JSRuntimeMode.Loose);
@@ -15,7 +15,7 @@ public class BunitJSInteropTest
 		result.ShouldBe(default);
 	}
 
-	[Fact(DisplayName = "After invocation a invocation should be visible from the Invocations list")]
+	[UIFact(DisplayName = "After invocation a invocation should be visible from the Invocations list")]
 	public void Test002()
 	{
 		var identifier = "fooFunc";
@@ -31,7 +31,7 @@ public class BunitJSInteropTest
 		invocation.CancellationToken.ShouldBe(cts.Token);
 	}
 
-	[Fact(DisplayName = "Mock throws exception when in strict mode and invocation has not been setup")]
+	[UIFact(DisplayName = "Mock throws exception when in strict mode and invocation has not been setup")]
 	public void Test003()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -49,7 +49,7 @@ public class BunitJSInteropTest
 				x => x.Arguments.ShouldBe(args));
 	}
 
-	[Fact(DisplayName = "All invocations received AFTER a invocation handler " +
+	[UIFact(DisplayName = "All invocations received AFTER a invocation handler " +
 						"has a result set, receives the same result")]
 	public async Task Test005x()
 	{
@@ -68,7 +68,7 @@ public class BunitJSInteropTest
 		(await i2).ShouldBe(expectedResult);
 	}
 
-	[Fact(DisplayName = "All invocations received BEFORE a invocation handler " +
+	[UIFact(DisplayName = "All invocations received BEFORE a invocation handler " +
 						"has a result set, receives the same result")]
 	public async Task Test005()
 	{
@@ -87,7 +87,7 @@ public class BunitJSInteropTest
 		(await i2).ShouldBe(expectedResult);
 	}
 
-	[Fact(DisplayName = "Invocations receive the latest result set in a invocation handler")]
+	[UIFact(DisplayName = "Invocations receive the latest result set in a invocation handler")]
 	public async Task Test006x()
 	{
 		var identifier = "func";
@@ -107,7 +107,7 @@ public class BunitJSInteropTest
 		(await i2).ShouldBe(expectedResult2);
 	}
 
-	[Fact(DisplayName = "A invocation handler can be canceled for any waiting received invocations")]
+	[UIFact(DisplayName = "A invocation handler can be canceled for any waiting received invocations")]
 	public void Test007()
 	{
 		var identifier = "func";
@@ -120,7 +120,7 @@ public class BunitJSInteropTest
 		invocation.IsCanceled.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "A invocation handler can be canceled after it has been set to a different result")]
+	[UIFact(DisplayName = "A invocation handler can be canceled after it has been set to a different result")]
 	public void Test107()
 	{
 		var identifier = "func";
@@ -136,7 +136,7 @@ public class BunitJSInteropTest
 		invocation2.IsCanceled.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "A invocation handler can throw an exception for any waiting received invocations")]
+	[UIFact(DisplayName = "A invocation handler can throw an exception for any waiting received invocations")]
 	public async Task Test008()
 	{
 		var identifier = "func";
@@ -152,7 +152,7 @@ public class BunitJSInteropTest
 		invocation.IsFaulted.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "A invocation handler can throw an exception after it has been set to a different result")]
+	[UIFact(DisplayName = "A invocation handler can throw an exception after it has been set to a different result")]
 	public void Test108()
 	{
 		var identifier = "func";
@@ -169,7 +169,7 @@ public class BunitJSInteropTest
 		invocation2.IsFaulted.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Invocations returns all from a invocation handler")]
+	[UIFact(DisplayName = "Invocations returns all from a invocation handler")]
 	public void Test009()
 	{
 		var identifier = "func";
@@ -185,7 +185,7 @@ public class BunitJSInteropTest
 		invocations[identifier][1].Arguments[0].ShouldBe("second");
 	}
 
-	[Fact(DisplayName = "Arguments used in Setup are matched with invocations")]
+	[UIFact(DisplayName = "Arguments used in Setup are matched with invocations")]
 	public void Test010()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -202,7 +202,7 @@ public class BunitJSInteropTest
 		invocation.Arguments[1].ShouldBe(42);
 	}
 
-	[Fact(DisplayName = "Argument matcher used in Setup are matched with invocations")]
+	[UIFact(DisplayName = "Argument matcher used in Setup are matched with invocations")]
 	public void Test011()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -219,7 +219,7 @@ public class BunitJSInteropTest
 		invocation.Arguments[0].ShouldBe(42);
 	}
 
-	[Fact(DisplayName = "SetupVoid returns a invocation handler that does not take a result object")]
+	[UIFact(DisplayName = "SetupVoid returns a invocation handler that does not take a result object")]
 	public async Task Test012()
 	{
 		var identifier = "func";
@@ -234,7 +234,7 @@ public class BunitJSInteropTest
 		invocation.IsCompletedSuccessfully.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Arguments used in SetupVoid are matched with invocations")]
+	[UIFact(DisplayName = "Arguments used in SetupVoid are matched with invocations")]
 	public void Test013()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -251,7 +251,7 @@ public class BunitJSInteropTest
 		invocation.Arguments[1].ShouldBe(42);
 	}
 
-	[Fact(DisplayName = "Argument matcher used in SetupVoid are matched with invocations")]
+	[UIFact(DisplayName = "Argument matcher used in SetupVoid are matched with invocations")]
 	public void Test014()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -269,7 +269,7 @@ public class BunitJSInteropTest
 		invocation.Arguments[1].ShouldBe(42);
 	}
 
-	[Fact(DisplayName = "Empty Setup returns the same result for all matching return type invocation")]
+	[UIFact(DisplayName = "Empty Setup returns the same result for all matching return type invocation")]
 	public async Task Test015()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -286,7 +286,7 @@ public class BunitJSInteropTest
 		(await i2).ShouldBe(expectedResult1);
 	}
 
-	[Fact(DisplayName = "Empty Setup only matches the configured return type")]
+	[UIFact(DisplayName = "Empty Setup only matches the configured return type")]
 	public void Test016()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -297,7 +297,7 @@ public class BunitJSInteropTest
 		planned.Invocations.Count.ShouldBe(0);
 	}
 
-	[Fact(DisplayName = "Empty Setup allows to return different results by return types")]
+	[UIFact(DisplayName = "Empty Setup allows to return different results by return types")]
 	public async Task Test017()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -317,7 +317,7 @@ public class BunitJSInteropTest
 		(await i2).ShouldBe(expectedResult2);
 	}
 
-	[Fact(DisplayName = "Empty Setup is only used when there is no handler exist for the invocation identifier")]
+	[UIFact(DisplayName = "Empty Setup is only used when there is no handler exist for the invocation identifier")]
 	public async Task Test018()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -339,7 +339,7 @@ public class BunitJSInteropTest
 		(await i2).ShouldBe(expectedResult);
 	}
 
-	[Fact(DisplayName = "Empty Setup uses the last set result")]
+	[UIFact(DisplayName = "Empty Setup uses the last set result")]
 	public async Task Test019()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -358,7 +358,7 @@ public class BunitJSInteropTest
 		(await i1).ShouldBe(expectedResult2);
 	}
 
-	[Fact(DisplayName = "SetupVoid matches all void invocations")]
+	[UIFact(DisplayName = "SetupVoid matches all void invocations")]
 	public async Task Test020()
 	{
 		var identifier = "someFunc";
@@ -376,7 +376,7 @@ public class BunitJSInteropTest
 		handler.Invocations.Count.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "Empty Setup is not used for invocation with void return types")]
+	[UIFact(DisplayName = "Empty Setup is not used for invocation with void return types")]
 	public void Test021()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -386,7 +386,7 @@ public class BunitJSInteropTest
 		Should.Throw<JSRuntimeUnhandledInvocationException>(async () => await sut.JSRuntime.InvokeVoidAsync("someFunc"));
 	}
 
-	[Fact(DisplayName = "CatchAll handlers SetupVoid is only used when there is no void handler")]
+	[UIFact(DisplayName = "CatchAll handlers SetupVoid is only used when there is no void handler")]
 	public async Task Test022()
 	{
 		var identifier = "someFunc";
@@ -404,7 +404,7 @@ public class BunitJSInteropTest
 		invocation.IsCompletedSuccessfully.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "The last handler matching an invocation receives the invocation")]
+	[UIFact(DisplayName = "The last handler matching an invocation receives the invocation")]
 	public void Test030()
 	{
 		var identifier = "someFunc";
@@ -418,7 +418,7 @@ public class BunitJSInteropTest
 		h2.Invocations.Count.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "TryGetInvokeHandler returns null when no handlers matches the arguments")]
+	[UIFact(DisplayName = "TryGetInvokeHandler returns null when no handlers matches the arguments")]
 	public void Test040()
 	{
 		var sut = CreateSut(JSRuntimeMode.Loose);
@@ -428,7 +428,7 @@ public class BunitJSInteropTest
 		actual.ShouldBeNull();
 	}
 
-	[Fact(DisplayName = "TryGetInvokeHandler returns the last handler matching the input parameters")]
+	[UIFact(DisplayName = "TryGetInvokeHandler returns the last handler matching the input parameters")]
 	public void Test041()
 	{
 		var sut = CreateSut(JSRuntimeMode.Loose);
@@ -441,7 +441,7 @@ public class BunitJSInteropTest
 		actual.ShouldNotBe(h1);
 	}
 
-	[Fact(DisplayName = "TryGetInvokeVoidHandler can find void-return handlers")]
+	[UIFact(DisplayName = "TryGetInvokeVoidHandler can find void-return handlers")]
 	public void Test042()
 	{
 		var sut = CreateSut(JSRuntimeMode.Loose);
@@ -453,7 +453,7 @@ public class BunitJSInteropTest
 		actual.ShouldBe(expected);
 	}
 
-	[Fact(DisplayName = "Mock returns default value from IJSInProcessRuntime's invoke method in loose mode without invocation setup")]
+	[UIFact(DisplayName = "Mock returns default value from IJSInProcessRuntime's invoke method in loose mode without invocation setup")]
 	public void Test043()
 	{
 		var sut = CreateSut(JSRuntimeMode.Loose);
@@ -463,7 +463,7 @@ public class BunitJSInteropTest
 		result.ShouldBe(default);
 	}
 
-	[Fact(DisplayName = "After IJSInProcessRuntime invocation a invocation should be visible from the Invocations list")]
+	[UIFact(DisplayName = "After IJSInProcessRuntime invocation a invocation should be visible from the Invocations list")]
 	public void Test044()
 	{
 		var identifier = "fooFunc";
@@ -477,7 +477,7 @@ public class BunitJSInteropTest
 		invocation.Arguments.ShouldBe(args);
 	}
 
-	[Fact(DisplayName = "IJSInProcessRuntime invocations receive the result set in a planned invocation")]
+	[UIFact(DisplayName = "IJSInProcessRuntime invocations receive the result set in a planned invocation")]
 	public void Test045()
 	{
 		var identifier = "func";
@@ -493,7 +493,7 @@ public class BunitJSInteropTest
 		i.ShouldBe(expectedResult);
 	}
 
-	[Fact(DisplayName = "Mock throws exception when in strict mode and IJSInProcessRuntime invocation has not been setup")]
+	[UIFact(DisplayName = "Mock throws exception when in strict mode and IJSInProcessRuntime invocation has not been setup")]
 	public void Test046()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -505,7 +505,7 @@ public class BunitJSInteropTest
 		exception.Invocation.Arguments.ShouldBe(args);
 	}
 
-	[Fact(DisplayName = "Mock throws exception when in strict mode and IJSUnmarshalledRuntime invocation has not been setup with one argument")]
+	[UIFact(DisplayName = "Mock throws exception when in strict mode and IJSUnmarshalledRuntime invocation has not been setup with one argument")]
 	public void Test047()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -517,7 +517,7 @@ public class BunitJSInteropTest
 		exception.Invocation.Arguments.ShouldBe(args);
 	}
 
-	[Fact(DisplayName = "Mock throws exception when in strict mode and IJSUnmarshalledRuntime invocation has not been setup with two arguments")]
+	[UIFact(DisplayName = "Mock throws exception when in strict mode and IJSUnmarshalledRuntime invocation has not been setup with two arguments")]
 	public void Test048()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -529,7 +529,7 @@ public class BunitJSInteropTest
 		exception.Invocation.Arguments.ShouldBe(args);
 	}
 
-	[Fact(DisplayName = "Mock throws exception when in strict mode and IJSUnmarshalledRuntime invocation has not been setup with three arguments")]
+	[UIFact(DisplayName = "Mock throws exception when in strict mode and IJSUnmarshalledRuntime invocation has not been setup with three arguments")]
 	public void Test049()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -541,7 +541,7 @@ public class BunitJSInteropTest
 		exception.Invocation.Arguments.ShouldBe(args);
 	}
 
-	[Fact(DisplayName = "Mock throws exception when in strict mode and IJSUnmarshalledRuntime invocation has not been setup with zero arguments")]
+	[UIFact(DisplayName = "Mock throws exception when in strict mode and IJSUnmarshalledRuntime invocation has not been setup with zero arguments")]
 	public void Test050()
 	{
 		var sut = CreateSut(JSRuntimeMode.Strict);
@@ -552,7 +552,7 @@ public class BunitJSInteropTest
 		exception.Invocation.Arguments.ShouldBeEmpty();
 	}
 
-	[Fact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when passed one arguments.")]
+	[UIFact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when passed one arguments.")]
 	public void Test055()
 	{
 		var identifier = "fooFunc";
@@ -567,7 +567,7 @@ public class BunitJSInteropTest
 		actual.ShouldBe(expectedResult);
 	}
 
-	[Fact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when passed two arguments.")]
+	[UIFact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when passed two arguments.")]
 	public void Test056()
 	{
 		var identifier = "fooFunc";
@@ -582,7 +582,7 @@ public class BunitJSInteropTest
 		actual.ShouldBe(expectedResult);
 	}
 
-	[Fact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when passed three arguments.")]
+	[UIFact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when passed three arguments.")]
 	public void Test057()
 	{
 		var identifier = "fooFunc";
@@ -597,7 +597,7 @@ public class BunitJSInteropTest
 		actual.ShouldBe(expectedResult);
 	}
 
-	[Fact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when passed zero arguments.")]
+	[UIFact(DisplayName = "An IJSUnmarshalledRuntime invocation should return the correct result when passed zero arguments.")]
 	public void Test058()
 	{
 		var identifier = "fooFunc";
@@ -611,7 +611,7 @@ public class BunitJSInteropTest
 		actual.ShouldBe(expectedResult);
 	}
 
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier), then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling InvokeUnmarshalled(identifier), then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test310(string identifier)
 	{
 		var sut = CreateSut(JSRuntimeMode.Loose);
@@ -629,7 +629,7 @@ public class BunitJSInteropTest
 				invocationMethodName: "InvokeUnmarshalled"));
 	}
 
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0), then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0), then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test306(string identifier, string arg0)
 	{
 		var sut = CreateSut(JSRuntimeMode.Loose);
@@ -647,7 +647,7 @@ public class BunitJSInteropTest
 				invocationMethodName: "InvokeUnmarshalled"));
 	}
 
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1), then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1), then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test307(string identifier, string arg0, string arg1)
 	{
 		var sut = CreateSut(JSRuntimeMode.Loose);
@@ -665,7 +665,7 @@ public class BunitJSInteropTest
 				invocationMethodName: "InvokeUnmarshalled"));
 	}
 
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1, arg2), then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1, arg2), then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test308(string identifier, string arg0, string arg1, string arg2)
 	{
 		var sut = CreateSut(JSRuntimeMode.Loose);

@@ -38,14 +38,16 @@ public partial class RenderedFragment
 			await onAfterRenderTask
 				.Task
 				.WaitAsync(timeout ?? TimeSpan.FromSeconds(1));
-
-			onAfterRenderActionException = null;
-			onAfterRenderAction = null;
-			onAfterRenderTask = null;
 		}
 		catch (TimeoutException)
 		{
 			throw new TimeoutException("The after render action did not complete successfully before the timeout was reached.", onAfterRenderActionException);
+		}
+		finally
+		{
+			onAfterRenderActionException = null;
+			onAfterRenderAction = null;
+			onAfterRenderTask = null;
 		}
 	}
 

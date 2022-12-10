@@ -12,7 +12,7 @@ public class TestRendererTest : TestContext
 		Services.AddXunitLogger(outputHelper);
 	}
 
-	[Fact(DisplayName = "RenderFragment re-throws exception from component")]
+	[UIFact(DisplayName = "RenderFragment re-throws exception from component")]
 	public void Test004()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
@@ -22,7 +22,7 @@ public class TestRendererTest : TestContext
 			.Message.ShouldBe(ThrowsDuringSetParams.EXCEPTION.Message);
 	}
 
-	[Fact(DisplayName = "RenderComponent re-throws exception from component")]
+	[UIFact(DisplayName = "RenderComponent re-throws exception from component")]
 	public void Test003()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
@@ -31,7 +31,7 @@ public class TestRendererTest : TestContext
 			.Message.ShouldBe(ThrowsDuringSetParams.EXCEPTION.Message);
 	}
 
-	[Fact(DisplayName = "Can render fragment without children and no parameters")]
+	[UIFact(DisplayName = "Can render fragment without children and no parameters")]
 	public void Test001()
 	{
 		const string MARKUP = "<h1>hello world</h1>";
@@ -43,7 +43,7 @@ public class TestRendererTest : TestContext
 		cut.Markup.ShouldBe(MARKUP);
 	}
 
-	[Fact(DisplayName = "Can render component without children and no parameters")]
+	[UIFact(DisplayName = "Can render component without children and no parameters")]
 	public void Test002()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
@@ -55,7 +55,7 @@ public class TestRendererTest : TestContext
 		cut.Instance.ShouldBeOfType<NoChildNoParams>();
 	}
 
-	[Fact(DisplayName = "Can render component with parameters")]
+	[UIFact(DisplayName = "Can render component with parameters")]
 	public void Test005()
 	{
 		const string VALUE = "FOO BAR";
@@ -66,7 +66,7 @@ public class TestRendererTest : TestContext
 		cut.Instance.Value.ShouldBe(VALUE);
 	}
 
-	[Fact(DisplayName = "Can render component with child component")]
+	[UIFact(DisplayName = "Can render component with child component")]
 	public void Test006()
 	{
 		const string PARENT_VALUE = "PARENT";
@@ -82,7 +82,7 @@ public class TestRendererTest : TestContext
 		cut.Markup.ShouldEndWith(CHILD_VALUE);
 	}
 
-	[Fact(DisplayName = "Rendered component gets RenderCount updated on re-render")]
+	[UIFact(DisplayName = "Rendered component gets RenderCount updated on re-render")]
 	public async Task Test010()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
@@ -96,7 +96,7 @@ public class TestRendererTest : TestContext
 		cut.RenderCount.ShouldBe(2);
 	}
 
-	[Fact(DisplayName = "Rendered component gets Markup updated on re-render")]
+	[UIFact(DisplayName = "Rendered component gets Markup updated on re-render")]
 	public async Task Test011()
 	{
 		// arrange
@@ -114,7 +114,7 @@ public class TestRendererTest : TestContext
 		cut.Markup.ShouldBe(EXPECTED);
 	}
 
-	[Fact(DisplayName = "FindComponent returns first component nested inside another rendered component")]
+	[UIFact(DisplayName = "FindComponent returns first component nested inside another rendered component")]
 	public void Test020()
 	{
 		// arrange
@@ -135,7 +135,7 @@ public class TestRendererTest : TestContext
 		childCut.RenderCount.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "FindComponent throws if parentComponent parameter is null")]
+	[UIFact(DisplayName = "FindComponent throws if parentComponent parameter is null")]
 	public void Test021()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
@@ -143,7 +143,7 @@ public class TestRendererTest : TestContext
 		Should.Throw<ArgumentNullException>(() => sut.FindComponent<HasParams>(null!));
 	}
 
-	[Fact(DisplayName = "FindComponent throws if component is not found")]
+	[UIFact(DisplayName = "FindComponent throws if component is not found")]
 	public void Test022()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
@@ -152,7 +152,7 @@ public class TestRendererTest : TestContext
 		Should.Throw<ComponentNotFoundException>(() => sut.FindComponent<HasParams>(cut));
 	}
 
-	[Fact(DisplayName = "FindComponent returns same rendered component when called multiple times")]
+	[UIFact(DisplayName = "FindComponent returns same rendered component when called multiple times")]
 	public void Test023()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
@@ -166,7 +166,7 @@ public class TestRendererTest : TestContext
 		child1.ShouldBe(child2);
 	}
 
-	[Fact(DisplayName = "FindComponents returns all components nested inside another rendered component")]
+	[UIFact(DisplayName = "FindComponents returns all components nested inside another rendered component")]
 	public void Test030()
 	{
 		// arrange
@@ -196,7 +196,7 @@ public class TestRendererTest : TestContext
 		childCuts[1].RenderCount.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "FindComponents throws if parentComponent parameter is null")]
+	[UIFact(DisplayName = "FindComponents throws if parentComponent parameter is null")]
 	public void Test031()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
@@ -204,7 +204,7 @@ public class TestRendererTest : TestContext
 		Should.Throw<ArgumentNullException>(() => sut.FindComponents<HasParams>(null!));
 	}
 
-	[Fact(DisplayName = "FindComponents returns same rendered components when called multiple times")]
+	[UIFact(DisplayName = "FindComponents returns same rendered components when called multiple times")]
 	public void Test032()
 	{
 		// arrange
@@ -221,7 +221,7 @@ public class TestRendererTest : TestContext
 		childCuts1.ShouldBe(childCuts2);
 	}
 
-	[Fact(DisplayName = "Retrieved rendered child component with FindComponent gets updated on re-render")]
+	[UIFact(DisplayName = "Retrieved rendered child component with FindComponent gets updated on re-render")]
 	public async Task Test040()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
@@ -240,7 +240,7 @@ public class TestRendererTest : TestContext
 		cut.Markup.ShouldBe("X");
 	}
 
-	[Fact(DisplayName = "Retrieved rendered child component with FindComponents gets updated on re-render")]
+	[UIFact(DisplayName = "Retrieved rendered child component with FindComponents gets updated on re-render")]
 	public async Task Test041()
 	{
 		var sut = Services.GetRequiredService<ITestRenderer>();
@@ -259,7 +259,7 @@ public class TestRendererTest : TestContext
 		cut.Markup.ShouldBe("X");
 	}
 
-	[Fact(DisplayName = "Rendered component updates on re-renders from child components with changes in render tree")]
+	[UIFact(DisplayName = "Rendered component updates on re-renders from child components with changes in render tree")]
 	public async Task Test050()
 	{
 		// arrange
@@ -277,7 +277,7 @@ public class TestRendererTest : TestContext
 		cut.Markup.ShouldBe("X");
 	}
 
-	[Fact(DisplayName = "When component is disposed by renderer, getting Markup throws and IsDisposed returns true")]
+	[UIFact(DisplayName = "When component is disposed by renderer, getting Markup throws and IsDisposed returns true")]
 	public async Task Test060()
 	{
 		// arrange
@@ -295,7 +295,7 @@ public class TestRendererTest : TestContext
 		Should.Throw<ComponentDisposedException>(() => child.Markup);
 	}
 
-	[Fact(DisplayName = "Rendered component updates itself if a child's child is disposed")]
+	[UIFact(DisplayName = "Rendered component updates itself if a child's child is disposed")]
 	public async Task Test061()
 	{
 		// arrange
@@ -315,7 +315,7 @@ public class TestRendererTest : TestContext
 		cut.Markup.ShouldBe(string.Empty);
 	}
 
-	[Fact(DisplayName = "When test renderer is disposed, so is all rendered components")]
+	[UIFact(DisplayName = "When test renderer is disposed, so is all rendered components")]
 	public void Test070()
 	{
 		var sut = (TestRenderer)Services.GetRequiredService<ITestRenderer>();
@@ -326,7 +326,7 @@ public class TestRendererTest : TestContext
 		cut.IsDisposed.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Can render component that awaits uncompleted task in OnInitializedAsync")]
+	[UIFact(DisplayName = "Can render component that awaits uncompleted task in OnInitializedAsync")]
 	public void Test100()
 	{
 		var tcs = new TaskCompletionSource<object>();
@@ -337,7 +337,7 @@ public class TestRendererTest : TestContext
 		cut.Find("h1").TextContent.ShouldBe("FIRST");
 	}
 
-	[Fact(DisplayName = "Can render component that awaits yielding task in OnInitializedAsync")]
+	[UIFact(DisplayName = "Can render component that awaits yielding task in OnInitializedAsync")]
 	[Trait("Category", "async")]
 	public async Task Test101()
 	{
@@ -347,7 +347,7 @@ public class TestRendererTest : TestContext
 		await cut.WaitForAssertionAsync(() => cut.Find("h1").TextContent.ShouldBe("SECOND"));
 	}
 
-	[Fact(DisplayName = "Can render component that awaits yielding task in OnInitializedAsync")]
+	[UIFact(DisplayName = "Can render component that awaits yielding task in OnInitializedAsync")]
 	[Trait("Category", "sync")]
 	public void Test101_Sync()
 	{
@@ -357,7 +357,7 @@ public class TestRendererTest : TestContext
 		cut.WaitForAssertion(() => cut.Find("h1").TextContent.ShouldBe("SECOND"));
 	}
 
-	[Fact(DisplayName = "Can render component that awaits completed task in OnInitializedAsync")]
+	[UIFact(DisplayName = "Can render component that awaits completed task in OnInitializedAsync")]
 	public void Test102()
 	{
 		var cut = RenderComponent<AsyncRenderOfSubComponentDuringInit>(parameters =>
@@ -366,7 +366,7 @@ public class TestRendererTest : TestContext
 		cut.Find("h1").TextContent.ShouldBe("SECOND");
 	}
 
-	[Fact(DisplayName = "UnhandledException has a reference to the exception thrown by component synchronously")]
+	[UIFact(DisplayName = "UnhandledException has a reference to the exception thrown by component synchronously")]
 	public async Task Test200()
 	{
 		var syncException = Should.Throw<SyncOperationThrows.SyncOperationThrowsException>(
@@ -376,7 +376,7 @@ public class TestRendererTest : TestContext
 		capturedException.ShouldBe(syncException);
 	}
 
-	[Fact(DisplayName = "UnhandledException has a reference to the exception thrown by an async operation in a component")]
+	[UIFact(DisplayName = "UnhandledException has a reference to the exception thrown by an async operation in a component")]
 	public async Task Test201()
 	{
 		var tsc = new TaskCompletionSource<object>();
@@ -389,7 +389,7 @@ public class TestRendererTest : TestContext
 		actualException.ShouldBe(expectedException);
 	}
 
-	[Fact(DisplayName = "UnhandledException has a reference to latest unhandled exception thrown by a component")]
+	[UIFact(DisplayName = "UnhandledException has a reference to latest unhandled exception thrown by a component")]
 	public async Task Test202()
 	{
 		var tsc1 = new TaskCompletionSource<object>();
@@ -408,7 +408,7 @@ public class TestRendererTest : TestContext
 		firstExceptionReported.ShouldNotBe(secondException);
 	}
 
-	[Fact(DisplayName = "UnhandledException has a reference to latest unhandled exception thrown by a component during OnAfterRenderAsync")]
+	[UIFact(DisplayName = "UnhandledException has a reference to latest unhandled exception thrown by a component during OnAfterRenderAsync")]
 	public void Test203()
 	{
 		// Arrange
@@ -423,7 +423,7 @@ public class TestRendererTest : TestContext
 		Renderer.UnhandledException.Result.ShouldBeOfType<InvalidOperationException>();
 	}
 
-	[Fact(DisplayName = "given a IComponentActivator, " +
+	[UIFact(DisplayName = "given a IComponentActivator, " +
 					"when passed to constructor," +
 					"then it used to create components")]
 	public void Test1000()

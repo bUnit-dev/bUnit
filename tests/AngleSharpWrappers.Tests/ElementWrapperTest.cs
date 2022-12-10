@@ -14,7 +14,7 @@ namespace AngleSharpWrappers;
     {
         private HtmlParser Parser { get; } = new HtmlParser();
 
-        [Fact(DisplayName = "QuerySelectorAll works the same with wrapped and non-wrapped element")]
+        [UIFact(DisplayName = "QuerySelectorAll works the same with wrapped and non-wrapped element")]
         public void Test001()
         {
             var elm = Parser.Parse(
@@ -31,7 +31,7 @@ namespace AngleSharpWrappers;
             sutQueryRes.ShouldBe(elmQueryRes);
         }
 
-        [Fact(DisplayName = "QuerySelector works the same with wrapped and non-wrapped element")]
+        [UIFact(DisplayName = "QuerySelector works the same with wrapped and non-wrapped element")]
         public void Test002()
         {
             var elm = Parser.Parse(

@@ -8,7 +8,7 @@ using InputFile = Microsoft.AspNetCore.Components.Forms.InputFile;
 
 public class InputFileTests : TestContext
 {
-	[Fact(DisplayName = "InputFile can upload a single string file")]
+	[UIFact(DisplayName = "InputFile can upload a single string file")]
 	public void Test001()
 	{
 		var cut = RenderComponent<InputFileComponent>();
@@ -23,7 +23,7 @@ public class InputFileTests : TestContext
 		cut.Instance.LastChanged.ShouldBe(lastModified);
 	}
 
-	[Fact(DisplayName = "InputFile can upload a single byte file")]
+	[UIFact(DisplayName = "InputFile can upload a single byte file")]
 	public void Test002()
 	{
 		var cut = RenderComponent<InputFileComponent>();
@@ -34,7 +34,7 @@ public class InputFileTests : TestContext
 		cut.Instance.Content.ShouldBe("Hello World");
 	}
 
-	[Fact(DisplayName = "InputFile can upload multiple files")]
+	[UIFact(DisplayName = "InputFile can upload multiple files")]
 	public void Test003()
 	{
 		var cut = RenderComponent<MultipleInputFileComponent>();
@@ -57,7 +57,7 @@ public class InputFileTests : TestContext
 		cut.Instance.Files[1].Type.ShouldBe("unit");
 	}
 
-	[Fact(DisplayName = "UploadFile throws exception when InputFile is null")]
+	[UIFact(DisplayName = "UploadFile throws exception when InputFile is null")]
 	public void Test004()
 	{
 		Action action = () => ((IRenderedComponent<InputFile>)null).UploadFiles();
@@ -65,7 +65,7 @@ public class InputFileTests : TestContext
 		action.ShouldThrow<ArgumentNullException>();
 	}
 
-	[Fact(DisplayName = "Creating InputFileContent with null text throws exception")]
+	[UIFact(DisplayName = "Creating InputFileContent with null text throws exception")]
 	public void Test005()
 	{
 		Action action = () => InputFileContent.CreateFromText(null);
@@ -73,7 +73,7 @@ public class InputFileTests : TestContext
 		action.ShouldThrow<ArgumentNullException>();
 	}
 
-	[Fact(DisplayName = "Creating InputFileContent with null binary throws exception")]
+	[UIFact(DisplayName = "Creating InputFileContent with null binary throws exception")]
 	public void Test006()
 	{
 		Action action = () => InputFileContent.CreateFromBinary(null);
@@ -81,7 +81,7 @@ public class InputFileTests : TestContext
 		action.ShouldThrow<ArgumentNullException>();
 	}
 
-	[Fact(DisplayName = "Upload no files will result in Exception")]
+	[UIFact(DisplayName = "Upload no files will result in Exception")]
 	public void Test007()
 	{
 		var cut = RenderComponent<InputFileComponent>();
@@ -91,7 +91,7 @@ public class InputFileTests : TestContext
 		act.ShouldThrow<ArgumentException>();
 	}
 
-	[Fact(DisplayName = "Setting up InputFile will not overwrite bUnit default")]
+	[UIFact(DisplayName = "Setting up InputFile will not overwrite bUnit default")]
 	public void Test008()
 	{
 		JSInterop.SetupVoid("Blazor._internal.InputFile.init").SetException(new Exception());

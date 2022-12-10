@@ -30,13 +30,13 @@ public class BunitHtmlParserTest
 	public static readonly IEnumerable<object[]> BodyHtmlAndSpecialElements = BodyHtmlElements.Concat(
 		new[] { "html", "head", "body", }.Select(x => new[] { x }));
 
-	[Fact(DisplayName = "Parse() called with null")]
+	[UIFact(DisplayName = "Parse() called with null")]
 	public void ParseCalledWithNull()
 	{
 		Should.Throw<ArgumentNullException>(() => Parser.Parse(null!));
 	}
 
-	[Theory(DisplayName = "Parse() called with text only")]
+	[UITheory(DisplayName = "Parse() called with text only")]
 	[InlineData("  ")]
 	[InlineData("FOO BAR")]
 	public void ParseWithWhitespaceOnly(string text)
@@ -46,7 +46,7 @@ public class BunitHtmlParserTest
 		actual.ShouldHaveSingleItem().TextContent.ShouldBe(text);
 	}
 
-	[Theory(DisplayName = "Parse() passed <TAG id=TAG>")]
+	[UITheory(DisplayName = "Parse() passed <TAG id=TAG>")]
 	[MemberData(nameof(BodyHtmlAndSpecialElements))]
 	public void Test001(string elementName)
 	{
@@ -55,7 +55,7 @@ public class BunitHtmlParserTest
 		VerifyElementParsedWithId(elementName, actual);
 	}
 
-	[Theory(DisplayName = "Parse() passed <TAG> with whitespace before")]
+	[UITheory(DisplayName = "Parse() passed <TAG> with whitespace before")]
 	[MemberData(nameof(BodyHtmlElements))]
 	public void Test002(string elementName)
 	{
@@ -64,7 +64,7 @@ public class BunitHtmlParserTest
 		VerifyElementParsedWithId(elementName, actual);
 	}
 
-	[Theory(DisplayName = "Parse() passed <TAG>")]
+	[UITheory(DisplayName = "Parse() passed <TAG>")]
 	[MemberData(nameof(BodyHtmlElements))]
 	public void Test003(string elementName)
 	{
@@ -75,7 +75,7 @@ public class BunitHtmlParserTest
 			.NodeName.ShouldBe(elementName, StringCompareShould.IgnoreCase);
 	}
 
-	[Theory(DisplayName = "Parse() passed <TAG/>")]
+	[UITheory(DisplayName = "Parse() passed <TAG/>")]
 	[MemberData(nameof(BodyHtmlElements))]
 	public void Test004(string elementName)
 	{
@@ -86,7 +86,7 @@ public class BunitHtmlParserTest
 			.NodeName.ShouldBe(elementName, StringCompareShould.IgnoreCase);
 	}
 
-	[Theory(DisplayName = "Parse() passed <TAG ...")]
+	[UITheory(DisplayName = "Parse() passed <TAG ...")]
 	[MemberData(nameof(BodyHtmlElements))]
 	public void Test005(string elementName)
 	{
@@ -97,7 +97,7 @@ public class BunitHtmlParserTest
 			.TextContent.ShouldBe(" ");
 	}
 
-	[Theory(DisplayName = "Parse() passed <TAG .../")]
+	[UITheory(DisplayName = "Parse() passed <TAG .../")]
 	[MemberData(nameof(BodyHtmlElements))]
 	public void Test006(string elementName)
 	{

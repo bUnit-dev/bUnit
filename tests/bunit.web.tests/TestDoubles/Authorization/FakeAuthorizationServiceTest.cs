@@ -5,7 +5,7 @@ namespace Bunit.TestDoubles.Authorization;
 
 public class FakeAuthorizationServiceTest
 {
-	[Fact(DisplayName = "Get AuthorizeAsync with an authorized result.")]
+	[UIFact(DisplayName = "Get AuthorizeAsync with an authorized result.")]
 	public async Task Test002()
 	{
 		// arrange
@@ -21,7 +21,7 @@ public class FakeAuthorizationServiceTest
 		Assert.False(result.Succeeded);
 	}
 
-	[Fact(DisplayName = "Get AuthorizeAsync with an authorized result.")]
+	[UIFact(DisplayName = "Get AuthorizeAsync with an authorized result.")]
 	public async Task Test003()
 	{
 		// arrange
@@ -37,7 +37,7 @@ public class FakeAuthorizationServiceTest
 		Assert.True(result.Succeeded);
 	}
 
-	[Fact(DisplayName = "Get AuthorizeAsync with policy name.")]
+	[UIFact(DisplayName = "Get AuthorizeAsync with policy name.")]
 	public async Task Test004()
 	{
 		// arrange
@@ -52,7 +52,7 @@ public class FakeAuthorizationServiceTest
 		Assert.False(result.Succeeded);
 	}
 
-	[Fact(DisplayName = "Get exception from invoking placeholder AuthorizationService methods.")]
+	[UIFact(DisplayName = "Get exception from invoking placeholder AuthorizationService methods.")]
 	public async Task Test005()
 	{
 		// arrange
@@ -68,7 +68,7 @@ public class FakeAuthorizationServiceTest
 		Assert.Equal("IAuthorizationService", ex.ServiceName);
 	}
 
-	[Fact(DisplayName = "Get exception from invoking placeholder AuthorizationService methods.")]
+	[UIFact(DisplayName = "Get exception from invoking placeholder AuthorizationService methods.")]
 	public async Task Test006()
 	{
 		// arrange

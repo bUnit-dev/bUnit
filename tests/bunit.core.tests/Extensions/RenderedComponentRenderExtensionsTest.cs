@@ -2,7 +2,7 @@ namespace Bunit;
 
 public class RenderedComponentRenderExtensionsTest : TestContext
 {
-	[Fact(DisplayName = "SetParametersAndRender rethrows exceptions from SetParameterAsync")]
+	[UIFact(DisplayName = "SetParametersAndRender rethrows exceptions from SetParameterAsync")]
 	public void Test001()
 	{
 		var cut = RenderComponent<ThrowsOnParameterSet>();

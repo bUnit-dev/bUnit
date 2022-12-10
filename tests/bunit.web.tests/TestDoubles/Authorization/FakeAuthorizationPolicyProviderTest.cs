@@ -4,7 +4,7 @@ namespace Bunit.TestDoubles.Authorization;
 
 public class FakeAuthorizationPolicyProviderTest
 {
-	[Fact(DisplayName = "Get default policy from PolicyProvider.")]
+	[UIFact(DisplayName = "Get default policy from PolicyProvider.")]
 	public async Task Test001()
 	{
 		// arrange
@@ -20,7 +20,7 @@ public class FakeAuthorizationPolicyProviderTest
 		Assert.IsType<DenyAnonymousAuthorizationRequirement>(policy.Requirements[0]);
 	}
 
-	[Fact(DisplayName = "Get fallback policy from PolicyProvider.")]
+	[UIFact(DisplayName = "Get fallback policy from PolicyProvider.")]
 	public async Task Test002()
 	{
 		// arrange
@@ -33,7 +33,7 @@ public class FakeAuthorizationPolicyProviderTest
 		Assert.Null(policy);
 	}
 
-	[Fact(DisplayName = "Get policy based on name from PolicyProvider.")]
+	[UIFact(DisplayName = "Get policy based on name from PolicyProvider.")]
 	public async Task Test003()
 	{
 		// arrange
@@ -51,7 +51,7 @@ public class FakeAuthorizationPolicyProviderTest
 		Assert.IsType<TestPolicyRequirement>(policy?.Requirements?[0]);
 	}
 
-	[Fact(DisplayName = "Get policy based on name not in the PolicyProvider.")]
+	[UIFact(DisplayName = "Get policy based on name not in the PolicyProvider.")]
 	public async Task Test004()
 	{
 		// arrange
@@ -69,7 +69,7 @@ public class FakeAuthorizationPolicyProviderTest
 		Assert.IsType<TestPolicyRequirement>(policy?.Requirements?[0]);
 	}
 
-	[Fact(DisplayName = "Set Policies with empty scheme name.")]
+	[UIFact(DisplayName = "Set Policies with empty scheme name.")]
 	public void Test006()
 	{
 		// arrange

@@ -2,7 +2,7 @@ namespace Bunit.TestDoubles.Authorization;
 
 public class TestAuthorizationContextTest : TestContext
 {
-	[Fact(DisplayName = "Register Authorization services with unauthenticated user.")]
+	[UIFact(DisplayName = "Register Authorization services with unauthenticated user.")]
 	public void Test003()
 	{
 		// act
@@ -15,7 +15,7 @@ public class TestAuthorizationContextTest : TestContext
 		Assert.Empty(authContext.Policies);
 	}
 
-	[Fact(DisplayName = "Register Authorization services with authorizing state.")]
+	[UIFact(DisplayName = "Register Authorization services with authorizing state.")]
 	public void Test0031()
 	{
 		// act
@@ -29,7 +29,7 @@ public class TestAuthorizationContextTest : TestContext
 		Assert.Empty(authContext.Policies);
 	}
 
-	[Fact(DisplayName = "Register Authorization services with authenticated but unauthorized user.")]
+	[UIFact(DisplayName = "Register Authorization services with authenticated but unauthorized user.")]
 	public void Test002()
 	{
 		// act
@@ -43,7 +43,7 @@ public class TestAuthorizationContextTest : TestContext
 		Assert.Empty(authContext.Policies);
 	}
 
-	[Fact(DisplayName = "Register Authorization services with authenticated and authorized user")]
+	[UIFact(DisplayName = "Register Authorization services with authenticated and authorized user")]
 	public void Test0010()
 	{
 		// act
@@ -57,7 +57,7 @@ public class TestAuthorizationContextTest : TestContext
 		Assert.Empty(authContext.Policies);
 	}
 
-	[Fact(DisplayName = "Register Authorization services with authenticated and authorized user and role.")]
+	[UIFact(DisplayName = "Register Authorization services with authenticated and authorized user and role.")]
 	public void Test001()
 	{
 		// act
@@ -72,7 +72,7 @@ public class TestAuthorizationContextTest : TestContext
 		Assert.Empty(authContext.Policies);
 	}
 
-	[Fact(DisplayName = "Register Authorization services with authenticated and authorized user and policy.")]
+	[UIFact(DisplayName = "Register Authorization services with authenticated and authorized user and policy.")]
 	public void Test0011()
 	{
 		// act

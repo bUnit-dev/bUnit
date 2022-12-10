@@ -25,7 +25,7 @@ public class KeyTest
 
 	public static IEnumerable<object[]> KeyboardEventArgsTestData { get; } = GetKeyboardEventArgsTestData();
 
-	[Theory(DisplayName = "Get method with value parameter should return initialized Key object")]
+	[UITheory(DisplayName = "Get method with value parameter should return initialized Key object")]
 	[MemberData(nameof(KeyValueTestData))]
 	public void GetWithValue(string value)
 	{
@@ -38,7 +38,7 @@ public class KeyTest
 		key.CommandKey.ShouldBeFalse();
 	}
 
-	[Theory(DisplayName = "Get method with empty value parameter should throw exception")]
+	[UITheory(DisplayName = "Get method with empty value parameter should throw exception")]
 	[InlineData(null)]
 	[InlineData("")]
 	public void GetWithNullValue(string value)
@@ -46,7 +46,7 @@ public class KeyTest
 		Should.Throw<ArgumentNullException>(() => Key.Get(value));
 	}
 
-	[Theory(DisplayName = "Casting from string should return initialized Key object")]
+	[UITheory(DisplayName = "Casting from string should return initialized Key object")]
 	[MemberData(nameof(KeyValueTestData))]
 	public void CanCastFromString(string value)
 	{
@@ -59,7 +59,7 @@ public class KeyTest
 		key.CommandKey.ShouldBeFalse();
 	}
 
-	[Theory(DisplayName = "Casting from null or empty string throws ArgumentNullException")]
+	[UITheory(DisplayName = "Casting from null or empty string throws ArgumentNullException")]
 	[InlineData(null)]
 	[InlineData("")]
 	public void CastingFromNullStringThrowsException(string value)
@@ -67,7 +67,7 @@ public class KeyTest
 		Should.Throw<ArgumentNullException>(() => (Key)value);
 	}
 
-	[Theory(DisplayName = "Get method with value and code parameters should return initialized Key object")]
+	[UITheory(DisplayName = "Get method with value and code parameters should return initialized Key object")]
 	[InlineData(" ", " ")]
 	[InlineData("x", "x")]
 	[InlineData("A", "A")]
@@ -95,7 +95,7 @@ public class KeyTest
 		key.CommandKey.ShouldBeFalse();
 	}
 
-	[Theory(DisplayName = "Get method with empty value or code should throw exception")]
+	[UITheory(DisplayName = "Get method with empty value or code should throw exception")]
 	[InlineData(null, "")]
 	[InlineData("", null)]
 	[InlineData(null, "t")]
@@ -107,7 +107,7 @@ public class KeyTest
 		Should.Throw<ArgumentNullException>(() => Key.Get(value, code));
 	}
 
-	[Theory(DisplayName = "Get with char value should return initialized Key object")]
+	[UITheory(DisplayName = "Get with char value should return initialized Key object")]
 	[MemberData(nameof(CharTestData))]
 	public void GetFromChar(char value)
 	{
@@ -120,7 +120,7 @@ public class KeyTest
 		key.CommandKey.ShouldBeFalse();
 	}
 
-	[Theory(DisplayName = "Casting from char should return initialized Key object")]
+	[UITheory(DisplayName = "Casting from char should return initialized Key object")]
 	[MemberData(nameof(CharTestData))]
 	public void CanCastFromChar(char value)
 	{
@@ -133,7 +133,7 @@ public class KeyTest
 		key.CommandKey.ShouldBeFalse();
 	}
 
-	[Fact(DisplayName = "Get method returns same instances for predefined keys")]
+	[UIFact(DisplayName = "Get method returns same instances for predefined keys")]
 	public void GetPredefinedKeys()
 	{
 		var keyType = typeof(Key);
@@ -148,7 +148,7 @@ public class KeyTest
 		}
 	}
 
-	[Theory(DisplayName = "Keys with same values should be equal")]
+	[UITheory(DisplayName = "Keys with same values should be equal")]
 	[MemberData(nameof(EqualsTestData))]
 	public void EqualsShouldBeTrueForSameKeys(Key key1, Key key2)
 	{
@@ -162,7 +162,7 @@ public class KeyTest
 		(key2 != key1).ShouldBeFalse();
 	}
 
-	[Theory(DisplayName = "Keys with same values should have same hash code")]
+	[UITheory(DisplayName = "Keys with same values should have same hash code")]
 	[MemberData(nameof(EqualsTestData))]
 	public void SameHashCode(Key key1, Key key2)
 	{
@@ -171,7 +171,7 @@ public class KeyTest
 		hashCode1.ShouldBe(hashCode2);
 	}
 
-	[Fact(DisplayName = "Null keys should be equal")]
+	[UIFact(DisplayName = "Null keys should be equal")]
 	public void NullsAreEqual()
 	{
 		Key? key1 = default;
@@ -182,7 +182,7 @@ public class KeyTest
 		(key2 != key1).ShouldBeFalse();
 	}
 
-	[Theory(DisplayName = "Keys with different values should not be equal")]
+	[UITheory(DisplayName = "Keys with different values should not be equal")]
 	[MemberData(nameof(NonEqualsTestData))]
 	public void EqualsShouldBeFalseForDifferentKeys(Key? key1, Key? key2)
 	{
@@ -205,7 +205,7 @@ public class KeyTest
 	}
 
 	// This may be flaky test. Hash codes can have collisions.
-	[Theory(DisplayName = "Keys with different values should have different hash codes")]
+	[UITheory(DisplayName = "Keys with different values should have different hash codes")]
 	[MemberData(nameof(NonEqualsTestData))]
 	public void DifferentHashCodes(Key? key1, Key? key2)
 	{
@@ -214,14 +214,14 @@ public class KeyTest
 		hashCode1.ShouldNotBe(hashCode2);
 	}
 
-	[Theory(DisplayName = "Key should not be equal to different object type")]
+	[UITheory(DisplayName = "Key should not be equal to different object type")]
 	[MemberData(nameof(KeyAndObjectTestData))]
 	public void KeyShouldBeDifferentFromObject(Key key, object other)
 	{
 		key.Equals(other).ShouldBeFalse();
 	}
 
-	[Theory(DisplayName = "WithControlKey should set ControlKey flag")]
+	[UITheory(DisplayName = "WithControlKey should set ControlKey flag")]
 	[MemberData(nameof(KeyWithModifiersTestData))]
 	public void WithControlKey(Key key, bool flag)
 	{
@@ -235,7 +235,7 @@ public class KeyTest
 		result.CommandKey.ShouldBe(key.CommandKey);
 	}
 
-	[Theory(DisplayName = "WithShiftKey should set ShiftKey flag")]
+	[UITheory(DisplayName = "WithShiftKey should set ShiftKey flag")]
 	[MemberData(nameof(KeyWithModifiersTestData))]
 	public void WithShiftKey(Key key, bool flag)
 	{
@@ -249,7 +249,7 @@ public class KeyTest
 		result.CommandKey.ShouldBe(key.CommandKey);
 	}
 
-	[Theory(DisplayName = "WithAltKey should set AltKey flag")]
+	[UITheory(DisplayName = "WithAltKey should set AltKey flag")]
 	[MemberData(nameof(KeyWithModifiersTestData))]
 	public void WithAltKey(Key key, bool flag)
 	{
@@ -263,7 +263,7 @@ public class KeyTest
 		result.CommandKey.ShouldBe(key.CommandKey);
 	}
 
-	[Theory(DisplayName = "WithCommandKey should set CommandKey flag")]
+	[UITheory(DisplayName = "WithCommandKey should set CommandKey flag")]
 	[MemberData(nameof(KeyWithModifiersTestData))]
 	public void WithCommandKey(Key key, bool flag)
 	{
@@ -277,7 +277,7 @@ public class KeyTest
 		result.CommandKey.ShouldBe(flag);
 	}
 
-	[Theory(DisplayName = "Combine key and key modifier should return key with modifier set")]
+	[UITheory(DisplayName = "Combine key and key modifier should return key with modifier set")]
 	[MemberData(nameof(MainKeyAndModifierKeyTestData))]
 	public void Combine2Keys(Key mainKey, Key keyModifier, bool controlKey, bool shiftKey, bool altKey, bool commandKey)
 	{
@@ -297,7 +297,7 @@ public class KeyTest
 		}
 	}
 
-	[Theory(DisplayName = "Combine key with null should return the same key")]
+	[UITheory(DisplayName = "Combine key with null should return the same key")]
 	[MemberData(nameof(MainKeyToCombineTestData))]
 	public void CombineKeyWithNull(Key key)
 	{
@@ -306,7 +306,7 @@ public class KeyTest
 		(null! + key).ShouldBeSameAs(key);
 	}
 
-	[Theory(DisplayName = "Combine 2 main keys should throw ArgumentException")]
+	[UITheory(DisplayName = "Combine 2 main keys should throw ArgumentException")]
 	[MemberData(nameof(Combine2MainKeysTestData))]
 	public void Combine2MainKeys(Key key1, Key key2)
 	{
@@ -316,7 +316,7 @@ public class KeyTest
 		Should.Throw<ArgumentException>(() => key2 + key1);
 	}
 
-	[Theory(DisplayName = "Can convert to KeyboardEventArgs")]
+	[UITheory(DisplayName = "Can convert to KeyboardEventArgs")]
 	[MemberData(nameof(KeyboardEventArgsTestData))]
 	public void ToKeyboardEventArgs(Key key, string value, string code, bool ctrlKey, bool shiftKey, bool altKey, bool metaKey)
 	{
@@ -331,7 +331,7 @@ public class KeyTest
 		result.Type.ShouldBe(null);
 	}
 
-	[Fact(DisplayName = "Can convert null to KeyboardEventArgs")]
+	[UIFact(DisplayName = "Can convert null to KeyboardEventArgs")]
 	public void NullToKeyboardEventArgs()
 	{
 		Key key = null!;

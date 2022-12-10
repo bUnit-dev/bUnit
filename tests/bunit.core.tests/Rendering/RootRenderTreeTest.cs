@@ -5,7 +5,7 @@ namespace Bunit;
 
 public class RootRenderTreeTest : TestContext
 {
-	[Fact(DisplayName = "Count returns number of component registrations added")]
+	[UIFact(DisplayName = "Count returns number of component registrations added")]
 	public void Test010()
 	{
 		RenderTree.Add<LayoutComponent>();
@@ -13,7 +13,7 @@ public class RootRenderTreeTest : TestContext
 		RenderTree.Count.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "GetEnumerator enumerates registered components")]
+	[UIFact(DisplayName = "GetEnumerator enumerates registered components")]
 	public void Test011()
 	{
 		RenderTree.Add<LayoutComponent>();
@@ -28,7 +28,7 @@ public class RootRenderTreeTest : TestContext
 			x => x.ComponentType.ShouldBe(typeof(CascadingValue<string>)));
 	}
 
-	[Fact(DisplayName = "RenderTree.Add<T> throws when T doesn't have a ChildContent or Body parameter")]
+	[UIFact(DisplayName = "RenderTree.Add<T> throws when T doesn't have a ChildContent or Body parameter")]
 	public void Test100()
 	{
 		Should.Throw<ArgumentException>(() =>
@@ -38,7 +38,7 @@ public class RootRenderTreeTest : TestContext
 		});
 	}
 
-	[Fact(DisplayName = "RenderTree.Add<T> adds T to render tree which CUT is rendered as child of")]
+	[UIFact(DisplayName = "RenderTree.Add<T> adds T to render tree which CUT is rendered as child of")]
 	public void Test110()
 	{
 		RenderTree.Add<LayoutComponent>();
@@ -48,7 +48,7 @@ public class RootRenderTreeTest : TestContext
 		cut.Markup.ShouldBe("<div>LAYOUT VALUE</div>");
 	}
 
-	[Fact(DisplayName = "RenderTree.Add<T> allows passing parameters to render tree components")]
+	[UIFact(DisplayName = "RenderTree.Add<T> allows passing parameters to render tree components")]
 	public void Test111()
 	{
 		RenderTree.Add<LayoutComponent>(parameters => parameters.Add(p => p.Value, "ANOTHER VALUE"));
@@ -58,7 +58,7 @@ public class RootRenderTreeTest : TestContext
 		cut.Markup.ShouldBe("<div>ANOTHER VALUE</div>");
 	}
 
-	[Fact(DisplayName = "RenderTree.Add<T> can be called multiple times")]
+	[UIFact(DisplayName = "RenderTree.Add<T> can be called multiple times")]
 	public void Test112()
 	{
 		RenderTree.Add<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "VALUE"));
@@ -69,7 +69,7 @@ public class RootRenderTreeTest : TestContext
 		cut.Markup.ShouldBe("<div>VALUE42</div>");
 	}
 
-	[Fact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
+	[UIFact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
 	public void Test113()
 	{
 		RenderTree.Add<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "VALUE"));
@@ -82,7 +82,7 @@ public class RootRenderTreeTest : TestContext
 		cut.Markup.ShouldBe("<div>VALUE42</div>");
 	}
 
-	[Fact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
+	[UIFact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
 	public void Test113_2()
 	{
 		RenderTree.Add<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "VALUE"));
@@ -94,7 +94,7 @@ public class RootRenderTreeTest : TestContext
 		cut.Instance.Value.ShouldBe("FOO");
 	}
 
-	[Fact(DisplayName = "Multiple RenderTree.Add<T> calls are added to render tree in call order")]
+	[UIFact(DisplayName = "Multiple RenderTree.Add<T> calls are added to render tree in call order")]
 	public void Test114()
 	{
 		RenderTree.Add<LayoutComponent>(parameters => parameters.Add(p => p.Value, "FOO"));
@@ -105,7 +105,7 @@ public class RootRenderTreeTest : TestContext
 		cut.Markup.ShouldBe($"<div>BAR</div>");
 	}
 
-	[Fact(DisplayName = "RenderTree.TryAdd<T> only adds T if it hasn't already been added")]
+	[UIFact(DisplayName = "RenderTree.TryAdd<T> only adds T if it hasn't already been added")]
 	public void Test120()
 	{
 		RenderTree.Add<LayoutComponent>(parameters => parameters.Add(p => p.Value, "FOO"));
@@ -116,14 +116,14 @@ public class RootRenderTreeTest : TestContext
 		cut.Markup.ShouldBe("<div>FOO</div>");
 	}
 
-	[Fact(DisplayName = "RenderTree.TryAdd<T> returns true if T was added")]
+	[UIFact(DisplayName = "RenderTree.TryAdd<T> returns true if T was added")]
 	public void Test121()
 	{
 		var result = RenderTree.TryAdd<LayoutComponent>();
 		result.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "RenderTree.TryAdd<T> returns false if T was previously added and not added again.")]
+	[UIFact(DisplayName = "RenderTree.TryAdd<T> returns false if T was previously added and not added again.")]
 	public void Test122()
 	{
 		RenderTree.Add<LayoutComponent>();
@@ -133,7 +133,7 @@ public class RootRenderTreeTest : TestContext
 		result.ShouldBeFalse();
 	}
 
-	[Fact(DisplayName = "RenderTree.TryAdd<T> distinguishes between different generic types of a generic component")]
+	[UIFact(DisplayName = "RenderTree.TryAdd<T> distinguishes between different generic types of a generic component")]
 	public void Test123()
 	{
 		RenderTree.TryAdd<CascadingValue<string>>();

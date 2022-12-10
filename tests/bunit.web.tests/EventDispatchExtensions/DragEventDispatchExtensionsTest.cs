@@ -4,7 +4,7 @@ public class DragEventDispatchExtensionsTest : EventDispatchExtensionsTest<DragE
 {
 	protected override string ElementName => "textarea";
 
-	[Theory(DisplayName = "Drag events are raised correctly through helpers")]
+	[UITheory(DisplayName = "Drag events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(DragEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{

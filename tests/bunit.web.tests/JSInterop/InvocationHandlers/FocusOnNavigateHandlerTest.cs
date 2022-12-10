@@ -13,7 +13,7 @@ namespace Bunit.JSInterop.InvocationHandlers;
 
 public class FocusOnNavigateHandlerTest : TestContext
 {
-	[Fact(DisplayName = "Can render components that calls FocusOnNavigate")]
+	[UIFact(DisplayName = "Can render components that calls FocusOnNavigate")]
 	public void Test001()
 	{
 		// <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -30,7 +30,7 @@ public class FocusOnNavigateHandlerTest : TestContext
 			.ShouldBe(focusOnNavigateComponent.Instance.Selector);
 	}
 
-	[Fact(DisplayName = "Will return completed task")]
+	[UIFact(DisplayName = "Will return completed task")]
 	public void Test002()
 	{
 		var cut = RenderComponent<App>(ps => ps

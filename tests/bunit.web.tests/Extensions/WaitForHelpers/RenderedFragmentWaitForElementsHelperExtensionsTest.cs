@@ -10,7 +10,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		Services.AddXunitLogger(testOutput);
 	}
 
-	[Fact(DisplayName = "WaitForElement waits until cssSelector returns at a element")]
+	[UIFact(DisplayName = "WaitForElement waits until cssSelector returns at a element")]
 	[Trait("Category", "sync")]
 	public void Test001()
 	{
@@ -22,7 +22,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		elm.MarkupMatches(expectedMarkup);
 	}
 
-	[Fact(DisplayName = "WaitForElement throws exception after timeout when cssSelector does not result in matching element")]
+	[UIFact(DisplayName = "WaitForElement throws exception after timeout when cssSelector does not result in matching element")]
 	[Trait("Category", "sync")]
 	public void Test002()
 	{
@@ -34,7 +34,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		expected.Message.ShouldStartWith(WaitForElementHelper.TimeoutBeforeFoundMessage);
 	}
 
-	[Fact(DisplayName = "WaitForElements waits until cssSelector returns at least one element")]
+	[UIFact(DisplayName = "WaitForElements waits until cssSelector returns at least one element")]
 	[Trait("Category", "sync")]
 	public void Test021()
 	{
@@ -46,7 +46,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		elms.MarkupMatches(expectedMarkup);
 	}
 
-	[Fact(DisplayName = "WaitForElements throws exception after timeout when cssSelector does not result in matching elements")]
+	[UIFact(DisplayName = "WaitForElements throws exception after timeout when cssSelector does not result in matching elements")]
 	[Trait("Category", "sync")]
 	public void Test022()
 	{
@@ -59,7 +59,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		expected.InnerException.ShouldBeNull();
 	}
 
-	[Fact(DisplayName = "WaitForElements with specific count N throws exception after timeout when cssSelector does not result in N matching elements")]
+	[UIFact(DisplayName = "WaitForElements with specific count N throws exception after timeout when cssSelector does not result in N matching elements")]
 	[Trait("Category", "sync")]
 	public void Test023()
 	{
@@ -72,7 +72,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		expected.InnerException.ShouldBeNull();
 	}
 
-	[Fact(DisplayName = "WaitForElements with specific count N waits until cssSelector returns at exact N elements")]
+	[UIFact(DisplayName = "WaitForElements with specific count N waits until cssSelector returns at exact N elements")]
 	[Trait("Category", "sync")]
 	public void Test024()
 	{
@@ -84,7 +84,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		elms.MarkupMatches(expectedMarkup);
 	}
 
-	[Fact(DisplayName = "WaitForElements with specific count 0 waits until cssSelector returns at exact zero elements")]
+	[UIFact(DisplayName = "WaitForElements with specific count 0 waits until cssSelector returns at exact zero elements")]
 	[Trait("Category", "sync")]
 	public void Test025()
 	{

@@ -15,7 +15,7 @@ public class FakeSignOutSessionStateManagerTest : TestContext
 			.ShouldBeTrue();
 	}
 
-	[Fact]
+	[UIFact]
 	public void ShouldReturnSignOutStateOnValidateSignOutState()
 	{
 		var cut = new FakeSignOutSessionStateManager(Mock.Of<IJSRuntime>());

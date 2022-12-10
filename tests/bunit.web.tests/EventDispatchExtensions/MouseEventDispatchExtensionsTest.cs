@@ -10,7 +10,7 @@ public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<Mous
 
 	protected override string ElementName => "button";
 
-	[Theory(DisplayName = "Mouse events are raised correctly through helpers")]
+	[UITheory(DisplayName = "Mouse events are raised correctly through helpers")]
 	[MemberData(nameof(Helpers))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
@@ -37,7 +37,7 @@ public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<Mous
 		//	(nameof(MouseEventDispatchExtensions.DoubleClick), "ondblclick"));
 	}
 
-	[Fact(DisplayName = "Click sets MouseEventArgs.Detail to 1 by default")]
+	[UIFact(DisplayName = "Click sets MouseEventArgs.Detail to 1 by default")]
 	public void Test001()
 	{
 		var spy = CreateTriggerSpy<MouseEventArgs>("button", "onclick");
@@ -47,7 +47,7 @@ public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<Mous
 		spy.RaisedEvent.Detail.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "DoubleClick sets MouseEventArgs.Detail to 2 by default")]
+	[UIFact(DisplayName = "DoubleClick sets MouseEventArgs.Detail to 2 by default")]
 	public void Test002()
 	{
 		var spy = CreateTriggerSpy<MouseEventArgs>("button", "ondblclick");
@@ -57,7 +57,7 @@ public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<Mous
 		spy.RaisedEvent.Detail.ShouldBe(2);
 	}
 
-	[Fact(DisplayName = "DoubleClick events are raised correctly through helpers")]
+	[UIFact(DisplayName = "DoubleClick events are raised correctly through helpers")]
 	public void Test003()
 	{
 		var expected = new MouseEventArgs
@@ -82,7 +82,7 @@ public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<Mous
 		spy.RaisedEvent.ShouldBe(expected);
 	}
 
-	[Fact(DisplayName = "DoubleClickAsync events are raised correctly through helpers")]
+	[UIFact(DisplayName = "DoubleClickAsync events are raised correctly through helpers")]
 	public void Test004()
 	{
 		var expected = new MouseEventArgs

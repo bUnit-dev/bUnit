@@ -27,7 +27,7 @@ public class CompareToDiffingExtensionsTest : TestContext
 		}
 	}
 
-	[Theory(DisplayName = "CompareTo null values throws")]
+	[UITheory(DisplayName = "CompareTo null values throws")]
 	[MemberData(nameof(GetCompareToMethods))]
 	public void Test001(MethodInfo methodInfo, string argName, object[] args)
 	{
@@ -37,7 +37,7 @@ public class CompareToDiffingExtensionsTest : TestContext
 			.ParamName.ShouldBe(argName);
 	}
 
-	[Fact(DisplayName = "CompareTo with rendered fragment and string")]
+	[UIFact(DisplayName = "CompareTo with rendered fragment and string")]
 	public void Test002()
 	{
 		var rf1 = RenderComponent<Simple1>((nameof(Simple1.Header), "FOO"));
@@ -46,7 +46,7 @@ public class CompareToDiffingExtensionsTest : TestContext
 		rf1.CompareTo(rf2.Markup).Count.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "CompareTo with rendered fragment and rendered fragment")]
+	[UIFact(DisplayName = "CompareTo with rendered fragment and rendered fragment")]
 	public void Test003()
 	{
 		var rf1 = RenderComponent<Simple1>((nameof(Simple1.Header), "FOO"));
@@ -55,7 +55,7 @@ public class CompareToDiffingExtensionsTest : TestContext
 		rf1.CompareTo(rf2).Count.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "CompareTo with INode and INodeList")]
+	[UIFact(DisplayName = "CompareTo with INode and INodeList")]
 	public void Test004()
 	{
 		var rf1 = RenderComponent<Simple1>((nameof(Simple1.Header), "FOO"));
@@ -65,7 +65,7 @@ public class CompareToDiffingExtensionsTest : TestContext
 		elm.CompareTo(rf2.Nodes).Count.ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "CompareTo with INodeList and INode")]
+	[UIFact(DisplayName = "CompareTo with INodeList and INode")]
 	public void Test005()
 	{
 		var rf1 = RenderComponent<Simple1>((nameof(Simple1.Header), "FOO"));

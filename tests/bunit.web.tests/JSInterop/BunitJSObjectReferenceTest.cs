@@ -16,7 +16,7 @@ public class BunitJSObjectReferenceTest : TestContext
 	private static readonly Type JSVoidResultType =
 			typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult);
 
-	[Theory(DisplayName = "Calling Setup<JSObjectReference> or Setup<IJSObjectReference> throws")]
+	[UITheory(DisplayName = "Calling Setup<JSObjectReference> or Setup<IJSObjectReference> throws")]
 	[InlineData("import", null)]
 	[InlineData("import", "file.js")]
 	[InlineData("customImport", null)]
@@ -27,20 +27,20 @@ public class BunitJSObjectReferenceTest : TestContext
 		Should.Throw<ArgumentException>(() => JSInterop.Setup<IJSObjectReference>(identifier, arg1));
 	}
 
-	[Theory(DisplayName = "Calling SetupModule(null) or SetupModule(empty string) throws")]
+	[UITheory(DisplayName = "Calling SetupModule(null) or SetupModule(empty string) throws")]
 	[InlineData(null)]
 	[InlineData("")]
 	[InlineData("  ")]
 	public void Test002(string url)
 		=> Should.Throw<ArgumentException>(() => JSInterop.SetupModule(url));
 
-	[Fact(DisplayName = "Calling SetupModule(jsInterop, identifier, invocationMatcher) with any null values throws")]
+	[UIFact(DisplayName = "Calling SetupModule(jsInterop, identifier, invocationMatcher) with any null values throws")]
 	public void Test003()
 	{
 		Should.Throw<ArgumentNullException>(() => default(BunitJSInterop)!.SetupModule("identifier", _ => true));
 	}
 
-	[Fact(DisplayName = "Calling SetupModule(uri) registers handler for module JS Interop")]
+	[UIFact(DisplayName = "Calling SetupModule(uri) registers handler for module JS Interop")]
 	public void Test010()
 	{
 		JSInterop.SetupModule("FOO.js");
@@ -49,7 +49,7 @@ public class BunitJSObjectReferenceTest : TestContext
 			.ShouldBeOfType<JSObjectReferenceInvocationHandler>();
 	}
 
-	[Fact(DisplayName = "Calling SetupModule(invocationMatcher) registers handler for module JS Interop")]
+	[UIFact(DisplayName = "Calling SetupModule(invocationMatcher) registers handler for module JS Interop")]
 	public void Test011()
 	{
 		JSInterop.SetupModule(_ => true);
@@ -58,7 +58,7 @@ public class BunitJSObjectReferenceTest : TestContext
 			.ShouldBeOfType<JSObjectReferenceInvocationHandler>();
 	}
 
-	[Fact(DisplayName = "Calling the catch-all SetupModule() registers handler for module JS Interop")]
+	[UIFact(DisplayName = "Calling the catch-all SetupModule() registers handler for module JS Interop")]
 	public void Test012()
 	{
 		JSInterop.SetupModule();
@@ -67,7 +67,7 @@ public class BunitJSObjectReferenceTest : TestContext
 			.ShouldBeOfType<JSObjectReferenceInvocationHandler>();
 	}
 
-	[Fact(DisplayName = "Calling SetupModule(customImport, args) registers handler for module JS Interop")]
+	[UIFact(DisplayName = "Calling SetupModule(customImport, args) registers handler for module JS Interop")]
 	public void Test013()
 	{
 		JSInterop.SetupModule("foo", Array.Empty<object>());
@@ -76,7 +76,7 @@ public class BunitJSObjectReferenceTest : TestContext
 			.ShouldBeOfType<JSObjectReferenceInvocationHandler>();
 	}
 
-	[Fact(DisplayName = "Handler for specific module name returns IJSObjectReference when receiving matching invocation")]
+	[UIFact(DisplayName = "Handler for specific module name returns IJSObjectReference when receiving matching invocation")]
 	public async Task Test020()
 	{
 		var moduleName = "FOO.js";
@@ -87,7 +87,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		module.ShouldNotBeNull();
 	}
 
-	[Theory(DisplayName = "Handler for specific module name doesn't match other module names")]
+	[UITheory(DisplayName = "Handler for specific module name doesn't match other module names")]
 	[InlineData(null)]
 	[InlineData("")]
 	[InlineData("BAR.js")]
@@ -98,7 +98,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		Should.Throw<JSRuntimeUnhandledInvocationException>(() => JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("import", requestedRoduleName));
 	}
 
-	[Fact(DisplayName = "Handler for matcher returns IJSObjectReference when receiving matching invocation")]
+	[UIFact(DisplayName = "Handler for matcher returns IJSObjectReference when receiving matching invocation")]
 	public async Task Test022()
 	{
 		var moduleName = "FOO.js";
@@ -109,7 +109,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		module.ShouldBeAssignableTo<IJSObjectReference>();
 	}
 
-	[Fact(DisplayName = "Handler for matcher returns IJSObjectReference when receiving matching invocation")]
+	[UIFact(DisplayName = "Handler for matcher returns IJSObjectReference when receiving matching invocation")]
 	public async Task Test026()
 	{
 		var moduleName = "FOO.js";
@@ -120,7 +120,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		module.ShouldBeAssignableTo<IJSObjectReference>();
 	}
 
-	[Theory(DisplayName = "Catch-all handler returns IJSObjectReference for all non-empty module names")]
+	[UITheory(DisplayName = "Catch-all handler returns IJSObjectReference for all non-empty module names")]
 	[InlineData("import", "FOO.js")]
 	[InlineData("customImport", null)]
 	[InlineData("customImport", "BAR.js")]
@@ -133,7 +133,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		module.ShouldBeAssignableTo<IJSObjectReference>();
 	}
 
-	[Theory(DisplayName = "JSInterop in loose mode returns IJSObjectReference for all non-empty module names without explicit SetupModule call")]
+	[UITheory(DisplayName = "JSInterop in loose mode returns IJSObjectReference for all non-empty module names without explicit SetupModule call")]
 	[InlineData("import", "FOO.js")]
 	[InlineData("customImport", null)]
 	[InlineData("customImport", "BAR.js")]
@@ -146,7 +146,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		module.ShouldBeAssignableTo<IJSObjectReference>();
 	}
 
-	[Fact(DisplayName = "Module JSInterop inherits the root JSInterop's Mode")]
+	[UIFact(DisplayName = "Module JSInterop inherits the root JSInterop's Mode")]
 	public void Test030()
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -156,7 +156,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		JSInterop.SetupModule("foo.js").Mode.ShouldBe(JSInterop.Mode);
 	}
 
-	[Fact(DisplayName = "Changing mode in root JSInterop changes it in module JSInterop when it's not been set explicitly there")]
+	[UIFact(DisplayName = "Changing mode in root JSInterop changes it in module JSInterop when it's not been set explicitly there")]
 	public void Test031()
 	{
 		var moduleJSInterop = JSInterop.SetupModule();
@@ -168,7 +168,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		moduleJSInterop.Mode.ShouldBe(JSInterop.Mode);
 	}
 
-	[Fact(DisplayName = "Changing mode on module JSInterop breaks inherited mode from root JSInterop")]
+	[UIFact(DisplayName = "Changing mode on module JSInterop breaks inherited mode from root JSInterop")]
 	public void Test032()
 	{
 		var moduleJSInterop = JSInterop.SetupModule();
@@ -179,7 +179,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		moduleJSInterop.Mode.ShouldBe(JSRuntimeMode.Strict);
 	}
 
-	[Fact(DisplayName = "InvokeAsync<TValue> on module in loose mode returns default TValue when no matching module JSInterops are registered")]
+	[UIFact(DisplayName = "InvokeAsync<TValue> on module in loose mode returns default TValue when no matching module JSInterops are registered")]
 	public async Task Test040()
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -190,7 +190,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		actual.ShouldBe(default(string));
 	}
 
-	[Fact(DisplayName = "InvokeAsync<IJSObjectReference> calls is registered in the root JSInterop Invocations list only")]
+	[UIFact(DisplayName = "InvokeAsync<IJSObjectReference> calls is registered in the root JSInterop Invocations list only")]
 	public async Task Test050()
 	{
 		var moduleJSInterop = JSInterop.SetupModule("FOO.js");
@@ -206,7 +206,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		moduleJSInterop.Invocations.ShouldBeEmpty();
 	}
 
-	[Fact(DisplayName = "Module.Invocation is registered in both module and root JSInterop")]
+	[UIFact(DisplayName = "Module.Invocation is registered in both module and root JSInterop")]
 	public async Task Test055()
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -224,7 +224,7 @@ public class BunitJSObjectReferenceTest : TestContext
 			.Identifier.ShouldBe("helloWorld");
 	}
 
-	[Fact(DisplayName = "TryGetModuleJSInterop returns registered module handler when called with parameters that the handler matches with")]
+	[UIFact(DisplayName = "TryGetModuleJSInterop returns registered module handler when called with parameters that the handler matches with")]
 	public void Test060()
 	{
 		var expected = JSInterop.SetupModule("FOO.js");
@@ -234,7 +234,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		actual.ShouldBe(expected);
 	}
 
-	[Fact(DisplayName = "TryGetModuleJSInterop returns null when called with parameters that the handler does not matches with")]
+	[UIFact(DisplayName = "TryGetModuleJSInterop returns null when called with parameters that the handler does not matches with")]
 	public void Test061()
 	{
 		JSInterop.SetupModule("FOO.js");
@@ -244,7 +244,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		actual.ShouldBeNull();
 	}
 
-	[Fact(DisplayName = "IJSObjectReference can be cast to IJSInProcessObjectReference")]
+	[UIFact(DisplayName = "IJSObjectReference can be cast to IJSInProcessObjectReference")]
 	public void Test070()
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -254,7 +254,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		jsRuntime.ShouldBeAssignableTo<IJSInProcessObjectReference>();
 	}
 
-	[Fact(DisplayName = "IJSObjectReference can be cast to IJSUnmarshalledObjectReference")]
+	[UIFact(DisplayName = "IJSObjectReference can be cast to IJSUnmarshalledObjectReference")]
 	public void Test071()
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -264,7 +264,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		jsRuntime.ShouldBeAssignableTo<IJSUnmarshalledObjectReference>();
 	}
 
-	[Fact(DisplayName = "IJSInProcessObjectReference-invocations is handled by handlers from BunitJSInterop")]
+	[UIFact(DisplayName = "IJSInProcessObjectReference-invocations is handled by handlers from BunitJSInterop")]
 	public async Task Test080()
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -285,7 +285,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		JSInterop.VerifyInvoke("bar6").Arguments.ShouldBe(new[] { "baz" });
 	}
 
-	[Fact(DisplayName = "IJSUnmarshalledObjectReference-invocations is handled by handlers from BunitJSInterop")]
+	[UIFact(DisplayName = "IJSUnmarshalledObjectReference-invocations is handled by handlers from BunitJSInterop")]
 	public async Task Test081()
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -314,7 +314,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		JSInterop.VerifyInvoke("bar10").Arguments.ShouldBe(new[] { "baz", "boo", "bah" });
 	}
 
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier), then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling InvokeUnmarshalled(identifier), then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test310(string identifier)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -332,7 +332,7 @@ public class BunitJSObjectReferenceTest : TestContext
 				invocationMethodName: "InvokeUnmarshalled"));
 	}
 
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0), then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0), then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test306(string identifier, string arg0)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -350,7 +350,7 @@ public class BunitJSObjectReferenceTest : TestContext
 				invocationMethodName: "InvokeUnmarshalled"));
 	}
 
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1), then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1), then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test307(string identifier, string arg0, string arg1)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -368,7 +368,7 @@ public class BunitJSObjectReferenceTest : TestContext
 				invocationMethodName: "InvokeUnmarshalled"));
 	}
 
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1, arg2), then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1, arg2), then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test308(string identifier, string arg0, string arg1, string arg2)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -387,7 +387,7 @@ public class BunitJSObjectReferenceTest : TestContext
 				invocationMethodName: "InvokeUnmarshalled"));
 	}
 
-	[Theory(DisplayName = "When calling InvokeVoidAsync, then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling InvokeVoidAsync, then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test302(string identifier, string[] args, CancellationToken cancellationToken)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -405,7 +405,7 @@ public class BunitJSObjectReferenceTest : TestContext
 				"InvokeVoidAsync"));
 	}
 
-	[Theory(DisplayName = "When calling InvokeAsync, then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling InvokeAsync, then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test303(string identifier, string[] args, CancellationToken cancellationToken)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -423,7 +423,7 @@ public class BunitJSObjectReferenceTest : TestContext
 				"InvokeAsync"));
 	}
 
-	[Theory(DisplayName = "When calling InvokeVoid, then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling InvokeVoid, then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test304(string identifier, string[] args)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -441,7 +441,7 @@ public class BunitJSObjectReferenceTest : TestContext
 				invocationMethodName: "InvokeVoid"));
 	}
 
-	[Theory(DisplayName = "When calling Invoke, then the invocation should be visible from the Invocations list"), AutoData]
+	[UITheory(DisplayName = "When calling Invoke, then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test305(string identifier, string[] args)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;

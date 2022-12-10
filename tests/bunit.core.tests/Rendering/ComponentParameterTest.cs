@@ -20,21 +20,21 @@ public class ComponentParameterTest
 		yield return new object[] { p1, p5, false };
 	}
 
-	[Fact(DisplayName = "Creating a cascading value with null throws")]
+	[UIFact(DisplayName = "Creating a cascading value with null throws")]
 	public void Test001()
 	{
 		Should.Throw<ArgumentNullException>(() => ComponentParameter.CreateCascadingValue(null, null!));
 		Should.Throw<ArgumentNullException>(() => (ComponentParameter)(null, null, true));
 	}
 
-	[Fact(DisplayName = "Creating a regular parameter without a name throws")]
+	[UIFact(DisplayName = "Creating a regular parameter without a name throws")]
 	public void Test002()
 	{
 		Should.Throw<ArgumentNullException>(() => ComponentParameter.CreateParameter(null!, null));
 		Should.Throw<ArgumentNullException>(() => (ComponentParameter)(null, null, false));
 	}
 
-	[Theory(DisplayName = "Equals compares correctly")]
+	[UITheory(DisplayName = "Equals compares correctly")]
 	[MemberData(nameof(GetEqualsTestData))]
 	public void Test003(ComponentParameter left, ComponentParameter right, bool expectedResult)
 	{
@@ -46,7 +46,7 @@ public class ComponentParameterTest
 		right.Equals((object)left).ShouldBe(expectedResult);
 	}
 
-	[Fact(DisplayName = "Equals operator works as expected with non compatible types")]
+	[UIFact(DisplayName = "Equals operator works as expected with non compatible types")]
 	public void Test004()
 	{
 		ComponentParameter.CreateParameter(string.Empty, string.Empty)
@@ -54,7 +54,7 @@ public class ComponentParameterTest
 			.ShouldBeFalse();
 	}
 
-	[Theory(DisplayName = "GetHashCode returns same result for equal ComponentParameter")]
+	[UITheory(DisplayName = "GetHashCode returns same result for equal ComponentParameter")]
 	[MemberData(nameof(GetEqualsTestData))]
 	public void Test005(ComponentParameter left, ComponentParameter right, bool expectedResult)
 	{

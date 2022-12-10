@@ -4,7 +4,7 @@ namespace Bunit;
 
 public class TestServiceProviderTest
 {
-	[Fact(DisplayName = "Provider initialized without a service collection has zero services by default")]
+	[UIFact(DisplayName = "Provider initialized without a service collection has zero services by default")]
 	public void Test001()
 	{
 		using var sut = new TestServiceProvider();
@@ -12,7 +12,7 @@ public class TestServiceProviderTest
 		sut.Count.ShouldBe(0);
 	}
 
-	[Fact(DisplayName = "Provider initialized with a service collection has the services form the provided collection")]
+	[UIFact(DisplayName = "Provider initialized with a service collection has the services form the provided collection")]
 	public void Test002()
 	{
 		var services = new ServiceCollection();
@@ -23,7 +23,7 @@ public class TestServiceProviderTest
 		sut[0].ServiceType.ShouldBe(typeof(DummyService));
 	}
 
-	[Fact(DisplayName = "Services can be registered in the provider like a normal service collection")]
+	[UIFact(DisplayName = "Services can be registered in the provider like a normal service collection")]
 	public void Test010()
 	{
 		using var sut = new TestServiceProvider();
@@ -37,7 +37,7 @@ public class TestServiceProviderTest
 		sut[1].ServiceType.ShouldBe(typeof(DummyService));
 	}
 
-	[Fact(DisplayName = "Services can be removed in the provider like a normal service collection")]
+	[UIFact(DisplayName = "Services can be removed in the provider like a normal service collection")]
 	public void Test011()
 	{
 		using var sut = new TestServiceProvider();
@@ -59,7 +59,7 @@ public class TestServiceProviderTest
 		sut.ShouldBeEmpty();
 	}
 
-	[Fact(DisplayName = "Misc collection methods works as expected")]
+	[UIFact(DisplayName = "Misc collection methods works as expected")]
 	public void Test012()
 	{
 		using var sut = new TestServiceProvider();
@@ -75,7 +75,7 @@ public class TestServiceProviderTest
 		((IEnumerable)sut).OfType<ServiceDescriptor>().Count().ShouldBe(1);
 	}
 
-	[Fact(DisplayName = "After the first service is requested, " +
+	[UIFact(DisplayName = "After the first service is requested, " +
 						"the provider does not allow changes to service collection")]
 	public void Test013()
 	{
@@ -100,7 +100,7 @@ public class TestServiceProviderTest
 		sut.IsReadOnly.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Registered services can be retrieved from the provider")]
+	[UIFact(DisplayName = "Registered services can be retrieved from the provider")]
 	public void Test020()
 	{
 		using var sut = new TestServiceProvider();
@@ -112,7 +112,7 @@ public class TestServiceProviderTest
 		actual.ShouldBe(expected);
 	}
 
-	[Fact(DisplayName = "No registered service returns null")]
+	[UIFact(DisplayName = "No registered service returns null")]
 	public void Test021()
 	{
 		using var sut = new TestServiceProvider();
@@ -122,7 +122,7 @@ public class TestServiceProviderTest
 		Assert.Null(result);
 	}
 
-	[Fact(DisplayName = "Registered fallback service provider returns value")]
+	[UIFact(DisplayName = "Registered fallback service provider returns value")]
 	public void Test022()
 	{
 		using var sut = new TestServiceProvider();
@@ -134,14 +134,14 @@ public class TestServiceProviderTest
 		Assert.IsType<DummyService>(result);
 	}
 
-	[Fact(DisplayName = "Register fallback service with null value")]
+	[UIFact(DisplayName = "Register fallback service with null value")]
 	public void Test023()
 	{
 		using var sut = new TestServiceProvider();
 		Assert.Throws<ArgumentNullException>(() => sut.AddFallbackServiceProvider(null!));
 	}
 
-	[Fact(DisplayName = "Service provider returns value before fallback service provider")]
+	[UIFact(DisplayName = "Service provider returns value before fallback service provider")]
 	public void Test024()
 	{
 		const string exceptionStringResult = "exceptionStringResult";
@@ -157,7 +157,7 @@ public class TestServiceProviderTest
 		Assert.IsType<DummyService>(fallbackResult);
 	}
 
-	[Fact(DisplayName = "Latest fallback provider is used")]
+	[UIFact(DisplayName = "Latest fallback provider is used")]
 	public void Test025()
 	{
 		using var sut = new TestServiceProvider();
@@ -169,7 +169,7 @@ public class TestServiceProviderTest
 		Assert.IsType<AnotherDummyService>(result);
 	}
 
-	[Fact(DisplayName = "Fallback service provider can be used to resolve services required by components")]
+	[UIFact(DisplayName = "Fallback service provider can be used to resolve services required by components")]
 	public void Test030()
 	{
 		// Arrange
@@ -183,7 +183,7 @@ public class TestServiceProviderTest
 		Should.NotThrow(() => ctx.RenderComponent<DummyComponentWhichRequiresDummyService>());
 	}
 
-	[Fact(DisplayName = "Can correctly resolve and dispose of scoped disposable service")]
+	[UIFact(DisplayName = "Can correctly resolve and dispose of scoped disposable service")]
 	public void Test031()
 	{
 		var sut = new TestServiceProvider();
@@ -195,7 +195,7 @@ public class TestServiceProviderTest
 		disposable.IsDisposed.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Can correctly resolve and dispose of transient disposable service")]
+	[UIFact(DisplayName = "Can correctly resolve and dispose of transient disposable service")]
 	public void Test032()
 	{
 		var sut = new TestServiceProvider();
@@ -207,7 +207,7 @@ public class TestServiceProviderTest
 		disposable.IsDisposed.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Can correctly resolve and dispose of singleton disposable service")]
+	[UIFact(DisplayName = "Can correctly resolve and dispose of singleton disposable service")]
 	public void Test033()
 	{
 		var sut = new TestServiceProvider();
@@ -219,7 +219,7 @@ public class TestServiceProviderTest
 		disposable.IsDisposed.ShouldBeTrue();
 	}
 
-	[Fact(DisplayName = "Validates that all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is true")]
+	[UIFact(DisplayName = "Validates that all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is true")]
 	public void Test035()
 	{
 		using var sut = new TestServiceProvider();
@@ -235,7 +235,7 @@ public class TestServiceProviderTest
 		action.ShouldThrow<AggregateException>("Some services are not able to be constructed (Error while validating the service descriptor");
 	}
 
-	[Fact(DisplayName = "Does not validate all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is false")]
+	[UIFact(DisplayName = "Does not validate all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is false")]
 	public void Test036()
 	{
 		using var sut = new TestServiceProvider();
@@ -252,7 +252,7 @@ public class TestServiceProviderTest
 		result.ShouldNotBeNull();
 	}
 
-	[Fact(DisplayName = "Does not validate all dependencies can be created when the first service is requested, if no ServiceProviderOptions is provided (backwards compatibility)")]
+	[UIFact(DisplayName = "Does not validate all dependencies can be created when the first service is requested, if no ServiceProviderOptions is provided (backwards compatibility)")]
 	public void Test037()
 	{
 		using var sut = new TestServiceProvider();

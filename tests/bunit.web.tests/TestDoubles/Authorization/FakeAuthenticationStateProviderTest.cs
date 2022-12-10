@@ -2,7 +2,7 @@ namespace Bunit.TestDoubles.Authorization;
 
 public class FakeAuthenticationStateProviderTest
 {
-	[Fact(DisplayName = "Create authenticated AuthenticationState")]
+	[UIFact(DisplayName = "Create authenticated AuthenticationState")]
 	public async Task Test001()
 	{
 		// arrange
@@ -19,7 +19,7 @@ public class FakeAuthenticationStateProviderTest
 		Assert.True(authState?.User?.Identity?.IsAuthenticated);
 	}
 
-	[Fact(DisplayName = "Create unauthenticated AuthenticationState")]
+	[UIFact(DisplayName = "Create unauthenticated AuthenticationState")]
 	public async Task Test002()
 	{
 		// act
@@ -33,7 +33,7 @@ public class FakeAuthenticationStateProviderTest
 		Assert.False(authState?.User?.Identity?.IsAuthenticated);
 	}
 
-	[Fact(DisplayName = "Switch AuthenticationState from unauthenticated to authenticated.")]
+	[UIFact(DisplayName = "Switch AuthenticationState from unauthenticated to authenticated.")]
 	public async Task Test003()
 	{
 		// arrange

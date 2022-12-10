@@ -2,22 +2,22 @@ namespace Bunit.ComponentFactories;
 
 public class ConditionalComponentFactoryTest : TestContext
 {
-	[Fact(DisplayName = "Add throws when factories is null")]
+	[UIFact(DisplayName = "Add throws when factories is null")]
 	public void Test001()
 		=> Should.Throw<ArgumentNullException>(
 			() => ComponentFactoryCollectionExtensions.Add(default, default(Predicate<Type>), default(Func<Type, IComponent>)));
 
-	[Fact(DisplayName = "Add throws when condition is null")]
+	[UIFact(DisplayName = "Add throws when condition is null")]
 	public void Test002()
 		=> Should.Throw<ArgumentNullException>(
 			() => ComponentFactories.Add(default(Predicate<Type>), default(Func<Type, IComponent>)));
 
-	[Fact(DisplayName = "Add throws when factory is null")]
+	[UIFact(DisplayName = "Add throws when factory is null")]
 	public void Test003()
 	=> Should.Throw<ArgumentNullException>(
 		() => ComponentFactories.Add(_ => true, default(Func<Type, IComponent>)));
 
-	[Fact(DisplayName = "Component is replaced in render tree with component from factory when matches returns true")]
+	[UIFact(DisplayName = "Component is replaced in render tree with component from factory when matches returns true")]
 	public void Test010()
 	{
 		var mockComponent = Mock.Of<Simple1>();
@@ -29,7 +29,7 @@ public class ConditionalComponentFactoryTest : TestContext
 			.Instance.ShouldBeSameAs(mockComponent);
 	}
 
-	[Fact(DisplayName = "Component is replaced in render tree with component from factory when matches returns true")]
+	[UIFact(DisplayName = "Component is replaced in render tree with component from factory when matches returns true")]
 	public void Test011()
 	{
 		var mockRepo = new MockRepository(MockBehavior.Loose);
@@ -45,7 +45,7 @@ public class ConditionalComponentFactoryTest : TestContext
 		cut.FindComponents<NoArgs>().ShouldAllBe(x => Mock.Get(x.Instance));
 	}
 
-	[Fact(DisplayName = "When matches returns false, factory is never called")]
+	[UIFact(DisplayName = "When matches returns false, factory is never called")]
 	public void Test012()
 	{
 		ComponentFactories.Add(_ => false, _ => throw new NotImplementedException("DONT CALL FACTORY"));

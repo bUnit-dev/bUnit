@@ -6,7 +6,7 @@ public class ComponentDoubleBaseTest : TestContext
 		where TComponent : IComponent
 	{ }
 
-	[Theory(DisplayName = "Double captures unmatched parameters")]
+	[UITheory(DisplayName = "Double captures unmatched parameters")]
 	[AutoData]
 	public void Test022(string attrName, string attrValue)
 	{

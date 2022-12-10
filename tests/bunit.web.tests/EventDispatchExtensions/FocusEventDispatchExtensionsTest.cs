@@ -4,7 +4,7 @@ public class FocusEventDispatchExtensionsTest : EventDispatchExtensionsTest<Focu
 {
 	protected override string ElementName => "p";
 
-	[Theory(DisplayName = "Focus events are raised correctly through helpers")]
+	[UITheory(DisplayName = "Focus events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(FocusEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{

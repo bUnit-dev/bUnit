@@ -7,7 +7,7 @@ public class WheelEventDispatchExtensionsTest : EventDispatchExtensionsTest<Whee
 
 	protected override string ElementName => "button";
 
-	[Theory(DisplayName = "Mouse wheel/wheel events are raised correctly through helpers")]
+	[UITheory(DisplayName = "Mouse wheel/wheel events are raised correctly through helpers")]
 	[MemberData(nameof(Helpers))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{

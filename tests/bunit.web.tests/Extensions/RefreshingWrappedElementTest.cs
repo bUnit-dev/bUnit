@@ -2,7 +2,7 @@ namespace Bunit.Extensions;
 
 public class RefreshingWrappedElementTest : TestContext
 {
-	[Fact(DisplayName = "Find() throws when element doesn't exist in DOM")]
+	[UIFact(DisplayName = "Find() throws when element doesn't exist in DOM")]
 	public void Test001()
 	{
 		var cut = RenderComponent<Markup>(ps => ps.Add(p => p.Base, "None"));
@@ -10,7 +10,7 @@ public class RefreshingWrappedElementTest : TestContext
 		Should.Throw<ElementNotFoundException>(() => cut.Find("div"));
 	}
 
-	[Fact(DisplayName = "Find() returns the single matching element in DOM")]
+	[UIFact(DisplayName = "Find() returns the single matching element in DOM")]
 	public void Test010()
 	{
 		var expected = "<div>foo</div>";
@@ -21,7 +21,7 @@ public class RefreshingWrappedElementTest : TestContext
 		actual.MarkupMatches(expected);
 	}
 
-	[Fact(DisplayName = "Find() returns first matching element in DOM")]
+	[UIFact(DisplayName = "Find() returns first matching element in DOM")]
 	public void Test011()
 	{
 		var expected = "<div>foo</div>";
@@ -35,7 +35,7 @@ public class RefreshingWrappedElementTest : TestContext
 		actual.MarkupMatches(expected);
 	}
 
-	[Fact(DisplayName = "Find() refreshes the found element on re-renders")]
+	[UIFact(DisplayName = "Find() refreshes the found element on re-renders")]
 	public void Test020()
 	{
 		var cut = RenderComponent<Markup>(ps => ps
@@ -55,7 +55,7 @@ public class RefreshingWrappedElementTest : TestContext
 		elm.TextContent.ShouldBe("bar");
 	}
 
-	[Fact(DisplayName = "Found element doesn't throw when it's removed from DOM")]
+	[UIFact(DisplayName = "Found element doesn't throw when it's removed from DOM")]
 	public void Test030()
 	{
 		var cut = RenderComponent<HidesButton>();
@@ -65,7 +65,7 @@ public class RefreshingWrappedElementTest : TestContext
 		Should.NotThrow(() => btn.Click());
 	}
 
-	[Fact(DisplayName = "Found element throws when its properties or methods are used after it's removed from DOM")]
+	[UIFact(DisplayName = "Found element throws when its properties or methods are used after it's removed from DOM")]
 	public void Test031()
 	{
 		var cut = RenderComponent<HidesButton>();

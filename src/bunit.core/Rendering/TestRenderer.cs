@@ -1,5 +1,4 @@
 using System.Runtime.ExceptionServices;
-using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
@@ -13,8 +12,10 @@ public class TestRenderer : Renderer, ITestRenderer
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
+	private readonly SynchronizationContext? syncContext;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
+
 
 	/// <inheritdoc/>
 	public Task<Exception> UnhandledException => unhandledExceptionTsc.Task;
@@ -34,7 +35,8 @@ public class TestRenderer : Renderer, ITestRenderer
 		: base(services, loggerFactory)
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
-		this.activator = renderedComponentActivator;
+		activator = renderedComponentActivator;
+		syncContext = SynchronizationContext.Current;
 	}
 
 	/// <summary>
@@ -44,7 +46,8 @@ public class TestRenderer : Renderer, ITestRenderer
 		: base(services, loggerFactory, componentActivator)
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
-		this.activator = renderedComponentActivator;
+		activator = renderedComponentActivator;
+		syncContext = SynchronizationContext.Current;
 	}
 
 	/// <inheritdoc/>
@@ -56,7 +59,9 @@ public class TestRenderer : Renderer, ITestRenderer
 		where TComponent : IComponent
 	{
 		if (parameters is null)
+		{
 			throw new ArgumentNullException(nameof(parameters));
+		}
 
 		var renderFragment = parameters.ToRenderFragment<TComponent>();
 		return Render(renderFragment, id => activator.CreateRenderedComponent<TComponent>(id));
@@ -76,7 +81,9 @@ public class TestRenderer : Renderer, ITestRenderer
 		bool ignoreUnknownEventHandlers)
 	{
 		if (fieldInfo is null)
+		{
 			throw new ArgumentNullException(nameof(fieldInfo));
+		}
 
 		var result = Dispatcher.InvokeAsync(() =>
 		{
@@ -156,16 +163,26 @@ public class TestRenderer : Renderer, ITestRenderer
 		logger.LogNewRenderBatchReceived();
 		Dispatcher.AssertAccess();
 		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
-		UpdateRenderedComponents(renderEvent, in renderBatch);
+		
+
+		if (syncContext is not null)
+		{
+			syncContext.Send(_ => UpdateRenderedComponents(renderEvent), null);
+		}
+		else
+		{
+			UpdateRenderedComponents(renderEvent);
+		}
+
 		return Task.CompletedTask;
 	}
 
-	private void UpdateRenderedComponents(RenderEvent renderEvent, in RenderBatch renderBatch)
+	private void UpdateRenderedComponents(RenderEvent renderEvent)
 	{
 		// removes disposed components
-		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
+		for (var i = 0; i < renderEvent.RenderBatch.DisposedComponentIDs.Count; i++)
 		{
-			var id = renderBatch.DisposedComponentIDs.Array[i];
+			var id = renderEvent.RenderBatch.DisposedComponentIDs.Array[i];
 
 			logger.LogComponentDisposed(id);
 
@@ -253,7 +270,9 @@ public class TestRenderer : Renderer, ITestRenderer
 		where TComponent : IComponent
 	{
 		if (parentComponent is null)
+		{
 			throw new ArgumentNullException(nameof(parentComponent));
+		}
 
 		// Ensure FindComponents runs on the same thread as the renderer,
 		// and that the renderer does not perform any renders while
@@ -283,13 +302,17 @@ public class TestRenderer : Renderer, ITestRenderer
 							result.Add(GetOrCreateRenderedComponent(framesCollection, frame.ComponentId, component));
 
 							if (result.Count == resultLimit)
+							{
 								return;
+							}
 						}
 
 						FindComponentsInRenderTree(frame.ComponentId);
 
 						if (result.Count == resultLimit)
+						{
 							return;
+						}
 					}
 				}
 			}
@@ -352,7 +375,9 @@ public class TestRenderer : Renderer, ITestRenderer
 	protected override void HandleException(Exception exception)
 	{
 		if (exception is null)
+		{
 			return;
+		}
 
 		logger.LogUnhandledException(exception);
 
@@ -370,7 +395,9 @@ public class TestRenderer : Renderer, ITestRenderer
 		capturedUnhandledException = null;
 
 		if (unhandledExceptionTsc.Task.IsCompleted)
+		{
 			unhandledExceptionTsc = new TaskCompletionSource<Exception>(TaskCreationOptions.RunContinuationsAsynchronously);
+		}
 	}
 
 	private void AssertNoUnhandledExceptions()
