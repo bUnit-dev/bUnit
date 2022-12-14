@@ -159,13 +159,11 @@ public static class RenderedFragmentWaitForHelperExtensions
 		{
 			return waiter.WaitTask.GetAwaiter().GetResult();
 		}
-		catch (Exception e)
+		catch (AggregateException e) when (e.InnerExceptions.Count == 1)
 		{
-			if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
-			{
-				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-			}
+			ExceptionDispatchInfo.Capture(e.InnerExceptions[0]).Throw();
 
+			// Unreachable code
 			throw;
 		}
 	}
@@ -189,13 +187,11 @@ public static class RenderedFragmentWaitForHelperExtensions
 		{
 			return waiter.WaitTask.GetAwaiter().GetResult();
 		}
-		catch (Exception e)
+		catch (AggregateException e) when (e.InnerExceptions.Count == 1)
 		{
-			if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
-			{
-				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-			}
+			ExceptionDispatchInfo.Capture(e.InnerExceptions[0]).Throw();
 
+			// Unreachable code
 			throw;
 		}
 	}

@@ -66,17 +66,18 @@ public class FakeAuthorizationService : IAuthorizationService
 
 		AuthorizationResult result;
 
-		if (requirements.All(p => p is DenyAnonymousAuthorizationRequirement))
+		var requirementsList = requirements.ToList();
+		if (requirementsList.All(p => p is DenyAnonymousAuthorizationRequirement))
 		{
 			result = (currentState == AuthorizationState.Authorized) ? AuthorizationResult.Success() : AuthorizationResult.Failed();
 		}
-		else if (requirements.All(p => p is RolesAuthorizationRequirement))
+		else if (requirementsList.All(p => p is RolesAuthorizationRequirement))
 		{
-			result = VerifyRequiredRoles(requirements);
+			result = VerifyRequiredRoles(requirementsList);
 		}
 		else if (supportedPolicies is not null)
 		{
-			result = VerifyRequiredPolicies(requirements);
+			result = VerifyRequiredPolicies(requirementsList);
 		}
 		else
 		{
@@ -110,28 +111,21 @@ public class FakeAuthorizationService : IAuthorizationService
 			return AuthorizationResult.Failed();
 		}
 
-		foreach (IAuthorizationRequirement req in requirements)
-		{
-			if (req is TestPolicyRequirement testReq && supportedPolicies.Contains(testReq.PolicyName, StringComparer.Ordinal))
-				return AuthorizationResult.Success();
-		}
-
-		return AuthorizationResult.Failed();
+		return requirements.OfType<TestPolicyRequirement>().Any(req => supportedPolicies.Contains(req.PolicyName, StringComparer.Ordinal))
+			? AuthorizationResult.Success()
+			: AuthorizationResult.Failed();
 	}
 
 	private AuthorizationResult VerifyRequiredRoles(IEnumerable<IAuthorizationRequirement> requirements)
 	{
-		AuthorizationResult result = AuthorizationResult.Failed();
-		foreach (IAuthorizationRequirement req in requirements)
+		var result = AuthorizationResult.Failed();
+		foreach (var req in requirements.OfType<RolesAuthorizationRequirement>())
 		{
-			if (req is RolesAuthorizationRequirement testReq)
+			var rolesFound = req.AllowedRoles.Intersect(supportedRoles, StringComparer.Ordinal);
+			if (rolesFound.Any())
 			{
-				IEnumerable<string> rolesFound = testReq.AllowedRoles.Intersect(supportedRoles, StringComparer.Ordinal);
-				if (rolesFound.Any())
-				{
-					result = AuthorizationResult.Success();
-					break;
-				}
+				result = AuthorizationResult.Success();
+				break;
 			}
 		}
 

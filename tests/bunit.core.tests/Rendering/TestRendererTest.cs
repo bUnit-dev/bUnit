@@ -422,20 +422,20 @@ public partial class TestRendererTest : TestContext
 		Renderer.UnhandledException.Result.ShouldBeOfType<InvalidOperationException>();
 	}
 
-	internal class NoChildNoParams : ComponentBase
+	internal sealed class NoChildNoParams : ComponentBase
 	{
 		public const string MARKUP = "hello world";
 		protected override void BuildRenderTree(RenderTreeBuilder builder) => builder.AddMarkupContent(0, MARKUP);
 	}
 
-	internal class ThrowsDuringSetParams : ComponentBase
+	internal sealed class ThrowsDuringSetParams : ComponentBase
 	{
 		public static readonly InvalidOperationException EXCEPTION = new("THROWS ON PURPOSE");
 
 		public override Task SetParametersAsync(ParameterView parameters) => throw EXCEPTION;
 	}
 
-	internal class HasParams : ComponentBase
+	internal sealed class HasParams : ComponentBase
 	{
 		[Parameter] public string? Value { get; set; }
 		[Parameter] public RenderFragment? ChildContent { get; set; }
@@ -447,7 +447,7 @@ public partial class TestRendererTest : TestContext
 		}
 	}
 
-	internal class RenderTrigger : ComponentBase
+	internal sealed class RenderTrigger : ComponentBase
 	{
 		[Parameter] public string? Value { get; set; }
 
@@ -465,7 +465,7 @@ public partial class TestRendererTest : TestContext
 		}
 	}
 
-	internal class ToggleChild : ComponentBase
+	internal sealed class ToggleChild : ComponentBase
 	{
 		private bool showing = true;
 
@@ -484,7 +484,7 @@ public partial class TestRendererTest : TestContext
 		}
 	}
 
-	internal class SyncOperationThrows : ComponentBase
+	internal sealed class SyncOperationThrows : ComponentBase
 	{
 		public bool AwaitDone { get; private set; }
 
@@ -494,7 +494,7 @@ public partial class TestRendererTest : TestContext
 		internal sealed class SyncOperationThrowsException : Exception { }
 	}
 
-	internal class AsyncOperationThrows : ComponentBase
+	internal sealed class AsyncOperationThrows : ComponentBase
 	{
 		[Parameter] public Task Awaitable { get; set; }
 
@@ -506,7 +506,7 @@ public partial class TestRendererTest : TestContext
 		internal sealed class AsyncOperationThrowsException : Exception { }
 	}
 
-	internal class AsyncAfterRenderThrows : ComponentBase
+	internal sealed class AsyncAfterRenderThrows : ComponentBase
 	{
 		[Inject] private IJSRuntime JSRuntime { get; set; }
 

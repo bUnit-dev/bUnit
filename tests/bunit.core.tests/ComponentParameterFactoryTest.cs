@@ -263,7 +263,7 @@ public class ComponentParameterFactoryTest
 		renderedFragment.Markup.ShouldBe(nameof(TestComponent) + EXPECTED);
 	}
 
-	private class TestComponent : ComponentBase
+	private sealed class TestComponent : ComponentBase
 	{
 		[Parameter] public string? Input { get; set; }
 		[Parameter] public RenderFragment<string>? Template { get; set; }

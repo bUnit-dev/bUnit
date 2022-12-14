@@ -76,7 +76,7 @@ public class RefreshingWrappedElementTest : TestContext
 		Should.Throw<ElementRemovedFromDomException>(() => btn.TextContent);
 	}
 
-	private class Markup : ComponentBase
+	private sealed class Markup : ComponentBase
 	{
 		[Parameter] public string Base { get; set; } = string.Empty;
 		[Parameter] public string? Optional { get; set; }
