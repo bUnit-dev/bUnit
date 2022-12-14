@@ -19,13 +19,17 @@ public static class DiffAssertExtensions
 		if (diffs is null)
 			throw new ArgumentNullException(nameof(diffs));
 
-		return diffs.FirstOrDefault()
-			?? throw new ActualExpectedAssertException(
-				actual: "0",
+		var diffsArray = diffs.ToArray();
+
+		if (diffsArray.Length != 1)
+			throw new ActualExpectedAssertException(
+				actual: diffsArray.Length.ToString(CultureInfo.InvariantCulture),
 				expected: "1",
 				actualText: "Actual changes",
 				expectedText: "Expected changes",
 				message: "There were more than one change");
+
+		return diffsArray.First();
 	}
 
 	/// <summary>
@@ -42,26 +46,21 @@ public static class DiffAssertExtensions
 		if (diffInspectors is null)
 			throw new ArgumentNullException(nameof(diffInspectors));
 
-		var diffCount = 0;
-		foreach (var diff in diffs)
-		{
-			if (diffCount >= diffInspectors.Length)
-			{
-				break;
-			}
+		var diffsArray = diffs.ToArray();
 
-			diffInspectors[diffCount](diff);
-			diffCount++;
-		}
-
-		if (diffCount != diffInspectors.Length)
-		{
+		if (diffsArray.Length != diffInspectors.Length)
 			throw new ActualExpectedAssertException(
-				actual: diffCount.ToString(CultureInfo.InvariantCulture),
+				actual: diffsArray.Length.ToString(CultureInfo.InvariantCulture),
 				expected: diffInspectors.Length.ToString(CultureInfo.InvariantCulture),
 				actualText: "Actual changes",
 				expectedText: "Expected changes",
 				message: "The actual number of changes does not match the expected.");
+
+		var index = 0;
+		foreach (var diff in diffsArray)
+		{
+			diffInspectors[index](diff);
+			index++;
 		}
 	}
 }
