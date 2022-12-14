@@ -69,7 +69,9 @@ public class FakeAuthorizationService : IAuthorizationService
 		var requirementsArray = requirements.ToArray();
 		if (requirementsArray.All(p => p is DenyAnonymousAuthorizationRequirement))
 		{
-			result = (currentState == AuthorizationState.Authorized) ? AuthorizationResult.Success() : AuthorizationResult.Failed();
+			result = currentState == AuthorizationState.Authorized
+				? AuthorizationResult.Success()
+				: AuthorizationResult.Failed();
 		}
 		else if (requirementsArray.All(p => p is RolesAuthorizationRequirement))
 		{
@@ -104,7 +106,7 @@ public class FakeAuthorizationService : IAuthorizationService
 		return AuthorizeAsync(user, resource, requirements);
 	}
 
-	private AuthorizationResult VerifyRequiredPolicies(IEnumerable<IAuthorizationRequirement> requirements)
+	private AuthorizationResult VerifyRequiredPolicies(IReadOnlyCollection<IAuthorizationRequirement> requirements)
 	{
 		if (supportedPolicies.IsNullOrEmpty() || requirements.IsNullOrEmpty())
 		{
@@ -116,7 +118,7 @@ public class FakeAuthorizationService : IAuthorizationService
 			: AuthorizationResult.Failed();
 	}
 
-	private AuthorizationResult VerifyRequiredRoles(IEnumerable<IAuthorizationRequirement> requirements)
+	private AuthorizationResult VerifyRequiredRoles(IReadOnlyCollection<IAuthorizationRequirement> requirements)
 	{
 		var result = AuthorizationResult.Failed();
 		foreach (var req in requirements.OfType<RolesAuthorizationRequirement>())
