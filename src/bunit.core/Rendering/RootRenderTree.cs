@@ -7,9 +7,8 @@ namespace Bunit.Rendering;
 /// Components added to the render tree must have either a <c>ChildContent</c> or
 /// <c>Body</c> parameter.
 /// </summary>
-#pragma warning disable CA1710 // RootRenderTree to end in either 'Collection' or 'Dictionary', 'Set', 'Stack','Queue'
+[SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "A tree is a collection by default.")]
 public sealed class RootRenderTree : IReadOnlyCollection<RootRenderTreeRegistration>
-#pragma warning restore CA1710
 {
 	private readonly List<RootRenderTreeRegistration> registrations = new();
 
