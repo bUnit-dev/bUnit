@@ -66,7 +66,7 @@ public partial class TestContextBaseTest : TestContext
 
 		DisposeComponents();
 
-		await wasDisposedTask.ShouldCompleteWithin(TimeSpan.FromMilliseconds(100));
+		await wasDisposedTask.ShouldCompleteWithin(TimeSpan.FromSeconds(1));
 	}
 
 	[Fact(DisplayName = "DisposeComponents should dispose components added via ComponentFactory")]

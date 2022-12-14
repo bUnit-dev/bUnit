@@ -15,6 +15,7 @@ public abstract class WaitForHelper<T> : IDisposable
 	private readonly IRenderedFragmentBase renderedFragment;
 	private readonly ILogger<WaitForHelper<T>> logger;
 	private bool isDisposed;
+	private int checkCount;
 	private Exception? capturedException;
 
 	/// <summary>
@@ -55,7 +56,7 @@ public abstract class WaitForHelper<T> : IDisposable
 		timer = new Timer(_ =>
 		{
 			logger.LogWaiterTimedOut(renderedFragment.ComponentId);
-			checkPassedCompletionSource.TrySetException(new WaitForFailedException(TimeoutErrorMessage, capturedException));
+			checkPassedCompletionSource.TrySetException(new WaitForFailedException(TimeoutErrorMessage, checkCount, capturedException));
 		});
 		WaitTask = CreateWaitTask(renderedFragment);
 		timer.Change(GetRuntimeTimeout(timeout), Timeout.InfiniteTimeSpan);
@@ -144,6 +145,7 @@ public abstract class WaitForHelper<T> : IDisposable
 			logger.LogCheckingWaitCondition(renderedFragment.ComponentId);
 
 			var checkResult = completeChecker();
+			checkCount++;
 			if (checkResult.CheckPassed)
 			{
 				checkPassedCompletionSource.TrySetResult(checkResult.Content);
@@ -157,13 +159,14 @@ public abstract class WaitForHelper<T> : IDisposable
 		}
 		catch (Exception ex)
 		{
+			checkCount++;
 			capturedException = ex;
 			logger.LogCheckThrow(renderedFragment.ComponentId, ex);
 
 			if (StopWaitingOnCheckException)
 			{
 				checkPassedCompletionSource.TrySetException(
-					new WaitForFailedException(CheckThrowErrorMessage, capturedException));
+					new WaitForFailedException(CheckThrowErrorMessage, checkCount, capturedException));
 				Dispose();
 			}
 		}

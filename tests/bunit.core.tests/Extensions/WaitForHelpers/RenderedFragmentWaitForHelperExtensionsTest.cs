@@ -36,7 +36,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		var expected = Should.Throw<WaitForFailedException>(() =>
 			cut.WaitForAssertion(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(10)));
 
-		expected.Message.ShouldBe(WaitForAssertionHelper.TimeoutMessage);
+		expected.Message.ShouldStartWith(WaitForAssertionHelper.TimeoutMessage);
 	}
 
 	[Fact(DisplayName = "WaitForState throws exception after timeout")]
@@ -47,7 +47,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 		var expected = Should.Throw<WaitForFailedException>(() =>
 			cut.WaitForState(() => string.IsNullOrEmpty(cut.Markup), TimeSpan.FromMilliseconds(100)));
 
-		expected.Message.ShouldBe(WaitForStateHelper.TimeoutBeforePassMessage);
+		expected.Message.ShouldStartWith(WaitForStateHelper.TimeoutBeforePassMessage);
 	}
 
 	[Fact(DisplayName = "WaitForState throws exception if statePredicate throws on a later render")]
@@ -66,7 +66,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 				return false;
 			}));
 
-		expected.Message.ShouldBe(WaitForStateHelper.ExceptionInPredicateMessage);
+		expected.Message.ShouldStartWith(WaitForStateHelper.ExceptionInPredicateMessage);
 		expected.InnerException.ShouldBeOfType<InvalidOperationException>()
 			.Message.ShouldBe(expectedInnerMessage);
 	}
