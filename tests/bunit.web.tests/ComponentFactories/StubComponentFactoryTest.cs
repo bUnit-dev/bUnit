@@ -114,7 +114,7 @@ public class StubComponentFactoryTest : TestContext
 	}
 
 	private class CompA : ComponentBase { }
-	private class CompDerivedA : CompA { }
+	private sealed class CompDerivedA : CompA { }
 }
 
 #endif

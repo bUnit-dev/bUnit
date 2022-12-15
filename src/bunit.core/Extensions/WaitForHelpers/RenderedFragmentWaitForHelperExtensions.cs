@@ -28,14 +28,9 @@ public static class RenderedFragmentWaitForHelperExtensions
 		{
 			waiter.WaitTask.GetAwaiter().GetResult();
 		}
-		catch (Exception e)
+		catch (AggregateException e) when (e.InnerExceptions.Count == 1)
 		{
-			if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
-			{
-				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-			}
-
-			throw;
+			ExceptionDispatchInfo.Capture(e.InnerExceptions[0]).Throw();
 		}
 	}
 
@@ -76,14 +71,9 @@ public static class RenderedFragmentWaitForHelperExtensions
 		{
 			waiter.WaitTask.GetAwaiter().GetResult();
 		}
-		catch (Exception e)
+		catch (AggregateException e) when (e.InnerExceptions.Count == 1)
 		{
-			if (e is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
-			{
-				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-			}
-
-			throw;
+			ExceptionDispatchInfo.Capture(e.InnerExceptions[0]).Throw();
 		}
 	}
 

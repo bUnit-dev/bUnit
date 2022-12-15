@@ -40,7 +40,7 @@ public partial class HtmlizerTests : TestContext
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 	}
 
-	private class Htmlizer01Component : ComponentBase
+	private sealed class Htmlizer01Component : ComponentBase
 	{
 		public ElementReference ButtomElmRef { get; set; }
 

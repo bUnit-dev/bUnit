@@ -264,30 +264,30 @@ public partial class TestServiceProviderTest
 		result.ShouldNotBeNull();
 	}
 
-	private class DummyService { }
+	private sealed class DummyService { }
 
-	private class AnotherDummyService { }
+	private sealed class AnotherDummyService { }
 
-	private class OneMoreDummyService { }
+	private sealed class OneMoreDummyService { }
 
-	private class DummyServiceWithDependencyOnAnotherDummyService
+	private sealed class DummyServiceWithDependencyOnAnotherDummyService
 	{
 		public DummyServiceWithDependencyOnAnotherDummyService(AnotherDummyService anotherDummyService)
 		{
 		}
 	}
 
-	private class FallbackServiceProvider : IServiceProvider
+	private sealed class FallbackServiceProvider : IServiceProvider
 	{
 		public object GetService(Type serviceType) => new DummyService();
 	}
 
-	private class AnotherFallbackServiceProvider : IServiceProvider
+	private sealed class AnotherFallbackServiceProvider : IServiceProvider
 	{
 		public object GetService(Type serviceType) => new AnotherDummyService();
 	}
 
-	private class DummyComponentWhichRequiresDummyService : ComponentBase
+	private sealed class DummyComponentWhichRequiresDummyService : ComponentBase
 	{
 		[Inject] public DummyService Service { get; set; }
 	}

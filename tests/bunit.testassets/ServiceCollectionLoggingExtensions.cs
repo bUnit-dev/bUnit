@@ -18,7 +18,8 @@ public static class ServiceCollectionLoggingExtensions
 			.WriteTo.TestOutput(
 				testOutputHelper: outputHelper,
 				restrictedToMinimumLevel: LogEventLevel.Verbose,
-				outputTemplate: ThreadIDEnricher.DefaultConsoleOutputTemplate)
+				outputTemplate: ThreadIDEnricher.DefaultConsoleOutputTemplate,
+				formatProvider: CultureInfo.InvariantCulture)
 			.CreateLogger();
 
 		services.AddSingleton<ILoggerFactory>(new LoggerFactory().AddSerilog(serilogLogger, dispose: true));
@@ -26,7 +27,7 @@ public static class ServiceCollectionLoggingExtensions
 		return services;
 	}
 
-	private class ThreadIDEnricher : ILogEventEnricher
+	private sealed class ThreadIDEnricher : ILogEventEnricher
 	{
 		internal const string DefaultConsoleOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss} ({ThreadID}) [{Level}] {Message}{NewLine}{Exception}";
 

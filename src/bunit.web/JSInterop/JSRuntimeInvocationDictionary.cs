@@ -15,12 +15,7 @@ public sealed class JSRuntimeInvocationDictionary : IReadOnlyCollection<JSRuntim
 	/// </summary>
 	/// <param name="identifier">The identifier to get invocations for.</param>
 	/// <returns>An <see cref="IReadOnlyList{JSRuntimeInvocation}"/>.</returns>
-	public IReadOnlyList<JSRuntimeInvocation> this[string identifier]
-	{
-		get => invocations.ContainsKey(identifier)
-			? invocations[identifier]
-			: Array.Empty<JSRuntimeInvocation>();
-	}
+	public IReadOnlyList<JSRuntimeInvocation> this[string identifier] => invocations.TryGetValue(identifier, out var value) ? value : Array.Empty<JSRuntimeInvocation>();
 
 	/// <summary>
 	/// Gets a read only collection of all the identifiers used in invocations in this dictionary.

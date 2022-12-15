@@ -129,7 +129,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 			() => cut.WaitForState(() => false, TimeSpan.FromSeconds(5)));
 	}
 
-	internal class ThrowsAfterAsyncOperation : ComponentBase
+	private sealed class ThrowsAfterAsyncOperation : ComponentBase
 	{
 		protected override async Task OnInitializedAsync()
 		{

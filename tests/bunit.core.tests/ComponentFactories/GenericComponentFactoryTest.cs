@@ -25,7 +25,7 @@ public class GenericComponentFactoryTest : TestContext
 		cut.MarkupMatches(@"<div id=""ref-status"">Has ref = True</div>");
 	}
 
-	private class FakeSimple1 : Simple1
+	private sealed class FakeSimple1 : Simple1
 	{
 		protected override void OnInitialized() { }
 		protected override Task OnInitializedAsync() => Task.CompletedTask;
