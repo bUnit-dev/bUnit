@@ -14,6 +14,7 @@ public abstract class WaitForHelper<T> : IDisposable
 	private readonly Func<(bool CheckPassed, T Content)> completeChecker;
 	private readonly IRenderedFragmentBase renderedFragment;
 	private readonly ILogger<WaitForHelper<T>> logger;
+	private readonly TestRenderer renderer;
 	private bool isDisposed;
 	private int checkCount;
 	private Exception? capturedException;
@@ -50,15 +51,18 @@ public abstract class WaitForHelper<T> : IDisposable
 	{
 		this.renderedFragment = renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment));
 		this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
-
+		
 		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
+		renderer = (TestRenderer)renderedFragment
+			.Services
+			.GetRequiredService<ITestRenderer>();
 		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
 		timer = new Timer(_ =>
 		{
 			logger.LogWaiterTimedOut(renderedFragment.ComponentId);
-			checkPassedCompletionSource.TrySetException(new WaitForFailedException(TimeoutErrorMessage, checkCount, capturedException));
+			checkPassedCompletionSource.TrySetException(new WaitForFailedException(TimeoutErrorMessage ?? string.Empty, checkCount, renderer.RenderCount, capturedException));
 		});
-		WaitTask = CreateWaitTask(renderedFragment);
+		WaitTask = CreateWaitTask();
 		timer.Change(GetRuntimeTimeout(timeout), Timeout.InfiniteTimeSpan);
 
 		InitializeWaiting();
@@ -114,12 +118,8 @@ public abstract class WaitForHelper<T> : IDisposable
 		}
 	}
 
-	private Task<T> CreateWaitTask(IRenderedFragmentBase renderedFragment)
-	{
-		var renderer = renderedFragment
-			.Services
-			.GetRequiredService<ITestRenderer>();
-
+	private Task<T> CreateWaitTask()
+	{	
 		// Two to failure conditions, that the renderer captures an unhandled
 		// exception from a component or itself, or that the timeout is reached,
 		// are executed on the renderers scheduler, to ensure that OnAfterRender
@@ -166,7 +166,7 @@ public abstract class WaitForHelper<T> : IDisposable
 			if (StopWaitingOnCheckException)
 			{
 				checkPassedCompletionSource.TrySetException(
-					new WaitForFailedException(CheckThrowErrorMessage, checkCount, capturedException));
+					new WaitForFailedException(CheckThrowErrorMessage ?? string.Empty, checkCount, renderer.RenderCount, capturedException));
 				Dispose();
 			}
 		}

@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace Bunit.Extensions.WaitForHelpers;
 
 /// <summary>
@@ -9,8 +11,13 @@ public sealed class WaitForFailedException : Exception
 	/// <summary>
 	/// Initializes a new instance of the <see cref="WaitForFailedException"/> class.
 	/// </summary>
-	public WaitForFailedException(string? errorMessage, int checkCount, Exception? innerException = null)
-		: base((errorMessage ?? string.Empty) + $" Check count: {checkCount}", innerException)
+	public WaitForFailedException(string? errorMessage, Exception? innerException = null)
+		: base(errorMessage ?? string.Empty, innerException)
+	{
+	}
+
+	internal WaitForFailedException(string errorMessage, int checkCount, int totalRenderCount, Exception? innerException = null)
+		: base(errorMessage + $" Check count: {checkCount}. Total render count: {totalRenderCount}.", innerException)
 	{
 	}
 
