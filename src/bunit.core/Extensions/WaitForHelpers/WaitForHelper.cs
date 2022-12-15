@@ -60,7 +60,13 @@ public abstract class WaitForHelper<T> : IDisposable
 		timer = new Timer(_ =>
 		{
 			logger.LogWaiterTimedOut(renderedFragment.ComponentId);
-			checkPassedCompletionSource.TrySetException(new WaitForFailedException(TimeoutErrorMessage ?? string.Empty, checkCount, renderer.RenderCount, capturedException));
+			checkPassedCompletionSource.TrySetException(
+				new WaitForFailedException(
+					TimeoutErrorMessage ?? string.Empty,
+					checkCount,
+					renderedFragment.RenderCount,
+					renderer.RenderCount,
+					capturedException));
 		});
 		WaitTask = CreateWaitTask();
 		timer.Change(GetRuntimeTimeout(timeout), Timeout.InfiniteTimeSpan);
@@ -166,7 +172,12 @@ public abstract class WaitForHelper<T> : IDisposable
 			if (StopWaitingOnCheckException)
 			{
 				checkPassedCompletionSource.TrySetException(
-					new WaitForFailedException(CheckThrowErrorMessage ?? string.Empty, checkCount, renderer.RenderCount, capturedException));
+					new WaitForFailedException(
+						CheckThrowErrorMessage ?? string.Empty,
+						checkCount,
+						renderedFragment.RenderCount,
+						renderer.RenderCount,
+						capturedException));
 				Dispose();
 			}
 		}

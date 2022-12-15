@@ -16,8 +16,8 @@ public sealed class WaitForFailedException : Exception
 	{
 	}
 
-	internal WaitForFailedException(string errorMessage, int checkCount, int totalRenderCount, Exception? innerException = null)
-		: base(errorMessage + $" Check count: {checkCount}. Total render count: {totalRenderCount}.", innerException)
+	internal WaitForFailedException(string errorMessage, int checkCount, int componentRenderCount, int totalRenderCount, Exception? innerException = null)
+		: base(errorMessage + $" Check count: {checkCount}. Component render count: {componentRenderCount}. Total render count: {totalRenderCount}.", innerException)
 	{
 	}
 
