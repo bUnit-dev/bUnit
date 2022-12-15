@@ -6,7 +6,7 @@ using Xunit.Sdk;
 
 namespace Serilog.Sinks.XUnit;
 
-internal class TestOutputSink : ILogEventSink
+internal sealed class TestOutputSink : ILogEventSink
 {
 	private readonly IMessageSink messageSink;
 	private readonly ITestOutputHelper testOutputHelper;

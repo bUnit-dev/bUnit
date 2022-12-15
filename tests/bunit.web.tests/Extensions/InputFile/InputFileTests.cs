@@ -103,7 +103,7 @@ public class InputFileTests : TestContext
 		act.ShouldNotThrow();
 	}
 
-	private class InputFileComponent : ComponentBase
+	private sealed class InputFileComponent : ComponentBase
 	{
 		public string? Filename { get; private set; }
 		public string? Content { get; private set; }
@@ -132,7 +132,7 @@ public class InputFileTests : TestContext
 		}
 	}
 
-	private class MultipleInputFileComponent : ComponentBase
+	private sealed class MultipleInputFileComponent : ComponentBase
 	{
 		public readonly List<File> Files = new();
 
@@ -158,7 +158,7 @@ public class InputFileTests : TestContext
 			}
 		}
 
-		public record File(string Filename, string FileContent, DateTimeOffset LastChanged, long Size, string Type);
+		public sealed record File(string Filename, string FileContent, DateTimeOffset LastChanged, long Size, string Type);
 	}
 }
 #endif

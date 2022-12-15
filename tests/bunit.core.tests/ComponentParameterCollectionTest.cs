@@ -335,7 +335,7 @@ public class ComponentParameterCollectionTest : TestContext
 		Should.Throw<ArgumentException>(() => sut.ToRenderFragment<Params>());
 	}
 
-	private class Params : ComponentBase
+	private sealed class Params : ComponentBase
 	{
 		public const string TemplateContent = "FOO";
 

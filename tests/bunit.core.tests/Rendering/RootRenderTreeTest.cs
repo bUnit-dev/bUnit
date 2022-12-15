@@ -144,7 +144,7 @@ public class RootRenderTreeTest : TestContext
 			x => x.ComponentType.ShouldBe(typeof(CascadingValue<int>)));
 	}
 
-	private class LayoutComponent : LayoutComponentBase
+	private sealed class LayoutComponent : LayoutComponentBase
 	{
 		[Parameter] public string Value { get; set; } = "LAYOUT VALUE";
 		[Parameter] public string? Name { get; set; }
@@ -160,7 +160,7 @@ public class RootRenderTreeTest : TestContext
 		}
 	}
 
-	private class InnerComponent : ComponentBase
+	private sealed class InnerComponent : ComponentBase
 	{
 		[CascadingParameter] public string LayoutValue { get; set; } = string.Empty;
 
@@ -172,7 +172,7 @@ public class RootRenderTreeTest : TestContext
 		}
 	}
 
-	private class MultipleParametersInnerComponent : ComponentBase
+	private sealed class MultipleParametersInnerComponent : ComponentBase
 	{
 		[CascadingParameter] public string StringValue { get; set; } = string.Empty;
 		[CascadingParameter] public int IntValue { get; set; }

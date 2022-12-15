@@ -3,7 +3,7 @@ namespace Bunit.TestDoubles.Components;
 
 public class ComponentDoubleBaseTest : TestContext
 {
-	private class ComponentDouble<TComponent> : ComponentDoubleBase<TComponent>
+	private sealed class ComponentDouble<TComponent> : ComponentDoubleBase<TComponent>
 		where TComponent : IComponent
 	{ }
 

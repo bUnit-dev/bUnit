@@ -7,7 +7,7 @@ public static class TaskAssertionExtensions
 #if NET6_0_OR_GREATER
 		await task.WaitAsync(timeout);
 #else
-		var cts = new CancellationTokenSource();
+		using var cts = new CancellationTokenSource();
         var delayTask = Task.Delay(timeout, cts.Token);
         if (task != await Task.WhenAny(task, delayTask))
             throw new TimeoutException();

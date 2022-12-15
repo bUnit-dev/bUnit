@@ -7,6 +7,7 @@ namespace Bunit.Rendering;
 /// Components added to the render tree must have either a <c>ChildContent</c> or
 /// <c>Body</c> parameter.
 /// </summary>
+[SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "A tree is a collection by default.")]
 public sealed class RootRenderTree : IReadOnlyCollection<RootRenderTreeRegistration>
 {
 	private readonly List<RootRenderTreeRegistration> registrations = new();

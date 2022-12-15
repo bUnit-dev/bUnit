@@ -38,7 +38,7 @@ public class FocusAsyncInvocationHandlerTest : TestContext
 		Assert.True(cut.Instance.AfterFirstRender);
 	}
 
-	private class FocusingComponent : ComponentBase
+	private sealed class FocusingComponent : ComponentBase
 	{
 		private ElementReference elmRef;
 		internal bool AfterFirstRender { get; private set; }
