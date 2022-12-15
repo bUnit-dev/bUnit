@@ -544,7 +544,7 @@ public class ComponentRenderingTest : TestContext
 
 		await cut.WaitForAssertionAsync(
 			() => Assert.Equal(expectedOutput, outputElement.TextContent.Trim()),
-			timeout: TimeSpan.FromMilliseconds(2000));
+			timeout: TimeSpan.FromSeconds(10));
 	}
 
 	[Fact]
@@ -565,7 +565,7 @@ public class ComponentRenderingTest : TestContext
 
 		cut.WaitForAssertion(
 			() => Assert.Equal(expectedOutput, outputElement.TextContent.Trim()),
-			timeout: TimeSpan.FromMilliseconds(2000));
+			timeout: TimeSpan.FromSeconds(10));
 	}
 
 	[Fact]
