@@ -201,6 +201,7 @@ public class TestRenderer : Renderer, ITestRenderer
 			}
 
 			renderedComponents.Clear();
+			unhandledExceptionTsc.TrySetCanceled();
 		}
 
 		base.Dispose(disposing);
