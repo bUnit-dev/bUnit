@@ -2,7 +2,8 @@
 namespace System.Diagnostics.CodeAnalysis;
 
 /// <summary>Fake version of the StringSyntaxAttribute, which was introduced in .NET 7</summary>
-[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property)]
+[SuppressMessage("Design", "CA1019:Define accessors for attribute arguments", Justification = "The sole purpose is to have the same public surface as the class in .NET7 and above.")]
 public sealed class StringSyntaxAttribute : Attribute
 {
 	/// <summary>

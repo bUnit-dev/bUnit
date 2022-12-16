@@ -720,9 +720,9 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		public void SomeMethod() { }
 	}
 
-	private class NoParams : ComponentBase { }
-	private class NonChildContentParameter : ComponentBase { public RenderFragment? ChildContent { get; set; } }
-	private class InhertedParams : Params { }
+	private sealed class NoParams : ComponentBase { }
+	private sealed class NonChildContentParameter : ComponentBase { public RenderFragment? ChildContent { get; set; } }
+	private sealed class InhertedParams : Params { }
 	private abstract class ParamsBase<T> : ComponentBase
 	{
 		public abstract T Value { get; set; }
@@ -733,21 +733,21 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		[Parameter] public override bool? Value { get; set; }
 	}
 
-	private class InheritedParamsWithoutOverride : InheritedParamsWithOverride
+	private sealed class InheritedParamsWithoutOverride : InheritedParamsWithOverride
 	{ }
 
-	private class TemplatedChildContent : ComponentBase
+	private sealed class TemplatedChildContent : ComponentBase
 	{
 		[Parameter] public RenderFragment<string>? ChildContent { get; set; }
 	}
 
-	private class NoTwoWayBind : ComponentBase
+	private sealed class NoTwoWayBind : ComponentBase
 	{
 		[Parameter]
 		public string Value { get; set; }
 	}
 
-	private class InvalidTwoWayBind : ComponentBase
+	private sealed class InvalidTwoWayBind : ComponentBase
 	{
 		[Parameter]
 		public string Value { get; set; }
@@ -755,13 +755,13 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		public EventCallback<string> ValueChanged { get; set; }
 	}
 
-	private class ComponentWithCascadingParameter : ComponentBase
+	private sealed class ComponentWithCascadingParameter : ComponentBase
 	{
 		[CascadingParameter] public string Value { get; set; } = string.Empty;
 		[Parameter] public EventCallback<string> ValueChanged { get; set; }
 	}
 
-	private class ValidNamesComponent : ComponentBase
+	private sealed class ValidNamesComponent : ComponentBase
 	{
 		[Parameter] public DateTime LastChanged { get; set; }
 		[Parameter] public EventCallback<DateTime> LastChangedChanged { get; set; }

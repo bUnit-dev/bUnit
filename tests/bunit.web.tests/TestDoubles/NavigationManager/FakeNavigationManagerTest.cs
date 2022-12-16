@@ -263,7 +263,7 @@ public class FakeNavigationManagerTest : TestContext
 			() => fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>());
 	}
 
-	private class InterceptNavigateToCounterComponent : ComponentBase
+	private sealed class InterceptNavigateToCounterComponent : ComponentBase
 	{
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
@@ -293,7 +293,7 @@ public class FakeNavigationManagerTest : TestContext
 		[Inject] private NavigationManager NavigationManager { get; set; } = default!;
 	}
 
-	public class GotoExternalResourceComponent : ComponentBase
+	private sealed class GotoExternalResourceComponent : ComponentBase
 	{
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
@@ -312,7 +312,7 @@ public class FakeNavigationManagerTest : TestContext
 		[Inject] private NavigationManager NavigationManager { get; set; } = default!;
 	}
 
-	private class ThrowsExceptionInInterceptNavigationComponent : ComponentBase
+	private sealed class ThrowsExceptionInInterceptNavigationComponent : ComponentBase
 	{
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{

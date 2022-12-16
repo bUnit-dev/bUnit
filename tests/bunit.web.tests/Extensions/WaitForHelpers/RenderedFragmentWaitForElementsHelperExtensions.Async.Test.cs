@@ -31,7 +31,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestCont
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
 			await cut.WaitForElementAsync("#notHereElm", TimeSpan.FromMilliseconds(10)));
 
-		expected.Message.ShouldBe(WaitForElementHelper.TimeoutBeforeFoundMessage);
+		expected.Message.ShouldStartWith(WaitForElementHelper.TimeoutBeforeFoundMessage);
 	}
 
 	[Fact(DisplayName = "WaitForElements waits until cssSelector returns at least one element")]
@@ -55,7 +55,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestCont
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
 			await cut.WaitForElementsAsync("#notHereElm", TimeSpan.FromMilliseconds(30)));
 
-		expected.Message.ShouldBe(WaitForElementsHelper.TimeoutBeforeFoundMessage);
+		expected.Message.ShouldStartWith(WaitForElementsHelper.TimeoutBeforeFoundMessage);
 		expected.InnerException.ShouldBeNull();
 	}
 
@@ -68,7 +68,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestCont
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
 			await cut.WaitForElementsAsync("#notHereElm", 2, TimeSpan.FromMilliseconds(30)));
 
-		expected.Message.ShouldBe(string.Format(CultureInfo.InvariantCulture, WaitForElementsHelper.TimeoutBeforeFoundWithCountMessage, 2));
+		expected.Message.ShouldStartWith(string.Format(CultureInfo.InvariantCulture, WaitForElementsHelper.TimeoutBeforeFoundWithCountMessage, 2));
 		expected.InnerException.ShouldBeNull();
 	}
 

@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace Bunit.Extensions.WaitForHelpers;
 
 /// <summary>
@@ -11,6 +13,11 @@ public sealed class WaitForFailedException : Exception
 	/// </summary>
 	public WaitForFailedException(string? errorMessage, Exception? innerException = null)
 		: base(errorMessage ?? string.Empty, innerException)
+	{
+	}
+
+	internal WaitForFailedException(string errorMessage, int checkCount, int componentRenderCount, int totalRenderCount, Exception? innerException = null)
+		: base(errorMessage + $" Check count: {checkCount}. Component render count: {componentRenderCount}. Total render count: {totalRenderCount}.", innerException)
 	{
 	}
 

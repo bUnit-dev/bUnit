@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -44,7 +44,6 @@ jobs:
             5.0.x
             6.0.x
             7.0.x
-          include-prerelease: true
 
       - name: 🎨 Setup color
         if: matrix.os != 'windows-latest'
@@ -64,10 +63,10 @@ jobs:
 
       - name: 🧪 Run unit tests (async)
         run: |
-          dotnet test --filter Category!=sync -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
+          dotnet test --filter Category!=sync -c release
       - name: 🧪 Run unit tests (sync)
         run: |
-          dotnet test --filter Category!=async -c release --blame-hang-timeout 15s --blame-hang-dump-type full --blame-crash-dump-type full
+          dotnet test --filter Category!=async -c release
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
         uses: actions/upload-artifact@v3

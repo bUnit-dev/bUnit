@@ -43,7 +43,7 @@ public class FocusOnNavigateHandlerTest : TestContext
 		Assert.True(focusOnNavigateComponent.Instance.AfterFirstRender);
 	}
 
-	private class FocusOnNavigateInternal : FocusOnNavigate
+	private sealed class FocusOnNavigateInternal : FocusOnNavigate
 	{
 		internal bool AfterFirstRender { get; private set; }
 		protected override async Task OnAfterRenderAsync(bool firstRender)

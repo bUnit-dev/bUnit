@@ -2,7 +2,7 @@ namespace Bunit.RazorTesting;
 
 public class FixtureBaseTest : TestContext
 {
-	private class FixtureComponent : FixtureBase<FixtureComponent>
+	private sealed class FixtureComponent : FixtureBase<FixtureComponent>
 	{
 		protected override Task RunAsync() => RunAsync(this);
 	}

@@ -75,7 +75,7 @@ public partial class TestContextTest : TestContext
 		Should.NotThrow(() => RenderComponent<ClickCounter>().Find("button").Click());
 	}
 
-	private class ReceivesCascadingValue : ComponentBase
+	private sealed class ReceivesCascadingValue : ComponentBase
 	{
 		[CascadingParameter] public string? Value { get; set; }
 

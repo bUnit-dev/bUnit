@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+This release contains a bunch of small tweaks and fixes.
+
 ## [1.12.6] - 2022-11-08
 
 ### Fixed

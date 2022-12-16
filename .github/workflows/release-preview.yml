@@ -21,7 +21,7 @@ jobs:
     steps:
 
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -36,7 +36,6 @@ jobs:
             5.0.x
             6.0.x
             7.0.x
-          include-prerelease: true
 
       - name: 🎨 Setup color
         run: |

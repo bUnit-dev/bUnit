@@ -22,6 +22,11 @@ public class TestRenderer : Renderer, ITestRenderer
 	public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
 
 	/// <summary>
+	/// Gets the number of render cycles that has been performed.
+	/// </summary>
+	internal int RenderCount { get; private set; }
+
+	/// <summary>
 	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
 	/// </summary>
 	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
@@ -151,6 +156,8 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		logger.LogNewRenderBatchReceived();
 
+		RenderCount++;
+		
 		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
 
 		// removes disposed components
@@ -201,6 +208,7 @@ public class TestRenderer : Renderer, ITestRenderer
 			}
 
 			renderedComponents.Clear();
+			unhandledExceptionTsc.TrySetCanceled();
 		}
 
 		base.Dispose(disposing);
