@@ -44,10 +44,10 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 <table border="0">
 	<tr>
 		<td align="center" width="120">
-			<a href="https://github.com/telerik">
-				<img src="https://avatars.githubusercontent.com/u/568561?s=200&v=4" alt="@Telerik" class="avatar" width="72" height="72" />
+			<a href="https://github.com/Progress-Telerik">
+				<img src="https://avatars.githubusercontent.com/u/57092419?s=460" alt="@Progress-Telerik" class="avatar" width="72" height="72" />
 				<br />
-				Telerik
+				Progress Telerik
 			</a>
 		</td>
 		<td align="center" width="120">
@@ -63,7 +63,7 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 				<br />
 				Amazon Web Services
 			</a>
-		</td>				
+		</td>			
 		<td align="center" width="120">
 			<a href="https://github.com/hassanhabib">
 				<img src="https://avatars.githubusercontent.com/u/1453985?s=460" alt="Hassan Rezk Habib (@hassanhabib)" width="72" height="72" class="avatar" />
