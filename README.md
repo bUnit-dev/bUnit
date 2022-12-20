@@ -56,7 +56,14 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 				<br />
 				Syncfusion
 			</a>
-		</td>		
+		</td>
+		<td align="center" width="120">
+			<a href="https://github.com/aws">
+				<img class="avatar" src="https://avatars.githubusercontent.com/u/2232217?s=200&v=4" width="72" height="72" alt="@aws" />
+				<br />
+				Amazon Web Services
+			</a>
+		</td>				
 		<td align="center" width="120">
 			<a href="https://github.com/hassanhabib">
 				<img src="https://avatars.githubusercontent.com/u/1453985?s=460" alt="Hassan Rezk Habib (@hassanhabib)" width="72" height="72" class="avatar" />
