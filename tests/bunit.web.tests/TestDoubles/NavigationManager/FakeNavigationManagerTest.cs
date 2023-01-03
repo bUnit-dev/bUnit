@@ -33,6 +33,8 @@ public class FakeNavigationManagerTest : TestContext
 	[InlineData("")]
 	[InlineData("/")]
 	[InlineData("/foo")]
+	[InlineData("/#Storstädning")]
+	[InlineData("/#åäö")]
 	public void Test003(string uri)
 	{
 		var sut = CreateFakeNavigationManager();
@@ -339,18 +341,5 @@ public class FakeNavigationManagerTest : TestContext
 		[Inject] private NavigationManager NavigationManager { get; set; } = default!;
 	}
 #endif
-
-	[Fact(DisplayName = "Navigate to path without absolute path")]
-	public void Test016()
-	{
-		var locationChangedInvoked = false;
-		const string externalUri = "/#Storstädning";
-		var sut = CreateFakeNavigationManager();
-		sut.LocationChanged += (s, e) => locationChangedInvoked = true;
-
-		sut.NavigateTo(externalUri);
-
-		locationChangedInvoked.ShouldBeTrue();
-	}
 }
 
