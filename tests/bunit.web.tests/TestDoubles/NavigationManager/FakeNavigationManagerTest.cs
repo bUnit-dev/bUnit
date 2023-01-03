@@ -350,7 +350,7 @@ public class FakeNavigationManagerTest : TestContext
 
 		sut.NavigateTo(externalUri);
 
-		locationChangedInvoked.ShouldBeFalse();
+		locationChangedInvoked.ShouldBeTrue();
 	}
 }
 
