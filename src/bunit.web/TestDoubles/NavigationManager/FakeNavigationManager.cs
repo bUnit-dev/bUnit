@@ -144,7 +144,7 @@ public sealed class FakeNavigationManager : NavigationManager
 	private URI GetNewAbsoluteUri(string uri)
 		=> URI.IsWellFormedUriString(uri, UriKind.Relative)
 			? ToAbsoluteUri(uri)
-			: new URI(uri, UriKind.Absolute);
+			: new URI(uri, UriKind.RelativeOrAbsolute);
 
 	private bool HasDifferentBaseUri(URI absoluteUri)
 		=> URI.Compare(
@@ -156,6 +156,6 @@ public sealed class FakeNavigationManager : NavigationManager
 
 	private static string GetBaseUri(URI uri)
 	{
-		return uri.Scheme + "://" + uri.Authority + "/";
+		return uri.IsAbsoluteUri ? uri.Scheme + "://" + uri.Authority + "/" : $"https://localhost/{uri.ToString()}";
 	}
 }
