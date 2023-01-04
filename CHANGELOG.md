@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+-   Added support in `FakeNavigationManager` to handle umlauts.
+
 ## [1.13.5] - 2022-12-16
 
 This release contains a bunch of small tweaks and fixes.
