@@ -5,6 +5,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 <!-- The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) -->
 
 ## [Unreleased]
+
+### Fixed
+
 -   Added support in `FakeNavigationManager` to handle umlauts.
 
 ## [1.13.5] - 2022-12-16
