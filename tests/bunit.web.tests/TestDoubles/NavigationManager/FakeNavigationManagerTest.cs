@@ -33,6 +33,8 @@ public class FakeNavigationManagerTest : TestContext
 	[InlineData("")]
 	[InlineData("/")]
 	[InlineData("/foo")]
+	[InlineData("/#Storstädning")]
+	[InlineData("/#åäö")]
 	public void Test003(string uri)
 	{
 		var sut = CreateFakeNavigationManager();
