@@ -691,11 +691,13 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	public void EscapableCharactersDontGetEncoded()
+	public void SomeEscapableCharactersDontGetEncoded()
 	{
-		var cut = RenderComponent<ComponentWithEscapableCharacters>();
+		const string input = "url('\"&')";
+		var cut = RenderComponent<ComponentWithEscapableCharacters>(
+			p => p.Add(s => s.Escaped, input));
 
-		cut.Markup.ShouldBe("<p style=\"url('')\">url('')</p>");
+		cut.Markup.ShouldBe("<p style=\"url('&quot;&amp;')\">url('\"&')</p>");
 	}
 
 	[Fact]
