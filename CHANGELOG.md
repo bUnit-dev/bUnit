@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- Added `IMemoryCache` by default to the Service-Cotaniner. By [@linkdotnet](https://github.com/linkdotnet).
+
 ### Fixed
 
 -   Added support in `FakeNavigationManager` to handle umlauts.
