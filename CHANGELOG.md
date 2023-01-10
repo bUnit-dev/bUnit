@@ -8,7 +8,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Added
 
-- Added `IMemoryCache` by default to the Service-Cotaniner. By [@linkdotnet](https://github.com/linkdotnet).
+- Added `IMemoryCache` by default to the Services container. By [@linkdotnet](https://github.com/linkdotnet).
 
 ### Fixed
 
