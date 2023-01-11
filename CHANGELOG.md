@@ -6,6 +6,15 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- Added `IMemoryCache` by default to the Services container. By [@linkdotnet](https://github.com/linkdotnet).
+
+### Fixed
+
+-   Added support in `FakeNavigationManager` to handle umlauts.
+-   Fixed a bug where attribute values did not get escaped. Reported by [@brettwinters](https://github.com/brettwinters). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.13.5] - 2022-12-16
 
 This release contains a bunch of small tweaks and fixes.
