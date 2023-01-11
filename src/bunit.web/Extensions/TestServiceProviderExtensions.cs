@@ -55,7 +55,7 @@ public static class TestServiceProviderExtensions
 		services.AddSingleton<BunitHtmlParser>();
 		services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
 
-		services.AddSingleton<IMemoryCache, MemoryCache>();
+		services.AddMemoryCache();
 
 #if NET6_0_OR_GREATER
 		services.AddSingleton<IErrorBoundaryLogger, BunitErrorBoundaryLogger>();
