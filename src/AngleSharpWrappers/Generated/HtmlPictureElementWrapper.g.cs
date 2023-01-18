@@ -10,15 +10,15 @@ namespace AngleSharpWrappers
 {
     #nullable enable
     /// <summary>
-    /// Represents a wrapper class around <see cref="IHtmlTextAreaElement"/> type.
+    /// Represents a wrapper class around <see cref="IHtmlPictureElement"/> type.
     /// </summary>
     [DebuggerDisplay("{OuterHtml,nq}")]
-    public sealed class HtmlTextAreaElementWrapper : Wrapper<IHtmlTextAreaElement>, IHtmlTextAreaElement
+    public sealed class HtmlPictureElementWrapper : Wrapper<IHtmlPictureElement>, IHtmlPictureElement
     {
         /// <summary>
-        /// Creates an instance of the <see cref="HtmlTextAreaElementWrapper"/> type;
+        /// Creates an instance of the <see cref="HtmlPictureElementWrapper"/> type;
         /// </summary>
-        public HtmlTextAreaElementWrapper(IElementFactory<IHtmlTextAreaElement> elementFactory) : base(elementFactory) { }
+        public HtmlPictureElementWrapper(IElementFactory<IHtmlPictureElement> elementFactory) : base(elementFactory) { }
 
         #region Events
         /// <inheritdoc/>
@@ -154,9 +154,6 @@ namespace AngleSharpWrappers
         public INamedNodeMap Attributes { get => WrappedElement.Attributes; }
         /// <inheritdoc/>
         [DebuggerHidden]
-        public Boolean Autofocus { get => WrappedElement.Autofocus; set => WrappedElement.Autofocus = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
         public String BaseUri { get => WrappedElement.BaseUri; }
         /// <inheritdoc/>
         [DebuggerHidden]
@@ -178,9 +175,6 @@ namespace AngleSharpWrappers
         public String? ClassName { get => WrappedElement.ClassName; set => WrappedElement.ClassName = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
-        public Int32 Columns { get => WrappedElement.Columns; set => WrappedElement.Columns = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
         public String? ContentEditable { get => WrappedElement.ContentEditable; set => WrappedElement.ContentEditable = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
@@ -190,13 +184,7 @@ namespace AngleSharpWrappers
         public IStringMap Dataset { get => WrappedElement.Dataset; }
         /// <inheritdoc/>
         [DebuggerHidden]
-        public String DefaultValue { get => WrappedElement.DefaultValue; set => WrappedElement.DefaultValue = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
         public String? Direction { get => WrappedElement.Direction; set => WrappedElement.Direction = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public String? DirectionName { get => WrappedElement.DirectionName; set => WrappedElement.DirectionName = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
         public ISettableTokenList DropZone { get => WrappedElement.DropZone; }
@@ -209,9 +197,6 @@ namespace AngleSharpWrappers
         /// <inheritdoc/>
         [DebuggerHidden]
         public NodeFlags Flags { get => WrappedElement.Flags; }
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public IHtmlFormElement? Form { get => WrappedElement.Form; }
         /// <inheritdoc/>
         [DebuggerHidden]
         public String? GivenNamespaceUri { get => WrappedElement.GivenNamespaceUri; }
@@ -229,9 +214,6 @@ namespace AngleSharpWrappers
         public Boolean IsContentEditable { get => WrappedElement.IsContentEditable; }
         /// <inheritdoc/>
         [DebuggerHidden]
-        public Boolean IsDisabled { get => WrappedElement.IsDisabled; set => WrappedElement.IsDisabled = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
         public Boolean IsDraggable { get => WrappedElement.IsDraggable; set => WrappedElement.IsDraggable = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
@@ -241,19 +223,10 @@ namespace AngleSharpWrappers
         public Boolean IsHidden { get => WrappedElement.IsHidden; set => WrappedElement.IsHidden = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
-        public Boolean IsReadOnly { get => WrappedElement.IsReadOnly; set => WrappedElement.IsReadOnly = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public Boolean IsRequired { get => WrappedElement.IsRequired; set => WrappedElement.IsRequired = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
         public Boolean IsSpellChecked { get => WrappedElement.IsSpellChecked; set => WrappedElement.IsSpellChecked = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
         public Boolean IsTranslated { get => WrappedElement.IsTranslated; set => WrappedElement.IsTranslated = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public INodeList Labels { get => WrappedElement.Labels; }
         /// <inheritdoc/>
         [DebuggerHidden]
         public String? Language { get => WrappedElement.Language; set => WrappedElement.Language = value;}
@@ -266,12 +239,6 @@ namespace AngleSharpWrappers
         /// <inheritdoc/>
         [DebuggerHidden]
         public String LocalName { get => WrappedElement.LocalName; }
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public Int32 MaxLength { get => WrappedElement.MaxLength; set => WrappedElement.MaxLength = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public String? Name { get => WrappedElement.Name; set => WrappedElement.Name = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
         public String? NamespaceUri { get => WrappedElement.NamespaceUri; }
@@ -304,9 +271,6 @@ namespace AngleSharpWrappers
         public IElement? ParentElement { get => WrappedElement.ParentElement; }
         /// <inheritdoc/>
         [DebuggerHidden]
-        public String? Placeholder { get => WrappedElement.Placeholder; set => WrappedElement.Placeholder = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
         public String? Prefix { get => WrappedElement.Prefix; }
         /// <inheritdoc/>
         [DebuggerHidden]
@@ -314,18 +278,6 @@ namespace AngleSharpWrappers
         /// <inheritdoc/>
         [DebuggerHidden]
         public INode? PreviousSibling { get => WrappedElement.PreviousSibling; }
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public Int32 Rows { get => WrappedElement.Rows; set => WrappedElement.Rows = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public String? SelectionDirection { get => WrappedElement.SelectionDirection; }
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public Int32 SelectionEnd { get => WrappedElement.SelectionEnd; set => WrappedElement.SelectionEnd = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public Int32 SelectionStart { get => WrappedElement.SelectionStart; set => WrappedElement.SelectionStart = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
         public IShadowRoot? ShadowRoot { get => WrappedElement.ShadowRoot; }
@@ -346,28 +298,7 @@ namespace AngleSharpWrappers
         public String TextContent { get => WrappedElement.TextContent; set => WrappedElement.TextContent = value;}
         /// <inheritdoc/>
         [DebuggerHidden]
-        public Int32 TextLength { get => WrappedElement.TextLength; }
-        /// <inheritdoc/>
-        [DebuggerHidden]
         public String? Title { get => WrappedElement.Title; set => WrappedElement.Title = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public String Type { get => WrappedElement.Type; }
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public String? ValidationMessage { get => WrappedElement.ValidationMessage; }
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public IValidityState Validity { get => WrappedElement.Validity; }
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public String Value { get => WrappedElement.Value; set => WrappedElement.Value = value;}
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public Boolean WillValidate { get => WrappedElement.WillValidate; }
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public String? Wrap { get => WrappedElement.Wrap; set => WrappedElement.Wrap = value;}
         #endregion
 
         #region Methods
@@ -389,9 +320,6 @@ namespace AngleSharpWrappers
         /// <inheritdoc/>
         [DebuggerHidden]
         public void Before(INode[] nodes) => WrappedElement.Before(nodes);
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public Boolean CheckValidity() => WrappedElement.CheckValidity();
         /// <inheritdoc/>
         [DebuggerHidden]
         public INode Clone(Boolean deep) => WrappedElement.Clone(deep);
@@ -499,19 +427,10 @@ namespace AngleSharpWrappers
         public INode ReplaceChild(INode newChild, INode oldChild) => WrappedElement.ReplaceChild(newChild, oldChild);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public void Select(Int32 selectionStart, Int32 selectionEnd, String? selectionDirection) => WrappedElement.Select(selectionStart, selectionEnd, selectionDirection);
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public void SelectAll() => WrappedElement.SelectAll();
-        /// <inheritdoc/>
-        [DebuggerHidden]
         public void SetAttribute(String name, String? value) => WrappedElement.SetAttribute(name, value);
         /// <inheritdoc/>
         [DebuggerHidden]
         public void SetAttribute(String? namespaceUri, String name, String? value) => WrappedElement.SetAttribute(namespaceUri, name, value);
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public void SetCustomValidity(String error) => WrappedElement.SetCustomValidity(error);
         /// <inheritdoc/>
         [DebuggerHidden]
         public void ToHtml(TextWriter writer, IMarkupFormatter formatter) => WrappedElement.ToHtml(writer, formatter);
