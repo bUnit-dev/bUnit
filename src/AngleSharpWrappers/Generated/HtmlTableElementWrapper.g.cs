@@ -19,9 +19,9 @@ namespace AngleSharpWrappers
         /// Creates an instance of the <see cref="HtmlTableElementWrapper"/> type;
         /// </summary>
         public HtmlTableElementWrapper(IElementFactory<IHtmlTableElement> elementFactory) : base(elementFactory) { }
-/// <inheritdoc/>
 
         #region Events
+        /// <inheritdoc/>
         public event DomEventHandler Aborted { add => WrappedElement.Aborted += value; remove => WrappedElement.Aborted -= value; }
         /// <inheritdoc/>
         public event DomEventHandler Blurred { add => WrappedElement.Blurred += value; remove => WrappedElement.Blurred -= value; }
@@ -137,10 +137,10 @@ namespace AngleSharpWrappers
         public event DomEventHandler VolumeChanged { add => WrappedElement.VolumeChanged += value; remove => WrappedElement.VolumeChanged -= value; }
         /// <inheritdoc/>
         public event DomEventHandler Waiting { add => WrappedElement.Waiting += value; remove => WrappedElement.Waiting -= value; }
-        /// <inheritdoc/>
         #endregion
 
         #region Properties and indexers
+        /// <inheritdoc/>
         [DebuggerHidden]
         public String? AccessKey { get => WrappedElement.AccessKey; set => WrappedElement.AccessKey = value;}
         /// <inheritdoc/>
@@ -209,6 +209,9 @@ namespace AngleSharpWrappers
         /// <inheritdoc/>
         [DebuggerHidden]
         public IHtmlTableSectionElement? Foot { get => WrappedElement.Foot; set => WrappedElement.Foot = value;}
+        /// <inheritdoc/>
+        [DebuggerHidden]
+        public String? GivenNamespaceUri { get => WrappedElement.GivenNamespaceUri; }
         /// <inheritdoc/>
         [DebuggerHidden]
         public Boolean HasChildNodes { get => WrappedElement.HasChildNodes; }
@@ -314,10 +317,10 @@ namespace AngleSharpWrappers
         /// <inheritdoc/>
         [DebuggerHidden]
         public String? Title { get => WrappedElement.Title; set => WrappedElement.Title = value;}
-        /// <inheritdoc/>
         #endregion
 
         #region Methods
+        /// <inheritdoc/>
         [DebuggerHidden]
         public void AddEventListener(String type, DomEventHandler? callback, Boolean capture) => WrappedElement.AddEventListener(type, callback, capture);
         /// <inheritdoc/>
@@ -469,10 +472,10 @@ namespace AngleSharpWrappers
         public INode ReplaceChild(INode newChild, INode oldChild) => WrappedElement.ReplaceChild(newChild, oldChild);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public void SetAttribute(String name, String value) => WrappedElement.SetAttribute(name, value);
+        public void SetAttribute(String name, String? value) => WrappedElement.SetAttribute(name, value);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public void SetAttribute(String? namespaceUri, String name, String value) => WrappedElement.SetAttribute(namespaceUri, name, value);
+        public void SetAttribute(String? namespaceUri, String name, String? value) => WrappedElement.SetAttribute(namespaceUri, name, value);
         /// <inheritdoc/>
         [DebuggerHidden]
         public void ToHtml(TextWriter writer, IMarkupFormatter formatter) => WrappedElement.ToHtml(writer, formatter);
