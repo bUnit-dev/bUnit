@@ -6,6 +6,21 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.14.4] - 2023-01-11
+
+### Added
+
+-   Added `IMemoryCache` by default to the Services container. By [@linkdotnet](https://github.com/linkdotnet).
+
+### Fixed
+
+-   Added support in `FakeNavigationManager` to handle umlauts.
+-   Fixed a bug where attribute values did not get escaped. Reported by [@brettwinters](https://github.com/brettwinters). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
+## [1.13.5] - 2022-12-16
+
+This release contains a bunch of small tweaks and fixes.
+
 ## [1.12.6] - 2022-11-08
 
 ### Fixed
@@ -1224,7 +1239,11 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**  
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.12.6...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.14.4...HEAD
+
+[1.14.4]: https://github.com/bUnit-dev/bUnit/compare/v1.13.5...v1.14.4
+
+[1.13.5]: https://github.com/bUnit-dev/bUnit/compare/v1.12.6...1.13.5
 
 [1.12.6]: https://github.com/bUnit-dev/bUnit/compare/v1.11.7...v1.12.6
 

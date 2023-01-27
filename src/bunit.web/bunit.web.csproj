@@ -15,14 +15,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AngleSharp" Version="0.17.1" />
-		<PackageReference Include="AngleSharp.Css" Version="0.16.4" />
+		<PackageReference Include="AngleSharp" Version="1.0.1" />
 		<PackageReference Include="AngleSharp.Diffing" Version="0.17.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet6Version)" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet6Version)" />
@@ -31,6 +31,7 @@
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet7Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet7Version)" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(DotNet7Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet7Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet7Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet7Version)" />

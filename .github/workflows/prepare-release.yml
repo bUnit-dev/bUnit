@@ -56,9 +56,9 @@ jobs:
         id: versions
         run: |
           nbgv prepare-release --versionIncrement ${{ github.event.inputs.versionIncrement }}          
-          echo "{MAIN_VERSION_COMMIT_MESSAGE}={$(git log --format=%B -n 1 --skip 1)}" >> $GITHUB_OUTPUT
+          echo "MAIN_VERSION_COMMIT_MESSAGE=$(git log --format=%B -n 1 --skip 1)" >> $GITHUB_OUTPUT
           git checkout release/v$NBGV_MajorMinorVersion
-          echo "{RELEASE_VERSION_COMMIT_MESSAGE}={$(git log --format=%B -n 1)}" >> $GITHUB_OUTPUT
+          echo "RELEASE_VERSION_COMMIT_MESSAGE=$(git log --format=%B -n 1)" >> $GITHUB_OUTPUT
       
       # Workaround since nbgv prepare-release does not sign commits.
       # This undo's the commits, keeps the version changes, and commits again with signing

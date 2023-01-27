@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using Bunit.Rendering;
 
 namespace Bunit;
@@ -270,7 +271,7 @@ internal static class Htmlizer
 					result.Append(frame.AttributeName);
 					result.Append('=');
 					result.Append('"');
-					result.Append(value);
+					result.Append(Escape(value));
 					result.Append('"');
 					break;
 				default:
@@ -280,6 +281,11 @@ internal static class Htmlizer
 
 		return position + maxElements;
 	}
+
+	private static string Escape(string value) =>
+		value
+			.Replace("&", "&amp;", StringComparison.OrdinalIgnoreCase)
+			.Replace("\"", "&quot;", StringComparison.OrdinalIgnoreCase);
 
 	private sealed class HtmlRenderingContext
 	{
