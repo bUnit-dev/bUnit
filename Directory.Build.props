@@ -22,6 +22,7 @@
 		<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<NoWarn>CA1014,NU5104</NoWarn>
+		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 
 		<!-- Used by code coverage -->
 		<DebugType>full</DebugType>

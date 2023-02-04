@@ -11,6 +11,7 @@
 		<IsPackable>false</IsPackable>		
 		<SonarQubeTestProject>true</SonarQubeTestProject>
 		<IsTestProject>true</IsTestProject>
+		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 	</PropertyGroup>
 
 	<ItemGroup Condition="$(MSBuildProjectName) != 'bunit.testassets'">

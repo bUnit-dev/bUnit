@@ -11,13 +11,13 @@ namespace AngleSharpWrappers
     /// </summary>
     public static class WrapperFactory
     {
-        /// <summary>
-        /// Wraps an <see cref="IElement"/> in the wrapper specific to it.
-        /// </summary>
-        /// <typeparam name="T">The element type.</typeparam>
-        /// <param name="factory">The factory that provides the wrapped element.</param>
-        /// <returns>The wrapped <see cref="IElement"/>.</returns>
-        public static T Create<T>(IElementFactory<T> factory) where T : class, INode
+		/// <summary>
+		/// Wraps an <see cref="IElement"/> in the wrapper specific to it.
+		/// </summary>
+		/// <typeparam name="T">The element type.</typeparam>
+		/// <param name="factory">The factory that provides the wrapped element.</param>
+		/// <returns>The wrapped <see cref="IElement"/>.</returns>
+		public static T Create<T>(IElementFactory<T> factory) where T : class, INode
         {
             IElement result = factory switch
             {
@@ -64,7 +64,6 @@ namespace AngleSharpWrappers
                 IElementFactory<IHtmlOutputElement> htmlOutputElementFactory => new HtmlOutputElementWrapper(htmlOutputElementFactory),
                 IElementFactory<IHtmlParagraphElement> htmlParagraphElementFactory => new HtmlParagraphElementWrapper(htmlParagraphElementFactory),
                 IElementFactory<IHtmlParamElement> htmlParamElementFactory => new HtmlParamElementWrapper(htmlParamElementFactory),
-                IElementFactory<IHtmlPictureElement> htmlPictureElementFactory => new HtmlPictureElementWrapper(htmlPictureElementFactory),
                 IElementFactory<IHtmlPreElement> htmlPreElementFactory => new HtmlPreElementWrapper(htmlPreElementFactory),
                 IElementFactory<IHtmlProgressElement> htmlProgressElementFactory => new HtmlProgressElementWrapper(htmlProgressElementFactory),
                 IElementFactory<IHtmlQuoteElement> htmlQuoteElementFactory => new HtmlQuoteElementWrapper(htmlQuoteElementFactory),
