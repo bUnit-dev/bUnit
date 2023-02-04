@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.15.5] - 2023-02-04
+
 -   Upgrade AngleSharp.Diffing to 0.17.1
 
 ## [1.14.4] - 2023-01-11
@@ -1241,7 +1243,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.14.4...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.15.5...HEAD
+
+[1.15.5]: https://github.com/bUnit-dev/bUnit/compare/v1.14.4...1.15.5
 
 [1.14.4]: https://github.com/bUnit-dev/bUnit/compare/v1.13.5...v1.14.4
 
