@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+-   Upgrade AngleSharp.Diffing to 0.17.1
+
 ## [1.14.4] - 2023-01-11
 
 ### Added
@@ -39,15 +41,15 @@ This release contains a bunch of small tweaks and fixes.
 
 -   Added new test double `FakeWebAssemblyHostEnvironment` that implements `IWebAssemblyHostEnvironment`. By [@KristofferStrube](https://github.com/KristofferStrube).
 
--   Added `Bind` method to parameter builder that makes it easier to emulate the `@bind-Value` syntax in C#-based tests. 
+-   Added `Bind` method to parameter builder that makes it easier to emulate the `@bind-Value` syntax in C#-based tests.
 
-    When writing tests in razor files, the `@bind-` directive can be directly applied like this: 
+    When writing tests in razor files, the `@bind-` directive can be directly applied like this:
 
     ```razor
     <MyComponent @bind-Value="myParam"></MyComponent>
     ```
 
-    The same expression in C# syntax is more verbose like this:  
+    The same expression in C# syntax is more verbose like this:
 
     ```csharp
     RenderComponent<MyComponent>(ps => ps
@@ -95,7 +97,7 @@ This release contains a bunch of small tweaks and fixes.
 
 ### Fixes
 
--   `TestServiceProvider` now implements `IAsyncDisposable`. This means `TestContext.Dispose()` now calls the async disposable method as well as the non-async version on the service provider. It does however not block or await the task returned, since that can lead to deadlocks.   
+-   `TestServiceProvider` now implements `IAsyncDisposable`. This means `TestContext.Dispose()` now calls the async disposable method as well as the non-async version on the service provider. It does however not block or await the task returned, since that can lead to deadlocks.
 
     To await the disposal of async services registered in the `TestContext.Services` container, do the following:
 
@@ -164,7 +166,7 @@ Also a big shout out to **bUnit's sponsors** who helped make this release happen
 
 ## [1.4.15] - 2021-12-18
 
-This release reintroduces `Stub<TComponent>` and related back into the main library, so the "preview" library `bunit.web.mock` is already obsolete. 
+This release reintroduces `Stub<TComponent>` and related back into the main library, so the "preview" library `bunit.web.mock` is already obsolete.
 
 A big shout out to **bUnit's sponsors** who helped make this release happen.
 
@@ -216,14 +218,14 @@ Big shout out to **bUnit's sponsors** who helped make this release happen.
 
 List of added functionality in this release.
 
--   Added support for writing tests of components that use the `<FocusOnNavigate>` component included in .NET 6. This includes an assertion helper method `VerifyFocusOnNavigateInvoke` on bUnit's `JSInterop` that allow you to verify that `<FocusOnNavigate>` has set focus on an element during render. For example, to verify that `h1` selector was used to pick an element to focus on, do:  
+-   Added support for writing tests of components that use the `<FocusOnNavigate>` component included in .NET 6. This includes an assertion helper method `VerifyFocusOnNavigateInvoke` on bUnit's `JSInterop` that allow you to verify that `<FocusOnNavigate>` has set focus on an element during render. For example, to verify that `h1` selector was used to pick an element to focus on, do:
 
     ```csharp
     // <App /> component uses <FocusOnNavigate>
     var cut = RenderComponent<App>();
 
     // Verifies that <FocusOnNavigate> called it's JavaScript function
-    var invocation = JSInterop.VerifyFocusOnNavigateInvoke(); 
+    var invocation = JSInterop.VerifyFocusOnNavigateInvoke();
 
     // Verify that the invocation of <FocusOnNavigate> JavaScript function included the "h1" as the selector
     Assert.Equal("h1", invocation.Arguments[0]);
@@ -265,7 +267,7 @@ List of added functionality in this release.
 
 -   Added `BunitErrorBoundaryLogger` implementation of `IErrorBoundaryLogger` (needed for Blazor's ErrorBoundary component in .NET 6.0). By [@jgoday](https://github.com/jgoday).
 
--   Added `ComponentFactories` property to the `TestContextBase` type. The `ComponentFactories` property is a `ComponentFactoryCollection` type that contains `IComponentFactory` types. These are used by bUnits component activator, whenever a component is created during testing. If no component factories is added to the collection, the standard component activator mechanism from Blazor is used. This feature makes it possible to control what components are created normally during a test, and which should be e.g. replaced by a test dummy. More info is available in issue [#388](https://github.com/bUnit-dev/bUnit/issues/388).  
+-   Added `ComponentFactories` property to the `TestContextBase` type. The `ComponentFactories` property is a `ComponentFactoryCollection` type that contains `IComponentFactory` types. These are used by bUnits component activator, whenever a component is created during testing. If no component factories is added to the collection, the standard component activator mechanism from Blazor is used. This feature makes it possible to control what components are created normally during a test, and which should be e.g. replaced by a test dummy. More info is available in issue [#388](https://github.com/bUnit-dev/bUnit/issues/388).
     Learn more about this feature on the [Controlling component instantiation](https://bunit.dev/docs/providing-input/controlling-component-instantiation) page.
 
 -   Added `HasComponent<TComponent>()` to `IRenderedFragement`. Use it to check if the rendered fragment contains a component of type `TComponent`. Added by [@egil](https://github.com/egil).
@@ -314,12 +316,12 @@ The following section list all changes since preview 02.
 
 List of changes in existing functionality.
 
--   _**BREAKING CHANGE:**_ Writing tests using the test components `<Fixture>` and `<SnapshotTest>` components inside .razor files has been moved to its own library, `bunit.web.testcomponents`. This was done for several reasons:  
+-   _**BREAKING CHANGE:**_ Writing tests using the test components `<Fixture>` and `<SnapshotTest>` components inside .razor files has been moved to its own library, `bunit.web.testcomponents`. This was done for several reasons:
 
-    -   The feature has been experimental since it was introduced, and it was introduced get a more natural way of specifying the component under test and any related markup used by test. 
+    -   The feature has been experimental since it was introduced, and it was introduced get a more natural way of specifying the component under test and any related markup used by test.
     -   The feature is only supported with xUnit.
-    -   There are some issues related to the `SourceFileFinder` library, which is used to discover the test components. 
-    -   A better way of writing tests in .razor files has been added to bUnit, using _"inline render fragments"_. This method works with all general purpose test frameworks, e.g. MSTest, NUnit, and xUnit, is more flexible, and offer less boilerplate code than the test components. The bUnit documentation has been updated with a guide to this style.  
+    -   There are some issues related to the `SourceFileFinder` library, which is used to discover the test components.
+    -   A better way of writing tests in .razor files has been added to bUnit, using _"inline render fragments"_. This method works with all general purpose test frameworks, e.g. MSTest, NUnit, and xUnit, is more flexible, and offer less boilerplate code than the test components. The bUnit documentation has been updated with a guide to this style.
 
     The new package `bunit.web.testcomponents` is provided as is, without expectation of further development or enhancements. If you are using the test components currently for writing tests, it will continue to work for you. If you are starting a new project, or have few of these tests, consider switching to the "inline render fragments" style.
 
@@ -370,7 +372,7 @@ List of changes in existing functionality.
 
             // Assert
             cut.MarkupMatches(@<h1>Hello world from Blazor</h1>);
-          }  
+          }
         }
 
     To make the snapshot test scenario even more compact, consider putting all code in one line, e.g. `Render(@<HelloWorld />).MarkupMatches(@<h1>Hello world from Blazor</h1>);`.
@@ -381,10 +383,10 @@ List of changes in existing functionality.
 
 List of now removed features.
 
--   The `AddXunitLogger` method, which provided support for capturing `ILogger` messages and passing them to xUnit's `ITestOutputHelper`, has been removed. There were no need to keep xUnit specific code around in bUnit going forward, and there are many implementations on-line that supports this feature, so having it in bUnit made little sense. One such alternative, which bUnit has adopted internally, is to use Serilog. This looks as follows:  
+-   The `AddXunitLogger` method, which provided support for capturing `ILogger` messages and passing them to xUnit's `ITestOutputHelper`, has been removed. There were no need to keep xUnit specific code around in bUnit going forward, and there are many implementations on-line that supports this feature, so having it in bUnit made little sense. One such alternative, which bUnit has adopted internally, is to use Serilog. This looks as follows:
 
     1.  Add the following packages to your test project: `Serilog`, `Serilog.Extensions.Logging`, and `Serilog.Sinks.XUnit`.
-    2.  Add the following class/extension method to your test project (which replicates the signature of the removed `AddXunitLogger` method):  
+    2.  Add the following class/extension method to your test project (which replicates the signature of the removed `AddXunitLogger` method):
 
             ```csharp
             using Microsoft.Extensions.DependencyInjection;
@@ -417,7 +419,7 @@ List of now removed features.
 
 ## [1.0.0-preview-02] - 2021-03-26
 
-The following section list all changes in 1.0.0 preview 02. 
+The following section list all changes in 1.0.0 preview 02.
 
 The plan is to make this the last preview release of bUnit. If no big blocking bugs show up the next two weeks, a non-preview release of bUnit will be pushed out to the world.
 
@@ -446,7 +448,7 @@ List of new features.
 
     By [@egil](https://github.com/egil) in [#344](https://github.com/egil/bUnit/issues/344).
 
--   Added a simple fake navigation manager, which is registered by default in bUnit's service provider. When the fake navigation manager's `NavigateTo` method is called, it does two things:  
+-   Added a simple fake navigation manager, which is registered by default in bUnit's service provider. When the fake navigation manager's `NavigateTo` method is called, it does two things:
 
     1.  Set the `Uri` property to the URI passed to the `NavigateTo` method (with the URI normalized to an absolute URI).
     2.  Raise the `LocationChanged` event with the URI passed to the `NavigateTo` method.
@@ -479,7 +481,7 @@ List of new features.
     Assert.Equal($"{navMan.BaseUri}foo", navMan.Uri);
     ```
 
-    Since the `foo` input argument is normalized to an absolute URI, we have to do the same normalization in our assertion. 
+    Since the `foo` input argument is normalized to an absolute URI, we have to do the same normalization in our assertion.
 
     The fake navigation manager's `BaseUri` is set to `http://localhost/`, but it is not recommended to use that URL directly in your code. Instead create an assertion by getting that value from the `BaseUri` property, like shown in the example above.
 
@@ -598,7 +600,7 @@ List of new features.
 
     By [@egil](https://github.com/egil) in [#288](https://github.com/egil/bUnit/pull/288).
 
--   Added support for registering services in bUnits `Services` collection that implements `IAsyncDisposable`. Suggested by [@jmaillet](https://github.com/jmaillet) in [#249](https://github.com/egil/bUnit/issues/249). 
+-   Added support for registering services in bUnits `Services` collection that implements `IAsyncDisposable`. Suggested by [@jmaillet](https://github.com/jmaillet) in [#249](https://github.com/egil/bUnit/issues/249).
 
 ### Changed
 
@@ -616,7 +618,7 @@ List of changes in existing functionality.
 
     The `InvocationMatcher` type is a delegate that receives a `JSRuntimeInvoation` and returns true. The `JSRuntimeInvoation` type contains the arguments of the invocation and the identifier for the invocation. This means old code using the `Setup` and `SetupVoid` methods should be updated to use the arguments list in `JSRuntimeInvoation`, e.g., change the following call:
 
-     `ctx.JSInterop.Setup<string>("foo", args => args.Count == 2)` to this:  
+     `ctx.JSInterop.Setup<string>("foo", args => args.Count == 2)` to this:
      `ctx.JSInterop.Setup<string>("foo", invocation => invocation.Arguments.Count == 2)`.
 
     Changed added in relation to [#240](https://github.com/egil/bUnit/issues/240) in [#257](https://github.com/egil/bUnit/issues/257) by [@egil](https://github.com/egil).
@@ -719,7 +721,7 @@ List of changes in existing functionality.
 
 List of now removed features.
 
--   The async event dispatcher helper methods have been removed (e.g. `ClickAsync()`), as they do not provide any benefit. If you have an event that triggers async operations in the component under test, instead use `cut.WaitForState()` or `cut.WaitForAssertion()` to await the expected state in the component.  
+-   The async event dispatcher helper methods have been removed (e.g. `ClickAsync()`), as they do not provide any benefit. If you have an event that triggers async operations in the component under test, instead use `cut.WaitForState()` or `cut.WaitForAssertion()` to await the expected state in the component.
 
 ### Fixed
 
@@ -847,7 +849,7 @@ You have to change it to this:
     void TestSetup(Fixture fixture) => fixture.Services.AddMockJsRuntime();
 
     // Add a Fixture fixture argument to the test method
-    void Test001(Fixture fixture) 
+    void Test001(Fixture fixture)
     {
         // Use the fixture instance to get the component under test
         var cut = fixture.GetComponentUnderTest<Counter>();
@@ -884,7 +886,7 @@ The two "wait for" methods are also only available through a rendered fragment o
 
 #### ComponentTestFixture deprecated
 
-Previously, the recommended method for creating xUnit component test classes was to inherit from `ComponentTestFixture`. Due to the restructuring of the library, this type is now just a `TestContext` with static component parameters factory methods, so it does not add much value anymore. 
+Previously, the recommended method for creating xUnit component test classes was to inherit from `ComponentTestFixture`. Due to the restructuring of the library, this type is now just a `TestContext` with static component parameters factory methods, so it does not add much value anymore.
 
 The component parameter factory methods are now also available in the more general purpose `ComponentParameterFactory` type, which can be imported into all test classes, not just xUnit ones, using the `import static Bunit.ComponentParameterFactory` method, and then you can change your existing xUnit test classes to inherit from `TestContext` instead of `ComponentTestFixture` to keep the current functionality for xUnit test classes.
 
@@ -947,14 +949,14 @@ The latest version of the library is available on NuGet in various incarnations:
 
 Thanks to [Martin Stühmer (@samtrion)](https://github.com/samtrion) and [Stef Heyenrath (@StefH)](https://github.com/StefH) for their code contributions in this release, and to [Brad Wilson (@bradwilson)](https://github.com/bradwilson) for his help with enabling xUnit to discover and run Razor based tests.
 
-Also a big thank to all you who have contributed by raising issues, participated in issues by helping answer questions and providing input on design and technical issues. 
+Also a big thank to all you who have contributed by raising issues, participated in issues by helping answer questions and providing input on design and technical issues.
 
 ### Added
 
 -   A new event, `OnAfterRender`, has been added to `IRenderedFragmentBase`, which `IRenderedFragment` inherits from. Subscribers will be invoked each time the rendered fragment is re-rendered. Related issue [#118](https://github.com/egil/bunit/issues/118).
 -   A new property, `RenderCount`, has been added to `IRenderedFragmentBase`, which `IRenderedFragment` inherits from. Its represents the number of times a rendered fragment has been rendered. Related issue [#118](https://github.com/egil/bunit/issues/118).
 -   A new event, `OnMarkupUpdated`, has been added to `IRenderedFragmentBase`. Subscribers will be notifid each time the rendered fragments markup has been regenerated. Related issue [#118](https://github.com/egil/bunit/issues/118).
--   Due to the [concurrency bug discovered](https://github.com/egil/bunit/issues/108), the entire render notification and markup notification system has been changed. 
+-   Due to the [concurrency bug discovered](https://github.com/egil/bunit/issues/108), the entire render notification and markup notification system has been changed.
 -   A new overload `RenderComponent()` and `SetParameterAndRender()`, which takes a `Action<ComponentParameterBuilder<TComponent>>` as input. That allows you to pass parameters to a component under test in a strongly typed way. Thanks to [@StefH](https://github.com/StefH) for the work on this. Related issues: [#79](https://github.com/egil/bunit/issues/79) and [#36](https://github.com/egil/bunit/issues/36).
 -   The two razor test types, `<Fixture>` and `<SnapshotTest>`, can now be **skipped**. by setting the `Skip="some reason for skipping"` parameter. Note, this requires support from the test runner, which current only includes bUnit.xUnit. Related issue: [#77](https://github.com/egil/bunit/issues/77).
 -   The two razor test types, `<Fixture>` and `<SnapshotTest>`, can now have a **timeout** specified, by setting the `Timeout="TimeSpan.FromSeconds(2)"` parameter. Note, this requires support from the test runner, which current only includes bUnit.xUnit.
@@ -966,7 +968,7 @@ Also a big thank to all you who have contributed by raising issues, participated
 
 -   Better error description from `MarkupMatches` when two sets of markup are different.
 -   The `JsRuntimePlannedInvocation` can now has its response to an invocation set both before and after an invocation is received. It can also have a new response set at any time, which will be used for new invocations. Related issue: [#78](https://github.com/egil/bunit/issues/78).
--   The `IDiff` assertion helpers like `ShouldHaveChanges` now takes an `IEnumerable<IDiff>` as input to make it easier to call in scenarios where only an enumerable is available. Related issue: [#87](https://github.com/egil/bunit/issues/87). 
+-   The `IDiff` assertion helpers like `ShouldHaveChanges` now takes an `IEnumerable<IDiff>` as input to make it easier to call in scenarios where only an enumerable is available. Related issue: [#87](https://github.com/egil/bunit/issues/87).
 -   `TextContext` now registers all its test dependencies as services in the `Services` collection. This now includes the `HtmlParser` and `HtmlComparer`. Related issue: [#114](https://github.com/egil/bunit/issues/114).
 
 ### Deprecated
@@ -1011,10 +1013,10 @@ The latest version of the library is availble on NuGet:
 
 ### Added
 
--   **`WaitForState(Func<bool> statePredicate, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `IRenderedFragment`.**  
-    This method will wait (block) until the provided statePredicate returns true, or the timeout is reached (during debugging the timeout is disabled). Each time the renderer in the test context renders, or the rendered fragment renders, the statePredicate is evaluated. 
+-   **`WaitForState(Func<bool> statePredicate, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `IRenderedFragment`.**
+    This method will wait (block) until the provided statePredicate returns true, or the timeout is reached (during debugging the timeout is disabled). Each time the renderer in the test context renders, or the rendered fragment renders, the statePredicate is evaluated.
 
-    You use this method, if you have a component under test, that requires _one or more asynchronous triggered renders_, to get to a desired state, before the test can continue. 
+    You use this method, if you have a component under test, that requires _one or more asynchronous triggered renders_, to get to a desired state, before the test can continue.
 
     The following example tests the `DelayedRenderOnClick.razor` component:
 
@@ -1052,10 +1054,10 @@ The latest version of the library is availble on NuGet:
     }
     ```
 
--   **`WaitForAssertion(Action assertion, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `IRenderedFragment`.**  
+-   **`WaitForAssertion(Action assertion, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `IRenderedFragment`.**
     This method will wait (block) until the provided assertion method passes, i.e. runs without throwing an assert exception, or until the timeout is reached (during debugging the timeout is disabled). Each time the renderer in the test context renders, or the rendered fragment renders, the assertion is attempted.
 
-    You use this method, if you have a component under test, that requires _one or more asynchronous triggered renders_, to get to a desired state, before the test can continue. 
+    You use this method, if you have a component under test, that requires _one or more asynchronous triggered renders_, to get to a desired state, before the test can continue.
 
     This is a test that tests the `DelayedRenderOnClick.razor` listed above, and that uses `WaitForAssertion` to attempt the assertion each time the component under test renders:
 
@@ -1076,8 +1078,8 @@ The latest version of the library is availble on NuGet:
     }
     ```
 
--   **Added support for capturing log statements from the renderer and components under test into the test output.**  
-    To enable this, add a constructor to your test classes that takes the `ITestOutputHelper` as input, then in the constructor call `Services.AddXunitLogger` and pass the `ITestOutputHelper` to it, e.g.:  
+-   **Added support for capturing log statements from the renderer and components under test into the test output.**
+    To enable this, add a constructor to your test classes that takes the `ITestOutputHelper` as input, then in the constructor call `Services.AddXunitLogger` and pass the `ITestOutputHelper` to it, e.g.:
 
     ```csharp
     // ComponentTest.cs
@@ -1102,12 +1104,12 @@ The latest version of the library is availble on NuGet:
     </Fixture>
     @code {
         private ITestOutputHelper _output;
-        
+
         public RazorComponentTest(ITestOutputHelper output)
         {
             _output = output;
         }
-        
+
         void Setup()
         {
             Services.AddXunitLogger(_output, minimumLogLevel: LogLevel.Debug);
@@ -1115,8 +1117,8 @@ The latest version of the library is availble on NuGet:
     }
     ```
 
--   **Added simpler `Template` helper method**  
-    To make it easier to test components with `RenderFragment<T>` parameters (template components) in C# based tests, a new `Template<TValue>(string name, Func<TValue, string> markupFactory)` helper methods have been added. It allows you to create a mock template that uses the `markupFactory` to create the rendered markup from the template. 
+-   **Added simpler `Template` helper method**
+    To make it easier to test components with `RenderFragment<T>` parameters (template components) in C# based tests, a new `Template<TValue>(string name, Func<TValue, string> markupFactory)` helper methods have been added. It allows you to create a mock template that uses the `markupFactory` to create the rendered markup from the template.
 
     This is an example of testing the `SimpleWithTemplate.razor`, which looks like this:
 
@@ -1124,7 +1126,7 @@ The latest version of the library is availble on NuGet:
     @typeparam T
     @foreach (var d in Data)
     {
-        @Template(d);      
+        @Template(d);
     }
     @code
     {
@@ -1162,15 +1164,15 @@ The latest version of the library is availble on NuGet:
 
 ### Changed
 
--   **Namespaces is now `Bunit`**  
+-   **Namespaces is now `Bunit`**
     The namespaces have changed from `Egil.RazorComponents.Testing.Library.*` to simply `Bunit` for the library, and `Bunit.Mocking.JSInterop` for the JSInterop mocking support.
 
--   **Auto-refreshing `IElement`s returned from `Find()`**  
-    `IRenderedFragment.Find(string cssSelector)` now returns a `IElement`, which internally will refresh itself, whenever the rendered fragment it was found in, changes. This means you can now search for an element once in your test and assign it to a variable, and then continue to assert against the same instance, even after triggering renders of the component under test.  
+-   **Auto-refreshing `IElement`s returned from `Find()`**
+    `IRenderedFragment.Find(string cssSelector)` now returns a `IElement`, which internally will refresh itself, whenever the rendered fragment it was found in, changes. This means you can now search for an element once in your test and assign it to a variable, and then continue to assert against the same instance, even after triggering renders of the component under test.
 
     For example, instead of having `cut.Find("p")` in multiple places in the same test, you can do `var p = cut.Find("p")` once, and the use the variable `p` all the places you would otherwise have the `Find(...)` statement.
 
--   **Refreshable element collection returned from `FindAll`.**  
+-   **Refreshable element collection returned from `FindAll`.**
     The `FindAll` query method on `IRenderedFragment` now returns a new type, the `IRefreshableElementCollection<IElement>` type, and the method also takes a second optional argument now, `bool enableAutoRefresh = false`.
 
     The `IRefreshableElementCollection` is a special collection type that can rerun the query to refresh its the collection of elements that are found by the CSS selector. This can either be done manually by calling the `Refresh()` method, or automatically whenever the rendered fragment renders and has changes, by setting the property `EnableAutoRefresh` to `true` (default set to `false`).
@@ -1229,14 +1231,14 @@ The latest version of the library is availble on NuGet:
 
 ### Removed
 
--   **`AddMockHttp` and related helper methods have been removed.**  
-    The mocking of HTTPClient, supported through the [mockhttp](https://github.com/richardszalay/mockhttp) library, has been removed from the library. This was done because the library really shouldn't have a dependency on a 3. party mocking library. It adds maintenance overhead and uneeded dependencies to it.  
+-   **`AddMockHttp` and related helper methods have been removed.**
+    The mocking of HTTPClient, supported through the [mockhttp](https://github.com/richardszalay/mockhttp) library, has been removed from the library. This was done because the library really shouldn't have a dependency on a 3. party mocking library. It adds maintenance overhead and uneeded dependencies to it.
 
     If you are using mockhttp, you can easily add again to your testing project. See [TODO Guide to mocking HttpClient](#) in the docs to learn how.
 
 ### Fixed
 
--   **Wrong casing on keyboard event dispatch helpers.**  
+-   **Wrong casing on keyboard event dispatch helpers.**
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
 [Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.14.4...HEAD
