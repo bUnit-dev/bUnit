@@ -6,9 +6,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+-   Changed semantic comparer to handle elements parsed outside their proper context, e.g. an `<path>` element parsed without being inside a `<svg>` element. The semantic comparer will now be able to treat those as regular elements and thus be able to compare correctly to other elements of the same type and with the same node name. By [@egil](https://github.com/egil).
+
 ## [1.15.5] - 2023-02-04
 
--   Upgrade AngleSharp.Diffing to 0.17.1
+-   Upgrade AngleSharp.Diffing to 0.17.1. 
 
 ## [1.14.4] - 2023-01-11
 

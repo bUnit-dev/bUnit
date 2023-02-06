@@ -123,4 +123,18 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 
 		cut.Find("div").MarkupMatches(cut.FindAll("div"));
 	}
+
+	[Fact(DisplayName = "Handles HtmlUnknownElement when comparing elements")]
+	public void Test015()
+	{
+		var chart = RenderComponent<SimpleSvg>();
+
+		// the path will be returned as a SvgElement since it is
+		// parsed in the context of a <svg> element.
+		var path = chart.Find("path");
+
+		// path will be parsed as an HtmlUnknownElement because it is not
+		// in a known context (e.g. <svg> or <foreignObject>)
+		path.MarkupMatches("<path />");
+	}
 }
