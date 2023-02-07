@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.16.2] - 2023-02-07
+
 -   Changed semantic comparer to handle elements parsed outside their proper context, e.g. an `<path>` element parsed without being inside a `<svg>` element. The semantic comparer will now be able to treat those as regular elements and thus be able to compare correctly to other elements of the same type and with the same node name. By [@egil](https://github.com/egil).
 
 ## [1.15.5] - 2023-02-04
@@ -1245,7 +1247,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.15.5...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.16.2...HEAD
+
+[1.16.2]: https://github.com/bUnit-dev/bUnit/compare/v1.15.5...v1.16.2
 
 [1.15.5]: https://github.com/bUnit-dev/bUnit/compare/v1.14.4...1.15.5
 
