@@ -19,7 +19,7 @@ InputFileContent fileToUpload = InputFileContent.CreateFromText("Text content", 
 IRenderedComponent<ComponentUnderTest> cut = ctx.RenderComponent<ComponentUnderTest>();
 
 // Find the InputFile component
-IRenderedComponent<ComponentUnderTest> inputFile = cut.FindComponent<InputFile>();
+IRenderedComponent<InputFile> inputFile = cut.FindComponent<InputFile>();
 
 // Upload the file to upload to the InputFile component
 inputFile.UploadFile(fileToUpload);
