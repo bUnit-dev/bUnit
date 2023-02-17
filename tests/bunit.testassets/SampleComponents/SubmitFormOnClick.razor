@@ -1,11 +1,13 @@
-﻿<form id="my-form" @onsubmit="() => FormSubmitted = true">
-	<button id="inside-form-button" type="submit" @onclick="() => Clicked = true">Submit</button>
-	<input id="inside-form-input" type="submit" @onclick="() => Clicked = true" value="Submit" />
+<form id="my-form" @onsubmit="() => FormSubmitted = true">
+    <button id="inside-form-button" type="submit" @onclick="() => Clicked = true" @onclick:preventDefault=PreventDefault>Submit</button>
+    <input id="inside-form-input" type="submit" @onclick="() => Clicked = true" @onclick:preventDefault=PreventDefault value="Submit" />
 </form>
 
 <button id="outside-form-button" form="my-form">Submit outside</button>
 
 @code {
     public bool FormSubmitted;
-	public bool Clicked;
+    public bool Clicked;
+
+    [Parameter] public bool PreventDefault { get; set; } = false;
 }

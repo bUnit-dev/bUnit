@@ -83,8 +83,11 @@ public static class TriggerEventDispatchExtensions
 	private static Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
+		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
+		var preventDefaultAttrName = $"{eventAttrName}:preventdefault";
+
 		var unwrappedElement = element.Unwrap();
-		if (isNonBubblingEvent)
+		if (isNonBubblingEvent || element.HasAttribute(preventDefaultAttrName))
 			return TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
 
 		return unwrappedElement switch
