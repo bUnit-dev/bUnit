@@ -90,14 +90,14 @@ public static class TriggerEventDispatchExtensions
 		return unwrappedElement switch
 		{
 			IHtmlInputElement { Type: "submit", Form: not null } input when eventName is "onclick"
-				=> TriggerFormSubmitBubblingEventAsync(renderer, input, eventArgs, input.Form),
+				=> TriggerBubblingClickEventWithFormSubmitAsync(renderer, input, eventArgs, input.Form),
 			IHtmlButtonElement { Type: "submit", Form: not null } button when eventName is "onclick"
-				=> TriggerFormSubmitBubblingEventAsync(renderer, button, eventArgs, button.Form),
+				=> TriggerBubblingClickEventWithFormSubmitAsync(renderer, button, eventArgs, button.Form),
 			_ => TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs)
 		};
 	}
 
-	private static Task TriggerFormSubmitBubblingEventAsync(ITestRenderer renderer, IElement element, EventArgs eventArgs, IHtmlFormElement form)
+	private static Task TriggerBubblingClickEventWithFormSubmitAsync(ITestRenderer renderer, IElement element, EventArgs eventArgs, IHtmlFormElement form)
 	{
 		const string eventName = "onclick";
 
