@@ -83,11 +83,8 @@ public static class TriggerEventDispatchExtensions
 	private static Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
-		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
-		var preventDefaultAttrName = $"{eventAttrName}:preventdefault";
-
 		var unwrappedElement = element.Unwrap();
-		if (isNonBubblingEvent || element.HasAttribute(preventDefaultAttrName))
+		if (isNonBubblingEvent)
 			return TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
 
 		return unwrappedElement switch
@@ -102,11 +99,19 @@ public static class TriggerEventDispatchExtensions
 
 	private static Task TriggerFormSubmitBubblingEventAsync(ITestRenderer renderer, IElement element, EventArgs eventArgs, IHtmlFormElement form)
 	{
-		var events = GetDispatchEventTasks(renderer, element, "onclick", eventArgs);
-		events = events.Concat(GetDispatchEventTasks(renderer, form, "onsubmit", eventArgs)).ToList();
+		const string eventName = "onclick";
+
+		var events = GetDispatchEventTasks(renderer, element, eventName, eventArgs);
+
+		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
+		var preventDefaultAttrName = $"{eventAttrName}:preventdefault";
+		if (!element.HasAttribute(preventDefaultAttrName))
+		{
+			events = events.Concat(GetDispatchEventTasks(renderer, form, "onsubmit", eventArgs)).ToList();
+		}
 
 		if (events.Count == 0)
-			throw new MissingEventHandlerException(element, "onclick");
+			throw new MissingEventHandlerException(element, eventName);
 
 		return Task.WhenAll(events);
 	}
