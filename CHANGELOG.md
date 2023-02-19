@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+-  Submit buttons and input fields now no longer cause a form submit when they have the `@onclick:preventDefault` attribute.
+
 ## [1.16.2] - 2023-02-07
 
 -   Changed semantic comparer to handle elements parsed outside their proper context, e.g. an `<path>` element parsed without being inside a `<svg>` element. The semantic comparer will now be able to treat those as regular elements and thus be able to compare correctly to other elements of the same type and with the same node name. By [@egil](https://github.com/egil).
