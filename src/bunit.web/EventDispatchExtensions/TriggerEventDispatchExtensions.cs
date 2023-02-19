@@ -97,7 +97,7 @@ public static class TriggerEventDispatchExtensions
 			case IHtmlButtonElement { Type: "submit", Form: not null } button when eventName is "onclick":
 				await TriggerFormSubmitAsync(renderer, button, eventArgs, button.Form);
 				break;
-		};
+		}
 	}
 
 	private static Task TriggerFormSubmitAsync(ITestRenderer renderer, IElement element, EventArgs eventArgs, IHtmlFormElement form)
