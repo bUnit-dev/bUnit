@@ -6,7 +6,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
--   Submit buttons and input fields now no longer cause a form submit when they have the `@onclick:preventDefault` attribute.
+-   Submit buttons and input fields now no longer cause a form submit when they have the `@onclick:preventDefault` attribute. By [@JelleHissink](https://github.com/JelleHissink).
 
 ## [1.16.2] - 2023-02-07
 
