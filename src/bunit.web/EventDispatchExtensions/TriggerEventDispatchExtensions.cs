@@ -80,30 +80,39 @@ public static class TriggerEventDispatchExtensions
 	}
 
 	[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "HTML events are standardize to lower case and safe in this context.")]
-	private static Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
+	private static async Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
 		var unwrappedElement = element.Unwrap();
 		if (isNonBubblingEvent)
-			return TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
+			await TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
+		else
+			await TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
 
-		return unwrappedElement switch
+		switch (unwrappedElement)
 		{
-			IHtmlInputElement { Type: "submit", Form: not null } input when eventName is "onclick"
-				=> TriggerFormSubmitBubblingEventAsync(renderer, input, eventArgs, input.Form),
-			IHtmlButtonElement { Type: "submit", Form: not null } button when eventName is "onclick"
-				=> TriggerFormSubmitBubblingEventAsync(renderer, button, eventArgs, button.Form),
-			_ => TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs)
-		};
+			case IHtmlInputElement { Type: "submit", Form: not null } input when eventName is "onclick":
+				await TriggerFormSubmitAsync(renderer, input, eventArgs, input.Form);
+				break;
+			case IHtmlButtonElement { Type: "submit", Form: not null } button when eventName is "onclick":
+				await TriggerFormSubmitAsync(renderer, button, eventArgs, button.Form);
+				break;
+		}
 	}
 
-	private static Task TriggerFormSubmitBubblingEventAsync(ITestRenderer renderer, IElement element, EventArgs eventArgs, IHtmlFormElement form)
+	private static Task TriggerFormSubmitAsync(ITestRenderer renderer, IElement element, EventArgs eventArgs, IHtmlFormElement form)
 	{
-		var events = GetDispatchEventTasks(renderer, element, "onclick", eventArgs);
-		events = events.Concat(GetDispatchEventTasks(renderer, form, "onsubmit", eventArgs)).ToList();
+		const string eventName = "onclick";
+
+		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
+		var preventDefaultAttrName = $"{eventAttrName}:preventdefault";
+		if (element.HasAttribute(preventDefaultAttrName))
+			return Task.CompletedTask;
+
+		var events = GetDispatchEventTasks(renderer, form, "onsubmit", eventArgs);
 
 		if (events.Count == 0)
-			throw new MissingEventHandlerException(element, "onclick");
+			throw new MissingEventHandlerException(element, eventName);
 
 		return Task.WhenAll(events);
 	}

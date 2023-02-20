@@ -266,6 +266,18 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		Should.Throw<InvalidOperationException>(() => cut.Find("button").Submit());
 	}
 
+	[Fact(DisplayName = "Should not submit a form if the button has preventDefault")]
+	public void Test307()
+	{
+		var cut = RenderComponent<SubmitFormOnClick>(
+			ComponentParameter.CreateParameter(nameof(SubmitFormOnClick.PreventDefault), true));
+
+		cut.Find("#inside-form-input").Click();
+
+		cut.Instance.FormSubmitted.ShouldBeFalse();
+		cut.Instance.Clicked.ShouldBeTrue();
+	}
+
 	public static IEnumerable<object[]> GetTenNumbers() => Enumerable.Range(0, 10)
 		.Select(i => new object[] { i });
 
