@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.17.2] - 2023-02-22
+
 -   Submit buttons and input fields now no longer cause a form submit when they have the `@onclick:preventDefault` attribute. By [@JelleHissink](https://github.com/JelleHissink).
 
 ## [1.16.2] - 2023-02-07
@@ -1249,7 +1251,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.16.2...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.17.2...HEAD
+
+[1.17.2]: https://github.com/bUnit-dev/bUnit/compare/v1.16.2...1.17.2
 
 [1.16.2]: https://github.com/bUnit-dev/bUnit/compare/v1.15.5...v1.16.2
 
