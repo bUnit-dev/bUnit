@@ -94,7 +94,7 @@ internal static class Htmlizer
 			case RenderTreeFrameType.Attribute:
 				throw new InvalidOperationException($"Attributes should only be encountered within {nameof(RenderElement)}");
 			case RenderTreeFrameType.Text:
-				context.Result.Append(frame.TextContent);
+				context.Result.Append(EscapeText(frame.TextContent));
 				return position + 1;
 			case RenderTreeFrameType.Markup:
 				context.Result.Append(frame.MarkupContent);
@@ -271,7 +271,7 @@ internal static class Htmlizer
 					result.Append(frame.AttributeName);
 					result.Append('=');
 					result.Append('"');
-					result.Append(Escape(value));
+					result.Append(EscapeAttributeValue(value));
 					result.Append('"');
 					break;
 				default:
@@ -282,10 +282,22 @@ internal static class Htmlizer
 		return position + maxElements;
 	}
 
-	private static string Escape(string value) =>
-		value
-			.Replace("&", "&amp;", StringComparison.OrdinalIgnoreCase)
-			.Replace("\"", "&quot;", StringComparison.OrdinalIgnoreCase);
+	private static string EscapeText(string value)
+	{
+		var builder = new StringBuilder(value);
+		builder.Replace("&", "&amp;")
+			.Replace("<", "&lt;")
+			.Replace(">", "&gt;");
+		return builder.ToString();
+	}
+
+	private static string EscapeAttributeValue(string value)
+	{
+		var builder = new StringBuilder(value);
+		builder.Replace("&", "&amp;")
+			.Replace("\"", "&quot;");
+		return builder.ToString();
+	}
 
 	private sealed class HtmlRenderingContext
 	{
