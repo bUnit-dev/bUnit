@@ -60,9 +60,14 @@ public static class TriggerEventDispatchExtensions
 	public static Task TriggerEventAsync(this IElement element, string eventName, EventArgs eventArgs)
 	{
 		if (element is null)
+		{
 			throw new ArgumentNullException(nameof(element));
+		}
+
 		if (eventName is null)
+		{
 			throw new ArgumentNullException(nameof(eventName));
+		}
 
 		var renderer = element.GetTestContext()?.Renderer
 			?? throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(ITestRenderer)}'.");
@@ -80,24 +85,58 @@ public static class TriggerEventDispatchExtensions
 	}
 
 	[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "HTML events are standardize to lower case and safe in this context.")]
-	private static async Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
+	private static Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
 		var unwrappedElement = element.Unwrap();
-		if (isNonBubblingEvent)
-			await TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
-		else
-			await TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
 
-		switch (unwrappedElement)
+		if (isNonBubblingEvent)
+		{
+			return TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
+		}
+		else
+		{
+			return TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
+		}
+	}
+
+	private static Task TriggerNonBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
+	{
+		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
+
+		if (string.Equals(eventName, "onsubmit", StringComparison.Ordinal) && element is not IHtmlFormElement)
+		{
+			throw new InvalidOperationException("Only forms can have a onsubmit event");
+		}
+
+		if (element.TryGetEventId(eventAttrName, out var id))
+		{
+			return renderer.DispatchEventAsync(id, new EventFieldInfo { FieldValue = eventName }, eventArgs);
+		}
+
+		throw new MissingEventHandlerException(element, eventName);
+	}
+
+	private static Task TriggerBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
+	{
+		var eventTasks = GetDispatchEventTasks(renderer, element, eventName, eventArgs);
+
+		switch (element)
 		{
 			case IHtmlInputElement { Type: "submit", Form: not null } input when eventName is "onclick":
-				await TriggerFormSubmitAsync(renderer, input, eventArgs, input.Form);
+				eventTasks.Add(TriggerFormSubmitAsync(renderer, input, eventArgs, input.Form));
 				break;
 			case IHtmlButtonElement { Type: "submit", Form: not null } button when eventName is "onclick":
-				await TriggerFormSubmitAsync(renderer, button, eventArgs, button.Form);
+				eventTasks.Add(TriggerFormSubmitAsync(renderer, button, eventArgs, button.Form));
 				break;
 		}
+
+		if (eventTasks.Count == 0)
+		{
+			throw new MissingEventHandlerException(element, eventName);
+		}
+
+		return Task.WhenAll(eventTasks);
 	}
 
 	private static Task TriggerFormSubmitAsync(ITestRenderer renderer, IElement element, EventArgs eventArgs, IHtmlFormElement form)
@@ -107,24 +146,18 @@ public static class TriggerEventDispatchExtensions
 		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
 		var preventDefaultAttrName = $"{eventAttrName}:preventdefault";
 		if (element.HasAttribute(preventDefaultAttrName))
+		{
 			return Task.CompletedTask;
+		}
 
 		var events = GetDispatchEventTasks(renderer, form, "onsubmit", eventArgs);
 
 		if (events.Count == 0)
+		{
 			throw new MissingEventHandlerException(element, eventName);
+		}
 
 		return Task.WhenAll(events);
-	}
-
-	private static Task TriggerBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
-	{
-		var eventTasks = GetDispatchEventTasks(renderer, element, eventName, eventArgs);
-
-		if (eventTasks.Count == 0)
-			throw new MissingEventHandlerException(element, eventName);
-
-		return Task.WhenAll(eventTasks);
 	}
 
 	private static List<Task> GetDispatchEventTasks(
@@ -154,34 +187,16 @@ public static class TriggerEventDispatchExtensions
 		return eventTasks;
 	}
 
-	private static Task TriggerNonBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
-	{
-		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
-
-		if (string.Equals(eventName, "onsubmit", StringComparison.Ordinal) && element is not IHtmlFormElement)
-			throw new InvalidOperationException("Only forms can have a onsubmit event");
-
-		if (element.TryGetEventId(eventAttrName, out var id))
-			return renderer.DispatchEventAsync(id, new EventFieldInfo { FieldValue = eventName }, eventArgs);
-
-		throw new MissingEventHandlerException(element, eventName);
-	}
-
 	private static bool EventIsDisabled(this IElement element, string eventName)
 	{
 		// We want to replicate the normal DOM event behavior that, for 'interactive' elements
 		// with a 'disabled' attribute, certain mouse events are suppressed
 
-		switch (element)
+		return element switch
 		{
-			case IHtmlButtonElement:
-			case IHtmlInputElement:
-			case IHtmlTextAreaElement:
-			case IHtmlSelectElement:
-				return DisabledEventNames.Contains(eventName) && element.IsDisabled();
-			default:
-				return false;
-		}
+			IHtmlButtonElement or IHtmlInputElement or IHtmlTextAreaElement or IHtmlSelectElement => DisabledEventNames.Contains(eventName) && element.IsDisabled(),
+			_ => false,
+		};
 	}
 
 	private static bool TryGetEventId(this IElement element, string blazorEventName, out ulong id)
