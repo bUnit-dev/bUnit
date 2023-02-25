@@ -90,14 +90,9 @@ public static class TriggerEventDispatchExtensions
 		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
 		var unwrappedElement = element.Unwrap();
 
-		if (isNonBubblingEvent)
-		{
-			return TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
-		}
-		else
-		{
-			return TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
-		}
+		return isNonBubblingEvent
+			? TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs)
+			: TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
 	}
 
 	private static Task TriggerNonBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
@@ -189,12 +184,8 @@ public static class TriggerEventDispatchExtensions
 			_ => null
 		};
 
-		if (form is null)
-		{
-			return false;
-		}
-
-		return form.TryGetEventId(Htmlizer.ToBlazorAttribute("onsubmit"), out eventId);
+		return form is not null
+			&& form.TryGetEventId(Htmlizer.ToBlazorAttribute("onsubmit"), out eventId);
 	}
 
 	private static bool EventIsDisabled(this IElement element, string eventName)
