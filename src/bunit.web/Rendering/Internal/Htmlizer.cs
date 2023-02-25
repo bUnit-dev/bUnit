@@ -5,8 +5,6 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
 using Bunit.Rendering;
 
 namespace Bunit;
@@ -22,30 +20,34 @@ internal static class Htmlizer
 	internal const string BlazorAttrPrefix = "blazor:";
 	internal const string ElementReferenceAttrName = BlazorAttrPrefix + "elementReference";
 
-	private static readonly HashSet<string> SelfClosingElements = new(StringComparer.OrdinalIgnoreCase)
-	{
-		"area",
-		"base",
-		"br",
-		"col",
-		"embed",
-		"hr",
-		"img",
-		"input",
-		"link",
-		"meta",
-		"param",
-		"source",
-		"track",
-		"wbr",
-	};
+	private static readonly HashSet<string> SelfClosingElements =
+		new(StringComparer.OrdinalIgnoreCase)
+		{
+			"area",
+			"base",
+			"br",
+			"col",
+			"embed",
+			"hr",
+			"img",
+			"input",
+			"link",
+			"meta",
+			"param",
+			"source",
+			"track",
+			"wbr",
+		};
 
 	public static bool IsBlazorAttribute(string attributeName)
 	{
 		if (attributeName is null)
+		{
 			throw new ArgumentNullException(nameof(attributeName));
-		return attributeName.StartsWith(BlazorAttrPrefix, StringComparison.Ordinal) ||
-					  attributeName.StartsWith(BlazorCssScopeAttrPrefix, StringComparison.Ordinal);
+		}
+
+		return attributeName.StartsWith(BlazorAttrPrefix, StringComparison.Ordinal)
+			|| attributeName.StartsWith(BlazorCssScopeAttrPrefix, StringComparison.Ordinal);
 	}
 
 	public static string ToBlazorAttribute(string attributeName)
@@ -58,11 +60,19 @@ internal static class Htmlizer
 		var context = new HtmlRenderingContext(framesCollection);
 		var frames = context.GetRenderTreeFrames(componentId);
 		var newPosition = RenderFrames(context, frames, 0, frames.Length);
-		Debug.Assert(newPosition == frames.Length, $"frames.Length = {frames.Length}. newPosition = {newPosition}");
+		Debug.Assert(
+			newPosition == frames.Length,
+			$"frames.Length = {frames.Length}. newPosition = {newPosition}"
+		);
 		return context.Result.ToString();
 	}
 
-	private static int RenderFrames(HtmlRenderingContext context, ReadOnlySpan<RenderTreeFrame> frames, int position, int maxElements)
+	private static int RenderFrames(
+		HtmlRenderingContext context,
+		ReadOnlySpan<RenderTreeFrame> frames,
+		int position,
+		int maxElements
+	)
 	{
 		var nextPosition = position;
 		var endPosition = position + maxElements;
@@ -84,7 +94,8 @@ internal static class Htmlizer
 	private static int RenderCore(
 		HtmlRenderingContext context,
 		ReadOnlySpan<RenderTreeFrame> frames,
-		int position)
+		int position
+	)
 	{
 		var frame = frames[position];
 		switch (frame.FrameType)
@@ -92,7 +103,9 @@ internal static class Htmlizer
 			case RenderTreeFrameType.Element:
 				return RenderElement(context, frames, position);
 			case RenderTreeFrameType.Attribute:
-				throw new InvalidOperationException($"Attributes should only be encountered within {nameof(RenderElement)}");
+				throw new InvalidOperationException(
+					$"Attributes should only be encountered within {nameof(RenderElement)}"
+				);
 			case RenderTreeFrameType.Text:
 				context.Result.Append(EscapeText(frame.TextContent));
 				return position + 1;
@@ -107,14 +120,17 @@ internal static class Htmlizer
 			case RenderTreeFrameType.ComponentReferenceCapture:
 				return position + 1;
 			default:
-				throw new InvalidOperationException($"Invalid element frame type '{frame.FrameType}'.");
+				throw new InvalidOperationException(
+					$"Invalid element frame type '{frame.FrameType}'."
+				);
 		}
 	}
 
 	private static int RenderChildComponent(
 		HtmlRenderingContext context,
 		ReadOnlySpan<RenderTreeFrame> frames,
-		int position)
+		int position
+	)
 	{
 		var frame = frames[position];
 		var childFrames = context.GetRenderTreeFrames(frame.ComponentId);
@@ -125,20 +141,33 @@ internal static class Htmlizer
 	private static int RenderElement(
 		HtmlRenderingContext context,
 		ReadOnlySpan<RenderTreeFrame> frames,
-		int position)
+		int position
+	)
 	{
 		var frame = frames[position];
 		var result = context.Result;
 		result.Append('<');
 		result.Append(frame.ElementName);
-		var afterAttributes = RenderAttributes(context, frames, position + 1, frame.ElementSubtreeLength - 1, out var capturedValueAttribute);
+		var afterAttributes = RenderAttributes(
+			context,
+			frames,
+			position + 1,
+			frame.ElementSubtreeLength - 1,
+			out var capturedValueAttribute
+		);
 
 		// When we see an <option> as a descendant of a <select>, and the option's "value" attribute matches the
 		// "value" attribute on the <select>, then we auto-add the "selected" attribute to that option. This is
 		// a way of converting Blazor's select binding feature to regular static HTML.
-		if (context.ClosestSelectValueAsString != null
+		if (
+			context.ClosestSelectValueAsString != null
 			&& string.Equals(frame.ElementName, "option", StringComparison.OrdinalIgnoreCase)
-			&& string.Equals(capturedValueAttribute, context.ClosestSelectValueAsString, StringComparison.Ordinal))
+			&& string.Equals(
+				capturedValueAttribute,
+				context.ClosestSelectValueAsString,
+				StringComparison.Ordinal
+			)
+		)
 		{
 			result.Append(" selected");
 		}
@@ -148,7 +177,11 @@ internal static class Htmlizer
 		{
 			result.Append('>');
 
-			var isSelect = string.Equals(frame.ElementName, "select", StringComparison.OrdinalIgnoreCase);
+			var isSelect = string.Equals(
+				frame.ElementName,
+				"select",
+				StringComparison.OrdinalIgnoreCase
+			);
 			if (isSelect)
 			{
 				context.ClosestSelectValueAsString = capturedValueAttribute;
@@ -181,11 +214,19 @@ internal static class Htmlizer
 			result.Append('>');
 		}
 
-		Debug.Assert(afterAttributes == position + frame.ElementSubtreeLength, $"afterAttributes = {afterAttributes}. position = {position}. frame.ElementSubtreeLength = {frame.ElementSubtreeLength}");
+		Debug.Assert(
+			afterAttributes == position + frame.ElementSubtreeLength,
+			$"afterAttributes = {afterAttributes}. position = {position}. frame.ElementSubtreeLength = {frame.ElementSubtreeLength}"
+		);
 		return afterAttributes;
 	}
 
-	private static int RenderChildren(HtmlRenderingContext context, ReadOnlySpan<RenderTreeFrame> frames, int position, int maxElements)
+	private static int RenderChildren(
+		HtmlRenderingContext context,
+		ReadOnlySpan<RenderTreeFrame> frames,
+		int position,
+		int maxElements
+	)
 	{
 		if (maxElements == 0)
 		{
@@ -195,13 +236,13 @@ internal static class Htmlizer
 		return RenderFrames(context, frames, position, maxElements);
 	}
 
-	[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
 	private static int RenderAttributes(
 		HtmlRenderingContext context,
 		ReadOnlySpan<RenderTreeFrame> frames,
 		int position,
 		int maxElements,
-		out string? capturedValueAttribute)
+		out string? capturedValueAttribute
+	)
 	{
 		capturedValueAttribute = null;
 
@@ -251,11 +292,19 @@ internal static class Htmlizer
 
 			switch (frame.AttributeValue)
 			{
-				case bool flag when flag && frame.AttributeName.StartsWith(BlazorInternalAttrPrefix, StringComparison.Ordinal):
+				case bool flag
+					when flag
+						&& frame.AttributeName.StartsWith(
+							BlazorInternalAttrPrefix,
+							StringComparison.Ordinal
+						):
 					// NOTE: This was added to make it more obvious
 					// that this is a generated/special blazor attribute
 					// for internal usage
-					var nameParts = frame.AttributeName.Split('_', StringSplitOptions.RemoveEmptyEntries);
+					var nameParts = frame.AttributeName.Split(
+						'_',
+						StringSplitOptions.RemoveEmptyEntries
+					);
 					result.Append(' ');
 					result.Append(BlazorAttrPrefix);
 					result.Append(nameParts[2]);
@@ -308,8 +357,8 @@ internal static class Htmlizer
 			this.frames = frames;
 		}
 
-		public ReadOnlySpan<RenderTreeFrame> GetRenderTreeFrames(int componentId)
-			=> new(frames[componentId].Array, 0, frames[componentId].Count);
+		public ReadOnlySpan<RenderTreeFrame> GetRenderTreeFrames(int componentId) =>
+			new(frames[componentId].Array, 0, frames[componentId].Count);
 
 		public StringBuilder Result { get; } = new();
 
