@@ -107,7 +107,7 @@ internal static class Htmlizer
 					$"Attributes should only be encountered within {nameof(RenderElement)}"
 				);
 			case RenderTreeFrameType.Text:
-				context.Result.Append(EscapeText(frame.TextContent));
+				AppendEscapeText(context, frame.TextContent);
 				return position + 1;
 			case RenderTreeFrameType.Markup:
 				context.Result.Append(frame.MarkupContent);
@@ -320,7 +320,7 @@ internal static class Htmlizer
 					result.Append(frame.AttributeName);
 					result.Append('=');
 					result.Append('"');
-					result.Append(EscapeAttributeValue(value));
+					AppendEscapeAttributeValue(context, value);
 					result.Append('"');
 					break;
 				default:
@@ -331,21 +331,65 @@ internal static class Htmlizer
 		return position + maxElements;
 	}
 
-	private static string EscapeText(string value)
+	private static void AppendEscapeText(HtmlRenderingContext context, string value)
 	{
-		var builder = new StringBuilder(value);
-		builder.Replace("&", "&amp;")
-			.Replace("<", "&lt;")
-			.Replace(">", "&gt;");
-		return builder.ToString();
+		var valueSpan = value.AsSpan();
+		var copyFromIndex = 0;
+		for (var index = 0; index < valueSpan.Length; index++)
+		{
+			var c = valueSpan[index];
+			if (c is '<' or '>' or '&')
+			{
+				context.Result.Append(valueSpan.Slice(copyFromIndex, index - copyFromIndex));
+				switch (c)
+				{
+					case '<':
+						context.Result.Append("&lt;");
+						break;
+					case '>':
+						context.Result.Append("&gt;");
+						break;
+					case '&':
+						context.Result.Append("&amp;");
+						break;
+				}
+				copyFromIndex = index + 1;
+			}
+		}
+
+		if (copyFromIndex < valueSpan.Length)
+		{
+			context.Result.Append(valueSpan.Slice(copyFromIndex));
+		}
 	}
 
-	private static string EscapeAttributeValue(string value)
+	private static void AppendEscapeAttributeValue(HtmlRenderingContext context, string value)
 	{
-		var builder = new StringBuilder(value);
-		builder.Replace("&", "&amp;")
-			.Replace("\"", "&quot;");
-		return builder.ToString();
+		var valueSpan = value.AsSpan();
+		var copyFromIndex = 0;
+		for (var index = 0; index < valueSpan.Length; index++)
+		{
+			var c = valueSpan[index];
+			if (c is '"' or '&')
+			{
+				context.Result.Append(valueSpan.Slice(copyFromIndex, index - copyFromIndex));
+				switch (c)
+				{
+					case '"':
+						context.Result.Append("&quot;");
+						break;
+					case '&':
+						context.Result.Append("&amp;");
+						break;
+				}
+				copyFromIndex = index + 1;
+			}
+		}
+
+		if (copyFromIndex < valueSpan.Length)
+		{
+			context.Result.Append(valueSpan.Slice(copyFromIndex));
+		}
 	}
 
 	private sealed class HtmlRenderingContext
