@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Changed
+
+-   Some characters where not properly escaped. Reported by [@pwhe23](https://github.com/pwhe23). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.17.2] - 2023-02-22
 
 -   Submit buttons and input fields now no longer cause a form submit when they have the `@onclick:preventDefault` attribute. By [@JelleHissink](https://github.com/JelleHissink).
