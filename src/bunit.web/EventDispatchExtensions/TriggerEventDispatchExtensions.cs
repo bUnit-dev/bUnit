@@ -121,43 +121,12 @@ public static class TriggerEventDispatchExtensions
 	{
 		var eventTasks = GetDispatchEventTasks(renderer, element, eventName, eventArgs);
 
-		switch (element)
-		{
-			case IHtmlInputElement { Type: "submit", Form: not null } input when eventName is "onclick":
-				eventTasks.Add(TriggerFormSubmitAsync(renderer, input, eventArgs, input.Form));
-				break;
-			case IHtmlButtonElement { Type: "submit", Form: not null } button when eventName is "onclick":
-				eventTasks.Add(TriggerFormSubmitAsync(renderer, button, eventArgs, button.Form));
-				break;
-		}
-
 		if (eventTasks.Count == 0)
 		{
 			throw new MissingEventHandlerException(element, eventName);
 		}
 
 		return Task.WhenAll(eventTasks);
-	}
-
-	private static Task TriggerFormSubmitAsync(ITestRenderer renderer, IElement element, EventArgs eventArgs, IHtmlFormElement form)
-	{
-		const string eventName = "onclick";
-
-		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
-		var preventDefaultAttrName = $"{eventAttrName}:preventdefault";
-		if (element.HasAttribute(preventDefaultAttrName))
-		{
-			return Task.CompletedTask;
-		}
-
-		var events = GetDispatchEventTasks(renderer, form, "onsubmit", eventArgs);
-
-		if (events.Count == 0)
-		{
-			throw new MissingEventHandlerException(element, eventName);
-		}
-
-		return Task.WhenAll(events);
 	}
 
 	private static List<Task> GetDispatchEventTasks(
@@ -178,6 +147,13 @@ public static class TriggerEventDispatchExtensions
 				eventTasks.Add(renderer.DispatchEventAsync(id, info, eventArgs, ignoreUnknownEventHandlers: eventTasks.Count > 0));
 			}
 
+			// Special case for elements inside form elements
+			if (TryGetParentFormElementSpecialCase(candidate, eventName, out var parentForm, out var formEventId))
+			{
+				var info = new EventFieldInfo { FieldValue = "onsubmit" };
+				eventTasks.Add(renderer.DispatchEventAsync(formEventId, info, eventArgs, ignoreUnknownEventHandlers: true));
+			}
+
 			if (candidate.HasAttribute(eventStopPropagationAttrName) || candidate.EventIsDisabled(eventName))
 			{
 				break;
@@ -185,6 +161,44 @@ public static class TriggerEventDispatchExtensions
 		}
 
 		return eventTasks;
+	}
+
+	private static bool TryGetParentFormElementSpecialCase(
+		IElement element,
+		string eventName,
+		[NotNullWhen(true)] out IHtmlFormElement? form,
+		out ulong eventId)
+	{
+		form = null;
+		eventId = default;
+
+		// Special case for onclick elements which may trigger an onsubmit
+		// on a parent form.
+		if (!eventName.Equals("onclick", StringComparison.OrdinalIgnoreCase))
+		{
+			return false;
+		}
+
+		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
+		var preventDefaultAttrName = $"{eventAttrName}:preventdefault";
+		if (element.HasAttribute(preventDefaultAttrName))
+		{
+			return false;
+		}
+
+		form = element switch
+		{
+			IHtmlInputElement { Type: "submit", Form: not null } input => input.Form,
+			IHtmlButtonElement { Type: "submit", Form: not null } button => button.Form,
+			_ => null
+		};
+
+		if (form is null)
+		{
+			return false;
+		}
+
+		return form.TryGetEventId(Htmlizer.ToBlazorAttribute("onsubmit"), out eventId);
 	}
 
 	private static bool EventIsDisabled(this IElement element, string eventName)

@@ -273,6 +273,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Theory(DisplayName = "Should not submit a form if the button has preventDefault")]
 	[InlineData("#inside-form-input")]
 	[InlineData("#inside-form-button")]
+	[InlineData("#span-inside-form-button")]
 	public void Test307(string submitElementSelector)
 	{
 		var cut = RenderComponent<SubmitFormOnClick>(ps => ps
@@ -287,8 +288,10 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Theory(DisplayName = "Should submit a form when submit button clicked")]
 	[InlineData("#inside-form-input")]
 	[InlineData("#inside-form-button")]
+	[InlineData("#span-inside-form-button")]
 	[InlineData("#inside-form-input-no-handler")]
 	[InlineData("#inside-form-button-no-handler")]
+	[InlineData("#span-inside-form-button-no-handler")]
 	public void Test308(string submitElementSelector)
 	{
 		var cut = RenderComponent<SubmitFormOnClick>();
@@ -296,6 +299,19 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Find(submitElementSelector).Click();
 
 		cut.Instance.FormSubmitted.ShouldBeTrue();
+	}
+
+	[Theory(DisplayName = "Should trigger click handler of buttons inside form")]
+	[InlineData("#inside-form-input")]
+	[InlineData("#inside-form-button")]
+	[InlineData("#span-inside-form-button")]
+	public void Test309(string submitElementSelector)
+	{
+		var cut = RenderComponent<ButtonsInsideForm>();
+
+		cut.Find(submitElementSelector).Click();
+
+		cut.Instance.Clicked.ShouldBeTrue();
 	}
 
 	public static IEnumerable<object[]> GetTenNumbers() => Enumerable.Range(0, 10)
