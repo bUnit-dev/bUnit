@@ -1,6 +1,14 @@
 <form id="my-form" @onsubmit="() => FormSubmitted = true">
     <button id="inside-form-button" type="submit" @onclick="() => Clicked = true" @onclick:preventDefault=PreventDefault>Submit</button>
     <input id="inside-form-input" type="submit" @onclick="() => Clicked = true" @onclick:preventDefault=PreventDefault value="Submit" />
+    <button id="inside-form-button-no-handler" type="submit" >Submit</button>
+    <input id="inside-form-input-no-handler" type="submit" />
+    <button type="submit" @onclick="() => Clicked = true" @onclick:preventDefault=PreventDefault>
+        <span id="span-inside-form-button"></span>
+    </button>
+    <button type="submit">
+        <span id="span-inside-form-button-no-handler"></span>
+    </button>
 </form>
 
 <button id="outside-form-button" form="my-form">Submit outside</button>
