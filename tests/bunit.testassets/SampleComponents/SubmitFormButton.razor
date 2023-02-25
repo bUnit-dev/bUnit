@@ -1,0 +1,7 @@
+<form id="my-form" @onsubmit="() => FormSubmitted = true">
+    <input id="inside-form-input" type="submit" value="Submit" />
+</form>
+
+@code {
+    public bool FormSubmitted;
+}

@@ -8,7 +8,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Changed
 
--   Some characters where not properly escaped. Reported by [@pwhe23](https://github.com/pwhe23). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+-   Some characters where not properly escaped. Reported by [@pwhe23](https://github.com/pwhe23). Fixed by [@linkdotnet](https://github.com/linkdotnet) and [@egil](https://github.com/egil).
+-   Fixed a regression where `submit` wasn't triggered on a button inside a form. Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.17.2] - 2023-02-22
 

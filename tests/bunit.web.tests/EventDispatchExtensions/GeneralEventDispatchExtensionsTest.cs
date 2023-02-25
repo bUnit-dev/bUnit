@@ -278,6 +278,16 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.Clicked.ShouldBeTrue();
 	}
 
+	[Fact(DisplayName = "Should submit a form on submit button")]
+	public void Test308()
+	{
+		var cut = RenderComponent<SubmitFormButton>();
+
+		cut.Find("#inside-form-input").Click();
+
+		cut.Instance.FormSubmitted.ShouldBeTrue();
+	}
+
 	public static IEnumerable<object[]> GetTenNumbers() => Enumerable.Range(0, 10)
 		.Select(i => new object[] { i });
 

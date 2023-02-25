@@ -80,24 +80,21 @@ public static class TriggerEventDispatchExtensions
 	}
 
 	[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "HTML events are standardize to lower case and safe in this context.")]
-	private static async Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
+	private static Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
 		var unwrappedElement = element.Unwrap();
 		if (isNonBubblingEvent)
-			await TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
-		else
-			await TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
+			return TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
 
-		switch (unwrappedElement)
+		return unwrappedElement switch
 		{
-			case IHtmlInputElement { Type: "submit", Form: not null } input when eventName is "onclick":
-				await TriggerFormSubmitAsync(renderer, input, eventArgs, input.Form);
-				break;
-			case IHtmlButtonElement { Type: "submit", Form: not null } button when eventName is "onclick":
-				await TriggerFormSubmitAsync(renderer, button, eventArgs, button.Form);
-				break;
-		}
+			IHtmlInputElement { Type: "submit", Form: not null } input when eventName is "onclick" =>
+				TriggerFormSubmitAsync(renderer, input, eventArgs, input.Form),
+			IHtmlButtonElement { Type: "submit", Form: not null } button when eventName is "onclick" =>
+				TriggerFormSubmitAsync(renderer, button, eventArgs, button.Form),
+			_ => TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs)
+		};
 	}
 
 	private static Task TriggerFormSubmitAsync(ITestRenderer renderer, IElement element, EventArgs eventArgs, IHtmlFormElement form)
@@ -106,10 +103,10 @@ public static class TriggerEventDispatchExtensions
 
 		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
 		var preventDefaultAttrName = $"{eventAttrName}:preventdefault";
-		if (element.HasAttribute(preventDefaultAttrName))
-			return Task.CompletedTask;
+		var events = GetDispatchEventTasks(renderer, element, eventName, eventArgs);
 
-		var events = GetDispatchEventTasks(renderer, form, "onsubmit", eventArgs);
+		if (!element.HasAttribute(preventDefaultAttrName))
+			events = events.Concat(GetDispatchEventTasks(renderer, form, "onsubmit", eventArgs)).ToList();
 
 		if (events.Count == 0)
 			throw new MissingEventHandlerException(element, eventName);
