@@ -141,14 +141,14 @@ public static class TriggerEventDispatchExtensions
 
 		foreach (var candidate in element.GetParentsAndSelf())
 		{
-			if (candidate.TryGetEventId(eventAttrName, out var id))
+			if (candidate.TryGetEventId(eventAttrName, out var eventId))
 			{
 				var info = new EventFieldInfo { FieldValue = eventName };
-				eventTasks.Add(renderer.DispatchEventAsync(id, info, eventArgs, ignoreUnknownEventHandlers: eventTasks.Count > 0));
+				eventTasks.Add(renderer.DispatchEventAsync(eventId, info, eventArgs, ignoreUnknownEventHandlers: eventTasks.Count > 0));
 			}
 
 			// Special case for elements inside form elements
-			if (TryGetParentFormElementSpecialCase(candidate, eventName, out var parentForm, out var formEventId))
+			if (TryGetParentFormElementSpecialCase(candidate, eventName, out var formEventId))
 			{
 				var info = new EventFieldInfo { FieldValue = "onsubmit" };
 				eventTasks.Add(renderer.DispatchEventAsync(formEventId, info, eventArgs, ignoreUnknownEventHandlers: true));
@@ -166,14 +166,10 @@ public static class TriggerEventDispatchExtensions
 	private static bool TryGetParentFormElementSpecialCase(
 		IElement element,
 		string eventName,
-		[NotNullWhen(true)] out IHtmlFormElement? form,
 		out ulong eventId)
 	{
-		form = null;
 		eventId = default;
 
-		// Special case for onclick elements which may trigger an onsubmit
-		// on a parent form.
 		if (!eventName.Equals("onclick", StringComparison.OrdinalIgnoreCase))
 		{
 			return false;
@@ -186,7 +182,7 @@ public static class TriggerEventDispatchExtensions
 			return false;
 		}
 
-		form = element switch
+		var form = element switch
 		{
 			IHtmlInputElement { Type: "submit", Form: not null } input => input.Form,
 			IHtmlButtonElement { Type: "submit", Form: not null } button => button.Form,
