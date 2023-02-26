@@ -6,10 +6,12 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.18.4] - 2023-02-26
+
 ### Fixed
 
 -   Some characters where not properly escaped. Reported by [@pwhe23](https://github.com/pwhe23). Fixed by [@linkdotnet](https://github.com/linkdotnet).
--	Clicking a submit button or submit input element inside a form, submits the form, if the submit button or submit input element does not have the `@onclick:preventDefault` attribute set. Reported by [@linkdotnet](https://github.com/linkdotnet). Fixed by [@egil](https://github.com/egil).
+-   Clicking a submit button or submit input element inside a form, submits the form, if the submit button or submit input element does not have the `@onclick:preventDefault` attribute set. Reported by [@linkdotnet](https://github.com/linkdotnet). Fixed by [@egil](https://github.com/egil).
 
 ## [1.17.2] - 2023-02-22
 
@@ -1256,7 +1258,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.17.2...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.18.4...HEAD
+
+[1.18.4]: https://github.com/bUnit-dev/bUnit/compare/v1.17.2...v1.18.4
 
 [1.17.2]: https://github.com/bUnit-dev/bUnit/compare/v1.16.2...1.17.2
 
