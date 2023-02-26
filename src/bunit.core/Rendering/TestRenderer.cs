@@ -15,6 +15,8 @@ public class TestRenderer : Renderer, ITestRenderer
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
 
+	public TaskCompletionSource<object>? WaitingRender { get; private set; }
+
 	/// <inheritdoc/>
 	public Task<Exception> UnhandledException => unhandledExceptionTsc.Task;
 
@@ -154,10 +156,11 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc/>
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
+		WaitingRender = new();
 		logger.LogNewRenderBatchReceived();
 
 		RenderCount++;
-		
+
 		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
 
 		// removes disposed components
@@ -194,7 +197,7 @@ public class TestRenderer : Renderer, ITestRenderer
 
 		logger.LogChangedComponentsMarkupUpdated();
 
-		return Task.CompletedTask;
+		return WaitingRender.Task;
 	}
 
 	/// <inheritdoc/>
