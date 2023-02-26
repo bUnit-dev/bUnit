@@ -1,0 +1,10 @@
+<form id="my-form">
+    <button id="inside-form-button" type="submit" @onclick="() => Clicked = true">Submit</button>
+    <input id="inside-form-input" type="submit" @onclick="() => Clicked = true" value="Submit" />
+    <button type="submit">
+        <span id="span-inside-form-button" @onclick="() => Clicked = true"></span>
+    </button>
+</form>
+@code {
+    public bool Clicked;
+}
