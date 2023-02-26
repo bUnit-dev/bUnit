@@ -197,7 +197,7 @@ public class TestRenderer : Renderer, ITestRenderer
 
 		logger.LogChangedComponentsMarkupUpdated();
 
-		return WaitingRender.Task;
+		return WaitingRender?.Task ?? Task.CompletedTask;
 	}
 
 	/// <inheritdoc/>
