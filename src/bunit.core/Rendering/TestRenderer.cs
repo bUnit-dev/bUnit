@@ -157,7 +157,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		logger.LogNewRenderBatchReceived();
 
 		RenderCount++;
-		
+
 		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
 
 		// removes disposed components
@@ -299,18 +299,14 @@ public class TestRenderer : Renderer, ITestRenderer
 	IRenderedComponentBase<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
 		where TComponent : IComponent
 	{
-		IRenderedComponentBase<TComponent> result;
-
 		if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
 		{
-			result = (IRenderedComponentBase<TComponent>)renderedComponent;
+			return (IRenderedComponentBase<TComponent>)renderedComponent;
 		}
-		else
-		{
-			LoadRenderTreeFrames(componentId, framesCollection);
-			result = activator.CreateRenderedComponent(componentId, component, framesCollection);
-			renderedComponents.Add(result.ComponentId, result);
-		}
+
+		LoadRenderTreeFrames(componentId, framesCollection);
+		var result = activator.CreateRenderedComponent(componentId, component, framesCollection);
+		renderedComponents.Add(result.ComponentId, result);
 
 		return result;
 	}
