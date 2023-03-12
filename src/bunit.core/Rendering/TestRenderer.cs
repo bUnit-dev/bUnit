@@ -67,10 +67,11 @@ public class TestRenderer : Renderer, ITestRenderer
 	public new Task DispatchEventAsync(
 		ulong eventHandlerId,
 		EventFieldInfo fieldInfo,
-		EventArgs eventArgs) => DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
+		EventArgs eventArgs)
+		=> DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
 
 	/// <inheritdoc/>
-	public Task DispatchEventAsync(
+	public virtual Task DispatchEventAsync(
 		ulong eventHandlerId,
 		EventFieldInfo fieldInfo,
 		EventArgs eventArgs,
@@ -79,30 +80,11 @@ public class TestRenderer : Renderer, ITestRenderer
 		if (fieldInfo is null)
 			throw new ArgumentNullException(nameof(fieldInfo));
 
-		var result = Dispatcher.InvokeAsync(() =>
-		{
-			ResetUnhandledException();
+		Dispatcher.AssertAccess();
 
-			try
-			{
-				return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
-			}
-			catch (ArgumentException ex) when (string.Equals(ex.Message, $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')", StringComparison.Ordinal))
-			{
-				if (ignoreUnknownEventHandlers)
-				{
-					return Task.CompletedTask;
-				}
+		ResetUnhandledException();
 
-				var betterExceptionMsg = new UnknownEventHandlerIdException(eventHandlerId, fieldInfo, ex);
-				return Task.FromException(betterExceptionMsg);
-			}
-		});
-
-		if (result.IsFaulted && result.Exception is not null)
-		{
-			HandleException(result.Exception);
-		}
+		var result = base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
 
 		AssertNoUnhandledExceptions();
 
