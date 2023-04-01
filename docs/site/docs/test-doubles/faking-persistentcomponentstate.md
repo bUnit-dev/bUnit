@@ -12,8 +12,7 @@ bUnit comes with fake version of the `PersistentComponentState` type in Blazor t
 To use the fake `PersistentComponentState` in bUnit, call the `AddFakePersistentComponentState` extension method on `TestContext`:
 
 ```csharp
-using var ctx = new TestContext();
-var fakeState = ctx.AddFakePersistentComponentState();
+var fakeState = AddFakePersistentComponentState();
 ```
 
 Calling `AddFakePersistentComponentState` returns a `FakePersistentComponentState` type, which has three methods; one to persist data, one to get persisted data, and one that triggers any "OnPersisting" callbacks added to the `PersistentComponentState`.
@@ -21,8 +20,7 @@ Calling `AddFakePersistentComponentState` returns a `FakePersistentComponentStat
 To add data to the `PersistentComponentState` before running a test, i.e. to verify that a component uses the persisted state, use the `Persist` method:
 
 ```csharp
-using var ctx = new TestContext();
-var fakeState = ctx.AddFakePersistentComponentState();
+var fakeState = AddFakePersistentComponentState();
 var key = "STATE KEY";
 var data = ...; // data to persist
 
@@ -33,8 +31,7 @@ fakeState.Persist(key, data);
 To trigger a callback registered with the `PersistentComponentState.RegisterOnPersisting` method, use the `TriggerOnPersisting` method on `FakePersistentComponentState`:
 
 ```csharp
-using var ctx = new TestContext();
-var fakeState = ctx.AddFakePersistentComponentState();
+var fakeState = AddFakePersistentComponentState();
 
 // render component
 
@@ -44,8 +41,7 @@ fakeState.TriggerOnPersisting();
 To check if data has been persisted, use the `TryTake` method:
 
 ```csharp
-using var ctx = new TestContext();
-var fakeState = ctx.AddFakePersistentComponentState();
+var fakeState = AddFakePersistentComponentState();
 var key = "STATE KEY";
 
 // render component, call TriggerOnPersisting
@@ -99,14 +95,13 @@ To test that the `<FetchData>` component uses persisted weather data instead of 
 
 ```csharp
 // Arrange
-using var ctx = new TestContext();
-var fakeState = ctx.AddFakePersistentComponentState();
+var fakeState = AddFakePersistentComponentState();
 
 // Persist a single weather forecast with a temperature of 42
 fakeState.Persist("weather-data", new [] { new WeatherForecast { Temperature = 42 } });
 
 // Act
-var cut = ctx.RenderComponent<FetchData>();
+var cut = RenderComponent<FetchData>();
 
 // Assert - verify that the persisted forecast was rendered out
 cut.MarkupMatches("<p>42</p>");
@@ -116,9 +111,8 @@ To test that the `<FetchData>` component correctly persists weather data when it
 
 ```csharp
 // Arrange
-using var ctx = new TestContext();
-var fakeState = ctx.AddFakePersistentComponentState();
-var cut = ctx.RenderComponent<FetchData>();
+var fakeState = AddFakePersistentComponentState();
+var cut = RenderComponent<FetchData>();
 
 // Act - trigger the FetchData components PersistForecasts method
 fakeState.TriggerOnPersisting();

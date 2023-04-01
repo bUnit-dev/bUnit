@@ -26,8 +26,7 @@ internal sealed class ElementFactory<TElement> : IElementFactory<TElement>
 		if (element is null)
 		{
 			var queryResult = testTarget.Nodes.QuerySelector(cssSelector);
-			if (queryResult is TElement queryResultElement)
-				element = queryResultElement;
+            element = queryResult as TElement;
 		}
 
 		return element ?? throw new ElementRemovedFromDomException(cssSelector);

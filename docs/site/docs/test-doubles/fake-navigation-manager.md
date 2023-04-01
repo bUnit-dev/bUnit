@@ -43,9 +43,8 @@ To verify that the `<PrintCurrentUrl>` component correctly listens to location c
 
 ```csharp
 // Arrange
-using var ctx = new TestContext();
-var navMan = ctx.Services.GetRequiredService<FakeNavigationManager>();
-var cut = ctx.RenderComponent<PrintCurrentUrl>();
+var navMan = Services.GetRequiredService<FakeNavigationManager>();
+var cut = RenderComponent<PrintCurrentUrl>();
 
 // Act - trigger a navigation change
 navMan.NavigateTo("newUrl");
@@ -58,15 +57,14 @@ To verify that the `<PrintCurrentUrl>` component correctly calls `NavigateTo` wh
 
 ```csharp
 // Arrange
-using var ctx = new TestContext();
-var cut = ctx.RenderComponent<PrintCurrentUrl>(parameters => parameters
+var cut = RenderComponent<PrintCurrentUrl>(parameters => parameters
   .Add(p => p.GoToUrl, "http://localhost/foo"));
 
 // Act - trigger a location change by clicking the button
 cut.Find("button").Click();
 
 // Assert - inspect the navigation manager to see if its Uri has been updated.
-var navMan = ctx.Services.GetRequiredService<FakeNavigationManager>();
+var navMan = Services.GetRequiredService<FakeNavigationManager>();
 Assert.Equal("http://localhost/foo", navMan.Uri);
 ```
 
@@ -95,9 +93,8 @@ A component can look like this:
 A typical test, which asserts that the navigation got prevented, would look like this:
 
 ```csharp
-using var ctx = new TestContext();
-var navMan = ctx.Services.GetRequiredService<FakeNavigationManager>();
-var cut = ctx.RenderComponent<InterceptComponent>();
+var navMan = Services.GetRequiredService<FakeNavigationManager>();
+var cut = RenderComponent<InterceptComponent>();
 
 cut.Find("button").Click();
 
@@ -126,9 +123,8 @@ As `<a href>` navigation is not natively supported in bUnit, the `NavigationMana
 The test utilizes the `NavigationManager` itself to achieve the same:
 
 ```csharp
-using var ctx = new TestContext();
-var navMan = ctx.Services.GetRequiredService<FakeNavigationManager>();
-var cut = ctx.RenderComponent<InterceptAHRefComponent>();
+var navMan = Services.GetRequiredService<FakeNavigationManager>();
+var cut = RenderComponent<InterceptAHRefComponent>();
 
 navMan.NavigateTo("/counter");
 
@@ -153,8 +149,7 @@ NavigationManager.NavigateToLogin("authentication/login", requestOptions);
 
 A test could look like this:
 ```csharp
-using var ctx = new TestContext();
-var navigationManager = ctx.Services.GetRequiredService<FakeNavigationManager>();
+var navigationManager = Services.GetRequiredService<FakeNavigationManager>();
 
 ActionToTriggerTheNavigationManager();
 

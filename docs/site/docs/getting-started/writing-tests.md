@@ -71,7 +71,7 @@ With that in place, lets look at a simple example that tests the following `<Hel
 
 The test above does the following:
 
-1. Creates a new instance of the disposable bUnit <xref:Bunit.TestContext>, and assigns it to `ctx` the variable using the `using var` syntax to avoid unnecessary source code indention.
+1. Inherits from the bUnit <xref:Bunit.TestContext>. This base class offers the majority of functions.
 2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the `Render(RenderFragment)` method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
@@ -111,46 +111,6 @@ There is a simple workaround though: wrap all elements in the special Blazor ele
  </text>
 ```
 
-### Remove boilerplate code from tests
-
-We can remove some boilerplate code from each test by making the <xref:Bunit.TestContext> implicitly available to the test class, so we don't have to have `using var ctx = new Bunit.TestContext();` in every test. This can be done like so:
-
-# [xUnit](#tab/xunit)
-
-[!code-cshtml[HelloWorldImplicitContextRazorTest.razor](../../../samples/tests/xunit/HelloWorldImplicitContextRazorTest.razor)]
-
-Since xUnit instantiates test classes for each execution of the test methods inside them, and disposes of them after each test method has run, we simply inherit from <xref:Bunit.TestContext>, and methods like <xref:Bunit.TestContext.Render(RenderFragment)> can then be called directly from each test. This is seen in the listing above. 
-
-# [NUnit](#tab/nunit)
-
-[!code-cshtml[HelloWorldImplicitContextRazorTest.razor](../../../samples/tests/nunit/HelloWorldImplicitContextRazorTest.razor)]
-
-[!code-csharp[BunitTestContext.cs](../../../samples/tests/nunit/BunitTestContext.cs)]
-
-Since NUnit instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed above, and use that to hook into NUnit's `[SetUp]` and `[TearDown]` methods, which runs before and after each test. The `BunitTestContext` class inherits from the <xref:Bunit.TestContextWrapper> type, which is included specifically to make this scenario easier.
-
-Then methods like <xref:Bunit.TestContext.Render(RenderFragment)> can be called directly from each test, as seen in the listing above.
-
-# [MSTest](#tab/mstest)
-
-[!code-cshtml[HelloWorldImplicitContextRazorTest.razor](../../../samples/tests/mstest/HelloWorldImplicitContextRazorTest.razor)]
-
-[!code-csharp[BunitTestContext.cs](../../../samples/tests/mstest/BunitTestContext.cs)]
-
-Since MSTest instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed above, and use that to hook into MSTest's `[TestInitialize]` and `[TestCleanup]` methods. This runs before and after each test. The `BunitTestContext` class inherits from the <xref:Bunit.TestContextWrapper> type, which is included specifically to make this scenario easier.
-
-Then methods like <xref:Bunit.TestContext.Render(RenderFragment)> can be called directly from each test, as seen in the listing above.
-
-***
-
-> [!IMPORTANT]
-> All the examples in the documentation explicitly new up a `TestContext`, i.e. `using var ctx = new TestContext()`. If you are using the trick above and have your test class inherit from `TestContext`, you should **NOT** new up a `TestContext` in test methods also. 
-> 
-> Simply call the test context's methods directly, as they are available in your test class. 
-> 
-> For example, `var cut = ctx.Render(@<HelloWorld/>);`  
-> becomes `var cut = Render(@<HelloWorld/>);`.
-
 ## Creating basic tests in `.cs` files
 
 This is a simple example of writing tests in `.cs` files which tests the following `<HelloWorld>` component:
@@ -180,7 +140,7 @@ This is a simple example of writing tests in `.cs` files which tests the followi
 
 The test above does the following:
 
-1. Creates a new instance of the disposable bUnit <xref:Bunit.TestContext>, and assigns it to the `ctx` variable using the `using var` syntax to avoid unnecessary source code indention.
+1. Inherits from the bUnit <xref:Bunit.TestContext>. This base class offers the majority of functions.
 2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.RenderComponent``1(Action{Bunit.ComponentParameterCollectionBuilder{``0}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
@@ -219,16 +179,6 @@ Then methods like <xref:Bunit.TestContext.RenderComponent``1(Action{Bunit.Compon
 Since MSTest instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed above, and use that to hook into MSTest's `[TestInitialize]` and `[TestCleanup]` methods. This runs before and after each test.
 
 Then methods like <xref:Bunit.TestContext.RenderComponent``1(Action{Bunit.ComponentParameterCollectionBuilder{``0}})> can be called directly from each test, as seen in the listing above.
-
-***
-
-> [!IMPORTANT]
-> All the examples in the documentation explicitly new up a `TestContext`, i.e. `using var ctx = new TestContext()`. If you are using the trick above and have your test class inherit from `TestContext`, you should **NOT** new up another `TestContext` in test methods also. 
-> 
-> Simply call the test contest's methods directly, as they are available in your test class. 
-> 
-> For example, `var cut = ctx.RenderComponent<HelloWorld>();`  
-> becomes `var cut = RenderComponent<HelloWorld>();`.
 
 ## Further reading
 

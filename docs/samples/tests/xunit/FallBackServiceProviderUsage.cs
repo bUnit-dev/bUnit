@@ -1,19 +1,17 @@
 using Xunit;
 using Bunit;
 
-namespace Bunit.Docs.Samples
+namespace Bunit.Docs.Samples;
+
+public class FallBackServiceProviderUsageExample : TestContext
 {
-  public class FallBackServiceProviderUssageExample
-  {
     [Fact]
     public void FallBackServiceProviderReturns()
     {
-      using var ctx = new TestContext();
-      ctx.Services.AddFallbackServiceProvider(new FallbackServiceProvider());
-      
-      var dummyService = ctx.Services.GetService<DummyService>();
+        Services.AddFallbackServiceProvider(new FallbackServiceProvider());
 
-      Assert.NotNull(dummyService);
+        var dummyService = Services.GetService<DummyService>();
+
+        Assert.NotNull(dummyService);
     }
-  }
 }

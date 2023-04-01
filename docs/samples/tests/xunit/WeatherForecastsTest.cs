@@ -7,24 +7,21 @@ using Microsoft.Extensions.DependencyInjection;
 
 using static Bunit.ComponentParameterFactory;
 
-namespace Bunit.Docs.Samples
+namespace Bunit.Docs.Samples;
+
+public class WeatherForecastsTest : TestContext
 {
-  public class WeatherForecastsTest
-  {
     [Fact]
     public void ServicesIsInjectedCorrectly()
     {
-      using var ctx = new TestContext();
+        // Register services
+        Services.AddSingleton<IWeatherForecastService>(new WeatherForecastService());
 
-      // Register services
-      ctx.Services.AddSingleton<IWeatherForecastService>(new WeatherForecastService());
+        // RenderComponent will inject the service in the WeatherForecasts component
+        // when it is instantiated and rendered.
+        var cut = RenderComponent<WeatherForecasts>();
 
-      // RenderComponent will inject the service in the WeatherForecasts component
-      // when it is instantiated and rendered.
-      var cut = ctx.RenderComponent<WeatherForecasts>();
-
-      // Assert that service is injected
-      Assert.NotNull(cut.Instance.Forecasts);
+        // Assert that service is injected
+        Assert.NotNull(cut.Instance.Forecasts);
     }
-  }
 }

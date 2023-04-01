@@ -6,21 +6,18 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Bunit.Rendering;
 
-namespace Bunit.Docs.Samples
+namespace Bunit.Docs.Samples;
+
+public class TemplateParams2Test : TestContext
 {
-  public class TemplateParams2Test
-  {
     [Fact]
     public void Test()
     {
-      using var ctx = new TestContext();
-
-      var cut = ctx.RenderComponent<TemplateParams<string>>(parameters => parameters
-        .Add(p => p.Items, new[] { "Foo", "Bar", "Baz" })
-        .Add<Item, string>(p => p.Template, value => itemParams => itemParams
-          .Add(p => p.Value, value)
-        )
-      );
+        var cut = RenderComponent<TemplateParams<string>>(parameters => parameters
+            .Add(p => p.Items, new[] { "Foo", "Bar", "Baz" })
+            .Add<Item, string>(p => p.Template, value => itemParams => itemParams
+                .Add(p => p.Value, value)
+            )
+        );
     }
-  }
 }

@@ -19,7 +19,7 @@ The following example verifies that the `PrintCascadingValue` component correctl
 
 Here is the test that adds the `CascadingValue<string>` component to the render tree and then renders the `PrintCascadingValue` component.
 
-[!code-csharp[PrintCascadingValueTest.cs](../../../samples/tests/xunit/RenderTreeTest.cs#L15-L27)]
+[!code-csharp[PrintCascadingValueTest.cs](../../../samples/tests/xunit/RenderTreeTest.cs#L15-L25)]
 
 > [!NOTE]
 > The call to [`Add`](xref:Bunit.Rendering.RootRenderTree.Add``1(System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})) can be done in a common setup method, outside the context of the test method listed here, for easy re-use between tests.
@@ -28,6 +28,6 @@ Here is the test that adds the `CascadingValue<string>` component to the render 
 
 Sometimes common test setup logic exists outside the test class, perhaps abstracted away in other libraries. In those cases, the [`TryAdd`](xref:Bunit.Rendering.RootRenderTree.TryAdd``1(System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})) method can be used to a components to the render tree, _only if_ it has not already been added. [`TryAdd`](xref:Bunit.Rendering.RootRenderTree.TryAdd``1(System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})) returns true if the component was added, false otherwise.
 
-[!code-csharp[](../../../samples/tests/xunit/RenderTreeTest.cs#L36-L38)]
+[!code-csharp[](../../../samples/tests/xunit/RenderTreeTest.cs#L32-L34)]
 
 In the listing above, the cascading value `BAR?` is added only if there is not another `CascadingValue<string>` component added to the render tree already.

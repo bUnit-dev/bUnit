@@ -46,13 +46,11 @@ To stub it out, use the `AddStub<T>()` method:
 [Fact]
 public void Foo_Doesnt_Have_A_Bar_But_Stub()
 {
-  using var ctx = new TestContext();
-
   // Register the a stub substitution.
-  ctx.ComponentFactories.AddStub<Bar>();
+  ComponentFactories.AddStub<Bar>();
 
   // Render the component under test.
-  IRenderedFragment cut = ctx.Render(@<Foo />);
+  IRenderedFragment cut = Render(@<Foo />);
   
   // Verify that the Bar component has 
   // been substituted in the render tree.
@@ -64,7 +62,7 @@ public void Foo_Doesnt_Have_A_Bar_But_Stub()
 It is also possible to specify a base type/component for the component you want to substitute. For example, if `<Bar>` inherits from `<BarBase>`, you can specify `<BarBase>` and all components that inherit from `<BarBase>` will be substituted.
 
 ```csharp
-ctx.ComponentFactories.AddStub<BarBase>();
+ComponentFactories.AddStub<BarBase>();
 ```
 
 To add substitute markup to the output, pass it in one of the following ways:
@@ -72,11 +70,11 @@ To add substitute markup to the output, pass it in one of the following ways:
 ```csharp
 // Add the markup specified in the string to the rendered output
 // instead of that from <Bar>.
-ctx.ComponentFactories.AddStub<Bar>("<div>NOT FROM BAR</div>");
+ComponentFactories.AddStub<Bar>("<div>NOT FROM BAR</div>");
 
 // Add the markup specified in the render fragment to the rendered
 // output instead of that from <Bar>.
-ctx.ComponentFactories.AddStub<Bar>(@<div>NOT FROM BAR</div>);
+ComponentFactories.AddStub<Bar>(@<div>NOT FROM BAR</div>);
 ```
 
 It is also possible to access the parameter that is passed to the substituted component, both when specifying alternative render output or when verifying the correct parameters was passed to the substituted component. For example, suppose `<Foo>` has a parameter named `Baz`:
@@ -84,11 +82,11 @@ It is also possible to access the parameter that is passed to the substituted co
 ```csharp
 // Add the markup specified in the template function to the rendered output
 // instead of that from <Bar>.
-ctx.ComponentFactories.AddStub<Bar>(parameters => $"<div>{parameters.Get(x => Baz)}</div>");
+ComponentFactories.AddStub<Bar>(parameters => $"<div>{parameters.Get(x => Baz)}</div>");
 
 // Add the markup produced by the render template to the rendered
 // output instead of that from <Bar>.
-ctx.ComponentFactories.AddStub<Bar>(parameters => @<div>@(parameters.Get(x => Baz))</div>);
+ComponentFactories.AddStub<Bar>(parameters => @<div>@(parameters.Get(x => Baz))</div>);
 ```
 
 To verify that the expected value was passed to the `Baz` parameter of `<Foo>`, first find the substituted component in the render tree using the `FindComponent`/`FindComponents` methods, and then inspect the `Parameters` property. E.g.:
@@ -97,10 +95,9 @@ To verify that the expected value was passed to the `Baz` parameter of `<Foo>`, 
 [Fact]
 public void Foo_Doesnt_Have_A_Bar_But_Stub()
 {
-  using var ctx = new TestContext();
-  ctx.ComponentFactories.AddStub<Bar>();
+  ComponentFactories.AddStub<Bar>();
 
-  IRenderedFragment cut = ctx.Render(@<Foo />);
+  IRenderedFragment cut = Render(@<Foo />);
 
   // Find the stubbed component in the render tree
   IRenderedComponent<Stub<Bar>> barStub = cut.FindComponent<Stub<Bar>>();
@@ -119,10 +116,10 @@ To stub more than one component, e.g. all components from a 3rd party component 
 
 ```csharp
 // Stub all components of type `Bar`
-ctx.ComponentFactories.AddStub(type => type == typeof(Bar));
+ComponentFactories.AddStub(type => type == typeof(Bar));
 
 // Stub all components in the Third.Party.Lib namespace
-ctx.ComponentFactories.AddStub(type => type.Namespace == "Third.Party.Lib");
+ComponentFactories.AddStub(type => type.Namespace == "Third.Party.Lib");
 ```
 
 It is also possible to specify replacement markup or a `RenderFragment` for components substituted using the "component predicate" method:
@@ -130,12 +127,12 @@ It is also possible to specify replacement markup or a `RenderFragment` for comp
 ```csharp
 // Add the markup specified in the string to the rendered output
 // instead of the components that match the predicate,
-ctx.ComponentFactories.AddStub(type => type.Namespace == "Third.Party.Lib",
+ComponentFactories.AddStub(type => type.Namespace == "Third.Party.Lib",
                                "<div>NOT FROM BAR</div>");
 
 // Add the markup produced by the render fragment to the rendered
 // output instead of the components that match the predicate.
-ctx.ComponentFactories.AddStub(type => type.Namespace == "Third.Party.Lib",
+ComponentFactories.AddStub(type => type.Namespace == "Third.Party.Lib",
                                @<div>NOT FROM BAR</div>);
 ```
 
@@ -175,14 +172,12 @@ Here are two examples of using the [Moq](https://github.com/Moq) and [NSubstitut
 [Fact]
 public void Foo_Doesnt_Have_A_Bar_But_Mock()
 {
-  using var ctx = new TestContext();
-
   // Register the mock instance for Bar
   Mock<Bar> barMock = new Mock<Bar>();
-  ctx.ComponentFactories.Add<Bar>(barMock.Object);
+  ComponentFactories.Add<Bar>(barMock.Object);
   
   // Render the component under test
-  IRenderedFragment cut = ctx.Render(@<Foo />);
+  IRenderedFragment cut = Render(@<Foo />);
  
   // Verify that the Bar component has 
   // been substituted in the render tree
@@ -199,14 +194,12 @@ Moq the exposes the mocked component instance through the `Object` property.
 [Fact]
 public void Foo_Doesnt_Have_A_Bar_But_Mock()
 {
-  using var ctx = new TestContext();
-
   // Register the mock instance for Bar
   Bar barMock = Substitute.For<FancyParagraph>();
-  ctx.ComponentFactories.Add<Bar>(barMock);
+  ComponentFactories.Add<Bar>(barMock);
   
   // Render the component under test
-  IRenderedFragment cut = ctx.Render(@<Foo />);
+  IRenderedFragment cut = Render(@<Foo />);
  
   // Verify that the Bar component has 
   // been substituted in the render tree
@@ -226,14 +219,14 @@ To mock multiple components of the same type, pass in a mocking component factor
 
 ```csharp
 // Register a mock component factory to replace multiple Bar components
-ctx.ComponentFactories.Add<Bar>(() => Mock.Of<Bar>());
+ComponentFactories.Add<Bar>(() => Mock.Of<Bar>());
 ```
 
 # [NSubstitute](#tab/nsubstitute)
 
 ```csharp
 // Register a mock component factory to replace multiple Bar components
-ctx.ComponentFactories.Add<Bar>(() => Substitute.For<FancyParagraph>()));
+ComponentFactories.Add<Bar>(() => Substitute.For<FancyParagraph>()));
 ```
 
 ***
@@ -244,8 +237,8 @@ In the example below, an extension method is used to create a mock using Moq wit
 
 ```csharp
 var mockRepo = new MockRepository(MockBehavior.Loose);
-ctx.ComponentFactories.Add(type => type.Namespace == "Thrid.Party.Lib",
-                           type => mockRepo.CreateComponent(type));
+ComponentFactories.Add(type => type.Namespace == "Thrid.Party.Lib",
+                       type => mockRepo.CreateComponent(type));
 ```
 
 And this is the extension method that can create mock components dynamically based on a type:
@@ -276,7 +269,7 @@ A popular technique in JavaScript-based frontend testing is "shallow rendering".
 This is possible in bUnit as well, using the type predicate technique discussed above. For example, to shallow render `<Foo>` using the built-in stub in bUnit, do the following:
 
 ```csharp
-ctx.ComponentFactories.AddStub<Foo>(type => type != typeof(Foo));
+ComponentFactories.AddStub<Foo>(type => type != typeof(Foo));
 ```
 
 This will tell bUnit to stub out all components in the render tree that is NOT `<Foo>`. This can also be achieved using a mocking framework. See the example in the previous section above for how to dynamically create component mocks using Moq.
