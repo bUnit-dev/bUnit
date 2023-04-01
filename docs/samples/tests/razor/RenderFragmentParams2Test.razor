@@ -1,12 +1,12 @@
+@inherits TestContext
+
 @code
 {
   [Fact]
   public void Test()
   {
-    using var ctx = new TestContext();
-
-    var cut = ctx.Render(@<RenderFragmentParams>
-                            <Content><Counter /></Content>
-                          </RenderFragmentParams>);
+    var cut = Render(@<RenderFragmentParams>
+                          <Content><Counter /></Content>
+                        </RenderFragmentParams>);
   }
 }

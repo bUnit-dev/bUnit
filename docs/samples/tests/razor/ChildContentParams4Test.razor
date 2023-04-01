@@ -1,15 +1,15 @@
+@inherits TestContext
+
 @code
 {
   [Fact]
   public void Test()
   {
-    using var ctx = new TestContext();
-
-    var cut = ctx.Render(@<ChildContentParams>
-                            <h1>Below you will find a most interesting alert!</h1>
-                            <Alert Heading="Alert heading" Type=@AlertType.Warning>
-                              <p>Hello World</p>
-                            </Alert>
-                          </ChildContentParams>);
+    var cut = Render(@<ChildContentParams>
+                          <h1>Below you will find a most interesting alert!</h1>
+                          <Alert Heading="Alert heading" Type=@AlertType.Warning>
+                            <p>Hello World</p>
+                          </Alert>
+                        </ChildContentParams>);
   }
 }

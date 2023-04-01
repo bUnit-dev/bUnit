@@ -6,19 +6,16 @@ using Microsoft.AspNetCore.Components.Web;
 
 using static Bunit.ComponentParameterFactory;
 
-namespace Bunit.Docs.Samples
+namespace Bunit.Docs.Samples;
+
+public class NestedComponentTest : TestContext
 {
-  public class NestedComponentTest
-  {
     [Fact]
     public void Test()
     {
-      using var ctx = new TestContext();
-
-      var wrapper = ctx.RenderComponent<Wrapper>(parameters => parameters
-        .AddChildContent<HelloWorld>()
-      );
-      var cut = wrapper.FindComponent<HelloWorld>();
+        var wrapper = RenderComponent<Wrapper>(parameters => parameters
+            .AddChildContent<HelloWorld>()
+        );
+        var cut = wrapper.FindComponent<HelloWorld>();
     }
-  }
 }

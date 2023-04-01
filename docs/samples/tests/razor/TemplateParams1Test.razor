@@ -1,16 +1,16 @@
+@inherits TestContext
+
 @code
 {
 #if NET6_0
   [Fact]
   public void Test()
   {
-    using var ctx = new TestContext();
-
-    var cut = ctx.Render(@<TemplateParams Items=@(new[] { "Foo", "Bar", "Baz" }) TItem="string">
-                            <Template>
-                              <span>@context</span>
-                            </Template>
-                          </TemplateParams>);
+    var cut = Render(@<TemplateParams Items=@(new[] { "Foo", "Bar", "Baz" }) TItem="string">
+                          <Template>
+                            <span>@context</span>
+                          </Template>
+                        </TemplateParams>);
   }
 #endif
 }

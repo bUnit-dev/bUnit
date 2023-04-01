@@ -18,8 +18,8 @@ In the following sub sections, we will show both `.cs`- and `.razor`-based test 
 
 > [!NOTE]
 > The examples below are written using **xUnit**, but the code is the same with **NUnit** and **MSTest**. 
-> 
-> In addition to this, the example tests explicitly instantiates the bUnit `TestContext` in each test. If your test class is inheriting from the `TestContext` as described in the section "Remove boilerplate code from tests" on the <xref:writing-tests> page, then you should NOT instantiates the `TestContext` in your tests and skip that step.
+>
+> The example tests are inheriting from the `TestContext` as described in the section "Remove boilerplate code from tests" on the <xref:writing-tests> page. If your test class is not inheriting from the `TestContext`, then you should explicitly instantiate the `TestContext` in your tests. The recommended way is to inherit from the `TestContext`.
 
 ## Regular parameters
 
@@ -245,7 +245,7 @@ To pass a template into a `RenderFragment<TValue>` parameter that just consists 
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[TemplateParamsTest.cs](../../../samples/tests/xunit/TemplateParams1Test.cs#L11-L23)]
+[!code-csharp[TemplateParamsTest.cs](../../../samples/tests/xunit/TemplateParams1Test.cs#L11-L21)]
 
 The examples pass a HTML markup template into the component under test. This is done with the help of a `Func<TValue, string>` delegate which takes whatever the template value is as input, and returns a (markup) string. The delegate is automatically turned into a `RenderFragment<TValue>` type and passed to the template parameter.
 
