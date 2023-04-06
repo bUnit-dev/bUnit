@@ -39,7 +39,7 @@ To trigger the `@onclick` `ClickHandler` event handler method in the `<ClickMe>`
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[ClickMeTest.cs](../../../samples/tests/xunit/ClickMeTest.cs?range=9-25&highlight=9-11)]
+[!code-csharp[ClickMeTest.cs](../../../samples/tests/xunit/ClickMeTest.cs?range=7-25&highlight=9-11)]
 
 # [Razor test code](#tab/razor)
 

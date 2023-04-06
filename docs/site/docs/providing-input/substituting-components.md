@@ -248,15 +248,15 @@ And this is the extension method that can create mock components dynamically bas
 // based on a type.
 internal static class MockRepositoryExtensions
 {
-	private static readonly MethodInfo CreateMethodInfo = typeof(MockRepository)
-		.GetMethod(nameof(MockRepository.Create), Array.Empty<Type>());
+  private static readonly MethodInfo CreateMethodInfo = typeof(MockRepository)
+    .GetMethod(nameof(MockRepository.Create), Array.Empty<Type>());
 
-	public static IComponent CreateComponent(this MockRepository repository, Type type)
-	{
-		var genericCreateMethod = CreateMethodInfo.MakeGenericMethod(type);
-		var mock = (Mock)genericCreateMethod.Invoke(repository, null);
-		return (IComponent)mock.Object;
-	}
+  public static IComponent CreateComponent(this MockRepository repository, Type type)
+  {
+    var genericCreateMethod = CreateMethodInfo.MakeGenericMethod(type);
+    var mock = (Mock)genericCreateMethod.Invoke(repository, null);
+    return (IComponent)mock.Object;
+  }
 }
 ```
 
