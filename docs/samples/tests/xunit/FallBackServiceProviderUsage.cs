@@ -5,13 +5,13 @@ namespace Bunit.Docs.Samples;
 
 public class FallBackServiceProviderUsageExample : TestContext
 {
-    [Fact]
-    public void FallBackServiceProviderReturns()
-    {
-        Services.AddFallbackServiceProvider(new FallbackServiceProvider());
+  [Fact]
+  public void FallBackServiceProviderReturns()
+  {
+    Services.AddFallbackServiceProvider(new FallbackServiceProvider());
 
-        var dummyService = Services.GetService<DummyService>();
+    var dummyService = Services.GetService<DummyService>();
 
-        Assert.NotNull(dummyService);
-    }
+    Assert.NotNull(dummyService);
+  }
 }

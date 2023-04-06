@@ -1,14 +1,13 @@
 using Bunit;
 using NUnit.Framework;
 
-namespace Bunit.Docs.Samples
-{
-  public abstract class BunitTestContext : TestContextWrapper
-    {
-    [SetUp]
-    public void Setup() => TestContext = new Bunit.TestContext();
+namespace Bunit.Docs.Samples;
 
-    [TearDown]
-    public void TearDown() => TestContext?.Dispose();
-  }
+public abstract class BunitTestContext : TestContextWrapper
+{
+  [SetUp]
+  public void Setup() => TestContext = new Bunit.TestContext();
+
+  [TearDown]
+  public void TearDown() => TestContext?.Dispose();
 }

@@ -10,11 +10,11 @@ namespace Bunit.Docs.Samples;
 
 public class ChildContentParams2Test : TestContext
 {
-    [Fact]
-    public void Test()
-    {
-        var cut = RenderComponent<ChildContentParams>(parameters => parameters
-            .AddChildContent<Counter>()
-        );
-    }
+  [Fact]
+  public void Test()
+  {
+    var cut = RenderComponent<ChildContentParams>(parameters => parameters
+      .AddChildContent<Counter>()
+    );
+  }
 }

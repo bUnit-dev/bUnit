@@ -10,15 +10,15 @@ namespace Bunit.Docs.Samples;
 
 public class EventCallbackParamsTest : TestContext
 {
-    [Fact]
-    public void Test()
-    {
-        Action<MouseEventArgs> onClickHandler = _ => { };
-        Action onSomethingHandler = () => { };
+  [Fact]
+  public void Test()
+  {
+    Action<MouseEventArgs> onClickHandler = _ => { };
+    Action onSomethingHandler = () => { };
 
-        var cut = RenderComponent<EventCallbackParams>(parameters => parameters
-            .Add(p => p.OnClick, onClickHandler)
-            .Add(p => p.OnSomething, onSomethingHandler)
-        );
-    }
+    var cut = RenderComponent<EventCallbackParams>(parameters => parameters
+      .Add(p => p.OnClick, onClickHandler)
+      .Add(p => p.OnSomething, onSomethingHandler)
+    );
+  }
 }

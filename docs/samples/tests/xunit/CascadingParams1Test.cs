@@ -10,13 +10,13 @@ namespace Bunit.Docs.Samples;
 
 public class CascadingParams1Test : TestContext
 {
-    [Fact]
-    public void Test()
-    {
-        var isDarkTheme = true;
+  [Fact]
+  public void Test()
+  {
+    var isDarkTheme = true;
 
-        var cut = RenderComponent<CascadingParams>(parameters => parameters
-            .Add(p => p.IsDarkTheme, isDarkTheme)
-        );
-    }
+    var cut = RenderComponent<CascadingParams>(parameters => parameters
+      .Add(p => p.IsDarkTheme, isDarkTheme)
+    );
+  }
 }

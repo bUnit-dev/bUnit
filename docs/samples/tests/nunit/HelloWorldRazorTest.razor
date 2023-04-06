@@ -1,11 +1,10 @@
+@inherits BunitTestContext
+
 @code
 {
   [Test]
   public void HelloWorldComponentRendersCorrectly()
   {
-    // Arrange
-    using var ctx = new Bunit.TestContext();
-
     // Act
     var cut = Render(@<HelloWorld />);
 

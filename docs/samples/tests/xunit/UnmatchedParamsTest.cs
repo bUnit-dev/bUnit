@@ -10,11 +10,11 @@ namespace Bunit.Docs.Samples;
 
 public class UnmatchedParamsTest : TestContext
 {
-    [Fact]
-    public void Test()
-    {
-        var cut = RenderComponent<UnmatchedParams>(parameters => parameters
-            .AddUnmatched("some-unknown-param", "a value")
-        );
-    }
+  [Fact]
+  public void Test()
+  {
+    var cut = RenderComponent<UnmatchedParams>(parameters => parameters
+      .AddUnmatched("some-unknown-param", "a value")
+    );
+  }
 }

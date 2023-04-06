@@ -4,10 +4,12 @@ namespace Bunit.Docs.Samples;
 
 public class FallbackServiceProvider : IServiceProvider
 {
-    public object GetService(Type serviceType)
-    { 
-        return new DummyService();
-    }
+  public object GetService(Type serviceType)
+  {
+    return new DummyService();
+  }
 }
 
-public class DummyService { }
+public class DummyService
+{
+}
