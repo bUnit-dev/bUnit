@@ -1,9 +1,9 @@
+namespace Bunit.Docs.Samples;
+
 using Bunit;
 using NUnit.Framework;
 
-namespace Bunit.Docs.Samples;
-
-public class HelloWorldTest : TestContext
+public class HelloWorldTest : BunitTestContext
 {
     [Test]
     public void HelloWorldComponentRendersCorrectly()

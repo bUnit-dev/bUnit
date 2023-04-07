@@ -1,7 +1,7 @@
+namespace Bunit.Docs.Samples;
+
 using Xunit;
 using Bunit;
-
-namespace Bunit.Docs.Samples;
 
 public class HelloWorldTest : TestContext
 {

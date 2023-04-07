@@ -1,7 +1,7 @@
+namespace Bunit.Docs.Samples;
+
 using Bunit;
 using NUnit.Framework;
-
-namespace Bunit.Docs.Samples;
 
 public abstract class BunitTestContext : TestContextWrapper
 {

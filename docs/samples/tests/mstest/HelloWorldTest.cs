@@ -1,10 +1,10 @@
-using Bunit;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Bunit.Docs.Samples;
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Bunit;
+
 [TestClass]
-public class HelloWorldTest : TestContext
+public class HelloWorldTest : BunitTestContext
 {
   [TestMethod]
   public void HelloWorldComponentRendersCorrectly()
