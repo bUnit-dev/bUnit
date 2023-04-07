@@ -1,10 +1,10 @@
+@inherits TestContext
+
 @code
 {
   [Fact]
   public void Test()
   {
-    using var ctx = new TestContext();
-
-    var cut = ctx.Render(@<UnmatchedParams some-unknown-param="a value"></UnmatchedParams>);
+    var cut = Render(@<UnmatchedParams some-unknown-param="a value"></UnmatchedParams>);
   }
 }

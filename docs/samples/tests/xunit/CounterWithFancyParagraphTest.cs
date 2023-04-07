@@ -6,18 +6,17 @@ using NSubstitute;
 
 namespace Bunit.Docs.Samples
 {
-  public class CounterWithFancyParagraphTest
+  public class CounterWithFancyParagraphTest : TestContext
   {
     [Fact]
     public void CounterShouldIncrementWhenClicked_Moq()
     {
-      using var ctx = new TestContext();      
       Mock<FancyParagraph> mock = new Mock<FancyParagraph>();
       FancyParagraph mockComponent = mock.Object;
 
-      ctx.ComponentFactories.Add(mock.Object);
-        
-      var cut = ctx.RenderComponent<Counter>();
+      ComponentFactories.Add(mock.Object);
+
+      var cut = RenderComponent<Counter>();
 
       cut.Find("button").Click();
 
@@ -27,12 +26,11 @@ namespace Bunit.Docs.Samples
     [Fact]
     public void CounterShouldIncrementWhenClicked_NSubstitute()
     {
-      using var ctx = new TestContext();      
       FancyParagraph mockComponent = Substitute.For<FancyParagraph>();
 
-      ctx.ComponentFactories.Add(mockComponent);
-        
-      var cut = ctx.RenderComponent<Counter>();
+      ComponentFactories.Add(mockComponent);
+
+      var cut = RenderComponent<Counter>();
 
       cut.Find("button").Click();
 

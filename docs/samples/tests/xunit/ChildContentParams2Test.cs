@@ -6,18 +6,15 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Bunit.Rendering;
 
-namespace Bunit.Docs.Samples
-{
-  public class ChildContentParams2Test
-  {
-    [Fact]
-    public void Test()
-    {
-      using var ctx = new TestContext();
+namespace Bunit.Docs.Samples;
 
-      var cut = ctx.RenderComponent<ChildContentParams>(parameters => parameters
-        .AddChildContent<Counter>()
-      );
-    }
+public class ChildContentParams2Test : TestContext
+{
+  [Fact]
+  public void Test()
+  {
+    var cut = RenderComponent<ChildContentParams>(parameters => parameters
+      .AddChildContent<Counter>()
+    );
   }
 }
