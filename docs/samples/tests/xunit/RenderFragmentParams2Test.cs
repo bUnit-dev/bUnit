@@ -10,11 +10,11 @@ namespace Bunit.Docs.Samples;
 
 public class RenderFragmentParams2Test : TestContext
 {
-    [Fact]
-    public void Test()
-    {
-        var cut = RenderComponent<RenderFragmentParams>(parameters => parameters
-            .Add<Counter>(p => p.Content)
-        );
-    }
+  [Fact]
+  public void Test()
+  {
+    var cut = RenderComponent<RenderFragmentParams>(parameters => parameters
+      .Add<Counter>(p => p.Content)
+    );
+  }
 }

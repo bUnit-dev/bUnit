@@ -10,11 +10,11 @@ namespace Bunit.Docs.Samples;
 
 public class CascadingParams2Test : TestContext
 {
-    [Fact]
-    public void Test()
-    {
-        var cut = RenderComponent<CascadingParams>(parameters => parameters
-            .Add(p => p.UserName, "Name of User")
-        );
-    }
+  [Fact]
+  public void Test()
+  {
+    var cut = RenderComponent<CascadingParams>(parameters => parameters
+      .Add(p => p.UserName, "Name of User")
+    );
+  }
 }

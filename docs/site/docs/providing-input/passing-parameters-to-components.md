@@ -19,7 +19,7 @@ In the following sub sections, we will show both `.cs`- and `.razor`-based test 
 > [!NOTE]
 > The examples below are written using **xUnit**, but the code is the same with **NUnit** and **MSTest**. 
 >
-> The example tests are inheriting from the `TestContext` as described in the section "Remove boilerplate code from tests" on the <xref:writing-tests> page. If your test class is not inheriting from the `TestContext`, then you should explicitly instantiate the `TestContext` in your tests. The recommended way is to inherit from the `TestContext`.
+> The example tests are inheriting from the `TestContext` as described in the <xref:writing-tests> page. If your test class is not inheriting from the `TestContext`, then you should explicitly instantiate the `TestContext` in your tests. The recommended way is to inherit from the `TestContext`. An example below will demonstrate how to instantiate a `TestContext` per test method.
 
 ## Regular parameters
 
@@ -406,7 +406,20 @@ The example uses the `Bind` method to setup two-way binding between the `Value` 
 The example uses the standard `@bind-Value` directive in Blazor to set up two way binding between the `Value` parameter and `ValueChanged` parameter and the local variable in the test method (`currentValue`).
 
 > [!WARNING]
-> When using `@bind` in conjunction with razor test-files the razor component should **not** inherit from `ComponentBase` (which is the default). The simplest solution would be to inherit from `TestContext` (as seen in the example above) which also brings the benefits as described on top of this page. For **NUnit** and **MSTest** check out the section "Remove boilerplate code from tests" on the <xref:writing-tests> page.
+> When using `@bind` in conjunction with razor test-files the razor component should **not** inherit from `ComponentBase` (which is the default). The simplest solution would be to inherit from `TestContext` (as seen in the example above) which also brings the benefits as described on top of this page.
+***
+
+## `TestContext` per test method
+There are scenarios where it is not possible or not desirable to inherit from `TestContext` in the test class. In those cases, it is possible to create a new `TestContext` instance per test method. As the `TestContext` class implements `IDisposable`, it is recommended to use the `using` statement to ensure that the instance is disposed of after the test method has run.
+
+# [C# test code](#tab/csharp)
+
+[!code-csharp[HelloWorldExplicitContext.cs](../../../samples/tests/xunit/HelloWorldExplicitContext.cs#L5-L16)] 
+
+# [Razor test code](#tab/razor)
+
+[!code-cshtml[HelloWorldExplicitContext.razor](../../../samples/tests/xunit/HelloWorldExplicitContextRazorTest.razor)]
+
 ***
 
 ## Further Reading

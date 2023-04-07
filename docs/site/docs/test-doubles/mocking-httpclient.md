@@ -25,8 +25,7 @@ bUnit's test context's `Services` collection, and configure responses to request
 With the helper methods in place, you can do the following in your tests:
 
 ```csharp
-using var ctx = new TestContext();
-var mock = ctx.Services.AddMockHttpClient();
+var mock = Services.AddMockHttpClient();
 mock.When("/getData").RespondJson(new List<Data>{ ... });
 ```
 

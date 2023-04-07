@@ -7,10 +7,10 @@
   public void Test()
   {
     var cut = Render(@<TemplateParams Items=@(new[] { "Foo", "Bar", "Baz" }) TItem="string">
-                          <Template>
-                            <span>@context</span>
-                          </Template>
-                        </TemplateParams>);
+                        <Template>
+                          <span>@context</span>
+                        </Template>
+                      </TemplateParams>);
   }
 #endif
 }

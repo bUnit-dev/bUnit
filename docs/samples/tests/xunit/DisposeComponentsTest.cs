@@ -5,20 +5,19 @@ using Xunit;
 
 namespace Bunit.Docs.Samples;
 
-public class DisposeComponentsTest
+public class DisposeComponentsTest : TestContext
 {
   [Fact]
   public void DisposeElements()
   {
-    using var ctx = new TestContext();
     var calledTimes = 0;
-    var cut = ctx.RenderComponent<DisposableComponent>(parameters => parameters
+    var cut = RenderComponent<DisposableComponent>(parameters => parameters
       .Add(p => p.LocationChangedCallback, url => calledTimes++)
     );
-    
-    ctx.DisposeComponents();
 
-    ctx.Services.GetRequiredService<NavigationManager>().NavigateTo("newurl");
+    DisposeComponents();
+
+    Services.GetRequiredService<NavigationManager>().NavigateTo("newurl");
 
     Assert.Equal(0, calledTimes);
   }
@@ -26,10 +25,9 @@ public class DisposeComponentsTest
   [Fact]
   public void ShouldCatchExceptionInDispose()
   {
-    using var ctx = new TestContext();
-    ctx.RenderComponent<ExceptionInDisposeComponent>();
+    RenderComponent<ExceptionInDisposeComponent>();
 
-    var act = ctx.DisposeComponents;
+    var act = DisposeComponents;
 
     Assert.Throws<NotSupportedException>(act);
   }
@@ -38,11 +36,10 @@ public class DisposeComponentsTest
   [Fact]
   public void ShouldCatchExceptionInDisposeAsync()
   {
-    using var ctx = new TestContext();
-    ctx.RenderComponent<ExceptionInDisposeAsyncComponent>();
+    RenderComponent<ExceptionInDisposeAsyncComponent>();
 
-    ctx.DisposeComponents();
-    var exception = ctx.Renderer.UnhandledException.Result;
+    DisposeComponents();
+    var exception = Renderer.UnhandledException.Result;
     Assert.IsType<NotSupportedException>(exception);
   }
 #endif
