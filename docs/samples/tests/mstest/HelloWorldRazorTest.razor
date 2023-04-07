@@ -1,14 +1,12 @@
 @attribute [TestClass]
-@code 
+@inherits BunitTestContext
+@code
 {
   [TestMethod]
   public void HelloWorldComponentRendersCorrectly()
   {
-    // Arrange
-    using var ctx = new Bunit.TestContext();
-
     // Act
-    var cut = ctx.Render(@<HelloWorld/>);
+    var cut = Render(@<HelloWorld/>);
 
     // Assert
     cut.MarkupMatches(@<h1>Hello world from Blazor</h1>);

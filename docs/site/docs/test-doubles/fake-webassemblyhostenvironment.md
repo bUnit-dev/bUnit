@@ -30,8 +30,7 @@ To verify that the `<HelloWorld>` component correctly says hello to the develope
 
 ```csharp
 // Arrange
-using var ctx = new TestContext();
-var hostEnvironment = ctx.Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();
+var hostEnvironment = Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();
 
 // Sets the environment to "Development". There are two other helper 
 // methods available as well, SetEnvironmentToProduction() and 
@@ -39,7 +38,7 @@ var hostEnvironment = ctx.Services.GetRequiredService<FakeWebAssemblyHostEnviron
 // directly through the hostEnvironment.Environment property.
 hostEnvironment.SetEnvironmentToDevelopment();
 
-var cut = ctx.RenderComponent<SimpleUsingWebAssemblyHostEnvironment>();
+var cut = RenderComponent<SimpleUsingWebAssemblyHostEnvironment>();
 
 // Assert - inspects markup to verify the message
 cut.Find("#message").MarkupMatches($"<p>Hello Developers.</p>");
@@ -49,14 +48,13 @@ To verify that the `<HelloWorld>` component correctly uses the current `BaseAddr
 
 ```csharp
 // Arrange
-using var ctx = new TestContext();
-var hostEnvironment = ctx.Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();
+var hostEnvironment = Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();
 
 // Sets a new base address directly on the BaseAddress property.
 hostEnvironment.BaseAddress = "myBaseUrl/";
 
 // Act
-var cut = ctx.RenderComponent<SimpleUsingWebAssemblyHostEnvironment>();
+var cut = RenderComponent<SimpleUsingWebAssemblyHostEnvironment>();
 
 // Assert - inspect markup to verify that the BaseAddress is used correctly.
 cut.Find("#address").MarkupMatches($"<p>The base URL is: myBaseUrl/</p>");

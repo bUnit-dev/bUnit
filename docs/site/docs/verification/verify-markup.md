@@ -30,7 +30,7 @@ To access the rendered markup of a component, just use the <xref:Bunit.IRendered
 
 To get the markup as a string, do the following:
 
-[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=16&end=21&highlight=5)]
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=16&end=19&highlight=3)]
 
 You can perform standard string assertions against the markup string, like checking whether it contains a value or is empty.
 
@@ -70,13 +70,13 @@ In the following examples, the `<Heading>` component listed below will be used a
 
 To use the `MarkupMatches()` method to perform a semantic comparison of the output of the `<Heading>` component through its <xref:Bunit.IRenderedFragment>, do the following:
 
-[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=27&end=34&highlight=5-9)]
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=25&end=30&highlight=3-6)]
 
 The highlighted line shows the call to the `MarkupMatches()` method. This test passes even though the insignificant whitespace is not exactly the same between the expected HTML string and the raw markup produced by the `<Heading>` component. It even works when the CSS class list is not in the same order on the `<small>` element.
 
 The `MarkupMatches()` method is also available on `INode` and `INodeList` types, for example:
 
-[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=40&end=45&highlight=5-6)]
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=36&end=39&highlight=3-4)]
 
 Here we use the `Find(string cssSelector)` method to find the `<small>` element, and only verify it and its content and attributes.
 
@@ -85,7 +85,7 @@ Here we use the `Find(string cssSelector)` method to find the `<small>` element,
 
 Text content can also be verified with the `MarkupMatches()` method, e.g. the text inside the `<small>` element. It has the advantage over regular string comparison in that it removes insignificant whitespace in the text automatically - even between words - where a normal string `Trim()` method isn't enough. For example:
 
-[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=51&end=56&highlight=5)]
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=45&end=48&highlight=3)]
 
 The semantic HTML comparer can be customized to make a test case even more stable and easier to maintain. For example, it is possible to ignore an element or attribute during comparison, or provide a regular expression to the comparer when comparing a specific element or attribute to make the comparer work with generated data.
 
@@ -112,11 +112,11 @@ Let's see some examples of using the [`Find(string cssSelector)`](xref:Bunit.Ren
 
 To find the `<caption>` element and the first `<td>` elements in each row, do the following:
 
-[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=62&end=67&highlight=5-6)]
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=54&end=57&highlight=3-4)]
 
 Once you have one or more elements, you verify against them,  such as by  inspecting their properties through the DOM API. For example:
 
-[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=69&end=71)]
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=59&end=61)]
 
 #### Auto-refreshing Find() queries
 
@@ -148,7 +148,7 @@ Let's look at a few examples  of using the assertion helpers. In the first one, 
 
 Here is an example of using the <xref:Bunit.IRenderedFragment.GetChangesSinceFirstRender> method:
 
-[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=77&end=90&highlight=8,11,14)]
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=67&end=79&highlight=7,10,13)]
 
 This is what happens in the test:
 
@@ -164,7 +164,7 @@ This example tests the `<CheckList>` component listed below. The component allow
 
 To test the end-to-end life cycle of adding and removing items from the `<CheckList>` component, do the following:
 
-[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=96&end=141)]
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=85&end=126)]
 
 This is what happens in the test:
 

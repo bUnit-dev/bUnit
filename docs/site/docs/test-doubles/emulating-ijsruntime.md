@@ -26,8 +26,7 @@ bUnit's JSInterop can run in two modes, **strict** or **loose**:
 By default, the bUnit's JSInterop runs in **Strict** mode. To change the mode, do the following:
 
 ```csharp
-using var ctx = new TestContext();
-ctx.JSInterop.Mode = JSRuntimeMode.Loose;
+JSInterop.Mode = JSRuntimeMode.Loose;
 ```
 
 ## Setting up invocations
@@ -43,13 +42,11 @@ Similarly, when the parameterless `Setup<TResult>()` and `SetupVoid()` methods a
 Here are two examples:
 
 ```csharp
-using var ctx = new TestContext();
-
 // Set up an invocation and specify the result value immediately
-ctx.JSInterop.Setup<string>("getPageTitle").SetResult("bUnit is awesome");
+JSInterop.Setup<string>("getPageTitle").SetResult("bUnit is awesome");
 
 // Set up an invocation without specifying the result
-var plannedInvocation = ctx.JSInterop.SetupVoid("startAnimation");
+var plannedInvocation = JSInterop.SetupVoid("startAnimation");
 
 // ... other test code
 
@@ -87,9 +84,7 @@ Since the .NET 5 release of Blazor, it has been possible to import JavaScript mo
 The `SetupModule` methods return a module JSInterop, which can be configured to handle JavaScript calls using the `Setup` and `SetupVoid` methods. For example, to configure bUnit's JSInterop to handle an import of the JavaScript module `hello.js`, and a call to the function `world()` in that model, do the following:
 
 ```csharp
-using var ctx = new TestContext();
-
-var moduleInterop = ctx.JSInterop.SetupModule("hello.js");
+var moduleInterop = JSInterop.SetupModule("hello.js");
 moduleInterop.SetupVoid("world");
 ```
 
@@ -98,7 +93,7 @@ moduleInterop.SetupVoid("world");
 By default, a module Interop inherits the `Mode` setting from the root JSInterop in bUnit. However, you can override it explicitly and have it in a different mode from another module's Interop or the root JSInterop. Just set the `Mode` property, e.g.:
 
 ```csharp
-var moduleInterop = ctx.JSInterop.SetupModule("hello.js");
+var moduleInterop = JSInterop.SetupModule("hello.js");
 moduleInterop.Mode = JSRuntimeMode.Loose;
 ```
 
@@ -141,13 +136,12 @@ To verify that the `FocusAsync` has been called in the `<ClickToFocus>` componen
 Do the following:
 
 ```csharp
-using var ctx = new TestContext();
 var cut = RenderComponent<ClickToFocus>();
 var inputElement = cut.Find("input");
 
 cut.Find("button").Click(); // Triggers onclick handler that sets focus of input element
 
-ctx.JSInterop.VerifyFocusAsyncInvoke() // Verifies that a FocusAsync call has happened
+JSInterop.VerifyFocusAsyncInvoke() // Verifies that a FocusAsync call has happened
    .Arguments[0] // gets the first argument passed to the FocusAsync method
    .ShouldBeElementReferenceTo(inputElement); // verify that it is an element reference to the input element.
 ```

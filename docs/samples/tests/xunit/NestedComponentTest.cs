@@ -3,22 +3,18 @@ using Bunit;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-
 using static Bunit.ComponentParameterFactory;
 
-namespace Bunit.Docs.Samples
-{
-  public class NestedComponentTest
-  {
-    [Fact]
-    public void Test()
-    {
-      using var ctx = new TestContext();
+namespace Bunit.Docs.Samples;
 
-      var wrapper = ctx.RenderComponent<Wrapper>(parameters => parameters
-        .AddChildContent<HelloWorld>()
-      );
-      var cut = wrapper.FindComponent<HelloWorld>();
-    }
+public class NestedComponentTest : TestContext
+{
+  [Fact]
+  public void Test()
+  {
+    var wrapper = RenderComponent<Wrapper>(parameters => parameters
+      .AddChildContent<HelloWorld>()
+    );
+    var cut = wrapper.FindComponent<HelloWorld>();
   }
 }

@@ -5,15 +5,15 @@
         {
           "files": [
             "bunit.core/bunit.core.csproj",
-            "bunit.web/bunit.web.csproj",
+            "bunit.web/bunit.web.csproj"
           ],
-          "exclude": [ "**/bin/**", "**/obj/**" ],
+          "exclude": [ "**/bin/**", "**/obj/**", "../../src/AngleSharpWrappers", "../../src/bunit", "../../src/bunit.web.testcomponents", "../../src/bunit.template" ],
           "src": "../../src"
         }
       ],
       "dest": "api",
       "properties": {
-        "TargetFramework": "net6.0"
+        "TargetFramework": "net7.0"
       },
       "disableGitFeatures": false,
       "disableDefaultFilter": false
