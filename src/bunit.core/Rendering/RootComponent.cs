@@ -12,7 +12,8 @@ internal sealed class RootComponent : IComponent
 
 	public void Attach(RenderHandle renderHandle) => this.renderHandle = renderHandle;
 
-	public Task SetParametersAsync(ParameterView parameters) => throw new InvalidOperationException($"{nameof(RootComponent)} shouldn't receive any parameters");
+	public Task SetParametersAsync(ParameterView parameters)
+		=> throw new InvalidOperationException($"{nameof(RootComponent)} shouldn't receive any parameters");
 
 	public void Render() => renderHandle.Render(renderFragment);
 

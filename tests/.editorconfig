@@ -44,3 +44,4 @@ dotnet_diagnostic.CA1819.severity = suggestion		# CA1819: Properties should not 
 dotnet_diagnostic.CA1849.severity = suggestion		# CA1849: Call async methods when in an async method
 dotnet_diagnostic.xUnit1026.severity = none			# xUnit1026: Theory methods should use all of their parameters
 dotnet_diagnostic.S1144.severity = suggestion		# S1144: Unused private types or members should be removed
+dotnet_diagnostic.S2094.severity = suggestion		# S2094: Classes should not be empty
