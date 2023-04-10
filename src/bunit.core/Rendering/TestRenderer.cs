@@ -8,6 +8,7 @@ namespace Bunit.Rendering;
 /// </summary>
 public class TestRenderer : Renderer, ITestRenderer
 {
+	private readonly object renderTreeUpdateLock = new();
 	private readonly SynchronizationContext? usersSyncContext = SynchronizationContext.Current;
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
 	private readonly List<RootComponent> rootComponents = new();
@@ -80,33 +81,39 @@ public class TestRenderer : Renderer, ITestRenderer
 		if (fieldInfo is null)
 			throw new ArgumentNullException(nameof(fieldInfo));
 
-		var result = Dispatcher.InvokeAsync(() =>
+		// Calling base.DispatchEventAsync updates the render tree
+		// if the event contains associated data.
+		lock (renderTreeUpdateLock)
 		{
-			ResetUnhandledException();
+			var result = Dispatcher.InvokeAsync(() =>
+			{
+				ResetUnhandledException();
 
-			try
-			{
-				return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
-			}
-			catch (ArgumentException ex) when (string.Equals(ex.Message, $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')", StringComparison.Ordinal))
-			{
-				if (ignoreUnknownEventHandlers)
+				try
 				{
-					return Task.CompletedTask;
+					return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
 				}
+				catch (ArgumentException ex) when (string.Equals(ex.Message, $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')", StringComparison.Ordinal))
+				{
+					if (ignoreUnknownEventHandlers)
+					{
+						return Task.CompletedTask;
+					}
 
-				var betterExceptionMsg = new UnknownEventHandlerIdException(eventHandlerId, fieldInfo, ex);
-				return Task.FromException(betterExceptionMsg);
+					var betterExceptionMsg = new UnknownEventHandlerIdException(eventHandlerId, fieldInfo, ex);
+					return Task.FromException(betterExceptionMsg);
+				}
+			});
+
+			if (result.IsFaulted && result.Exception is not null)
+			{
+				HandleException(result.Exception);
 			}
-		});
 
-		if (result.IsFaulted && result.Exception is not null)
-		{
-			HandleException(result.Exception);
+			AssertNoUnhandledExceptions();
+
+			return result;
 		}
-
-		AssertNoUnhandledExceptions();
-		return result;
 	}
 
 	/// <inheritdoc/>
@@ -148,6 +155,19 @@ public class TestRenderer : Renderer, ITestRenderer
 
 		rootComponents.Clear();
 		AssertNoUnhandledExceptions();
+	}
+
+	/// <inheritdoc/>
+	protected override void ProcessPendingRender()
+	{
+		// Blocks updates to the renderers internal render tree
+		// while the render tree is being read elsewhere.
+		// base.ProcessPendingRender calls UpdateDisplayAsync,
+		// so there is no need to lock in that method.
+		lock (renderTreeUpdateLock)
+		{
+			base.ProcessPendingRender();
+		}
 	}
 
 	/// <inheritdoc/>
@@ -281,7 +301,12 @@ public class TestRenderer : Renderer, ITestRenderer
 		var result = new List<IRenderedComponentBase<TComponent>>();
 		var framesCollection = new RenderTreeFrameDictionary();
 
-		FindComponentsInRenderTree(parentComponent.ComponentId);
+		// Blocks the renderer from changing the render tree
+		// while this method searches through it.
+		lock (renderTreeUpdateLock)
+		{
+			FindComponentsInRenderTree(parentComponent.ComponentId);
+		}
 
 		return result;
 
