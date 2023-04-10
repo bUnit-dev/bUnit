@@ -1,9 +1,15 @@
 using System.Security.Claims;
+using Xunit.Abstractions;
 
 namespace Bunit.TestDoubles.Authorization;
 
 public class AuthorizationTest : TestContext
 {
+	public AuthorizationTest(ITestOutputHelper outputHelper)
+	{
+		Services.AddXunitLogger(outputHelper);
+	}
+
 	[Fact(DisplayName = "AuthorizeView with unauthenticated user")]
 	public void Test001()
 	{
