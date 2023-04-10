@@ -414,7 +414,7 @@ There are scenarios where it is not possible or not desirable to inherit from `T
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[HelloWorldExplicitContext.cs](../../../samples/tests/xunit/HelloWorldExplicitContext.cs#L5-L16)] 
+[!code-csharp[HelloWorldExplicitContext.cs](../../../samples/tests/xunit/HelloWorldExplicitContext.cs#L6-L16)] 
 
 # [Razor test code](#tab/razor)
 

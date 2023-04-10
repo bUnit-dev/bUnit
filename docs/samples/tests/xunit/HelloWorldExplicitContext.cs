@@ -1,3 +1,6 @@
+using Bunit;
+using Xunit;
+
 namespace Bunit.Docs.Samples;
 
 public class HelloWorldExplicitContext
