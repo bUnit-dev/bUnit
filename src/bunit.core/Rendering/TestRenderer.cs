@@ -8,6 +8,7 @@ namespace Bunit.Rendering;
 /// </summary>
 public class TestRenderer : Renderer, ITestRenderer
 {
+	private readonly SynchronizationContext? usersSyncContext = SynchronizationContext.Current;
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
@@ -105,7 +106,6 @@ public class TestRenderer : Renderer, ITestRenderer
 		}
 
 		AssertNoUnhandledExceptions();
-
 		return result;
 	}
 
@@ -123,7 +123,6 @@ public class TestRenderer : Renderer, ITestRenderer
 	public IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
 		where TComponent : IComponent
 		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
-
 
 	/// <inheritdoc />
 	public void DisposeComponents()
@@ -154,10 +153,38 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc/>
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
-		logger.LogNewRenderBatchReceived();
+		if (usersSyncContext is not null && usersSyncContext != SynchronizationContext.Current)
+		{
+			// The users' sync context, typically one established by
+			// xUnit or another testing framework is used to update any
+			// rendered fragments/dom trees and trigger WaitForX handlers.
+			// This ensures that changes to DOM observed inside a WaitForX handler
+			// will also be visible outside a WaitForX handler, since
+			// they will be running in the same sync context. The theory is that 
+			// this should mitigate the issues where Blazor's dispatcher/thread is used 
+			// to verify an assertion inside a WaitForX handler, and another thread is 
+			// used again to access the DOM/repeat the assertion, where the change
+			// may not be visible yet (another theory about why that may happen is different 
+			// CPU cache updates not happening immediately).
+			//
+			// There is no guarantee a caller/test framework has set a sync context.
+			usersSyncContext.Send(static (state) =>
+			{
+				var (renderBatch, renderer) = ((RenderBatch, TestRenderer))state!;
+				renderer.UpdateDisplay(renderBatch);
+			}, (renderBatch, this));
+		}
+		else
+		{
+			UpdateDisplay(renderBatch);
+		}
 
+		return Task.CompletedTask;
+	}
+
+	private void UpdateDisplay(in RenderBatch renderBatch)
+	{
 		RenderCount++;
-
 		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
 
 		// removes disposed components
@@ -177,11 +204,11 @@ public class TestRenderer : Renderer, ITestRenderer
 		// notify each rendered component about the render
 		foreach (var (key, rc) in renderedComponents.ToArray())
 		{
-			logger.LogComponentRendered(rc.ComponentId);
-
 			LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
 
 			rc.OnRender(renderEvent);
+
+			logger.LogComponentRendered(rc.ComponentId);
 
 			// RC can replace the instance of the component it is bound
 			// to while processing the update event.
@@ -191,10 +218,6 @@ public class TestRenderer : Renderer, ITestRenderer
 				renderedComponents.Add(rc.ComponentId, rc);
 			}
 		}
-
-		logger.LogChangedComponentsMarkupUpdated();
-
-		return Task.CompletedTask;
 	}
 
 	/// <inheritdoc/>
@@ -255,45 +278,37 @@ public class TestRenderer : Renderer, ITestRenderer
 		if (parentComponent is null)
 			throw new ArgumentNullException(nameof(parentComponent));
 
-		// Ensure FindComponents runs on the same thread as the renderer,
-		// and that the renderer does not perform any renders while
-		// FindComponents is traversing the current render tree.
-		// Without this, the render tree could change while FindComponentsInternal
-		// is traversing down the render tree, with indeterministic as a results.
-		return Dispatcher.InvokeAsync(() =>
+		var result = new List<IRenderedComponentBase<TComponent>>();
+		var framesCollection = new RenderTreeFrameDictionary();
+
+		FindComponentsInRenderTree(parentComponent.ComponentId);
+
+		return result;
+
+		void FindComponentsInRenderTree(int componentId)
 		{
-			var result = new List<IRenderedComponentBase<TComponent>>();
-			var framesCollection = new RenderTreeFrameDictionary();
+			var frames = GetOrLoadRenderTreeFrame(framesCollection, componentId);
 
-			FindComponentsInRenderTree(parentComponent.ComponentId);
-
-			return result;
-
-			void FindComponentsInRenderTree(int componentId)
+			for (var i = 0; i < frames.Count; i++)
 			{
-				var frames = GetOrLoadRenderTreeFrame(framesCollection, componentId);
-
-				for (var i = 0; i < frames.Count; i++)
+				ref var frame = ref frames.Array[i];
+				if (frame.FrameType == RenderTreeFrameType.Component)
 				{
-					ref var frame = ref frames.Array[i];
-					if (frame.FrameType == RenderTreeFrameType.Component)
+					if (frame.Component is TComponent component)
 					{
-						if (frame.Component is TComponent component)
-						{
-							result.Add(GetOrCreateRenderedComponent(framesCollection, frame.ComponentId, component));
-
-							if (result.Count == resultLimit)
-								return;
-						}
-
-						FindComponentsInRenderTree(frame.ComponentId);
+						result.Add(GetOrCreateRenderedComponent(framesCollection, frame.ComponentId, component));
 
 						if (result.Count == resultLimit)
 							return;
 					}
+
+					FindComponentsInRenderTree(frame.ComponentId);
+
+					if (result.Count == resultLimit)
+						return;
 				}
 			}
-		}).GetAwaiter().GetResult();
+		}
 	}
 
 	IRenderedComponentBase<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)

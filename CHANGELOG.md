@@ -6,6 +6,12 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+
+### Changed 
+
+- Changed test renderer such that updates to rendered components markup happen in the same synchronization context as the test framework is using (if any), if any, to avoid memory race conditions. By [@egil](https://github.com/egil).
+- Changed default "WaitFor" timeout to 10 seconds. By [@egil](https://github.com/egil).
+
 ## [1.18.4] - 2023-02-26
 
 ### Fixed
