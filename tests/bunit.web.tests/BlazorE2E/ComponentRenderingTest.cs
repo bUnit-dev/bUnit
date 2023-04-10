@@ -674,7 +674,7 @@ public class ComponentRenderingTest : TestContext
 
 		cut.Find("button").Click();
 
-		cut.WaitForStateAsync(() => !cut.FindAll("div").Any());
+		cut.WaitForState(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
 

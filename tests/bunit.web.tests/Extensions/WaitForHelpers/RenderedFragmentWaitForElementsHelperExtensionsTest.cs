@@ -5,6 +5,8 @@ namespace Bunit.Extensions.WaitForHelpers;
 
 public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 {
+	private readonly static TimeSpan WaitForTestTimeout = TimeSpan.FromMilliseconds(5);
+
 	public RenderedFragmentWaitForElementsHelperExtensionsTest(ITestOutputHelper testOutput)
 	{
 		Services.AddXunitLogger(testOutput);
@@ -29,7 +31,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		var cut = RenderComponent<DelayRenderFragment>();
 
 		var expected = Should.Throw<WaitForFailedException>(() =>
-			cut.WaitForElement("#notHereElm", TimeSpan.FromMilliseconds(10)));
+			cut.WaitForElement("#notHereElm", WaitForTestTimeout));
 
 		expected.Message.ShouldStartWith(WaitForElementHelper.TimeoutBeforeFoundMessage);
 	}
@@ -53,7 +55,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		var cut = RenderComponent<DelayRenderFragment>();
 
 		var expected = Should.Throw<WaitForFailedException>(() =>
-			cut.WaitForElements("#notHereElm", TimeSpan.FromMilliseconds(30)));
+			cut.WaitForElements("#notHereElm", WaitForTestTimeout));
 
 		expected.Message.ShouldStartWith(WaitForElementsHelper.TimeoutBeforeFoundMessage);
 		expected.InnerException.ShouldBeNull();
@@ -66,7 +68,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		var cut = RenderComponent<DelayRenderFragment>();
 
 		var expected = Should.Throw<WaitForFailedException>(() =>
-			cut.WaitForElements("#notHereElm", 2, TimeSpan.FromMilliseconds(30)));
+			cut.WaitForElements("#notHereElm", 2, WaitForTestTimeout));
 
 		expected.Message.ShouldStartWith(string.Format(CultureInfo.InvariantCulture, WaitForElementsHelper.TimeoutBeforeFoundWithCountMessage, 2));
 		expected.InnerException.ShouldBeNull();
