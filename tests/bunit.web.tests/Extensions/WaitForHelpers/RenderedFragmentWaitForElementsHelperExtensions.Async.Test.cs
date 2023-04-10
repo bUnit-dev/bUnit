@@ -5,7 +5,9 @@ namespace Bunit.Extensions.WaitForHelpers;
 
 public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestContext
 {
-	public RenderedFragmentWaitForElementsHelperExtensionsAsyncTest(ITestOutputHelper testOutput)
+    private readonly static TimeSpan WaitForTestTimeout = TimeSpan.FromMilliseconds(5);
+
+    public RenderedFragmentWaitForElementsHelperExtensionsAsyncTest(ITestOutputHelper testOutput)
 	{
 		Services.AddXunitLogger(testOutput);
 	}
@@ -29,7 +31,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestCont
 		var cut = RenderComponent<DelayRenderFragment>();
 
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
-			await cut.WaitForElementAsync("#notHereElm", TimeSpan.FromMilliseconds(10)));
+			await cut.WaitForElementAsync("#notHereElm", WaitForTestTimeout));
 
 		expected.Message.ShouldStartWith(WaitForElementHelper.TimeoutBeforeFoundMessage);
 	}
@@ -53,7 +55,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestCont
 		var cut = RenderComponent<DelayRenderFragment>();
 
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
-			await cut.WaitForElementsAsync("#notHereElm", TimeSpan.FromMilliseconds(30)));
+			await cut.WaitForElementsAsync("#notHereElm", WaitForTestTimeout));
 
 		expected.Message.ShouldStartWith(WaitForElementsHelper.TimeoutBeforeFoundMessage);
 		expected.InnerException.ShouldBeNull();
@@ -66,7 +68,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestCont
 		var cut = RenderComponent<DelayRenderFragment>();
 
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
-			await cut.WaitForElementsAsync("#notHereElm", 2, TimeSpan.FromMilliseconds(30)));
+			await cut.WaitForElementsAsync("#notHereElm", 2, WaitForTestTimeout));
 
 		expected.Message.ShouldStartWith(string.Format(CultureInfo.InvariantCulture, WaitForElementsHelper.TimeoutBeforeFoundWithCountMessage, 2));
 		expected.InnerException.ShouldBeNull();

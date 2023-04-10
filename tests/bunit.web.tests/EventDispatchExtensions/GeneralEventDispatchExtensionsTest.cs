@@ -1,12 +1,18 @@
 using AngleSharp;
 using AngleSharp.Dom;
 using Bunit.Rendering;
+using Xunit.Abstractions;
 
 namespace Bunit;
 
 public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<EventArgs>
 {
 	protected override string ElementName => "p";
+
+	public GeneralEventDispatchExtensionsTest(ITestOutputHelper outputHelper)
+	{
+		Services.AddXunitLogger(outputHelper);
+	}
 
 	[Theory(DisplayName = "General events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(GeneralEventDispatchExtensions))]
@@ -314,16 +320,13 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.Clicked.ShouldBeTrue();
 	}
 
-	public static IEnumerable<object[]> GetTenNumbers() => Enumerable.Range(0, 10)
-		.Select(i => new object[] { i });
-
 	// Runs the test multiple times to trigger the race condition
 	// reliably.
 	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Needed to trigger multiple reruns of test.")]
 	[Theory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
-	[MemberData(nameof(GetTenNumbers))]
+	[Repeat(10)]
 	[Trait("Category", "async")]
-	public async Task Test400(int i)
+	public async Task Test400(int repeatCount)
 	{
 		var cut = RenderComponent<CounterComponentDynamic>();
 
@@ -338,9 +341,9 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	// reliably.
 	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Needed to trigger multiple reruns of test.")]
 	[Theory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
-	[MemberData(nameof(GetTenNumbers))]
-	[Trait("Category", "sync")]
-	public async Task Test400_Sync(int i)
+    [Repeat(10)]
+    [Trait("Category", "sync")]
+	public async Task Test400_Sync(int repeatCount)
 	{
 		var cut = RenderComponent<CounterComponentDynamic>();
 
