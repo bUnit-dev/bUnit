@@ -11,7 +11,7 @@ public class UserRightsTest : TestContext
   public void Test001()
   {
     // Arrange
-    var authContext = AddTestAuthorization();
+    var authContext = this.AddTestAuthorization();
     authContext.SetAuthorized("TEST USER");
 
     // Act
@@ -26,7 +26,7 @@ public class UserRightsTest : TestContext
   public void Test002()
   {
     // Arrange
-    var authContext = AddTestAuthorization();
+    var authContext = this.AddTestAuthorization();
     authContext.SetAuthorized("TEST USER");
     authContext.SetRoles("superuser");
 
@@ -44,7 +44,7 @@ public class UserRightsTest : TestContext
   public void Test003()
   {
     // Arrange
-    var authContext = AddTestAuthorization();
+    var authContext = this.AddTestAuthorization();
     authContext.SetAuthorized("TEST USER");
     authContext.SetRoles("admin", "superuser");
 
@@ -63,7 +63,7 @@ public class UserRightsTest : TestContext
   public void Test004()
   {
     // Arrange
-    var authContext = AddTestAuthorization();
+    var authContext = this.AddTestAuthorization();
     authContext.SetAuthorized("TEST USER");
     authContext.SetPolicies("content-editor");
 
@@ -81,7 +81,7 @@ public class UserRightsTest : TestContext
   public void Test0041()
   {
     // Arrange
-    var authContext = AddTestAuthorization();
+    var authContext = this.AddTestAuthorization();
     authContext.SetAuthorized("TEST USER");
     authContext.SetPolicies("content-editor", "approver");
 
@@ -99,7 +99,7 @@ public class UserRightsTest : TestContext
   public void Test006()
   {
     // Arrange
-    var authContext = AddTestAuthorization();
+    var authContext = this.AddTestAuthorization();
     authContext.SetAuthorized("TEST USER");
     authContext.SetClaims(
       new Claim(ClaimTypes.Email, "test@example.com"),
@@ -121,7 +121,7 @@ public class UserRightsTest : TestContext
   public void Test005()
   {
     // Arrange
-    var authContext = AddTestAuthorization();
+    var authContext = this.AddTestAuthorization();
     authContext.SetAuthorized("TEST USER");
     authContext.SetRoles("admin", "superuser");
     authContext.SetPolicies("content-editor");
@@ -144,7 +144,7 @@ public class UserRightsTest : TestContext
   public void Test007()
   {
     // Arrange
-    var authContext = AddTestAuthorization();
+    var authContext = this.AddTestAuthorization();
     authContext.SetAuthorized("TEST USER");
     authContext.SetAuthenticationType("custom-auth-type");
 

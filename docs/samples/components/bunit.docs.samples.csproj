@@ -1,9 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net5.0;net6.0;net7.0</TargetFrameworks>
+		<LangVersion>10.0</LangVersion>
 		<RazorLangVersion>3.0</RazorLangVersion>
 		<RootNamespace>Bunit.Docs.Samples</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<NoWarn>CA1014,NU5104</NoWarn>
+		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -28,6 +32,14 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.0" />
 	</ItemGroup>
 
 </Project>

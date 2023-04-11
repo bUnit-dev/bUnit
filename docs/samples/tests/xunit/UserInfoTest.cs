@@ -9,7 +9,7 @@ public class UserInfoTest : TestContext
   public void Test001()
   {
     // Arrange
-    AddTestAuthorization();
+    this.AddTestAuthorization();
 
     // Act
     var cut = RenderComponent<UserInfo>();
@@ -23,7 +23,7 @@ public class UserInfoTest : TestContext
   public void Test004()
   {
     // Arrange
-    var authContext = AddTestAuthorization();
+    var authContext = this.AddTestAuthorization();
     authContext.SetAuthorizing();
 
     // Act
@@ -38,7 +38,7 @@ public class UserInfoTest : TestContext
   public void Test002()
   {
     // Arrange
-    var authContext = AddTestAuthorization();
+    var authContext = this.AddTestAuthorization();
     authContext.SetAuthorized("TEST USER", AuthorizationState.Unauthorized);
 
     // Act
@@ -53,7 +53,7 @@ public class UserInfoTest : TestContext
   public void Test003()
   {
     // Arrange
-    var authContext = AddTestAuthorization();
+    var authContext = this.AddTestAuthorization();
     authContext.SetAuthorized("TEST USER");
 
     // Act
