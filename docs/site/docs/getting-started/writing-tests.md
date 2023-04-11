@@ -13,7 +13,7 @@ Rendering a component happens through bUnit's <xref:Bunit.TestContext>. The resu
 
 ## Write tests in `.cs` or `.razor` files
 
-bUnit works with MSTest, NUnit, and xUnit, and it allows you to write the unit tests in either `.cs` or `.razor` files. 
+bUnit works with MSTest, NUnit, and xUnit, and it allows you to write the unit tests in either `.cs` or `.razor` files.
 
 The latter, writing tests in `.razor` files, provides an easier way to declare component markup and HTML markup in the tests, so it will most likely be the go-to for many people in the future.
 
@@ -26,8 +26,8 @@ The following sections show how to get started writing tests in either `.cs` or 
 Before writing tests in `.razor` files, a few things needs to be in place:
 
 1. Make sure the test project has the SDK type set to `Microsoft.NET.Sdk.Razor`. Otherwise the Blazor compiler will not translate your `.razor` files into runnable code.
-2. Add an `_Imports.razor` file to the test project. It serves the same purpose as `_Imports.razor` files in regular Blazor projects. These using statements are useful to add right away:   
-   
+2. Add an `_Imports.razor` file to the test project. It serves the same purpose as `_Imports.razor` files in regular Blazor projects. These using statements are useful to add right away:
+
    ```cshtml
    @using Microsoft.AspNetCore.Components.Forms
    @using Microsoft.AspNetCore.Components.Web
@@ -37,7 +37,7 @@ Before writing tests in `.razor` files, a few things needs to be in place:
    @using Bunit
    @using Bunit.TestDoubles
    ```
-    
+
 Also add an using statement for your general purpose testing framework, e.g. `@using Xunit` for xUnit.
 
 With that in place, lets look at a simple example that tests the following `<HelloWorld>` component:
@@ -180,22 +180,22 @@ Just be aware that all examples in the rest of the documentation assumes that yo
 
 # [xUnit](#tab/xunit)
 
-[!code-csharp[HelloWorldExplicitContextTest.cs](../../../samples/tests/xunit/HelloWorldExplicitContextTest.cs#L3-L20)]
+[!code-csharp[HelloWorldExplicitContextTest.cs](../../../samples/tests/xunit/HelloWorldExplicitContextTest.cs#L6-L20)]
 
 # [NUnit](#tab/nunit)
 
-[!code-csharp[HelloWorldExplicitContextTest.cs](../../../samples/tests/nunit/HelloWorldExplicitContextTest.cs#L3-L20)]
+[!code-csharp[HelloWorldExplicitContextTest.cs](../../../samples/tests/nunit/HelloWorldExplicitContextTest.cs#L6-L20)]
 
 > [!NOTE]
-> `TestContext` is an ambiguous reference - it could mean `Bunit.TestContext` or `NUnit.Framework.TestContext` - so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.: `using BunitTestContext = Bunit.TestContext;` 
+> `TestContext` is an ambiguous reference - it could mean `Bunit.TestContext` or `NUnit.Framework.TestContext` - so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.: `using BunitTestContext = Bunit.TestContext;`
 
 # [MSTest](#tab/mstest)
 
-[!code-csharp[HelloWorldImplicitContextTest.cs](../../../samples/tests/mstest/HelloWorldExplicitContextTest.cs#L3-L20)]
+[!code-csharp[HelloWorldImplicitContextTest.cs](../../../samples/tests/mstest/HelloWorldExplicitContextTest.cs#L6-L21)]
 
 > [!NOTE]
-> `TestContext` is an ambiguous reference - it could mean `Bunit.TestContext` or `Microsoft.VisualStudio.TestTools.UnitTesting.TestContext` - so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.:   
-> `using BunitTestContext = Bunit.TestContext;` 
+> `TestContext` is an ambiguous reference - it could mean `Bunit.TestContext` or `Microsoft.VisualStudio.TestTools.UnitTesting.TestContext` - so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.:
+> `using BunitTestContext = Bunit.TestContext;`
 
 ## Further reading
 
