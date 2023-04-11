@@ -3,6 +3,8 @@ root = true
 [*]
 indent_style = space
 tab_size = 2
+indent_size = 2
+indent_width = 2
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = false
@@ -13,6 +15,8 @@ trim_trailing_whitespace = false
 [*.{cs,razor}]
 tab_size = 2
 indent_style = space
+indent_size = 2
+indent_width = 2
 dotnet_diagnostic.BL0001.severity = none
 dotnet_diagnostic.BL0002.severity = none
 dotnet_diagnostic.BL0003.severity = none
