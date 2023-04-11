@@ -30,7 +30,7 @@ Let’s write a test for the `<Counter>` component listed below. This comes with
 
 To do this, you can carry out the following using bUnit and xUnit:
 
-[!code-csharp[CounterTest.cs](../samples/tests/razor/CounterTest.razor)]
+[!code-cshtml[CounterTest.razor](../samples/tests/razor/CounterTest.razor)]
 
 This test uses bUnit's test context to render the `Counter` component with the `Render` method. It then finds the button the component rendered and clicks it with the `Find` and `Click` methods. Finally, it finds the paragraph (`<p>`) element and verifies that it matches the expected markup passed to the MarkupMatches method.
 
