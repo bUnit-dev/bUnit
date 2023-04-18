@@ -50,7 +50,7 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.54.0.63966" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.56.0.67649" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings"
