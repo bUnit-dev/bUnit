@@ -144,7 +144,7 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 		const string expectedMarkup = @"
 		<div class=""header"">
 			<div>Custom Metadata Definitions</div>
-			<zui-button></zui-button>
+			<zui-button diff:ignoreAttributes></zui-button>
 		</div>";
 
 		var cut = RenderComponent<CustomElement>();
