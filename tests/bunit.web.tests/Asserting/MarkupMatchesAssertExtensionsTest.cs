@@ -141,12 +141,13 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	[Fact(DisplayName = "Handles custom elements with attributes")]
 	public void Test016()
 	{
-		const string expectedMarkup = @"<div class=""main"">
-			<my-button emphasis=""primary-highlight"" disabled>Add new<my-icon slot=""icon"" size=""s32""></my-icon></my-button>
-			</div>
-			";
+		const string expectedMarkup = @"
+		<div class=""header"">
+			<div>Custom Metadata Definitions</div>
+			<zui-button></zui-button>
+		</div>";
 
-		var cut = RenderComponent<CustomElementWithAttribute>();
+		var cut = RenderComponent<CustomElement>();
 
 		cut.MarkupMatches(expectedMarkup);
 	}
