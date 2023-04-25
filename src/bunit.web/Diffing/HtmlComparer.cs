@@ -21,7 +21,7 @@ public sealed class HtmlComparer
 	{
 		var strategy = new DiffingStrategyPipeline();
 		strategy.AddDefaultOptions();
-		strategy.AddMatcher(BlazorDiffingHelpers.UnknownElementMatch, StrategyType.Specialized);
+		strategy.AddMatcher(BlazorDiffingHelpers.UnknownElementMatch, StrategyType.Generalized);
 		strategy.AddFilter(BlazorDiffingHelpers.BlazorAttributeFilter, StrategyType.Specialized);
 		differenceEngine = new HtmlDiffer(strategy);
 	}
