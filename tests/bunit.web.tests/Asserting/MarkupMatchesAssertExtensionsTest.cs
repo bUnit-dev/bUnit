@@ -137,4 +137,18 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 		// in a known context (e.g. <svg> or <foreignObject>)
 		path.MarkupMatches("<path />");
 	}
+
+	[Fact(DisplayName = "Werid")]
+	public void Test016()
+	{
+		const string expectedMarkup = @"<div class=""main"">
+			<my-button emphasis=""primary-highlight"" disabled>Add new<my-icon slot=""icon"" size=""s32""></my-icon></my-button>
+			</div>
+			";
+
+		// Act
+		var chart = RenderComponent<CustomElementWithAttribute>();
+
+		chart.MarkupMatches(expectedMarkup);
+	}
 }
