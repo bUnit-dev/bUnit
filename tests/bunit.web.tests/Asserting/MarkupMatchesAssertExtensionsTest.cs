@@ -138,7 +138,7 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 		path.MarkupMatches("<path />");
 	}
 
-	[Fact(DisplayName = "Werid")]
+	[Fact(DisplayName = "Handles custom elements with attributes")]
 	public void Test016()
 	{
 		const string expectedMarkup = @"<div class=""main"">
@@ -146,9 +146,8 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 			</div>
 			";
 
-		// Act
-		var chart = RenderComponent<CustomElementWithAttribute>();
+		var cut = RenderComponent<CustomElementWithAttribute>();
 
-		chart.MarkupMatches(expectedMarkup);
+		cut.MarkupMatches(expectedMarkup);
 	}
 }
