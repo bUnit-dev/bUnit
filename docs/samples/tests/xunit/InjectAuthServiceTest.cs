@@ -2,37 +2,34 @@
 using System;
 using Xunit;
 
-namespace Bunit.Docs.Samples
+namespace Bunit.Docs.Samples;
+
+public class InjectAuthServiceTest : TestContext
 {
-    public class InjectAuthServiceTest
-    {
-		[Fact(DisplayName = "Use AuthenticationStateProvider service with authenticated and authorized user")]
-		public void Test001()
-		{
-			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
-			authContext.SetAuthorized("TestUserName", AuthorizationState.Authorized);
+  [Fact(DisplayName = "Use AuthenticationStateProvider service with authenticated and authorized user")]
+  public void Test001()
+  {
+    // arrange
+    var authContext = this.AddTestAuthorization();
+    authContext.SetAuthorized("TestUserName", AuthorizationState.Authorized);
 
-			// act
-			var cut = ctx.RenderComponent<InjectAuthService>();
+    // act
+    var cut = RenderComponent<InjectAuthService>();
 
-			// assert
-			Assert.Contains("<p>User: TestUserName</p>", cut.Markup, StringComparison.InvariantCulture);
-		}
+    // assert
+    Assert.Contains("<p>User: TestUserName</p>", cut.Markup, StringComparison.InvariantCulture);
+  }
 
-		[Fact(DisplayName = "Use AuthenticationStateProvider service with unauthenticated and unauthorized user")]
-		public void Test002()
-		{
-			// arrange
-			using var ctx = new TestContext();
-			var authContext = ctx.AddTestAuthorization();
+  [Fact(DisplayName = "Use AuthenticationStateProvider service with unauthenticated and unauthorized user")]
+  public void Test002()
+  {
+    // arrange
+    var authContext = this.AddTestAuthorization();
 
-			// act
-			var cut = ctx.RenderComponent<InjectAuthService>();
+    // act
+    var cut = RenderComponent<InjectAuthService>();
 
-			// assert
-			Assert.DoesNotContain("User:", cut.Markup, StringComparison.InvariantCulture);
-		}
-	}
+    // assert
+    Assert.DoesNotContain("User:", cut.Markup, StringComparison.InvariantCulture);
+  }
 }

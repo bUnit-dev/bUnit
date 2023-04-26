@@ -26,7 +26,7 @@ Let us look at an example. Consider the following `<AsyncData>` component which 
 
 To test the `<AsyncData>` component, do the following:
 
-[!code-csharp[AsyncDataTest.cs](../../../samples/tests/xunit/AsyncDataTest.cs?start=15&end=28&highlight=2,8,11,14)]
+[!code-csharp[AsyncDataTest.cs](../../../samples/tests/xunit/AsyncDataTest.cs?start=15&end=27&highlight=1,7,10,13)]
 
 This is what happens in the test:
 
@@ -42,7 +42,7 @@ This is what happens in the test:
 
 The timeout, which defaults to one second, can be controlled by passing a `TimeSpan` as the second argument to the `WaitForState()` method, e.g.:
 
-[!code-csharp[](../../../samples/tests/xunit/AsyncDataTest.cs?start=45&end=45)]
+[!code-csharp[](../../../samples/tests/xunit/AsyncDataTest.cs?start=43&end=43)]
 
 If the timeout is reached, a <xref:Bunit.Extensions.WaitForHelpers.WaitForFailedException> exception is thrown with the following error message:
 

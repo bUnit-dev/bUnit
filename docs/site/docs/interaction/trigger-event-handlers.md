@@ -39,11 +39,11 @@ To trigger the `@onclick` `ClickHandler` event handler method in the `<ClickMe>`
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[ClickMeTest.cs](../../../samples/tests/xunit/ClickMeTest.cs?range=9-25&highlight=10-13)]
+[!code-csharp[ClickMeTest.cs](../../../samples/tests/xunit/ClickMeTest.cs?range=7-25&highlight=9-11)]
 
 # [Razor test code](#tab/razor)
 
-[!code-cshtml[ClickMeTest.razor](../../../samples/tests/razor/ClickMeTest.razor?highlight=12-14)]
+[!code-cshtml[ClickMeTest.razor](../../../samples/tests/razor/ClickMeTest.razor?highlight=13-15)]
 
 ***
 
@@ -99,8 +99,7 @@ To trigger the `@oncustompaste` event callback, do the following:
 
 ```csharp
 // Arrange
-using var ctx = new TestContext();
-var cut = ctxRenderComponent<CustomPasteSample>();
+var cut = RenderComponent<CustomPasteSample>();
 
 // Atc - find the input element and trigger the oncustompaste event
 cut.Find("input").TriggerEvent("oncustompaste", new CustomPasteEventArgs

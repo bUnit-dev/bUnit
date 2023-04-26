@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
@@ -15,8 +15,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AngleSharp" Version="1.0.1" />
-		<PackageReference Include="AngleSharp.Diffing" Version="0.17.0" />
+		<PackageReference Include="AngleSharp" Version="0.17.1" />
+		<PackageReference Include="AngleSharp.Diffing" Version="0.18.1" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">

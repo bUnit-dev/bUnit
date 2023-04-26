@@ -1,6 +1,7 @@
 using AngleSharp;
 using AngleSharp.Dom;
 using Bunit.Rendering;
+using Xunit.Abstractions;
 
 namespace Bunit;
 
@@ -8,15 +9,24 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 {
 	protected override string ElementName => "p";
 
+	public GeneralEventDispatchExtensionsTest(ITestOutputHelper outputHelper)
+	{
+		Services.AddXunitLogger(outputHelper);
+	}
+
 	[Theory(DisplayName = "General events are raised correctly through helpers")]
 	[MemberData(nameof(GetEventHelperMethods), typeof(GeneralEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
 		if (helper is null)
+		{
 			throw new ArgumentNullException(nameof(helper));
+		}
 
 		if (helper.Name == nameof(TriggerEventDispatchExtensions.TriggerEventAsync))
+		{
 			return;
+		}
 
 		VerifyEventRaisesCorrectly(helper, EventArgs.Empty);
 	}
@@ -264,15 +274,56 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		Should.Throw<InvalidOperationException>(() => cut.Find("button").Submit());
 	}
 
-	public static IEnumerable<object[]> GetTenNumbers() => Enumerable.Range(0, 10)
-		.Select(i => new object[] { i });
+	[Theory(DisplayName = "Should not submit a form if the button has preventDefault")]
+	[InlineData("#inside-form-input")]
+	[InlineData("#inside-form-button")]
+	[InlineData("#span-inside-form-button")]
+	public void Test307(string submitElementSelector)
+	{
+		var cut = RenderComponent<SubmitFormOnClick>(ps => ps
+			.Add(x => x.PreventDefault, true));
+
+		cut.Find(submitElementSelector).Click();
+
+		cut.Instance.FormSubmitted.ShouldBeFalse();
+		cut.Instance.Clicked.ShouldBeTrue();
+	}
+
+	[Theory(DisplayName = "Should submit a form when submit button clicked")]
+	[InlineData("#inside-form-input")]
+	[InlineData("#inside-form-button")]
+	[InlineData("#span-inside-form-button")]
+	[InlineData("#inside-form-input-no-handler")]
+	[InlineData("#inside-form-button-no-handler")]
+	[InlineData("#span-inside-form-button-no-handler")]
+	public void Test308(string submitElementSelector)
+	{
+		var cut = RenderComponent<SubmitFormOnClick>();
+
+		cut.Find(submitElementSelector).Click();
+
+		cut.Instance.FormSubmitted.ShouldBeTrue();
+	}
+
+	[Theory(DisplayName = "Should trigger click handler of buttons inside form")]
+	[InlineData("#inside-form-input")]
+	[InlineData("#inside-form-button")]
+	[InlineData("#span-inside-form-button")]
+	public void Test309(string submitElementSelector)
+	{
+		var cut = RenderComponent<ButtonsInsideForm>();
+
+		cut.Find(submitElementSelector).Click();
+
+		cut.Instance.Clicked.ShouldBeTrue();
+	}
 
 	// Runs the test multiple times to trigger the race condition
 	// reliably.
 	[Theory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
-	[MemberData(nameof(GetTenNumbers))]
+	[Repeat(10)]
 	[Trait("Category", "async")]
-	public async Task Test400(int i)
+	public async Task Test400(int repeatCount)
 	{
 		var cut = RenderComponent<CounterComponentDynamic>();
 
@@ -287,9 +338,9 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	// reliably.
 	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Needed to trigger multiple reruns of test.")]
 	[Theory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
-	[MemberData(nameof(GetTenNumbers))]
-	[Trait("Category", "sync")]
-	public async Task Test400_Sync(int i)
+    [Repeat(10)]
+    [Trait("Category", "sync")]
+	public async Task Test400_Sync(int repeatCount)
 	{
 		var cut = RenderComponent<CounterComponentDynamic>();
 

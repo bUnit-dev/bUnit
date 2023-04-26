@@ -696,6 +696,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldNotThrow();
 	}
 
+#pragma warning disable S1144 // Unused private types or members should be removed
 	private class Params : ComponentBase
 	{
 		public int Field = -1;
@@ -770,4 +771,5 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		[Parameter] public EventCallback<string> FacialExpressionChanged { get; set; }
 		[Parameter] public Expression<Func<string>> FacialExpressionExpression { get; set; }
 	}
+#pragma warning restore S1144 // Unused private types or members should be removed
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using AngleSharp.Dom;
+﻿using AngleSharp.Dom;
 
 namespace AngleSharpWrappers;
 

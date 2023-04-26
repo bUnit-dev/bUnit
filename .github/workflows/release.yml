@@ -90,9 +90,9 @@ jobs:
 
       - name: 🛠️ Packing library in release mode
         run: |
-          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit.template/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
 
       - name: 🛠️ Upload library to NuGet.org repository
         run: |

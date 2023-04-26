@@ -674,7 +674,7 @@ public class ComponentRenderingTest : TestContext
 
 		cut.Find("button").Click();
 
-		cut.WaitForStateAsync(() => !cut.FindAll("div").Any());
+		cut.WaitForState(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
 
@@ -690,14 +690,16 @@ public class ComponentRenderingTest : TestContext
 		cut.FindAll("div").Count.ShouldBe(0);
 	}
 
-	[Fact]
-	public void SomeEscapableCharactersDontGetEncoded()
+	[Theory]
+	[InlineData("<b>Message</b>", "<p some-attribute=\"<b>Message</b>\">&lt;b&gt;Message&lt;/b&gt;</p>")]
+	[InlineData("url('&*')", "<p some-attribute=\"url('&amp;*')\">url('&amp;*')</p>")]
+	[InlineData("<\"*?_'", "<p some-attribute=\"<&quot;*?_'\">&lt;\"*?_'</p>")]
+	public void SomeEscapableCharactersDontGetEncoded(string input, string expected)
 	{
-		const string input = "url('\"&')";
 		var cut = RenderComponent<ComponentWithEscapableCharacters>(
 			p => p.Add(s => s.Escaped, input));
 
-		cut.Markup.ShouldBe("<p style=\"url('&quot;&amp;')\">url('\"&')</p>");
+		cut.Markup.ShouldBe(expected);
 	}
 
 	[Fact]

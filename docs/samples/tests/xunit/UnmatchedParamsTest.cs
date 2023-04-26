@@ -6,18 +6,15 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Bunit.Rendering;
 
-namespace Bunit.Docs.Samples
-{
-  public class UnmatchedParamsTest
-  {
-    [Fact]
-    public void Test()
-    {
-      using var ctx = new TestContext();
+namespace Bunit.Docs.Samples;
 
-      var cut = ctx.RenderComponent<UnmatchedParams>(parameters => parameters
-        .AddUnmatched("some-unknown-param", "a value")
-      );
-    }
+public class UnmatchedParamsTest : TestContext
+{
+  [Fact]
+  public void Test()
+  {
+    var cut = RenderComponent<UnmatchedParams>(parameters => parameters
+      .AddUnmatched("some-unknown-param", "a value")
+    );
   }
 }

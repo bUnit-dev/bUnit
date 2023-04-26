@@ -1,21 +1,17 @@
+namespace Bunit.Docs.Samples;
+
 using Bunit;
 using NUnit.Framework;
 
-namespace Bunit.Docs.Samples
+public class HelloWorldTest : BunitTestContext
 {
-  public class HelloWorldTest
-  {
     [Test]
     public void HelloWorldComponentRendersCorrectly()
     {
-      // Arrange
-      using var ctx = new Bunit.TestContext();
+        // Act
+        var cut = RenderComponent<HelloWorld>();
 
-      // Act
-      var cut = ctx.RenderComponent<HelloWorld>();
-
-      // Assert
-      cut.MarkupMatches("<h1>Hello world from Blazor</h1>");
+        // Assert
+        cut.MarkupMatches("<h1>Hello world from Blazor</h1>");
     }
-  }
 }

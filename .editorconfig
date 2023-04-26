@@ -3,7 +3,7 @@ root = true
 [*]
 indent_style = tab
 indent_size = tab
-tab_size = 4
+tab_width = 4
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
@@ -504,3 +504,5 @@ dotnet_diagnostic.S125.severity = none # S125: Sections of code should not be co
 dotnet_diagnostic.S3459.severity = none # S3459: Unassigned members should be removed
 dotnet_diagnostic.S3871.severity = none # S3871: Exception types should be "public"
 dotnet_diagnostic.S1186.severity = none # S1186: Methods should not be empty
+dotnet_diagnostic.S1133.severity = none # S1133: Deprecated code should be removed
+dotnet_diagnostic.S3963.severity = none # S3963: "static" fields should be initialized inline (covered by CA1810)

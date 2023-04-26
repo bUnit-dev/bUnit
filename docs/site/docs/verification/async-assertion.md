@@ -26,7 +26,7 @@ Let's look at an example. Consider the following `<AsyncData>` component, which 
 
 To test the `<AsyncData>` component, do the following:
 
-[!code-csharp[AsyncDataTest.cs](../../../samples/tests/xunit/AsyncDataTest.cs?start=54&end=65&highlight=3,9,12)]
+[!code-csharp[AsyncDataTest.cs](../../../samples/tests/xunit/AsyncDataTest.cs?start=52&end=62&highlight=2,8,11)]
 
 This is what happens in the test:
 
@@ -38,7 +38,7 @@ This is what happens in the test:
 
 The timeout, which defaults to one second, can be controlled by passing a `TimeSpan` as the second argument to the `WaitForAssertion()` method, e.g.:
 
-[!code-csharp[](../../../samples/tests/xunit/AsyncDataTest.cs?start=66&end=66)]
+[!code-csharp[](../../../samples/tests/xunit/AsyncDataTest.cs?start=63&end=63)]
 
 If the timeout is reached, a <xref:Bunit.Extensions.WaitForHelpers.WaitForFailedException> exception is thrown with the following error message:
 

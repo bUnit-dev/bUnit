@@ -13,18 +13,7 @@ public abstract class TestContextBase : IDisposable
 	/// <summary>
 	/// Gets the renderer used by the test context.
 	/// </summary>
-	public ITestRenderer Renderer
-	{
-		get
-		{
-			if (testRenderer is null)
-			{
-				testRenderer = Services.GetRequiredService<ITestRenderer>();
-			}
-
-			return testRenderer;
-		}
-	}
+	public ITestRenderer Renderer => testRenderer ??= Services.GetRequiredService<ITestRenderer>();
 
 	/// <summary>
 	/// Gets the service collection and service provider that is used when a
@@ -86,7 +75,7 @@ public abstract class TestContextBase : IDisposable
 
 		// Ignore the async task as GetAwaiter().GetResult() can cause deadlock
 		// and implementing IAsyncDisposable in TestContext will be a breaking change.
-		// 
+		//
 		// NOTE: This has to be called before Services.Dispose().
 		// If there are IAsyncDisposable services registered, calling Dispose first
 		// causes the service provider to throw an exception.

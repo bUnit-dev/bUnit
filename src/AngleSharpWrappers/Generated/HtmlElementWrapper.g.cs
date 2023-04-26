@@ -19,9 +19,9 @@ namespace AngleSharpWrappers
         /// Creates an instance of the <see cref="HtmlElementWrapper"/> type;
         /// </summary>
         public HtmlElementWrapper(IElementFactory<IHtmlElement> elementFactory) : base(elementFactory) { }
+/// <inheritdoc/>
 
         #region Events
-        /// <inheritdoc/>
         public event DomEventHandler Aborted { add => WrappedElement.Aborted += value; remove => WrappedElement.Aborted -= value; }
         /// <inheritdoc/>
         public event DomEventHandler Blurred { add => WrappedElement.Blurred += value; remove => WrappedElement.Blurred -= value; }
@@ -137,10 +137,10 @@ namespace AngleSharpWrappers
         public event DomEventHandler VolumeChanged { add => WrappedElement.VolumeChanged += value; remove => WrappedElement.VolumeChanged -= value; }
         /// <inheritdoc/>
         public event DomEventHandler Waiting { add => WrappedElement.Waiting += value; remove => WrappedElement.Waiting -= value; }
+        /// <inheritdoc/>
         #endregion
 
         #region Properties and indexers
-        /// <inheritdoc/>
         [DebuggerHidden]
         public String? AccessKey { get => WrappedElement.AccessKey; set => WrappedElement.AccessKey = value;}
         /// <inheritdoc/>
@@ -197,9 +197,6 @@ namespace AngleSharpWrappers
         /// <inheritdoc/>
         [DebuggerHidden]
         public NodeFlags Flags { get => WrappedElement.Flags; }
-        /// <inheritdoc/>
-        [DebuggerHidden]
-        public String? GivenNamespaceUri { get => WrappedElement.GivenNamespaceUri; }
         /// <inheritdoc/>
         [DebuggerHidden]
         public Boolean HasChildNodes { get => WrappedElement.HasChildNodes; }
@@ -299,10 +296,10 @@ namespace AngleSharpWrappers
         /// <inheritdoc/>
         [DebuggerHidden]
         public String? Title { get => WrappedElement.Title; set => WrappedElement.Title = value;}
+        /// <inheritdoc/>
         #endregion
 
         #region Methods
-        /// <inheritdoc/>
         [DebuggerHidden]
         public void AddEventListener(String type, DomEventHandler? callback, Boolean capture) => WrappedElement.AddEventListener(type, callback, capture);
         /// <inheritdoc/>
@@ -364,7 +361,7 @@ namespace AngleSharpWrappers
         public IHtmlCollection<IElement> GetElementsByTagName(String tagName) => WrappedElement.GetElementsByTagName(tagName);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public IHtmlCollection<IElement> GetElementsByTagNameNS(String? namespaceUri, String tagName) => WrappedElement.GetElementsByTagNameNS(namespaceUri, tagName);
+        public IHtmlCollection<IElement> GetElementsByTagNameNS(String namespaceUri, String tagName) => WrappedElement.GetElementsByTagNameNS(namespaceUri, tagName);
         /// <inheritdoc/>
         [DebuggerHidden]
         public Boolean HasAttribute(String name) => WrappedElement.HasAttribute(name);
@@ -388,7 +385,7 @@ namespace AngleSharpWrappers
         public String? LookupNamespaceUri(String prefix) => WrappedElement.LookupNamespaceUri(prefix);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public String? LookupPrefix(String? namespaceUri) => WrappedElement.LookupPrefix(namespaceUri);
+        public String? LookupPrefix(String namespaceUri) => WrappedElement.LookupPrefix(namespaceUri);
         /// <inheritdoc/>
         [DebuggerHidden]
         public Boolean Matches(String selectors) => WrappedElement.Matches(selectors);
@@ -412,7 +409,7 @@ namespace AngleSharpWrappers
         public Boolean RemoveAttribute(String name) => WrappedElement.RemoveAttribute(name);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public Boolean RemoveAttribute(String? namespaceUri, String localName) => WrappedElement.RemoveAttribute(namespaceUri, localName);
+        public Boolean RemoveAttribute(String namespaceUri, String localName) => WrappedElement.RemoveAttribute(namespaceUri, localName);
         /// <inheritdoc/>
         [DebuggerHidden]
         public INode RemoveChild(INode child) => WrappedElement.RemoveChild(child);
@@ -427,10 +424,10 @@ namespace AngleSharpWrappers
         public INode ReplaceChild(INode newChild, INode oldChild) => WrappedElement.ReplaceChild(newChild, oldChild);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public void SetAttribute(String name, String? value) => WrappedElement.SetAttribute(name, value);
+        public void SetAttribute(String name, String value) => WrappedElement.SetAttribute(name, value);
         /// <inheritdoc/>
         [DebuggerHidden]
-        public void SetAttribute(String? namespaceUri, String name, String? value) => WrappedElement.SetAttribute(namespaceUri, name, value);
+        public void SetAttribute(String namespaceUri, String name, String value) => WrappedElement.SetAttribute(namespaceUri, name, value);
         /// <inheritdoc/>
         [DebuggerHidden]
         public void ToHtml(TextWriter writer, IMarkupFormatter formatter) => WrappedElement.ToHtml(writer, formatter);

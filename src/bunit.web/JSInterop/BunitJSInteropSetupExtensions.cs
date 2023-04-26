@@ -291,4 +291,19 @@ public static class BunitJSInteropSetupExtensions
 		if (resultType == typeof(Microsoft.JSInterop.Implementation.JSObjectReference))
 			throw new ArgumentException(UseSetupModuleErrorMessage);
 	}
+
+#if NET5_0_OR_GREATER
+	private static void EnsureResultNotIJSObjectReference<TResult>()
+	{
+		const string UseSetupModuleErrorMessage = "Use one of the SetupModule() methods instead to set up an invocation handler that returns an IJSObjectReference.";
+
+		var resultType = typeof(TResult);
+
+		if (resultType == typeof(IJSObjectReference))
+			throw new ArgumentException(UseSetupModuleErrorMessage);
+
+		if (resultType == typeof(Microsoft.JSInterop.Implementation.JSObjectReference))
+			throw new ArgumentException(UseSetupModuleErrorMessage);
+	}
+#endif
 }

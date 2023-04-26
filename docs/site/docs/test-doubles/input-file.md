@@ -10,16 +10,14 @@ bUnit comes with integrated support for the [`InputFile`](https://docs.microsoft
 To upload a file, first find the `InputFile` component in the component under test. Afterwards call the method `UploadFile`:
 
 ```csharp
-using var ctx = new TestContext();
-
 // Create an InputFileContent with string content
 InputFileContent fileToUpload = InputFileContent.CreateFromText("Text content", "Filename.txt");
 
 // Render the component under test which contains the InputFile component as a child component
-IRenderedComponent<ComponentUnderTest> cut = ctx.RenderComponent<ComponentUnderTest>();
+IRenderedComponent<ComponentUnderTest> cut = RenderComponent<ComponentUnderTest>();
 
 // Find the InputFile component
-IRenderedComponent<ComponentUnderTest> inputFile = cut.FindComponent<InputFile>();
+IRenderedComponent<InputFile> inputFile = cut.FindComponent<InputFile>();
 
 // Upload the file to upload to the InputFile component
 inputFile.UploadFile(fileToUpload);

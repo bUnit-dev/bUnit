@@ -1,18 +1,18 @@
+@inherits TestContext
+
 @code
 {
   [Fact]
   public void Test()
   {
-    using var ctx = new TestContext();
-
     var isDarkTheme = true;
 
-    var cut = ctx.Render(@<CascadingValue Name="LoggedInUser" Value=@("Name of User")>
-                            <CascadingValue Name="LoggedInEmail" Value=@("user@example.com")>
-                              <CascadingValue Value="isDarkTheme">
-                                <CascadingParams />
-                              </CascadingValue>
-                            </CascadingValue>
-                          </CascadingValue>);
+    var cut = Render(@<CascadingValue Name="LoggedInUser" Value=@("Name of User")>
+                        <CascadingValue Name="LoggedInEmail" Value=@("user@example.com")>
+                          <CascadingValue Value="isDarkTheme">
+                            <CascadingParams />
+                          </CascadingValue>
+                        </CascadingValue>
+                      </CascadingValue>);
   }
 }

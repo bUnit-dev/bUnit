@@ -3,9 +3,9 @@ namespace Bunit;
 public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<ChangeEventArgs>
 {
 	private static readonly string[] ExcludedMethodsFromGenericTests = new[] { "Change", "Input", "Submit" };
-        public static IEnumerable<object[]> Helpers { get; }
-        	= GetEventHelperMethods(typeof(InputEventDispatchExtensions), x => !ExcludedMethodsFromGenericTests
-        	.Contains(x.Name.Replace("Async", string.Empty, StringComparison.Ordinal)));
+	public static IEnumerable<object[]> Helpers { get; }
+		= GetEventHelperMethods(typeof(InputEventDispatchExtensions), x => !ExcludedMethodsFromGenericTests
+		.Contains(x.Name.Replace("Async", string.Empty, StringComparison.Ordinal)));
 
 	private static readonly Fixture Fixture = new();
 
@@ -15,7 +15,7 @@ public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<Chan
 	[MemberData(nameof(Helpers))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
-		var expected = new ChangeEventArgs()
+		var expected = new ChangeEventArgs
 		{
 			Value = "SOME VALUE",
 		};
