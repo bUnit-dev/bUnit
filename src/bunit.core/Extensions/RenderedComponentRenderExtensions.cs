@@ -25,8 +25,7 @@ public static class RenderedComponentRenderExtensions
 	public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, ParameterView parameters)
 		where TComponent : IComponent
 	{
-		if (renderedComponent is null)
-			throw new ArgumentNullException(nameof(renderedComponent));
+		ArgumentNullException.ThrowIfNull(renderedComponent);
 
 		var result = renderedComponent.InvokeAsync(() =>
 			renderedComponent.Instance.SetParametersAsync(parameters));
@@ -57,10 +56,8 @@ public static class RenderedComponentRenderExtensions
 	public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, params ComponentParameter[] parameters)
 		where TComponent : IComponent
 	{
-		if (renderedComponent is null)
-			throw new ArgumentNullException(nameof(renderedComponent));
-		if (parameters is null)
-			throw new ArgumentNullException(nameof(parameters));
+		ArgumentNullException.ThrowIfNull(renderedComponent);
+		ArgumentNullException.ThrowIfNull(parameters);
 
 		SetParametersAndRender(renderedComponent, ToParameterView(parameters));
 	}
@@ -74,10 +71,8 @@ public static class RenderedComponentRenderExtensions
 	public static void SetParametersAndRender<TComponent>(this IRenderedComponentBase<TComponent> renderedComponent, Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
 		where TComponent : IComponent
 	{
-		if (renderedComponent is null)
-			throw new ArgumentNullException(nameof(renderedComponent));
-		if (parameterBuilder is null)
-			throw new ArgumentNullException(nameof(parameterBuilder));
+		ArgumentNullException.ThrowIfNull(renderedComponent);
+		ArgumentNullException.ThrowIfNull(parameterBuilder);
 
 		var builder = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder);
 		SetParametersAndRender(renderedComponent, ToParameterView(builder.Build()));

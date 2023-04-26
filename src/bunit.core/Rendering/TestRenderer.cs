@@ -56,8 +56,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent
 	{
-		if (parameters is null)
-			throw new ArgumentNullException(nameof(parameters));
+		ArgumentNullException.ThrowIfNull(parameters);
 
 		var renderFragment = parameters.ToRenderFragment<TComponent>();
 		return Render(renderFragment, id => activator.CreateRenderedComponent<TComponent>(id));
@@ -76,8 +75,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		EventArgs eventArgs,
 		bool ignoreUnknownEventHandlers)
 	{
-		if (fieldInfo is null)
-			throw new ArgumentNullException(nameof(fieldInfo));
+		ArgumentNullException.ThrowIfNull(fieldInfo);
 
 		// Calling base.DispatchEventAsync updates the render tree
 		// if the event contains associated data.
@@ -178,11 +176,11 @@ public class TestRenderer : Renderer, ITestRenderer
 			// rendered fragments/dom trees and trigger WaitForX handlers.
 			// This ensures that changes to DOM observed inside a WaitForX handler
 			// will also be visible outside a WaitForX handler, since
-			// they will be running in the same sync context. The theory is that 
-			// this should mitigate the issues where Blazor's dispatcher/thread is used 
-			// to verify an assertion inside a WaitForX handler, and another thread is 
+			// they will be running in the same sync context. The theory is that
+			// this should mitigate the issues where Blazor's dispatcher/thread is used
+			// to verify an assertion inside a WaitForX handler, and another thread is
 			// used again to access the DOM/repeat the assertion, where the change
-			// may not be visible yet (another theory about why that may happen is different 
+			// may not be visible yet (another theory about why that may happen is different
 			// CPU cache updates not happening immediately).
 			//
 			// There is no guarantee a caller/test framework has set a sync context.
@@ -290,11 +288,10 @@ public class TestRenderer : Renderer, ITestRenderer
 		return result;
 	}
 
-	private IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
+	private List<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
 		where TComponent : IComponent
 	{
-		if (parentComponent is null)
-			throw new ArgumentNullException(nameof(parentComponent));
+		ArgumentNullException.ThrowIfNull(parentComponent);
 
 		var result = new List<IRenderedComponentBase<TComponent>>();
 		var framesCollection = new RenderTreeFrameDictionary();

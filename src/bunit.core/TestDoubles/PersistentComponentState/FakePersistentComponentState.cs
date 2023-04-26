@@ -64,8 +64,7 @@ public sealed class FakePersistentComponentState
 	/// <param name="instance">The instance to persist.</param>
 	public void Persist<TValue>(string key, TValue instance)
 	{
-		if (key is null)
-			throw new ArgumentNullException(nameof(key));
+		ArgumentNullException.ThrowIfNull(key);
 
 		store.Add(key, JsonSerializer.SerializeToUtf8Bytes(instance, JsonSerializerOptions));
 		manager.Value.RestoreStateAsync(store);

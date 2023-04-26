@@ -131,10 +131,7 @@ dotnet add package bunit --version #{NBGV_NuGetPackageVersion}#
 The test projects setting needs to be set to the following:
 
 - the project's SDK needs to be set to `Microsoft.NET.Sdk.Razor`
-- set the `<TargetFramework>` to `net7.0`
-
-> [!NOTE]
-> bUnit works with `net6.0`, `net5.0` and `netcoreapp3.1`/`netstandard2.1` test projects as well.
+- set the `<TargetFramework>` to `net8.0`
 
 To do so, change the first part of the test projects `.csproj` file to look like this.:
 
@@ -142,7 +139,7 @@ To do so, change the first part of the test projects `.csproj` file to look like
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>  ...
 
 </Project>
@@ -165,7 +162,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -194,7 +191,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -220,7 +217,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>

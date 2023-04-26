@@ -9,8 +9,7 @@ public class TriggerTester<TEventArgs> : ComponentBase
 
 	protected override void BuildRenderTree(RenderTreeBuilder builder)
 	{
-		if (builder is null)
-			throw new ArgumentNullException(nameof(builder));
+		ArgumentNullException.ThrowIfNull(builder);
 		if (TriggeredEvent is null)
 			throw new InvalidOperationException($"{nameof(TriggeredEvent)} is null");
 
