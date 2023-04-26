@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-
-namespace Bunit.TestAssets.XunitExtensions;
+namespace Xunit;
 
 public static class TheoryDataExtensions
 {

@@ -1,4 +1,3 @@
-using Bunit.TestAssets.XunitExtensions;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 

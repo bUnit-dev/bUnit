@@ -137,4 +137,18 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 		// in a known context (e.g. <svg> or <foreignObject>)
 		path.MarkupMatches("<path />");
 	}
+
+	[Fact(DisplayName = "Handles custom elements with attributes")]
+	public void Test016()
+	{
+		const string expectedMarkup = @"
+		<div class=""header"">
+			<div>Custom Metadata Definitions</div>
+			<zui-button diff:ignoreAttributes></zui-button>
+		</div>";
+
+		var cut = RenderComponent<CustomElement>();
+
+		cut.MarkupMatches(expectedMarkup);
+	}
 }

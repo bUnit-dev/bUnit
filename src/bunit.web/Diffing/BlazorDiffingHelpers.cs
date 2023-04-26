@@ -1,4 +1,5 @@
 using AngleSharp.Diffing.Core;
+using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 
 namespace Bunit.Diffing;
@@ -33,7 +34,7 @@ public static class BlazorDiffingHelpers
 		SourceCollection testSources)
 	{
 		var lastMatchedTestNodeIndex = -1;
-		foreach (var control in controlSources.GetUnmatched())
+		foreach (var control in controlSources.GetUnmatched().Where(c => c.Node is IElement))
 		{
 			var comparison = TryFindMatchingNodes(control, testSources, lastMatchedTestNodeIndex + 1);
 			if (comparison.HasValue)
@@ -46,7 +47,7 @@ public static class BlazorDiffingHelpers
 
 	private static Comparison? TryFindMatchingNodes(in ComparisonSource control, SourceCollection testSources, int startIndex)
 	{
-		foreach (var test in testSources.GetUnmatched(startIndex))
+		foreach (var test in testSources.GetUnmatched(startIndex).Where(t => t.Node is IElement))
 		{
 			if (control.Node is IHtmlUnknownElement
 				|| test.Node is IHtmlUnknownElement
