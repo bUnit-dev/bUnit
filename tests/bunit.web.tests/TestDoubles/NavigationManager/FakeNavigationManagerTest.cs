@@ -169,7 +169,6 @@ public class FakeNavigationManagerTest : TestContext
 		locationChangedInvoked.ShouldBeFalse();
 	}
 
-#if NET7_0_OR_GREATER
 	[Fact(DisplayName = "When component provides NavigationLock, FakeNavigationManager should intercept calls")]
 	public void Test010()
 	{
@@ -322,6 +321,5 @@ public class FakeNavigationManagerTest : TestContext
 
 		[Inject] private NavigationManager NavigationManager { get; set; } = default!;
 	}
-#endif
 }
 

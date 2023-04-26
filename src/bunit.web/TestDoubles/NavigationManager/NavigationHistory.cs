@@ -1,8 +1,6 @@
-#if NET7_0_OR_GREATER
 using System.Text.Json;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-#endif
 
 namespace Bunit.TestDoubles;
 
@@ -21,7 +19,6 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// </summary>
 	public Microsoft.AspNetCore.Components.NavigationOptions Options { get; }
 
-#if NET7_0_OR_GREATER
 	/// <summary>
 	/// Gets the <see cref="NavigationState"/> associated with this history entry.
 	/// </summary>
@@ -34,7 +31,6 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// Will not be null when <see cref="State"/> is <see cref="NavigationState.Faulted"/>.
 	/// </remarks>
 	public Exception? Exception { get; }
-#endif
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="NavigationHistory"/> class.
@@ -47,7 +43,6 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 		Options = options;
 	}
 
-#if NET7_0_OR_GREATER
 	/// <summary>
 	/// Initializes a new instance of the <see cref="NavigationHistory"/> class.
 	/// </summary>
@@ -87,16 +82,8 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 			Options.HistoryEntryState,
 			options ?? JsonSerializerOptions.Default);
 	}
-#endif
 
 	/// <inheritdoc/>
-#if NET6_0
-	public bool Equals(NavigationHistory? other)
-		=> other is not null
-		&& string.Equals(Uri, other.Uri, StringComparison.Ordinal)
-		&& Options.ForceLoad == other.Options.ForceLoad
-		&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry;
-#else
 	public bool Equals(NavigationHistory? other)
 	=> other is not null
 	&& string.Equals(Uri, other.Uri, StringComparison.Ordinal)
@@ -104,7 +91,6 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	&& Options.ReplaceHistoryEntry == other.Options.ReplaceHistoryEntry
 	&& State == other.State
 	&& Exception == other.Exception;
-#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is NavigationHistory other && Equals(other);

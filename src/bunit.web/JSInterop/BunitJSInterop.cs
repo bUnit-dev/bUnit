@@ -128,9 +128,7 @@ public class BunitJSInterop
 		AddInvocationHandler(new LooseModeJSObjectReferenceInvocationHandler(this));
 		AddInvocationHandler(new InputFileInvocationHandler());
 		AddInvocationHandler(new FocusOnNavigateHandler());
-#if NET7_0_OR_GREATER
 		AddInvocationHandler(new NavigationLockDisableNavigationPromptInvocationHandler());
 		AddInvocationHandler(new NavigationLockEnableNavigationPromptInvocationHandler());
-#endif
 	}
 }
