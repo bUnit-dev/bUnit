@@ -6,13 +6,15 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.19.14] - 2023-04-26
+
 ### Fixed
 
-- Custom elements with attributes throw `ArgumentException` with `MarkupMatches`. Reported by [@candritzky](https://github.com/candritzky). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+-   Custom elements with attributes throw `ArgumentException` with `MarkupMatches`. Reported by [@candritzky](https://github.com/candritzky). Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
-### Changed 
+### Changed
 
-- Changed test renderer such that updates to rendered components markup happen in the same synchronization context as the test framework is using (if any), if any, to avoid memory race conditions. By [@egil](https://github.com/egil).
+-   Changed test renderer such that updates to rendered components markup happen in the same synchronization context as the test framework is using (if any), if any, to avoid memory race conditions. By [@egil](https://github.com/egil).
 
 ## [1.18.4] - 2023-02-26
 
@@ -1266,7 +1268,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.18.4...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.19.14...HEAD
+
+[1.19.14]: https://github.com/bUnit-dev/bUnit/compare/v1.18.4...1.19.14
 
 [1.18.4]: https://github.com/bUnit-dev/bUnit/compare/v1.17.2...v1.18.4
 
