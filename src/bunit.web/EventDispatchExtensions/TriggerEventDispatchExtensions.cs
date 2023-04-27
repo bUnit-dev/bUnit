@@ -12,7 +12,7 @@ namespace Bunit;
 /// </summary>
 public static class TriggerEventDispatchExtensions
 {
-	private static readonly HashSet<string> NonBubblingEvents = new(StringComparer.Ordinal)
+	private static readonly HashSet<string> NonBubblingEvents = new(StringComparer.OrdinalIgnoreCase)
 	{
 		"onabort",
 		"onblur",
@@ -37,7 +37,7 @@ public static class TriggerEventDispatchExtensions
 		"onpointerenter",
 		"onselectionchange",
 	};
-	private static readonly HashSet<string> DisabledEventNames = new(StringComparer.Ordinal) { "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup" };
+	private static readonly HashSet<string> DisabledEventNames = new(StringComparer.OrdinalIgnoreCase) { "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup" };
 
 	/// <summary>
 	/// Raises the event <paramref name="eventName"/> on the element <paramref name="element"/>
@@ -79,7 +79,7 @@ public static class TriggerEventDispatchExtensions
 
 	private static Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
-		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
+		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName);
 		var unwrappedElement = element.Unwrap();
 
 		return isNonBubblingEvent

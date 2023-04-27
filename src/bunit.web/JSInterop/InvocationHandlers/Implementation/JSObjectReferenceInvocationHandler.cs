@@ -22,6 +22,8 @@ internal sealed class JSObjectReferenceInvocationHandler : JSRuntimeInvocationHa
 		: base(invocationMatcher, isCatchAllHandler)
 	{
 		JSInterop = new BunitJSModuleInterop(parent);
+#pragma warning disable CA2000 // BunitJSObjectReference has an empty Dispose method
 		SetResult(new BunitJSObjectReference(JSInterop));
+#pragma warning restore CA2000
 	}
 }

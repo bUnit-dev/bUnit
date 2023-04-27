@@ -18,10 +18,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[MemberData(nameof(GetEventHelperMethods), typeof(GeneralEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
-		if (helper is null)
-		{
-			throw new ArgumentNullException(nameof(helper));
-		}
+		ArgumentNullException.ThrowIfNull(helper);
 
 		if (helper.Name == nameof(TriggerEventDispatchExtensions.TriggerEventAsync))
 		{

@@ -18,8 +18,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 
 	protected void VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string MethodName, string EventName)[] methodNameEventMap)
 	{
-		if (helper is null)
-			throw new ArgumentNullException(nameof(helper));
+		ArgumentNullException.ThrowIfNull(helper);
 
 		var eventName = methodNameEventMap.SingleOrDefault(x => x.MethodName.Equals(helper.Name, StringComparison.Ordinal)).EventName
 			?? GetEventNameFromMethod(helper);
@@ -65,8 +64,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 
 	private static string GetEventNameFromMethod(MethodInfo helper)
 	{
-		if (helper is null)
-			throw new ArgumentNullException(nameof(helper));
+		ArgumentNullException.ThrowIfNull(helper);
 
 		var nameLength = helper.Name.Length;
 
@@ -82,8 +80,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 
 	public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType)
 	{
-		if (helperClassType is null)
-			throw new ArgumentNullException(nameof(helperClassType));
+		ArgumentNullException.ThrowIfNull(helperClassType);
 
 		return helperClassType.GetMethods()
 			.Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement))
@@ -93,8 +90,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 
 	public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType, Func<MethodInfo, bool> customFilter)
 	{
-		if (helperClassType is null)
-			throw new ArgumentNullException(nameof(helperClassType));
+		ArgumentNullException.ThrowIfNull(helperClassType);
 
 		return helperClassType.GetMethods()
 			.Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement) && customFilter(x))

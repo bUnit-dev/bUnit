@@ -21,7 +21,7 @@ internal sealed class BunitJSRuntime : IJSInProcessRuntime, IJSUnmarshalledRunti
 
 	/// <inheritdoc/>
 	public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
-		=> JSInterop.HandleInvokeAsync<TValue>(identifier, cancellationToken, args);
+		=> JSInterop.HandleInvokeAsync<TValue>(identifier, args, cancellationToken);
 
 	/// <inheritdoc/>
 	public TResult Invoke<TResult>(string identifier, params object?[]? args)

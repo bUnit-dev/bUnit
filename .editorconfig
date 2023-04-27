@@ -442,9 +442,15 @@ dotnet_diagnostic.MA0018.severity = none # MA0018: Do not declare static members
 
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+dotnet_diagnostic.CA1000.severity = none # CA1000: Do not declare static members on generic types
 dotnet_diagnostic.CA1014.severity = none # CA1014: Mark assemblies with CLSCompliant
 dotnet_diagnostic.CA1031.severity = suggestion # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA1032.severity = none # CA1032: Implement standard exception constructors
+dotnet_diagnostic.CA1054.severity = none # CA1054: Uri parameters should not be strings
+dotnet_diagnostic.CA1056.severity = none # CA1056: Uri properties should not be strings
+dotnet_diagnostic.CA1308.severity = none # CA1308: Normalize strings to uppercase
+dotnet_diagnostic.CA1710.severity = none # CA1710: Identifiers should have correct suffix
+dotnet_diagnostic.CA1711.severity = none # CA1711: Identifiers should not have incorrect suffix
 dotnet_diagnostic.CA2007.severity = none # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2201.severity = suggestion # CA2201: Do not raise reserved exception types
 dotnet_diagnostic.CA2225.severity = none # CA2225: Operator overloads have named alternates
@@ -487,11 +493,16 @@ dotnet_diagnostic.MA0048.severity = silent # MA0048: File name must match type n
 
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+dotnet_diagnostic.CA1019.severity = none # CA1019: Define accessors for attribute arguments
+dotnet_diagnostic.CA1034.severity = none # CA1034: Nested types should not be visible
 dotnet_diagnostic.CA1054.severity = none # CA1054: URI-like parameters should not be strings
 dotnet_diagnostic.CA1062.severity = none # CA1062: Validate arguments of public methods
+dotnet_diagnostic.CA1508.severity = none # CA1508: Avoid dead conditional code
 dotnet_diagnostic.CA1707.severity = none # CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1708.severity = none # CA1708: Identifiers should differ by more than case
 dotnet_diagnostic.CA1812.severity = none # CA1812: Avoid uninstantiated internal classes - components under test are never instantiated directly.
 dotnet_diagnostic.CA1822.severity = suggestion # CA1822: Mark members as static
+dotnet_diagnostic.CA1859.severity = none # CA1859:
 dotnet_diagnostic.CA2007.severity = none # CA2007: Consider calling ConfigureAwait on the awaited task
 
 # Microsoft - FxCop

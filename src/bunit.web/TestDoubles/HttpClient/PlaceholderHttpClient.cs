@@ -8,7 +8,9 @@ internal sealed class PlaceholderHttpClient : HttpClient
 	private const string PlaceholderBaseAddress = "http://localhost";
 
 	public PlaceholderHttpClient()
+#pragma warning disable CA2000 // Will be disposed by HttpClient
 		: base(new PlaceholderHttpMessageHandler(), disposeHandler: true)
+#pragma warning restore CA2000
 	{
 		BaseAddress = new Uri(PlaceholderBaseAddress);
 	}

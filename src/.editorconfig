@@ -36,5 +36,3 @@
 ##########################################
 # Custom - Code Analyzers Rules
 ##########################################
-
-dotnet_diagnostic.S1133.severity = none # S1133: Deprecated code should be removed

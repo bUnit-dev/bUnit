@@ -9,7 +9,7 @@ internal static class JSRuntimeExtensions
 		return jSInterop.HandleInvocation<TValue>(invocation);
 	}
 
-	internal static ValueTask<TValue> HandleInvokeAsync<TValue>(this BunitJSInterop jSInterop, string identifier, CancellationToken cancellationToken, object?[]? args)
+	internal static ValueTask<TValue> HandleInvokeAsync<TValue>(this BunitJSInterop jSInterop, string identifier, object?[]? args, CancellationToken cancellationToken)
 	{
 		var invocationMethodName = GetInvokeAsyncMethodName<TValue>();
 		var invocation = new JSRuntimeInvocation(identifier, cancellationToken, args, typeof(TValue), invocationMethodName);

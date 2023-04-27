@@ -49,7 +49,9 @@ public sealed class HtmlEqualException : ActualExpectedAssertException
 			return $"  {i + 1}: {diffText}";
 		})) + Environment.NewLine;
 
+#pragma warning disable CA1308
 		static string NodeName(ComparisonSource source) => source.Node.NodeType.ToString().ToLowerInvariant();
+#pragma warning restore CA1308
 	}
 
 	private HtmlEqualException(SerializationInfo serializationInfo, StreamingContext streamingContext)

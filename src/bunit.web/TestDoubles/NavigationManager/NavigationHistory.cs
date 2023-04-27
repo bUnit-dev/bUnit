@@ -17,7 +17,7 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// <summary>
 	/// Gets the options that was specified when the <see name="Uri"/> was navigated to.
 	/// </summary>
-	public Microsoft.AspNetCore.Components.NavigationOptions Options { get; }
+	public NavigationOptions Options { get; }
 
 	/// <summary>
 	/// Gets the <see cref="NavigationState"/> associated with this history entry.
@@ -37,7 +37,7 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// </summary>
 	/// <param name="uri"></param>
 	/// <param name="options"></param>
-	public NavigationHistory(string uri, Microsoft.AspNetCore.Components.NavigationOptions options)
+	public NavigationHistory(string uri, NavigationOptions options)
 	{
 		Uri = uri;
 		Options = options;

@@ -35,8 +35,7 @@ public abstract class ComponentDoubleBase<TComponent> : IComponent
 	/// </summary>
 	/// <param name="builder">A <see cref="RenderTreeBuilder"/> to build DOM tree.</param>
 	protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
-
-
+	
 	/// <inheritdoc/>
-	void IComponent.Attach(RenderHandle renderHandle) => this.renderHandle = renderHandle;
+	public void Attach(RenderHandle renderHandle) => this.renderHandle = renderHandle;
 }

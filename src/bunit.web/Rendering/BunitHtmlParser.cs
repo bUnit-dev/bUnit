@@ -20,7 +20,7 @@ public sealed class BunitHtmlParser : IDisposable
 	private static readonly string[] SpecialHtmlElements = { "HTML", "HEAD", "BODY" };
 
 	private readonly IBrowsingContext context;
-	private readonly IHtmlParser htmlParser;
+	private readonly HtmlParser htmlParser;
 	private readonly List<IDocument> documents = new();
 
 	/// <summary>
@@ -70,7 +70,7 @@ public sealed class BunitHtmlParser : IDisposable
 			: htmlParser.ParseFragment(markup, ctx!);
 	}
 
-	private INodeList ParseSpecial(string markup, string matchedElement)
+	private SingleNodeNodeList ParseSpecial(string markup, string matchedElement)
 	{
 		var doc = htmlParser.ParseDocument(markup);
 
