@@ -61,8 +61,7 @@ public class FakeAuthorizationService : IAuthorizationService
 	/// <returns>Result of authorize request.</returns>
 	public Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object? resource, IEnumerable<IAuthorizationRequirement> requirements)
 	{
-		if (requirements is null)
-			throw new ArgumentNullException(nameof(requirements));
+		ArgumentNullException.ThrowIfNull(requirements);
 
 		AuthorizationResult result;
 

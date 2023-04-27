@@ -59,8 +59,7 @@ public sealed class BunitHtmlParser : IDisposable
 	/// <returns>The <see cref="INodeList"/>.</returns>
 	public INodeList Parse([StringSyntax("Html")]string markup)
 	{
-		if (markup is null)
-			throw new ArgumentNullException(nameof(markup));
+		ArgumentNullException.ThrowIfNull(markup);
 
 		var document = GetNewDocumentAsync().GetAwaiter().GetResult();
 

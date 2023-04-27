@@ -35,8 +35,7 @@ public sealed class JSInvokeCountExpectedException : Exception
 	private JSInvokeCountExpectedException(SerializationInfo serializationInfo, StreamingContext streamingContext)
 		: base(serializationInfo, streamingContext)
 	{
-		if (serializationInfo is null)
-			throw new ArgumentNullException(nameof(serializationInfo));
+		ArgumentNullException.ThrowIfNull(serializationInfo);
 		ExpectedInvocationCount = serializationInfo.GetInt32(nameof(ExpectedInvocationCount));
 		ActualInvocationCount = serializationInfo.GetInt32(nameof(ActualInvocationCount));
 		Identifier = serializationInfo.GetString(nameof(Identifier)) ?? string.Empty;
@@ -45,8 +44,7 @@ public sealed class JSInvokeCountExpectedException : Exception
 	/// <inheritdoc/>
 	public override void GetObjectData(SerializationInfo info, StreamingContext context)
 	{
-		if (info is null)
-			throw new ArgumentNullException(nameof(info));
+		ArgumentNullException.ThrowIfNull(info);
 
 		info.AddValue(nameof(ExpectedInvocationCount), ExpectedInvocationCount);
 		info.AddValue(nameof(ActualInvocationCount), ActualInvocationCount);
