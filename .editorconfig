@@ -3,7 +3,7 @@ root = true
 [*]
 indent_style = tab
 indent_size = tab
-tab_size = 4
+tab_width = 4
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
@@ -256,12 +256,12 @@ dotnet_naming_style.prefix_type_parameters_with_t_style.capitalization = pascal_
 dotnet_naming_style.prefix_type_parameters_with_t_style.required_prefix = T
 # disallowed_style - Anything that has this style applied is marked as disallowed
 dotnet_naming_style.disallowed_style.capitalization  = pascal_case
-dotnet_naming_style.disallowed_style.required_prefix = 
-dotnet_naming_style.disallowed_style.required_suffix = 
+dotnet_naming_style.disallowed_style.required_prefix =
+dotnet_naming_style.disallowed_style.required_suffix =
 # internal_error_style - This style should never occur... if it does, it indicates a bug in file or in the parser using the file
 dotnet_naming_style.internal_error_style.capitalization  = pascal_case
-dotnet_naming_style.internal_error_style.required_prefix = 
-dotnet_naming_style.internal_error_style.required_suffix = 
+dotnet_naming_style.internal_error_style.required_prefix =
+dotnet_naming_style.internal_error_style.required_suffix =
 
 ##########################################
 # .NET Design Guideline Field Naming Rules
@@ -418,7 +418,7 @@ dotnet_diagnostic.MA0028.severity = none            # https://github.com/atc-net
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
 dotnet_diagnostic.CA1707.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA1707.md
-dotnet_diagnostic.CA2007.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA2007.md
+dotnet_diagnostic.instance007.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA2007.md
 
 
 # SonarAnalyzer.CSharp
@@ -442,10 +442,18 @@ dotnet_diagnostic.MA0018.severity = none # MA0018: Do not declare static members
 
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+dotnet_diagnostic.CA1000.severity = none # CA1000: Do not declare static members on generic types
 dotnet_diagnostic.CA1014.severity = none # CA1014: Mark assemblies with CLSCompliant
 dotnet_diagnostic.CA1031.severity = suggestion # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA1032.severity = none # CA1032: Implement standard exception constructors
+dotnet_diagnostic.CA1054.severity = none # CA1054: Uri parameters should not be strings
+dotnet_diagnostic.CA1056.severity = none # CA1056: Uri properties should not be strings
+dotnet_diagnostic.CA1308.severity = none # CA1308: Normalize strings to uppercase
+dotnet_diagnostic.CA1710.severity = none # CA1710: Identifiers should have correct suffix
+dotnet_diagnostic.CA1711.severity = none # CA1711: Identifiers should not have incorrect suffix
+dotnet_diagnostic.CA2007.severity = none # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2201.severity = suggestion # CA2201: Do not raise reserved exception types
+dotnet_diagnostic.CA2225.severity = none # CA2225: Operator overloads have named alternates
 
 # SonarAnalyzer.CSharp
 # https://rules.sonarsource.com/csharp
@@ -485,11 +493,16 @@ dotnet_diagnostic.MA0048.severity = silent # MA0048: File name must match type n
 
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+dotnet_diagnostic.CA1019.severity = none # CA1019: Define accessors for attribute arguments
+dotnet_diagnostic.CA1034.severity = none # CA1034: Nested types should not be visible
 dotnet_diagnostic.CA1054.severity = none # CA1054: URI-like parameters should not be strings
 dotnet_diagnostic.CA1062.severity = none # CA1062: Validate arguments of public methods
+dotnet_diagnostic.CA1508.severity = none # CA1508: Avoid dead conditional code
 dotnet_diagnostic.CA1707.severity = none # CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1708.severity = none # CA1708: Identifiers should differ by more than case
 dotnet_diagnostic.CA1812.severity = none # CA1812: Avoid uninstantiated internal classes - components under test are never instantiated directly.
 dotnet_diagnostic.CA1822.severity = suggestion # CA1822: Mark members as static
+dotnet_diagnostic.CA1859.severity = none # CA1859:
 dotnet_diagnostic.CA2007.severity = none # CA2007: Consider calling ConfigureAwait on the awaited task
 
 # Microsoft - FxCop
@@ -504,3 +517,5 @@ dotnet_diagnostic.S125.severity = none # S125: Sections of code should not be co
 dotnet_diagnostic.S3459.severity = none # S3459: Unassigned members should be removed
 dotnet_diagnostic.S3871.severity = none # S3871: Exception types should be "public"
 dotnet_diagnostic.S1186.severity = none # S1186: Methods should not be empty
+dotnet_diagnostic.S1133.severity = none # S1133: Deprecated code should be removed
+dotnet_diagnostic.S3963.severity = none # S3963: "static" fields should be initialized inline (covered by CA1810)

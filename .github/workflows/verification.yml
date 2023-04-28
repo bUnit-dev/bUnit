@@ -40,8 +40,7 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
-            6.0.x
-            7.0.x
+            8.0.x
 
       - name: 🎨 Setup color
         if: matrix.os != 'windows-latest'
@@ -77,9 +76,9 @@ jobs:
 
       - name: 🗳️ Pack library
         run: |
-          dotnet pack -c release -o ${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit/ -c release -o ${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit.template/ -c release -o ${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack -c release --property:PackageOutputPath=${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit/ -c release --property:PackageOutputPath=${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit.template/ -c release --property:PackageOutputPath=${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
 
       - name: ✳ Install bUnit template
         run: |

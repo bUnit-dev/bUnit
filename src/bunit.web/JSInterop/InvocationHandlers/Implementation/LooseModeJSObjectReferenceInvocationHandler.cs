@@ -12,6 +12,8 @@ internal sealed class LooseModeJSObjectReferenceInvocationHandler : JSRuntimeInv
 	internal LooseModeJSObjectReferenceInvocationHandler(BunitJSInterop parent)
 		: base(_ => parent.Mode == JSRuntimeMode.Loose, isCatchAllHandler: true)
 	{
+#pragma warning disable CA2000 // BunitJSObjectReference has an empty Dispose method
 		SetResult(new BunitJSObjectReference(parent));
+#pragma warning restore CA2000
 	}
 }

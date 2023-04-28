@@ -91,16 +91,9 @@ public sealed class RootRenderTree : IReadOnlyCollection<RootRenderTreeRegistrat
 	public int GetCountOf<TComponent>()
 		where TComponent : IComponent
 	{
-		var result = 0;
 		var countType = typeof(TComponent);
 
-		for (int i = 0; i < registrations.Count; i++)
-		{
-			if (countType == registrations[i].ComponentType)
-				result++;
-		}
-
-		return result;
+		return registrations.Count(t => countType == t.ComponentType);
 	}
 
 	private static RenderFragment<RenderFragment> CreateRenderFragmentBuilder<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder)

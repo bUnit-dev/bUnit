@@ -1,5 +1,4 @@
 using System.Collections;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit;
 

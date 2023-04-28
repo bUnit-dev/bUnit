@@ -1,15 +1,15 @@
+@inherits TestContext
+
 @code
 {
   [Fact]
   public void Test()
   {
-    using var ctx = new TestContext();
-
     Action<MouseEventArgs> onClickHandler = _ => { };
     Action onSomethingHandler = () => { };
 
-    var cut = ctx.Render(@<EventCallbackParams
-                              OnClick="onClickHandler"
-                              OnSomething="onSomethingHandler" />);
+    var cut = Render(@<EventCallbackParams
+                          OnClick="onClickHandler"
+                          OnSomething="onSomethingHandler" />);
   }
 }

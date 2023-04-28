@@ -48,12 +48,12 @@ public sealed class UseCultureAttribute : BeforeAfterTestAttribute
 	/// <summary>
 	/// Gets the culture.
 	/// </summary>
-	public CultureInfo Culture { get { return culture.Value; } }
+	public CultureInfo Culture => culture.Value;
 
 	/// <summary>
 	/// Gets the UI culture.
 	/// </summary>
-	public CultureInfo UICulture { get { return uiCulture.Value; } }
+	public CultureInfo UICulture => uiCulture.Value;
 
 	/// <summary>
 	/// Stores the current <see cref="Thread.CurrentPrincipal" />
@@ -86,4 +86,6 @@ public sealed class UseCultureAttribute : BeforeAfterTestAttribute
 		CultureInfo.CurrentCulture.ClearCachedData();
 		CultureInfo.CurrentUICulture.ClearCachedData();
 	}
+
+	public string UiCulture { get; }
 }

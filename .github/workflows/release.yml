@@ -63,8 +63,7 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
-            6.0.x
-            7.0.x
+            8.0.x
 
       - name: 🛠️ Update changelog
         uses: thomaseizinger/keep-a-changelog-new-release@1.3.0
@@ -90,9 +89,9 @@ jobs:
 
       - name: 🛠️ Packing library in release mode
         run: |
-          dotnet pack -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit.template/ -c Release -o ${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
+          dotnet pack src/bunit.template/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true
 
       - name: 🛠️ Upload library to NuGet.org repository
         run: |

@@ -6,6 +6,7 @@ namespace Bunit.Rendering;
 /// <inheritdoc />
 internal class RenderedFragment : IRenderedFragment
 {
+	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by TestServiceProvider, disposed by it.")]
 	private readonly BunitHtmlParser htmlParser;
 	private readonly object markupAccessLock = new();
 	private string markup = string.Empty;
@@ -66,10 +67,7 @@ internal class RenderedFragment : IRenderedFragment
 			// The lock ensures that latest nodes is always based on the latest rendered markup.
 			lock (markupAccessLock)
 			{
-				if (latestRenderNodes is null)
-					latestRenderNodes = htmlParser.Parse(Markup);
-
-				return latestRenderNodes;
+				return latestRenderNodes ??= htmlParser.Parse(Markup);
 			}
 		}
 	}

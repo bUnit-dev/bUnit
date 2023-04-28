@@ -2,15 +2,14 @@
 
 namespace Bunit.Docs.Samples;
 
-public class TwoWayBindingTest
+public class TwoWayBindingTest : TestContext
 {
   [Fact]
   public void Test()
   {
-    using var ctx = new TestContext();
     var currentValue = string.Empty;
 
-    ctx.RenderComponent<TwoWayBinding>(parameters =>
+    RenderComponent<TwoWayBinding>(parameters =>
       parameters.Bind(
         p => p.Value,
         currentValue,

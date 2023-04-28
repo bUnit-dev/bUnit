@@ -1,12 +1,12 @@
+@inherits TestContext
+
 @code
 {
   [Fact]
   public void Test()
   {
-    using var ctx = new TestContext();
-
-    var cut = ctx.Render(@<CascadingValue Name="LoggedInUser" Value=@("Name of User")>
-                            <CascadingParams />
-                          </CascadingValue>);
+    var cut = Render(@<CascadingValue Name="LoggedInUser" Value=@("Name of User")>
+                        <CascadingParams />
+                      </CascadingValue>);
   }
 }

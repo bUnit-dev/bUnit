@@ -22,7 +22,7 @@ internal sealed class BunitJSObjectReference : IJSUnmarshalledObjectReference
 
 	/// <inheritdoc/>
 	public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
-		=> JSInterop.HandleInvokeAsync<TValue>(identifier, cancellationToken, args);
+		=> JSInterop.HandleInvokeAsync<TValue>(identifier, args, cancellationToken);
 
 	/// <inheritdoc/>
 	public TValue Invoke<TValue>(string identifier, params object?[]? args)

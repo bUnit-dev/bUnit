@@ -20,8 +20,7 @@ public static class BunitJSInteropSetupExtensions
 	/// <returns>A <see cref="JSRuntimeInvocationHandler{TResult}"/>.</returns>
 	public static JSRuntimeInvocationHandler<TResult> Setup<TResult>(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher, bool isCatchAllHandler = false)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
+		ArgumentNullException.ThrowIfNull(jsInterop);
 
 		EnsureResultNotIJSObjectReference<TResult>();
 
@@ -74,8 +73,7 @@ public static class BunitJSInteropSetupExtensions
 	/// <returns>A <see cref="JSRuntimeInvocationHandler"/>.</returns>
 	public static JSRuntimeInvocationHandler SetupVoid(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher, bool isCatchAllHandler = false)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
+		ArgumentNullException.ThrowIfNull(jsInterop);
 
 		var result = new JSRuntimeInvocationHandler(invocationMatcher, isCatchAllHandler);
 		jsInterop.AddInvocationHandler(result);
@@ -124,8 +122,7 @@ public static class BunitJSInteropSetupExtensions
 	/// <returns>Returns the <see cref="JSRuntimeInvocationHandler{TResult}"/> or null if no one is found.</returns>
 	public static JSRuntimeInvocationHandler<TResult>? TryGetInvokeHandler<TResult>(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
+		ArgumentNullException.ThrowIfNull(jsInterop);
 
 		return jsInterop.TryGetHandlerFor<TResult>(
 			new JSRuntimeInvocation(
@@ -146,8 +143,7 @@ public static class BunitJSInteropSetupExtensions
 	/// <returns>Returns the <see cref="JSRuntimeInvocationHandler"/> or null if no one is found.</returns>
 	public static JSRuntimeInvocationHandler? TryGetInvokeVoidHandler(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
+		ArgumentNullException.ThrowIfNull(jsInterop);
 
 		var invocation = new JSRuntimeInvocation(identifier, default, arguments, typeof(object), string.Empty);
 
@@ -171,10 +167,8 @@ public static class BunitJSInteropSetupExtensions
 	/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
 	public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher, bool isCatchAllHandler = false)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
-		if (invocationMatcher is null)
-			throw new ArgumentNullException(nameof(invocationMatcher));
+		ArgumentNullException.ThrowIfNull(jsInterop);
+		ArgumentNullException.ThrowIfNull(invocationMatcher);
 
 		var result = new JSObjectReferenceInvocationHandler(jsInterop, invocationMatcher, isCatchAllHandler);
 		jsInterop.AddInvocationHandler(result);
@@ -269,8 +263,7 @@ public static class BunitJSInteropSetupExtensions
 	/// <returns>A <see cref="BunitJSModuleInterop"/> or null if no one is found.</returns>
 	public static BunitJSModuleInterop? TryGetModuleJSInterop(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
+		ArgumentNullException.ThrowIfNull(jsInterop);
 
 		var invocation = new JSRuntimeInvocation(identifier, default, arguments, typeof(IJSObjectReference), "InvokeAsync");
 

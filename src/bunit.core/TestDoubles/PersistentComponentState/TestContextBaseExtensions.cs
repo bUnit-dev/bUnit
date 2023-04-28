@@ -17,8 +17,7 @@ public static class TestContextBaseExtensions
 	/// <returns>The added <see cref="FakePersistentComponentState"/>.</returns>
 	public static FakePersistentComponentState AddFakePersistentComponentState(this TestContextBase testContext)
 	{
-		if (testContext is null)
-			throw new ArgumentNullException(nameof(testContext));
+		ArgumentNullException.ThrowIfNull(testContext);
 
 		testContext.Services.AddSingleton<ComponentStatePersistenceManager>();
 		testContext.Services.AddSingleton<PersistentComponentState>(s => s.GetRequiredService<ComponentStatePersistenceManager>().State);

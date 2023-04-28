@@ -16,10 +16,10 @@ public static class InputFileExtensions
 		this IRenderedComponent<InputFile> inputFileComponent,
 		params InputFileContent[] files)
 	{
-		if (inputFileComponent == null)
-			throw new ArgumentNullException(nameof(inputFileComponent));
+		ArgumentNullException.ThrowIfNull(inputFileComponent);
+		ArgumentNullException.ThrowIfNull(files);
 
-		if (!files.Any())
+		if (files.Length == 0)
 			throw new ArgumentException("No files were provided to be uploaded.", nameof(files));
 
 		var browserFiles = files.Select(file => new BUnitBrowserFile(

@@ -17,9 +17,7 @@ In `.razor` based tests, using the <xref:Bunit.TestContext>'s <xref:Bunit.TestCo
 The <xref:Bunit.IRenderedComponentBase`1.Instance> property on the <xref:Bunit.IRenderedComponent`1> type provides access to the component under test. For example:
 
 ```csharp
-using var ctx = new TestContext();
-
-IRenderedComponent<Alert> cut = ctx.RenderComponent<Alert>();
+IRenderedComponent<Alert> cut = RenderComponent<Alert>();
 
 Alert alert = cut.Instance;
 
@@ -37,8 +35,7 @@ To get the instances of components nested inside the component under test, use t
 [`FindComponent<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponent``1(Bunit.IRenderedFragment)) and [`FindComponents<TComponent>()`](xref:Bunit.RenderedFragmentExtensions.FindComponents``1(Bunit.IRenderedFragment)) methods on the <xref:Bunit.IRenderedComponent`1> type. Suppose, for each task in the todo list, we have a `<TodoList>` component with `<Task>` components nested inside. In this case, the `<Task>` components can be found like this:
 
 ```csharp
-using var ctx = new TestContext();
-var cut = ctx.RenderComponent<TodoList>(parameter => parameter
+var cut = RenderComponent<TodoList>(parameter => parameter
   .Add(p => p.Tasks, new [] { "Task 1", "Task 2" })
 );
 

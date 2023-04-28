@@ -2,8 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 	<PropertyGroup Label="Configuration variables">
-		<DotNet6Version>6.0.0</DotNet6Version>
-		<DotNet7Version>7.0.0</DotNet7Version>
+		<DotNet8Version>8.0.0-*</DotNet8Version>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->
@@ -17,8 +16,10 @@
 	<PropertyGroup Label="Compile settings">
 		<Nullable>enable</Nullable>
 		<LangVersion>11.0</LangVersion>
+		<AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<NoWarn>CA1014,NU5104</NoWarn>
+		<NoWarn>CA1014,NU5104,NETSDK1138</NoWarn>
+		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 
 		<!-- Used by code coverage -->
 		<DebugType>full</DebugType>
@@ -46,7 +47,7 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.51.0.59060" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.56.0.67649" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings"

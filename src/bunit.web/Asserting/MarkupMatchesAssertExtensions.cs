@@ -22,10 +22,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches([StringSyntax("Html")]this string actual, [StringSyntax("Html")]string expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		using var parser = new BunitHtmlParser();
 		var actualNodes = parser.Parse(actual);
@@ -44,10 +42,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches([StringSyntax("Html")]this string actual, IRenderedFragment expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var actualNodes = actual.ToNodeList(expected.Services.GetRequiredService<BunitHtmlParser>());
 		actualNodes.MarkupMatches(expected, userMessage);
@@ -64,10 +60,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches([StringSyntax("Html")]this string actual, INodeList expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var actualNodes = actual.ToNodeList(expected.GetHtmlParser());
 		actualNodes.MarkupMatches(expected, userMessage);
@@ -84,10 +78,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches([StringSyntax("Html")]this string actual, INode expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var actualNodes = actual.ToNodeList(expected.GetHtmlParser());
 		actualNodes.MarkupMatches(expected, userMessage);
@@ -104,10 +96,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this IRenderedFragment actual, [StringSyntax("Html")]string expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var expectedNodes = expected.ToNodeList(actual.Services.GetRequiredService<BunitHtmlParser>());
 		actual.Nodes.MarkupMatches(expectedNodes, userMessage);
@@ -124,10 +114,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this IRenderedFragment actual, IRenderedFragment expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		actual.Nodes.MarkupMatches(expected.Nodes, userMessage);
 	}
@@ -144,10 +132,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this INodeList actual, IRenderedFragment expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		actual.MarkupMatches(expected.Nodes, userMessage);
 	}
@@ -164,10 +150,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this INode actual, IRenderedFragment expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		actual.MarkupMatches(expected.Nodes, userMessage);
 	}
@@ -184,10 +168,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this INode actual, [StringSyntax("Html")]string expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var expectedNodes = expected.ToNodeList(actual.GetHtmlParser());
 		actual.MarkupMatches(expectedNodes, userMessage);
@@ -205,10 +187,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this INodeList actual, [StringSyntax("Html")]string expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var expectedNodes = expected.ToNodeList(actual.GetHtmlParser());
 		actual.MarkupMatches(expectedNodes, userMessage);
@@ -226,10 +206,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this INodeList actual, INodeList expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var diffs = actual.CompareTo(expected);
 
@@ -249,10 +227,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this INodeList actual, INode expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var diffs = actual.CompareTo(expected);
 
@@ -272,10 +248,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this INode actual, INodeList expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var diffs = actual.CompareTo(expected);
 
@@ -294,10 +268,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this IRenderedFragment actual, RenderFragment expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var testContext = actual.Services.GetRequiredService<TestContextBase>();
 		var renderedFragment = (IRenderedFragment)testContext.RenderInsideRenderTree(expected);
@@ -315,10 +287,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this INode actual, RenderFragment expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as IRenderedFragment
 			?? AdhocRenderRenderFragment(expected);
@@ -336,10 +306,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this INodeList actual, RenderFragment expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as IRenderedFragment
 			?? AdhocRenderRenderFragment(expected);
@@ -357,10 +325,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this IEnumerable<IElement> actual, [StringSyntax("Html")]string expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		MarkupMatches(actual.ToNodeList(), expected, userMessage);
 	}
@@ -376,10 +342,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this IElement actual, IEnumerable<IRenderedFragment> expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var expectedNodes = string.Join(string.Empty, expected.Select(e => e.Markup));
 
@@ -397,10 +361,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this IElement actual, IEnumerable<IElement> expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var expectedNodes = expected.ToNodeList();
 
@@ -418,10 +380,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this IEnumerable<IElement> actual, IRenderedFragment expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		MarkupMatches(actual.ToNodeList(), expected, userMessage);
 	}
@@ -437,10 +397,8 @@ public static class MarkupMatchesAssertExtensions
 	[AssertionMethod]
 	public static void MarkupMatches(this IEnumerable<IElement> actual, IEnumerable<IRenderedFragment> expected, string? userMessage = null)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var expectedNodes = string.Join(string.Empty, expected.Select(e => e.Markup));
 

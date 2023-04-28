@@ -21,7 +21,9 @@ public static class ServiceCollectionLoggingExtensions
 				formatProvider: CultureInfo.InvariantCulture)
 			.CreateLogger();
 
-		services.AddSingleton<ILoggerFactory>(new LoggerFactory().AddSerilog(serilogLogger, dispose: true));
+#pragma warning disable CA2000 // Handled by the container
+		services.AddSingleton(new LoggerFactory().AddSerilog(serilogLogger, dispose: true));
+#pragma warning restore CA2000
 		services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 		return services;
 	}

@@ -131,4 +131,32 @@ public class MarkupMatchesAssertExtensionsTest : TestContext
 
 		cut.MarkupMatches("<h1>Hello Pink World!</h1>");
 	}
+
+	[Fact(DisplayName = "Handles HtmlUnknownElement when comparing elements")]
+	public void Test015()
+	{
+		var chart = RenderComponent<SimpleSvg>();
+
+		// the path will be returned as a SvgElement since it is
+		// parsed in the context of a <svg> element.
+		var path = chart.Find("path");
+
+		// path will be parsed as an HtmlUnknownElement because it is not
+		// in a known context (e.g. <svg> or <foreignObject>)
+		path.MarkupMatches("<path />");
+	}
+
+	[Fact(DisplayName = "Handles custom elements with attributes")]
+	public void Test016()
+	{
+		const string expectedMarkup = @"
+		<div class=""header"">
+			<div>Custom Metadata Definitions</div>
+			<zui-button diff:ignoreAttributes></zui-button>
+		</div>";
+
+		var cut = RenderComponent<CustomElement>();
+
+		cut.MarkupMatches(expectedMarkup);
+	}
 }

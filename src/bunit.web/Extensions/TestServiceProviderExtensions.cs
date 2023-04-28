@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 
 namespace Bunit.Extensions;
@@ -20,12 +19,9 @@ public static class TestServiceProviderExtensions
 	/// </summary>
 	public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services, TestContextBase testContext, BunitJSInterop jsInterop)
 	{
-		if (services is null)
-			throw new System.ArgumentNullException(nameof(services));
-		if (testContext is null)
-			throw new System.ArgumentNullException(nameof(testContext));
-		if (jsInterop is null)
-			throw new System.ArgumentNullException(nameof(jsInterop));
+		ArgumentNullException.ThrowIfNull(services);
+		ArgumentNullException.ThrowIfNull(testContext);
+		ArgumentNullException.ThrowIfNull(jsInterop);
 
 		// Placeholders and defaults for common Blazor services
 		services.AddLogging();
