@@ -1,11 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using Bunit.TestAssets.SampleComponents;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-using Shouldly;
-using Xunit;
-
 namespace Bunit.ComponentFactories;
 
 public class GenericComponentFactoryTest : TestContext

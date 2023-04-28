@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace Bunit.TestDoubles;
 

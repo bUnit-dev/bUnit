@@ -1,7 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Components;
-
 namespace Bunit.Rendering;
 
 internal class BunitComponentActivator : IComponentActivator

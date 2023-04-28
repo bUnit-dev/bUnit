@@ -1,9 +1,3 @@
-using System.Threading.Tasks;
-using Bunit.TestAssets.SampleComponents;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-using Xunit;
-
 namespace Bunit.JSInterop.InvocationHandlers;
 
 public class FocusAsyncInvocationHandlerTest : TestContext

@@ -1,6 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.JSInterop;
-
 namespace Bunit.JSInterop.InvocationHandlers.Implementation;
 
 /// <summary>
