@@ -6,8 +6,4 @@
 		<AssemblyName>AngleSharpWrappers.Tests</AssemblyName>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\src\AngleSharpWrappers\AngleSharpWrappers.csproj" />
-	</ItemGroup>
-
 </Project>

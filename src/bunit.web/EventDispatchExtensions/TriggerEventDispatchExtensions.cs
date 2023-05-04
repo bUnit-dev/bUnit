@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Runtime.ExceptionServices;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using AngleSharpWrappers;
 using Bunit.Rendering;
 
 namespace Bunit;
@@ -80,11 +79,10 @@ public static class TriggerEventDispatchExtensions
 	private static Task TriggerEventsAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName);
-		var unwrappedElement = element.Unwrap();
 
 		return isNonBubblingEvent
-			? TriggerNonBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs)
-			: TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
+			? TriggerNonBubblingEventAsync(renderer, element, eventName, eventArgs)
+			: TriggerBubblingEventAsync(renderer, element, eventName, eventArgs);
 	}
 
 	private static Task TriggerNonBubblingEventAsync(ITestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)

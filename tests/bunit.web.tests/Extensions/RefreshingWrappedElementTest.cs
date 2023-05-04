@@ -43,16 +43,16 @@ public class RefreshingWrappedElementTest : TestContext
 			.Add(p => p.Optional, "<div>bar</div>")
 			.Add(p => p.ShowOptional, false));
 
-		var elm = cut.Find("div:last-child");
+		var elm = cut.FindRefreshable("div:last-child");
 
 		// initially only foo div is rendered
-		elm.TextContent.ShouldBe("foo");
+		elm.Unwrap().TextContent.ShouldBe("foo");
 
 		cut.SetParametersAndRender(ps => ps.Add(p => p.ShowOptional, true));
 
 		// after optional markup is included, the refreshed query
 		// returns new div as it is now last child
-		elm.TextContent.ShouldBe("bar");
+		elm.Unwrap().TextContent.ShouldBe("bar");
 	}
 
 	[Fact(DisplayName = "Found element doesn't throw when it's removed from DOM")]
@@ -69,11 +69,11 @@ public class RefreshingWrappedElementTest : TestContext
 	public void Test031()
 	{
 		var cut = RenderComponent<HidesButton>();
-		var btn = cut.Find("button");
+		var btn = cut.FindRefreshable("button");
 
-		btn.Click(); // remove from dom
+		btn.Unwrap().Click(); // remove from dom
 
-		Should.Throw<ElementRemovedFromDomException>(() => btn.TextContent);
+		Should.Throw<ElementNotFoundException>(() => btn.Unwrap().TextContent);
 	}
 
 	private sealed class Markup : ComponentBase

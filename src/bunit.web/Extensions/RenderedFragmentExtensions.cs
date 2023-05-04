@@ -1,5 +1,4 @@
 using AngleSharp.Dom;
-using AngleSharpWrappers;
 using Bunit.Rendering;
 
 namespace Bunit;
@@ -25,7 +24,21 @@ public static class RenderedFragmentExtensions
 		if (result is null)
 			throw new ElementNotFoundException(cssSelector);
 
-		return WrapperFactory.Create(new ElementFactory<IElement>(renderedFragment, result, cssSelector));
+		return result;
+	}
+
+	/// <summary>
+	/// Returns the first element from the rendered fragment or component under test,
+	/// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal
+	/// of the rendered nodes.
+	/// </summary>
+	/// <param name="renderedFragment">The rendered fragment to search.</param>
+	/// <param name="cssSelector">The group of selectors to use.</param>
+	/// <returns>An element that automatically refreshes if the <paramref name="renderedFragment"/> changes.</returns>
+	public static RefreshableElement FindRefreshable(this IRenderedFragment renderedFragment, string cssSelector)
+	{
+		ArgumentNullException.ThrowIfNull(renderedFragment);
+		return new RefreshableElement(renderedFragment, cssSelector);
 	}
 
 	/// <summary>
