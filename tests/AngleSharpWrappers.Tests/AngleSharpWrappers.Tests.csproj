@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<RootNamespace>AngleSharpWrappers</RootNamespace>
-		<AssemblyName>AngleSharpWrappers.Tests</AssemblyName>
-	</PropertyGroup>
-
-</Project>
