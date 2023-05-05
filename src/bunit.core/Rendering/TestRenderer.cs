@@ -294,15 +294,8 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		ArgumentNullException.ThrowIfNull(parentComponent);
 
-		// Ensure FindComponents runs on the same thread as the renderer,
-		// and that the renderer does not perform any renders while
-		// FindComponents is traversing the current render tree.
-		// Without this, the render tree could change while FindComponentsInternal
-		// is traversing down the render tree, with indeterministic as a results.
-		return Dispatcher.InvokeAsync(() =>
-		{
-			var result = new List<IRenderedComponent<TComponent>>();
-			var framesCollection = new RenderTreeFrameDictionary();
+		var result = new List<IRenderedComponent<TComponent>>();
+		var framesCollection = new RenderTreeFrameDictionary();
 
 		// Blocks the renderer from changing the render tree
 		// while this method searches through it.
@@ -342,11 +335,9 @@ public class TestRenderer : Renderer, ITestRenderer
 	private IRenderedComponent<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
 		where TComponent : IComponent
 	{
-		IRenderedComponent<TComponent> result;
-
 		if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
 		{
-			result = (IRenderedComponent<TComponent>)renderedComponent;
+			return (IRenderedComponent<TComponent>)renderedComponent;
 		}
 
 		LoadRenderTreeFrames(componentId, framesCollection);
