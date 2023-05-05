@@ -6,7 +6,7 @@ namespace Bunit.Extensions;
 /// <summary>
 /// Helper extension methods for getting a logger.
 /// </summary>
-public static class LoggerHelperExtensions
+internal static class LoggerHelperExtensions
 {
 	/// <summary>
 	/// Creates a logger from the <see cref="ILoggerFactory"/> registered in the <see cref="IServiceProvider"/>.
