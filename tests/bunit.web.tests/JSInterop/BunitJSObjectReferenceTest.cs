@@ -1,9 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoFixture.Xunit2;
 using Bunit.JSInterop.InvocationHandlers.Implementation;
 using Microsoft.JSInterop.Implementation;
 
