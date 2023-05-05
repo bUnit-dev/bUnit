@@ -10,16 +10,7 @@ internal class RenderedFragment : IRenderedFragment
 	private readonly BunitHtmlParser htmlParser;
 	private readonly object markupAccessLock = new();
 	private string markup = string.Empty;
-	private string? snapshotMarkup;
-
-	private INodeList? firstRenderNodes;
 	private INodeList? latestRenderNodes;
-	private INodeList? snapshotNodes;
-
-	/// <summary>
-	/// Gets the first rendered markup.
-	/// </summary>
-	protected string FirstRenderMarkup { get; private set; } = string.Empty;
 
 	/// <inheritdoc/>
 	public event EventHandler? OnAfterRender;
@@ -82,34 +73,6 @@ internal class RenderedFragment : IRenderedFragment
 		htmlParser = Services.GetRequiredService<BunitHtmlParser>();
 	}
 
-	/// <inheritdoc/>
-	public IReadOnlyList<IDiff> GetChangesSinceFirstRender()
-	{
-		if (firstRenderNodes is null)
-			firstRenderNodes = htmlParser.Parse(FirstRenderMarkup);
-
-		return Nodes.CompareTo(firstRenderNodes);
-	}
-
-	/// <inheritdoc/>
-	public IReadOnlyList<IDiff> GetChangesSinceSnapshot()
-	{
-		if (snapshotMarkup is null)
-			throw new InvalidOperationException($"No snapshot exists to compare with. Call {nameof(SaveSnapshot)}() to create one.");
-
-		if (snapshotNodes is null)
-			snapshotNodes = htmlParser.Parse(snapshotMarkup);
-
-		return Nodes.CompareTo(snapshotNodes);
-	}
-
-	/// <inheritdoc/>
-	public void SaveSnapshot()
-	{
-		snapshotNodes = null;
-		snapshotMarkup = Markup;
-	}
-
 	void IRenderedFragmentBase.OnRender(RenderEvent renderEvent)
 	{
 		if (IsDisposed)
@@ -165,9 +128,6 @@ internal class RenderedFragment : IRenderedFragment
 			// markup string can be stored in a CPUs register and not
 			// get updated when another CPU changes the string.
 			Volatile.Write(ref markup, newMarkup);
-
-			if (RenderCount == 1)
-				FirstRenderMarkup = newMarkup;
 		}
 	}
 
@@ -206,6 +166,5 @@ internal class RenderedFragment : IRenderedFragment
 		IsDisposed = true;
 		markup = string.Empty;
 		OnAfterRender = null;
-		FirstRenderMarkup = string.Empty;
 	}
 }

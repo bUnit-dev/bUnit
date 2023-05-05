@@ -1,9 +1,3 @@
-using System.Threading.Tasks;
-using AutoFixture.Xunit2;
-using Bunit.TestAssets.SampleComponents;
-using Microsoft.AspNetCore.Components;
-using Shouldly;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace Bunit.TestDoubles;

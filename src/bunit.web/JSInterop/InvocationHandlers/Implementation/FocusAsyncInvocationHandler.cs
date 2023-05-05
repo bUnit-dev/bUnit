@@ -1,6 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Components;
-
 namespace Bunit.JSInterop.InvocationHandlers.Implementation;
 
 /// <summary>

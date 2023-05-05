@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Bunit.JSInterop.InvocationHandlers.Implementation;
-using Microsoft.AspNetCore.Components;
 
 namespace Bunit;
 
