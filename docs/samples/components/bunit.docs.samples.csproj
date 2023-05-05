@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
-		<LangVersion>10.0</LangVersion>
-		<RazorLangVersion>3.0</RazorLangVersion>
+		<TargetFramework>net8.0</TargetFramework>
 		<RootNamespace>Bunit.Docs.Samples</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<NoWarn>CA1014,NU5104</NoWarn>

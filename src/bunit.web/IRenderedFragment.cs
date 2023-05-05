@@ -23,27 +23,4 @@ public interface IRenderedFragment : IRenderedFragmentBase
 	/// on the HTML markup from the rendered fragment/component.
 	/// </summary>	
 	INodeList Nodes { get; }
-
-	/// <summary>
-	/// Performs a comparison of the markup produced by the initial rendering of the
-	/// fragment or component under test with the current rendering of the fragment
-	/// or component under test.
-	/// </summary>
-	/// <returns>A list of differences found.</returns>
-	IReadOnlyList<IDiff> GetChangesSinceFirstRender();
-
-	/// <summary>
-	/// Performs a comparison of the markup produced by the rendering of the
-	/// fragment or component under test at the time the <see cref="SaveSnapshot"/> was called
-	/// with the current rendering of the fragment or component under test.
-	/// </summary>
-	/// <returns>A list of differences found.</returns>
-	IReadOnlyList<IDiff> GetChangesSinceSnapshot();
-
-	/// <summary>
-	/// Saves the markup from the current rendering of the fragment or component under test.
-	/// Use the method <see cref="GetChangesSinceSnapshot"/> later to get the difference between
-	/// the snapshot and the rendered markup at that time.
-	/// </summary>
-	void SaveSnapshot();
 }
