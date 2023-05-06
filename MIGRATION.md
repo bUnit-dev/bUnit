@@ -25,3 +25,8 @@ public static class Extensions
 
 ## Merge of `bunit.core` and `bunit.web`
 The `bunit.core` and `bunit.web` packages have been merged into a single `bunit` package. If you used either of these packages, you should remove them and install the `bunit` package instead.
+
+## Removal of unneeded abstraction
+
+### `IRenderedComponentBase<TComponent>` and `IRenderedFragmentBase`
+`IRenderedComponentBase<TComponent>` and `IRenderedFragmentBase` have been removed. They were used to provide a common base class for `IRenderedComponent<TComponent>` and `IRenderedFragment`, but this is no longer needed (due to the merge of the project). If you used either of these interfaces, you should replace them with `IRenderedComponent<TComponent>` and `IRenderedFragment` respectively.
