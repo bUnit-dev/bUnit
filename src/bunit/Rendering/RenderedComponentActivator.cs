@@ -16,7 +16,7 @@ public sealed class RenderedComponentActivator : IRenderedComponentActivator
 	}
 
 	/// <inheritdoc/>
-	public IRenderedFragmentBase CreateRenderedFragment(int componentId)
+	public IRenderedFragment CreateRenderedFragment(int componentId)
 		=> new RenderedFragment(componentId, services);
 
 	/// <inheritdoc/>

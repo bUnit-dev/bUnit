@@ -37,7 +37,7 @@ public class TestRendererTest : TestContext
 		const string MARKUP = "<h1>hello world</h1>";
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = (IRenderedFragment)sut.RenderFragment(builder => builder.AddMarkupContent(0, MARKUP));
+		var cut = sut.RenderFragment(builder => builder.AddMarkupContent(0, MARKUP));
 
 		cut.RenderCount.ShouldBe(1);
 		cut.Markup.ShouldBe(MARKUP);

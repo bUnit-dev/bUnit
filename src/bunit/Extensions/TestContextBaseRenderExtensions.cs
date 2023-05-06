@@ -28,8 +28,8 @@ public static class TestContextBaseRenderExtensions
 	/// </summary>
 	/// <param name="testContext">Test context to use to render with.</param>
 	/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> to render.</param>
-	/// <returns>A <see cref="IRenderedFragmentBase"/>.</returns>
-	public static IRenderedFragmentBase RenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment)
+	/// <returns>A <see cref="IRenderedFragment"/>.</returns>
+	public static IRenderedFragment RenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment)
 	{
 		ArgumentNullException.ThrowIfNull(testContext);
 

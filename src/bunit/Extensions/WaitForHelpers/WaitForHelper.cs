@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 namespace Bunit.Extensions.WaitForHelpers;
 
 /// <summary>
-/// Represents a helper class that can wait for a render notifications from a <see cref="IRenderedFragmentBase"/> type,
+/// Represents a helper class that can wait for a render notifications from a <see cref="IRenderedFragment"/> type,
 /// until a specific timeout is reached.
 /// </summary>
 public abstract class WaitForHelper<T> : IDisposable
@@ -12,7 +12,7 @@ public abstract class WaitForHelper<T> : IDisposable
 	private readonly Timer timer;
 	private readonly TaskCompletionSource<T> checkPassedCompletionSource;
 	private readonly Func<(bool CheckPassed, T Content)> completeChecker;
-	private readonly IRenderedFragmentBase renderedFragment;
+	private readonly IRenderedFragment renderedFragment;
 	private readonly ILogger<WaitForHelper<T>> logger;
 	private readonly TestRenderer renderer;
 	private bool isDisposed;
@@ -45,7 +45,7 @@ public abstract class WaitForHelper<T> : IDisposable
 	/// Initializes a new instance of the <see cref="WaitForHelper{T}"/> class.
 	/// </summary>
 	protected WaitForHelper(
-		IRenderedFragmentBase renderedFragment,
+		IRenderedFragment renderedFragment,
 		Func<(bool CheckPassed, T Content)> completeChecker,
 		TimeSpan? timeout = null)
 	{

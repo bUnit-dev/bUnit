@@ -71,7 +71,7 @@ public class TestContext : TestContextBase
 	/// <param name="renderFragment">The render fragment to render.</param>
 	/// <returns>The <see cref="IRenderedFragment"/>.</returns>
 	public virtual IRenderedFragment Render(RenderFragment renderFragment)
-		=> (IRenderedFragment)this.RenderInsideRenderTree(renderFragment);
+		=> this.RenderInsideRenderTree(renderFragment);
 
 	/// <summary>
 	/// Dummy method required to allow Blazor's compiler to generate

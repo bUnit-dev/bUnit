@@ -10,7 +10,7 @@ public class TestRenderer : Renderer, ITestRenderer
 {
 	private readonly object renderTreeUpdateLock = new();
 	private readonly SynchronizationContext? usersSyncContext = SynchronizationContext.Current;
-	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
+	private readonly Dictionary<int, IRenderedFragment> renderedComponents = new();
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
@@ -49,7 +49,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	public IRenderedFragmentBase RenderFragment(RenderFragment renderFragment)
+	public IRenderedFragment RenderFragment(RenderFragment renderFragment)
 		=> Render(renderFragment, id => activator.CreateRenderedFragment(id));
 
 	/// <inheritdoc/>
@@ -113,7 +113,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	public IRenderedComponent<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)
+	public IRenderedComponent<TComponent> FindComponent<TComponent>(IRenderedFragment parentComponent)
 		where TComponent : IComponent
 	{
 		var foundComponents = FindComponents<TComponent>(parentComponent, 1);
@@ -123,7 +123,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	public IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
+	public IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragment parentComponent)
 		where TComponent : IComponent
 		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
 
@@ -254,7 +254,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
-		where TResult : IRenderedFragmentBase
+		where TResult : IRenderedFragment
 	{
 		var renderTask = Dispatcher.InvokeAsync(() =>
 		{
@@ -288,7 +288,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		return result;
 	}
 
-	private List<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
+	private List<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragment parentComponent, int resultLimit)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(parentComponent);

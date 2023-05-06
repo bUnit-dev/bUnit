@@ -29,7 +29,7 @@ public sealed class RenderEvent
 	/// </summary>
 	/// <param name="renderedComponent">The <paramref name="renderedComponent"/> to get the status for.</param>
 	/// <returns>A tuple of statuses indicating whether the rendered component rendered during the render cycle, if it changed or if it was disposed.</returns>
-	public (bool Rendered, bool Changed, bool Disposed) GetRenderStatus(IRenderedFragmentBase renderedComponent)
+	public (bool Rendered, bool Changed, bool Disposed) GetRenderStatus(IRenderedFragment renderedComponent)
 	{
 		ArgumentNullException.ThrowIfNull(renderedComponent);
 
@@ -47,7 +47,7 @@ public sealed class RenderEvent
 		return result;
 	}
 
-	private bool DidComponentDispose(IRenderedFragmentBase renderedComponent)
+	private bool DidComponentDispose(IRenderedFragment renderedComponent)
 	{
 		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
 		{
@@ -70,7 +70,7 @@ public sealed class RenderEvent
 	/// GetStatus and GetStatusFromChildren call each other until there are no more children,
 	/// or both a render and a change is found.
 	/// </summary>
-	private (bool Rendered, bool HasChanges) GetRenderAndChangeStatus(IRenderedFragmentBase renderedComponent)
+	private (bool Rendered, bool HasChanges) GetRenderAndChangeStatus(IRenderedFragment renderedComponent)
 	{
 		var result = (Rendered: false, HasChanges: false);
 

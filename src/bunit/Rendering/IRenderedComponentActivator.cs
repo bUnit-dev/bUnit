@@ -1,14 +1,14 @@
 namespace Bunit.Rendering;
 
 /// <summary>
-/// Represents an activator for <see cref="IRenderedFragmentBase"/> and <see cref="IRenderedComponent{TComponent}"/> types.
+/// Represents an activator for <see cref="IRenderedFragment"/> and <see cref="IRenderedComponent{TComponent}"/> types.
 /// </summary>
 public interface IRenderedComponentActivator
 {
 	/// <summary>
-	/// Creates an <see cref="IRenderedFragmentBase"/> with the specified <paramref name="componentId"/>.
+	/// Creates an <see cref="IRenderedFragment"/> with the specified <paramref name="componentId"/>.
 	/// </summary>
-	IRenderedFragmentBase CreateRenderedFragment(int componentId);
+	IRenderedFragment CreateRenderedFragment(int componentId);
 
 	/// <summary>
 	/// Creates an <see cref="IRenderedComponent{TComponent}"/> with the specified <paramref name="componentId"/>.
