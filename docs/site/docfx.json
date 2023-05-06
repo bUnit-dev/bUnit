@@ -2,8 +2,7 @@
     "metadata": [{
         "src": [{
             "files": [
-                "bunit.core/bunit.core.csproj",
-                "bunit.web/bunit.web.csproj"
+                "bunit/bunit.csproj"
             ],
             "exclude": ["**/bin/**", "**/obj/**"],
             "src": "../../src"
