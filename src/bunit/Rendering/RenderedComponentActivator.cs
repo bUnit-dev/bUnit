@@ -20,12 +20,12 @@ public sealed class RenderedComponentActivator : IRenderedComponentActivator
 		=> new RenderedFragment(componentId, services);
 
 	/// <inheritdoc/>
-	public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId)
+	public IRenderedComponent<TComponent> CreateRenderedComponent<TComponent>(int componentId)
 		where TComponent : IComponent
 		=> new RenderedComponent<TComponent>(componentId, services);
 
 	/// <inheritdoc/>
-	public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId, TComponent component, RenderTreeFrameDictionary componentFrames)
+	public IRenderedComponent<TComponent> CreateRenderedComponent<TComponent>(int componentId, TComponent component, RenderTreeFrameDictionary componentFrames)
 		where TComponent : IComponent
 		=> new RenderedComponent<TComponent>(componentId, component, componentFrames, services);
 }

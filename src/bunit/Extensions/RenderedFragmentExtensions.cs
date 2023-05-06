@@ -56,7 +56,7 @@ public static class RenderedFragmentExtensions
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 
 		var renderer = renderedFragment.Services.GetRequiredService<ITestRenderer>();
-		return (IRenderedComponent<TComponent>)renderer.FindComponent<TComponent>(renderedFragment);
+		return renderer.FindComponent<TComponent>(renderedFragment);
 	}
 
 	/// <summary>

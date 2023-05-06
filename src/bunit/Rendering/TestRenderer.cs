@@ -53,7 +53,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		=> Render(renderFragment, id => activator.CreateRenderedFragment(id));
 
 	/// <inheritdoc/>
-	public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
+	public IRenderedComponent<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(parameters);
@@ -113,7 +113,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	public IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)
+	public IRenderedComponent<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)
 		where TComponent : IComponent
 	{
 		var foundComponents = FindComponents<TComponent>(parentComponent, 1);
@@ -123,7 +123,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	public IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
+	public IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
 		where TComponent : IComponent
 		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
 
@@ -288,12 +288,12 @@ public class TestRenderer : Renderer, ITestRenderer
 		return result;
 	}
 
-	private List<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
+	private List<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(parentComponent);
 
-		var result = new List<IRenderedComponentBase<TComponent>>();
+		var result = new List<IRenderedComponent<TComponent>>();
 		var framesCollection = new RenderTreeFrameDictionary();
 
 		// Blocks the renderer from changing the render tree
@@ -331,12 +331,12 @@ public class TestRenderer : Renderer, ITestRenderer
 		}
 	}
 
-	IRenderedComponentBase<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
+	IRenderedComponent<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
 		where TComponent : IComponent
 	{
 		if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
 		{
-			return (IRenderedComponentBase<TComponent>)renderedComponent;
+			return (IRenderedComponent<TComponent>)renderedComponent;
 		}
 
 		LoadRenderTreeFrames(componentId, framesCollection);

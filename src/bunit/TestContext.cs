@@ -63,7 +63,7 @@ public class TestContext : TestContextBase
 	/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
 	public virtual IRenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
-		=> (IRenderedComponent<TComponent>)this.RenderInsideRenderTree<TComponent>(renderFragment);
+		=> this.RenderInsideRenderTree<TComponent>(renderFragment);
 
 	/// <summary>
 	/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="IRenderedFragment"/>.
