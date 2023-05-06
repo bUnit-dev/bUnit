@@ -30,3 +30,6 @@ The `bunit.core` and `bunit.web` packages have been merged into a single `bunit`
 
 ### `IRenderedComponentBase<TComponent>` and `IRenderedFragmentBase`
 `IRenderedComponentBase<TComponent>` and `IRenderedFragmentBase` have been removed. They were used to provide a common base class for `IRenderedComponent<TComponent>` and `IRenderedFragment`, but this is no longer needed (due to the merge of the project). If you used either of these interfaces, you should replace them with `IRenderedComponent<TComponent>` and `IRenderedFragment` respectively.
+
+### `WebTestRender` merged into `TestRender`
+The `WebTestRender` class has been merged into the `TestRender` class. If you used `WebTestRender`, you should replace it with `TestRender`.

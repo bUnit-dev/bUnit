@@ -35,7 +35,8 @@ public class TestRenderer : Renderer, ITestRenderer
 		: base(services, loggerFactory)
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
-		this.activator = renderedComponentActivator;
+		activator = renderedComponentActivator;
+		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
 	}
 
 	/// <summary>
@@ -45,7 +46,8 @@ public class TestRenderer : Renderer, ITestRenderer
 		: base(services, loggerFactory, componentActivator)
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
-		this.activator = renderedComponentActivator;
+		activator = renderedComponentActivator;
+		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
 	}
 
 	/// <inheritdoc/>

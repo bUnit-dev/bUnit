@@ -31,7 +31,7 @@ public static class TestServiceProviderExtensions
 		services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
 
 		// bUnits fake JSInterop
-		services.AddSingleton<IJSRuntime>(jsInterop.JSRuntime);
+		services.AddSingleton(jsInterop.JSRuntime);
 
 		// bUnits fake Navigation Manager
 		services.AddSingleton<FakeNavigationManager>();
@@ -43,10 +43,10 @@ public static class TestServiceProviderExtensions
 		services.AddSingleton<IWebAssemblyHostEnvironment>(s => s.GetRequiredService<FakeWebAssemblyHostEnvironment>());
 
 		// bUnit specific services
-		services.AddSingleton<TestContextBase>(testContext);
-		services.AddSingleton<WebTestRenderer>();
-		services.AddSingleton<Renderer>(s => s.GetRequiredService<WebTestRenderer>());
-		services.AddSingleton<ITestRenderer>(s => s.GetRequiredService<WebTestRenderer>());
+		services.AddSingleton(testContext);
+		services.AddSingleton<TestRenderer>();
+		services.AddSingleton<Renderer>(s => s.GetRequiredService<TestRenderer>());
+		services.AddSingleton<ITestRenderer>(s => s.GetRequiredService<TestRenderer>());
 		services.AddSingleton<HtmlComparer>();
 		services.AddSingleton<BunitHtmlParser>();
 		services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
