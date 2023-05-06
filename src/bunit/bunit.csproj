@@ -1,9 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<NoBuild>true</NoBuild>
-		<IncludeBuildOutput>false</IncludeBuildOutput>
-		<IncludeSymbols>false</IncludeSymbols>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -20,9 +17,16 @@
 		</Description>
 	</PropertyGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\bunit.core\bunit.core.csproj" />
-	  <ProjectReference Include="..\bunit.web\bunit.web.csproj" />
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet8Version)" />
 	</ItemGroup>
 
 </Project>

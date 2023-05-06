@@ -12,8 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\bunit.core\bunit.core.csproj" />
-      <ProjectReference Include="..\..\src\bunit.web\bunit.web.csproj" />
       <ProjectReference Include="..\bunit.benchmarks.assets\bunit.benchmarks.assets.csproj" />
     </ItemGroup>
 
