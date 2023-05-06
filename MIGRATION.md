@@ -6,7 +6,7 @@ The `GetChangesSinceFirstRender` and `GetChangesSinceLastRender` methods have be
 
 Alternatively, the `IRenderFragment` still offers the `OnMarkupUpdated` event, which can be used to assert against the markup after a render.
 
-## Removal of `IsNullOrEmpty` extension method on `IEnumerable<T>` and `CreateLogger` on `IserviceProvider`
+## Removal of `IsNullOrEmpty` extension method on `IEnumerable<T>` and `CreateLogger` on `IServiceProvider`
 The `IsNullOrEmpty` extension method on `IEnumerable<T>` has been removed, as well as the `CreateLogger` extension method on `IServiceProvider`. These extension methods are pretty common and conflict with other libraries. These methods can be recreated like this:
 
 ```csharp
