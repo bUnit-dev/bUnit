@@ -13,8 +13,8 @@ public static class TestContextBaseRenderExtensions
 	/// <typeparam name="TComponent">The type of component to render.</typeparam>
 	/// <param name="testContext">Test context to use to render with.</param>
 	/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> that contains a declaration of the component.</param>
-	/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/>.</returns>
-	public static IRenderedComponentBase<TComponent> RenderInsideRenderTree<TComponent>(this TestContextBase testContext, RenderFragment renderFragment)
+	/// <returns>A <see cref="IRenderedComponent{TComponent}"/>.</returns>
+	public static IRenderedComponent<TComponent> RenderInsideRenderTree<TComponent>(this TestContextBase testContext, RenderFragment renderFragment)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(testContext);
@@ -28,8 +28,8 @@ public static class TestContextBaseRenderExtensions
 	/// </summary>
 	/// <param name="testContext">Test context to use to render with.</param>
 	/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> to render.</param>
-	/// <returns>A <see cref="IRenderedFragmentBase"/>.</returns>
-	public static IRenderedFragmentBase RenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment)
+	/// <returns>A <see cref="IRenderedFragment"/>.</returns>
+	public static IRenderedFragment RenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment)
 	{
 		ArgumentNullException.ThrowIfNull(testContext);
 

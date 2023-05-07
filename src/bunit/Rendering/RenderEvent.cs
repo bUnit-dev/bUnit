@@ -20,7 +20,7 @@ public sealed class RenderEvent
 	/// </summary>
 	/// <param name="renderedComponent">The <paramref name="renderedComponent"/> to get the status for.</param>
 	/// <returns>A tuple of statuses indicating whether the rendered component rendered during the render cycle, if it changed or if it was disposed.</returns>
-	public (bool Rendered, bool Changed, bool Disposed) GetRenderStatus(IRenderedFragmentBase renderedComponent)
+	public (bool Rendered, bool Changed, bool Disposed) GetRenderStatus(IRenderedFragment renderedComponent)
 	{
 		ArgumentNullException.ThrowIfNull(renderedComponent);
 
