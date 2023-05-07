@@ -16,6 +16,7 @@ public static class ShouldBeTextChangeAssertExtensions
 	/// <param name="diffs">The list of diffs to verify against.</param>
 	/// <param name="expectedChange">The expected text change.</param>
 	/// <param name="userMessage">A custom error message to show if the verification fails.</param>
+	[Obsolete("Will be removed in v2.")]
 	public static void ShouldHaveSingleTextChange(this IEnumerable<IDiff> diffs, string expectedChange, string? userMessage = null)
 	{
 		DiffAssertExtensions.ShouldHaveSingleChange(diffs).ShouldBeTextChange(expectedChange, userMessage);
@@ -27,6 +28,7 @@ public static class ShouldBeTextChangeAssertExtensions
 	/// <param name="actualChange">The diff to verify.</param>
 	/// <param name="expectedChange">The expected text change.</param>
 	/// <param name="userMessage">A custom error message to show if the verification fails.</param>
+	[Obsolete("Will be removed in v2.")]
 	public static void ShouldBeTextChange(this IDiff actualChange, string expectedChange, string? userMessage = null)
 	{
 		if (actualChange is null)
@@ -55,6 +57,7 @@ public static class ShouldBeTextChangeAssertExtensions
 	/// <param name="actualChange">The diff to verify.</param>
 	/// <param name="expectedChange">The rendered fragment containing the expected text change.</param>
 	/// <param name="userMessage">A custom error message to show if the verification fails.</param>
+	[Obsolete("Will be removed in v2.")]
 	public static void ShouldBeTextChange(this IDiff actualChange, IRenderedFragment expectedChange, string? userMessage = null)
 	{
 		if (expectedChange is null)
@@ -68,6 +71,7 @@ public static class ShouldBeTextChangeAssertExtensions
 	/// <param name="actualChange">The diff to verify.</param>
 	/// <param name="expectedChange">The node list containing the expected text change.</param>
 	/// <param name="userMessage">A custom error message to show if the verification fails.</param>
+	[Obsolete("Will be removed in v2.")]
 	public static void ShouldBeTextChange(this IDiff actualChange, INodeList expectedChange, string? userMessage = null)
 	{
 		if (actualChange is null)
@@ -94,6 +98,7 @@ public static class ShouldBeTextChangeAssertExtensions
 	/// <param name="expectedAttrName">The expected name of the changed attribute.</param>
 	/// <param name="expectedAttrValue">The expected value of the changed attribute.</param>
 	/// <param name="userMessage">A custom user message to show when the verification fails.</param>
+	[Obsolete("Will be removed in v2.")]
 	public static void ShouldBeAttributeChange(this IDiff actualChange, string expectedAttrName, string expectedAttrValue, string? userMessage = null)
 	{
 		if (actualChange is null)

@@ -30,6 +30,7 @@ public interface IRenderedFragment : IRenderedFragmentBase
 	/// or component under test.
 	/// </summary>
 	/// <returns>A list of differences found.</returns>
+	[Obsolete("Will be removed in v2.")]
 	IReadOnlyList<IDiff> GetChangesSinceFirstRender();
 
 	/// <summary>
@@ -38,6 +39,7 @@ public interface IRenderedFragment : IRenderedFragmentBase
 	/// with the current rendering of the fragment or component under test.
 	/// </summary>
 	/// <returns>A list of differences found.</returns>
+	[Obsolete("Will be removed in v2.")]
 	IReadOnlyList<IDiff> GetChangesSinceSnapshot();
 
 	/// <summary>
@@ -45,5 +47,6 @@ public interface IRenderedFragment : IRenderedFragmentBase
 	/// Use the method <see cref="GetChangesSinceSnapshot"/> later to get the difference between
 	/// the snapshot and the rendered markup at that time.
 	/// </summary>
+	[Obsolete("Will be removed in v2.")]
 	void SaveSnapshot();
 }

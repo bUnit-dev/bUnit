@@ -17,6 +17,7 @@ public static class ShouldBeRemovalAssertExtensions
 	/// <param name="actualChange">The change to verify.</param>
 	/// <param name="expectedChange">The expected removal to verify against.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+	[Obsolete("Will be removed in v2.")]
 	public static void ShouldBeRemoval(this IDiff actualChange, string expectedChange, string? userMessage = null)
 	{
 		if (actualChange is null)
@@ -48,6 +49,7 @@ public static class ShouldBeRemovalAssertExtensions
 	/// <param name="actualChange">The change to verify.</param>
 	/// <param name="expectedChange">The expected removal to verify against.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+	[Obsolete("Will be removed in v2.")]
 	public static void ShouldBeRemoval(this IDiff actualChange, IRenderedFragment expectedChange, string? userMessage = null)
 	{
 		if (expectedChange is null)
@@ -63,6 +65,7 @@ public static class ShouldBeRemovalAssertExtensions
 	/// <param name="actualChange">The change to verify.</param>
 	/// <param name="expectedChange">The expected removal to verify against.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
+	[Obsolete("Will be removed in v2.")]
 	public static void ShouldBeRemoval(this IDiff actualChange, INodeList expectedChange, string? userMessage = null)
 	{
 		if (actualChange is null)

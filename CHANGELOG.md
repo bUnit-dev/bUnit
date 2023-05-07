@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+- `ObsoleteAttribute` for API that will be removed with `v2`.
+
 ## [1.19.14] - 2023-04-26
 
 ### Fixed

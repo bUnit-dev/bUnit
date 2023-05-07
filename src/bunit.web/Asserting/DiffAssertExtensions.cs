@@ -14,6 +14,7 @@ public static class DiffAssertExtensions
 	/// </summary>
 	/// <param name="diffs">The collection to be inspected.</param>
 	/// <returns>The expected single <see cref="IDiff"/> in the collection.</returns>
+	[Obsolete("Will be removed in v2.")]
 	public static IDiff ShouldHaveSingleChange(this IEnumerable<IDiff> diffs)
 	{
 		if (diffs is null)
@@ -39,6 +40,7 @@ public static class DiffAssertExtensions
 	/// <param name="diffs">The collection to be inspected.</param>
 	/// <param name="diffInspectors">The <see cref="IDiff"/> inspectors, which inspect each <see cref="IDiff"/> in turn.
 	/// The total number of <see cref="IDiff"/> inspectors must exactly match the number of <see cref="IDiff"/>s in the collection.</param>
+	[Obsolete("Will be removed in v2.")]
 	public static void ShouldHaveChanges(this IEnumerable<IDiff> diffs, params Action<IDiff>[] diffInspectors)
 	{
 		if (diffs is null)

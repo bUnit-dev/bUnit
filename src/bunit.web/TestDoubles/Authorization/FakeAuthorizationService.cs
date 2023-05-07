@@ -108,7 +108,9 @@ public class FakeAuthorizationService : IAuthorizationService
 
 	private AuthorizationResult VerifyRequiredPolicies(IReadOnlyCollection<IAuthorizationRequirement> requirements)
 	{
+#pragma warning disable CS0618
 		if (supportedPolicies.IsNullOrEmpty() || requirements.IsNullOrEmpty())
+#pragma warning restore CS0618
 		{
 			return AuthorizationResult.Failed();
 		}
