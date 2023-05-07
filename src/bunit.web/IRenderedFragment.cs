@@ -31,7 +31,9 @@ public interface IRenderedFragment : IRenderedFragmentBase
 	/// </summary>
 	/// <returns>A list of differences found.</returns>
 	[Obsolete("Will be removed in v2.")]
+#pragma warning disable CA1024 // Public API - cannot change structure
 	IReadOnlyList<IDiff> GetChangesSinceFirstRender();
+#pragma warning restore CA1024
 
 	/// <summary>
 	/// Performs a comparison of the markup produced by the rendering of the
@@ -40,7 +42,9 @@ public interface IRenderedFragment : IRenderedFragmentBase
 	/// </summary>
 	/// <returns>A list of differences found.</returns>
 	[Obsolete("Will be removed in v2.")]
+#pragma warning disable CA1024 // Public API - cannot change structure
 	IReadOnlyList<IDiff> GetChangesSinceSnapshot();
+#pragma warning restore CA1024
 
 	/// <summary>
 	/// Saves the markup from the current rendering of the fragment or component under test.
