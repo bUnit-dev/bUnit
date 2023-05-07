@@ -3,7 +3,7 @@ using Bunit.Rendering;
 namespace Bunit;
 
 /// <summary>
-/// InvokeAsync extensions methods on <see cref="IRenderedFragmentBase"/>.
+/// InvokeAsync extensions methods on <see cref="IRenderedFragment"/>.
 /// </summary>
 public static class RenderedFragmentInvokeAsyncExtensions
 {
@@ -13,7 +13,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <param name="renderedFragment">The rendered fragment whose dispatcher to invoke with.</param>
 	/// <param name="workItem">The work item to execute on the renderer's thread.</param>
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing or is suspended by an asynchronous operation.</returns>
-	public static Task InvokeAsync(this IRenderedFragmentBase renderedFragment, Action workItem)
+	public static Task InvokeAsync(this IRenderedFragment renderedFragment, Action workItem)
 	{
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 
@@ -31,7 +31,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <param name="renderedFragment">The rendered component whose dispatcher to invoke with.</param>
 	/// <param name="workItem">The work item to execute on the renderer's thread.</param>
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing.</returns>
-	public static Task InvokeAsync(this IRenderedFragmentBase renderedFragment, Func<Task> workItem)
+	public static Task InvokeAsync(this IRenderedFragment renderedFragment, Func<Task> workItem)
 	{
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 
@@ -49,7 +49,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <param name="renderedFragment">The rendered component whose dispatcher to invoke with.</param>
 	/// <param name="workItem">The work item to execute on the renderer's thread.</param>
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing, with the return value from <paramref name="workItem"/>.</returns>
-	public static Task<T> InvokeAsync<T>(this IRenderedFragmentBase renderedFragment, Func<T> workItem)
+	public static Task<T> InvokeAsync<T>(this IRenderedFragment renderedFragment, Func<T> workItem)
 	{
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 
@@ -67,7 +67,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <param name="renderedFragment">The rendered component whose dispatcher to invoke with.</param>
 	/// <param name="workItem">The work item to execute on the renderer's thread.</param>
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing, with the return value from <paramref name="workItem"/>.</returns>
-	public static Task<T> InvokeAsync<T>(this IRenderedFragmentBase renderedFragment, Func<Task<T>> workItem)
+	public static Task<T> InvokeAsync<T>(this IRenderedFragment renderedFragment, Func<Task<T>> workItem)
 	{
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 

@@ -278,7 +278,7 @@ public static class MarkupMatchesAssertExtensions
 			actual.Services.GetRequiredService<IRenderedComponentActivator>(),
 			actual.Services.GetRequiredService<TestServiceProvider>(),
 			actual.Services.GetRequiredService<ILoggerFactory>());
-		var renderedFragment = (IRenderedFragment)renderer.RenderFragment(expected);
+		var renderedFragment = renderer.RenderFragment(expected);
 		MarkupMatches(actual, renderedFragment, userMessage);
 	}
 
@@ -414,7 +414,7 @@ public static class MarkupMatchesAssertExtensions
 	private static IRenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
 	{
 		using var ctx = new TestContext();
-		return (IRenderedFragment)ctx.RenderInsideRenderTree(renderFragment);
+		return ctx.RenderInsideRenderTree(renderFragment);
 	}
 
 	private static INodeList ToNodeList(this string markup, BunitHtmlParser? htmlParser)
