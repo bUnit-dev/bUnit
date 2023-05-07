@@ -16,16 +16,16 @@ public sealed class RenderedComponentActivator : IRenderedComponentActivator
 	}
 
 	/// <inheritdoc/>
-	public IRenderedFragmentBase CreateRenderedFragment(int componentId)
+	public IRenderedFragment CreateRenderedFragment(int componentId)
 		=> new RenderedFragment(componentId, services);
 
 	/// <inheritdoc/>
-	public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId)
+	public IRenderedComponent<TComponent> CreateRenderedComponent<TComponent>(int componentId)
 		where TComponent : IComponent
 		=> new RenderedComponent<TComponent>(componentId, services);
 
 	/// <inheritdoc/>
-	public IRenderedComponentBase<TComponent> CreateRenderedComponent<TComponent>(int componentId, TComponent component, RenderTreeFrameDictionary componentFrames)
+	public IRenderedComponent<TComponent> CreateRenderedComponent<TComponent>(int componentId, TComponent component, RenderTreeFrameDictionary componentFrames)
 		where TComponent : IComponent
 		=> new RenderedComponent<TComponent>(componentId, component, componentFrames, services);
 }
