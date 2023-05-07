@@ -31,7 +31,7 @@ public static class TestServiceProviderExtensions
 		services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
 
 		// bUnits fake JSInterop
-		services.AddSingleton<IJSRuntime>(jsInterop.JSRuntime);
+		services.AddSingleton(jsInterop.JSRuntime);
 
 		// bUnits fake Navigation Manager
 		services.AddSingleton<FakeNavigationManager>();

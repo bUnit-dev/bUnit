@@ -39,13 +39,13 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 
 	private IRenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
 	{
-		return (IRenderedFragment)Renderer.RenderFragment(renderFragment);
+		return Renderer.RenderFragment(renderFragment);
 	}
 
 	private IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
 	{
-		var res = (IRenderedFragment)Renderer.RenderFragment(renderFragment);
+		var res = Renderer.RenderFragment(renderFragment);
 		return res.FindComponent<TComponent>();
 	}
 
