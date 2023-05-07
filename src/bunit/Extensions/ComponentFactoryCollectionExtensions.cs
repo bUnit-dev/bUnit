@@ -18,7 +18,7 @@ public static class ComponentFactoryCollectionExtensions
 	/// <returns>A <see cref="ComponentFactoryCollection"/>.</returns>
 	public static ComponentFactoryCollection Add<TComponent, TSubstituteComponent>(this ComponentFactoryCollection factories)
 		where TComponent : IComponent
-		where TSubstituteComponent : IComponent
+		where TSubstituteComponent : IComponent, new()
 	{
 		ArgumentNullException.ThrowIfNull(factories);
 
