@@ -40,7 +40,7 @@
 	</PropertyGroup>
 
 	<!-- Treat warnings as errors are always on when building in release -->
-	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND $(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
+	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND $(MSBuildProjectName) != 'bunit.template'">
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
@@ -51,7 +51,7 @@
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings"
-						 Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit' AND $(MSBuildProjectName) != 'AngleSharpWrappers.Tests'">
+						 Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'AngleSharpWrappers.Tests'">
 		<Using Include="Microsoft.AspNetCore.Components" />
 		<Using Include="Microsoft.AspNetCore.Components.RenderTree" />
 		<Using Include="Microsoft.AspNetCore.Components.Rendering" />

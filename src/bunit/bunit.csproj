@@ -1,9 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<NoBuild>true</NoBuild>
-		<IncludeBuildOutput>false</IncludeBuildOutput>
-		<IncludeSymbols>false</IncludeSymbols>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -21,8 +18,49 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\bunit.core\bunit.core.csproj" />
-	  <ProjectReference Include="..\bunit.web\bunit.web.csproj" />
+		<PackageReference Include="AngleSharp" Version="0.17.1" />
+		<PackageReference Include="AngleSharp.Diffing" Version="0.18.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet8Version)" />
+	</ItemGroup>
+
+	<!-- The following two elements ensures that AngleSharpWrappers.dll is included in this projects nuget package -->
+	<PropertyGroup>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+	</PropertyGroup>
+
+	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
+		<ItemGroup>
+			<!-- Filter out unnecessary files -->
+			<_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')->WithMetadataValue('PrivateAssets', 'All'))"/>
+		</ItemGroup>
+
+		<!-- Print batches for debug purposes -->
+		<Message Text="Batch for .nupkg: ReferenceCopyLocalPaths = @(_ReferenceCopyLocalPaths), ReferenceCopyLocalPaths.DestinationSubDirectory = %(_ReferenceCopyLocalPaths.DestinationSubDirectory) Filename = %(_ReferenceCopyLocalPaths.Filename) Extension = %(_ReferenceCopyLocalPaths.Extension)" Importance="High" Condition="'@(_ReferenceCopyLocalPaths)' != ''" />
+
+		<ItemGroup>
+			<!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
+			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)"/>
+		</ItemGroup>
+	</Target>
+
+	<ItemGroup>
+		<ProjectReference Include="..\AngleSharpWrappers\AngleSharpWrappers.csproj" PrivateAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template'">
+		<Using Include="Microsoft.AspNetCore.Components.Web" />
+		<Using Include="Microsoft.JSInterop" />
 	</ItemGroup>
 
 </Project>

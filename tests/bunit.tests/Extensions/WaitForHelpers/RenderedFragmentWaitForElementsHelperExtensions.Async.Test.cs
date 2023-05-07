@@ -5,7 +5,7 @@ namespace Bunit.Extensions.WaitForHelpers;
 
 public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestContext
 {
-    private readonly static TimeSpan WaitForTestTimeout = TimeSpan.FromMilliseconds(100);
+    private static readonly TimeSpan WaitForTestTimeout = TimeSpan.FromMilliseconds(100);
 
     public RenderedFragmentWaitForElementsHelperExtensionsAsyncTest(ITestOutputHelper testOutput)
 	{
