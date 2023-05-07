@@ -26,7 +26,7 @@ public class WaitForAssertionHelper : WaitForHelper<object?>
 	/// <remarks>
 	/// If a debugger is attached the timeout is set to <see cref="Timeout.InfiniteTimeSpan" />, giving the possibility to debug without the timeout triggering.
 	/// </remarks>
-	public WaitForAssertionHelper(IRenderedFragmentBase renderedFragment, Action assertion, TimeSpan? timeout = null)
+	public WaitForAssertionHelper(IRenderedFragment renderedFragment, Action assertion, TimeSpan? timeout = null)
 		: base(
 			  renderedFragment,
 			  () =>

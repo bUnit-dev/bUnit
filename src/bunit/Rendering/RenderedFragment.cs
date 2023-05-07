@@ -78,7 +78,7 @@ internal class RenderedFragment : IRenderedFragment
 		htmlParser = Services.GetRequiredService<BunitHtmlParser>();
 	}
 
-	void IRenderedFragmentBase.OnRender(RenderEvent renderEvent)
+	void IRenderedFragment.OnRender(RenderEvent renderEvent)
 	{
 		if (IsDisposed)
 			return;
