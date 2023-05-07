@@ -65,7 +65,7 @@ public class TestContext : TestContextBase
 	/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
 	public virtual IRenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
-		=> (IRenderedComponent<TComponent>)this.RenderInsideRenderTree<TComponent>(renderFragment);
+		=> this.RenderInsideRenderTree<TComponent>(renderFragment);
 
 	/// <summary>
 	/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="IRenderedFragment"/>.
@@ -73,7 +73,7 @@ public class TestContext : TestContextBase
 	/// <param name="renderFragment">The render fragment to render.</param>
 	/// <returns>The <see cref="IRenderedFragment"/>.</returns>
 	public virtual IRenderedFragment Render(RenderFragment renderFragment)
-		=> (IRenderedFragment)this.RenderInsideRenderTree(renderFragment);
+		=> this.RenderInsideRenderTree(renderFragment);
 
 	/// <summary>
 	/// Dummy method required to allow Blazor's compiler to generate
@@ -89,7 +89,7 @@ public class TestContext : TestContextBase
 
 		var componentActivator = Services.GetService<IComponentActivator>();
 		return componentActivator is null
-			? new WebTestRenderer(renderedComponentActivator, Services, logger)
-			: new WebTestRenderer(renderedComponentActivator, Services, logger, componentActivator);
+			? new TestRenderer(renderedComponentActivator, Services, logger)
+			: new TestRenderer(renderedComponentActivator, Services, logger, componentActivator);
 	}
 }

@@ -10,7 +10,7 @@ public class ComponentParameterFactoryTest
 
 	private static IRenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
 	{
-		return (IRenderedFragment)Context.Renderer.RenderFragment(renderFragment);
+		return Context.Renderer.RenderFragment(renderFragment);
 	}
 
 	private string? Actual { get; set; }

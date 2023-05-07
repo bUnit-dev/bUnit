@@ -4,7 +4,7 @@ public class ComponentParameterCollectionTest : TestContext
 {
 	private IRenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
 	{
-		var res = (IRenderedFragment)Renderer.RenderFragment(renderFragment);
+		var res = Renderer.RenderFragment(renderFragment);
 		return res.FindComponent<Params>();
 	}
 
