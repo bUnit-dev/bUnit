@@ -272,7 +272,7 @@ public static class MarkupMatchesAssertExtensions
 		ArgumentNullException.ThrowIfNull(expected);
 
 		var testContext = actual.Services.GetRequiredService<TestContextBase>();
-		var renderedFragment = (IRenderedFragment)testContext.RenderInsideRenderTree(expected);
+		var renderedFragment = testContext.RenderInsideRenderTree(expected);
 		MarkupMatches(actual, renderedFragment, userMessage);
 	}
 
@@ -408,7 +408,7 @@ public static class MarkupMatchesAssertExtensions
 	private static IRenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
 	{
 		using var ctx = new TestContext();
-		return (IRenderedFragment)ctx.RenderInsideRenderTree(renderFragment);
+		return ctx.RenderInsideRenderTree(renderFragment);
 	}
 
 	private static INodeList ToNodeList(this string markup, BunitHtmlParser? htmlParser)

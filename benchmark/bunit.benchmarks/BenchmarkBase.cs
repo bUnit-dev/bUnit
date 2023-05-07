@@ -32,7 +32,7 @@ public abstract class BenchmarkBase
 		Renderer.Dispose();
 	}
 
-	protected IRenderedComponentBase<TComponent> RenderComponent<TComponent>()
+	protected IRenderedComponent<TComponent> RenderComponent<TComponent>()
 		where TComponent : IComponent =>
 		Renderer.RenderComponent<TComponent>(EmptyParameter);
 

@@ -46,16 +46,16 @@ public interface ITestRenderer
 	/// Renders the <paramref name="renderFragment"/>.
 	/// </summary>
 	/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
-	/// <returns>A <see cref="IRenderedFragmentBase"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
-	IRenderedFragmentBase RenderFragment(RenderFragment renderFragment);
+	/// <returns>A <see cref="IRenderedFragment"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
+	IRenderedFragment RenderFragment(RenderFragment renderFragment);
 
 	/// <summary>
 	/// Renders a <typeparamref name="TComponent"/> with the <paramref name="parameters"/> passed to it.
 	/// </summary>
 	/// <typeparam name = "TComponent" > The type of component to render.</typeparam>
 	/// <param name="parameters">The parameters to pass to the component.</param>
-	/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/> that provides access to the rendered component.</returns>
-	IRenderedComponentBase<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
+	/// <returns>A <see cref="IRenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
+	IRenderedComponent<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent;
 
 	/// <summary>
@@ -63,7 +63,7 @@ public interface ITestRenderer
 	/// </summary>
 	/// <typeparam name="TComponent">Type of component to find.</typeparam>
 	/// <param name="parentComponent">Parent component to search.</param>
-	IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)
+	IRenderedComponent<TComponent> FindComponent<TComponent>(IRenderedFragment parentComponent)
 		where TComponent : IComponent;
 
 	/// <summary>
@@ -71,7 +71,7 @@ public interface ITestRenderer
 	/// </summary>
 	/// <typeparam name="TComponent">Type of components to find.</typeparam>
 	/// <param name="parentComponent">Parent component to search.</param>
-	IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent)
+	IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragment parentComponent)
 		where TComponent : IComponent;
 
 	/// <summary>

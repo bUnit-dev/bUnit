@@ -37,7 +37,7 @@ public class TestRendererTest : TestContext
 		const string MARKUP = "<h1>hello world</h1>";
 		var sut = Services.GetRequiredService<ITestRenderer>();
 
-		var cut = (IRenderedFragment)sut.RenderFragment(builder => builder.AddMarkupContent(0, MARKUP));
+		var cut = sut.RenderFragment(builder => builder.AddMarkupContent(0, MARKUP));
 
 		cut.RenderCount.ShouldBe(1);
 		cut.Markup.ShouldBe(MARKUP);
@@ -128,7 +128,7 @@ public class TestRendererTest : TestContext
 			ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE)));
 
 		// act
-		var childCut = (IRenderedComponent<HasParams>)sut.FindComponent<HasParams>(cut);
+		var childCut = sut.FindComponent<HasParams>(cut);
 
 		// assert
 		childCut.Markup.ShouldBe(CHILD_VALUE);
@@ -230,7 +230,7 @@ public class TestRendererTest : TestContext
 			ChildContent<RenderTrigger>());
 
 		// act
-		var cut = (IRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(parent);
+		var cut = sut.FindComponent<RenderTrigger>(parent);
 
 		cut.RenderCount.ShouldBe(1);
 
@@ -249,7 +249,7 @@ public class TestRendererTest : TestContext
 			ChildContent<RenderTrigger>());
 
 		// act
-		var cut = (IRenderedComponent<RenderTrigger>)sut.FindComponents<RenderTrigger>(parent).Single();
+		var cut = sut.FindComponents<RenderTrigger>(parent).Single();
 
 		cut.RenderCount.ShouldBe(1);
 
@@ -267,7 +267,7 @@ public class TestRendererTest : TestContext
 
 		var cut = sut.RenderComponent<HasParams>(
 			ChildContent<RenderTrigger>());
-		var child = (IRenderedComponent<RenderTrigger>)sut.FindComponent<RenderTrigger>(cut);
+		var child = sut.FindComponent<RenderTrigger>(cut);
 
 		// act
 		await child.Instance.TriggerWithValue("X");
@@ -285,7 +285,7 @@ public class TestRendererTest : TestContext
 
 		var cut = sut.RenderComponent<ToggleChild>(
 			ChildContent<NoChildNoParams>());
-		var child = (IRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
+		var child = sut.FindComponent<NoChildNoParams>(cut);
 
 		// act
 		await cut.Instance.DisposeChild();
@@ -304,8 +304,8 @@ public class TestRendererTest : TestContext
 		var cut = sut.RenderComponent<ToggleChild>(
 			ChildContent<ToggleChild>(
 				ChildContent<NoChildNoParams>()));
-		var child = (IRenderedComponent<ToggleChild>)sut.FindComponent<ToggleChild>(cut);
-		var childChild = (IRenderedComponent<NoChildNoParams>)sut.FindComponent<NoChildNoParams>(cut);
+		var child = sut.FindComponent<ToggleChild>(cut);
+		var childChild = sut.FindComponent<NoChildNoParams>(cut);
 
 		// act
 		await child.Instance.DisposeChild();
@@ -440,7 +440,7 @@ public class TestRendererTest : TestContext
 
 		activatorMock.Verify(x => x.CreateInstance(typeof(Wrapper)), Times.Once());
 	}
-	
+
 	internal sealed class NoChildNoParams : ComponentBase
 	{
 		public const string MARKUP = "hello world";
