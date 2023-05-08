@@ -58,12 +58,10 @@ jobs:
         with:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
 
-      - name: 🧪 Run unit tests (async)
+      - name: 🧪 Run unit tests
         run: |
-          dotnet test --filter Category!=sync -c release
-      - name: 🧪 Run unit tests (sync)
-        run: |
-          dotnet test --filter Category!=async -c release
+          dotnet test -c release
+          
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
         uses: actions/upload-artifact@v3

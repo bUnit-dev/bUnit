@@ -33,3 +33,6 @@ The `bunit.core` and `bunit.web` packages have been merged into a single `bunit`
 
 ### `WebTestRender` merged into `TestRender`
 The `WebTestRender` class has been merged into the `TestRender` class. If you used `WebTestRender`, you should replace it with `TestRender`.
+
+## `WaitFor` methods are asynchronous
+`WaitForState`, `WaitForAssertion`, `WaitForElement` and `WaitForElements` are now asynchronous methods. Therefore they should be awaited and all of them have the `Async` suffix in the method name.

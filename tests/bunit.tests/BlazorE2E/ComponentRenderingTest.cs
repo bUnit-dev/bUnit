@@ -65,7 +65,6 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	[Trait("Category", "async")]
 	public async Task CanTriggerAsyncEventHandlers()
 	{
 		// Initial state is stopped
@@ -79,23 +78,6 @@ public class ComponentRenderingTest : TestContext
 
 		cut.Find("#tock").Click();
 		await cut.WaitForAssertionAsync(() => Assert.Equal("Stopped", stateElement.TextContent));
-	}
-
-	[Fact]
-	[Trait("Category", "sync")]
-	public void CanTriggerAsyncEventHandlers_Sync()
-	{
-		// Initial state is stopped
-		var cut = RenderComponent<AsyncEventHandlerComponent>();
-		var stateElement = cut.Find("#state");
-		Assert.Equal("Stopped", stateElement.TextContent);
-
-		// Clicking 'tick' changes the state, and starts a task
-		cut.Find("#tick").Click();
-		Assert.Equal("Started", stateElement.TextContent);
-
-		cut.Find("#tock").Click();
-		cut.WaitForAssertion(() => Assert.Equal("Stopped", stateElement.TextContent));
 	}
 
 	[Fact]
@@ -527,7 +509,6 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	[Trait("Category", "async")]
 	public async Task CanAcceptSimultaneousRenderRequests()
 	{
 		var expectedOutput = string.Join(
@@ -548,28 +529,6 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	[Trait("Category", "sync")]
-	public void CanAcceptSimultaneousRenderRequests_Sync()
-	{
-		var expectedOutput = string.Join(
-			string.Empty,
-			Enumerable.Range(0, 100).Select(_ => "😊"));
-
-		var cut = RenderComponent<ConcurrentRenderParent>();
-
-		// It's supposed to pause the rendering for this long. The WaitAssert below
-		// allows it to take up extra time if needed.
-		// await Task.Delay(1000);
-
-		var outputElement = cut.Find("#concurrent-render-output");
-
-		cut.WaitForAssertion(
-			() => Assert.Equal(expectedOutput, outputElement.TextContent.Trim()),
-			timeout: TimeSpan.FromSeconds(10));
-	}
-
-	[Fact]
-	[Trait("Category", "async")]
 	public async Task CanDispatchRenderToSyncContext()
 	{
 		var cut = RenderComponent<DispatchingComponent>();
@@ -581,19 +540,6 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	[Trait("Category", "sync")]
-	public void CanDispatchRenderToSyncContext_Sync()
-	{
-		var cut = RenderComponent<DispatchingComponent>();
-		var result = cut.Find("#result");
-
-		cut.Find("#run-with-dispatch").Click();
-
-		cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
-	}
-
-	[Fact]
-	[Trait("Category", "async")]
 	public async Task CanDoubleDispatchRenderToSyncContext()
 	{
 		var cut = RenderComponent<DispatchingComponent>();
@@ -602,18 +548,6 @@ public class ComponentRenderingTest : TestContext
 		cut.Find("#run-with-double-dispatch").Click();
 
 		await cut.WaitForAssertionAsync(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
-	}
-
-	[Fact]
-	[Trait("Category", "sync")]
-	public void CanDoubleDispatchRenderToSyncContext_Sync()
-	{
-		var cut = RenderComponent<DispatchingComponent>();
-		var result = cut.Find("#result");
-
-		cut.Find("#run-with-double-dispatch").Click();
-
-		cut.WaitForAssertion(() => Assert.Equal("Success (completed synchronously)", result.TextContent.Trim()));
 	}
 
 	[Fact]
@@ -655,7 +589,6 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	[Trait("Category", "async")]
 	public async Task CanHandleRemovedParentObjects()
 	{
 		var cut = RenderComponent<DispatcherException>();
@@ -667,19 +600,6 @@ public class ComponentRenderingTest : TestContext
 	}
 
 	[Fact]
-	[Trait("Category", "sync")]
-	public void CanHandleRemovedParentObjects_Sync()
-	{
-		var cut = RenderComponent<DispatcherException>();
-
-		cut.Find("button").Click();
-
-		cut.WaitForState(() => !cut.FindAll("div").Any());
-		cut.FindAll("div").Count.ShouldBe(0);
-	}
-
-	[Fact]
-	[Trait("Category", "async")]
 	public async Task CanHandleRemovedParentObjectsAsync()
 	{
 		var cut = RenderComponent<DispatcherException>();
@@ -700,17 +620,5 @@ public class ComponentRenderingTest : TestContext
 			p => p.Add(s => s.Escaped, input));
 
 		cut.Markup.ShouldBe(expected);
-	}
-
-	[Fact]
-	[Trait("Category", "sync")]
-	public async Task CanHandleRemovedParentObjectsAsync_Sync()
-	{
-		var cut = RenderComponent<DispatcherException>();
-
-		await cut.Find("button").ClickAsync(new MouseEventArgs());
-
-		cut.WaitForState(() => !cut.FindAll("div").Any());
-		cut.FindAll("div").Count.ShouldBe(0);
 	}
 }
