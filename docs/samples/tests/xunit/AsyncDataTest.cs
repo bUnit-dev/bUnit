@@ -9,7 +9,7 @@ namespace Bunit.Docs.Samples;
 public class AsyncDataTest : TestContext
 {
   [Fact]
-  public void LoadDataAsync()
+  public async Task LoadDataAsync()
   {
     // Arrange
     var textService = new TaskCompletionSource<string>();
@@ -21,14 +21,14 @@ public class AsyncDataTest : TestContext
     textService.SetResult("Hello World");
 
     // Wait for state before continuing test
-    cut.WaitForState(() => cut.Find("p").TextContent == "Hello World");
+    await cut.WaitForStateAsync(() => cut.Find("p").TextContent == "Hello World");
 
     // Assert - verify result has been set
     cut.MarkupMatches("<p>Hello World</p>");
   }
 
   [Fact]
-  public void LoadDataAsyncWithTimeout()
+  public async Task LoadDataAsyncWithTimeout()
   {
     // Arrange
     var textService = new TaskCompletionSource<string>();
@@ -40,14 +40,14 @@ public class AsyncDataTest : TestContext
     textService.SetResult("Long time");
 
     // Wait for state before continuing test
-    cut.WaitForState(() => cut.Find("p").TextContent == "Long time", TimeSpan.FromSeconds(2));
+    await cut.WaitForStateAsync(() => cut.Find("p").TextContent == "Long time", TimeSpan.FromSeconds(2));
 
     // Assert - verify result has been set
     cut.MarkupMatches("<p>Long time</p>");
   }
 
   [Fact]
-  public void LoadDataAsyncAssertion()
+  public async Task LoadDataAsyncAssertion()
   {
     // Arrange
     var textService = new TaskCompletionSource<string>();
@@ -59,7 +59,7 @@ public class AsyncDataTest : TestContext
     textService.SetResult("Hello World");
 
     // Wait for assertion to pass
-    cut.WaitForAssertion(() => cut.MarkupMatches("<p>Hello World</p>"));
-    cut.WaitForAssertion(() => cut.MarkupMatches("<p>Hello World</p>"), TimeSpan.FromSeconds(2));
+    await cut.WaitForAssertionAsync(() => cut.MarkupMatches("<p>Hello World</p>"));
+    await cut.WaitForAssertionAsync(() => cut.MarkupMatches("<p>Hello World</p>"), TimeSpan.FromSeconds(2));
   }
 }

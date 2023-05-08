@@ -10,7 +10,6 @@ namespace Bunit;
 /// </summary>
 public static class RenderedFragmentWaitForHelperExtensions
 {
-
 	/// <summary>
 	/// Wait until the provided <paramref name="statePredicate"/> action returns true,
 	/// or the <paramref name="timeout"/> is reached (default is one second).
