@@ -9,18 +9,18 @@ A test can fail if a component performs asynchronous renders. This may be due to
 
 You need to handle this specifically in your tests because tests execute in the test framework's synchronization context and the test renderer executes renders in its own synchronization context. If you do not, you will likely experience tests that sometimes pass and sometimes fail.
 
-bUnit comes with two methods that help to deal with this issue: the [`WaitForState()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragment,Func{System.Boolean},System.Nullable{TimeSpan})) method covered on this page, and the [`WaitForAssertion()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragment,Action,System.Nullable{TimeSpan})) method covered on the <xref:async-assertion> page.
+bUnit comes with two methods that help to deal with this issue: the [`WaitForStateAsync()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForStateAsync(Bunit.IRenderedFragment,Func{System.Boolean},System.Nullable{TimeSpan})) method covered on this page, and the [`WaitForAssertionAsync()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertionAsync(Bunit.IRenderedFragment,Action,System.Nullable{TimeSpan})) method covered on the <xref:async-assertion> page.
 
-Let's start by taking a look at the `WaitForState` method in more detail.
+Let's start by taking a look at the `WaitForStateAsync` method in more detail.
 
-## Waiting for state using `WaitForState`
+## Waiting for state using `WaitForStateAsync`
 
-The [`WaitForState(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragment,Func{System.Boolean},System.Nullable{TimeSpan})) method can be used to block and wait in a test method, until the provided predicate returns true or the timeout is reached. (The default timeout is one second.)
+The [`WaitForStatAsync(Func<Boolean>, TimeSpan?)`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForStateAsync(Bunit.IRenderedFragment,Func{System.Boolean},System.Nullable{TimeSpan})) method can be used to block and wait in a test method until the provided predicate returns true or the timeout is reached. (The default timeout is one second.)
 
 > [!NOTE]
-> The `WaitForState()` method will try the predicate passed to it when the `WaitForState()` method is called, and every time the component under test renders.
+> The `WaitForStateAsync()` method will try the predicate passed to it when the `WaitForStateAsync()` method is called, and every time the component under test renders.
 
-Let us look at an example. Consider the following `<AsyncData>` component which awaits an async `TextService` in its `OnInitializedAsync()` life-cycle method. When the service returns the data, the component will automatically re-render to update its rendered markup:
+Let us look at an example. Consider the following `<AsyncData>` component, which awaits an async `TextService` in its `OnInitializedAsync()` life-cycle method. When the service returns the data, the component will automatically re-render to update its rendered markup:
 
 [!code-cshtml[AsyncData.razor](../../../samples/components/AsyncData.razor)]
 
@@ -32,15 +32,15 @@ This is what happens in the test:
 
 1. The test uses a `TaskCompletionSource<string>` to simulate an async web service.
 2. In the second highlighted line, the result is provided to the component through the `textService`. This causes the component to re-render.
-3. In the third highlighted line, the `WaitForState()` method is used to block the test until the predicate provided to it returns true.
+3. In the third highlighted line, the `WaitForStateAsync()` method is used to block the test until the predicate provided to it returns true.
 4. Finally, the tests assertion step can execute, knowing that the desired state has been reached.
 
 > [!WARNING]
-> The wait predicate and an assertion should not verify the same thing. Instead, use the `WaitForAssertion(...)` method covered on the <xref:async-assertion> page instead.
+> The wait predicate and an assertion should not verify the same thing. Instead, use the `WaitForAssertionAsync(...)` method covered on the <xref:async-assertion> page instead.
  
 ### Controlling wait timeout
 
-The timeout, which defaults to one second, can be controlled by passing a `TimeSpan` as the second argument to the `WaitForState()` method, e.g.:
+The timeout, which defaults to one second, can be controlled by passing a `TimeSpan` as the second argument to the `WaitForStateAsync()` method, e.g.:
 
 [!code-csharp[](../../../samples/tests/xunit/AsyncDataTest.cs?start=43&end=43)]
 

@@ -13,7 +13,7 @@ The following example of this:
 [!code-csharp[](../../../samples/tests/xunit/DisposeComponentsTest.cs#L13-L22)]
 
 > [!WARNING]
-> For `IAsyncDisposable` (since .net5) relying on [`WaitForState()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragment,Func{System.Boolean},System.Nullable{TimeSpan})) or [`WaitForAssertion()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.IRenderedFragment,Action,System.Nullable{TimeSpan})) will not work as a disposed component will not trigger a new render cycle.
+> For `IAsyncDisposable` (since .net5) relying on [`WaitForStateAsync()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForStateAsync(Bunit.IRenderedFragment,Func{System.Boolean},System.Nullable{TimeSpan})) or [`WaitForAssertionAsync()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertionAsync(Bunit.IRenderedFragment,Action,System.Nullable{TimeSpan})) will not work as a disposed component will not trigger a new render cycle.
 
 ## Checking for exceptions
 `Dispose` as well as `DisposeAsync` can throw exceptions which can be asserted as well. If a component under test throws an exception in `Dispose` the [`DisposeComponents`](xref:Bunit.TestContextBase.DisposeComponents) will throw the exception to the user code:
