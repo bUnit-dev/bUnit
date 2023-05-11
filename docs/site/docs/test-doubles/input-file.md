@@ -7,7 +7,7 @@ title: Uploading files to the InputFile component
 
 bUnit comes with integrated support for the [`InputFile`](https://docs.microsoft.com/en-us/aspnet/core/blazor/file-uploads?view=aspnetcore-6.0&pivots=server) component and makes it easy to simulate uploading files.
 
-To upload a file, first find the `InputFile` component in the component under test. Afterwards call the method `UploadFile`:
+To upload a file, first find the `InputFile` component in the component under test. Afterward, call the method `UploadFile`:
 
 ```csharp
 // Create an InputFileContent with string content
@@ -25,5 +25,4 @@ inputFile.UploadFile(fileToUpload);
 // Assertions...
 ```
 
-To upload binary content, create an `InputFileContent`  with the `InputFileContent.CreateFromBinary()` method.
-See all supported properties supported by the `InputFileContent` on its [reference page](xref:Bunit.InputFileContent).
+To upload binary content, create an `InputFileContent` with the `InputFileContent.CreateFromBinary()` method.
