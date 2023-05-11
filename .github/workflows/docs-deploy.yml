@@ -81,7 +81,7 @@ jobs:
         run: dotnet test docs/samples/samples.sln
 
       - name: 🛠️ Building docs
-        uses: nikeee/docfx-action@v1.0.0
+        uses: ./workflows/actions/docfx
         with:
           args: docs/site/docfx.json
 

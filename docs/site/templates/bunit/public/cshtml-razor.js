@@ -1,93 +1,10 @@
 /*
  * Language: cshtml-razor
- * Requires: xml.js, cs.js, css.js, javascript.js
+ * Requires: xml.js, csharp.js, css.js, javascript.js
  * Author: Roman Resh <romanresh@live.com>
 */
 
-var module = module ? module : {};
-
-function getXmlBlocks(hljs, additional_blocks) {
-    var xml_comment = hljs.COMMENT(
-        '<!--',
-        '-->',
-        {
-            relevance: 10
-        }
-    );
-    var string = {
-        className: 'string',
-        variants: [
-            { begin: /"/, end: /"/, contains: additional_blocks },
-            { begin: /'/, end: /'/, contains: additional_blocks },
-            { begin: /[^\s"'=<>`]+/ }
-        ]
-    };
-    var xml_tag_internal = {
-        endsWithParent: true,
-        illegal: /</,
-        relevance: 0,
-        contains: [
-            {
-                className: 'attr',
-                begin: '[A-Za-z0-9\\._:-]+',
-                relevance: 0
-            },
-            {
-                begin: /=\s*/,
-                relevance: 0,
-                contains: [string]
-            }
-        ]
-    };
-    return [
-        {
-            className: 'meta',
-            begin: '<!DOCTYPE', end: '>',
-            relevance: 10,
-            contains: [{ begin: '\\[', end: '\\]' }]
-        },
-        xml_comment,
-        {
-            begin: '<\\!\\[CDATA\\[', end: '\\]\\]>',
-            relevance: 10
-        },
-        {
-            className: 'meta',
-            begin: /<\?xml/, end: /\?>/, relevance: 10
-        },
-        {
-            className: 'tag',
-            begin: '<style(?=\\s|>|$)', end: '>',
-            keywords: { name: 'style' },
-            contains: [xml_tag_internal],
-            starts: {
-                end: '</style>', returnEnd: true,
-                subLanguage: ['css', 'xml']
-            }
-        },
-        {
-            className: 'tag',
-            begin: '<script(?=\\s|>|$)', end: '>',
-            keywords: { name: 'script' },
-            contains: [xml_tag_internal],
-            starts: {
-                end: '\<\/script\>', returnEnd: true,
-                subLanguage: ['actionscript', 'javascript', 'handlebars', 'xml']
-            }
-        },
-        {
-            className: 'tag',
-            begin: '</?', end: '/?>',
-            contains: [
-                {
-                    className: 'name', begin: /[^\/><\s]+/, relevance: 0
-                },
-                xml_tag_internal
-            ]
-        }
-    ].concat(additional_blocks);
-}
-function hljsDefineCshtmlRazor(hljs) {
+export function razor(hljs) {
     var SPECIAL_SYMBOL_CLASSNAME = "built_in";
     var CONTENT_REPLACER = {};
     var closed_brace = {
@@ -124,12 +41,15 @@ function hljsDefineCshtmlRazor(hljs) {
                 className: SPECIAL_SYMBOL_CLASSNAME
             },
             {
-                begin: '".*(?!$)"',
+                begin: '\\[',
+                end: '\\]',
                 skip: true
-            },
+            }
+            ,
             {
-                begin: '"',
-                endsParent: true
+                begin: '\\(',
+                end: '\\)',
+                skip: true
             }
         ],
         returnEnd: true
@@ -186,14 +106,15 @@ function hljsDefineCshtmlRazor(hljs) {
         ]
     };
     var xml_blocks = getXmlBlocks(hljs, [razor_inline_expresion, razor_parentheses_block]);
+    var razor_directives_prefix = "^\\s*@(page|model|using|inherits|inject|layout)";
     var razor_directives = {
-        begin: "^\\s*@(page|model|using|inherits|inject)[^\\r\\n{\\(]*$",
+        begin: razor_directives_prefix + "[^\\r\\n{\\(]*$",
         end: "$",
         returnBegin: true,
         returnEnd: true,
         contains: [
             {
-                begin: "^\\s*@(page|model|using|inherits|inject)",
+                begin: razor_directives_prefix,
                 className: SPECIAL_SYMBOL_CLASSNAME
             },
             {
@@ -356,46 +277,120 @@ function hljsDefineCshtmlRazor(hljs) {
         ]
     };
 
-    var result = {
-        aliases: ['cshtml', 'razor', 'razor-cshtml'],
-        contains: [
-            razor_directives,
-            razor_helper_block,
-            razor_block,
-            razor_code_block,
-            razor_section_block,
-            rasor_await,
-            razor_try_block,
-            razor_escape_at,
-            razor_text_block,
-            razor_comment,
-            razor_parentheses_block,
-            {
-                className: 'meta',
-                begin: '<!DOCTYPE', end: '>',
-                relevance: 10,
-                contains: [{ begin: '\\[', end: '\\]' }]
-            },
-            {
-                begin: '<\\!\\[CDATA\\[', end: '\\]\\]>',
-                relevance: 10
-            }
-        ]
-    };
-    result.contains = result.contains.concat(xml_blocks);
-
+    var contains = [
+        razor_directives,
+        razor_helper_block,
+        razor_block,
+        razor_code_block,
+        razor_section_block,
+        rasor_await,
+        razor_try_block,
+        razor_escape_at,
+        razor_text_block,
+        razor_comment,
+        razor_parentheses_block,
+        {
+            className: 'meta',
+            begin: '<!DOCTYPE', end: '>',
+            relevance: 10,
+            contains: [{ begin: '\\[', end: '\\]' }]
+        },
+        {
+            begin: '<\\!\\[CDATA\\[', end: '\\]\\]>',
+            relevance: 10
+        }
+    ].concat(xml_blocks);
     [razor_block, razor_code_block, razor_try_block]
         .forEach(function (mode) {
-            var razorModes = result.contains.filter(function (c) { return c !== mode; });
+            var razorModes = contains.filter(function (c) { return c !== mode; });
             var replacerIndex = mode.contains.indexOf(CONTENT_REPLACER);
             mode.contains.splice.apply(mode.contains, [replacerIndex, 1].concat(razorModes));
         });
 
-    return result;
-}
-
-module.exports = function (hljs) {
-    hljs.registerLanguage('cshtml-razor', hljsDefineCshtmlRazor);
+    return {
+        aliases: ['cshtml', 'razor', 'razor-cshtml', 'cshtml-razor'],
+        contains: contains
+    };
 };
 
-module.exports.definer = hljsDefineCshtmlRazor;
+function getXmlBlocks(hljs, additional_blocks) {
+    var xml_comment = hljs.COMMENT(
+        '<!--',
+        '-->',
+        {
+            relevance: 10
+        }
+    );
+    var string = {
+        className: 'string',
+        variants: [
+            { begin: /"/, end: /"/, contains: additional_blocks },
+            { begin: /'/, end: /'/, contains: additional_blocks },
+            { begin: /[^\s"'=<>`]+/ }
+        ]
+    };
+    var xml_tag_internal = {
+        endsWithParent: true,
+        illegal: /</,
+        relevance: 0,
+        contains: [
+            {
+                className: 'attr',
+                begin: '[A-Za-z0-9\\._:-]+',
+                relevance: 0
+            },
+            {
+                begin: /=\s*/,
+                relevance: 0,
+                contains: [string]
+            }
+        ]
+    };
+    return [
+        {
+            className: 'meta',
+            begin: '<!DOCTYPE', end: '>',
+            relevance: 10,
+            contains: [{ begin: '\\[', end: '\\]' }]
+        },
+        xml_comment,
+        {
+            begin: '<\\!\\[CDATA\\[', end: '\\]\\]>',
+            relevance: 10
+        },
+        {
+            className: 'meta',
+            begin: /<\?xml/, end: /\?>/, relevance: 10
+        },
+        {
+            className: 'tag',
+            begin: '<style(?=\\s|>|$)', end: '>',
+            keywords: { name: 'style' },
+            contains: [xml_tag_internal],
+            starts: {
+                end: '</style>', returnEnd: true,
+                subLanguage: ['css', 'xml']
+            }
+        },
+        {
+            className: 'tag',
+            begin: '<script(?=\\s|>|$)', end: '>',
+            keywords: { name: 'script' },
+            contains: [xml_tag_internal],
+            starts: {
+                end: '\<\/script\>', returnEnd: true,
+                subLanguage: ['actionscript', 'javascript', 'handlebars', 'xml']
+            }
+        },
+        {
+            className: 'tag',
+            begin: '</?', end: '/?>',
+            contains: [
+                {
+                    className: 'name', begin: /[^\/><\s]+/, relevance: 0
+                },
+                xml_tag_internal
+            ]
+        }
+    ].concat(additional_blocks);
+}
