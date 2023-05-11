@@ -1,0 +1,11 @@
+name: docfx-action
+author: bUnit team (forked from Niklas Mollenhauer)
+description: Runs docfx as a GitHub Action.
+
+runs:
+  using: docker
+  image: 'Dockerfile'
+
+branding:
+  icon: book
+  color: green

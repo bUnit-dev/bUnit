@@ -20,7 +20,7 @@
 - Pass parameters, cascading values and inject services into components under test
 - Mock `IJSRuntime`, Blazor authentication and authorization, and others
 
-bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which run the Blazor component tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run. 
+bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which run the Blazor component tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run.
 
 **Go to [bUnit.dev](https://bunit.dev) to learn more.**
 
@@ -31,9 +31,9 @@ bUnit is available on NuGet in various incarnations. Most should just pick the [
 | Name | Description | NuGet Download Link |
 | ----- | ----- | ---- |
 | [bUnit](https://www.nuget.org/packages/bunit/) | Includes the bUnit.core and bUnit.web packages. | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) |
-| [bUnit.core](https://www.nuget.org/packages/bunit.core/) | Core library that enables rendering a Blazor component in a test context. | [![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.core/) | 
-| [bUnit.web](https://www.nuget.org/packages/bunit.web/) | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) | 
-| [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template, which currently creates xUnit-based bUnit test projects only | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) | 
+| [bUnit.core](https://www.nuget.org/packages/bunit.core/) | Core library that enables rendering a Blazor component in a test context. | [![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.core/) |
+| [bUnit.web](https://www.nuget.org/packages/bunit.web/) | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) |
+| [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template, which currently creates xUnit-based bUnit test projects only | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) |
 
 To get started, head to the [getting started documentation](https://bunit.dev/docs/getting-started) to learn more.
 
@@ -63,13 +63,6 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 				<br />
 				Amazon Web Services
 			</a>
-		</td>			
-		<td align="center" width="120">
-			<a href="https://github.com/hassanhabib">
-				<img src="https://avatars.githubusercontent.com/u/1453985?s=460" alt="Hassan Rezk Habib (@hassanhabib)" width="72" height="72" class="avatar" />
-				<br />
-				Hassan Rezk Habib
-			</a>
 		</td>
 	</tr>
 </table>
@@ -87,7 +80,7 @@ These good people have contributed code or documentation to bUnit:
 ## Code of conduct
 
 This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.
-For more information see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct). 
+For more information see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).
 
 ## .NET Foundation
 
