@@ -81,9 +81,9 @@ jobs:
         run: dotnet test docs/samples/samples.sln
 
       - name: 🛠️ Building docs
-        uses: nikeee/docfx-action@v1.0.0
-        with:
-          args: docs/site/docfx.json
+        run: |
+          dotnet tool update -g docfx --version 2.67.0
+          docfx docs/site/docfx.json
 
       - name: 🛠️ Deploy to GitHub Pages
         if: success()
