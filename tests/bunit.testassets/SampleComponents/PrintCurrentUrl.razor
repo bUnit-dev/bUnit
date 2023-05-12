@@ -18,6 +18,7 @@
     private	void OnLocationChanged(object? sender, LocationChangedEventArgs e)
 	{
         url = e.Location;
-        StateHasChanged();
+	    // TODO: That is valid code that causes issues
+	    StateHasChanged();
 	}
 }

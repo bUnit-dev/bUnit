@@ -78,7 +78,7 @@ public sealed class BunitNavigationManager : NavigationManager
 			// not notify of location changes.
 			if (!changedBaseUri)
 			{
-				NotifyLocationChanged(isInterceptedLink: false);
+				renderer.EnableUnblockedRendering(() => NotifyLocationChanged(isInterceptedLink: false));
 			}
 			else
 			{

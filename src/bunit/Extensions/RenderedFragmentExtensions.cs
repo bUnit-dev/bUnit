@@ -71,9 +71,7 @@ public static class RenderedFragmentExtensions
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 
 		var renderer = renderedFragment.Services.GetRequiredService<BunitRenderer>();
-		var components = renderer.FindComponents<TComponent>(renderedFragment);
-
-		return components.OfType<IRenderedComponent<TComponent>>().ToArray();
+		return renderer.FindComponents<TComponent>(renderedFragment);
 	}
 
 	/// <summary>

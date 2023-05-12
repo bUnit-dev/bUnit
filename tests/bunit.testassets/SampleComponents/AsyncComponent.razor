@@ -1,0 +1,15 @@
+<button @onclick="Callback"></button>
+<p>@text</p>
+@code {
+	private string text = string.Empty;
+	private readonly TaskCompletionSource<bool> tcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+	public void CompleteTask() => tcs.SetResult(true);
+
+	private async Task Callback()
+	{
+		text = "Rendering";
+		await tcs.Task;
+		text = "Rendered";
+	}
+}

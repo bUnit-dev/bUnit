@@ -14,7 +14,7 @@ public partial class TestContext : IDisposable, IAsyncDisposable
 	/// <summary>
 	/// Gets or sets the default wait timeout used by "WaitFor" operations.
 	/// </summary>
-	/// <remarks>The default is 1 second.</remarks>
+	/// <remarks>The default is 30 seconds.</remarks>
 	public static TimeSpan DefaultWaitTimeout { get; set; } = TimeSpan.FromSeconds(30);
 
 	/// <summary>

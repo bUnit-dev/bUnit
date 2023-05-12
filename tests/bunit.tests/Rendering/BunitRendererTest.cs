@@ -91,7 +91,7 @@ public class BunitRendererTest : TestContext
 
 		cut.RenderCount.ShouldBe(1);
 
-		await cut.Instance.Trigger();
+		await cut.InvokeAsync(() => cut.Instance.Trigger());
 
 		cut.RenderCount.ShouldBe(2);
 	}
@@ -107,7 +107,7 @@ public class BunitRendererTest : TestContext
 		cut.RenderCount.ShouldBe(1);
 
 		// act
-		await cut.Instance.TriggerWithValue(EXPECTED);
+		await cut.InvokeAsync(async () => await cut.Instance.TriggerWithValue(EXPECTED));
 
 		// assert
 		cut.RenderCount.ShouldBe(2);
@@ -230,7 +230,7 @@ public class BunitRendererTest : TestContext
 
 		cut.RenderCount.ShouldBe(1);
 
-		await cut.Instance.TriggerWithValue("X");
+		await cut.InvokeAsync(() => cut.Instance.TriggerWithValue("X"));
 
 		cut.RenderCount.ShouldBe(2);
 		cut.Markup.ShouldBe("X");
@@ -249,7 +249,7 @@ public class BunitRendererTest : TestContext
 
 		cut.RenderCount.ShouldBe(1);
 
-		await cut.Instance.TriggerWithValue("X");
+		await cut.InvokeAsync(() => cut.Instance.TriggerWithValue("X"));
 
 		cut.RenderCount.ShouldBe(2);
 		cut.Markup.ShouldBe("X");
@@ -266,7 +266,7 @@ public class BunitRendererTest : TestContext
 		var child = sut.FindComponent<RenderTrigger>(cut);
 
 		// act
-		await child.Instance.TriggerWithValue("X");
+		await cut.InvokeAsync(() => child.Instance.TriggerWithValue("X"));
 
 		// assert
 		cut.RenderCount.ShouldBe(2);
@@ -284,7 +284,7 @@ public class BunitRendererTest : TestContext
 		var child = sut.FindComponent<NoChildNoParams>(cut);
 
 		// act
-		await cut.Instance.DisposeChild();
+		await cut.InvokeAsync(() => cut.Instance.DisposeChild());
 
 		// assert
 		child.IsDisposed.ShouldBeTrue();
@@ -304,7 +304,7 @@ public class BunitRendererTest : TestContext
 		var childChild = sut.FindComponent<NoChildNoParams>(cut);
 
 		// act
-		await child.Instance.DisposeChild();
+		await child.InvokeAsync(() => cut.Instance.DisposeChild());
 
 		// assert
 		childChild.IsDisposed.ShouldBeTrue();
