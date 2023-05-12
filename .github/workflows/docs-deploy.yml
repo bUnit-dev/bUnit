@@ -58,7 +58,7 @@ jobs:
         env:
           RELEASE-VERSION: ${{ steps.changelog_reader.outputs.version }}
         with:
-          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
+          files: '["docs/site/docfx.json", "docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
 
       - name: ⚙️ Setup dotnet versions
         uses: actions/setup-dotnet@v3
