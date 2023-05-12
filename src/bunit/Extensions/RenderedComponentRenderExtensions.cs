@@ -1,3 +1,4 @@
+using Bunit.Rendering;
 using System.Runtime.ExceptionServices;
 
 namespace Bunit;
@@ -18,8 +19,9 @@ public static class RenderedComponentRenderExtensions
 	{
 		ArgumentNullException.ThrowIfNull(renderedComponent);
 
-		var result = renderedComponent.InvokeAsync(() =>
-			renderedComponent.Instance.SetParametersAsync(parameters));
+		var renderer = renderedComponent.Services.GetRequiredService<BunitRenderer>();
+
+		var result = renderer.EnableUnblockedRendering(() => renderedComponent.Instance.SetParametersAsync(parameters));
 
 		if (result.IsFaulted && result.Exception is not null)
 		{
@@ -31,10 +33,6 @@ public static class RenderedComponentRenderExtensions
 			{
 				ExceptionDispatchInfo.Capture(result.Exception).Throw();
 			}
-		}
-		else if (!result.IsCompleted)
-		{
-			result.GetAwaiter().GetResult();
 		}
 	}
 
@@ -55,25 +53,23 @@ public static class RenderedComponentRenderExtensions
 
 	private static ParameterView ToParameterView(IReadOnlyCollection<ComponentParameter> parameters)
 	{
-		var parameterView = ParameterView.Empty;
-
-		if (parameters.Count > 0)
+		if (parameters.Count == 0)
 		{
-			var paramDict = new Dictionary<string, object?>(parameters.Count, StringComparer.Ordinal);
-
-			foreach (var param in parameters)
-			{
-				if (param.IsCascadingValue)
-					throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(Render)} method.");
-				if (param.Name is null)
-					throw new InvalidOperationException("A parameters name is required.");
-
-				paramDict.Add(param.Name, param.Value);
-			}
-
-			parameterView = ParameterView.FromDictionary(paramDict);
+			return ParameterView.Empty;
 		}
 
-		return parameterView;
+		var paramDict = new Dictionary<string, object?>(parameters.Count, StringComparer.Ordinal);
+
+		foreach (var param in parameters)
+		{
+			if (param.IsCascadingValue)
+				throw new InvalidOperationException($"You cannot provide a new cascading value through the {nameof(Render)} method.");
+			if (param.Name is null)
+				throw new InvalidOperationException("A parameter name is required.");
+
+			paramDict.Add(param.Name, param.Value);
+		}
+
+		return ParameterView.FromDictionary(paramDict);
 	}
 }

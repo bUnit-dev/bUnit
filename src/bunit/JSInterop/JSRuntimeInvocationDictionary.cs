@@ -31,16 +31,7 @@ public sealed class JSRuntimeInvocationDictionary : IReadOnlyCollection<JSRuntim
 	/// iterate over all invocations in the dictionary.
 	/// </summary>
 	/// <returns>An iterator with all the <see cref="JSRuntimeInvocation"/> registered in this dictionary.</returns>
-	public IEnumerator<JSRuntimeInvocation> GetEnumerator()
-	{
-		foreach (var kvp in invocations)
-		{
-			foreach (var item in kvp.Value)
-			{
-				yield return item;
-			}
-		}
-	}
+	public IEnumerator<JSRuntimeInvocation> GetEnumerator() => invocations.SelectMany(kvp => kvp.Value).GetEnumerator();
 
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

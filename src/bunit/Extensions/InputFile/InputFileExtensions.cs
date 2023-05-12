@@ -30,10 +30,6 @@ public static class InputFileExtensions
 			file.Content));
 
 		var args = new InputFileChangeEventArgs(browserFiles.ToArray());
-		var uploadTask = inputFileComponent.InvokeAsync(() => inputFileComponent.Instance.OnChange.InvokeAsync(args));
-		if (!uploadTask.IsCompleted)
-		{
-			uploadTask.GetAwaiter().GetResult();
-		}
+		inputFileComponent.InvokeAsync(() => inputFileComponent.Instance.OnChange.InvokeAsync(args));
 	}
 }

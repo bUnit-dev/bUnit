@@ -8,14 +8,16 @@ namespace Bunit.Rendering;
 /// </summary>
 public sealed class BunitRenderer : Renderer
 {
-	private readonly object renderTreeUpdateLock = new();
-	private readonly SynchronizationContext? usersSyncContext = SynchronizationContext.Current;
 	private readonly Dictionary<int, IRenderedFragment> renderedComponents = new();
 	private readonly List<int> rootComponentIds = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private readonly TestServiceProvider services;
+	private readonly ManualResetEventSlim renderBlocker = new(initialState: true);
+	private readonly object renderCycleLock = new();
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
+	private bool disposed;
+	private bool blockRenderer;
 
 	/// <summary>
 	/// Gets a <see cref="Task{Exception}"/>, which completes when an unhandled exception
@@ -89,39 +91,43 @@ public sealed class BunitRenderer : Renderer
 	{
 		ArgumentNullException.ThrowIfNull(fieldInfo);
 
-		// Calling base.DispatchEventAsync updates the render tree
-		// if the event contains associated data.
-		lock (renderTreeUpdateLock)
+		ObjectDisposedException.ThrowIf(disposed, this);
+
+		var result = Dispatcher.InvokeAsync(() =>
 		{
-			var result = Dispatcher.InvokeAsync(() =>
+			UnblockRendering();
+			ResetUnhandledException();
+
+			try
 			{
-				ResetUnhandledException();
-
-				try
-				{
-					return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
-				}
-				catch (ArgumentException ex) when (string.Equals(ex.Message, $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')", StringComparison.Ordinal))
-				{
-					if (ignoreUnknownEventHandlers)
-					{
-						return Task.CompletedTask;
-					}
-
-					var betterExceptionMsg = new UnknownEventHandlerIdException(eventHandlerId, fieldInfo, ex);
-					return Task.FromException(betterExceptionMsg);
-				}
-			});
-
-			if (result.IsFaulted && result.Exception is not null)
-			{
-				HandleException(result.Exception);
+				return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
 			}
+			catch (ArgumentException ex) when (string.Equals(ex.Message,
+				                                   $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')",
+				                                   StringComparison.Ordinal))
+			{
+				if (ignoreUnknownEventHandlers)
+				{
+					return Task.CompletedTask;
+				}
 
-			AssertNoUnhandledExceptions();
+				var betterExceptionMsg = new UnknownEventHandlerIdException(eventHandlerId, fieldInfo, ex);
+				return Task.FromException(betterExceptionMsg);
+			}
+			finally
+			{
+				BlockRendering();
+			}
+		});
 
-			return result;
+		if (result.IsFaulted && result.Exception is not null)
+		{
+			HandleException(result.Exception);
 		}
+
+		AssertNoUnhandledExceptions();
+
+		return result;
 	}
 
 	/// <summary>
@@ -147,72 +153,110 @@ public sealed class BunitRenderer : Renderer
 	/// </summary>
 	public void DisposeComponents()
 	{
+		ObjectDisposedException.ThrowIf(disposed, this);
+
 		// The dispatcher will always return a completed task,
 		// when dealing with an IAsyncDisposable.
-		// Therefore checking for a completed task and awaiting it
-		// will only work on IDisposable
-		var disposeTask = Dispatcher.InvokeAsync(() =>
+		// When the component is an IDisposable, the task will be completed
+		// Therefore we don't have to wait for the task to complete.
+		Dispatcher.InvokeAsync(() =>
 		{
 			ResetUnhandledException();
 
+			UnblockRendering();
 			foreach (var root in rootComponentIds)
 			{
 				RemoveRootComponent(root);
 			}
-		});
 
-		if (!disposeTask.IsCompleted)
-		{
-			disposeTask.GetAwaiter().GetResult();
-		}
+			BlockRendering();
+		});
 
 		rootComponentIds.Clear();
 		AssertNoUnhandledExceptions();
 	}
 
+	/// <summary>
+	/// Prepares the renderer for a new asynchronous render operation.
+	/// </summary>
+	internal void UnblockRendering() => renderBlocker.Set();
+
+	internal void AllowOneRenderCycle()
+	{
+		// Normally UnblockRendering will be called inside the Dispatcher
+		// so we don't have to deal with concurrency issues. But here we can't as
+		// the average case is that the Renderer is currently "locked" by the renderBlocker, so we go into a deadlock
+		// To prevent concurrency issues, we introduce this "defensive" lock.
+		//
+		// In WaitForHelpers we allow one render cycle which triggers the OnRender event of the component
+		// This will trigger another check inside the WaitForHelpers.
+		// The WaitForHelper and the Renderer are in different threads, leading to concurrency issues.
+		lock (renderCycleLock)
+		{
+			blockRenderer = true;
+			UnblockRendering();
+		}
+	}
+
+	internal void EnableUnblockedRendering(Action act)
+	{
+		Dispatcher.InvokeAsync(() =>
+		{
+			UnblockRendering();
+			act();
+			BlockRendering();
+		});
+	}
+
+	internal Task<T> EnableUnblockedRendering<T>(Func<T> act)
+	{
+		return Dispatcher.InvokeAsync(() =>
+		{
+			UnblockRendering();
+			var result = act();
+			BlockRendering();
+			return result;
+		});
+	}
+
 	/// <inheritdoc/>
 	protected override void ProcessPendingRender()
 	{
-		// Blocks updates to the renderers internal render tree
-		// while the render tree is being read elsewhere.
-		// base.ProcessPendingRender calls UpdateDisplayAsync,
-		// so there is no need to lock in that method.
-		lock (renderTreeUpdateLock)
-		{
-			base.ProcessPendingRender();
-		}
+		if (disposed)
+			return;
+
+		renderBlocker.Wait();
+
+		if (disposed)
+			return;
+
+		base.ProcessPendingRender();
 	}
 
 	/// <inheritdoc/>
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
-		if (usersSyncContext is not null && usersSyncContext != SynchronizationContext.Current)
-		{
-			// The users' sync context, typically one established by
-			// xUnit or another testing framework is used to update any
-			// rendered fragments/dom trees and trigger WaitForX handlers.
-			// This ensures that changes to DOM observed inside a WaitForX handler
-			// will also be visible outside a WaitForX handler, since
-			// they will be running in the same sync context. The theory is that
-			// this should mitigate the issues where Blazor's dispatcher/thread is used
-			// to verify an assertion inside a WaitForX handler, and another thread is
-			// used again to access the DOM/repeat the assertion, where the change
-			// may not be visible yet (another theory about why that may happen is different
-			// CPU cache updates not happening immediately).
-			//
-			// There is no guarantee a caller/test framework has set a sync context.
-			usersSyncContext.Send(static (state) =>
-			{
-				var (renderBatch, renderer) = ((RenderBatch, BunitRenderer))state!;
-				renderer.UpdateDisplay(renderBatch);
-			}, (renderBatch, this));
-		}
-		else
-		{
-			UpdateDisplay(renderBatch);
-		}
+		if (disposed)
+			return Task.CompletedTask;
 
+		renderBlocker.Wait();
+
+		if (disposed)
+			return Task.CompletedTask;
+
+		BlockNextRenderCycle();
+
+		UpdateDisplay(renderBatch);
 		return Task.CompletedTask;
+
+		void BlockNextRenderCycle()
+		{
+			if (blockRenderer)
+			{
+				BlockRendering();
+				blockRenderer = false;
+			}
+		}
 	}
 
 	/// <inheritdoc/>
@@ -228,6 +272,9 @@ public sealed class BunitRenderer : Renderer
 	{
 		RenderCount++;
 		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
+
+		if (disposed)
+			return;
 
 		// removes disposed components
 		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
@@ -265,6 +312,12 @@ public sealed class BunitRenderer : Renderer
 	/// <inheritdoc/>
 	protected override void Dispose(bool disposing)
 	{
+		if(disposed)
+			return;
+
+		BlockRendering();
+		disposed = true;
+
 		if (disposing)
 		{
 			foreach (var rc in renderedComponents.Values)
@@ -276,13 +329,21 @@ public sealed class BunitRenderer : Renderer
 			unhandledExceptionTsc.TrySetCanceled();
 		}
 
+		UnblockRendering();
+		renderBlocker.Dispose();
+
 		base.Dispose(disposing);
 	}
 
+	private void BlockRendering() => renderBlocker.Reset();
+
 	private IRenderedFragment Render(RenderFragment renderFragment)
 	{
+		ObjectDisposedException.ThrowIf(disposed, this);
+
 		var renderTask = Dispatcher.InvokeAsync(() =>
 		{
+			UnblockRendering();
 			ResetUnhandledException();
 
 			var root = new RootComponent(renderFragment);
@@ -309,6 +370,7 @@ public sealed class BunitRenderer : Renderer
 		logger.LogInitialRenderCompleted(result.ComponentId);
 
 		AssertNoUnhandledExceptions();
+		BlockRendering();
 
 		return result;
 	}
@@ -317,15 +379,11 @@ public sealed class BunitRenderer : Renderer
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(parentComponent);
+		ObjectDisposedException.ThrowIf(disposed, this);
 
 		var framesCollection = new RenderTreeFrameDictionary();
 
-		// Blocks the renderer from changing the render tree
-		// while this method searches through it.
-		lock (renderTreeUpdateLock)
-		{
-			return FindComponentsInRenderTree(parentComponent.ComponentId);
-		}
+		return FindComponentsInRenderTree(parentComponent.ComponentId);
 
 		IEnumerable<IRenderedComponent<TComponent>> FindComponentsInRenderTree(int componentId)
 		{
@@ -401,7 +459,7 @@ public sealed class BunitRenderer : Renderer
 	/// <inheritdoc/>
 	protected override void HandleException(Exception exception)
 	{
-		if (exception is null)
+		if (exception is null || disposed)
 			return;
 
 		logger.LogUnhandledException(exception);
@@ -425,7 +483,7 @@ public sealed class BunitRenderer : Renderer
 
 	private void AssertNoUnhandledExceptions()
 	{
-		if (capturedUnhandledException is Exception unhandled)
+		if (capturedUnhandledException is Exception unhandled && !disposed)
 		{
 			capturedUnhandledException = null;
 

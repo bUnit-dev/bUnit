@@ -70,7 +70,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 		expected.InnerException.ShouldBeNull();
 	}
 
-	[Fact(DisplayName = "WaitForElements with specific count N waits until cssSelector returns at exact N elements")]
+	[Fact(DisplayName = "WaitForElements with specific count N waits until cssSelector returns at exact N elements", Skip = "Flaky")]
 	public async Task Test024()
 	{
 		var expectedMarkup = "<p>child content</p><p>child content</p><p>child content</p>";

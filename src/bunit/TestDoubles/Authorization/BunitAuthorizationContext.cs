@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -10,9 +11,27 @@ namespace Bunit.TestDoubles;
 /// </summary>
 public class BunitAuthorizationContext
 {
+	private readonly TestServiceProvider services;
 	private readonly BunitAuthorizationService authService = new();
 	private readonly BunitAuthorizationPolicyProvider policyProvider = new();
 	private readonly BunitAuthenticationStateProvider authProvider = new();
+	private BunitRenderer? renderer;
+	private BunitRenderer Renderer => renderer ??= services.GetRequiredService<BunitRenderer>();
+
+
+	/// <summary>
+	/// Creates a new instance of <see cref="BunitAuthorizationContext"/>.
+	/// </summary>
+	internal BunitAuthorizationContext(TestServiceProvider services)
+	{
+		this.services = services;
+
+		services.AddSingleton<IAuthorizationService>(authService);
+		services.AddSingleton<IAuthorizationPolicyProvider>(policyProvider);
+		services.AddSingleton<AuthenticationStateProvider>(authProvider);
+
+		authService.SetAuthorizationState(AuthorizationState.Unauthorized);
+	}
 
 	/// <summary>
 	/// Gets a value indicating whether user is authenticated.
@@ -51,17 +70,6 @@ public class BunitAuthorizationContext
 	public string PolicySchemeName { get; set; } = "TestScheme";
 
 	/// <summary>
-	/// Registers authorization services with the specified service provider.
-	/// </summary>
-	/// <param name="services">Service provider to use.</param>
-	public void RegisterAuthorizationServices(IServiceCollection services)
-	{
-		services.AddSingleton<IAuthorizationService>(authService);
-		services.AddSingleton<IAuthorizationPolicyProvider>(policyProvider);
-		services.AddSingleton<AuthenticationStateProvider>(authProvider);
-	}
-
-	/// <summary>
 	/// Authenticates the user with specified name and authorization state.
 	/// </summary>
 	/// <param name="userName">User name for the principal identity.</param>
@@ -71,7 +79,7 @@ public class BunitAuthorizationContext
 		IsAuthenticated = true;
 		UserName = userName;
 
-		authProvider.TriggerAuthenticationStateChanged(userName, Roles, Claims);
+		Renderer.EnableUnblockedRendering(() => authProvider.TriggerAuthenticationStateChanged(userName, Roles, Claims));
 
 		State = state;
 		authService.SetAuthorizationState(state);
@@ -91,7 +99,7 @@ public class BunitAuthorizationContext
 		authProvider.TriggerAuthorizingStateChanged();
 
 		State = AuthorizationState.Authorizing;
-		authService.SetAuthorizationState(AuthorizationState.Authorizing);
+		Renderer.EnableUnblockedRendering(() => authService.SetAuthorizationState(AuthorizationState.Authorizing));
 
 		return this;
 	}
@@ -104,7 +112,7 @@ public class BunitAuthorizationContext
 		IsAuthenticated = false;
 		Roles = Array.Empty<string>();
 
-		authProvider.TriggerUnauthenticationStateChanged();
+		Renderer.EnableUnblockedRendering(() => authProvider.TriggerUnauthenticationStateChanged());
 
 		State = AuthorizationState.Unauthorized;
 		authService.SetAuthorizationState(AuthorizationState.Unauthorized);
@@ -120,7 +128,7 @@ public class BunitAuthorizationContext
 	{
 		Roles = roles;
 		authService.SetRoles(Roles);
-		authProvider.TriggerAuthenticationStateChanged(UserName, Roles);
+		Renderer.EnableUnblockedRendering(() => authProvider.TriggerAuthenticationStateChanged(UserName, Roles));
 
 		return this;
 	}
@@ -145,7 +153,7 @@ public class BunitAuthorizationContext
 	public BunitAuthorizationContext SetClaims(params Claim[] claims)
 	{
 		Claims = claims;
-		authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims);
+		Renderer.EnableUnblockedRendering(() => authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims));
 
 		return this;
 	}
@@ -156,7 +164,7 @@ public class BunitAuthorizationContext
 	/// <param name="authenticationType">The authentication type to set.</param>
 	public BunitAuthorizationContext SetAuthenticationType(string authenticationType)
 	{
-		this.authProvider.TriggerAuthenticationStateChanged(this.UserName, this.Roles, this.Claims, authenticationType);
+		Renderer.EnableUnblockedRendering(() =>authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims, authenticationType));
 		return this;
 	}
 }

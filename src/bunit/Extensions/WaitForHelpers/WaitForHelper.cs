@@ -9,7 +9,7 @@ namespace Bunit.Extensions.WaitForHelpers;
 /// </summary>
 public abstract class WaitForHelper<T> : IDisposable
 {
-	private readonly Timer timer;
+	private readonly CancellationTokenSource cts;
 	private readonly TaskCompletionSource<T> checkPassedCompletionSource;
 	private readonly Func<(bool CheckPassed, T Content)> completeChecker;
 	private readonly IRenderedFragment renderedFragment;
@@ -59,7 +59,8 @@ public abstract class WaitForHelper<T> : IDisposable
 			.Services
 			.GetRequiredService<BunitRenderer>();
 		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
-		timer = new Timer(_ =>
+		cts = new CancellationTokenSource(GetRuntimeTimeout(timeout));
+		cts.Token.Register(() =>
 		{
 			logger.LogWaiterTimedOut(renderedFragment.ComponentId);
 			checkPassedCompletionSource.TrySetException(
@@ -71,7 +72,6 @@ public abstract class WaitForHelper<T> : IDisposable
 					capturedException));
 		});
 		WaitTask = CreateWaitTask();
-		timer.Change(GetRuntimeTimeout(timeout), Timeout.InfiniteTimeSpan);
 
 		InitializeWaiting();
 	}
@@ -100,7 +100,7 @@ public abstract class WaitForHelper<T> : IDisposable
 			return;
 
 		isDisposed = true;
-		timer.Dispose();
+		cts.Dispose();
 		checkPassedCompletionSource.TrySetCanceled();
 		renderedFragment.OnAfterRender -= OnAfterRender;
 		logger.LogWaiterDisposed(renderedFragment.ComponentId);
@@ -110,19 +110,8 @@ public abstract class WaitForHelper<T> : IDisposable
 	{
 		if (!WaitTask.IsCompleted)
 		{
-			// Subscribe inside the renderers synchronization context
-			// to ensure no renders happens between the
-			// initial OnAfterRender and subscribing.
-			// This also ensures that checks performed during OnAfterRender,
-			// which are usually not atomic, e.g. search the DOM tree,
-			// can be performed without the DOM tree changing.
-			renderedFragment.InvokeAsync(() =>
-			{
-				// Before subscribing to renderedFragment.OnAfterRender,
-				// we need to make sure that the desired state has not already been reached.
-				OnAfterRender(this, EventArgs.Empty);
-				SubscribeToOnAfterRender();
-			});
+			renderedFragment.OnAfterRender += OnAfterRender;
+			OnAfterRender(this, EventArgs.Empty);
 		}
 	}
 
@@ -162,6 +151,7 @@ public abstract class WaitForHelper<T> : IDisposable
 			}
 			else
 			{
+				renderer.AllowOneRenderCycle();
 				logger.LogCheckFailed(renderedFragment.ComponentId);
 			}
 		}
@@ -182,16 +172,9 @@ public abstract class WaitForHelper<T> : IDisposable
 						capturedException));
 				Dispose();
 			}
-		}
-	}
 
-	private void SubscribeToOnAfterRender()
-	{
-		// There might not be a need to subscribe if the WaitTask has already
-		// been completed, perhaps due to an unhandled exception from the
-		// renderer or from the initial check by the checker.
-		if (!isDisposed && !WaitTask.IsCompleted)
-			renderedFragment.OnAfterRender += OnAfterRender;
+			renderer.AllowOneRenderCycle();
+		}
 	}
 
 	private static TimeSpan GetRuntimeTimeout(TimeSpan? timeout)

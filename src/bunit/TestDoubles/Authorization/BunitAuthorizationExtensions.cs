@@ -18,9 +18,7 @@ public partial class TestContext
 #pragma warning disable CS0618
 		Services.AddSingleton<SignOutSessionStateManager>(s => s.GetRequiredService<BunitSignOutSessionStateManager>());
 #pragma warning restore CS0618
-		var authCtx = new BunitAuthorizationContext();
-		authCtx.SetNotAuthorized();
-		authCtx.RegisterAuthorizationServices(Services);
+		var authCtx = new BunitAuthorizationContext(Services);
 		return authCtx;
 	}
 }
