@@ -117,17 +117,12 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc/>
 	public IRenderedComponent<TComponent> FindComponent<TComponent>(IRenderedFragment parentComponent)
 		where TComponent : IComponent
-	{
-		var foundComponents = FindComponents<TComponent>(parentComponent, 1);
-		return foundComponents.Count == 1
-			? foundComponents[0]
-			: throw new ComponentNotFoundException(typeof(TComponent));
-	}
+		=> FindComponentsInternal<TComponent>(parentComponent).FirstOrDefault() ?? throw new ComponentNotFoundException(typeof(TComponent));
 
 	/// <inheritdoc/>
 	public IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragment parentComponent)
 		where TComponent : IComponent
-		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
+		=> FindComponentsInternal<TComponent>(parentComponent).ToList();
 
 	/// <inheritdoc />
 	public void DisposeComponents()
@@ -290,44 +285,38 @@ public class TestRenderer : Renderer, ITestRenderer
 		return result;
 	}
 
-	private List<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragment parentComponent, int resultLimit)
+	private IEnumerable<IRenderedComponent<TComponent>> FindComponentsInternal<TComponent>(IRenderedFragment parentComponent)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(parentComponent);
 
-		var result = new List<IRenderedComponent<TComponent>>();
 		var framesCollection = new RenderTreeFrameDictionary();
 
 		// Blocks the renderer from changing the render tree
 		// while this method searches through it.
 		lock (renderTreeUpdateLock)
 		{
-			FindComponentsInRenderTree(parentComponent.ComponentId);
+			return FindComponentsInRenderTree(parentComponent.ComponentId);
 		}
 
-		return result;
-
-		void FindComponentsInRenderTree(int componentId)
+		IEnumerable<IRenderedComponent<TComponent>> FindComponentsInRenderTree(int componentId)
 		{
 			var frames = GetOrLoadRenderTreeFrame(framesCollection, componentId);
 
 			for (var i = 0; i < frames.Count; i++)
 			{
-				ref var frame = ref frames.Array[i];
+				var frame = frames.Array[i];
 				if (frame.FrameType == RenderTreeFrameType.Component)
 				{
 					if (frame.Component is TComponent component)
 					{
-						result.Add(GetOrCreateRenderedComponent(framesCollection, frame.ComponentId, component));
-
-						if (result.Count == resultLimit)
-							return;
+						yield return GetOrCreateRenderedComponent(framesCollection, frame.ComponentId, component);
 					}
 
-					FindComponentsInRenderTree(frame.ComponentId);
-
-					if (result.Count == resultLimit)
-						return;
+					foreach (var childComponent in FindComponentsInRenderTree(frame.ComponentId))
+					{
+						yield return childComponent;
+					}
 				}
 			}
 		}
