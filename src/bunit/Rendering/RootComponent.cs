@@ -16,6 +16,4 @@ internal sealed class RootComponent : IComponent
 		=> throw new InvalidOperationException($"{nameof(RootComponent)} shouldn't receive any parameters");
 
 	public void Render() => renderHandle.Render(renderFragment);
-
-	public void Detach() => renderHandle.Render(_ => { });
 }

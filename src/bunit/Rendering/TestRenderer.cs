@@ -11,7 +11,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	private readonly object renderTreeUpdateLock = new();
 	private readonly SynchronizationContext? usersSyncContext = SynchronizationContext.Current;
 	private readonly Dictionary<int, IRenderedFragment> renderedComponents = new();
-	private readonly List<RootComponent> rootComponents = new();
+	private readonly List<int> rootComponentIds = new();
 	private readonly ILogger<TestRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -140,9 +140,9 @@ public class TestRenderer : Renderer, ITestRenderer
 		{
 			ResetUnhandledException();
 
-			foreach (var root in rootComponents)
+			foreach (var root in rootComponentIds)
 			{
-				root.Detach();
+				RemoveRootComponent(root);
 			}
 		});
 
@@ -151,7 +151,7 @@ public class TestRenderer : Renderer, ITestRenderer
 			disposeTask.GetAwaiter().GetResult();
 		}
 
-		rootComponents.Clear();
+		rootComponentIds.Clear();
 		AssertNoUnhandledExceptions();
 	}
 
@@ -266,7 +266,7 @@ public class TestRenderer : Renderer, ITestRenderer
 			var rootComponentId = AssignRootComponentId(root);
 			var result = activator(rootComponentId);
 			renderedComponents.Add(rootComponentId, result);
-			rootComponents.Add(root);
+			rootComponentIds.Add(rootComponentId);
 			root.Render();
 			return result;
 		});
