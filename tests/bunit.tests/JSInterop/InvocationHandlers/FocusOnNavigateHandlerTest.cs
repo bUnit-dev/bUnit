@@ -6,7 +6,6 @@ public class FocusOnNavigateHandlerTest : TestContext
 	public void Test001()
 	{
 		// <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-		Services.AddScoped(_ => Mock.Of<IScrollToLocationHash>());
 		var cut = RenderComponent<App>(ps => ps
 			.Add<FocusOnNavigate, RouteData>(p => p.FoundTemplate, routeData => cps => cps
 				.Add(x => x.RouteData, routeData)
@@ -23,7 +22,6 @@ public class FocusOnNavigateHandlerTest : TestContext
 	[Fact(DisplayName = "Will return completed task")]
 	public void Test002()
 	{
-		Services.AddScoped(_ => Mock.Of<IScrollToLocationHash>());
 		var cut = RenderComponent<App>(ps => ps
 			.Add<FocusOnNavigateInternal, RouteData>(p => p.FoundTemplate, routeData => cps => cps
 				.Add(x => x.RouteData, routeData)
