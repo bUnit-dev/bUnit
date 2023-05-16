@@ -68,7 +68,51 @@ public class TestRenderer : Renderer, ITestRenderer
 	public override Task DispatchEventAsync(
 		ulong eventHandlerId,
 		EventFieldInfo? fieldInfo,
-		EventArgs eventArgs) => DispatchEventInternalAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
+		EventArgs eventArgs) => DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
+
+	/// <inheritdoc/>
+	public new Task DispatchEventAsync(
+		ulong eventHandlerId,
+		EventFieldInfo? fieldInfo,
+		EventArgs eventArgs,
+		bool ignoreUnknownEventHandlers)
+	{
+		ArgumentNullException.ThrowIfNull(fieldInfo);
+
+		// Calling base.DispatchEventAsync updates the render tree
+		// if the event contains associated data.
+		lock (renderTreeUpdateLock)
+		{
+			var result = Dispatcher.InvokeAsync(() =>
+			{
+				ResetUnhandledException();
+
+				try
+				{
+					return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
+				}
+				catch (ArgumentException ex) when (string.Equals(ex.Message, $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')", StringComparison.Ordinal))
+				{
+					if (ignoreUnknownEventHandlers)
+					{
+						return Task.CompletedTask;
+					}
+
+					var betterExceptionMsg = new UnknownEventHandlerIdException(eventHandlerId, fieldInfo, ex);
+					return Task.FromException(betterExceptionMsg);
+				}
+			});
+
+			if (result.IsFaulted && result.Exception is not null)
+			{
+				HandleException(result.Exception);
+			}
+
+			AssertNoUnhandledExceptions();
+
+			return result;
+		}
+	}
 
 	/// <inheritdoc/>
 	public IRenderedComponent<TComponent> FindComponent<TComponent>(IRenderedFragment parentComponent)
@@ -149,49 +193,6 @@ public class TestRenderer : Renderer, ITestRenderer
 		}
 
 		return Task.CompletedTask;
-	}
-
-	private Task DispatchEventInternalAsync(
-		ulong eventHandlerId,
-		EventFieldInfo? fieldInfo,
-		EventArgs eventArgs,
-		bool ignoreUnknownEventHandlers)
-	{
-		ArgumentNullException.ThrowIfNull(fieldInfo);
-
-		// Calling base.DispatchEventAsync updates the render tree
-		// if the event contains associated data.
-		lock (renderTreeUpdateLock)
-		{
-			var result = Dispatcher.InvokeAsync(() =>
-			{
-				ResetUnhandledException();
-
-				try
-				{
-					return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
-				}
-				catch (ArgumentException ex) when (string.Equals(ex.Message, $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')", StringComparison.Ordinal))
-				{
-					if (ignoreUnknownEventHandlers)
-					{
-						return Task.CompletedTask;
-					}
-
-					var betterExceptionMsg = new UnknownEventHandlerIdException(eventHandlerId, fieldInfo, ex);
-					return Task.FromException(betterExceptionMsg);
-				}
-			});
-
-			if (result.IsFaulted && result.Exception is not null)
-			{
-				HandleException(result.Exception);
-			}
-
-			AssertNoUnhandledExceptions();
-
-			return result;
-		}
 	}
 
 	private void UpdateDisplay(in RenderBatch renderBatch)
