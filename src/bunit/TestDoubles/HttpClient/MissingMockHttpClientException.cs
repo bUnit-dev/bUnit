@@ -4,7 +4,6 @@ namespace Bunit.TestDoubles;
 /// Exception use to indicate that a mock HttpClient is required by a test
 /// but was not provided.
 /// </summary>
-[Serializable]
 public sealed class MissingMockHttpClientException : Exception
 {
 	[NonSerialized]
@@ -27,7 +26,4 @@ public sealed class MissingMockHttpClientException : Exception
 		this.request = request;
 		HelpLink = "https://bunit.egilhansen.com/docs/test-doubles/mocking-httpclient";
 	}
-
-	private MissingMockHttpClientException(SerializationInfo serializationInfo, StreamingContext streamingContext)
-		: base(serializationInfo, streamingContext) { }
 }

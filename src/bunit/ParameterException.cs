@@ -3,7 +3,6 @@ namespace Bunit.RazorTesting;
 /// <summary>
 /// Represents an missing or invalid Blazor parameter on a Blazor component.
 /// </summary>
-[Serializable]
 public sealed class ParameterException : ArgumentException
 {
 	/// <summary>
@@ -13,9 +12,5 @@ public sealed class ParameterException : ArgumentException
 	/// <param name="parameterName">Name of the Blazor parameter.</param>
 	public ParameterException(string messsage, string parameterName)
 		: base(messsage, parameterName)
-	{ }
-
-	private ParameterException(SerializationInfo serializationInfo, StreamingContext streamingContext)
-		: base(serializationInfo, streamingContext)
 	{ }
 }

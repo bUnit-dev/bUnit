@@ -7,7 +7,6 @@ namespace Bunit;
 /// received by the <see cref="BunitJSInterop"/> running in <see cref="JSRuntimeMode.Strict"/> mode,
 /// which didn't contain a matching invocation handler.
 /// </summary>
-[Serializable]
 public sealed class JSRuntimeUnhandledInvocationException : Exception
 {
 	/// <summary>
@@ -24,11 +23,6 @@ public sealed class JSRuntimeUnhandledInvocationException : Exception
 		: base(CreateErrorMessage(invocation))
 	{
 		Invocation = invocation;
-	}
-
-	private JSRuntimeUnhandledInvocationException(SerializationInfo serializationInfo, StreamingContext streamingContext)
-		: base(serializationInfo, streamingContext)
-	{
 	}
 
 	private static string CreateErrorMessage(JSRuntimeInvocation invocation)

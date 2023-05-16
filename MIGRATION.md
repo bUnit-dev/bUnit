@@ -39,3 +39,6 @@ The `WebTestRender` class has been merged into the `TestRender` class. If you us
 
 ## `AddFallbackServiceProvider` renamed to `SetFallbackServiceProvider`
 The `AddFallbackServiceProvider` on the `TestServiceProvider` has been renamed to `SetFallbackServiceProvider`. If you used `AddFallbackServiceProvider`, you should replace it with `SetFallbackServiceProvider`.
+
+## Exceptions remove obsolete `SerializableAttribute` and `ISerializable` interface
+With .NET 8 the `SerializableAttribute` and `ISerializable` interface have been marked as obsolete. Therefore, exceptions in bUnit no longer implement `ISerializable` and are no longer marked with the `SerializableAttribute`. More information can be found here: https://github.com/dotnet/docs/issues/34893
