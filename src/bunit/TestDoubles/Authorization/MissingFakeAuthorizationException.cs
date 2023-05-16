@@ -4,7 +4,6 @@ namespace Bunit.TestDoubles;
 /// Exception used to indicate that the fake authorization services are required by a test
 /// but provided in TestContext.Services.
 /// </summary>
-[Serializable]
 public sealed class MissingFakeAuthorizationException : Exception
 {
 	/// <summary>
@@ -22,11 +21,5 @@ public sealed class MissingFakeAuthorizationException : Exception
 	{
 		ServiceName = serviceName;
 		HelpLink = "https://bunit.egilhansen.com/docs/test-doubles/faking-auth";
-	}
-
-	private MissingFakeAuthorizationException(SerializationInfo serializationInfo, StreamingContext streamingContext)
-		: base(serializationInfo, streamingContext)
-	{
-		ServiceName = serializationInfo?.GetString(nameof(ServiceName)) ?? string.Empty;
 	}
 }

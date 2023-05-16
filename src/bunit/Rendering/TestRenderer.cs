@@ -65,15 +65,15 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	public new Task DispatchEventAsync(
+	public override Task DispatchEventAsync(
 		ulong eventHandlerId,
-		EventFieldInfo fieldInfo,
+		EventFieldInfo? fieldInfo,
 		EventArgs eventArgs) => DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
 
 	/// <inheritdoc/>
-	public Task DispatchEventAsync(
+	public new Task DispatchEventAsync(
 		ulong eventHandlerId,
-		EventFieldInfo fieldInfo,
+		EventFieldInfo? fieldInfo,
 		EventArgs eventArgs,
 		bool ignoreUnknownEventHandlers)
 	{

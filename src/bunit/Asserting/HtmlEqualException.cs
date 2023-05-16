@@ -7,7 +7,6 @@ namespace Bunit;
 /// <summary>
 /// Represents an differences between pieces of markup.
 /// </summary>
-[Serializable]
 public sealed class HtmlEqualException : ActualExpectedAssertException
 {
 	/// <summary>
@@ -52,9 +51,6 @@ public sealed class HtmlEqualException : ActualExpectedAssertException
 		static string NodeName(ComparisonSource source) => source.Node.NodeType.ToString().ToLowerInvariant();
 #pragma warning restore CA1308
 	}
-
-	private HtmlEqualException(SerializationInfo serializationInfo, StreamingContext streamingContext)
-		: base(serializationInfo, streamingContext) { }
 
 	private static string PrintHtml(IMarkupFormattable nodes) => nodes.ToDiffMarkup() + Environment.NewLine;
 }

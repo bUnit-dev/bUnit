@@ -4,7 +4,6 @@ namespace Bunit;
 /// Represents a failure to find an element in the searched target
 /// using a CSS selector.
 /// </summary>
-[Serializable]
 public class ElementNotFoundException : Exception
 {
 	/// <summary>
@@ -28,22 +27,5 @@ public class ElementNotFoundException : Exception
 		: base(message)
 	{
 		CssSelector = cssSelector;
-	}
-
-	/// <summary>
-	/// Initializes a new instance of the <see cref="ElementNotFoundException"/> class.
-	/// </summary>
-	protected ElementNotFoundException(SerializationInfo serializationInfo, StreamingContext streamingContext)
-		: base(serializationInfo, streamingContext)
-	{
-		CssSelector = serializationInfo?.GetString(nameof(CssSelector)) ?? string.Empty;
-	}
-
-	/// <inheritdoc/>
-	public override void GetObjectData(SerializationInfo info, StreamingContext context)
-	{
-		ArgumentNullException.ThrowIfNull(info);
-		info.AddValue(nameof(CssSelector), CssSelector);
-		base.GetObjectData(info, context);
 	}
 }

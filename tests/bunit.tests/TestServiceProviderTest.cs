@@ -126,7 +126,7 @@ public class TestServiceProviderTest
 	public void Test022()
 	{
 		using var sut = new TestServiceProvider();
-		sut.AddFallbackServiceProvider(new FallbackServiceProvider());
+		sut.SetFallbackServiceProvider(new FallbackServiceProvider());
 
 		var result = sut.GetService(typeof(object));
 
@@ -138,7 +138,7 @@ public class TestServiceProviderTest
 	public void Test023()
 	{
 		using var sut = new TestServiceProvider();
-		Assert.Throws<ArgumentNullException>(() => sut.AddFallbackServiceProvider(null!));
+		Assert.Throws<ArgumentNullException>(() => sut.SetFallbackServiceProvider(null!));
 	}
 
 	[Fact(DisplayName = "Service provider returns value before fallback service provider")]
@@ -148,7 +148,7 @@ public class TestServiceProviderTest
 
 		using var sut = new TestServiceProvider();
 		sut.AddSingleton<string>(exceptionStringResult);
-		sut.AddFallbackServiceProvider(new FallbackServiceProvider());
+		sut.SetFallbackServiceProvider(new FallbackServiceProvider());
 
 		var stringResult = sut.GetService(typeof(string));
 		Assert.Equal(exceptionStringResult, stringResult);
@@ -161,8 +161,8 @@ public class TestServiceProviderTest
 	public void Test025()
 	{
 		using var sut = new TestServiceProvider();
-		sut.AddFallbackServiceProvider(new FallbackServiceProvider());
-		sut.AddFallbackServiceProvider(new AnotherFallbackServiceProvider());
+		sut.SetFallbackServiceProvider(new FallbackServiceProvider());
+		sut.SetFallbackServiceProvider(new AnotherFallbackServiceProvider());
 
 		var result = sut.GetService(typeof(object));
 
@@ -177,7 +177,7 @@ public class TestServiceProviderTest
 		var fallbackServiceProvider = new ServiceCollection()
 			.AddSingleton(new DummyService())
 			.BuildServiceProvider();
-		ctx.Services.AddFallbackServiceProvider(fallbackServiceProvider);
+		ctx.Services.SetFallbackServiceProvider(fallbackServiceProvider);
 
 		// Act and assert
 		Should.NotThrow(() => ctx.RenderComponent<DummyComponentWhichRequiresDummyService>());

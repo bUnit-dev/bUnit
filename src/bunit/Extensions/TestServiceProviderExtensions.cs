@@ -42,6 +42,9 @@ public static class TestServiceProviderExtensions
 		services.AddSingleton<FakeWebAssemblyHostEnvironment>();
 		services.AddSingleton<IWebAssemblyHostEnvironment>(s => s.GetRequiredService<FakeWebAssemblyHostEnvironment>());
 
+		// bUnits fake ScrollToLocationHash
+		services.AddSingleton<IScrollToLocationHash, FakeScrollToLocationHash>();
+
 		// bUnit specific services
 		services.AddSingleton(testContext);
 		services.AddSingleton<TestRenderer>();
