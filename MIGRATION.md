@@ -36,3 +36,6 @@ The `WebTestRender` class has been merged into the `TestRender` class. If you us
 
 ## `WaitFor` methods are asynchronous
 `WaitForState`, `WaitForAssertion`, `WaitForElement` and `WaitForElements` are now asynchronous methods. Therefore they should be awaited and all of them have the `Async` suffix in the method name.
+
+## `AddFallbackServiceProvider` renamed to `SetFallbackServiceProvider`
+The `AddFallbackServiceProvider` on the `TestServiceProvider` has been renamed to `SetFallbackServiceProvider`. If you used `AddFallbackServiceProvider`, you should replace it with `SetFallbackServiceProvider`.
