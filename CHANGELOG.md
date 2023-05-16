@@ -6,6 +6,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## Fixed
+
+-   TestRenderer throws `ObjectDisposedException` if any methods is accessed after it has been disposed. It will also prevent changes to the internal render tree after it has been disposed. By [@egil](https://github.com/egil).
+
+
 ## [1.19.14] - 2023-04-26
 
 ### Fixed
@@ -33,7 +38,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [1.15.5] - 2023-02-04
 
--   Upgrade AngleSharp.Diffing to 0.17.1. 
+-   Upgrade AngleSharp.Diffing to 0.17.1.
 
 ## [1.14.4] - 2023-01-11
 
