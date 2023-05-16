@@ -14,6 +14,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
+	private bool disposed;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
 
@@ -81,6 +82,9 @@ public class TestRenderer : Renderer, ITestRenderer
 		if (fieldInfo is null)
 			throw new ArgumentNullException(nameof(fieldInfo));
 
+		if (disposed)
+			throw new ObjectDisposedException(nameof(TestRenderer));
+
 		// Calling base.DispatchEventAsync updates the render tree
 		// if the event contains associated data.
 		lock (renderTreeUpdateLock)
@@ -134,6 +138,9 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc />
 	public void DisposeComponents()
 	{
+		if (disposed)
+			throw new ObjectDisposedException(nameof(TestRenderer));
+
 		// The dispatcher will always return a completed task,
 		// when dealing with an IAsyncDisposable.
 		// Therefore checking for a completed task and awaiting it
@@ -160,6 +167,9 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc/>
 	protected override void ProcessPendingRender()
 	{
+		if (disposed)
+			return;
+
 		// Blocks updates to the renderers internal render tree
 		// while the render tree is being read elsewhere.
 		// base.ProcessPendingRender calls UpdateDisplayAsync,
@@ -173,6 +183,9 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc/>
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
+		if (disposed)
+			return Task.CompletedTask;
+
 		if (usersSyncContext is not null && usersSyncContext != SynchronizationContext.Current)
 		{
 			// The users' sync context, typically one established by
@@ -243,23 +256,34 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc/>
 	protected override void Dispose(bool disposing)
 	{
-		if (disposing)
+		if (disposed)
+			return;
+
+		disposed = true;
+
+		lock (renderTreeUpdateLock)
 		{
-			foreach (var rc in renderedComponents.Values)
+			if (disposing)
 			{
-				rc.Dispose();
+				foreach (var rc in renderedComponents.Values)
+				{
+					rc.Dispose();
+				}
+
+				renderedComponents.Clear();
+				unhandledExceptionTsc.TrySetCanceled();
 			}
 
-			renderedComponents.Clear();
-			unhandledExceptionTsc.TrySetCanceled();
+			base.Dispose(disposing);
 		}
-
-		base.Dispose(disposing);
 	}
 
 	private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
 		where TResult : IRenderedFragmentBase
 	{
+		if (disposed)
+			throw new ObjectDisposedException(nameof(TestRenderer));
+
 		var renderTask = Dispatcher.InvokeAsync(() =>
 		{
 			ResetUnhandledException();
@@ -297,6 +321,9 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		if (parentComponent is null)
 			throw new ArgumentNullException(nameof(parentComponent));
+
+		if (disposed)
+			throw new ObjectDisposedException(nameof(TestRenderer));
 
 		var result = new List<IRenderedComponentBase<TComponent>>();
 		var framesCollection = new RenderTreeFrameDictionary();
@@ -387,7 +414,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc/>
 	protected override void HandleException(Exception exception)
 	{
-		if (exception is null)
+		if (exception is null || disposed)
 			return;
 
 		logger.LogUnhandledException(exception);
@@ -411,7 +438,7 @@ public class TestRenderer : Renderer, ITestRenderer
 
 	private void AssertNoUnhandledExceptions()
 	{
-		if (capturedUnhandledException is Exception unhandled)
+		if (capturedUnhandledException is Exception unhandled && !disposed)
 		{
 			capturedUnhandledException = null;
 
