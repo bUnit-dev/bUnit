@@ -168,7 +168,10 @@ public class TestRenderer : Renderer, ITestRenderer
 	protected override void ProcessPendingRender()
 	{
 		if (disposed)
+		{
+			logger.LogRenderCycleActiveAfterDispose();
 			return;
+		}
 
 		// Blocks updates to the renderers internal render tree
 		// while the render tree is being read elsewhere.
@@ -184,7 +187,10 @@ public class TestRenderer : Renderer, ITestRenderer
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
 		if (disposed)
+		{
+			logger.LogRenderCycleActiveAfterDispose();
 			return Task.CompletedTask;
+		}
 
 		if (usersSyncContext is not null && usersSyncContext != SynchronizationContext.Current)
 		{
@@ -219,6 +225,12 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		RenderCount++;
 		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
+
+		if (disposed)
+		{
+			logger.LogRenderCycleActiveAfterDispose();
+			return;
+		}
 
 		// removes disposed components
 		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
