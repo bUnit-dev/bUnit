@@ -28,27 +28,78 @@ internal static class TestRendererLoggerExtensions
 	private static readonly Action<ILogger, string, string, Exception> UnhandledException
 		= LoggerMessage.Define<string, string>(LogLevel.Error, new EventId(30, "LogUnhandledException"), "An unhandled exception happened during rendering: {Message}" + Environment.NewLine + "{StackTrace}");
 
+	private static readonly Action<ILogger, Exception?> RenderCycleActiveAfterDispose
+		= LoggerMessage.Define(LogLevel.Warning, new EventId(31, "LogRenderCycleActiveAfterDispose"), "A component attempted to update the render tree after the renderer was disposed.");
+
 	internal static void LogProcessingPendingRenders(this ILogger<TestRenderer> logger)
-		=> ProcessingPendingRenders(logger, null);
+	{
+		if (logger.IsEnabled(LogLevel.Debug))
+		{
+			ProcessingPendingRenders(logger, null);
+		}
+	}
 
 	internal static void LogNewRenderBatchReceived(this ILogger<TestRenderer> logger)
-		=> NewRenderBatchReceived(logger, null);
+	{
+		if (logger.IsEnabled(LogLevel.Debug))
+		{
+			NewRenderBatchReceived(logger, null);
+		}
+	}
 
 	internal static void LogComponentDisposed(this ILogger<TestRenderer> logger, int componentId)
-		=> ComponentDisposed(logger, componentId, null);
+	{
+		if (logger.IsEnabled(LogLevel.Debug))
+		{
+			ComponentDisposed(logger, componentId, null);
+		}
+	}
 
 	internal static void LogComponentRendered(this ILogger<TestRenderer> logger, int componentId)
-		=> ComponentRendered(logger, componentId, null);
+	{
+		if (logger.IsEnabled(LogLevel.Debug))
+		{
+			ComponentRendered(logger, componentId, null);
+		}
+	}
 
 	internal static void LogChangedComponentsMarkupUpdated(this ILogger<TestRenderer> logger)
-		=> ChangedComponentsMarkupUpdated(logger, null);
+	{
+		if (logger.IsEnabled(LogLevel.Debug))
+		{
+			ChangedComponentsMarkupUpdated(logger, null);
+		}
+	}
 
 	internal static void LogAsyncInitialRender(this ILogger<TestRenderer> logger)
-		=> AsyncInitialRender(logger, null);
+	{
+		if (logger.IsEnabled(LogLevel.Debug))
+		{
+			AsyncInitialRender(logger, null);
+		}
+	}
 
 	internal static void LogInitialRenderCompleted(this ILogger<TestRenderer> logger, int componentId)
-		=> InitialRenderCompleted(logger, componentId, null);
+	{
+		if (logger.IsEnabled(LogLevel.Debug))
+		{
+			InitialRenderCompleted(logger, componentId, null);
+		}
+	}
 
 	internal static void LogUnhandledException(this ILogger<TestRenderer> logger, Exception exception)
-		=> UnhandledException(logger, exception.Message, exception.StackTrace ?? string.Empty, exception);
+	{
+		if (logger.IsEnabled(LogLevel.Error))
+		{
+			UnhandledException(logger, exception.Message, exception.StackTrace ?? string.Empty, exception);
+		}
+	}
+
+	internal static void LogRenderCycleActiveAfterDispose(this ILogger<TestRenderer> logger)
+	{
+		if (logger.IsEnabled(LogLevel.Warning))
+		{
+			RenderCycleActiveAfterDispose(logger, null);
+		}
+	}
 }
