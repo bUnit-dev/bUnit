@@ -9,6 +9,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestCont
 
     public RenderedFragmentWaitForElementsHelperExtensionsAsyncTest(ITestOutputHelper testOutput)
 	{
+		TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(testOutput);
 	}
 

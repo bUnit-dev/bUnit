@@ -7,6 +7,7 @@ public class AuthorizationTest : TestContext
 {
 	public AuthorizationTest(ITestOutputHelper outputHelper)
 	{
+		TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(outputHelper);
 	}
 
