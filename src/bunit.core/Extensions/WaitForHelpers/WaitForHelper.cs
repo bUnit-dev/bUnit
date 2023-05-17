@@ -51,7 +51,7 @@ public abstract class WaitForHelper<T> : IDisposable
 	{
 		this.renderedFragment = renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment));
 		this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
-		
+
 		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
 		renderer = (TestRenderer)renderedFragment
 			.Services
@@ -125,7 +125,7 @@ public abstract class WaitForHelper<T> : IDisposable
 	}
 
 	private Task<T> CreateWaitTask()
-	{	
+	{
 		// Two to failure conditions, that the renderer captures an unhandled
 		// exception from a component or itself, or that the timeout is reached,
 		// are executed on the renderers scheduler, to ensure that OnAfterRender
@@ -194,6 +194,6 @@ public abstract class WaitForHelper<T> : IDisposable
 
 	private static TimeSpan GetRuntimeTimeout(TimeSpan? timeout)
 	{
-		return timeout ?? TimeSpan.FromSeconds(1);
+		return timeout ?? TestContextBase.DefaultWaitTimeout;
 	}
 }

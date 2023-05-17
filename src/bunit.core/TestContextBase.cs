@@ -11,6 +11,12 @@ public abstract class TestContextBase : IDisposable
 	private ITestRenderer? testRenderer;
 
 	/// <summary>
+	/// Gets or sets the default wait timeout used by "WaitFor" operations, i.e. <see cref="RenderedFragmentWaitForHelperExtensions.WaitForAssertion(IRenderedFragmentBase, Action, TimeSpan?)"/>.
+	/// </summary>
+	/// <remarks>The default is 1 second.</remarks>
+	public static TimeSpan DefaultWaitTimeout { get; set; } = TimeSpan.FromSeconds(1);
+
+	/// <summary>
 	/// Gets the renderer used by the test context.
 	/// </summary>
 	public ITestRenderer Renderer => testRenderer ??= Services.GetRequiredService<ITestRenderer>();
