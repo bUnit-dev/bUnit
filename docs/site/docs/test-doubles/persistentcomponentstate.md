@@ -7,7 +7,7 @@ title: bUnit's persistent component state
 
 bUnit comes with its own version of the `PersistentComponentState` type in Blazor that makes it possible to test components that use the type.
 
-## Using the bUnit's `PersistentComponentState`
+## Using bUnit's `PersistentComponentState`
 
 To use bUnit's `PersistentComponentState`, call the `AddBunitPersistentComponentState` extension method on `TestContext`:
 
