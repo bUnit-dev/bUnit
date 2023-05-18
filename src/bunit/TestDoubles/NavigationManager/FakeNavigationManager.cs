@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components.Routing;
 
@@ -9,6 +10,7 @@ using URI = Uri;
 /// Represents a fake <see cref="NavigationManager"/> that captures calls to
 /// <see cref="NavigationManager.NavigateTo(string, bool)"/> for testing purposes.
 /// </summary>
+[DebuggerDisplay("Current Uri: {Uri}, History Count: {History.Count}")]
 public sealed class FakeNavigationManager : NavigationManager
 {
 	private readonly ITestRenderer renderer;

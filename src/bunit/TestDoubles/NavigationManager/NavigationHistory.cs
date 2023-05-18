@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components.Routing;
 
@@ -6,6 +7,7 @@ namespace Bunit.TestDoubles;
 /// <summary>
 /// Represents a navigation to a <seealso cref="Uri"/> with a set of specific navigation <seealso cref="Options"/>.
 /// </summary>
+[DebuggerDisplay("Uri={Uri}, NavigationState={State}, HasException={HasException}")]
 public sealed class NavigationHistory : IEquatable<NavigationHistory>
 {
 	/// <summary>
@@ -31,16 +33,7 @@ public sealed class NavigationHistory : IEquatable<NavigationHistory>
 	/// </remarks>
 	public Exception? Exception { get; }
 
-	/// <summary>
-	/// Initializes a new instance of the <see cref="NavigationHistory"/> class.
-	/// </summary>
-	/// <param name="uri"></param>
-	/// <param name="options"></param>
-	public NavigationHistory(string uri, NavigationOptions options)
-	{
-		Uri = uri;
-		Options = options;
-	}
+	private bool HasException => Exception is not null;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="NavigationHistory"/> class.
