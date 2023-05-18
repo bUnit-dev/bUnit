@@ -14,7 +14,7 @@ public class AuthorizationTest : TestContext
 	public void Test001()
 	{
 		// Arrange
-		this.AddTestAuthorization();
+		AddTestAuthorization();
 
 		// Act
 		var cut = RenderComponent<SimpleAuthView>();
@@ -27,7 +27,7 @@ public class AuthorizationTest : TestContext
 	public void Test002()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
 
 		// act
@@ -41,7 +41,7 @@ public class AuthorizationTest : TestContext
 	public void Test003()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser", AuthorizationState.Unauthorized);
 
 		// act
@@ -55,7 +55,7 @@ public class AuthorizationTest : TestContext
 	public async Task Test004()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 
 		// start off unauthenticated.
 		var cut = RenderComponent<SimpleAuthView>();
@@ -74,7 +74,7 @@ public class AuthorizationTest : TestContext
 	public void Test005()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser005", AuthorizationState.Authorized);
 
 		// start off unauthenticated.
@@ -105,7 +105,7 @@ public class AuthorizationTest : TestContext
 	public void Test007()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser").SetPolicies("ContentViewer");
 
 		// act
@@ -119,7 +119,7 @@ public class AuthorizationTest : TestContext
 	public void Test008()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser");
 
 		// act
@@ -133,7 +133,7 @@ public class AuthorizationTest : TestContext
 	public void Test0081()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser").SetPolicies("OtherPolicy");
 
 		// act
@@ -147,7 +147,7 @@ public class AuthorizationTest : TestContext
 	public void Test009()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser").SetRoles("Admin");
 
 		// act
@@ -161,7 +161,7 @@ public class AuthorizationTest : TestContext
 	public void Test010()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser");
 
 		// act
@@ -175,7 +175,7 @@ public class AuthorizationTest : TestContext
 	public void Test011()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser").SetRoles("NotAdmin");
 
 		// act
@@ -189,7 +189,7 @@ public class AuthorizationTest : TestContext
 	public void Test012()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorizing();
 
 		// act
@@ -204,7 +204,7 @@ public class AuthorizationTest : TestContext
 	{
 		// arrange
 		var userId = new Guid("{5d5fa9c1-abf9-4ed6-8fb0-3365382b629c}");
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		var emailClaim = new Claim(ClaimTypes.Email, "user@test.com");
 		var uuidClaim = new Claim(ClaimTypes.Sid, userId.ToString());
 		authContext.SetAuthorized("TestUser").SetClaims(uuidClaim, emailClaim);
@@ -223,7 +223,7 @@ public class AuthorizationTest : TestContext
 	public void Test014()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser");
 
 		// act
@@ -238,7 +238,7 @@ public class AuthorizationTest : TestContext
 	public void Test020()
 	{
 		var role = "myTestRole";
-		var authCtx = this.AddTestAuthorization();
+		var authCtx = AddTestAuthorization();
 		authCtx.SetAuthorized("FooBar");
 		authCtx.SetRoles(role);
 
@@ -251,7 +251,7 @@ public class AuthorizationTest : TestContext
 	public void Test021()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser");
 		authContext.SetAuthenticationType("custom-auth-type");
 
@@ -266,7 +266,7 @@ public class AuthorizationTest : TestContext
 	public void Test022()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = AddTestAuthorization();
 		authContext.SetAuthorized("TestUser");
 
 		// act
