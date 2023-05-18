@@ -1,6 +1,6 @@
 ﻿namespace Bunit.TestDoubles;
 
-public class FakeSignOutSessionStateManagerTest : TestContext
+public class BunitSignOutSessionStateManagerTest : TestContext
 {
 	[Theory, AutoData]
 	public void ShouldSignOut(string randomUserName)
@@ -10,7 +10,7 @@ public class FakeSignOutSessionStateManagerTest : TestContext
 
 		cut.Find("button").Click();
 
-		Services.GetService<FakeSignOutSessionStateManager>()!
+		Services.GetService<BunitSignOutSessionStateManager>()!
 			.IsSignedOut
 			.ShouldBeTrue();
 	}
@@ -18,7 +18,7 @@ public class FakeSignOutSessionStateManagerTest : TestContext
 	[Fact]
 	public void ShouldReturnSignOutStateOnValidateSignOutState()
 	{
-		var cut = new FakeSignOutSessionStateManager(Mock.Of<IJSRuntime>());
+		var cut = new BunitSignOutSessionStateManager(Mock.Of<IJSRuntime>());
 		cut.SetSignOutState();
 
 		var wasValidate = cut.ValidateSignOutState().Result;

@@ -1,11 +1,11 @@
 namespace Bunit.TestDoubles;
 
-public class FakeWebAssemblyHostEnvironmentTest : TestContext
+public class BunitWebAssemblyHostEnvironmentTest : TestContext
 {
 	[Fact]
 	public void ShouldSayHelloToDevelopers()
 	{
-		var hostEnvironment = Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();
+		var hostEnvironment = Services.GetRequiredService<BunitWebAssemblyHostEnvironment>();
 		hostEnvironment.SetEnvironmentToDevelopment();
 
 		var cut = RenderComponent<SimpleUsingWebAssemblyHostEnvironment>();
@@ -17,7 +17,7 @@ public class FakeWebAssemblyHostEnvironmentTest : TestContext
 	[Fact]
 	public void ShouldUseCorrectBaseAddress()
 	{
-		var hostEnvironment = Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();
+		var hostEnvironment = Services.GetRequiredService<BunitWebAssemblyHostEnvironment>();
 		hostEnvironment.BaseAddress = "myBaseUrl/";
 		var cut = RenderComponent<SimpleUsingWebAssemblyHostEnvironment>();
 

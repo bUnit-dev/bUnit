@@ -7,24 +7,24 @@ namespace Bunit.TestDoubles;
 /// Represents a fake <see cref="PersistentComponentState"/>, that can be used to the
 /// real <see cref="PersistentComponentState"/> in the Blazor runtime.
 /// </summary>
-public sealed class FakePersistentComponentState
+public sealed class BunitPersistentComponentState
 {
 	private static readonly JsonSerializerOptions JsonSerializerOptions = new()
 	{
 		PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
 		PropertyNameCaseInsensitive = true,
 	};
-	private readonly FakePersistentComponentStateStore store;
+	private readonly BunitPersistentComponentStateStore store;
 	private readonly Lazy<ComponentStatePersistenceManager> manager;
 	private readonly Lazy<Renderer> renderer;
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="FakePersistentComponentState"/> class.
+	/// Initializes a new instance of the <see cref="BunitPersistentComponentState"/> class.
 	/// </summary>
 	/// <param name="services">The <see cref="IServiceProvider"/> to pull lazily dependencies from.</param>
-	internal FakePersistentComponentState(IServiceProvider services)
+	internal BunitPersistentComponentState(IServiceProvider services)
 	{
-		store = new FakePersistentComponentStateStore();
+		store = new BunitPersistentComponentStateStore();
 		manager = new Lazy<ComponentStatePersistenceManager>(() => services.GetRequiredService<ComponentStatePersistenceManager>());
 		renderer = new Lazy<Renderer>(() => services.GetRequiredService<Renderer>());
 	}
@@ -36,7 +36,7 @@ public sealed class FakePersistentComponentState
 	/// </summary>
 	/// <remarks>
 	/// Only call this method after all services has been registered with the <see cref="TestContextBase.Services"/>.
-	/// Calling this method will lookup dependencies of the <see cref="FakePersistentComponentState"/>
+	/// Calling this method will lookup dependencies of the <see cref="BunitPersistentComponentState"/>
 	/// from the <see cref="TestServiceProvider"/>, which means no other services can be registered after this point.
 	/// </remarks>
 	public void TriggerOnPersisting()
@@ -50,7 +50,7 @@ public sealed class FakePersistentComponentState
 	/// </summary>
 	/// <remarks>
 	/// Only call this method after all services has been registered with the <see cref="TestContextBase.Services"/>.
-	/// Calling this method will lookup dependencies of the <see cref="FakePersistentComponentState"/>
+	/// Calling this method will lookup dependencies of the <see cref="BunitPersistentComponentState"/>
 	/// from the <see cref="TestServiceProvider"/>, which means no other services can be registered after this point.
 	/// </remarks>
 	/// <typeparam name="TValue">The <paramref name="instance"/> type.</typeparam>
@@ -70,7 +70,7 @@ public sealed class FakePersistentComponentState
 	/// </summary>
 	/// <remarks>
 	/// Only call this method after all services has been registered with the <see cref="TestContextBase.Services"/>.
-	/// Calling this method will lookup dependencies of the <see cref="FakePersistentComponentState"/>
+	/// Calling this method will lookup dependencies of the <see cref="BunitPersistentComponentState"/>
 	/// from the <see cref="TestServiceProvider"/>, which means no other services can be registered after this point.
 	/// </remarks>
 	/// <param name="key">The key used to persist the instance.</param>

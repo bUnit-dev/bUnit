@@ -42,3 +42,6 @@ The `AddFallbackServiceProvider` on the `TestServiceProvider` has been renamed t
 
 ## Exceptions remove obsolete `SerializableAttribute` and `ISerializable` interface
 With .NET 8 the `SerializableAttribute` and `ISerializable` interface have been marked as obsolete. Therefore, exceptions in bUnit no longer implement `ISerializable` and are no longer marked with the `SerializableAttribute`. More information can be found here: https://github.com/dotnet/docs/issues/34893
+
+## Renamed `Fake` to `Bunit` in many test doubles
+The `Fake` prefix has been replaced with `Bunit` in many test doubles. For example, `FakeNavigationManager` is now `BunitNavigationManager`. If you used any of these test doubles, you should replace them with the new name.

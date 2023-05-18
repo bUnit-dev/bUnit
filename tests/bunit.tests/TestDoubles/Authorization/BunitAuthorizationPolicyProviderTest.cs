@@ -2,13 +2,13 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace Bunit.TestDoubles.Authorization;
 
-public class FakeAuthorizationPolicyProviderTest
+public class BunitAuthorizationPolicyProviderTest
 {
 	[Fact(DisplayName = "Get default policy from PolicyProvider.")]
 	public async Task Test001()
 	{
 		// arrange
-		var provider = new FakeAuthorizationPolicyProvider();
+		var provider = new BunitAuthorizationPolicyProvider();
 
 		// act
 		var policy = await provider.GetDefaultPolicyAsync();
@@ -24,7 +24,7 @@ public class FakeAuthorizationPolicyProviderTest
 	public async Task Test002()
 	{
 		// arrange
-		var provider = new FakeAuthorizationPolicyProvider();
+		var provider = new BunitAuthorizationPolicyProvider();
 
 		// act
 		var policy = await provider.GetFallbackPolicyAsync();
@@ -37,7 +37,7 @@ public class FakeAuthorizationPolicyProviderTest
 	public async Task Test003()
 	{
 		// arrange
-		var provider = new FakeAuthorizationPolicyProvider();
+		var provider = new BunitAuthorizationPolicyProvider();
 		provider.SetPolicyScheme("TestScheme");
 
 		// act
@@ -55,7 +55,7 @@ public class FakeAuthorizationPolicyProviderTest
 	public async Task Test004()
 	{
 		// arrange
-		var provider = new FakeAuthorizationPolicyProvider();
+		var provider = new BunitAuthorizationPolicyProvider();
 		provider.SetPolicyScheme("TestScheme");
 
 		// act
@@ -73,7 +73,7 @@ public class FakeAuthorizationPolicyProviderTest
 	public void Test006()
 	{
 		// arrange
-		var provider = new FakeAuthorizationPolicyProvider();
+		var provider = new BunitAuthorizationPolicyProvider();
 
 		// assert
 		Assert.Throws<ArgumentNullException>(

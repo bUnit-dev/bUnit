@@ -94,7 +94,7 @@ public class AuthorizationTest : TestContext
 	public void Test006()
 	{
 		// act
-		var ex = Assert.Throws<MissingFakeAuthorizationException>(() => RenderComponent<SimpleAuthView>());
+		var ex = Assert.Throws<MissingAuthorizationHandlerException>(() => RenderComponent<SimpleAuthView>());
 
 		// assert
 		Assert.Equal("AuthenticationStateProvider", ex.ServiceName);
