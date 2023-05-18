@@ -1,52 +1,52 @@
 ﻿---
-uid: faking-persistentcomponentstate
-title: Faking persistent component state
+uid: bunit-persistentcomponentstate
+title: bUnit's persistent component state
 ---
 
-# Faking persistent component state
+# Adding persistent component state
 
-bUnit comes with fake version of the `PersistentComponentState` type in Blazor that makes it possible to test components that use the type.
+bUnit comes with its own version of the `PersistentComponentState` type in Blazor that makes it possible to test components that use the type.
 
-## Using the fake `PersistentComponentState`
+## Using bUnit's `PersistentComponentState`
 
-To use the fake `PersistentComponentState` in bUnit, call the `AddFakePersistentComponentState` extension method on `TestContext`:
+To use bUnit's `PersistentComponentState`, call the `AddBunitPersistentComponentState` extension method on `TestContext`:
 
 ```csharp
-var fakeState = AddFakePersistentComponentState();
+var state = AddBunitPersistentComponentState();
 ```
 
-Calling `AddFakePersistentComponentState` returns a `FakePersistentComponentState` type, which has three methods; one to persist data, one to get persisted data, and one that triggers any "OnPersisting" callbacks added to the `PersistentComponentState`.
+Calling `AddBunitPersistentComponentState` returns a `BunitPersistentComponentState` type, which has three methods; one to persist data, one to get persisted data, and one that triggers any "OnPersisting" callbacks added to the `PersistentComponentState`.
 
 To add data to the `PersistentComponentState` before running a test, i.e. to verify that a component uses the persisted state, use the `Persist` method:
 
 ```csharp
-var fakeState = AddFakePersistentComponentState();
+var state = AddBunitPersistentComponentState();
 var key = "STATE KEY";
 var data = ...; // data to persist
 
-fakeState.Persist(key, data);
+state.Persist(key, data);
 
 // render component
 ```
-To trigger a callback registered with the `PersistentComponentState.RegisterOnPersisting` method, use the `TriggerOnPersisting` method on `FakePersistentComponentState`:
+To trigger a callback registered with the `PersistentComponentState.RegisterOnPersisting` method, use the `TriggerOnPersisting` method on `BunitPersistentComponentState`:
 
 ```csharp
-var fakeState = AddFakePersistentComponentState();
+var state = AddBunitPersistentComponentState();
 
 // render component
 
-fakeState.TriggerOnPersisting();
+state.TriggerOnPersisting();
 ```
 
 To check if data has been persisted, use the `TryTake` method:
 
 ```csharp
-var fakeState = AddFakePersistentComponentState();
+var state = AddBunitPersistentComponentState();
 var key = "STATE KEY";
 
 // render component, call TriggerOnPersisting
 
-bool foundState = fakeState.TryTake<string>(key, out var data);
+bool foundState = state.TryTake<string>(key, out var data);
 ```
 
 The following section has a complete example.
@@ -91,14 +91,14 @@ In this example, lets test the following `<FetchData>` component that use `Persi
 }
 ```
 
-To test that the `<FetchData>` component uses persisted weather data instead of downloading (generating) it again with the `CreateForecastsAsync` method, use the `Persist` method on the `FakePersistentComponentState` type:
+To test that the `<FetchData>` component uses persisted weather data instead of downloading (generating) it again with the `CreateForecastsAsync` method, use the `Persist` method on the `BunitPersistentComponentState` type:
 
 ```csharp
 // Arrange
-var fakeState = AddFakePersistentComponentState();
+var state = AddBunitPersistentComponentState();
 
 // Persist a single weather forecast with a temperature of 42
-fakeState.Persist("weather-data", new [] { new WeatherForecast { Temperature = 42 } });
+state.Persist("weather-data", new [] { new WeatherForecast { Temperature = 42 } });
 
 // Act
 var cut = RenderComponent<FetchData>();
@@ -111,14 +111,14 @@ To test that the `<FetchData>` component correctly persists weather data when it
 
 ```csharp
 // Arrange
-var fakeState = AddFakePersistentComponentState();
+var state = AddBunitPersistentComponentState();
 var cut = RenderComponent<FetchData>();
 
 // Act - trigger the FetchData components PersistForecasts method
-fakeState.TriggerOnPersisting();
+state.TriggerOnPersisting();
 
 // Assert that state was saved and there is a non-empty forecast array returned
-var didSaveState = fakeState.TryTake<WeatherForecast[]>("weather-data", out var savedState);
+var didSaveState = state.TryTake<WeatherForecast[]>("weather-data", out var savedState);
 Assert.IsTrue(didSaveState);
 Assert.NotEmpty(savedState);
 ```   

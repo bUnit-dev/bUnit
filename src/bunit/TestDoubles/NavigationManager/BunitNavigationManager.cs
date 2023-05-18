@@ -11,13 +11,13 @@ using URI = Uri;
 /// <see cref="NavigationManager.NavigateTo(string, bool)"/> for testing purposes.
 /// </summary>
 [DebuggerDisplay("Current Uri: {Uri}, History Count: {History.Count}")]
-public sealed class FakeNavigationManager : NavigationManager
+public sealed class BunitNavigationManager : NavigationManager
 {
 	private readonly ITestRenderer renderer;
 	private readonly Stack<NavigationHistory> history = new();
 
 	/// <summary>
-	/// The navigation history captured by the <see cref="FakeNavigationManager"/>.
+	/// The navigation history captured by the <see cref="BunitNavigationManager"/>.
 	/// This is a stack based collection, so the first element is the latest/current navigation target.
 	/// </summary>
 	/// <remarks>
@@ -26,9 +26,9 @@ public sealed class FakeNavigationManager : NavigationManager
 	public IReadOnlyCollection<NavigationHistory> History => history;
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="FakeNavigationManager"/> class.
+	/// Initializes a new instance of the <see cref="BunitNavigationManager"/> class.
 	/// </summary>
-	public FakeNavigationManager(ITestRenderer renderer)
+	public BunitNavigationManager(ITestRenderer renderer)
 	{
 		this.renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
 		Initialize("http://localhost/", "http://localhost/");

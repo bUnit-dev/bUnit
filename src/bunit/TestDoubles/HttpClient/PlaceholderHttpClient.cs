@@ -9,13 +9,13 @@ internal sealed class PlaceholderHttpClient : HttpClient
 
 	public PlaceholderHttpClient()
 #pragma warning disable CA2000 // Will be disposed by HttpClient
-		: base(new PlaceholderHttpMessageHandler(), disposeHandler: true)
+		: base(new BunitHttpMessageHandler(), disposeHandler: true)
 #pragma warning restore CA2000
 	{
 		BaseAddress = new Uri(PlaceholderBaseAddress);
 	}
 
-	private sealed class PlaceholderHttpMessageHandler : HttpMessageHandler
+	private sealed class BunitHttpMessageHandler : HttpMessageHandler
 	{
 		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 			=> throw new MissingMockHttpClientException(request);

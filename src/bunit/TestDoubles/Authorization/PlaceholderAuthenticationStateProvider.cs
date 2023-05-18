@@ -6,6 +6,6 @@ internal sealed class PlaceholderAuthenticationStateProvider : AuthenticationSta
 {
 	public override Task<AuthenticationState> GetAuthenticationStateAsync()
 	{
-		throw new MissingFakeAuthorizationException(nameof(AuthenticationStateProvider));
+		throw new MissingAuthorizationHandlerException(nameof(AuthenticationStateProvider));
 	}
 }

@@ -3,18 +3,17 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Bunit.TestDoubles.Authorization;
 
-public class FakeAuthorizationServiceTest
+public class BunitAuthorizationServiceTest
 {
 	[Fact(DisplayName = "Get AuthorizeAsync with an authorized result.")]
 	public async Task Test002()
 	{
 		// arrange
-		var service = new FakeAuthorizationService(AuthorizationState.Unauthorized);
+		var service = new BunitAuthorizationService(AuthorizationState.Unauthorized);
 		var user = CreateUserPrincipal("FooBar");
-		var requirements = new List<IAuthorizationRequirement>();
 
 		// act
-		var result = await service.AuthorizeAsync(user, "testResource", requirements);
+		var result = await service.AuthorizeAsync(user, "testResource", Array.Empty<IAuthorizationRequirement>());
 
 		// assert
 		Assert.NotNull(result);
@@ -25,12 +24,11 @@ public class FakeAuthorizationServiceTest
 	public async Task Test003()
 	{
 		// arrange
-		var service = new FakeAuthorizationService();
+		var service = new BunitAuthorizationService();
 		var user = CreateUserPrincipal("FooBar");
-		var requirements = new List<IAuthorizationRequirement>();
 
 		// act
-		var result = await service.AuthorizeAsync(user, "testResource", requirements);
+		var result = await service.AuthorizeAsync(user, "testResource", Array.Empty<IAuthorizationRequirement>());
 
 		// assert
 		Assert.NotNull(result);
@@ -41,7 +39,7 @@ public class FakeAuthorizationServiceTest
 	public async Task Test004()
 	{
 		// arrange
-		var service = new FakeAuthorizationService(AuthorizationState.Unauthorized);
+		var service = new BunitAuthorizationService(AuthorizationState.Unauthorized);
 		var user = CreateUserPrincipal("FooBar");
 
 		// act
@@ -61,7 +59,7 @@ public class FakeAuthorizationServiceTest
 		var requirements = Array.Empty<IAuthorizationRequirement>();
 
 		// act
-		var ex = await Assert.ThrowsAsync<MissingFakeAuthorizationException>(() =>
+		var ex = await Assert.ThrowsAsync<MissingAuthorizationHandlerException>(() =>
 			authService.AuthorizeAsync(null!, string.Empty, requirements));
 
 		// assert
@@ -76,7 +74,7 @@ public class FakeAuthorizationServiceTest
 		var authService = ctx.Services.GetRequiredService<IAuthorizationService>();
 
 		// act
-		var ex = await Assert.ThrowsAsync<MissingFakeAuthorizationException>(() =>
+		var ex = await Assert.ThrowsAsync<MissingAuthorizationHandlerException>(() =>
 			authService.AuthorizeAsync(default!, string.Empty, "testPolicy"));
 
 		// assert

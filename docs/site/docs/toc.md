@@ -25,9 +25,9 @@
 ## [Emulating IJSRuntime](xref:emulating-ijsruntime)
 ## [Faking authorization](xref:faking-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
-## [Faking PersistentComponentState](xref:faking-persistentcomponentstate)
-## [Faking NavigationManager](xref:fake-navigation-manager)
-## [Faking IWebAssemblyHostEnvironment](xref:fake-webassemblyhostenvironment)
+## [bUnit's PersistentComponentState](xref:bunit-persistentcomponentstate)
+## [bUnit's NavigationManager](xref:bunit-navigation-manager)
+## [bUnit's IWebAssemblyHostEnvironment](xref:bunit-webassemblyhostenvironment)
 ## [Testing with InputFile component](xref:input-file)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)

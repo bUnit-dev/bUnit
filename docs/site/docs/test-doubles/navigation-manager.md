@@ -1,11 +1,11 @@
 ---
-uid: fake-navigation-manager
-title: Faking NavigationManager
+uid: bunit-navigation-manager
+title: bUnit's NavigationManager
 ---
 
 # Faking `NavigationManager`
 
-bUnit has a fake version of Blazor's `NavigationManager` built-in, which is added by default to bUnit's `TestContext.Services` service provider. That means nothing special is needed to test components that depend on `NavigationManager`, as it is already available by default.
+bUnit has its own version of Blazor's `NavigationManager` built-in, which is added by default to bUnit's `TestContext.Services` service provider. That means nothing special is needed to test components that depend on `NavigationManager`, as it is already available by default.
 
 ## Verify `NavigationManager` interactions
 
@@ -43,7 +43,7 @@ To verify that the `<PrintCurrentUrl>` component correctly listens to location c
 
 ```csharp
 // Arrange
-var navMan = Services.GetRequiredService<FakeNavigationManager>();
+var navMan = Services.GetRequiredService<BunitNavigationManager>();
 var cut = RenderComponent<PrintCurrentUrl>();
 
 // Act - trigger a navigation change
@@ -64,11 +64,11 @@ var cut = RenderComponent<PrintCurrentUrl>(parameters => parameters
 cut.Find("button").Click();
 
 // Assert - inspect the navigation manager to see if its Uri has been updated.
-var navMan = Services.GetRequiredService<FakeNavigationManager>();
+var navMan = Services.GetRequiredService<BunitNavigationManager>();
 Assert.Equal("http://localhost/foo", navMan.Uri);
 ```
 
-If a component issues multiple `NavigateTo` calls, then it is possible to inspect the navigation history by accessing the <xref:Bunit.TestDoubles.FakeNavigationManager.History> property. It's a stack based structure, meaning the latest navigations will be first in the collection at index 0.
+If a component issues multiple `NavigateTo` calls, then it is possible to inspect the navigation history by accessing the <xref:Bunit.TestDoubles.BunitNavigationManager.History> property. It's a stack based structure, meaning the latest navigations will be first in the collection at index 0.
 
 ## Asserting that a navigation was prevented with the `NavigationLock` component
 
@@ -93,7 +93,7 @@ A component can look like this:
 A typical test, which asserts that the navigation got prevented, would look like this:
 
 ```csharp
-var navMan = Services.GetRequiredService<FakeNavigationManager>();
+var navMan = Services.GetRequiredService<BunitNavigationManager>();
 var cut = RenderComponent<InterceptComponent>();
 
 cut.Find("button").Click();
@@ -123,7 +123,7 @@ As `<a href>` navigation is not natively supported in bUnit, the `NavigationMana
 The test utilizes the `NavigationManager` itself to achieve the same:
 
 ```csharp
-var navMan = Services.GetRequiredService<FakeNavigationManager>();
+var navMan = Services.GetRequiredService<BunitNavigationManager>();
 var cut = RenderComponent<InterceptAHRefComponent>();
 
 navMan.NavigateTo("/counter");
@@ -149,7 +149,7 @@ NavigationManager.NavigateToLogin("authentication/login", requestOptions);
 
 A test could look like this:
 ```csharp
-var navigationManager = Services.GetRequiredService<FakeNavigationManager>();
+var navigationManager = Services.GetRequiredService<BunitNavigationManager>();
 
 ActionToTriggerTheNavigationManager();
 

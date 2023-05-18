@@ -34,16 +34,16 @@ public static class TestServiceProviderExtensions
 		services.AddSingleton(jsInterop.JSRuntime);
 
 		// bUnits fake Navigation Manager
-		services.AddSingleton<FakeNavigationManager>();
-		services.AddSingleton<NavigationManager>(s => s.GetRequiredService<FakeNavigationManager>());
-		services.AddSingleton<INavigationInterception, FakeNavigationInterception>();
+		services.AddSingleton<BunitNavigationManager>();
+		services.AddSingleton<NavigationManager>(s => s.GetRequiredService<BunitNavigationManager>());
+		services.AddSingleton<INavigationInterception, BunitNavigationInterception>();
 
 		// bUnits fake WebAssemblyHostEnvironment
-		services.AddSingleton<FakeWebAssemblyHostEnvironment>();
-		services.AddSingleton<IWebAssemblyHostEnvironment>(s => s.GetRequiredService<FakeWebAssemblyHostEnvironment>());
+		services.AddSingleton<BunitWebAssemblyHostEnvironment>();
+		services.AddSingleton<IWebAssemblyHostEnvironment>(s => s.GetRequiredService<BunitWebAssemblyHostEnvironment>());
 
 		// bUnits fake ScrollToLocationHash
-		services.AddSingleton<IScrollToLocationHash, FakeScrollToLocationHash>();
+		services.AddSingleton<IScrollToLocationHash, BunitScrollToLocationHash>();
 
 		// bUnit specific services
 		services.AddSingleton(testContext);

@@ -2,9 +2,9 @@ using Xunit.Abstractions;
 
 namespace Bunit.TestDoubles;
 
-public class FakePersistentComponentStateTest : TestContext
+public class BunitPersistentComponentStateTest : TestContext
 {
-	public FakePersistentComponentStateTest(ITestOutputHelper outputHelper)
+	public BunitPersistentComponentStateTest(ITestOutputHelper outputHelper)
 	{
 		Services.AddXunitLogger(outputHelper);
 	}
@@ -12,7 +12,7 @@ public class FakePersistentComponentStateTest : TestContext
 	[Fact(DisplayName = "AddFakePersistentComponentState is registers PersistentComponentState in services")]
 	public void Test001()
 	{
-		_ = this.AddFakePersistentComponentState();
+		_ = this.AddBunitPersistentComponentState();
 
 		var actual = Services.GetService<PersistentComponentState>();
 
@@ -22,7 +22,7 @@ public class FakePersistentComponentStateTest : TestContext
 	[Fact(DisplayName = "AddFakePersistentComponentState enables PersistentComponentState injection into components")]
 	public void Test002()
 	{
-		this.AddFakePersistentComponentState();
+		this.AddBunitPersistentComponentState();
 
 		var cut = RenderComponent<PersistentComponentStateSample>();
 
@@ -33,7 +33,7 @@ public class FakePersistentComponentStateTest : TestContext
 	[AutoData]
 	public void Test011(string key, string data)
 	{
-		var fakeState = this.AddFakePersistentComponentState();
+		var fakeState = this.AddBunitPersistentComponentState();
 
 		fakeState.Persist(key, data);
 
@@ -45,7 +45,7 @@ public class FakePersistentComponentStateTest : TestContext
 	[Fact(DisplayName = "TryTake returns true if key contains data saved in store")]
 	public void Test012()
 	{
-		var fakeState = this.AddFakePersistentComponentState();
+		var fakeState = this.AddBunitPersistentComponentState();
 		var cut = RenderComponent<PersistentComponentStateSample>();
 
 		fakeState.TriggerOnPersisting();
@@ -58,7 +58,7 @@ public class FakePersistentComponentStateTest : TestContext
 	[AutoData]
 	public void Test013(string key)
 	{
-		var fakeState = this.AddFakePersistentComponentState();
+		var fakeState = this.AddBunitPersistentComponentState();
 
 		fakeState.TryTake<string>(key, out var actual).ShouldBeFalse();
 	}
@@ -67,7 +67,7 @@ public class FakePersistentComponentStateTest : TestContext
 	public void Test014()
 	{
 		var onPersistingCalledTimes = 0;
-		var fakeState = this.AddFakePersistentComponentState();
+		var fakeState = this.AddBunitPersistentComponentState();
 		var store = Services.GetService<PersistentComponentState>();
 		store.RegisterOnPersisting(() =>
 		{

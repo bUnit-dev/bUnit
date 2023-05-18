@@ -7,19 +7,19 @@ namespace Bunit.TestDoubles;
 /// Represents a fake implementation of AuthenticationStateProvider for testing purposes that allows
 /// user to test components that use authentication and authorization.
 /// </summary>
-public class FakeAuthenticationStateProvider : AuthenticationStateProvider
+public class BunitAuthenticationStateProvider : AuthenticationStateProvider
 {
 	private TaskCompletionSource<AuthenticationState> authState = new();
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="FakeAuthenticationStateProvider"/> class
+	/// Initializes a new instance of the <see cref="BunitAuthenticationStateProvider"/> class
 	/// with an initial AuthenticationState.
 	/// </summary>
 	/// <param name="userName">Identity's user name.</param>
 	/// <param name="roles">Roles that this user principal has.</param>
 	/// <param name="claims">Claims to add to user principal.</param>
 	/// <param name="authenticationType">The authentication type for the user principal.</param>
-	public FakeAuthenticationStateProvider(
+	public BunitAuthenticationStateProvider(
 		string userName,
 		IEnumerable<string>? roles = null,
 		IEnumerable<Claim>? claims = null,
@@ -27,9 +27,9 @@ public class FakeAuthenticationStateProvider : AuthenticationStateProvider
 		=> SetAuthenticatedState(userName, roles, claims, authenticationType);
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="FakeAuthenticationStateProvider"/> class.
+	/// Initializes a new instance of the <see cref="BunitAuthenticationStateProvider"/> class.
 	/// </summary>
-	public FakeAuthenticationStateProvider() => SetUnauthenticatedState();
+	public BunitAuthenticationStateProvider() => SetUnauthenticatedState();
 
 	/// <summary>
 	/// Overridden method to get the current authentication state.

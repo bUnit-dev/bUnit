@@ -12,7 +12,7 @@
 			You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic.
 			You can interact with and inspect the component under test, trigger event handlers, provide cascading values, and inject services.
 
-			bUnit also includes a complete fake implementation of Blazor's authentication and authorization logic, navigation manager, and
+			bUnit also includes a complete implementation of Blazor's authentication and authorization logic, navigation manager, and
 			JSInterop.
 		</Description>
 	</PropertyGroup>
