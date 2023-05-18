@@ -3,7 +3,7 @@ namespace Bunit.Rendering;
 /// <summary>
 /// Represents a generalized Blazor renderer for testing purposes.
 /// </summary>
-public interface ITestRenderer
+public interface ITestRenderer : IDisposable
 {
 	/// <summary>
 	/// Gets a <see cref="Task{Exception}"/>, which completes when an unhandled exception

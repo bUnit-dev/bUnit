@@ -14,7 +14,9 @@ public abstract class WaitForHelper<T> : IDisposable
 	private readonly Func<(bool CheckPassed, T Content)> completeChecker;
 	private readonly IRenderedFragment renderedFragment;
 	private readonly ILogger<WaitForHelper<T>> logger;
-	private readonly TestRenderer renderer;
+#pragma warning disable CA2213 // Handled by the container
+	private readonly BunitRenderer renderer;
+#pragma warning restore CA2213
 	private bool isDisposed;
 	private int checkCount;
 	private Exception? capturedException;
@@ -51,11 +53,11 @@ public abstract class WaitForHelper<T> : IDisposable
 	{
 		this.renderedFragment = renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment));
 		this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
-		
+
 		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
-		renderer = (TestRenderer)renderedFragment
+		renderer = renderedFragment
 			.Services
-			.GetRequiredService<ITestRenderer>();
+			.GetRequiredService<BunitRenderer>();
 		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
 		timer = new Timer(_ =>
 		{
@@ -125,7 +127,7 @@ public abstract class WaitForHelper<T> : IDisposable
 	}
 
 	private Task<T> CreateWaitTask()
-	{	
+	{
 		// Two to failure conditions, that the renderer captures an unhandled
 		// exception from a component or itself, or that the timeout is reached,
 		// are executed on the renderers scheduler, to ensure that OnAfterRender

@@ -47,9 +47,9 @@ public static class TestServiceProviderExtensions
 
 		// bUnit specific services
 		services.AddSingleton(testContext);
-		services.AddSingleton<TestRenderer>();
-		services.AddSingleton<Renderer>(s => s.GetRequiredService<TestRenderer>());
-		services.AddSingleton<ITestRenderer>(s => s.GetRequiredService<TestRenderer>());
+		services.AddSingleton<BunitRenderer>();
+		services.AddSingleton<Renderer>(s => s.GetRequiredService<BunitRenderer>());
+		services.AddSingleton<ITestRenderer>(s => s.GetRequiredService<BunitRenderer>());
 		services.AddSingleton<HtmlComparer>();
 		services.AddSingleton<BunitHtmlParser>();
 		services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();

@@ -318,7 +318,7 @@ public class TestRendererTest : TestContext
 	[Fact(DisplayName = "When test renderer is disposed, so is all rendered components")]
 	public void Test070()
 	{
-		var sut = (TestRenderer)Services.GetRequiredService<ITestRenderer>();
+		var sut = (BunitRenderer)Services.GetRequiredService<ITestRenderer>();
 		var cut = sut.RenderComponent<NoChildNoParams>();
 
 		sut.Dispose();
@@ -419,7 +419,7 @@ public class TestRendererTest : TestContext
 	{
 		var activatorMock = new Mock<IComponentActivator>();
 		activatorMock.Setup(x => x.CreateInstance(typeof(Wrapper))).Returns(new Wrapper());
-		using var renderer = new TestRenderer(
+		using var renderer = new BunitRenderer(
 			Services.GetService<IRenderedComponentActivator>(),
 			Services,
 			NullLoggerFactory.Instance,

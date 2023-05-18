@@ -6,13 +6,13 @@ namespace Bunit.Rendering;
 /// <summary>
 /// Represents a bUnit <see cref="ITestRenderer"/> used to render Blazor components and fragments during bUnit tests.
 /// </summary>
-public class TestRenderer : Renderer, ITestRenderer
+internal sealed class BunitRenderer : Renderer, ITestRenderer
 {
 	private readonly object renderTreeUpdateLock = new();
 	private readonly SynchronizationContext? usersSyncContext = SynchronizationContext.Current;
 	private readonly Dictionary<int, IRenderedFragment> renderedComponents = new();
 	private readonly List<int> rootComponentIds = new();
-	private readonly ILogger<TestRenderer> logger;
+	private readonly ILogger<BunitRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
@@ -29,23 +29,23 @@ public class TestRenderer : Renderer, ITestRenderer
 	internal int RenderCount { get; private set; }
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
+	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
+	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
 		: base(services, loggerFactory)
 	{
-		logger = loggerFactory.CreateLogger<TestRenderer>();
+		logger = loggerFactory.CreateLogger<BunitRenderer>();
 		activator = renderedComponentActivator;
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
 	}
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
+	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
 		: base(services, loggerFactory, componentActivator)
 	{
-		logger = loggerFactory.CreateLogger<TestRenderer>();
+		logger = loggerFactory.CreateLogger<BunitRenderer>();
 		activator = renderedComponentActivator;
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
 	}
@@ -183,7 +183,7 @@ public class TestRenderer : Renderer, ITestRenderer
 			// There is no guarantee a caller/test framework has set a sync context.
 			usersSyncContext.Send(static (state) =>
 			{
-				var (renderBatch, renderer) = ((RenderBatch, TestRenderer))state!;
+				var (renderBatch, renderer) = ((RenderBatch, BunitRenderer))state!;
 				renderer.UpdateDisplay(renderBatch);
 			}, (renderBatch, this));
 		}
