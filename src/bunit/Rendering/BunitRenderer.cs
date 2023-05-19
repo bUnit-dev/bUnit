@@ -31,7 +31,7 @@ public sealed class BunitRenderer : Renderer
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, IServiceProvider services, ILoggerFactory loggerFactory)
+	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
 		: base(services, loggerFactory)
 	{
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
@@ -42,7 +42,7 @@ public sealed class BunitRenderer : Renderer
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, IServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
 		: base(services, loggerFactory, componentActivator)
 	{
 		logger = loggerFactory.CreateLogger<BunitRenderer>();

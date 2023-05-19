@@ -26,6 +26,7 @@ public abstract class BenchmarkBase
 	public void Cleanup()
 	{
 		InternalCleanup();
+		Renderer.Dispose();
 	}
 
 	protected IRenderedComponent<TComponent> RenderComponent<TComponent>()
