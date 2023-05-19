@@ -13,7 +13,7 @@ using URI = Uri;
 [DebuggerDisplay("Current Uri: {Uri}, History Count: {History.Count}")]
 public sealed class BunitNavigationManager : NavigationManager
 {
-	private readonly ITestRenderer renderer;
+	private readonly BunitRenderer renderer;
 	private readonly Stack<NavigationHistory> history = new();
 
 	/// <summary>
@@ -28,7 +28,7 @@ public sealed class BunitNavigationManager : NavigationManager
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitNavigationManager"/> class.
 	/// </summary>
-	public BunitNavigationManager(ITestRenderer renderer)
+	public BunitNavigationManager(BunitRenderer renderer)
 	{
 		this.renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
 		Initialize("http://localhost/", "http://localhost/");

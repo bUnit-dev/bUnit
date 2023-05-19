@@ -1,7 +1,7 @@
 namespace Bunit.Rendering;
 
 /// <summary>
-/// Represents an render event from a <see cref="ITestRenderer"/>.
+/// Represents an render event from a <see cref="BunitRenderer"/>.
 /// </summary>
 public sealed class RenderEvent
 {

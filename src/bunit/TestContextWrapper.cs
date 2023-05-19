@@ -17,7 +17,7 @@ public abstract class TestContextWrapper
 	/// <summary>
 	/// Gets the renderer used by the test context.
 	/// </summary>
-	public ITestRenderer Renderer => TestContext?.Renderer ?? throw new InvalidOperationException("The TestContext has not been initialized.");
+	public BunitRenderer Renderer => TestContext?.Renderer ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 
 	/// <summary>
 	/// Gets the service collection and service provider that is used when a

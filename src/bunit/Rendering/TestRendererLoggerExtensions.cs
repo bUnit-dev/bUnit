@@ -28,27 +28,27 @@ internal static class TestRendererLoggerExtensions
 	private static readonly Action<ILogger, string, string, Exception> UnhandledException
 		= LoggerMessage.Define<string, string>(LogLevel.Error, new EventId(30, "LogUnhandledException"), "An unhandled exception happened during rendering: {Message}" + Environment.NewLine + "{StackTrace}");
 
-	internal static void LogProcessingPendingRenders(this ILogger<TestRenderer> logger)
+	internal static void LogProcessingPendingRenders(this ILogger<BunitRenderer> logger)
 		=> ProcessingPendingRenders(logger, null);
 
-	internal static void LogNewRenderBatchReceived(this ILogger<TestRenderer> logger)
+	internal static void LogNewRenderBatchReceived(this ILogger<BunitRenderer> logger)
 		=> NewRenderBatchReceived(logger, null);
 
-	internal static void LogComponentDisposed(this ILogger<TestRenderer> logger, int componentId)
+	internal static void LogComponentDisposed(this ILogger<BunitRenderer> logger, int componentId)
 		=> ComponentDisposed(logger, componentId, null);
 
-	internal static void LogComponentRendered(this ILogger<TestRenderer> logger, int componentId)
+	internal static void LogComponentRendered(this ILogger<BunitRenderer> logger, int componentId)
 		=> ComponentRendered(logger, componentId, null);
 
-	internal static void LogChangedComponentsMarkupUpdated(this ILogger<TestRenderer> logger)
+	internal static void LogChangedComponentsMarkupUpdated(this ILogger<BunitRenderer> logger)
 		=> ChangedComponentsMarkupUpdated(logger, null);
 
-	internal static void LogAsyncInitialRender(this ILogger<TestRenderer> logger)
+	internal static void LogAsyncInitialRender(this ILogger<BunitRenderer> logger)
 		=> AsyncInitialRender(logger, null);
 
-	internal static void LogInitialRenderCompleted(this ILogger<TestRenderer> logger, int componentId)
+	internal static void LogInitialRenderCompleted(this ILogger<BunitRenderer> logger, int componentId)
 		=> InitialRenderCompleted(logger, componentId, null);
 
-	internal static void LogUnhandledException(this ILogger<TestRenderer> logger, Exception exception)
+	internal static void LogUnhandledException(this ILogger<BunitRenderer> logger, Exception exception)
 		=> UnhandledException(logger, exception.Message, exception.StackTrace ?? string.Empty, exception);
 }

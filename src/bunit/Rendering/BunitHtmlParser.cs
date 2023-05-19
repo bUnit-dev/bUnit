@@ -25,7 +25,7 @@ public sealed class BunitHtmlParser : IDisposable
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitHtmlParser"/> class
-	/// with a AngleSharp context without a <see cref="TestRenderer"/> registered.
+	/// with a AngleSharp context without a <see cref="BunitRenderer"/> registered.
 	/// </summary>
 	public BunitHtmlParser()
 		: this(Configuration.Default.WithCss().With(new HtmlComparer())) { }
@@ -34,7 +34,7 @@ public sealed class BunitHtmlParser : IDisposable
 	/// Initializes a new instance of the <see cref="BunitHtmlParser"/> class
 	/// with a AngleSharp context that includes a the <paramref name="testRenderer"/> registered.
 	/// </summary>
-	public BunitHtmlParser(ITestRenderer testRenderer, HtmlComparer htmlComparer, TestContextBase testContext)
+	public BunitHtmlParser(BunitRenderer testRenderer, HtmlComparer htmlComparer, TestContextBase testContext)
 		: this(Configuration.Default.WithCss()
 			  .With(testRenderer ?? throw new ArgumentNullException(nameof(testRenderer)))
 			  .With(htmlComparer ?? throw new ArgumentNullException(nameof(htmlComparer)))
