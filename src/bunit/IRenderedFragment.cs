@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using AngleSharp.Dom;
 using Bunit.Rendering;
 

@@ -1,9 +1,10 @@
-using AngleSharp.Diffing.Core;
+using System.Diagnostics;
 using AngleSharp.Dom;
 
 namespace Bunit.Rendering;
 
 /// <inheritdoc />
+[DebuggerDisplay("Markup={TruncatedMarkup}")]
 internal class RenderedFragment : IRenderedFragment
 {
 	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by TestServiceProvider, disposed by it.")]
@@ -11,6 +12,8 @@ internal class RenderedFragment : IRenderedFragment
 	private readonly object markupAccessLock = new();
 	private string markup = string.Empty;
 	private INodeList? latestRenderNodes;
+
+	private protected string TruncatedMarkup => Markup.Length <= 120 ? Markup : string.Concat(Markup.AsSpan(0, 120), "...");
 
 	/// <inheritdoc/>
 	public event EventHandler? OnAfterRender;

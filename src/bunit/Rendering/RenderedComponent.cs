@@ -1,6 +1,9 @@
+using System.Diagnostics;
+
 namespace Bunit.Rendering;
 
 /// <inheritdoc/>
+[DebuggerDisplay("Type={typeof(TComponent).Name,nq},Markup={TruncatedMarkup}")]
 internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent>
 	where TComponent : IComponent
 {
@@ -50,7 +53,7 @@ internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRendere
 		}
 	}
 
-	private bool TryFindComponent(RenderTreeFrameDictionary framesCollection, int parentComponentId, out int componentId, out TComponent component)
+	private static bool TryFindComponent(RenderTreeFrameDictionary framesCollection, int parentComponentId, out int componentId, out TComponent component)
 	{
 		componentId = -1;
 		component = default!;
