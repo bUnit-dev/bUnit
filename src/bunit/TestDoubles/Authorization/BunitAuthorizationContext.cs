@@ -8,7 +8,7 @@ namespace Bunit.TestDoubles;
 /// Root authorization service that manages different authentication/authorization state
 /// in the system.
 /// </summary>
-public class TestAuthorizationContext
+public class BunitAuthorizationContext
 {
 	private readonly BunitAuthorizationService authService = new();
 	private readonly BunitAuthorizationPolicyProvider policyProvider = new();
@@ -66,7 +66,7 @@ public class TestAuthorizationContext
 	/// </summary>
 	/// <param name="userName">User name for the principal identity.</param>
 	/// <param name="state">Authorization state.</param>
-	public TestAuthorizationContext SetAuthorized(string userName, AuthorizationState state = AuthorizationState.Authorized)
+	public BunitAuthorizationContext SetAuthorized(string userName, AuthorizationState state = AuthorizationState.Authorized)
 	{
 		IsAuthenticated = true;
 		UserName = userName;
@@ -83,7 +83,7 @@ public class TestAuthorizationContext
 	/// <summary>
 	/// Puts the authorization services into the authorizing state.
 	/// </summary>
-	public TestAuthorizationContext SetAuthorizing()
+	public BunitAuthorizationContext SetAuthorizing()
 	{
 		IsAuthenticated = false;
 		Roles = Array.Empty<string>();
@@ -99,7 +99,7 @@ public class TestAuthorizationContext
 	/// <summary>
 	/// Puts the authorization services into an unauthenticated and unauthorized state.
 	/// </summary>
-	public TestAuthorizationContext SetNotAuthorized()
+	public BunitAuthorizationContext SetNotAuthorized()
 	{
 		IsAuthenticated = false;
 		Roles = Array.Empty<string>();
@@ -116,7 +116,7 @@ public class TestAuthorizationContext
 	/// Sets the user roles in this context..
 	/// </summary>
 	/// <param name="roles">Roles for the claims principal.</param>
-	public TestAuthorizationContext SetRoles(params string[] roles)
+	public BunitAuthorizationContext SetRoles(params string[] roles)
 	{
 		Roles = roles;
 		authService.SetRoles(Roles);
@@ -129,7 +129,7 @@ public class TestAuthorizationContext
 	/// Sets the authorization policies supported for the current user.
 	/// </summary>
 	/// <param name="policies">Supported authorization policies.</param>
-	public TestAuthorizationContext SetPolicies(params string[] policies)
+	public BunitAuthorizationContext SetPolicies(params string[] policies)
 	{
 		Policies = policies;
 		policyProvider.SetPolicyScheme(PolicySchemeName);
@@ -142,7 +142,7 @@ public class TestAuthorizationContext
 	/// Sets the claims on the current user/principal.
 	/// </summary>
 	/// <param name="claims">Claims to set.</param>
-	public TestAuthorizationContext SetClaims(params Claim[] claims)
+	public BunitAuthorizationContext SetClaims(params Claim[] claims)
 	{
 		Claims = claims;
 		authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims);
@@ -154,7 +154,7 @@ public class TestAuthorizationContext
 	/// Sets the Identity.AuthenticationType for the current user/principa;.
 	/// </summary>
 	/// <param name="authenticationType">The authentication type to set.</param>
-	public TestAuthorizationContext SetAuthenticationType(string authenticationType)
+	public BunitAuthorizationContext SetAuthenticationType(string authenticationType)
 	{
 		this.authProvider.TriggerAuthenticationStateChanged(this.UserName, this.Roles, this.Claims, authenticationType);
 		return this;

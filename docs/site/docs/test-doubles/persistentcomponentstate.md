@@ -9,7 +9,7 @@ bUnit comes with its own version of the `PersistentComponentState` type in Blazo
 
 ## Using bUnit's `PersistentComponentState`
 
-To use bUnit's `PersistentComponentState`, call the `AddBunitPersistentComponentState` extension method on `TestContext`:
+To use bUnit's `PersistentComponentState`, call the `AddBunitPersistentComponentState` method on `TestContext`:
 
 ```csharp
 var state = AddBunitPersistentComponentState();

@@ -5,7 +5,7 @@ namespace Bunit;
 /// <summary>
 /// A test context is a factory that makes it possible to create components under tests.
 /// </summary>
-public abstract class TestContextBase : IDisposable
+public abstract partial class TestContextBase : IDisposable
 {
 	private bool disposed;
 	private BunitRenderer? testRenderer;

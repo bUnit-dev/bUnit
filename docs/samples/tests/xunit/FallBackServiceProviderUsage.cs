@@ -8,7 +8,7 @@ public class FallBackServiceProviderUsageExample : TestContext
   [Fact]
   public void FallBackServiceProviderReturns()
   {
-    Services.AddFallbackServiceProvider(new FallbackServiceProvider());
+    Services.SetFallbackServiceProvider(new FallbackServiceProvider());
 
     var dummyService = Services.GetService<DummyService>();
 
