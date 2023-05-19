@@ -6,7 +6,7 @@ public class TestAuthorizationContextTest : TestContext
 	public void Test003()
 	{
 		// act
-		var authContext = AddTestAuthorization();
+		var authContext = AddAuthorization();
 
 		// assert
 		Assert.False(authContext.IsAuthenticated);
@@ -19,7 +19,7 @@ public class TestAuthorizationContextTest : TestContext
 	public void Test0031()
 	{
 		// act
-		var authContext = AddTestAuthorization();
+		var authContext = AddAuthorization();
 		authContext.SetAuthorizing();
 
 		// assert
@@ -33,7 +33,7 @@ public class TestAuthorizationContextTest : TestContext
 	public void Test002()
 	{
 		// act
-		var authContext = AddTestAuthorization();
+		var authContext = AddAuthorization();
 		authContext.SetAuthorized("DarthPedro", AuthorizationState.Unauthorized);
 
 		// assert
@@ -47,7 +47,7 @@ public class TestAuthorizationContextTest : TestContext
 	public void Test0010()
 	{
 		// act
-		var authContext = AddTestAuthorization();
+		var authContext = AddAuthorization();
 		authContext.SetAuthorized("DarthPedro");
 
 		// assert
@@ -61,7 +61,7 @@ public class TestAuthorizationContextTest : TestContext
 	public void Test001()
 	{
 		// act
-		var authContext = AddTestAuthorization();
+		var authContext = AddAuthorization();
 		authContext.SetAuthorized("DarthPedro");
 		authContext.SetRoles("some-role");
 
@@ -76,7 +76,7 @@ public class TestAuthorizationContextTest : TestContext
 	public void Test0011()
 	{
 		// act
-		var authContext = AddTestAuthorization();
+		var authContext = AddAuthorization();
 		authContext.SetAuthorized("DarthPedro");
 		authContext.SetPolicies("TestPolicy", "Other");
 

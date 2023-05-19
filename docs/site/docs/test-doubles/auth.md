@@ -15,10 +15,7 @@ The test implementation of Blazor's authentication and authorization can be put 
 - **Authenticated** and **authorized** 
 - **Authenticated** and **authorized** with one or more **roles**, **claims**, and/or **policies**
 
-bUnit's authentication and authorization implementation is easily available by calling [`AddTestAuthorization()`](xref:Bunit.TestContextBase.AddTestAuthorization()) on a test context. This adds the necessary services to the `Services` collection and the `CascadingAuthenticationState` component to the [root render tree](xref:root-render-tree). The method returns an instance of the <xref:Bunit.TestDoubles.TestAuthorizationContext> type that allows you to control the authentication and authorization state for a test.
-
-> [!NOTE]
-> If your test class inherits directly from bUnit's <xref:Bunit.TestContext>, as described in <xref:writing-tests#remove-boilerplate-code-from-tests>, then you need to call the [`AddTestAuthorization()`](xref:Bunit.TestContextBase.AddTestAuthorization()) method.
+bUnit's authentication and authorization implementation is easily available by calling [`AddAuthorization()`](xref:Bunit.TestContextBase.AddAuthorization()) on a test context. This adds the necessary services to the `Services` collection and the `CascadingAuthenticationState` component to the [root render tree](xref:root-render-tree). The method returns an instance of the <xref:Bunit.TestDoubles.TestAuthorizationContext> type that allows you to control the authentication and authorization state for a test.
 
 The following sections show how to set each of these states in a test.
 
@@ -36,9 +33,9 @@ To set the state to unauthenticated and unauthorized, do the following:
 
 [!code-csharp[UserInfoTest.cs](../../../samples/tests/xunit/UserInfoTest.cs?start=11&end=19&highlight=2)]
 
-The highlighted line shows how `AddTestAuthorization()` is used to add the test-specific implementation of Blazor's authentication and authorization types to the `Services` collection, which makes the authentication state available to other services as well as components used throughout the test that require it.
+The highlighted line shows how `AddAuthorization()` is used to add the test-specific implementation of Blazor's authentication and authorization types to the `Services` collection, which makes the authentication state available to other services as well as components used throughout the test that require it.
 
-After calling `AddTestAuthorization()`, the default authentication state is unauthenticated and unauthorized.
+After calling `AddAuthorization()`, the default authentication state is unauthenticated and unauthorized.
 
 ### Authenticating and authorizing state
 
@@ -46,7 +43,7 @@ To set the state to authenticating and authorizing, do the following:
 
 [!code-csharp[UserInfoTest.cs](../../../samples/tests/xunit/UserInfoTest.cs?start=25&end=34&highlight=3)]
 
-After calling `AddTestAuthorization()`, the returned <xref:Bunit.TestDoubles.TestAuthorizationContext> is used to set the authenticating and authorizing state through the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorizing> method.
+After calling `AddAuthorization()`, the returned <xref:Bunit.TestDoubles.TestAuthorizationContext> is used to set the authenticating and authorizing state through the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorizing> method.
 
 ### Authenticated and unauthorized state
 
@@ -54,7 +51,7 @@ To set the state to authenticated and unauthorized, do the following:
 
 [!code-csharp[UserInfoTest.cs](../../../samples/tests/xunit/UserInfoTest.cs?start=40&end=49&highlight=3)]
 
-After calling `AddTestAuthorization()`, the returned <xref:Bunit.TestDoubles.TestAuthorizationContext> is used to set the authenticated and unauthorized state through the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(System.String,Bunit.TestDoubles.AuthorizationState)> method.
+After calling `AddAuthorization()`, the returned <xref:Bunit.TestDoubles.TestAuthorizationContext> is used to set the authenticated and unauthorized state through the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(System.String,Bunit.TestDoubles.AuthorizationState)> method.
 
 ### Authenticated and authorized state
 
@@ -62,7 +59,7 @@ To set the state to authenticated and authorized, do the following:
 
 [!code-csharp[UserInfoTest.cs](../../../samples/tests/xunit/UserInfoTest.cs?start=55&end=64&highlight=3)]
 
-After calling `AddTestAuthorization()`, the returned <xref:Bunit.TestDoubles.TestAuthorizationContext> is used to set the authenticated and authorized state through the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(System.String,Bunit.TestDoubles.AuthorizationState)> method. 
+After calling `AddAuthorization()`, the returned <xref:Bunit.TestDoubles.TestAuthorizationContext> is used to set the authenticated and authorized state through the <xref:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(System.String,Bunit.TestDoubles.AuthorizationState)> method. 
 
 Note that the second parameter, `AuthorizationState`, is optional, and defaults to `AuthorizationState.Authorized` if not specified.
 
