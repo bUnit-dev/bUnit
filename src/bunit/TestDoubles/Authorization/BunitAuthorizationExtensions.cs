@@ -11,14 +11,14 @@ public abstract partial class TestContextBase
 	/// an authenticated user, as well as adding the <see cref="CascadingAuthenticationState"/> component to the
 	/// test contexts render tree.
 	/// </summary>
-	public TestAuthorizationContext AddAuthorization()
+	public BunitAuthorizationContext AddAuthorization()
 	{
 		RenderTree.TryAdd<CascadingAuthenticationState>();
 		Services.AddSingleton<BunitSignOutSessionStateManager>();
 #pragma warning disable CS0618
 		Services.AddSingleton<SignOutSessionStateManager>(s => s.GetRequiredService<BunitSignOutSessionStateManager>());
 #pragma warning restore CS0618
-		var authCtx = new TestAuthorizationContext();
+		var authCtx = new BunitAuthorizationContext();
 		authCtx.SetNotAuthorized();
 		authCtx.RegisterAuthorizationServices(Services);
 		return authCtx;
