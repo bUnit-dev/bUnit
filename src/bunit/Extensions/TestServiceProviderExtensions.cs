@@ -17,7 +17,7 @@ public static class TestServiceProviderExtensions
 	/// <summary>
 	/// Registers the default services required by the web <see cref="TestContext"/>.
 	/// </summary>
-	public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services, TestContextBase testContext, BunitJSInterop jsInterop)
+	public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services, TestContext testContext, BunitJSInterop jsInterop)
 	{
 		ArgumentNullException.ThrowIfNull(services);
 		ArgumentNullException.ThrowIfNull(testContext);
