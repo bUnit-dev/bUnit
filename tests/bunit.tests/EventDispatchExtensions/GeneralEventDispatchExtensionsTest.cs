@@ -54,7 +54,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		elmMock.Setup(x => x.GetAttribute(It.IsAny<string>())).Returns("1");
 		elmMock.SetupGet(x => x.Owner).Returns(docMock.Object);
 		docMock.SetupGet(x => x.Context).Returns(ctxMock.Object);
-		ctxMock.Setup(x => x.GetService<ITestRenderer>()).Returns(() => null!);
+		ctxMock.Setup(x => x.GetService<BunitRenderer>()).Returns(() => null!);
 
 		Should.Throw<InvalidOperationException>(() => elmMock.Object.TriggerEventAsync("click", EventArgs.Empty));
 	}

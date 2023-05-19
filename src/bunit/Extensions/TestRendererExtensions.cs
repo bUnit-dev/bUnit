@@ -3,7 +3,7 @@ using Bunit.Rendering;
 namespace Bunit.Extensions;
 
 /// <summary>
-/// Helper methods that make it easier to work directly with a <see cref="ITestRenderer"/>
+/// Helper methods that make it easier to work directly with a <see cref="BunitRenderer"/>
 /// in bUnit web.
 /// </summary>
 public static class TestRendererExtensions
@@ -15,7 +15,7 @@ public static class TestRendererExtensions
 	/// <param name="renderer">The renderer to use.</param>
 	/// <param name="parameters">The parameters to pass to the component.</param>
 	/// <returns>A <see cref="IRenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
-	public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this ITestRenderer renderer, params ComponentParameter[] parameters)
+	public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this BunitRenderer renderer, params ComponentParameter[] parameters)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(renderer);
@@ -34,7 +34,7 @@ public static class TestRendererExtensions
 	/// <param name="renderer">The renderer to use.</param>
 	/// <param name="parameterBuilder">The a builder to create parameters to pass to the component.</param>
 	/// <returns>A <see cref="IRenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
-	public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this ITestRenderer renderer, Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
+	public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this BunitRenderer renderer, Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(renderer);

@@ -8,12 +8,12 @@ namespace Bunit;
 public abstract class TestContextBase : IDisposable
 {
 	private bool disposed;
-	private ITestRenderer? testRenderer;
+	private BunitRenderer? testRenderer;
 
 	/// <summary>
 	/// Gets the renderer used by the test context.
 	/// </summary>
-	public ITestRenderer Renderer => testRenderer ??= Services.GetRequiredService<ITestRenderer>();
+	public BunitRenderer Renderer => testRenderer ??= Services.GetRequiredService<BunitRenderer>();
 
 	/// <summary>
 	/// Gets the service collection and service provider that is used when a

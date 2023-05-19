@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 namespace Bunit.Rendering;
 
 /// <summary>
-/// Represents a bUnit <see cref="ITestRenderer"/> used to render Blazor components and fragments during bUnit tests.
+/// Represents a bUnit <see cref="Renderer"/> used to render Blazor components and fragments during bUnit tests.
 /// </summary>
-internal sealed class BunitRenderer : Renderer, ITestRenderer
+public sealed class BunitRenderer : Renderer
 {
 	private readonly object renderTreeUpdateLock = new();
 	private readonly SynchronizationContext? usersSyncContext = SynchronizationContext.Current;
@@ -31,7 +31,7 @@ internal sealed class BunitRenderer : Renderer, ITestRenderer
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
+	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, IServiceProvider services, ILoggerFactory loggerFactory)
 		: base(services, loggerFactory)
 	{
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
@@ -42,7 +42,7 @@ internal sealed class BunitRenderer : Renderer, ITestRenderer
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, IServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
 		: base(services, loggerFactory, componentActivator)
 	{
 		logger = loggerFactory.CreateLogger<BunitRenderer>();

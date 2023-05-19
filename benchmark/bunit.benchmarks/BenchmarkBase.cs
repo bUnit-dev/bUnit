@@ -11,7 +11,7 @@ public abstract class BenchmarkBase
 	private static readonly ComponentParameterCollection EmptyParameter = new();
 	private readonly ServiceCollection services = new();
 
-	protected ITestRenderer Renderer { get; private set; } = default!;
+	protected BunitRenderer Renderer { get; private set; } = default!;
 
 	[GlobalSetup]
 	public void Setup()
@@ -19,7 +19,7 @@ public abstract class BenchmarkBase
 		RegisterServices(services);
 
 		var serviceProvider = services.BuildServiceProvider();
-		Renderer = serviceProvider.GetRequiredService<ITestRenderer>();
+		Renderer = serviceProvider.GetRequiredService<BunitRenderer>();
 	}
 
 	[GlobalCleanup]
