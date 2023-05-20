@@ -1,9 +1,10 @@
-using AngleSharp.Diffing.Core;
+using System.Diagnostics;
 using AngleSharp.Dom;
 
 namespace Bunit.Rendering;
 
 /// <inheritdoc />
+[DebuggerDisplay("Rendered:{RenderCount}")]
 internal class RenderedFragment : IRenderedFragment
 {
 	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by TestServiceProvider, disposed by it.")]
@@ -88,7 +89,7 @@ internal class RenderedFragment : IRenderedFragment
 
 		// The lock prevents a race condition between the renderers thread
 		// and the test frameworks thread, where one might be reading the Markup
-		// while the other is updating it due to async code in a rendered component.
+		// while the other is updating it due tof async code in a rendered component.
 		lock (markupAccessLock)
 		{
 			if (rendered)
