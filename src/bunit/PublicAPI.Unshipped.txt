@@ -1,0 +1,890 @@
+#nullable enable
+abstract Bunit.Extensions.WaitForHelpers.WaitForHelper<T>.StopWaitingOnCheckException.get -> bool
+Bunit.Asserting.ActualExpectedAssertException
+Bunit.Asserting.ActualExpectedAssertException.ActualExpectedAssertException(string! actual, string! expected, string! actualText, string! expectedText, string! message) -> void
+Bunit.Asserting.AssertionMethodAttribute
+Bunit.Asserting.AssertionMethodAttribute.AssertionMethodAttribute() -> void
+Bunit.BunitJSInterop
+Bunit.BunitJSInterop.AddInvocationHandler<TResult>(Bunit.JSRuntimeInvocationHandlerBase<TResult>! handler) -> void
+Bunit.BunitJSInterop.BunitJSInterop() -> void
+Bunit.BunitJSInterop.Invocations.get -> Bunit.JSRuntimeInvocationDictionary!
+Bunit.BunitJSInterop.JSRuntime.get -> Microsoft.JSInterop.IJSRuntime!
+Bunit.BunitJSInteropSetupExtensions
+Bunit.BunitJSModuleInterop
+Bunit.BunitJSModuleInterop.BunitJSModuleInterop(Bunit.BunitJSInterop! parent) -> void
+Bunit.ClipboardEventDispatchExtensions
+Bunit.CompareToExtensions
+Bunit.ComponentFactoryCollection
+Bunit.ComponentFactoryCollection.Add(Bunit.IComponentFactory! item) -> void
+Bunit.ComponentFactoryCollection.Clear() -> void
+Bunit.ComponentFactoryCollection.ComponentFactoryCollection() -> void
+Bunit.ComponentFactoryCollection.Contains(Bunit.IComponentFactory! item) -> bool
+Bunit.ComponentFactoryCollection.CopyTo(Bunit.IComponentFactory![]! array, int arrayIndex) -> void
+Bunit.ComponentFactoryCollection.Count.get -> int
+Bunit.ComponentFactoryCollection.GetEnumerator() -> System.Collections.Generic.IEnumerator<Bunit.IComponentFactory!>!
+Bunit.ComponentFactoryCollection.IndexOf(Bunit.IComponentFactory! item) -> int
+Bunit.ComponentFactoryCollection.Insert(int index, Bunit.IComponentFactory! item) -> void
+Bunit.ComponentFactoryCollection.IsReadOnly.get -> bool
+Bunit.ComponentFactoryCollection.Remove(Bunit.IComponentFactory! item) -> bool
+Bunit.ComponentFactoryCollection.RemoveAt(int index) -> void
+Bunit.ComponentFactoryCollection.this[int index].get -> Bunit.IComponentFactory!
+Bunit.ComponentFactoryCollection.this[int index].set -> void
+Bunit.ComponentFactoryCollectionExtensions
+Bunit.ComponentParameter
+Bunit.ComponentParameter.ComponentParameter() -> void
+Bunit.ComponentParameter.Equals(Bunit.ComponentParameter other) -> bool
+Bunit.ComponentParameter.IsCascadingValue.get -> bool
+Bunit.ComponentParameter.Name.get -> string?
+Bunit.ComponentParameter.Value.get -> object?
+Bunit.ComponentParameterCollection
+Bunit.ComponentParameterCollection.Add(Bunit.ComponentParameter item) -> void
+Bunit.ComponentParameterCollection.Add(System.Collections.Generic.IEnumerable<Bunit.ComponentParameter>! parameters) -> void
+Bunit.ComponentParameterCollection.Clear() -> void
+Bunit.ComponentParameterCollection.ComponentParameterCollection() -> void
+Bunit.ComponentParameterCollection.Contains(Bunit.ComponentParameter item) -> bool
+Bunit.ComponentParameterCollection.CopyTo(Bunit.ComponentParameter[]! array, int arrayIndex) -> void
+Bunit.ComponentParameterCollection.Count.get -> int
+Bunit.ComponentParameterCollection.GetEnumerator() -> System.Collections.Generic.IEnumerator<Bunit.ComponentParameter>!
+Bunit.ComponentParameterCollection.IsReadOnly.get -> bool
+Bunit.ComponentParameterCollection.Remove(Bunit.ComponentParameter item) -> bool
+Bunit.ComponentParameterCollection.ToRenderFragment<TComponent>() -> Microsoft.AspNetCore.Components.RenderFragment!
+Bunit.ComponentParameterCollectionBuilder<TComponent>
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback>!>! parameterSelector, System.Action! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback>!>! parameterSelector, System.Action<object!>! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback>!>! parameterSelector, System.Func<System.Threading.Tasks.Task!>! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback?>!>! parameterSelector, System.Action! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback?>!>! parameterSelector, System.Action<object!>! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback?>!>! parameterSelector, System.Func<System.Threading.Tasks.Task!>! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.RenderFragment?>!>! parameterSelector, string! markup) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add<TChildComponent, TValue>(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.RenderFragment<TValue>?>!>! parameterSelector, System.Func<TValue, System.Action<Bunit.ComponentParameterCollectionBuilder<TChildComponent>!>!>! templateFactory) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add<TChildComponent>(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.RenderFragment?>!>! parameterSelector, System.Action<Bunit.ComponentParameterCollectionBuilder<TChildComponent>!>? childParameterBuilder = null) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add<TValue>(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback<TValue>>!>! parameterSelector, System.Action! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add<TValue>(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback<TValue>>!>! parameterSelector, System.Action<TValue>! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add<TValue>(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback<TValue>>!>! parameterSelector, System.Func<System.Threading.Tasks.Task!>! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add<TValue>(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback<TValue>?>!>! parameterSelector, System.Action! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add<TValue>(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback<TValue>?>!>! parameterSelector, System.Action<TValue>! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add<TValue>(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.EventCallback<TValue>?>!>! parameterSelector, System.Func<System.Threading.Tasks.Task!>! callback) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add<TValue>(System.Linq.Expressions.Expression<System.Func<TComponent, Microsoft.AspNetCore.Components.RenderFragment<TValue>?>!>! parameterSelector, System.Func<TValue, string!>! markupFactory) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Add<TValue>(System.Linq.Expressions.Expression<System.Func<TComponent, TValue>!>! parameterSelector, TValue? value) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.AddCascadingValue<TValue>(string! name, TValue cascadingValue) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.AddCascadingValue<TValue>(TValue cascadingValue) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.AddChildContent(Microsoft.AspNetCore.Components.RenderFragment! childContent) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.AddChildContent(string! markup) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.AddChildContent<TChildComponent>(System.Action<Bunit.ComponentParameterCollectionBuilder<TChildComponent>!>? childParameterBuilder = null) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.AddUnmatched(string! name, object? value = null) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Bind<TValue>(System.Linq.Expressions.Expression<System.Func<TComponent, TValue>!>! parameterSelector, TValue initialValue, System.Action<TValue>! changedAction, System.Linq.Expressions.Expression<System.Func<TValue>!>? valueExpression = null) -> Bunit.ComponentParameterCollectionBuilder<TComponent>!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.Build() -> Bunit.ComponentParameterCollection!
+Bunit.ComponentParameterCollectionBuilder<TComponent>.ComponentParameterCollectionBuilder() -> void
+Bunit.ComponentParameterCollectionBuilder<TComponent>.ComponentParameterCollectionBuilder(System.Action<Bunit.ComponentParameterCollectionBuilder<TComponent>!>? parameterAdder) -> void
+Bunit.ComponentParameterCollectionBuilder<TComponent>.TryAdd<TValue>(string! name, TValue? value) -> bool
+Bunit.ComponentParameterFactory
+Bunit.DetailsElementEventDispatchExtensions
+Bunit.Diffing.BlazorDiffingHelpers
+Bunit.Diffing.DiffMarkupFormatter
+Bunit.Diffing.DiffMarkupFormatter.ConvertToString(AngleSharp.Dom.IAttr! attr) -> string!
+Bunit.Diffing.DiffMarkupFormatter.DiffMarkupFormatter() -> void
+Bunit.Diffing.HtmlComparer
+Bunit.Diffing.HtmlComparer.Compare(AngleSharp.Dom.INode! controlHtml, AngleSharp.Dom.INode! testHtml) -> System.Collections.Generic.IEnumerable<AngleSharp.Diffing.Core.IDiff!>!
+Bunit.Diffing.HtmlComparer.Compare(System.Collections.Generic.IEnumerable<AngleSharp.Dom.INode!>! controlHtml, System.Collections.Generic.IEnumerable<AngleSharp.Dom.INode!>! testHtml) -> System.Collections.Generic.IEnumerable<AngleSharp.Diffing.Core.IDiff!>!
+Bunit.Diffing.HtmlComparer.HtmlComparer() -> void
+Bunit.DragEventDispatchExtensions
+Bunit.ElementNotFoundException
+Bunit.ElementNotFoundException.CssSelector.get -> string!
+Bunit.ElementNotFoundException.ElementNotFoundException(string! cssSelector) -> void
+Bunit.ElementNotFoundException.ElementNotFoundException(string! message, string! cssSelector) -> void
+Bunit.ElementRemovedFromDomException
+Bunit.ElementRemovedFromDomException.ElementRemovedFromDomException(string! cssSelector) -> void
+Bunit.Extensions.BlazorExtensions
+Bunit.Extensions.TestContextRenderExtensions
+Bunit.Extensions.TestRendererExtensions
+Bunit.Extensions.TestServiceProviderExtensions
+Bunit.Extensions.WaitForHelpers.WaitForAssertionHelper
+Bunit.Extensions.WaitForHelpers.WaitForAssertionHelper.WaitForAssertionHelper(Bunit.IRenderedFragment! renderedFragment, System.Action! assertion, System.TimeSpan? timeout = null) -> void
+Bunit.Extensions.WaitForHelpers.WaitForFailedException
+Bunit.Extensions.WaitForHelpers.WaitForFailedException.WaitForFailedException(string? errorMessage, System.Exception? innerException = null) -> void
+Bunit.Extensions.WaitForHelpers.WaitForHelper<T>
+Bunit.Extensions.WaitForHelpers.WaitForHelper<T>.Dispose() -> void
+Bunit.Extensions.WaitForHelpers.WaitForHelper<T>.WaitForHelper(Bunit.IRenderedFragment! renderedFragment, System.Func<(bool CheckPassed, T Content)>! completeChecker, System.TimeSpan? timeout = null) -> void
+Bunit.Extensions.WaitForHelpers.WaitForHelper<T>.WaitTask.get -> System.Threading.Tasks.Task<T>!
+Bunit.Extensions.WaitForHelpers.WaitForStateHelper
+Bunit.Extensions.WaitForHelpers.WaitForStateHelper.WaitForStateHelper(Bunit.IRenderedFragment! renderedFragment, System.Func<bool>! statePredicate, System.TimeSpan? timeout = null) -> void
+Bunit.FocusAsyncAssertJSInteropExtensions
+Bunit.FocusEventDispatchExtensions
+Bunit.FocusOnNavigateAssertJSInteropExtensions
+Bunit.GeneralEventDispatchExtensions
+Bunit.HtmlEqualException
+Bunit.HtmlEqualException.HtmlEqualException(System.Collections.Generic.IEnumerable<AngleSharp.Diffing.Core.IDiff!>! diffs, AngleSharp.IMarkupFormattable! expected, AngleSharp.IMarkupFormattable! actual, string? userMessage) -> void
+Bunit.IComponentFactory
+Bunit.IComponentFactory.CanCreate(System.Type! componentType) -> bool
+Bunit.IComponentFactory.Create(System.Type! componentType) -> Microsoft.AspNetCore.Components.IComponent!
+Bunit.InputEventDispatchExtensions
+Bunit.InputFileContent
+Bunit.InputFileExtensions
+Bunit.InvocationMatcher
+Bunit.IRefreshableElementCollection<T>
+Bunit.IRefreshableElementCollection<T>.EnableAutoRefresh.get -> bool
+Bunit.IRefreshableElementCollection<T>.EnableAutoRefresh.set -> void
+Bunit.IRefreshableElementCollection<T>.Refresh() -> void
+Bunit.IRenderedComponent<TComponent>
+Bunit.IRenderedComponent<TComponent>.Instance.get -> TComponent
+Bunit.IRenderedFragment
+Bunit.IRenderedFragment.ComponentId.get -> int
+Bunit.IRenderedFragment.IsDisposed.get -> bool
+Bunit.IRenderedFragment.Markup.get -> string!
+Bunit.IRenderedFragment.Nodes.get -> AngleSharp.Dom.INodeList!
+Bunit.IRenderedFragment.OnAfterRender -> System.EventHandler!
+Bunit.IRenderedFragment.OnMarkupUpdated -> System.EventHandler!
+Bunit.IRenderedFragment.OnRender(Bunit.Rendering.RenderEvent! renderEvent) -> void
+Bunit.IRenderedFragment.RenderCount.get -> int
+Bunit.IRenderedFragment.Services.get -> System.IServiceProvider!
+Bunit.JSInvokeCountExpectedException
+Bunit.JSInvokeCountExpectedException.ActualInvocationCount.get -> int
+Bunit.JSInvokeCountExpectedException.ExpectedInvocationCount.get -> int
+Bunit.JSInvokeCountExpectedException.Identifier.get -> string!
+Bunit.JSInvokeCountExpectedException.JSInvokeCountExpectedException(string! identifier, int expectedCount, int actualCount, string! assertMethod, string? userMessage = null) -> void
+Bunit.JSRuntimeAssertExtensions
+Bunit.JSRuntimeInvocation
+Bunit.JSRuntimeInvocation.Arguments.get -> System.Collections.Generic.IReadOnlyList<object?>!
+Bunit.JSRuntimeInvocation.CancellationToken.get -> System.Threading.CancellationToken?
+Bunit.JSRuntimeInvocation.Equals(Bunit.JSRuntimeInvocation other) -> bool
+Bunit.JSRuntimeInvocation.Identifier.get -> string!
+Bunit.JSRuntimeInvocation.InvocationMethodName.get -> string!
+Bunit.JSRuntimeInvocation.IsVoidResultInvocation.get -> bool
+Bunit.JSRuntimeInvocation.JSRuntimeInvocation() -> void
+Bunit.JSRuntimeInvocation.JSRuntimeInvocation(string! identifier, object?[]! args, System.Type! resultType, string! invocationMethodName) -> void
+Bunit.JSRuntimeInvocation.JSRuntimeInvocation(string! identifier, System.Threading.CancellationToken? cancellationToken, object?[]? args, System.Type! resultType, string! invocationMethodName) -> void
+Bunit.JSRuntimeInvocation.JSRuntimeInvocation(string! identifier, System.Type! resultType, string! invocationMethodName) -> void
+Bunit.JSRuntimeInvocation.ResultType.get -> System.Type!
+Bunit.JSRuntimeInvocationDictionary
+Bunit.JSRuntimeInvocationDictionary.Count.get -> int
+Bunit.JSRuntimeInvocationDictionary.GetEnumerator() -> System.Collections.Generic.IEnumerator<Bunit.JSRuntimeInvocation>!
+Bunit.JSRuntimeInvocationDictionary.Identifiers.get -> System.Collections.Generic.IReadOnlyCollection<string!>!
+Bunit.JSRuntimeInvocationDictionary.JSRuntimeInvocationDictionary() -> void
+Bunit.JSRuntimeInvocationDictionary.this[string! identifier].get -> System.Collections.Generic.IReadOnlyList<Bunit.JSRuntimeInvocation>!
+Bunit.JSRuntimeInvocationHandler
+Bunit.JSRuntimeInvocationHandler.JSRuntimeInvocationHandler(Bunit.InvocationMatcher! matcher, bool isCatchAllHandler) -> void
+Bunit.JSRuntimeInvocationHandler.SetCanceled() -> Bunit.JSRuntimeInvocationHandler!
+Bunit.JSRuntimeInvocationHandler.SetException<TException>(TException! exception) -> Bunit.JSRuntimeInvocationHandler!
+Bunit.JSRuntimeInvocationHandler.SetVoidResult() -> Bunit.JSRuntimeInvocationHandler!
+Bunit.JSRuntimeInvocationHandler<TResult>
+Bunit.JSRuntimeInvocationHandler<TResult>.JSRuntimeInvocationHandler(Bunit.InvocationMatcher! matcher, bool isCatchAllHandler) -> void
+Bunit.JSRuntimeInvocationHandler<TResult>.SetCanceled() -> Bunit.JSRuntimeInvocationHandler<TResult>!
+Bunit.JSRuntimeInvocationHandler<TResult>.SetException<TException>(TException! exception) -> Bunit.JSRuntimeInvocationHandler<TResult>!
+Bunit.JSRuntimeInvocationHandler<TResult>.SetResult(TResult result) -> Bunit.JSRuntimeInvocationHandler<TResult>!
+Bunit.JSRuntimeInvocationHandlerBase<TResult>
+Bunit.JSRuntimeInvocationHandlerBase<TResult>.Invocations.get -> Bunit.JSRuntimeInvocationDictionary!
+Bunit.JSRuntimeInvocationHandlerBase<TResult>.IsCatchAllHandler.get -> bool
+Bunit.JSRuntimeInvocationHandlerBase<TResult>.JSRuntimeInvocationHandlerBase(Bunit.InvocationMatcher! matcher, bool isCatchAllHandler) -> void
+Bunit.JSRuntimeInvocationHandlerBase<TResult>.SetCanceledBase() -> void
+Bunit.JSRuntimeInvocationHandlerBase<TResult>.SetExceptionBase<TException>(TException! exception) -> void
+Bunit.JSRuntimeInvocationHandlerBase<TResult>.SetResultBase(TResult result) -> void
+Bunit.JSRuntimeMode
+Bunit.JSRuntimeMode.Loose = 0 -> Bunit.JSRuntimeMode
+Bunit.JSRuntimeMode.Strict = 1 -> Bunit.JSRuntimeMode
+Bunit.JSRuntimeUnhandledInvocationException
+Bunit.JSRuntimeUnhandledInvocationException.Invocation.get -> Bunit.JSRuntimeInvocation
+Bunit.JSRuntimeUnhandledInvocationException.JSRuntimeUnhandledInvocationException(Bunit.JSRuntimeInvocation invocation) -> void
+Bunit.Key
+Bunit.Key.AltKey.get -> bool
+Bunit.Key.Code.get -> string!
+Bunit.Key.Combine(Bunit.Key? key) -> Bunit.Key!
+Bunit.Key.CommandKey.get -> bool
+Bunit.Key.ControlKey.get -> bool
+Bunit.Key.Equals(Bunit.Key? other) -> bool
+Bunit.Key.ShiftKey.get -> bool
+Bunit.Key.Value.get -> string!
+Bunit.Key.WithAltKey(bool value) -> Bunit.Key!
+Bunit.Key.WithCommandKey(bool value) -> Bunit.Key!
+Bunit.Key.WithControlKey(bool value) -> Bunit.Key!
+Bunit.Key.WithShiftKey(bool value) -> Bunit.Key!
+Bunit.KeyboardEventDispatchExtensions
+Bunit.MarkupMatchesAssertExtensions
+Bunit.MediaEventDispatchExtensions
+Bunit.MissingEventHandlerException
+Bunit.MissingEventHandlerException.MissingEventHandlerException(AngleSharp.Dom.IElement! element, string! missingEventName) -> void
+Bunit.MouseEventDispatchExtensions
+Bunit.NodePrintExtensions
+Bunit.PointerEventDispatchExtensions
+Bunit.ProgressEventDispatchExtensions
+Bunit.RazorTesting.ParameterException
+Bunit.RazorTesting.ParameterException.ParameterException(string! messsage, string! parameterName) -> void
+Bunit.RenderedComponentRenderExtensions
+Bunit.RenderedFragmentExtensions
+Bunit.RenderedFragmentInvokeAsyncExtensions
+Bunit.RenderedFragmentWaitForHelperExtensions
+Bunit.Rendering.BunitHtmlParser
+Bunit.Rendering.BunitHtmlParser.BunitHtmlParser() -> void
+Bunit.Rendering.BunitHtmlParser.BunitHtmlParser(Bunit.Rendering.BunitRenderer! testRenderer, Bunit.Diffing.HtmlComparer! htmlComparer, Bunit.TestContext! testContext) -> void
+Bunit.Rendering.BunitHtmlParser.Dispose() -> void
+Bunit.Rendering.BunitHtmlParser.Parse(string! markup) -> AngleSharp.Dom.INodeList!
+Bunit.Rendering.BunitRenderer
+Bunit.Rendering.BunitRenderer.BunitRenderer(Bunit.Rendering.IRenderedComponentActivator! renderedComponentActivator, Bunit.TestServiceProvider! services, Microsoft.Extensions.Logging.ILoggerFactory! loggerFactory) -> void
+Bunit.Rendering.BunitRenderer.BunitRenderer(Bunit.Rendering.IRenderedComponentActivator! renderedComponentActivator, Bunit.TestServiceProvider! services, Microsoft.Extensions.Logging.ILoggerFactory! loggerFactory, Microsoft.AspNetCore.Components.IComponentActivator! componentActivator) -> void
+Bunit.Rendering.BunitRenderer.DispatchEventAsync(ulong eventHandlerId, Microsoft.AspNetCore.Components.RenderTree.EventFieldInfo? fieldInfo, System.EventArgs! eventArgs, bool ignoreUnknownEventHandlers) -> System.Threading.Tasks.Task!
+Bunit.Rendering.BunitRenderer.DisposeComponents() -> void
+Bunit.Rendering.BunitRenderer.FindComponent<TComponent>(Bunit.IRenderedFragment! parentComponent) -> Bunit.IRenderedComponent<TComponent>!
+Bunit.Rendering.BunitRenderer.FindComponents<TComponent>(Bunit.IRenderedFragment! parentComponent) -> System.Collections.Generic.IReadOnlyList<Bunit.IRenderedComponent<TComponent>!>!
+Bunit.Rendering.BunitRenderer.RenderComponent<TComponent>(Bunit.ComponentParameterCollection! parameters) -> Bunit.IRenderedComponent<TComponent>!
+Bunit.Rendering.BunitRenderer.RenderFragment(Microsoft.AspNetCore.Components.RenderFragment! renderFragment) -> Bunit.IRenderedFragment!
+Bunit.Rendering.BunitRenderer.UnhandledException.get -> System.Threading.Tasks.Task<System.Exception!>!
+Bunit.Rendering.ComponentDisposedException
+Bunit.Rendering.ComponentDisposedException.ComponentDisposedException(int componentId) -> void
+Bunit.Rendering.ComponentNotFoundException
+Bunit.Rendering.ComponentNotFoundException.ComponentNotFoundException(System.Type! componentType) -> void
+Bunit.Rendering.IRenderedComponentActivator
+Bunit.Rendering.IRenderedComponentActivator.CreateRenderedComponent<TComponent>(int componentId) -> Bunit.IRenderedComponent<TComponent>!
+Bunit.Rendering.IRenderedComponentActivator.CreateRenderedComponent<TComponent>(int componentId, TComponent component, Bunit.Rendering.RenderTreeFrameDictionary! componentFrames) -> Bunit.IRenderedComponent<TComponent>!
+Bunit.Rendering.IRenderedComponentActivator.CreateRenderedFragment(int componentId) -> Bunit.IRenderedFragment!
+Bunit.Rendering.RenderedComponentActivator
+Bunit.Rendering.RenderedComponentActivator.CreateRenderedComponent<TComponent>(int componentId) -> Bunit.IRenderedComponent<TComponent>!
+Bunit.Rendering.RenderedComponentActivator.CreateRenderedComponent<TComponent>(int componentId, TComponent component, Bunit.Rendering.RenderTreeFrameDictionary! componentFrames) -> Bunit.IRenderedComponent<TComponent>!
+Bunit.Rendering.RenderedComponentActivator.CreateRenderedFragment(int componentId) -> Bunit.IRenderedFragment!
+Bunit.Rendering.RenderedComponentActivator.RenderedComponentActivator(System.IServiceProvider! services) -> void
+Bunit.Rendering.RenderEvent
+Bunit.Rendering.RenderEvent.Frames.get -> Bunit.Rendering.RenderTreeFrameDictionary!
+Bunit.Rendering.RenderEvent.GetRenderStatus(Bunit.IRenderedFragment! renderedComponent) -> (bool Rendered, bool Changed, bool Disposed)
+Bunit.Rendering.RenderTreeFrameDictionary
+Bunit.Rendering.RenderTreeFrameDictionary.Contains(int componentId) -> bool
+Bunit.Rendering.RenderTreeFrameDictionary.ContainsKey(int key) -> bool
+Bunit.Rendering.RenderTreeFrameDictionary.Count.get -> int
+Bunit.Rendering.RenderTreeFrameDictionary.GetEnumerator() -> System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<int, Microsoft.AspNetCore.Components.RenderTree.ArrayRange<Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame>>>!
+Bunit.Rendering.RenderTreeFrameDictionary.Keys.get -> System.Collections.Generic.IEnumerable<int>!
+Bunit.Rendering.RenderTreeFrameDictionary.this[int componentId].get -> Microsoft.AspNetCore.Components.RenderTree.ArrayRange<Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame>
+Bunit.Rendering.RenderTreeFrameDictionary.TryGetValue(int key, out Microsoft.AspNetCore.Components.RenderTree.ArrayRange<Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame> value) -> bool
+Bunit.Rendering.RenderTreeFrameDictionary.Values.get -> System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Components.RenderTree.ArrayRange<Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame>>!
+Bunit.Rendering.RootRenderTree
+Bunit.Rendering.RootRenderTree.Add<TComponent>(System.Action<Bunit.ComponentParameterCollectionBuilder<TComponent>!>? parameterBuilder = null) -> void
+Bunit.Rendering.RootRenderTree.Count.get -> int
+Bunit.Rendering.RootRenderTree.GetCountOf<TComponent>() -> int
+Bunit.Rendering.RootRenderTree.GetEnumerator() -> System.Collections.Generic.IEnumerator<Bunit.Rendering.RootRenderTreeRegistration!>!
+Bunit.Rendering.RootRenderTree.RootRenderTree() -> void
+Bunit.Rendering.RootRenderTree.TryAdd<TComponent>(System.Action<Bunit.ComponentParameterCollectionBuilder<TComponent>!>? parameterBuilder = null) -> bool
+Bunit.Rendering.RootRenderTree.Wrap(Microsoft.AspNetCore.Components.RenderFragment! target) -> Microsoft.AspNetCore.Components.RenderFragment!
+Bunit.Rendering.RootRenderTreeRegistration
+Bunit.Rendering.RootRenderTreeRegistration.ComponentType.get -> System.Type!
+Bunit.Rendering.RootRenderTreeRegistration.RenderFragmentBuilder.get -> Microsoft.AspNetCore.Components.RenderFragment<Microsoft.AspNetCore.Components.RenderFragment!>!
+Bunit.Rendering.UnknownEventHandlerIdException
+Bunit.Rendering.UnknownEventHandlerIdException.UnknownEventHandlerIdException(ulong eventHandlerId, Microsoft.AspNetCore.Components.RenderTree.EventFieldInfo! fieldInfo, System.Exception! innerException) -> void
+Bunit.StubComponentFactoryCollectionExtensions
+Bunit.TestContext
+Bunit.TestContext.AddAuthorization() -> Bunit.TestDoubles.BunitAuthorizationContext!
+Bunit.TestContext.AddBunitPersistentComponentState() -> Bunit.TestDoubles.BunitPersistentComponentState!
+Bunit.TestContext.ComponentFactories.get -> Bunit.ComponentFactoryCollection!
+Bunit.TestContext.Dispose() -> void
+Bunit.TestContext.DisposeComponents() -> void
+Bunit.TestContext.JSInterop.get -> Bunit.BunitJSInterop!
+Bunit.TestContext.Renderer.get -> Bunit.Rendering.BunitRenderer!
+Bunit.TestContext.RenderTree.get -> Bunit.Rendering.RootRenderTree!
+Bunit.TestContext.Services.get -> Bunit.TestServiceProvider!
+Bunit.TestContext.TestContext() -> void
+Bunit.TestContextWrapper
+Bunit.TestContextWrapper.JSInterop.get -> Bunit.BunitJSInterop!
+Bunit.TestContextWrapper.Renderer.get -> Bunit.Rendering.BunitRenderer!
+Bunit.TestContextWrapper.RenderTree.get -> Bunit.Rendering.RootRenderTree!
+Bunit.TestContextWrapper.Services.get -> Bunit.TestServiceProvider!
+Bunit.TestContextWrapper.TestContextWrapper() -> void
+Bunit.TestDoubles.AuthorizationState
+Bunit.TestDoubles.AuthorizationState.Authorized = 1 -> Bunit.TestDoubles.AuthorizationState
+Bunit.TestDoubles.AuthorizationState.Authorizing = 2 -> Bunit.TestDoubles.AuthorizationState
+Bunit.TestDoubles.AuthorizationState.Unauthorized = 0 -> Bunit.TestDoubles.AuthorizationState
+Bunit.TestDoubles.BunitAuthenticationStateProvider
+Bunit.TestDoubles.BunitAuthenticationStateProvider.BunitAuthenticationStateProvider() -> void
+Bunit.TestDoubles.BunitAuthenticationStateProvider.BunitAuthenticationStateProvider(string! userName, System.Collections.Generic.IEnumerable<string!>? roles = null, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim!>? claims = null, string? authenticationType = null) -> void
+Bunit.TestDoubles.BunitAuthenticationStateProvider.TriggerAuthenticationStateChanged(string! userName, System.Collections.Generic.IEnumerable<string!>? roles = null, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim!>? claims = null, string? authenticationType = null) -> void
+Bunit.TestDoubles.BunitAuthenticationStateProvider.TriggerAuthorizingStateChanged() -> void
+Bunit.TestDoubles.BunitAuthenticationStateProvider.TriggerUnauthenticationStateChanged() -> void
+Bunit.TestDoubles.BunitAuthorizationContext
+Bunit.TestDoubles.BunitAuthorizationContext.BunitAuthorizationContext() -> void
+Bunit.TestDoubles.BunitAuthorizationContext.Claims.get -> System.Collections.Generic.IEnumerable<System.Security.Claims.Claim!>!
+Bunit.TestDoubles.BunitAuthorizationContext.IsAuthenticated.get -> bool
+Bunit.TestDoubles.BunitAuthorizationContext.Policies.get -> System.Collections.Generic.IEnumerable<string!>!
+Bunit.TestDoubles.BunitAuthorizationContext.PolicySchemeName.get -> string!
+Bunit.TestDoubles.BunitAuthorizationContext.PolicySchemeName.set -> void
+Bunit.TestDoubles.BunitAuthorizationContext.RegisterAuthorizationServices(Microsoft.Extensions.DependencyInjection.IServiceCollection! services) -> void
+Bunit.TestDoubles.BunitAuthorizationContext.Roles.get -> System.Collections.Generic.IEnumerable<string!>!
+Bunit.TestDoubles.BunitAuthorizationContext.SetAuthenticationType(string! authenticationType) -> Bunit.TestDoubles.BunitAuthorizationContext!
+Bunit.TestDoubles.BunitAuthorizationContext.SetAuthorized(string! userName, Bunit.TestDoubles.AuthorizationState state = Bunit.TestDoubles.AuthorizationState.Authorized) -> Bunit.TestDoubles.BunitAuthorizationContext!
+Bunit.TestDoubles.BunitAuthorizationContext.SetAuthorizing() -> Bunit.TestDoubles.BunitAuthorizationContext!
+Bunit.TestDoubles.BunitAuthorizationContext.SetClaims(params System.Security.Claims.Claim![]! claims) -> Bunit.TestDoubles.BunitAuthorizationContext!
+Bunit.TestDoubles.BunitAuthorizationContext.SetNotAuthorized() -> Bunit.TestDoubles.BunitAuthorizationContext!
+Bunit.TestDoubles.BunitAuthorizationContext.SetPolicies(params string![]! policies) -> Bunit.TestDoubles.BunitAuthorizationContext!
+Bunit.TestDoubles.BunitAuthorizationContext.SetRoles(params string![]! roles) -> Bunit.TestDoubles.BunitAuthorizationContext!
+Bunit.TestDoubles.BunitAuthorizationContext.State.get -> Bunit.TestDoubles.AuthorizationState
+Bunit.TestDoubles.BunitAuthorizationContext.UserName.get -> string!
+Bunit.TestDoubles.BunitAuthorizationPolicyProvider
+Bunit.TestDoubles.BunitAuthorizationPolicyProvider.BunitAuthorizationPolicyProvider() -> void
+Bunit.TestDoubles.BunitAuthorizationPolicyProvider.GetDefaultPolicyAsync() -> System.Threading.Tasks.Task<Microsoft.AspNetCore.Authorization.AuthorizationPolicy!>!
+Bunit.TestDoubles.BunitAuthorizationPolicyProvider.GetFallbackPolicyAsync() -> System.Threading.Tasks.Task<Microsoft.AspNetCore.Authorization.AuthorizationPolicy?>!
+Bunit.TestDoubles.BunitAuthorizationPolicyProvider.GetPolicyAsync(string! policyName) -> System.Threading.Tasks.Task<Microsoft.AspNetCore.Authorization.AuthorizationPolicy?>!
+Bunit.TestDoubles.BunitAuthorizationPolicyProvider.SetPolicyScheme(string! policySchemeName) -> void
+Bunit.TestDoubles.BunitAuthorizationService
+Bunit.TestDoubles.BunitAuthorizationService.AuthorizeAsync(System.Security.Claims.ClaimsPrincipal! user, object? resource, string! policyName) -> System.Threading.Tasks.Task<Microsoft.AspNetCore.Authorization.AuthorizationResult!>!
+Bunit.TestDoubles.BunitAuthorizationService.AuthorizeAsync(System.Security.Claims.ClaimsPrincipal! user, object? resource, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Authorization.IAuthorizationRequirement!>! requirements) -> System.Threading.Tasks.Task<Microsoft.AspNetCore.Authorization.AuthorizationResult!>!
+Bunit.TestDoubles.BunitAuthorizationService.BunitAuthorizationService(Bunit.TestDoubles.AuthorizationState state = Bunit.TestDoubles.AuthorizationState.Authorized) -> void
+Bunit.TestDoubles.BunitAuthorizationService.SetAuthorizationState(Bunit.TestDoubles.AuthorizationState state) -> void
+Bunit.TestDoubles.BunitAuthorizationService.SetPolicies(System.Collections.Generic.IEnumerable<string!>! policies) -> void
+Bunit.TestDoubles.BunitAuthorizationService.SetRoles(System.Collections.Generic.IEnumerable<string!>! roles) -> void
+Bunit.TestDoubles.BunitNavigationManager
+Bunit.TestDoubles.BunitNavigationManager.BunitNavigationManager(Bunit.Rendering.BunitRenderer! renderer) -> void
+Bunit.TestDoubles.BunitNavigationManager.History.get -> System.Collections.Generic.IReadOnlyCollection<Bunit.TestDoubles.NavigationHistory!>!
+Bunit.TestDoubles.BunitPersistentComponentState
+Bunit.TestDoubles.BunitPersistentComponentState.Persist<TValue>(string! key, TValue instance) -> void
+Bunit.TestDoubles.BunitPersistentComponentState.TriggerOnPersisting() -> void
+Bunit.TestDoubles.BunitPersistentComponentState.TryTake<TValue>(string! key, out TValue? instance) -> bool
+Bunit.TestDoubles.BunitSignOutSessionStateManager
+Bunit.TestDoubles.BunitSignOutSessionStateManager.BunitSignOutSessionStateManager(Microsoft.JSInterop.IJSRuntime! jsRuntime) -> void
+Bunit.TestDoubles.BunitSignOutSessionStateManager.IsSignedOut.get -> bool
+Bunit.TestDoubles.BunitSignOutSessionStateManager.IsSignedOut.set -> void
+Bunit.TestDoubles.BunitWebAssemblyHostEnvironment
+Bunit.TestDoubles.BunitWebAssemblyHostEnvironment.BaseAddress.get -> string!
+Bunit.TestDoubles.BunitWebAssemblyHostEnvironment.BaseAddress.set -> void
+Bunit.TestDoubles.BunitWebAssemblyHostEnvironment.BunitWebAssemblyHostEnvironment() -> void
+Bunit.TestDoubles.BunitWebAssemblyHostEnvironment.Environment.get -> string!
+Bunit.TestDoubles.BunitWebAssemblyHostEnvironment.Environment.set -> void
+Bunit.TestDoubles.BunitWebAssemblyHostEnvironment.SetEnvironmentToDevelopment() -> void
+Bunit.TestDoubles.BunitWebAssemblyHostEnvironment.SetEnvironmentToProduction() -> void
+Bunit.TestDoubles.BunitWebAssemblyHostEnvironment.SetEnvironmentToStaging() -> void
+Bunit.TestDoubles.CapturedParameterView<TComponent>
+Bunit.TestDoubles.CapturedParameterView<TComponent>.ContainsKey(string! key) -> bool
+Bunit.TestDoubles.CapturedParameterView<TComponent>.Count.get -> int
+Bunit.TestDoubles.CapturedParameterView<TComponent>.Get<TValue>(System.Linq.Expressions.Expression<System.Func<TComponent, TValue>!>! parameterSelector) -> TValue
+Bunit.TestDoubles.CapturedParameterView<TComponent>.GetEnumerator() -> System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string!, object!>>!
+Bunit.TestDoubles.CapturedParameterView<TComponent>.Keys.get -> System.Collections.Generic.IEnumerable<string!>!
+Bunit.TestDoubles.CapturedParameterView<TComponent>.this[string! key].get -> object!
+Bunit.TestDoubles.CapturedParameterView<TComponent>.TryGetValue(string! key, out object! value) -> bool
+Bunit.TestDoubles.CapturedParameterView<TComponent>.Values.get -> System.Collections.Generic.IEnumerable<object!>!
+Bunit.TestDoubles.ComponentDoubleBase<TComponent>
+Bunit.TestDoubles.ComponentDoubleBase<TComponent>.Attach(Microsoft.AspNetCore.Components.RenderHandle renderHandle) -> void
+Bunit.TestDoubles.ComponentDoubleBase<TComponent>.ComponentDoubleBase() -> void
+Bunit.TestDoubles.ComponentDoubleBase<TComponent>.Parameters.get -> Bunit.TestDoubles.CapturedParameterView<TComponent>!
+Bunit.TestDoubles.MissingAuthorizationHandlerException
+Bunit.TestDoubles.MissingAuthorizationHandlerException.MissingAuthorizationHandlerException(string! serviceName) -> void
+Bunit.TestDoubles.MissingAuthorizationHandlerException.ServiceName.get -> string!
+Bunit.TestDoubles.MissingMockHttpClientException
+Bunit.TestDoubles.MissingMockHttpClientException.MissingMockHttpClientException(System.Net.Http.HttpRequestMessage! request) -> void
+Bunit.TestDoubles.MissingMockHttpClientException.Request.get -> System.Net.Http.HttpRequestMessage?
+Bunit.TestDoubles.MissingMockStringLocalizationException
+Bunit.TestDoubles.MissingMockStringLocalizationException.Arguments.get -> System.Collections.Generic.IReadOnlyList<object?>!
+Bunit.TestDoubles.MissingMockStringLocalizationException.MissingMockStringLocalizationException(string! methodName, params object?[]! arguments) -> void
+Bunit.TestDoubles.NavigationHistory
+Bunit.TestDoubles.NavigationHistory.Equals(Bunit.TestDoubles.NavigationHistory? other) -> bool
+Bunit.TestDoubles.NavigationHistory.Exception.get -> System.Exception?
+Bunit.TestDoubles.NavigationHistory.NavigationHistory(string! uri, Microsoft.AspNetCore.Components.NavigationOptions options, Bunit.TestDoubles.NavigationState navigationState, System.Exception? exception = null) -> void
+Bunit.TestDoubles.NavigationHistory.Options.get -> Microsoft.AspNetCore.Components.NavigationOptions
+Bunit.TestDoubles.NavigationHistory.State.get -> Bunit.TestDoubles.NavigationState
+Bunit.TestDoubles.NavigationHistory.StateFromJson<T>(System.Text.Json.JsonSerializerOptions? options = null) -> T?
+Bunit.TestDoubles.NavigationHistory.Uri.get -> string!
+Bunit.TestDoubles.NavigationState
+Bunit.TestDoubles.NavigationState.Faulted = 2 -> Bunit.TestDoubles.NavigationState
+Bunit.TestDoubles.NavigationState.Prevented = 1 -> Bunit.TestDoubles.NavigationState
+Bunit.TestDoubles.NavigationState.Succeeded = 0 -> Bunit.TestDoubles.NavigationState
+Bunit.TestDoubles.ParameterNotFoundException
+Bunit.TestDoubles.ParameterNotFoundException.ParameterNotFoundException(string! parameterName, string! componentName) -> void
+Bunit.TestDoubles.Stub<TComponent>
+Bunit.TestDoubles.Stub<TComponent>.Stub() -> void
+Bunit.TestDoubles.Stub<TComponent>.Stub(object? replacement) -> void
+Bunit.TestDoubles.TestPolicyRequirement
+Bunit.TestDoubles.TestPolicyRequirement.PolicyName.get -> string!
+Bunit.TestDoubles.TestPolicyRequirement.PolicyName.set -> void
+Bunit.TestDoubles.TestPolicyRequirement.TestPolicyRequirement() -> void
+Bunit.TestServiceProvider
+Bunit.TestServiceProvider.Add(Microsoft.Extensions.DependencyInjection.ServiceDescriptor! item) -> void
+Bunit.TestServiceProvider.Clear() -> void
+Bunit.TestServiceProvider.Contains(Microsoft.Extensions.DependencyInjection.ServiceDescriptor! item) -> bool
+Bunit.TestServiceProvider.CopyTo(Microsoft.Extensions.DependencyInjection.ServiceDescriptor![]! array, int arrayIndex) -> void
+Bunit.TestServiceProvider.Count.get -> int
+Bunit.TestServiceProvider.Dispose() -> void
+Bunit.TestServiceProvider.DisposeAsync() -> System.Threading.Tasks.ValueTask
+Bunit.TestServiceProvider.GetEnumerator() -> System.Collections.Generic.IEnumerator<Microsoft.Extensions.DependencyInjection.ServiceDescriptor!>!
+Bunit.TestServiceProvider.GetService(System.Type! serviceType) -> object?
+Bunit.TestServiceProvider.GetService<TService>() -> TService?
+Bunit.TestServiceProvider.IndexOf(Microsoft.Extensions.DependencyInjection.ServiceDescriptor! item) -> int
+Bunit.TestServiceProvider.Insert(int index, Microsoft.Extensions.DependencyInjection.ServiceDescriptor! item) -> void
+Bunit.TestServiceProvider.IsProviderInitialized.get -> bool
+Bunit.TestServiceProvider.IsReadOnly.get -> bool
+Bunit.TestServiceProvider.Options.get -> Microsoft.Extensions.DependencyInjection.ServiceProviderOptions!
+Bunit.TestServiceProvider.Options.set -> void
+Bunit.TestServiceProvider.Remove(Microsoft.Extensions.DependencyInjection.ServiceDescriptor! item) -> bool
+Bunit.TestServiceProvider.RemoveAt(int index) -> void
+Bunit.TestServiceProvider.SetFallbackServiceProvider(System.IServiceProvider! serviceProvider) -> void
+Bunit.TestServiceProvider.TestServiceProvider(Microsoft.Extensions.DependencyInjection.IServiceCollection? initialServiceCollection = null) -> void
+Bunit.TestServiceProvider.this[int index].get -> Microsoft.Extensions.DependencyInjection.ServiceDescriptor!
+Bunit.TestServiceProvider.this[int index].set -> void
+Bunit.TouchEventDispatchExtensions
+Bunit.TriggerEventDispatchExtensions
+override Bunit.BunitJSModuleInterop.Mode.get -> Bunit.JSRuntimeMode
+override Bunit.BunitJSModuleInterop.Mode.set -> void
+override Bunit.ComponentParameter.Equals(object? obj) -> bool
+override Bunit.ComponentParameter.GetHashCode() -> int
+override Bunit.Diffing.DiffMarkupFormatter.Attribute(AngleSharp.Dom.IAttr! attr) -> string!
+override Bunit.Diffing.DiffMarkupFormatter.CloseTag(AngleSharp.Dom.IElement! element, bool selfClosing) -> string!
+override Bunit.Diffing.DiffMarkupFormatter.OpenTag(AngleSharp.Dom.IElement! element, bool selfClosing) -> string!
+override Bunit.Extensions.WaitForHelpers.WaitForAssertionHelper.StopWaitingOnCheckException.get -> bool
+override Bunit.Extensions.WaitForHelpers.WaitForAssertionHelper.TimeoutErrorMessage.get -> string?
+override Bunit.Extensions.WaitForHelpers.WaitForStateHelper.CheckThrowErrorMessage.get -> string?
+override Bunit.Extensions.WaitForHelpers.WaitForStateHelper.StopWaitingOnCheckException.get -> bool
+override Bunit.Extensions.WaitForHelpers.WaitForStateHelper.TimeoutErrorMessage.get -> string?
+override Bunit.JSRuntimeInvocation.Equals(object? obj) -> bool
+override Bunit.JSRuntimeInvocation.GetHashCode() -> int
+override Bunit.Key.Equals(object? obj) -> bool
+override Bunit.Key.GetHashCode() -> int
+override Bunit.Key.ToString() -> string!
+override Bunit.Rendering.BunitRenderer.Dispatcher.get -> Microsoft.AspNetCore.Components.Dispatcher!
+override Bunit.Rendering.BunitRenderer.DispatchEventAsync(ulong eventHandlerId, Microsoft.AspNetCore.Components.RenderTree.EventFieldInfo? fieldInfo, System.EventArgs! eventArgs) -> System.Threading.Tasks.Task!
+override Bunit.TestDoubles.BunitAuthenticationStateProvider.GetAuthenticationStateAsync() -> System.Threading.Tasks.Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState!>!
+override Bunit.TestDoubles.BunitSignOutSessionStateManager.SetSignOutState() -> System.Threading.Tasks.ValueTask
+override Bunit.TestDoubles.BunitSignOutSessionStateManager.ValidateSignOutState() -> System.Threading.Tasks.Task<bool>!
+override Bunit.TestDoubles.NavigationHistory.Equals(object? obj) -> bool
+override Bunit.TestDoubles.NavigationHistory.GetHashCode() -> int
+override Bunit.TestDoubles.Stub<TComponent>.ToString() -> string!
+override sealed Bunit.JSRuntimeInvocationHandler.IsVoidResultHandler.get -> bool
+static Bunit.BunitJSInteropSetupExtensions.Setup<TResult>(this Bunit.BunitJSInterop! jsInterop) -> Bunit.JSRuntimeInvocationHandler<TResult>!
+static Bunit.BunitJSInteropSetupExtensions.Setup<TResult>(this Bunit.BunitJSInterop! jsInterop, Bunit.InvocationMatcher! invocationMatcher, bool isCatchAllHandler = false) -> Bunit.JSRuntimeInvocationHandler<TResult>!
+static Bunit.BunitJSInteropSetupExtensions.Setup<TResult>(this Bunit.BunitJSInterop! jsInterop, string! identifier, Bunit.InvocationMatcher! invocationMatcher) -> Bunit.JSRuntimeInvocationHandler<TResult>!
+static Bunit.BunitJSInteropSetupExtensions.Setup<TResult>(this Bunit.BunitJSInterop! jsInterop, string! identifier, params object?[]? arguments) -> Bunit.JSRuntimeInvocationHandler<TResult>!
+static Bunit.BunitJSInteropSetupExtensions.SetupModule(this Bunit.BunitJSInterop! jsInterop) -> Bunit.BunitJSModuleInterop!
+static Bunit.BunitJSInteropSetupExtensions.SetupModule(this Bunit.BunitJSInterop! jsInterop, Bunit.InvocationMatcher! invocationMatcher, bool isCatchAllHandler = false) -> Bunit.BunitJSModuleInterop!
+static Bunit.BunitJSInteropSetupExtensions.SetupModule(this Bunit.BunitJSInterop! jsInterop, string! identifier, Bunit.InvocationMatcher! invocationMatcher) -> Bunit.BunitJSModuleInterop!
+static Bunit.BunitJSInteropSetupExtensions.SetupModule(this Bunit.BunitJSInterop! jsInterop, string! identifier, object?[]! arguments) -> Bunit.BunitJSModuleInterop!
+static Bunit.BunitJSInteropSetupExtensions.SetupModule(this Bunit.BunitJSInterop! jsInterop, string! moduleName) -> Bunit.BunitJSModuleInterop!
+static Bunit.BunitJSInteropSetupExtensions.SetupVoid(this Bunit.BunitJSInterop! jsInterop) -> Bunit.JSRuntimeInvocationHandler!
+static Bunit.BunitJSInteropSetupExtensions.SetupVoid(this Bunit.BunitJSInterop! jsInterop, Bunit.InvocationMatcher! invocationMatcher, bool isCatchAllHandler = false) -> Bunit.JSRuntimeInvocationHandler!
+static Bunit.BunitJSInteropSetupExtensions.SetupVoid(this Bunit.BunitJSInterop! jsInterop, string! identifier, Bunit.InvocationMatcher! invocationMatcher) -> Bunit.JSRuntimeInvocationHandler!
+static Bunit.BunitJSInteropSetupExtensions.SetupVoid(this Bunit.BunitJSInterop! jsInterop, string! identifier, params object?[]? arguments) -> Bunit.JSRuntimeInvocationHandler!
+static Bunit.BunitJSInteropSetupExtensions.TryGetInvokeHandler<TResult>(this Bunit.BunitJSInterop! jsInterop, string! identifier, params object?[]? arguments) -> Bunit.JSRuntimeInvocationHandler<TResult>?
+static Bunit.BunitJSInteropSetupExtensions.TryGetInvokeVoidHandler(this Bunit.BunitJSInterop! jsInterop, string! identifier, params object?[]? arguments) -> Bunit.JSRuntimeInvocationHandler?
+static Bunit.BunitJSInteropSetupExtensions.TryGetModuleJSInterop(this Bunit.BunitJSInterop! jsInterop, string! identifier, params object?[]? arguments) -> Bunit.BunitJSModuleInterop?
+static Bunit.ClipboardEventDispatchExtensions.BeforeCopy(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.ClipboardEventDispatchExtensions.BeforeCopyAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.ClipboardEventDispatchExtensions.BeforeCut(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.ClipboardEventDispatchExtensions.BeforeCutAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.ClipboardEventDispatchExtensions.BeforePaste(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.ClipboardEventDispatchExtensions.BeforePasteAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.ClipboardEventDispatchExtensions.Copy(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ClipboardEventArgs! eventArgs) -> void
+static Bunit.ClipboardEventDispatchExtensions.Copy(this AngleSharp.Dom.IElement! element, string? type = null) -> void
+static Bunit.ClipboardEventDispatchExtensions.CopyAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ClipboardEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.ClipboardEventDispatchExtensions.Cut(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ClipboardEventArgs! eventArgs) -> void
+static Bunit.ClipboardEventDispatchExtensions.Cut(this AngleSharp.Dom.IElement! element, string! type = null) -> void
+static Bunit.ClipboardEventDispatchExtensions.CutAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ClipboardEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.ClipboardEventDispatchExtensions.Paste(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ClipboardEventArgs! eventArgs) -> void
+static Bunit.ClipboardEventDispatchExtensions.Paste(this AngleSharp.Dom.IElement! element, string! type = null) -> void
+static Bunit.ClipboardEventDispatchExtensions.PasteAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ClipboardEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.CompareToExtensions.CompareTo(this AngleSharp.Dom.INode! actual, AngleSharp.Dom.INodeList! expected) -> System.Collections.Generic.IReadOnlyList<AngleSharp.Diffing.Core.IDiff!>!
+static Bunit.CompareToExtensions.CompareTo(this AngleSharp.Dom.INodeList! actual, AngleSharp.Dom.INode! expected) -> System.Collections.Generic.IReadOnlyList<AngleSharp.Diffing.Core.IDiff!>!
+static Bunit.CompareToExtensions.CompareTo(this AngleSharp.Dom.INodeList! actual, AngleSharp.Dom.INodeList! expected) -> System.Collections.Generic.IReadOnlyList<AngleSharp.Diffing.Core.IDiff!>!
+static Bunit.CompareToExtensions.CompareTo(this Bunit.IRenderedFragment! actual, Bunit.IRenderedFragment! expected) -> System.Collections.Generic.IReadOnlyList<AngleSharp.Diffing.Core.IDiff!>!
+static Bunit.CompareToExtensions.CompareTo(this Bunit.IRenderedFragment! actual, string! expected) -> System.Collections.Generic.IReadOnlyList<AngleSharp.Diffing.Core.IDiff!>!
+static Bunit.ComponentFactoryCollectionExtensions.Add(this Bunit.ComponentFactoryCollection! factories, System.Predicate<System.Type!>! condition, System.Func<System.Type!, Microsoft.AspNetCore.Components.IComponent!>! factory) -> Bunit.ComponentFactoryCollection!
+static Bunit.ComponentFactoryCollectionExtensions.Add<TComponent, TSubstituteComponent>(this Bunit.ComponentFactoryCollection! factories) -> Bunit.ComponentFactoryCollection!
+static Bunit.ComponentFactoryCollectionExtensions.Add<TComponent>(this Bunit.ComponentFactoryCollection! factories, System.Func<TComponent>! factory) -> Bunit.ComponentFactoryCollection!
+static Bunit.ComponentFactoryCollectionExtensions.Add<TComponent>(this Bunit.ComponentFactoryCollection! factories, TComponent instance) -> Bunit.ComponentFactoryCollection!
+static Bunit.ComponentParameter.CreateCascadingValue(string? name, object! value) -> Bunit.ComponentParameter
+static Bunit.ComponentParameter.CreateParameter(string! name, object? value) -> Bunit.ComponentParameter
+static Bunit.ComponentParameter.implicit operator Bunit.ComponentParameter((string! Name, object? Value) input) -> Bunit.ComponentParameter
+static Bunit.ComponentParameter.implicit operator Bunit.ComponentParameter((string? Name, object? Value, bool IsCascadingValue) input) -> Bunit.ComponentParameter
+static Bunit.ComponentParameter.operator !=(Bunit.ComponentParameter left, Bunit.ComponentParameter right) -> bool
+static Bunit.ComponentParameter.operator ==(Bunit.ComponentParameter left, Bunit.ComponentParameter right) -> bool
+static Bunit.ComponentParameterFactory.CascadingValue(object! value) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.CascadingValue(string! name, object! value) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.ChildContent(Microsoft.AspNetCore.Components.RenderFragment! renderFragment) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.ChildContent(string! markup) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.ChildContent<TComponent>(params Bunit.ComponentParameter[]! parameters) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.EventCallback(string! name, System.Action! callback) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.EventCallback(string! name, System.Action<object!>! callback) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.EventCallback(string! name, System.Func<object!, System.Threading.Tasks.Task!>! callback) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.EventCallback(string! name, System.Func<System.Threading.Tasks.Task!>! callback) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.EventCallback<TValue>(string! name, System.Action! callback) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.EventCallback<TValue>(string! name, System.Action<TValue>! callback) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.EventCallback<TValue>(string! name, System.Func<System.Threading.Tasks.Task!>! callback) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.EventCallback<TValue>(string! name, System.Func<TValue, System.Threading.Tasks.Task!>! callback) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.Parameter(string! name, object? value) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.RenderFragment(string! name, string! markup) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.RenderFragment<TComponent>(string! name, params Bunit.ComponentParameter[]! parameters) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.Template<TComponent, TValue>(string! name, System.Func<TValue, Bunit.ComponentParameter[]!>! parameterCollectionBuilder) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.Template<TValue>(string! name, Microsoft.AspNetCore.Components.RenderFragment<TValue>! template) -> Bunit.ComponentParameter
+static Bunit.ComponentParameterFactory.Template<TValue>(string! name, System.Func<TValue, string!>! markupFactory) -> Bunit.ComponentParameter
+static Bunit.DetailsElementEventDispatchExtensions.Toggle(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.DetailsElementEventDispatchExtensions.ToggleAsync(this AngleSharp.Dom.IElement! element, System.EventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.Diffing.BlazorDiffingHelpers.BlazorAttributeFilter(in AngleSharp.Diffing.Core.AttributeComparisonSource attrSource, AngleSharp.Diffing.Core.FilterDecision currentDecision) -> AngleSharp.Diffing.Core.FilterDecision
+static Bunit.DragEventDispatchExtensions.Drag(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string! type = null, Microsoft.AspNetCore.Components.Web.DataTransfer! dataTransfer = null) -> void
+static Bunit.DragEventDispatchExtensions.Drag(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> void
+static Bunit.DragEventDispatchExtensions.DragAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.DragEventDispatchExtensions.DragEnd(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, Microsoft.AspNetCore.Components.Web.DataTransfer? dataTransfer = null) -> void
+static Bunit.DragEventDispatchExtensions.DragEnd(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> void
+static Bunit.DragEventDispatchExtensions.DragEndAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.DragEventDispatchExtensions.DragEnter(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, Microsoft.AspNetCore.Components.Web.DataTransfer? dataTransfer = null) -> void
+static Bunit.DragEventDispatchExtensions.DragEnter(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> void
+static Bunit.DragEventDispatchExtensions.DragEnterAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.DragEventDispatchExtensions.DragLeave(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, Microsoft.AspNetCore.Components.Web.DataTransfer? dataTransfer = null) -> void
+static Bunit.DragEventDispatchExtensions.DragLeave(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> void
+static Bunit.DragEventDispatchExtensions.DragLeaveAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.DragEventDispatchExtensions.DragOver(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, Microsoft.AspNetCore.Components.Web.DataTransfer? dataTransfer = null) -> void
+static Bunit.DragEventDispatchExtensions.DragOver(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> void
+static Bunit.DragEventDispatchExtensions.DragOverAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.DragEventDispatchExtensions.DragStart(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, Microsoft.AspNetCore.Components.Web.DataTransfer? dataTransfer = null) -> void
+static Bunit.DragEventDispatchExtensions.DragStart(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> void
+static Bunit.DragEventDispatchExtensions.DragStartAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.DragEventDispatchExtensions.Drop(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, Microsoft.AspNetCore.Components.Web.DataTransfer? dataTransfer = null) -> void
+static Bunit.DragEventDispatchExtensions.Drop(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> void
+static Bunit.DragEventDispatchExtensions.DropAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.DragEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.Extensions.BlazorExtensions.ToMarkupRenderFragment(this string? markup) -> Microsoft.AspNetCore.Components.RenderFragment!
+static Bunit.Extensions.TestContextRenderExtensions.RenderInsideRenderTree(this Bunit.TestContext! testContext, Microsoft.AspNetCore.Components.RenderFragment! renderFragment) -> Bunit.IRenderedFragment!
+static Bunit.Extensions.TestContextRenderExtensions.RenderInsideRenderTree<TComponent>(this Bunit.TestContext! testContext, Microsoft.AspNetCore.Components.RenderFragment! renderFragment) -> Bunit.IRenderedComponent<TComponent>!
+static Bunit.Extensions.TestRendererExtensions.RenderComponent<TComponent>(this Bunit.Rendering.BunitRenderer! renderer, params Bunit.ComponentParameter[]! parameters) -> Bunit.IRenderedComponent<TComponent>!
+static Bunit.Extensions.TestRendererExtensions.RenderComponent<TComponent>(this Bunit.Rendering.BunitRenderer! renderer, System.Action<Bunit.ComponentParameterCollectionBuilder<TComponent>!>! parameterBuilder) -> Bunit.IRenderedComponent<TComponent>!
+static Bunit.Extensions.TestServiceProviderExtensions.AddDefaultTestContextServices(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, Bunit.TestContext! testContext, Bunit.BunitJSInterop! jsInterop) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Bunit.FocusAsyncAssertJSInteropExtensions.VerifyFocusAsyncInvoke(this Bunit.BunitJSInterop! handler, int calledTimes, string? userMessage = null) -> System.Collections.Generic.IReadOnlyList<Bunit.JSRuntimeInvocation>!
+static Bunit.FocusAsyncAssertJSInteropExtensions.VerifyFocusAsyncInvoke(this Bunit.BunitJSInterop! handler, string? userMessage = null) -> Bunit.JSRuntimeInvocation
+static Bunit.FocusEventDispatchExtensions.Blur(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.FocusEventArgs! eventArgs) -> void
+static Bunit.FocusEventDispatchExtensions.Blur(this AngleSharp.Dom.IElement! element, string? type = null) -> void
+static Bunit.FocusEventDispatchExtensions.BlurAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.FocusEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.FocusEventDispatchExtensions.Focus(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.FocusEventArgs! eventArgs) -> void
+static Bunit.FocusEventDispatchExtensions.Focus(this AngleSharp.Dom.IElement! element, string? type = null) -> void
+static Bunit.FocusEventDispatchExtensions.FocusAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.FocusEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.FocusEventDispatchExtensions.FocusIn(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.FocusEventArgs! eventArgs) -> void
+static Bunit.FocusEventDispatchExtensions.FocusIn(this AngleSharp.Dom.IElement! element, string? type = null) -> void
+static Bunit.FocusEventDispatchExtensions.FocusInAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.FocusEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.FocusEventDispatchExtensions.FocusOut(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.FocusEventArgs! eventArgs) -> void
+static Bunit.FocusEventDispatchExtensions.FocusOut(this AngleSharp.Dom.IElement! element, string? type = null) -> void
+static Bunit.FocusEventDispatchExtensions.FocusOutAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.FocusEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.FocusOnNavigateAssertJSInteropExtensions.VerifyFocusOnNavigateInvoke(this Bunit.BunitJSInterop! handler, int calledTimes, string? userMessage = null) -> System.Collections.Generic.IReadOnlyList<Bunit.JSRuntimeInvocation>!
+static Bunit.FocusOnNavigateAssertJSInteropExtensions.VerifyFocusOnNavigateInvoke(this Bunit.BunitJSInterop! handler, string? userMessage = null) -> Bunit.JSRuntimeInvocation
+static Bunit.GeneralEventDispatchExtensions.Activate(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.ActivateAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.BeforeActivate(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.BeforeActivateAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.BeforeDeactivate(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.BeforeDeactivateAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.Deactivate(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.DeactivateAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.Ended(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.EndedAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.FullscreenChange(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.FullscreenChangeAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.FullscreenError(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.FullscreenErrorAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.LoadedData(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.LoadedDataAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.LoadedMetadata(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.LoadedMetadataAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.PointerlockChange(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.PointerlockChangeAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.PointerlockError(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.PointerlockErrorAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.ReadystateChange(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.ReadystateChangeAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.GeneralEventDispatchExtensions.Scroll(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.GeneralEventDispatchExtensions.ScrollAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.InputEventDispatchExtensions.Change(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.ChangeEventArgs! eventArgs) -> void
+static Bunit.InputEventDispatchExtensions.Change<T>(this AngleSharp.Dom.IElement! element, T value) -> void
+static Bunit.InputEventDispatchExtensions.ChangeAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.ChangeEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.InputEventDispatchExtensions.Input(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.InputEventDispatchExtensions.Input(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.ChangeEventArgs! eventArgs) -> void
+static Bunit.InputEventDispatchExtensions.Input<T>(this AngleSharp.Dom.IElement! element, T value) -> void
+static Bunit.InputEventDispatchExtensions.InputAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.InputEventDispatchExtensions.InputAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.ChangeEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.InputEventDispatchExtensions.Invalid(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.InputEventDispatchExtensions.InvalidAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.InputEventDispatchExtensions.Reset(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.InputEventDispatchExtensions.ResetAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.InputEventDispatchExtensions.Select(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.InputEventDispatchExtensions.SelectAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.InputEventDispatchExtensions.SelectionChange(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.InputEventDispatchExtensions.SelectionChangeAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.InputEventDispatchExtensions.SelectStart(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.InputEventDispatchExtensions.SelectStartAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.InputEventDispatchExtensions.Submit(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.InputEventDispatchExtensions.SubmitAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.InputFileContent.CreateFromBinary(byte[]! fileContent, string? fileName = null, System.DateTimeOffset? lastChanged = null, string? contentType = null) -> Bunit.InputFileContent!
+static Bunit.InputFileContent.CreateFromText(string! fileContent, string? fileName = null, System.DateTimeOffset? lastChanged = null, string? contentType = null) -> Bunit.InputFileContent!
+static Bunit.InputFileExtensions.UploadFiles(this Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.Forms.InputFile!>! inputFileComponent, params Bunit.InputFileContent![]! files) -> void
+static Bunit.JSRuntimeAssertExtensions.ShouldBeElementReferenceTo(this object? actualArgument, AngleSharp.Dom.IElement! expectedTargetElement) -> void
+static Bunit.JSRuntimeAssertExtensions.VerifyInvoke(this Bunit.BunitJSInterop! jsInterop, string! identifier, int calledTimes, string? userMessage = null) -> System.Collections.Generic.IReadOnlyList<Bunit.JSRuntimeInvocation>!
+static Bunit.JSRuntimeAssertExtensions.VerifyInvoke(this Bunit.BunitJSInterop! jsInterop, string! identifier, string? userMessage = null) -> Bunit.JSRuntimeInvocation
+static Bunit.JSRuntimeAssertExtensions.VerifyInvoke<TResult>(this Bunit.JSRuntimeInvocationHandlerBase<TResult>! handler, string! identifier, int calledTimes, string? userMessage = null) -> System.Collections.Generic.IReadOnlyList<Bunit.JSRuntimeInvocation>!
+static Bunit.JSRuntimeAssertExtensions.VerifyInvoke<TResult>(this Bunit.JSRuntimeInvocationHandlerBase<TResult>! handler, string! identifier, string? userMessage = null) -> Bunit.JSRuntimeInvocation
+static Bunit.JSRuntimeAssertExtensions.VerifyNotInvoke(this Bunit.BunitJSInterop! jsInterop, string! identifier, string? userMessage = null) -> void
+static Bunit.JSRuntimeAssertExtensions.VerifyNotInvoke<TResult>(this Bunit.JSRuntimeInvocationHandlerBase<TResult>! handler, string! identifier, string? userMessage = null) -> void
+static Bunit.JSRuntimeInvocation.operator !=(Bunit.JSRuntimeInvocation left, Bunit.JSRuntimeInvocation right) -> bool
+static Bunit.JSRuntimeInvocation.operator ==(Bunit.JSRuntimeInvocation left, Bunit.JSRuntimeInvocation right) -> bool
+static Bunit.Key.Add.get -> Bunit.Key!
+static Bunit.Key.Alt.get -> Bunit.Key!
+static Bunit.Key.Backspace.get -> Bunit.Key!
+static Bunit.Key.Command.get -> Bunit.Key!
+static Bunit.Key.Control.get -> Bunit.Key!
+static Bunit.Key.Delete.get -> Bunit.Key!
+static Bunit.Key.Divide.get -> Bunit.Key!
+static Bunit.Key.Down.get -> Bunit.Key!
+static Bunit.Key.End.get -> Bunit.Key!
+static Bunit.Key.Enter.get -> Bunit.Key!
+static Bunit.Key.Equal.get -> Bunit.Key!
+static Bunit.Key.Escape.get -> Bunit.Key!
+static Bunit.Key.F1.get -> Bunit.Key!
+static Bunit.Key.F10.get -> Bunit.Key!
+static Bunit.Key.F11.get -> Bunit.Key!
+static Bunit.Key.F12.get -> Bunit.Key!
+static Bunit.Key.F2.get -> Bunit.Key!
+static Bunit.Key.F3.get -> Bunit.Key!
+static Bunit.Key.F4.get -> Bunit.Key!
+static Bunit.Key.F5.get -> Bunit.Key!
+static Bunit.Key.F6.get -> Bunit.Key!
+static Bunit.Key.F7.get -> Bunit.Key!
+static Bunit.Key.F8.get -> Bunit.Key!
+static Bunit.Key.F9.get -> Bunit.Key!
+static Bunit.Key.Get(char value) -> Bunit.Key!
+static Bunit.Key.Get(string! value) -> Bunit.Key!
+static Bunit.Key.Get(string! value, string! code) -> Bunit.Key!
+static Bunit.Key.Home.get -> Bunit.Key!
+static Bunit.Key.implicit operator Bunit.Key!(char key) -> Bunit.Key!
+static Bunit.Key.implicit operator Bunit.Key!(string! value) -> Bunit.Key!
+static Bunit.Key.implicit operator Microsoft.AspNetCore.Components.Web.KeyboardEventArgs!(Bunit.Key! key) -> Microsoft.AspNetCore.Components.Web.KeyboardEventArgs!
+static Bunit.Key.Insert.get -> Bunit.Key!
+static Bunit.Key.Left.get -> Bunit.Key!
+static Bunit.Key.Multiply.get -> Bunit.Key!
+static Bunit.Key.NumberPad0.get -> Bunit.Key!
+static Bunit.Key.NumberPad1.get -> Bunit.Key!
+static Bunit.Key.NumberPad2.get -> Bunit.Key!
+static Bunit.Key.NumberPad3.get -> Bunit.Key!
+static Bunit.Key.NumberPad4.get -> Bunit.Key!
+static Bunit.Key.NumberPad5.get -> Bunit.Key!
+static Bunit.Key.NumberPad6.get -> Bunit.Key!
+static Bunit.Key.NumberPad7.get -> Bunit.Key!
+static Bunit.Key.NumberPad8.get -> Bunit.Key!
+static Bunit.Key.NumberPad9.get -> Bunit.Key!
+static Bunit.Key.NumberPadDecimal.get -> Bunit.Key!
+static Bunit.Key.operator !=(Bunit.Key? x, Bunit.Key? y) -> bool
+static Bunit.Key.operator +(Bunit.Key! x, Bunit.Key? y) -> Bunit.Key!
+static Bunit.Key.operator ==(Bunit.Key? x, Bunit.Key? y) -> bool
+static Bunit.Key.PageDown.get -> Bunit.Key!
+static Bunit.Key.PageUp.get -> Bunit.Key!
+static Bunit.Key.Pause.get -> Bunit.Key!
+static Bunit.Key.Right.get -> Bunit.Key!
+static Bunit.Key.Shift.get -> Bunit.Key!
+static Bunit.Key.Space.get -> Bunit.Key!
+static Bunit.Key.Subtract.get -> Bunit.Key!
+static Bunit.Key.Tab.get -> Bunit.Key!
+static Bunit.Key.Up.get -> Bunit.Key!
+static Bunit.KeyboardEventDispatchExtensions.KeyDown(this AngleSharp.Dom.IElement! element, Bunit.Key! key, bool repeat = false, string? type = null) -> void
+static Bunit.KeyboardEventDispatchExtensions.KeyDown(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.KeyboardEventArgs! eventArgs) -> void
+static Bunit.KeyboardEventDispatchExtensions.KeyDown(this AngleSharp.Dom.IElement! element, string! key, string? code = null, float location = 0, bool repeat = false, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.KeyboardEventDispatchExtensions.KeyDownAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.KeyboardEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.KeyboardEventDispatchExtensions.KeyPress(this AngleSharp.Dom.IElement! element, Bunit.Key! key, bool repeat = false, string? type = null) -> void
+static Bunit.KeyboardEventDispatchExtensions.KeyPress(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.KeyboardEventArgs! eventArgs) -> void
+static Bunit.KeyboardEventDispatchExtensions.KeyPress(this AngleSharp.Dom.IElement! element, string! key, string? code = null, float location = 0, bool repeat = false, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.KeyboardEventDispatchExtensions.KeyPressAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.KeyboardEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.KeyboardEventDispatchExtensions.KeyUp(this AngleSharp.Dom.IElement! element, Bunit.Key! key, bool repeat = false, string? type = null) -> void
+static Bunit.KeyboardEventDispatchExtensions.KeyUp(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.KeyboardEventArgs! eventArgs) -> void
+static Bunit.KeyboardEventDispatchExtensions.KeyUp(this AngleSharp.Dom.IElement! element, string! key, string? code = null, float location = 0, bool repeat = false, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.KeyboardEventDispatchExtensions.KeyUpAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.KeyboardEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this AngleSharp.Dom.IElement! actual, System.Collections.Generic.IEnumerable<AngleSharp.Dom.IElement!>! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this AngleSharp.Dom.IElement! actual, System.Collections.Generic.IEnumerable<Bunit.IRenderedFragment!>! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this AngleSharp.Dom.INode! actual, AngleSharp.Dom.INodeList! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this AngleSharp.Dom.INode! actual, Bunit.IRenderedFragment! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this AngleSharp.Dom.INode! actual, Microsoft.AspNetCore.Components.RenderFragment! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this AngleSharp.Dom.INode! actual, string! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this AngleSharp.Dom.INodeList! actual, AngleSharp.Dom.INode! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this AngleSharp.Dom.INodeList! actual, AngleSharp.Dom.INodeList! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this AngleSharp.Dom.INodeList! actual, Bunit.IRenderedFragment! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this AngleSharp.Dom.INodeList! actual, Microsoft.AspNetCore.Components.RenderFragment! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this AngleSharp.Dom.INodeList! actual, string! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this Bunit.IRenderedFragment! actual, Bunit.IRenderedFragment! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this Bunit.IRenderedFragment! actual, Microsoft.AspNetCore.Components.RenderFragment! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this Bunit.IRenderedFragment! actual, string! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this string! actual, AngleSharp.Dom.INode! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this string! actual, AngleSharp.Dom.INodeList! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this string! actual, Bunit.IRenderedFragment! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this string! actual, string! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this System.Collections.Generic.IEnumerable<AngleSharp.Dom.IElement!>! actual, Bunit.IRenderedFragment! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this System.Collections.Generic.IEnumerable<AngleSharp.Dom.IElement!>! actual, string! expected, string? userMessage = null) -> void
+static Bunit.MarkupMatchesAssertExtensions.MarkupMatches(this System.Collections.Generic.IEnumerable<AngleSharp.Dom.IElement!>! actual, System.Collections.Generic.IEnumerable<Bunit.IRenderedFragment!>! expected, string? userMessage = null) -> void
+static Bunit.MediaEventDispatchExtensions.CanPlay(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.CanPlayAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.CanPlayThrough(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.CanPlayThroughAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.CueChange(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.CueChangeAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.DurationChange(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.DurationChangeAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.Emptied(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.EmptiedAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.Pause(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.PauseAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.Play(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.PlayAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.Playing(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.PlayingAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.RateChange(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.RateChangeAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.Seeked(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.SeekedAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.Seeking(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.SeekingAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.Stalled(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.StalledAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.Stop(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.StopAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.Suspend(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.SuspendAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.TimeUpdate(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.TimeUpdateAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.VolumeChange(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.VolumeChangeAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MediaEventDispatchExtensions.Waiting(this AngleSharp.Dom.IElement! element) -> void
+static Bunit.MediaEventDispatchExtensions.WaitingAsync(this AngleSharp.Dom.IElement! element) -> System.Threading.Tasks.Task!
+static Bunit.MouseEventDispatchExtensions.Click(this AngleSharp.Dom.IElement! element, long detail = 1, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, double pageX = 0, double pageY = 0, double offsetX = 0, double offsetY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.MouseEventDispatchExtensions.Click(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> void
+static Bunit.MouseEventDispatchExtensions.ClickAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.MouseEventDispatchExtensions.ContextMenu(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.MouseEventDispatchExtensions.ContextMenu(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> void
+static Bunit.MouseEventDispatchExtensions.ContextMenuAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.MouseEventDispatchExtensions.DoubleClick(this AngleSharp.Dom.IElement! element, long detail = 2, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, double pageX = 0, double pageY = 0, double offsetX = 0, double offsetY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.MouseEventDispatchExtensions.DoubleClick(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> void
+static Bunit.MouseEventDispatchExtensions.DoubleClickAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.MouseEventDispatchExtensions.MouseDown(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.MouseEventDispatchExtensions.MouseDown(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> void
+static Bunit.MouseEventDispatchExtensions.MouseDownAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.MouseEventDispatchExtensions.MouseMove(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.MouseEventDispatchExtensions.MouseMove(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> void
+static Bunit.MouseEventDispatchExtensions.MouseMoveAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.MouseEventDispatchExtensions.MouseOut(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.MouseEventDispatchExtensions.MouseOut(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> void
+static Bunit.MouseEventDispatchExtensions.MouseOutAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.MouseEventDispatchExtensions.MouseOver(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.MouseEventDispatchExtensions.MouseOver(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> void
+static Bunit.MouseEventDispatchExtensions.MouseOverAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.MouseEventDispatchExtensions.MouseUp(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.MouseEventDispatchExtensions.MouseUp(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> void
+static Bunit.MouseEventDispatchExtensions.MouseUpAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.MouseEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.MouseEventDispatchExtensions.MouseWheel(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, double deltaX = 0, double deltaY = 0, double deltaZ = 0, long deltaMode = 0) -> void
+static Bunit.MouseEventDispatchExtensions.MouseWheel(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.WheelEventArgs! eventArgs) -> void
+static Bunit.MouseEventDispatchExtensions.MouseWheelAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.WheelEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.MouseEventDispatchExtensions.Wheel(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, double deltaX = 0, double deltaY = 0, double deltaZ = 0, long deltaMode = 0) -> void
+static Bunit.MouseEventDispatchExtensions.Wheel(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.WheelEventArgs! eventArgs) -> void
+static Bunit.MouseEventDispatchExtensions.WheelAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.WheelEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.NodePrintExtensions.ToDiffMarkup(this AngleSharp.IMarkupFormattable! markupFormattable) -> string!
+static Bunit.NodePrintExtensions.ToDiffMarkup(this System.Collections.Generic.IEnumerable<AngleSharp.Dom.INode!>! nodes) -> string!
+static Bunit.NodePrintExtensions.ToHtml(this System.Collections.Generic.IEnumerable<AngleSharp.Dom.INode!>! nodes, System.IO.TextWriter! writer, AngleSharp.IMarkupFormatter! formatter) -> void
+static Bunit.NodePrintExtensions.ToMarkup(this AngleSharp.IMarkupFormattable! markupFormattable) -> string!
+static Bunit.NodePrintExtensions.ToMarkup(this System.Collections.Generic.IEnumerable<AngleSharp.Dom.INode!>! nodes) -> string!
+static Bunit.NodePrintExtensions.ToMarkupElementOnly(this AngleSharp.Dom.IElement! element) -> string!
+static Bunit.PointerEventDispatchExtensions.GotPointerCapture(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, long pointerId = 0, float width = 0, float height = 0, float pressure = 0, float tiltX = 0, float tiltY = 0, string? pointerType = null, bool isPrimary = false) -> void
+static Bunit.PointerEventDispatchExtensions.GotPointerCapture(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> void
+static Bunit.PointerEventDispatchExtensions.GotPointerCaptureAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.PointerEventDispatchExtensions.LostPointerCapture(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, long pointerId = 0, float width = 0, float height = 0, float pressure = 0, float tiltX = 0, float tiltY = 0, string? pointerType = null, bool isPrimary = false) -> void
+static Bunit.PointerEventDispatchExtensions.LostPointerCapture(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> void
+static Bunit.PointerEventDispatchExtensions.LostPointerCaptureAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.PointerEventDispatchExtensions.PointerCancel(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, long pointerId = 0, float width = 0, float height = 0, float pressure = 0, float tiltX = 0, float tiltY = 0, string? pointerType = null, bool isPrimary = false) -> void
+static Bunit.PointerEventDispatchExtensions.PointerCancel(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> void
+static Bunit.PointerEventDispatchExtensions.PointerCancelAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.PointerEventDispatchExtensions.PointerDown(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, long pointerId = 0, float width = 0, float height = 0, float pressure = 0, float tiltX = 0, float tiltY = 0, string? pointerType = null, bool isPrimary = false) -> void
+static Bunit.PointerEventDispatchExtensions.PointerDown(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> void
+static Bunit.PointerEventDispatchExtensions.PointerDownAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.PointerEventDispatchExtensions.PointerEnter(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, long pointerId = 0, float width = 0, float height = 0, float pressure = 0, float tiltX = 0, float tiltY = 0, string? pointerType = null, bool isPrimary = false) -> void
+static Bunit.PointerEventDispatchExtensions.PointerEnter(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> void
+static Bunit.PointerEventDispatchExtensions.PointerEnterAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.PointerEventDispatchExtensions.PointerLeave(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, long pointerId = 0, float width = 0, float height = 0, float pressure = 0, float tiltX = 0, float tiltY = 0, string? pointerType = null, bool isPrimary = false) -> void
+static Bunit.PointerEventDispatchExtensions.PointerLeave(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> void
+static Bunit.PointerEventDispatchExtensions.PointerLeaveAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.PointerEventDispatchExtensions.PointerMove(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, long pointerId = 0, float width = 0, float height = 0, float pressure = 0, float tiltX = 0, float tiltY = 0, string? pointerType = null, bool isPrimary = false) -> void
+static Bunit.PointerEventDispatchExtensions.PointerMove(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> void
+static Bunit.PointerEventDispatchExtensions.PointerMoveAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.PointerEventDispatchExtensions.PointerOut(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, long pointerId = 0, float width = 0, float height = 0, float pressure = 0, float tiltX = 0, float tiltY = 0, string? pointerType = null, bool isPrimary = false) -> void
+static Bunit.PointerEventDispatchExtensions.PointerOut(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> void
+static Bunit.PointerEventDispatchExtensions.PointerOutAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.PointerEventDispatchExtensions.PointerOver(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, long pointerId = 0, float width = 0, float height = 0, float pressure = 0, float tiltX = 0, float tiltY = 0, string? pointerType = null, bool isPrimary = false) -> void
+static Bunit.PointerEventDispatchExtensions.PointerOver(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> void
+static Bunit.PointerEventDispatchExtensions.PointerOverAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.PointerEventDispatchExtensions.PointerUp(this AngleSharp.Dom.IElement! element, long detail = 0, double screenX = 0, double screenY = 0, double clientX = 0, double clientY = 0, long button = 0, long buttons = 0, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null, long pointerId = 0, float width = 0, float height = 0, float pressure = 0, float tiltX = 0, float tiltY = 0, string? pointerType = null, bool isPrimary = false) -> void
+static Bunit.PointerEventDispatchExtensions.PointerUp(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> void
+static Bunit.PointerEventDispatchExtensions.PointerUpAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.PointerEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.ProgressEventDispatchExtensions.Abort(this AngleSharp.Dom.IElement! element, bool lengthComputable = false, long loaded = 0, long total = 0, string? type = null) -> void
+static Bunit.ProgressEventDispatchExtensions.Abort(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> void
+static Bunit.ProgressEventDispatchExtensions.AbortAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.ProgressEventDispatchExtensions.Error(this AngleSharp.Dom.IElement! element, bool lengthComputable = false, long loaded = 0, long total = 0, string? type = null) -> void
+static Bunit.ProgressEventDispatchExtensions.Error(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> void
+static Bunit.ProgressEventDispatchExtensions.ErrorAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.ProgressEventDispatchExtensions.Load(this AngleSharp.Dom.IElement! element, bool lengthComputable = false, long loaded = 0, long total = 0, string? type = null) -> void
+static Bunit.ProgressEventDispatchExtensions.Load(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> void
+static Bunit.ProgressEventDispatchExtensions.LoadAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.ProgressEventDispatchExtensions.LoadEnd(this AngleSharp.Dom.IElement! element, bool lengthComputable = false, long loaded = 0, long total = 0, string? type = null) -> void
+static Bunit.ProgressEventDispatchExtensions.LoadEnd(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> void
+static Bunit.ProgressEventDispatchExtensions.LoadEndAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.ProgressEventDispatchExtensions.LoadStart(this AngleSharp.Dom.IElement! element, bool lengthComputable = false, long loaded = 0, long total = 0, string? type = null) -> void
+static Bunit.ProgressEventDispatchExtensions.LoadStart(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> void
+static Bunit.ProgressEventDispatchExtensions.LoadStartAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.ProgressEventDispatchExtensions.Progress(this AngleSharp.Dom.IElement! element, bool lengthComputable = false, long loaded = 0, long total = 0, string? type = null) -> void
+static Bunit.ProgressEventDispatchExtensions.Progress(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> void
+static Bunit.ProgressEventDispatchExtensions.ProgressAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.ProgressEventDispatchExtensions.Timeout(this AngleSharp.Dom.IElement! element, bool lengthComputable = false, long loaded = 0, long total = 0, string? type = null) -> void
+static Bunit.ProgressEventDispatchExtensions.Timeout(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> void
+static Bunit.ProgressEventDispatchExtensions.TimeoutAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.ProgressEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.RenderedComponentRenderExtensions.Render<TComponent>(this Bunit.IRenderedComponent<TComponent>! renderedComponent) -> void
+static Bunit.RenderedComponentRenderExtensions.SetParametersAndRender<TComponent>(this Bunit.IRenderedComponent<TComponent>! renderedComponent, Microsoft.AspNetCore.Components.ParameterView parameters) -> void
+static Bunit.RenderedComponentRenderExtensions.SetParametersAndRender<TComponent>(this Bunit.IRenderedComponent<TComponent>! renderedComponent, params Bunit.ComponentParameter[]! parameters) -> void
+static Bunit.RenderedComponentRenderExtensions.SetParametersAndRender<TComponent>(this Bunit.IRenderedComponent<TComponent>! renderedComponent, System.Action<Bunit.ComponentParameterCollectionBuilder<TComponent>!>! parameterBuilder) -> void
+static Bunit.RenderedFragmentExtensions.Find(this Bunit.IRenderedFragment! renderedFragment, string! cssSelector) -> AngleSharp.Dom.IElement!
+static Bunit.RenderedFragmentExtensions.FindAll(this Bunit.IRenderedFragment! renderedFragment, string! cssSelector, bool enableAutoRefresh = false) -> Bunit.IRefreshableElementCollection<AngleSharp.Dom.IElement!>!
+static Bunit.RenderedFragmentExtensions.FindComponent<TComponent>(this Bunit.IRenderedFragment! renderedFragment) -> Bunit.IRenderedComponent<TComponent>!
+static Bunit.RenderedFragmentExtensions.FindComponents<TComponent>(this Bunit.IRenderedFragment! renderedFragment) -> System.Collections.Generic.IReadOnlyList<Bunit.IRenderedComponent<TComponent>!>!
+static Bunit.RenderedFragmentExtensions.HasComponent<TComponent>(this Bunit.IRenderedFragment! renderedFragment) -> bool
+static Bunit.RenderedFragmentInvokeAsyncExtensions.InvokeAsync(this Bunit.IRenderedFragment! renderedFragment, System.Action! workItem) -> System.Threading.Tasks.Task!
+static Bunit.RenderedFragmentInvokeAsyncExtensions.InvokeAsync(this Bunit.IRenderedFragment! renderedFragment, System.Func<System.Threading.Tasks.Task!>! workItem) -> System.Threading.Tasks.Task!
+static Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertionAsync(this Bunit.IRenderedFragment! renderedFragment, System.Action! assertion, System.TimeSpan? timeout = null) -> System.Threading.Tasks.Task!
+static Bunit.RenderedFragmentWaitForHelperExtensions.WaitForElementAsync(this Bunit.IRenderedFragment! renderedFragment, string! cssSelector) -> System.Threading.Tasks.Task<AngleSharp.Dom.IElement!>!
+static Bunit.RenderedFragmentWaitForHelperExtensions.WaitForElementsAsync(this Bunit.IRenderedFragment! renderedFragment, string! cssSelector) -> System.Threading.Tasks.Task<Bunit.IRefreshableElementCollection<AngleSharp.Dom.IElement!>!>!
+static Bunit.RenderedFragmentWaitForHelperExtensions.WaitForStateAsync(this Bunit.IRenderedFragment! renderedFragment, System.Func<bool>! statePredicate, System.TimeSpan? timeout = null) -> System.Threading.Tasks.Task!
+static Bunit.StubComponentFactoryCollectionExtensions.AddStub(this Bunit.ComponentFactoryCollection! factories, System.Predicate<System.Type!>! componentTypePredicate) -> Bunit.ComponentFactoryCollection!
+static Bunit.StubComponentFactoryCollectionExtensions.AddStub(this Bunit.ComponentFactoryCollection! factories, System.Predicate<System.Type!>! componentTypePredicate, Microsoft.AspNetCore.Components.RenderFragment! replacementFragment) -> Bunit.ComponentFactoryCollection!
+static Bunit.StubComponentFactoryCollectionExtensions.AddStub(this Bunit.ComponentFactoryCollection! factories, System.Predicate<System.Type!>! componentTypePredicate, string! replacementMarkup) -> Bunit.ComponentFactoryCollection!
+static Bunit.StubComponentFactoryCollectionExtensions.AddStub<TComponent>(this Bunit.ComponentFactoryCollection! factories) -> Bunit.ComponentFactoryCollection!
+static Bunit.StubComponentFactoryCollectionExtensions.AddStub<TComponent>(this Bunit.ComponentFactoryCollection! factories, Microsoft.AspNetCore.Components.RenderFragment! replacementFragment) -> Bunit.ComponentFactoryCollection!
+static Bunit.StubComponentFactoryCollectionExtensions.AddStub<TComponent>(this Bunit.ComponentFactoryCollection! factories, Microsoft.AspNetCore.Components.RenderFragment<Bunit.TestDoubles.CapturedParameterView<TComponent>!>! replacementTemplate) -> Bunit.ComponentFactoryCollection!
+static Bunit.StubComponentFactoryCollectionExtensions.AddStub<TComponent>(this Bunit.ComponentFactoryCollection! factories, string! replacementMarkup) -> Bunit.ComponentFactoryCollection!
+static Bunit.StubComponentFactoryCollectionExtensions.AddStub<TComponent>(this Bunit.ComponentFactoryCollection! factories, System.Func<Bunit.TestDoubles.CapturedParameterView<TComponent>!, string!>! replacementTemplate) -> Bunit.ComponentFactoryCollection!
+static Bunit.TestDoubles.CapturedParameterView<TComponent>.Empty.get -> Bunit.TestDoubles.CapturedParameterView<TComponent>!
+static Bunit.TestDoubles.CapturedParameterView<TComponent>.From(Microsoft.AspNetCore.Components.ParameterView parameters) -> Bunit.TestDoubles.CapturedParameterView<TComponent>!
+static Bunit.TouchEventDispatchExtensions.TouchCancel(this AngleSharp.Dom.IElement! element, long detail = 0, Microsoft.AspNetCore.Components.Web.TouchPoint![]? touches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? targetTouches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? changedTouches = null, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.TouchEventDispatchExtensions.TouchCancel(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> void
+static Bunit.TouchEventDispatchExtensions.TouchCancelAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.TouchEventDispatchExtensions.TouchEnd(this AngleSharp.Dom.IElement! element, long detail = 0, Microsoft.AspNetCore.Components.Web.TouchPoint![]? touches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? targetTouches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? changedTouches = null, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.TouchEventDispatchExtensions.TouchEnd(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> void
+static Bunit.TouchEventDispatchExtensions.TouchEndAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.TouchEventDispatchExtensions.TouchEnter(this AngleSharp.Dom.IElement! element, long detail = 0, Microsoft.AspNetCore.Components.Web.TouchPoint![]? touches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? targetTouches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? changedTouches = null, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.TouchEventDispatchExtensions.TouchEnter(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> void
+static Bunit.TouchEventDispatchExtensions.TouchEnterAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.TouchEventDispatchExtensions.TouchLeave(this AngleSharp.Dom.IElement! element, long detail = 0, Microsoft.AspNetCore.Components.Web.TouchPoint![]? touches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? targetTouches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? changedTouches = null, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.TouchEventDispatchExtensions.TouchLeave(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> void
+static Bunit.TouchEventDispatchExtensions.TouchLeaveAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.TouchEventDispatchExtensions.TouchMove(this AngleSharp.Dom.IElement! element, long detail = 0, Microsoft.AspNetCore.Components.Web.TouchPoint![]? touches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? targetTouches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? changedTouches = null, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.TouchEventDispatchExtensions.TouchMove(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> void
+static Bunit.TouchEventDispatchExtensions.TouchMoveAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.TouchEventDispatchExtensions.TouchStart(this AngleSharp.Dom.IElement! element, long detail = 0, Microsoft.AspNetCore.Components.Web.TouchPoint![]? touches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? targetTouches = null, Microsoft.AspNetCore.Components.Web.TouchPoint![]? changedTouches = null, bool ctrlKey = false, bool shiftKey = false, bool altKey = false, bool metaKey = false, string? type = null) -> void
+static Bunit.TouchEventDispatchExtensions.TouchStart(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> void
+static Bunit.TouchEventDispatchExtensions.TouchStartAsync(this AngleSharp.Dom.IElement! element, Microsoft.AspNetCore.Components.Web.TouchEventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static Bunit.TriggerEventDispatchExtensions.TriggerEvent(this AngleSharp.Dom.IElement! element, string! eventName, System.EventArgs! eventArgs) -> void
+static Bunit.TriggerEventDispatchExtensions.TriggerEventAsync(this AngleSharp.Dom.IElement! element, string! eventName, System.EventArgs! eventArgs) -> System.Threading.Tasks.Task!
+static readonly Bunit.Diffing.DiffMarkupFormatter.Instance -> Bunit.Diffing.DiffMarkupFormatter!
+static readonly Bunit.TestDoubles.ComponentDoubleBase<TComponent>.DoubledType -> System.Type!
+virtual Bunit.BunitJSInterop.Mode.get -> Bunit.JSRuntimeMode
+virtual Bunit.BunitJSInterop.Mode.set -> void
+virtual Bunit.Extensions.WaitForHelpers.WaitForHelper<T>.CheckThrowErrorMessage.get -> string?
+virtual Bunit.Extensions.WaitForHelpers.WaitForHelper<T>.Dispose(bool disposing) -> void
+virtual Bunit.Extensions.WaitForHelpers.WaitForHelper<T>.TimeoutErrorMessage.get -> string?
+virtual Bunit.JSRuntimeInvocationHandlerBase<TResult>.HandleAsync(Bunit.JSRuntimeInvocation invocation) -> System.Threading.Tasks.Task<TResult>!
+virtual Bunit.JSRuntimeInvocationHandlerBase<TResult>.IsVoidResultHandler.get -> bool
+virtual Bunit.TestContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder! builder) -> void
+virtual Bunit.TestContext.Dispose(bool disposing) -> void
+virtual Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment! renderFragment) -> Bunit.IRenderedFragment!
+virtual Bunit.TestContext.Render<TComponent>(Microsoft.AspNetCore.Components.RenderFragment! renderFragment) -> Bunit.IRenderedComponent<TComponent>!
+virtual Bunit.TestContext.RenderComponent<TComponent>(params Bunit.ComponentParameter[]! parameters) -> Bunit.IRenderedComponent<TComponent>!
+virtual Bunit.TestContext.RenderComponent<TComponent>(System.Action<Bunit.ComponentParameterCollectionBuilder<TComponent>!>? parameterBuilder = null) -> Bunit.IRenderedComponent<TComponent>!
+virtual Bunit.TestContextWrapper.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder! builder) -> void
+virtual Bunit.TestContextWrapper.DisposeComponents() -> void
+virtual Bunit.TestContextWrapper.Render(Microsoft.AspNetCore.Components.RenderFragment! renderFragment) -> Bunit.IRenderedFragment!
+virtual Bunit.TestContextWrapper.Render<TComponent>(Microsoft.AspNetCore.Components.RenderFragment! renderFragment) -> Bunit.IRenderedComponent<TComponent>!
+virtual Bunit.TestContextWrapper.RenderComponent<TComponent>(params Bunit.ComponentParameter[]! parameters) -> Bunit.IRenderedComponent<TComponent>!
+virtual Bunit.TestContextWrapper.RenderComponent<TComponent>(System.Action<Bunit.ComponentParameterCollectionBuilder<TComponent>!>! parameterBuilder) -> Bunit.IRenderedComponent<TComponent>!
+virtual Bunit.TestContextWrapper.TestContext.get -> Bunit.TestContext?
+virtual Bunit.TestContextWrapper.TestContext.set -> void
+virtual Bunit.TestDoubles.ComponentDoubleBase<TComponent>.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder! builder) -> void
+virtual Bunit.TestDoubles.ComponentDoubleBase<TComponent>.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView parameters) -> System.Threading.Tasks.Task!

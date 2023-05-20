@@ -32,6 +32,13 @@
 # SonarAnalyzer.CSharp
 # https://rules.sonarsource.com/csharp
 
+# Public API Analyzer rules
+dotnet_diagnostic.RS0016.severity = error # Add public types and members to the declared API
+dotnet_diagnostic.RS0017.severity = error # Remove deleted types and members from the declared API
+dotnet_diagnostic.RS0022.severity = error # Constructor make noninheritable base class inheritable
+dotnet_diagnostic.RS0026.severity = suggestion # Do not add multiple public overloads with optional parameters
+dotnet_diagnostic.RS0027.severity = suggestion # API with optional parameter(s) should have the most parameters amongst its public overloads
+
 
 ##########################################
 # Custom - Code Analyzers Rules
