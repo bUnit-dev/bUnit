@@ -20,11 +20,7 @@ public static class TestRendererExtensions
 	{
 		ArgumentNullException.ThrowIfNull(renderer);
 
-		var resultBase = renderer.RenderComponent<TComponent>(new ComponentParameterCollection { parameters });
-		if (resultBase is IRenderedComponent<TComponent> result)
-			return result;
-
-		throw new InvalidOperationException($"The renderer did not produce the expected type. Is the test renderer using the expected {nameof(IRenderedComponentActivator)}?");
+		return renderer.RenderComponent<TComponent>(new ComponentParameterCollection { parameters });
 	}
 
 	/// <summary>
@@ -41,10 +37,6 @@ public static class TestRendererExtensions
 		ArgumentNullException.ThrowIfNull(parameterBuilder);
 
 		var builder = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder);
-		var resultBase = renderer.RenderComponent<TComponent>(builder.Build());
-		if (resultBase is IRenderedComponent<TComponent> result)
-			return result;
-
-		throw new InvalidOperationException($"The renderer did not produce the expected type. Is the test renderer using the expected {nameof(IRenderedComponentActivator)}?");
+		return renderer.RenderComponent<TComponent>(builder.Build());
 	}
 }
