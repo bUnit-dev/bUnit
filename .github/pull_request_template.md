@@ -14,6 +14,7 @@
 - [ ] My code follows the code style of this project and AspNetCore coding guidelines.
 - [ ] My change requires a change to the documentation.
   - [ ] I have updated the documentation accordingly.
+- [ ] I have added new public API to the `PublicAPI.Unshipped.txt` and did not change the `PublicAPI.Shipped.txt` file.
 - [ ] I have updated the appropriate sub section in the _CHANGELOG.md_.
 - [ ] I have added, updated or removed tests to according to my changes.
   - [ ] All tests passed.
