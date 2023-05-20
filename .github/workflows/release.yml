@@ -70,6 +70,10 @@ jobs:
         with:
           version: ${{ env.NBGV_SemVer2 }}
 
+      - name: 🚢 Update shipped Public API
+        run: |
+          cat src/bunit/PublicAPI.Unshipped.txt >> src/bunit/PublicAPI.Shipped.txt
+
       - name: 🛠️ Update changelog compare URLs
         shell: bash
         run: |
