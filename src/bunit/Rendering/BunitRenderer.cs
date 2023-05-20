@@ -17,7 +17,10 @@ public sealed class BunitRenderer : Renderer
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Gets a <see cref="Task{Exception}"/>, which completes when an unhandled exception
+	/// is thrown during the rendering of a component, that is caught by the renderer.
+	/// </summary>
 	public Task<Exception> UnhandledException => unhandledExceptionTsc.Task;
 
 	/// <inheritdoc/>
@@ -50,11 +53,20 @@ public sealed class BunitRenderer : Renderer
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
 	}
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Renders the <paramref name="renderFragment"/>.
+	/// </summary>
+	/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
+	/// <returns>A <see cref="IRenderedFragment"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
 	public IRenderedFragment RenderFragment(RenderFragment renderFragment)
 		=> Render(renderFragment, id => activator.CreateRenderedFragment(id));
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Renders a <typeparamref name="TComponent"/> with the <paramref name="parameters"/> passed to it.
+	/// </summary>
+	/// <typeparam name = "TComponent" > The type of component to render.</typeparam>
+	/// <param name="parameters">The parameters to pass to the component.</param>
+	/// <returns>A <see cref="IRenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
 	public IRenderedComponent<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent
 	{
@@ -64,13 +76,26 @@ public sealed class BunitRenderer : Renderer
 		return Render(renderFragment, id => activator.CreateRenderedComponent<TComponent>(id));
 	}
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Notifies the renderer that an event has occurred.
+	/// </summary>
+	/// <param name="eventHandlerId">The <see cref="RenderTreeFrame.AttributeEventHandlerId"/> value from the original event attribute.</param>
+	/// <param name="fieldInfo">Information that the renderer can use to update the state of the existing render tree to match the UI.</param>
+	/// <param name="eventArgs">Arguments to be passed to the event handler.</param>
+	/// <returns>A <see cref="Task"/> which will complete once all asynchronous processing related to the event has completed.</returns>
 	public override Task DispatchEventAsync(
 		ulong eventHandlerId,
 		EventFieldInfo? fieldInfo,
 		EventArgs eventArgs) => DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Notifies the renderer that an event has occurred.
+	/// </summary>
+	/// <param name="eventHandlerId">The <see cref="RenderTreeFrame.AttributeEventHandlerId"/> value from the original event attribute.</param>
+	/// <param name="fieldInfo">Information that the renderer can use to update the state of the existing render tree to match the UI.</param>
+	/// <param name="eventArgs">Arguments to be passed to the event handler.</param>
+	/// <param name="ignoreUnknownEventHandlers">Set to true to ignore the <see cref="UnknownEventHandlerIdException"/>.</param>
+	/// <returns>A <see cref="Task"/> which will complete once all asynchronous processing related to the event has completed.</returns>
 	public new Task DispatchEventAsync(
 		ulong eventHandlerId,
 		EventFieldInfo? fieldInfo,
@@ -114,17 +139,27 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Performs a depth-first search for the first <typeparamref name="TComponent"/> child component of the <paramref name="parentComponent"/>.
+	/// </summary>
+	/// <typeparam name="TComponent">Type of component to find.</typeparam>
+	/// <param name="parentComponent">Parent component to search.</param>
 	public IRenderedComponent<TComponent> FindComponent<TComponent>(IRenderedFragment parentComponent)
 		where TComponent : IComponent
 		=> FindComponentsInternal<TComponent>(parentComponent).FirstOrDefault() ?? throw new ComponentNotFoundException(typeof(TComponent));
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Performs a depth-first search for all <typeparamref name="TComponent"/> child components of the <paramref name="parentComponent"/>.
+	/// </summary>
+	/// <typeparam name="TComponent">Type of components to find.</typeparam>
+	/// <param name="parentComponent">Parent component to search.</param>
 	public IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragment parentComponent)
 		where TComponent : IComponent
 		=> FindComponentsInternal<TComponent>(parentComponent).ToList();
 
-	/// <inheritdoc />
+	/// <summary>
+	/// Disposes all components rendered by the <see cref="BunitRenderer" />.
+	/// </summary>
 	public void DisposeComponents()
 	{
 		// The dispatcher will always return a completed task,
