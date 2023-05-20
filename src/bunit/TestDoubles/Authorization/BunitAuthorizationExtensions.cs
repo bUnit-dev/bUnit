@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace Bunit;
 
-public abstract partial class TestContextBase
+public partial class TestContext
 {
 	/// <summary>
 	/// Adds the appropriate Blazor authentication and authorization services to the <see cref="TestServiceProvider"/> to enable

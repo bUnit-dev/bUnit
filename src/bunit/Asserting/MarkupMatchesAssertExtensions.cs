@@ -271,7 +271,7 @@ public static class MarkupMatchesAssertExtensions
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
 
-		var testContext = actual.Services.GetRequiredService<TestContextBase>();
+		var testContext = actual.Services.GetRequiredService<TestContext>();
 		var renderedFragment = testContext.RenderInsideRenderTree(expected);
 		MarkupMatches(actual, renderedFragment, userMessage);
 	}
