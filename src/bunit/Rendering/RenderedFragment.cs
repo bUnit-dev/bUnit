@@ -4,7 +4,7 @@ using AngleSharp.Dom;
 namespace Bunit.Rendering;
 
 /// <inheritdoc />
-[DebuggerDisplay("Markup={TruncatedMarkup}")]
+[DebuggerDisplay("Rendered:{RenderCount}")]
 internal class RenderedFragment : IRenderedFragment
 {
 	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by TestServiceProvider, disposed by it.")]
@@ -12,8 +12,6 @@ internal class RenderedFragment : IRenderedFragment
 	private readonly object markupAccessLock = new();
 	private string markup = string.Empty;
 	private INodeList? latestRenderNodes;
-
-	private protected string TruncatedMarkup => Markup.Length <= 120 ? Markup : string.Concat(Markup.AsSpan(0, 120), "...");
 
 	/// <inheritdoc/>
 	public event EventHandler? OnAfterRender;
@@ -91,7 +89,7 @@ internal class RenderedFragment : IRenderedFragment
 
 		// The lock prevents a race condition between the renderers thread
 		// and the test frameworks thread, where one might be reading the Markup
-		// while the other is updating it due to async code in a rendered component.
+		// while the other is updating it due tof async code in a rendered component.
 		lock (markupAccessLock)
 		{
 			if (rendered)

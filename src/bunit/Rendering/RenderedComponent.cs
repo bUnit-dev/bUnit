@@ -3,7 +3,7 @@ using System.Diagnostics;
 namespace Bunit.Rendering;
 
 /// <inheritdoc/>
-[DebuggerDisplay("Type={typeof(TComponent).Name,nq},Markup={TruncatedMarkup}")]
+[DebuggerDisplay("Component={typeof(TComponent).Name,nq},RenderCount={RenderCount}")]
 internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent>
 	where TComponent : IComponent
 {
