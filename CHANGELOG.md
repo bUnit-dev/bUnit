@@ -6,11 +6,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
-## Added
+### Added
 
 -   Added static `DefaultWaitTimeout` property to `TestContext` to enable overriding the default timeout of "wait for" methods like `WaitForAssertion` from 1 second to something else. By [@egil](https://github.com/egil).
 
-## Fixed
+### Fixed
 
 -   TestRenderer throws `ObjectDisposedException` if any methods is accessed after it has been disposed. It will also prevent changes to the internal render tree after it has been disposed. By [@egil](https://github.com/egil).
 
