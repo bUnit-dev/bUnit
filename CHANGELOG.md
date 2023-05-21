@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.20.8] - 2023-05-21
+
 ### Added
 
 -   Added static `DefaultWaitTimeout` property to `TestContext` to enable overriding the default timeout of "wait for" methods like `WaitForAssertion` from 1 second to something else. By [@egil](https://github.com/egil).
@@ -13,7 +15,6 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Fixed
 
 -   TestRenderer throws `ObjectDisposedException` if any methods is accessed after it has been disposed. It will also prevent changes to the internal render tree after it has been disposed. By [@egil](https://github.com/egil).
-
 
 ## [1.19.14] - 2023-04-26
 
@@ -1277,7 +1278,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**
     The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.19.14...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.20.8...HEAD
+
+[1.20.8]: https://github.com/bUnit-dev/bUnit/compare/v1.19.14...v1.20.8
 
 [1.19.14]: https://github.com/bUnit-dev/bUnit/compare/v1.18.4...1.19.14
 
