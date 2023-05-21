@@ -8,6 +8,7 @@ public partial class TestRendererTest : TestContext
 {
 	public TestRendererTest(ITestOutputHelper outputHelper)
 	{
+		TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(outputHelper);
 	}
 

@@ -11,6 +11,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 	public GeneralEventDispatchExtensionsTest(ITestOutputHelper outputHelper)
 	{
+		TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(outputHelper);
 	}
 

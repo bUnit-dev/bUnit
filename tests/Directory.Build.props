@@ -8,18 +8,18 @@
 
 	<PropertyGroup Label="Compile settings" Condition="$(MSBuildProjectName) != 'bunit.testassets'">
 		<Nullable>annotations</Nullable>
-		<IsPackable>false</IsPackable>		
+		<IsPackable>false</IsPackable>
 		<SonarQubeTestProject>true</SonarQubeTestProject>
 		<IsTestProject>true</IsTestProject>
 		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 	</PropertyGroup>
 
-	<ItemGroup Condition="$(MSBuildProjectName) != 'bunit.testassets'">
+	<ItemGroup Condition="$(MSBuildProjectName) != 'bunit.testassets' and $(MSBuildProjectName) != 'bunit.web.testcomponents.tests'">
 		<PackageReference Include="AutoFixture" Version="4.18.0" />
 		<PackageReference Include="AutoFixture.Xunit2" Version="4.18.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-    <PackageReference Include="Moq" Version="4.18.4" />
-		<PackageReference Include="Shouldly" Version="4.1.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+		<PackageReference Include="Moq" Version="4.18.4" />
+		<PackageReference Include="Shouldly" Version="4.2.1" />
 		<PackageReference Include="xunit" Version="2.4.2" />
 		<PackageReference Include="Xunit.Combinatorial" Version="1.5.25" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="All" />

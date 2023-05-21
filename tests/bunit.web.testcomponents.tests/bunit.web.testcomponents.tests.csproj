@@ -11,6 +11,15 @@
 		<PackageReference Include="xunit.extensibility.core" Version="2.4.2" />
 		<PackageReference Include="xunit.extensibility.execution" Version="2.4.2" />
 		<PackageReference Include="xunit.runner.utility" Version="2.4.2" />
+		<PackageReference Include="AutoFixture" Version="4.18.0" />
+		<PackageReference Include="AutoFixture.Xunit2" Version="4.18.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+		<PackageReference Include="Moq" Version="4.18.4" />
+		<PackageReference Include="Shouldly" Version="4.1.0" /> <!-- some test fails with > 4.1.0 -->
+		<PackageReference Include="xunit" Version="2.4.2" />
+		<PackageReference Include="Xunit.Combinatorial" Version="1.5.25" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="All" />
+		<PackageReference Include="coverlet.msbuild" Version="3.2.0" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup>

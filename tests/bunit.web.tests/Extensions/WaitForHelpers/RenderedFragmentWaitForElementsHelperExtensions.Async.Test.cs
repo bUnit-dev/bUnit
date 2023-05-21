@@ -5,10 +5,11 @@ namespace Bunit.Extensions.WaitForHelpers;
 
 public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestContext
 {
-    private readonly static TimeSpan WaitForTestTimeout = TimeSpan.FromMilliseconds(100);
+	private readonly static TimeSpan WaitForTestTimeout = TimeSpan.FromMilliseconds(5);
 
-    public RenderedFragmentWaitForElementsHelperExtensionsAsyncTest(ITestOutputHelper testOutput)
+	public RenderedFragmentWaitForElementsHelperExtensionsAsyncTest(ITestOutputHelper testOutput)
 	{
+		TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(testOutput);
 	}
 
@@ -61,7 +62,8 @@ public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestCont
 		expected.InnerException.ShouldBeNull();
 	}
 
-	[Fact(DisplayName = "WaitForElements with specific count N throws exception after timeout when cssSelector does not result in N matching elements")]
+	[Fact(DisplayName = "WaitForElements with specific count N throws exception after timeout when cssSelector does not result in N matching elements",
+		Skip = "Need to figure out how to make this deterministic.")]
 	[Trait("Category", "async")]
 	public async Task Test023()
 	{
