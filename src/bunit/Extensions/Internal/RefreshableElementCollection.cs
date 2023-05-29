@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Diagnostics;
 using AngleSharp.Dom;
 
 namespace Bunit;
 
+[DebuggerDisplay("Selector={cssSelector},AutoRefresh={enableAutoRefresh}")]
 internal sealed class RefreshableElementCollection : IRefreshableElementCollection<IElement>
 {
 	private readonly IRenderedFragment renderedFragment;

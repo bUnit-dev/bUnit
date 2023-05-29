@@ -22,7 +22,7 @@ public static class InputFileExtensions
 		if (files.Length == 0)
 			throw new ArgumentException("No files were provided to be uploaded.", nameof(files));
 
-		var browserFiles = files.Select(file => new BUnitBrowserFile(
+		var browserFiles = files.Select(file => new BunitBrowserFile(
 			file.Filename ?? string.Empty,
 			file.LastModified ?? default,
 			file.Size,

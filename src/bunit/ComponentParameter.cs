@@ -4,7 +4,7 @@ namespace Bunit;
 /// Represents a single parameter supplied to an <see cref="Microsoft.AspNetCore.Components.IComponent"/>
 /// component under test.
 /// </summary>
-public readonly struct ComponentParameter : IEquatable<ComponentParameter>
+public readonly record struct ComponentParameter
 {
 	/// <summary>
 	/// Gets the name of the parameter. Can be null if the parameter is for an unnamed cascading value.
@@ -47,7 +47,7 @@ public readonly struct ComponentParameter : IEquatable<ComponentParameter>
 	/// <param name="value">Value or null to pass the component.</param>
 	/// <returns>The created <see cref="ComponentParameter"/>.</returns>
 	public static ComponentParameter CreateParameter(string name, object? value)
-		=> new ComponentParameter(name, value, isCascadingValue: false);
+		=> new(name, value, isCascadingValue: false);
 
 	/// <summary>
 	/// Create a Cascading Value parameter for a component under test.
@@ -56,7 +56,7 @@ public readonly struct ComponentParameter : IEquatable<ComponentParameter>
 	/// <param name="value">The cascading value.</param>
 	/// <returns>The created <see cref="ComponentParameter"/>.</returns>
 	public static ComponentParameter CreateCascadingValue(string? name, object value)
-		=> new ComponentParameter(name, value, isCascadingValue: true);
+		=> new(name, value, isCascadingValue: true);
 
 	/// <summary>
 	/// Create a parameter for a component under test.
@@ -72,27 +72,5 @@ public readonly struct ComponentParameter : IEquatable<ComponentParameter>
 	/// <param name="input">A name/value/isCascadingValue triple for the parameter.</param>
 	/// <returns>The created <see cref="ComponentParameter"/>.</returns>
 	public static implicit operator ComponentParameter((string? Name, object? Value, bool IsCascadingValue) input)
-		=> new ComponentParameter(input.Name, input.Value, input.IsCascadingValue);
-
-	/// <inheritdoc/>
-	public bool Equals(ComponentParameter other)
-		=> string.Equals(Name, other.Name, StringComparison.Ordinal)
-		&& ((Value is null && other.Value is null) || (Value?.Equals(other.Value) ?? false))
-		&& IsCascadingValue.Equals(other.IsCascadingValue);
-
-	/// <inheritdoc/>
-	public override bool Equals(object? obj) => obj is ComponentParameter other && Equals(other);
-
-	/// <inheritdoc/>
-	public override int GetHashCode() => HashCode.Combine(Name, Value, IsCascadingValue);
-
-	/// <summary>
-	/// Verify whether the <paramref name="left"/> and <paramref name="right"/> <see cref="ComponentParameter"/> are equal.
-	/// </summary>
-	public static bool operator ==(ComponentParameter left, ComponentParameter right) => left.Equals(right);
-
-	/// <summary>
-	/// Verify whether the <paramref name="left"/> and <paramref name="right"/> <see cref="ComponentParameter"/> are not equal.
-	/// </summary>
-	public static bool operator !=(ComponentParameter left, ComponentParameter right) => !(left == right);
+		=> new(input.Name, input.Value, input.IsCascadingValue);
 }
