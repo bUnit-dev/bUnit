@@ -109,9 +109,6 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 
 		void AddAttributes(RenderTreeBuilder builder)
 		{
-			if (parameters is null)
-				return;
-
 			var attrCount = 100;
 
 			foreach (var pgroup in parameters.Where(x => !x.IsCascadingValue).GroupBy(x => x.Name, StringComparer.Ordinal))
