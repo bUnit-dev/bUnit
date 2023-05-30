@@ -162,7 +162,7 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 
 		Queue<(ComponentParameter Parameter, Type Type)> GetCascadingValues()
 		{
-			var cascadingValues = parameters?
+			var cascadingValues = parameters
 				.Where(x => x.IsCascadingValue)
 				.Select(x => (Parameter: x, Type: GetCascadingValueType(x)))
 				.ToArray() ?? Array.Empty<(ComponentParameter Parameter, Type Type)>();
