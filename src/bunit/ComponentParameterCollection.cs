@@ -12,15 +12,15 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 {
 	private static readonly MethodInfo CreateTemplateWrapperMethod = GetCreateTemplateWrapperMethod();
 	private static readonly Type CascadingValueType = typeof(CascadingValue<>);
-	private List<ComponentParameter>? parameters;
+	private readonly List<ComponentParameter> parameters = new();
 
 	/// <summary>
 	/// Gets the number of <see cref="ComponentParameter"/> in the collection.
 	/// </summary>
-	public int Count => parameters?.Count ?? 0;
+	public int Count => parameters.Count;
 
 	/// <inheritdoc />
-	public bool IsReadOnly { get; }
+	public bool IsReadOnly => false;
 
 	/// <summary>
 	/// Adds a <paramref name="item"/> to the collection.
@@ -30,9 +30,6 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 	{
 		if (item.Name is null && item.Value is null)
 			throw new ArgumentException("A component parameter without a name and value is not valid.", nameof(item));
-
-		if (parameters is null)
-			parameters = new List<ComponentParameter>();
 
 		parameters.Add(item);
 	}
@@ -56,16 +53,16 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 	/// </summary>
 	/// <param name="item">Parameter to check with.</param>
 	/// <returns>True if <paramref name="item"/> is in the collection, false otherwise.</returns>
-	public bool Contains(ComponentParameter item) => parameters?.Contains(item) ?? false;
+	public bool Contains(ComponentParameter item) => parameters.Contains(item);
 
 	/// <inheritdoc/>
-	public void Clear() => parameters?.Clear();
+	public void Clear() => parameters.Clear();
 
 	/// <inheritdoc/>
-	public void CopyTo(ComponentParameter[] array, int arrayIndex) => parameters?.CopyTo(array, arrayIndex);
+	public void CopyTo(ComponentParameter[] array, int arrayIndex) => parameters.CopyTo(array, arrayIndex);
 
 	/// <inheritdoc/>
-	public bool Remove(ComponentParameter item) => parameters?.Remove(item) ?? false;
+	public bool Remove(ComponentParameter item) => parameters.Remove(item);
 
 	/// <summary>
 	/// Creates a <see cref="RenderFragment"/> that will render a
@@ -152,7 +149,7 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 
 				var groupType = groupObject?.GetType();
 
-				if (groupType != null && groupType.IsGenericType && groupType.GetGenericTypeDefinition() == typeof(RenderFragment<>))
+				if (groupType is { IsGenericType: true } && groupType.GetGenericTypeDefinition() == typeof(RenderFragment<>))
 				{
 					builder.AddAttribute(
 						attrCount++,
