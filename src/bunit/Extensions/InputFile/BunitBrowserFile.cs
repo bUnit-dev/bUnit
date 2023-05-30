@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace Bunit;
 
-internal class BUnitBrowserFile : IBrowserFile
+internal sealed class BunitBrowserFile : IBrowserFile
 {
 	public string Name { get; }
 	public DateTimeOffset LastModified { get; }
@@ -10,7 +10,7 @@ internal class BUnitBrowserFile : IBrowserFile
 	public string ContentType { get; }
 	public byte[] Content { get; }
 
-	public BUnitBrowserFile(
+	public BunitBrowserFile(
 		string name,
 		DateTimeOffset lastModified,
 		long size,
