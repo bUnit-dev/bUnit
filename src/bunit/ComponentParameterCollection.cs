@@ -185,16 +185,7 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 	}
 
 	/// <inheritdoc/>
-	public IEnumerator<ComponentParameter> GetEnumerator()
-	{
-		if (parameters is not null)
-		{
-			for (var i = 0; i < parameters.Count; i++)
-			{
-				yield return parameters[i];
-			}
-		}
-	}
+	public IEnumerator<ComponentParameter> GetEnumerator() => ((IEnumerable<ComponentParameter>)parameters).GetEnumerator();
 
 	/// <inheritdoc/>
 	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
