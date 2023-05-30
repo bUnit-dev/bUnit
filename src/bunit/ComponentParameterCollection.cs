@@ -185,7 +185,7 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 	}
 
 	/// <inheritdoc/>
-	public IEnumerator<ComponentParameter> GetEnumerator() => ((IEnumerable<ComponentParameter>)parameters).GetEnumerator();
+	public IEnumerator<ComponentParameter> GetEnumerator() => parameters.GetEnumerator();
 
 	/// <inheritdoc/>
 	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
