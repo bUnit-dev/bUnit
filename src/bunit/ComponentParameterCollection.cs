@@ -165,7 +165,7 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 			var cascadingValues = parameters
 				.Where(x => x.IsCascadingValue)
 				.Select(x => (Parameter: x, Type: GetCascadingValueType(x)))
-				.ToArray() ?? Array.Empty<(ComponentParameter Parameter, Type Type)>();
+				.ToArray();
 
 			var duplicate = cascadingValues
 				.GroupBy(x => new { x.Type, x.Parameter.Name })
