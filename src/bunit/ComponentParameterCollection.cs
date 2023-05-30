@@ -168,32 +168,22 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 
 		Queue<(ComponentParameter Parameter, Type Type)> GetCascadingValues()
 		{
-			var cascadingValues = parameters?.Where(x => x.IsCascadingValue)
+			var cascadingValues = parameters?
+				.Where(x => x.IsCascadingValue)
 				.Select(x => (Parameter: x, Type: GetCascadingValueType(x)))
 				.ToArray() ?? Array.Empty<(ComponentParameter Parameter, Type Type)>();
 
-			// Detect duplicated unnamed values
-			for (var i = 0; i < cascadingValues.Length; i++)
-			{
-				for (var j = i + 1; j < cascadingValues.Length; j++)
-				{
-					if (cascadingValues[i].Type == cascadingValues[j].Type)
-					{
-						var iName = cascadingValues[i].Parameter.Name;
-						if (iName is null)
-						{
-							var cascadingValueType = cascadingValues[i].Type.GetGenericArguments()[0];
-							throw new ArgumentException($"Two or more unnamed cascading values with the type '{cascadingValueType.Name}' was added. " +
-														$"Only add one unnamed cascading value of the same type.");
-						}
+			var duplicate = cascadingValues
+				.GroupBy(x => new { x.Type, x.Parameter.Name })
+				.FirstOrDefault(g => g.Count() > 1);
 
-						if (iName.Equals(cascadingValues[j].Parameter.Name, StringComparison.Ordinal))
-						{
-							throw new ArgumentException($"Two or more named cascading values with the name '{iName}' and the same type was added. " +
-														$"Only add one named cascading value with the same name and type.");
-						}
-					}
-				}
+			if (duplicate is not null)
+			{
+				var name = duplicate.Key.Name;
+				var type = duplicate.First().Type.GetGenericArguments()[0];
+
+				throw new ArgumentException($"Two or more unnamed cascading values with the type '{name ?? type.Name}' was added. " +
+				                            $"Only add one unnamed cascading value of the same type.");
 			}
 
 			return new Queue<(ComponentParameter Parameter, Type Type)>(cascadingValues);
