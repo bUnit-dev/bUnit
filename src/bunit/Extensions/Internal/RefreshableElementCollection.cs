@@ -4,7 +4,7 @@ using AngleSharp.Dom;
 
 namespace Bunit;
 
-[DebuggerDisplay("Selector={cssSelector},AutoRefresh={enableAutoRefresh}")]
+[DebuggerDisplay("Selector={cssSelector}, AutoRefresh={enableAutoRefresh}")]
 internal sealed class RefreshableElementCollection : IRefreshableElementCollection<IElement>
 {
 	private readonly IRenderedFragment renderedFragment;
