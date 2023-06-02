@@ -60,8 +60,8 @@ jobs:
 
       - name: 🧪 Run unit tests
         run: |
-          dotnet test -c release
-          
+          dotnet test --configuration Release --logger GitHubActions -- RunConfiguration.CollectSourceInformation=true
+
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
         uses: actions/upload-artifact@v3
