@@ -167,5 +167,6 @@ internal class RenderedFragment : IRenderedFragment
 		IsDisposed = true;
 		markup = string.Empty;
 		OnAfterRender = null;
+		OnMarkupUpdated = null;
 	}
 }
