@@ -63,3 +63,7 @@ The `AddTestAuthorization` method on `TestContext` has been renamed to `AddAutho
 
 ## Merged `TestContext` and `TestContextBase`
 The `TestContext` and `TestContextBase` classes have been merged into a single `TestContext` class. All references to `TestContextBase` should replace them with `TestContext` to migrate.
+
+## `TestContext` implements `IDisposable` and `IAsyncDisposable`
+The `TestContext` now implements `IDisposable` and `IAsyncDisposable`. In version 1.x, `TestContext` only implemented `IDisposable` and cleaned up asynchronous objects in the synchronous `Dispose` method. This is no longer the case, and asynchronous objects are now cleaned up in the `DisposeAsync` method.
+If you register services into the container that implement `IAsyncDisposable` make sure that the test framework calls the right method.
