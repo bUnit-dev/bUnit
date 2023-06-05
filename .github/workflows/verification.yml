@@ -21,6 +21,10 @@ concurrency:
   group: verification-${{ github.ref }}-1
   cancel-in-progress: true
 
+env:
+  VSTEST_CONNECTION_TIMEOUT: 180
+  DOTNET_NOLOGO: "true"
+
 jobs:
   verify-bunit:
     name: 👌 Verify bUnit
