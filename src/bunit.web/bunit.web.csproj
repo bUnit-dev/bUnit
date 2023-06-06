@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AngleSharp" Version="0.17.1" />
+		<PackageReference Include="AngleSharp" Version="1.0.2" />
 		<PackageReference Include="AngleSharp.Diffing" Version="0.18.1" />
 	</ItemGroup>
 
