@@ -51,7 +51,6 @@ public static class TestServiceProviderExtensions
 		services.AddSingleton<Renderer>(s => s.GetRequiredService<BunitRenderer>());
 		services.AddSingleton<HtmlComparer>();
 		services.AddSingleton<BunitHtmlParser>();
-		services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
 
 		services.AddMemoryCache();
 

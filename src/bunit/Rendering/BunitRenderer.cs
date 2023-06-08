@@ -1,5 +1,5 @@
-using System.Runtime.ExceptionServices;
 using Microsoft.Extensions.Logging;
+using System.Runtime.ExceptionServices;
 
 namespace Bunit.Rendering;
 
@@ -13,7 +13,7 @@ public sealed class BunitRenderer : Renderer
 	private readonly Dictionary<int, IRenderedFragment> renderedComponents = new();
 	private readonly List<int> rootComponentIds = new();
 	private readonly ILogger<BunitRenderer> logger;
-	private readonly IRenderedComponentActivator activator;
+	private readonly TestServiceProvider services;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
 
@@ -34,23 +34,23 @@ public sealed class BunitRenderer : Renderer
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
+	public BunitRenderer(TestServiceProvider services, ILoggerFactory loggerFactory)
 		: base(services, loggerFactory)
 	{
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
-		activator = renderedComponentActivator;
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
+		this.services = services;
 	}
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+	public BunitRenderer(TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
 		: base(services, loggerFactory, componentActivator)
 	{
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
-		activator = renderedComponentActivator;
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
+		this.services = services;
 	}
 
 	/// <summary>
@@ -59,7 +59,7 @@ public sealed class BunitRenderer : Renderer
 	/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
 	/// <returns>A <see cref="IRenderedFragment"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
 	public IRenderedFragment RenderFragment(RenderFragment renderFragment)
-		=> Render(renderFragment, id => activator.CreateRenderedFragment(id));
+		=> Render(renderFragment);
 
 	/// <summary>
 	/// Renders a <typeparamref name="TComponent"/> with the <paramref name="parameters"/> passed to it.
@@ -73,7 +73,7 @@ public sealed class BunitRenderer : Renderer
 		ArgumentNullException.ThrowIfNull(parameters);
 
 		var renderFragment = parameters.ToRenderFragment<TComponent>();
-		return Render(renderFragment, id => activator.CreateRenderedComponent<TComponent>(id));
+		return Render(renderFragment).FindComponent<TComponent>();
 	}
 
 	/// <summary>
@@ -285,8 +285,7 @@ public sealed class BunitRenderer : Renderer
 		base.Dispose(disposing);
 	}
 
-	private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
-		where TResult : IRenderedFragment
+	private IRenderedFragment Render(RenderFragment renderFragment)
 	{
 		var renderTask = Dispatcher.InvokeAsync(() =>
 		{
@@ -294,14 +293,14 @@ public sealed class BunitRenderer : Renderer
 
 			var root = new RootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
-			var result = activator(rootComponentId);
+			var result = new RenderedFragment(rootComponentId, services);
 			renderedComponents.Add(rootComponentId, result);
 			rootComponentIds.Add(rootComponentId);
 			root.Render();
 			return result;
 		});
 
-		TResult result;
+		IRenderedFragment result;
 
 		if (!renderTask.IsCompleted)
 		{
@@ -366,7 +365,7 @@ public sealed class BunitRenderer : Renderer
 		}
 
 		LoadRenderTreeFrames(componentId, framesCollection);
-		var result = activator.CreateRenderedComponent(componentId, component, framesCollection);
+		var result = new RenderedComponent<TComponent>(componentId, component, framesCollection, services);
 		renderedComponents.Add(result.ComponentId, result);
 
 		return result;
