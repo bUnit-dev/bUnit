@@ -421,7 +421,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// Builds the <see cref="ComponentParameterCollection"/>.
 	/// </summary>
 	/// <returns>The created <see cref="ComponentParameterCollection"/>.</returns>
-	public ComponentParameterCollection Build() => parameters;
+	internal ComponentParameterCollection Build() => parameters;
 
 	private static (string Name, string? CascadingValueName, bool IsCascading) GetParameterInfo<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
 	{

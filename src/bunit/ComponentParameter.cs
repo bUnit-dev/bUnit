@@ -4,7 +4,7 @@ namespace Bunit;
 /// Represents a single parameter supplied to an <see cref="Microsoft.AspNetCore.Components.IComponent"/>
 /// component under test.
 /// </summary>
-public readonly record struct ComponentParameter
+internal readonly record struct ComponentParameter
 {
 	/// <summary>
 	/// Gets the name of the parameter. Can be null if the parameter is for an unnamed cascading value.
@@ -57,20 +57,4 @@ public readonly record struct ComponentParameter
 	/// <returns>The created <see cref="ComponentParameter"/>.</returns>
 	public static ComponentParameter CreateCascadingValue(string? name, object value)
 		=> new(name, value, isCascadingValue: true);
-
-	/// <summary>
-	/// Create a parameter for a component under test.
-	/// </summary>
-	/// <param name="input">A name/value pair for the parameter.</param>
-	/// <returns>The created <see cref="ComponentParameter"/>.</returns>
-	public static implicit operator ComponentParameter((string Name, object? Value) input)
-		=> CreateParameter(input.Name, input.Value);
-
-	/// <summary>
-	/// Create a parameter or cascading value for a component under test.
-	/// </summary>
-	/// <param name="input">A name/value/isCascadingValue triple for the parameter.</param>
-	/// <returns>The created <see cref="ComponentParameter"/>.</returns>
-	public static implicit operator ComponentParameter((string? Name, object? Value, bool IsCascadingValue) input)
-		=> new(input.Name, input.Value, input.IsCascadingValue);
 }

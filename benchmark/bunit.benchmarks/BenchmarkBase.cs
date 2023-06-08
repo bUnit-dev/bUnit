@@ -1,14 +1,13 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
+using Bunit.Extensions;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Bunit;
 
 public abstract class BenchmarkBase
 {
-	private static readonly ComponentParameterCollection EmptyParameter = new();
 	private readonly ServiceCollection services = new();
 
 	protected BunitRenderer Renderer { get; private set; } = default!;
@@ -30,8 +29,7 @@ public abstract class BenchmarkBase
 	}
 
 	protected IRenderedComponent<TComponent> RenderComponent<TComponent>()
-		where TComponent : IComponent =>
-		Renderer.RenderComponent<TComponent>(EmptyParameter);
+		where TComponent : IComponent => Renderer.RenderComponent<TComponent>();
 
 	protected virtual void InternalCleanup()
 	{
