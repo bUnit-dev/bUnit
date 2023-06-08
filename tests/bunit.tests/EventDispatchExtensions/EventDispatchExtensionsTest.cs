@@ -10,11 +10,11 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 	protected abstract string ElementName { get; }
 
 	protected TriggerEventSpy<EventArgs> CreateTriggerSpy(string element, string eventName)
-		=> new(p => RenderComponent<TriggerTester<EventArgs>>(p), element, eventName);
+		=> new(builder => RenderComponent<TriggerTester<EventArgs>>(builder), element, eventName);
 
 	// This is a separate overload for useful in non-reflection based testing
 	protected TriggerEventSpy<T> CreateTriggerSpy<T>(string element, string eventName) where T : EventArgs, new()
-		=> new(p => RenderComponent<TriggerTester<T>>(p), element, eventName);
+		=> new(builder => RenderComponent<TriggerTester<T>>(builder), element, eventName);
 
 	protected void VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string MethodName, string EventName)[] methodNameEventMap)
 	{
