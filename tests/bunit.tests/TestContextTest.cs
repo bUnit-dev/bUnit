@@ -10,7 +10,7 @@ public class TestContextTest : TestContext
 	public void Test101()
 	{
 		var callStack = new List<string>();
-		RenderComponent<ParentDispose>(ps => ps.Add(p => p.CallStack, callStack));
+		Render<ParentDispose>(ps => ps.Add(p => p.CallStack, callStack));
 
 		DisposeComponents();
 
@@ -23,8 +23,8 @@ public class TestContextTest : TestContext
 	public void Test102()
 	{
 		var callStack = new List<string>();
-		RenderComponent<ChildDispose>(ps => ps.Add(p => p.CallStack, callStack));
-		RenderComponent<ChildDispose>(ps => ps.Add(p => p.CallStack, callStack));
+		Render<ChildDispose>(ps => ps.Add(p => p.CallStack, callStack));
+		Render<ChildDispose>(ps => ps.Add(p => p.CallStack, callStack));
 
 		DisposeComponents();
 
@@ -34,7 +34,7 @@ public class TestContextTest : TestContext
 	[Fact(DisplayName = "DisposeComponents rethrows exceptions from Dispose methods in components")]
 	public void Test103()
 	{
-		RenderComponent<ThrowExceptionComponent>();
+		Render<ThrowExceptionComponent>();
 		var action = () => DisposeComponents();
 
 		action.ShouldThrow<NotSupportedException>();
@@ -57,7 +57,7 @@ public class TestContextTest : TestContext
 		var mock = CreateMockComponentFactory(canCreate: _ => false, create: _ => null);
 		ComponentFactories.Add(mock.Object);
 
-		RenderComponent<Simple1>();
+		Render<Simple1>();
 
 		mock.Verify(x => x.CanCreate(typeof(Simple1)), Times.Once);
 		mock.Verify(x => x.Create(It.IsAny<Type>()), Times.Never);
@@ -69,7 +69,7 @@ public class TestContextTest : TestContext
 		var mock = CreateMockComponentFactory(canCreate: _ => true, create: _ => new Simple1());
 		ComponentFactories.Add(mock.Object);
 
-		RenderComponent<Simple1>();
+		Render<Simple1>();
 
 		mock.Verify(x => x.CanCreate(typeof(Simple1)), Times.Once);
 		mock.Verify(x => x.Create(typeof(Simple1)), Times.Once);
@@ -83,7 +83,7 @@ public class TestContextTest : TestContext
 		ComponentFactories.Add(firstMock.Object);
 		ComponentFactories.Add(secondMock.Object);
 
-		RenderComponent<Simple1>();
+		Render<Simple1>();
 
 		firstMock.Verify(x => x.CanCreate(It.IsAny<Type>()), Times.Never);
 		firstMock.Verify(x => x.Create(It.IsAny<Type>()), Times.Never);
@@ -94,7 +94,7 @@ public class TestContextTest : TestContext
 	[Fact(DisplayName = "DisposeComponents captures exceptions from DisposeAsync in Renderer.UnhandledException")]
 	public async Task Test201()
 	{
-		RenderComponent<AsyncThrowExceptionComponent>();
+		Render<AsyncThrowExceptionComponent>();
 
 		DisposeComponents();
 
@@ -105,7 +105,7 @@ public class TestContextTest : TestContext
 	[Fact(DisplayName = "DisposeComponents calls DisposeAsync on rendered components")]
 	public async Task Test202()
 	{
-		var cut = RenderComponent<AsyncDisposableComponent>();
+		var cut = Render<AsyncDisposableComponent>();
 		var wasDisposedTask = cut.Instance.DisposedTask;
 
 		DisposeComponents();
@@ -117,7 +117,7 @@ public class TestContextTest : TestContext
 	public void Test203()
 	{
 		ComponentFactories.Add<ChildDispose, MyChildDisposeStub>();
-		var cut = RenderComponent<ParentDispose>(ps => ps.Add(p => p.CallStack, new List<string>()));
+		var cut = Render<ParentDispose>(ps => ps.Add(p => p.CallStack, new List<string>()));
 		var instance = cut.FindComponent<MyChildDisposeStub>().Instance;
 
 		DisposeComponents();
@@ -164,13 +164,13 @@ public class TestContextTest : TestContext
 	[Fact(DisplayName = "The test service provider should register a placeholder HttpClient which throws exceptions")]
 	public void Test024()
 	{
-		Should.Throw<MissingMockHttpClientException>(() => RenderComponent<SimpleWithHttpClient>());
+		Should.Throw<MissingMockHttpClientException>(() => Render<SimpleWithHttpClient>());
 	}
 
 	[Fact(DisplayName = "The test service provider should register a placeholder IStringLocalizer which throws exceptions")]
 	public void Test026()
 	{
-		Should.Throw<MissingMockStringLocalizationException>(() => RenderComponent<SimpleUsingLocalizer>());
+		Should.Throw<MissingMockStringLocalizationException>(() => Render<SimpleUsingLocalizer>());
 	}
 
 	[Fact(DisplayName = "Render() renders fragment inside RenderTree")]
@@ -208,7 +208,7 @@ public class TestContextTest : TestContext
 	public void Test032()
 	{
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
-		var cut = RenderComponent<ReceivesCascadingValue>(ps => ps.Add(p => p.Dummy, null));
+		var cut = Render<ReceivesCascadingValue>(ps => ps.Add(p => p.Dummy, null));
 
 		cut.Instance
 			.Value
@@ -219,7 +219,7 @@ public class TestContextTest : TestContext
 	public void Test033()
 	{
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
-		var cut = RenderComponent<ReceivesCascadingValue>(ps => ps
+		var cut = Render<ReceivesCascadingValue>(ps => ps
 			.Add(p => p.Dummy, null!));
 
 		cut.Instance
@@ -230,7 +230,7 @@ public class TestContextTest : TestContext
 	[Fact(DisplayName = "Can raise events from markup rendered with TestContext")]
 	public void Test040()
 	{
-		Should.NotThrow(() => RenderComponent<ClickCounter>().Find("button").Click());
+		Should.NotThrow(() => Render<ClickCounter>().Find("button").Click());
 	}
 
 	private sealed class AsyncDisposableService : IAsyncDisposable

@@ -13,14 +13,14 @@ public class RenderedFragmentTest : TestContext
 	[Fact(DisplayName = "Find throws an exception if no element matches the css selector")]
 	public void Test001()
 	{
-		var cut = RenderComponent<Wrapper>();
+		var cut = Render<Wrapper>();
 		Should.Throw<ElementNotFoundException>(() => cut.Find("div"));
 	}
 
 	[Fact(DisplayName = "Find returns expected element that matches the css selector")]
 	public void Test002()
 	{
-		var cut = RenderComponent<Wrapper>(x => x.AddChildContent("<div>"));
+		var cut = Render<Wrapper>(x => x.AddChildContent("<div>"));
 		var result = cut.Find("div");
 		result.ShouldNotBeNull();
 	}
@@ -29,7 +29,7 @@ public class RenderedFragmentTest : TestContext
 						"when a event handler trigger has caused changes to DOM tree")]
 	public void Test006()
 	{
-		var cut = RenderComponent<ClickCounter>();
+		var cut = Render<ClickCounter>();
 		var initialNodes = cut.Nodes;
 
 		cut.Find("button").Click();
@@ -41,7 +41,7 @@ public class RenderedFragmentTest : TestContext
 						"when a nested component has caused the DOM tree to change")]
 	public void Test007()
 	{
-		var cut = RenderComponent<CascadingValue<string>>(builder => builder
+		var cut = Render<CascadingValue<string>>(builder => builder
 			.Add(p => p.Value, "FOO")
 			.AddChildContent<ClickCounter>());
 
@@ -56,7 +56,7 @@ public class RenderedFragmentTest : TestContext
 						"when a re-render does not causes the DOM to change")]
 	public void Test008()
 	{
-		var cut = RenderComponent<RenderOnClick>();
+		var cut = Render<RenderOnClick>();
 		var initialNodes = cut.Nodes;
 
 		cut.Find("button").Click();
@@ -68,12 +68,12 @@ public class RenderedFragmentTest : TestContext
 	[Fact(DisplayName = "Changes to event handler should return a new instance of DOM tree")]
 	public void Test009()
 	{
-		var cut = RenderComponent<ToggleClickHandler>();
+		var cut = Render<ToggleClickHandler>();
 		cut.Find("#btn").Click();
 
 		cut.Instance.Counter.ShouldBe(1);
 
-		cut.SetParametersAndRender(ps => ps.Add(p => p.HandleClicks, false));
+		cut.Render(ps => ps.Add(p => p.HandleClicks, false));
 
 		cut.Find("#btn").Click();
 
@@ -83,7 +83,7 @@ public class RenderedFragmentTest : TestContext
 	[Fact(DisplayName = "FindComponent<TComponent> returns component from first branch of tree in first depth first search")]
 	public void Test100()
 	{
-		var wrapper = RenderComponent<TwoComponentWrapper>(builder => builder
+		var wrapper = Render<TwoComponentWrapper>(builder => builder
 			.Add<Wrapper>(p => p.First, wrapper => wrapper
 				.AddChildContent<Simple1>(simple1 => simple1
 					.Add(p => p.Header, "First")))
@@ -98,7 +98,7 @@ public class RenderedFragmentTest : TestContext
 	[Fact(DisplayName = "FindComponent<TComponent> finds components when first tree branch is empty")]
 	public void Test101()
 	{
-		var wrapper = RenderComponent<TwoComponentWrapper>(builder => builder
+		var wrapper = Render<TwoComponentWrapper>(builder => builder
 			.Add<Wrapper>(p => p.First)
 			.Add<Simple1>(p => p.Second, simple1 => simple1
 				.Add(p => p.Header, "Second")));
@@ -111,7 +111,7 @@ public class RenderedFragmentTest : TestContext
 	[Fact(DisplayName = "GetComponent throws when component of requested type is not in the render tree")]
 	public void Test102()
 	{
-		var wrapper = RenderComponent<Wrapper>();
+		var wrapper = Render<Wrapper>();
 
 		Should.Throw<ComponentNotFoundException>(() => wrapper.FindComponent<Simple1>());
 	}
@@ -119,7 +119,7 @@ public class RenderedFragmentTest : TestContext
 	[Fact(DisplayName = "GetComponents returns all components of requested type using a depth first order")]
 	public void Test103()
 	{
-		var wrapper = RenderComponent<TwoComponentWrapper>(builder => builder
+		var wrapper = Render<TwoComponentWrapper>(builder => builder
 			.Add<Wrapper>(p => p.First, wrapper => wrapper
 				.AddChildContent<Simple1>(simple1 => simple1
 					.Add(p => p.Header, "First")))
@@ -136,7 +136,7 @@ public class RenderedFragmentTest : TestContext
 	[Fact(DisplayName = "Render events for non-rendered sub components are not emitted")]
 	public void Test010()
 	{
-		var wrapper = RenderComponent<TwoComponentWrapper>(parameters => parameters
+		var wrapper = Render<TwoComponentWrapper>(parameters => parameters
 			.Add<Simple1>(p => p.First)
 			.Add<Simple1>(p => p.Second));
 		var cuts = wrapper.FindComponents<Simple1>();
@@ -163,11 +163,11 @@ public class RenderedFragmentTest : TestContext
 	[Fact(DisplayName = "Getting Markup from a RenderedFragment based on a disposed component throws")]
 	public void Test020()
 	{
-		var cut = RenderComponent<ToggleChildComponent>(ps => ps.Add(p => p.ShowChild, true));
+		var cut = Render<ToggleChildComponent>(ps => ps.Add(p => p.ShowChild, true));
 		var target = cut.FindComponent<Simple1>();
 
 		// Disposes of <Simple1 />
-		cut.SetParametersAndRender(ps => ps.Add(p => p.ShowChild, false));
+		cut.Render(ps => ps.Add(p => p.ShowChild, false));
 
 		Should.Throw<ComponentDisposedException>(() => target.Markup);
 	}

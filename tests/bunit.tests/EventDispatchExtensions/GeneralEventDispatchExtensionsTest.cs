@@ -39,7 +39,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Fact(DisplayName = "TriggerEventAsync throws if element does not contain an attribute with the blazor event-name")]
 	public void Test002()
 	{
-		var cut = RenderComponent<Simple1>();
+		var cut = Render<Simple1>();
 
 		Should.Throw<MissingEventHandlerException>(() => cut.Find("h1").Click());
 	}
@@ -63,7 +63,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 						"event handlers higher up the DOM tree is also triggered")]
 	public void Test100()
 	{
-		var cut = RenderComponent<ClickEventBubbling>();
+		var cut = Render<ClickEventBubbling>();
 
 		cut.Find("span").Click();
 
@@ -75,7 +75,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 						"event handlers higher up the DOM tree is triggered")]
 	public void Test101()
 	{
-		var cut = RenderComponent<ClickEventBubbling>();
+		var cut = Render<ClickEventBubbling>();
 
 		cut.Find("button").Click();
 
@@ -107,7 +107,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[InlineData("onselectionchange")]
 	public async Task Test110(string eventName)
 	{
-		var cut = RenderComponent<EventBubbles>(ps => ps.Add(p => p.EventName, eventName));
+		var cut = Render<EventBubbles>(ps => ps.Add(p => p.EventName, eventName));
 
 		await cut.Find("#child").TriggerEventAsync(eventName, EventArgs.Empty);
 
@@ -119,7 +119,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Fact(DisplayName = "When event has StopPropergation modifier, events does not bubble from target")]
 	public async Task Test111()
 	{
-		var cut = RenderComponent<EventBubbles>(ps => ps
+		var cut = Render<EventBubbles>(ps => ps
 			.Add(p => p.EventName, "onclick")
 			.Add(p => p.ChildStopPropagation, true));
 
@@ -133,7 +133,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Fact(DisplayName = "When event has StopPropergation modifier, events does not bubble from parent of target")]
 	public async Task Test112()
 	{
-		var cut = RenderComponent<EventBubbles>(ps => ps
+		var cut = Render<EventBubbles>(ps => ps
 			.Add(p => p.EventName, "onclick")
 			.Add(p => p.ParentStopPropagation, true));
 
@@ -149,7 +149,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		[CombinatorialValues("onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup")] string eventName,
 		[CombinatorialValues("button", "input", "textarea", "select")] string elementType)
 	{
-		var cut = RenderComponent<EventBubbles>(ps => ps
+		var cut = Render<EventBubbles>(ps => ps
 			.Add(p => p.EventName, eventName)
 			.Add(p => p.ChildElementType, elementType)
 			.Add(p => p.ChildElementDisabled, true));
@@ -166,7 +166,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		[CombinatorialValues("onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup")] string eventName,
 		[CombinatorialValues("button", "input", "textarea", "select")] string elementType)
 	{
-		var cut = RenderComponent<EventBubbles>(ps => ps
+		var cut = Render<EventBubbles>(ps => ps
 			.Add(p => p.EventName, eventName)
 			.Add(p => p.ChildElementType, elementType)
 			.Add(p => p.ChildElementDisabled, false));
@@ -181,7 +181,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Fact(DisplayName = "TriggerEvent can trigger custom events")]
 	public void Test201()
 	{
-		var cut = RenderComponent<CustomPasteSample>();
+		var cut = Render<CustomPasteSample>();
 
 		cut.Find("input").TriggerEvent("oncustompaste", new CustomPasteEventArgs
 		{
@@ -195,7 +195,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Fact(DisplayName = "TriggerEventAsync throws NoEventHandlerException when invoked with an unknown event handler ID")]
 	public void Test300()
 	{
-		var cut = RenderComponent<ClickRemovesEventHandler>();
+		var cut = Render<ClickRemovesEventHandler>();
 		var buttons = cut.FindAll("button");
 		buttons[0].Click();
 
@@ -205,7 +205,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Fact(DisplayName = "Removed bubbled event handled NoEventHandlerException are ignored")]
 	public void Test301()
 	{
-		var cut = RenderComponent<BubbleEventsRemoveTriggers>();
+		var cut = Render<BubbleEventsRemoveTriggers>();
 
 		cut.Find("button").Click();
 
@@ -221,7 +221,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[AutoData]
 	public void Test302(string exceptionMessage)
 	{
-		var cut = RenderComponent<BubbleEventsThrows>(ps => ps.Add(p => p.ExceptionMessage, exceptionMessage));
+		var cut = Render<BubbleEventsThrows>(ps => ps.Add(p => p.ExceptionMessage, exceptionMessage));
 
 		Should.Throw<Exception>(() => cut.Find("button").Click())
 			.Message.ShouldBe(exceptionMessage);
@@ -235,7 +235,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[AutoData]
 	public void Test303(string exceptionMessage)
 	{
-		var cut = RenderComponent<EventHandlerThrows>(ps => ps.Add(p => p.ExceptionMessage, exceptionMessage));
+		var cut = Render<EventHandlerThrows>(ps => ps.Add(p => p.ExceptionMessage, exceptionMessage));
 
 		Should.Throw<Exception>(() => cut.Find("button").Click())
 			.Message.ShouldBe(exceptionMessage);
@@ -244,7 +244,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Fact(DisplayName = "Should handle click event first and submit form afterwards for button")]
 	public void Test304()
 	{
-		var cut = RenderComponent<SubmitFormOnClick>();
+		var cut = Render<SubmitFormOnClick>();
 
 		cut.Find("button").Click();
 
@@ -255,7 +255,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Fact(DisplayName = "Should handle click event first and submit form afterwards for input when type button")]
 	public void Test305()
 	{
-		var cut = RenderComponent<SubmitFormOnClick>();
+		var cut = Render<SubmitFormOnClick>();
 
 		cut.Find("#inside-form-input").Click();
 
@@ -266,7 +266,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Fact(DisplayName = "Should throw exception when invoking onsubmit from non form")]
 	public void Test306()
 	{
-		var cut = RenderComponent<OnsubmitButton>();
+		var cut = Render<OnsubmitButton>();
 
 		Should.Throw<InvalidOperationException>(() => cut.Find("button").Submit());
 	}
@@ -277,7 +277,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[InlineData("#span-inside-form-button")]
 	public void Test307(string submitElementSelector)
 	{
-		var cut = RenderComponent<SubmitFormOnClick>(ps => ps
+		var cut = Render<SubmitFormOnClick>(ps => ps
 			.Add(x => x.PreventDefault, true));
 
 		cut.Find(submitElementSelector).Click();
@@ -295,7 +295,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[InlineData("#span-inside-form-button-no-handler")]
 	public void Test308(string submitElementSelector)
 	{
-		var cut = RenderComponent<SubmitFormOnClick>();
+		var cut = Render<SubmitFormOnClick>();
 
 		cut.Find(submitElementSelector).Click();
 
@@ -308,7 +308,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[InlineData("#span-inside-form-button")]
 	public void Test309(string submitElementSelector)
 	{
-		var cut = RenderComponent<ButtonsInsideForm>();
+		var cut = Render<ButtonsInsideForm>();
 
 		cut.Find(submitElementSelector).Click();
 
@@ -321,7 +321,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Repeat(10)]
 	public async Task Test400(int repeatCount)
 	{
-		var cut = RenderComponent<CounterComponentDynamic>();
+		var cut = Render<CounterComponentDynamic>();
 
 		await cut.WaitForAssertionAsync(() => cut.Find("[data-id=1]"));
 

@@ -17,7 +17,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	public async Task Test001()
 	{
 		var expectedMarkup = "<p>child content</p>";
-		var cut = RenderComponent<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
+		var cut = Render<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
 		var elm = await cut.WaitForElementAsync("main > p");
 
@@ -27,7 +27,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	[Fact(DisplayName = "WaitForElement throws exception after timeout when cssSelector does not result in matching element")]
 	public async Task Test002()
 	{
-		var cut = RenderComponent<DelayRenderFragment>();
+		var cut = Render<DelayRenderFragment>();
 
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
 			await cut.WaitForElementAsync("#notHereElm", WaitForTestTimeout));
@@ -39,7 +39,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	public async Task Test021()
 	{
 		var expectedMarkup = "<p>child content</p>";
-		var cut = RenderComponent<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
+		var cut = Render<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
 		var elms = await cut.WaitForElementsAsync("main > p");
 
@@ -49,7 +49,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	[Fact(DisplayName = "WaitForElements throws exception after timeout when cssSelector does not result in matching elements")]
 	public async Task Test022()
 	{
-		var cut = RenderComponent<DelayRenderFragment>();
+		var cut = Render<DelayRenderFragment>();
 
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
 			await cut.WaitForElementsAsync("#notHereElm", WaitForTestTimeout));
@@ -61,7 +61,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	[Fact(DisplayName = "WaitForElements with specific count N throws exception after timeout when cssSelector does not result in N matching elements")]
 	public async Task Test023()
 	{
-		var cut = RenderComponent<DelayRenderFragment>();
+		var cut = Render<DelayRenderFragment>();
 
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
 			await cut.WaitForElementsAsync("#notHereElm", 2, WaitForTestTimeout));
@@ -74,7 +74,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	public async Task Test024()
 	{
 		var expectedMarkup = "<p>child content</p><p>child content</p><p>child content</p>";
-		var cut = RenderComponent<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
+		var cut = Render<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
 		var elms = await cut.WaitForElementsAsync("main > p", matchElementCount: 3);
 
@@ -85,7 +85,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	public async Task Test025()
 	{
 		var expectedMarkup = "<p>child content</p>";
-		var cut = RenderComponent<DelayRemovedRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
+		var cut = Render<DelayRemovedRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
 		var elms = await cut.WaitForElementsAsync("main > p", matchElementCount: 0);
 

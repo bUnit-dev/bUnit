@@ -5,7 +5,7 @@ public class StubTest : TestContext
 	[Fact(DisplayName = "Stub<TComponent> renders nothing without a replacement template")]
 	public void Test001()
 	{
-		var cut = RenderComponent<Stub<Simple1>>();
+		var cut = Render<Stub<Simple1>>();
 
 		cut.Nodes.Length.ShouldBe(0);
 	}
@@ -14,7 +14,7 @@ public class StubTest : TestContext
 	[AutoData]
 	public void Test002(string header, string attrValue)
 	{
-		var cut = RenderComponent<Stub<Simple1>>(ps => ps
+		var cut = Render<Stub<Simple1>>(ps => ps
 			.AddUnmatched(nameof(Simple1.Header), header)
 			.AddUnmatched(nameof(Simple1.AttrValue), attrValue));
 
