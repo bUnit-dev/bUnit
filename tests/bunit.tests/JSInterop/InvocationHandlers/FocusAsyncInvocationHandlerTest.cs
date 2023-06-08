@@ -5,7 +5,7 @@ public class FocusAsyncInvocationHandlerTest : TestContext
 	[Fact(DisplayName = "Can render components that calls FocusAsync")]
 	public void Test001()
 	{
-		var cut = RenderComponent<FocusingComponent>();
+		var cut = Render<FocusingComponent>();
 		var input = cut.Find("input");
 		JSInterop.VerifyFocusAsyncInvoke().Arguments[0].ShouldBeElementReferenceTo(input);
 	}
@@ -13,7 +13,7 @@ public class FocusAsyncInvocationHandlerTest : TestContext
 	[Fact(DisplayName = "Can capture two FocusAsync calls")]
 	public void Test002()
 	{
-		var cut = RenderComponent<Wrapper>(ps => ps
+		var cut = Render<Wrapper>(ps => ps
 			.AddChildContent<FocusingComponent>()
 			.AddChildContent<FocusingComponent>());
 
@@ -27,7 +27,7 @@ public class FocusAsyncInvocationHandlerTest : TestContext
 	[Fact(DisplayName = "Will return completed task")]
 	public void Test003()
 	{
-		var cut = RenderComponent<FocusingComponent>();
+		var cut = Render<FocusingComponent>();
 		Assert.True(cut.Instance.AfterFirstRender);
 	}
 

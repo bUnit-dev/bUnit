@@ -8,7 +8,7 @@ public class HtmlizerTests : TestContext
 	[InlineData(true, true)]
 	public void Test002(bool stopPropagation, bool preventDefault)
 	{
-		var component = RenderComponent<Htmlizer01Component>(parameters => parameters
+		var component = Render<Htmlizer01Component>(parameters => parameters
 			.Add(p => p.OnClick, _ => { })
 			.Add(p => p.OnClickStopPropagation, stopPropagation)
 			.Add(p => p.OnClickPreventDefault, preventDefault));
@@ -22,7 +22,7 @@ public class HtmlizerTests : TestContext
 	[Fact(DisplayName = "Blazor ElementReferences are included in rendered markup")]
 	public void Test001()
 	{
-		var cut = RenderComponent<Htmlizer01Component>();
+		var cut = Render<Htmlizer01Component>();
 
 		var elmRefValue = cut.Find("button").GetAttribute("blazor:elementreference");
 
@@ -32,10 +32,10 @@ public class HtmlizerTests : TestContext
 	[Fact(DisplayName = "Blazor ElementReferences start in markup on rerenders")]
 	public void Test003()
 	{
-		var cut = RenderComponent<Htmlizer01Component>();
+		var cut = Render<Htmlizer01Component>();
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 
-		cut.SetParametersAndRender(parameters => parameters.Add(p => p.OnClick, _ => { }));
+		cut.Render(parameters => parameters.Add(p => p.OnClick, _ => { }));
 
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 	}

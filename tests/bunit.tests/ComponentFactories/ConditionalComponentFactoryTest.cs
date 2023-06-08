@@ -23,7 +23,7 @@ public class ConditionalComponentFactoryTest : TestContext
 		var mockComponent = Mock.Of<Simple1>();
 		ComponentFactories.Add(type => type == typeof(Simple1), _ => mockComponent);
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
 		cut.FindComponent<Simple1>()
 			.Instance.ShouldBeSameAs(mockComponent);
@@ -37,7 +37,7 @@ public class ConditionalComponentFactoryTest : TestContext
 			type => type != typeof(TwoComponentWrapper),
 			mockRepo.CreateComponent);
 
-		var cut = RenderComponent<TwoComponentWrapper>(ps => ps
+		var cut = Render<TwoComponentWrapper>(ps => ps
 		   .Add<Simple1>(p => p.First)
 		   .Add<NoArgs>(p => p.Second));
 
@@ -50,7 +50,7 @@ public class ConditionalComponentFactoryTest : TestContext
 	{
 		ComponentFactories.Add(_ => false, _ => throw new NotImplementedException("DONT CALL FACTORY"));
 
-		Should.NotThrow(() => RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>()));
+		Should.NotThrow(() => Render<Wrapper>(ps => ps.AddChildContent<Simple1>()));
 	}
 }
 

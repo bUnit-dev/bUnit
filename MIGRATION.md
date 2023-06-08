@@ -1,9 +1,13 @@
 # Migration Guide `v1` to `v2`
 This document describes the changes that need to be made to migrate from bUnit 1.x to 2.x.
 
+## Renamed all `RenderComponent` and `SetParametersAndRender` to `Render`
+
+To make the API more consistent, `RenderComponent` and `SetParametersAndRender` methods have been renamed to `Render`.
+
 ## Removal of `ComponentParameter` and method using them
 
-Using `ComponentParameter` and factory methods to create them is not recommend in V1 and have now been removed in V2. Instead, use the strongly typed builder pattern that enables you to pass parameters to components you render.
+Using the `ComponentParameter` type and related factory methods is not recommended in V1 and have now been removed in V2. Instead, use the strongly typed builder pattern that enables you to pass parameters to components you render or write your tests in .razor files. Go to https://bunit.dev/docs/providing-input/passing-parameters-to-components to learn more.
 
 ## Change default "WaitFor" timeout
 

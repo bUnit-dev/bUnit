@@ -29,7 +29,7 @@ public abstract class BenchmarkBase
 	}
 
 	protected IRenderedComponent<TComponent> RenderComponent<TComponent>()
-		where TComponent : IComponent => Renderer.RenderComponent<TComponent>();
+		where TComponent : IComponent => Renderer.Render<TComponent>();
 
 	protected virtual void InternalCleanup()
 	{

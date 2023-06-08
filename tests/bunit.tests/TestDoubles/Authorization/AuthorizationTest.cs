@@ -17,7 +17,7 @@ public class AuthorizationTest : TestContext
 		AddAuthorization();
 
 		// Act
-		var cut = RenderComponent<SimpleAuthView>();
+		var cut = Render<SimpleAuthView>();
 
 		// Assert
 		cut.MarkupMatches("Not authorized?");
@@ -31,7 +31,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
 
 		// act
-		var cut = RenderComponent<SimpleAuthView>();
+		var cut = Render<SimpleAuthView>();
 
 		// assert
 		cut.MarkupMatches("Authorized!");
@@ -45,7 +45,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser", AuthorizationState.Unauthorized);
 
 		// act
-		var cut = RenderComponent<SimpleAuthView>();
+		var cut = Render<SimpleAuthView>();
 
 		// assert
 		cut.MarkupMatches("Not authorized?");
@@ -58,7 +58,7 @@ public class AuthorizationTest : TestContext
 		var authContext = AddAuthorization();
 
 		// start off unauthenticated.
-		var cut = RenderComponent<SimpleAuthView>();
+		var cut = Render<SimpleAuthView>();
 		cut.MarkupMatches("Not authorized?");
 
 		// act
@@ -78,7 +78,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser005", AuthorizationState.Authorized);
 
 		// start off unauthenticated.
-		var cut = RenderComponent<SimpleAuthView>();
+		var cut = Render<SimpleAuthView>();
 		cut.MarkupMatches("Authorized!");
 
 		// act
@@ -94,7 +94,7 @@ public class AuthorizationTest : TestContext
 	public void Test006()
 	{
 		// act
-		var ex = Assert.Throws<MissingAuthorizationHandlerException>(() => RenderComponent<SimpleAuthView>());
+		var ex = Assert.Throws<MissingAuthorizationHandlerException>(() => Render<SimpleAuthView>());
 
 		// assert
 		Assert.Equal("AuthenticationStateProvider", ex.ServiceName);
@@ -109,7 +109,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser").SetPolicies("ContentViewer");
 
 		// act
-		var cut = RenderComponent<SimpleAuthViewWithPolicy>();
+		var cut = Render<SimpleAuthViewWithPolicy>();
 
 		// assert
 		cut.MarkupMatches("Authorized for content viewers.");
@@ -123,7 +123,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser");
 
 		// act
-		var cut = RenderComponent<SimpleAuthViewWithPolicy>();
+		var cut = Render<SimpleAuthViewWithPolicy>();
 
 		// assert
 		cut.MarkupMatches(string.Empty);
@@ -137,7 +137,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser").SetPolicies("OtherPolicy");
 
 		// act
-		var cut = RenderComponent<SimpleAuthViewWithPolicy>();
+		var cut = Render<SimpleAuthViewWithPolicy>();
 
 		// assert
 		cut.MarkupMatches(string.Empty);
@@ -151,7 +151,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser").SetRoles("Admin");
 
 		// act
-		var cut = RenderComponent<SimpleAuthViewWithRole>();
+		var cut = Render<SimpleAuthViewWithRole>();
 
 		// assert
 		cut.MarkupMatches("Authorized content for admins.");
@@ -165,7 +165,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser");
 
 		// act
-		var cut = RenderComponent<SimpleAuthViewWithRole>();
+		var cut = Render<SimpleAuthViewWithRole>();
 
 		// assert
 		cut.MarkupMatches(string.Empty);
@@ -179,7 +179,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser").SetRoles("NotAdmin");
 
 		// act
-		var cut = RenderComponent<SimpleAuthViewWithRole>();
+		var cut = Render<SimpleAuthViewWithRole>();
 
 		// assert
 		cut.MarkupMatches(string.Empty);
@@ -193,7 +193,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorizing();
 
 		// act
-		var cut = RenderComponent<SimpleAuthView>();
+		var cut = Render<SimpleAuthView>();
 
 		// assert
 		cut.MarkupMatches("Authorizing...");
@@ -210,7 +210,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser").SetClaims(uuidClaim, emailClaim);
 
 		// act
-		var cut = RenderComponent<SimpleAuthViewWithClaims>();
+		var cut = Render<SimpleAuthViewWithClaims>();
 
 		// assert
 		cut.MarkupMatches(@$"<div>Authorized!</div>
@@ -227,7 +227,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser");
 
 		// act
-		var cut = RenderComponent<SimpleAuthViewWithClaims>();
+		var cut = Render<SimpleAuthViewWithClaims>();
 
 		// assert
 		cut.MarkupMatches(@"<div>Authorized!</div>
@@ -242,7 +242,7 @@ public class AuthorizationTest : TestContext
 		authCtx.SetAuthorized("FooBar");
 		authCtx.SetRoles(role);
 
-		var cut = RenderComponent<AuthCascading>(ps => ps.Add(p => p.ExpectedRole, role));
+		var cut = Render<AuthCascading>(ps => ps.Add(p => p.ExpectedRole, role));
 
 		cut.MarkupMatches("<p>True</p>");
 	}
@@ -256,7 +256,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthenticationType("custom-auth-type");
 
 		// act
-		var cut = RenderComponent<SimpleAuthViewWithCustomAuthType>();
+		var cut = Render<SimpleAuthViewWithCustomAuthType>();
 
 		// assert
 		cut.MarkupMatches("<p>Authorized content with custom auth type.</p>");
@@ -270,7 +270,7 @@ public class AuthorizationTest : TestContext
 		authContext.SetAuthorized("TestUser");
 
 		// act
-		var cut = RenderComponent<SimpleAuthViewWithCustomAuthType>();
+		var cut = Render<SimpleAuthViewWithCustomAuthType>();
 
 		// assert
 		cut.MarkupMatches(string.Empty);

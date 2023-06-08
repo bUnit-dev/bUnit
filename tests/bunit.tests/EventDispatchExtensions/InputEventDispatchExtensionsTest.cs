@@ -264,7 +264,7 @@ public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<Chan
 
 	private void VerifyMultipleBindValue<T>(T[] values)
 	{
-		var cut = RenderComponent<OnChangeMultipleBindSample<T>>(ps => ps
+		var cut = Render<OnChangeMultipleBindSample<T>>(ps => ps
 			.Add(p => p.Options, values));
 
 		cut.Find("#bind").Change(values);
@@ -278,7 +278,7 @@ public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<Chan
 
 	private void VerifySingleBindValue<T>(T value)
 	{
-		var cut = RenderComponent<OnChangeBindSample<T>>(ps => ps
+		var cut = Render<OnChangeBindSample<T>>(ps => ps
 			.Add(p => p.BindValue, Fixture.Create<T>())
 		 	.Add(p => p.OnChangeValue, Fixture.Create<T>())
 			.Add(p => p.OnInputValue, Fixture.Create<T>()));
