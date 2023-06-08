@@ -39,6 +39,7 @@ public interface IRenderedFragment : IDisposable
 	/// Adds or removes an event handler that will be triggered after each render of this <see cref="IRenderedFragment"/>.
 	/// </summary>
 	event EventHandler OnAfterRender;
+
 	/// <summary>
 	/// An event that is raised after the markup of the <see cref="IRenderedFragment"/> is updated.
 	/// </summary>
