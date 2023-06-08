@@ -17,7 +17,7 @@ public class TypeBasedComponentFactoryTest : TestContext
 		var simple1Mock = Mock.Of<Simple1>();
 		ComponentFactories.Add<Simple1>(() => simple1Mock);
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
 		cut.FindComponent<Simple1>()
 			.Instance.ShouldBeSameAs(simple1Mock);
@@ -29,7 +29,7 @@ public class TypeBasedComponentFactoryTest : TestContext
 		var mockRepo = new MockRepository(MockBehavior.Loose);
 		ComponentFactories.Add<Simple1>(() => mockRepo.Create<Simple1>().Object);
 
-		var cut = RenderComponent<TwoComponentWrapper>(ps => ps
+		var cut = Render<TwoComponentWrapper>(ps => ps
 			   .Add<Simple1>(p => p.First)
 			   .Add<Simple1>(p => p.Second));
 

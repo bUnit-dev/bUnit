@@ -10,7 +10,7 @@ public class ComponentDoubleBaseTest : TestContext
 	[AutoData]
 	public void Test022(string attrName, string attrValue)
 	{
-		var cut = RenderComponent<ComponentDouble<AllTypesOfParams<string>>>(ps => ps
+		var cut = Render<ComponentDouble<AllTypesOfParams<string>>>(ps => ps
 			.AddUnmatched(attrName, attrValue));
 
 		cut.Instance.Parameters[attrName].ShouldBe(attrValue);

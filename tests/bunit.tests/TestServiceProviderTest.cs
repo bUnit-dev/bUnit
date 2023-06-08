@@ -180,7 +180,7 @@ public class TestServiceProviderTest
 		ctx.Services.SetFallbackServiceProvider(fallbackServiceProvider);
 
 		// Act and assert
-		Should.NotThrow(() => ctx.RenderComponent<DummyComponentWhichRequiresDummyService>());
+		Should.NotThrow(() => ctx.Render<DummyComponentWhichRequiresDummyService>());
 	}
 
 	[Fact(DisplayName = "Can correctly resolve and dispose of scoped disposable service")]

@@ -24,7 +24,7 @@ public class BunitPersistentComponentStateTest : TestContext
 	{
 		AddBunitPersistentComponentState();
 
-		var cut = RenderComponent<PersistentComponentStateSample>();
+		var cut = Render<PersistentComponentStateSample>();
 
 		cut.Instance.State.ShouldNotBeNull();
 	}
@@ -46,7 +46,7 @@ public class BunitPersistentComponentStateTest : TestContext
 	public void Test012()
 	{
 		var fakeState = AddBunitPersistentComponentState();
-		var cut = RenderComponent<PersistentComponentStateSample>();
+		var cut = Render<PersistentComponentStateSample>();
 
 		fakeState.TriggerOnPersisting();
 

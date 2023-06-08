@@ -7,7 +7,7 @@
         var initialValue = "Hello";
 
         // act
-        var bindMethod = RenderComponent<FullBind>(ps => ps
+        var bindMethod = Render<FullBind>(ps => ps
             .Bind(
                 p => p.Foo,
                 initialValue,

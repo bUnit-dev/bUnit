@@ -62,7 +62,7 @@ public partial class TestContext : IDisposable
 	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 	/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered.</param>
 	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
+	public virtual IRenderedComponent<TComponent> Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
 		where TComponent : IComponent
 	{
 		var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder)
