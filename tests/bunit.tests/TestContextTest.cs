@@ -1,3 +1,4 @@
+using AngleSharp.Common;
 using Bunit.TestAssets.SampleComponents.DisposeComponents;
 using Bunit.TestDoubles;
 
@@ -218,7 +219,8 @@ public class TestContextTest : TestContext
 	public void Test033()
 	{
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
-		var cut = RenderComponent<ReceivesCascadingValue>(("Dummy", null));
+		var cut = RenderComponent<ReceivesCascadingValue>(ps => ps
+			.Add(p => p.Dummy, null!));
 
 		cut.Instance
 			.Value

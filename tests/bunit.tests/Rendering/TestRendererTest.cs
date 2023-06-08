@@ -1,7 +1,5 @@
 using Bunit.Extensions;
-using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
-using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering;
 
@@ -62,7 +60,8 @@ public class TestRendererTest : TestContext
 		const string VALUE = "FOO BAR";
 		var sut = Services.GetRequiredService<BunitRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>((nameof(HasParams.Value), VALUE));
+		var cut = sut.RenderComponent<HasParams>(ps => ps
+			.Add(p => p.Value, VALUE));
 
 		cut.Instance.Value.ShouldBe(VALUE);
 	}
@@ -75,9 +74,9 @@ public class TestRendererTest : TestContext
 
 		var sut = Services.GetRequiredService<BunitRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
-			(nameof(HasParams.Value), PARENT_VALUE),
-			ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE)));
+		var cut = sut.RenderComponent<HasParams>(ps => ps
+			.Add(p => p.Value, PARENT_VALUE)
+			.AddChildContent<HasParams>(pps => pps.Add(p => p.Value, CHILD_VALUE)));
 
 		cut.Markup.ShouldStartWith(PARENT_VALUE);
 		cut.Markup.ShouldEndWith(CHILD_VALUE);
@@ -121,12 +120,10 @@ public class TestRendererTest : TestContext
 		// arrange
 		const string PARENT_VALUE = "PARENT";
 		const string CHILD_VALUE = "CHILD";
-
 		var sut = Services.GetRequiredService<BunitRenderer>();
-
-		var cut = sut.RenderComponent<HasParams>(
-			(nameof(HasParams.Value), PARENT_VALUE),
-			ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE)));
+		var cut = sut.RenderComponent<HasParams>(ps => ps
+			.Add(p => p.Value, PARENT_VALUE)
+			.AddChildContent<HasParams>(pps => pps.Add(p => p.Value, CHILD_VALUE)));
 
 		// act
 		var childCut = sut.FindComponent<HasParams>(cut);
@@ -157,9 +154,8 @@ public class TestRendererTest : TestContext
 	public void Test023()
 	{
 		var sut = Services.GetRequiredService<BunitRenderer>();
-
-		var cut = sut.RenderComponent<HasParams>(
-			ChildContent<HasParams>());
+		var cut = sut.RenderComponent<HasParams>(ps => ps
+			.AddChildContent<HasParams>());
 
 		var child1 = sut.FindComponent<HasParams>(cut);
 		var child2 = sut.FindComponent<HasParams>(cut);
@@ -176,18 +172,17 @@ public class TestRendererTest : TestContext
 		const string CHILD_VALUE = nameof(CHILD_VALUE);
 
 		var sut = Services.GetRequiredService<BunitRenderer>();
-
-		var cut = sut.RenderComponent<HasParams>(
-			(nameof(HasParams.Value), GRAND_PARENT_VALUE),
-			ChildContent<HasParams>(
-				(nameof(HasParams.Value), PARENT_VALUE),
-				ChildContent<HasParams>(
-					(nameof(HasParams.Value), CHILD_VALUE))));
+		var cut = sut.RenderComponent<HasParams>(ps => ps
+			.Add(p => p.Value, GRAND_PARENT_VALUE)
+			.AddChildContent<HasParams>(pps => pps
+				.Add(p => p.Value, PARENT_VALUE)
+				.AddChildContent<HasParams>(ppps => ppps
+					.Add(p=>p.Value, CHILD_VALUE))));
 
 		// act
 		var childCuts = sut.FindComponents<HasParams>(cut)
 			.OfType<IRenderedComponent<HasParams>>()
-			.ToList();
+			.ToArray();
 
 		// assert
 		childCuts[0].Markup.ShouldBe(PARENT_VALUE + CHILD_VALUE);
@@ -210,9 +205,9 @@ public class TestRendererTest : TestContext
 	{
 		// arrange
 		var sut = Services.GetRequiredService<BunitRenderer>();
-		var cut = sut.RenderComponent<HasParams>(
-			ChildContent<HasParams>(
-				ChildContent<HasParams>()));
+		var cut = sut.RenderComponent<HasParams>(ps => ps
+			.AddChildContent<HasParams>(pps => pps
+				.AddChildContent<HasParams>()));
 
 		// act
 		var childCuts1 = sut.FindComponents<HasParams>(cut);
@@ -227,8 +222,8 @@ public class TestRendererTest : TestContext
 	{
 		var sut = Services.GetRequiredService<BunitRenderer>();
 
-		var parent = sut.RenderComponent<HasParams>(
-			ChildContent<RenderTrigger>());
+		var parent = sut.RenderComponent<HasParams>(ps => ps
+			.AddChildContent<RenderTrigger>());
 
 		// act
 		var cut = sut.FindComponent<RenderTrigger>(parent);
@@ -246,8 +241,8 @@ public class TestRendererTest : TestContext
 	{
 		var sut = Services.GetRequiredService<BunitRenderer>();
 
-		var parent = sut.RenderComponent<HasParams>(
-			ChildContent<RenderTrigger>());
+		var parent = sut.RenderComponent<HasParams>(ps => ps
+			.AddChildContent<RenderTrigger>());
 
 		// act
 		var cut = sut.FindComponents<RenderTrigger>(parent).Single();
@@ -266,8 +261,8 @@ public class TestRendererTest : TestContext
 		// arrange
 		var sut = Services.GetRequiredService<BunitRenderer>();
 
-		var cut = sut.RenderComponent<HasParams>(
-			ChildContent<RenderTrigger>());
+		var cut = sut.RenderComponent<HasParams>(ps => ps
+			.AddChildContent<RenderTrigger>());
 		var child = sut.FindComponent<RenderTrigger>(cut);
 
 		// act
@@ -284,8 +279,8 @@ public class TestRendererTest : TestContext
 		// arrange
 		var sut = Services.GetRequiredService<BunitRenderer>();
 
-		var cut = sut.RenderComponent<ToggleChild>(
-			ChildContent<NoChildNoParams>());
+		var cut = sut.RenderComponent<ToggleChild>(ps => ps
+			.AddChildContent<NoChildNoParams>());
 		var child = sut.FindComponent<NoChildNoParams>(cut);
 
 		// act
@@ -302,9 +297,9 @@ public class TestRendererTest : TestContext
 		// arrange
 		var sut = Services.GetRequiredService<BunitRenderer>();
 
-		var cut = sut.RenderComponent<ToggleChild>(
-			ChildContent<ToggleChild>(
-				ChildContent<NoChildNoParams>()));
+		var cut = sut.RenderComponent<ToggleChild>(ps => ps
+			.AddChildContent<ToggleChild>(pps => pps
+				.AddChildContent<NoChildNoParams>()));
 		var child = sut.FindComponent<ToggleChild>(cut);
 		var childChild = sut.FindComponent<NoChildNoParams>(cut);
 

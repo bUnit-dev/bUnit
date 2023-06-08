@@ -1,6 +1,10 @@
 # Migration Guide `v1` to `v2`
 This document describes the changes that need to be made to migrate from bUnit 1.x to 2.x.
 
+## Removal of `ComponentParameter` and method using them
+
+Using `ComponentParameter` and factory methods to create them is not recommend in V1 and have now been removed in V2. Instead, use the strongly typed builder pattern that enables you to pass parameters to components you render.
+
 ## Change default "WaitFor" timeout
 
 When running many tests in parallel on slow machines, e.g. CI runners like GitHub Actions or Azure DevOps, the default "WaitFor" timeout of 1 second may not be enough for the renderer to get processor time and be able to complete the expected renders. Thus, in v2, the default timeout is being increased to 30 seconds.
