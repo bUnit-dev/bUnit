@@ -23,7 +23,7 @@
 
 # [Test doubles](xref:test-doubles)
 ## [Emulating IJSRuntime](xref:emulating-ijsruntime)
-## [Faking authorization](xref:faking-auth)
+## [Faking authorization](xref:bunit-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
 ## [bUnit's PersistentComponentState](xref:bunit-persistentcomponentstate)
 ## [bUnit's NavigationManager](xref:bunit-navigation-manager)

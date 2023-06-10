@@ -15,7 +15,7 @@ The following sections will describe how to use component factories to control t
 
 To take control of how components are instantiated during testing, add one or more <xref:Bunit.IComponentFactory> types to the `ComponentFactories` collection.
 
-The added component factories <xref:Bunit.IComponentFactory.CanCreate(System.Type)> methods will be called in a last- to first-added order, e.g., the last one added will be called first, then the second-to-last, and so on, and the first that returns `true` will have its <xref:Bunit.IComponentFactory.Create(System.Type)> method invoked. If none of the factories can create the requested type, the default Blazor factory will be used.
+The added component factories <xref:Bunit.IComponentFactory.CanCreate(Type)> methods will be called in a last- to first-added order, e.g., the last one added will be called first, then the second-to-last, and so on, and the first that returns `true` will have its <xref:Bunit.IComponentFactory.Create(Type)> method invoked. If none of the factories can create the requested type, the default Blazor factory will be used.
 
 ## Example – replacing `<Foo>` with `<Bar>`
 
