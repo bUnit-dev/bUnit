@@ -21,6 +21,10 @@ concurrency:
   group: verification-${{ github.ref }}-1
   cancel-in-progress: true
 
+env:
+  VSTEST_CONNECTION_TIMEOUT: 180
+  DOTNET_NOLOGO: "true"
+
 jobs:
   verify-bunit:
     name: 👌 Verify bUnit
@@ -103,7 +107,7 @@ jobs:
           dotnet restore ${{ github.workspace }}/TemplateTestMstest --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages
           dotnet test ${{ github.workspace }}/TemplateTestMstest
 
-      # DocFx only works well on Windows currently
-      - name: 📄 Build documentation
-        if: matrix.os == 'windows-latest'
-        run: dotnet build docs/site/
+      - name: 📄 Building docs
+        run: |
+          dotnet tool update -g docfx --version 2.67.0
+          docfx docs/site/docfx.json
