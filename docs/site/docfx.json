@@ -1,76 +1,77 @@
 {
-    "metadata": [{
-        "src": [{
-            "files": [
-                "bunit/bunit.csproj"
-            ],
-            "exclude": ["**/bin/**", "**/obj/**"],
-            "src": "../../src"
-        }],
-        "dest": "api",
-        "properties": {
-            "TargetFramework": "net8.0"
-        },
-        "disableGitFeatures": false,
-        "disableDefaultFilter": false
-    }],
-    "build": {
-        "content": [{
-                "files": [
-                    "api/**.yml",
-                    "api/index.md"
-                ]
-            },
-            {
-                "files": [
-                    "docs/**.md",
-                    "docs/**/toc.yml",
-                    "toc.yml",
-                    "*.md"
-                ]
-            }
-        ],
-        "resource": [{
-            "files": [
-                "images/**",
-                ".nojekyll",
-                "site.webmanifest",
-                "*.png",
-                "CNAME",
-                "sponsors/**"
-            ]
-        }],
-        "overwrite": [{
-            "files": [
-                "apidoc/**.md"
-            ],
-            "exclude": [
-                "obj/**",
-                "bin/**",
-                "_site/**"
-            ]
-        }],
-        "dest": "_site",
-        "globalMetadataFiles": [],
-        "fileMetadataFiles": [],
-        "template": [
-            "default",
-            "templates/bunit"
-        ],
-        "globalMetadata": {
-            "_appName": "bUnit",
-            "_appTitle": "bUnit",
-            "_description": "bUnit is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.",
-            "_enableSearch": true,
-            "_appLogoPath": "/images/bunit-logo.png",
-            "_disableBreadcrumb": true,
-            "_disableFooter": false
-        },
-        "postProcessors": [],
-        "markdownEngineName": "markdig",
-        "noLangKeyword": false,
-        "keepFileLink": false,
-        "cleanupCacheHistory": true,
-        "disableGitFeatures": false
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "bunit/bunit.csproj"
+          ],
+          "src": "../../src"
+        }
+      ],
+      "dest": "api",
+      "includePrivateMembers": false,
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "noRestore": true,
+      "namespaceLayout": "flattened",
+      "memberLayout": "samePage",
+      "allowCompilationErrors": false
     }
+  ],
+
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "api/index.md"
+        ]
+      },
+      {
+        "files": [
+          "docs/**.md",
+          "docs/**/toc.yml",
+          "toc.yml",
+          "*.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**",
+          ".nojekyll",
+          "site.webmanifest",
+          "*.png",
+          "CNAME",
+          "sponsors/**",
+          "favicon.ico"
+        ]
+      }
+    ],
+    "dest": "_site",
+    "globalMetadataFiles": [],
+    "fileMetadataFiles": [],
+    "template": [
+      "default",
+      "modern",
+      "templates/bunit"
+    ],
+    "globalMetadata": {
+      "_appName": "bUnit",
+      "_appTitle": "bUnit",
+      "_description": "bUnit is a unit testing library for Blazor Components. You can easily define components under test in C# or Razor syntax and verify outcome using semantic HTML diffing/comparison logic. You can interact with and inspect components, trigger event handlers, provide cascading values, inject services, mock IJsRuntime, and perform snapshot testing.",
+      "_enableSearch": true,
+      "_appLogoPath": "/images/bunit-logo.png",
+      "_disableBreadcrumb": false,
+      "_disableFooter": false,
+      "_appFooter": "<small>Documentation updated on #{NBGV_GitCommitDate}# in commit #{NBGV_GitCommitIdShort}#</small>"
+    },
+    "postProcessors": [],
+    "noLangKeyword": false,
+    "keepFileLink": false,
+    "cleanupCacheHistory": true,
+    "disableGitFeatures": false
+  }
 }

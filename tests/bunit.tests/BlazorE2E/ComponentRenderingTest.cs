@@ -19,6 +19,7 @@ public class ComponentRenderingTest : TestContext
 {
 	public ComponentRenderingTest(ITestOutputHelper outputHelper)
 	{
+		TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(outputHelper);
 		JSInterop.Mode = JSRuntimeMode.Loose;
 	}

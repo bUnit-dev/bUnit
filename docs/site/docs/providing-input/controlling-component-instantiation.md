@@ -9,13 +9,13 @@ Components are, by default in bUnit, instantiated in the exact same way the regu
 
 It is however possible to control how Blazor components build using .NET 5 or newer are instantiated by bUnit. This enables the possibility to replace one component during testing with another, e.g., to replace a 3rd party component during testing with a "[stub component](https://en.wikipedia.org/wiki/Test_stub)", to make the test easier to write and maintain.
 
-The following sections will describe how to use component factories to control instantiation of components during testing.
+The following sections will describe how to use component factories to control the instantiation of components during testing.
 
 ## Using component factories to control instantiation
 
 To take control of how components are instantiated during testing, add one or more <xref:Bunit.IComponentFactory> types to the `ComponentFactories` collection.
 
-The added component factories <xref:Bunit.IComponentFactory.CanCreate(System.Type)> methods will be called in a last- to first-added order, e.g., the last one added will be called first, then the second-to-last, and so on, and the first that returns `true` will have its <xref:Bunit.IComponentFactory.Create(System.Type)> method invoked. If none of the factories can create the requested type, the default Blazor factory will be used.
+The added component factories <xref:Bunit.IComponentFactory.CanCreate(Type)> methods will be called in a last- to first-added order, e.g., the last one added will be called first, then the second-to-last, and so on, and the first that returns `true` will have its <xref:Bunit.IComponentFactory.Create(Type)> method invoked. If none of the factories can create the requested type, the default Blazor factory will be used.
 
 ## Example – replacing `<Foo>` with `<Bar>`
 

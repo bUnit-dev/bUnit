@@ -20,7 +20,7 @@
 - Pass parameters, cascading values and inject services into components under test
 - Mock `IJSRuntime`, Blazor authentication and authorization, and others
 
-bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which run the Blazor component tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run. 
+bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which run the Blazor component tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run.
 
 **Go to [bUnit.dev](https://bunit.dev) to learn more.**
 
@@ -61,13 +61,6 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 				<br />
 				Amazon Web Services
 			</a>
-		</td>			
-		<td align="center" width="120">
-			<a href="https://github.com/hassanhabib">
-				<img src="https://avatars.githubusercontent.com/u/1453985?s=460" alt="Hassan Rezk Habib (@hassanhabib)" width="72" height="72" class="avatar" />
-				<br />
-				Hassan Rezk Habib
-			</a>
 		</td>
 	</tr>
 </table>
@@ -85,7 +78,7 @@ These good people have contributed code or documentation to bUnit:
 ## Code of conduct
 
 This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.
-For more information see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct). 
+For more information see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).
 
 ## .NET Foundation
 

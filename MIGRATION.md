@@ -1,6 +1,10 @@
 # Migration Guide `v1` to `v2`
 This document describes the changes that need to be made to migrate from bUnit 1.x to 2.x.
 
+## Change default "WaitFor" timeout
+
+When running many tests in parallel on slow machines, e.g. CI runners like GitHub Actions or Azure DevOps, the default "WaitFor" timeout of 1 second may not be enough for the renderer to get processor time and be able to complete the expected renders. Thus, in v2, the default timeout is being increased to 30 seconds.
+
 ## Removal of `GetChangesSinceFirstRender` and `GetChangesSinceLastRender` methods
 The `GetChangesSinceFirstRender` and `GetChangesSinceLastRender` methods have been removed from `IRenderedComponent<TComponent>`. There is no one-to-one replacement for these methods, but the general idea is to select the HTML in question via `Find` and assert against that.
 

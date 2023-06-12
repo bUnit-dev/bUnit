@@ -1,0 +1,26 @@
+:root {
+  --header-bg-color: #0d47a1;
+  --header-ft-color: #fff;
+  --highlight-light: #5e92f3;
+  --highlight-dark: #003c8f;
+  --font-color: #34393e;
+}
+
+#logo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.tabGroup {
+  margin-bottom: 1.3rem;
+}
+
+.tabGroup section *:last-child {
+  margin-bottom: 0;
+}
+
+body:not([data-search])[data-layout=""]>main>.affix,
+body:not([data-search])[data-layout=conceptual]>main>.affix {
+  max-height: calc(100vh + 330px);
+  overflow-y: hidden;
+}

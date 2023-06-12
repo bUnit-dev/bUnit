@@ -5,11 +5,11 @@ title: Assertion of asynchronous changes
 
 # Assertion of asynchronous changes
 
-A test can fail if a component performs asynchronous renders. This may be due to a reason such as waiting for an asynchronous operation to complete before continuing its render life-cycle . For example, if a component is waiting for an async web service to return data to it in the `OnInitializedAsync()` life-cycle method before rendering it to the render tree.
+A test can fail if a component performs asynchronous renders. This may be due to a reason such as waiting for an asynchronous operation to complete before continuing its render life-cycle. For example, if a component is waiting for an async web service to return data to it in the `OnInitializedAsync()` life-cycle method before rendering it to the render tree.
 
 You need to handle this specifically in your tests because tests execute in the test framework's synchronization context and the test renderer executes renders in its own synchronization context. If you do not, you will likely experience tests that sometimes pass, and sometimes fail.
 
-bUnit comes with two methods that help to deal with this issue: the [`WaitForAssertionAsync()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertionAsync(Bunit.IRenderedFragment,Action,System.Nullable{TimeSpan})) method covered on this page, and the [`WaitForState()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.IRenderedFragment,Func{System.Boolean},System.Nullable{TimeSpan})) method covered on the <xref:awaiting-async-state> page.
+bUnit comes with two methods that help to deal with this issue: the [`WaitForAssertionAsync()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertionAsync(Bunit.IRenderedFragment,Action,System.Nullable{TimeSpan})) method covered on this page, and the [`WaitForState()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForStateAsync(Bunit.IRenderedFragment,Func{System.Boolean},System.Nullable{TimeSpan})) method covered on the <xref:awaiting-async-state> page.
 
 Let's start by taking a look at the ` WaitForAssertionAsync` method in more detail.
 

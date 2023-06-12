@@ -196,6 +196,6 @@ public abstract class WaitForHelper<T> : IDisposable
 
 	private static TimeSpan GetRuntimeTimeout(TimeSpan? timeout)
 	{
-		return timeout ?? TimeSpan.FromSeconds(1);
+		return timeout ?? TestContext.DefaultWaitTimeout;
 	}
 }
