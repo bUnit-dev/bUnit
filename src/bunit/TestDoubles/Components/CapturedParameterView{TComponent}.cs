@@ -9,19 +9,19 @@ namespace Bunit.TestDoubles;
 /// Represents a view of parameters captured by a <see cref="ComponentDoubleBase{TComponent}"/>.
 /// </summary>
 /// <typeparam name="TComponent"></typeparam>
-public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, object>
+public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, object?>
 	where TComponent : IComponent
 {
 	/// <summary>
 	/// Gets a empty <see cref="CapturedParameterView{TComponent}"/>.
 	/// </summary>
-	public static CapturedParameterView<TComponent> Empty { get; } = new(ImmutableDictionary<string, object>.Empty);
+	public static CapturedParameterView<TComponent> Empty { get; } = new(ImmutableDictionary<string, object?>.Empty);
 
 	private static readonly Type ComponentType = typeof(TComponent);
 
-	private readonly IReadOnlyDictionary<string, object> parameters;
+	private readonly IReadOnlyDictionary<string, object?> parameters;
 
-	private CapturedParameterView(IReadOnlyDictionary<string, object> parameters)
+	private CapturedParameterView(IReadOnlyDictionary<string, object?> parameters)
 		=> this.parameters = parameters;
 
 	/// <summary>
@@ -29,7 +29,7 @@ public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, obj
 	/// </summary>
 	/// <param name="key">Name of the parameter to get.</param>
 	/// <returns>The value of the parameter</returns>
-	public object this[string key]
+	public object? this[string key]
 		=> parameters[key];
 
 	/// <inheritdoc/>
@@ -37,7 +37,7 @@ public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, obj
 		=> parameters.Keys;
 
 	/// <inheritdoc/>
-	public IEnumerable<object> Values
+	public IEnumerable<object?> Values
 		=> parameters.Values;
 
 	/// <inheritdoc/>
@@ -63,7 +63,7 @@ public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, obj
 	/// <exception cref="ParameterNotFoundException">Thrown when the selected parameter was not passed to the captured <typeparamref name="TComponent"/>.</exception>
 	/// <exception cref="InvalidCastException">Throw when the type of the value passed to the selected parameter is not the same as the selected parameters type, i.e. <typeparamref name="TValue"/>.</exception>
 	/// <returns>The <typeparamref name="TValue"/>.</returns>
-	public TValue Get<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
+	public TValue? Get<TValue>(Expression<Func<TComponent, TValue?>> parameterSelector)
 	{
 		ArgumentNullException.ThrowIfNull(parameterSelector);
 
@@ -83,11 +83,11 @@ public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, obj
 		if (!parameters.TryGetValue(propertyInfo.Name, out var objectResult))
 			throw new ParameterNotFoundException(propertyInfo.Name, ComponentType.ToString());
 
-		return (TValue)objectResult;
+		return (TValue?)objectResult;
 	}
 
 	/// <inheritdoc/>
-	public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+	public IEnumerator<KeyValuePair<string, object?>> GetEnumerator()
 		=> parameters.GetEnumerator();
 
 	/// <inheritdoc/>
