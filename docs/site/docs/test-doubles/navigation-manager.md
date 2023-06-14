@@ -44,7 +44,7 @@ To verify that the `<PrintCurrentUrl>` component correctly listens to location c
 ```csharp
 // Arrange
 var navMan = Services.GetRequiredService<BunitNavigationManager>();
-var cut = RenderComponent<PrintCurrentUrl>();
+var cut = Render<PrintCurrentUrl>();
 
 // Act - trigger a navigation change
 navMan.NavigateTo("newUrl");
@@ -57,7 +57,7 @@ To verify that the `<PrintCurrentUrl>` component correctly calls `NavigateTo` wh
 
 ```csharp
 // Arrange
-var cut = RenderComponent<PrintCurrentUrl>(parameters => parameters
+var cut = Render<PrintCurrentUrl>(parameters => parameters
   .Add(p => p.GoToUrl, "http://localhost/foo"));
 
 // Act - trigger a location change by clicking the button
@@ -72,7 +72,7 @@ If a component issues multiple `NavigateTo` calls, then it is possible to inspec
 
 ## Asserting that navigation was prevented with the `NavigationLock` component
 
-The `NavigationLock` component, which was introduced with .NET 7, gives the possibility to intercept the navigation and can even prevent it. bUnit will always create a history entry for prevented or even failed interceptions. This gets reflected in the <xref:Bunit.TestDoubles.NavigationHistory> property.
+The `NavigationLock` component, which was introduced with .NET 7, gives the possibility to intercept the navigation and can even prevent it. bUnit will always create a history entry for prevented or even failed interceptions. This gets reflected in the <xref:Bunit.TestDoubles.NavigationHistory.State> property, as well as in case of an exception on the <xref:Bunit.TestDoubles.NavigationHistory.Exception> property.
 
 A component can look like this:
 ```razor
@@ -94,7 +94,7 @@ A typical test, which asserts that the navigation got prevented, would look like
 
 ```csharp
 var navMan = Services.GetRequiredService<BunitNavigationManager>();
-var cut = RenderComponent<InterceptComponent>();
+var cut = Render<InterceptComponent>();
 
 cut.Find("button").Click();
 
@@ -124,7 +124,7 @@ The test utilizes the `NavigationManager` itself to achieve the same:
 
 ```csharp
 var navMan = Services.GetRequiredService<BunitNavigationManager>();
-var cut = RenderComponent<InterceptAHRefComponent>();
+var cut = Render<InterceptAHRefComponent>();
 
 navMan.NavigateTo("/counter");
 

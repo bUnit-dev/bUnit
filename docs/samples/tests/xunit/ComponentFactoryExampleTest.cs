@@ -15,7 +15,7 @@ namespace Bunit.Docs.Samples
       ComponentFactories.Add(new FooBarComponentFactory());
 
       // Act
-      var cut = RenderComponent<Wrapper>(parameters => parameters
+      var cut = Render<Wrapper>(parameters => parameters
         .AddChildContent<Foo>());
 
       // Assert that there are no <Foo> in render tree,

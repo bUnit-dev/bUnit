@@ -13,7 +13,7 @@ public class ReRenderTest : TestContext
   public void RenderAgainUsingRender()
   {
     // Arrange - renders the Heading component
-    var cut = RenderComponent<Heading>();
+    var cut = Render<Heading>();
     Assert.Equal(1, cut.RenderCount);
 
     // Re-render without new parameters
@@ -26,13 +26,13 @@ public class ReRenderTest : TestContext
   public void RenderAgainUsingSetParametersAndRender()
   {
     // Arrange - renders the Heading component
-    var cut = RenderComponent<Item>(parameters => parameters
+    var cut = Render<Item>(parameters => parameters
       .Add(p => p.Value, "Foo")
     );
     cut.MarkupMatches("<span>Foo</span>");
 
     // Re-render with new parameters
-    cut.SetParametersAndRender(parameters => parameters
+    cut.Render(parameters => parameters
       .Add(p => p.Value, "Bar")
     );
 
@@ -43,7 +43,7 @@ public class ReRenderTest : TestContext
   public void RendersViaInvokeAsync()
   {
     // Arrange - renders the Heading component
-    var cut = RenderComponent<Calc>();
+    var cut = Render<Calc>();
 
     // Indirectly re-renders through the call to StateHasChanged
     // in the Calculate(x, y) method.

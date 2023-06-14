@@ -11,8 +11,8 @@ bUnit comes with a number of ways to pass parameters to components under test:
 
 2. In tests written in `.cs` files, bUnit includes a strongly typed builder. There are two methods in bUnit that allow passing parameters in C#-based test code:
 
-   - `RenderComponent` method on the test context, which is used to render a component initially.
-   - `SetParametersAndRender` method on a rendered component, which is used to pass new parameters to an already rendered component.
+   - `Render` method on the test context, which is used to render a component initially.
+   - `Render` method on a rendered component, which is used to pass new parameters to an already rendered component.
 
 In the following sub sections, we will show both `.cs`- and `.razor`-based test code; just click between them using the tabs.
 
@@ -377,7 +377,7 @@ It is possible to nest a component under tests inside other components, if that 
 
 [!code-csharp[NestedComponentTest](../../../samples/tests/xunit/NestedComponentTest.cs#L11-L23)]
 
-The example renders the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()` that returns a `IRenderedComponent<HelloWorld>`. This is needed because the `RenderComponent<Wrapper>` method call returns an `IRenderedComponent<Wrapper>` instance, that provides access to the instance of the `<Wrapper>` component, but not the `<HelloWorld>`-component instance.
+The example renders the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()` that returns a `IRenderedComponent<HelloWorld>`. This is needed because the `Render<Wrapper>` method call returns an `IRenderedComponent<Wrapper>` instance, that provides access to the instance of the `<Wrapper>` component, but not the `<HelloWorld>`-component instance.
 
 # [Razor test code](#tab/razor)
 
