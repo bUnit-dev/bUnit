@@ -14,7 +14,7 @@ public class InjectAuthServiceTest : TestContext
     authContext.SetAuthorized("TestUserName", AuthorizationState.Authorized);
 
     // act
-    var cut = RenderComponent<InjectAuthService>();
+    var cut = Render<InjectAuthService>();
 
     // assert
     Assert.Contains("<p>User: TestUserName</p>", cut.Markup, StringComparison.InvariantCulture);
@@ -27,7 +27,7 @@ public class InjectAuthServiceTest : TestContext
     var authContext = AddAuthorization();
 
     // act
-    var cut = RenderComponent<InjectAuthService>();
+    var cut = Render<InjectAuthService>();
 
     // assert
     Assert.DoesNotContain("User:", cut.Markup, StringComparison.InvariantCulture);

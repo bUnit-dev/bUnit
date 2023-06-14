@@ -99,7 +99,7 @@ To trigger the `@oncustompaste` event callback, do the following:
 
 ```csharp
 // Arrange
-var cut = RenderComponent<CustomPasteSample>();
+var cut = Render<CustomPasteSample>();
 
 // Atc - find the input element and trigger the oncustompaste event
 cut.Find("input").TriggerEvent("oncustompaste", new CustomPasteEventArgs

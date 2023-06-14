@@ -133,7 +133,7 @@ This is a simple example of writing tests in `.cs` files which tests the followi
 The test above does the following:
 
 1. Inherits from the bUnit's `TestContext`. This base class offers the majority of functions.
-2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.RenderComponent``1(System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
+2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.Render``1(System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
 # [NUnit](#tab/nunit)
@@ -147,7 +147,7 @@ Since NUnit instantiates a test class only once for all tests inside it, we cann
 The test above does the following:
 
 1. Inherits from the `BunitTestContext` listed above. This base class offers the majority of functions.
-2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.RenderComponent``1(System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
+2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.Render``1(System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
 # [MSTest](#tab/mstest)
@@ -161,7 +161,7 @@ Since MSTest instantiates a test class only once for all tests inside it, we can
 The test above does the following:
 
 1. Inherits from the `BunitTestContext` listed above. This base class offers the majority of functions.
-2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.RenderComponent``1(System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
+2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.Render``1(System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
 ***

@@ -13,7 +13,7 @@ public class ChildContentParams4Test : TestContext
   [Fact]
   public void Test()
   {
-    var cut = RenderComponent<ChildContentParams>(parameters => parameters
+    var cut = Render<ChildContentParams>(parameters => parameters
       .AddChildContent("<h1>Below you will find a most interesting alert!</h1>")
       .AddChildContent<Alert>(childParams => childParams
         .Add(p => p.Heading, "Alert heading")

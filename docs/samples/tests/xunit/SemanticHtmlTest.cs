@@ -13,7 +13,7 @@ public class SemanticHtmlTest : TestContext
   public void InitialHtmlIsCorrect()
   {
     // Arrange - renders the Heading component
-    var cut = RenderComponent<Heading>();
+    var cut = Render<Heading>();
 
     // Assert
     // Here we specify expected HTML from CUT.
