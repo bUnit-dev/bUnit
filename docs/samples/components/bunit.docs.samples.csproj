@@ -4,24 +4,16 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<RootNamespace>Bunit.Docs.Samples</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<NoWarn>CA1014,NU5104</NoWarn>
+		<NoWarn>CA1014,NU5104,BL0006</NoWarn>
 		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.0" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.0" />
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0-*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0-*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.0-*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0-*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0-*" />
 	</ItemGroup>
 
 </Project>

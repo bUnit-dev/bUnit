@@ -22,7 +22,7 @@
 		<PackageReference Include="AngleSharp.Diffing" Version="0.18.1" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet8Version)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet8Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet8Version)" />
