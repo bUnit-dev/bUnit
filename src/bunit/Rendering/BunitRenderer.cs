@@ -215,6 +215,15 @@ public sealed class BunitRenderer : Renderer
 		return Task.CompletedTask;
 	}
 
+	/// <inheritdoc/>
+	protected override IComponent ResolveComponentForRenderMode(Type componentType, int? parentComponentId,
+		IComponentActivator componentActivator, IComponentRenderMode componentTypeRenderMode)
+
+	{
+		ArgumentNullException.ThrowIfNull(componentActivator);
+		return componentActivator.CreateInstance(componentType);
+	}
+
 	private void UpdateDisplay(in RenderBatch renderBatch)
 	{
 		RenderCount++;
