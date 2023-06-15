@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
-using static Bunit.ComponentParameterFactory;
+
 
 namespace Bunit.Docs.Samples;
 
