@@ -3,11 +3,11 @@ using Xunit.Abstractions;
 
 namespace Bunit.Rendering;
 
-public class TestRendererTest : TestContext
+public class BunitRendererTest : TestContext
 {
-	public TestRendererTest(ITestOutputHelper outputHelper)
+	public BunitRendererTest(ITestOutputHelper outputHelper)
 	{
-		TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
+		DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(outputHelper);
 	}
 
@@ -408,20 +408,28 @@ public class TestRendererTest : TestContext
 		Renderer.UnhandledException.Result.ShouldBeOfType<InvalidOperationException>();
 	}
 
-	internal sealed class NoChildNoParams : ComponentBase
+	[Fact(DisplayName = "Can render components that have a RenderMode attribute")]
+	public void Test204()
+	{
+		var cut = Render<RenderModeServerComponent>();
+
+		cut.Find("h3").TextContent.ShouldBe("Hello from Server");
+	}
+
+	private sealed class NoChildNoParams : ComponentBase
 	{
 		public const string MARKUP = "hello world";
 		protected override void BuildRenderTree(RenderTreeBuilder builder) => builder.AddMarkupContent(0, MARKUP);
 	}
 
-	internal sealed class ThrowsDuringSetParams : ComponentBase
+	private sealed class ThrowsDuringSetParams : ComponentBase
 	{
 		public static readonly InvalidOperationException EXCEPTION = new("THROWS ON PURPOSE");
 
 		public override Task SetParametersAsync(ParameterView parameters) => throw EXCEPTION;
 	}
 
-	internal sealed class HasParams : ComponentBase
+	private sealed class HasParams : ComponentBase
 	{
 		[Parameter] public string? Value { get; set; }
 		[Parameter] public RenderFragment? ChildContent { get; set; }
@@ -433,7 +441,7 @@ public class TestRendererTest : TestContext
 		}
 	}
 
-	internal sealed class RenderTrigger : ComponentBase
+	private sealed class RenderTrigger : ComponentBase
 	{
 		[Parameter] public string? Value { get; set; }
 
@@ -451,7 +459,7 @@ public class TestRendererTest : TestContext
 		}
 	}
 
-	internal sealed class ToggleChild : ComponentBase
+	private sealed class ToggleChild : ComponentBase
 	{
 		private bool showing = true;
 
@@ -470,7 +478,7 @@ public class TestRendererTest : TestContext
 		}
 	}
 
-	internal sealed class SyncOperationThrows : ComponentBase
+	private sealed class SyncOperationThrows : ComponentBase
 	{
 		public bool AwaitDone { get; private set; }
 
@@ -480,7 +488,7 @@ public class TestRendererTest : TestContext
 		internal sealed class SyncOperationThrowsException : Exception { }
 	}
 
-	internal sealed class AsyncOperationThrows : ComponentBase
+	private sealed class AsyncOperationThrows : ComponentBase
 	{
 		[Parameter] public Task Awaitable { get; set; }
 
@@ -492,7 +500,7 @@ public class TestRendererTest : TestContext
 		internal sealed class AsyncOperationThrowsException : Exception { }
 	}
 
-	internal sealed class AsyncAfterRenderThrows : ComponentBase
+	private sealed class AsyncAfterRenderThrows : ComponentBase
 	{
 		[Inject] private IJSRuntime JSRuntime { get; set; }
 
@@ -500,6 +508,15 @@ public class TestRendererTest : TestContext
 		{
 			await JSRuntime.InvokeVoidAsync("foo");
 			throw new InvalidOperationException();
+		}
+	}
+
+	[RenderModeServer]
+	private sealed class RenderModeServerComponent : ComponentBase
+	{
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.AddMarkupContent(0, "<h3>Hello from Server</h3>");
 		}
 	}
 }
