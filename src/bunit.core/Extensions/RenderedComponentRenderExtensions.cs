@@ -1,3 +1,4 @@
+using Bunit.Rendering;
 using System.Runtime.ExceptionServices;
 
 namespace Bunit;
@@ -28,24 +29,8 @@ public static class RenderedComponentRenderExtensions
 		if (renderedComponent is null)
 			throw new ArgumentNullException(nameof(renderedComponent));
 
-		var result = renderedComponent.InvokeAsync(() =>
-			renderedComponent.Instance.SetParametersAsync(parameters));
-
-		if (result.IsFaulted && result.Exception is not null)
-		{
-			if (result.Exception.InnerExceptions.Count == 1)
-			{
-				ExceptionDispatchInfo.Capture(result.Exception.InnerExceptions[0]).Throw();
-			}
-			else
-			{
-				ExceptionDispatchInfo.Capture(result.Exception).Throw();
-			}
-		}
-		else if (!result.IsCompleted)
-		{
-			result.GetAwaiter().GetResult();
-		}
+		var renderer = renderedComponent.Services.GetRequiredService<TestRenderer>();
+		renderer.SetDirectParameters(renderedComponent, parameters);
 	}
 
 	/// <summary>

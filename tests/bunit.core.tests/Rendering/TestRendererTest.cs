@@ -423,6 +423,38 @@ public partial class TestRendererTest : TestContext
 		Renderer.UnhandledException.Result.ShouldBeOfType<InvalidOperationException>();
 	}
 
+	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with SetParametersAndRender")]
+	public void Test204()
+	{
+		var cut = RenderComponent<MultipleStateHasChangedInOnParametersSet>();
+		cut.RenderCount.ShouldBe(1);
+
+		cut.SetParametersAndRender();
+		cut.RenderCount.ShouldBe(2);
+	}
+
+	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with Render")]
+	public void Test205()
+	{
+		var cut = RenderComponent<MultipleStateHasChangedInOnParametersSet>();
+		cut.RenderCount.ShouldBe(1);
+
+		cut.Render();
+		cut.RenderCount.ShouldBe(2);
+	}
+
+	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with event dispatch render trigger")]
+	public void Test206()
+	{
+		var cut = RenderComponent<TriggerChildContentRerenderViaClick>();
+		var child = cut.FindComponent<MultipleStateHasChangedInOnParametersSet>();
+		child.RenderCount.ShouldBe(1);
+
+		cut.Find("button").Click();
+
+		child.RenderCount.ShouldBe(2);
+	}
+
 	internal sealed class NoChildNoParams : ComponentBase
 	{
 		public const string MARKUP = "hello world";

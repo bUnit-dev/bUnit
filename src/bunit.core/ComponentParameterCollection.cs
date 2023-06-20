@@ -71,7 +71,6 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 	/// the parameters in the collection passed to it.
 	/// </summary>
 	/// <typeparam name="TComponent">Type of component to render.</typeparam>
-	[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
 	public RenderFragment ToRenderFragment<TComponent>()
 		where TComponent : IComponent
 	{
