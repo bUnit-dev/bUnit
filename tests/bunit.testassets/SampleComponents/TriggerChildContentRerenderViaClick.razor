@@ -1,0 +1,6 @@
+@* TriggerChildContentRerenderViaClick.razor *@
+<button @onclick="() => counter++">Count = @counter</button>
+<MultipleStateHasChangedInOnParametersSet Value="counter" />
+@code {
+    int counter;
+}

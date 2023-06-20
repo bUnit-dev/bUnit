@@ -48,6 +48,7 @@ public static class TestServiceProviderExtensions
 		// bUnit specific services
 		services.AddSingleton<TestContextBase>(testContext);
 		services.AddSingleton<WebTestRenderer>();
+		services.AddSingleton<TestRenderer>(s => s.GetRequiredService<WebTestRenderer>());
 		services.AddSingleton<Renderer>(s => s.GetRequiredService<WebTestRenderer>());
 		services.AddSingleton<ITestRenderer>(s => s.GetRequiredService<WebTestRenderer>());
 		services.AddSingleton<HtmlComparer>();
