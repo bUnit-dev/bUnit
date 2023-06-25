@@ -27,7 +27,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 		var spy = CreateTriggerSpy(ElementName, eventName);
 		var evtArg = new TEventArgs();
 
-		if (helper.GetParameters().Any(p => p.ParameterType == EventArgsType))
+		if (Array.Exists(helper.GetParameters(), p => p.ParameterType == EventArgsType))
 		{
 			// Matches methods like: public static void Xxxx(this IElement element, TEventArgs args)
 			spy.Trigger(element =>

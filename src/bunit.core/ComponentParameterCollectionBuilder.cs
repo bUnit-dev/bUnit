@@ -480,7 +480,9 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		var type = typeof(TComponent);
 		var property = type.GetProperty(parameterName);
 
-		return property != null && property.GetCustomAttributes(inherit: true).Any(a => a is ParameterAttribute);
+		return property is not null && Array.Exists(
+			property.GetCustomAttributes(inherit: true),
+			a => a is ParameterAttribute);
 	}
 
 	private static bool IsConcreteGenericOf(Type type, Type openGeneric)

@@ -117,7 +117,7 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 			foreach (var pgroup in parameters.Where(x => !x.IsCascadingValue).GroupBy(x => x.Name, StringComparer.Ordinal))
 			{
 				var group = pgroup.ToArray();
-				var groupObject = group.FirstOrDefault(x => x.Value is not null).Value;
+				var groupObject = Array.Find(group, x => x.Value is not null).Value;
 
 				if (group.Length == 1)
 				{

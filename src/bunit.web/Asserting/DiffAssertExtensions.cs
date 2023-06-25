@@ -29,7 +29,7 @@ public static class DiffAssertExtensions
 				expectedText: "Expected changes",
 				message: "There were more than one change");
 
-		return diffsArray.First();
+		return diffsArray[0];
 	}
 
 	/// <summary>
