@@ -67,13 +67,13 @@ public class FakeAuthorizationService : IAuthorizationService
 		AuthorizationResult result;
 
 		var requirementsArray = requirements.ToArray();
-		if (requirementsArray.All(p => p is DenyAnonymousAuthorizationRequirement))
+		if (Array.TrueForAll(requirementsArray, p => p is DenyAnonymousAuthorizationRequirement))
 		{
 			result = currentState == AuthorizationState.Authorized
 				? AuthorizationResult.Success()
 				: AuthorizationResult.Failed();
 		}
-		else if (requirementsArray.All(p => p is RolesAuthorizationRequirement))
+		else if (Array.TrueForAll(requirementsArray, p => p is RolesAuthorizationRequirement))
 		{
 			result = VerifyRequiredRoles(requirementsArray);
 		}
