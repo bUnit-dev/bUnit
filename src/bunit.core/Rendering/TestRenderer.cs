@@ -279,6 +279,11 @@ public class TestRenderer : Renderer, ITestRenderer
 		{
 			var id = renderBatch.DisposedComponentIDs.Array[i];
 
+			// Add disposed components to the frames collection
+			// to avoid them being added into the dictionary later during a
+			// LoadRenderTreeFrames/GetOrLoadRenderTreeFrame call.
+			renderEvent.Frames.Add(id, default);
+
 			logger.LogComponentDisposed(id);
 
 			if (renderedComponents.TryGetValue(id, out var rc))
@@ -443,7 +448,8 @@ public class TestRenderer : Renderer, ITestRenderer
 		for (var i = 0; i < frames.Count; i++)
 		{
 			ref var frame = ref frames.Array[i];
-			if (frame.FrameType == RenderTreeFrameType.Component)
+			
+			if (frame.FrameType == RenderTreeFrameType.Component && !framesCollection.Contains(frame.ComponentId))
 			{
 				LoadRenderTreeFrames(frame.ComponentId, framesCollection);
 			}
