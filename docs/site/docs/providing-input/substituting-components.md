@@ -269,7 +269,7 @@ A popular technique in JavaScript-based frontend testing is "shallow rendering".
 This is possible in bUnit as well, using the type predicate technique discussed above. For example, to shallow render `<Foo>` using the built-in stub in bUnit, do the following:
 
 ```csharp
-ComponentFactories.AddStub<Foo>(type => type != typeof(Foo));
+ComponentFactories.AddStub(type => type != typeof(Foo));
 ```
 
 This will tell bUnit to stub out all components in the render tree that is NOT `<Foo>`. This can also be achieved using a mocking framework. See the example in the previous section above for how to dynamically create component mocks using Moq.
