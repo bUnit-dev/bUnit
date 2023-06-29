@@ -5,24 +5,15 @@ namespace Bunit.Rendering;
 /// </summary>
 public sealed class RenderEvent
 {
-	private readonly RenderBatch renderBatch;
+	private readonly Dictionary<int, Status> statuses = new();
+
+	internal IReadOnlyDictionary<int, Status> Statuses => statuses;
 
 	/// <summary>
 	/// Gets a collection of <see cref="ArrayRange{RenderTreeFrame}"/>, accessible via the ID
 	/// of the component they are created by.
 	/// </summary>
-	public RenderTreeFrameDictionary Frames { get; }
-
-	/// <summary>
-	/// Initializes a new instance of the <see cref="RenderEvent"/> class.
-	/// </summary>
-	/// <param name="renderBatch">The <see cref="RenderBatch"/> update from the render event.</param>
-	/// <param name="frames">The <see cref="RenderTreeFrameDictionary"/> from the current render.</param>
-	internal RenderEvent(RenderBatch renderBatch, RenderTreeFrameDictionary frames)
-	{
-		this.renderBatch = renderBatch;
-		Frames = frames;
-	}
+	public RenderTreeFrameDictionary Frames { get; } = new();
 
 	/// <summary>
 	/// Gets the render status for a <paramref name="renderedComponent"/>.
@@ -34,86 +25,62 @@ public sealed class RenderEvent
 		if (renderedComponent is null)
 			throw new ArgumentNullException(nameof(renderedComponent));
 
-		var result = (Rendered: false, Changed: false, Disposed: false);
-
-		if (DidComponentDispose(renderedComponent))
-		{
-			result.Disposed = true;
-		}
-		else
-		{
-			(result.Rendered, result.Changed) = GetRenderAndChangeStatus(renderedComponent);
-		}
-
-		return result;
+		return statuses.TryGetValue(renderedComponent.ComponentId, out var status)
+			? (status.Rendered, status.Changed, status.Disposed)
+			: (Rendered: false, Changed: false, Disposed: false);
 	}
 
-	private bool DidComponentDispose(IRenderedFragmentBase renderedComponent)
+	internal Status GetStatus(int componentId)
 	{
-		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
+		if (!statuses.TryGetValue(componentId, out var status))
 		{
-			if (renderBatch.DisposedComponentIDs.Array[i].Equals(renderedComponent.ComponentId))
-			{
-				return true;
-			}
+			status = new();
+			statuses[componentId] = status;
 		}
-
-		return false;
+		return status;
 	}
 
-	/// <summary>
-	/// This method determines if the <paramref name="renderedComponent"/> or any of the
-	/// components underneath it in the render tree rendered and whether they they changed
-	/// their render tree during render.
-	///
-	/// It does this by getting the status from the <paramref name="renderedComponent"/>,
-	/// then from all its children, using a recursive pattern, where the internal methods
-	/// GetStatus and GetStatusFromChildren call each other until there are no more children,
-	/// or both a render and a change is found.
-	/// </summary>
-	private (bool Rendered, bool HasChanges) GetRenderAndChangeStatus(IRenderedFragmentBase renderedComponent)
+	internal void SetDisposed(int componentId)
 	{
-		var result = (Rendered: false, HasChanges: false);
+		GetStatus(componentId).Disposed = true;
+	}
 
-		GetStatus(renderedComponent.ComponentId);
+	internal void SetUpdated(int componentId, bool hasChanges)
+	{
+		var status = GetStatus(componentId);
+		status.Rendered = true;
+		status.Changed = hasChanges;
+	}
 
-		return result;
+	internal void SetFramesLoaded(int componentId)
+	{
+		GetStatus(componentId).FramesLoaded = true;
+	}
 
-		void GetStatus(int componentId)
-		{
-			for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
-			{
-				ref var update = ref renderBatch.UpdatedComponents.Array[i];
-				if (update.ComponentId == componentId)
-				{
-					result.Rendered = true;
-					result.HasChanges = update.Edits.Count > 0;
-					break;
-				}
-			}
+	internal void SetUpdatedApplied(int componentId)
+	{
+		GetStatus(componentId).UpdatesApplied = true;
+	}
 
-			if (!result.HasChanges)
-			{
-				GetStatusFromChildren(componentId);
-			}
-		}
+	internal void AddFrames(int componentId, ArrayRange<RenderTreeFrame> frames)
+	{
+		Frames.Add(componentId, frames);
+		GetStatus(componentId).FramesLoaded = true;
+	}
 
-		void GetStatusFromChildren(int componentId)
-		{
-			var frames = Frames[componentId];
-			for (var i = 0; i < frames.Count; i++)
-			{
-				ref var frame = ref frames.Array[i];
-				if (frame.FrameType == RenderTreeFrameType.Component)
-				{
-					GetStatus(frame.ComponentId);
+	internal record class Status
+	{
+		public bool Rendered { get; set; }
 
-					if (result.HasChanges)
-					{
-						break;
-					}
-				}
-			}
-		}
+		public bool Changed { get; set; }
+
+		public bool Disposed { get; set; }
+
+		public bool UpdatesApplied { get; set; }
+
+		public bool FramesLoaded { get; set; }
+
+		public bool UpdateNeeded => Rendered || Changed;
 	}
 }
+
