@@ -165,55 +165,58 @@ public class TestRenderer : Renderer, ITestRenderer
 		if (disposed)
 			throw new ObjectDisposedException(nameof(TestRenderer));
 
-		// The dispatcher will always return a completed task,
-		// when dealing with an IAsyncDisposable.
-		// Therefore checking for a completed task and awaiting it
-		// will only work on IDisposable
-		var disposeTask = Dispatcher.InvokeAsync(() =>
+		lock (renderTreeUpdateLock)
 		{
-			ResetUnhandledException();
-
-			foreach (var root in rootComponents)
+			// The dispatcher will always return a completed task,
+			// when dealing with an IAsyncDisposable.
+			// Therefore checking for a completed task and awaiting it
+			// will only work on IDisposable
+			Dispatcher.InvokeAsync(() =>
 			{
-				root.Detach();
-			}
-		});
+				ResetUnhandledException();
 
-		if (!disposeTask.IsCompleted)
-		{
-			disposeTask.GetAwaiter().GetResult();
+				foreach (var root in rootComponents)
+				{
+					root.Detach();
+				}
+			});
+
+			rootComponents.Clear();
+			AssertNoUnhandledExceptions();
 		}
-
-		rootComponents.Clear();
-		AssertNoUnhandledExceptions();
 	}
 
 	/// <inheritdoc/>
 	internal void SetDirectParameters(IRenderedFragmentBase renderedComponent, ParameterView parameters)
 	{
-		Dispatcher.InvokeAsync(() =>
+		// Calling SetDirectParameters updates the render tree
+		// if the event contains associated data.
+		lock (renderTreeUpdateLock)
 		{
-			try
+			Dispatcher.InvokeAsync(() =>
 			{
-				IsBatchInProgress = true;
+				try
+				{
+					IsBatchInProgress = true;
 
-				var componentState = GetRequiredComponentStateMethod.Invoke(this, new object[] { renderedComponent.ComponentId })!;
-				var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
-				setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
-			}
-			catch (TargetInvocationException ex) when (ex.InnerException is not null)
-			{
-				HandleException(ex.InnerException);
-			}
-			finally
-			{
-				IsBatchInProgress = false;
-			}
+					var componentState = GetRequiredComponentStateMethod.Invoke(this, new object[] { renderedComponent.ComponentId })!;
+					var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
+					setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
+				}
+				catch (TargetInvocationException ex) when (ex.InnerException is not null)
+				{
+					HandleException(ex.InnerException);
+				}
+				finally
+				{
+					IsBatchInProgress = false;
+				}
 
-			ProcessPendingRender();
-		});
+				ProcessPendingRender();
+			});
 
-		AssertNoUnhandledExceptions();
+			AssertNoUnhandledExceptions();
+		}
 	}
 
 	/// <inheritdoc/>
@@ -508,17 +511,23 @@ public class TestRenderer : Renderer, ITestRenderer
 
 	private void AssertNoUnhandledExceptions()
 	{
-		if (capturedUnhandledException is Exception unhandled && !disposed)
+		// Ensure we are not throwing an exception while a render is ongoing.
+		// This could lead to the renderer being disposed which could lead to
+		// tests failing that should not be failing.
+		lock (renderTreeUpdateLock)
 		{
-			capturedUnhandledException = null;
+			if (capturedUnhandledException is Exception unhandled && !disposed)
+			{
+				capturedUnhandledException = null;
 
-			if (unhandled is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
-			{
-				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-			}
-			else
-			{
-				ExceptionDispatchInfo.Capture(unhandled).Throw();
+				if (unhandled is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
+				{
+					ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
+				}
+				else
+				{
+					ExceptionDispatchInfo.Capture(unhandled).Throw();
+				}
 			}
 		}
 	}
