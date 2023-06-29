@@ -247,80 +247,128 @@ public class TestRenderer : Renderer, ITestRenderer
 			return Task.CompletedTask;
 		}
 
-		if (usersSyncContext is not null && usersSyncContext != SynchronizationContext.Current)
-		{
-			// The users' sync context, typically one established by
-			// xUnit or another testing framework is used to update any
-			// rendered fragments/dom trees and trigger WaitForX handlers.
-			// This ensures that changes to DOM observed inside a WaitForX handler
-			// will also be visible outside a WaitForX handler, since
-			// they will be running in the same sync context. The theory is that 
-			// this should mitigate the issues where Blazor's dispatcher/thread is used 
-			// to verify an assertion inside a WaitForX handler, and another thread is 
-			// used again to access the DOM/repeat the assertion, where the change
-			// may not be visible yet (another theory about why that may happen is different 
-			// CPU cache updates not happening immediately).
-			//
-			// There is no guarantee a caller/test framework has set a sync context.
-			usersSyncContext.Send(static (state) =>
-			{
-				var (renderBatch, renderer) = ((RenderBatch, TestRenderer))state!;
-				renderer.UpdateDisplay(renderBatch);
-			}, (renderBatch, this));
-		}
-		else
-		{
-			UpdateDisplay(renderBatch);
-		}
+		var renderEvent = new RenderEvent();
 
-		return Task.CompletedTask;
-	}
-
-	private void UpdateDisplay(in RenderBatch renderBatch)
-	{
-		RenderCount++;
-		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
-
-		if (disposed)
-		{
-			logger.LogRenderCycleActiveAfterDispose();
-			return;
-		}
-
-		// removes disposed components
 		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
 		{
 			var id = renderBatch.DisposedComponentIDs.Array[i];
+			renderEvent.SetDisposed(id);
+		}
 
-			// Add disposed components to the frames collection
-			// to avoid them being added into the dictionary later during a
-			// LoadRenderTreeFrames/GetOrLoadRenderTreeFrame call.
-			renderEvent.Frames.Add(id, default);
+		for (int i = 0; i < renderBatch.UpdatedComponents.Count; i++)
+		{
+			ref var update = ref renderBatch.UpdatedComponents.Array[i];
+			renderEvent.SetUpdated(update.ComponentId, update.Edits.Count > 0);
+		}
 
-			logger.LogComponentDisposed(id);
+		foreach (var (key, rc) in renderedComponents)
+		{
+			LoadChangesIntoRenderEvent(rc.ComponentId);
+		}
 
-			if (renderedComponents.TryGetValue(id, out var rc))
+		InvokeApplyRenderEvent();
+
+		return Task.CompletedTask;
+
+		void LoadChangesIntoRenderEvent(int componentId)
+		{
+			var status = renderEvent.GetStatus(componentId);
+			if (status.FramesLoaded || status.Disposed)
 			{
-				renderedComponents.Remove(id);
-				rc.OnRender(renderEvent);
+				return;
+			}
+
+			var frames = GetCurrentRenderTreeFrames(componentId);
+			renderEvent.AddFrames(componentId, frames);
+
+			for (var i = 0; i < frames.Count; i++)
+			{
+				ref var frame = ref frames.Array[i];
+				if (frame.FrameType == RenderTreeFrameType.Component)
+				{
+					var childStatus = renderEvent.GetStatus(frame.ComponentId);
+					if (childStatus.Disposed)
+					{
+						logger.LogDisposedChildInRenderTreeFrame(componentId, frame.ComponentId);
+					}
+					else if (!renderEvent.GetStatus(frame.ComponentId).FramesLoaded)
+					{
+						LoadChangesIntoRenderEvent(frame.ComponentId);
+					}
+
+					if (childStatus.Rendered || childStatus.Changed || childStatus.Disposed)
+					{
+						status.Rendered = status.Rendered || childStatus.Rendered;
+						status.Changed = status.Changed || childStatus.Changed || childStatus.Disposed;
+					}
+				}
 			}
 		}
 
-		// notify each rendered component about the render
-		foreach (var (key, rc) in renderedComponents.ToArray())
+		void InvokeApplyRenderEvent()
 		{
-			LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
-
-			rc.OnRender(renderEvent);
-
-			logger.LogComponentRendered(rc.ComponentId);
-
-			// RC can replace the instance of the component it is bound
-			// to while processing the update event.
-			if (key != rc.ComponentId)
+			if (usersSyncContext is not null && usersSyncContext != SynchronizationContext.Current)
 			{
-				renderedComponents.Remove(key);
-				renderedComponents.Add(rc.ComponentId, rc);
+				// The users' sync context, typically one established by
+				// xUnit or another testing framework is used to update any
+				// rendered fragments/dom trees and trigger WaitForX handlers.
+				// This ensures that changes to DOM observed inside a WaitForX handler
+				// will also be visible outside a WaitForX handler, since
+				// they will be running in the same sync context. The theory is that 
+				// this should mitigate the issues where Blazor's dispatcher/thread is used 
+				// to verify an assertion inside a WaitForX handler, and another thread is 
+				// used again to access the DOM/repeat the assertion, where the change
+				// may not be visible yet (another theory about why that may happen is different 
+				// CPU cache updates not happening immediately).
+				//
+				// There is no guarantee a caller/test framework has set a sync context.
+				usersSyncContext.Send(static (state) =>
+				{
+					var (renderEvent, renderer) = ((RenderEvent, TestRenderer))state!;
+					renderer.ApplyRenderEvent(renderEvent);
+				}, (renderEvent, this));
+			}
+			else
+			{
+				ApplyRenderEvent(renderEvent);
+			}
+		}
+	}
+
+	private void ApplyRenderEvent(RenderEvent renderEvent)
+	{
+		foreach (var (componentId, status) in renderEvent.Statuses)
+		{
+			if (status.UpdatesApplied || !renderedComponents.TryGetValue(componentId, out var rc))
+			{
+				continue;
+			}
+
+			if (status.Disposed)
+			{
+				renderedComponents.Remove(componentId);
+				rc.OnRender(renderEvent);
+				renderEvent.SetUpdatedApplied(componentId);
+				logger.LogComponentDisposed(componentId);
+				continue;
+			}
+
+			if (status.UpdateNeeded)
+			{
+				rc.OnRender(renderEvent);
+				renderEvent.SetUpdatedApplied(componentId);
+
+				// RC can replace the instance of the component it is bound
+				// to while processing the update event, e.g. during the
+				// initial render of a component.
+				if (componentId != rc.ComponentId)
+				{
+					renderedComponents.Remove(componentId);
+					renderedComponents.Add(rc.ComponentId, rc);
+					renderEvent.SetUpdatedApplied(rc.ComponentId);
+				}
+
+				logger.LogComponentRendered(rc.ComponentId);
 			}
 		}
 	}
@@ -461,7 +509,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		for (var i = 0; i < frames.Count; i++)
 		{
 			ref var frame = ref frames.Array[i];
-			
+
 			if (frame.FrameType == RenderTreeFrameType.Component && !framesCollection.Contains(frame.ComponentId))
 			{
 				LoadRenderTreeFrames(frame.ComponentId, framesCollection);

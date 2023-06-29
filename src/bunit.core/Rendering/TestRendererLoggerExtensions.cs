@@ -19,6 +19,9 @@ internal static class TestRendererLoggerExtensions
 	private static readonly Action<ILogger, Exception?> ChangedComponentsMarkupUpdated
 		= LoggerMessage.Define(LogLevel.Debug, new EventId(13, "UpdateDisplayAsync"), "Finished updating the markup of changed components.");
 
+	private static readonly Action<ILogger, int, int, Exception?> DisposedChildInRenderTreeFrame
+		= LoggerMessage.Define<int, int>(LogLevel.Warning, new EventId(14, "UpdateDisplayAsync"), "A parent components {ParentComponentId} has a disposed component {ComponentId} as its child.");
+
 	private static readonly Action<ILogger, Exception?> AsyncInitialRender
 		= LoggerMessage.Define(LogLevel.Debug, new EventId(20, "Render"), "The initial render task did not complete immediately.");
 
@@ -100,6 +103,14 @@ internal static class TestRendererLoggerExtensions
 		if (logger.IsEnabled(LogLevel.Warning))
 		{
 			RenderCycleActiveAfterDispose(logger, null);
+		}
+	}
+
+	internal static void LogDisposedChildInRenderTreeFrame(this ILogger<TestRenderer> logger, int parentComponentId, int componentId)
+	{
+		if (logger.IsEnabled(LogLevel.Warning))
+		{
+			DisposedChildInRenderTreeFrame(logger, parentComponentId, componentId, null);
 		}
 	}
 }
