@@ -16,7 +16,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AngleSharp" Version="0.17.1" />
-		<PackageReference Include="AngleSharp.Diffing" Version="0.18.1" />
+		<PackageReference Include="AngleSharp.Diffing" Version="0.18.2" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
