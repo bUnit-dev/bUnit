@@ -243,32 +243,35 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		if (disposed)
 		{
-			logger.LogRenderCycleActiveAfterDispose();
 			return Task.CompletedTask;
 		}
 
 		var renderEvent = new RenderEvent();
 
-		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
-		{
-			var id = renderBatch.DisposedComponentIDs.Array[i];
-			renderEvent.SetDisposed(id);
-		}
-
-		for (int i = 0; i < renderBatch.UpdatedComponents.Count; i++)
-		{
-			ref var update = ref renderBatch.UpdatedComponents.Array[i];
-			renderEvent.SetUpdated(update.ComponentId, update.Edits.Count > 0);
-		}
-
-		foreach (var (key, rc) in renderedComponents)
-		{
-			LoadChangesIntoRenderEvent(rc.ComponentId);
-		}
-
+		PrepareRenderEvent(renderBatch);
 		InvokeApplyRenderEvent();
 
 		return Task.CompletedTask;
+
+		void PrepareRenderEvent(in RenderBatch renderBatch)
+		{
+			for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
+			{
+				var id = renderBatch.DisposedComponentIDs.Array[i];
+				renderEvent.SetDisposed(id);
+			}
+
+			for (int i = 0; i < renderBatch.UpdatedComponents.Count; i++)
+			{
+				ref var update = ref renderBatch.UpdatedComponents.Array[i];
+				renderEvent.SetUpdated(update.ComponentId, update.Edits.Count > 0);
+			}
+
+			foreach (var (key, rc) in renderedComponents)
+			{
+				LoadChangesIntoRenderEvent(rc.ComponentId);
+			}
+		}
 
 		void LoadChangesIntoRenderEvent(int componentId)
 		{

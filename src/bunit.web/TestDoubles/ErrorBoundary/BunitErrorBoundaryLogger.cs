@@ -1,7 +1,4 @@
 #if NET6_0_OR_GREATER
-using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.TestDoubles;
@@ -12,10 +9,8 @@ namespace Bunit.TestDoubles;
 /// </summary>
 internal class BunitErrorBoundaryLogger : IErrorBoundaryLogger
 {
-	private static readonly Action<ILogger, string, Exception> ExceptionCaughtByErrorBoundary = LoggerMessage.Define<string>(
-		LogLevel.Warning,
-		100,
-		"Unhandled exception rendering component: {Message}");
+	private static readonly Action<ILogger, string, Exception> ExceptionCaughtByErrorBoundary
+		= LoggerMessage.Define<string>(LogLevel.Warning, new EventId(100, "ExceptionCaughtByErrorBoundary"), "Unhandled exception rendering component: {Message}");
 
 	private readonly ILogger logger;
 
