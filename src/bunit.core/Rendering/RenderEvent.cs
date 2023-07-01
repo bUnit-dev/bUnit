@@ -52,11 +52,6 @@ public sealed class RenderEvent
 		status.Changed = hasChanges;
 	}
 
-	internal void SetFramesLoaded(int componentId)
-	{
-		GetStatus(componentId).FramesLoaded = true;
-	}
-
 	internal void SetUpdatedApplied(int componentId)
 	{
 		GetStatus(componentId).UpdatesApplied = true;
