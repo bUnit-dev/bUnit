@@ -1,4 +1,5 @@
 using AngleSharp.Dom;
+using Xunit.Abstractions;
 
 namespace Bunit;
 
@@ -8,6 +9,11 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 	protected static readonly Type EventArgsType = typeof(TEventArgs);
 
 	protected abstract string ElementName { get; }
+
+	protected EventDispatchExtensionsTest(ITestOutputHelper outputHelper)
+	{
+		Services.AddXunitLogger(outputHelper);
+	}
 
 	protected TriggerEventSpy<EventArgs> CreateTriggerSpy(string element, string eventName)
 		=> new(p => RenderComponent<TriggerTester<EventArgs>>(p), element, eventName);

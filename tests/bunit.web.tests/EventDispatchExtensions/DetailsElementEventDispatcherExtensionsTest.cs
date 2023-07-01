@@ -1,7 +1,4 @@
 #if !NETCOREAPP3_1
-using Bunit.TestAssets.SampleComponents;
-using Shouldly;
-using Xunit;
 
 namespace Bunit.EventDispatchExtensions;
 

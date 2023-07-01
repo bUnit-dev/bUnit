@@ -2,6 +2,10 @@ namespace Bunit;
 
 public class FocusEventDispatchExtensionsTest : EventDispatchExtensionsTest<FocusEventArgs>
 {
+	public FocusEventDispatchExtensionsTest(ITestOutputHelper outputHelper) : base(outputHelper)
+	{
+	}
+
 	protected override string ElementName => "p";
 
 	[Theory(DisplayName = "Focus events are raised correctly through helpers")]

@@ -2,6 +2,10 @@ namespace Bunit;
 
 public class WheelEventDispatchExtensionsTest : EventDispatchExtensionsTest<WheelEventArgs>
 {
+	public WheelEventDispatchExtensionsTest(ITestOutputHelper outputHelper) : base(outputHelper)
+	{
+	}
+
 	public static IEnumerable<object[]> Helpers { get; }
 		= GetEventHelperMethods(typeof(MouseEventDispatchExtensions), x => x.Name.Contains("Wheel", StringComparison.OrdinalIgnoreCase));
 

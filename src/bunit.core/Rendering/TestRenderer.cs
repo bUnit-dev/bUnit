@@ -119,6 +119,7 @@ public class TestRenderer : Renderer, ITestRenderer
 
 				try
 				{
+					logger.LogDispatchingEvent(eventHandlerId, fieldInfo, eventArgs);
 					return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
 				}
 				catch (ArgumentException ex) when (string.Equals(ex.Message, $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')", StringComparison.Ordinal))
@@ -142,7 +143,7 @@ public class TestRenderer : Renderer, ITestRenderer
 
 			return result;
 		}
-	}
+	}	
 
 	/// <inheritdoc/>
 	public IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)

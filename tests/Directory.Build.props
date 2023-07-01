@@ -42,6 +42,7 @@
 		<Using Include="Moq" />
 		<Using Include="Shouldly" />
 		<Using Include="Xunit" />
+		<Using Include="Xunit.Abstractions" />
 	</ItemGroup>
 
 </Project>
