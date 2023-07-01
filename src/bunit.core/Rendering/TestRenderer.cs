@@ -1,6 +1,6 @@
+using Microsoft.Extensions.Logging;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
-using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
 
@@ -143,7 +143,7 @@ public class TestRenderer : Renderer, ITestRenderer
 
 			return result;
 		}
-	}	
+	}
 
 	/// <inheritdoc/>
 	public IRenderedComponentBase<TComponent> FindComponent<TComponent>(IRenderedFragmentBase parentComponent)
@@ -295,11 +295,19 @@ public class TestRenderer : Renderer, ITestRenderer
 				ref var frame = ref frames.Array[i];
 				if (frame.FrameType == RenderTreeFrameType.Component)
 				{
+					// If a child component of the current components has been
+					// disposed, there is no reason to load the disposed components
+					// render tree frames. This can also cause a stack overflow if
+					// the current component was previously a child of the disposed
+					// component (is that possible?)
 					var childStatus = renderEvent.GetStatus(frame.ComponentId);
 					if (childStatus.Disposed)
 					{
 						logger.LogDisposedChildInRenderTreeFrame(componentId, frame.ComponentId);
 					}
+					// The assumption is that a component cannot be in multiple places at
+					// once. However, in case this is not a correct assumption, this
+					// ensures that a child components frames are only loaded once.
 					else if (!renderEvent.GetStatus(frame.ComponentId).FramesLoaded)
 					{
 						LoadChangesIntoRenderEvent(frame.ComponentId);
@@ -308,6 +316,10 @@ public class TestRenderer : Renderer, ITestRenderer
 					if (childStatus.Rendered || childStatus.Changed || childStatus.Disposed)
 					{
 						status.Rendered = status.Rendered || childStatus.Rendered;
+
+						// The current component should also be marked as changed if the child component is
+						// either changed or disposed, as there is a good chance that the child component
+						// contained markup which is no longer visible.
 						status.Changed = status.Changed || childStatus.Changed || childStatus.Disposed;
 					}
 				}
