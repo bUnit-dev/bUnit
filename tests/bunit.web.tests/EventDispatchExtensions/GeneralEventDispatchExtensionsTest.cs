@@ -1,7 +1,6 @@
 using AngleSharp;
 using AngleSharp.Dom;
 using Bunit.Rendering;
-using Xunit.Abstractions;
 
 namespace Bunit;
 
@@ -10,9 +9,9 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	protected override string ElementName => "p";
 
 	public GeneralEventDispatchExtensionsTest(ITestOutputHelper outputHelper)
+		: base(outputHelper)
 	{
 		TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
-		Services.AddXunitLogger(outputHelper);
 	}
 
 	[Theory(DisplayName = "General events are raised correctly through helpers")]
@@ -342,8 +341,8 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	// reliably.
 	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Needed to trigger multiple reruns of test.")]
 	[Theory(DisplayName = "TriggerEventAsync avoids race condition with DOM tree updates")]
-    [Repeat(10)]
-    [Trait("Category", "sync")]
+	[Repeat(10)]
+	[Trait("Category", "sync")]
 	public async Task Test400_Sync(int repeatCount)
 	{
 		var cut = RenderComponent<CounterComponentDynamic>();
