@@ -194,7 +194,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		// if the event contains associated data.
 		lock (renderTreeUpdateLock)
 		{
-			Dispatcher.InvokeAsync(() =>
+			var result = Dispatcher.InvokeAsync(() =>
 			{
 				try
 				{
@@ -206,7 +206,7 @@ public class TestRenderer : Renderer, ITestRenderer
 				}
 				catch (TargetInvocationException ex) when (ex.InnerException is not null)
 				{
-					HandleException(ex.InnerException);
+					throw ex.InnerException;
 				}
 				finally
 				{
@@ -215,6 +215,11 @@ public class TestRenderer : Renderer, ITestRenderer
 
 				ProcessPendingRender();
 			});
+
+			if (result.IsFaulted && result.Exception is not null)
+			{
+				HandleException(result.Exception);
+			}
 
 			AssertNoUnhandledExceptions();
 		}
