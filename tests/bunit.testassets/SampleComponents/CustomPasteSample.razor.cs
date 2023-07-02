@@ -11,6 +11,7 @@ public partial class CustomPasteSample
 }
 
 [EventHandler("oncustompaste", typeof(CustomPasteEventArgs), enableStopPropagation: true, enablePreventDefault: true)]
+[SuppressMessage("Naming", "CA1724:Type names should not match namespaces", Justification = "By convention this has to be named EventHandlers")]
 public static class EventHandlers
 {
 	// This static class doesn't need to contain any members. It's just a place where we can put

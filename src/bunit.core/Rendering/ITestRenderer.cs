@@ -52,7 +52,7 @@ public interface ITestRenderer
 	/// <summary>
 	/// Renders a <typeparamref name="TComponent"/> with the <paramref name="parameters"/> passed to it.
 	/// </summary>
-	/// <typeparam name = "TComponent" > The type of component to render.</typeparam>
+	/// <typeparam name="TComponent">The type of component to render.</typeparam>
 	/// <param name="parameters">The parameters to pass to the component.</param>
 	/// <returns>A <see cref="IRenderedComponentBase{TComponent}"/> that provides access to the rendered component.</returns>
 	IRenderedComponentBase<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
@@ -77,5 +77,5 @@ public interface ITestRenderer
 	/// <summary>
 	/// Disposes all components rendered by the <see cref="ITestRenderer" />.
 	/// </summary>
-	public void DisposeComponents();
+	void DisposeComponents();
 }

@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Runtime.ExceptionServices;
 using Microsoft.Extensions.Logging;
 
@@ -6,8 +7,13 @@ namespace Bunit.Rendering;
 /// <summary>
 /// Represents a bUnit <see cref="ITestRenderer"/> used to render Blazor components and fragments during bUnit tests.
 /// </summary>
+[SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Blazors internal API has been stable for a while now.")]
 public class TestRenderer : Renderer, ITestRenderer
 {
+	private static readonly Type RendererType = typeof(Renderer);
+	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;
+	private static readonly MethodInfo GetRequiredComponentStateMethod = RendererType.GetMethod("GetRequiredComponentState", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
 	private readonly object renderTreeUpdateLock = new();
 	private readonly SynchronizationContext? usersSyncContext = SynchronizationContext.Current;
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
@@ -17,6 +23,14 @@ public class TestRenderer : Renderer, ITestRenderer
 	private bool disposed;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
+
+	private bool IsBatchInProgress
+	{
+#pragma warning disable S1144 // Unused private types or members should be removed
+		get => (bool)(IsBatchInProgressField.GetValue(this) ?? false);
+#pragma warning restore S1144 // Unused private types or members should be removed
+		set => IsBatchInProgressField.SetValue(this, value);
+	}
 
 	/// <inheritdoc/>
 	public Task<Exception> UnhandledException => unhandledExceptionTsc.Task;
@@ -29,6 +43,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// </summary>
 	internal int RenderCount { get; private set; }
 
+#if NETSTANDARD
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
 	/// </summary>
@@ -38,13 +53,22 @@ public class TestRenderer : Renderer, ITestRenderer
 		logger = loggerFactory.CreateLogger<TestRenderer>();
 		this.activator = renderedComponentActivator;
 	}
+#elif NET5_0_OR_GREATER
+	/// <summary>
+	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
+	/// </summary>
+	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
+		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), null))
+	{
+		logger = loggerFactory.CreateLogger<TestRenderer>();
+		this.activator = renderedComponentActivator;
+	}
 
-#if NET5_0_OR_GREATER
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
 	/// </summary>
 	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
-		: base(services, loggerFactory, componentActivator)
+		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), componentActivator))
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
 		this.activator = renderedComponentActivator;
@@ -165,6 +189,34 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
+	internal void SetDirectParameters(IRenderedFragmentBase renderedComponent, ParameterView parameters)
+	{
+		Dispatcher.InvokeAsync(() =>
+		{
+			try
+			{
+				IsBatchInProgress = true;
+
+				var componentState = GetRequiredComponentStateMethod.Invoke(this, new object[] { renderedComponent.ComponentId })!;
+				var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
+				setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
+			}
+			catch (TargetInvocationException ex) when (ex.InnerException is not null)
+			{
+				HandleException(ex.InnerException);
+			}
+			finally
+			{
+				IsBatchInProgress = false;
+			}
+
+			ProcessPendingRender();
+		});
+
+		AssertNoUnhandledExceptions();
+	}
+
+	/// <inheritdoc/>
 	protected override void ProcessPendingRender()
 	{
 		if (disposed)
@@ -236,6 +288,11 @@ public class TestRenderer : Renderer, ITestRenderer
 		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
 		{
 			var id = renderBatch.DisposedComponentIDs.Array[i];
+
+			// Add disposed components to the frames collection
+			// to avoid them being added into the dictionary later during a
+			// LoadRenderTreeFrames/GetOrLoadRenderTreeFrame call.
+			renderEvent.Frames.Add(id, default);
 
 			logger.LogComponentDisposed(id);
 
@@ -375,7 +432,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		}
 	}
 
-	IRenderedComponentBase<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
+	private IRenderedComponentBase<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
 		where TComponent : IComponent
 	{
 		if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
@@ -401,7 +458,8 @@ public class TestRenderer : Renderer, ITestRenderer
 		for (var i = 0; i < frames.Count; i++)
 		{
 			ref var frame = ref frames.Array[i];
-			if (frame.FrameType == RenderTreeFrameType.Component)
+			
+			if (frame.FrameType == RenderTreeFrameType.Component && !framesCollection.Contains(frame.ComponentId))
 			{
 				LoadRenderTreeFrames(frame.ComponentId, framesCollection);
 			}

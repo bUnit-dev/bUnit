@@ -71,7 +71,6 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 	/// the parameters in the collection passed to it.
 	/// </summary>
 	/// <typeparam name="TComponent">Type of component to render.</typeparam>
-	[SuppressMessage("Design", "MA0051:Method is too long", Justification = "TODO: Refactor")]
 	public RenderFragment ToRenderFragment<TComponent>()
 		where TComponent : IComponent
 	{
@@ -118,7 +117,7 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 			foreach (var pgroup in parameters.Where(x => !x.IsCascadingValue).GroupBy(x => x.Name, StringComparer.Ordinal))
 			{
 				var group = pgroup.ToArray();
-				var groupObject = group.FirstOrDefault(x => x.Value is not null).Value;
+				var groupObject = Array.Find(group, x => x.Value is not null).Value;
 
 				if (group.Length == 1)
 				{
