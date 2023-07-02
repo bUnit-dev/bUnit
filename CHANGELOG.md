@@ -8,6 +8,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Fixed
 
+- Allow using 3rd party `IComponentActivator` at the same time as component factories. By [@egil](https://github.com/egil). Reported by [BenSchoen](https://github.com/BenSchoen) in https://github.com/bUnit-dev/bUnit/issues/1129.
+
 - Calling `IRenderedComponent.Render()` or `IRenderedComponent.SetParametersAndRender()` did not batch up multiple synchronous re-renders after setting parameters. This is now changed such that the method causes the component to re-render with new parameters in the same way as if a parent component had passed new parameters to it. By [@egil](https://github.com/egil). Reported by [@Jcparkyn](https://github.com/Jcparkyn) in https://github.com/bUnit-dev/bUnit/issues/1119.
 
 ## [1.20.8] - 2023-05-21

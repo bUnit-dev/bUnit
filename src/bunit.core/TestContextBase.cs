@@ -54,7 +54,7 @@ public abstract class TestContextBase : IDisposable
 	{
 		Services = new TestServiceProvider();
 #if NET5_0_OR_GREATER
-		Services.AddSingleton<IComponentActivator>(new BunitComponentActivator(ComponentFactories));
+		Services.AddSingleton<ComponentFactoryCollection>(_ => ComponentFactories);
 #endif
 	}
 

@@ -43,6 +43,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// </summary>
 	internal int RenderCount { get; private set; }
 
+#if NETSTANDARD
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
 	/// </summary>
@@ -52,13 +53,22 @@ public class TestRenderer : Renderer, ITestRenderer
 		logger = loggerFactory.CreateLogger<TestRenderer>();
 		this.activator = renderedComponentActivator;
 	}
+#elif NET5_0_OR_GREATER
+	/// <summary>
+	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
+	/// </summary>
+	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
+		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), null))
+	{
+		logger = loggerFactory.CreateLogger<TestRenderer>();
+		this.activator = renderedComponentActivator;
+	}
 
-#if NET5_0_OR_GREATER
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
 	/// </summary>
 	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
-		: base(services, loggerFactory, componentActivator)
+		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), componentActivator))
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
 		this.activator = renderedComponentActivator;
