@@ -1,6 +1,5 @@
 #if NET5_0_OR_GREATER
 using System.Collections;
-using System.Collections.Generic;
 
 namespace Bunit;
 
