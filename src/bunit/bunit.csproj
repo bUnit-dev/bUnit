@@ -15,6 +15,7 @@
 			bUnit also includes a complete implementation of Blazor's authentication and authorization logic, navigation manager, and
 			JSInterop.
 		</Description>
+		<RootNamespace>Bunit</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

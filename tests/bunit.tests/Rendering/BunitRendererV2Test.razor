@@ -1,0 +1,29 @@
+@using Bunit.Rendering.Internal
+@using Microsoft.Extensions.Logging;
+@code {
+    private readonly TestServiceProvider services;
+
+	public BunitRendererV2Test(ITestOutputHelper output)
+    {
+		services = new TestServiceProvider();
+		services.AddXunitLogger(output);
+		services.AddScoped<IJSRuntime>(_ => new BunitJSInterop().JSRuntime);
+	}
+
+	[Fact]
+	public void MyTestMethod()
+	{
+		var sut = new BunitRendererV2(services, services.GetRequiredService<ILoggerFactory>());
+		var result = sut.RenderFragment(@<Wrapper><Simple1 Header="Foo" /><Simple1 Header="Bar" /></Wrapper>);
+        result.Markup.ShouldNotBeEmpty();
+    }
+
+    // [Fact]
+    // public void MyTestMethod_2()
+    // {
+    //     var sut = new BunitRendererV2(services, services.GetRequiredService<ILoggerFactory>());
+    //     var result = sut.RenderFragment(@<ToggleChildComponent ShowChild="true" />);
+
+    //     result(ps => ps.Add(p => p.ShowChild, false));
+    // }
+}

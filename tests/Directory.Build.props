@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
-	<!--
-    Add any shared properties you want for the projects under this directory that need to be set before the auto imported Directory.Build.props
-  -->
 	<Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory).., Directory.Build.props))\Directory.Build.props" />
 
 	<PropertyGroup Label="Compile settings" Condition="$(MSBuildProjectName) != 'bunit.testassets'">
@@ -12,6 +8,7 @@
 		<SonarQubeTestProject>true</SonarQubeTestProject>
 		<IsTestProject>true</IsTestProject>
 		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+		<RootNamespace>Bunit</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup Condition="$(MSBuildProjectName) != 'bunit.testassets'">
@@ -38,6 +35,7 @@
 		<Using Include="Moq" />
 		<Using Include="Shouldly" />
 		<Using Include="Xunit" />
+		<Using Include="Xunit.Abstractions"/>
 	</ItemGroup>
 
 </Project>
