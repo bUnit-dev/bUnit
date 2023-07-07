@@ -21,8 +21,8 @@ public static class TestContextBaseExtensions
 		if (testContext is null)
 			throw new ArgumentNullException(nameof(testContext));
 
-		testContext.Services.AddSingleton<ComponentStatePersistenceManager>();
-		testContext.Services.AddSingleton<PersistentComponentState>(s => s.GetRequiredService<ComponentStatePersistenceManager>().State);
+		testContext.Services.AddScoped<ComponentStatePersistenceManager>();
+		testContext.Services.AddScoped<PersistentComponentState>(s => s.GetRequiredService<ComponentStatePersistenceManager>().State);
 		return new FakePersistentComponentState(testContext.Services);
 	}
 }

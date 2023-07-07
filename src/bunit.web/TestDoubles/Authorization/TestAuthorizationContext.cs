@@ -56,9 +56,9 @@ public class TestAuthorizationContext
 	/// <param name="services">Service provider to use.</param>
 	public void RegisterAuthorizationServices(IServiceCollection services)
 	{
-		services.AddSingleton<IAuthorizationService>(authService);
-		services.AddSingleton<IAuthorizationPolicyProvider>(policyProvider);
-		services.AddSingleton<AuthenticationStateProvider>(authProvider);
+		services.AddScoped<IAuthorizationService>(_ => authService);
+		services.AddScoped<IAuthorizationPolicyProvider>(_ => policyProvider);
+		services.AddScoped<AuthenticationStateProvider>(_ => authProvider);
 	}
 
 	/// <summary>
@@ -66,7 +66,9 @@ public class TestAuthorizationContext
 	/// </summary>
 	/// <param name="userName">User name for the principal identity.</param>
 	/// <param name="state">Authorization state.</param>
-	public TestAuthorizationContext SetAuthorized(string userName, AuthorizationState state = AuthorizationState.Authorized)
+	public TestAuthorizationContext SetAuthorized(
+		string userName,
+		AuthorizationState state = AuthorizationState.Authorized)
 	{
 		IsAuthenticated = true;
 		UserName = userName;

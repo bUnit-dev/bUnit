@@ -93,7 +93,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	{
 		if (serviceProvider is null)
 		{
-			serviceCollection.AddSingleton<TestServiceProvider>(this);
+			serviceCollection.AddScoped<TestServiceProvider>(_ => this);
 			rootServiceProvider = serviceCollection.BuildServiceProvider(options);
 			serviceScope = rootServiceProvider.CreateScope();
 			serviceProvider = serviceScope.ServiceProvider;

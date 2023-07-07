@@ -1,4 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,6 +42,6 @@ public abstract class BenchmarkBase
 
 	protected virtual void RegisterServices(IServiceCollection serviceCollection)
 	{
-		services.AddSingleton<BunitHtmlParser>();
+		services.AddScoped<BunitHtmlParser>();
 	}
 }
