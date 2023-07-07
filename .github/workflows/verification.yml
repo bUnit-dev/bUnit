@@ -72,6 +72,9 @@ jobs:
         run: |
           dotnet test --filter Category!=async -c release
 
+      - name: 🧪 Run sample unit tests
+        run: dotnet test -c release docs/samples/samples.sln
+
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
         uses: actions/upload-artifact@v3
