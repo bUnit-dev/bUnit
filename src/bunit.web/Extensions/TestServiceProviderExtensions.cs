@@ -28,37 +28,37 @@ public static class TestServiceProviderExtensions
 
 		// Placeholders and defaults for common Blazor services
 		services.AddLogging();
-		services.AddSingleton<AuthenticationStateProvider, PlaceholderAuthenticationStateProvider>();
-		services.AddSingleton<IAuthorizationService, PlaceholderAuthorizationService>();
-		services.AddSingleton<HttpClient, PlaceholderHttpClient>();
-		services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
+		services.AddScoped<AuthenticationStateProvider, PlaceholderAuthenticationStateProvider>();
+		services.AddScoped<IAuthorizationService, PlaceholderAuthorizationService>();
+		services.AddScoped<HttpClient, PlaceholderHttpClient>();
+		services.AddScoped<IStringLocalizer, PlaceholderStringLocalization>();
 
 		// bUnits fake JSInterop
-		services.AddSingleton<IJSRuntime>(jsInterop.JSRuntime);
+		services.AddScoped<IJSRuntime>(_ => jsInterop.JSRuntime);
 
 		// bUnits fake Navigation Manager
-		services.AddSingleton<FakeNavigationManager>();
-		services.AddSingleton<NavigationManager>(s => s.GetRequiredService<FakeNavigationManager>());
-		services.AddSingleton<INavigationInterception, FakeNavigationInterception>();
+		services.AddScoped<FakeNavigationManager>();
+		services.AddScoped<NavigationManager>(s => s.GetRequiredService<FakeNavigationManager>());
+		services.AddScoped<INavigationInterception, FakeNavigationInterception>();
 
 		// bUnits fake WebAssemblyHostEnvironment
-		services.AddSingleton<FakeWebAssemblyHostEnvironment>();
-		services.AddSingleton<IWebAssemblyHostEnvironment>(s => s.GetRequiredService<FakeWebAssemblyHostEnvironment>());
+		services.AddScoped<FakeWebAssemblyHostEnvironment>();
+		services.AddScoped<IWebAssemblyHostEnvironment>(s => s.GetRequiredService<FakeWebAssemblyHostEnvironment>());
 
 		// bUnit specific services
-		services.AddSingleton<TestContextBase>(testContext);
-		services.AddSingleton<WebTestRenderer>();
-		services.AddSingleton<TestRenderer>(s => s.GetRequiredService<WebTestRenderer>());
-		services.AddSingleton<Renderer>(s => s.GetRequiredService<WebTestRenderer>());
-		services.AddSingleton<ITestRenderer>(s => s.GetRequiredService<WebTestRenderer>());
-		services.AddSingleton<HtmlComparer>();
-		services.AddSingleton<BunitHtmlParser>();
-		services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();
+		services.AddScoped<TestContextBase>(_ => testContext);
+		services.AddScoped<WebTestRenderer>();
+		services.AddScoped<TestRenderer>(s => s.GetRequiredService<WebTestRenderer>());
+		services.AddScoped<Renderer>(s => s.GetRequiredService<WebTestRenderer>());
+		services.AddScoped<ITestRenderer>(s => s.GetRequiredService<WebTestRenderer>());
+		services.AddScoped<HtmlComparer>();
+		services.AddScoped<BunitHtmlParser>();
+		services.AddScoped<IRenderedComponentActivator, RenderedComponentActivator>();
 
 		services.AddMemoryCache();
 
 #if NET6_0_OR_GREATER
-		services.AddSingleton<IErrorBoundaryLogger, BunitErrorBoundaryLogger>();
+		services.AddScoped<IErrorBoundaryLogger, BunitErrorBoundaryLogger>();
 #endif
 		return services;
 	}
