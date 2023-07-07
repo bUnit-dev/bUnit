@@ -8,13 +8,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="xunit.extensibility.core" Version="2.4.2" />
-		<PackageReference Include="xunit.extensibility.execution" Version="2.4.2" />
-		<PackageReference Include="xunit.runner.utility" Version="2.4.2" />
-		<PackageReference Update="Shouldly" Version="4.1.0">
+		<PackageReference Include="xunit.extensibility.core" Version="2.5.0" />
+		<PackageReference Include="xunit.extensibility.execution" Version="2.5.0" />
+		<PackageReference Include="xunit.runner.utility" Version="2.5.0" />
+		<PackageReference Update="Shouldly" Version="4.2.1">
 			<!-- some test fails with > 4.1.0 -->
 			<NoWarn>NU1605</NoWarn>
-		</PackageReference>	
+		</PackageReference>
+		<PackageReference Update="SonarAnalyzer.CSharp" Version="9.5.0.73987" />	
 	</ItemGroup>
 
 	<ItemGroup>
