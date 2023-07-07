@@ -644,7 +644,7 @@ public class ComponentRenderingTest : TestContext
 		// because the diff algorithm explicitly unchecks it
 		cut.Find(".incomplete-items .item-isdone").Change(true);
 		var incompleteLIs = cut.FindAll(incompleteItemsSelector);
-		Assert.Equal(1, incompleteLIs.Count);
+		Assert.Single(incompleteLIs);
 		Assert.False(incompleteLIs[0].QuerySelector(".item-isdone").HasAttribute("checked"));
 
 		// Mark first done item as not done; observe the remaining complete item appears checked
