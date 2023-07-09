@@ -14,8 +14,8 @@
 		}
 	},
 	"usageExamples": [
-		"--framework xunit --sdk net6.0",
-		"--framework nunit --sdk net6.0",
-		"--framework mstest --sdk net6.0"
+		"--framework xunit --sdk net7.0",
+		"--framework nunit --sdk net7.0",
+		"--framework mstest --sdk net7.0"
 	]
 }
