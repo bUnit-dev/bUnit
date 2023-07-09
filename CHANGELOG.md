@@ -6,7 +6,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
-## Changed
+### Added
+
+- Update bunit templates to support the target framework version of the project. By [@linkdotnet](https://github.com/linkdotnet).
+
+### Changed
 
 - Change all bUnit services registration from singleton to scoped. By [@egil](https://github.com/egil). Closes https://github.com/bUnit-dev/bUnit/issues/1138.
 
