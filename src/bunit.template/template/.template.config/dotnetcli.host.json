@@ -7,11 +7,15 @@
 		"UnitTestFramework": {
 			"longName": "framework",
 			"shortName": ""
+		},
+		"TargetSdk": {
+			"longName": "sdk",
+			"shortName": ""
 		}
 	},
 	"usageExamples": [
-		"--framework xunit",
-		"--framework nunit",
-		"--framework mstest"
+		"--framework xunit --sdk net6.0",
+		"--framework nunit --sdk net6.0",
+		"--framework mstest --sdk net6.0"
 	]
 }
