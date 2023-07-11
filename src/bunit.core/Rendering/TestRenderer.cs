@@ -281,11 +281,9 @@ public class TestRenderer : Renderer, ITestRenderer
 
 		void LoadChangesIntoRenderEvent(int componentId)
 		{
-			var status = renderEvent.GetStatus(componentId);
+			var status = renderEvent.GetOrCreateStatus(componentId);
 			if (status.FramesLoaded || status.Disposed)
-			{
 				return;
-			}
 
 			var frames = GetCurrentRenderTreeFrames(componentId);
 			renderEvent.AddFrames(componentId, frames);
@@ -300,7 +298,7 @@ public class TestRenderer : Renderer, ITestRenderer
 					// render tree frames. This can also cause a stack overflow if
 					// the current component was previously a child of the disposed
 					// component (is that possible?)
-					var childStatus = renderEvent.GetStatus(frame.ComponentId);
+					var childStatus = renderEvent.GetOrCreateStatus(frame.ComponentId);
 					if (childStatus.Disposed)
 					{
 						logger.LogDisposedChildInRenderTreeFrame(componentId, frame.ComponentId);
@@ -308,7 +306,7 @@ public class TestRenderer : Renderer, ITestRenderer
 					// The assumption is that a component cannot be in multiple places at
 					// once. However, in case this is not a correct assumption, this
 					// ensures that a child components frames are only loaded once.
-					else if (!renderEvent.GetStatus(frame.ComponentId).FramesLoaded)
+					else if (!renderEvent.GetOrCreateStatus(frame.ComponentId).FramesLoaded)
 					{
 						LoadChangesIntoRenderEvent(frame.ComponentId);
 					}
@@ -343,11 +341,7 @@ public class TestRenderer : Renderer, ITestRenderer
 				// CPU cache updates not happening immediately).
 				//
 				// There is no guarantee a caller/test framework has set a sync context.
-				usersSyncContext.Send(static (state) =>
-				{
-					var (renderEvent, renderer) = ((RenderEvent, TestRenderer))state!;
-					renderer.ApplyRenderEvent(renderEvent);
-				}, (renderEvent, this));
+				usersSyncContext.Send(_ => ApplyRenderEvent(renderEvent), null);
 			}
 			else
 			{

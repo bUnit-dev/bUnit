@@ -30,7 +30,7 @@ public sealed class RenderEvent
 			: (Rendered: false, Changed: false, Disposed: false);
 	}
 
-	internal Status GetStatus(int componentId)
+	internal Status GetOrCreateStatus(int componentId)
 	{
 		if (!statuses.TryGetValue(componentId, out var status))
 		{
@@ -42,25 +42,25 @@ public sealed class RenderEvent
 
 	internal void SetDisposed(int componentId)
 	{
-		GetStatus(componentId).Disposed = true;
+		GetOrCreateStatus(componentId).Disposed = true;
 	}
 
 	internal void SetUpdated(int componentId, bool hasChanges)
 	{
-		var status = GetStatus(componentId);
+		var status = GetOrCreateStatus(componentId);
 		status.Rendered = true;
 		status.Changed = hasChanges;
 	}
 
 	internal void SetUpdatedApplied(int componentId)
 	{
-		GetStatus(componentId).UpdatesApplied = true;
+		GetOrCreateStatus(componentId).UpdatesApplied = true;
 	}
 
 	internal void AddFrames(int componentId, ArrayRange<RenderTreeFrame> frames)
 	{
 		Frames.Add(componentId, frames);
-		GetStatus(componentId).FramesLoaded = true;
+		GetOrCreateStatus(componentId).FramesLoaded = true;
 	}
 
 	internal record class Status
