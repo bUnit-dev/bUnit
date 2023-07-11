@@ -361,6 +361,8 @@ public class TestRenderer : Renderer, ITestRenderer
 
 	private void ApplyRenderEvent(RenderEvent renderEvent)
 	{
+		RenderCount++;
+
 		foreach (var (componentId, status) in renderEvent.Statuses)
 		{
 			if (status.UpdatesApplied || !renderedComponents.TryGetValue(componentId, out var rc))
