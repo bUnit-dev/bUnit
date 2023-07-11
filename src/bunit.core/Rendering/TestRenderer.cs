@@ -113,6 +113,9 @@ public class TestRenderer : Renderer, ITestRenderer
 		// if the event contains associated data.
 		lock (renderTreeUpdateLock)
 		{
+			if (disposed)
+				throw new ObjectDisposedException(nameof(TestRenderer));
+
 			var result = Dispatcher.InvokeAsync(() =>
 			{
 				ResetUnhandledException();
@@ -190,10 +193,16 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc/>
 	internal void SetDirectParameters(IRenderedFragmentBase renderedComponent, ParameterView parameters)
 	{
+		if (disposed)
+			throw new ObjectDisposedException(nameof(TestRenderer));
+
 		// Calling SetDirectParameters updates the render tree
 		// if the event contains associated data.
 		lock (renderTreeUpdateLock)
 		{
+			if (disposed)
+				throw new ObjectDisposedException(nameof(TestRenderer));
+
 			var result = Dispatcher.InvokeAsync(() =>
 			{
 				try
@@ -240,6 +249,12 @@ public class TestRenderer : Renderer, ITestRenderer
 		// so there is no need to lock in that method.
 		lock (renderTreeUpdateLock)
 		{
+			if (disposed)
+			{
+				logger.LogRenderCycleActiveAfterDispose();
+				return;
+			}
+
 			base.ProcessPendingRender();
 		}
 	}
@@ -247,13 +262,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc/>
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
-		if (disposed)
-		{
-			return Task.CompletedTask;
-		}
-
 		var renderEvent = new RenderEvent();
-
 		PrepareRenderEvent(renderBatch);
 		InvokeApplyRenderEvent();
 
@@ -273,7 +282,7 @@ public class TestRenderer : Renderer, ITestRenderer
 				renderEvent.SetUpdated(update.ComponentId, update.Edits.Count > 0);
 			}
 
-			foreach (var (key, rc) in renderedComponents)
+			foreach (var (_, rc) in renderedComponents)
 			{
 				LoadChangesIntoRenderEvent(rc.ComponentId);
 			}
@@ -394,10 +403,13 @@ public class TestRenderer : Renderer, ITestRenderer
 		if (disposed)
 			return;
 
-		disposed = true;
-
 		lock (renderTreeUpdateLock)
 		{
+			if (disposed)
+				return;
+
+			disposed = true;
+
 			if (disposing)
 			{
 				foreach (var rc in renderedComponents.Values)
@@ -467,6 +479,9 @@ public class TestRenderer : Renderer, ITestRenderer
 		// while this method searches through it.
 		lock (renderTreeUpdateLock)
 		{
+			if (disposed)
+				throw new ObjectDisposedException(nameof(TestRenderer));
+
 			FindComponentsInRenderTree(parentComponent.ComponentId);
 		}
 
@@ -548,9 +563,9 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	protected override void HandleException(Exception exception)
+	protected override void HandleException([NotNull] Exception exception)
 	{
-		if (exception is null || disposed)
+		if (disposed)
 			return;
 
 		logger.LogUnhandledException(exception);
@@ -579,11 +594,14 @@ public class TestRenderer : Renderer, ITestRenderer
 		// tests failing that should not be failing.
 		lock (renderTreeUpdateLock)
 		{
-			if (capturedUnhandledException is Exception unhandled && !disposed)
+			if (disposed)
+				return;
+
+			if (capturedUnhandledException is { } unhandled)
 			{
 				capturedUnhandledException = null;
 
-				if (unhandled is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
+				if (unhandled is AggregateException { InnerExceptions.Count: 1 } aggregateException)
 				{
 					ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
 				}
