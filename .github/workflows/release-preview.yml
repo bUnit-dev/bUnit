@@ -26,7 +26,7 @@ jobs:
           fetch-depth: 0
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.0
+        uses: dotnet/nbgv@v0.4.1
 
       - name: ⚙️ Setup dotnet versions
         uses: actions/setup-dotnet@v3
