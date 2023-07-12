@@ -7,34 +7,33 @@ using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 #endif
 
-namespace Bunit.Rendering
+namespace Bunit.Rendering;
+
+/// <summary>
+/// Represents a <see cref="ITestRenderer"/> that is used when rendering
+/// Blazor components for the web.
+/// </summary>
+public class WebTestRenderer : TestRenderer
 {
 	/// <summary>
-	/// Represents a <see cref="ITestRenderer"/> that is used when rendering
-	/// Blazor components for the web.
+	/// Initializes a new instance of the <see cref="WebTestRenderer"/> class.
 	/// </summary>
-	public class WebTestRenderer : TestRenderer
+	public WebTestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
+		: base(renderedComponentActivator, services, loggerFactory)
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="WebTestRenderer"/> class.
-		/// </summary>
-		public WebTestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
-			: base(renderedComponentActivator, services, loggerFactory)
-		{
 #if NET5_0_OR_GREATER
-			ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
-#endif
-		}
-
-#if NET5_0_OR_GREATER
-		/// <summary>
-		/// Initializes a new instance of the <see cref="WebTestRenderer"/> class.
-		/// </summary>
-		public WebTestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
-			: base(renderedComponentActivator, services, loggerFactory, componentActivator)
-		{
-			ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
-		}
+		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
 #endif
 	}
+
+#if NET5_0_OR_GREATER
+	/// <summary>
+	/// Initializes a new instance of the <see cref="WebTestRenderer"/> class.
+	/// </summary>
+	public WebTestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+		: base(renderedComponentActivator, services, loggerFactory, componentActivator)
+	{
+		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
+	}
+#endif
 }

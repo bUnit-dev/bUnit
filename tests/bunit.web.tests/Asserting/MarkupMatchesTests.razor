@@ -1,0 +1,18 @@
+@using Bunit.TestAssets.SampleComponents
+@inherits TestContext
+
+@code {
+	[Fact]
+	public void MarkupMatchesShouldNotBeBlockedByRenderer()
+	{
+		var tcs = new TaskCompletionSource<object?>();
+
+		var cut = Render(@<LoadingComponent Task="@tcs.Task"/> );
+
+		cut.MarkupMatches(@<span>loading</span>);
+
+		tcs.SetResult(true);
+
+		cut.WaitForAssertion(() => cut.MarkupMatches(@<span>done</span>));
+	}
+}
