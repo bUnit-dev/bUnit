@@ -49,7 +49,7 @@ public sealed class RenderEvent
 	{
 		var status = GetOrCreateStatus(componentId);
 		status.Rendered = true;
-		status.Changed = hasChanges;
+		status.Changed = status.Changed || hasChanges;
 	}
 
 	internal void SetUpdatedApplied(int componentId)
