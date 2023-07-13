@@ -20,9 +20,9 @@ public static class FakeAuthorizationExtensions
 			throw new ArgumentNullException(nameof(context));
 
 		context.RenderTree.TryAdd<CascadingAuthenticationState>();
-		context.Services.AddScoped<FakeSignOutSessionStateManager>();
+		context.Services.AddSingleton<FakeSignOutSessionStateManager>();
 #pragma warning disable CS0618
-		context.Services.AddScoped<SignOutSessionStateManager>(s => s.GetRequiredService<FakeSignOutSessionStateManager>());
+		context.Services.AddSingleton<SignOutSessionStateManager>(s => s.GetRequiredService<FakeSignOutSessionStateManager>());
 #pragma warning restore CS0618
 		var authCtx = new TestAuthorizationContext();
 		authCtx.SetNotAuthorized();

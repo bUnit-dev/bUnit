@@ -44,6 +44,6 @@ internal sealed class RazorTestInvoker : XunitTestInvoker
 
 	private void RegisterXunitHelpersInTest(RazorTestBase test)
 	{
-		test.Services.AddScoped<ITestOutputHelper>(_ => testOutputHelperFactory());
+		test.Services.AddSingleton<ITestOutputHelper>(_ => testOutputHelperFactory());
 	}
 }
