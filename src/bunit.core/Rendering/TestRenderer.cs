@@ -15,7 +15,6 @@ public class TestRenderer : Renderer, ITestRenderer
 	private static readonly MethodInfo GetRequiredComponentStateMethod = RendererType.GetMethod("GetRequiredComponentState", BindingFlags.Instance | BindingFlags.NonPublic)!;
 
 	private readonly object renderTreeUpdateLock = new();
-	private readonly SynchronizationContext? usersSyncContext = SynchronizationContext.Current;
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
@@ -264,7 +263,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		var renderEvent = new RenderEvent();
 		PrepareRenderEvent(renderBatch);
-		InvokeApplyRenderEvent();
+		ApplyRenderEvent(renderEvent);
 
 		return Task.CompletedTask;
 
@@ -330,31 +329,6 @@ public class TestRenderer : Renderer, ITestRenderer
 						status.Changed = status.Changed || childStatus.Changed || childStatus.Disposed;
 					}
 				}
-			}
-		}
-
-		void InvokeApplyRenderEvent()
-		{
-			if (usersSyncContext is not null && usersSyncContext != SynchronizationContext.Current)
-			{
-				// The users' sync context, typically one established by
-				// xUnit or another testing framework is used to update any
-				// rendered fragments/dom trees and trigger WaitForX handlers.
-				// This ensures that changes to DOM observed inside a WaitForX handler
-				// will also be visible outside a WaitForX handler, since
-				// they will be running in the same sync context. The theory is that 
-				// this should mitigate the issues where Blazor's dispatcher/thread is used 
-				// to verify an assertion inside a WaitForX handler, and another thread is 
-				// used again to access the DOM/repeat the assertion, where the change
-				// may not be visible yet (another theory about why that may happen is different 
-				// CPU cache updates not happening immediately).
-				//
-				// There is no guarantee a caller/test framework has set a sync context.
-				usersSyncContext.Send(_ => ApplyRenderEvent(renderEvent), null);
-			}
-			else
-			{
-				ApplyRenderEvent(renderEvent);
 			}
 		}
 	}
