@@ -2,6 +2,7 @@
 @inherits TestContext
 
 @code {
+
 	[Fact]
 	public void MarkupMatchesShouldNotBeBlockedByRenderer()
 	{
@@ -10,6 +11,21 @@
 		var cut = Render(@<LoadingComponent Task="@tcs.Task"/> );
 
 		cut.MarkupMatches(@<span>loading</span>);
+
+		tcs.SetResult(true);
+
+		cut.WaitForAssertion(() => cut.MarkupMatches(@<span>done</span>));
+	}
+
+	[Theory]
+	[Repeat(2)]
+	public void MarkupMatchesShouldNotBeBlockedByRendererComplex(int repeatCount)
+	{
+		var tcs = new TaskCompletionSource<object?>();
+
+		var cut = Render(@<InvokeAsyncInsideContinueWith Task="@tcs.Task"/> );
+
+		cut.MarkupMatches(@<span>waiting</span>);
 
 		tcs.SetResult(true);
 

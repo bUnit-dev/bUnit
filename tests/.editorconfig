@@ -7,7 +7,7 @@
 ##########################################
 # Code Analyzers Rules
 ##########################################
-[*.{cs,csx,cake}]
+[*.{cs,csx,cake,razor}]
 
 # AsyncFixer
 # http://www.asyncfixer.com
