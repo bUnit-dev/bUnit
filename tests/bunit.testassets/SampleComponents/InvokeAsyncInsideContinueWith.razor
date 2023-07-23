@@ -1,0 +1,50 @@
+@if (Task != null)
+{
+	@if (Task.IsCompleted)
+	{
+		<span>done</span>
+	}
+	else
+	{
+		<span>waiting</span>
+	}
+}
+@code {
+	[Parameter] public Task? Task { get; set; }
+
+	private Task? registeredTask;
+	private Task? delegatedTask;
+
+	protected override void OnParametersSet()
+	{
+		var task = Task;
+		if (task != registeredTask)
+		{
+			registeredTask = task;
+			delegatedTask = task == null ? null : DelegateTo(task);
+			RenderWhenDone();
+		}
+
+		base.OnParametersSet();
+	}
+
+	private async void RenderWhenDone()
+	{
+		var task = delegatedTask;
+		if (task != null)
+		{
+			_ = await Task.WhenAny(task).ConfigureAwait(false);
+
+			if (task == delegatedTask)
+			{
+				_ = InvokeAsync(StateHasChanged);
+			}
+		}
+	}
+
+	private static async Task<object?> DelegateTo(Task task)
+	{
+		await task;//.ConfigureAwait(false);
+		return null;
+	}
+}
