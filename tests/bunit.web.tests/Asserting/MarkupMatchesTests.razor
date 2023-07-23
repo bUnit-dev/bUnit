@@ -17,6 +17,7 @@
 		cut.WaitForAssertion(() => cut.MarkupMatches(@<span>done</span>));
 	}
 
+	[SuppressMessage("Usage", "xUnit1026:Theory method does not use parameter")]
 	[Theory]
 	[Repeat(2)]
 	public void MarkupMatchesShouldNotBeBlockedByRendererComplex(int repeatCount)
