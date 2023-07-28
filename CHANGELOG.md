@@ -10,6 +10,14 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 - Update bunit templates to support the target framework version of the project. By [@linkdotnet](https://github.com/linkdotnet).
 
+### Fixed
+
+- Calling `MarkupMatches(RenderFragment)` from a lambda passed to e.g. `WaitForAssertion` could lead to a deadlock in certain circumstances. Fixed by [@linkdotnet](https://github.com/linkdotnet). Reported by [@uecasm](https://github.com/uecasm) in https://github.com/bUnit-dev/bUnit/issues/1143.
+
+- Rendering complex component hierarchies could result in a stack overflow. Fixed by [@egil](https://github.com/egil).. Reported by [@groogiam](https://github.com/groogiam) in https://github.com/bUnit-dev/bUnit/issues/1064.
+
+- Remove capturing and dispatching markup updates to test frameworks synchronization context again. This could cause deadlocks and does not have any impact on test stability. Fixed by [@egil](https://github.com/egil). Reported by [@biohazard999](https://github.com/biohazard999) in https://github.com/bUnit-dev/bUnit/issues/1144.
+
 ## [1.21.9] - 2023-07-02
 
 ### Fixed
