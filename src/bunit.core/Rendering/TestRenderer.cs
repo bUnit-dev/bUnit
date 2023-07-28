@@ -1,6 +1,6 @@
+using Microsoft.Extensions.Logging;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
-using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
 
@@ -15,7 +15,6 @@ public class TestRenderer : Renderer, ITestRenderer
 	private static readonly MethodInfo GetRequiredComponentStateMethod = RendererType.GetMethod("GetRequiredComponentState", BindingFlags.Instance | BindingFlags.NonPublic)!;
 
 	private readonly object renderTreeUpdateLock = new();
-	private readonly SynchronizationContext? usersSyncContext = SynchronizationContext.Current;
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
@@ -113,12 +112,16 @@ public class TestRenderer : Renderer, ITestRenderer
 		// if the event contains associated data.
 		lock (renderTreeUpdateLock)
 		{
+			if (disposed)
+				throw new ObjectDisposedException(nameof(TestRenderer));
+
 			var result = Dispatcher.InvokeAsync(() =>
 			{
 				ResetUnhandledException();
 
 				try
 				{
+					logger.LogDispatchingEvent(eventHandlerId, fieldInfo, eventArgs);
 					return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
 				}
 				catch (ArgumentException ex) when (string.Equals(ex.Message, $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')", StringComparison.Ordinal))
@@ -165,55 +168,69 @@ public class TestRenderer : Renderer, ITestRenderer
 		if (disposed)
 			throw new ObjectDisposedException(nameof(TestRenderer));
 
-		// The dispatcher will always return a completed task,
-		// when dealing with an IAsyncDisposable.
-		// Therefore checking for a completed task and awaiting it
-		// will only work on IDisposable
-		var disposeTask = Dispatcher.InvokeAsync(() =>
+		lock (renderTreeUpdateLock)
 		{
-			ResetUnhandledException();
-
-			foreach (var root in rootComponents)
+			// The dispatcher will always return a completed task,
+			// when dealing with an IAsyncDisposable.
+			// Therefore checking for a completed task and awaiting it
+			// will only work on IDisposable
+			Dispatcher.InvokeAsync(() =>
 			{
-				root.Detach();
-			}
-		});
+				ResetUnhandledException();
 
-		if (!disposeTask.IsCompleted)
-		{
-			disposeTask.GetAwaiter().GetResult();
+				foreach (var root in rootComponents)
+				{
+					root.Detach();
+				}
+			});
+
+			rootComponents.Clear();
+			AssertNoUnhandledExceptions();
 		}
-
-		rootComponents.Clear();
-		AssertNoUnhandledExceptions();
 	}
 
 	/// <inheritdoc/>
 	internal void SetDirectParameters(IRenderedFragmentBase renderedComponent, ParameterView parameters)
 	{
-		Dispatcher.InvokeAsync(() =>
+		if (disposed)
+			throw new ObjectDisposedException(nameof(TestRenderer));
+
+		// Calling SetDirectParameters updates the render tree
+		// if the event contains associated data.
+		lock (renderTreeUpdateLock)
 		{
-			try
-			{
-				IsBatchInProgress = true;
+			if (disposed)
+				throw new ObjectDisposedException(nameof(TestRenderer));
 
-				var componentState = GetRequiredComponentStateMethod.Invoke(this, new object[] { renderedComponent.ComponentId })!;
-				var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
-				setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
-			}
-			catch (TargetInvocationException ex) when (ex.InnerException is not null)
+			var result = Dispatcher.InvokeAsync(() =>
 			{
-				HandleException(ex.InnerException);
-			}
-			finally
+				try
+				{
+					IsBatchInProgress = true;
+
+					var componentState = GetRequiredComponentStateMethod.Invoke(this, new object[] { renderedComponent.ComponentId })!;
+					var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
+					setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
+				}
+				catch (TargetInvocationException ex) when (ex.InnerException is not null)
+				{
+					throw ex.InnerException;
+				}
+				finally
+				{
+					IsBatchInProgress = false;
+				}
+
+				ProcessPendingRender();
+			});
+
+			if (result.IsFaulted && result.Exception is not null)
 			{
-				IsBatchInProgress = false;
+				HandleException(result.Exception);
 			}
 
-			ProcessPendingRender();
-		});
-
-		AssertNoUnhandledExceptions();
+			AssertNoUnhandledExceptions();
+		}
 	}
 
 	/// <inheritdoc/>
@@ -231,6 +248,12 @@ public class TestRenderer : Renderer, ITestRenderer
 		// so there is no need to lock in that method.
 		lock (renderTreeUpdateLock)
 		{
+			if (disposed)
+			{
+				logger.LogRenderCycleActiveAfterDispose();
+				return;
+			}
+
 			base.ProcessPendingRender();
 		}
 	}
@@ -238,86 +261,114 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc/>
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
-		if (disposed)
-		{
-			logger.LogRenderCycleActiveAfterDispose();
-			return Task.CompletedTask;
-		}
-
-		if (usersSyncContext is not null && usersSyncContext != SynchronizationContext.Current)
-		{
-			// The users' sync context, typically one established by
-			// xUnit or another testing framework is used to update any
-			// rendered fragments/dom trees and trigger WaitForX handlers.
-			// This ensures that changes to DOM observed inside a WaitForX handler
-			// will also be visible outside a WaitForX handler, since
-			// they will be running in the same sync context. The theory is that 
-			// this should mitigate the issues where Blazor's dispatcher/thread is used 
-			// to verify an assertion inside a WaitForX handler, and another thread is 
-			// used again to access the DOM/repeat the assertion, where the change
-			// may not be visible yet (another theory about why that may happen is different 
-			// CPU cache updates not happening immediately).
-			//
-			// There is no guarantee a caller/test framework has set a sync context.
-			usersSyncContext.Send(static (state) =>
-			{
-				var (renderBatch, renderer) = ((RenderBatch, TestRenderer))state!;
-				renderer.UpdateDisplay(renderBatch);
-			}, (renderBatch, this));
-		}
-		else
-		{
-			UpdateDisplay(renderBatch);
-		}
+		var renderEvent = new RenderEvent();
+		PrepareRenderEvent(renderBatch);
+		ApplyRenderEvent(renderEvent);
 
 		return Task.CompletedTask;
-	}
 
-	private void UpdateDisplay(in RenderBatch renderBatch)
-	{
-		RenderCount++;
-		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
-
-		if (disposed)
+		void PrepareRenderEvent(in RenderBatch renderBatch)
 		{
-			logger.LogRenderCycleActiveAfterDispose();
-			return;
-		}
-
-		// removes disposed components
-		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
-		{
-			var id = renderBatch.DisposedComponentIDs.Array[i];
-
-			// Add disposed components to the frames collection
-			// to avoid them being added into the dictionary later during a
-			// LoadRenderTreeFrames/GetOrLoadRenderTreeFrame call.
-			renderEvent.Frames.Add(id, default);
-
-			logger.LogComponentDisposed(id);
-
-			if (renderedComponents.TryGetValue(id, out var rc))
+			for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
 			{
-				renderedComponents.Remove(id);
-				rc.OnRender(renderEvent);
+				var id = renderBatch.DisposedComponentIDs.Array[i];
+				renderEvent.SetDisposed(id);
+			}
+
+			for (int i = 0; i < renderBatch.UpdatedComponents.Count; i++)
+			{
+				ref var update = ref renderBatch.UpdatedComponents.Array[i];
+				renderEvent.SetUpdated(update.ComponentId, update.Edits.Count > 0);
+			}
+
+			foreach (var (_, rc) in renderedComponents)
+			{
+				LoadChangesIntoRenderEvent(rc.ComponentId);
 			}
 		}
 
-		// notify each rendered component about the render
-		foreach (var (key, rc) in renderedComponents.ToArray())
+		void LoadChangesIntoRenderEvent(int componentId)
 		{
-			LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
+			var status = renderEvent.GetOrCreateStatus(componentId);
+			if (status.FramesLoaded || status.Disposed)
+				return;
 
-			rc.OnRender(renderEvent);
+			var frames = GetCurrentRenderTreeFrames(componentId);
+			renderEvent.AddFrames(componentId, frames);
 
-			logger.LogComponentRendered(rc.ComponentId);
-
-			// RC can replace the instance of the component it is bound
-			// to while processing the update event.
-			if (key != rc.ComponentId)
+			for (var i = 0; i < frames.Count; i++)
 			{
-				renderedComponents.Remove(key);
-				renderedComponents.Add(rc.ComponentId, rc);
+				ref var frame = ref frames.Array[i];
+				if (frame.FrameType == RenderTreeFrameType.Component)
+				{
+					// If a child component of the current components has been
+					// disposed, there is no reason to load the disposed components
+					// render tree frames. This can also cause a stack overflow if
+					// the current component was previously a child of the disposed
+					// component (is that possible?)
+					var childStatus = renderEvent.GetOrCreateStatus(frame.ComponentId);
+					if (childStatus.Disposed)
+					{
+						logger.LogDisposedChildInRenderTreeFrame(componentId, frame.ComponentId);
+					}
+					// The assumption is that a component cannot be in multiple places at
+					// once. However, in case this is not a correct assumption, this
+					// ensures that a child components frames are only loaded once.
+					else if (!renderEvent.GetOrCreateStatus(frame.ComponentId).FramesLoaded)
+					{
+						LoadChangesIntoRenderEvent(frame.ComponentId);
+					}
+
+					if (childStatus.Rendered || childStatus.Changed || childStatus.Disposed)
+					{
+						status.Rendered = status.Rendered || childStatus.Rendered;
+
+						// The current component should also be marked as changed if the child component is
+						// either changed or disposed, as there is a good chance that the child component
+						// contained markup which is no longer visible.
+						status.Changed = status.Changed || childStatus.Changed || childStatus.Disposed;
+					}
+				}
+			}
+		}
+	}
+
+	private void ApplyRenderEvent(RenderEvent renderEvent)
+	{
+		RenderCount++;
+
+		foreach (var (componentId, status) in renderEvent.Statuses)
+		{
+			if (status.UpdatesApplied || !renderedComponents.TryGetValue(componentId, out var rc))
+			{
+				continue;
+			}
+
+			if (status.Disposed)
+			{
+				renderedComponents.Remove(componentId);
+				rc.OnRender(renderEvent);
+				renderEvent.SetUpdatedApplied(componentId);
+				logger.LogComponentDisposed(componentId);
+				continue;
+			}
+
+			if (status.UpdateNeeded)
+			{
+				rc.OnRender(renderEvent);
+				renderEvent.SetUpdatedApplied(componentId);
+
+				// RC can replace the instance of the component it is bound
+				// to while processing the update event, e.g. during the
+				// initial render of a component.
+				if (componentId != rc.ComponentId)
+				{
+					renderedComponents.Remove(componentId);
+					renderedComponents.Add(rc.ComponentId, rc);
+					renderEvent.SetUpdatedApplied(rc.ComponentId);
+				}
+
+				logger.LogComponentRendered(rc.ComponentId);
 			}
 		}
 	}
@@ -328,10 +379,13 @@ public class TestRenderer : Renderer, ITestRenderer
 		if (disposed)
 			return;
 
-		disposed = true;
-
 		lock (renderTreeUpdateLock)
 		{
+			if (disposed)
+				return;
+
+			disposed = true;
+
 			if (disposing)
 			{
 				foreach (var rc in renderedComponents.Values)
@@ -401,6 +455,9 @@ public class TestRenderer : Renderer, ITestRenderer
 		// while this method searches through it.
 		lock (renderTreeUpdateLock)
 		{
+			if (disposed)
+				throw new ObjectDisposedException(nameof(TestRenderer));
+
 			FindComponentsInRenderTree(parentComponent.ComponentId);
 		}
 
@@ -458,7 +515,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		for (var i = 0; i < frames.Count; i++)
 		{
 			ref var frame = ref frames.Array[i];
-			
+
 			if (frame.FrameType == RenderTreeFrameType.Component && !framesCollection.Contains(frame.ComponentId))
 			{
 				LoadRenderTreeFrames(frame.ComponentId, framesCollection);
@@ -482,9 +539,9 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 
 	/// <inheritdoc/>
-	protected override void HandleException(Exception exception)
+	protected override void HandleException([NotNull] Exception exception)
 	{
-		if (exception is null || disposed)
+		if (disposed)
 			return;
 
 		logger.LogUnhandledException(exception);
@@ -508,17 +565,26 @@ public class TestRenderer : Renderer, ITestRenderer
 
 	private void AssertNoUnhandledExceptions()
 	{
-		if (capturedUnhandledException is Exception unhandled && !disposed)
+		// Ensure we are not throwing an exception while a render is ongoing.
+		// This could lead to the renderer being disposed which could lead to
+		// tests failing that should not be failing.
+		lock (renderTreeUpdateLock)
 		{
-			capturedUnhandledException = null;
+			if (disposed)
+				return;
 
-			if (unhandled is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
+			if (capturedUnhandledException is { } unhandled)
 			{
-				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-			}
-			else
-			{
-				ExceptionDispatchInfo.Capture(unhandled).Throw();
+				capturedUnhandledException = null;
+
+				if (unhandled is AggregateException { InnerExceptions.Count: 1 } aggregateException)
+				{
+					ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
+				}
+				else
+				{
+					ExceptionDispatchInfo.Capture(unhandled).Throw();
+				}
 			}
 		}
 	}

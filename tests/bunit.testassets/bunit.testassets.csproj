@@ -14,6 +14,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Serilog" Version="3.0.1" />
+		<PackageReference Include="Serilog.Expressions" Version="3.4.1" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">

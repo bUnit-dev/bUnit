@@ -1,0 +1,12 @@
+<span>@text</span>
+@code {
+	[Parameter]
+	public Task Task { get; set; }
+
+	private string text = "loading";
+	protected override async Task OnInitializedAsync()
+	{
+		await Task;
+		text = "done";
+	}
+}

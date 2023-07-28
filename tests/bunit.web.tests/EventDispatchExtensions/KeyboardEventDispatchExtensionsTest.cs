@@ -2,6 +2,10 @@ namespace Bunit;
 
 public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<KeyboardEventArgs>
 {
+	public KeyboardEventDispatchExtensionsTest(ITestOutputHelper outputHelper) : base(outputHelper)
+	{
+	}
+
 	public static IEnumerable<object[]> Helpers { get; }
 		= GetEventHelperMethods(
 			typeof(KeyboardEventDispatchExtensions),
