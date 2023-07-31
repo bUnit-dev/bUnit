@@ -12,7 +12,9 @@ public class TestRenderer : Renderer, ITestRenderer
 {
 	private static readonly Type RendererType = typeof(Renderer);
 	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;
+#if !NET8_0_OR_GREATER
 	private static readonly MethodInfo GetRequiredComponentStateMethod = RendererType.GetMethod("GetRequiredComponentState", BindingFlags.Instance | BindingFlags.NonPublic)!;
+#endif
 
 	private readonly object renderTreeUpdateLock = new();
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
@@ -96,7 +98,11 @@ public class TestRenderer : Renderer, ITestRenderer
 		EventArgs eventArgs) => DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
 
 	/// <inheritdoc/>
+#if !NET8_0_OR_GREATER
 	public Task DispatchEventAsync(
+#else
+	public new Task DispatchEventAsync(
+#endif
 		ulong eventHandlerId,
 		EventFieldInfo fieldInfo,
 		EventArgs eventArgs,
@@ -188,6 +194,17 @@ public class TestRenderer : Renderer, ITestRenderer
 			AssertNoUnhandledExceptions();
 		}
 	}
+	
+#if NET8_0_OR_GREATER
+	/// <inheritdoc/>
+	protected override IComponent ResolveComponentForRenderMode(Type componentType, int? parentComponentId,
+		IComponentActivator componentActivator, IComponentRenderMode renderMode)
+
+	{
+		ArgumentNullException.ThrowIfNull(componentActivator);
+		return componentActivator.CreateInstance(componentType);
+	}
+#endif
 
 	/// <inheritdoc/>
 	internal void SetDirectParameters(IRenderedFragmentBase renderedComponent, ParameterView parameters)
@@ -207,9 +224,14 @@ public class TestRenderer : Renderer, ITestRenderer
 				try
 				{
 					IsBatchInProgress = true;
-
+					
+#if NET8_0_OR_GREATER
+					var setDirectParametersMethod = typeof(ComponentState).GetMethod("SetDirectParameters", BindingFlags.NonPublic | BindingFlags.Instance)!;
+					var componentState = GetComponentState(renderedComponent.ComponentId);
+#else
 					var componentState = GetRequiredComponentStateMethod.Invoke(this, new object[] { renderedComponent.ComponentId })!;
 					var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
+#endif
 					setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
 				}
 				catch (TargetInvocationException ex) when (ex.InnerException is not null)

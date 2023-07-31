@@ -6,6 +6,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+
+### Added
+
+- `net8.0` support
+
 ## [1.22.19] - 2023-07-28
 
 ### Added

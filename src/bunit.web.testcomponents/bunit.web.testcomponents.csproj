@@ -33,10 +33,6 @@
 		<PackageReference Include="System.Reflection.Metadata" Version="$(DotNet5Version)" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="System.Reflection.Metadata" Version="$(DotNet6Version)" />
-	</ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\bunit.web\bunit.web.csproj" />
 	</ItemGroup>
