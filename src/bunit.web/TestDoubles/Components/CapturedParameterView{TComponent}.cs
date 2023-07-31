@@ -106,6 +106,6 @@ public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, obj
 	/// <returns>An instance of <see cref="CapturedParameterView{TComponent}"/>.</returns>
 	[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Following factory pattern used in .net")]
 	public static CapturedParameterView<TComponent> From(ParameterView parameters)
-		=> new(parameters.ToDictionary());
+		=> new(parameters.ToDictionary()!);
 }
 #endif
