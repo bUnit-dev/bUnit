@@ -53,11 +53,12 @@ public sealed class JSRuntimeInvocationDictionary : IReadOnlyCollection<JSRuntim
 	{
 		Count++;
 
-		if (!invocations.ContainsKey(invocation.Identifier))
+		if (!invocations.TryGetValue(invocation.Identifier, out var value))
 		{
-			invocations.Add(invocation.Identifier, new List<JSRuntimeInvocation>());
+			value = new List<JSRuntimeInvocation>();
+			invocations.Add(invocation.Identifier, value);
 		}
 
-		invocations[invocation.Identifier].Add(invocation);
+		value.Add(invocation);
 	}
 }

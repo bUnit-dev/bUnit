@@ -6,6 +6,7 @@
 		<DotNet5Version>5.0.0</DotNet5Version>
 		<DotNet6Version>6.0.0</DotNet6Version>
 		<DotNet7Version>7.0.0</DotNet7Version>
+		<DotNet8Version>8.0.0-*</DotNet8Version>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->
@@ -21,7 +22,7 @@
 		<LangVersion>11.0</LangVersion>
 		<AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<NoWarn>CA1014,NU5104,NETSDK1138</NoWarn>
+		<NoWarn>CA1014,NU5104,NETSDK1138,SYSLIB0051</NoWarn>
 		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 
 		<!-- Used by code coverage -->
@@ -38,7 +39,7 @@
 	<PropertyGroup Label="Analyzer settings">
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisLevel>latest</AnalysisLevel>
+		<AnalysisLevel>7</AnalysisLevel>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 

@@ -50,7 +50,7 @@ internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRendere
 		}
 	}
 
-	private bool TryFindComponent(RenderTreeFrameDictionary framesCollection, int parentComponentId, out int componentId, out TComponent component)
+	private static bool TryFindComponent(RenderTreeFrameDictionary framesCollection, int parentComponentId, out int componentId, out TComponent component)
 	{
 		componentId = -1;
 		component = default!;
