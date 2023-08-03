@@ -217,7 +217,7 @@ public sealed class BunitRenderer : Renderer
 
 	/// <inheritdoc/>
 	protected override IComponent ResolveComponentForRenderMode(Type componentType, int? parentComponentId,
-		IComponentActivator componentActivator, IComponentRenderMode componentTypeRenderMode)
+		IComponentActivator componentActivator, IComponentRenderMode renderMode)
 
 	{
 		ArgumentNullException.ThrowIfNull(componentActivator);

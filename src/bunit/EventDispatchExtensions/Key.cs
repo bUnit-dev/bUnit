@@ -1,9 +1,11 @@
+using System.Collections.Frozen;
+
 namespace Bunit;
 
 /// <summary>
 /// Representation of keyboard key that can be argument of keyboard events.
 /// </summary>
-public sealed class Key : IEquatable<Key>
+public sealed record class Key
 {
 	private Key(string value)
 		: this(value, value) { }
@@ -57,242 +59,242 @@ public sealed class Key : IEquatable<Key>
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Backspace key.
 	/// </summary>
-	public static Key Backspace { get; } = new Key("Backspace");
+	public static Key Backspace { get; } = new("Backspace");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Tab key.
 	/// </summary>
-	public static Key Tab { get; } = new Key("Tab");
+	public static Key Tab { get; } = new("Tab");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Enter key.
 	/// </summary>
-	public static Key Enter { get; } = new Key("Enter");
+	public static Key Enter { get; } = new("Enter");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Pause key.
 	/// </summary>
-	public static Key Pause { get; } = new Key("Pause");
+	public static Key Pause { get; } = new("Pause");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Escape key.
 	/// </summary>
-	public static Key Escape { get; } = new Key("Escape");
+	public static Key Escape { get; } = new("Escape");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Spacebar key.
 	/// </summary>
-	public static Key Space { get; } = new Key(" ", "Space");
+	public static Key Space { get; } = new(" ", "Space");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Page Up key.
 	/// </summary>
-	public static Key PageUp { get; } = new Key("PageUp");
+	public static Key PageUp { get; } = new("PageUp");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Page Down key.
 	/// </summary>
-	public static Key PageDown { get; } = new Key("PageDown");
+	public static Key PageDown { get; } = new("PageDown");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the End key.
 	/// </summary>
-	public static Key End { get; } = new Key("End");
+	public static Key End { get; } = new("End");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Home key.
 	/// </summary>
-	public static Key Home { get; } = new Key("Home");
+	public static Key Home { get; } = new("Home");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the left arrow key.
 	/// </summary>
-	public static Key Left { get; } = new Key("ArrowLeft");
+	public static Key Left { get; } = new("ArrowLeft");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the up arrow key.
 	/// </summary>
-	public static Key Up { get; } = new Key("ArrowUp");
+	public static Key Up { get; } = new("ArrowUp");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the right arrow key.
 	/// </summary>
-	public static Key Right { get; } = new Key("ArrowRight");
+	public static Key Right { get; } = new("ArrowRight");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the down arrow key.
 	/// </summary>
-	public static Key Down { get; } = new Key("ArrowDown");
+	public static Key Down { get; } = new("ArrowDown");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Insert key.
 	/// </summary>
-	public static Key Insert { get; } = new Key("Insert");
+	public static Key Insert { get; } = new("Insert");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Delete key.
 	/// </summary>
-	public static Key Delete { get; } = new Key("Delete");
+	public static Key Delete { get; } = new("Delete");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the equal sign key.
 	/// </summary>
-	public static Key Equal { get; } = new Key("=", "Equal");
+	public static Key Equal { get; } = new("=", "Equal");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad 0 key.
 	/// </summary>
-	public static Key NumberPad0 { get; } = new Key("0", "Numpad0");
+	public static Key NumberPad0 { get; } = new("0", "Numpad0");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad 1 key.
 	/// </summary>
-	public static Key NumberPad1 { get; } = new Key("1", "Numpad1");
+	public static Key NumberPad1 { get; } = new("1", "Numpad1");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad 2 key.
 	/// </summary>
-	public static Key NumberPad2 { get; } = new Key("2", "Numpad2");
+	public static Key NumberPad2 { get; } = new("2", "Numpad2");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad 3 key.
 	/// </summary>
-	public static Key NumberPad3 { get; } = new Key("3", "Numpad3");
+	public static Key NumberPad3 { get; } = new("3", "Numpad3");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad 4 key.
 	/// </summary>
-	public static Key NumberPad4 { get; } = new Key("4", "Numpad4");
+	public static Key NumberPad4 { get; } = new("4", "Numpad4");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad 5 key.
 	/// </summary>
-	public static Key NumberPad5 { get; } = new Key("5", "Numpad5");
+	public static Key NumberPad5 { get; } = new("5", "Numpad5");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad 6 key.
 	/// </summary>
-	public static Key NumberPad6 { get; } = new Key("6", "Numpad6");
+	public static Key NumberPad6 { get; } = new("6", "Numpad6");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad 7 key.
 	/// </summary>
-	public static Key NumberPad7 { get; } = new Key("7", "Numpad7");
+	public static Key NumberPad7 { get; } = new("7", "Numpad7");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad 8 key.
 	/// </summary>
-	public static Key NumberPad8 { get; } = new Key("8", "Numpad8");
+	public static Key NumberPad8 { get; } = new("8", "Numpad8");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad 9 key.
 	/// </summary>
-	public static Key NumberPad9 { get; } = new Key("9", "Numpad9");
+	public static Key NumberPad9 { get; } = new("9", "Numpad9");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad multiplication key.
 	/// </summary>
-	public static Key Multiply { get; } = new Key("*", "NumpadMultiply");
+	public static Key Multiply { get; } = new("*", "NumpadMultiply");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad addition key.
 	/// </summary>
-	public static Key Add { get; } = new Key("+", "NumpadAdd");
+	public static Key Add { get; } = new("+", "NumpadAdd");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad subtraction key.
 	/// </summary>
-	public static Key Subtract { get; } = new Key("-", "NumpadSubtract");
+	public static Key Subtract { get; } = new("-", "NumpadSubtract");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad decimal separator key.
 	/// </summary>
-	public static Key NumberPadDecimal { get; } = new Key(".", "NumpadDecimal");
+	public static Key NumberPadDecimal { get; } = new(".", "NumpadDecimal");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the number pad division key.
 	/// </summary>
-	public static Key Divide { get; } = new Key("/", "NumpadDivide");
+	public static Key Divide { get; } = new("/", "NumpadDivide");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F1.
 	/// </summary>
-	public static Key F1 { get; } = new Key("F1");
+	public static Key F1 { get; } = new("F1");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F2.
 	/// </summary>
-	public static Key F2 { get; } = new Key("F2");
+	public static Key F2 { get; } = new("F2");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F3.
 	/// </summary>
-	public static Key F3 { get; } = new Key("F3");
+	public static Key F3 { get; } = new("F3");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F4.
 	/// </summary>
-	public static Key F4 { get; } = new Key("F4");
+	public static Key F4 { get; } = new("F4");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F5.
 	/// </summary>
-	public static Key F5 { get; } = new Key("F5");
+	public static Key F5 { get; } = new("F5");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F6.
 	/// </summary>
-	public static Key F6 { get; } = new Key("F6");
+	public static Key F6 { get; } = new("F6");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F7.
 	/// </summary>
-	public static Key F7 { get; } = new Key("F7");
+	public static Key F7 { get; } = new("F7");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F8.
 	/// </summary>
-	public static Key F8 { get; } = new Key("F8");
+	public static Key F8 { get; } = new("F8");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F9.
 	/// </summary>
-	public static Key F9 { get; } = new Key("F9");
+	public static Key F9 { get; } = new("F9");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F10.
 	/// </summary>
-	public static Key F10 { get; } = new Key("F10");
+	public static Key F10 { get; } = new("F10");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F11.
 	/// </summary>
-	public static Key F11 { get; } = new Key("F11");
+	public static Key F11 { get; } = new("F11");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key F12.
 	/// </summary>
-	public static Key F12 { get; } = new Key("F12");
+	public static Key F12 { get; } = new("F12");
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Control key. This is a control key and it can be combined with other keys. E.g. Key.Enter + Key.Control.
 	/// </summary>
-	public static Key Control { get; } = new Key("Control", "ControlLeft", controlKey: true, shiftKey: false, altKey: false, commandKey: false);
+	public static Key Control { get; } = new("Control", "ControlLeft", controlKey: true, shiftKey: false, altKey: false, commandKey: false);
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Shift key. This is a control key and it can be combined with other keys. E.g. Key.Enter + Key.Shift.
 	/// </summary>
-	public static Key Shift { get; } = new Key("Shift", "ShiftLeft", controlKey: false, shiftKey: true, altKey: false, commandKey: false);
+	public static Key Shift { get; } = new("Shift", "ShiftLeft", controlKey: false, shiftKey: true, altKey: false, commandKey: false);
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the Alt key. This is a control key and it can be combined with other keys. E.g. Key.Enter + Keys.Alt.
 	/// </summary>
-	public static Key Alt { get; } = new Key("Alt", "AltLeft", controlKey: false, shiftKey: false, altKey: true, commandKey: false);
+	public static Key Alt { get; } = new("Alt", "AltLeft", controlKey: false, shiftKey: false, altKey: true, commandKey: false);
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> that represents the function key Command. This is a control key and it can be combined with other keys. E.g. Key.Enter + Key.Command.
 	/// </summary>
-	public static Key Command { get; } = new Key("Meta", "MetaLeft", controlKey: false, shiftKey: false, altKey: false, commandKey: true);
+	public static Key Command { get; } = new("Meta", "MetaLeft", controlKey: false, shiftKey: false, altKey: false, commandKey: true);
 
 	/// <summary>
 	/// Gets a <see cref="Key"/> object with specified value and code.
@@ -325,37 +327,6 @@ public sealed class Key : IEquatable<Key>
 	public static Key Get(char value) => Get(value.ToString());
 
 	/// <summary>
-	/// Gets the value indicating whether the current object is equal to another object of the same type.
-	/// </summary>
-	/// <param name="obj">The object to compare with this object.</param>
-	/// <returns><c>True</c> if the current object is equal to the other parameter; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object? obj) => obj is Key key && Equals(key);
-
-	/// <summary>
-	/// Gets the value indicating whether the current object is equal to another object of the same type.
-	/// </summary>
-	/// <param name="other">A key to compare with this object.</param>
-	/// <returns><c>True</c> if the current object is equal to the other parameter; otherwise, <c>false</c>.</returns>
-	public bool Equals(Key? other)
-	{
-		if (other is null)
-			return false;
-
-		return string.Equals(Value, other.Value, StringComparison.Ordinal) &&
-			   string.Equals(Code, other.Code, StringComparison.Ordinal) &&
-			   ControlKey == other.ControlKey &&
-			   ShiftKey == other.ShiftKey &&
-			   AltKey == other.AltKey &&
-			   CommandKey == other.CommandKey;
-	}
-
-	/// <summary>
-	/// Gets hash code of this object.
-	/// </summary>
-	/// <returns>A hash code for the current object.</returns>
-	public override int GetHashCode() => HashCode.Combine(Value, Code, ControlKey, ShiftKey, AltKey, CommandKey);
-
-	/// <summary>
 	/// Gets a string that represents the current object.
 	/// </summary>
 	/// <returns>A string that represents the current object.</returns>
@@ -366,28 +337,28 @@ public sealed class Key : IEquatable<Key>
 	/// </summary>
 	/// <param name="value">New value of Control key.</param>
 	/// <returns>The key with new value of Control key.</returns>
-	public Key WithControlKey(bool value) => new Key(Value, Code, value, ShiftKey, AltKey, CommandKey);
+	public Key WithControlKey(bool value) => new(Value, Code, value, ShiftKey, AltKey, CommandKey);
 
 	/// <summary>
 	/// Gets the key with new value of Shift key.
 	/// </summary>
 	/// <param name="value">New value of Shift key.</param>
 	/// <returns>The key with new value of Shift key.</returns>
-	public Key WithShiftKey(bool value) => new Key(Value, Code, ControlKey, value, AltKey, CommandKey);
+	public Key WithShiftKey(bool value) => new(Value, Code, ControlKey, value, AltKey, CommandKey);
 
 	/// <summary>
 	/// Gets the key with new value of Alt key.
 	/// </summary>
 	/// <param name="value">New value of Alt key.</param>
 	/// <returns>The key with new value of Alt key.</returns>
-	public Key WithAltKey(bool value) => new Key(Value, Code, ControlKey, ShiftKey, value, CommandKey);
+	public Key WithAltKey(bool value) => new(Value, Code, ControlKey, ShiftKey, value, CommandKey);
 
 	/// <summary>
 	/// Gets the key with new value of Command key.
 	/// </summary>
 	/// <param name="value">New value of Command key.</param>
 	/// <returns>The key with new value of Command key.</returns>
-	public Key WithCommandKey(bool value) => new Key(Value, Code, ControlKey, ShiftKey, AltKey, value);
+	public Key WithCommandKey(bool value) => new(Value, Code, ControlKey, ShiftKey, AltKey, value);
 
 	/// <summary>
 	/// Gets a combination of current key with another key. A key instance can be combined only
@@ -413,7 +384,7 @@ public sealed class Key : IEquatable<Key>
 			   (string.Equals(key.Value, Command.Value, StringComparison.Ordinal) && string.Equals(key.Code, Command.Code, StringComparison.Ordinal));
 
 		static Key Combine(Key first, Key second)
-			=> new Key(
+			=> new(
 				first.Value,
 				first.Code,
 				first.ControlKey || second.ControlKey,
@@ -421,31 +392,6 @@ public sealed class Key : IEquatable<Key>
 				first.AltKey || second.AltKey,
 				first.CommandKey || second.CommandKey);
 	}
-
-	/// <summary>
-	/// Gets the value indicating whether 2 instances of <see cref="Key" /> are equal.
-	/// </summary>
-	/// <param name="x">The first key to compare.</param>
-	/// <param name="y">The second key to compare.</param>
-	/// <returns><c>True</c> if the instances of Key are equal; otherwise, <c>false</c>.</returns>
-	public static bool operator ==(Key? x, Key? y)
-	{
-		if (x is null && y is null)
-			return true;
-		if (x is null || y is null)
-			return false;
-		if (ReferenceEquals(x, y))
-			return true;
-		return x.Equals(y);
-	}
-
-	/// <summary>
-	/// Gets the value indicating whether 2 instances of <see cref="Key" /> are different.
-	/// </summary>
-	/// <param name="x">The first key to compare.</param>
-	/// <param name="y">The second key to compare.</param>
-	/// <returns><c>True</c> if the instances of Key are different; otherwise, <c>false</c>.</returns>
-	public static bool operator !=(Key? x, Key? y) => !(x == y);
 
 	/// <summary>
 	/// Gets a combination of 2 key objects. A key instance can be combined only with <see cref="Control" />,
@@ -503,7 +449,7 @@ public sealed class Key : IEquatable<Key>
 	}
 
 	// This has to be placed last since it is referencing other static fields, that must be initialized first.
-	private static readonly Dictionary<(string Value, string Code), Key> PredefinedKeys = new()
+	private static readonly FrozenDictionary<(string Value, string Code), Key> PredefinedKeys = new Dictionary<(string Value, string Code), Key>
 	{
 		{ (Backspace.Value, Backspace.Code), Backspace },
 		{ (Tab.Value, Tab.Code), Tab },
@@ -553,5 +499,5 @@ public sealed class Key : IEquatable<Key>
 		{ (Shift.Value, Shift.Code), Shift },
 		{ (Alt.Value, Alt.Code), Alt },
 		{ (Command.Value, Command.Code), Command },
-	};
+	}.ToFrozenDictionary();
 }
