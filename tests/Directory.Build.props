@@ -18,7 +18,7 @@
 		<PackageReference Include="AutoFixture" Version="4.18.0" />
 		<PackageReference Include="AutoFixture.Xunit2" Version="4.18.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
-		<PackageReference Include="Moq" Version="4.18.4" />
+		<PackageReference Include="NSubstitute" Version="5.0.0" />
 		<PackageReference Include="Shouldly" Version="4.2.1" />
 		<PackageReference Include="xunit" Version="2.5.0" />
 		<PackageReference Include="Xunit.Combinatorial" Version="1.5.25" />
@@ -39,7 +39,7 @@
 		<Using Include="Microsoft.AspNetCore.Components.Web" />
 		<Using Include="Microsoft.AspNetCore.Components.Routing" />
 		<Using Include="System.Reflection" />
-		<Using Include="Moq" />
+		<Using Include="NSubstitute" />
 		<Using Include="Shouldly" />
 		<Using Include="Xunit" />
 		<Using Include="Xunit.Abstractions" />
