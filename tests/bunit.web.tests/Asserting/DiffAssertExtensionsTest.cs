@@ -44,7 +44,7 @@ public class DiffAssertExtensionsTest
 	[Fact(DisplayName = "ShouldHaveSingleChange returns the single diff in input when there is only one")]
 	public void Test003()
 	{
-		var input = new IDiff[] { Mock.Of<IDiff>() };
+		var input = new[] { Substitute.For<IDiff>() };
 
 		var output = input.ShouldHaveSingleChange();
 
@@ -58,8 +58,8 @@ public class DiffAssertExtensionsTest
 		{
 				new IDiff[]
 				{
-					Mock.Of<IDiff>(),
-					Mock.Of<IDiff>(),
+					Substitute.For<IDiff>(),
+					Substitute.For<IDiff>(),
 				},
 		};
 	}

@@ -8,7 +8,7 @@ namespace Bunit.RazorTesting;
 public sealed class RazorTestSourceInformationProviderTest : IDisposable
 {
 	private readonly TestComponentRenderer renderer = new();
-	private readonly IMessageSink messageBus = Mock.Of<IMessageSink>();
+	private readonly IMessageSink messageBus = Substitute.For<IMessageSink>();
 
 	private RazorTestBase GetTest(Type testComponent, int testIndex)
 	{

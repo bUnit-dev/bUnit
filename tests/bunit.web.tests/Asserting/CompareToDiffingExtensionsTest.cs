@@ -22,8 +22,8 @@ public class CompareToDiffingExtensionsTest : TestContext
 			object p1 = p1Info.ParameterType.ToMockInstance();
 			object p2 = p2Info.ParameterType.ToMockInstance();
 
-			yield return new object[] { method, p1Info.Name!, new object[] { null!, p2! } };
-			yield return new object[] { method, p2Info.Name!, new object[] { p1!, null! } };
+			yield return new object[] { method, p1Info.Name!, new[] { null!, p2! } };
+			yield return new object[] { method, p2Info.Name!, new[] { p1!, null! } };
 		}
 	}
 

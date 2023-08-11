@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Bunit.TestAssets.SampleComponents;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
 using Xunit;
 
 namespace Bunit.Rendering;
@@ -19,17 +18,17 @@ public partial class TestRendererTest : TestContext
 						"then it used to create components")]
 	public void Test1000()
 	{
-		var activatorMock = new Mock<IComponentActivator>();
-		activatorMock.Setup(x => x.CreateInstance(typeof(Wrapper))).Returns(new Wrapper());
+		var activatorMock = Substitute.For<IComponentActivator>();
+		activatorMock.CreateInstance(typeof(Wrapper)).Returns(new Wrapper());
 		using var renderer = new TestRenderer(
 			Services.GetService<IRenderedComponentActivator>(),
 			Services,
 			NullLoggerFactory.Instance,
-			activatorMock.Object);
+			activatorMock);
 
 		renderer.RenderComponent<Wrapper>(new ComponentParameterCollection());
 
-		activatorMock.Verify(x => x.CreateInstance(typeof(Wrapper)), Times.Once());
+		activatorMock.Received(1).CreateInstance(typeof(Wrapper));
 	}
 }
 #endif
