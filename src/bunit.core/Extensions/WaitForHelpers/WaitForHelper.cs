@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Bunit.Rendering;
 using Microsoft.Extensions.Logging;
 
@@ -194,6 +195,9 @@ public abstract class WaitForHelper<T> : IDisposable
 
 	private static TimeSpan GetRuntimeTimeout(TimeSpan? timeout)
 	{
-		return timeout ?? TestContextBase.DefaultWaitTimeout;
+		var defaultWaitTimeout = Debugger.IsAttached
+			? Timeout.InfiniteTimeSpan
+			: TestContextBase.DefaultWaitTimeout;
+		return timeout ?? defaultWaitTimeout;
 	}
 }

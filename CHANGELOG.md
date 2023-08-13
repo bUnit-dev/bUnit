@@ -6,10 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
-
 ### Added
 
 - `net8.0` support
+- Increased timeout of `WaitForAssertion` to infinite when a debugger is attached. By [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.22.19] - 2023-07-28
 
