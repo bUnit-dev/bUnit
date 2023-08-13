@@ -47,3 +47,7 @@ The timeout, which defaults to one second, can be controlled by passing a `TimeS
 If the timeout is reached, a <xref:Bunit.Extensions.WaitForHelpers.WaitForFailedException> exception is thrown with the following error message:
 
 > The state predicate did not pass before the timeout period passed.
+
+## Debugging code that uses `WaitForState` ort `WaitForAssertion`
+
+When debugging code that uses the `WaitForState()` or `WaitForAssertion()` methods, it can be helpful that the timeout is not just one second as it is by default. When `bUnit` detects that the debugger is attached (`Debugger.IsAttached`), it will automatically increase the timeout to `Timeout.InfiniteTimeSpan`. If this behaviour is not desired, the timeout can be controlled by passing a `TimeSpan` as the second argument to the `WaitForState()` or `WaitForAssertion()` methods, overriding this behaviour.
