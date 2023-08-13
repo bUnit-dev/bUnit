@@ -20,6 +20,9 @@ public static class RenderedFragmentWaitForHelperExtensions
 	/// <param name="statePredicate">The predicate to invoke after each render, which must returns <c>true</c> when the desired state has been reached.</param>
 	/// <param name="timeout">The maximum time to wait for the desired state.</param>
 	/// <exception cref="WaitForFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
+	/// <remarks>
+	/// If a debugger is attached the timeout is set to <see cref="Timeout.InfiniteTimeSpan" />, giving the possibility to debug without the timeout triggering.
+	/// </remarks>
 	public static void WaitForState(this IRenderedFragmentBase renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
 	{
 		using var waiter = new WaitForStateHelper(renderedFragment, statePredicate, timeout);
