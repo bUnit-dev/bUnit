@@ -25,7 +25,6 @@ public class WaitForAssertionHelper : WaitForHelper<object?>
 	/// <param name="timeout">The maximum time to attempt the verification.</param>
 	/// <remarks>
 	/// If a debugger is attached and <paramref name="timeout" /> is not specified, the timeout is set to <see cref="Timeout.InfiniteTimeSpan" />, giving the possibility to debug without the timeout triggering.
-	/// To remove this behavior set <paramref name="timeout" /> to a value.
 	/// </remarks>
 	public WaitForAssertionHelper(IRenderedFragmentBase renderedFragment, Action assertion, TimeSpan? timeout = null)
 		: base(

@@ -195,9 +195,8 @@ public abstract class WaitForHelper<T> : IDisposable
 
 	private static TimeSpan GetRuntimeTimeout(TimeSpan? timeout)
 	{
-		var defaultWaitTimeout = Debugger.IsAttached
+		return Debugger.IsAttached
 			? Timeout.InfiniteTimeSpan
-			: TestContextBase.DefaultWaitTimeout;
-		return timeout ?? defaultWaitTimeout;
+			: timeout ?? TestContextBase.DefaultWaitTimeout;
 	}
 }
