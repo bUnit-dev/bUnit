@@ -48,6 +48,6 @@ If the timeout is reached, a <xref:Bunit.Extensions.WaitForHelpers.WaitForFailed
 
 > The state predicate did not pass before the timeout period passed.
 
-## Debugging code that uses `WaitForState` ort `WaitForAssertion`
+## Debugging code that uses `WaitForState`, `WaitForAssertion`, or `WaitForElement`
 
 When `bUnit` detects that a debugger is attached (`Debugger.IsAttached`), it will automatically disable the timeout functionality of the "wait for" methods.
