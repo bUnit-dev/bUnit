@@ -1,5 +1,4 @@
 using AngleSharp.Dom;
-using AngleSharpWrappers;
 using Bunit.Rendering;
 
 namespace Bunit;
@@ -26,7 +25,7 @@ public static class RenderedFragmentExtensions
 		if (result is null)
 			throw new ElementNotFoundException(cssSelector);
 
-		return WrapperFactory.Create(new ElementFactory<IElement>(renderedFragment, result, cssSelector));
+		return ElementWrapperFactory.Create(result, renderedFragment, cssSelector);
 	}
 
 	/// <summary>

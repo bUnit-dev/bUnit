@@ -3,6 +3,8 @@
 // See the NOTICE.md at the root of this repository for a copy
 // of the license from the aspnetcore repository.
 using System.Numerics;
+using AngleSharp.Dom;
+using Bunit.TestAssets;
 using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
 using Xunit.Abstractions;
@@ -23,7 +25,7 @@ public class ComponentRenderingTest : TestContext
 		Services.AddXunitLogger(outputHelper);
 		JSInterop.Mode = JSRuntimeMode.Loose;
 	}
-
+	
 	[Fact]
 	public void CanRenderTextOnlyComponent()
 	{
@@ -713,5 +715,20 @@ public class ComponentRenderingTest : TestContext
 
 		cut.WaitForState(() => !cut.FindAll("div").Any());
 		cut.FindAll("div").Count.ShouldBe(0);
+	}
+	
+	[Fact]
+	public void CanHandleAndPassThroughPropertiesOfWrappedElements()
+	{
+		// Act
+		var component = RenderComponent<ComponentWithButton>(p =>
+		{
+			p.Add(c => c.IsDisabled, true);
+		});
+
+		// Assert
+		var element = component.Find("button");
+		element.HasAttribute("disabled").ShouldBeTrue();
+		element.IsDisabled().ShouldBeTrue();
 	}
 }
