@@ -4,6 +4,7 @@
 // of the license from the aspnetcore repository.
 using System.Numerics;
 using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 using Bunit.TestAssets;
 using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
