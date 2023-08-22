@@ -149,9 +149,8 @@ internal static class ElementWrapperFactory
 				new ElementFactory<ISvgElement>(renderedFragment, svgElement, cssSelector)),
 			IHtmlElement htmlElement => new HtmlElementWrapper(
 				new ElementFactory<IHtmlElement>(renderedFragment, htmlElement, cssSelector)),
-			IElement _ => new ElementWrapper(
+			_ => new ElementWrapper(
 				new ElementFactory<IElement>(renderedFragment, element, cssSelector)),
-			_ => throw new InvalidOperationException($"Unknown type. Cannot create wrapper for {element}"),
 		};
 	}
 }
