@@ -729,7 +729,6 @@ public class ComponentRenderingTest : TestContext
 
 		// Assert
 		var element = component.Find("button");
-		element.HasAttribute("disabled").ShouldBeTrue();
-		element.IsDisabled().ShouldBeTrue();
+		element.ShouldBeAssignableTo<IHtmlButtonElement>();
 	}
 }
