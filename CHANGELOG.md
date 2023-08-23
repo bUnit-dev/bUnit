@@ -10,6 +10,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 - `net8.0` support
 - Increased timeout of `WaitForAssertion` to infinite when a debugger is attached. By [@linkdotnet](https://github.com/linkdotnet).
+- Easier overloads for Stub's to invoke `EventCallback`s
 
 ### Fixed
 

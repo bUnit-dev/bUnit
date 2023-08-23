@@ -16,6 +16,11 @@ public abstract class ComponentDoubleBase<TComponent> : IComponent
 	protected static readonly Type DoubledType = typeof(TComponent);
 
 	/// <summary>
+	/// Invokes the given <see cref="Func{TResult}"/> in the context of the associated <see cref="Renderer"/>.
+	/// </summary>
+	protected Task InvokeAsync(Func<Task> workItem) => renderHandle.Dispatcher.InvokeAsync(workItem);
+
+	/// <summary>
 	/// Gets the parameters that was passed to the <typeparamref name="TComponent"/>
 	/// that this stub replaced in the component tree.
 	/// </summary>

@@ -1,5 +1,6 @@
 #if NET5_0_OR_GREATER
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace Bunit.TestDoubles;
 
@@ -31,6 +32,27 @@ public sealed class Stub<TComponent> : ComponentDoubleBase<TComponent>
 			replacementFragment = replacementRenderFragment;
 		else if (replacement is not null)
 			throw new ArgumentException($"The type of replacement is not supported. Replacement type = {replacement.GetType()}", nameof(replacement));
+	}
+
+	/// <summary>
+	/// Triggers an event callback from the stub.
+	/// </summary>
+	/// <param name="selector">Event to trigger.</param>
+	public Task InvokeEventCallback(Expression<Func<TComponent, EventCallback>> selector)
+	{
+		var callback = Parameters.Get(selector);
+		return InvokeAsync(callback.InvokeAsync);
+	}
+
+	/// <summary>
+	/// Triggers an event callback from the stub.
+	/// </summary>
+	/// <param name="selector">Event to trigger.</param>
+	/// <param name="value">Value to pass to the event callback.</param>
+	public Task InvokeEventCallback<T>(Expression<Func<TComponent, EventCallback<T>>> selector, T? value)
+	{
+		var callback = Parameters.Get(selector);
+		return InvokeAsync(() => callback.InvokeAsync(value));
 	}
 
 	/// <inheritdoc/>

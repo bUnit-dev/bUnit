@@ -1,5 +1,7 @@
+using System.Linq.Expressions;
 using AngleSharp.Dom;
 using Bunit.Rendering;
+using Bunit.TestDoubles;
 
 namespace Bunit;
 
