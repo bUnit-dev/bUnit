@@ -68,6 +68,10 @@ The test above does the following:
 2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the `Render(RenderFragment)` method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
+Alternatively, use the [LifeCycle.InstancePerTestCase](https://docs.nunit.org/articles/nunit/writing-tests/attributes/fixturelifecycle.html) attribute (introduced in NUnit 3.13) so that a new instance of the test class is created for each test removing the need for the wrapper.
+
+[!code-csharp[HelloWorldInstancePerTestCase.cs](../../../samples/tests/nunit/HelloWorldInstancePerTestCase.cs#L5-L17)]
+
 # [MSTest](#tab/mstest)
 
 [!code-cshtml[HelloWorldRazorTest.razor](../../../samples/tests/mstest/HelloWorldRazorTest.razor)]
@@ -149,6 +153,10 @@ The test above does the following:
 1. Inherits from the `BunitTestContext` listed above. This base class offers the majority of functions.
 2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.RenderComponent``1(Action{Bunit.ComponentParameterCollectionBuilder{``0}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
+
+Alternatively, use the [LifeCycle.InstancePerTestCase](https://docs.nunit.org/articles/nunit/writing-tests/attributes/fixturelifecycle.html) attribute (introduced in NUnit 3.13) so that a new instance of the test class is created for each test removing the need for the wrapper.
+
+[!code-csharp[HelloWorldRazorInstancePerTestCase.razor](../../../samples/tests/nunit/HelloWorldInstancePerTestCase.cs)]
 
 # [MSTest](#tab/mstest)
 
