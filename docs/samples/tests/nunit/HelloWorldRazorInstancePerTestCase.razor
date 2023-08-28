@@ -1,0 +1,14 @@
+@attribute [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
+@inherits Bunit.TestContext
+
+@code {
+  [Test]
+  public void HelloWorldComponentRendersCorrectly()
+  {
+    // Act
+    var cut = Render(@<HelloWorld />);
+
+    // Assert
+    cut.MarkupMatches(@<h1>Hello world from Blazor</h1>);
+  }
+}
