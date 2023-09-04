@@ -15,7 +15,6 @@
 			<!-- some test fails with > 4.1.0 -->
 			<NoWarn>NU1605</NoWarn>
 		</PackageReference>
-		<PackageReference Update="SonarAnalyzer.CSharp" Version="9.7.0.75501" />	
 	</ItemGroup>
 
 	<ItemGroup>

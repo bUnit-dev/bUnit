@@ -32,8 +32,8 @@ public sealed class RazorTestSourceInformationProviderTest : IDisposable
 		var sourceInfo = sut.GetSourceInformation(target, GetTest(target, testNumber), testNumber);
 
 		sourceInfo.ShouldNotBeNull();
-		sourceInfo?.FileName.ShouldEndWith($"SampleComponents{Path.DirectorySeparatorChar}{target.Name}.razor", Case.Insensitive);
-		sourceInfo?.LineNumber.ShouldBe(expectedLineNumber);
+		sourceInfo.FileName.ShouldEndWith($"SampleComponents{Path.DirectorySeparatorChar}{target.Name}.razor", Case.Insensitive);
+		sourceInfo.LineNumber.ShouldBe(expectedLineNumber);
 	}
 
 	public void Dispose() => renderer.Dispose();
