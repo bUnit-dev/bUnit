@@ -21,8 +21,8 @@
 	<ItemGroup>
 		<PackageReference Include="SourceFileFinder" Version="1.1.0" />
 		<PackageReference Include="xunit.assert" Version="2.4.2" />
-		<PackageReference Include="xunit.extensibility.core" Version="2.5.0" />
-		<PackageReference Include="xunit.extensibility.execution" Version="2.5.0" />
+		<PackageReference Include="xunit.extensibility.core" Version="2.4.2" />
+		<PackageReference Include="xunit.extensibility.execution" Version="2.4.2" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
