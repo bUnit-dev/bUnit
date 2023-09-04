@@ -194,7 +194,7 @@ public class TestRenderer : Renderer, ITestRenderer
 			AssertNoUnhandledExceptions();
 		}
 	}
-	
+
 #if NET8_0_OR_GREATER
 	/// <inheritdoc/>
 	protected override IComponent ResolveComponentForRenderMode(Type componentType, int? parentComponentId,
@@ -207,52 +207,46 @@ public class TestRenderer : Renderer, ITestRenderer
 #endif
 
 	/// <inheritdoc/>
-	internal void SetDirectParameters(IRenderedFragmentBase renderedComponent, ParameterView parameters)
+	internal Task SetDirectParametersAsync(IRenderedFragmentBase renderedComponent, ParameterView parameters)
 	{
 		if (disposed)
 			throw new ObjectDisposedException(nameof(TestRenderer));
 
-		// Calling SetDirectParameters updates the render tree
-		// if the event contains associated data.
-		lock (renderTreeUpdateLock)
+		var result = Dispatcher.InvokeAsync(() =>
 		{
-			if (disposed)
-				throw new ObjectDisposedException(nameof(TestRenderer));
-
-			var result = Dispatcher.InvokeAsync(() =>
+			try
 			{
-				try
-				{
-					IsBatchInProgress = true;
-					
+				IsBatchInProgress = true;
+
 #if NET8_0_OR_GREATER
-					var setDirectParametersMethod = typeof(ComponentState).GetMethod("SetDirectParameters", BindingFlags.NonPublic | BindingFlags.Instance)!;
-					var componentState = GetComponentState(renderedComponent.ComponentId);
+				var setDirectParametersMethod = typeof(ComponentState).GetMethod("SetDirectParameters", BindingFlags.NonPublic | BindingFlags.Instance)!;
+				var componentState = GetComponentState(renderedComponent.ComponentId);
 #else
-					var componentState = GetRequiredComponentStateMethod.Invoke(this, new object[] { renderedComponent.ComponentId })!;
-					var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
+				var componentState = GetRequiredComponentStateMethod.Invoke(this, new object[] { renderedComponent.ComponentId })!;
+				var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
 #endif
-					setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
-				}
-				catch (TargetInvocationException ex) when (ex.InnerException is not null)
-				{
-					throw ex.InnerException;
-				}
-				finally
-				{
-					IsBatchInProgress = false;
-				}
-
-				ProcessPendingRender();
-			});
-
-			if (result.IsFaulted && result.Exception is not null)
+				setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
+			}
+			catch (TargetInvocationException ex) when (ex.InnerException is not null)
 			{
-				HandleException(result.Exception);
+				throw ex.InnerException;
+			}
+			finally
+			{
+				IsBatchInProgress = false;
 			}
 
-			AssertNoUnhandledExceptions();
+			ProcessPendingRender();
+		});
+
+		if (result.IsFaulted && result.Exception is not null)
+		{
+			HandleException(result.Exception);
 		}
+
+		AssertNoUnhandledExceptions();
+
+		return result;
 	}
 
 	/// <inheritdoc/>

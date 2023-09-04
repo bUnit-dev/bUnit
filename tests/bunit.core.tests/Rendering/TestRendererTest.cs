@@ -488,7 +488,7 @@ public partial class TestRendererTest : TestContext
 		cut.Instance.AfterRenderCount.ShouldBe(2);
 		cut.Instance.AfterRenderAsyncCount.ShouldBe(2);
 	}
-	
+
 #if NET8_0_OR_GREATER
 	[Fact(DisplayName = "Can render components that have a RenderMode attribute")]
 	public void Test209()
@@ -632,7 +632,7 @@ public partial class TestRendererTest : TestContext
 			throw new InvalidOperationException();
 		}
 	}
-	
+
 #if NET8_0_OR_GREATER
 	[RenderModeServer]
 	private sealed class RenderModeServerComponent : ComponentBase
