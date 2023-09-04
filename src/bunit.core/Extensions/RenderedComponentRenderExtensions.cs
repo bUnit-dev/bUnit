@@ -30,7 +30,15 @@ public static class RenderedComponentRenderExtensions
 			throw new ArgumentNullException(nameof(renderedComponent));
 
 		var renderer = renderedComponent.Services.GetRequiredService<TestRenderer>();
-		renderer.SetDirectParameters(renderedComponent, parameters);
+
+		try
+		{
+			renderer.SetDirectParametersAsync(renderedComponent, parameters).GetAwaiter().GetResult();
+		}
+		catch (AggregateException e) when (e.InnerExceptions.Count == 1)
+		{
+			ExceptionDispatchInfo.Capture(e.InnerExceptions[0]).Throw();
+		}
 	}
 
 	/// <summary>
