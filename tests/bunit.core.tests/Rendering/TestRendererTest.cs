@@ -489,6 +489,16 @@ public partial class TestRendererTest : TestContext
 		cut.Instance.AfterRenderAsyncCount.ShouldBe(2);
 	}
 
+#if NET8_0_OR_GREATER
+	[Fact(DisplayName = "Can render components that have a RenderMode attribute")]
+	public void Test209()
+	{
+		var cut = RenderComponent<RenderModeServerComponent>();
+
+		cut.Find("h3").TextContent.ShouldBe("Hello from Server");
+	}
+#endif
+
 	internal sealed class LifeCycleMethodInvokeCounter : ComponentBase
 	{
 		public int InitilizedCount { get; private set; }
@@ -622,4 +632,15 @@ public partial class TestRendererTest : TestContext
 			throw new InvalidOperationException();
 		}
 	}
+
+#if NET8_0_OR_GREATER
+	[RenderModeServer]
+	private sealed class RenderModeServerComponent : ComponentBase
+	{
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.AddMarkupContent(0, "<h3>Hello from Server</h3>");
+		}
+	}
+#endif
 }

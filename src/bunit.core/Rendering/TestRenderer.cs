@@ -12,7 +12,9 @@ public class TestRenderer : Renderer, ITestRenderer
 {
 	private static readonly Type RendererType = typeof(Renderer);
 	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;
+#if !NET8_0_OR_GREATER
 	private static readonly MethodInfo GetRequiredComponentStateMethod = RendererType.GetMethod("GetRequiredComponentState", BindingFlags.Instance | BindingFlags.NonPublic)!;
+#endif
 
 	private readonly object renderTreeUpdateLock = new();
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
@@ -96,7 +98,11 @@ public class TestRenderer : Renderer, ITestRenderer
 		EventArgs eventArgs) => DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
 
 	/// <inheritdoc/>
+#if !NET8_0_OR_GREATER
 	public Task DispatchEventAsync(
+#else
+	public new Task DispatchEventAsync(
+#endif
 		ulong eventHandlerId,
 		EventFieldInfo fieldInfo,
 		EventArgs eventArgs,
@@ -189,48 +195,58 @@ public class TestRenderer : Renderer, ITestRenderer
 		}
 	}
 
+#if NET8_0_OR_GREATER
 	/// <inheritdoc/>
-	internal void SetDirectParameters(IRenderedFragmentBase renderedComponent, ParameterView parameters)
+	protected override IComponent ResolveComponentForRenderMode(Type componentType, int? parentComponentId,
+		IComponentActivator componentActivator, IComponentRenderMode renderMode)
+
+	{
+		ArgumentNullException.ThrowIfNull(componentActivator);
+		return componentActivator.CreateInstance(componentType);
+	}
+#endif
+
+	/// <inheritdoc/>
+	internal Task SetDirectParametersAsync(IRenderedFragmentBase renderedComponent, ParameterView parameters)
 	{
 		if (disposed)
 			throw new ObjectDisposedException(nameof(TestRenderer));
 
-		// Calling SetDirectParameters updates the render tree
-		// if the event contains associated data.
-		lock (renderTreeUpdateLock)
+		var result = Dispatcher.InvokeAsync(() =>
 		{
-			if (disposed)
-				throw new ObjectDisposedException(nameof(TestRenderer));
-
-			var result = Dispatcher.InvokeAsync(() =>
+			try
 			{
-				try
-				{
-					IsBatchInProgress = true;
+				IsBatchInProgress = true;
 
-					var componentState = GetRequiredComponentStateMethod.Invoke(this, new object[] { renderedComponent.ComponentId })!;
-					var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
-					setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
-				}
-				catch (TargetInvocationException ex) when (ex.InnerException is not null)
-				{
-					throw ex.InnerException;
-				}
-				finally
-				{
-					IsBatchInProgress = false;
-				}
-
-				ProcessPendingRender();
-			});
-
-			if (result.IsFaulted && result.Exception is not null)
+#if NET8_0_OR_GREATER
+				var setDirectParametersMethod = typeof(ComponentState).GetMethod("SetDirectParameters", BindingFlags.NonPublic | BindingFlags.Instance)!;
+				var componentState = GetComponentState(renderedComponent.ComponentId);
+#else
+				var componentState = GetRequiredComponentStateMethod.Invoke(this, new object[] { renderedComponent.ComponentId })!;
+				var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
+#endif
+				setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
+			}
+			catch (TargetInvocationException ex) when (ex.InnerException is not null)
 			{
-				HandleException(result.Exception);
+				throw ex.InnerException;
+			}
+			finally
+			{
+				IsBatchInProgress = false;
 			}
 
-			AssertNoUnhandledExceptions();
+			ProcessPendingRender();
+		});
+
+		if (result.IsFaulted && result.Exception is not null)
+		{
+			HandleException(result.Exception);
 		}
+
+		AssertNoUnhandledExceptions();
+
+		return result;
 	}
 
 	/// <inheritdoc/>

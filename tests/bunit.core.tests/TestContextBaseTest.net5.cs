@@ -11,24 +11,24 @@ public partial class TestContextBaseTest : TestContext
 	public void Test0001()
 	{
 		var mock = CreateMockComponentFactory(canCreate: _ => false, create: _ => null);
-		ComponentFactories.Add(mock.Object);
+		ComponentFactories.Add(mock);
 
 		RenderComponent<Simple1>();
 
-		mock.Verify(x => x.CanCreate(typeof(Simple1)), Times.Once);
-		mock.Verify(x => x.Create(It.IsAny<Type>()), Times.Never);
+		mock.Received(1).CanCreate(typeof(Simple1));
+		mock.DidNotReceive().Create(Arg.Any<Type>());
 	}
 
 	[Fact(DisplayName = "ComponentFactories Create() method is called when their CanCreate() method returns true")]
 	public void Test0002()
 	{
 		var mock = CreateMockComponentFactory(canCreate: _ => true, create: _ => new Simple1());
-		ComponentFactories.Add(mock.Object);
+		ComponentFactories.Add(mock);
 
 		RenderComponent<Simple1>();
 
-		mock.Verify(x => x.CanCreate(typeof(Simple1)), Times.Once);
-		mock.Verify(x => x.Create(typeof(Simple1)), Times.Once);
+		mock.Received(1).CanCreate(typeof(Simple1));
+		mock.Received(1).Create(typeof(Simple1));
 	}
 
 	[Fact(DisplayName = "ComponentFactories is used in last added order")]
@@ -36,15 +36,15 @@ public partial class TestContextBaseTest : TestContext
 	{
 		var firstMock = CreateMockComponentFactory(canCreate: _ => true, create: _ => new Simple1());
 		var secondMock = CreateMockComponentFactory(canCreate: _ => true, create: _ => new Simple1());
-		ComponentFactories.Add(firstMock.Object);
-		ComponentFactories.Add(secondMock.Object);
+		ComponentFactories.Add(firstMock);
+		ComponentFactories.Add(secondMock);
 
 		RenderComponent<Simple1>();
 
-		firstMock.Verify(x => x.CanCreate(It.IsAny<Type>()), Times.Never);
-		firstMock.Verify(x => x.Create(It.IsAny<Type>()), Times.Never);
-		secondMock.Verify(x => x.CanCreate(typeof(Simple1)), Times.Once);
-		secondMock.Verify(x => x.Create(typeof(Simple1)), Times.Once);
+		firstMock.DidNotReceive().CanCreate(Arg.Any<Type>());
+		firstMock.DidNotReceive().Create(Arg.Any<Type>());
+		secondMock.Received(1).CanCreate(typeof(Simple1));
+		secondMock.Received(1).Create(typeof(Simple1));
 	}
 
 	[Fact(DisplayName = "DisposeComponents captures exceptions from DisposeAsync in Renderer.UnhandledException")]
@@ -160,11 +160,11 @@ public partial class TestContextBaseTest : TestContext
 		}
 	}
 
-	private static Mock<IComponentFactory> CreateMockComponentFactory(Func<Type, bool> canCreate, Func<Type, IComponent> create)
+	private static IComponentFactory CreateMockComponentFactory(Func<Type, bool> canCreate, Func<Type, IComponent> create)
 	{
-		var result = new Mock<IComponentFactory>(MockBehavior.Strict);
-		result.Setup(x => x.CanCreate(It.IsAny<Type>())).Returns(canCreate);
-		result.Setup(x => x.Create(It.IsAny<Type>())).Returns(create);
+		var result = Substitute.For<IComponentFactory>();
+		result.CanCreate(Arg.Any<Type>()).Returns(call => canCreate((Type)call[0]));
+		result.Create(Arg.Any<Type>()).Returns(call => create((Type)call[0]));
 		return result;
 	}
 }

@@ -8,7 +8,7 @@ namespace Bunit.RazorTesting;
 public sealed class RazorTestSourceInformationProviderTest : IDisposable
 {
 	private readonly TestComponentRenderer renderer = new();
-	private readonly IMessageSink messageBus = Mock.Of<IMessageSink>();
+	private readonly IMessageSink messageBus = Substitute.For<IMessageSink>();
 
 	private RazorTestBase GetTest(Type testComponent, int testIndex)
 	{
@@ -32,8 +32,8 @@ public sealed class RazorTestSourceInformationProviderTest : IDisposable
 		var sourceInfo = sut.GetSourceInformation(target, GetTest(target, testNumber), testNumber);
 
 		sourceInfo.ShouldNotBeNull();
-		sourceInfo?.FileName.ShouldEndWith($"SampleComponents{Path.DirectorySeparatorChar}{target.Name}.razor", Case.Insensitive);
-		sourceInfo?.LineNumber.ShouldBe(expectedLineNumber);
+		sourceInfo.FileName.ShouldEndWith($"SampleComponents{Path.DirectorySeparatorChar}{target.Name}.razor", Case.Insensitive);
+		sourceInfo.LineNumber.ShouldBe(expectedLineNumber);
 	}
 
 	public void Dispose() => renderer.Dispose();

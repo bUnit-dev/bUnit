@@ -13,8 +13,8 @@ public class RazorTestDiscovererTest
 	public RazorTestDiscovererTest()
 	{
 		options = TestFrameworkOptions.ForDiscovery();
-		messageBus = Mock.Of<IMessageSink>();
-		attribute = Mock.Of<IReflectionAttributeInfo>();
+		messageBus = Substitute.For<IMessageSink>();
+		attribute = Substitute.For<IReflectionAttributeInfo>();
 	}
 
 	[Fact(DisplayName = "Can find single razor test in test component")]

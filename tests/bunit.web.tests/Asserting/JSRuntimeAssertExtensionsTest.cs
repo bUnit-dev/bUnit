@@ -103,7 +103,7 @@ public class JSRuntimeAssertExtensionsTest
 	public void Test201()
 	{
 		var obj = new object();
-		Should.Throw<ActualExpectedAssertException>(() => obj.ShouldBeElementReferenceTo(Mock.Of<IElement>()));
+		Should.Throw<ActualExpectedAssertException>(() => obj.ShouldBeElementReferenceTo(Substitute.For<IElement>()));
 	}
 
 	[Fact(DisplayName = "ShouldBeElementReferenceTo throws if element reference does not point to the provided element")]
