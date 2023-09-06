@@ -6,18 +6,20 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.23.9] - 2023-09-06
+
 ### Fixed
 
-- If the renderer was not idle when calling `SetParametersAndRender`, the method could return before the parameters were set and the component under test had finished rendering. This was a regression that happened in v1.21.9. Reported by [@Skintkingle](https://github.com/Skintkingle]) in <https://github.com/bUnit-dev/bUnit/issues/1188>. Fixed by [@egil](https://github.com/egil).
+-   If the renderer was not idle when calling `SetParametersAndRender`, the method could return before the parameters were set and the component under test had finished rendering. This was a regression that happened in v1.21.9. Reported by [@Skintkingle](https://github.com/Skintkingle]) in <https://github.com/bUnit-dev/bUnit/issues/1188>. Fixed by [@egil](https://github.com/egil).
 
 ### Added
 
-- `net8.0` support
-- Increased timeout of `WaitForAssertion` to infinite when a debugger is attached. By [@linkdotnet](https://github.com/linkdotnet).
+-   `net8.0` support
+-   Increased timeout of `WaitForAssertion` to infinite when a debugger is attached. By [@linkdotnet](https://github.com/linkdotnet).
 
 ### Fixed
 
-- AngleSharp IElement extension methods do not work with `IRenderedFragment.Find`. Reported by [a2er](https://github.com/a2er). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+-   AngleSharp IElement extension methods do not work with `IRenderedFragment.Find`. Reported by [a2er](https://github.com/a2er). Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.22.19] - 2023-07-28
 
@@ -1313,7 +1315,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**
         The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.22.19...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.23.9...HEAD
+
+[1.23.9]: https://github.com/bUnit-dev/bUnit/compare/v1.22.19...1.23.9
 
 [1.22.19]: https://github.com/bUnit-dev/bUnit/compare/v1.21.9...v1.22.19
 
