@@ -182,6 +182,6 @@ public abstract class WaitForHelper<T> : IDisposable
 	{
 		return Debugger.IsAttached
 			? Timeout.InfiniteTimeSpan
-			: timeout ?? TestContextBase.DefaultWaitTimeout;
+			: timeout ?? TestContext.DefaultWaitTimeout;
 	}
 }

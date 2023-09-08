@@ -416,20 +416,10 @@ public class BunitRendererTest : TestContext
 		cut.Find("h3").TextContent.ShouldBe("Hello from Server");
 	}
 
-	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with SetParametersAndRender")]
-	public void Test204()
-	{
-		var cut = RenderComponent<MultipleStateHasChangedInOnParametersSet>();
-		cut.RenderCount.ShouldBe(1);
-
-		cut.SetParametersAndRender();
-		cut.RenderCount.ShouldBe(2);
-	}
-
 	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with Render")]
 	public void Test205()
 	{
-		var cut = RenderComponent<MultipleStateHasChangedInOnParametersSet>();
+		var cut = Render<MultipleStateHasChangedInOnParametersSet>();
 		cut.RenderCount.ShouldBe(1);
 
 		cut.Render();
@@ -439,7 +429,7 @@ public class BunitRendererTest : TestContext
 	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with event dispatch render trigger")]
 	public void Test206()
 	{
-		var cut = RenderComponent<TriggerChildContentRerenderViaClick>();
+		var cut = Render<TriggerChildContentRerenderViaClick>();
 		var child = cut.FindComponent<MultipleStateHasChangedInOnParametersSet>();
 		child.RenderCount.ShouldBe(1);
 
@@ -451,7 +441,7 @@ public class BunitRendererTest : TestContext
 	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with Render")]
 	public void Test207()
 	{
-		var cut = RenderComponent<LifeCycleMethodInvokeCounter>();
+		var cut = Render<LifeCycleMethodInvokeCounter>();
 		cut.RenderCount.ShouldBe(1);
 
 		cut.Render();
@@ -468,10 +458,10 @@ public class BunitRendererTest : TestContext
 	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with Render")]
 	public void Test208()
 	{
-		var cut = RenderComponent<LifeCycleMethodInvokeCounter>();
+		var cut = Render<LifeCycleMethodInvokeCounter>();
 		cut.RenderCount.ShouldBe(1);
 
-		cut.SetParametersAndRender();
+		cut.Render();
 
 		cut.RenderCount.ShouldBe(2);
 		cut.Instance.InitilizedCount.ShouldBe(1);
@@ -485,7 +475,7 @@ public class BunitRendererTest : TestContext
 	[Fact(DisplayName = "Can render components that have a RenderMode attribute")]
 	public void Test209()
 	{
-		var cut = RenderComponent<RenderModeServerComponent>();
+		var cut = Render<RenderModeServerComponent>();
 
 		cut.Find("h3").TextContent.ShouldBe("Hello from Server");
 	}

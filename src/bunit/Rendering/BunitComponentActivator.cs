@@ -8,7 +8,7 @@ internal class BunitComponentActivator : IComponentActivator
 	public BunitComponentActivator(ComponentFactoryCollection factories, IComponentActivator? externalComponentActivator)
 	{
 		this.factories = factories ?? throw new ArgumentNullException(nameof(factories));
-		this.componentActivator = externalComponentActivator ?? DefaultComponentActivator.Instance;
+		componentActivator = externalComponentActivator ?? DefaultComponentActivator.Instance;
 	}
 
 	public IComponent CreateInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type componentType)
@@ -45,7 +45,7 @@ internal class BunitComponentActivator : IComponentActivator
 
 		/// <inheritdoc />
 		public IComponent CreateInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type componentType)
-		{			
+		{
 			return (IComponent)Activator.CreateInstance(componentType)!;
 		}
 	}

@@ -1,10 +1,11 @@
 @using Bunit.TestAssets.SampleComponents
-@inherits TestContext
+@using Bunit
+@inherits Bunit.TestContext
 
 @code {
 
 	[Fact]
-	public void MarkupMatchesShouldNotBeBlockedByRenderer()
+	public async Task MarkupMatchesShouldNotBeBlockedByRenderer()
 	{
 		var tcs = new TaskCompletionSource<object?>();
 
@@ -14,13 +15,13 @@
 
 		tcs.SetResult(true);
 
-		cut.WaitForAssertion(() => cut.MarkupMatches(@<span>done</span>));
+		await cut.WaitForAssertionAsync(() => cut.MarkupMatches(@<span>done</span>));
 	}
 
 	[SuppressMessage("Usage", "xUnit1026:Theory method does not use parameter")]
 	[Theory]
 	[Repeat(2)]
-	public void MarkupMatchesShouldNotBeBlockedByRendererComplex(int repeatCount)
+	public async Task MarkupMatchesShouldNotBeBlockedByRendererComplex(int repeatCount)
 	{
 		var tcs = new TaskCompletionSource<object?>();
 
@@ -30,6 +31,6 @@
 
 		tcs.SetResult(true);
 
-		cut.WaitForAssertion(() => cut.MarkupMatches(@<span>done</span>));
+		await cut.WaitForAssertionAsync(() => cut.MarkupMatches(@<span>done</span>));
 	}
 }

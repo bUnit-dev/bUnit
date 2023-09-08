@@ -630,7 +630,7 @@ public class ComponentRenderingTest : TestContext
 	public void CanHandleAndPassThroughPropertiesOfWrappedElements()
 	{
 		// Act
-		var component = RenderComponent<ComponentWithButton>(p =>
+		var component = Render<ComponentWithButton>(p =>
 		{
 			p.Add(c => c.IsDisabled, true);
 		});

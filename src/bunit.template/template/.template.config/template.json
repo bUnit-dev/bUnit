@@ -86,16 +86,6 @@
 			"replaces": "targetSdk",
 			"choices": [
 				{
-					"choice": "net6.0",
-					"description": ".net 6.0",
-					"displayName": ".net 6.0"
-				},
-				{
-					"choice": "net7.0",
-					"description": ".net 7.0",
-					"displayName": ".net 7.0"
-				},
-				{
 					"choice": "net8.0",
 					"description": ".net 8.0",
 					"displayName": ".net 8.0"

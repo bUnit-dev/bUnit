@@ -1,5 +1,3 @@
-#if NET5_0_OR_GREATER
-
 using Bunit.TestDoubles;
 
 namespace Bunit.Rendering;
@@ -12,7 +10,7 @@ public class BunitComponentActivatorTest : TestContext
 		var activator = new CustomComponentActivator();
 		Services.AddSingleton<IComponentActivator>(activator);
 
-		var cut = RenderComponent<Simple1>();
+		var cut = Render<Simple1>();
 
 		cut.Instance.ShouldBeOfType<Simple1>();
 	}
@@ -23,7 +21,7 @@ public class BunitComponentActivatorTest : TestContext
 		var activator = new CustomComponentActivator();
 		Services.AddSingleton<IComponentActivator>(activator);
 
-		RenderComponent<Simple1>();
+		Render<Simple1>();
 
 		activator.RequestedComponentTypes
 			.ShouldHaveSingleItem()
@@ -37,7 +35,7 @@ public class BunitComponentActivatorTest : TestContext
 		Services.AddSingleton<IComponentActivator>(activator);
 		ComponentFactories.AddStub<ClickCounter>();
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<ClickCounter>());
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<ClickCounter>());
 
 		activator.RequestedComponentTypes
 			.ShouldHaveSingleItem()
@@ -57,5 +55,3 @@ public class BunitComponentActivatorTest : TestContext
 		}
 	}
 }
-
-#endif

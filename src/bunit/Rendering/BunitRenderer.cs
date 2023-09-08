@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 using System.Runtime.ExceptionServices;
 
@@ -8,7 +9,9 @@ namespace Bunit.Rendering;
 /// </summary>
 public sealed class BunitRenderer : Renderer
 {
-	private readonly Dictionary<int, IRenderedFragment> renderedComponents = new();
+	private static readonly Type RendererType = typeof(Renderer);
+	[SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Accesses internal method to mimic the behavior of the Blazor renderer.")]
+	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;private readonly Dictionary<int, IRenderedFragment> renderedComponents = new();
 	private readonly List<int> rootComponentIds = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private readonly TestServiceProvider services;
@@ -18,6 +21,14 @@ public sealed class BunitRenderer : Renderer
 	private Exception? capturedUnhandledException;
 	private bool disposed;
 	private bool blockRenderer;
+
+	private bool IsBatchInProgress
+	{
+#pragma warning disable S1144 // Unused private types or members should be removed
+		get => (bool)(IsBatchInProgressField.GetValue(this) ?? false);
+#pragma warning restore S1144 // Unused private types or members should be removed
+		set => IsBatchInProgressField.SetValue(this, value);
+	}
 
 	/// <summary>
 	/// Gets a <see cref="Task{Exception}"/>, which completes when an unhandled exception
@@ -219,16 +230,60 @@ public sealed class BunitRenderer : Renderer
 		});
 	}
 
+	[SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Accesses private method in this type.")]
+	internal Task SetDirectParametersAsync(IRenderedFragment renderedComponent, ParameterView parameters)
+	{
+		if (disposed)
+			throw new ObjectDisposedException(nameof(BunitRenderer));
+
+		var result = Dispatcher.InvokeAsync(() =>
+		{
+			try
+			{
+				IsBatchInProgress = true;
+
+				var setDirectParametersMethod = typeof(ComponentState).GetMethod("SetDirectParameters", BindingFlags.NonPublic | BindingFlags.Instance)!;
+				var componentState = GetComponentState(renderedComponent.ComponentId);
+				setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
+			}
+			catch (TargetInvocationException ex) when (ex.InnerException is not null)
+			{
+				throw ex.InnerException;
+			}
+			finally
+			{
+				IsBatchInProgress = false;
+			}
+
+			ProcessPendingRender();
+		});
+
+		if (result.IsFaulted && result.Exception is not null)
+		{
+			HandleException(result.Exception);
+		}
+
+		AssertNoUnhandledExceptions();
+
+		return result;
+	}
+
 	/// <inheritdoc/>
 	protected override void ProcessPendingRender()
 	{
 		if (disposed)
+		{
+			logger.LogRenderCycleActiveAfterDispose();
 			return;
+		}
 
 		renderBlocker.Wait();
 
 		if (disposed)
+		{
+			logger.LogRenderCycleActiveAfterDispose();
 			return;
+		}
 
 		base.ProcessPendingRender();
 	}
@@ -246,7 +301,9 @@ public sealed class BunitRenderer : Renderer
 
 		BlockNextRenderCycle();
 
-		UpdateDisplay(renderBatch);
+		var renderEvent = new RenderEvent();
+		PrepareRenderEvent(renderBatch);
+		ApplyRenderEvent(renderEvent);
 		return Task.CompletedTask;
 
 		void BlockNextRenderCycle()
@@ -255,6 +312,71 @@ public sealed class BunitRenderer : Renderer
 			{
 				BlockRendering();
 				blockRenderer = false;
+			}
+		}
+
+		void PrepareRenderEvent(in RenderBatch renderBatch)
+		{
+			for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
+			{
+				var id = renderBatch.DisposedComponentIDs.Array[i];
+				renderEvent.SetDisposed(id);
+			}
+
+			for (int i = 0; i < renderBatch.UpdatedComponents.Count; i++)
+			{
+				ref var update = ref renderBatch.UpdatedComponents.Array[i];
+				renderEvent.SetUpdated(update.ComponentId, update.Edits.Count > 0);
+			}
+
+			foreach (var (_, rc) in renderedComponents)
+			{
+				LoadChangesIntoRenderEvent(rc.ComponentId);
+			}
+		}
+
+		void LoadChangesIntoRenderEvent(int componentId)
+		{
+			var status = renderEvent.GetOrCreateStatus(componentId);
+			if (status.FramesLoaded || status.Disposed)
+				return;
+
+			var frames = GetCurrentRenderTreeFrames(componentId);
+			renderEvent.AddFrames(componentId, frames);
+
+			for (var i = 0; i < frames.Count; i++)
+			{
+				ref var frame = ref frames.Array[i];
+				if (frame.FrameType == RenderTreeFrameType.Component)
+				{
+					// If a child component of the current components has been
+					// disposed, there is no reason to load the disposed components
+					// render tree frames. This can also cause a stack overflow if
+					// the current component was previously a child of the disposed
+					// component (is that possible?)
+					var childStatus = renderEvent.GetOrCreateStatus(frame.ComponentId);
+					if (childStatus.Disposed)
+					{
+						logger.LogDisposedChildInRenderTreeFrame(componentId, frame.ComponentId);
+					}
+					// The assumption is that a component cannot be in multiple places at
+					// once. However, in case this is not a correct assumption, this
+					// ensures that a child components frames are only loaded once.
+					else if (!renderEvent.GetOrCreateStatus(frame.ComponentId).FramesLoaded)
+					{
+						LoadChangesIntoRenderEvent(frame.ComponentId);
+					}
+
+					if (childStatus.Rendered || childStatus.Changed || childStatus.Disposed)
+					{
+						status.Rendered = status.Rendered || childStatus.Rendered;
+
+						// The current component should also be marked as changed if the child component is
+						// either changed or disposed, as there is a good chance that the child component
+						// contained markup which is no longer visible.
+						status.Changed = status.Changed || childStatus.Changed || childStatus.Disposed;
+					}
+				}
 			}
 		}
 	}
@@ -266,47 +388,6 @@ public sealed class BunitRenderer : Renderer
 	{
 		ArgumentNullException.ThrowIfNull(componentActivator);
 		return componentActivator.CreateInstance(componentType);
-	}
-
-	private void UpdateDisplay(in RenderBatch renderBatch)
-	{
-		RenderCount++;
-		var renderEvent = new RenderEvent(renderBatch, new RenderTreeFrameDictionary());
-
-		if (disposed)
-			return;
-
-		// removes disposed components
-		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
-		{
-			var id = renderBatch.DisposedComponentIDs.Array[i];
-
-			logger.LogComponentDisposed(id);
-
-			if (renderedComponents.TryGetValue(id, out var rc))
-			{
-				renderedComponents.Remove(id);
-				rc.OnRender(renderEvent);
-			}
-		}
-
-		// notify each rendered component about the render
-		foreach (var (key, rc) in renderedComponents.ToArray())
-		{
-			LoadRenderTreeFrames(rc.ComponentId, renderEvent.Frames);
-
-			rc.OnRender(renderEvent);
-
-			logger.LogComponentRendered(rc.ComponentId);
-
-			// RC can replace the instance of the component it is bound
-			// to while processing the update event.
-			if (key != rc.ComponentId)
-			{
-				renderedComponents.Remove(key);
-				renderedComponents.Add(rc.ComponentId, rc);
-			}
-		}
 	}
 
 	/// <inheritdoc/>
@@ -336,6 +417,46 @@ public sealed class BunitRenderer : Renderer
 	}
 
 	private void BlockRendering() => renderBlocker.Reset();
+
+	private void ApplyRenderEvent(RenderEvent renderEvent)
+	{
+		RenderCount++;
+
+		foreach (var (componentId, status) in renderEvent.Statuses)
+		{
+			if (status.UpdatesApplied || !renderedComponents.TryGetValue(componentId, out var rc))
+			{
+				continue;
+			}
+
+			if (status.Disposed)
+			{
+				renderedComponents.Remove(componentId);
+				rc.OnRender(renderEvent);
+				renderEvent.SetUpdatedApplied(componentId);
+				logger.LogComponentDisposed(componentId);
+				continue;
+			}
+
+			if (status.UpdateNeeded)
+			{
+				rc.OnRender(renderEvent);
+				renderEvent.SetUpdatedApplied(componentId);
+
+				// RC can replace the instance of the component it is bound
+				// to while processing the update event, e.g. during the
+				// initial render of a component.
+				if (componentId != rc.ComponentId)
+				{
+					renderedComponents.Remove(componentId);
+					renderedComponents.Add(rc.ComponentId, rc);
+					renderEvent.SetUpdatedApplied(rc.ComponentId);
+				}
+
+				logger.LogComponentRendered(rc.ComponentId);
+			}
+		}
+	}
 
 	private IRenderedFragment Render(RenderFragment renderFragment)
 	{

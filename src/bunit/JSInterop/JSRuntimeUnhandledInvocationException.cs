@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 
 namespace Bunit;
@@ -33,11 +34,11 @@ public sealed class JSRuntimeUnhandledInvocationException : Exception
 
 		if (invocation.IsVoidResultInvocation)
 		{
-			sb.AppendLine(FormattableString.Invariant($"    {invocation.InvocationMethodName}({GetArguments(invocation)})"));
+			sb.AppendLine(string.Format(CultureInfo.InvariantCulture, $"    {invocation.InvocationMethodName}({GetArguments(invocation)})"));
 		}
 		else
 		{
-			sb.AppendLine(FormattableString.Invariant($"    {invocation.InvocationMethodName}<{GetGenericInvocationArguments(invocation)}>({GetArguments(invocation)})"));
+			sb.AppendLine(string.Format(CultureInfo.InvariantCulture, $"    {invocation.InvocationMethodName}<{GetGenericInvocationArguments(invocation)}>({GetArguments(invocation)})"));
 		}
 
 		sb.AppendLine();
@@ -46,26 +47,26 @@ public sealed class JSRuntimeUnhandledInvocationException : Exception
 
 		if (IsImportModuleInvocation(invocation))
 		{
-			sb.AppendLine(FormattableString.Invariant($"    SetupModule({GetArguments(invocation, includeIdentifier: false)})"));
+			sb.AppendLine(string.Format(CultureInfo.InvariantCulture, $"    SetupModule({GetArguments(invocation, includeIdentifier: false)})"));
 		}
 		else
 		{
 			if (invocation.IsVoidResultInvocation)
 			{
-				sb.AppendLine(FormattableString.Invariant($"    SetupVoid({GetArguments(invocation)})"));
+				sb.AppendLine(string.Format(CultureInfo.InvariantCulture, $"    SetupVoid({GetArguments(invocation)})"));
 			}
 			else
 			{
-				sb.AppendLine(FormattableString.Invariant($"    Setup<{GetReturnTypeName(invocation.ResultType)}>({GetArguments(invocation)})"));
+				sb.AppendLine(string.Format(CultureInfo.InvariantCulture, $"    Setup<{GetReturnTypeName(invocation.ResultType)}>({GetArguments(invocation)})"));
 			}
 
 			if (invocation.Arguments.Any())
 			{
 				sb.AppendLine("or the following, to match any arguments:");
 				if (invocation.IsVoidResultInvocation)
-					sb.AppendLine(FormattableString.Invariant($"    SetupVoid(\"{invocation.Identifier}\", _ => true)"));
+					sb.AppendLine(string.Format(CultureInfo.InvariantCulture, $"    SetupVoid(\"{invocation.Identifier}\", _ => true)"));
 				else
-					sb.AppendLine(FormattableString.Invariant($"    Setup<{GetReturnTypeName(invocation.ResultType)}>(\"{invocation.Identifier}\", _ => true)"));
+					sb.AppendLine(string.Format(CultureInfo.InvariantCulture, $"    Setup<{GetReturnTypeName(invocation.ResultType)}>(\"{invocation.Identifier}\", _ => true)"));
 			}
 		}
 
@@ -80,19 +81,20 @@ public sealed class JSRuntimeUnhandledInvocationException : Exception
 	private static string GetReturnTypeName(Type resultType)
 		=> resultType switch
 		{
-			Type { FullName: "System.Boolean" } => "bool",
-			Type { FullName: "System.Byte" } => "byte",
-			Type { FullName: "System.Char" } => "char",
-			Type { FullName: "System.Double" } => "double",
-			Type { FullName: "System.Int16" } => "short",
-			Type { FullName: "System.Int32" } => "int",
-			Type { FullName: "System.Int64" } => "long",
-			Type { FullName: "System.SByte" } => "sbyte",
-			Type { FullName: "System.Single" } => "float",
-			Type { FullName: "System.UInt16" } => "ushort",
-			Type { FullName: "System.UInt32" } => "uint",
-			Type { FullName: "System.UInt64" } => "ulong",
-			Type x => x.Name
+			{ FullName: "System.Boolean" } => "bool",
+			{ FullName: "System.Byte" } => "byte",
+			{ FullName: "System.Char" } => "char",
+			{ FullName: "System.Double" } => "double",
+			{ FullName: "System.Int16" } => "short",
+			{ FullName: "System.Int32" } => "int",
+			{ FullName: "System.Int64" } => "long",
+			{ FullName: "System.SByte" } => "sbyte",
+			{ FullName: "System.Single" } => "float",
+			{ FullName: "System.UInt16" } => "ushort",
+			{ FullName: "System.UInt32" } => "uint",
+			{ FullName: "System.UInt64" } => "ulong",
+			{ } => resultType.Name,
+			_ => throw new ArgumentOutOfRangeException(nameof(resultType), resultType, null)
 		};
 
 	private static string GetGenericInvocationArguments(JSRuntimeInvocation invocation)
