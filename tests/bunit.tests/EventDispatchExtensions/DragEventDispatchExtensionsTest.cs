@@ -2,6 +2,10 @@ namespace Bunit;
 
 public class DragEventDispatchExtensionsTest : EventDispatchExtensionsTest<DragEventArgs>
 {
+	public DragEventDispatchExtensionsTest(ITestOutputHelper outputHelper) : base(outputHelper)
+	{
+	}
+
 	protected override string ElementName => "textarea";
 
 	[Theory(DisplayName = "Drag events are raised correctly through helpers")]

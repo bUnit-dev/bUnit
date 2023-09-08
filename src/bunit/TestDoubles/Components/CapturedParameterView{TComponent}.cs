@@ -101,5 +101,5 @@ public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, obj
 	/// <param name="parameters">Parameters to create from.</param>
 	/// <returns>An instance of <see cref="CapturedParameterView{TComponent}"/>.</returns>
 	public static CapturedParameterView<TComponent> From(ParameterView parameters)
-		=> new(parameters.ToDictionary());
+		=> new(parameters.ToDictionary()!);
 }

@@ -8,10 +8,8 @@ namespace Bunit.TestDoubles;
 /// </summary>
 internal class BunitErrorBoundaryLogger : IErrorBoundaryLogger
 {
-	private static readonly Action<ILogger, string, Exception> ExceptionCaughtByErrorBoundary = LoggerMessage.Define<string>(
-		LogLevel.Warning,
-		100,
-		"Unhandled exception rendering component: {Message}");
+	private static readonly Action<ILogger, string, Exception> ExceptionCaughtByErrorBoundary
+		= LoggerMessage.Define<string>(LogLevel.Warning, new EventId(100, "ExceptionCaughtByErrorBoundary"), "Unhandled exception rendering component: {Message}");
 
 	private readonly ILogger logger;
 

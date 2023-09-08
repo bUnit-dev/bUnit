@@ -3,6 +3,7 @@ using Bunit.Asserting;
 using Bunit.Diffing;
 using Bunit.Extensions;
 using Bunit.Rendering;
+using Microsoft.Extensions.Logging;
 
 namespace Bunit;
 
@@ -271,8 +272,13 @@ public static class MarkupMatchesAssertExtensions
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
 
-		var testContext = actual.Services.GetRequiredService<TestContext>();
-		var renderedFragment = testContext.RenderInsideRenderTree(expected);
+		// TODO: This will be obsolete with: https://github.com/bUnit-dev/bUnit/issues/1018
+		// As the renderer would be transient we don't have to new up an instance
+		using var renderer = new BunitRenderer(
+			actual.Services.GetRequiredService<IRenderedComponentActivator>(),
+			actual.Services.GetRequiredService<TestServiceProvider>(),
+			actual.Services.GetRequiredService<ILoggerFactory>());
+		var renderedFragment = (IRenderedFragment)renderer.RenderFragment(expected);
 		MarkupMatches(actual, renderedFragment, userMessage);
 	}
 

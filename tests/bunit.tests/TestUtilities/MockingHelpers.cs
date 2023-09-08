@@ -5,10 +5,6 @@ namespace Bunit.TestUtilities;
 /// </summary>
 public static class MockingHelpers
 {
-	private static readonly MethodInfo MockOfInfo = typeof(Mock)
-		.GetMethods()
-		.First(x => string.Equals(x.Name, nameof(Mock.Of), StringComparison.Ordinal) && x.GetParameters().Length == 0);
-
 	private static readonly Type DelegateType = typeof(MulticastDelegate);
 	private static readonly Type StringType = typeof(string);
 
@@ -23,15 +19,11 @@ public static class MockingHelpers
 
 		if (type.IsMockable())
 		{
-			var result = MockOfInfo.MakeGenericMethod(type).Invoke(null, Array.Empty<object>());
-
-			if (result is null)
-				throw new NotSupportedException($"Cannot create an mock of {type.FullName}.");
-
-			return result;
+			var result = Substitute.For(new[] { type }, Array.Empty<object>());
+			return result ?? throw new NotSupportedException($"Cannot create an mock of {type.FullName}.");
 		}
 
-		if (type.Equals(StringType))
+		if (type == StringType)
 		{
 			return string.Empty;
 		}
@@ -52,8 +44,5 @@ public static class MockingHelpers
 	/// <summary>
 	/// Gets whether a type is a delegate type.
 	/// </summary>
-	public static bool IsDelegateType(this Type type)
-	{
-		return Equals(type, DelegateType);
-	}
+	public static bool IsDelegateType(this Type type) => type == DelegateType;
 }

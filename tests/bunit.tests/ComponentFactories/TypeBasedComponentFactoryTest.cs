@@ -14,7 +14,7 @@ public class TypeBasedComponentFactoryTest : TestContext
 	[Fact(DisplayName = "TComponent replaced in render tree with component from factory method")]
 	public void Test010()
 	{
-		var simple1Mock = Mock.Of<Simple1>();
+		var simple1Mock = Substitute.For<Simple1>();
 		ComponentFactories.Add<Simple1>(() => simple1Mock);
 
 		var cut = Render<Wrapper>(ps => ps.AddChildContent<Simple1>());
@@ -26,16 +26,16 @@ public class TypeBasedComponentFactoryTest : TestContext
 	[Fact(DisplayName = "Multiple TComponent replaced in render tree with component from factory method")]
 	public void Test011()
 	{
-		var mockRepo = new MockRepository(MockBehavior.Loose);
-		ComponentFactories.Add<Simple1>(() => mockRepo.Create<Simple1>().Object);
+		ComponentFactories.Add(() => Substitute.For<Simple1>());
 
 		var cut = Render<TwoComponentWrapper>(ps => ps
 			   .Add<Simple1>(p => p.First)
 			   .Add<Simple1>(p => p.Second));
 
-		cut.FindComponents<Simple1>()
-			.ShouldAllBe(
-				x => Mock.Get(x.Instance),
-				x => Mock.Get(x.Instance));
+		foreach (var component in cut.FindComponents<Simple1>())
+		{
+			Action checkIfSubstitute = () => component.Instance.Received();
+			checkIfSubstitute.ShouldNotThrow();
+		}
 	}
 }

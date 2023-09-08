@@ -15,8 +15,8 @@ public class BunitAuthorizationPolicyProviderTest
 
 		// assert
 		Assert.NotNull(policy);
-		Assert.Equal(0, policy.AuthenticationSchemes.Count);
-		Assert.Equal(1, policy.Requirements.Count);
+		Assert.Empty(policy.AuthenticationSchemes);
+		Assert.Single(policy.Requirements);
 		Assert.IsType<DenyAnonymousAuthorizationRequirement>(policy.Requirements[0]);
 	}
 

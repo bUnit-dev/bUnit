@@ -45,7 +45,7 @@ public sealed class RootRenderTree : IReadOnlyCollection<RootRenderTreeRegistrat
 		where TComponent : IComponent
 	{
 		var componentType = typeof(TComponent);
-		if (registrations.Any(x => x.ComponentType == componentType))
+		if (registrations.Exists(x => x.ComponentType == componentType))
 			return false;
 
 		var registration = new RootRenderTreeRegistration(componentType, CreateRenderFragmentBuilder(parameterBuilder));

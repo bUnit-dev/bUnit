@@ -45,6 +45,11 @@ public static class TestServiceProviderExtensions
 		// bUnits fake ScrollToLocationHash
 		services.AddSingleton<IScrollToLocationHash, BunitScrollToLocationHash>();
 
+#if NET8_0_OR_GREATER
+		// bUnits fake ScrollToLocationHash
+		services.AddSingleton<IScrollToLocationHash, BunitScrollToLocationHash>();
+#endif
+		
 		// bUnit specific services
 		services.AddSingleton(testContext);
 		services.AddSingleton<BunitRenderer>();

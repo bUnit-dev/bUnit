@@ -45,32 +45,33 @@ It can sometimes be helpful to capture log messages sent to `ILogger` types in t
 
 With xUnit, this can be done as follows:
 
-1. Add the following packages to your test project: `Serilog`, `Serilog.Extensions.Logging`, and `Serilog.Sinks.XUnit`.
+1. Add the following packages to your test project: [Serilog](https://www.nuget.org/packages/Serilog), [Serilog.Extensions.Logging](https://www.nuget.org/packages/Serilog.Extensions.Logging), [Serilog.Expressions](https://www.nuget.org/packages/Serilog.Expressions), and [Serilog.Sinks.XUnit](https://www.nuget.org/packages/Serilog.Sinks.XUnit).
 2. Add the following class/extension method to your test project (which replicates the signature of the removed `AddXunitLogger` method):  
   
   ```csharp
-  using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Logging;
   using Serilog;
   using Serilog.Events;
+  using Serilog.Templates;
   using Xunit.Abstractions;
-
-  namespace Bunit
+  
+  namespace Xunit;
+  
+  public static class ServiceCollectionLoggingExtensions
   {
-    public static class ServiceCollectionLoggingExtensions
+    public static IServiceCollection AddXunitLogger(this IServiceCollection services, ITestOutputHelper outputHelper)
     {
-      public static IServiceCollection AddXunitLogger(this IServiceCollection services, ITestOutputHelper outputHelper)
-      {
-        var serilogLogger = new LoggerConfiguration()
-          .MinimumLevel.Verbose()
-          .WriteTo.TestOutput(outputHelper, LogEventLevel.Verbose)
-          .CreateLogger();
-
-        services.AddSingleton<ILoggerFactory>(new LoggerFactory().AddSerilog(serilogLogger, dispose: true));
-        services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
-
-        return services;
-      }
+      var serilogLogger = new LoggerConfiguration()
+        .MinimumLevel.Verbose()
+        .WriteTo.TestOutput(
+          testOutputHelper: outputHelper,
+          formatter: new ExpressionTemplate("[{UtcDateTime(@t):mm:ss.ffffff} | {@l:u3} | {Substring(SourceContext, LastIndexOf(SourceContext, '.') + 1)} | {Coalesce(EventId.Name, '<none>')}] {@m}\n{@x}"),
+          restrictedToMinimumLevel: LogEventLevel.Verbose)
+        .CreateLogger();
+      
+      services.AddSingleton<ILoggerFactory>(_ => new LoggerFactory().AddSerilog(serilogLogger, dispose: true));
+      services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+      return services;
     }
   }
   ```
@@ -84,19 +85,18 @@ With xUnit, this can be done as follows:
   using Xunit;
   using Xunit.Abstractions;
 
-  namespace MyTests
+  namespace MyTests;
+  
+  public class MyComponenTest : TestContext
   {
-    public class MyComponenTest : TestContext
+    public MyComponenTest(ITestOutputHelper outputHelper)
     {
-      public MyComponenTest(ITestOutputHelper outputHelper)
-      {
-        Services.AddXunitLogger(outputHelper);
-      }
-
-      [Fact]
-      public void Test() ...
+      Services.AddXunitLogger(outputHelper);
     }
-  }
+
+    [Fact]
+    public void Test() ...
+  }  
   ```
 
 ## Easier HTML copying/pasting

@@ -20,7 +20,7 @@ public class ConditionalComponentFactoryTest : TestContext
 	[Fact(DisplayName = "Component is replaced in render tree with component from factory when matches returns true")]
 	public void Test010()
 	{
-		var mockComponent = Mock.Of<Simple1>();
+		var mockComponent = Substitute.For<Simple1>();
 		ComponentFactories.Add(type => type == typeof(Simple1), _ => mockComponent);
 
 		var cut = Render<Wrapper>(ps => ps.AddChildContent<Simple1>());
@@ -32,17 +32,20 @@ public class ConditionalComponentFactoryTest : TestContext
 	[Fact(DisplayName = "Component is replaced in render tree with component from factory when matches returns true")]
 	public void Test011()
 	{
-		var mockRepo = new MockRepository(MockBehavior.Loose);
+		var mockSimple1 = Substitute.For<Simple1>();
+		var mockNoArgs = Substitute.For<NoArgs>();
 		ComponentFactories.Add(
 			type => type != typeof(TwoComponentWrapper),
-			mockRepo.CreateComponent);
+			type => CreateComponent(type, mockSimple1, mockNoArgs)
+		);
 
 		var cut = Render<TwoComponentWrapper>(ps => ps
 		   .Add<Simple1>(p => p.First)
 		   .Add<NoArgs>(p => p.Second));
 
-		cut.FindComponents<Simple1>().ShouldAllBe(x => Mock.Get(x.Instance));
-		cut.FindComponents<NoArgs>().ShouldAllBe(x => Mock.Get(x.Instance));
+		// Assert
+		cut.FindComponents<Simple1>().ShouldAllBe(x => x.Instance == mockSimple1);
+		cut.FindComponents<NoArgs>().ShouldAllBe(x => x.Instance == mockNoArgs);
 	}
 
 	[Fact(DisplayName = "When matches returns false, factory is never called")]
@@ -52,17 +55,11 @@ public class ConditionalComponentFactoryTest : TestContext
 
 		Should.NotThrow(() => Render<Wrapper>(ps => ps.AddChildContent<Simple1>()));
 	}
-}
-
-internal static class MockRepositoryExtensions
-{
-	private static readonly MethodInfo CreateMethodInfo = typeof(MockRepository)
-		.GetMethod(nameof(MockRepository.Create), Array.Empty<Type>());
-
-	public static IComponent CreateComponent(this MockRepository repository, Type type)
+	
+	private static IComponent CreateComponent(Type type, Simple1 simple1, NoArgs noArgs)
 	{
-		var genericCreateMethod = CreateMethodInfo.MakeGenericMethod(type);
-		var mock = (Mock)genericCreateMethod.Invoke(repository, null);
-		return (IComponent)mock.Object;
+		if (type == typeof(Simple1)) return simple1;
+		if (type == typeof(NoArgs)) return noArgs;
+		throw new NotImplementedException($"No mock implementation provided for type {type.FullName}");
 	}
 }

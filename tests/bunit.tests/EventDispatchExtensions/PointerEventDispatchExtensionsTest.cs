@@ -2,6 +2,10 @@ namespace Bunit;
 
 public class PointerEventDispatchExtensionsTest : EventDispatchExtensionsTest<PointerEventArgs>
 {
+	public PointerEventDispatchExtensionsTest(ITestOutputHelper outputHelper) : base(outputHelper)
+	{
+	}
+
 	protected override string ElementName => "div";
 
 	[Theory(DisplayName = "Pointer events are raised correctly through helpers")]

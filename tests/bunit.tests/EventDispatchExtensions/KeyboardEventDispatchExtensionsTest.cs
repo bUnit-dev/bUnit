@@ -2,7 +2,14 @@ namespace Bunit;
 
 public class KeyboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<KeyboardEventArgs>
 {
-	public static IEnumerable<object[]> Helpers { get; } = GetEventHelperMethods(typeof(KeyboardEventDispatchExtensions), x => x.GetParameters().All(p => p.ParameterType != typeof(Key)));
+	public KeyboardEventDispatchExtensionsTest(ITestOutputHelper outputHelper) : base(outputHelper)
+	{
+	}
+
+	public static IEnumerable<object[]> Helpers { get; }
+		= GetEventHelperMethods(
+			typeof(KeyboardEventDispatchExtensions),
+			x => Array.TrueForAll(x.GetParameters(), p => p.ParameterType != typeof(Key)));
 
 	protected override string ElementName => "input";
 
