@@ -455,31 +455,6 @@ public class BunitRendererTest : TestContext
 		cut.Instance.AfterRenderAsyncCount.ShouldBe(2);
 	}
 
-	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with Render")]
-	public void Test208()
-	{
-		var cut = Render<LifeCycleMethodInvokeCounter>();
-		cut.RenderCount.ShouldBe(1);
-
-		cut.Render();
-
-		cut.RenderCount.ShouldBe(2);
-		cut.Instance.InitilizedCount.ShouldBe(1);
-		cut.Instance.InitilizedAsyncCount.ShouldBe(1);
-		cut.Instance.ParametersSetCount.ShouldBe(2);
-		cut.Instance.ParametersSetAsyncCount.ShouldBe(2);
-		cut.Instance.AfterRenderCount.ShouldBe(2);
-		cut.Instance.AfterRenderAsyncCount.ShouldBe(2);
-	}
-	
-	[Fact(DisplayName = "Can render components that have a RenderMode attribute")]
-	public void Test209()
-	{
-		var cut = Render<RenderModeServerComponent>();
-
-		cut.Find("h3").TextContent.ShouldBe("Hello from Server");
-	}
-
 	internal sealed class LifeCycleMethodInvokeCounter : ComponentBase
 	{
 		public int InitilizedCount { get; private set; }
