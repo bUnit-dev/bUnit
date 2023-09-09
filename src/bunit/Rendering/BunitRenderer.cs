@@ -48,7 +48,7 @@ public sealed class BunitRenderer : Renderer
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
 	public BunitRenderer(TestServiceProvider services, ILoggerFactory loggerFactory)
-		: base(services, loggerFactory)
+		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), null))
 	{
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
@@ -59,7 +59,7 @@ public sealed class BunitRenderer : Renderer
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
 	public BunitRenderer(TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
-		: base(services, loggerFactory, componentActivator)
+		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), componentActivator))
 	{
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());

@@ -58,7 +58,7 @@ public partial class TestContext : IDisposable, IAsyncDisposable
 	public TestContext()
 	{
 		Services = new TestServiceProvider();
-		Services.AddSingleton<IComponentActivator>(new BunitComponentActivator(ComponentFactories, null));
+		Services.AddSingleton<ComponentFactoryCollection>(_ => ComponentFactories);
 		Services.AddDefaultTestContextServices(this, JSInterop);
 	}
 
