@@ -233,8 +233,7 @@ public sealed class BunitRenderer : Renderer
 	[SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Accesses private method in this type.")]
 	internal Task SetDirectParametersAsync(IRenderedFragment renderedComponent, ParameterView parameters)
 	{
-		if (disposed)
-			throw new ObjectDisposedException(nameof(BunitRenderer));
+		ObjectDisposedException.ThrowIf(disposed, this);
 
 		var result = Dispatcher.InvokeAsync(() =>
 		{
