@@ -337,7 +337,7 @@ public class ComponentRenderingTest : TestContext
 	{
 		// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJSRuntime
 		//       The original test code is here:
-		// var cut = RenderComponent<ElementRefComponent>();
+		// var cut = Render<ElementRefComponent>();
 		// var inputElement = cut.Find("#capturedElement");
 		// var buttonElement = cut.Find("button");
 
@@ -365,7 +365,7 @@ public class ComponentRenderingTest : TestContext
 	{
 		// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJSRuntime
 		//       The original test code is here:
-		// var cut = RenderComponent<ElementRefComponent>();
+		// var cut = Render<ElementRefComponent>();
 		// var buttonElement = cut.Find("button");
 		// var checkbox = cut.Find("input[type=checkbox]");
 		//
@@ -446,7 +446,7 @@ public class ComponentRenderingTest : TestContext
 	// [Fact]
 	// public void CanUseJSInteropForRefElementsDuringOnAfterRender()
 	// {
-	//     var cut = RenderComponent<AfterRenderInteropComponent>();
+	//     var cut = Render<AfterRenderInteropComponent>();
 	//     Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));
 	// }
 

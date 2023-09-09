@@ -30,7 +30,7 @@ public partial class TestContext : IDisposable, IAsyncDisposable
 
 	/// <summary>
 	/// Gets the <see cref="RootRenderTree"/> that all components rendered with the
-	/// <c>RenderComponent&lt;TComponent&gt;()</c> methods, are rendered inside.
+	/// <c>Render&lt;TComponent&gt;()</c> methods, are rendered inside.
 	/// </summary>
 	/// <remarks>
 	/// Use this to add default layout- or root-components which a component under test

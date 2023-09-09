@@ -204,7 +204,7 @@ public class TestContextTest : TestContext
 			.ShouldBe("FOO");
 	}
 
-	[Fact(DisplayName = "RenderComponent<TComponent>(builder) renders TComponent inside RenderTree")]
+	[Fact(DisplayName = "Render<TComponent>(builder) renders TComponent inside RenderTree")]
 	public void Test032()
 	{
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
@@ -215,7 +215,7 @@ public class TestContextTest : TestContext
 			.ShouldBe("FOO");
 	}
 
-	[Fact(DisplayName = "RenderComponent<TComponent>(factories) renders TComponent inside RenderTree")]
+	[Fact(DisplayName = "Render<TComponent>(factories) renders TComponent inside RenderTree")]
 	public void Test033()
 	{
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));

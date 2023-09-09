@@ -69,7 +69,7 @@ public class RootRenderTreeTest : TestContext
 		cut.Markup.ShouldBe("<div>VALUE42</div>");
 	}
 
-	[Fact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
+	[Fact(DisplayName = "Render<T> finds correct component when T is also added to render tree")]
 	public void Test113()
 	{
 		RenderTree.Add<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "VALUE"));
@@ -82,7 +82,7 @@ public class RootRenderTreeTest : TestContext
 		cut.Markup.ShouldBe("<div>VALUE42</div>");
 	}
 
-	[Fact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
+	[Fact(DisplayName = "Render<T> finds correct component when T is also added to render tree")]
 	public void Test113_2()
 	{
 		RenderTree.Add<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "VALUE"));
