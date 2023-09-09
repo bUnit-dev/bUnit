@@ -45,10 +45,10 @@ public class BunitAuthorizationPolicyProviderTest
 
 		// assert
 		Assert.NotNull(policy);
-		Assert.Equal(1, policy?.AuthenticationSchemes?.Count);
-		Assert.Equal("TestScheme:FooBar", policy?.AuthenticationSchemes?[0]);
-		Assert.Equal(1, policy?.Requirements?.Count);
-		Assert.IsType<TestPolicyRequirement>(policy?.Requirements?[0]);
+		Assert.Equal(1, policy.AuthenticationSchemes?.Count);
+		Assert.Equal("TestScheme:FooBar", policy.AuthenticationSchemes?[0]);
+		Assert.Equal(1, policy.Requirements?.Count);
+		Assert.IsType<TestPolicyRequirement>(policy.Requirements[0]);
 	}
 
 	[Fact(DisplayName = "Get policy based on name not in the PolicyProvider.")]
@@ -63,10 +63,10 @@ public class BunitAuthorizationPolicyProviderTest
 
 		// assert
 		Assert.NotNull(policy);
-		Assert.Equal(1, policy?.AuthenticationSchemes?.Count);
-		Assert.Equal("TestScheme:OtherPolicy", policy?.AuthenticationSchemes?[0]);
-		Assert.Equal(1, policy?.Requirements?.Count);
-		Assert.IsType<TestPolicyRequirement>(policy?.Requirements?[0]);
+		Assert.Equal(1, policy.AuthenticationSchemes?.Count);
+		Assert.Equal("TestScheme:OtherPolicy", policy.AuthenticationSchemes?[0]);
+		Assert.Equal(1, policy.Requirements?.Count);
+		Assert.IsType<TestPolicyRequirement>(policy.Requirements[0]);
 	}
 
 	[Fact(DisplayName = "Set Policies with empty scheme name.")]
