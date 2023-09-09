@@ -82,7 +82,7 @@
 			"description": "The target framework sdk for the project.",
 			"displayName": "Target framework sdk",
 			"datatype": "choice",
-			"defaultValue": "net7.0",
+			"defaultValue": "net8.0",
 			"replaces": "targetSdk",
 			"choices": [
 				{
