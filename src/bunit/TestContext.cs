@@ -159,5 +159,5 @@ public partial class TestContext : IDisposable, IAsyncDisposable
 	/// Dummy method required to allow Blazor's compiler to generate
 	/// C# from .razor files.
 	/// </summary>
-	protected virtual void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) { }
+	protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
 }
