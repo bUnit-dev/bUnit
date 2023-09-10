@@ -416,7 +416,85 @@ public class BunitRendererTest : TestContext
 		cut.Find("h3").TextContent.ShouldBe("Hello from Server");
 	}
 
-	private sealed class NoChildNoParams : ComponentBase
+	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with Render")]
+	public void Test205()
+	{
+		var cut = Render<MultipleStateHasChangedInOnParametersSet>();
+		cut.RenderCount.ShouldBe(1);
+
+		cut.Render();
+		cut.RenderCount.ShouldBe(2);
+	}
+
+	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with event dispatch render trigger")]
+	public void Test206()
+	{
+		var cut = Render<TriggerChildContentRerenderViaClick>();
+		var child = cut.FindComponent<MultipleStateHasChangedInOnParametersSet>();
+		child.RenderCount.ShouldBe(1);
+
+		cut.Find("button").Click();
+
+		child.RenderCount.ShouldBe(2);
+	}
+
+	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with Render")]
+	public void Test207()
+	{
+		var cut = Render<LifeCycleMethodInvokeCounter>();
+		cut.RenderCount.ShouldBe(1);
+
+		cut.Render();
+
+		cut.RenderCount.ShouldBe(2);
+		cut.Instance.InitilizedCount.ShouldBe(1);
+		cut.Instance.InitilizedAsyncCount.ShouldBe(1);
+		cut.Instance.ParametersSetCount.ShouldBe(2);
+		cut.Instance.ParametersSetAsyncCount.ShouldBe(2);
+		cut.Instance.AfterRenderCount.ShouldBe(2);
+		cut.Instance.AfterRenderAsyncCount.ShouldBe(2);
+	}
+
+	internal sealed class LifeCycleMethodInvokeCounter : ComponentBase
+	{
+		public int InitilizedCount { get; private set; }
+
+		public int InitilizedAsyncCount { get; private set; }
+
+		public int ParametersSetCount { get; private set; }
+		public int ParametersSetAsyncCount { get; private set; }
+		public int AfterRenderCount { get; private set; }
+		public int AfterRenderAsyncCount { get; private set; }
+
+		protected override void OnInitialized()
+			=> InitilizedCount++;
+
+		protected override Task OnInitializedAsync()
+		{
+			InitilizedAsyncCount++;
+			return Task.CompletedTask;
+		}
+
+		protected override void OnParametersSet()
+			=> ParametersSetCount++;
+
+		protected override Task OnParametersSetAsync()
+		{
+			ParametersSetAsyncCount++;
+			return Task.CompletedTask;
+		}
+
+		protected override void OnAfterRender(bool firstRender)
+			=> AfterRenderCount++;
+
+		protected override Task OnAfterRenderAsync(bool firstRender)
+		{
+			AfterRenderAsyncCount++;
+			return Task.CompletedTask;
+		}
+	}
+
+	internal sealed class NoChildNoParams : ComponentBase
 	{
 		public const string MARKUP = "hello world";
 		protected override void BuildRenderTree(RenderTreeBuilder builder) => builder.AddMarkupContent(0, MARKUP);

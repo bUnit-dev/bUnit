@@ -15,8 +15,8 @@ public class BunitAuthenticationStateProviderTest
 		// assert
 		Assert.NotNull(authState.User);
 		Assert.NotNull(authState.User.Identity);
-		Assert.Equal("TestUser", authState?.User?.Identity?.Name);
-		Assert.True(authState?.User?.Identity?.IsAuthenticated);
+		Assert.Equal("TestUser", authState.User.Identity?.Name);
+		Assert.True(authState.User.Identity?.IsAuthenticated);
 	}
 
 	[Fact(DisplayName = "Create unauthenticated AuthenticationState")]

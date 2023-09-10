@@ -5,22 +5,22 @@ namespace Bunit.Extensions.WaitForHelpers;
 internal static class WaitForHelperLoggerExtensions
 {
 	private static readonly Action<ILogger, int, Exception?> CheckingWaitCondition
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(1, "OnAfterRender"), "Checking the wait condition for component {Id}.");
+		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(1, "CheckingWaitCondition"), "Checking the wait condition for component {Id}.");
 
 	private static readonly Action<ILogger, int, Exception?> CheckCompleted
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(2, "OnAfterRender"), "The check completed successfully for component {Id}.");
+		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(2, "CheckCompleted"), "The check completed successfully for component {Id}.");
 
 	private static readonly Action<ILogger, int, Exception?> CheckFailed
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(3, "OnAfterRender"), "The check failed for component {Id}.");
+		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(3, "CheckFailed"), "The check failed for component {Id}.");
 
 	private static readonly Action<ILogger, int, Exception> CheckThrow
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(4, "OnAfterRender"), "The checker for component {Id} throw an exception.");
+		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(4, "CheckThrow"), "The checker for component {Id} throw an exception.");
 
 	private static readonly Action<ILogger, int, Exception?> WaiterTimedOut
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(10, "OnTimeout"), "The waiter for component {Id} timed out.");
+		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(10, "WaiterTimedOut"), "The waiter for component {Id} timed out.");
 
 	private static readonly Action<ILogger, int, Exception?> WaiterDisposed
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(20, "OnTimeout"), "The waiter for component {Id} disposed.");
+		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(20, "WaiterDisposed"), "The waiter for component {Id} disposed.");
 
 	internal static void LogCheckingWaitCondition<T>(this ILogger<WaitForHelper<T>> logger, int componentId)
 	{

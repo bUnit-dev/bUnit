@@ -3,6 +3,9 @@
 // See the NOTICE.md at the root of this repository for a copy
 // of the license from the aspnetcore repository.
 using System.Numerics;
+using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
+using Bunit.TestAssets;
 using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
 using Xunit.Abstractions;
@@ -23,7 +26,7 @@ public class ComponentRenderingTest : TestContext
 		Services.AddXunitLogger(outputHelper);
 		JSInterop.Mode = JSRuntimeMode.Loose;
 	}
-
+	
 	[Fact]
 	public void CanRenderTextOnlyComponent()
 	{
@@ -334,7 +337,7 @@ public class ComponentRenderingTest : TestContext
 	{
 		// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJSRuntime
 		//       The original test code is here:
-		// var cut = RenderComponent<ElementRefComponent>();
+		// var cut = Render<ElementRefComponent>();
 		// var inputElement = cut.Find("#capturedElement");
 		// var buttonElement = cut.Find("button");
 
@@ -362,7 +365,7 @@ public class ComponentRenderingTest : TestContext
 	{
 		// NOTE: This test required JS to modify the DOM. Test rewritten to use MockJSRuntime
 		//       The original test code is here:
-		// var cut = RenderComponent<ElementRefComponent>();
+		// var cut = Render<ElementRefComponent>();
 		// var buttonElement = cut.Find("button");
 		// var checkbox = cut.Find("input[type=checkbox]");
 		//
@@ -443,7 +446,7 @@ public class ComponentRenderingTest : TestContext
 	// [Fact]
 	// public void CanUseJSInteropForRefElementsDuringOnAfterRender()
 	// {
-	//     var cut = RenderComponent<AfterRenderInteropComponent>();
+	//     var cut = Render<AfterRenderInteropComponent>();
 	//     Assert.Equal("Value set after render", () => Browser.Find("input").GetAttribute("value"));
 	// }
 
@@ -578,7 +581,7 @@ public class ComponentRenderingTest : TestContext
 		// because the diff algorithm explicitly unchecks it
 		cut.Find(".incomplete-items .item-isdone").Change(true);
 		var incompleteLIs = cut.FindAll(incompleteItemsSelector);
-		Assert.Equal(1, incompleteLIs.Count);
+		Assert.Single(incompleteLIs);
 		Assert.False(incompleteLIs[0].QuerySelector(".item-isdone").HasAttribute("checked"));
 
 		// Mark first done item as not done; observe the remaining complete item appears checked
@@ -621,5 +624,19 @@ public class ComponentRenderingTest : TestContext
 			p => p.Add(s => s.Escaped, input));
 
 		cut.Markup.ShouldBe(expected);
+	}
+
+	[Fact]
+	public void CanHandleAndPassThroughPropertiesOfWrappedElements()
+	{
+		// Act
+		var component = Render<ComponentWithButton>(p =>
+		{
+			p.Add(c => c.IsDisabled, true);
+		});
+
+		// Assert
+		var element = component.Find("button");
+		element.ShouldBeAssignableTo<IHtmlButtonElement>();
 	}
 }

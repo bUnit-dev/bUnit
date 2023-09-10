@@ -1,7 +1,6 @@
 using AngleSharp;
 using AngleSharp.Dom;
 using Bunit.Rendering;
-using Xunit.Abstractions;
 
 namespace Bunit;
 
@@ -10,6 +9,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	protected override string ElementName => "p";
 
 	public GeneralEventDispatchExtensionsTest(ITestOutputHelper outputHelper)
+		: base(outputHelper)
 	{
 		Services.AddXunitLogger(outputHelper);
 	}
@@ -47,16 +47,16 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[Fact(DisplayName = "TriggerEventAsync throws if element was not rendered through blazor (has a TestRendere in its context)")]
 	public void Test003()
 	{
-		var elmMock = new Mock<IElement>();
-		var docMock = new Mock<IDocument>();
-		var ctxMock = new Mock<IBrowsingContext>();
+		var elmMock = Substitute.For<IElement>();
+		var docMock = Substitute.For<IDocument>();
+		var ctxMock = Substitute.For<IBrowsingContext>();
 
-		elmMock.Setup(x => x.GetAttribute(It.IsAny<string>())).Returns("1");
-		elmMock.SetupGet(x => x.Owner).Returns(docMock.Object);
-		docMock.SetupGet(x => x.Context).Returns(ctxMock.Object);
-		ctxMock.Setup(x => x.GetService<BunitRenderer>()).Returns(() => null!);
+		elmMock.GetAttribute(Arg.Any<string>()).Returns("1");
+		elmMock.Owner.Returns(docMock);
+		docMock.Context.Returns(ctxMock);
+		ctxMock.GetService<BunitRenderer>().Returns(x => null!);
 
-		Should.Throw<InvalidOperationException>(() => elmMock.Object.TriggerEventAsync("click", EventArgs.Empty));
+		Should.Throw<InvalidOperationException>(() => elmMock.TriggerEventAsync("click", EventArgs.Empty));
 	}
 
 	[Fact(DisplayName = "When clicking on an element with an event handler, " +

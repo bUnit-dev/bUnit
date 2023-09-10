@@ -462,6 +462,7 @@ dotnet_diagnostic.S112.severity = none # S112: General exceptions should never b
 dotnet_diagnostic.S1075.severity = suggestion # S1075: URIs should not be hardcoded
 dotnet_diagnostic.S1186.severity = suggestion # S1186: Methods should not be empty
 dotnet_diagnostic.S2292.severity = suggestion # S2292: Trivial properties should be auto-implemented
+dotnet_diagnostic.S2583.severity = suggestion # Change this condition so that it does not always evaluate to 'False'/'True'.
 dotnet_diagnostic.S3925.severity = none # BUGGY with .NET 8 new Analyzers
 dotnet_diagnostic.S4158.severity = none # BUGGY with C#9 code - doesnt understand local methods
 

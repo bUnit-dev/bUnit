@@ -1,4 +1,5 @@
 using AngleSharp.Dom;
+using Xunit.Abstractions;
 
 namespace Bunit;
 
@@ -8,6 +9,11 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 	protected static readonly Type EventArgsType = typeof(TEventArgs);
 
 	protected abstract string ElementName { get; }
+
+	protected EventDispatchExtensionsTest(ITestOutputHelper outputHelper)
+	{
+		Services.AddXunitLogger(outputHelper);
+	}
 
 	protected TriggerEventSpy<EventArgs> CreateTriggerSpy(string element, string eventName)
 		=> new(builder => Render<TriggerTester<EventArgs>>(builder), element, eventName);
@@ -26,7 +32,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 		var spy = CreateTriggerSpy(ElementName, eventName);
 		var evtArg = new TEventArgs();
 
-		if (helper.GetParameters().Any(p => p.ParameterType == EventArgsType))
+		if (Array.Exists(helper.GetParameters(), p => p.ParameterType == EventArgsType))
 		{
 			// Matches methods like: public static void Xxxx(this IElement element, TEventArgs args)
 			spy.Trigger(element =>

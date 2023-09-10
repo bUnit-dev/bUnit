@@ -13,20 +13,20 @@ public class InstanceComponentFactoryTest : TestContext
 	[Fact(DisplayName = "Factory replaces one TComponent with instance in the render tree")]
 	public void Test010()
 	{
-		var simple1Mock = new Mock<Simple1>();
-		ComponentFactories.Add<Simple1>(simple1Mock.Object);
+		var simple1Mock = Substitute.For<Simple1>();
+		ComponentFactories.Add(simple1Mock);
 
 		var cut = Render<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
 		cut.FindComponent<Simple1>()
-			.Instance.ShouldBeSameAs(simple1Mock.Object);
+			.Instance.ShouldBeSameAs(simple1Mock);
 	}
 
 	[Fact(DisplayName = "Factory throws if component instance is requested twice for TComponent that inherits from ComponentBase")]
 	public void Test020()
 	{
-		var simple1Mock = new Mock<Simple1>();
-		ComponentFactories.Add<Simple1>(simple1Mock.Object);
+		var simple1Mock = Substitute.For<Simple1>();
+		ComponentFactories.Add(simple1Mock);
 
 		Should.Throw<InvalidOperationException>(() => Render<TwoComponentWrapper>(ps => ps
 			   .Add<Simple1>(p => p.First)
@@ -36,8 +36,8 @@ public class InstanceComponentFactoryTest : TestContext
 	[Fact(DisplayName = "Factory throws if component instance is requested twice for TComponent that implements from IComponent")]
 	public void Test021()
 	{
-		var simple1Mock = new Mock<BasicComponent>();
-		ComponentFactories.Add<BasicComponent>(simple1Mock.Object);
+		var simple1Mock = Substitute.For<BasicComponent>();
+		ComponentFactories.Add(simple1Mock);
 
 		Should.Throw<InvalidOperationException>(() => Render<TwoComponentWrapper>(ps => ps
 			.Add<BasicComponent>(p => p.First)

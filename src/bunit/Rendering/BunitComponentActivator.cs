@@ -3,10 +3,12 @@ namespace Bunit.Rendering;
 internal class BunitComponentActivator : IComponentActivator
 {
 	private readonly ComponentFactoryCollection factories;
+	private readonly IComponentActivator componentActivator;
 
-	public BunitComponentActivator(ComponentFactoryCollection factories)
+	public BunitComponentActivator(ComponentFactoryCollection factories, IComponentActivator? externalComponentActivator)
 	{
 		this.factories = factories ?? throw new ArgumentNullException(nameof(factories));
+		componentActivator = externalComponentActivator ?? DefaultComponentActivator.Instance;
 	}
 
 	public IComponent CreateInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type componentType)
@@ -34,6 +36,17 @@ internal class BunitComponentActivator : IComponentActivator
 			}
 		}
 
-		return (IComponent)Activator.CreateInstance(componentType)!;
+		return componentActivator.CreateInstance(componentType);
+	}
+
+	private sealed class DefaultComponentActivator : IComponentActivator
+	{
+		public static IComponentActivator Instance { get; } = new DefaultComponentActivator();
+
+		/// <inheritdoc />
+		public IComponent CreateInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type componentType)
+		{
+			return (IComponent)Activator.CreateInstance(componentType)!;
+		}
 	}
 }

@@ -53,7 +53,7 @@ jobs:
           echo "TERM=xterm" >> $GITHUB_ENV
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.0
+        uses: dotnet/nbgv@v0.4.1
         with:
           setAllVars: true
 
@@ -65,6 +65,9 @@ jobs:
       - name: 🧪 Run unit tests
         run: |
           dotnet test --configuration Release --logger GitHubActions -- RunConfiguration.CollectSourceInformation=true
+
+      - name: 🧪 Run sample unit tests
+        run: dotnet test -c release docs/samples/samples.sln
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()

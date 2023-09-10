@@ -2,6 +2,10 @@ namespace Bunit;
 
 public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<MouseEventArgs>
 {
+	public MouseEventDispatchExtensionsTest(ITestOutputHelper outputHelper) : base(outputHelper)
+	{
+	}
+
 	public static IEnumerable<object[]> Helpers { get; }
 		= GetEventHelperMethods(
 			typeof(MouseEventDispatchExtensions),

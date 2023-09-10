@@ -11,7 +11,7 @@ public partial class CustomPasteSample
 }
 
 [EventHandler("oncustompaste", typeof(CustomPasteEventArgs), enableStopPropagation: true, enablePreventDefault: true)]
-#pragma warning disable CA1724 // The type name EventHandlers conflicts in whole or in part with the namespace name 'Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.EventHandlers'.
+[SuppressMessage("Naming", "CA1724:Type names should not match namespaces", Justification = "By convention this has to be named EventHandlers")]
 public static class EventHandlers
 #pragma warning restore
 {

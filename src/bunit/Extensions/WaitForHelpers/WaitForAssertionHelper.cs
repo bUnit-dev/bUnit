@@ -23,6 +23,9 @@ public class WaitForAssertionHelper : WaitForHelper<object?>
 	/// <param name="renderedFragment">The rendered fragment to wait for renders from and assert against.</param>
 	/// <param name="assertion">The verification or assertion to perform.</param>
 	/// <param name="timeout">The maximum time to attempt the verification.</param>
+	/// <remarks>
+	/// If a debugger is attached the timeout is set to <see cref="Timeout.InfiniteTimeSpan" />, giving the possibility to debug without the timeout triggering.
+	/// </remarks>
 	public WaitForAssertionHelper(IRenderedFragment renderedFragment, Action assertion, TimeSpan? timeout = null)
 		: base(
 			  renderedFragment,

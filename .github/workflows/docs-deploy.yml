@@ -43,7 +43,7 @@ jobs:
           git config --global commit.gpgsign true
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.0
+        uses: dotnet/nbgv@v0.4.1
         with:
           setAllVars: true
 
@@ -107,7 +107,7 @@ jobs:
 
       - name: ⏭ Create pull request from stable to main when direct merge fails
         if: steps.mergeMainline.outcome == 'failure'
-        uses: thomaseizinger/create-pull-request@1.3.0
+        uses: thomaseizinger/create-pull-request@1.3.1
         env:
           GITHUB_TOKEN: ${{ secrets.BUNIT_BOT_TOKEN }}
         with:

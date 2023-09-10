@@ -1,8 +1,7 @@
-using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Core;
 using Serilog.Events;
+using Serilog.Templates;
 using Xunit.Abstractions;
 
 namespace Xunit;
@@ -13,29 +12,14 @@ public static class ServiceCollectionLoggingExtensions
 	{
 		var serilogLogger = new LoggerConfiguration()
 			.MinimumLevel.Verbose()
-			.Enrich.With(new ThreadIDEnricher())
 			.WriteTo.TestOutput(
 				testOutputHelper: outputHelper,
-				restrictedToMinimumLevel: LogEventLevel.Verbose,
-				outputTemplate: ThreadIDEnricher.DefaultConsoleOutputTemplate,
-				formatProvider: CultureInfo.InvariantCulture)
+				formatter: new ExpressionTemplate("[{UtcDateTime(@t):mm:ss.ffffff} | {@l:u3} | {Substring(SourceContext, LastIndexOf(SourceContext, '.') + 1)} | {Coalesce(EventId.Name, '<none>')}] {@m}\n{@x}"),
+				restrictedToMinimumLevel: LogEventLevel.Verbose)
 			.CreateLogger();
 
-#pragma warning disable CA2000 // Handled by the container
-		services.AddSingleton(new LoggerFactory().AddSerilog(serilogLogger, dispose: true));
-#pragma warning restore CA2000
+		services.AddSingleton<ILoggerFactory>(_ => new LoggerFactory().AddSerilog(serilogLogger, dispose: true));
 		services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 		return services;
-	}
-
-	private sealed class ThreadIDEnricher : ILogEventEnricher
-	{
-		internal const string DefaultConsoleOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss} ({ThreadID}) [{Level}] {Message}{NewLine}{Exception}";
-
-		public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
-		{
-			logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty(
-			  "ThreadID", Environment.CurrentManagedThreadId.ToString("D4", CultureInfo.InvariantCulture)));
-		}
 	}
 }

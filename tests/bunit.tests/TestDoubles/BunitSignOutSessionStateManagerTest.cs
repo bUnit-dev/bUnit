@@ -18,7 +18,7 @@ public class BunitSignOutSessionStateManagerTest : TestContext
 	[Fact]
 	public void ShouldReturnSignOutStateOnValidateSignOutState()
 	{
-		var cut = new BunitSignOutSessionStateManager(Mock.Of<IJSRuntime>());
+		var cut = new BunitSignOutSessionStateManager(Substitute.For<IJSRuntime>());
 		cut.SetSignOutState();
 
 		var wasValidate = cut.ValidateSignOutState().Result;

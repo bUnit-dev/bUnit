@@ -47,3 +47,7 @@ The timeout, which defaults to one second, can be controlled by passing a `TimeS
 If the timeout is reached, a <xref:Bunit.Extensions.WaitForHelpers.WaitForFailedException> exception is thrown with the following error message:
 
 > The state predicate did not pass before the timeout period passed.
+
+## Debugging code that uses `WaitForState`, `WaitForAssertion`, or `WaitForElement`
+
+When `bUnit` detects that a debugger is attached (`Debugger.IsAttached`), it will automatically disable the timeout functionality of the "wait for" methods.

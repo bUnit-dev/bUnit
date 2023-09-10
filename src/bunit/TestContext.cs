@@ -30,7 +30,7 @@ public partial class TestContext : IDisposable, IAsyncDisposable
 
 	/// <summary>
 	/// Gets the <see cref="RootRenderTree"/> that all components rendered with the
-	/// <c>RenderComponent&lt;TComponent&gt;()</c> methods, are rendered inside.
+	/// <c>Render&lt;TComponent&gt;()</c> methods, are rendered inside.
 	/// </summary>
 	/// <remarks>
 	/// Use this to add default layout- or root-components which a component under test
@@ -58,7 +58,7 @@ public partial class TestContext : IDisposable, IAsyncDisposable
 	public TestContext()
 	{
 		Services = new TestServiceProvider();
-		Services.AddSingleton<IComponentActivator>(new BunitComponentActivator(ComponentFactories));
+		Services.AddSingleton<ComponentFactoryCollection>(_ => ComponentFactories);
 		Services.AddDefaultTestContextServices(this, JSInterop);
 	}
 
@@ -159,5 +159,5 @@ public partial class TestContext : IDisposable, IAsyncDisposable
 	/// Dummy method required to allow Blazor's compiler to generate
 	/// C# from .razor files.
 	/// </summary>
-	protected virtual void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) { }
+	protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
 }

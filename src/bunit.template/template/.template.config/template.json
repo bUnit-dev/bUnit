@@ -76,6 +76,21 @@
 		"testFramework_mstest": {
 			"type": "computed",
 			"value": "UnitTestFramework == \"mstest\""
+		},
+		"targetSdk": {
+			"type": "parameter",
+			"description": "The target framework sdk for the project.",
+			"displayName": "Target framework sdk",
+			"datatype": "choice",
+			"defaultValue": "net8.0",
+			"replaces": "targetSdk",
+			"choices": [
+				{
+					"choice": "net8.0",
+					"description": ".net 8.0",
+					"displayName": ".net 8.0"
+				}
+			]
 		}
 	},
   "primaryOutputs": [

@@ -11,6 +11,10 @@ public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<Chan
 
 	protected override string ElementName => "input";
 
+	public InputEventDispatchExtensionsTest(ITestOutputHelper outputHelper) : base(outputHelper)
+	{
+	}
+
 	[Theory(DisplayName = "Input events are raised correctly through helpers")]
 	[MemberData(nameof(Helpers))]
 	public void CanRaiseEvents(MethodInfo helper)

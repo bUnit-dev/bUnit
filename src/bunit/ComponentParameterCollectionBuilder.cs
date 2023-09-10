@@ -320,13 +320,13 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	/// <remarks>
 	/// This function is a short-hand form for the following expression:
-	/// <code>RenderComponent&lt;<typeparamref name="TComponent"/>&gt;(ps => ps
+	/// <code>Render&lt;<typeparamref name="TComponent"/>&gt;(ps => ps
 	///   .Add(c => c.Value, value)
 	///   .Add(c => c.ValueChanged, newValue => value = newValue)
 	///   .Add(c => c.ValueExpression, () => value));
 	/// </code>
 	/// With <c>Bind</c>, it can be written like this:
-	/// <code>RenderComponent&lt;<typeparamref name="TComponent"/>&gt;(ps => ps
+	/// <code>Render&lt;<typeparamref name="TComponent"/>&gt;(ps => ps
 	///   .Bind(c => c.Value, value, newValue => value = newValue, () => value));
 	/// </code>
 	/// </remarks>
@@ -476,7 +476,9 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		var type = typeof(TComponent);
 		var property = type.GetProperty(parameterName);
 
-		return property != null && property.GetCustomAttributes(inherit: true).Any(a => a is ParameterAttribute);
+		return property is not null && Array.Exists(
+			property.GetCustomAttributes(inherit: true),
+			a => a is ParameterAttribute);
 	}
 
 	private static bool IsConcreteGenericOf(Type type, Type openGeneric)
