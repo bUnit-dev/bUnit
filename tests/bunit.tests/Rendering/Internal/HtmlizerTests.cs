@@ -26,7 +26,7 @@ public class HtmlizerTests : TestContext
 
 		var elmRefValue = cut.Find("button").GetAttribute("blazor:elementreference");
 
-		elmRefValue.ShouldBe(cut.Instance.ButtomElmRef.Id);
+		cut.AccessInstance(c => c.ButtomElmRef.Id.ShouldBe(elmRefValue));
 	}
 
 	[Fact(DisplayName = "Blazor ElementReferences start in markup on rerenders")]

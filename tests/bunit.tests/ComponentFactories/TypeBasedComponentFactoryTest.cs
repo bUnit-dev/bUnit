@@ -19,8 +19,7 @@ public class TypeBasedComponentFactoryTest : TestContext
 
 		var cut = Render<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
-		cut.FindComponent<Simple1>()
-			.Instance.ShouldBeSameAs(simple1Mock);
+		cut.FindComponent<Simple1>().AccessInstance(i => i.ShouldBeSameAs(simple1Mock));
 	}
 
 	[Fact(DisplayName = "Multiple TComponent replaced in render tree with component from factory method")]
@@ -34,7 +33,7 @@ public class TypeBasedComponentFactoryTest : TestContext
 
 		foreach (var component in cut.FindComponents<Simple1>())
 		{
-			Action checkIfSubstitute = () => component.Instance.Received();
+			Action checkIfSubstitute = () => component.AccessInstance(s => s.Received());
 			checkIfSubstitute.ShouldNotThrow();
 		}
 	}

@@ -91,7 +91,7 @@ public class RootRenderTreeTest : TestContext
 		var cut = Render<CascadingValue<string>>(parameters => parameters
 			.Add(p => p.Value, "FOO"));
 
-		cut.Instance.Value.ShouldBe("FOO");
+		cut.AccessInstance(c => c.Value.ShouldBe("FOO"));
 	}
 
 	[Fact(DisplayName = "Multiple RenderTree.Add<T> calls are added to render tree in call order")]

@@ -1,5 +1,3 @@
-using Xunit.Abstractions;
-
 namespace Bunit.TestDoubles;
 
 public class BunitPersistentComponentStateTest : TestContext
@@ -26,7 +24,7 @@ public class BunitPersistentComponentStateTest : TestContext
 
 		var cut = Render<PersistentComponentStateSample>();
 
-		cut.Instance.State.ShouldNotBeNull();
+		cut.AccessInstance(c => c.State.ShouldNotBeNull());
 	}
 
 	[Theory(DisplayName = "Persist stores state in store for components to consume")]
@@ -51,7 +49,7 @@ public class BunitPersistentComponentStateTest : TestContext
 		fakeState.TriggerOnPersisting();
 
 		fakeState.TryTake<WeatherForecast[]>(PersistentComponentStateSample.PersistenceKey, out var actual).ShouldBeTrue();
-		actual.ShouldBeEquivalentTo(cut.Instance.Forecasts);
+		cut.AccessInstance(c => c.Forecasts.ShouldBeEquivalentTo(actual));
 	}
 
 	[Theory(DisplayName = "TryTake returns false if key is not in store")]

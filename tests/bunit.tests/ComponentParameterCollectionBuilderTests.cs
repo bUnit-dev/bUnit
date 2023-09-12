@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 namespace Bunit;
 
-public partial class ComponentParameterCollectionBuilderTests : TestContext
+public class ComponentParameterCollectionBuilderTests : TestContext
 {
 	private ComponentParameterCollectionBuilder<Params> Builder { get; } = new();
 
@@ -248,7 +248,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment>("ChildContent", isCascadingValue: false);
 		var actualComponent = RenderWithRenderFragment<InhertedParams>(actual);
-		actualComponent.Instance.ValueTypeParam.ShouldBe(42);
+		actualComponent.AccessInstance(c => c.ValueTypeParam.ShouldBe(42));
 	}
 
 	[Fact(DisplayName = "ChildContent can be passed as a child component without parameters")]
@@ -259,7 +259,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment>("ChildContent", isCascadingValue: false);
 		var actualComponent = RenderWithRenderFragment<NoParams>(actual);
-		actualComponent.Instance.ShouldBeOfType<NoParams>();
+		actualComponent.AccessInstance(c => c.ShouldBeOfType<NoParams>());
 	}
 
 	[Fact(DisplayName = "ChildContent can be passed as a markup string")]
@@ -282,7 +282,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment>("OtherFragment", isCascadingValue: false);
 		var actualComponent = RenderWithRenderFragment<InhertedParams>(actual);
-		actualComponent.Instance.ValueTypeParam.ShouldBe(42);
+		actualComponent.AccessInstance(c => c.ValueTypeParam.ShouldBe(42));
 	}
 
 	[Fact(DisplayName = "RenderFragment can be passed as a child component without parameters")]
@@ -293,7 +293,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		var actual = Builder.Build().ShouldHaveSingleItem()
 			.ShouldBeParameter<RenderFragment>("OtherFragment", isCascadingValue: false);
 		var actualComponent = RenderWithRenderFragment<NoParams>(actual);
-		actualComponent.Instance.ShouldBeOfType<NoParams>();
+		actualComponent.AccessInstance(c => c.ShouldBeOfType<NoParams>());
 	}
 
 	[Fact(DisplayName = "RenderFragment can be passed as a markup string")]
@@ -371,7 +371,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBeParameter<RenderFragment<string>>("Template", isCascadingValue: false);
 
 		var actualComponent = RenderWithRenderFragment<InhertedParams>(actual(input));
-		actualComponent.Instance.Param.ShouldBe(input);
+		actualComponent.AccessInstance(c => c.Param.ShouldBe(input));
 	}
 
 	[Fact(DisplayName = "RenderFragment<T> can be passed multiple times")]

@@ -36,8 +36,7 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
-		c.VerifyParamsHaveDefaultValues();
+		RenderWithRenderFragment(rf).AccessInstance(s => s.VerifyParamsHaveDefaultValues());
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes regular params to component in RenderFragment")]
@@ -52,10 +51,12 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
-		c.Param.ShouldBe("FOO");
-		c.ValueTypeParam.ShouldBe(42);
-		c.NullableValueTypeParam.ShouldBe(1337);
+		RenderWithRenderFragment(rf).AccessInstance(c =>
+		{
+			c.Param.ShouldBe("FOO");
+			c.ValueTypeParam.ShouldBe(42);
+			c.NullableValueTypeParam.ShouldBe(1337);
+		});
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes single ChildContent param to component in RenderFragment")]
@@ -128,8 +129,7 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
-		c.Attributes?.ContainsKey("attr").ShouldBeTrue();
+		RenderWithRenderFragment(rf).AccessInstance(c => c.Attributes?.ContainsKey("attr").ShouldBeTrue());
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes EventCallback params to component in RenderFragment")]
@@ -152,11 +152,13 @@ public class ComponentParameterCollectionTest : TestContext
 		var rf = sut.ToRenderFragment<Params>();
 
 		// assert
-		var c = RenderWithRenderFragment(rf).Instance;
-		c.NullableEC.ShouldBe(ec1);
-		c.EC.ShouldBe(ec2);
-		c.NullableECWithArgs.ShouldBe(ec3);
-		c.ECWithArgs.ShouldBe(ec4);
+		RenderWithRenderFragment(rf).AccessInstance(c =>
+		{
+			c.NullableEC.ShouldBe(ec1);
+			c.EC.ShouldBe(ec2);
+			c.NullableECWithArgs.ShouldBe(ec3);
+			c.ECWithArgs.ShouldBe(ec4);
+		});
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment passes single template param to component in RenderFragment")]
@@ -255,8 +257,7 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
-		c.NullableCC.ShouldBe("FOO");
+		RenderWithRenderFragment(rf).AccessInstance(c => c.NullableCC.ShouldBe("FOO"));
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment wraps component in multiple unnamed cascading values in RenderFragment")]
@@ -270,9 +271,11 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
-		c.NullableCC.ShouldBe("FOO");
-		c.CC.ShouldBe(42);
+		RenderWithRenderFragment(rf).AccessInstance(c =>
+		{
+			c.NullableCC.ShouldBe("FOO");
+			c.CC.ShouldBe(42);
+		});
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment throws when multiple unnamed cascading values with same type is added")]
@@ -299,8 +302,7 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
-		c.NullableNamedCC.ShouldBe("FOO");
+		RenderWithRenderFragment(rf).AccessInstance(c => c.NullableNamedCC.ShouldBe("FOO"));
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment wraps component in multiple named cascading values in RenderFragment")]
@@ -315,10 +317,12 @@ public class ComponentParameterCollectionTest : TestContext
 
 		var rf = sut.ToRenderFragment<Params>();
 
-		var c = RenderWithRenderFragment(rf).Instance;
-		c.NullableNamedCC.ShouldBe("FOO");
-		c.NamedCC.ShouldBe(42);
-		c.AnotherNamedCC.ShouldBe(1337);
+		RenderWithRenderFragment(rf).AccessInstance(c =>
+		{
+			c.NullableNamedCC.ShouldBe("FOO");
+			c.NamedCC.ShouldBe(42);
+			c.AnotherNamedCC.ShouldBe(1337);
+		});
 	}
 
 	[Fact(DisplayName = "ToComponentRenderFragment throws when multiple named cascading values with same name and type is added")]

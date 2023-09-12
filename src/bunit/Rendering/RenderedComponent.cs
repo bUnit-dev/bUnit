@@ -9,8 +9,7 @@ internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRendere
 {
 	private TComponent? instance;
 
-	/// <inheritdoc/>
-	public TComponent Instance
+	internal TComponent Instance
 	{
 		get
 		{
@@ -28,6 +27,12 @@ internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRendere
 		this.instance = instance;
 		RenderCount++;
 		UpdateMarkup(componentFrames);
+	}
+
+	/// <inheritdoc/>
+	public void AccessInstance(Action<TComponent> action)
+	{
+		this.InvokeAsync(() => action(Instance)).GetAwaiter().GetResult();
 	}
 
 	protected override void OnRender(RenderEvent renderEvent)

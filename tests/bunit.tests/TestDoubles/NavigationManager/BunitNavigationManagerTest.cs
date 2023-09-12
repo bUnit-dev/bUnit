@@ -167,7 +167,7 @@ public class BunitNavigationManagerTest : TestContext
 
 		cut.Find("button").Click();
 
-		cut.Instance.NavigationIntercepted.ShouldBeTrue();
+		cut.AccessInstance(c => c.NavigationIntercepted.ShouldBeTrue());
 		bunitNavigationManager.History.Single().State.ShouldBe(NavigationState.Prevented);
 	}
 

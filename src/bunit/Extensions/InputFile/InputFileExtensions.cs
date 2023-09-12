@@ -30,6 +30,6 @@ public static class InputFileExtensions
 			file.Content));
 
 		var args = new InputFileChangeEventArgs(browserFiles.ToArray());
-		inputFileComponent.InvokeAsync(() => inputFileComponent.Instance.OnChange.InvokeAsync(args));
+		inputFileComponent.AccessInstance(i => i.OnChange.InvokeAsync(args));
 	}
 }

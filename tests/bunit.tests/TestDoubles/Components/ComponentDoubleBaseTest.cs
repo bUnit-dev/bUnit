@@ -13,6 +13,6 @@ public class ComponentDoubleBaseTest : TestContext
 		var cut = Render<ComponentDouble<AllTypesOfParams<string>>>(ps => ps
 			.AddUnmatched(attrName, attrValue));
 
-		cut.Instance.Parameters[attrName].ShouldBe(attrValue);
+		cut.AccessInstance(c => c.Parameters[attrName].ShouldBe(attrValue));
 	}
 }

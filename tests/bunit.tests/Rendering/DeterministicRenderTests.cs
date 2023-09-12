@@ -12,7 +12,7 @@ public class DeterministicRenderTests : TestContext
 		cut.Find("p").TextContent.ShouldBe("Rendering");
 
 		// Set the task to finished
-		cut.Instance.CompleteTask();
+		cut.AccessInstance(c => c.CompleteTask());
 		await cut.WaitForAssertionAsync(() => cut.Find("p").TextContent.ShouldBe("Rendered"));
 
 		cut.Find("p").TextContent.ShouldBe("Rendered");
@@ -25,7 +25,7 @@ public class DeterministicRenderTests : TestContext
 
 		cut.Find("p").TextContent.ShouldBe("False");
 
-		cut.Instance.CompleteTask();
+		cut.AccessInstance(c => c.CompleteTask());
 		await cut.WaitForAssertionAsync(() => cut.Find("p").TextContent.ShouldBe("True"));
 	}
 
@@ -135,7 +135,7 @@ public class DeterministicRenderTests : TestContext
 	public async Task CallingInvokeAsyncWrappedInTaskRun()
 	{
 		var cut = Render<RenderOnDemandComponent>();
-		var renderTask = Task.Run(() => cut.Instance.Render(10));
+		var renderTask = Task.Run(() => cut.AccessInstance(c => c.Render(10)));
 
 		await cut.WaitForAssertionAsync(() => cut.Find("p").TextContent.ShouldBe("10"));
 		await renderTask;
@@ -144,7 +144,7 @@ public class DeterministicRenderTests : TestContext
 	[Fact]
 	public async Task ConfigureAwaitComponent()
 	{
-		var cut = Render<AsyncConfigureAwaitComponent>();
+		var cut = (RenderedComponent<AsyncConfigureAwaitComponent>)Render<AsyncConfigureAwaitComponent>();
 		cut.Find("p").TextContent.ShouldBe("0");
 
 		cut.Instance.Tcs.SetResult();
@@ -169,9 +169,9 @@ public class DeterministicRenderTests : TestContext
 			return Task.CompletedTask;
 		}
 
-		public Task Render(int number)
+		public void Render(int number)
 		{
-			return renderHandle.Dispatcher.InvokeAsync(() =>
+			renderHandle.Dispatcher.InvokeAsync(() =>
 			{
 				renderHandle.Render(builder =>
 				{

@@ -13,10 +13,9 @@ public class FocusOnNavigateHandlerTest : TestContext
 
 		var focusOnNavigateComponent = cut.FindComponent<FocusOnNavigate>();
 
-		Assert.Equal("h1", JSInterop.VerifyFocusOnNavigateInvoke().Arguments[0]);
-		JSInterop.VerifyFocusOnNavigateInvoke()
-			.Arguments[0]
-			.ShouldBe(focusOnNavigateComponent.Instance.Selector);
+		var argument = JSInterop.VerifyFocusOnNavigateInvoke().Arguments[0];
+		Assert.Equal("h1", argument);
+		focusOnNavigateComponent.AccessInstance(c => c.Selector.ShouldBe(argument));
 	}
 
 	[Fact(DisplayName = "Will return completed task")]
@@ -28,7 +27,7 @@ public class FocusOnNavigateHandlerTest : TestContext
 				.Add(x => x.Selector, "h1")));
 
 		var focusOnNavigateComponent = cut.FindComponent<FocusOnNavigateInternal>();
-		Assert.True(focusOnNavigateComponent.Instance.AfterFirstRender);
+		focusOnNavigateComponent.AccessInstance(c => c.AfterFirstRender.ShouldBeTrue());
 	}
 
 	private sealed class FocusOnNavigateInternal : FocusOnNavigate

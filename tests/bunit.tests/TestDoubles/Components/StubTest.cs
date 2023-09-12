@@ -18,11 +18,11 @@ public class StubTest : TestContext
 			.AddUnmatched(nameof(Simple1.Header), header)
 			.AddUnmatched(nameof(Simple1.AttrValue), attrValue));
 
-		cut.Instance
+		cut.AccessInstance(c => c
 			.Parameters
 			.ShouldSatisfyAllConditions(
 				ps => ps.ShouldContain(x => x.Key == nameof(Simple1.Header) && header.Equals(x.Value)),
 				ps => ps.ShouldContain(x => x.Key == nameof(Simple1.AttrValue) && attrValue.Equals(x.Value)),
-				ps => ps.Count.ShouldBe(2));
+				ps => ps.Count.ShouldBe(2)));
 	}
 }

@@ -28,7 +28,7 @@ public class FocusAsyncInvocationHandlerTest : TestContext
 	public void Test003()
 	{
 		var cut = Render<FocusingComponent>();
-		Assert.True(cut.Instance.AfterFirstRender);
+		cut.AccessInstance(c => c.AfterFirstRender.ShouldBeTrue());
 	}
 
 	private sealed class FocusingComponent : ComponentBase

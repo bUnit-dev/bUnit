@@ -21,6 +21,8 @@ public class WeatherForecastsTest : TestContext
     var cut = Render<WeatherForecasts>();
 
     // Assert that service is injected
-    Assert.NotNull(cut.Instance.Forecasts);
+    WeatherForecast[] weatherForecast = null;
+    cut.AccessInstance(c => weatherForecast = c.Forecasts);
+    Assert.NotNull(weatherForecast);
   }
 }

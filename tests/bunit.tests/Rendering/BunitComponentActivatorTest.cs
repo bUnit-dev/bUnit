@@ -12,7 +12,7 @@ public class BunitComponentActivatorTest : TestContext
 
 		var cut = Render<Simple1>();
 
-		cut.Instance.ShouldBeOfType<Simple1>();
+		cut.AccessInstance(c => c.ShouldBeOfType<Simple1>());
 	}
 
 	[Fact(DisplayName = "Custom singleton IComponentActivator registered in Services")]

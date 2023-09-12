@@ -55,6 +55,6 @@ public class RenderedComponentTest : TestContext
 		// Disposes of <Simple1 />
 		cut.Render(ps => ps.Add(p => p.ShowChild, false));
 
-		Should.Throw<ComponentDisposedException>(() => target.Instance);
+		Should.Throw<ComponentDisposedException>(() => target.AccessInstance(_ => { }));
 	}
 }

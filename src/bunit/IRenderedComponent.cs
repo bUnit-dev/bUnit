@@ -4,8 +4,9 @@ namespace Bunit;
 public interface IRenderedComponent<out TComponent> : IRenderedFragment
 	where TComponent : IComponent
 {
+
 	/// <summary>
-	/// Gets the component under test.
+	/// Invokes an action on the component under test inside the Dispatcher.
 	/// </summary>
-	TComponent Instance { get; }
+	void AccessInstance(Action<TComponent> action);
 }

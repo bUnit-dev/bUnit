@@ -106,7 +106,8 @@ public class TestContextTest : TestContext
 	public async Task Test202()
 	{
 		var cut = Render<AsyncDisposableComponent>();
-		var wasDisposedTask = cut.Instance.DisposedTask;
+		var wasDisposedTask = Task.FromException(new Exception());
+		cut.FindComponent<AsyncDisposableComponent>().AccessInstance(c => wasDisposedTask = c.DisposedTask);
 
 		DisposeComponents();
 
@@ -118,7 +119,8 @@ public class TestContextTest : TestContext
 	{
 		ComponentFactories.Add<ChildDispose, MyChildDisposeStub>();
 		var cut = Render<ParentDispose>(ps => ps.Add(p => p.CallStack, new List<string>()));
-		var instance = cut.FindComponent<MyChildDisposeStub>().Instance;
+		MyChildDisposeStub instance = default!;
+		cut.FindComponent<MyChildDisposeStub>().AccessInstance(c => instance = c);
 
 		DisposeComponents();
 
@@ -183,10 +185,9 @@ public class TestContextTest : TestContext
 			b.CloseComponent();
 		});
 
-		cut.FindComponent<ReceivesCascadingValue>()
-			.Instance
+		cut.FindComponent<ReceivesCascadingValue>().AccessInstance(c => c
 			.Value
-			.ShouldBe("FOO");
+			.ShouldBe("FOO"));
 	}
 
 	[Fact(DisplayName = "Render<TComponent>() renders fragment inside RenderTree")]
@@ -199,9 +200,9 @@ public class TestContextTest : TestContext
 			b.CloseComponent();
 		});
 
-		cut.Instance
+		cut.AccessInstance(c => c
 			.Value
-			.ShouldBe("FOO");
+			.ShouldBe("FOO"));
 	}
 
 	[Fact(DisplayName = "Render<TComponent>(builder) renders TComponent inside RenderTree")]
@@ -210,9 +211,9 @@ public class TestContextTest : TestContext
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
 		var cut = Render<ReceivesCascadingValue>(ps => ps.Add(p => p.Dummy, null));
 
-		cut.Instance
+		cut.AccessInstance(c => c
 			.Value
-			.ShouldBe("FOO");
+			.ShouldBe("FOO"));
 	}
 
 	[Fact(DisplayName = "Render<TComponent>(factories) renders TComponent inside RenderTree")]
@@ -222,9 +223,9 @@ public class TestContextTest : TestContext
 		var cut = Render<ReceivesCascadingValue>(ps => ps
 			.Add(p => p.Dummy, null!));
 
-		cut.Instance
+		cut.AccessInstance(c => c
 			.Value
-			.ShouldBe("FOO");
+			.ShouldBe("FOO"));
 	}
 
 	[Fact(DisplayName = "Can raise events from markup rendered with TestContext")]

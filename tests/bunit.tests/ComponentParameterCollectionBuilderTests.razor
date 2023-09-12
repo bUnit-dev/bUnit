@@ -1,7 +1,7 @@
 @inherits Bunit.TestContext
 @code {
     [Fact(DisplayName = "Bind method should behave like bind-directive")]
-    public async Task Test400()
+    public void Test400()
     {
         // arrange
         var initialValue = "Hello";
@@ -16,15 +16,20 @@
         var bindDirective = Render<FullBind>(@<FullBind @bind-Foo="initialValue" />);
 
         // assert
-        bindMethod.Instance.Foo.ShouldBe(bindDirective.Instance.Foo);
+	    FullBind bindInstance = default!;
+	    FullBind bindDirectiveInstance = default!;
+	    bindMethod.AccessInstance(c => bindInstance = c);
+	    bindDirective.AccessInstance(c => bindDirectiveInstance = c);
+	    
+	    bindInstance.Foo.ShouldBe(bindDirectiveInstance.Foo);
 
-        await bindMethod.Instance.FooChanged.InvokeAsync(nameof(bindMethod));
+        bindMethod.AccessInstance(c => c.FooChanged.InvokeAsync(nameof(bindMethod)));
         initialValue.ShouldBe(nameof(bindMethod));
 
-        await bindDirective.Instance.FooChanged.InvokeAsync(nameof(bindDirective));
+        bindDirective.AccessInstance(c => c.FooChanged.InvokeAsync(nameof(bindDirective)));
         initialValue.ShouldBe(nameof(bindDirective));
 
-        bindMethod.Instance.FooExpression.ToString()
-            .ShouldBe(bindDirective.Instance.FooExpression.ToString());
+	    bindInstance.FooExpression.ToString()
+            .ShouldBe(bindDirectiveInstance.FooExpression.ToString());
     }
 }

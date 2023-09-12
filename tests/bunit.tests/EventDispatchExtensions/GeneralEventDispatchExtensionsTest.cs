@@ -67,8 +67,8 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		cut.Find("span").Click();
 
-		cut.Instance.SpanClickCount.ShouldBe(1);
-		cut.Instance.HeaderClickCount.ShouldBe(1);
+		cut.AccessInstance(c => c.SpanClickCount.ShouldBe(1));
+		cut.AccessInstance(c => c.HeaderClickCount.ShouldBe(1));
 	}
 
 	[Fact(DisplayName = "When clicking on an element without an event handler attached, " +
@@ -79,9 +79,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		cut.Find("button").Click();
 
-		cut.Instance.SpanClickCount.ShouldBe(0);
-		cut.Instance.HeaderClickCount.ShouldBe(1);
-	}
+		cut.AccessInstance(c => c.SpanClickCount.ShouldBe(0));		cut.AccessInstance(c => c.HeaderClickCount.ShouldBe(1));	}
 
 	[Theory(DisplayName = "When clicking element with non-bubbling events, the event does not bubble")]
 	[InlineData("onabort")]
@@ -111,9 +109,9 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		await cut.Find("#child").TriggerEventAsync(eventName, EventArgs.Empty);
 
-		cut.Instance.ChildTriggerCount.ShouldBe(1);
-		cut.Instance.ParentTriggerCount.ShouldBe(0);
-		cut.Instance.GrandParentTriggerCount.ShouldBe(0);
+		cut.AccessInstance(c => c.ChildTriggerCount.ShouldBe(1));
+		cut.AccessInstance(c => c.ParentTriggerCount.ShouldBe(0));
+		cut.AccessInstance(c => c.GrandParentTriggerCount.ShouldBe(0));
 	}
 
 	[Fact(DisplayName = "When event has StopPropergation modifier, events does not bubble from target")]
@@ -125,9 +123,9 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		await cut.Find("#child").TriggerEventAsync("onclick", EventArgs.Empty);
 
-		cut.Instance.ChildTriggerCount.ShouldBe(1);
-		cut.Instance.ParentTriggerCount.ShouldBe(0);
-		cut.Instance.GrandParentTriggerCount.ShouldBe(0);
+		cut.AccessInstance(c => c.ChildTriggerCount.ShouldBe(1));
+		cut.AccessInstance(c => c.ParentTriggerCount.ShouldBe(0));
+		cut.AccessInstance(c => c.GrandParentTriggerCount.ShouldBe(0));
 	}
 
 	[Fact(DisplayName = "When event has StopPropergation modifier, events does not bubble from parent of target")]
@@ -139,9 +137,9 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		await cut.Find("#child").TriggerEventAsync("onclick", EventArgs.Empty);
 
-		cut.Instance.ChildTriggerCount.ShouldBe(1);
-		cut.Instance.ParentTriggerCount.ShouldBe(1);
-		cut.Instance.GrandParentTriggerCount.ShouldBe(0);
+		cut.AccessInstance(c => c.ChildTriggerCount.ShouldBe(1));
+		cut.AccessInstance(c => c.ParentTriggerCount.ShouldBe(1));
+		cut.AccessInstance(c => c.GrandParentTriggerCount.ShouldBe(0));
 	}
 
 	[Theory(DisplayName = "Disabled input elements does not bubble for event type"), PairwiseData]
@@ -156,9 +154,9 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		await cut.Find("#child").TriggerEventAsync(eventName, EventArgs.Empty);
 
-		cut.Instance.ChildTriggerCount.ShouldBe(1);
-		cut.Instance.ParentTriggerCount.ShouldBe(0);
-		cut.Instance.GrandParentTriggerCount.ShouldBe(0);
+		cut.AccessInstance(c => c.ChildTriggerCount.ShouldBe(1));
+		cut.AccessInstance(c => c.ParentTriggerCount.ShouldBe(0));
+		cut.AccessInstance(c => c.GrandParentTriggerCount.ShouldBe(0));	
 	}
 
 	[Theory(DisplayName = "Enabled input elements does not bubble for event type"), PairwiseData]
@@ -173,10 +171,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		await cut.Find("#child").TriggerEventAsync(eventName, EventArgs.Empty);
 
-		cut.Instance.ChildTriggerCount.ShouldBe(1);
-		cut.Instance.ParentTriggerCount.ShouldBe(1);
-		cut.Instance.GrandParentTriggerCount.ShouldBe(1);
-	}
+		cut.AccessInstance(c => c.ChildTriggerCount.ShouldBe(1));		cut.AccessInstance(c => c.ParentTriggerCount.ShouldBe(1));		cut.AccessInstance(c => c.GrandParentTriggerCount.ShouldBe(1));	}
 
 	[Fact(DisplayName = "TriggerEvent can trigger custom events")]
 	public void Test201()
@@ -212,10 +207,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		// When middle div clicked event handlers is disposed, the
 		// NoEventHandlerException is ignored and the top div clicked event
 		// handler is still invoked.
-		cut.Instance.BtnClicked.ShouldBeTrue();
-		cut.Instance.MiddleDivClicked.ShouldBeFalse();
-		cut.Instance.TopDivClicked.ShouldBeTrue();
-	}
+		cut.AccessInstance(c => c.BtnClicked.ShouldBeTrue());		cut.AccessInstance(c => c.MiddleDivClicked.ShouldBeFalse());		cut.AccessInstance(c => c.TopDivClicked.ShouldBeTrue());	}
 
 	[Theory(DisplayName = "When bubbling event throws, no other event handlers are triggered")]
 	[AutoData]
@@ -226,9 +218,8 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		Should.Throw<Exception>(() => cut.Find("button").Click())
 			.Message.ShouldBe(exceptionMessage);
 
-		cut.Instance.BtnClicked.ShouldBeTrue();
-		cut.Instance.MiddleDivClicked.ShouldBeFalse();
-		cut.Instance.TopDivClicked.ShouldBeFalse();
+		cut.AccessInstance(c => c.BtnClicked.ShouldBeTrue());
+		cut.AccessInstance(c => c.MiddleDivClicked.ShouldBeFalse());		cut.AccessInstance(c => c.TopDivClicked.ShouldBeFalse());
 	}
 
 	[Theory(DisplayName = "When event handler throws, the exception is passed up to test")]
@@ -248,8 +239,8 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		cut.Find("button").Click();
 
-		cut.Instance.FormSubmitted.ShouldBeTrue();
-		cut.Instance.Clicked.ShouldBeTrue();
+		cut.AccessInstance(c => c.FormSubmitted.ShouldBeTrue());		
+		cut.AccessInstance(c => c.Clicked.ShouldBeTrue());	
 	}
 
 	[Fact(DisplayName = "Should handle click event first and submit form afterwards for input when type button")]
@@ -259,9 +250,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		cut.Find("#inside-form-input").Click();
 
-		cut.Instance.FormSubmitted.ShouldBeTrue();
-		cut.Instance.Clicked.ShouldBeTrue();
-	}
+		cut.AccessInstance(c => c.FormSubmitted.ShouldBeTrue());		cut.AccessInstance(c => c.Clicked.ShouldBeTrue());	}
 
 	[Fact(DisplayName = "Should throw exception when invoking onsubmit from non form")]
 	public void Test306()
@@ -282,9 +271,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		cut.Find(submitElementSelector).Click();
 
-		cut.Instance.FormSubmitted.ShouldBeFalse();
-		cut.Instance.Clicked.ShouldBeTrue();
-	}
+		cut.AccessInstance(c => c.FormSubmitted.ShouldBeFalse());		cut.AccessInstance(c => c.Clicked.ShouldBeTrue());	}
 
 	[Theory(DisplayName = "Should submit a form when submit button clicked")]
 	[InlineData("#inside-form-input")]
@@ -299,7 +286,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		cut.Find(submitElementSelector).Click();
 
-		cut.Instance.FormSubmitted.ShouldBeTrue();
+		cut.AccessInstance(c => c.FormSubmitted.ShouldBeTrue());	
 	}
 
 	[Theory(DisplayName = "Should trigger click handler of buttons inside form")]
@@ -312,7 +299,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		cut.Find(submitElementSelector).Click();
 
-		cut.Instance.Clicked.ShouldBeTrue();
+		cut.AccessInstance(c => c.Clicked.ShouldBeTrue());	
 	}
 
 	// Runs the test multiple times to trigger the race condition

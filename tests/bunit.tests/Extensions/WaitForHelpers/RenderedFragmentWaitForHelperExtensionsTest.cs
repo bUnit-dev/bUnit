@@ -95,18 +95,18 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	public async Task Test200()
 	{
 		var cut = Render<AsyncRenderChangesProperty>();
-		cut.Instance.Counter.ShouldBe(0);
+		cut.AccessInstance(c => c.Counter.ShouldBe(0));
 
 		// Clicking 'tick' changes the counter, and starts a task
 		cut.Find("#tick").Click();
-		cut.Instance.Counter.ShouldBe(1);
+		cut.AccessInstance(c => c.Counter.ShouldBe(1));
 
 		// Clicking 'tock' completes the task, which updates the counter
 		// This click causes two renders, thus something is needed to await here.
 		cut.Find("#tock").Click();
-		await cut.WaitForStateAsync(() => cut.Instance.Counter == 2);
+		await cut.WaitForStateAsync(c => c.Counter == 2);
 
-		cut.Instance.Counter.ShouldBe(2);
+		cut.AccessInstance(c => c.Counter.ShouldBe(2));
 	}
 
 	[Fact(DisplayName = "WaitForAssertion rethrows unhandled exception from a components async operation's methods")]

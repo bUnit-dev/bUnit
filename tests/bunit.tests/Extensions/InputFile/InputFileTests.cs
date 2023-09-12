@@ -17,10 +17,13 @@ public class InputFileTests : TestContext
 
 		cut.FindComponent<InputFile>().UploadFiles(file);
 
-		cut.Instance.Content.ShouldBe("Hello World");
-		cut.Instance.Filename.ShouldBe("Hey.txt");
-		cut.Instance.Size.ShouldBe(11);
-		cut.Instance.LastChanged.ShouldBe(lastModified);
+		cut.AccessInstance(c =>
+		{
+			c.Content.ShouldBe("Hello World");
+			c.Filename.ShouldBe("Hey.txt");
+			c.Size.ShouldBe(11);
+			c.LastChanged.ShouldBe(lastModified);
+		});
 	}
 
 	[Fact(DisplayName = "InputFile can upload a single byte file")]
@@ -31,7 +34,7 @@ public class InputFileTests : TestContext
 
 		cut.FindComponent<InputFile>().UploadFiles(file);
 
-		cut.Instance.Content.ShouldBe("Hello World");
+		cut.AccessInstance(c => c.Content.ShouldBe("Hello World"));
 	}
 
 	[Fact(DisplayName = "InputFile can upload multiple files")]
@@ -44,17 +47,21 @@ public class InputFileTests : TestContext
 
 		cut.FindComponent<InputFile>().UploadFiles(file1, file2);
 
-		cut.Instance.Files.Count.ShouldBe(2);
-		cut.Instance.Files[0].FileContent.ShouldBe("Hello World");
-		cut.Instance.Files[0].Filename.ShouldBe("Hey.txt");
-		cut.Instance.Files[0].LastChanged.ShouldBe(lastModified);
-		cut.Instance.Files[0].Size.ShouldBe(11);
-		cut.Instance.Files[0].Type.ShouldBe("test");
-		cut.Instance.Files[1].FileContent.ShouldBe("World Hey");
-		cut.Instance.Files[1].Filename.ShouldBe("Test.txt");
-		cut.Instance.Files[1].LastChanged.ShouldBe(lastModified);
-		cut.Instance.Files[1].Size.ShouldBe(9);
-		cut.Instance.Files[1].Type.ShouldBe("unit");
+		cut.AccessInstance(c =>
+		{
+			c.Files.Count.ShouldBe(2);
+			c.Files[0].FileContent.ShouldBe("Hello World");
+			c.Files[0].Filename.ShouldBe("Hey.txt");
+			c.Files[0].LastChanged.ShouldBe(lastModified);
+			c.Files[0].Size.ShouldBe(11);
+			c.Files[0].Type.ShouldBe("test");
+			c.Files[1].FileContent.ShouldBe("World Hey");
+			c.Files[1].Filename.ShouldBe("Test.txt");
+			c.Files[1].LastChanged.ShouldBe(lastModified);
+			c.Files[1].Size.ShouldBe(9);
+			c.Files[1].Type.ShouldBe("unit");
+		});
+		
 	}
 
 	[Fact(DisplayName = "UploadFile throws exception when InputFile is null")]

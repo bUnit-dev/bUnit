@@ -51,7 +51,7 @@ public class BunitRendererTest : TestContext
 
 		cut.RenderCount.ShouldBe(1);
 		cut.Markup.ShouldBe(NoChildNoParams.MARKUP);
-		cut.Instance.ShouldBeOfType<NoChildNoParams>();
+		cut.AccessInstance(c => c.ShouldBeOfType<NoChildNoParams>());
 	}
 
 	[Fact(DisplayName = "Can render component with parameters")]
@@ -63,7 +63,7 @@ public class BunitRendererTest : TestContext
 		var cut = sut.Render<HasParams>(ps => ps
 			.Add(p => p.Value, VALUE));
 
-		cut.Instance.Value.ShouldBe(VALUE);
+		cut.AccessInstance(c => c.Value.ShouldBe(VALUE));
 	}
 
 	[Fact(DisplayName = "Can render component with child component")]
@@ -83,7 +83,7 @@ public class BunitRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "Rendered component gets RenderCount updated on re-render")]
-	public async Task Test010()
+	public void Test010()
 	{
 		var sut = Services.GetRequiredService<BunitRenderer>();
 
@@ -91,13 +91,13 @@ public class BunitRendererTest : TestContext
 
 		cut.RenderCount.ShouldBe(1);
 
-		await cut.InvokeAsync(() => cut.Instance.Trigger());
+		cut.AccessInstance(c => c.Trigger());
 
 		cut.RenderCount.ShouldBe(2);
 	}
 
 	[Fact(DisplayName = "Rendered component gets Markup updated on re-render")]
-	public async Task Test011()
+	public void Test011()
 	{
 		// arrange
 		const string EXPECTED = "NOW VALUE";
@@ -107,7 +107,7 @@ public class BunitRendererTest : TestContext
 		cut.RenderCount.ShouldBe(1);
 
 		// act
-		await cut.InvokeAsync(async () => await cut.Instance.TriggerWithValue(EXPECTED));
+		cut.AccessInstance(c => c.TriggerWithValue(EXPECTED));
 
 		// assert
 		cut.RenderCount.ShouldBe(2);
@@ -218,7 +218,7 @@ public class BunitRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "Retrieved rendered child component with FindComponent gets updated on re-render")]
-	public async Task Test040()
+	public void Test040()
 	{
 		var sut = Services.GetRequiredService<BunitRenderer>();
 
@@ -230,14 +230,14 @@ public class BunitRendererTest : TestContext
 
 		cut.RenderCount.ShouldBe(1);
 
-		await cut.InvokeAsync(() => cut.Instance.TriggerWithValue("X"));
+		cut.AccessInstance(c => c.TriggerWithValue("X"));
 
 		cut.RenderCount.ShouldBe(2);
 		cut.Markup.ShouldBe("X");
 	}
 
 	[Fact(DisplayName = "Retrieved rendered child component with FindComponents gets updated on re-render")]
-	public async Task Test041()
+	public void Test041()
 	{
 		var sut = Services.GetRequiredService<BunitRenderer>();
 
@@ -249,7 +249,7 @@ public class BunitRendererTest : TestContext
 
 		cut.RenderCount.ShouldBe(1);
 
-		await cut.InvokeAsync(() => cut.Instance.TriggerWithValue("X"));
+		cut.AccessInstance(c => c.TriggerWithValue("X"));
 
 		cut.RenderCount.ShouldBe(2);
 		cut.Markup.ShouldBe("X");
@@ -266,7 +266,7 @@ public class BunitRendererTest : TestContext
 		var child = sut.FindComponent<RenderTrigger>(cut);
 
 		// act
-		await cut.InvokeAsync(() => child.Instance.TriggerWithValue("X"));
+		await cut.InvokeAsync(() => child.AccessInstance(c => c.TriggerWithValue("X")));
 
 		// assert
 		cut.RenderCount.ShouldBe(2);
@@ -274,7 +274,7 @@ public class BunitRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "When component is disposed by renderer, getting Markup throws and IsDisposed returns true")]
-	public async Task Test060()
+	public void Test060()
 	{
 		// arrange
 		var sut = Services.GetRequiredService<BunitRenderer>();
@@ -284,7 +284,7 @@ public class BunitRendererTest : TestContext
 		var child = sut.FindComponent<NoChildNoParams>(cut);
 
 		// act
-		await cut.InvokeAsync(() => cut.Instance.DisposeChild());
+		cut.AccessInstance(c => c.DisposeChild());
 
 		// assert
 		child.IsDisposed.ShouldBeTrue();
@@ -292,7 +292,7 @@ public class BunitRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "Rendered component updates itself if a child's child is disposed")]
-	public async Task Test061()
+	public void Test061()
 	{
 		// arrange
 		var sut = Services.GetRequiredService<BunitRenderer>();
@@ -304,7 +304,7 @@ public class BunitRendererTest : TestContext
 		var childChild = sut.FindComponent<NoChildNoParams>(cut);
 
 		// act
-		await child.InvokeAsync(() => cut.Instance.DisposeChild());
+		child.AccessInstance(c => c.DisposeChild());
 
 		// assert
 		childChild.IsDisposed.ShouldBeTrue();
@@ -447,12 +447,15 @@ public class BunitRendererTest : TestContext
 		cut.Render();
 
 		cut.RenderCount.ShouldBe(2);
-		cut.Instance.InitilizedCount.ShouldBe(1);
-		cut.Instance.InitilizedAsyncCount.ShouldBe(1);
-		cut.Instance.ParametersSetCount.ShouldBe(2);
-		cut.Instance.ParametersSetAsyncCount.ShouldBe(2);
-		cut.Instance.AfterRenderCount.ShouldBe(2);
-		cut.Instance.AfterRenderAsyncCount.ShouldBe(2);
+		cut.AccessInstance(c =>
+		{
+			c.InitilizedCount.ShouldBe(1);
+			c.InitilizedAsyncCount.ShouldBe(1);
+			c.ParametersSetCount.ShouldBe(2);
+			c.ParametersSetAsyncCount.ShouldBe(2);
+			c.AfterRenderCount.ShouldBe(2);
+			c.AfterRenderAsyncCount.ShouldBe(2);
+		});
 	}
 
 	internal sealed class LifeCycleMethodInvokeCounter : ComponentBase
@@ -523,12 +526,12 @@ public class BunitRendererTest : TestContext
 	{
 		[Parameter] public string? Value { get; set; }
 
-		public Task Trigger() => InvokeAsync(StateHasChanged);
+		public void Trigger() => InvokeAsync(StateHasChanged);
 
-		public Task TriggerWithValue(string value)
+		public void TriggerWithValue(string value)
 		{
 			Value = value;
-			return InvokeAsync(StateHasChanged);
+			InvokeAsync(StateHasChanged);
 		}
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
@@ -543,10 +546,10 @@ public class BunitRendererTest : TestContext
 
 		[Parameter] public RenderFragment? ChildContent { get; set; }
 
-		public Task DisposeChild()
+		public void DisposeChild()
 		{
 			showing = false;
-			return InvokeAsync(StateHasChanged);
+			InvokeAsync(StateHasChanged);
 		}
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)

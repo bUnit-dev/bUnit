@@ -61,7 +61,7 @@ public class RenderedFragmentTest : TestContext
 
 		cut.Find("button").Click();
 
-		cut.Instance.RenderCount.ShouldBe(2);
+		cut.AccessInstance(c => c.RenderCount.ShouldBe(2));
 		Assert.Same(initialNodes, cut.Nodes);
 	}
 
@@ -71,13 +71,13 @@ public class RenderedFragmentTest : TestContext
 		var cut = Render<ToggleClickHandler>();
 		cut.Find("#btn").Click();
 
-		cut.Instance.Counter.ShouldBe(1);
+		cut.AccessInstance(c => c.Counter.ShouldBe(1));
 
 		cut.Render(ps => ps.Add(p => p.HandleClicks, false));
 
 		cut.Find("#btn").Click();
 
-		cut.Instance.Counter.ShouldBe(1);
+		cut.AccessInstance(c => c.Counter.ShouldBe(1));
 	}
 
 	[Fact(DisplayName = "FindComponent<TComponent> returns component from first branch of tree in first depth first search")]
@@ -92,7 +92,7 @@ public class RenderedFragmentTest : TestContext
 
 		var cut = wrapper.FindComponent<Simple1>();
 
-		cut.Instance.Header.ShouldBe("First");
+		cut.AccessInstance(c => c.Header.ShouldBe("First"));
 	}
 
 	[Fact(DisplayName = "FindComponent<TComponent> finds components when first tree branch is empty")]
@@ -105,7 +105,7 @@ public class RenderedFragmentTest : TestContext
 
 		var cut = wrapper.FindComponent<Simple1>();
 
-		cut.Instance.Header.ShouldBe("Second");
+		cut.AccessInstance(c => c.Header.ShouldBe("Second"));
 	}
 
 	[Fact(DisplayName = "GetComponent throws when component of requested type is not in the render tree")]
@@ -129,8 +129,8 @@ public class RenderedFragmentTest : TestContext
 		var cuts = wrapper.FindComponents<Simple1>();
 
 		cuts.Count.ShouldBe(2);
-		cuts[0].Instance.Header.ShouldBe("First");
-		cuts[1].Instance.Header.ShouldBe("Second");
+		cuts[0].AccessInstance(c => c.Header.ShouldBe("First"));
+		cuts[1].AccessInstance(c => c.Header.ShouldBe("Second"));
 	}
 
 	[Fact(DisplayName = "Render events for non-rendered sub components are not emitted")]

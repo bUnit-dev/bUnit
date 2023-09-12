@@ -25,8 +25,7 @@ public class ConditionalComponentFactoryTest : TestContext
 
 		var cut = Render<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
-		cut.FindComponent<Simple1>()
-			.Instance.ShouldBeSameAs(mockComponent);
+		cut.FindComponent<Simple1>().AccessInstance(s => s.ShouldBeSameAs(mockComponent));
 	}
 
 	[Fact(DisplayName = "Component is replaced in render tree with component from factory when matches returns true")]
@@ -44,8 +43,8 @@ public class ConditionalComponentFactoryTest : TestContext
 		   .Add<NoArgs>(p => p.Second));
 
 		// Assert
-		cut.FindComponents<Simple1>().ShouldAllBe(x => x.Instance == mockSimple1);
-		cut.FindComponents<NoArgs>().ShouldAllBe(x => x.Instance == mockNoArgs);
+		cut.FindComponents<Simple1>().ShouldAllBe(x => IsOfInstance(x, mockSimple1).ShouldBeTrue());
+		cut.FindComponents<NoArgs>().ShouldAllBe(x => IsOfInstance(x, mockNoArgs).ShouldBeTrue());
 	}
 
 	[Fact(DisplayName = "When matches returns false, factory is never called")]
@@ -61,5 +60,13 @@ public class ConditionalComponentFactoryTest : TestContext
 		if (type == typeof(Simple1)) return simple1;
 		if (type == typeof(NoArgs)) return noArgs;
 		throw new NotImplementedException($"No mock implementation provided for type {type.FullName}");
+	}
+	
+	private static bool IsOfInstance<TComponent>(IRenderedComponent<TComponent> component, TComponent instance)
+		where TComponent : class, IComponent
+	{
+		var isSame = false;
+		component.AccessInstance(x => isSame = x == instance);
+		return isSame;
 	}
 }

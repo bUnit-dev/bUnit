@@ -275,9 +275,12 @@ public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<Chan
 		cut.Find("#onChangeInput").Change(values);
 		cut.Find("#onInputInput").Input(values);
 
-		cut.Instance.BindValues.ShouldBe(values);
-		cut.Instance.OnChangeValue.ShouldBe(FormatValues(values));
-		cut.Instance.OnInputValue.ShouldBe(FormatValues(values));
+		cut.AccessInstance(c =>
+		{
+			c.BindValues.ShouldBe(values);
+			c.OnChangeValue.ShouldBe(FormatValues(values));
+			c.OnInputValue.ShouldBe(FormatValues(values));
+		});
 	}
 
 	private void VerifySingleBindValue<T>(T value)
@@ -291,9 +294,12 @@ public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<Chan
 		cut.Find("#onChangeInput").Change(value);
 		cut.Find("#onInputInput").Input(value);
 
-		cut.Instance.BindValue.ShouldBeEquivalentTo(value);
-		cut.Instance.OnChangeValue.ShouldBeEquivalentTo(FormatValue(value));
-		cut.Instance.OnInputValue.ShouldBeEquivalentTo(FormatValue(value));
+		cut.AccessInstance(c =>
+		{
+			c.BindValue.ShouldBeEquivalentTo(value);
+			c.OnChangeValue.ShouldBeEquivalentTo(FormatValue(value));
+			c.OnInputValue.ShouldBeEquivalentTo(FormatValue(value));
+		});
 	}
 
 	private static object?[] FormatValues<T>(T[] values)

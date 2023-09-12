@@ -18,8 +18,7 @@ public class InstanceComponentFactoryTest : TestContext
 
 		var cut = Render<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
-		cut.FindComponent<Simple1>()
-			.Instance.ShouldBeSameAs(simple1Mock);
+		cut.FindComponent<Simple1>().AccessInstance(s => s.ShouldBeSameAs(simple1Mock));
 	}
 
 	[Fact(DisplayName = "Factory throws if component instance is requested twice for TComponent that inherits from ComponentBase")]
