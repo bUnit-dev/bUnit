@@ -67,3 +67,9 @@ The `TestContext` and `TestContextBase` classes have been merged into a single `
 ## `TestContext` implements `IDisposable` and `IAsyncDisposable`
 The `TestContext` now implements `IDisposable` and `IAsyncDisposable`. In version 1.x, `TestContext` only implemented `IDisposable` and cleaned up asynchronous objects in the synchronous `Dispose` method. This is no longer the case, and asynchronous objects are now cleaned up in the `DisposeAsync` method.
 If you register services into the container that implement `IAsyncDisposable` make sure that the test framework calls the right method.
+
+## Removed `IRenderedComponent<TComponent>.Instance`
+The `IRenderedComponent<TComponent>.Instance` property has been removed. If you used `Instance`, you should replace it with `IRenderedComponent<TComponent>.AccessInstance` method.
+
+## Removed `IRenderedFragment.InvokeAsync`
+With the introduction of `AccessInstance`, the direct call to `IRenderedFragment.InvokeAsync` has been removed.

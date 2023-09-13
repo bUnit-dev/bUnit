@@ -256,7 +256,7 @@ public class BunitRendererTest : TestContext
 	}
 
 	[Fact(DisplayName = "Rendered component updates on re-renders from child components with changes in render tree")]
-	public async Task Test050()
+	public void Test050()
 	{
 		// arrange
 		var sut = Services.GetRequiredService<BunitRenderer>();
@@ -266,7 +266,7 @@ public class BunitRendererTest : TestContext
 		var child = sut.FindComponent<RenderTrigger>(cut);
 
 		// act
-		await cut.InvokeAsync(() => child.AccessInstance(c => c.TriggerWithValue("X")));
+		child.AccessInstance(c => c.TriggerWithValue("X"));
 
 		// assert
 		cut.RenderCount.ShouldBe(2);

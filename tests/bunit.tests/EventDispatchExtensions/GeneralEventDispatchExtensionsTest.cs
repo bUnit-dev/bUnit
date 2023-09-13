@@ -312,7 +312,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		await cut.WaitForAssertionAsync(() => cut.Find("[data-id=1]"));
 
-		await cut.InvokeAsync(() => cut.Find("[data-id=1]").Click());
+		cut.Find("[data-id=1]").Click();
 
 		await cut.WaitForAssertionAsync(() => cut.Find("[data-id=2]"));
 	}
