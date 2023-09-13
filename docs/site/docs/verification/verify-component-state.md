@@ -5,7 +5,7 @@ title: Verifying the state of a component under test
 
 # Verifying the state of a component
 
-The instance of a component under test is available through the <xref:Bunit.IRenderedComponent`1.Instance> property on the <xref:Bunit.IRenderedComponent`1> type. When using the <xref:Bunit.TestContext>'s `Render<TComponent>()` method, this is the type returned.
+The instance of a component under test is available through the <xref:Bunit.IRenderedComponent`1.AccessInstance> method on the <xref:Bunit.IRenderedComponent`1> type. When using the <xref:Bunit.TestContext>'s `Render<TComponent>()` method, this is the type returned.
 
 In `.razor` based tests, using the <xref:Bunit.TestContext>'s <xref:Bunit.TestContext.Render``1(RenderFragment)> method also returns an <xref:Bunit.IRenderedComponent`1> (as opposed to the <xref:Bunit.TestContext.Render(RenderFragment)> method which returns the more simple <xref:Bunit.IRenderedFragment>).
 
@@ -14,18 +14,17 @@ In `.razor` based tests, using the <xref:Bunit.TestContext>'s <xref:Bunit.TestCo
 
 ## Inspecting the Component Under Test
 
-The <xref:Bunit.IRenderedComponent`1.Instance> property on the <xref:Bunit.IRenderedComponent`1> type provides access to the component under test. For example:
+The <xref:Bunit.IRenderedComponent`1.AccessInstance> method on the <xref:Bunit.IRenderedComponent`1> type provides access to the component under test. For example:
 
 ```csharp
 IRenderedComponent<Alert> cut = Render<Alert>();
 
-Alert alert = cut.Instance;
-
 // Assert against <Alert /> instance
+cut.AccessInstance(c => Assert.Equal(c.Message, "Foo"));
 ```
 
 > [!WARNING]
-> While it is possible to set `[Parameter]` and `[CascadingParameter]` properties directly through the <xref:Bunit.IRenderedComponent`1.Instance> property on the <xref:Bunit.IRenderedComponent`1> type, doing so does not implicitly trigger a render and the component life-cycle methods are not called. 
+> While it is possible to set `[Parameter]` and `[CascadingParameter]` properties directly through the <xref:Bunit.IRenderedComponent`1.AccessInstance> method on the <xref:Bunit.IRenderedComponent`1> type, doing so does not implicitly trigger a render and the component life-cycle methods are not called. 
 > 
 > The correct approach is to set parameters through the [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponent{``0},System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})) methods. See the <xref:trigger-renders> page for more on this.
 

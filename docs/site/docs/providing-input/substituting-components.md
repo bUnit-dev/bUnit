@@ -181,8 +181,8 @@ public void Foo_Doesnt_Have_A_Bar_But_Mock()
  
   // Verify that the Bar component has 
   // been substituted in the render tree
-  IRenderedComponent<Bar> bar = cut.FindComponent<Bar>();  
-  Assert.Same(barMock.Object, bar.Instance);
+  IRenderedComponent<Bar> bar = cut.FindComponent<Bar>();
+  bar.AccessInstance(c => Assert.Same(barMock.Object, c));
 }
 ```
 
@@ -204,7 +204,7 @@ public void Foo_Doesnt_Have_A_Bar_But_Mock()
   // Verify that the Bar component has 
   // been substituted in the render tree
   IRenderedComponent<Bar> bar = cut.FindComponent<Bar>();  
-  Assert.Same(barMock, bar.Instance);
+  bar.AccessInstance(c => Assert.Same(barMock.Object, c));
 }
 ```
 

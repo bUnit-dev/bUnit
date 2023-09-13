@@ -11,7 +11,7 @@ In `.razor` based tests, using the <xref:Bunit.TestContext>'s <xref:Bunit.TestCo
 
 If you have a <xref:Bunit.IRenderedFragment> or a <xref:Bunit.IRenderedComponent`1> in a test, but need a child component's <xref:Bunit.IRenderedComponent`1>, then use the `FindComponent<TComponent>()` or the `FindComponents<TComponent>()` methods, which traverse down the render tree and finds rendered components.
 
-With a <xref:Bunit.IRenderedComponent`1>, it is possible to cause the component to render again directly through the <xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponent{``0},System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})> method, or indirectly through the [`InvokeAsync()`](xref:Bunit.IRenderedFragment.Bunit.RenderedFragmentInvokeAsyncExtensions.InvokeAsync(Action)) method.
+With a <xref:Bunit.IRenderedComponent`1>, it is possible to cause the component to render again directly through the <xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponent{``0},System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})> method.
 
 Let's look at how to use each of these methods to cause a re-render.
 
@@ -36,24 +36,3 @@ The highlighted line shows the call to [`Render()`](xref:Bunit.RenderedComponent
 
 > [!NOTE]
 > Passing parameters to components through the [`Render(...)`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponent{``0},System.Nullable{Action{Bunit.ComponentParameterCollectionBuilder{``0}}})) methods is identical to doing it with the `Render<TComponent>(...)` methods, described in detail on the <xref:passing-parameters-to-components> page.
-
-## InvokeAsync
-
-Invoking methods on a component under test, which causes a render, e.g. by calling `StateHasChanged`, can result in the following error, if the caller is running on another thread than the renderer's thread:
-
-> The current thread is not associated with the Dispatcher. Use `InvokeAsync()` to switch execution to the Dispatcher when triggering rendering or component state.
-
-If you receive this error, you need to invoke your method inside an `Action` delegate passed to the `InvokeAsync()` method.
-
-Let’s look at an example of this, using the `<Calc>` component listed below:
-
-[!code-cshtml[Calc.razor](../../../samples/components/Calc.razor)]
-
-To invoke the `Calculate()` method on the component instance, do the following:
-
-[!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=47&end=53&highlight=5)]
-
-The highlighted line shows the call to `InvokeAsync()`, which is passed an `Action` delegate that calls the `Calculate` method.
-
-> [!TIP]
-> The instance of a component under test is available through the <xref:Bunit.IRenderedComponent`1.Instance> property.
