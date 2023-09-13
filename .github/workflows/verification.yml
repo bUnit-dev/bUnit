@@ -27,6 +27,7 @@ env:
 
 jobs:
   verify-bunit:
+    if: github.event.pull_request.draft == false
     name: 👌 Verify bUnit
     strategy:
       fail-fast: false
