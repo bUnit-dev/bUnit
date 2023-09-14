@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 
 namespace Bunit.Rendering;
@@ -7,13 +8,18 @@ namespace Bunit.Rendering;
 /// <summary>
 /// Represents a bUnit <see cref="ITestRenderer"/> used to render Blazor components and fragments during bUnit tests.
 /// </summary>
-[SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Blazors internal API has been stable for a while now.")]
 public class TestRenderer : Renderer, ITestRenderer
 {
+#if NET8_0_OR_GREATER
+	[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_isBatchInProgress")]
+	extern static ref bool GetIsBatchInProgressField(Renderer renderer);
+
+	[UnsafeAccessor(UnsafeAccessorKind.Method, Name = "SetDirectParameters")]
+	extern static void CallSetDirectParameters(ComponentState componentState, ParameterView parameters);
+#else
 	private static readonly Type RendererType = typeof(Renderer);
-	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;
-#if !NET8_0_OR_GREATER
 	private static readonly MethodInfo GetRequiredComponentStateMethod = RendererType.GetMethod("GetRequiredComponentState", BindingFlags.Instance | BindingFlags.NonPublic)!;
+	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;
 #endif
 
 	private readonly object renderTreeUpdateLock = new();
@@ -28,9 +34,23 @@ public class TestRenderer : Renderer, ITestRenderer
 	private bool IsBatchInProgress
 	{
 #pragma warning disable S1144 // Unused private types or members should be removed
-		get => (bool)(IsBatchInProgressField.GetValue(this) ?? false);
+		get
+		{
+#if NET8_0_OR_GREATER
+			return GetIsBatchInProgressField(this);
+#else
+			return (bool)(IsBatchInProgressField.GetValue(this) ?? false);
+#endif
+		}
 #pragma warning restore S1144 // Unused private types or members should be removed
-		set => IsBatchInProgressField.SetValue(this, value);
+		set
+		{
+#if NET8_0_OR_GREATER
+			GetIsBatchInProgressField(this) = value;
+#else
+			IsBatchInProgressField.SetValue(this, value);
+#endif
+		}
 	}
 
 	/// <inheritdoc/>
@@ -217,15 +237,7 @@ public class TestRenderer : Renderer, ITestRenderer
 			try
 			{
 				IsBatchInProgress = true;
-
-#if NET8_0_OR_GREATER
-				var setDirectParametersMethod = typeof(ComponentState).GetMethod("SetDirectParameters", BindingFlags.NonPublic | BindingFlags.Instance)!;
-				var componentState = GetComponentState(renderedComponent.ComponentId);
-#else
-				var componentState = GetRequiredComponentStateMethod.Invoke(this, new object[] { renderedComponent.ComponentId })!;
-				var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
-#endif
-				setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
+				SetDirectParametersViaComponentState(this, renderedComponent.ComponentId, parameters);
 			}
 			catch (TargetInvocationException ex) when (ex.InnerException is not null)
 			{
@@ -247,6 +259,21 @@ public class TestRenderer : Renderer, ITestRenderer
 		AssertNoUnhandledExceptions();
 
 		return result;
+
+#if NET8_0_OR_GREATER
+		static void SetDirectParametersViaComponentState(TestRenderer renderer, int componentId, in ParameterView parameters)
+		{
+			var componentState = renderer.GetComponentState(componentId);
+			CallSetDirectParameters(componentState, parameters);
+		}
+#else
+		static void SetDirectParametersViaComponentState(TestRenderer renderer, int componentId, in ParameterView parameters)
+		{
+			var componentState = GetRequiredComponentStateMethod.Invoke(renderer, new object[] { componentId })!;
+			var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
+			setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
+		}
+#endif
 	}
 
 	/// <inheritdoc/>
