@@ -177,8 +177,18 @@ public class DeterministicRenderTests : TestContext
 		cut.Find("button").Click();
 
 		cut.Find("p").TextContent.ShouldBe("43");
+	}
 
-		await cut.WaitForAssertionAsync(() => cut.Find("p").TextContent.ShouldBe("43"));
+	[Fact]
+	public async Task MyTestMethod2_x()
+	{
+		var tcs = new TaskCompletionSource<int>();
+		var cut = Render<LoadingClickCounter>(ps => ps.Add(p => p.DataProvider, tcs.Task));
+		tcs.SetResult(42);
+
+		cut.Find("button").Click();
+
+		cut.Find("p").TextContent.ShouldBe("43");
 	}
 
 	[Fact]
