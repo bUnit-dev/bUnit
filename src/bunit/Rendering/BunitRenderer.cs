@@ -37,7 +37,7 @@ public sealed class BunitRenderer : Renderer
 	public Task<Exception> UnhandledException => unhandledExceptionTsc.Task;
 
 	/// <inheritdoc/>
-	public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
+	public override Dispatcher Dispatcher { get; } = new BunitRendererSynchronizationContextDispatcher();
 
 	/// <summary>
 	/// Gets the number of render cycles that has been performed.

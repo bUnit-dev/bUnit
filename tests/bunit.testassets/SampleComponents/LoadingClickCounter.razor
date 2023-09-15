@@ -1,0 +1,15 @@
+<p>@Data</p>
+<button @onclick="() => Data++">Click</button>
+@code {
+    public int Data { get; set; }
+
+    [Parameter]
+    public Task<int> DataProvider { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await DataProvider;
+        await Task.Yield();
+        Data = result;
+    }
+}

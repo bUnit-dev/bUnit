@@ -1,3 +1,6 @@
+using System;
+using Xunit;
+
 namespace Bunit.Rendering;
 
 public class DeterministicRenderTests : TestContext
@@ -157,6 +160,38 @@ public class DeterministicRenderTests : TestContext
 		await cut.WaitForAssertionAsync(() => cut.Find("p").TextContent.ShouldNotBe("1"));
 
 		cut.Find("p").TextContent.ShouldBe("2");
+	}
+
+	[Fact]
+	public async Task MyTestMethod2()
+	{
+		var tcs = new TaskCompletionSource<int>();
+		var cut = Render<LoadingClickCounter>(ps => ps.Add(p => p.DataProvider, tcs.Task));
+
+		tcs.SetResult(42);
+
+		await cut.WaitForAssertionAsync(() => cut.Find("p").TextContent.ShouldBe("42"));
+
+		//cut.Find("p").TextContent.ShouldBe("0");
+
+		cut.Find("button").Click();
+
+		cut.Find("p").TextContent.ShouldBe("43");
+
+		await cut.WaitForAssertionAsync(() => cut.Find("p").TextContent.ShouldBe("43"));
+	}
+
+	[Fact]
+	public void MyTestMethod()
+	{
+		//var tcs = new TaskCompletionSource<int>();
+		var cut = Render<LoadingClickCounter>(ps => ps.Add(p => p.DataProvider, Task.Delay(10000).ContinueWith(x => 1)));
+
+		cut.Find("p").TextContent.ShouldBe("0");
+
+		cut.Find("button").Click();
+
+		cut.Find("p").TextContent.ShouldBe("1");
 	}
 
 	private sealed class RenderOnDemandComponent : IComponent
