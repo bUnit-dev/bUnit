@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace Bunit.Rendering;
 
-/// <inheritdoc/>
+/// <inheritdoc cref="IRenderedComponent{TComponent}" />
 [DebuggerDisplay("Component={typeof(TComponent).Name,nq},RenderCount={RenderCount}")]
 internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent>
 	where TComponent : IComponent
@@ -18,9 +18,6 @@ internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRendere
 			return instance ?? throw new InvalidOperationException("Component has not rendered yet...");
 		}
 	}
-
-	internal RenderedComponent(int componentId, IServiceProvider services)
-		: base(componentId, services) { }
 
 	internal RenderedComponent(int componentId, TComponent instance, RenderTreeFrameDictionary componentFrames, IServiceProvider services)
 		: base(componentId, services)

@@ -42,6 +42,7 @@ internal class RenderedFragment : IRenderedFragment
 	public int RenderCount { get; protected set; }
 
 	/// <inheritdoc/>
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 	public INodeList Nodes
 	{
 		get
