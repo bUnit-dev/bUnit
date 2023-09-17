@@ -1,3 +1,5 @@
+using Bunit.Rendering;
+
 namespace Bunit.Extensions.WaitForHelpers;
 
 /// <summary>
@@ -29,7 +31,7 @@ public class WaitForStateHelper : WaitForHelper<object?>
 	/// <param name="statePredicate">The predicate to invoke after each render, which must returns <c>true</c> when the desired state has been reached.</param>
 	/// <param name="timeout">The maximum time to wait for the desired state.</param>
 	/// <exception cref="WaitForFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
-	public WaitForStateHelper(IRenderedFragment renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
+	public WaitForStateHelper(RenderedFragment renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
 		: base(renderedFragment, () => (statePredicate(), default), timeout)
 	{
 	}

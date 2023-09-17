@@ -43,7 +43,7 @@ public abstract class TestContextWrapper
 	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 	/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered.</param>
 	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual IRenderedComponent<TComponent> Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
+	public virtual RenderedComponent<TComponent> Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
 		where TComponent : IComponent
 		=> TestContext?.Render<TComponent>(parameterBuilder) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 
@@ -55,17 +55,17 @@ public abstract class TestContextWrapper
 	/// </remarks>
 	/// <typeparam name="TComponent">The type of component to find in the render tree.</typeparam>
 	/// <param name="renderFragment">The render fragment to render.</param>
-	/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
-	public virtual IRenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
+	/// <returns>The <see cref="RenderedComponent{TComponent}"/>.</returns>
+	public virtual RenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
 		=> TestContext?.Render<TComponent>(renderFragment) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 
 	/// <summary>
-	/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="IRenderedFragment"/>.
+	/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="RenderedFragment"/>.
 	/// </summary>
 	/// <param name="renderFragment">The render fragment to render.</param>
-	/// <returns>The <see cref="IRenderedFragment"/>.</returns>
-	public virtual IRenderedFragment Render(RenderFragment renderFragment)
+	/// <returns>The <see cref="RenderedFragment"/>.</returns>
+	public virtual RenderedFragment Render(RenderFragment renderFragment)
 		=> TestContext?.Render(renderFragment) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 
 	/// <summary>

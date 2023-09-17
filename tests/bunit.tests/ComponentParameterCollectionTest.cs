@@ -1,8 +1,10 @@
+using Bunit.Rendering;
+
 namespace Bunit;
 
 public class ComponentParameterCollectionTest : TestContext
 {
-	private IRenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
+	private RenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
 	{
 		var res = Renderer.RenderFragment(renderFragment);
 		return res.FindComponent<Params>();

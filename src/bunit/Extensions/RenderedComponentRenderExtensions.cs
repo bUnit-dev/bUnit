@@ -4,7 +4,7 @@ using System.Runtime.ExceptionServices;
 namespace Bunit;
 
 /// <summary>
-/// Re-render extension methods, optionally with new parameters, for <see cref="IRenderedComponent{TComponent}"/>.
+/// Re-render extension methods, optionally with new parameters, for <see cref="RenderedComponent{TComponent}"/>.
 /// </summary>
 public static class RenderedComponentRenderExtensions
 {
@@ -14,7 +14,7 @@ public static class RenderedComponentRenderExtensions
 	/// <param name="renderedComponent">The rendered component to re-render with new parameters.</param>
 	/// <param name="parameters">Parameters to pass to the component upon rendered.</param>
 	/// <typeparam name="TComponent">The type of the component.</typeparam>
-	public static void Render<TComponent>(this IRenderedComponent<TComponent> renderedComponent, ParameterView parameters)
+	public static void Render<TComponent>(this RenderedComponent<TComponent> renderedComponent, ParameterView parameters)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(renderedComponent);
@@ -42,7 +42,7 @@ public static class RenderedComponentRenderExtensions
 	/// <param name="renderedComponent">The rendered component to re-render with new parameters.</param>
 	/// <param name="parameterBuilder">An action that receives a <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</param>
 	/// <typeparam name="TComponent">The type of the component.</typeparam>
-	public static void Render<TComponent>(this IRenderedComponent<TComponent> renderedComponent, Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
+	public static void Render<TComponent>(this RenderedComponent<TComponent> renderedComponent, Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(renderedComponent);
