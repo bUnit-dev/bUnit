@@ -1,5 +1,4 @@
 using Bunit.Extensions;
-using Xunit.Abstractions;
 
 namespace Bunit.Rendering;
 

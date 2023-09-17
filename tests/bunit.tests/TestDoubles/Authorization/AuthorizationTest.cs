@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using Xunit.Abstractions;
 
 namespace Bunit.TestDoubles.Authorization;
 

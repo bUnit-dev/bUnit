@@ -1,5 +1,4 @@
 using Bunit.Rendering;
-using Xunit.Sdk;
 
 namespace Bunit.TestUtilities;
 

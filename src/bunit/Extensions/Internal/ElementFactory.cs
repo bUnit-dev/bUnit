@@ -1,5 +1,4 @@
 using AngleSharp.Dom;
-using Bunit.Rendering;
 
 namespace Bunit;
 

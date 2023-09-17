@@ -1,5 +1,4 @@
 using AngleSharp.Dom;
-using Xunit.Abstractions;
 
 namespace Bunit;
 

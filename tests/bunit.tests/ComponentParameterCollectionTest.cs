@@ -1,5 +1,3 @@
-using Bunit.Rendering;
-
 namespace Bunit;
 
 public class ComponentParameterCollectionTest : TestContext

@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Bunit.Rendering;
 
 namespace Bunit;
 

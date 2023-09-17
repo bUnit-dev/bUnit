@@ -1,5 +1,3 @@
-using Xunit.Abstractions;
-
 namespace Bunit.TestDoubles;
 
 public class BunitPersistentComponentStateTest : TestContext

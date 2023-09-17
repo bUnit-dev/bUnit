@@ -1,8 +1,6 @@
-using System.Runtime.ExceptionServices;
 using AngleSharp.Dom;
 using Bunit.Asserting;
 using Bunit.Extensions.WaitForHelpers;
-using Bunit.Rendering;
 
 namespace Bunit;
 
