@@ -37,12 +37,12 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		EventCallbackCalled.ShouldBeTrue();
 	}
 
-	private IRenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
+	private RenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
 	{
 		return Renderer.RenderFragment(renderFragment);
 	}
 
-	private IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
+	private RenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
 	{
 		var res = Renderer.RenderFragment(renderFragment);

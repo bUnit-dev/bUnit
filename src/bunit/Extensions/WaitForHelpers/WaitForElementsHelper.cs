@@ -20,7 +20,7 @@ internal class WaitForElementsHelper : WaitForHelper<IRefreshableElementCollecti
 	/// <inheritdoc/>
 	protected override bool StopWaitingOnCheckException => true;
 
-	public WaitForElementsHelper(IRenderedFragment renderedFragment, string cssSelector, int? matchElementCount, TimeSpan? timeout = null)
+	public WaitForElementsHelper(RenderedFragment renderedFragment, string cssSelector, int? matchElementCount, TimeSpan? timeout = null)
 		: base(renderedFragment, () =>
 		{
 			var elements = renderedFragment.FindAll(cssSelector);

@@ -7,11 +7,11 @@ using AngleSharpWrappers;
 internal sealed class ElementFactory<TElement> : IElementFactory<TElement>
 	where TElement : class, IElement
 {
-	private readonly IRenderedFragment testTarget;
+	private readonly RenderedFragment testTarget;
 	private readonly string cssSelector;
 	private TElement? element;
 
-	public ElementFactory(IRenderedFragment testTarget, TElement initialElement, string cssSelector)
+	public ElementFactory(RenderedFragment testTarget, TElement initialElement, string cssSelector)
 	{
 		this.testTarget = testTarget;
 		this.cssSelector = cssSelector;

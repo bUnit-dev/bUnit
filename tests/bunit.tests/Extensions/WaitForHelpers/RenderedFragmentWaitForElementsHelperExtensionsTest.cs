@@ -1,5 +1,4 @@
 using System.Globalization;
-using Xunit.Abstractions;
 
 namespace Bunit.Extensions.WaitForHelpers;
 

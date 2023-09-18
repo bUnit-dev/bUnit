@@ -19,8 +19,8 @@ public class CompareToDiffingExtensionsTest : TestContext
 		{
 			var p1Info = method.GetParameters()[0];
 			var p2Info = method.GetParameters()[1];
-			object p1 = p1Info.ParameterType.ToMockInstance();
-			object p2 = p2Info.ParameterType.ToMockInstance();
+			var p1 = p1Info.ParameterType.ToMockInstance();
+			var p2 = p2Info.ParameterType.ToMockInstance();
 
 			yield return new object[] { method, p1Info.Name!, new[] { null!, p2! } };
 			yield return new object[] { method, p2Info.Name!, new[] { p1!, null! } };

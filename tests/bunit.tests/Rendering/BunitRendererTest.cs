@@ -1,5 +1,4 @@
 using Bunit.Extensions;
-using Xunit.Abstractions;
 
 namespace Bunit.Rendering;
 
@@ -181,7 +180,7 @@ public class BunitRendererTest : TestContext
 
 		// act
 		var childCuts = sut.FindComponents<HasParams>(cut)
-			.OfType<IRenderedComponent<HasParams>>()
+			.OfType<RenderedComponent<HasParams>>()
 			.ToArray();
 
 		// assert

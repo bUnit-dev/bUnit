@@ -11,7 +11,7 @@ public sealed class BunitRenderer : Renderer
 {
 	private static readonly Type RendererType = typeof(Renderer);
 	[SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Accesses internal method to mimic the behavior of the Blazor renderer.")]
-	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;private readonly Dictionary<int, IRenderedFragment> renderedComponents = new();
+	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;private readonly Dictionary<int, RenderedFragment> renderedComponents = new();
 	private readonly List<int> rootComponentIds = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private readonly TestServiceProvider services;
@@ -70,8 +70,8 @@ public sealed class BunitRenderer : Renderer
 	/// Renders the <paramref name="renderFragment"/>.
 	/// </summary>
 	/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
-	/// <returns>A <see cref="IRenderedFragment"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
-	public IRenderedFragment RenderFragment(RenderFragment renderFragment)
+	/// <returns>A <see cref="RenderedFragment"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
+	public RenderedFragment RenderFragment(RenderFragment renderFragment)
 		=> Render(renderFragment);
 
 	/// <summary>
@@ -146,7 +146,7 @@ public sealed class BunitRenderer : Renderer
 	/// </summary>
 	/// <typeparam name="TComponent">Type of component to find.</typeparam>
 	/// <param name="parentComponent">Parent component to search.</param>
-	public IRenderedComponent<TComponent> FindComponent<TComponent>(IRenderedFragment parentComponent)
+	public RenderedComponent<TComponent> FindComponent<TComponent>(RenderedFragment parentComponent)
 		where TComponent : IComponent
 		=> FindComponentsInternal<TComponent>(parentComponent).FirstOrDefault() ?? throw new ComponentNotFoundException(typeof(TComponent));
 
@@ -155,7 +155,7 @@ public sealed class BunitRenderer : Renderer
 	/// </summary>
 	/// <typeparam name="TComponent">Type of components to find.</typeparam>
 	/// <param name="parentComponent">Parent component to search.</param>
-	public IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragment parentComponent)
+	public IReadOnlyList<RenderedComponent<TComponent>> FindComponents<TComponent>(RenderedFragment parentComponent)
 		where TComponent : IComponent
 		=> FindComponentsInternal<TComponent>(parentComponent).ToList();
 
@@ -231,7 +231,7 @@ public sealed class BunitRenderer : Renderer
 	}
 
 	[SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Accesses private method in this type.")]
-	internal Task SetDirectParametersAsync(IRenderedFragment renderedComponent, ParameterView parameters)
+	internal Task SetDirectParametersAsync(RenderedFragment renderedComponent, ParameterView parameters)
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
@@ -457,7 +457,7 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	private IRenderedFragment Render(RenderFragment renderFragment)
+	private RenderedFragment Render(RenderFragment renderFragment)
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
@@ -475,7 +475,7 @@ public sealed class BunitRenderer : Renderer
 			return result;
 		});
 
-		IRenderedFragment result;
+		RenderedFragment result;
 
 		if (!renderTask.IsCompleted)
 		{
@@ -495,7 +495,7 @@ public sealed class BunitRenderer : Renderer
 		return result;
 	}
 
-	private IEnumerable<IRenderedComponent<TComponent>> FindComponentsInternal<TComponent>(IRenderedFragment parentComponent)
+	private IEnumerable<RenderedComponent<TComponent>> FindComponentsInternal<TComponent>(RenderedFragment parentComponent)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(parentComponent);
@@ -505,7 +505,7 @@ public sealed class BunitRenderer : Renderer
 
 		return FindComponentsInRenderTree(parentComponent.ComponentId);
 
-		IEnumerable<IRenderedComponent<TComponent>> FindComponentsInRenderTree(int componentId)
+		IEnumerable<RenderedComponent<TComponent>> FindComponentsInRenderTree(int componentId)
 		{
 			var frames = GetOrLoadRenderTreeFrame(framesCollection, componentId);
 
@@ -528,12 +528,12 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	IRenderedComponent<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
+	private RenderedComponent<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
 		where TComponent : IComponent
 	{
 		if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
 		{
-			return (IRenderedComponent<TComponent>)renderedComponent;
+			return (RenderedComponent<TComponent>)renderedComponent;
 		}
 
 		LoadRenderTreeFrames(componentId, framesCollection);

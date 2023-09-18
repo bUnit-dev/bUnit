@@ -7,7 +7,7 @@ namespace Bunit;
 
 internal static class ElementWrapperFactory
 {
-	public static IElement Create(IElement element, IRenderedFragment renderedFragment, string cssSelector)
+	public static IElement Create(IElement element, RenderedFragment renderedFragment, string cssSelector)
 	{
 		return element switch
 		{

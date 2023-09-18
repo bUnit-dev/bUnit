@@ -60,7 +60,7 @@ public class InputFileTests : TestContext
 	[Fact(DisplayName = "UploadFile throws exception when InputFile is null")]
 	public void Test004()
 	{
-		Action action = () => ((IRenderedComponent<InputFile>)null).UploadFiles();
+		Action action = () => ((RenderedComponent<InputFile>)null).UploadFiles();
 
 		action.ShouldThrow<ArgumentNullException>();
 	}
