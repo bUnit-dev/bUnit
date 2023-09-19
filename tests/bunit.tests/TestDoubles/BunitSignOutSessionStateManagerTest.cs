@@ -16,12 +16,12 @@ public class BunitSignOutSessionStateManagerTest : TestContext
 	}
 
 	[Fact]
-	public void ShouldReturnSignOutStateOnValidateSignOutState()
+	public async Task ShouldReturnSignOutStateOnValidateSignOutState()
 	{
 		var cut = new BunitSignOutSessionStateManager(Substitute.For<IJSRuntime>());
-		cut.SetSignOutState();
+		await cut.SetSignOutState();
 
-		var wasValidate = cut.ValidateSignOutState().Result;
+		var wasValidate = await cut.ValidateSignOutState();
 
 		wasValidate.ShouldBeTrue();
 		cut.IsSignedOut.ShouldBeFalse();
