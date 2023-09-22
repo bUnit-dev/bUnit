@@ -152,7 +152,6 @@ public abstract class WaitForHelper<T> : IDisposable
 			}
 			else
 			{
-				renderer.AllowOneRenderCycle();
 				logger.LogCheckFailed(renderedFragment.ComponentId);
 			}
 		}
@@ -174,7 +173,6 @@ public abstract class WaitForHelper<T> : IDisposable
 				Dispose();
 			}
 
-			renderer.AllowOneRenderCycle();
 		}
 	}
 

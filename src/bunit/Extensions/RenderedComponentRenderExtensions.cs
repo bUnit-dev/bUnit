@@ -21,7 +21,7 @@ public static class RenderedComponentRenderExtensions
 
 		var renderer = renderedComponent.Services.GetRequiredService<BunitRenderer>();
 
-		var result = renderer.EnableUnblockedRendering(() => renderer.SetDirectParametersAsync(renderedComponent, parameters));
+		var result = renderer.SetDirectParametersAsync(renderedComponent, parameters);
 
 		if (result.IsFaulted && result.Exception is not null)
 		{

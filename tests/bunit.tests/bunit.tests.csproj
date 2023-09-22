@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
+		<RootNamespace>Bunit</RootNamespace>
         <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\bunit\bunit.csproj" />
+        <ProjectReference Include="..\..\src\bunit\Bunit.csproj" />
         <ProjectReference Include="..\bunit.testassets\bunit.testassets.csproj" />
     </ItemGroup>
 

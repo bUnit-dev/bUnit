@@ -11,12 +11,10 @@ public sealed class BunitRenderer : Renderer
 {
 	private static readonly Type RendererType = typeof(Renderer);
 	[SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Accesses internal method to mimic the behavior of the Blazor renderer.")]
-	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;private readonly Dictionary<int, RenderedFragment> renderedComponents = new();
+	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!; private readonly Dictionary<int, IRenderedFragment> renderedComponents = new();
 	private readonly List<int> rootComponentIds = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private readonly TestServiceProvider services;
-	private readonly ManualResetEventSlim renderBlocker = new(initialState: true);
-	private readonly object renderCycleLock = new();
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
 	private bool disposed;
@@ -106,7 +104,6 @@ public sealed class BunitRenderer : Renderer
 
 		var result = Dispatcher.InvokeAsync(() =>
 		{
-			UnblockRendering();
 			ResetUnhandledException();
 
 			try
@@ -114,8 +111,8 @@ public sealed class BunitRenderer : Renderer
 				return base.DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs);
 			}
 			catch (ArgumentException ex) when (string.Equals(ex.Message,
-				                                   $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')",
-				                                   StringComparison.Ordinal))
+												   $"There is no event handler associated with this event. EventId: '{eventHandlerId}'. (Parameter 'eventHandlerId')",
+												   StringComparison.Ordinal))
 			{
 				if (ignoreUnknownEventHandlers)
 				{
@@ -124,10 +121,6 @@ public sealed class BunitRenderer : Renderer
 
 				var betterExceptionMsg = new UnknownEventHandlerIdException(eventHandlerId, fieldInfo, ex);
 				return Task.FromException(betterExceptionMsg);
-			}
-			finally
-			{
-				BlockRendering();
 			}
 		});
 
@@ -174,60 +167,14 @@ public sealed class BunitRenderer : Renderer
 		{
 			ResetUnhandledException();
 
-			UnblockRendering();
 			foreach (var root in rootComponentIds)
 			{
 				RemoveRootComponent(root);
 			}
-
-			BlockRendering();
 		});
 
 		rootComponentIds.Clear();
 		AssertNoUnhandledExceptions();
-	}
-
-	/// <summary>
-	/// Prepares the renderer for a new asynchronous render operation.
-	/// </summary>
-	internal void UnblockRendering() => renderBlocker.Set();
-
-	internal void AllowOneRenderCycle()
-	{
-		// Normally UnblockRendering will be called inside the Dispatcher
-		// so we don't have to deal with concurrency issues. But here we can't as
-		// the average case is that the Renderer is currently "locked" by the renderBlocker, so we go into a deadlock
-		// To prevent concurrency issues, we introduce this "defensive" lock.
-		//
-		// In WaitForHelpers we allow one render cycle which triggers the OnRender event of the component
-		// This will trigger another check inside the WaitForHelpers.
-		// The WaitForHelper and the Renderer are in different threads, leading to concurrency issues.
-		lock (renderCycleLock)
-		{
-			blockRenderer = true;
-			UnblockRendering();
-		}
-	}
-
-	internal void EnableUnblockedRendering(Action act)
-	{
-		Dispatcher.InvokeAsync(() =>
-		{
-			UnblockRendering();
-			act();
-			BlockRendering();
-		});
-	}
-
-	internal Task<T> EnableUnblockedRendering<T>(Func<T> act)
-	{
-		return Dispatcher.InvokeAsync(() =>
-		{
-			UnblockRendering();
-			var result = act();
-			BlockRendering();
-			return result;
-		});
 	}
 
 	[SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Accesses private method in this type.")]
@@ -276,14 +223,6 @@ public sealed class BunitRenderer : Renderer
 			return;
 		}
 
-		renderBlocker.Wait();
-
-		if (disposed)
-		{
-			logger.LogRenderCycleActiveAfterDispose();
-			return;
-		}
-
 		base.ProcessPendingRender();
 	}
 
@@ -293,26 +232,10 @@ public sealed class BunitRenderer : Renderer
 		if (disposed)
 			return Task.CompletedTask;
 
-		renderBlocker.Wait();
-
-		if (disposed)
-			return Task.CompletedTask;
-
-		BlockNextRenderCycle();
-
 		var renderEvent = new RenderEvent();
 		PrepareRenderEvent(renderBatch);
 		ApplyRenderEvent(renderEvent);
 		return Task.CompletedTask;
-
-		void BlockNextRenderCycle()
-		{
-			if (blockRenderer)
-			{
-				BlockRendering();
-				blockRenderer = false;
-			}
-		}
 
 		void PrepareRenderEvent(in RenderBatch renderBatch)
 		{
@@ -395,7 +318,6 @@ public sealed class BunitRenderer : Renderer
 		if(disposed)
 			return;
 
-		BlockRendering();
 		disposed = true;
 
 		if (disposing)
@@ -409,13 +331,8 @@ public sealed class BunitRenderer : Renderer
 			unhandledExceptionTsc.TrySetCanceled();
 		}
 
-		UnblockRendering();
-		renderBlocker.Dispose();
-
 		base.Dispose(disposing);
 	}
-
-	private void BlockRendering() => renderBlocker.Reset();
 
 	private void ApplyRenderEvent(RenderEvent renderEvent)
 	{
@@ -463,7 +380,6 @@ public sealed class BunitRenderer : Renderer
 
 		var renderTask = Dispatcher.InvokeAsync(() =>
 		{
-			UnblockRendering();
 			ResetUnhandledException();
 
 			var root = new RootComponent(renderFragment);
@@ -490,7 +406,6 @@ public sealed class BunitRenderer : Renderer
 		logger.LogInitialRenderCompleted(result.ComponentId);
 
 		AssertNoUnhandledExceptions();
-		BlockRendering();
 
 		return result;
 	}

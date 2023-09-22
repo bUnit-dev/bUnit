@@ -18,7 +18,6 @@ public static class RenderedFragmentInvokeAsyncExtensions
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 
 		var renderer = renderedFragment.Services.GetRequiredService<BunitRenderer>();
-		renderer.UnblockRendering();
 		return renderer.Dispatcher.InvokeAsync(workItem);
 	}
 
@@ -33,7 +32,6 @@ public static class RenderedFragmentInvokeAsyncExtensions
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 
 		var renderer = renderedFragment.Services.GetRequiredService<BunitRenderer>();
-		renderer.UnblockRendering();
 		return renderer.Dispatcher.InvokeAsync(workItem);
 	}
 }

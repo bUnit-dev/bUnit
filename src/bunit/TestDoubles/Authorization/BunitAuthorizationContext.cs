@@ -79,7 +79,7 @@ public class BunitAuthorizationContext
 		IsAuthenticated = true;
 		UserName = userName;
 
-		Renderer.EnableUnblockedRendering(() => authProvider.TriggerAuthenticationStateChanged(userName, Roles, Claims));
+		authProvider.TriggerAuthenticationStateChanged(userName, Roles, Claims);
 
 		State = state;
 		authService.SetAuthorizationState(state);
@@ -99,7 +99,7 @@ public class BunitAuthorizationContext
 		authProvider.TriggerAuthorizingStateChanged();
 
 		State = AuthorizationState.Authorizing;
-		Renderer.EnableUnblockedRendering(() => authService.SetAuthorizationState(AuthorizationState.Authorizing));
+		authService.SetAuthorizationState(AuthorizationState.Authorizing);
 
 		return this;
 	}
@@ -112,7 +112,7 @@ public class BunitAuthorizationContext
 		IsAuthenticated = false;
 		Roles = Array.Empty<string>();
 
-		Renderer.EnableUnblockedRendering(() => authProvider.TriggerUnauthenticationStateChanged());
+		authProvider.TriggerUnauthenticationStateChanged();
 
 		State = AuthorizationState.Unauthorized;
 		authService.SetAuthorizationState(AuthorizationState.Unauthorized);
@@ -128,7 +128,7 @@ public class BunitAuthorizationContext
 	{
 		Roles = roles;
 		authService.SetRoles(Roles);
-		Renderer.EnableUnblockedRendering(() => authProvider.TriggerAuthenticationStateChanged(UserName, Roles));
+		authProvider.TriggerAuthenticationStateChanged(UserName, Roles);
 
 		return this;
 	}
@@ -153,7 +153,7 @@ public class BunitAuthorizationContext
 	public BunitAuthorizationContext SetClaims(params Claim[] claims)
 	{
 		Claims = claims;
-		Renderer.EnableUnblockedRendering(() => authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims));
+		authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims);
 
 		return this;
 	}
@@ -164,7 +164,7 @@ public class BunitAuthorizationContext
 	/// <param name="authenticationType">The authentication type to set.</param>
 	public BunitAuthorizationContext SetAuthenticationType(string authenticationType)
 	{
-		Renderer.EnableUnblockedRendering(() =>authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims, authenticationType));
+		authProvider.TriggerAuthenticationStateChanged(UserName, Roles, Claims, authenticationType);
 		return this;
 	}
 }
