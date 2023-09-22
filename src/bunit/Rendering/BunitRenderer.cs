@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using System.Runtime.ExceptionServices;
+using Microsoft.AspNetCore.Components;
 
 namespace Bunit.Rendering;
 
@@ -15,10 +16,12 @@ public sealed class BunitRenderer : Renderer
 	private readonly List<int> rootComponentIds = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private readonly TestServiceProvider services;
-	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
-	private Exception? capturedUnhandledException;
+	private readonly BunitRendererSynchronizationContextDispatcher dispatcher = new();
+	private readonly object lockObject = new();
 	private bool disposed;
-	private bool blockRenderer;
+	private Exception? capturedUnhandledException;
+	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
+	private TaskCompletionSource renderBlocker = new TaskCompletionSource();
 
 	private bool IsBatchInProgress
 	{
@@ -35,7 +38,7 @@ public sealed class BunitRenderer : Renderer
 	public Task<Exception> UnhandledException => unhandledExceptionTsc.Task;
 
 	/// <inheritdoc/>
-	public override Dispatcher Dispatcher { get; } = Dispatcher.CreateDefault();
+	public override Dispatcher Dispatcher => dispatcher;
 
 	/// <summary>
 	/// Gets the number of render cycles that has been performed.
@@ -315,13 +318,16 @@ public sealed class BunitRenderer : Renderer
 	/// <inheritdoc/>
 	protected override void Dispose(bool disposing)
 	{
-		if(disposed)
+		if (disposed)
 			return;
 
 		disposed = true;
 
+
 		if (disposing)
 		{
+			renderBlocker.SetResult();
+
 			foreach (var rc in renderedComponents.Values)
 			{
 				rc.Dispose();
@@ -378,7 +384,7 @@ public sealed class BunitRenderer : Renderer
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
-		var renderTask = Dispatcher.InvokeAsync(() =>
+		var result = EnqueueAndRun(() =>
 		{
 			ResetUnhandledException();
 
@@ -391,21 +397,7 @@ public sealed class BunitRenderer : Renderer
 			return result;
 		});
 
-		RenderedFragment result;
-
-		if (!renderTask.IsCompleted)
-		{
-			logger.LogAsyncInitialRender();
-			result = renderTask.GetAwaiter().GetResult();
-		}
-		else
-		{
-			result = renderTask.Result;
-		}
-
 		logger.LogInitialRenderCompleted(result.ComponentId);
-
-		AssertNoUnhandledExceptions();
 
 		return result;
 	}
@@ -530,6 +522,40 @@ public sealed class BunitRenderer : Renderer
 			{
 				ExceptionDispatchInfo.Capture(unhandled).Throw();
 			}
+		}
+	}
+
+	internal void EnqueueAndRun(Action action)
+	{
+		lock (lockObject)
+		{
+			var existingBlocker = renderBlocker;
+			renderBlocker = new();
+
+			var actionResult = dispatcher.InvokeThenBlock(action, renderBlocker.Task);
+
+			existingBlocker.SetResult();
+
+			AssertNoUnhandledExceptions();
+
+			actionResult.GetAwaiter().GetResult();
+		}
+	}
+
+	internal TResult EnqueueAndRun<TResult>(Func<TResult> action)
+	{
+		lock (lockObject)
+		{
+			var existingBlocker = renderBlocker;
+			renderBlocker = new();
+
+			var actionResult = dispatcher.InvokeThenBlock(action, renderBlocker.Task);
+
+			existingBlocker.SetResult();
+
+			AssertNoUnhandledExceptions();
+
+			return actionResult.GetAwaiter().GetResult();
 		}
 	}
 }
