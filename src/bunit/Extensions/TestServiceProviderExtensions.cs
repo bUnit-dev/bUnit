@@ -23,6 +23,8 @@ public static class TestServiceProviderExtensions
 		ArgumentNullException.ThrowIfNull(testContext);
 		ArgumentNullException.ThrowIfNull(jsInterop);
 
+		services.AddSingleton<TimeProvider>(TimeProvider.System);
+
 		// Placeholders and defaults for common Blazor services
 		services.AddLogging();
 		services.AddSingleton<AuthenticationStateProvider, PlaceholderAuthenticationStateProvider>();
