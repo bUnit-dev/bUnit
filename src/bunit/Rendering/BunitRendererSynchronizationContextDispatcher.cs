@@ -1,62 +1,210 @@
+using System.Diagnostics;
+
 namespace Bunit.Rendering;
 
 internal class BunitRendererSynchronizationContextDispatcher : Dispatcher
 {
+	private readonly object bulkheadsLock = new();
 	private readonly BunitRendererSynchronizationContext context;
+	private readonly Queue<TaskCompletionSource> workItemBulkheads = new();
+	private Func<bool>? isReadyForDispatch;
+	private Action? onAfterDispatchCompleted;
+	private Action<Exception>? onDispatchException;
+
+	private Task CreateBulkhead()
+	{
+		lock (bulkheadsLock)
+		{
+			if (isReadyForDispatch is not null && isReadyForDispatch())
+			{
+				return Task.CompletedTask;
+			}
+			else
+			{
+				var tcs = new TaskCompletionSource();
+				workItemBulkheads.Enqueue(tcs);
+				return tcs.Task;
+			}
+		}
+	}
+
+	public int BulkheadCount => workItemBulkheads.Count;
 
 	public BunitRendererSynchronizationContextDispatcher()
 	{
-		context = new BunitRendererSynchronizationContext();
+		// pass in a dummy bulkhead to ensure the sync context doesn't executes
+		// workitems immediately if its taskQueue is completed.
+		context = new BunitRendererSynchronizationContext(CreateBulkhead());
 		context.UnhandledException += (sender, e) =>
 		{
+			if (e.ExceptionObject is Exception ex)
+				onDispatchException?.Invoke(ex);
+
 			OnUnhandledException(e);
 		};
 	}
 
+	public void Subscribe(
+		Func<bool> isReadyForDispatch,
+		Action onAfterDispatchCompleted,
+		Action<Exception> onDispatchException)
+	{
+		lock (bulkheadsLock)
+		{
+			this.isReadyForDispatch += isReadyForDispatch;
+			this.onAfterDispatchCompleted += onAfterDispatchCompleted;
+			this.onDispatchException += onDispatchException;
+
+			// proceed to dequeue any existing bulkheads until.
+			while (this.isReadyForDispatch() && workItemBulkheads.TryDequeue(out var tcs))
+			{
+				tcs.SetResult();
+			}
+		}
+	}
+
+	public void Unsubscribe(
+		Func<bool> isReadyForDispatch,
+		Action onAfterDispatchCompleted,
+		Action<Exception> onDispatchException)
+	{
+		lock (bulkheadsLock)
+		{
+			this.isReadyForDispatch -= isReadyForDispatch;
+			this.onAfterDispatchCompleted -= onAfterDispatchCompleted;
+			this.onDispatchException -= onDispatchException;
+		}
+	}
+
+	public Task ReleaseAllAndInvoke(Action workItem)
+	{
+		lock (bulkheadsLock)
+		{
+			var result = InvokeAsync(workItem);
+
+			// because the lock prevents additional bulkheads from
+			// being added to the queue, we can safely assume that
+			// the workItem passed to this method is the last item
+			// in the queue and we can release all bulkheads.
+			while (workItemBulkheads.TryDequeue(out var tcs))
+			{
+				tcs.SetResult();
+			}
+
+			return result;
+		}
+	}
+
+	public Task<TResult> ReleaseAllAndInvoke<TResult>(Func<TResult> workItem)
+	{
+		lock (bulkheadsLock)
+		{
+			var result = InvokeAsync(workItem);
+
+			while (workItemBulkheads.TryDequeue(out var tcs))
+			{
+				tcs.SetResult();
+			}
+
+			return result;
+		}
+	}
+
 	public override bool CheckAccess() => SynchronizationContext.Current == context;
-
-	internal Task InvokeThenBlock(Action workItem, Task block) => context.InvokeThenBlock(workItem, block);
-
-	internal Task<TResult> InvokeThenBlock<TResult>(Func<TResult> workItem, Task block) => context.InvokeThenBlock(workItem, block);
 
 	public override Task InvokeAsync(Action workItem)
 	{
-		if (CheckAccess())
+		lock (bulkheadsLock)
 		{
-			workItem();
-			return Task.CompletedTask;
-		}
+			var bulkheadTask = CreateBulkhead();
+			return context.InvokeAsync(async () =>
+			{
+				await bulkheadTask;
 
-		return context.InvokeAsync(workItem);
+				try
+				{
+					workItem.Invoke();
+					onAfterDispatchCompleted?.Invoke();
+				}
+				catch (Exception e)
+				{
+					onDispatchException?.Invoke(e);
+					throw;
+				}
+			});
+		}
 	}
 
 	public override Task InvokeAsync(Func<Task> workItem)
 	{
-		if (CheckAccess())
+		lock (bulkheadsLock)
 		{
-			return workItem();
-		}
+			var bulkheadTask = CreateBulkhead();
 
-		return context.InvokeAsync(workItem);
+			return context.InvokeAsync(async () =>
+			{
+				await bulkheadTask;
+
+				try
+				{
+					await workItem();
+					onAfterDispatchCompleted?.Invoke();
+				}
+				catch (Exception e)
+				{
+					onDispatchException?.Invoke(e);
+					throw;
+				}
+			});
+		}
 	}
 
 	public override Task<TResult> InvokeAsync<TResult>(Func<TResult> workItem)
 	{
-		if (CheckAccess())
+		lock (bulkheadsLock)
 		{
-			return Task.FromResult(workItem());
-		}
+			var bulkheadTask = CreateBulkhead();
+			return context.InvokeAsync(async () =>
+			{
+				await bulkheadTask;
 
-		return context.InvokeAsync<TResult>(workItem);
+				try
+				{
+					var result = workItem();
+					onAfterDispatchCompleted?.Invoke();
+					return result;
+				}
+				catch (Exception e)
+				{
+					onDispatchException?.Invoke(e);
+					throw;
+				}
+			});
+		}
 	}
 
 	public override Task<TResult> InvokeAsync<TResult>(Func<Task<TResult>> workItem)
 	{
-		if (CheckAccess())
+		lock (bulkheadsLock)
 		{
-			return workItem();
-		}
+			var bulkheadTask = CreateBulkhead();
 
-		return context.InvokeAsync<TResult>(workItem);
+			return context.InvokeAsync(async () =>
+			{
+				await bulkheadTask;
+
+				try
+				{
+					var result = await workItem();
+					onAfterDispatchCompleted?.Invoke();
+					return result;
+				}
+				catch (Exception e)
+				{
+					onDispatchException?.Invoke(e);
+					throw;
+				}
+			});
+		}
 	}
 }

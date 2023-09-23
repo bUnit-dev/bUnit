@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using System.Runtime.ExceptionServices;
-using Microsoft.AspNetCore.Components;
+using System.Diagnostics;
 
 namespace Bunit.Rendering;
 
@@ -17,11 +17,9 @@ public sealed class BunitRenderer : Renderer
 	private readonly ILogger<BunitRenderer> logger;
 	private readonly TestServiceProvider services;
 	private readonly BunitRendererSynchronizationContextDispatcher dispatcher = new();
-	private readonly object lockObject = new();
 	private bool disposed;
 	private Exception? capturedUnhandledException;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
-	private TaskCompletionSource renderBlocker = new TaskCompletionSource();
 
 	private bool IsBatchInProgress
 	{
@@ -30,6 +28,10 @@ public sealed class BunitRenderer : Renderer
 #pragma warning restore S1144 // Unused private types or members should be removed
 		set => IsBatchInProgressField.SetValue(this, value);
 	}
+
+	internal BunitRendererSynchronizationContextDispatcher BunitDispatcher => dispatcher;
+
+	internal int DispatcherQueueLength => dispatcher.BulkheadCount;
 
 	/// <summary>
 	/// Gets a <see cref="Task{Exception}"/>, which completes when an unhandled exception
@@ -101,11 +103,10 @@ public sealed class BunitRenderer : Renderer
 		EventArgs eventArgs,
 		bool ignoreUnknownEventHandlers)
 	{
+		ObjectDisposedException.ThrowIf(disposed, this);
 		ArgumentNullException.ThrowIfNull(fieldInfo);
 
-		ObjectDisposedException.ThrowIf(disposed, this);
-
-		var result = Dispatcher.InvokeAsync(() =>
+		var result = BunitDispatcher.InvokeAsync(() =>
 		{
 			ResetUnhandledException();
 
@@ -166,7 +167,7 @@ public sealed class BunitRenderer : Renderer
 		// when dealing with an IAsyncDisposable.
 		// When the component is an IDisposable, the task will be completed
 		// Therefore we don't have to wait for the task to complete.
-		Dispatcher.InvokeAsync(() =>
+		BunitDispatcher.InvokeAsync(() =>
 		{
 			ResetUnhandledException();
 
@@ -185,7 +186,7 @@ public sealed class BunitRenderer : Renderer
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
-		var result = Dispatcher.InvokeAsync(() =>
+		var result = BunitDispatcher.InvokeAsync(() =>
 		{
 			try
 			{
@@ -323,21 +324,20 @@ public sealed class BunitRenderer : Renderer
 
 		disposed = true;
 
-
 		if (disposing)
 		{
-			renderBlocker.SetResult();
-
-			foreach (var rc in renderedComponents.Values)
+			dispatcher.ReleaseAllAndInvoke(() =>
 			{
-				rc.Dispose();
-			}
+				foreach (var rc in renderedComponents.Values)
+				{
+					rc.Dispose();
+				}
 
-			renderedComponents.Clear();
-			unhandledExceptionTsc.TrySetCanceled();
+				renderedComponents.Clear();
+				unhandledExceptionTsc.TrySetCanceled();
+				base.Dispose(disposing);
+			});
 		}
-
-		base.Dispose(disposing);
 	}
 
 	private void ApplyRenderEvent(RenderEvent renderEvent)
@@ -384,10 +384,9 @@ public sealed class BunitRenderer : Renderer
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
-		var result = EnqueueAndRun(() =>
+		var result = dispatcher.ReleaseAllAndInvoke(() =>
 		{
 			ResetUnhandledException();
-
 			var root = new RootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
 			var result = new RenderedFragment(rootComponentId, services);
@@ -395,7 +394,7 @@ public sealed class BunitRenderer : Renderer
 			rootComponentIds.Add(rootComponentId);
 			root.Render();
 			return result;
-		});
+		}).GetAwaiter().GetResult();
 
 		logger.LogInitialRenderCompleted(result.ComponentId);
 
@@ -522,40 +521,6 @@ public sealed class BunitRenderer : Renderer
 			{
 				ExceptionDispatchInfo.Capture(unhandled).Throw();
 			}
-		}
-	}
-
-	internal void EnqueueAndRun(Action action)
-	{
-		lock (lockObject)
-		{
-			var existingBlocker = renderBlocker;
-			renderBlocker = new();
-
-			var actionResult = dispatcher.InvokeThenBlock(action, renderBlocker.Task);
-
-			existingBlocker.SetResult();
-
-			AssertNoUnhandledExceptions();
-
-			actionResult.GetAwaiter().GetResult();
-		}
-	}
-
-	internal TResult EnqueueAndRun<TResult>(Func<TResult> action)
-	{
-		lock (lockObject)
-		{
-			var existingBlocker = renderBlocker;
-			renderBlocker = new();
-
-			var actionResult = dispatcher.InvokeThenBlock(action, renderBlocker.Task);
-
-			existingBlocker.SetResult();
-
-			AssertNoUnhandledExceptions();
-
-			return actionResult.GetAwaiter().GetResult();
 		}
 	}
 }

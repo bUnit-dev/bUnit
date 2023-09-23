@@ -10,14 +10,15 @@ namespace Bunit.Extensions.WaitForHelpers;
 /// </summary>
 public abstract class WaitForHelper<T> : IDisposable
 {
-	private readonly CancellationTokenSource cts;
-	private readonly TaskCompletionSource<T> checkPassedCompletionSource;
+	private readonly TaskCompletionSource<T> completion;
 	private readonly Func<(bool CheckPassed, T Content)> completeChecker;
 	private readonly RenderedFragment renderedFragment;
 	private readonly ILogger<WaitForHelper<T>> logger;
-#pragma warning disable CA2213 // Handled by the container
+#pragma warning disable CA2213 // not owned by this type
 	private readonly BunitRenderer renderer;
 #pragma warning restore CA2213
+	private readonly TimeProvider timeProvider;
+	private ITimer? timeoutTimer;
 	private bool isDisposed;
 	private int checkCount;
 	private Exception? capturedException;
@@ -59,22 +60,13 @@ public abstract class WaitForHelper<T> : IDisposable
 		renderer = renderedFragment
 			.Services
 			.GetRequiredService<BunitRenderer>();
-		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
-		cts = new CancellationTokenSource(GetRuntimeTimeout(timeout));
-		cts.Token.Register(() =>
-		{
-			logger.LogWaiterTimedOut(renderedFragment.ComponentId);
-			checkPassedCompletionSource.TrySetException(
-				new WaitForFailedException(
-					TimeoutErrorMessage ?? string.Empty,
-					checkCount,
-					renderedFragment.RenderCount,
-					renderer.RenderCount,
-					capturedException));
-		});
-		WaitTask = CreateWaitTask();
+		timeProvider = renderedFragment.Services.GetService<TimeProvider>() ?? TimeProvider.System;
 
-		InitializeWaiting();
+		completion = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+		WaitTask = completion.Task;
+
+		InitializeWaiting(GetRuntimeTimeout(timeout));
 	}
 
 	/// <summary>
@@ -100,79 +92,139 @@ public abstract class WaitForHelper<T> : IDisposable
 		if (isDisposed || !disposing)
 			return;
 
-		isDisposed = true;
-		cts.Dispose();
-		checkPassedCompletionSource.TrySetCanceled();
-		renderedFragment.OnAfterRender -= OnAfterRender;
-		logger.LogWaiterDisposed(renderedFragment.ComponentId);
-	}
-
-	private void InitializeWaiting()
-	{
-		if (!WaitTask.IsCompleted)
+		lock (completion)
 		{
-			renderedFragment.OnAfterRender += OnAfterRender;
-			OnAfterRender(this, EventArgs.Empty);
+			isDisposed = true;
+			renderer.BunitDispatcher.Unsubscribe(
+				IsReadyForDispatch,
+				OnAfterDispatchCompleted,
+				OnDispatchException);
+
+			timeoutTimer?.Dispose();
+			completion.TrySetCanceled();
+			logger.LogWaiterDisposed(renderedFragment.ComponentId);
 		}
 	}
 
-	private Task<T> CreateWaitTask()
+	private void InitializeWaiting(TimeSpan timeout)
 	{
-		// Two to failure conditions, that the renderer captures an unhandled
-		// exception from a component or itself, or that the timeout is reached,
-		// are executed on the renderers scheduler, to ensure that OnAfterRender
-		// and the continuations does not happen at the same time.
-		var failureTask = renderer.Dispatcher.InvokeAsync(async () =>
-		{
-			var exception = await renderer.UnhandledException;
-			return Task.FromException<T>(exception);
-		}).Unwrap();
+		if (CheckWaitCondition())
+			return;
 
-		return Task
-			.WhenAny(checkPassedCompletionSource.Task, failureTask)
-			.Unwrap();
+		renderer.BunitDispatcher.Subscribe(
+			IsReadyForDispatch,
+			OnAfterDispatchCompleted,
+			OnDispatchException);
+
+		if (timeout > TimeSpan.Zero)
+		{
+			timeoutTimer = timeProvider.CreateTimer(static state =>
+			{
+				var helper = (WaitForHelper<T>)state!;
+				helper.OnTimeout();
+			}, this, timeout, Timeout.InfiniteTimeSpan);
+		}
 	}
 
-	private void OnAfterRender(object? sender, EventArgs args)
+	private bool IsReadyForDispatch()
+	{
+		if (isDisposed || WaitTask.IsCompleted)
+			return false;
+
+		lock (completion)
+		{
+			return !isDisposed && !WaitTask.IsCompleted;
+		}
+	}
+
+	private void OnAfterDispatchCompleted()
+	{
+		CheckWaitCondition();
+	}
+
+	private void OnDispatchException(Exception exception)
 	{
 		if (isDisposed || WaitTask.IsCompleted)
 			return;
 
-		try
+		lock (completion)
 		{
-			logger.LogCheckingWaitCondition(renderedFragment.ComponentId);
+			if (isDisposed || WaitTask.IsCompleted)
+				return;
 
-			var checkResult = completeChecker();
-			checkCount++;
-			if (checkResult.CheckPassed)
-			{
-				checkPassedCompletionSource.TrySetResult(checkResult.Content);
-				logger.LogCheckCompleted(renderedFragment.ComponentId);
-				Dispose();
-			}
-			else
-			{
-				logger.LogCheckFailed(renderedFragment.ComponentId);
-			}
+			completion.TrySetException(exception);
 		}
-		catch (Exception ex)
-		{
-			checkCount++;
-			capturedException = ex;
-			logger.LogCheckThrow(renderedFragment.ComponentId, ex);
+	}
 
-			if (StopWaitingOnCheckException)
+	private void OnTimeout()
+	{
+		if (isDisposed || WaitTask.IsCompleted)
+			return;
+
+		lock (completion)
+		{
+			if (isDisposed || WaitTask.IsCompleted)
+				return;
+
+			completion.TrySetException(
+				new WaitForFailedException(
+					TimeoutErrorMessage ?? string.Empty,
+					checkCount,
+					renderedFragment.RenderCount,
+					renderer.RenderCount,
+					capturedException));
+		}
+	}
+
+	private bool CheckWaitCondition()
+	{
+		if (isDisposed || WaitTask.IsCompleted)
+			return true;
+
+		lock (completion)
+		{
+			if (isDisposed || WaitTask.IsCompleted)
+				return true;
+
+			try
 			{
-				checkPassedCompletionSource.TrySetException(
-					new WaitForFailedException(
-						CheckThrowErrorMessage ?? string.Empty,
-						checkCount,
-						renderedFragment.RenderCount,
-						renderer.RenderCount,
-						capturedException));
-				Dispose();
+				logger.LogCheckingWaitCondition(renderedFragment.ComponentId);
+
+				var checkResult = completeChecker();
+				checkCount++;
+				if (checkResult.CheckPassed)
+				{
+					completion.TrySetResult(checkResult.Content);
+					logger.LogCheckCompleted(renderedFragment.ComponentId);
+					Dispose();
+					return true;
+				}
+				else
+				{
+					logger.LogCheckFailed(renderedFragment.ComponentId);
+				}
+			}
+			catch (Exception ex)
+			{
+				checkCount++;
+				capturedException = ex;
+				logger.LogCheckThrow(renderedFragment.ComponentId, ex);
+
+				if (StopWaitingOnCheckException)
+				{
+					completion.TrySetException(
+						new WaitForFailedException(
+							CheckThrowErrorMessage ?? string.Empty,
+							checkCount,
+							renderedFragment.RenderCount,
+							renderer.RenderCount,
+							capturedException));
+					Dispose();
+					return true;
+				}
 			}
 
+			return false;
 		}
 	}
 

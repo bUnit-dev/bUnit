@@ -1,15 +1,19 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Bunit.Rendering;
+namespace Microsoft.AspNetCore.Components.Rendering;
 
-internal class BunitRendererSynchronizationContext : SynchronizationContext
+internal sealed class BunitRendererSynchronizationContext : SynchronizationContext
 {
 	private readonly object lockObject;
 	private Task taskQueue;
 
 	public event UnhandledExceptionEventHandler? UnhandledException;
 
-	public BunitRendererSynchronizationContext() : this(new object(), Task.CompletedTask) { }
+	public BunitRendererSynchronizationContext(Task initialTaskQueue) : this(new object(), initialTaskQueue) { }
 
 	private BunitRendererSynchronizationContext(object @lock, Task taskQueue)
 	{
@@ -60,84 +64,6 @@ internal class BunitRendererSynchronizationContext : SynchronizationContext
 			{
 				state.Action();
 				state.Completion.SetResult();
-			}
-			catch (Exception exception)
-			{
-				state.Completion.SetException(exception);
-			}
-			finally
-			{
-				SetSynchronizationContext(original);
-			}
-		}
-	}
-
-	public Task InvokeThenBlock(Action action, Task block)
-	{
-		var completion = AsyncTaskMethodBuilder.Create();
-		var t = completion.Task; // lazy initialize before passing around the struct
-
-		lock (lockObject)
-		{
-			if (!taskQueue.IsCompleted)
-			{
-				taskQueue = PostAsync(taskQueue, Execute, (completion, action, this)).ContinueWith(_ => block, TaskScheduler.Current);
-				
-				return t;
-			}
-
-			taskQueue = block;
-		}
-
-		Execute((completion, action, this));
-		return t;
-
-		static void Execute((AsyncTaskMethodBuilder Completion, Action Action, BunitRendererSynchronizationContext Context) state)
-		{
-			var original = Current;
-			SetSynchronizationContext(state.Context);
-			try
-			{
-				state.Action();
-				state.Completion.SetResult();
-			}
-			catch (Exception exception)
-			{
-				state.Completion.SetException(exception);
-			}
-			finally
-			{
-				SetSynchronizationContext(original);
-			}
-		}
-	}
-
-	internal Task<TResult> InvokeThenBlock<TResult>(Func<TResult> function, Task block)
-	{
-		var completion = AsyncTaskMethodBuilder<TResult>.Create();
-		var t = completion.Task; // lazy initialize before passing around the struct
-
-		lock (lockObject)
-		{
-			if (!taskQueue.IsCompleted)
-			{
-				taskQueue = PostAsync(taskQueue, Execute, (completion, function, this)).ContinueWith(_ => block, TaskScheduler.Current);
-				return t;
-			}
-
-			taskQueue = block;
-		}
-
-		Execute((completion, function, this));
-		return t;
-
-		static void Execute((AsyncTaskMethodBuilder<TResult> Completion, Func<TResult> Func, BunitRendererSynchronizationContext Context) state)
-		{
-			var original = Current;
-			SetSynchronizationContext(state.Context);
-			try
-			{
-				state.Completion.SetResult(state.Func());
 			}
 			catch (Exception exception)
 			{
