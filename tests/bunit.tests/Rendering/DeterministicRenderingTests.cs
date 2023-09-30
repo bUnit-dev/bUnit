@@ -209,6 +209,21 @@ public class DeterministicRenderingTests : TestContext
 		var actualException = await waitFor.ShouldThrowAsync<Exception>();
 		actualException.ShouldBe(exceptedException);
 	}
+
+	[Fact]
+	public async Task WaitFor_allows_each_queued_task_to_complete()
+	{
+		var cut = Render<RemoteRenderTriggerComponent>();
+		var completion = new TaskCompletionSource();
+		var t1 = cut.InvokeAsync(async () => { await completion.Task; await cut.Instance.TriggerRender(); });
+		var t2 = cut.InvokeAsync(() => throw new Exception("Should not be called"));
+
+		var waitFor = cut.WaitForStateAsync(() => cut.Instance.RendersCompleted == 1);
+		completion.SetResult();
+
+		await waitFor;
+		t2.Status.ShouldBe(TaskStatus.WaitingForActivation);
+	}
 }
 
 file sealed class NoopComponent : ComponentBase
