@@ -96,7 +96,7 @@ public abstract class WaitForHelper<T> : IDisposable
 		{
 			isDisposed = true;
 			renderer.BunitDispatcher.Unsubscribe(
-				IsReadyForDispatch,
+				UnblockWaitingTask,
 				OnAfterDispatchCompleted,
 				OnDispatchException);
 
@@ -112,7 +112,7 @@ public abstract class WaitForHelper<T> : IDisposable
 			return;
 
 		renderer.BunitDispatcher.Subscribe(
-			IsReadyForDispatch,
+			UnblockWaitingTask,
 			OnAfterDispatchCompleted,
 			OnDispatchException);
 
@@ -126,7 +126,7 @@ public abstract class WaitForHelper<T> : IDisposable
 		}
 	}
 
-	private bool IsReadyForDispatch()
+	private bool UnblockWaitingTask()
 	{
 		if (isDisposed || WaitTask.IsCompleted)
 			return false;

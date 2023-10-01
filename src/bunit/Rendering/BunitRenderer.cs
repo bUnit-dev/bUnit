@@ -31,7 +31,7 @@ public sealed class BunitRenderer : Renderer
 
 	internal BunitRendererSynchronizationContextDispatcher BunitDispatcher => dispatcher;
 
-	internal int DispatcherQueueLength => dispatcher.BulkheadCount;
+	internal int DispatcherQueueLength => dispatcher.WaitingTasks;
 
 	/// <summary>
 	/// Gets a <see cref="Task{Exception}"/>, which completes when an unhandled exception

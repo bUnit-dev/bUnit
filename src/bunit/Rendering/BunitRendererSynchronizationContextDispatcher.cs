@@ -7,7 +7,7 @@ internal class BunitRendererSynchronizationContextDispatcher : Dispatcher
 	private readonly object bulkheadsLock = new();
 	private readonly BunitRendererSynchronizationContext context;
 	private readonly Queue<TaskCompletionSource> workItemBulkheads = new();
-	private Func<bool>? isReadyForDispatch;
+	private Func<bool>? unblockWaitingTask;
 	private Action? onAfterDispatchCompleted;
 	private Action<Exception>? onDispatchException;
 
@@ -15,7 +15,7 @@ internal class BunitRendererSynchronizationContextDispatcher : Dispatcher
 	{
 		lock (bulkheadsLock)
 		{
-			if (isReadyForDispatch is not null && isReadyForDispatch())
+			if (unblockWaitingTask is not null && unblockWaitingTask())
 			{
 				return Task.CompletedTask;
 			}
@@ -45,18 +45,18 @@ internal class BunitRendererSynchronizationContextDispatcher : Dispatcher
 	}
 
 	public void Subscribe(
-		Func<bool> isReadyForDispatch,
+		Func<bool> unblockWaitingTask,
 		Action onAfterDispatchCompleted,
 		Action<Exception> onDispatchException)
 	{
 		lock (bulkheadsLock)
 		{
-			this.isReadyForDispatch += isReadyForDispatch;
+			this.unblockWaitingTask += unblockWaitingTask;
 			this.onAfterDispatchCompleted += onAfterDispatchCompleted;
 			this.onDispatchException += onDispatchException;
 
 			// proceed to dequeue any existing bulkheads until.
-			while (this.isReadyForDispatch() && workItemBulkheads.TryDequeue(out var tcs))
+			while (this.unblockWaitingTask() && workItemBulkheads.TryDequeue(out var tcs))
 			{
 				tcs.SetResult();
 			}
@@ -64,13 +64,13 @@ internal class BunitRendererSynchronizationContextDispatcher : Dispatcher
 	}
 
 	public void Unsubscribe(
-		Func<bool> isReadyForDispatch,
+		Func<bool> unblockWaitingTask,
 		Action onAfterDispatchCompleted,
 		Action<Exception> onDispatchException)
 	{
 		lock (bulkheadsLock)
 		{
-			this.isReadyForDispatch -= isReadyForDispatch;
+			this.unblockWaitingTask -= unblockWaitingTask;
 			this.onAfterDispatchCompleted -= onAfterDispatchCompleted;
 			this.onDispatchException -= onDispatchException;
 		}
