@@ -224,6 +224,35 @@ public class DeterministicRenderingTests : TestContext
 		await waitFor;
 		t2.Status.ShouldBe(TaskStatus.WaitingForActivation);
 	}
+
+	[Fact]
+	public void Disposing_Renderer_should_not_be_blocked()
+	{
+		var cut = Render<RemoteRenderTriggerComponent>();
+		var completion = new TaskCompletionSource();
+		var runningTask = cut.InvokeAsync(async () => { await completion.Task; await cut.Instance.TriggerRender(); });
+		
+		DisposeComponents();
+		
+		runningTask.Status.ShouldBe(TaskStatus.WaitingForActivation);
+	}
+
+	[Fact]
+	public async Task Triggering_renders_in_parent_is_not_influenced_by_child_component()
+	{
+		var cut = Render<RemoteRenderTriggerComponent>(
+			p => p.AddChildContent(s =>
+			{
+				s.OpenComponent<NeverFinishedComponent>(1);
+				s.CloseComponent();
+			}));
+		var completion = new TaskCompletionSource();
+		var runningTask = cut.InvokeAsync(async () => { await completion.Task; await cut.Instance.TriggerRender(); });
+
+		await cut.WaitForStateAsync(() => cut.Instance.RendersCompleted == 2);
+		
+		runningTask.Status.ShouldBe(TaskStatus.RanToCompletion);
+	}
 }
 
 file sealed class NoopComponent : ComponentBase
@@ -235,6 +264,9 @@ file sealed class NoopComponent : ComponentBase
 
 file sealed class RemoteRenderTriggerComponent : ComponentBase
 {
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+	
 	public int RendersCompleted { get; private set; }
 
 	public async Task TriggerRender()
@@ -243,3 +275,13 @@ file sealed class RemoteRenderTriggerComponent : ComponentBase
 
 	protected override void OnAfterRender(bool firstRender) => RendersCompleted++;
 }
+
+file sealed class NeverFinishedComponent : ComponentBase
+{
+	private readonly TaskCompletionSource tcs = new();
+	protected override async Task OnInitializedAsync()
+	{
+		await tcs.Task;
+	}
+}
+
