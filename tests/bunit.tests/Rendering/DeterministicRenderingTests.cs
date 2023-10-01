@@ -241,16 +241,12 @@ public class DeterministicRenderingTests : TestContext
 	public async Task Triggering_renders_in_parent_is_not_influenced_by_child_component()
 	{
 		var cut = Render<RemoteRenderTriggerComponent>(p => p.AddChildContent<NeverFinishedComponent>());
-		var completion = new TaskCompletionSource();
-		var runningTask = cut.InvokeAsync(async () =>
+		_ = cut.InvokeAsync(async () =>
 		{
-			await completion.Task;
 			await cut.Instance.TriggerRender();
 		});
 
-		await cut.WaitForStateAsync(() => cut.Instance.RendersCompleted == 2);
-
-		runningTask.Status.ShouldBe(TaskStatus.RanToCompletion);
+		await cut.WaitForAssertionAsync(() => cut.Instance.RendersCompleted.ShouldBe(2));
 	}
 }
 
