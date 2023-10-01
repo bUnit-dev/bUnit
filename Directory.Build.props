@@ -42,11 +42,10 @@
 
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.10.0.77988" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.11.0.78383" PrivateAssets="All" />
 	</ItemGroup>
 
-	<ItemGroup Label="Implicit usings"
-						 Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'AngleSharpWrappers.Tests'">
+	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'AngleSharpWrappers.Tests'">
 		<Using Include="Microsoft.AspNetCore.Components" />
 		<Using Include="Microsoft.AspNetCore.Components.RenderTree" />
 		<Using Include="Microsoft.AspNetCore.Components.Rendering" />

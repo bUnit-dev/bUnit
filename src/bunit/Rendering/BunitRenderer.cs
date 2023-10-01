@@ -13,7 +13,7 @@ public sealed class BunitRenderer : Renderer
 	private static readonly Type RendererType = typeof(Renderer);
 	[SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "Accesses internal method to mimic the behavior of the Blazor renderer.")]
 	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;
-	private readonly Dictionary<int, IRenderedFragment> renderedComponents = new();
+	private readonly Dictionary<int, RenderedFragment> renderedComponents = new();
 	private readonly List<int> rootComponentIds = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private readonly TestServiceProvider services;
