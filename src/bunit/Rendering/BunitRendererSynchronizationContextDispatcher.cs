@@ -21,14 +21,14 @@ internal class BunitRendererSynchronizationContextDispatcher : Dispatcher
 			}
 			else
 			{
-				var tcs = new TaskCompletionSource();
+				var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
 				workItemBulkheads.Enqueue(tcs);
 				return tcs.Task;
 			}
 		}
 	}
 
-	public int BulkheadCount => workItemBulkheads.Count;
+	public int WaitingTasks => workItemBulkheads.Count;
 
 	public BunitRendererSynchronizationContextDispatcher()
 	{
