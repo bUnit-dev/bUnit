@@ -218,7 +218,7 @@ public class DeterministicRenderingTests : TestContext
 		var t1 = cut.InvokeAsync(async () => { await completion.Task; await cut.Instance.TriggerRender(); });
 		var t2 = cut.InvokeAsync(() => throw new Exception("Should not be called"));
 
-		var waitFor = cut.WaitForStateAsync(() => cut.Instance.RendersCompleted == 1);
+		var waitFor = cut.WaitForStateAsync(() => cut.Instance.RendersCompleted == 2);
 		completion.SetResult();
 
 		await waitFor;
@@ -231,26 +231,25 @@ public class DeterministicRenderingTests : TestContext
 		var cut = Render<RemoteRenderTriggerComponent>();
 		var completion = new TaskCompletionSource();
 		var runningTask = cut.InvokeAsync(async () => { await completion.Task; await cut.Instance.TriggerRender(); });
-		
+
 		DisposeComponents();
-		
+
 		runningTask.Status.ShouldBe(TaskStatus.WaitingForActivation);
 	}
 
 	[Fact]
 	public async Task Triggering_renders_in_parent_is_not_influenced_by_child_component()
 	{
-		var cut = Render<RemoteRenderTriggerComponent>(
-			p => p.AddChildContent(s =>
-			{
-				s.OpenComponent<NeverFinishedComponent>(1);
-				s.CloseComponent();
-			}));
+		var cut = Render<RemoteRenderTriggerComponent>(p => p.AddChildContent<NeverFinishedComponent>());
 		var completion = new TaskCompletionSource();
-		var runningTask = cut.InvokeAsync(async () => { await completion.Task; await cut.Instance.TriggerRender(); });
+		var runningTask = cut.InvokeAsync(async () =>
+		{
+			await completion.Task;
+			await cut.Instance.TriggerRender();
+		});
 
 		await cut.WaitForStateAsync(() => cut.Instance.RendersCompleted == 2);
-		
+
 		runningTask.Status.ShouldBe(TaskStatus.RanToCompletion);
 	}
 }
@@ -266,19 +265,20 @@ file sealed class RemoteRenderTriggerComponent : ComponentBase
 {
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
-	
+
 	public int RendersCompleted { get; private set; }
 
 	public async Task TriggerRender()
-		=> await InvokeAsync(StateHasChanged)
-		.ConfigureAwait(false); // this should force the invocation/waiting task to be on the thread pool
+		=> await InvokeAsync(StateHasChanged).ConfigureAwait(false); // this should force the invocation/waiting task to be on the thread pool
 
-	protected override void OnAfterRender(bool firstRender) => RendersCompleted++;
+	protected override void OnAfterRender(bool firstRender)
+		=> RendersCompleted++;
 }
 
 file sealed class NeverFinishedComponent : ComponentBase
 {
 	private readonly TaskCompletionSource tcs = new();
+
 	protected override async Task OnInitializedAsync()
 	{
 		await tcs.Task;
