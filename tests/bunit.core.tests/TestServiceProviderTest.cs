@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace Bunit;
 
 public partial class TestServiceProviderTest
@@ -14,7 +16,7 @@ public partial class TestServiceProviderTest
 	public void Test002()
 	{
 		var services = new ServiceCollection();
-		_ = services.AddSingleton(new DummyService());
+		services.AddSingleton(new DummyService());
 		using var sut = new TestServiceProvider(services);
 
 		sut.Count.ShouldBe(1);
@@ -24,10 +26,9 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Services can be registered in the provider like a normal service collection")]
 	public void Test010()
 	{
-		using var sut = new TestServiceProvider
-		{
-			new ServiceDescriptor(typeof(DummyService), new DummyService())
-		};
+		using var sut = new TestServiceProvider();
+
+		sut.Add(new ServiceDescriptor(typeof(DummyService), new DummyService()));
 		sut.Insert(0, new ServiceDescriptor(typeof(AnotherDummyService), new AnotherDummyService()));
 		sut[1] = new ServiceDescriptor(typeof(DummyService), new DummyService());
 
@@ -48,7 +49,7 @@ public partial class TestServiceProviderTest
 		sut.Add(anotherDescriptor);
 		sut.Add(oneMoreDescriptor);
 
-		_ = sut.Remove(descriptor);
+		sut.Remove(descriptor);
 		sut.Count.ShouldBe(2);
 
 		sut.RemoveAt(1);
@@ -71,7 +72,7 @@ public partial class TestServiceProviderTest
 		sut.CopyTo(copyToTarget, 0);
 		copyToTarget[0].ShouldBe(descriptor);
 		sut.IsReadOnly.ShouldBeFalse();
-		sut.OfType<ServiceDescriptor>().Count().ShouldBe(1);
+		((IEnumerable)sut).OfType<ServiceDescriptor>().Count().ShouldBe(1);
 	}
 
 	[Fact(DisplayName = "After the first service is requested, " +
@@ -81,18 +82,18 @@ public partial class TestServiceProviderTest
 		var descriptor = new ServiceDescriptor(typeof(AnotherDummyService), new AnotherDummyService());
 
 		using var sut = new TestServiceProvider();
-		_ = sut.AddSingleton(new DummyService());
-		_ = sut.GetService<DummyService>();
+		sut.AddSingleton(new DummyService());
+		sut.GetService<DummyService>();
 
 		// Try adding
-		_ = Should.Throw<InvalidOperationException>(() => sut.Add(descriptor));
-		_ = Should.Throw<InvalidOperationException>(() => sut.Insert(0, descriptor));
-		_ = Should.Throw<InvalidOperationException>(() => sut[0] = descriptor);
+		Should.Throw<InvalidOperationException>(() => sut.Add(descriptor));
+		Should.Throw<InvalidOperationException>(() => sut.Insert(0, descriptor));
+		Should.Throw<InvalidOperationException>(() => sut[0] = descriptor);
 
 		// Try removing
-		_ = Should.Throw<InvalidOperationException>(() => sut.Remove(descriptor));
-		_ = Should.Throw<InvalidOperationException>(() => sut.RemoveAt(0));
-		_ = Should.Throw<InvalidOperationException>(sut.Clear);
+		Should.Throw<InvalidOperationException>(() => sut.Remove(descriptor));
+		Should.Throw<InvalidOperationException>(() => sut.RemoveAt(0));
+		Should.Throw<InvalidOperationException>(() => sut.Clear());
 
 		// Verify state
 		sut.IsProviderInitialized.ShouldBeTrue();
@@ -104,7 +105,7 @@ public partial class TestServiceProviderTest
 	{
 		using var sut = new TestServiceProvider();
 		var expected = new DummyService();
-		_ = sut.AddSingleton(expected);
+		sut.AddSingleton(expected);
 
 		var actual = sut.GetService<DummyService>();
 
@@ -130,14 +131,14 @@ public partial class TestServiceProviderTest
 		var result = sut.GetService(typeof(object));
 
 		Assert.NotNull(result);
-		_ = Assert.IsType<DummyService>(result);
+		Assert.IsType<DummyService>(result);
 	}
 
 	[Fact(DisplayName = "Register fallback service with null value")]
 	public void Test023()
 	{
 		using var sut = new TestServiceProvider();
-		_ = Assert.Throws<ArgumentNullException>(() => sut.AddFallbackServiceProvider(null!));
+		Assert.Throws<ArgumentNullException>(() => sut.AddFallbackServiceProvider(null!));
 	}
 
 	[Fact(DisplayName = "Service provider returns value before fallback service provider")]
@@ -146,14 +147,14 @@ public partial class TestServiceProviderTest
 		const string exceptionStringResult = "exceptionStringResult";
 
 		using var sut = new TestServiceProvider();
-		_ = sut.AddSingleton<string>(exceptionStringResult);
+		sut.AddSingleton<string>(exceptionStringResult);
 		sut.AddFallbackServiceProvider(new FallbackServiceProvider());
 
 		var stringResult = sut.GetService(typeof(string));
 		Assert.Equal(exceptionStringResult, stringResult);
 
 		var fallbackResult = sut.GetService(typeof(DummyService));
-		_ = Assert.IsType<DummyService>(fallbackResult);
+		Assert.IsType<DummyService>(fallbackResult);
 	}
 
 	[Fact(DisplayName = "Latest fallback provider is used")]
@@ -165,7 +166,7 @@ public partial class TestServiceProviderTest
 
 		var result = sut.GetService(typeof(object));
 
-		_ = Assert.IsType<AnotherDummyService>(result);
+		Assert.IsType<AnotherDummyService>(result);
 	}
 
 	[Fact(DisplayName = "Fallback service provider can be used to resolve services required by components")]
@@ -179,14 +180,14 @@ public partial class TestServiceProviderTest
 		ctx.Services.AddFallbackServiceProvider(fallbackServiceProvider);
 
 		// Act and assert
-		_ = Should.NotThrow(() => ctx.RenderComponent<DummyComponentWhichRequiresDummyService>());
+		Should.NotThrow(() => ctx.RenderComponent<DummyComponentWhichRequiresDummyService>());
 	}
 
 	[Fact(DisplayName = "Can correctly resolve and dispose of scoped disposable service")]
 	public void Test031()
 	{
 		var sut = new TestServiceProvider();
-		_ = sut.AddScoped<DisposableService>();
+		sut.AddScoped<DisposableService>();
 		var disposable = sut.GetService<DisposableService>();
 
 		sut.Dispose();
@@ -198,7 +199,7 @@ public partial class TestServiceProviderTest
 	public void Test032()
 	{
 		var sut = new TestServiceProvider();
-		_ = sut.AddTransient<DisposableService>();
+		sut.AddTransient<DisposableService>();
 		var disposable = sut.GetService<DisposableService>();
 
 		sut.Dispose();
@@ -210,7 +211,7 @@ public partial class TestServiceProviderTest
 	public void Test033()
 	{
 		var sut = new TestServiceProvider();
-		_ = sut.AddSingleton<DisposableService>();
+		sut.AddSingleton<DisposableService>();
 		var disposable = sut.GetService<DisposableService>();
 
 		sut.Dispose();
@@ -227,11 +228,11 @@ public partial class TestServiceProviderTest
 			ValidateOnBuild = true,
 			ValidateScopes = true
 		};
-		_ = sut.AddSingleton<DummyService>();
-		_ = sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
-		var action = sut.GetRequiredService<DummyService>;
+		sut.AddSingleton<DummyService>();
+		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
+		var action = () => sut.GetRequiredService<DummyService>();
 
-		_ = action.ShouldThrow<AggregateException>("Some services are not able to be constructed (Error while validating the service descriptor");
+		action.ShouldThrow<AggregateException>("Some services are not able to be constructed (Error while validating the service descriptor");
 	}
 
 	[Fact(DisplayName = "Does not validate all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is false")]
@@ -243,31 +244,31 @@ public partial class TestServiceProviderTest
 			ValidateOnBuild = false,
 			ValidateScopes = true
 		};
-		_ = sut.AddSingleton<DummyService>();
-		_ = sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
+		sut.AddSingleton<DummyService>();
+		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
 
 		var result = sut.GetRequiredService<DummyService>();
 
-		_ = result.ShouldNotBeNull();
+		result.ShouldNotBeNull();
 	}
 
 	[Fact(DisplayName = "Does not validate all dependencies can be created when the first service is requested, if no ServiceProviderOptions is provided (backwards compatibility)")]
 	public void Test037()
 	{
 		using var sut = new TestServiceProvider();
-		_ = sut.AddSingleton<DummyService>();
-		_ = sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
+		sut.AddSingleton<DummyService>();
+		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
 
 		var result = sut.GetRequiredService<DummyService>();
 
-		_ = result.ShouldNotBeNull();
+		result.ShouldNotBeNull();
 	}
 
 	[Fact(DisplayName = "Test custom service provider factory")]
 	public void Test038()
 	{
 		using var sut = new TestServiceProvider();
-		_ = sut.AddSingleton<DummyService>();
+		sut.AddSingleton<DummyService>();
 
 		var dummyServiceProviderFactory = new DummyServiceProviderFactory();
 
@@ -275,10 +276,10 @@ public partial class TestServiceProviderTest
 
 		var result = sut.GetRequiredService<DummyService>();
 
-		_ = result.ShouldNotBeNull();
+		result.ShouldNotBeNull();
 
-		_ = dummyServiceProviderFactory.TestContainerBuilder.ShouldNotBeNull();
-		_ = dummyServiceProviderFactory.TestContainerBuilder.TestServiceProvider.ShouldNotBeNull();
+		dummyServiceProviderFactory.TestContainerBuilder.ShouldNotBeNull();
+		dummyServiceProviderFactory.TestContainerBuilder.TestServiceProvider.ShouldNotBeNull();
 		dummyServiceProviderFactory.TestContainerBuilder.TestServiceProvider.ResolvedTestServices.ShouldContain(result);
 		dummyServiceProviderFactory.TestContainerBuilder.TestServiceProvider.ResolvedTestServices.Count.ShouldBe(1);
 	}
@@ -287,7 +288,7 @@ public partial class TestServiceProviderTest
 	public void Test039()
 	{
 		using var sut = new TestServiceProvider();
-		_ = sut.AddSingleton<DummyService>();
+		sut.AddSingleton<DummyService>();
 
 		DummyServiceProvider dummyServiceProvider = null;
 
@@ -295,9 +296,9 @@ public partial class TestServiceProviderTest
 
 		var result = sut.GetRequiredService<DummyService>();
 
-		_ = result.ShouldNotBeNull();
+		result.ShouldNotBeNull();
 
-		_ = dummyServiceProvider.ShouldNotBeNull();
+		dummyServiceProvider.ShouldNotBeNull();
 		dummyServiceProvider.ResolvedTestServices.ShouldContain(result);
 		dummyServiceProvider.ResolvedTestServices.Count.ShouldBe(1);
 	}
@@ -334,7 +335,10 @@ public partial class TestServiceProviderTest
 	{
 		public bool IsDisposed { get; private set; }
 
-		public void Dispose() => IsDisposed = true;
+		public void Dispose()
+		{
+			IsDisposed = true;
+		}
 	}
 
 	private sealed class DummyServiceProvider : IServiceProvider, IServiceScopeFactory, IServiceScope
@@ -349,9 +353,7 @@ public partial class TestServiceProviderTest
 		public object? GetService(Type serviceType)
 		{
 			if (serviceType == typeof(IServiceScope) || serviceType == typeof(IServiceScopeFactory))
-			{
 				return this;
-			}
 
 			var result = Activator.CreateInstance(serviceDescriptors.Single(x => x.ServiceType == serviceType).ImplementationType);
 			ResolvedTestServices.Add(result);

@@ -62,9 +62,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	{
 		serviceCollection = initialServiceCollection;
 		if (initializeProvider)
-		{
 			InitializeProvider();
-		}
 	}
 
 	/// <summary>
@@ -123,7 +121,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	{
 		CheckInitializedAndThrow();
 
-		_ = serviceCollection.AddSingleton<TestServiceProvider>(this);
+		serviceCollection.AddSingleton<TestServiceProvider>(this);
 		rootServiceProvider = (buildServiceProviderDelegate ?? BuildServiceProvider)();
 		serviceScope = rootServiceProvider.CreateScope();
 		serviceProvider = serviceScope.ServiceProvider;
@@ -160,16 +158,12 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	private object? GetServiceInternal(Type serviceType)
 	{
 		if (serviceProvider is null)
-		{
 			InitializeProvider();
-		}
 
 		var result = serviceProvider!.GetService(serviceType);
 
 		if (result is null && fallbackServiceProvider is not null)
-		{
 			result = fallbackServiceProvider.GetService(serviceType);
-		}
 
 		return result;
 	}
@@ -184,28 +178,20 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	public void Dispose()
 	{
 		if (serviceScope is IDisposable serviceScopeDisposable)
-		{
 			serviceScopeDisposable.Dispose();
-		}
 
 		if (rootServiceProvider is IDisposable rootServiceProviderDisposable)
-		{
 			rootServiceProviderDisposable.Dispose();
-		}
 	}
 
 	/// <inheritdoc/>
 	public async ValueTask DisposeAsync()
 	{
 		if (serviceScope is IAsyncDisposable serviceScopeAsync)
-		{
 			await serviceScopeAsync.DisposeAsync();
-		}
 
 		if (rootServiceProvider is IAsyncDisposable rootServiceProviderAsync)
-		{
 			await rootServiceProviderAsync.DisposeAsync();
-		}
 	}
 
 	/// <inheritdoc/>
