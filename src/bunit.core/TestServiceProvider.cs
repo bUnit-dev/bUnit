@@ -15,6 +15,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	private IServiceProvider? serviceProvider;
 	private IServiceProvider? fallbackServiceProvider;
 	private ServiceProviderOptions options = DefaultServiceProviderOptions;
+	private Func<IServiceProvider>? buildServiceProviderDelegate;
 
 	/// <summary>
 	/// Gets a value indicating whether this <see cref="TestServiceProvider"/> has been initialized, and
@@ -61,7 +62,74 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	{
 		serviceCollection = initialServiceCollection;
 		if (initializeProvider)
-			serviceProvider = serviceCollection.BuildServiceProvider();
+		{
+			InitializeProvider();
+		}
+	}
+
+	/// <summary>
+	/// Use a custom service provider factory for creating the underlying IServiceProvider.
+	/// </summary>
+	/// <param name="serviceProviderFactory">custom service provider factory</param>
+	public void UseServiceProviderFactory(Func<IServiceCollection, IServiceProvider>? serviceProviderFactory)
+	{
+		if (serviceProviderFactory is null)
+		{
+			throw new ArgumentNullException(nameof(serviceProviderFactory));
+		}
+
+		buildServiceProviderDelegate = BuildServiceProvider;
+
+		IServiceProvider BuildServiceProvider()
+			=> serviceProviderFactory(serviceCollection);
+	}
+
+	/// <summary>
+	/// Use a custom service provider factory for creating the underlying IServiceProvider.
+	/// </summary>
+	/// <typeparam name="TContainerBuilder">
+	/// Type of the container builder.
+	/// See <see cref="IServiceProviderFactory{TContainerBuilder}" />
+	/// </typeparam>
+	/// <param name="serviceProviderFactory">custom service provider factory</param>
+	/// <param name="configure">builder configuration action</param>
+	public void UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> serviceProviderFactory, Action<TContainerBuilder>? configure = null)
+	{
+		if (serviceProviderFactory is null)
+		{
+			throw new ArgumentNullException(nameof(serviceProviderFactory));
+		}
+
+		buildServiceProviderDelegate = BuildServiceProvider;
+
+		IServiceProvider BuildServiceProvider()
+		{
+			var containerBuilder = serviceProviderFactory.CreateBuilder(serviceCollection);
+			configure?.Invoke(containerBuilder);
+			return serviceProviderFactory.CreateServiceProvider(containerBuilder);
+		}
+	}
+
+	/// <summary>
+	/// Creates the underlying service provider. Throws if it was already build.
+	/// Automatically called while getting a service if unitialized.
+	/// No longer will accept calls to the <c>AddService</c>'s methods.
+	/// See <see cref="IsProviderInitialized"/>
+	/// </summary>
+#if !NETSTANDARD2_1
+	[MemberNotNull(nameof(serviceProvider))]
+#endif
+	public void InitializeProvider()
+	{
+		CheckInitializedAndThrow();
+
+		_ = serviceCollection.AddSingleton<TestServiceProvider>(this);
+		rootServiceProvider = (buildServiceProviderDelegate ?? BuildServiceProvider)();
+		serviceScope = rootServiceProvider.CreateScope();
+		serviceProvider = serviceScope.ServiceProvider;
+
+		IServiceProvider BuildServiceProvider()
+			=> serviceCollection.BuildServiceProvider(options);
 	}
 
 	/// <summary>
@@ -93,16 +161,15 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	{
 		if (serviceProvider is null)
 		{
-			serviceCollection.AddSingleton<TestServiceProvider>(this);
-			rootServiceProvider = serviceCollection.BuildServiceProvider(options);
-			serviceScope = rootServiceProvider.CreateScope();
-			serviceProvider = serviceScope.ServiceProvider;
+			InitializeProvider();
 		}
 
-		var result = serviceProvider.GetService(serviceType);
+		var result = serviceProvider!.GetService(serviceType);
 
 		if (result is null && fallbackServiceProvider is not null)
+		{
 			result = fallbackServiceProvider.GetService(serviceType);
+		}
 
 		return result;
 	}
@@ -113,25 +180,32 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-
 	/// <inheritdoc/>
 	public void Dispose()
 	{
 		if (serviceScope is IDisposable serviceScopeDisposable)
+		{
 			serviceScopeDisposable.Dispose();
+		}
 
 		if (rootServiceProvider is IDisposable rootServiceProviderDisposable)
+		{
 			rootServiceProviderDisposable.Dispose();
+		}
 	}
 
 	/// <inheritdoc/>
 	public async ValueTask DisposeAsync()
 	{
 		if (serviceScope is IAsyncDisposable serviceScopeAsync)
+		{
 			await serviceScopeAsync.DisposeAsync();
+		}
 
 		if (rootServiceProvider is IAsyncDisposable rootServiceProviderAsync)
+		{
 			await rootServiceProviderAsync.DisposeAsync();
+		}
 	}
 
 	/// <inheritdoc/>
