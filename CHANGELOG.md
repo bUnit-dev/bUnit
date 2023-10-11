@@ -13,7 +13,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
   
 ### Added
 
-- Support for custom service provider factories (IServiceProviderFactory<TContainerBuilder>). This enables the use of Autofac and other frameworks for dependency injection like on real world ASP.NET Core / Blazor projects.
+- Support for custom service provider factories (`IServiceProviderFactory<TContainerBuilder>`). This enables the use of Autofac and other frameworks for dependency injection like on real-world ASP.NET Core / Blazor projects. By [@inf9144](https://github.com/inf9144).
 
 ## [1.23.9] - 2023-09-06
 
