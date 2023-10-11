@@ -51,6 +51,24 @@ Here is a test where the fallback service provider is used:
 
 In this example, the `DummyService` is provided by the fallback service provider, since it is not registered in the default service provider.
 
+## Using a custom IServiceProvider implementation
+A custom service provider factory can be registered with the built-in `TestServiceProvider`. It is used to create the underlying IServiceProvider. This enables a few interesting use cases, such as using an alternative IoC container (which should implement the `IServiceProvider` interface). This approach can be useful if the fallback service provider is not an option. For example, if you have dependencies in the fallback container, that rely on dependencies which are in the main container and vice versa.
+
+### Registering a custom service provider factory
+The examples contain dummy implementations of `IServiceProvider` and `IServiceProviderFactory<TContainerBuilder>`. Normally those implementations are supplied by the creator of your custom dependency injection solution. This dummy implementations are not intended to use as is.
+
+This is an example of how to implement and use a dummy custom service provider factory.
+
+[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactory.cs?start=8&end=46)]
+
+Here is a test where the custom service provider factory is used:
+
+[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactoryUsage.cs?start=11&end=15)]
+
+Here is a test where the custom service provider is used via delegate:
+
+[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactoryUsage.cs?start=20&end=24)]
+
 ## Further reading
 
 A closely related topic is mocking. To learn more about mocking in bUnit, go to the <xref:test-doubles> page.
