@@ -1,4 +1,5 @@
 using Bunit.Extensions;
+using Bunit.TestAssets.RenderModes;
 using Xunit.Abstractions;
 using static Bunit.ComponentParameterFactory;
 
@@ -490,12 +491,28 @@ public partial class TestRendererTest : TestContext
 	}
 
 #if NET8_0_OR_GREATER
-	[Fact(DisplayName = "Can render components that have a RenderMode attribute")]
+	[Fact(DisplayName = "Can render components that have a RenderMode InteractiveAuto")]
 	public void Test209()
 	{
-		var cut = RenderComponent<RenderModeServerComponent>();
+		var cut = RenderComponent<InteractiveAutoComponent>();
 
-		cut.Find("h3").TextContent.ShouldBe("Hello from Server");
+		cut.Find("h1").TextContent.ShouldBe($"Hello world {RenderMode.InteractiveAuto}");
+	}
+
+	[Fact(DisplayName = "Can render components that have a RenderMode InteractiveServer")]
+	public void Test210()
+	{
+		var cut = RenderComponent<InteractiveServerComponent>();
+
+		cut.Find("h1").TextContent.ShouldBe($"Hello world {RenderMode.InteractiveServer}");
+	}
+
+	[Fact(DisplayName = "Can render components that have a RenderMode InteractiveWebAssembly")]
+	public void Test211()
+	{
+		var cut = RenderComponent<InteractiveWebAssemblyComponent>();
+
+		cut.Find("h1").TextContent.ShouldBe($"Hello world {RenderMode.InteractiveWebAssembly}");
 	}
 #endif
 
@@ -632,15 +649,4 @@ public partial class TestRendererTest : TestContext
 			throw new InvalidOperationException();
 		}
 	}
-
-#if NET8_0_OR_GREATER
-	[RenderModeServer]
-	private sealed class RenderModeServerComponent : ComponentBase
-	{
-		protected override void BuildRenderTree(RenderTreeBuilder builder)
-		{
-			builder.AddMarkupContent(0, "<h3>Hello from Server</h3>");
-		}
-	}
-#endif
 }
