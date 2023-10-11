@@ -69,7 +69,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	/// Use a custom service provider factory for creating the underlying IServiceProvider.
 	/// </summary>
 	/// <param name="serviceProviderFactory">custom service provider factory</param>
-	public void UseServiceProviderFactory(Func<IServiceCollection, IServiceProvider>? serviceProviderFactory)
+	public void UseServiceProviderFactory(Func<IServiceCollection, IServiceProvider> serviceProviderFactory)
 	{
 		if (serviceProviderFactory is null)
 		{
@@ -91,7 +91,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	/// </typeparam>
 	/// <param name="serviceProviderFactory">custom service provider factory</param>
 	/// <param name="configure">builder configuration action</param>
-	public void UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> serviceProviderFactory, Action<TContainerBuilder>? configure = null)
+	public void UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> serviceProviderFactory, Action<TContainerBuilder>? configure = null) where TContainerBuilder : notnull
 	{
 		if (serviceProviderFactory is null)
 		{
