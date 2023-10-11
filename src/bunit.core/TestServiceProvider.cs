@@ -117,7 +117,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 #if !NETSTANDARD2_1
 	[MemberNotNull(nameof(serviceProvider))]
 #endif
-	public void InitializeProvider()
+	private void InitializeProvider()
 	{
 		CheckInitializedAndThrow();
 
