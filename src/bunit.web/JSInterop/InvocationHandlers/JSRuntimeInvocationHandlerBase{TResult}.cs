@@ -30,7 +30,7 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult>
 	/// <param name="isCatchAllHandler">Set to true if this handler is a catch all handler, that should only be used if there are no other non-catch all handlers available.</param>
 	protected JSRuntimeInvocationHandlerBase(InvocationMatcher matcher, bool isCatchAllHandler)
 	{
-		invocationMatcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
+		invocationMatcher = Guard.NotNull(matcher);
 		completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 		IsCatchAllHandler = isCatchAllHandler;
 	}

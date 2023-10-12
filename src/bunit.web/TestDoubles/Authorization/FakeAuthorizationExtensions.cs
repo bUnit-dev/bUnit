@@ -16,8 +16,7 @@ public static class FakeAuthorizationExtensions
 	/// </summary>
 	public static TestAuthorizationContext AddTestAuthorization(this TestContextBase context)
 	{
-		if (context is null)
-			throw new ArgumentNullException(nameof(context));
+		Guard.NotNull(context);
 
 		context.RenderTree.TryAdd<CascadingAuthenticationState>();
 		context.Services.AddSingleton<FakeSignOutSessionStateManager>();

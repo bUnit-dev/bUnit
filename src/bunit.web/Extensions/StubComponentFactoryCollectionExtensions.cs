@@ -19,8 +19,7 @@ public static class StubComponentFactoryCollectionExtensions
 	/// <returns>A <see cref="ComponentFactoryCollection"/>.</returns>
 	public static ComponentFactoryCollection AddStub<TComponent>(this ComponentFactoryCollection factories) where TComponent : IComponent
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
+		Guard.NotNull(factories);
 
 		factories.Add(new StubComponentFactory(CreatePredicate(typeof(TComponent)), null));
 
@@ -53,8 +52,7 @@ public static class StubComponentFactoryCollectionExtensions
 	/// <returns>A <see cref="ComponentFactoryCollection"/>.</returns>
 	public static ComponentFactoryCollection AddStub<TComponent>(this ComponentFactoryCollection factories, RenderFragment replacementFragment) where TComponent : IComponent
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
+		Guard.NotNull(factories);
 
 		factories.Add(new StubComponentFactory(CreatePredicate(typeof(TComponent)), replacementFragment));
 
@@ -95,10 +93,8 @@ public static class StubComponentFactoryCollectionExtensions
 		RenderFragment<CapturedParameterView<TComponent>> replacementTemplate)
 		where TComponent : IComponent
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
-		if (replacementTemplate is null)
-			throw new ArgumentNullException(nameof(replacementTemplate));
+		Guard.NotNull(factories);
+		Guard.NotNull(replacementTemplate);
 
 		factories.Add(new StubComponentFactory(CreatePredicate(typeof(TComponent)), replacementTemplate));
 
@@ -153,10 +149,8 @@ public static class StubComponentFactoryCollectionExtensions
 		Predicate<Type> componentTypePredicate,
 		RenderFragment replacementFragment)
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
-		if (componentTypePredicate is null)
-			throw new ArgumentNullException(nameof(componentTypePredicate));
+		Guard.NotNull(factories);
+		Guard.NotNull(componentTypePredicate);
 
 		factories.Add(new StubComponentFactory(componentTypePredicate, replacementFragment));
 		return factories;

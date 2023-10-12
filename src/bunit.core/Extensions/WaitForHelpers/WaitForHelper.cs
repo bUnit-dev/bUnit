@@ -50,8 +50,8 @@ public abstract class WaitForHelper<T> : IDisposable
 		Func<(bool CheckPassed, T Content)> completeChecker,
 		TimeSpan? timeout = null)
 	{
-		this.renderedFragment = renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment));
-		this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
+		this.renderedFragment = Guard.NotNull(renderedFragment);
+		this.completeChecker = Guard.NotNull(completeChecker);
 
 		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
 		renderer = (TestRenderer)renderedFragment

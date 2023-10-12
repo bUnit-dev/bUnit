@@ -59,15 +59,8 @@ public static class TriggerEventDispatchExtensions
 	/// <returns>A <see cref="Task"/> that completes when the render caused by the triggering of the event finishes.</returns>
 	public static Task TriggerEventAsync(this IElement element, string eventName, EventArgs eventArgs)
 	{
-		if (element is null)
-		{
-			throw new ArgumentNullException(nameof(element));
-		}
-
-		if (eventName is null)
-		{
-			throw new ArgumentNullException(nameof(eventName));
-		}
+		Guard.NotNull(element);
+		Guard.NotNull(eventName);
 
 		var renderer = element.GetTestContext()?.Renderer
 			?? throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(ITestRenderer)}'.");

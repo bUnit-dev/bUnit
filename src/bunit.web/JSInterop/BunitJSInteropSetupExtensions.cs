@@ -16,8 +16,7 @@ public static partial class BunitJSInteropSetupExtensions
 	/// <returns>A <see cref="JSRuntimeInvocationHandler{TResult}"/>.</returns>
 	public static JSRuntimeInvocationHandler<TResult> Setup<TResult>(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher, bool isCatchAllHandler = false)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
+		Guard.NotNull(jsInterop);
 
 #if NET5_0_OR_GREATER
 		EnsureResultNotIJSObjectReference<TResult>();
@@ -72,8 +71,7 @@ public static partial class BunitJSInteropSetupExtensions
 	/// <returns>A <see cref="JSRuntimeInvocationHandler"/>.</returns>
 	public static JSRuntimeInvocationHandler SetupVoid(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher, bool isCatchAllHandler = false)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
+		Guard.NotNull(jsInterop);
 
 		var result = new JSRuntimeInvocationHandler(invocationMatcher, isCatchAllHandler);
 		jsInterop.AddInvocationHandler(result);
@@ -122,8 +120,7 @@ public static partial class BunitJSInteropSetupExtensions
 	/// <returns>Returns the <see cref="JSRuntimeInvocationHandler{TResult}"/> or null if no one is found.</returns>
 	public static JSRuntimeInvocationHandler<TResult>? TryGetInvokeHandler<TResult>(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
+		Guard.NotNull(jsInterop);
 
 		return jsInterop.TryGetHandlerFor<TResult>(
 			new JSRuntimeInvocation(
@@ -144,8 +141,7 @@ public static partial class BunitJSInteropSetupExtensions
 	/// <returns>Returns the <see cref="JSRuntimeInvocationHandler"/> or null if no one is found.</returns>
 	public static JSRuntimeInvocationHandler? TryGetInvokeVoidHandler(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
+		Guard.NotNull(jsInterop);
 
 		var invocation = new JSRuntimeInvocation(identifier, default, arguments, typeof(object), string.Empty);
 

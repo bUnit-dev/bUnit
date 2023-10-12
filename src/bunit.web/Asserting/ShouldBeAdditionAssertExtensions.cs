@@ -19,10 +19,8 @@ public static class ShouldBeAdditionAssertExtensions
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	public static void ShouldBeAddition(this IDiff actualChange, string expectedChange, string? userMessage = null)
 	{
-		if (actualChange is null)
-			throw new ArgumentNullException(nameof(actualChange));
-		if (expectedChange is null)
-			throw new ArgumentNullException(nameof(expectedChange));
+		Guard.NotNull(actualChange);
+		Guard.NotNull(expectedChange);
 		if (actualChange is not UnexpectedNodeDiff actual)
 			throw new DiffChangeAssertException(actualChange.Result, DiffResult.Unexpected, "The change was not an addition.");
 
@@ -50,8 +48,7 @@ public static class ShouldBeAdditionAssertExtensions
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	public static void ShouldBeAddition(this IDiff actualChange, IRenderedFragment expectedChange, string? userMessage = null)
 	{
-		if (expectedChange is null)
-			throw new ArgumentNullException(nameof(expectedChange));
+		Guard.NotNull(expectedChange);
 		ShouldBeAddition(actualChange, expectedChange.Nodes, userMessage);
 	}
 
@@ -65,10 +62,9 @@ public static class ShouldBeAdditionAssertExtensions
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	public static void ShouldBeAddition(this IDiff actualChange, INodeList expectedChange, string? userMessage = null)
 	{
-		if (actualChange is null)
-			throw new ArgumentNullException(nameof(actualChange));
-		if (expectedChange is null)
-			throw new ArgumentNullException(nameof(expectedChange));
+		Guard.NotNull(actualChange);
+		Guard.NotNull(expectedChange);
+
 		if (actualChange is not UnexpectedNodeDiff actual)
 			throw new DiffChangeAssertException(actualChange.Result, DiffResult.Unexpected, "The change was not an addition.");
 

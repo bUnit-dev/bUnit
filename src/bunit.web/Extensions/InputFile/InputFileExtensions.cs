@@ -17,8 +17,7 @@ public static class InputFileExtensions
 		this IRenderedComponent<InputFile> inputFileComponent,
 		params InputFileContent[] files)
 	{
-		if (inputFileComponent == null)
-			throw new ArgumentNullException(nameof(inputFileComponent));
+		Guard.NotNull(inputFileComponent);
 
 		if (!files.Any())
 			throw new ArgumentException("No files were provided to be uploaded.", nameof(files));

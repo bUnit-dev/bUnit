@@ -20,8 +20,7 @@ public static class NodePrintExtensions
 	/// <param name="formatter">The formatter to use.</param>
 	public static void ToHtml(this IEnumerable<INode> nodes, TextWriter writer, IMarkupFormatter formatter)
 	{
-		if (nodes is null)
-			throw new ArgumentNullException(nameof(nodes));
+		Guard.NotNull(nodes);
 
 		foreach (var node in nodes)
 		{
@@ -37,8 +36,7 @@ public static class NodePrintExtensions
 	/// </summary>
 	public static string ToDiffMarkup(this IEnumerable<INode> nodes)
 	{
-		if (nodes is null)
-			throw new ArgumentNullException(nameof(nodes));
+		Guard.NotNull(nodes);
 
 		using var sw = new StringWriter();
 		nodes.ToHtml(sw, new DiffMarkupFormatter());
@@ -53,8 +51,7 @@ public static class NodePrintExtensions
 	/// </summary>
 	public static string ToDiffMarkup(this IMarkupFormattable markupFormattable)
 	{
-		if (markupFormattable is null)
-			throw new ArgumentNullException(nameof(markupFormattable));
+		Guard.NotNull(markupFormattable);
 
 		using var sw = new StringWriter();
 		markupFormattable.ToHtml(sw, new DiffMarkupFormatter());
@@ -67,8 +64,7 @@ public static class NodePrintExtensions
 	/// </summary>
 	public static string ToMarkup(this IEnumerable<INode> nodes)
 	{
-		if (nodes is null)
-			throw new ArgumentNullException(nameof(nodes));
+		Guard.NotNull(nodes);
 
 		using var sw = new StringWriter();
 		var formatter = new PrettyMarkupFormatter
@@ -86,8 +82,7 @@ public static class NodePrintExtensions
 	/// </summary>
 	public static string ToMarkup(this IMarkupFormattable markupFormattable)
 	{
-		if (markupFormattable is null)
-			throw new ArgumentNullException(nameof(markupFormattable));
+		Guard.NotNull(markupFormattable);
 
 		using var sw = new StringWriter();
 		var formatter = new PrettyMarkupFormatter

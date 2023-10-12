@@ -21,8 +21,7 @@ public static class ComponentFactoryCollectionExtensions
 		where TComponent : IComponent
 		where TSubstituteComponent : IComponent
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
+		Guard.NotNull(factories);
 
 		factories.Add(new GenericComponentFactory<TComponent, TSubstituteComponent>());
 
@@ -44,10 +43,8 @@ public static class ComponentFactoryCollectionExtensions
 	public static ComponentFactoryCollection Add<TComponent>(this ComponentFactoryCollection factories, TComponent instance)
 		where TComponent : IComponent
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
-		if (instance is null)
-			throw new ArgumentNullException(nameof(instance));
+		Guard.NotNull(factories);
+		Guard.NotNull(instance);
 
 		factories.Add(new InstanceComponentFactory<TComponent>(instance));
 
@@ -70,10 +67,8 @@ public static class ComponentFactoryCollectionExtensions
 	public static ComponentFactoryCollection Add<TComponent>(this ComponentFactoryCollection factories, Func<TComponent> factory)
 		where TComponent : IComponent
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
-		if (factory is null)
-			throw new ArgumentNullException(nameof(factory));
+		Guard.NotNull(factories);
+		Guard.NotNull(factory);
 
 		factories.Add(new TypeBasedComponentFactory<TComponent>(factory));
 
@@ -95,12 +90,9 @@ public static class ComponentFactoryCollectionExtensions
 	/// <exception cref="ArgumentNullException">Thrown when <paramref name="factories"/>, <paramref name="condition"/>, and/or <paramref name="factory"/> is null.</exception>
 	public static ComponentFactoryCollection Add(this ComponentFactoryCollection factories, Predicate<Type> condition, Func<Type, IComponent> factory)
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
-		if (condition is null)
-			throw new ArgumentNullException(nameof(condition));
-		if (factory is null)
-			throw new ArgumentNullException(nameof(factory));
+		Guard.NotNull(factories);
+		Guard.NotNull(condition);
+		Guard.NotNull(factory);
 
 		factories.Add(new ConditionalComponentFactory(condition, factory));
 

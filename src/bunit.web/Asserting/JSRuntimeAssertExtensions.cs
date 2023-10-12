@@ -77,10 +77,8 @@ public static class JSRuntimeAssertExtensions
 	/// <param name="expectedTargetElement">expected targeted element.</param>
 	public static void ShouldBeElementReferenceTo(this object? actualArgument, IElement expectedTargetElement)
 	{
-		if (actualArgument is null)
-			throw new ArgumentNullException(nameof(actualArgument));
-		if (expectedTargetElement is null)
-			throw new ArgumentNullException(nameof(expectedTargetElement));
+		Guard.NotNull(actualArgument);
+		Guard.NotNull(expectedTargetElement);
 		if (actualArgument is not ElementReference elmRef)
 			throw new ActualExpectedAssertException(actualArgument.GetType().Name, nameof(ElementReference), "Actual argument type", "Expected argument type", $"The argument was not an {nameof(ElementReference)}");
 

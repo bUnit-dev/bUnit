@@ -104,8 +104,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent
 	{
-		if (parameters is null)
-			throw new ArgumentNullException(nameof(parameters));
+		Guard.NotNull(parameters);
 
 		var renderFragment = parameters.ToRenderFragment<TComponent>();
 		return Render(renderFragment, id => activator.CreateRenderedComponent<TComponent>(id));
@@ -128,8 +127,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		EventArgs eventArgs,
 		bool ignoreUnknownEventHandlers)
 	{
-		if (fieldInfo is null)
-			throw new ArgumentNullException(nameof(fieldInfo));
+		Guard.NotNull(fieldInfo);
 
 		if (disposed)
 			throw new ObjectDisposedException(nameof(TestRenderer));
@@ -485,8 +483,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	private IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
 		where TComponent : IComponent
 	{
-		if (parentComponent is null)
-			throw new ArgumentNullException(nameof(parentComponent));
+		Guard.NotNull(parentComponent);
 
 		if (disposed)
 			throw new ObjectDisposedException(nameof(TestRenderer));

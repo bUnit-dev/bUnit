@@ -33,10 +33,8 @@ public static partial class BunitJSInteropSetupExtensions
 	/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
 	public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher, bool isCatchAllHandler = false)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
-		if (invocationMatcher is null)
-			throw new ArgumentNullException(nameof(invocationMatcher));
+		Guard.NotNull(jsInterop);
+		Guard.NotNull(invocationMatcher);
 
 		var result = new JSObjectReferenceInvocationHandler(jsInterop, invocationMatcher, isCatchAllHandler);
 		jsInterop.AddInvocationHandler(result);
@@ -131,8 +129,7 @@ public static partial class BunitJSInteropSetupExtensions
 	/// <returns>A <see cref="BunitJSModuleInterop"/> or null if no one is found.</returns>
 	public static BunitJSModuleInterop? TryGetModuleJSInterop(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
+		Guard.NotNull(jsInterop);
 
 		var invocation = new JSRuntimeInvocation(identifier, default, arguments, typeof(IJSObjectReference), "InvokeAsync");
 

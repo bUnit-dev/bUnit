@@ -45,8 +45,7 @@ public class ElementNotFoundException : Exception
 #endif
 	public override void GetObjectData(SerializationInfo info, StreamingContext context)
 	{
-		if (info is null)
-			throw new ArgumentNullException(nameof(info));
+		Guard.NotNull(info);
 		info.AddValue(nameof(CssSelector), CssSelector);
 		base.GetObjectData(info, context);
 	}

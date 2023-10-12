@@ -40,8 +40,7 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 	/// <param name="parameters">Parameters to add.</param>
 	public void Add(IEnumerable<ComponentParameter> parameters)
 	{
-		if (parameters is null)
-			throw new ArgumentNullException(nameof(parameters));
+		Guard.NotNull(parameters);
 
 		foreach (var cp in parameters)
 		{

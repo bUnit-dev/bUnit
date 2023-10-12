@@ -27,8 +27,7 @@ public sealed class MissingMockStringLocalizationException : Exception
 	private MissingMockStringLocalizationException(SerializationInfo serializationInfo, StreamingContext streamingContext)
 		: base(serializationInfo, streamingContext)
 	{
-		if (serializationInfo is null)
-			throw new ArgumentNullException(nameof(serializationInfo));
+		Guard.NotNull(serializationInfo);
 		Arguments = serializationInfo.GetValue(nameof(Arguments), Array.Empty<object?>().GetType()) as object?[] ?? Array.Empty<object?>();
 	}
 
@@ -38,8 +37,7 @@ public sealed class MissingMockStringLocalizationException : Exception
 #endif
 	public override void GetObjectData(SerializationInfo info, StreamingContext context)
 	{
-		if (info is null)
-			throw new ArgumentNullException(nameof(info));
+		Guard.NotNull(info);
 		info.AddValue(nameof(Arguments), Arguments, Array.Empty<object?>().GetType());
 		base.GetObjectData(info, context);
 	}

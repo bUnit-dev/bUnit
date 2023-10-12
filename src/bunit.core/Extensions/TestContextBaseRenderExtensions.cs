@@ -17,8 +17,7 @@ public static class TestContextBaseRenderExtensions
 	public static IRenderedComponentBase<TComponent> RenderInsideRenderTree<TComponent>(this TestContextBase testContext, RenderFragment renderFragment)
 		where TComponent : IComponent
 	{
-		if (testContext is null)
-			throw new ArgumentNullException(nameof(testContext));
+		Guard.NotNull(testContext);
 
 		var baseResult = RenderInsideRenderTree(testContext, renderFragment);
 		return testContext.Renderer.FindComponent<TComponent>(baseResult);
@@ -32,8 +31,7 @@ public static class TestContextBaseRenderExtensions
 	/// <returns>A <see cref="IRenderedFragmentBase"/>.</returns>
 	public static IRenderedFragmentBase RenderInsideRenderTree(this TestContextBase testContext, RenderFragment renderFragment)
 	{
-		if (testContext is null)
-			throw new ArgumentNullException(nameof(testContext));
+		Guard.NotNull(testContext);
 
 		// Wrap fragment in a FragmentContainer so the start of the test supplied
 		// razor fragment can be found after, and then wrap in any layout components

@@ -22,8 +22,7 @@ public sealed class RenderEvent
 	/// <returns>A tuple of statuses indicating whether the rendered component rendered during the render cycle, if it changed or if it was disposed.</returns>
 	public (bool Rendered, bool Changed, bool Disposed) GetRenderStatus(IRenderedFragmentBase renderedComponent)
 	{
-		if (renderedComponent is null)
-			throw new ArgumentNullException(nameof(renderedComponent));
+		Guard.NotNull(renderedComponent);
 
 		return statuses.TryGetValue(renderedComponent.ComponentId, out var status)
 			? (status.Rendered, status.Changed, status.Disposed)

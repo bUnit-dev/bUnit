@@ -29,7 +29,7 @@ public sealed class FakeNavigationManager : NavigationManager
 	[SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "By design. Fake navigation manager defaults to local host as base URI.")]
 	public FakeNavigationManager(ITestRenderer renderer)
 	{
-		this.renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
+		this.renderer = Guard.NotNull(renderer);
 		Initialize("http://localhost/", "http://localhost/");
 	}
 

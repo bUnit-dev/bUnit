@@ -33,8 +33,7 @@ public class DiffMarkupFormatter : PrettyMarkupFormatter, IMarkupFormatter
 	/// <inheritdoc/>
 	protected override string Attribute(IAttr attr)
 	{
-		if (attr is null)
-			throw new ArgumentNullException(nameof(attr));
+		Guard.NotNull(attr);
 
 		return Htmlizer.IsBlazorAttribute(attr.Name ?? string.Empty)
 			? string.Empty

@@ -51,8 +51,7 @@ public class BunitJSInterop
 	/// </summary>
 	public void AddInvocationHandler<TResult>(JSRuntimeInvocationHandlerBase<TResult> handler)
 	{
-		if (handler is null)
-			throw new ArgumentNullException(nameof(handler));
+		Guard.NotNull(handler);
 
 		var resultType = typeof(TResult);
 

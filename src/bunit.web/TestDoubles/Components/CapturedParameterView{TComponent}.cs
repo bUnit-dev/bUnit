@@ -68,8 +68,7 @@ public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, obj
 	/// <returns>The <typeparamref name="TValue"/>.</returns>
 	public TValue Get<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
 	{
-		if (parameterSelector is null)
-			throw new ArgumentNullException(nameof(parameterSelector));
+		Guard.NotNull(parameterSelector);
 
 		if (parameterSelector.Body is not MemberExpression { Member: PropertyInfo propInfoCandidate })
 			throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.", nameof(parameterSelector));

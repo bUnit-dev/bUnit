@@ -69,7 +69,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	/// </summary>
 	/// <param name="serviceProvider">The fallback service provider.</param>
 	public void AddFallbackServiceProvider(IServiceProvider serviceProvider)
-		=> fallbackServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+		=> fallbackServiceProvider = Guard.NotNull(serviceProvider);
 
 	/// <summary>
 	/// Get service of type T from the test provider.
