@@ -15,7 +15,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	private IServiceProvider? serviceProvider;
 	private IServiceProvider? fallbackServiceProvider;
 	private ServiceProviderOptions options = DefaultServiceProviderOptions;
-	private Func<IServiceProvider> serviceProviderFactory = () => serviceCollection.BuildServiceProvider();
+	private Func<IServiceProvider> serviceProviderFactory;
 
 	/// <summary>
 	/// Gets a value indicating whether this <see cref="TestServiceProvider"/> has been initialized, and
@@ -61,6 +61,8 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	private TestServiceProvider(IServiceCollection initialServiceCollection, bool initializeProvider)
 	{
 		serviceCollection = initialServiceCollection;
+		serviceProviderFactory = () => serviceCollection.BuildServiceProvider();
+
 		if (initializeProvider)
 			InitializeProvider();
 	}
