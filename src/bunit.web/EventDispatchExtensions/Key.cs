@@ -302,8 +302,8 @@ public sealed class Key : IEquatable<Key>
 	/// <param name="code">The key code of physical key.</param>
 	public static Key Get(string value, string code)
 	{
-		Guard.NotNull(value);
-		Guard.NotNull(code);
+		Guard.NotNullOrEmpty(value);
+		Guard.NotNullOrEmpty(code);
 
 		return PredefinedKeys.TryGetValue((value, code), out var key)
 			? key
