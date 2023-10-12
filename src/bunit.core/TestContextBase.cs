@@ -91,10 +91,13 @@ public abstract class TestContextBase : IDisposable
 			renderer.Dispose();
 		}
 
+		// Ignore the async task as GetAwaiter().GetResult() can cause deadlock
+		// and implementing IAsyncDisposable in TestContext will be a breaking change.
+		//
 		// NOTE: This has to be called before Services.Dispose().
 		// If there are IAsyncDisposable services registered, calling Dispose first
 		// causes the service provider to throw an exception.
-		Services.DisposeAsync().GetAwaiter().GetResult();
+		_ = Services.DisposeAsync();
 
 		// The service provider should dispose of any
 		// disposable object it has created, when it is disposed.
