@@ -97,7 +97,6 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 			throw new ArgumentNullException(nameof(serviceProviderFactory));
 		}
 
-
 		UseServiceProviderFactory(
 			serviceCollection =>
 			{
