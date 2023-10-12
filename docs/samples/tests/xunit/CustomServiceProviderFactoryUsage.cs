@@ -7,9 +7,11 @@ using System.Text;
 using Xunit;
 
 namespace Bunit.Docs.Samples;
-public class CustomServiceProviderFactoryUsage : TestContext {
+public class CustomServiceProviderFactoryUsage : TestContext
+{
   [Fact]
-  public void CustomServiceProviderViaFactoryReturns() {
+  public void CustomServiceProviderViaFactoryReturns()
+  {
     Services.UseServiceProviderFactory(new CustomServiceProviderFactory());
 
     var dummyService = Services.GetService<DummyService>();
@@ -18,7 +20,8 @@ public class CustomServiceProviderFactoryUsage : TestContext {
   }
 
   [Fact]
-  public void CustomServiceProviderViaDelegateReturns() {
+  public void CustomServiceProviderViaDelegateReturns()
+  {
     Services.UseServiceProviderFactory(x => new CustomServiceProvider(x));
 
     var dummyService = Services.GetService<DummyService>();
@@ -27,8 +30,10 @@ public class CustomServiceProviderFactoryUsage : TestContext {
   }
 
   [Fact]
-  public void AutofacServiceProviderViaFactoryReturns() {
-    void ConfigureContainer(ContainerBuilder containerBuilder) {
+  public void AutofacServiceProviderViaFactoryReturns()
+  {
+    void ConfigureContainer(ContainerBuilder containerBuilder)
+    {
       containerBuilder
         .RegisterType<DummyService>()
         .AsSelf();
@@ -51,8 +56,10 @@ public class CustomServiceProviderFactoryUsage : TestContext {
   }
 
   [Fact]
-  public void AutofacServiceProviderViaDelegateReturns() {
-    ILifetimeScope ConfigureContainer(IServiceCollection services) {
+  public void AutofacServiceProviderViaDelegateReturns()
+  {
+    ILifetimeScope ConfigureContainer(IServiceCollection services)
+    {
       var containerBuilder = new ContainerBuilder();
 
       containerBuilder
