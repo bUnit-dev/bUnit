@@ -59,26 +59,26 @@ The example makes use of `AutofacServiceProviderFactory` and `AutofacServiceProv
 
 Here is a test where the Autofac service provider factory is used:
 
-[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactoryUsage.cs?start=31&end=50)]
+[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactoryUsage.cs?start=32&end=56)]
 
 Here is a test where the Autofac service provider is used via delegate:
 
-[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactoryUsage.cs?start=55&end=80)]
+[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactoryUsage.cs?start=58&end=88)]
 
 ### Registering a custom service provider factory
 The examples contain dummy implementations of `IServiceProvider` and `IServiceProviderFactory<TContainerBuilder>`. Normally those implementations are supplied by the creator of your custom dependency injection solution (e.g. Autofac example above). This dummy implementations are not intended to use as is.
 
 This is an example of how to implement and use a dummy custom service provider factory.
 
-[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactory.cs?start=8&end=46)]
+[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactory.cs?start=8&end=49)]
 
 Here is a test where the custom service provider factory is used:
 
-[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactoryUsage.cs?start=13&end=17)]
+[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactoryUsage.cs?start=15&end=19)]
 
 Here is a test where the custom service provider is used via delegate:
 
-[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactoryUsage.cs?start=22&end=26)]
+[!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactoryUsage.cs?start=25&end=29)]
 
 ## Further reading
 
