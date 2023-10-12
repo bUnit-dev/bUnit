@@ -97,24 +97,21 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 			throw new ArgumentNullException(nameof(serviceProviderFactory));
 		}
 
-		UseServiceProviderFactory(
-			serviceCollection =>
-			{
-				var containerBuilder = serviceProviderFactory.CreateBuilder(serviceCollection);
-				configure?.Invoke(containerBuilder);
-				return serviceProviderFactory.CreateServiceProvider(containerBuilder);
-			});
+		UseServiceProviderFactory(serviceCollection =>
+		{
+			var containerBuilder = serviceProviderFactory.CreateBuilder(serviceCollection);
+			configure?.Invoke(containerBuilder);
+			return serviceProviderFactory.CreateServiceProvider(containerBuilder);
+		});
 	}
 
 	/// <summary>
 	/// Creates the underlying service provider. Throws if it was already build.
-	/// Automatically called while getting a service if unitialized.
+	/// Automatically called while getting a service if uninitialized.
 	/// No longer will accept calls to the <c>AddService</c>'s methods.
 	/// See <see cref="IsProviderInitialized"/>
 	/// </summary>
-#if !NETSTANDARD2_1
 	[MemberNotNull(nameof(serviceProvider))]
-#endif
 	private void InitializeProvider()
 	{
 		CheckInitializedAndThrow();
@@ -155,7 +152,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 		if (serviceProvider is null)
 			InitializeProvider();
 
-		var result = serviceProvider!.GetService(serviceType);
+		var result = serviceProvider.GetService(serviceType);
 
 		if (result is null && fallbackServiceProvider is not null)
 			result = fallbackServiceProvider.GetService(serviceType);
