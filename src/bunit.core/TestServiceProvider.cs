@@ -15,6 +15,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	private IServiceProvider? serviceProvider;
 	private IServiceProvider? fallbackServiceProvider;
 	private ServiceProviderOptions options = DefaultServiceProviderOptions;
+	private Func<IServiceProvider> serviceProviderFactory;
 
 	/// <summary>
 	/// Gets a value indicating whether this <see cref="TestServiceProvider"/> has been initialized, and
@@ -60,8 +61,68 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	private TestServiceProvider(IServiceCollection initialServiceCollection, bool initializeProvider)
 	{
 		serviceCollection = initialServiceCollection;
+		serviceProviderFactory = () => serviceCollection.BuildServiceProvider(Options);
+
 		if (initializeProvider)
-			serviceProvider = serviceCollection.BuildServiceProvider();
+			InitializeProvider();
+	}
+
+	/// <summary>
+	/// Use a custom service provider factory for creating the underlying IServiceProvider.
+	/// </summary>
+	/// <param name="serviceProviderFactory">custom service provider factory</param>
+	public void UseServiceProviderFactory(Func<IServiceCollection, IServiceProvider> serviceProviderFactory)
+	{
+		if (serviceProviderFactory is null)
+		{
+			throw new ArgumentNullException(nameof(serviceProviderFactory));
+		}
+
+		this.serviceProviderFactory = () => serviceProviderFactory(serviceCollection);
+	}
+
+	/// <summary>
+	/// Use a custom service provider factory for creating the underlying IServiceProvider.
+	/// </summary>
+	/// <typeparam name="TContainerBuilder">
+	/// Type of the container builder.
+	/// See <see cref="IServiceProviderFactory{TContainerBuilder}" />
+	/// </typeparam>
+	/// <param name="serviceProviderFactory">custom service provider factory</param>
+	/// <param name="configure">builder configuration action</param>
+	public void UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> serviceProviderFactory, Action<TContainerBuilder>? configure = null) where TContainerBuilder : notnull
+	{
+		if (serviceProviderFactory is null)
+		{
+			throw new ArgumentNullException(nameof(serviceProviderFactory));
+		}
+
+		UseServiceProviderFactory(
+			serviceCollection =>
+			{
+				var containerBuilder = serviceProviderFactory.CreateBuilder(serviceCollection);
+				configure?.Invoke(containerBuilder);
+				return serviceProviderFactory.CreateServiceProvider(containerBuilder);
+			});
+	}
+
+	/// <summary>
+	/// Creates the underlying service provider. Throws if it was already build.
+	/// Automatically called while getting a service if unitialized.
+	/// No longer will accept calls to the <c>AddService</c>'s methods.
+	/// See <see cref="IsProviderInitialized"/>
+	/// </summary>
+#if !NETSTANDARD2_1
+	[MemberNotNull(nameof(serviceProvider))]
+#endif
+	private void InitializeProvider()
+	{
+		CheckInitializedAndThrow();
+
+		serviceCollection.AddSingleton<TestServiceProvider>(this);
+		rootServiceProvider = serviceProviderFactory.Invoke();
+		serviceScope = rootServiceProvider.CreateScope();
+		serviceProvider = serviceScope.ServiceProvider;
 	}
 
 	/// <summary>
@@ -92,14 +153,9 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	private object? GetServiceInternal(Type serviceType)
 	{
 		if (serviceProvider is null)
-		{
-			serviceCollection.AddSingleton<TestServiceProvider>(this);
-			rootServiceProvider = serviceCollection.BuildServiceProvider(options);
-			serviceScope = rootServiceProvider.CreateScope();
-			serviceProvider = serviceScope.ServiceProvider;
-		}
+			InitializeProvider();
 
-		var result = serviceProvider.GetService(serviceType);
+		var result = serviceProvider!.GetService(serviceType);
 
 		if (result is null && fallbackServiceProvider is not null)
 			result = fallbackServiceProvider.GetService(serviceType);
@@ -112,7 +168,6 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
 
 	/// <inheritdoc/>
 	public void Dispose()

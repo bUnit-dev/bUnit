@@ -264,6 +264,39 @@ public partial class TestServiceProviderTest
 		result.ShouldNotBeNull();
 	}
 
+	[Fact(DisplayName = "Test custom service provider factory")]
+	public void Test038()
+	{
+		using var sut = new TestServiceProvider();
+		sut.AddSingleton<DummyService>();
+		var dummyServiceProviderFactory = new DummyServiceProviderFactory();
+		sut.UseServiceProviderFactory(dummyServiceProviderFactory);
+
+		var result = sut.GetRequiredService<DummyService>();
+
+		result.ShouldNotBeNull();
+		dummyServiceProviderFactory.TestContainerBuilder.ShouldNotBeNull();
+		dummyServiceProviderFactory.TestContainerBuilder.TestServiceProvider.ShouldNotBeNull();
+		dummyServiceProviderFactory.TestContainerBuilder.TestServiceProvider.ResolvedTestServices.ShouldContain(result);
+		dummyServiceProviderFactory.TestContainerBuilder.TestServiceProvider.ResolvedTestServices.Count.ShouldBe(1);
+	}
+
+	[Fact(DisplayName = "Test custom service provider factory as delegate")]
+	public void Test039()
+	{
+		using var sut = new TestServiceProvider();
+		sut.AddSingleton<DummyService>();
+		DummyServiceProvider dummyServiceProvider = null;
+		sut.UseServiceProviderFactory(x => dummyServiceProvider = new DummyServiceProvider(x));
+
+		var result = sut.GetRequiredService<DummyService>();
+
+		result.ShouldNotBeNull();
+		dummyServiceProvider.ShouldNotBeNull();
+		dummyServiceProvider.ResolvedTestServices.ShouldContain(result);
+		dummyServiceProvider.ResolvedTestServices.Count.ShouldBe(1);
+	}
+
 	private sealed class DummyService { }
 
 	private sealed class AnotherDummyService { }
@@ -300,5 +333,52 @@ public partial class TestServiceProviderTest
 		{
 			IsDisposed = true;
 		}
+	}
+
+	private sealed class DummyServiceProvider : IServiceProvider, IServiceScopeFactory, IServiceScope
+	{
+		private readonly IServiceCollection serviceDescriptors;
+
+		public readonly List<object?> ResolvedTestServices = new();
+
+		public DummyServiceProvider(IServiceCollection serviceDescriptors)
+			=> this.serviceDescriptors = serviceDescriptors;
+
+		public object? GetService(Type serviceType)
+		{
+			if (serviceType == typeof(IServiceScope) || serviceType == typeof(IServiceScopeFactory))
+				return this;
+
+			var result = Activator.CreateInstance(serviceDescriptors.Single(x => x.ServiceType == serviceType).ImplementationType);
+			ResolvedTestServices.Add(result);
+			return result;
+		}
+
+		void IDisposable.Dispose() { }
+		public IServiceScope CreateScope() => this;
+		IServiceProvider IServiceScope.ServiceProvider => this;
+
+	}
+
+	private sealed class DummyServiceProviderFactoryContainerBuilder
+	{
+		private readonly IServiceCollection serviceDescriptors;
+
+		public DummyServiceProvider? TestServiceProvider { get; private set; }
+
+		public DummyServiceProviderFactoryContainerBuilder(IServiceCollection serviceDescriptors) => this.serviceDescriptors = serviceDescriptors;
+
+		public IServiceProvider Build() => TestServiceProvider = new DummyServiceProvider(serviceDescriptors);
+	}
+
+	private sealed class DummyServiceProviderFactory : IServiceProviderFactory<DummyServiceProviderFactoryContainerBuilder>
+	{
+		public DummyServiceProviderFactoryContainerBuilder TestContainerBuilder { get; private set; }
+
+		public DummyServiceProviderFactoryContainerBuilder CreateBuilder(IServiceCollection services)
+			=> TestContainerBuilder = new DummyServiceProviderFactoryContainerBuilder(services);
+
+		public IServiceProvider CreateServiceProvider(DummyServiceProviderFactoryContainerBuilder containerBuilder)
+			=> containerBuilder.Build();
 	}
 }

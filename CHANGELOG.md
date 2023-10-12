@@ -6,10 +6,14 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
-## Fixed
+### Fixed
 
 - When the `TestContext` was disposed, it disposed of all services via the service provider. However, if there were ongoing renders happening, this could cause inconsistent state in the render tree, since the `TestRenderer` could try to access the service provider to instantiate components.  
   This release changes the dispose phase such that the renderer gets disposed first, then the service provider. The disposal of any services that implement `IAsyncDisposable` is now also awaited. Fixed by [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet). Reported by [@BenSchoen](https://github.com/BenSchoen) in https://github.com/bUnit-dev/bUnit/issues/1227.
+  
+### Added
+
+- Support for custom service provider factories (`IServiceProviderFactory<TContainerBuilder>`). This enables the use of Autofac and other frameworks for dependency injection like on real-world ASP.NET Core / Blazor projects. By [@inf9144](https://github.com/inf9144).
 
 ## [1.23.9] - 2023-09-06
 
