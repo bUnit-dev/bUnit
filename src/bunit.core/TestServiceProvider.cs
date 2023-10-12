@@ -61,7 +61,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	private TestServiceProvider(IServiceCollection initialServiceCollection, bool initializeProvider)
 	{
 		serviceCollection = initialServiceCollection;
-		serviceProviderFactory = () => serviceCollection.BuildServiceProvider();
+		serviceProviderFactory = () => serviceCollection.BuildServiceProvider(Options);
 
 		if (initializeProvider)
 			InitializeProvider();
