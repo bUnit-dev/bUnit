@@ -269,15 +269,12 @@ public partial class TestServiceProviderTest
 	{
 		using var sut = new TestServiceProvider();
 		sut.AddSingleton<DummyService>();
-
 		var dummyServiceProviderFactory = new DummyServiceProviderFactory();
-
 		sut.UseServiceProviderFactory(dummyServiceProviderFactory);
 
 		var result = sut.GetRequiredService<DummyService>();
 
 		result.ShouldNotBeNull();
-
 		dummyServiceProviderFactory.TestContainerBuilder.ShouldNotBeNull();
 		dummyServiceProviderFactory.TestContainerBuilder.TestServiceProvider.ShouldNotBeNull();
 		dummyServiceProviderFactory.TestContainerBuilder.TestServiceProvider.ResolvedTestServices.ShouldContain(result);
@@ -289,15 +286,12 @@ public partial class TestServiceProviderTest
 	{
 		using var sut = new TestServiceProvider();
 		sut.AddSingleton<DummyService>();
-
 		DummyServiceProvider dummyServiceProvider = null;
-
 		sut.UseServiceProviderFactory(x => dummyServiceProvider = new DummyServiceProvider(x));
 
 		var result = sut.GetRequiredService<DummyService>();
 
 		result.ShouldNotBeNull();
-
 		dummyServiceProvider.ShouldNotBeNull();
 		dummyServiceProvider.ResolvedTestServices.ShouldContain(result);
 		dummyServiceProvider.ResolvedTestServices.Count.ShouldBe(1);

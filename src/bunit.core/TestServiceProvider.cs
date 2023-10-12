@@ -15,7 +15,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 	private IServiceProvider? serviceProvider;
 	private IServiceProvider? fallbackServiceProvider;
 	private ServiceProviderOptions options = DefaultServiceProviderOptions;
-	private Func<IServiceProvider>? buildServiceProviderDelegate;
+	private Func<IServiceProvider> serviceProviderFactory = () => serviceCollection.BuildServiceProvider();
 
 	/// <summary>
 	/// Gets a value indicating whether this <see cref="TestServiceProvider"/> has been initialized, and
@@ -76,10 +76,7 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 			throw new ArgumentNullException(nameof(serviceProviderFactory));
 		}
 
-		buildServiceProviderDelegate = BuildServiceProvider;
-
-		IServiceProvider BuildServiceProvider()
-			=> serviceProviderFactory(serviceCollection);
+		this.serviceProviderFactory = () => serviceProviderFactory(serviceCollection);
 	}
 
 	/// <summary>
@@ -98,14 +95,14 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 			throw new ArgumentNullException(nameof(serviceProviderFactory));
 		}
 
-		buildServiceProviderDelegate = BuildServiceProvider;
 
-		IServiceProvider BuildServiceProvider()
-		{
-			var containerBuilder = serviceProviderFactory.CreateBuilder(serviceCollection);
-			configure?.Invoke(containerBuilder);
-			return serviceProviderFactory.CreateServiceProvider(containerBuilder);
-		}
+		UseServiceProviderFactory(
+			serviceCollection =>
+			{
+				var containerBuilder = serviceProviderFactory.CreateBuilder(serviceCollection);
+				configure?.Invoke(containerBuilder);
+				return serviceProviderFactory.CreateServiceProvider(containerBuilder);
+			});
 	}
 
 	/// <summary>
@@ -122,12 +119,9 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 		CheckInitializedAndThrow();
 
 		serviceCollection.AddSingleton<TestServiceProvider>(this);
-		rootServiceProvider = (buildServiceProviderDelegate ?? BuildServiceProvider)();
+		rootServiceProvider = serviceProviderFactory.Invoke();
 		serviceScope = rootServiceProvider.CreateScope();
 		serviceProvider = serviceScope.ServiceProvider;
-
-		IServiceProvider BuildServiceProvider()
-			=> serviceCollection.BuildServiceProvider(options);
 	}
 
 	/// <summary>
