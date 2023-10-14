@@ -7,13 +7,6 @@ on:
     types: [completed]
     branches: [main, v2]
 
-  workflow_dispatch:
-    inputs:
-      nugetRelease:
-        description: 'Release to NuGet? Set to "true" to release to NuGet.org as well as GPR.'
-        required: true
-        default: 'true'
-
 jobs:
   release-preview:
     if: github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && ${{ github.event.workflow_run.conclusion == 'success' }}) || (github.ref == 'refs/heads/v2' && ${{ github.event.workflow_run.conclusion == 'success' }})
@@ -58,5 +51,4 @@ jobs:
         run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bunit-dev/index.json --skip-duplicate --no-symbols
 
       - name: 🛠️ Upload library to NuGet.org repository
-        if: github.event.inputs.nugetRelease == 'true'
         run: dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols

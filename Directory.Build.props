@@ -19,7 +19,7 @@
 
 	<PropertyGroup Label="Compile settings">
 		<Nullable>enable</Nullable>
-		<LangVersion>11.0</LangVersion>
+		<LangVersion>preview</LangVersion>
 		<AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<NoWarn>CA1014,NU5104,NETSDK1138,SYSLIB0051</NoWarn>
@@ -51,7 +51,7 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.9.0.77355" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.12.0.78982" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings"

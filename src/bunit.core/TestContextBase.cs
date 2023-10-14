@@ -83,6 +83,14 @@ public abstract class TestContextBase : IDisposable
 
 		disposed = true;
 
+		// Ensure the renderer is disposed before all others,
+		// otherwise a render cycle may be ongoing and try to access
+		// the service provider to perform operations.
+		if(Renderer is IDisposable renderer)
+		{
+			renderer.Dispose();
+		}
+
 		// Ignore the async task as GetAwaiter().GetResult() can cause deadlock
 		// and implementing IAsyncDisposable in TestContext will be a breaking change.
 		//

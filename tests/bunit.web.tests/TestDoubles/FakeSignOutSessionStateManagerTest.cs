@@ -1,4 +1,4 @@
-﻿namespace Bunit.TestDoubles;
+namespace Bunit.TestDoubles;
 
 public class FakeSignOutSessionStateManagerTest : TestContext
 {
@@ -16,12 +16,12 @@ public class FakeSignOutSessionStateManagerTest : TestContext
 	}
 
 	[Fact]
-	public void ShouldReturnSignOutStateOnValidateSignOutState()
+	public async Task ShouldReturnSignOutStateOnValidateSignOutState()
 	{
 		var cut = new FakeSignOutSessionStateManager(Substitute.For<IJSRuntime>());
-		cut.SetSignOutState();
+		await cut.SetSignOutState();
 
-		var wasValidate = cut.ValidateSignOutState().Result;
+		var wasValidate = await cut.ValidateSignOutState();
 
 		wasValidate.ShouldBeTrue();
 		cut.IsSignedOut.ShouldBeFalse();

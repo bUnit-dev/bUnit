@@ -38,3 +38,4 @@
 ##########################################
 
 dotnet_diagnostic.S1133.severity = none # S1133: Deprecated code should be removed
+dotnet_diagnostic.S3011.severity = none # S3011: Reflection should not be used to increase accessibility of classes, methods, or fields
