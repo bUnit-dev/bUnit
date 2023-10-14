@@ -12,6 +12,10 @@ public class DiffMarkupFormatter : PrettyMarkupFormatter, IMarkupFormatter
 	/// <summary>
 	/// Gets an instance of the <see cref="DiffMarkupFormatter"/>.
 	/// </summary>
+	/// <remarks>
+	/// The <see cref="DiffMarkupFormatter"/> is not thread safe, so using this singleton
+	/// instance to format elements may not result in the desired effect.
+	/// </remarks>
 	public static new readonly DiffMarkupFormatter Instance = new();
 
 	/// <summary>
