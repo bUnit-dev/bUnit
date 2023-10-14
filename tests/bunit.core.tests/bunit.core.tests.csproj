@@ -12,4 +12,14 @@
 		<ProjectReference Include="..\bunit.testassets\bunit.testassets.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="xunit" Version="2.5.2" />
+		<!-- DO NOT UPGRADE TO versions > 2.4.5 as they do not support .net5 or older -->
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+			<NoWarn>NU1701</NoWarn>
+		</PackageReference>
+	</ItemGroup>
+
 </Project>
