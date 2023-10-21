@@ -10,6 +10,7 @@
 		<Nullable>annotations</Nullable>
 		<IsPackable>false</IsPackable>
 		<SonarQubeTestProject>true</SonarQubeTestProject>
+		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
 		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 	</PropertyGroup>
