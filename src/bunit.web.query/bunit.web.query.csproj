@@ -50,4 +50,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet9Version)" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\bunit.web\bunit.web.csproj" />
+	</ItemGroup>
+
 </Project>
