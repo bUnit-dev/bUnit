@@ -86,6 +86,4 @@ public class LabelQueryExtensionsTests : TestContext
 		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
 		input.GetAttribute("aria-labelledby").ShouldBe($"{htmlElementWithLabel}-with-aria-labelledby");
 	}
-
-	// Throw error that says why
 }
