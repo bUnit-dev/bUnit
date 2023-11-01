@@ -4,15 +4,28 @@ namespace Bunit.Labels;
 
 public class LabelQueryExtensionsTests : TestContext
 {
-	[Fact(DisplayName = "Should return back input associated with label when using the for attribute")]
-	public void Test001()
+	public static IEnumerable<object[]> HtmlElementsThatCanHaveALabel =>
+		new List<object[]>
+		{
+			new object[] { "input" },
+			new object[] { "select" },
+			new object[] { "button" },
+			new object[] { "meter" },
+			new object[] { "output" },
+			new object[] { "progress" },
+		};
+
+	[Theory(DisplayName = "Should return back associated element with label when using the for attribute")]
+	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
+	public void Test001(string htmlElementWithLabel)
 	{
 		var cut = RenderComponent<LabelQueryComponent>();
-		
-		var input = cut.FindByLabelText("Label for Input 1");
-		
+
+		var input = cut.FindByLabelText($"Label for {htmlElementWithLabel} 1");
+
 		input.ShouldNotBeNull();
-		input.Id.ShouldBe("input-with-label");
+		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
+		input.Id.ShouldBe($"{htmlElementWithLabel}-with-label");
 	}
 
 	[Fact(DisplayName = "Should throw exception when label text does not exist in the DOM")]
@@ -20,7 +33,7 @@ public class LabelQueryExtensionsTests : TestContext
 	{
 		var expectedLabelText = Guid.NewGuid().ToString();
 		var cut = RenderComponent<LabelQueryComponent>();
-		
+
 		Should.Throw<ElementNotFoundException>(() => cut.FindByLabelText(expectedLabelText))
 			.CssSelector.ShouldBe(expectedLabelText);
 	}
@@ -29,9 +42,9 @@ public class LabelQueryExtensionsTests : TestContext
 	public void Test003()
 	{
 		var cut = RenderComponent<LabelQueryComponent>();
-		
+
 		var input = cut.FindByLabelText("Wrapped Label");
-		
+
 		input.ShouldNotBeNull();
 		input.Id.ShouldBe("wrapped-label");
 	}
@@ -45,14 +58,14 @@ public class LabelQueryExtensionsTests : TestContext
 		Should.Throw<ElementNotFoundException>(() => cut.FindByLabelText(expectedLabelText))
 			.CssSelector.ShouldBe(expectedLabelText);
 	}
-	
+
 	[Fact(DisplayName = "Should return back input associated with label when label using the aria-label")]
 	public void Test005()
 	{
 		var cut = RenderComponent<LabelQueryComponent>();
 
 		var input = cut.FindByLabelText("Aria Label");
-		
+
 		input.ShouldNotBeNull();
 		input.Id.ShouldBe("input-with-aria-label");
 	}

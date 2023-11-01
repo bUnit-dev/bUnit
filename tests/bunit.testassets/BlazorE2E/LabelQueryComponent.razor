@@ -1,19 +1,35 @@
-﻿
-<label for="input-with-label">Label for Input 1</label>
-<input id="input-with-label"/>
+﻿@* Testing the for attribute *@ 
+@foreach (var htmlElement in htmlElementsThatCanHaveALabel)
+{
+	<label for="@htmlElement-with-label">Label for @htmlElement 1</label>
+	@((MarkupString) $"""<{htmlElement} id="{htmlElement}-with-label"></{htmlElement}>""")	
+}
 
+@* This is ignored but just making sure we don't ever pick this up *@
 <label for="ignored-input">Unused label to ensure we don't accidentally pick this one up</label>
 <input id="ignored-input"/>
 
+@* Testing wrapped label *@
 <label>Wrapped Label
 	<input id="wrapped-label"/>
 </label>
 
+@* Testing no input *@
 <label>Label With Missing Input</label>
 
+@* Testing aria-label *@
 <input id="input-with-aria-label" aria-label="Aria Label" />
 
 
 @code {
-	
+	List<string> htmlElementsThatCanHaveALabel = new()
+	{
+		"input",
+		"select",
+		"textarea",
+		"button",
+		"meter",
+		"output",
+		"progress",
+	};
 }

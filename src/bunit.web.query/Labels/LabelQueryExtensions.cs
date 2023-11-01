@@ -4,7 +4,7 @@ namespace Bunit;
 
 public static class LabelQueryExtensions
 {
-	private static List<ILabelTextQueryStrategy> LabelTextQueryStrategies = new()
+	private static readonly List<ILabelTextQueryStrategy> LabelTextQueryStrategies = new()
 	{
 		// This is intentionally in the order of most likely to minimize strategies tried to find the label
 		new LabelTextUsingForAttributeStrategy(),
