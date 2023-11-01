@@ -74,6 +74,18 @@ public class LabelQueryExtensionsTests : TestContext
 		input.Id.ShouldBe($"{htmlElementWithLabel}-with-aria-label");
 	}
 
+	[Theory(DisplayName = "Should return back element associated with another element when that other element uses aria-labelledby")]
+	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
+	public void Test006(string htmlElementWithLabel)
+	{
+		var cut = RenderComponent<LabelQueryComponent>();
+
+		var input = cut.FindByLabelText($"{htmlElementWithLabel} Aria Labelled By");
+
+		input.ShouldNotBeNull();
+		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
+		input.GetAttribute("aria-labelledby").ShouldBe($"{htmlElementWithLabel}-with-aria-labelledby");
+	}
+
 	// Throw error that says why
-	// TODO: get aria-labelledby
 }

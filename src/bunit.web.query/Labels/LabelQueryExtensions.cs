@@ -10,6 +10,7 @@ public static class LabelQueryExtensions
 		new LabelTextUsingForAttributeStrategy(),
 		new LabelTextUsingAriaLabelStrategy(),
 		new LabelTextUsingWrappedElementStrategy(),
+		new LabelTextUsingAriaLabelledByStrategy(),
 	};
 
 	/// <summary>

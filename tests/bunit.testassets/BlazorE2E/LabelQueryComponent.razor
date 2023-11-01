@@ -26,9 +26,15 @@
 	@((MarkupString) $"""<{htmlElement} id="{htmlElement}-with-aria-label" aria-label="{htmlElement} Aria Label"></{htmlElement}>""")
 }
 
+@* Testing aria-labelledby *@
+@foreach (var htmlElement in htmlElementsThatCanHaveALabel)
+{
+	<h2 id="@htmlElement-with-aria-labelledby">@htmlElement Aria Labelled By</h2>
+	@((MarkupString) $"""<{htmlElement} aria-labelledby="{htmlElement}-with-aria-labelledby"></{htmlElement}>""")
+}
 
 @code {
-	List<string> htmlElementsThatCanHaveALabel = new()
+	readonly List<string> htmlElementsThatCanHaveALabel = new()
 	{
 		"input",
 		"select",
