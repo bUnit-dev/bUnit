@@ -50,12 +50,14 @@ public class LabelQueryExtensionsTests : TestContext
 	public void Test005()
 	{
 		var cut = RenderComponent<LabelQueryComponent>();
-		
+
 		var input = cut.FindByLabelText("Aria Label");
 		
 		input.ShouldNotBeNull();
 		input.Id.ShouldBe("input-with-aria-label");
 	}
 
+	// Throw error that says why
+	// TODO: test with button, input (except for type="hidden" ), meter, output, progress, select and textarea
 	// TODO: get aria-labelledby
 }
