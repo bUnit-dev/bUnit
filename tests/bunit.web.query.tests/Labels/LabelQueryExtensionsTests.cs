@@ -61,18 +61,19 @@ public class LabelQueryExtensionsTests : TestContext
 			.CssSelector.ShouldBe(expectedLabelText);
 	}
 
-	[Fact(DisplayName = "Should return back input associated with label when label using the aria-label")]
-	public void Test005()
+	[Theory(DisplayName = "Should return back element associated with label when element uses aria-label")]
+	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
+	public void Test005(string htmlElementWithLabel)
 	{
 		var cut = RenderComponent<LabelQueryComponent>();
 
-		var input = cut.FindByLabelText("Aria Label");
+		var input = cut.FindByLabelText($"{htmlElementWithLabel} Aria Label");
 
 		input.ShouldNotBeNull();
-		input.Id.ShouldBe("input-with-aria-label");
+		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
+		input.Id.ShouldBe($"{htmlElementWithLabel}-with-aria-label");
 	}
 
 	// Throw error that says why
-	// TODO: test with button, input (except for type="hidden" ), meter, output, progress, select and textarea
 	// TODO: get aria-labelledby
 }

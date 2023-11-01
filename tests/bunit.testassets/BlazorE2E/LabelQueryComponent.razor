@@ -21,7 +21,10 @@
 <label>Label With Missing Input</label>
 
 @* Testing aria-label *@
-<input id="input-with-aria-label" aria-label="Aria Label" />
+@foreach (var htmlElement in htmlElementsThatCanHaveALabel)
+{
+	@((MarkupString) $"""<{htmlElement} id="{htmlElement}-with-aria-label" aria-label="{htmlElement} Aria Label"></{htmlElement}>""")
+}
 
 
 @code {
