@@ -38,15 +38,17 @@ public class LabelQueryExtensionsTests : TestContext
 			.CssSelector.ShouldBe(expectedLabelText);
 	}
 
-	[Fact(DisplayName = "Should return back input associated with label when label when is wrapped around input")]
-	public void Test003()
+	[Theory(DisplayName = "Should return back element associated with label when label when is wrapped around element")]
+	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
+	public void Test003(string htmlElementWithLabel)
 	{
 		var cut = RenderComponent<LabelQueryComponent>();
 
-		var input = cut.FindByLabelText("Wrapped Label");
+		var input = cut.FindByLabelText($"{htmlElementWithLabel} Wrapped Label");
 
 		input.ShouldNotBeNull();
-		input.Id.ShouldBe("wrapped-label");
+		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
+		input.Id.ShouldBe($"{htmlElementWithLabel}-wrapped-label");
 	}
 
 	[Fact(DisplayName = "Should throw exception when label text exists but is not tied to any input")]

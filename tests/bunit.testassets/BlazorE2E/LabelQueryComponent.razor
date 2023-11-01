@@ -10,9 +10,12 @@
 <input id="ignored-input"/>
 
 @* Testing wrapped label *@
-<label>Wrapped Label
-	<input id="wrapped-label"/>
-</label>
+@foreach (var htmlElement in htmlElementsThatCanHaveALabel)
+{
+	<label>@htmlElement Wrapped Label
+		@((MarkupString) $"""<{htmlElement} id="{htmlElement}-wrapped-label"></{htmlElement}>""")
+	</label>
+}
 
 @* Testing no input *@
 <label>Label With Missing Input</label>
