@@ -4,16 +4,15 @@ namespace Bunit.Labels;
 
 public class LabelQueryExtensionsTests : TestContext
 {
-	public static IEnumerable<object[]> HtmlElementsThatCanHaveALabel =>
-		new List<object[]>
-		{
-			new object[] { "input" },
-			new object[] { "select" },
-			new object[] { "button" },
-			new object[] { "meter" },
-			new object[] { "output" },
-			new object[] { "progress" },
-		};
+	public static TheoryData<string> HtmlElementsThatCanHaveALabel { get; } = new()
+	{
+		"input",
+		"select",
+		"button",
+		"meter",
+		"output",
+		"progress",
+	};
 
 	[Theory(DisplayName = "Should return back associated element with label when using the for attribute")]
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
