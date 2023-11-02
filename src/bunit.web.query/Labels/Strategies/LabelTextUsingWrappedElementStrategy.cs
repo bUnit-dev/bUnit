@@ -11,6 +11,6 @@ internal class LabelTextUsingWrappedElementStrategy : ILabelTextQueryStrategy
 
 		return matchingLabel?
 			.Children
-			.SingleOrDefault(n => LabelQueryConstants.HtmlElementsThatCanHaveALabel.Contains(n.NodeName, StringComparer.OrdinalIgnoreCase));
+			.SingleOrDefault(n => n.IsHtmlElementThatCanHaveALabel());
 	}
 }
