@@ -37,6 +37,7 @@ public class LabelQueryExtensionsTests : TestContext
 			.CssSelector.ShouldBe(expectedLabelText);
 	}
 
+	// TODO: fix this for refreshable
 	[Theory(DisplayName = "Should return back element associated with label when label when is wrapped around element")]
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test003(string htmlElementWithLabel)
@@ -60,6 +61,7 @@ public class LabelQueryExtensionsTests : TestContext
 			.CssSelector.ShouldBe(expectedLabelText);
 	}
 
+	// TODO: fix this for refreshable
 	[Theory(DisplayName = "Should return back element associated with label when element uses aria-label")]
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test005(string htmlElementWithLabel)
@@ -73,6 +75,7 @@ public class LabelQueryExtensionsTests : TestContext
 		input.Id.ShouldBe($"{htmlElementWithLabel}-with-aria-label");
 	}
 
+	// TODO: fix this for refreshable
 	[Theory(DisplayName = "Should return back element associated with another element when that other element uses aria-labelledby")]
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test006(string htmlElementWithLabel)
@@ -86,12 +89,16 @@ public class LabelQueryExtensionsTests : TestContext
 		input.GetAttribute("aria-labelledby").ShouldBe($"{htmlElementWithLabel}-with-aria-labelledby");
 	}
 
-	[Fact(DisplayName = "Should reflect latest value when component re-renders")]
-	public void Test007()
+	[Theory(DisplayName = "Should reflect latest value when element re-renders")]
+	[InlineData("Re-rendered input with label")]
+	[InlineData("Re-rendered input with wrapped label")]
+	[InlineData("Re-rendered input With Aria Label")]
+	[InlineData("Re-rendered input with Aria Labelledby")]
+	public void Test007(string labelText)
 	{
 		var cut = RenderComponent<LabelQueryComponent>();
 
-		var input = cut.FindByLabelText("Re-rendered Element");
+		var input = cut.FindByLabelText(labelText);
 		input.GetAttribute("value").ShouldBe("0");
 
 		cut.Find("#increment-button").Click();

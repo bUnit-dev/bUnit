@@ -1,6 +1,6 @@
 ﻿using AngleSharp.Dom;
 
-namespace Bunit;
+namespace Bunit.Labels.Strategies;
 
 internal interface ILabelTextQueryStrategy
 {
