@@ -85,4 +85,16 @@ public class LabelQueryExtensionsTests : TestContext
 		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
 		input.GetAttribute("aria-labelledby").ShouldBe($"{htmlElementWithLabel}-with-aria-labelledby");
 	}
+
+	[Fact(DisplayName = "Should reflect latest value when component re-renders")]
+	public void Test007()
+	{
+		var cut = RenderComponent<LabelQueryComponent>();
+
+		var input = cut.FindByLabelText("Re-rendered Element");
+		input.GetAttribute("value").ShouldBe("0");
+
+		cut.Find("#increment-button").Click();
+		input.GetAttribute("value").ShouldBe("1");
+	}
 }

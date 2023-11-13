@@ -33,6 +33,10 @@
 	@((MarkupString) $"""<{htmlElement} aria-labelledby="{htmlElement}-with-aria-labelledby"></{htmlElement}>""")
 }
 
+@* Testing we get back the re-rendered element *@
+<input id="re-rendered-element" @bind="@_count" aria-label="Re-rendered Element" />
+<button id="increment-button" @onclick="IncrementCount">Click</button>
+
 @code {
 	readonly List<string> htmlElementsThatCanHaveALabel = new()
 	{
@@ -44,4 +48,7 @@
 		"output",
 		"progress",
 	};
+
+	private int _count;
+	public void IncrementCount() => _count++;
 }
