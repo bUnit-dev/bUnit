@@ -1,11 +1,12 @@
-﻿using AngleSharp.Dom;
+﻿using System.Collections.ObjectModel;
+using AngleSharp.Dom;
 using Bunit.Labels.Strategies;
 
 namespace Bunit;
 
 public static class LabelQueryExtensions
 {
-	private static readonly List<ILabelTextQueryStrategy> LabelTextQueryStrategies = new()
+	private static readonly IReadOnlyList<ILabelTextQueryStrategy> LabelTextQueryStrategies = new ILabelTextQueryStrategy[]
 	{
 		// This is intentionally in the order of most likely to minimize strategies tried to find the label
 		new LabelTextUsingForAttributeStrategy(),
