@@ -6,7 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
-- Upgrade all .NET 8 preview dependencies to .NET 8 stable.
+## [1.25.3] - 2023-11-14
+
+-   Upgrade all .NET 8 preview dependencies to .NET 8 stable.
 
 ## [1.24.10] - 2023-10-14
 
@@ -1330,7 +1332,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.24.10...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.25.3...HEAD
+
+[1.25.3]: https://github.com/bUnit-dev/bUnit/compare/v1.24.10...1.25.3
 
 [1.24.10]: https://github.com/bUnit-dev/bUnit/compare/v1.23.9...v1.24.10
 
