@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+- Upgrade all .NET 8 preview dependencies to .NET 8 stable.
+
 ## [1.24.10] - 2023-10-14
 
 ### Fixed

@@ -23,7 +23,8 @@ concurrency:
 
 env:
   VSTEST_CONNECTION_TIMEOUT: 180
-  DOTNET_NOLOGO: "true"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
 
 jobs:
   verify-bunit:
@@ -66,12 +67,8 @@ jobs:
         with:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
 
-      - name: 🧪 Run unit tests (async)
-        run: |
-          dotnet test --filter Category!=sync -c release
-      - name: 🧪 Run unit tests (sync)
-        run: |
-          dotnet test --filter Category!=async -c release
+      - name: 🧪 Run unit tests 
+        run: dotnet test -c release --blame --blame-crash --blame-hang
 
       - name: 🧪 Run sample unit tests
         run: dotnet test -c release docs/samples/samples.sln
