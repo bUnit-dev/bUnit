@@ -8,7 +8,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Fixed
 
-- Disposing `TestContext` and therefore `Renderer` will lead to disposing components under test if they implement `IDisposable`. By [@linkdotnet](https://github.com/linkdotnet).
+- When the `TestContext` was disposed, the Blazor Renderer itself didn't dispose components under test. By [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.25.3] - 2023-11-14
 
