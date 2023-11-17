@@ -440,7 +440,7 @@ public class TestRenderer : Renderer, ITestRenderer
 				unhandledExceptionTsc.TrySetCanceled();
 			}
 
-			base.Dispose(disposing);
+			Dispatcher.InvokeAsync(() => base.Dispose(disposing));
 		}
 	}
 

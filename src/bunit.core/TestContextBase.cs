@@ -86,7 +86,7 @@ public abstract class TestContextBase : IDisposable
 		// Ensure the renderer is disposed before all others,
 		// otherwise a render cycle may be ongoing and try to access
 		// the service provider to perform operations.
-		if(Renderer is IDisposable renderer)
+		if (Renderer is IDisposable renderer)
 		{
 			renderer.Dispose();
 		}
