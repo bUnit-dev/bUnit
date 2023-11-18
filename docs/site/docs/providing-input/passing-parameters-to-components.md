@@ -422,6 +422,24 @@ There are scenarios where it is not possible or not desirable to inherit from `T
 
 ***
 
+## Getting an `InvalidOperationException`
+When the razor syntax is used and the test throws the following exception:
+
+> System.InvalidOperationException: The render handle is not yet assigned.
+
+This usually means that the test is direclty inheriting from `ComponentBase` and not from `TestContext`. The solution is to inherit from `TestContext` instead.
+```razor
+@inherits TestContext
+
+@code {
+    [Fact]
+    public void Test1()
+    {
+        // test code
+    }
+}
+```
+
 ## Further Reading
 
 - <xref:inject-services>
