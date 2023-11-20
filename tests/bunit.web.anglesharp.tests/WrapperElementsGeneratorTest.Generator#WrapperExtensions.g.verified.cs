@@ -1,10 +1,11 @@
 ﻿//HintName: WrapperExtensions.g.cs
 namespace Bunit.Web.AngleSharp;
 
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Bunit.Web.AngleSharp", "1.0.0.0")]
 internal static class WrapperExtensions
 {
 
-	public static global::AngleSharp.Dom.IElement WrapUsing<TElementFactory>(this global::AngleSharp.Dom.IElement element, TElementFactory elementFactory) where TElementFactory : IElementFactory => element switch
+	public static global::AngleSharp.Dom.IElement WrapUsing<TElementFactory>(this global::AngleSharp.Dom.IElement element, TElementFactory elementFactory) where TElementFactory : Bunit.Web.AngleSharp.IElementFactory => element switch
 	{
 		global::AngleSharp.Html.Dom.IHtmlAnchorElement e => new HtmlAnchorElementWrapper(e, elementFactory),
 		global::AngleSharp.Html.Dom.IHtmlSlotElement e => new HtmlSlotElementWrapper(e, elementFactory),

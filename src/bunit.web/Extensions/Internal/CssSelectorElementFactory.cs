@@ -18,7 +18,7 @@ internal sealed class CssSelectorElementFactory : Bunit.Web.AngleSharp.IElementF
 		testTarget.OnMarkupUpdated += FragmentsMarkupUpdated;
 	}
 
-	public TElement GetElement<TElement>() where TElement : class, INode
+	public TElement GetElement<TElement>() where TElement : class, IElement
 	{
 		var queryResult = testTarget.Nodes.QuerySelector(cssSelector);
 		var element = queryResult as TElement;

@@ -1,4 +1,5 @@
 #nullable enable
+using System.CodeDom.Compiler;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AngleSharp.Dom;
@@ -9,8 +10,9 @@ namespace Bunit.Web.AngleSharp;
 /// Represents a wrapper <see cref="IElement"/>.
 /// </summary>
 [DebuggerNonUserCode]
+[GeneratedCodeAttribute("Bunit.Web.AngleSharp", "1.0.0.0")]
 internal abstract class WrapperBase<TElement> : IElementWrapper<TElement>
-	where TElement : class, INode
+	where TElement : class, IElement
 {
 	private readonly IElementFactory elementFactory;
 	private TElement? element;

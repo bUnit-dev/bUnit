@@ -1,4 +1,5 @@
 ﻿//HintName: ElementWrapper.g.cs
+#nullable enable
 using System.Runtime.CompilerServices;
 
 namespace Bunit.Web.AngleSharp;
@@ -6,16 +7,17 @@ namespace Bunit.Web.AngleSharp;
 /// <inheritdoc/>
 [System.Diagnostics.DebuggerDisplay("{OuterHtml,nq}")]
 [System.Diagnostics.DebuggerNonUserCode]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Bunit.Web.AngleSharp", "1.0.0.0")]
 internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IElement>, global::AngleSharp.Dom.IElement
 {
 
-	internal ElementWrapper(global::AngleSharp.Dom.IElement element, IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal ElementWrapper(global::AngleSharp.Dom.IElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void AddEventListener(string type, global::AngleSharp.Dom.DomEventHandler callback, bool capture) => WrappedElement.AddEventListener(type, callback, capture);
+	public void AddEventListener(string type, global::AngleSharp.Dom.DomEventHandler? callback, bool capture) => WrappedElement.AddEventListener(type, callback, capture);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -57,7 +59,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.IElement Closest(string selectors) => WrappedElement.Closest(selectors);
+	public global::AngleSharp.Dom.IElement? Closest(string selectors) => WrappedElement.Closest(selectors);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -87,13 +89,13 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public string GetAttribute(string name) => WrappedElement.GetAttribute(name);
+	public string? GetAttribute(string name) => WrappedElement.GetAttribute(name);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public string GetAttribute(string namespaceUri, string localName) => WrappedElement.GetAttribute(namespaceUri, localName);
+	public string? GetAttribute(string? namespaceUri, string localName) => WrappedElement.GetAttribute(namespaceUri, localName);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -111,7 +113,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.IHtmlCollection<global::AngleSharp.Dom.IElement> GetElementsByTagNameNS(string namespaceUri, string tagName) => WrappedElement.GetElementsByTagNameNS(namespaceUri, tagName);
+	public global::AngleSharp.Dom.IHtmlCollection<global::AngleSharp.Dom.IElement> GetElementsByTagNameNS(string? namespaceUri, string tagName) => WrappedElement.GetElementsByTagNameNS(namespaceUri, tagName);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -123,7 +125,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public bool HasAttribute(string namespaceUri, string localName) => WrappedElement.HasAttribute(namespaceUri, localName);
+	public bool HasAttribute(string? namespaceUri, string localName) => WrappedElement.HasAttribute(namespaceUri, localName);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -135,7 +137,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.INode InsertBefore(global::AngleSharp.Dom.INode newElement, global::AngleSharp.Dom.INode referenceElement) => WrappedElement.InsertBefore(newElement, referenceElement);
+	public global::AngleSharp.Dom.INode InsertBefore(global::AngleSharp.Dom.INode newElement, global::AngleSharp.Dom.INode? referenceElement) => WrappedElement.InsertBefore(newElement, referenceElement);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -153,13 +155,13 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public string LookupNamespaceUri(string prefix) => WrappedElement.LookupNamespaceUri(prefix);
+	public string? LookupNamespaceUri(string prefix) => WrappedElement.LookupNamespaceUri(prefix);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public string LookupPrefix(string namespaceUri) => WrappedElement.LookupPrefix(namespaceUri);
+	public string? LookupPrefix(string? namespaceUri) => WrappedElement.LookupPrefix(namespaceUri);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -183,7 +185,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.IElement QuerySelector(string selectors) => WrappedElement.QuerySelector(selectors);
+	public global::AngleSharp.Dom.IElement? QuerySelector(string selectors) => WrappedElement.QuerySelector(selectors);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -207,7 +209,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public bool RemoveAttribute(string namespaceUri, string localName) => WrappedElement.RemoveAttribute(namespaceUri, localName);
+	public bool RemoveAttribute(string? namespaceUri, string localName) => WrappedElement.RemoveAttribute(namespaceUri, localName);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -219,7 +221,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void RemoveEventListener(string type, global::AngleSharp.Dom.DomEventHandler callback, bool capture) => WrappedElement.RemoveEventListener(type, callback, capture);
+	public void RemoveEventListener(string type, global::AngleSharp.Dom.DomEventHandler? callback, bool capture) => WrappedElement.RemoveEventListener(type, callback, capture);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -237,13 +239,13 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void SetAttribute(string name, string value) => WrappedElement.SetAttribute(name, value);
+	public void SetAttribute(string name, string? value) => WrappedElement.SetAttribute(name, value);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void SetAttribute(string namespaceUri, string name, string value) => WrappedElement.SetAttribute(namespaceUri, name, value);
+	public void SetAttribute(string? namespaceUri, string name, string? value) => WrappedElement.SetAttribute(namespaceUri, name, value);
 
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -252,7 +254,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	public void ToHtml(global::System.IO.TextWriter writer, global::AngleSharp.IMarkupFormatter formatter) => WrappedElement.ToHtml(writer, formatter);
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.IElement AssignedSlot
+	public global::AngleSharp.Dom.IElement? AssignedSlot
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -279,7 +281,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.Url BaseUrl
+	public global::AngleSharp.Dom.Url? BaseUrl
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -324,7 +326,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public string ClassName
+	public string? ClassName
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -337,7 +339,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.INode FirstChild
+	public global::AngleSharp.Dom.INode? FirstChild
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -346,7 +348,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.IElement FirstElementChild
+	public global::AngleSharp.Dom.IElement? FirstElementChild
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -364,7 +366,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public string GivenNamespaceUri
+	public string? GivenNamespaceUri
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -382,7 +384,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public string Id
+	public string? Id
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -417,7 +419,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.INode LastChild
+	public global::AngleSharp.Dom.INode? LastChild
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -426,7 +428,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.IElement LastElementChild
+	public global::AngleSharp.Dom.IElement? LastElementChild
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -444,7 +446,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public string NamespaceUri
+	public string? NamespaceUri
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -453,7 +455,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.IElement NextElementSibling
+	public global::AngleSharp.Dom.IElement? NextElementSibling
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -462,7 +464,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.INode NextSibling
+	public global::AngleSharp.Dom.INode? NextSibling
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -515,7 +517,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.IDocument Owner
+	public global::AngleSharp.Dom.IDocument? Owner
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -524,7 +526,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.INode Parent
+	public global::AngleSharp.Dom.INode? Parent
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -533,7 +535,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.IElement ParentElement
+	public global::AngleSharp.Dom.IElement? ParentElement
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -542,7 +544,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public string Prefix
+	public string? Prefix
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -551,7 +553,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.IElement PreviousElementSibling
+	public global::AngleSharp.Dom.IElement? PreviousElementSibling
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -560,7 +562,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.INode PreviousSibling
+	public global::AngleSharp.Dom.INode? PreviousSibling
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -569,7 +571,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.IShadowRoot ShadowRoot
+	public global::AngleSharp.Dom.IShadowRoot? ShadowRoot
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -578,7 +580,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public string Slot
+	public string? Slot
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -591,7 +593,7 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 	}
 
 	/// <inheritdoc/>
-	public global::AngleSharp.Dom.ISourceReference SourceReference
+	public global::AngleSharp.Dom.ISourceReference? SourceReference
 	{
 		[System.Diagnostics.DebuggerHidden]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -621,3 +623,4 @@ internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IEleme
 		set => WrappedElement.TextContent = value;
 	}
 }
+#nullable restore

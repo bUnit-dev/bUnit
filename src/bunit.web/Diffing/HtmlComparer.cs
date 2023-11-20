@@ -30,7 +30,15 @@ public sealed class HtmlComparer
 	/// </summary>
 	public IEnumerable<IDiff> Compare(INode controlHtml, INode testHtml)
 	{
-		return differenceEngine.Compare(controlHtml.Unwrap(), testHtml.Unwrap());
+		controlHtml = controlHtml is IElement controlElement
+			? controlElement.Unwrap()
+			: controlHtml;
+
+		testHtml = testHtml is IElement testElement
+			? testElement.Unwrap()
+			: testHtml;
+
+		return differenceEngine.Compare(controlHtml, testHtml);
 	}
 
 	/// <summary>

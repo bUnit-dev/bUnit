@@ -1,12 +1,14 @@
 #nullable enable
 using AngleSharp.Dom;
 using System;
+using System.CodeDom.Compiler;
 
 namespace Bunit.Web.AngleSharp;
 
 /// <summary>
 /// Represents an <see cref="IElement"/> factory, used by a <see cref="WrapperBase{TElement}"/>.
 /// </summary>
+[GeneratedCodeAttribute("Bunit.Web.AngleSharp", "1.0.0.0")]
 internal interface IElementFactory
 {
 	/// <summary>
@@ -15,7 +17,7 @@ internal interface IElementFactory
 	/// <remarks>
 	/// This method should throw if the element is not found or is not of the correct type (<typeparamref name="TElement"/>).
 	/// </remarks>
-	TElement GetElement<TElement>() where TElement : class, INode;
+	TElement GetElement<TElement>() where TElement : class, IElement;
 
 	/// <summary>
 	/// Subscribe to updates to the wrapped elements.
@@ -26,7 +28,8 @@ internal interface IElementFactory
 /// <summary>
 /// Represents a wrapper around an <typeparamref name="TElement"/>.
 /// </summary>
-internal interface IElementWrapper<out TElement> where TElement : class, INode
+[GeneratedCodeAttribute("Bunit.Web.AngleSharp", "1.0.0.0")]
+internal interface IElementWrapper<out TElement> where TElement : class, IElement
 {
 	/// <summary>
 	/// Gets the wrapped element.

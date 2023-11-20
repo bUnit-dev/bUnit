@@ -10,21 +10,23 @@ internal static class WrapperElementGenerator
 	internal static string GenerateWrapperTypeSource(StringBuilder source, INamedTypeSymbol elm)
 	{
 		var name = $"{elm.Name.Substring(1)}Wrapper";
-		var wrappedTypeName = elm.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+		var wrappedTypeName = elm.ToDisplayString(GeneratorConfig.SymbolFormat);
 
+		source.AppendLine("#nullable enable");
 		source.AppendLine("using System.Runtime.CompilerServices;");
 		source.AppendLine();
 		source.AppendLine("""namespace Bunit.Web.AngleSharp;""");
 		source.AppendLine();
 		source.AppendLine("/// <inheritdoc/>");
 		source.AppendLine("""[System.Diagnostics.DebuggerDisplay("{OuterHtml,nq}")]""");
-		source.AppendLine("""[System.Diagnostics.DebuggerNonUserCode]""");
+		source.AppendLine("[System.Diagnostics.DebuggerNonUserCode]");
+		source.AppendLine("[System.CodeDom.Compiler.GeneratedCodeAttribute(\"Bunit.Web.AngleSharp\", \"1.0.0.0\")]");
 		source.AppendLine($"internal sealed class {name} : WrapperBase<{wrappedTypeName}>, {wrappedTypeName}");
 		source.AppendLine("{");
 		source.AppendLine();
 
 		source.AppendLine($$"""
-					internal {{name}}({{wrappedTypeName}} element, IElementFactory elementFactory) : base(element, elementFactory) { }
+					internal {{name}}({{wrappedTypeName}} element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
 				""");
 
 		var generatedProperties = new HashSet<string>();
@@ -52,13 +54,14 @@ internal static class WrapperElementGenerator
 		}
 
 		source.AppendLine("}");
+		source.AppendLine("#nullable restore");
 		return name;
 	}
 
 	private static void GenerateOrdinaryMethod(StringBuilder source, IMethodSymbol method)
 	{
 		// Determine the return type of the method
-		string returnType = method.ReturnType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+		string returnType = method.ReturnType.ToDisplayString(GeneratorConfig.SymbolFormat);
 
 		// Start building the method signature
 		source.AppendLine();
@@ -75,7 +78,7 @@ internal static class WrapperElementGenerator
 			if (i > 0)
 				source.Append(", ");
 
-			source.Append($"{parameters[i].Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {parameters[i].Name}");
+			source.Append($"{parameters[i].Type.ToDisplayString(GeneratorConfig.SymbolFormat)} {parameters[i].Name}");
 		}
 
 		// Complete the method signature and start the method body
@@ -98,7 +101,7 @@ internal static class WrapperElementGenerator
 	{
 		source.AppendLine();
 		source.AppendLine("\t/// <inheritdoc/>");
-		source.Append($"\tpublic {property.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {property.Name}");
+		source.Append($"\tpublic {property.Type.ToDisplayString(GeneratorConfig.SymbolFormat)} {property.Name}");
 		source.AppendLine();
 		source.AppendLine("\t{");
 
@@ -125,11 +128,11 @@ internal static class WrapperElementGenerator
 	{
 		source.AppendLine();
 		source.AppendLine("\t/// <inheritdoc/>");
-		source.Append($"\tpublic {property.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} this[");
+		source.Append($"\tpublic {property.Type.ToDisplayString(GeneratorConfig.SymbolFormat)} this[");
 
 		foreach (var p in property.Parameters)
 		{
-			source.Append($"{p.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {p.Name}");
+			source.Append($"{p.Type.ToDisplayString(GeneratorConfig.SymbolFormat)} {p.Name}");
 		}
 
 		source.Append("]");
@@ -173,14 +176,14 @@ internal static class WrapperElementGenerator
 	{
 		source.AppendLine();
 		source.AppendLine("\t/// <inheritdoc/>");
-		source.AppendLine($"\tpublic event {eventSymbol.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {eventSymbol.Name}");
+		source.AppendLine($"\tpublic event {eventSymbol.Type.ToDisplayString(GeneratorConfig.SymbolFormat)} {eventSymbol.Name}");
 		source.AppendLine("\t{");
 		source.AppendLine("\t\t[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]");
 		source.AppendLine("\t\t[System.Diagnostics.DebuggerHidden]");
-		source.AppendLine($"\t\tadd => Unsafe.As<{eventSymbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>(WrappedElement).{eventSymbol.Name} += value;");
+		source.AppendLine($"\t\tadd => Unsafe.As<{eventSymbol.ContainingSymbol.ToDisplayString(GeneratorConfig.SymbolFormat)}>(WrappedElement).{eventSymbol.Name} += value;");
 		source.AppendLine("\t\t[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]");
 		source.AppendLine("\t\t[System.Diagnostics.DebuggerHidden]");
-		source.AppendLine($"\t\tremove => Unsafe.As<{eventSymbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>(WrappedElement).{eventSymbol.Name} -= value;");
+		source.AppendLine($"\t\tremove => Unsafe.As<{eventSymbol.ContainingSymbol.ToDisplayString(GeneratorConfig.SymbolFormat)}>(WrappedElement).{eventSymbol.Name} -= value;");
 		source.AppendLine("\t}");
 	}
 
