@@ -26,7 +26,7 @@ public class BunitJSObjectReferenceTest : TestContext
 	[InlineData("import", "file.js")]
 	[InlineData("customImport", null)]
 	[InlineData("customImport", "file.js")]
-	public void Test001(string identifier, object arg1)
+	public void Test001(string identifier, object? arg1)
 	{
 		Should.Throw<ArgumentException>(() => JSInterop.Setup<JSObjectReference>(identifier, arg1));
 		Should.Throw<ArgumentException>(() => JSInterop.Setup<IJSObjectReference>(identifier, arg1));
@@ -36,7 +36,7 @@ public class BunitJSObjectReferenceTest : TestContext
 	[InlineData(null)]
 	[InlineData("")]
 	[InlineData("  ")]
-	public void Test002(string url)
+	public void Test002(string? url)
 		=> Should.Throw<ArgumentException>(() => JSInterop.SetupModule(url));
 
 	[Fact(DisplayName = "Calling SetupModule(jsInterop, identifier, invocationMatcher) with any null values throws")]
@@ -96,7 +96,7 @@ public class BunitJSObjectReferenceTest : TestContext
 	[InlineData(null)]
 	[InlineData("")]
 	[InlineData("BAR.js")]
-	public void Test021(string requestedRoduleName)
+	public void Test021(string? requestedRoduleName)
 	{
 		JSInterop.SetupModule("FOO.js");
 
