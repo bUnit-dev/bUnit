@@ -1,4 +1,3 @@
-using AngleSharp.Html.Dom;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System;
@@ -6,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 
 namespace Bunit.Web.AngleSharp;
 
@@ -76,7 +74,12 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 
 	private static IReadOnlyList<INamedTypeSymbol> FindElementInterfaces(Compilation compilation)
 	{
-		var meta = compilation.References.First(x => x.Display?.EndsWith("\\AngleSharp.dll") ?? false);
+		var meta = compilation.References.FirstOrDefault(x => x.Display?.EndsWith($"{Path.DirectorySeparatorChar}AngleSharp.dll", StringComparison.Ordinal) ?? false);
+
+		if (meta is null)
+		{
+			throw new InvalidOperationException($"AngleSharp.dll not found. References: {string.Join(",", compilation.References.Select(x => x.Display))}");
+		}
 
 		var angleSharpAssemblySymbol = compilation.GetAssemblyOrModuleSymbol(meta) as IAssemblySymbol;
 		var htmlDomNameSpace = angleSharpAssemblySymbol
