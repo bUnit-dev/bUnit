@@ -41,9 +41,9 @@ public class KeyTest
 	[Theory(DisplayName = "Get method with empty value parameter should throw exception")]
 	[InlineData(null)]
 	[InlineData("")]
-	public void GetWithNullValue(string value)
+	public void GetWithNullValue(string? value)
 	{
-		Should.Throw<ArgumentNullException>(() => Key.Get(value));
+		Should.Throw<ArgumentNullException>(() => Key.Get(value!));
 	}
 
 	[Theory(DisplayName = "Casting from string should return initialized Key object")]
@@ -62,7 +62,7 @@ public class KeyTest
 	[Theory(DisplayName = "Casting from null or empty string throws ArgumentNullException")]
 	[InlineData(null)]
 	[InlineData("")]
-	public void CastingFromNullStringThrowsException(string value)
+	public void CastingFromNullStringThrowsException(string? value)
 	{
 		Should.Throw<ArgumentNullException>(() => (Key)value);
 	}
@@ -102,9 +102,9 @@ public class KeyTest
 	[InlineData("", "t")]
 	[InlineData("T", null)]
 	[InlineData("T", "")]
-	public void GetWithNullValueAndNonNullCode(string value, string code)
+	public void GetWithNullValueAndNonNullCode(string? value, string? code)
 	{
-		Should.Throw<ArgumentNullException>(() => Key.Get(value, code));
+		Should.Throw<ArgumentNullException>(() => Key.Get(value!, code!));
 	}
 
 	[Theory(DisplayName = "Get with char value should return initialized Key object")]
