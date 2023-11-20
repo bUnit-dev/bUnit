@@ -1,6 +1,5 @@
 using AngleSharp.Dom;
 using Bunit.TestUtilities;
-using NuGet.Frameworks;
 
 namespace Bunit;
 

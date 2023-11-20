@@ -3,7 +3,6 @@ using System.Runtime.ExceptionServices;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Bunit.Rendering;
-using Bunit.Web.AngleSharp;
 
 namespace Bunit;
 

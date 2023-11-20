@@ -1,5 +1,3 @@
-using Xunit.Abstractions;
-
 namespace Bunit;
 
 public class ClipboardEventDispatchExtensionsTest : EventDispatchExtensionsTest<ClipboardEventArgs>

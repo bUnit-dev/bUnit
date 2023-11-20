@@ -3,12 +3,10 @@
 // See the NOTICE.md at the root of this repository for a copy
 // of the license from the aspnetcore repository.
 using System.Numerics;
-using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Bunit.TestAssets;
 using Bunit.TestAssets.BlazorE2E;
 using Bunit.TestAssets.BlazorE2E.HierarchicalImportsTest.Subdir;
-using Xunit.Abstractions;
 
 namespace Bunit.BlazorE2E;
 
