@@ -1,9 +1,9 @@
 using AngleSharp.Dom;
 
-namespace Bunit;
+namespace Bunit.Web.AngleSharp;
 
 /// <summary>
-/// Extensions for <see cref="IElement"/> wrapped inside <see cref="Web.AngleSharp.WrapperBase{TElement}" /> types.
+/// Extensions for <see cref="IElement"/> wrapped inside <see cref="WrapperBase{TElement}" /> types.
 /// </summary>
 public static class AngleSharpWrapperExtensions
 {
@@ -11,7 +11,7 @@ public static class AngleSharpWrapperExtensions
 	/// Unwraps a wrapped AngleSharp object, if it has been wrapped.
 	/// </summary>
 	public static TElement Unwrap<TElement>(this TElement element) where TElement : class, IElement
-		=> element is Bunit.Web.AngleSharp.IElementWrapper<TElement> wrapper
+		=> element is IElementWrapper<TElement> wrapper
 			? wrapper.WrappedElement
 			: element;
 
