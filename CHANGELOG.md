@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Changed
+
+- Upgraded AngleSharp to 1.0.7.
+
 ### Fixed
 
 - When the `TestContext` was disposed, the Blazor Renderer itself didn't dispose components under test. By [@linkdotnet](https://github.com/linkdotnet).
