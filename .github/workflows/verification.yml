@@ -67,7 +67,7 @@ jobs:
         with:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
 
-      - name: 🧪 Run unit tests 
+      - name: 🧪 Run unit tests
         run: dotnet test -c release --blame --blame-crash --blame-hang
 
       - name: 🧪 Run sample unit tests
@@ -117,4 +117,5 @@ jobs:
       - name: 📄 Building docs
         run: |
           dotnet tool update -g docfx --version 2.67.0
+          dotnet build /p:PublicRelease=true
           docfx docs/site/docfx.json
