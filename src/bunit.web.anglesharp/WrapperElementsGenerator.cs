@@ -13,76 +13,81 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 {
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		var assemblyReferences = context
+		// Finds the AngleSharp assembly referenced by the target project
+		// This should prevent the source generator from running unless a
+		// new symbol is returned.
+		var angleSharpAssemblyReference = context
 			.CompilationProvider
-			.Select((compilation, cancellationToken) => HasAngleSharpReference(compilation));
-
-		context.RegisterSourceOutput(assemblyReferences, (context, hasAngleSharp) =>
-		{
-			if (!hasAngleSharp)
-				return;
-
-			var elementFactorySource = ReadEmbeddedResource("Bunit.Web.AngleSharp.IElementFactory.cs");
-			var wrapperBase = ReadEmbeddedResource("Bunit.Web.AngleSharp.WrapperBase.cs");
-			context.AddSource("IElementFactory.g.cs", elementFactorySource);
-			context.AddSource("WrapperBase.g.cs", wrapperBase);
-		});
-
-		context.RegisterSourceOutput(context.CompilationProvider.Combine(assemblyReferences), (context, input) =>
-		{
-			var (compilation, hasAngleSharp) = input;
-
-			if (!hasAngleSharp)
-				return;
-
-			var elementInterfacetypes = FindElementInterfaces(compilation);
-
-			var source = new StringBuilder();
-			foreach (var elm in elementInterfacetypes)
+			.Select((compilation, cancellationToken) =>
 			{
-				source.Clear();
-				var name = WrapperElementGenerator.GenerateWrapperTypeSource(source, elm);
-				context.AddSource($"{name}.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
-			}
+				var meta = compilation.References.FirstOrDefault(x => x.Display?.EndsWith($"{Path.DirectorySeparatorChar}AngleSharp.dll", StringComparison.Ordinal) ?? false);
+				return compilation.GetAssemblyOrModuleSymbol(meta);
+			});
 
+		// Output the hardcoded source files
+		context.RegisterSourceOutput(angleSharpAssemblyReference, GenerateStaticContent);
+
+		// Output the generated wrapper types
+		context.RegisterSourceOutput(angleSharpAssemblyReference, GenerateWrapperTypes);
+	}
+
+	private static void GenerateStaticContent(SourceProductionContext context, ISymbol assembly)
+	{
+		if (assembly is not IAssemblySymbol angleSharpAssembly)
+			return;
+
+		var elementFactorySource = ReadEmbeddedResource("Bunit.Web.AngleSharp.IElementFactory.cs");
+		var wrapperBase = ReadEmbeddedResource("Bunit.Web.AngleSharp.WrapperBase.cs");
+		context.AddSource("IElementFactory.g.cs", elementFactorySource);
+		context.AddSource("WrapperBase.g.cs", wrapperBase);
+	}
+
+	private static void GenerateWrapperTypes(SourceProductionContext context, ISymbol assembly)
+	{
+		if (assembly is not IAssemblySymbol angleSharpAssembly)
+			return;
+
+		var elementInterfacetypes = FindElementInterfaces(angleSharpAssembly);
+
+		var source = new StringBuilder();
+		foreach (var elm in elementInterfacetypes)
+		{
 			source.Clear();
-			GenerateWrapperFactory(source, elementInterfacetypes);
-			context.AddSource($"WrapperExtensions.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
-		});
+			var name = WrapperElementGenerator.GenerateWrapperTypeSource(source, elm);
+			context.AddSource($"{name}.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
+		}
+
+		source.Clear();
+		GenerateWrapperFactory(source, elementInterfacetypes);
+		context.AddSource($"WrapperExtensions.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
 	}
 
 	private static void GenerateWrapperFactory(StringBuilder source, IEnumerable<INamedTypeSymbol> elementInterfacetypes)
 	{
 		source.AppendLine("""namespace Bunit.Web.AngleSharp;""");
 		source.AppendLine();
+		source.AppendLine("[System.CodeDom.Compiler.GeneratedCodeAttribute(\"Bunit.Web.AngleSharp\", \"1.0.0.0\")]");
 		source.AppendLine($"internal static class WrapperExtensions");
 		source.AppendLine("{");
 		source.AppendLine();
-		source.AppendLine($"\tpublic static global::AngleSharp.Dom.IElement WrapUsing<TElementFactory>(this global::AngleSharp.Dom.IElement element, TElementFactory elementFactory) where TElementFactory : IElementFactory => element switch");
+		source.AppendLine($"\tpublic static global::AngleSharp.Dom.IElement WrapUsing<TElementFactory>(this global::AngleSharp.Dom.IElement element, TElementFactory elementFactory) where TElementFactory : Bunit.Web.AngleSharp.IElementFactory => element switch");
 		source.AppendLine("\t{");
 
 		foreach (var elm in elementInterfacetypes)
 		{
 			var wrapperName = $"{elm.Name.Substring(1)}Wrapper";
-			source.AppendLine($"\t\t{elm.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} e => new {wrapperName}(e, elementFactory),");
+			source.AppendLine($"\t\t{elm.ToDisplayString(GeneratorConfig.SymbolFormat)} e => new {wrapperName}(e, elementFactory),");
 		}
+
 		source.AppendLine($"\t\t_ => new ElementWrapper(element, elementFactory),");
 
 		source.AppendLine("\t};");
 		source.AppendLine("}");
 	}
 
-	private static IReadOnlyList<INamedTypeSymbol> FindElementInterfaces(Compilation compilation)
+	private static IReadOnlyList<INamedTypeSymbol> FindElementInterfaces(IAssemblySymbol angleSharpAssembly)
 	{
-		var meta = compilation.References.FirstOrDefault(x => x.Display?.EndsWith($"{Path.DirectorySeparatorChar}AngleSharp.dll", StringComparison.Ordinal) ?? false);
-
-		if (meta is null)
-		{
-			throw new InvalidOperationException($"AngleSharp.dll not found. References: {string.Join(",", compilation.References.Select(x => x.Display))}");
-		}
-
-		var angleSharpAssemblySymbol = compilation.GetAssemblyOrModuleSymbol(meta) as IAssemblySymbol;
-		var htmlDomNameSpace = angleSharpAssemblySymbol
+		var htmlDomNamespace = angleSharpAssembly
 			.GlobalNamespace
 			.GetNamespaceMembers()
 			.First(x => x.Name == "AngleSharp")
@@ -91,16 +96,19 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 			.GetNamespaceMembers()
 			.First(x => x.Name == "Dom");
 
-		var elementInterfaceSymbol = angleSharpAssemblySymbol.GetTypeByMetadataName("AngleSharp.Dom.IElement");
+		var elementInterfaceSymbol = angleSharpAssembly
+			.GetTypeByMetadataName("AngleSharp.Dom.IElement");
 
-		var result = htmlDomNameSpace
+		var result = htmlDomNamespace
 			.GetTypeMembers()
 			.Where(typeSymbol => typeSymbol.TypeKind == TypeKind.Interface && typeSymbol.AllInterfaces.Contains(elementInterfaceSymbol))
 			.ToList();
 
 		result.Add(elementInterfaceSymbol);
 
-		// Order
+		// Order the interfaces such that interfaces that inherits
+		// from other interfaces appears earlier in the result.
+		// E.g. IHtmlElement appears before IElement.
 		result.Sort(static (x, y) =>
 		{
 			if (x.AllInterfaces.Contains(y))
@@ -124,18 +132,5 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 
 		using var reader = new StreamReader(stream);
 		return reader.ReadToEnd();
-	}
-
-	private static bool HasAngleSharpReference(Compilation compilation)
-	{
-		foreach (var reference in compilation.ReferencedAssemblyNames)
-		{
-			if (reference.Name.StartsWith("AngleSharp", StringComparison.OrdinalIgnoreCase))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 }
