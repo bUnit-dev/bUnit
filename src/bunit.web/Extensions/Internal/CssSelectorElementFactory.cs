@@ -1,8 +1,9 @@
 using AngleSharp.Dom;
+using Bunit.Web.AngleSharp;
 
 namespace Bunit;
 
-internal sealed class CssSelectorElementFactory : Bunit.Web.AngleSharp.IElementFactory
+internal sealed class CssSelectorElementFactory : IElementFactory
 {
 	private readonly IRenderedFragment testTarget;
 	private readonly string cssSelector;
