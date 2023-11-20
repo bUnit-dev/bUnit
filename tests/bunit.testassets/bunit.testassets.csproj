@@ -51,5 +51,5 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet8Version)" />
 		<PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
 	</ItemGroup>
-	
+
 </Project>
