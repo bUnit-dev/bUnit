@@ -1,6 +1,5 @@
 using Bunit.Extensions;
 using Bunit.TestAssets.RenderModes;
-using Xunit.Abstractions;
 using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering;

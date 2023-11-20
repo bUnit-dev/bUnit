@@ -3,7 +3,6 @@ using AngleSharp.Diffing.Core;
 using AngleSharp.Diffing.Strategies;
 using AngleSharp.Dom;
 using Bunit.Rendering;
-using Bunit.Web.AngleSharp;
 
 namespace Bunit.Diffing;
 
