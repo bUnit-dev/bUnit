@@ -1,11 +1,23 @@
 <Project>
-	<PropertyGroup>
-		<TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0</TargetFrameworks>
-		<IsPackable>false</IsPackable>
-		<LangVersion>10.0</LangVersion>
-    	<RazorLangVersion>3.0</RazorLangVersion>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<NoWarn>CA1014,NU5104</NoWarn>
-		<CheckEolTargetFramework>false</CheckEolTargetFramework>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+    <SonarQubeTestProject>true</SonarQubeTestProject>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <LangVersion>latest</LangVersion>
+    <RazorLangVersion>3.0</RazorLangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>CA1014,NU5104</NoWarn>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net7.0' OR '$(TargetFramework)' == 'net8.0'">
+    <PackageReference Include="System.Text.Json" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' OR '$(TargetFramework)' == 'net5.0'">
+    <PackageReference Include="System.Text.Json" Version="6.0.9" />
+  </ItemGroup>
+
 </Project>
