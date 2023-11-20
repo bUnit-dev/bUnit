@@ -30,6 +30,7 @@ internal sealed class RefreshableElementCollection : IRefreshableElementCollecti
 	}
 
 	private bool ShouldDisable(bool value) => !value && enableAutoRefresh;
+
 	private bool ShouldEnable(bool value) => value && !enableAutoRefresh;
 
 	internal RefreshableElementCollection(IRenderedFragment renderedFragment, string cssSelector)

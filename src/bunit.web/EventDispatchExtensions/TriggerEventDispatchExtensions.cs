@@ -2,8 +2,8 @@ using System.Globalization;
 using System.Runtime.ExceptionServices;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using AngleSharpWrappers;
 using Bunit.Rendering;
+using Bunit.Web.AngleSharp;
 
 namespace Bunit;
 
