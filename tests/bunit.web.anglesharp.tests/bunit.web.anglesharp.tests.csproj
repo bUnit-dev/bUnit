@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<RootNamespace>Bunit</RootNamespace>
+		<AssemblyName>Bunit.Web.AngleSharp.Tests</AssemblyName>
+		<ImplicitUsings>true</ImplicitUsings>
+		<SonarQubeTestProject>true</SonarQubeTestProject>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+		<PackageReference Include="Verify.SourceGenerators" Version="2.2.0" />
+		<PackageReference Include="Verify.Xunit" Version="22.5.0" />
+		<PackageReference Update="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" />
+		<PackageReference Update="Microsoft.CodeAnalysis.Common" Version="4.6.0" />
+		<PackageReference Update="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.6.0" />
+		<PackageReference Update="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.6.0" />
+		<PackageReference Update="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit" Version="1.1.1" />
+
+		<PackageReference Include="xunit" Version="2.6.1" />
+		<!-- DO NOT UPGRADE TO versions > 2.4.5 as they do not support .net5 or older -->
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+			<NoWarn>NU1701</NoWarn>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\bunit.web.anglesharp\bunit.web.anglesharp.csproj" />
+	</ItemGroup>
+
+</Project>

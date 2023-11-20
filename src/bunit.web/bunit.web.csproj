@@ -19,6 +19,10 @@
 		<PackageReference Include="AngleSharp.Diffing" Version="0.18.2" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\bunit.web.anglesharp\bunit.web.anglesharp.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet3Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet3Version)" />
@@ -64,8 +68,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet8Version)" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\AngleSharpWrappers\AngleSharpWrappers.csproj" PrivateAssets="All" />
+	<ItemGroup>		
 		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />
 	</ItemGroup>
 
