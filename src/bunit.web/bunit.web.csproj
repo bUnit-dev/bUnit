@@ -4,6 +4,7 @@
 		<TargetFrameworks>netstandard2.1;net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
 		<RootNamespace>Bunit</RootNamespace>
 		<AssemblyName>Bunit.Web</AssemblyName>
+		<SuppressTfmSupportBuildWarnings Condition="'$(TargetFramework)' == 'net5.0'">true</SuppressTfmSupportBuildWarnings>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -13,9 +14,10 @@
 			bUnit.web is the web specific parts of bUnit, that enables you to easily test and verify the output of Blazor (web) component.
 		</Description>
 	</PropertyGroup>
-
+	
 	<ItemGroup>
-		<PackageReference Include="AngleSharp" Version="0.17.1" />
+		<PackageReference Include="AngleSharp" Version="1.0.7" />
+		<PackageReference Include="AngleSharp.Css" Version="1.0.0-alpha-99" />
 		<PackageReference Include="AngleSharp.Diffing" Version="0.18.2" />
 	</ItemGroup>
 

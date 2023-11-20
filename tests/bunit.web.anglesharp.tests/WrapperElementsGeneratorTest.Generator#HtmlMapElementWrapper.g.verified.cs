@@ -1114,6 +1114,15 @@ internal sealed class HtmlMapElementWrapper : WrapperBase<global::AngleSharp.Htm
 	}
 
 	/// <inheritdoc/>
+	public string GivenNamespaceUri
+	{
+		[System.Diagnostics.DebuggerHidden]
+		[System.Diagnostics.DebuggerStepThrough]
+		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => WrappedElement.GivenNamespaceUri;
+	}
+
+	/// <inheritdoc/>
 	public bool HasChildNodes
 	{
 		[System.Diagnostics.DebuggerHidden]

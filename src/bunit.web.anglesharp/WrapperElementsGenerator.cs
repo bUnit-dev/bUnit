@@ -97,6 +97,7 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 
 		result.Add(elementInterfaceSymbol);
 
+		// Order
 		result.Sort(static (x, y) =>
 		{
 			if (x.AllInterfaces.Contains(y))
