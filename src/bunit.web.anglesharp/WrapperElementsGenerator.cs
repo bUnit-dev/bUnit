@@ -33,7 +33,7 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 
 	private static void GenerateStaticContent(SourceProductionContext context, ISymbol assembly)
 	{
-		if (assembly is not IAssemblySymbol angleSharpAssembly)
+		if (assembly is not IAssemblySymbol)
 			return;
 
 		var elementFactorySource = ReadEmbeddedResource("Bunit.Web.AngleSharp.IElementFactory.cs");
