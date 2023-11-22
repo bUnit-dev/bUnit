@@ -1,3 +1,4 @@
+// "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/v1.0/schema.json#",
 {
   "metadata": [
     {
@@ -5,7 +6,8 @@
         {
           "files": [
             "bunit.core/bunit.core.csproj",
-            "bunit.web/bunit.web.csproj"
+            "bunit.web/bunit.web.csproj",
+            "bunit.web.anglesharp/bunit.web.anglesharp.csproj"
           ],
           "src": "../../src"
         }
@@ -14,7 +16,8 @@
       "includePrivateMembers": false,
       "disableGitFeatures": false,
       "disableDefaultFilter": false,
-      "noRestore": true,
+      "noRestore": false,
+
       "namespaceLayout": "flattened",
       "memberLayout": "samePage",
       "allowCompilationErrors": false

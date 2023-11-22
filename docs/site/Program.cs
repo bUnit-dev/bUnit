@@ -1,0 +1,1 @@
+﻿await Docfx.Docset.Build("docfx.json");
