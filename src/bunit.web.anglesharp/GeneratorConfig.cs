@@ -7,22 +7,34 @@ internal static class GeneratorConfig
 	internal static readonly SymbolDisplayFormat SymbolFormat = new SymbolDisplayFormat(
 		globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Included,
 		typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
-		genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+		genericsOptions:
+			SymbolDisplayGenericsOptions.IncludeTypeParameters |
+			SymbolDisplayGenericsOptions.IncludeTypeConstraints |
+			SymbolDisplayGenericsOptions.IncludeVariance,
 		memberOptions:
-			SymbolDisplayMemberOptions.IncludeParameters |
 			SymbolDisplayMemberOptions.IncludeType |
-			SymbolDisplayMemberOptions.IncludeRef |
-			SymbolDisplayMemberOptions.IncludeContainingType,
-		kindOptions:
-			SymbolDisplayKindOptions.IncludeMemberKeyword,
+			SymbolDisplayMemberOptions.IncludeModifiers |
+			SymbolDisplayMemberOptions.IncludeAccessibility |
+			SymbolDisplayMemberOptions.IncludeParameters |
+			SymbolDisplayMemberOptions.IncludeConstantValue |
+			SymbolDisplayMemberOptions.IncludeRef,
+		kindOptions: SymbolDisplayKindOptions.IncludeMemberKeyword,
 		parameterOptions:
 			SymbolDisplayParameterOptions.IncludeName |
 			SymbolDisplayParameterOptions.IncludeType |
 			SymbolDisplayParameterOptions.IncludeParamsRefOut |
-			SymbolDisplayParameterOptions.IncludeDefaultValue,
+			SymbolDisplayParameterOptions.IncludeDefaultValue |
+			SymbolDisplayParameterOptions.IncludeModifiers,
 		localOptions: SymbolDisplayLocalOptions.IncludeType,
 		miscellaneousOptions:
 			SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers |
 			SymbolDisplayMiscellaneousOptions.UseSpecialTypes |
-			SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
+			SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier |
+			SymbolDisplayMiscellaneousOptions.AllowDefaultLiteral);
+
+	internal static readonly SymbolDisplayFormat SymbolFormatDefaultValue = new SymbolDisplayFormat(
+		globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Included,
+		typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+		memberOptions: SymbolDisplayMemberOptions.IncludeType,
+		parameterOptions: SymbolDisplayParameterOptions.IncludeType);
 }

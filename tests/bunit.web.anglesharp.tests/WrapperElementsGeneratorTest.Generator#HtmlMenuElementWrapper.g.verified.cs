@@ -652,268 +652,312 @@ internal sealed class HtmlMenuElementWrapper : WrapperBase<global::AngleSharp.Ht
 	}
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void AddEventListener(string type, global::AngleSharp.Dom.DomEventHandler? callback, bool capture) => WrappedElement.AddEventListener(type, callback, capture);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void AddEventListener(string type, global::AngleSharp.Dom.DomEventHandler? callback = null, bool capture = false)
+		=> WrappedElement.AddEventListener(type, callback, capture);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void After(global::AngleSharp.Dom.INode[] nodes) => WrappedElement.After(nodes);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void After(params global::AngleSharp.Dom.INode[] nodes)
+		=> WrappedElement.After(nodes);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void Append(global::AngleSharp.Dom.INode[] nodes) => WrappedElement.Append(nodes);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void Append(params global::AngleSharp.Dom.INode[] nodes)
+		=> WrappedElement.Append(nodes);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.INode AppendChild(global::AngleSharp.Dom.INode child) => WrappedElement.AppendChild(child);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.INode AppendChild(global::AngleSharp.Dom.INode child)
+		=> WrappedElement.AppendChild(child);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.IShadowRoot AttachShadow(global::AngleSharp.Dom.ShadowRootMode mode) => WrappedElement.AttachShadow(mode);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.IShadowRoot AttachShadow(global::AngleSharp.Dom.ShadowRootMode mode = global::AngleSharp.Dom.ShadowRootMode.Open)
+		=> WrappedElement.AttachShadow(mode);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void Before(global::AngleSharp.Dom.INode[] nodes) => WrappedElement.Before(nodes);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void Before(params global::AngleSharp.Dom.INode[] nodes)
+		=> WrappedElement.Before(nodes);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.INode Clone(bool deep) => WrappedElement.Clone(deep);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.INode Clone(bool deep = true)
+		=> WrappedElement.Clone(deep);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.IElement? Closest(string selectors) => WrappedElement.Closest(selectors);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.IElement? Closest(string selectors)
+		=> WrappedElement.Closest(selectors);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.DocumentPositions CompareDocumentPosition(global::AngleSharp.Dom.INode otherNode) => WrappedElement.CompareDocumentPosition(otherNode);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.DocumentPositions CompareDocumentPosition(global::AngleSharp.Dom.INode otherNode)
+		=> WrappedElement.CompareDocumentPosition(otherNode);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public bool Contains(global::AngleSharp.Dom.INode otherNode) => WrappedElement.Contains(otherNode);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool Contains(global::AngleSharp.Dom.INode otherNode)
+		=> WrappedElement.Contains(otherNode);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public bool Dispatch(global::AngleSharp.Dom.Events.Event ev) => WrappedElement.Dispatch(ev);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool Dispatch(global::AngleSharp.Dom.Events.Event ev)
+		=> WrappedElement.Dispatch(ev);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void DoBlur() => WrappedElement.DoBlur();
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void DoBlur()
+		=> WrappedElement.DoBlur();
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void DoClick() => WrappedElement.DoClick();
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void DoClick()
+		=> WrappedElement.DoClick();
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void DoFocus() => WrappedElement.DoFocus();
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void DoFocus()
+		=> WrappedElement.DoFocus();
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void DoSpellCheck() => WrappedElement.DoSpellCheck();
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void DoSpellCheck()
+		=> WrappedElement.DoSpellCheck();
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public bool Equals(global::AngleSharp.Dom.INode otherNode) => WrappedElement.Equals(otherNode);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool Equals(global::AngleSharp.Dom.INode otherNode)
+		=> WrappedElement.Equals(otherNode);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public string? GetAttribute(string name) => WrappedElement.GetAttribute(name);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public string? GetAttribute(string name)
+		=> WrappedElement.GetAttribute(name);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public string? GetAttribute(string? namespaceUri, string localName) => WrappedElement.GetAttribute(namespaceUri, localName);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public string? GetAttribute(string? namespaceUri, string localName)
+		=> WrappedElement.GetAttribute(namespaceUri, localName);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.IHtmlCollection<global::AngleSharp.Dom.IElement> GetElementsByClassName(string classNames) => WrappedElement.GetElementsByClassName(classNames);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.IHtmlCollection<global::AngleSharp.Dom.IElement> GetElementsByClassName(string classNames)
+		=> WrappedElement.GetElementsByClassName(classNames);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.IHtmlCollection<global::AngleSharp.Dom.IElement> GetElementsByTagName(string tagName) => WrappedElement.GetElementsByTagName(tagName);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.IHtmlCollection<global::AngleSharp.Dom.IElement> GetElementsByTagName(string tagName)
+		=> WrappedElement.GetElementsByTagName(tagName);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.IHtmlCollection<global::AngleSharp.Dom.IElement> GetElementsByTagNameNS(string? namespaceUri, string tagName) => WrappedElement.GetElementsByTagNameNS(namespaceUri, tagName);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.IHtmlCollection<global::AngleSharp.Dom.IElement> GetElementsByTagNameNS(string? namespaceUri, string tagName)
+		=> WrappedElement.GetElementsByTagNameNS(namespaceUri, tagName);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public bool HasAttribute(string name) => WrappedElement.HasAttribute(name);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool HasAttribute(string name)
+		=> WrappedElement.HasAttribute(name);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public bool HasAttribute(string? namespaceUri, string localName) => WrappedElement.HasAttribute(namespaceUri, localName);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool HasAttribute(string? namespaceUri, string localName)
+		=> WrappedElement.HasAttribute(namespaceUri, localName);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void Insert(global::AngleSharp.Dom.AdjacentPosition position, string html) => WrappedElement.Insert(position, html);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void Insert(global::AngleSharp.Dom.AdjacentPosition position, string html)
+		=> WrappedElement.Insert(position, html);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.INode InsertBefore(global::AngleSharp.Dom.INode newElement, global::AngleSharp.Dom.INode? referenceElement) => WrappedElement.InsertBefore(newElement, referenceElement);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.INode InsertBefore(global::AngleSharp.Dom.INode newElement, global::AngleSharp.Dom.INode? referenceElement)
+		=> WrappedElement.InsertBefore(newElement, referenceElement);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void InvokeEventListener(global::AngleSharp.Dom.Events.Event ev) => WrappedElement.InvokeEventListener(ev);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void InvokeEventListener(global::AngleSharp.Dom.Events.Event ev)
+		=> WrappedElement.InvokeEventListener(ev);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public bool IsDefaultNamespace(string namespaceUri) => WrappedElement.IsDefaultNamespace(namespaceUri);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool IsDefaultNamespace(string namespaceUri)
+		=> WrappedElement.IsDefaultNamespace(namespaceUri);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public string? LookupNamespaceUri(string prefix) => WrappedElement.LookupNamespaceUri(prefix);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public string? LookupNamespaceUri(string prefix)
+		=> WrappedElement.LookupNamespaceUri(prefix);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public string? LookupPrefix(string? namespaceUri) => WrappedElement.LookupPrefix(namespaceUri);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public string? LookupPrefix(string? namespaceUri)
+		=> WrappedElement.LookupPrefix(namespaceUri);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public bool Matches(string selectors) => WrappedElement.Matches(selectors);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool Matches(string selectors)
+		=> WrappedElement.Matches(selectors);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void Normalize() => WrappedElement.Normalize();
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void Normalize()
+		=> WrappedElement.Normalize();
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void Prepend(global::AngleSharp.Dom.INode[] nodes) => WrappedElement.Prepend(nodes);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void Prepend(params global::AngleSharp.Dom.INode[] nodes)
+		=> WrappedElement.Prepend(nodes);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.IElement? QuerySelector(string selectors) => WrappedElement.QuerySelector(selectors);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.IElement? QuerySelector(string selectors)
+		=> WrappedElement.QuerySelector(selectors);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.IHtmlCollection<global::AngleSharp.Dom.IElement> QuerySelectorAll(string selectors) => WrappedElement.QuerySelectorAll(selectors);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.IHtmlCollection<global::AngleSharp.Dom.IElement> QuerySelectorAll(string selectors)
+		=> WrappedElement.QuerySelectorAll(selectors);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void Remove() => WrappedElement.Remove();
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void Remove()
+		=> WrappedElement.Remove();
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public bool RemoveAttribute(string name) => WrappedElement.RemoveAttribute(name);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool RemoveAttribute(string name)
+		=> WrappedElement.RemoveAttribute(name);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public bool RemoveAttribute(string? namespaceUri, string localName) => WrappedElement.RemoveAttribute(namespaceUri, localName);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool RemoveAttribute(string? namespaceUri, string localName)
+		=> WrappedElement.RemoveAttribute(namespaceUri, localName);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.INode RemoveChild(global::AngleSharp.Dom.INode child) => WrappedElement.RemoveChild(child);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.INode RemoveChild(global::AngleSharp.Dom.INode child)
+		=> WrappedElement.RemoveChild(child);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void RemoveEventListener(string type, global::AngleSharp.Dom.DomEventHandler? callback, bool capture) => WrappedElement.RemoveEventListener(type, callback, capture);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void RemoveEventListener(string type, global::AngleSharp.Dom.DomEventHandler? callback = null, bool capture = false)
+		=> WrappedElement.RemoveEventListener(type, callback, capture);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void Replace(global::AngleSharp.Dom.INode[] nodes) => WrappedElement.Replace(nodes);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void Replace(params global::AngleSharp.Dom.INode[] nodes)
+		=> WrappedElement.Replace(nodes);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public global::AngleSharp.Dom.INode ReplaceChild(global::AngleSharp.Dom.INode newChild, global::AngleSharp.Dom.INode oldChild) => WrappedElement.ReplaceChild(newChild, oldChild);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public global::AngleSharp.Dom.INode ReplaceChild(global::AngleSharp.Dom.INode newChild, global::AngleSharp.Dom.INode oldChild)
+		=> WrappedElement.ReplaceChild(newChild, oldChild);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void SetAttribute(string name, string? value) => WrappedElement.SetAttribute(name, value);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void SetAttribute(string name, string? value)
+		=> WrappedElement.SetAttribute(name, value);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void SetAttribute(string? namespaceUri, string name, string? value) => WrappedElement.SetAttribute(namespaceUri, name, value);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void SetAttribute(string? namespaceUri, string name, string? value)
+		=> WrappedElement.SetAttribute(namespaceUri, name, value);
 
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	public void ToHtml(global::System.IO.TextWriter writer, global::AngleSharp.IMarkupFormatter formatter) => WrappedElement.ToHtml(writer, formatter);
+	[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void ToHtml(global::System.IO.TextWriter writer, global::AngleSharp.IMarkupFormatter formatter)
+		=> WrappedElement.ToHtml(writer, formatter);
 
 	/// <inheritdoc/>
 	public string? AccessKey
