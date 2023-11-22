@@ -115,7 +115,5 @@ jobs:
           dotnet test ${{ github.workspace }}/TemplateTestMstest
 
       - name: 📄 Building docs
-        run: |
-          dotnet tool update -g docfx --version 2.67.0
-          dotnet build /p:PublicRelease=true
-          docfx docs/site/docfx.json
+        working-directory: ./docs/site
+        run: dotnet run Site.csproj
