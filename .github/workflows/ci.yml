@@ -1,4 +1,4 @@
-name: verification
+name: ci
 
 on:
   push:
@@ -226,3 +226,33 @@ jobs:
       - name: 📄 Build docs
         working-directory: ./docs/site
         run: dotnet run Site.csproj
+
+  dependency-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    if: github.event_name == 'pull_request' && github.repository_owner == 'bunit-dev'
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v3
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v3
+
+  release-preview:
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2'
+    runs-on: ubuntu-latest
+    needs: [ validate-nuget, run-test, validate_template, validate-docs ]
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.NUGET_PACKAGES_ARTIFACT }}
+          path: ${{ env.NUGET_DIRECTORY }}
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+
+      - name: 🛠️ Upload library to GitHub Package Repository
+        run: dotnet nuget push ${{ env.NUGET_DIRECTORY }}/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bunit-dev/index.json --skip-duplicate --no-symbols
+
+      - name: 🛠️ Upload library to NuGet.org repository
+        run: dotnet nuget push ${{ env.NUGET_DIRECTORY }}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
