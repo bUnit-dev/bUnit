@@ -18,17 +18,85 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: verification-${{ github.ref }}-1
+  group: verification-${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.run_id || github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:
   VSTEST_CONNECTION_TIMEOUT: 180
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
   DOTNET_NOLOGO: true
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  NUGET_DIRECTORY: ${{ github.workspace}}/nuget
+  DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+  TERM: xterm
 
 jobs:
-  verify-bunit:
-    name: 👌 Verify bUnit
+  create-nuget:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
+
+    # Install the .NET SDK indicated in the global.json file
+    - name: ⚙️ Setup dotnet versions
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: |
+          3.1.x
+          5.0.x
+          6.0.x
+          7.0.x
+          8.0.x
+
+    - name: ⚙️ Setup GIT versioning
+      uses: dotnet/nbgv@v0.4.1
+      with:
+        setAllVars: true
+
+    - name: 🍥 Replace tokens in files
+      uses: cschleiden/replace-tokens@v1
+      with:
+        files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
+
+    # Create the NuGet package in the folder from the environment variable NuGetDirectory
+    - run: |
+        dotnet pack -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true
+        dotnet pack src/bunit/ -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true
+        dotnet pack src/bunit.template/ -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true
+
+    # Publish the NuGet package as an artifact, so they can be used in the following jobs
+    - uses: actions/upload-artifact@v3
+      with:
+        name: nuget
+        if-no-files-found: error
+        retention-days: 7
+        path: ${{ env.NUGET_DIRECTORY }}/*.nupkg
+
+  validate-nuget:
+    runs-on: ubuntu-latest
+    needs: [ create-nuget ]
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: nuget
+          path: ${{ env.NUGET_DIRECTORY }}
+
+      - name: Install nuget validator
+        run: dotnet tool update Meziantou.Framework.NuGetPackageValidation.Tool --global
+
+      # Validate metadata and content of the NuGet package
+      # https://www.nuget.org/packages/Meziantou.Framework.NuGetPackageValidation.Tool#readme-body-tab
+      # If some rules are not applicable, you can disable them
+      # using the --excluded-rules or --excluded-rule-ids option
+      - name: Validate package
+        shell: pwsh
+        run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NUGET_DIRECTORY }}/*.nupkg") --excluded-rules IconMustBeSet
+
+  run-test:
     strategy:
       fail-fast: false
       matrix:
@@ -51,27 +119,8 @@ jobs:
             7.0.x
             8.0.x
 
-      - name: 🎨 Setup color
-        if: matrix.os != 'windows-latest'
-        run: |
-          echo "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION=1" >> $GITHUB_ENV
-          echo "TERM=xterm" >> $GITHUB_ENV
-
-      - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.1
-        with:
-          setAllVars: true
-
-      - name: 🍥 Replace tokens in files
-        uses: cschleiden/replace-tokens@v1
-        with:
-          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
-
       - name: 🧪 Run unit tests
         run: dotnet test -c release --blame --blame-crash --blame-hang
-
-      - name: 🧪 Run sample unit tests
-        run: dotnet test -c release docs/samples/samples.sln
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
@@ -83,15 +132,21 @@ jobs:
             **/*hangdump.dmp
             **/*crashdump.dmp
 
-      - name: 🗳️ Pack library
-        run: |
-          dotnet pack -c release --property:PackageOutputPath=${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit/ -c release --property:PackageOutputPath=${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
-          dotnet pack src/bunit.template/ -c release --property:PackageOutputPath=${{ github.workspace }}/packages -p:ContinuousIntegrationBuild=true
+  validate_template:
+    runs-on: ubuntu-latest
+    needs: [ create-nuget ]
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: nuget
+          path: ${{ env.NUGET_DIRECTORY }}
 
       - name: ✳ Install bUnit template
         run: |
-          dotnet new --install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${{ github.workspace }}/packages
+          dotnet new --install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${{ env.NUGET_DIRECTORY }}
 
       - name: ✔ Verify xUnit template
         run: |
@@ -114,6 +169,41 @@ jobs:
           dotnet restore ${{ github.workspace }}/TemplateTestMstest --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages
           dotnet test ${{ github.workspace }}/TemplateTestMstest
 
-      - name: 📄 Building docs
+  validate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup dotnet versions
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            3.1.x
+            5.0.x
+            6.0.x
+            7.0.x
+            8.0.x
+
+      - name: ⚙️ Setup GIT versioning
+        uses: dotnet/nbgv@v0.4.1
+        with:
+          setAllVars: true
+
+      - name: 🍥 Replace tokens in files
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
+
+      - name: 📄 Build bUnit
+        run: dotnet build
+
+      - name: 🧪 Run sample unit tests
+        run: dotnet test -c release docs/samples/samples.sln
+
+      - name: 📄 Build docs
         working-directory: ./docs/site
         run: dotnet run Site.csproj
