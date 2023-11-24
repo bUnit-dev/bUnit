@@ -27,12 +27,6 @@
 		<PackageValidationBaselineVersion>1.25.3</PackageValidationBaselineVersion>
 	</PropertyGroup>
 
-	<Target Name="SetPackageReleaseNotes" BeforeTargets="GenerateNuspec">
-		<PropertyGroup>
-			<PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../CHANGELOG.md"))</PackageReleaseNotes>
-		</PropertyGroup>
-	</Target>
-
 	<PropertyGroup Label="NuGet package information">
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/bUnit-dev/bUnit</RepositoryUrl>
@@ -46,6 +40,7 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageIcon>bunit-logo.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReleaseNotes>#{RELEASE_NOTES}#</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>

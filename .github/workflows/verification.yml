@@ -55,10 +55,20 @@ jobs:
       with:
         setAllVars: true
 
-    - name: 🍥 Replace tokens in files
+    - name: 🛠️ Get Changelog Entry
+      id: changelog_reader
+      uses: mindsers/changelog-reader-action@v2
+      with:
+        version: Unreleased
+        path: ./CHANGELOG.md
+
+    - name: 🛠️ Update tokens in project files
       uses: cschleiden/replace-tokens@v1
       with:
-        files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
+        files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+      env:
+        RELEASE_VERSION: ${{ env.NBGV_NuGetPackageVersion }}
+        RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
     - run: |
@@ -137,6 +147,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ create-nuget ]
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
 
@@ -152,32 +166,31 @@ jobs:
 
       - name: ✳ Install bUnit template
         run: |
-          dotnet new --install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${{ env.NUGET_DIRECTORY }}
+          dotnet new install bunit.template::${NBGV_NuGetPackageVersion} --nuget-source ${{ env.NUGET_DIRECTORY }}
 
       - name: ✔ Verify xUnit template
         run: |
           dotnet new bunit --no-restore -o ${{ github.workspace }}/TemplateTestXunit
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestXunit/Directory.Build.props
-          dotnet restore ${{ github.workspace }}/TemplateTestXunit --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages
+          dotnet restore ${{ github.workspace }}/TemplateTestXunit --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
           dotnet test ${{ github.workspace }}/TemplateTestXunit
 
       - name: ✔ Verify NUnit template
         run: |
           dotnet new bunit --framework nunit --no-restore -o ${{ github.workspace }}/TemplateTestNunit
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestNunit/Directory.Build.props
-          dotnet restore ${{ github.workspace }}/TemplateTestNunit --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages
+          dotnet restore ${{ github.workspace }}/TemplateTestNunit --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
           dotnet test ${{ github.workspace }}/TemplateTestNunit
 
       - name: ✔ Verify MSTest template
         run: |
           dotnet new bunit --framework mstest --no-restore -o ${{ github.workspace }}/TemplateTestMstest
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestMstest/Directory.Build.props
-          dotnet restore ${{ github.workspace }}/TemplateTestMstest --source https://api.nuget.org/v3/index.json --source ${{ github.workspace }}/packages
+          dotnet restore ${{ github.workspace }}/TemplateTestMstest --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
           dotnet test ${{ github.workspace }}/TemplateTestMstest
 
   validate-docs:
     runs-on: ubuntu-latest
-
     steps:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v4
@@ -208,7 +221,7 @@ jobs:
         run: dotnet build
 
       - name: 🧪 Run sample unit tests
-        run: dotnet test -c release docs/samples/samples.sln
+        run: dotnet test docs/samples/samples.sln
 
       - name: 📄 Build docs
         working-directory: ./docs/site

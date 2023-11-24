@@ -15,6 +15,13 @@ on:
 
   workflow_dispatch:
 
+env:
+  VSTEST_CONNECTION_TIMEOUT: 180
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+  TERM: xterm
+
 jobs:
   deploy:
     name: 📃 Deploy new version bunit.dev
@@ -55,10 +62,11 @@ jobs:
 
       - name: 🛠️ Update tokens in project files
         uses: cschleiden/replace-tokens@v1
-        env:
-          RELEASE-VERSION: ${{ steps.changelog_reader.outputs.version }}
         with:
-          files: '["docs/site/docfx.json", "docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+        env:
+          RELEASE_VERSION: ${{ steps.changelog_reader.outputs.version }}
+          RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
       - name: ⚙️ Setup dotnet versions
         uses: actions/setup-dotnet@v3

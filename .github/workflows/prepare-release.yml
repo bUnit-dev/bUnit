@@ -8,13 +8,13 @@ on:
         description: 'The version increment. Allowed values are "major" and "minor".'
         required: true
         default: 'minor'
-        
-jobs:  
+
+jobs:
   prepare-release:
     name: 🚚 Prepare new release
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && contains(fromJson('["major","minor"]'), github.event.inputs.versionIncrement)
-    steps:   
+    steps:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v4
         with:
@@ -27,39 +27,40 @@ jobs:
         with:
           version: Unreleased
           path: ./CHANGELOG.md
-      
+
       - name: ☑ Check that release contains changes
         if: steps.changelog_reader.outputs.changes == ''
         run: |
           echo "::error file=CHANGELOG.md::The unreleased section in the changelog is empty. Nothing to release."
           exit 1
+
       - name: ⚙️ Import GPG key
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v6
         with:
           gpg_private_key: ${{ secrets.BUNIT_BOT_GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.BUNIT_BOT_GPG_KEY_PASSPHRASE }}
-      
+
       - name: ⚙️ Setup CI GIT
         run: |
           git config user.name "${{ steps.import_gpg.outputs.name }}"
           git config user.email ${{ steps.import_gpg.outputs.email }}
           git config --global user.signingkey ${{ steps.import_gpg.outputs.keyid }}
-          git config --global commit.gpgsign true   
-      
+          git config --global commit.gpgsign true
+
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.1
         with:
           setAllVars: true
-          
+
       - name: 🛠️ Increment version.json on main + create release branch
         id: versions
         run: |
-          nbgv prepare-release --versionIncrement ${{ github.event.inputs.versionIncrement }}          
+          nbgv prepare-release --versionIncrement ${{ github.event.inputs.versionIncrement }}
           echo "MAIN_VERSION_COMMIT_MESSAGE=$(git log --format=%B -n 1 --skip 1)" >> $GITHUB_OUTPUT
           git checkout release/v$NBGV_MajorMinorVersion
           echo "RELEASE_VERSION_COMMIT_MESSAGE=$(git log --format=%B -n 1)" >> $GITHUB_OUTPUT
-      
+
       # Workaround since nbgv prepare-release does not sign commits.
       # This undo's the commits, keeps the version changes, and commits again with signing
       # with the saved commit messages from previous step.
@@ -69,16 +70,16 @@ jobs:
           git checkout release/v$NBGV_MajorMinorVersion
           git reset --soft HEAD~1
           git commit -S -m "${{ steps.versions.outputs.RELEASE_VERSION_COMMIT_MESSAGE }}"
-          
+
           git checkout main
           git reset --hard HEAD~1
           git reset --soft HEAD~1
           git commit -S -m "${{ steps.versions.outputs.MAIN_VERSION_COMMIT_MESSAGE }}"
           git merge -S -X ours release/v$NBGV_MajorMinorVersion
-          
+
       - name: ⏩ Push version.json updates to main
         run: git push origin main
-        
+
       - name: ⏩ Push release branch to origin
         run: git push origin release/v$NBGV_MajorMinorVersion
 
@@ -92,7 +93,7 @@ jobs:
           title: Release of new ${{ github.event.inputs.versionIncrement }} version v${{ env.NBGV_MajorMinorVersion }}
           body: |
             This PR was created in response to a manual trigger of the [prepare-release workflow](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
-            
+
             Merging this PR will create a GitHub Release and push new packages to NuGet.
-            
+
             **NOTE:** Only small fixes should be added to this PR at this point. If you need to make minor or major changes, close the PR and make those changes to ${{ github.ref }} instead, and run the prepare-release workflow again once you are done.

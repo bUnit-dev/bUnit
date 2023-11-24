@@ -7,6 +7,13 @@ on:
     types: [completed]
     branches: [main, v2]
 
+env:
+  VSTEST_CONNECTION_TIMEOUT: 180
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+  TERM: xterm
+
 jobs:
   release-preview:
     if: github.event_name == 'workflow_dispatch' || (github.ref == 'refs/heads/main' && ${{ github.event.workflow_run.conclusion == 'success' }}) || (github.ref == 'refs/heads/v2' && ${{ github.event.workflow_run.conclusion == 'success' }})
@@ -31,15 +38,20 @@ jobs:
             7.0.x
             8.0.x
 
-      - name: 🎨 Setup color
-        run: |
-          echo "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION=1" >> $GITHUB_ENV
-          echo "TERM=xterm" >> $GITHUB_ENV
+      - name: 🛠️ Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          version: Unreleased
+          path: ./CHANGELOG.md
 
       - name: 🛠️ Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["*.csproj", "**/*.csproj"]'
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+        env:
+          RELEASE_VERSION: ${{ env.NBGV_NuGetPackageVersion }}
+          RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
       - name: 🛠️ Packing library in release mode
         run: |

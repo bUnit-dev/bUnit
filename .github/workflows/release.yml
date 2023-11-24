@@ -12,6 +12,13 @@ on:
 
   workflow_dispatch:
 
+env:
+  VSTEST_CONNECTION_TIMEOUT: 180
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+  TERM: xterm
+
 jobs:
   release:
     name: 🎁 Publish new release
@@ -26,19 +33,6 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.BUNIT_BOT_TOKEN }}
-
-      - name: 🛠️ Get Changelog Entry
-        id: changelog_reader
-        uses: mindsers/changelog-reader-action@v2
-        with:
-          version: Unreleased
-          path: ./CHANGELOG.md
-
-      - name: ☑ Check that release contains changes
-        if: steps.changelog_reader.outputs.changes == ''
-        run: |
-          echo "::error file=CHANGELOG.md::The unreleased section in the changelog is empty. Nothing to release."
-          exit 1
 
       - name: ⚙️ Import GPG key
         id: import_gpg
@@ -86,10 +80,20 @@ jobs:
           git commit -S -m "Updated CHANGELOG.md for ${{ env.NBGV_SimpleVersion }} release"
           echo "RELEASE_COMMIT_HASH=$(git rev-parse stable)" >> $GITHUB_ENV
 
+      - name: 🛠️ Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          version: ${{ env.NBGV_SemVer2 }}
+          path: ./CHANGELOG.md
+
       - name: 🛠️ Update tokens in project files
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["*.csproj", "**/*.csproj"]'
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+        env:
+          RELEASE_VERSION: ${{ env.NBGV_NuGetPackageVersion }}
+          RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
       - name: 🛠️ Packing library in release mode
         run: |
