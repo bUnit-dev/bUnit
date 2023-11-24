@@ -68,9 +68,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.query", "src\buni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.query.tests", "tests\bunit.web.query.tests\bunit.web.query.tests.csproj", "{DE975A0C-0672-4248-913E-D267C1001801}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.anglesharp", "src\bunit.web.anglesharp\bunit.web.anglesharp.csproj", "{683600A7-236B-4C5D-9F42-84657F64B9C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.generators", "src\bunit.generators\bunit.generators.csproj", "{AE3DFB52-2BF4-4806-AD82-7FB7B38AC17F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.anglesharp.tests", "tests\bunit.web.anglesharp.tests\bunit.web.anglesharp.tests.csproj", "{69305E2B-49EF-4DB5-B9EB-952E1A6D667F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.generators.tests", "tests\bunit.generators.tests\bunit.generators.tests.csproj", "{09046981-D9EC-4295-8502-721AC54E1F12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -118,14 +118,14 @@ Global
 		{DE975A0C-0672-4248-913E-D267C1001801}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE975A0C-0672-4248-913E-D267C1001801}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE975A0C-0672-4248-913E-D267C1001801}.Release|Any CPU.Build.0 = Release|Any CPU
-		{683600A7-236B-4C5D-9F42-84657F64B9C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{683600A7-236B-4C5D-9F42-84657F64B9C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{683600A7-236B-4C5D-9F42-84657F64B9C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{683600A7-236B-4C5D-9F42-84657F64B9C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{69305E2B-49EF-4DB5-B9EB-952E1A6D667F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69305E2B-49EF-4DB5-B9EB-952E1A6D667F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69305E2B-49EF-4DB5-B9EB-952E1A6D667F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69305E2B-49EF-4DB5-B9EB-952E1A6D667F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE3DFB52-2BF4-4806-AD82-7FB7B38AC17F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE3DFB52-2BF4-4806-AD82-7FB7B38AC17F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE3DFB52-2BF4-4806-AD82-7FB7B38AC17F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE3DFB52-2BF4-4806-AD82-7FB7B38AC17F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09046981-D9EC-4295-8502-721AC54E1F12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09046981-D9EC-4295-8502-721AC54E1F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09046981-D9EC-4295-8502-721AC54E1F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09046981-D9EC-4295-8502-721AC54E1F12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,8 +142,8 @@ Global
 		{3619481F-DF6F-4399-9FED-450EE545A19E} = {F6084D31-2A92-4794-A47E-A8F2254E6970}
 		{0FF92169-7D8F-46A2-8327-A2F028CB426F} = {9A2B3B34-D41C-43E8-BC7D-246BEBE48D59}
 		{DE975A0C-0672-4248-913E-D267C1001801} = {6EA09ED4-B714-4E6F-B0E1-4D987F8AE520}
-		{683600A7-236B-4C5D-9F42-84657F64B9C1} = {9A2B3B34-D41C-43E8-BC7D-246BEBE48D59}
-		{69305E2B-49EF-4DB5-B9EB-952E1A6D667F} = {6EA09ED4-B714-4E6F-B0E1-4D987F8AE520}
+		{AE3DFB52-2BF4-4806-AD82-7FB7B38AC17F} = {9A2B3B34-D41C-43E8-BC7D-246BEBE48D59}
+		{09046981-D9EC-4295-8502-721AC54E1F12} = {6EA09ED4-B714-4E6F-B0E1-4D987F8AE520}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24106918-1C86-4769-BDA6-9C80E64CD260}

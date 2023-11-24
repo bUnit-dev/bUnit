@@ -30,7 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\bunit.web.anglesharp\bunit.web.anglesharp.csproj" />
+		<ProjectReference Include="..\..\src\bunit.generators\bunit.generators.csproj" />
 	</ItemGroup>
 
 </Project>

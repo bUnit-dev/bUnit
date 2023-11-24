@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngleSharpWrappers", "AngleSharpWrappers\AngleSharpWrappers.csproj", "{740427B1-69C5-4DD6-B2EE-09D5C6FE08B8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit", "bunit\bunit.csproj", "{91DF582A-7C2B-4437-AB28-EE9FBED907A0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.core", "bunit.core\bunit.core.csproj", "{EC350F53-49A3-498A-B349-59BC6C0EB236}"
@@ -13,11 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.template", "bunit.tem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web", "bunit.web\bunit.web.csproj", "{73994570-A89F-4726-8A6F-DFA53947DD29}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.anglesharp", "bunit.web.anglesharp\bunit.web.anglesharp.csproj", "{EB2BD695-0ED9-4F4D-8C9A-021A3B948800}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.query", "bunit.web.query\bunit.web.query.csproj", "{F3C4F8A2-1B48-4E70-B66B-E14E97C38927}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bunit.template (1)", "bunit.template", "{C7995CF2-FFAB-4409-8AFB-74698442B784}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bunit.template (1)", "bunit.template (1)", "{C7995CF2-FFAB-4409-8AFB-74698442B784}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Company.BlazorTests1", "bunit.template\template\Company.BlazorTests1.csproj", "{537418EE-DC2C-4611-B16A-B986D41740EE}"
 EndProject
@@ -27,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{740427B1-69C5-4DD6-B2EE-09D5C6FE08B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{740427B1-69C5-4DD6-B2EE-09D5C6FE08B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{740427B1-69C5-4DD6-B2EE-09D5C6FE08B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{740427B1-69C5-4DD6-B2EE-09D5C6FE08B8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{91DF582A-7C2B-4437-AB28-EE9FBED907A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{91DF582A-7C2B-4437-AB28-EE9FBED907A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91DF582A-7C2B-4437-AB28-EE9FBED907A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,10 +39,6 @@ Global
 		{73994570-A89F-4726-8A6F-DFA53947DD29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73994570-A89F-4726-8A6F-DFA53947DD29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73994570-A89F-4726-8A6F-DFA53947DD29}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB2BD695-0ED9-4F4D-8C9A-021A3B948800}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB2BD695-0ED9-4F4D-8C9A-021A3B948800}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB2BD695-0ED9-4F4D-8C9A-021A3B948800}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB2BD695-0ED9-4F4D-8C9A-021A3B948800}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F3C4F8A2-1B48-4E70-B66B-E14E97C38927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F3C4F8A2-1B48-4E70-B66B-E14E97C38927}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3C4F8A2-1B48-4E70-B66B-E14E97C38927}.Release|Any CPU.ActiveCfg = Release|Any CPU

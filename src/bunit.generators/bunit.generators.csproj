@@ -4,12 +4,13 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>12.0</LangVersion>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-		<RootNamespace>Bunit.Web.AngleSharp</RootNamespace>
+		<RootNamespace>Bunit</RootNamespace>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="IElementFactory.cs" />
-		<EmbeddedResource Include="WrapperBase.cs" />
+		<EmbeddedResource Include="Web.AngleSharp\IElementFactory.cs" />
+		<EmbeddedResource Include="Web.AngleSharp\WrapperBase.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

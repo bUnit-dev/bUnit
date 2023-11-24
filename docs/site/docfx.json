@@ -6,8 +6,7 @@
         {
           "files": [
             "bunit.core/bunit.core.csproj",
-            "bunit.web/bunit.web.csproj",
-            "bunit.web.anglesharp/bunit.web.anglesharp.csproj"
+            "bunit.web/bunit.web.csproj"
           ],
           "src": "../../src"
         }
