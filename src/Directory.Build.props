@@ -21,7 +21,17 @@
 		<!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
 		<DebugType>embedded</DebugType>
 		<Deterministic>true</Deterministic>
+
+		<EnablePackageValidation>true</EnablePackageValidation>
+		<GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
+		<PackageValidationBaselineVersion>1.25.3</PackageValidationBaselineVersion>
 	</PropertyGroup>
+
+	<Target Name="SetPackageReleaseNotes" BeforeTargets="GenerateNuspec">
+		<PropertyGroup>
+			<PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../CHANGELOG.md"))</PackageReleaseNotes>
+		</PropertyGroup>
+	</Target>
 
 	<PropertyGroup Label="NuGet package information">
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -35,16 +45,25 @@
 		<Product>bUnit</Product>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageIcon>bunit-logo.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\..\bunit-logo.png" Pack="true" PackagePath="" Visible="false" />      
+		<None Include="..\..\bunit-logo.png" Pack="true" PackagePath="" Visible="false" />
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
 		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" PrivateAssets="All" />
-		
 	</ItemGroup>
-	
+
 </Project>
