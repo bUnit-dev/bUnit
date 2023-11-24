@@ -18,7 +18,7 @@
 		<PackageReference Include="Verify.Xunit" Version="22.5.0" />
 		<PackageReference Update="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
 		<PackageReference Update="Microsoft.CodeAnalysis.Common" Version="4.6.0" />
-		<PackageReference Update="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.6.0" />
+		<PackageReference Update="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.8.0" />
 		<PackageReference Update="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.6.0" />
 		<PackageReference Update="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit" Version="1.1.1" />
 
