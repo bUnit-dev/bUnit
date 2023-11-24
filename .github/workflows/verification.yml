@@ -26,7 +26,8 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
   DOTNET_NOLOGO: true
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-  NUGET_DIRECTORY: ${{ github.workspace}}/nuget
+  NUGET_DIRECTORY: ${{ github.workspace }}/nuget
+  NUGET_PACKAGES_ARTIFACT: nuget-packages
   DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
   TERM: xterm
 
@@ -68,7 +69,7 @@ jobs:
     # Publish the NuGet package as an artifact, so they can be used in the following jobs
     - uses: actions/upload-artifact@v3
       with:
-        name: nuget
+        name: ${{ env.NUGET_PACKAGES_ARTIFACT }}
         if-no-files-found: error
         retention-days: 7
         path: ${{ env.NUGET_DIRECTORY }}/*.nupkg
@@ -82,7 +83,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: nuget
+          name: ${{ env.NUGET_PACKAGES_ARTIFACT }}
           path: ${{ env.NUGET_DIRECTORY }}
 
       - name: Install nuget validator
@@ -141,8 +142,13 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: nuget
+          name: ${{ env.NUGET_PACKAGES_ARTIFACT }}
           path: ${{ env.NUGET_DIRECTORY }}
+
+      - name: ⚙️ Setup GIT versioning
+        uses: dotnet/nbgv@v0.4.1
+        with:
+          setAllVars: true
 
       - name: ✳ Install bUnit template
         run: |
