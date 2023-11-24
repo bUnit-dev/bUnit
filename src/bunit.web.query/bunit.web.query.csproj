@@ -44,16 +44,4 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet8Version)" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <None Remove="version.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Include="version.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	</ItemGroup>
-
 </Project>
