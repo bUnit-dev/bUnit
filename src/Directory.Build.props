@@ -46,7 +46,6 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageIcon>bunit-logo.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	</PropertyGroup>
 
 	<ItemGroup>
