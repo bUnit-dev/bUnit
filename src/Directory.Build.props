@@ -40,7 +40,13 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageIcon>bunit-logo.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageReleaseNotes>#{RELEASE_NOTES}#</PackageReleaseNotes>
+		<PackageReleaseNotes>
+Changes in bUnit #{RELEASE_VERSION}#
+
+#{RELEASE_NOTES}#
+
+See the full changelog at https://github.com/bUnit-dev/bUnit/releases
+		</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
