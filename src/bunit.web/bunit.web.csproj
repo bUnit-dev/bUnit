@@ -78,7 +78,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />
-		<ProjectReference Include="..\bunit.generators\bunit.generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\bunit.generators.internal\bunit.generators.internal.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
