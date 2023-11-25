@@ -442,6 +442,30 @@ The solution is to inherit from bUnits `TestContext` instead, i.e.:
 }
 ```
 
+## Limitations of rendering a `RenderFragment` inside a test
+  
+When rendering a `RenderFragment` using the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method, the created <xref:Bunit.IRenderedFragment> is static. This means that it will not re-render even if events are triggered.
+```razor
+@inherits TestContext
+
+@code {
+  [Fact]
+  public void Button_clicked_string_gets_updated()
+  {
+    var output = string.Empty;
+    var cut = Render(@<button @onclick='@(() => output = "Success")'>@output</button>);
+    
+    cut.Find("button").Click();
+    
+    // This will pass, as events are triggered and the function get executed
+    output.ShouldBe("Success");
+
+    // This will fail, as the markup will not get updated
+    cut.Find("button").TextContent.ShouldBe("Success");
+  }
+}
+```
+
 ## Further Reading
 
 - <xref:inject-services>
