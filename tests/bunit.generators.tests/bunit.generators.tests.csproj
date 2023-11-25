@@ -30,7 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\bunit.generators\bunit.generators.csproj" />
+		<ProjectReference Include="..\..\src\bunit.generators.internal\bunit.generators.internal.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -68,7 +68,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.query", "src\buni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.query.tests", "tests\bunit.web.query.tests\bunit.web.query.tests.csproj", "{DE975A0C-0672-4248-913E-D267C1001801}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.generators", "src\bunit.generators\bunit.generators.csproj", "{AE3DFB52-2BF4-4806-AD82-7FB7B38AC17F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.generators.internal", "src\bunit.generators.internal\bunit.generators.internal.csproj", "{AE3DFB52-2BF4-4806-AD82-7FB7B38AC17F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.generators.tests", "tests\bunit.generators.tests\bunit.generators.tests.csproj", "{09046981-D9EC-4295-8502-721AC54E1F12}"
 EndProject
