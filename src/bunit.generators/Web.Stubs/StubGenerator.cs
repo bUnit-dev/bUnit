@@ -1,9 +1,8 @@
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Bunit.Web.Stubs;
 
@@ -13,61 +12,49 @@ namespace Bunit.Web.Stubs;
 [Generator]
 public class StubGenerator : IIncrementalGenerator
 {
+	private const string AttributeFullQualifiedName = "Bunit.StubAttribute";
+
 	/// <inheritdoc/>
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		var classDeclarations = context.SyntaxProvider
-			.CreateSyntaxProvider(
-				predicate: static (s, _) => s is ClassDeclarationSyntax { AttributeLists.Count: > 0 },
+		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
+			"StubAttribute.g.cs",
+			SourceText.From(StubAttributeGenerator.StubAttribute, Encoding.UTF8)));
+
+		var classesToStub = context.SyntaxProvider
+			.ForAttributeWithMetadataName(
+				AttributeFullQualifiedName,
+				predicate: static (s, _) => s is ClassDeclarationSyntax,
 				transform: static (ctx, _) => GetStubClassInfo(ctx))
 			.Where(static m => m is not null);
 
-		var compilationAndClasses = context.CompilationProvider.Combine(classDeclarations.Collect());
 
-		context.RegisterSourceOutput(compilationAndClasses, static (spc, source) => Execute(source.Item2, spc));
+		context.RegisterSourceOutput(
+			classesToStub,
+			static (spc, source) => Execute(source, spc));
 	}
 
-	private static StubClassInfo GetStubClassInfo(GeneratorSyntaxContext context)
+	private static StubClassInfo GetStubClassInfo(GeneratorAttributeSyntaxContext context)
 	{
-		var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
-
-		// Check if the class is partial
-		if (!classDeclarationSyntax.Modifiers.Any(SyntaxKind.PartialKeyword))
+		foreach (var attribute in context.TargetSymbol.GetAttributes())
 		{
-			return null;
-		}
-
-		// Find the StubAttribute on the class
-		foreach (var attribute in classDeclarationSyntax.AttributeLists.SelectMany(a => a.Attributes))
-		{
-			var attributeSymbol =
-				ModelExtensions.GetSymbolInfo(context.SemanticModel, attribute).Symbol as IMethodSymbol;
-			if (attributeSymbol is null || !IsStubAttribute(attributeSymbol))
+			if (context.TargetSymbol is not ITypeSymbol stubbedType ||
+			    !ImplementsInterface(stubbedType, "Microsoft.AspNetCore.Components.IComponent"))
 			{
 				continue;
 			}
 
-			if (attribute.ArgumentList?.Arguments is not [{ Expression: TypeOfExpressionSyntax typeOfExpression }])
+			var namespaceName = stubbedType.ContainingNamespace.ToDisplayString();
+			var className = context.TargetSymbol.Name;
+
+			// TODO: Check for the name not the first
+			var originalTypeToStub = attribute.ConstructorArguments.FirstOrDefault().Value;
+			if (originalTypeToStub is not ITypeSymbol originalType)
 			{
 				continue;
 			}
 
-			var typeSymbol = ModelExtensions.GetTypeInfo(context.SemanticModel, typeOfExpression.Type).Type;
-			if (typeSymbol == null)
-			{
-				continue;
-			}
-
-			if (!ImplementsInterface(typeSymbol, "Microsoft.AspNetCore.Components.IComponent"))
-			{
-				continue;
-			}
-
-			var namespaceSyntax = classDeclarationSyntax.Parent as NamespaceDeclarationSyntax;
-			var namespaceName = namespaceSyntax?.Name.ToString();
-			var className = classDeclarationSyntax.Identifier.ValueText;
-
-			return new StubClassInfo { ClassName = className, Namespace = namespaceName, TargetType = typeSymbol };
+			return new StubClassInfo { ClassName = className, Namespace = namespaceName, TargetType = originalType };
 		}
 
 		return null;
@@ -78,51 +65,49 @@ public class StubGenerator : IIncrementalGenerator
 		}
 	}
 
-	private static bool IsStubAttribute(ISymbol attributeSymbol) => attributeSymbol.ContainingType.ToDisplayString() == "Bunit.StubAttribute";
-
-	private static void Execute(ImmutableArray<StubClassInfo> classes, SourceProductionContext context)
+	private static void Execute(StubClassInfo classInfo, SourceProductionContext context)
 	{
-		context.AddSource("StubAttribute.g.cs", StubAttributeGenerator.StubAttribute);
+		var hasSomethingToStub = false;
+		var targetTypeSymbol = (INamedTypeSymbol)classInfo!.TargetType;
+		var sourceBuilder = new StringBuilder();
 
-		if (classes.IsDefaultOrEmpty)
+		// TODO: Shall we dictate file-scoped namespaces here?
+		sourceBuilder.AppendLine($"namespace {classInfo.Namespace};");
+
+		// TODO: If the class is a nested one, that approach does not work
+		sourceBuilder.AppendLine($"public partial class {classInfo.ClassName}");
+		sourceBuilder.Append("{");
+
+		foreach (var member in targetTypeSymbol
+			         .GetMembers()
+			         .OfType<IPropertySymbol>()
+			         .Where(p => p.GetAttributes()
+				         .Any(attr =>
+					         attr.AttributeClass?.ToDisplayString() ==
+					         "Microsoft.AspNetCore.Components.ParameterAttribute" ||
+					         attr.AttributeClass?.ToDisplayString() ==
+					         "Microsoft.AspNetCore.Components.CascadingParameterAttribute")))
 		{
-			return;
+			sourceBuilder.AppendLine();
+
+			hasSomethingToStub = true;
+			var propertyType = member.Type.ToDisplayString();
+			var propertyName = member.Name;
+
+			var isParameterAttribute = member.GetAttributes().Any(attr =>
+				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.ParameterAttribute");
+			var attributeLine = isParameterAttribute
+				? "\t[global::Microsoft.AspNetCore.Components.Parameter]"
+				: "\t[global::Microsoft.AspNetCore.Components.CascadingParameter]";
+
+			sourceBuilder.AppendLine(attributeLine);
+			sourceBuilder.AppendLine($"\tpublic {propertyType} {propertyName} {{ get; set; }}");
 		}
 
-		foreach (var classInfo in classes.Where(t => t?.TargetType is INamedTypeSymbol))
+		sourceBuilder.AppendLine("}");
+
+		if (hasSomethingToStub)
 		{
-			var targetTypeSymbol = (INamedTypeSymbol)classInfo!.TargetType;
-			var sourceBuilder = new StringBuilder();
-
-			sourceBuilder.AppendLine($"namespace {classInfo.Namespace};");
-			sourceBuilder.AppendLine($"public partial class {classInfo.ClassName}");
-			sourceBuilder.AppendLine("{");
-
-			foreach (var member in targetTypeSymbol
-				         .GetMembers()
-				         .OfType<IPropertySymbol>()
-				         .Where(p => p.GetAttributes()
-					         .Any(attr =>
-						         attr.AttributeClass?.ToDisplayString() ==
-						         "Microsoft.AspNetCore.Components.ParameterAttribute" ||
-						         attr.AttributeClass?.ToDisplayString() ==
-						         "Microsoft.AspNetCore.Components.CascadingParameterAttribute")))
-			{
-				var propertyType = $"global::{member.Type.ToDisplayString()}";
-				var propertyName = member.Name;
-
-				var isParameterAttribute = member.GetAttributes().Any(attr =>
-					attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.ParameterAttribute");
-				var attributeLine = isParameterAttribute
-					? "\t[global::Microsoft.AspNetCore.Components.Parameter]"
-					: "\t[global::Microsoft.AspNetCore.Components.CascadingParameter]";
-
-				sourceBuilder.AppendLine(attributeLine);
-				sourceBuilder.AppendLine($"\tpublic {propertyType} {propertyName} {{ get; set; }}");
-				sourceBuilder.AppendLine();
-			}
-
-			sourceBuilder.AppendLine("}");
 			context.AddSource($"{classInfo.ClassName}Stub.g.cs", sourceBuilder.ToString());
 		}
 	}
