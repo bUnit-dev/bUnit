@@ -4,8 +4,7 @@ namespace Bunit.Web.Stubs;
 
 internal static class StubAttributeGenerator
 {
-	public static string StubAttribute => @"
-#if NET5_0_OR_GREATER
+	public static string StubAttribute => @"#if NET5_0_OR_GREATER
 namespace Bunit;
 
 /// <summary>
