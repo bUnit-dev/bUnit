@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlQuoteElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlQuoteElement>, global::AngleSharp.Html.Dom.IHtmlQuoteElement
 {
 
-	internal HtmlQuoteElementWrapper(global::AngleSharp.Html.Dom.IHtmlQuoteElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlQuoteElementWrapper(global::AngleSharp.Html.Dom.IHtmlQuoteElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

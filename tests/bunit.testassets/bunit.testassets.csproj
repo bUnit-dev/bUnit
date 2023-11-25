@@ -9,14 +9,15 @@
 		<Nullable>annotations</Nullable>
 		<SonarQubeTestProject>false</SonarQubeTestProject>
 		<IsTestProject>false</IsTestProject>
-		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<EmitCompilerGeneratedFiles>false</EmitCompilerGeneratedFiles>
+		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Serilog" Version="3.1.1" />
 		<PackageReference Include="Serilog.Expressions" Version="4.0.0" />
 		<PackageReference Include="xunit.extensibility.execution" Version="2.5.2" />
-		<PackageReference Include="xunit.abstractions" Version="2.0.3" />
+		<PackageReference Include="xunit.abstractions" Version="2.0.3" />		
 		<PackageReference Include="xunit.assert" Version="2.6.2" />
 	</ItemGroup>
 

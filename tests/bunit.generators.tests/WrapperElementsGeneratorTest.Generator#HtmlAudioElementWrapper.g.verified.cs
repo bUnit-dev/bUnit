@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlAudioElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlAudioElement>, global::AngleSharp.Html.Dom.IHtmlAudioElement
 {
 
-	internal HtmlAudioElementWrapper(global::AngleSharp.Html.Dom.IHtmlAudioElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlAudioElementWrapper(global::AngleSharp.Html.Dom.IHtmlAudioElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

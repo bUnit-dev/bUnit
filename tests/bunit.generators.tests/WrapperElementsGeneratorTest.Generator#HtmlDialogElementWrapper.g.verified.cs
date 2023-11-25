@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlDialogElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlDialogElement>, global::AngleSharp.Html.Dom.IHtmlDialogElement
 {
 
-	internal HtmlDialogElementWrapper(global::AngleSharp.Html.Dom.IHtmlDialogElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlDialogElementWrapper(global::AngleSharp.Html.Dom.IHtmlDialogElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

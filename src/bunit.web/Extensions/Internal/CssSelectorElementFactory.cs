@@ -3,7 +3,7 @@ using Bunit.Web.AngleSharp;
 
 namespace Bunit;
 
-internal sealed class CssSelectorElementFactory : IElementFactory
+internal sealed class CssSelectorElementFactory : IElementWrapperFactory
 {
 	private readonly IRenderedFragment testTarget;
 	private readonly string cssSelector;

@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlTimeElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlTimeElement>, global::AngleSharp.Html.Dom.IHtmlTimeElement
 {
 
-	internal HtmlTimeElementWrapper(global::AngleSharp.Html.Dom.IHtmlTimeElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlTimeElementWrapper(global::AngleSharp.Html.Dom.IHtmlTimeElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

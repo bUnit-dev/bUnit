@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlTableCaptionElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlTableCaptionElement>, global::AngleSharp.Html.Dom.IHtmlTableCaptionElement
 {
 
-	internal HtmlTableCaptionElementWrapper(global::AngleSharp.Html.Dom.IHtmlTableCaptionElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlTableCaptionElementWrapper(global::AngleSharp.Html.Dom.IHtmlTableCaptionElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

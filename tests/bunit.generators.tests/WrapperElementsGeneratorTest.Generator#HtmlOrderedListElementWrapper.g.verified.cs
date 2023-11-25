@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlOrderedListElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlOrderedListElement>, global::AngleSharp.Html.Dom.IHtmlOrderedListElement
 {
 
-	internal HtmlOrderedListElementWrapper(global::AngleSharp.Html.Dom.IHtmlOrderedListElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlOrderedListElementWrapper(global::AngleSharp.Html.Dom.IHtmlOrderedListElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

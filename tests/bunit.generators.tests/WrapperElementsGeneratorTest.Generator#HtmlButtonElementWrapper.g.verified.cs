@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlButtonElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlButtonElement>, global::AngleSharp.Html.Dom.IHtmlButtonElement
 {
 
-	internal HtmlButtonElementWrapper(global::AngleSharp.Html.Dom.IHtmlButtonElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlButtonElementWrapper(global::AngleSharp.Html.Dom.IHtmlButtonElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

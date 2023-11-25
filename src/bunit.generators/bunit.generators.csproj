@@ -9,7 +9,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="Web.AngleSharp\IElementFactory.cs" />
+		<EmbeddedResource Include="Web.AngleSharp\IElementWrapperFactory.cs" />
+		<EmbeddedResource Include="Web.AngleSharp\IElementWrapper.cs" />
 		<EmbeddedResource Include="Web.AngleSharp\WrapperBase.cs" />
 	</ItemGroup>
 

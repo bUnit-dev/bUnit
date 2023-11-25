@@ -15,7 +15,7 @@ namespace Bunit.Web.AngleSharp;
 internal abstract class WrapperBase<TElement> : IElementWrapper<TElement>
 	where TElement : class, IElement
 {
-	private readonly IElementFactory elementFactory;
+	private readonly IElementWrapperFactory elementFactory;
 	private TElement? element;
 
 	/// <summary>
@@ -39,7 +39,7 @@ internal abstract class WrapperBase<TElement> : IElementWrapper<TElement>
 	/// </summary>
 	protected WrapperBase(
 		TElement element,
-		IElementFactory elementFactory)
+		IElementWrapperFactory elementFactory)
 	{
 		this.element = element;
 		this.elementFactory = elementFactory;

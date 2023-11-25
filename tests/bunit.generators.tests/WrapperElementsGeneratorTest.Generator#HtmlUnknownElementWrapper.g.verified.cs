@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlUnknownElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlUnknownElement>, global::AngleSharp.Html.Dom.IHtmlUnknownElement
 {
 
-	internal HtmlUnknownElementWrapper(global::AngleSharp.Html.Dom.IHtmlUnknownElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlUnknownElementWrapper(global::AngleSharp.Html.Dom.IHtmlUnknownElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

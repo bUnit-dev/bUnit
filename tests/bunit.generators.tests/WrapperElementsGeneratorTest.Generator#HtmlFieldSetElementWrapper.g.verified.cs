@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlFieldSetElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlFieldSetElement>, global::AngleSharp.Html.Dom.IHtmlFieldSetElement
 {
 
-	internal HtmlFieldSetElementWrapper(global::AngleSharp.Html.Dom.IHtmlFieldSetElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlFieldSetElementWrapper(global::AngleSharp.Html.Dom.IHtmlFieldSetElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

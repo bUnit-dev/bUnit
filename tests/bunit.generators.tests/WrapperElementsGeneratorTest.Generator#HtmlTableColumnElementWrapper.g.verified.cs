@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlTableColumnElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlTableColumnElement>, global::AngleSharp.Html.Dom.IHtmlTableColumnElement
 {
 
-	internal HtmlTableColumnElementWrapper(global::AngleSharp.Html.Dom.IHtmlTableColumnElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlTableColumnElementWrapper(global::AngleSharp.Html.Dom.IHtmlTableColumnElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

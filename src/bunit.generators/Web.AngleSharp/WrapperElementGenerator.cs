@@ -27,7 +27,7 @@ internal static class WrapperElementGenerator
 		source.AppendLine();
 
 		source.AppendLine($$"""
-					internal {{name}}({{wrappedTypeName}} element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+					internal {{name}}({{wrappedTypeName}} element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 				""");
 
 		var generatedProperties = new HashSet<string>();

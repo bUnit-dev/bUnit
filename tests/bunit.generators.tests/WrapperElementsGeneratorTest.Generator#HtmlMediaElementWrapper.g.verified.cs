@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlMediaElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlMediaElement>, global::AngleSharp.Html.Dom.IHtmlMediaElement
 {
 
-	internal HtmlMediaElementWrapper(global::AngleSharp.Html.Dom.IHtmlMediaElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlMediaElementWrapper(global::AngleSharp.Html.Dom.IHtmlMediaElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted
