@@ -5,17 +5,26 @@
 		<LangVersion>12.0</LangVersion>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<RootNamespace>Bunit</RootNamespace>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="Web.AngleSharp\IElementWrapperFactory.cs" />
+		<EmbeddedResource Include="Web.AngleSharp\IElementWrapper.cs" />
+		<EmbeddedResource Include="Web.AngleSharp\WrapperBase.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AngleSharp" Version="1.0.7" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Meziantou.Polyfill" Version="1.0.31">
+		<PackageReference Include="Meziantou.Polyfill" Version="1.0.30">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
+
 </Project>

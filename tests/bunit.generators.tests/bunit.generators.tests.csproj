@@ -8,6 +8,7 @@
 		<SonarQubeTestProject>true</SonarQubeTestProject>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -16,6 +17,7 @@
 		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 		<PackageReference Include="Verify.SourceGenerators" Version="2.2.0" />
 		<PackageReference Include="Verify.Xunit" Version="22.8.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
 		<PackageReference Update="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
 		<PackageReference Update="Microsoft.CodeAnalysis.Common" Version="4.8.0" />
 		<PackageReference Update="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.8.0" />
@@ -31,6 +33,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\bunit.generators.internal\bunit.generators.internal.csproj" />
+		<ProjectReference Include="..\..\src\bunit.generators\bunit.generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 </Project>
