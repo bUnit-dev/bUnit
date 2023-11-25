@@ -72,6 +72,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.generators.internal",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.generators.tests", "tests\bunit.generators.tests\bunit.generators.tests.csproj", "{09046981-D9EC-4295-8502-721AC54E1F12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.generators", "src\bunit.generators\bunit.generators.csproj", "{A7C6A2AA-FF8F-4ED1-8590-5324FC566059}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,10 @@ Global
 		{09046981-D9EC-4295-8502-721AC54E1F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09046981-D9EC-4295-8502-721AC54E1F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09046981-D9EC-4295-8502-721AC54E1F12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7C6A2AA-FF8F-4ED1-8590-5324FC566059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C6A2AA-FF8F-4ED1-8590-5324FC566059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C6A2AA-FF8F-4ED1-8590-5324FC566059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C6A2AA-FF8F-4ED1-8590-5324FC566059}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,6 +150,7 @@ Global
 		{DE975A0C-0672-4248-913E-D267C1001801} = {6EA09ED4-B714-4E6F-B0E1-4D987F8AE520}
 		{AE3DFB52-2BF4-4806-AD82-7FB7B38AC17F} = {9A2B3B34-D41C-43E8-BC7D-246BEBE48D59}
 		{09046981-D9EC-4295-8502-721AC54E1F12} = {6EA09ED4-B714-4E6F-B0E1-4D987F8AE520}
+		{A7C6A2AA-FF8F-4ED1-8590-5324FC566059} = {9A2B3B34-D41C-43E8-BC7D-246BEBE48D59}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24106918-1C86-4769-BDA6-9C80E64CD260}
