@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlBreakRowElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlBreakRowElement>, global::AngleSharp.Html.Dom.IHtmlBreakRowElement
 {
 
-	internal HtmlBreakRowElementWrapper(global::AngleSharp.Html.Dom.IHtmlBreakRowElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlBreakRowElementWrapper(global::AngleSharp.Html.Dom.IHtmlBreakRowElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

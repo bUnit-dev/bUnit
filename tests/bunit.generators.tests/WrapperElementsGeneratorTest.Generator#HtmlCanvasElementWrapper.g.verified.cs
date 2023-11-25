@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlCanvasElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlCanvasElement>, global::AngleSharp.Html.Dom.IHtmlCanvasElement
 {
 
-	internal HtmlCanvasElementWrapper(global::AngleSharp.Html.Dom.IHtmlCanvasElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlCanvasElementWrapper(global::AngleSharp.Html.Dom.IHtmlCanvasElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

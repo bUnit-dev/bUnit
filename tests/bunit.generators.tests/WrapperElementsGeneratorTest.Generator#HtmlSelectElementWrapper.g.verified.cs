@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlSelectElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlSelectElement>, global::AngleSharp.Html.Dom.IHtmlSelectElement
 {
 
-	internal HtmlSelectElementWrapper(global::AngleSharp.Html.Dom.IHtmlSelectElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlSelectElementWrapper(global::AngleSharp.Html.Dom.IHtmlSelectElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlTextAreaElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlTextAreaElement>, global::AngleSharp.Html.Dom.IHtmlTextAreaElement
 {
 
-	internal HtmlTextAreaElementWrapper(global::AngleSharp.Html.Dom.IHtmlTextAreaElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlTextAreaElementWrapper(global::AngleSharp.Html.Dom.IHtmlTextAreaElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

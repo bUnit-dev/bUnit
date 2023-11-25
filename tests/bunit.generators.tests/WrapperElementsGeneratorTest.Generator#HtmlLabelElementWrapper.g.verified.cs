@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlLabelElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlLabelElement>, global::AngleSharp.Html.Dom.IHtmlLabelElement
 {
 
-	internal HtmlLabelElementWrapper(global::AngleSharp.Html.Dom.IHtmlLabelElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlLabelElementWrapper(global::AngleSharp.Html.Dom.IHtmlLabelElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

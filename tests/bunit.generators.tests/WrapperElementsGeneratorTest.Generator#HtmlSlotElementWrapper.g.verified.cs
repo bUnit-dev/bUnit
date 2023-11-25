@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlSlotElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlSlotElement>, global::AngleSharp.Html.Dom.IHtmlSlotElement
 {
 
-	internal HtmlSlotElementWrapper(global::AngleSharp.Html.Dom.IHtmlSlotElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlSlotElementWrapper(global::AngleSharp.Html.Dom.IHtmlSlotElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

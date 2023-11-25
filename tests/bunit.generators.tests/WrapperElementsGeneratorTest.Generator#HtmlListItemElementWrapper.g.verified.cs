@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlListItemElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlListItemElement>, global::AngleSharp.Html.Dom.IHtmlListItemElement
 {
 
-	internal HtmlListItemElementWrapper(global::AngleSharp.Html.Dom.IHtmlListItemElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlListItemElementWrapper(global::AngleSharp.Html.Dom.IHtmlListItemElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

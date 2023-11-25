@@ -1,4 +1,4 @@
-﻿//HintName: IElementFactory.g.cs
+﻿//HintName: IElementWrapperFactory.g.cs
 #nullable enable
 using AngleSharp.Dom;
 using System;
@@ -10,7 +10,7 @@ namespace Bunit.Web.AngleSharp;
 /// Represents an <see cref="IElement"/> factory, used by a <see cref="WrapperBase{TElement}"/>.
 /// </summary>
 [GeneratedCodeAttribute("Bunit.Web.AngleSharp", "1.0.0.0")]
-internal interface IElementFactory
+internal interface IElementWrapperFactory
 {
 	/// <summary>
 	/// A method that returns the latest version of the element to wrap.
@@ -24,17 +24,5 @@ internal interface IElementFactory
 	/// Subscribe to updates to the wrapped elements.
 	/// </summary>
 	Action? OnElementReplaced { get; set; }
-}
-
-/// <summary>
-/// Represents a wrapper around an <typeparamref name="TElement"/>.
-/// </summary>
-[GeneratedCodeAttribute("Bunit.Web.AngleSharp", "1.0.0.0")]
-internal interface IElementWrapper<out TElement> where TElement : class, IElement
-{
-	/// <summary>
-	/// Gets the wrapped element.
-	/// </summary>
-	TElement WrappedElement { get; }
 }
 #nullable restore

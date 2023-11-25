@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlKeygenElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlKeygenElement>, global::AngleSharp.Html.Dom.IHtmlKeygenElement
 {
 
-	internal HtmlKeygenElementWrapper(global::AngleSharp.Html.Dom.IHtmlKeygenElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlKeygenElementWrapper(global::AngleSharp.Html.Dom.IHtmlKeygenElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

@@ -36,10 +36,9 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 		if (assembly is not IAssemblySymbol)
 			return;
 
-		var elementFactorySource = ReadEmbeddedResource("Bunit.Web.AngleSharp.IElementFactory.cs");
-		var wrapperBase = ReadEmbeddedResource("Bunit.Web.AngleSharp.WrapperBase.cs");
-		context.AddSource("IElementFactory.g.cs", elementFactorySource);
-		context.AddSource("WrapperBase.g.cs", wrapperBase);
+		context.AddSource("IElementWrapperFactory.g.cs", ReadEmbeddedResource("Bunit.Web.AngleSharp.IElementWrapperFactory.cs"));
+		context.AddSource("IElementWrapper.g.cs", ReadEmbeddedResource("Bunit.Web.AngleSharp.IElementWrapper.cs"));
+		context.AddSource("WrapperBase.g.cs", ReadEmbeddedResource("Bunit.Web.AngleSharp.WrapperBase.cs"));
 	}
 
 	private static void GenerateWrapperTypes(SourceProductionContext context, ISymbol assembly)
@@ -70,7 +69,7 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 		source.AppendLine($"internal static class WrapperExtensions");
 		source.AppendLine("{");
 		source.AppendLine();
-		source.AppendLine($"\tpublic static global::AngleSharp.Dom.IElement WrapUsing<TElementFactory>(this global::AngleSharp.Dom.IElement element, TElementFactory elementFactory) where TElementFactory : Bunit.Web.AngleSharp.IElementFactory => element switch");
+		source.AppendLine($"\tpublic static global::AngleSharp.Dom.IElement WrapUsing<TElementFactory>(this global::AngleSharp.Dom.IElement element, TElementFactory elementFactory) where TElementFactory : Bunit.Web.AngleSharp.IElementWrapperFactory => element switch");
 		source.AppendLine("\t{");
 
 		foreach (var elm in elementInterfacetypes)

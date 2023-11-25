@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class HtmlLegendElementWrapper : WrapperBase<global::AngleSharp.Html.Dom.IHtmlLegendElement>, global::AngleSharp.Html.Dom.IHtmlLegendElement
 {
 
-	internal HtmlLegendElementWrapper(global::AngleSharp.Html.Dom.IHtmlLegendElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal HtmlLegendElementWrapper(global::AngleSharp.Html.Dom.IHtmlLegendElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Aborted

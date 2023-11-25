@@ -1,4 +1,4 @@
-﻿//HintName: ElementWrapper.g.cs
+//HintName: ElementWrapper.g.cs
 #nullable enable
 using System.Runtime.CompilerServices;
 
@@ -11,7 +11,7 @@ namespace Bunit.Web.AngleSharp;
 internal sealed class ElementWrapper : WrapperBase<global::AngleSharp.Dom.IElement>, global::AngleSharp.Dom.IElement
 {
 
-	internal ElementWrapper(global::AngleSharp.Dom.IElement element, Bunit.Web.AngleSharp.IElementFactory elementFactory) : base(element, elementFactory) { }
+	internal ElementWrapper(global::AngleSharp.Dom.IElement element, Bunit.Web.AngleSharp.IElementWrapperFactory elementFactory) : base(element, elementFactory) { }
 
 	/// <inheritdoc/>
 	[System.Diagnostics.DebuggerHidden]
