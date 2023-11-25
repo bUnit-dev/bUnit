@@ -25,9 +25,9 @@ public class StubTests
 			Assert.Equal(isCascadingParameter, stubIsCascadingParameter);
 		}
 	}
-	
-	[Stub(typeof(CounterComponentStub))]
-	public partial class CounterComponentStub : ComponentBase
-	{
-	}
+}
+
+[Stub(typeof(CounterComponent))]
+public partial class CounterComponentStub : ComponentBase
+{
 }
