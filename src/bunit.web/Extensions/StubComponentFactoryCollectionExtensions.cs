@@ -161,5 +161,20 @@ public static class StubComponentFactoryCollectionExtensions
 		factories.Add(new StubComponentFactory(componentTypePredicate, replacementFragment));
 		return factories;
 	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	/// TODO.
+	/// </summary>
+#pragma warning disable S2326
+	public static ComponentFactoryCollection AddGeneratedStub<TComponent>(this ComponentFactoryCollection factories) where TComponent : IComponent
+#pragma warning restore S2326
+	{
+		if (factories is null)
+			throw new ArgumentNullException(nameof(factories));
+
+		return factories;
+	}
+#endif
 }
 #endif
