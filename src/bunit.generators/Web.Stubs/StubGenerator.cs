@@ -138,7 +138,7 @@ public class StubGenerator : IIncrementalGenerator
 
 		if (hasSomethingToStub)
 		{
-			context.AddSource($"{classInfo.StubClassName}Stub.g.cs", sourceBuilder.ToString());
+			context.AddSource($"{classInfo.StubClassName}.g.cs", sourceBuilder.ToString());
 		}
 
 		return hasSomethingToStub;
