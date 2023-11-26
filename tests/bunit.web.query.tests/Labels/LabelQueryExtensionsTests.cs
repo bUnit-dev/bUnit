@@ -1,4 +1,4 @@
-﻿using Bunit.TestAssets.BlazorE2E;
+using Bunit.TestAssets.BlazorE2E;
 
 namespace Bunit.Labels;
 
@@ -33,8 +33,8 @@ public class LabelQueryExtensionsTests : TestContext
 		var expectedLabelText = Guid.NewGuid().ToString();
 		var cut = RenderComponent<LabelQueryComponent>();
 
-		Should.Throw<ElementNotFoundException>(() => cut.FindByLabelText(expectedLabelText))
-			.CssSelector.ShouldBe(expectedLabelText);
+		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText))
+			.LabelText.ShouldBe(expectedLabelText);
 	}
 
 	[Theory(DisplayName = "Should return back element associated with label when label when is wrapped around element")]
@@ -56,8 +56,8 @@ public class LabelQueryExtensionsTests : TestContext
 		var expectedLabelText = "Label With Missing Input";
 		var cut = RenderComponent<LabelQueryComponent>();
 
-		Should.Throw<ElementNotFoundException>(() => cut.FindByLabelText(expectedLabelText))
-			.CssSelector.ShouldBe(expectedLabelText);
+		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText))
+			.LabelText.ShouldBe(expectedLabelText);
 	}
 
 	[Theory(DisplayName = "Should return back element associated with label when element uses aria-label")]

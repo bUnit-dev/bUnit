@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using AngleSharp.Dom;
 using Bunit.Labels.Strategies;
 
@@ -22,7 +22,7 @@ public static class LabelQueryExtensions
 	/// <param name="labelText">The text of the label to search (i.e. the InnerText of the Label, such as "First Name" for a `<label>First Name</label>`)</param>
 	public static IElement FindByLabelText(this IRenderedFragment renderedFragment, string labelText)
 	{
-		return FindByLabelTextInternal(renderedFragment, labelText) ?? throw new ElementNotFoundException(labelText);
+		return FindByLabelTextInternal(renderedFragment, labelText) ?? throw new LabelNotFoundException(labelText);
 	}
 
 	/// <summary>
