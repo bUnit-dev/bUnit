@@ -2,7 +2,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 
 namespace Bunit.Web.Stubs;
 
@@ -12,70 +11,124 @@ namespace Bunit.Web.Stubs;
 [Generator]
 public class StubGenerator : IIncrementalGenerator
 {
-	private const string AttributeFullQualifiedName = "Bunit.StubAttribute";
-
 	/// <inheritdoc/>
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"StubAttribute.g.cs",
-			SourceText.From(StubAttributeGenerator.StubAttribute, Encoding.UTF8)));
-
 		var classesToStub = context.SyntaxProvider
-			.ForAttributeWithMetadataName(
-				AttributeFullQualifiedName,
-				predicate: static (s, _) => s is ClassDeclarationSyntax,
+			.CreateSyntaxProvider(
+				predicate: static (s, _) => s is InvocationExpressionSyntax,
 				transform: static (ctx, _) => GetStubClassInfo(ctx))
 			.Where(static m => m is not null);
-
 
 		context.RegisterSourceOutput(
 			classesToStub,
 			static (spc, source) => Execute(source, spc));
 	}
 
-	private static StubClassInfo GetStubClassInfo(GeneratorAttributeSyntaxContext context)
+	private static StubClassInfo GetStubClassInfo(GeneratorSyntaxContext context)
 	{
-		foreach (var attribute in context.TargetSymbol.GetAttributes())
+		var invocation = context.Node as InvocationExpressionSyntax;
+		if (!IsComponentFactoryStubMethod(invocation, context.SemanticModel))
 		{
-			if (context.TargetSymbol is not ITypeSymbol stubbedType ||
-			    !ImplementsInterface(stubbedType, "Microsoft.AspNetCore.Components.IComponent"))
+			return null;
+		}
+
+		if (invocation?.Expression is MemberAccessExpressionSyntax { Name: GenericNameSyntax { TypeArgumentList.Arguments.Count: 1 } genericName })
+		{
+			var typeArgument = genericName.TypeArgumentList.Arguments[0];
+			if (context.SemanticModel.GetSymbolInfo(typeArgument).Symbol is ITypeSymbol symbol)
 			{
-				continue;
+				var path = GetInterceptorFilePath(context.Node.SyntaxTree, context.SemanticModel.Compilation);
+				var line = context.SemanticModel.SyntaxTree.GetLineSpan(context.Node.Span).StartLinePosition.Line + 1;
+				// Find then column for "AddGeneratedStub" in the invocation expression
+				var column = context.SemanticModel.SyntaxTree.GetLineSpan(context.Node.Span).StartLinePosition.Character + 1;
+				return new StubClassInfo
+				{
+					StubClassName = $"{symbol.Name}Stub",
+					TargetTypeNamespace = symbol.ContainingNamespace.ToDisplayString(),
+					TargetType = symbol,
+					Path = path,
+					Line = line,
+					Column = column + 19, // Yeah - no - well - it works (Future Steven can take care of it)
+				};
 			}
-
-			var namespaceName = stubbedType.ContainingNamespace.ToDisplayString();
-			var className = context.TargetSymbol.Name;
-
-			// TODO: Check for the name not the first
-			var originalTypeToStub = attribute.ConstructorArguments.FirstOrDefault().Value;
-			if (originalTypeToStub is not ITypeSymbol originalType)
-			{
-				continue;
-			}
-
-			return new StubClassInfo { ClassName = className, Namespace = namespaceName, TargetType = originalType };
 		}
 
 		return null;
 
-		static bool ImplementsInterface(ITypeSymbol typeSymbol, string interfaceName)
+		static bool IsComponentFactoryStubMethod(InvocationExpressionSyntax invocation, SemanticModel semanticModel)
 		{
-			return typeSymbol.AllInterfaces.Any(i => i.ToDisplayString() == interfaceName);
+			if (invocation.Expression is not MemberAccessExpressionSyntax memberAccess)
+			{
+				return false;
+			}
+
+			if (memberAccess.Name.Identifier.Text != "AddGeneratedStub" ||
+			    invocation.ArgumentList.Arguments.Count != 0)
+			{
+				return false;
+			}
+
+			return semanticModel.GetSymbolInfo(invocation).Symbol is IMethodSymbol { IsExtensionMethod: true, ReceiverType.Name: "ComponentFactoryCollection" };
+		}
+
+		static string GetInterceptorFilePath(SyntaxTree tree, Compilation compilation)
+		{
+			return compilation.Options.SourceReferenceResolver?.NormalizePath(tree.FilePath, baseFilePath: null) ?? tree.FilePath;
 		}
 	}
 
 	private static void Execute(StubClassInfo classInfo, SourceProductionContext context)
 	{
+		var didStubComponent = GenerateStubComponent(classInfo, context);
+		if (didStubComponent is false)
+		{
+			return;
+		}
+
+		// Generate the attribute
+		const string attribute = @"namespace System.Runtime.CompilerServices
+{
+	sealed file class InterceptsLocationAttribute : Attribute
+	{
+		public InterceptsLocationAttribute(string filePath, int line, int column)
+		{
+			_ = filePath;
+			_ = line;
+			_ = column;
+		}
+	}
+}";
+
+		// Generate the interceptor
+		var interceptorSource = new StringBuilder();
+		interceptorSource.AppendLine(attribute);
+		interceptorSource.AppendLine();
+		interceptorSource.AppendLine("namespace Bunit");
+		interceptorSource.AppendLine("{");
+		interceptorSource.AppendLine($"\tstatic class Interceptor{classInfo.StubClassName}");
+		interceptorSource.AppendLine("\t{");
+		interceptorSource.AppendLine(
+			$"\t\t[System.Runtime.CompilerServices.InterceptsLocationAttribute(\"{classInfo.Path}\", {classInfo.Line}, {classInfo.Column})]");
+		interceptorSource.AppendLine("\t\tpublic static global::Bunit.ComponentFactoryCollection AddGeneratedStubInterceptor<TComponent>(this global::Bunit.ComponentFactoryCollection factories)");
+		interceptorSource.AppendLine("\t\t\twhere TComponent : Microsoft.AspNetCore.Components.IComponent");
+		interceptorSource.AppendLine("\t\t{");
+		interceptorSource.AppendLine($"\t\t\treturn factories.Add<global::{classInfo.TargetType.ToDisplayString()}, {classInfo.TargetTypeNamespace}.{classInfo.StubClassName}>();");
+		interceptorSource.AppendLine("\t\t}");
+		interceptorSource.AppendLine("\t}");
+		interceptorSource.AppendLine("}");
+
+		context.AddSource($"Interceptor{classInfo.StubClassName}.g.cs", interceptorSource.ToString());
+	}
+
+	private static bool GenerateStubComponent(StubClassInfo classInfo, SourceProductionContext context)
+	{
 		var hasSomethingToStub = false;
 		var targetTypeSymbol = (INamedTypeSymbol)classInfo!.TargetType;
 		var sourceBuilder = new StringBuilder();
 
-		// TODO: Shall we dictate file-scoped namespaces here?
-		sourceBuilder.AppendLine($"namespace {classInfo.Namespace};");
-
-		// TODO: If the class is a nested one, that approach does not work
-		sourceBuilder.AppendLine($"public partial class {classInfo.ClassName}");
+		sourceBuilder.AppendLine($"namespace {classInfo.TargetTypeNamespace};");
+		sourceBuilder.AppendLine($"public class {classInfo.StubClassName} : Microsoft.AspNetCore.Components.ComponentBase");
 		sourceBuilder.Append("{");
 
 		foreach (var member in targetTypeSymbol
@@ -108,14 +161,19 @@ public class StubGenerator : IIncrementalGenerator
 
 		if (hasSomethingToStub)
 		{
-			context.AddSource($"{classInfo.ClassName}Stub.g.cs", sourceBuilder.ToString());
+			context.AddSource($"{classInfo.StubClassName}Stub.g.cs", sourceBuilder.ToString());
 		}
+
+		return hasSomethingToStub;
 	}
 }
 
 internal sealed class StubClassInfo
 {
-	public string ClassName { get; set; }
-	public string Namespace { get; set; }
+	public string StubClassName { get; set; }
+	public string TargetTypeNamespace { get; set; }
 	public ITypeSymbol TargetType { get; set; }
+	public string Path { get; set; }
+	public int Line { get; set; }
+	public int Column { get; set; }
 }
