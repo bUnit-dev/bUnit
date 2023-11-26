@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -42,9 +44,10 @@ public class StubGenerator : IIncrementalGenerator
 			if (context.SemanticModel.GetSymbolInfo(typeArgument).Symbol is ITypeSymbol symbol)
 			{
 				var path = GetInterceptorFilePath(context.Node.SyntaxTree, context.SemanticModel.Compilation);
-				var line = context.SemanticModel.SyntaxTree.GetLineSpan(context.Node.Span).StartLinePosition.Line + 1;
-				// Find then column for "AddGeneratedStub" in the invocation expression
-				var column = context.SemanticModel.SyntaxTree.GetLineSpan(context.Node.Span).StartLinePosition.Character + 1;
+				var lineSpan = context.SemanticModel.SyntaxTree.GetLineSpan(context.Node.Span);
+				var line = lineSpan.StartLinePosition.Line + 1;
+				var column = lineSpan.Span.Start.Character + context.Node.ToString().IndexOf("AddGeneratedStub", StringComparison.Ordinal);
+
 				return new StubClassInfo
 				{
 					StubClassName = $"{symbol.Name}Stub",
@@ -52,7 +55,7 @@ public class StubGenerator : IIncrementalGenerator
 					TargetType = symbol,
 					Path = path,
 					Line = line,
-					Column = column + 19, // Yeah - no - well - it works (Future Steven can take care of it)
+					Column = column + 1,
 				};
 			}
 		}
