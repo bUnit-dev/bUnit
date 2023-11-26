@@ -1,4 +1,5 @@
-﻿using AngleSharp.Dom;
+using AngleSharp.Dom;
+using Bunit.Web.AngleSharp;
 
 namespace Bunit.Labels.Strategies;
 
@@ -11,6 +12,6 @@ internal class LabelTextUsingAriaLabelStrategy : ILabelTextQueryStrategy
 		if (element is null)
 			return null;
 
-		return ElementWrapperFactory.CreateByLabelText(element, renderedFragment, labelText);
+		return element.WrapUsing(new ByLabelTextElementFactory(renderedFragment, labelText));
 	}
 }

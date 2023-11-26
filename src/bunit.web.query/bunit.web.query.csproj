@@ -51,8 +51,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\AngleSharpWrappers\AngleSharpWrappers.csproj" />
 	  <ProjectReference Include="..\bunit.web\bunit.web.csproj" />
+	  <ProjectReference Include="..\bunit.generators\bunit.generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 </Project>

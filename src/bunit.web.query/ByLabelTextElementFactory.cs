@@ -1,34 +1,28 @@
-﻿using AngleSharp.Dom;
+using AngleSharp.Dom;
+using Bunit.Web.AngleSharp;
 
 namespace Bunit;
 
-using AngleSharpWrappers;
-
-
-internal sealed class ByLabelTextElementFactory<TElement> : IElementFactory<TElement>
-	where TElement : class, IElement
+internal sealed class ByLabelTextElementFactory : IElementWrapperFactory
 {
 	private readonly IRenderedFragment testTarget;
 	private readonly string labelText;
-	private TElement? element;
 
-	public ByLabelTextElementFactory(IRenderedFragment testTarget, TElement initialElement, string labelText)
+	public Action? OnElementReplaced { get; set; }
+
+	public ByLabelTextElementFactory(IRenderedFragment testTarget, string labelText)
 	{
 		this.testTarget = testTarget;
-		element = initialElement;
 		this.labelText = labelText;
 		testTarget.OnMarkupUpdated += FragmentsMarkupUpdated;
 	}
 
-	private void FragmentsMarkupUpdated(object? sender, EventArgs args) => element = null;
+	private void FragmentsMarkupUpdated(object? sender, EventArgs args)
+		=> OnElementReplaced?.Invoke();
 
-	TElement IElementFactory<TElement>.GetElement()
+	public TElement GetElement<TElement>() where TElement : class, IElement
 	{
-		if (element is null)
-		{
-			var queryResult = testTarget.FindByLabelTextInternal(labelText);
-			element = queryResult as TElement;
-		}
+		var element = testTarget.FindByLabelTextInternal(labelText) as TElement;
 
 		return element ?? throw new ElementRemovedFromDomException(labelText);
 	}
