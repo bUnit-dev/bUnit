@@ -103,7 +103,7 @@ public class StubGenerator : IIncrementalGenerator
 		var sourceBuilder = new StringBuilder();
 
 		sourceBuilder.AppendLine($"namespace {classInfo.TargetTypeNamespace};");
-		sourceBuilder.AppendLine($"public class {classInfo.StubClassName} : Microsoft.AspNetCore.Components.ComponentBase");
+		sourceBuilder.AppendLine($"public partial class {classInfo.StubClassName} : Microsoft.AspNetCore.Components.ComponentBase");
 		sourceBuilder.Append("{");
 
 		foreach (var member in targetTypeSymbol
