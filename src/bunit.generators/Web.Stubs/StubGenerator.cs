@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -18,7 +19,8 @@ public class StubGenerator : IIncrementalGenerator
 			.CreateSyntaxProvider(
 				predicate: static (s, _) => s is InvocationExpressionSyntax,
 				transform: static (ctx, _) => GetStubClassInfo(ctx))
-			.Where(static m => m is not null);
+			.Where(static m => m is not null)
+			.Collect();
 
 		context.RegisterSourceOutput(
 			classesToStub,
@@ -78,17 +80,21 @@ public class StubGenerator : IIncrementalGenerator
 		}
 	}
 
-	private static void Execute(StubClassInfo classInfo, SourceProductionContext context)
+	private static void Execute(ImmutableArray<StubClassInfo> classInfos, SourceProductionContext context)
 	{
-		var didStubComponent = GenerateStubComponent(classInfo, context);
-		if (didStubComponent is false)
+		foreach (var stubClassGrouped in classInfos.GroupBy(c => c.UniqueQualifier))
 		{
-			return;
-		}
+			var stubbedComponentGroup = stubClassGrouped.First();
+			var didStubComponent = GenerateStubComponent(stubbedComponentGroup, context);
+			if (didStubComponent is false)
+			{
+				return;
+			}
 
-		// Generate the attribute
-		const string attribute = @"namespace System.Runtime.CompilerServices
+			// Generate the attribute
+			const string attribute = @"namespace System.Runtime.CompilerServices
 {
+	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 	sealed file class InterceptsLocationAttribute : Attribute
 	{
 		public InterceptsLocationAttribute(string filePath, int line, int column)
@@ -100,25 +106,33 @@ public class StubGenerator : IIncrementalGenerator
 	}
 }";
 
-		// Generate the interceptor
-		var interceptorSource = new StringBuilder();
-		interceptorSource.AppendLine(attribute);
-		interceptorSource.AppendLine();
-		interceptorSource.AppendLine("namespace Bunit");
-		interceptorSource.AppendLine("{");
-		interceptorSource.AppendLine($"\tstatic class Interceptor{classInfo.StubClassName}");
-		interceptorSource.AppendLine("\t{");
-		interceptorSource.AppendLine(
-			$"\t\t[System.Runtime.CompilerServices.InterceptsLocationAttribute(\"{classInfo.Path}\", {classInfo.Line}, {classInfo.Column})]");
-		interceptorSource.AppendLine("\t\tpublic static global::Bunit.ComponentFactoryCollection AddGeneratedStubInterceptor<TComponent>(this global::Bunit.ComponentFactoryCollection factories)");
-		interceptorSource.AppendLine("\t\t\twhere TComponent : Microsoft.AspNetCore.Components.IComponent");
-		interceptorSource.AppendLine("\t\t{");
-		interceptorSource.AppendLine($"\t\t\treturn factories.Add<global::{classInfo.TargetType.ToDisplayString()}, {classInfo.TargetTypeNamespace}.{classInfo.StubClassName}>();");
-		interceptorSource.AppendLine("\t\t}");
-		interceptorSource.AppendLine("\t}");
-		interceptorSource.AppendLine("}");
+			// Generate the interceptor
+			var interceptorSource = new StringBuilder();
+			interceptorSource.AppendLine(attribute);
+			interceptorSource.AppendLine();
+			interceptorSource.AppendLine("namespace Bunit");
+			interceptorSource.AppendLine("{");
+			interceptorSource.AppendLine($"\tstatic class Interceptor{stubbedComponentGroup.StubClassName}");
+			interceptorSource.AppendLine("\t{");
 
-		context.AddSource($"Interceptor{classInfo.StubClassName}.g.cs", interceptorSource.ToString());
+			foreach (var hit in stubClassGrouped)
+			{
+				interceptorSource.AppendLine(
+					$"\t\t[System.Runtime.CompilerServices.InterceptsLocationAttribute(\"{hit.Path}\", {hit.Line}, {hit.Column})]");
+			}
+
+			interceptorSource.AppendLine(
+				"\t\tpublic static global::Bunit.ComponentFactoryCollection AddGeneratedStubInterceptor<TComponent>(this global::Bunit.ComponentFactoryCollection factories)");
+			interceptorSource.AppendLine("\t\t\twhere TComponent : Microsoft.AspNetCore.Components.IComponent");
+			interceptorSource.AppendLine("\t\t{");
+			interceptorSource.AppendLine(
+				$"\t\t\treturn factories.Add<global::{stubbedComponentGroup.TargetType.ToDisplayString()}, {stubbedComponentGroup.TargetTypeNamespace}.{stubbedComponentGroup.StubClassName}>();");
+			interceptorSource.AppendLine("\t\t}");
+			interceptorSource.AppendLine("\t}");
+			interceptorSource.AppendLine("}");
+
+			context.AddSource($"Interceptor{stubbedComponentGroup.StubClassName}.g.cs", interceptorSource.ToString());
+		}
 	}
 
 	private static bool GenerateStubComponent(StubClassInfo classInfo, SourceProductionContext context)
@@ -172,6 +186,7 @@ internal sealed class StubClassInfo
 {
 	public string StubClassName { get; set; }
 	public string TargetTypeNamespace { get; set; }
+	public string UniqueQualifier => $"{TargetTypeNamespace}.{StubClassName}";
 	public ITypeSymbol TargetType { get; set; }
 	public string Path { get; set; }
 	public int Line { get; set; }
