@@ -174,7 +174,7 @@ public static class StubComponentFactoryCollectionExtensions
 	/// This call does the same as <c>ComponentFactories.Add&lt;MyButton, MyButtonStub&gt;()</c>.
 	/// </remarks>
 #pragma warning disable S2326 // Unused type parameters should be removed - this is just the shape for the interceptor
-	public static ComponentFactoryCollection AddGeneratedStub<TComponent>(this ComponentFactoryCollection factories)
+	public static ComponentFactoryCollection AddGeneratedStub2<TComponent>(this ComponentFactoryCollection factories)
 		where TComponent : IComponent
 #pragma warning restore S2326
 	{
