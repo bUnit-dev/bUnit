@@ -17,6 +17,29 @@ public class StubGenerator : IIncrementalGenerator
 	/// <inheritdoc/>
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
+		context.RegisterPostInitializationOutput(
+			ctx => ctx.AddSource("AddGeneratedStub.g.cs",
+				@"namespace Bunit
+{
+    public static class ComponentFactoriesExtensions
+	{
+        /// <summary>
+		/// Marks a component as a stub component so that a stub gets generated for it. The stub has the same name as the component, but with the suffix ""Stub"" added.
+		/// </summary>
+		/// <typeparam name=""TComponent"">The type of component to generate a stub for.</typeparam>
+		/// <remarks>
+		/// When <c>ComponentFactories.AddGeneratedStub&lt;MyButton&gt;()</c> is called, a stub component is generated for the component
+		/// with the name <c>MyButtonStub</c>. The stub component is added to the <see cref=""ComponentFactoryCollection""/> and can be used.
+		/// It can also be retrieved via `cut.FindComponent&lt;MyButtonStub&gt;()`.
+		/// This call does the same as <c>ComponentFactories.Add&lt;MyButton, MyButtonStub&gt;()</c>.
+		/// </remarks>
+		public static ComponentFactoryCollection AddGeneratedStub<TComponent>(this ComponentFactoryCollection factories)
+			where TComponent : Microsoft.AspNetCore.Components.IComponent
+		{
+			return factories.AddGeneratedStubInterceptor<TComponent>();
+		}
+	}
+}"));
 		var classesToStub = context.SyntaxProvider
 			.CreateSyntaxProvider(
 				predicate: static (s, _) => s is InvocationExpressionSyntax,
