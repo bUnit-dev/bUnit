@@ -1,7 +1,6 @@
 using System.Reflection;
 using Bunit.Web.Stub.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit.Web.Stub;
 
