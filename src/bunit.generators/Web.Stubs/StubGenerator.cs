@@ -128,7 +128,7 @@ public class StubGenerator : IIncrementalGenerator
 		var sourceBuilder = new StringBuilder();
 
 		sourceBuilder.AppendLine($"namespace {classInfo.TargetTypeNamespace};");
-		sourceBuilder.AppendLine($"public partial class {classInfo.StubClassName} : Microsoft.AspNetCore.Components.ComponentBase");
+		sourceBuilder.AppendLine($"internal partial class {classInfo.StubClassName} : Microsoft.AspNetCore.Components.ComponentBase");
 		sourceBuilder.Append("{");
 
 		foreach (var member in targetTypeSymbol
@@ -147,13 +147,9 @@ public class StubGenerator : IIncrementalGenerator
 			var propertyType = member.Type.ToDisplayString();
 			var propertyName = member.Name;
 
-			var isParameterAttribute = member.GetAttributes().Any(attr =>
-				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.ParameterAttribute");
-			var attributeLine = isParameterAttribute
-				? "\t[global::Microsoft.AspNetCore.Components.Parameter]"
-				: "\t[global::Microsoft.AspNetCore.Components.CascadingParameter]";
-
+			var attributeLine = GetAttributeLine(member);
 			sourceBuilder.AppendLine(attributeLine);
+
 			sourceBuilder.AppendLine($"\tpublic {propertyType} {propertyName} {{ get; set; }}");
 		}
 
@@ -165,6 +161,39 @@ public class StubGenerator : IIncrementalGenerator
 		}
 
 		return hasSomethingToStub;
+
+		string GetAttributeLine(IPropertySymbol member)
+		{
+			var attribute = member.GetAttributes().First(attr =>
+				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.ParameterAttribute" ||
+				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.CascadingParameterAttribute");
+
+			var attributeLine = new StringBuilder("\t[");
+			if (attribute.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.ParameterAttribute")
+			{
+				attributeLine.Append("global::Microsoft.AspNetCore.Components.Parameter");
+				var captureUnmatchedValuesArg = attribute.NamedArguments
+					.FirstOrDefault(arg => arg.Key == "CaptureUnmatchedValues").Value;
+				if (captureUnmatchedValuesArg.Value is bool captureUnmatchedValues)
+				{
+					var captureString = captureUnmatchedValues ? "true" : "false";
+					attributeLine.Append($"(CaptureUnmatchedValues = {captureString})");
+				}
+			}
+			else if (attribute.AttributeClass?.ToDisplayString() ==
+			         "Microsoft.AspNetCore.Components.CascadingParameterAttribute")
+			{
+				attributeLine.Append("global::Microsoft.AspNetCore.Components.CascadingParameter");
+				var nameArg = attribute.NamedArguments.FirstOrDefault(arg => arg.Key == "Name").Value;
+				if (!nameArg.IsNull)
+				{
+					attributeLine.Append($"(Name = \"{nameArg.Value}\")");
+				}
+			}
+
+			attributeLine.Append("]");
+			return attributeLine.ToString();
+		}
 	}
 
 	private static void GenerateInterceptorCode(StubClassInfo stubbedComponentGroup, IEnumerable<StubClassInfo> stubClassGrouped, SourceProductionContext context)
