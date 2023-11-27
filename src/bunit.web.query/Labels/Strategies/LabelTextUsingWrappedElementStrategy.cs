@@ -5,10 +5,10 @@ namespace Bunit.Labels.Strategies;
 
 internal class LabelTextUsingWrappedElementStrategy : ILabelTextQueryStrategy
 {
-	public IElement? FindElement(IRenderedFragment renderedFragment, string labelText)
+	public IElement? FindElement(IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
 	{
-		var labels = renderedFragment.Nodes.QuerySelectorAll("label");
-		var matchingLabel = labels.SingleOrDefault(l => l.InnerHtml.StartsWith(labelText));
+		var matchingLabel = renderedFragment.Nodes.TryQuerySelectorAll("label")
+			.SingleOrDefault(l => l.InnerHtml.StartsWith(labelText, options.ComparisonType));
 
 		var matchingElement = matchingLabel?
 			.Children
@@ -17,6 +17,6 @@ internal class LabelTextUsingWrappedElementStrategy : ILabelTextQueryStrategy
 		if (matchingElement is null)
 			return null;
 
-		return matchingElement.WrapUsing(new ByLabelTextElementFactory(renderedFragment, labelText));
+		return matchingElement.WrapUsing(new ByLabelTextElementFactory(renderedFragment, labelText, options));
 	}
 }

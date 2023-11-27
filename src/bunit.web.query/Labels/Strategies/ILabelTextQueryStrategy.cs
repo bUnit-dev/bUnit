@@ -1,8 +1,8 @@
-﻿using AngleSharp.Dom;
+using AngleSharp.Dom;
 
 namespace Bunit.Labels.Strategies;
 
 internal interface ILabelTextQueryStrategy
 {
-	IElement? FindElement(IRenderedFragment renderedFragment, string labelText);
+	IElement? FindElement(IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions options);
 }

@@ -1,8 +1,8 @@
-﻿using AngleSharp.Dom;
+using AngleSharp.Dom;
 
 namespace Bunit;
 
-internal static class LabelOptions
+internal static class LabelElementExtensions
 {
 	internal static bool IsHtmlElementThatCanHaveALabel(this IElement element) => element.NodeName switch
 	{

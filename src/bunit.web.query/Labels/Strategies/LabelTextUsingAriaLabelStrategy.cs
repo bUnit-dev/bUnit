@@ -5,13 +5,21 @@ namespace Bunit.Labels.Strategies;
 
 internal class LabelTextUsingAriaLabelStrategy : ILabelTextQueryStrategy
 {
-	public IElement? FindElement(IRenderedFragment renderedFragment, string labelText)
+	public IElement? FindElement(IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
 	{
-		var element = renderedFragment.Nodes.QuerySelector($"[aria-label='{labelText}']");
+		var caseSensitivityQualifier = options.ComparisonType switch
+		{
+			StringComparison.OrdinalIgnoreCase => "i",
+			StringComparison.InvariantCultureIgnoreCase => "i",
+			StringComparison.CurrentCultureIgnoreCase => "i",
+			_ => ""
+		};
+
+		var element = renderedFragment.Nodes.TryQuerySelector($"[aria-label='{labelText}'{caseSensitivityQualifier}]");
 
 		if (element is null)
 			return null;
 
-		return element.WrapUsing(new ByLabelTextElementFactory(renderedFragment, labelText));
+		return element.WrapUsing(new ByLabelTextElementFactory(renderedFragment, labelText, options));
 	}
 }

@@ -5,15 +5,15 @@ namespace Bunit.Labels.Strategies;
 
 internal class LabelTextUsingAriaLabelledByStrategy : ILabelTextQueryStrategy
 {
-	public IElement? FindElement(IRenderedFragment renderedFragment, string labelText)
+	public IElement? FindElement(IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
 	{
-		var elementsWithAriaLabelledBy = renderedFragment.Nodes.QuerySelectorAll("[aria-labelledby]");
+		var elementsWithAriaLabelledBy = renderedFragment.Nodes.TryQuerySelectorAll("[aria-labelledby]");
 
 		foreach (var element in elementsWithAriaLabelledBy)
 		{
-			var labelElement = renderedFragment.Nodes.QuerySelector($"#{element.GetAttribute("aria-labelledby")}");
-			if (labelElement.GetInnerText() == labelText)
-				return element.WrapUsing(new ByLabelTextElementFactory(renderedFragment, labelText));
+			var labelElement = renderedFragment.Nodes.TryQuerySelector($"#{element.GetAttribute("aria-labelledby")}");
+			if (labelElement.GetInnerText().Equals(labelText, options.ComparisonType))
+				return element.WrapUsing(new ByLabelTextElementFactory(renderedFragment, labelText, options));
 		}
 
 		return null;
