@@ -162,7 +162,7 @@ public class StubGenerator : IIncrementalGenerator
 
 		return hasSomethingToStub;
 
-		string GetAttributeLine(IPropertySymbol member)
+		string GetAttributeLine(ISymbol member)
 		{
 			var attribute = member.GetAttributes().First(attr =>
 				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.ParameterAttribute" ||
