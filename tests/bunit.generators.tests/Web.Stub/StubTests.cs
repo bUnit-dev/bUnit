@@ -1,3 +1,8 @@
+using System.Reflection;
+using Bunit.Web.Stub.Components;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Bunit.Web.Stub;
 
 public class StubTests : TestContext
@@ -14,12 +19,17 @@ public class StubTests : TestContext
 	}
 
 	[Fact]
-	public void Stubbed_component_can_be_used_in_multiple_tests()
+	public void Stubbed_component_has_same_parameter_values()
 	{
-		ComponentFactories.AddGeneratedStub<CounterComponent>();
-
-		var cut = RenderComponent<ParentComponent>();
+		var type = typeof(CounterComponentStub);
+		var cascadingParameterValue = type.GetProperty(nameof(CounterComponentStub.CascadingCount))
+			?.GetCustomAttribute<CascadingParameterAttribute>()
+			?.Name;
+		var captureUnmatchedValues = type.GetProperty(nameof(CounterComponentStub.UnmatchedValues))
+			?.GetCustomAttribute<ParameterAttribute>()
+			?.CaptureUnmatchedValues;
 		
-		Assert.True(cut.HasComponent<CounterComponentStub>());
+		Assert.Equal("Cascading", cascadingParameterValue);
+		Assert.True(captureUnmatchedValues);
 	}
 }

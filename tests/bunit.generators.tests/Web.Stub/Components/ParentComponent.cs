@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace Bunit.Web.Stub;
+namespace Bunit.Web.Stub.Components;
 
 public class ParentComponent : ComponentBase
 {
@@ -11,11 +11,4 @@ public class ParentComponent : ComponentBase
 		builder.AddAttribute(2, "Count", 2);
 		builder.CloseComponent();
 	}
-}
-
-public class CounterComponent : ComponentBase
-{
-	[Parameter] public int Count { get; set; }
-	[CascadingParameter] public int CascadingCount { get; set; }
-	[Parameter] public EventCallback IncrementCount { get; set; }
 }
