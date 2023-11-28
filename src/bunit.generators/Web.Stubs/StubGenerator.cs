@@ -14,7 +14,7 @@ namespace Bunit.Web.Stubs;
 [Generator]
 public class StubGenerator : IIncrementalGenerator
 {
-	private static string CascadingParameterAttributeQualifier;
+	private const string CascadingParameterAttributeQualifier = "Microsoft.AspNetCore.Components.CascadingParameterAttribute";
 	private const string ParameterAttributeQualifier = "Microsoft.AspNetCore.Components.ParameterAttribute";
 
 	/// <inheritdoc/>
@@ -27,7 +27,7 @@ public class StubGenerator : IIncrementalGenerator
     public static class ComponentFactoriesExtensions
 	{
         /// <summary>
-		/// Marks a component as a stub, so that a stub get is generated for it. The stub has the same name as the component, but with the suffix ""Stub"" added.
+		/// Marks a component, so that a stub get is generated for it. The stub has the same name as the component, but with the suffix ""Stub"" added.
 		/// </summary>
 		/// <typeparam name=""TComponent"">The type of component to generate a stub for.</typeparam>
 		/// <remarks>
@@ -131,10 +131,10 @@ public class StubGenerator : IIncrementalGenerator
 		var sourceBuilder = new StringBuilder();
 
 		sourceBuilder.AppendLine($"namespace {classInfo.TargetTypeNamespace};");
+		sourceBuilder.AppendLine();
 		sourceBuilder.AppendLine($"internal partial class {classInfo.StubClassName} : Microsoft.AspNetCore.Components.ComponentBase");
 		sourceBuilder.Append("{");
 
-		CascadingParameterAttributeQualifier = "Microsoft.AspNetCore.Components.CascadingParameterAttribute";
 		foreach (var member in targetTypeSymbol
 			         .GetMembers()
 			         .OfType<IPropertySymbol>()
