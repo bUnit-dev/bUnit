@@ -14,6 +14,9 @@ namespace Bunit.Web.Stubs;
 [Generator]
 public class StubGenerator : IIncrementalGenerator
 {
+	private static string CascadingParameterAttributeQualifier;
+	private const string ParameterAttributeQualifier = "Microsoft.AspNetCore.Components.ParameterAttribute";
+
 	/// <inheritdoc/>
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
@@ -131,15 +134,16 @@ public class StubGenerator : IIncrementalGenerator
 		sourceBuilder.AppendLine($"internal partial class {classInfo.StubClassName} : Microsoft.AspNetCore.Components.ComponentBase");
 		sourceBuilder.Append("{");
 
+		CascadingParameterAttributeQualifier = "Microsoft.AspNetCore.Components.CascadingParameterAttribute";
 		foreach (var member in targetTypeSymbol
 			         .GetMembers()
 			         .OfType<IPropertySymbol>()
 			         .Where(p => p.GetAttributes()
 				         .Any(attr =>
 					         attr.AttributeClass?.ToDisplayString() ==
-					         "Microsoft.AspNetCore.Components.ParameterAttribute" ||
+					         ParameterAttributeQualifier ||
 					         attr.AttributeClass?.ToDisplayString() ==
-					         "Microsoft.AspNetCore.Components.CascadingParameterAttribute")))
+					         CascadingParameterAttributeQualifier)))
 		{
 			sourceBuilder.AppendLine();
 
@@ -165,13 +169,13 @@ public class StubGenerator : IIncrementalGenerator
 		string GetAttributeLine(ISymbol member)
 		{
 			var attribute = member.GetAttributes().First(attr =>
-				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.ParameterAttribute" ||
-				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.CascadingParameterAttribute");
+				attr.AttributeClass?.ToDisplayString() == ParameterAttributeQualifier ||
+				attr.AttributeClass?.ToDisplayString() == CascadingParameterAttributeQualifier);
 
 			var attributeLine = new StringBuilder("\t[");
-			if (attribute.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.ParameterAttribute")
+			if (attribute.AttributeClass?.ToDisplayString() == ParameterAttributeQualifier)
 			{
-				attributeLine.Append("global::Microsoft.AspNetCore.Components.Parameter");
+				attributeLine.Append($"global::{ParameterAttributeQualifier}");
 				var captureUnmatchedValuesArg = attribute.NamedArguments
 					.FirstOrDefault(arg => arg.Key == "CaptureUnmatchedValues").Value;
 				if (captureUnmatchedValuesArg.Value is bool captureUnmatchedValues)
@@ -180,10 +184,9 @@ public class StubGenerator : IIncrementalGenerator
 					attributeLine.Append($"(CaptureUnmatchedValues = {captureString})");
 				}
 			}
-			else if (attribute.AttributeClass?.ToDisplayString() ==
-			         "Microsoft.AspNetCore.Components.CascadingParameterAttribute")
+			else if (attribute.AttributeClass?.ToDisplayString() == CascadingParameterAttributeQualifier)
 			{
-				attributeLine.Append("global::Microsoft.AspNetCore.Components.CascadingParameter");
+				attributeLine.Append($"global::{CascadingParameterAttributeQualifier}");
 				var nameArg = attribute.NamedArguments.FirstOrDefault(arg => arg.Key == "Name").Value;
 				if (!nameArg.IsNull)
 				{
