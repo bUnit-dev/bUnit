@@ -27,13 +27,13 @@ public class StubGenerator : IIncrementalGenerator
     public static class ComponentFactoriesExtensions
 	{
         /// <summary>
-		/// Marks a component as a stub component so that a stub gets generated for it. The stub has the same name as the component, but with the suffix ""Stub"" added.
+		/// Marks a component as a stub, so that a stub get is generated for it. The stub has the same name as the component, but with the suffix ""Stub"" added.
 		/// </summary>
 		/// <typeparam name=""TComponent"">The type of component to generate a stub for.</typeparam>
 		/// <remarks>
 		/// When <c>ComponentFactories.AddGeneratedStub&lt;MyButton&gt;()</c> is called, a stub component is generated for the component
 		/// with the name <c>MyButtonStub</c>. The stub component is added to the <see cref=""ComponentFactoryCollection""/> and can be used.
-		/// It can also be retrieved via `cut.FindComponent&lt;MyButtonStub&gt;()`.
+		/// It can also be retrieved via <c>cut.FindComponent&lt;MyButtonStub&gt;()</c>.
 		/// This call does the same as <c>ComponentFactories.Add&lt;MyButton, MyButtonStub&gt;()</c>.
 		/// </remarks>
 		public static ComponentFactoryCollection AddGeneratedStub<TComponent>(this ComponentFactoryCollection factories)
