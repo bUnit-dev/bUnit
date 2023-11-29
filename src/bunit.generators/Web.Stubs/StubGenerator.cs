@@ -205,7 +205,7 @@ public class StubGenerator : IIncrementalGenerator
 		foreach (var hit in stubClassGrouped)
 		{
 			interceptorSource.AppendLine(
-				$"\t\t[global::System.Runtime.CompilerServices.InterceptsLocationAttribute(\"{hit.Path}\", {hit.Line}, {hit.Column})]");
+				$"\t\t[global::System.Runtime.CompilerServices.InterceptsLocationAttribute(@\"{hit.Path}\", {hit.Line}, {hit.Column})]");
 		}
 
 		interceptorSource.AppendLine(
