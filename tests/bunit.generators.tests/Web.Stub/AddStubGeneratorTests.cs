@@ -1,8 +1,9 @@
 using Bunit.Web.Stub.Components;
+using Microsoft.AspNetCore.Components;
 
 namespace Bunit.Web.Stub;
 
-public class StubTests : TestContext
+public class AddStubGeneratorTests : TestContext
 {
 	[Fact]
 	public void Stubbed_component_has_same_parameters()
@@ -45,4 +46,25 @@ public class StubTests : TestContext
 		Assert.Equal("test", captured.GetValueOrDefault("Class", null));
 		Assert.Equal(3, captured.GetValueOrDefault("Data", 0));
 	}
+	
+	[Fact]
+	public void Generated_stub_via_attribute_has_same_parameters()
+	{
+		ComponentFactories.Add<ButtonComponent, ButtonComponentStub>();
+
+		var cut = Render(builder =>
+		{
+			builder.OpenComponent<ButtonComponent>(1);
+			builder.AddAttribute(2, "Text", "test");
+			builder.CloseComponent();
+		});
+
+		var stub = cut.FindComponent<ButtonComponentStub>();
+		Assert.Equal("test", stub.Instance.Text);
+	}
+}
+
+[Stub(typeof(ButtonComponent))]
+public partial class ButtonComponentStub
+{
 }

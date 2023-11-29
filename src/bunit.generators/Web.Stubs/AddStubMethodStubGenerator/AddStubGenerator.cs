@@ -6,17 +6,14 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Bunit.Web.Stubs;
+namespace Bunit.Web.Stubs.AddStubMethodStubGenerator;
 
 /// <summary>
 /// Generator that creates a stub that mimics the public surface of a Component.
 /// </summary>
 [Generator]
-public class StubGenerator : IIncrementalGenerator
+public class AddStubGenerator : IIncrementalGenerator
 {
-	private const string CascadingParameterAttributeQualifier = "Microsoft.AspNetCore.Components.CascadingParameterAttribute";
-	private const string ParameterAttributeQualifier = "Microsoft.AspNetCore.Components.ParameterAttribute";
-
 	/// <inheritdoc/>
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
@@ -32,7 +29,7 @@ public class StubGenerator : IIncrementalGenerator
 			static (spc, source) => Execute(source, spc));
 	}
 
-	private static StubClassInfo GetStubClassInfo(GeneratorSyntaxContext context)
+	private static AddStubClassInfo GetStubClassInfo(GeneratorSyntaxContext context)
 	{
 		var invocation = context.Node as InvocationExpressionSyntax;
 		if (!IsComponentFactoryStubMethod(invocation, context.SemanticModel))
@@ -50,7 +47,7 @@ public class StubGenerator : IIncrementalGenerator
 				var line = lineSpan.StartLinePosition.Line + 1;
 				var column = lineSpan.Span.Start.Character + context.Node.ToString().IndexOf("AddStub", StringComparison.Ordinal) + 1;
 
-				return new StubClassInfo
+				return new AddStubClassInfo
 				{
 					StubClassName = $"{symbol.Name}Stub",
 					TargetTypeNamespace = symbol.ContainingNamespace.ToDisplayString(),
@@ -86,12 +83,12 @@ public class StubGenerator : IIncrementalGenerator
 		}
 	}
 
-	private static void Execute(ImmutableArray<StubClassInfo> classInfos, SourceProductionContext context)
+	private static void Execute(ImmutableArray<AddStubClassInfo> classInfos, SourceProductionContext context)
 	{
 		foreach (var stubClassGrouped in classInfos.GroupBy(c => c.UniqueQualifier))
 		{
 			var stubbedComponentGroup = stubClassGrouped.First();
-			var didStubComponent = GenerateStubComponent(stubbedComponentGroup, context);
+			var didStubComponent = StubComponentBuilder.GenerateStubComponent(stubbedComponentGroup, context);
 			if (didStubComponent is false)
 			{
 				return;
@@ -101,82 +98,9 @@ public class StubGenerator : IIncrementalGenerator
 		}
 	}
 
-	private static bool GenerateStubComponent(StubClassInfo classInfo, SourceProductionContext context)
-	{
-		var hasSomethingToStub = false;
-		var targetTypeSymbol = (INamedTypeSymbol)classInfo!.TargetType;
-		var sourceBuilder = new StringBuilder();
 
-		sourceBuilder.AppendLine($"namespace {classInfo.TargetTypeNamespace};");
-		sourceBuilder.AppendLine();
-		sourceBuilder.AppendLine($"internal partial class {classInfo.StubClassName} : global::Microsoft.AspNetCore.Components.ComponentBase");
-		sourceBuilder.Append("{");
 
-		foreach (var member in targetTypeSymbol
-			         .GetMembers()
-			         .OfType<IPropertySymbol>()
-			         .Where(p => p.GetAttributes()
-				         .Any(attr =>
-					         attr.AttributeClass?.ToDisplayString() ==
-					         ParameterAttributeQualifier ||
-					         attr.AttributeClass?.ToDisplayString() ==
-					         CascadingParameterAttributeQualifier)))
-		{
-			sourceBuilder.AppendLine();
-
-			hasSomethingToStub = true;
-			var propertyType = member.Type.ToDisplayString();
-			var propertyName = member.Name;
-
-			var attributeLine = GetAttributeLine(member);
-			sourceBuilder.AppendLine(attributeLine);
-
-			sourceBuilder.AppendLine($"\tpublic {propertyType} {propertyName} {{ get; set; }}");
-		}
-
-		sourceBuilder.AppendLine("}");
-
-		if (hasSomethingToStub)
-		{
-			context.AddSource($"{classInfo.StubClassName}.g.cs", sourceBuilder.ToString());
-		}
-
-		return hasSomethingToStub;
-
-		string GetAttributeLine(ISymbol member)
-		{
-			var attribute = member.GetAttributes().First(attr =>
-				attr.AttributeClass?.ToDisplayString() == ParameterAttributeQualifier ||
-				attr.AttributeClass?.ToDisplayString() == CascadingParameterAttributeQualifier);
-
-			var attributeLine = new StringBuilder("\t[");
-			if (attribute.AttributeClass?.ToDisplayString() == ParameterAttributeQualifier)
-			{
-				attributeLine.Append($"global::{ParameterAttributeQualifier}");
-				var captureUnmatchedValuesArg = attribute.NamedArguments
-					.FirstOrDefault(arg => arg.Key == "CaptureUnmatchedValues").Value;
-				if (captureUnmatchedValuesArg.Value is bool captureUnmatchedValues)
-				{
-					var captureString = captureUnmatchedValues ? "true" : "false";
-					attributeLine.Append($"(CaptureUnmatchedValues = {captureString})");
-				}
-			}
-			else if (attribute.AttributeClass?.ToDisplayString() == CascadingParameterAttributeQualifier)
-			{
-				attributeLine.Append($"global::{CascadingParameterAttributeQualifier}");
-				var nameArg = attribute.NamedArguments.FirstOrDefault(arg => arg.Key == "Name").Value;
-				if (!nameArg.IsNull)
-				{
-					attributeLine.Append($"(Name = \"{nameArg.Value}\")");
-				}
-			}
-
-			attributeLine.Append("]");
-			return attributeLine.ToString();
-		}
-	}
-
-	private static void GenerateInterceptorCode(StubClassInfo stubbedComponentGroup, IEnumerable<StubClassInfo> stubClassGrouped, SourceProductionContext context)
+	private static void GenerateInterceptorCode(AddStubClassInfo stubbedComponentGroup, IEnumerable<AddStubClassInfo> stubClassGrouped, SourceProductionContext context)
 	{
 		// Generate the attribute
 		const string attribute = @"namespace System.Runtime.CompilerServices
@@ -222,7 +146,7 @@ public class StubGenerator : IIncrementalGenerator
 	}
 }
 
-internal sealed class StubClassInfo
+internal sealed class AddStubClassInfo
 {
 	public string StubClassName { get; set; }
 	public string TargetTypeNamespace { get; set; }
