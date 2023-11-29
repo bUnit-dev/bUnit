@@ -7,7 +7,7 @@ public class StubTests : TestContext
 	[Fact]
 	public void Stubbed_component_has_same_parameters()
 	{
-		ComponentFactories.AddGeneratedStub<CounterComponent>();
+		ComponentFactories.AddStub<CounterComponent>();
 		
 		var cut = RenderComponent<ParentComponent>();
 
@@ -18,7 +18,7 @@ public class StubTests : TestContext
 	[Fact]
 	public void Generated_stub_can_handle_cascading_parameters()
 	{
-		ComponentFactories.AddGeneratedStub<CounterComponent>();
+		ComponentFactories.AddStub<CounterComponent>();
 
 		var cut = RenderComponent<ParentComponent>(p => p.AddCascadingValue("Cascading", 3));
 
@@ -29,7 +29,7 @@ public class StubTests : TestContext
 	[Fact]
 	public void Generated_stub_can_handle_unmatched_parameters()
 	{
-		ComponentFactories.AddGeneratedStub<CounterComponent>();
+		ComponentFactories.AddStub<CounterComponent>();
 
 		var cut = Render(builder =>
 		{
