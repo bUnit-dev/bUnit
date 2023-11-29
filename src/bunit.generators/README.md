@@ -2,7 +2,7 @@
 
 This package contains source generators for bUnit, to make it easier and more convenient to write tests. 
 
-## `AddGeneratedStub` Generator
+## `AddStub` Generator
 This generator adds the ability to automatically generate stubs for a given type. This comes in handy, when dealing
 with 3rd party components that might need an extensive setup. Here a small example:
 
@@ -28,7 +28,7 @@ public void Text_button_gets_initial_count()
 {
     // This call will automatically generate a stub for the ThirdPartyButton component
     // with the name "ThirdPartyButtonStub"
-    ComponentFactories.AddGeneratedStub<ThirdPartyText>();
+    ComponentFactories.AddStub<ThirdPartyText>();
     var cut = Render<Counter>(@<Counter />);
     
     cut.Find("button").Click();

@@ -20,29 +20,6 @@ public class StubGenerator : IIncrementalGenerator
 	/// <inheritdoc/>
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		context.RegisterPostInitializationOutput(
-			ctx => ctx.AddSource("AddGeneratedStub.g.cs",
-				@"namespace Bunit
-{
-    public static class ComponentFactoriesExtensions
-	{
-        /// <summary>
-		/// Marks a component, so that a stub get is generated for it. The stub has the same name as the component, but with the suffix ""Stub"" added.
-		/// </summary>
-		/// <typeparam name=""TComponent"">The type of component to generate a stub for.</typeparam>
-		/// <remarks>
-		/// When <c>ComponentFactories.AddGeneratedStub&lt;MyButton&gt;()</c> is called, a stub component is generated for the component
-		/// with the name <c>MyButtonStub</c>. The stub component is added to the <see cref=""ComponentFactoryCollection""/> and can be used.
-		/// It can also be retrieved via <c>cut.FindComponent&lt;MyButtonStub&gt;()</c>.
-		/// This call does the same as <c>ComponentFactories.Add&lt;MyButton, MyButtonStub&gt;()</c>.
-		/// </remarks>
-		public static ComponentFactoryCollection AddGeneratedStub<TComponent>(this ComponentFactoryCollection factories)
-			where TComponent : Microsoft.AspNetCore.Components.IComponent
-		{
-			return factories.AddGeneratedStubInterceptor<TComponent>();
-		}
-	}
-}"));
 		var classesToStub = context.SyntaxProvider
 			.CreateSyntaxProvider(
 				predicate: static (s, _) => s is InvocationExpressionSyntax,
@@ -71,7 +48,7 @@ public class StubGenerator : IIncrementalGenerator
 				var path = GetInterceptorFilePath(context.Node.SyntaxTree, context.SemanticModel.Compilation);
 				var lineSpan = context.SemanticModel.SyntaxTree.GetLineSpan(context.Node.Span);
 				var line = lineSpan.StartLinePosition.Line + 1;
-				var column = lineSpan.Span.Start.Character + context.Node.ToString().IndexOf("AddGeneratedStub", StringComparison.Ordinal);
+				var column = lineSpan.Span.Start.Character + context.Node.ToString().IndexOf("AddStub", StringComparison.Ordinal) + 1;
 
 				return new StubClassInfo
 				{
@@ -80,7 +57,7 @@ public class StubGenerator : IIncrementalGenerator
 					TargetType = symbol,
 					Path = path,
 					Line = line,
-					Column = column + 1,
+					Column = column,
 				};
 			}
 		}
@@ -94,7 +71,7 @@ public class StubGenerator : IIncrementalGenerator
 				return false;
 			}
 
-			if (memberAccess.Name.Identifier.Text != "AddGeneratedStub" ||
+			if (memberAccess.Name.Identifier.Text != "AddStub" ||
 			    invocation.ArgumentList.Arguments.Count != 0)
 			{
 				return false;
@@ -132,7 +109,7 @@ public class StubGenerator : IIncrementalGenerator
 
 		sourceBuilder.AppendLine($"namespace {classInfo.TargetTypeNamespace};");
 		sourceBuilder.AppendLine();
-		sourceBuilder.AppendLine($"internal partial class {classInfo.StubClassName} : Microsoft.AspNetCore.Components.ComponentBase");
+		sourceBuilder.AppendLine($"internal partial class {classInfo.StubClassName} : global::Microsoft.AspNetCore.Components.ComponentBase");
 		sourceBuilder.Append("{");
 
 		foreach (var member in targetTypeSymbol
@@ -222,21 +199,21 @@ public class StubGenerator : IIncrementalGenerator
 		interceptorSource.AppendLine();
 		interceptorSource.AppendLine("namespace Bunit");
 		interceptorSource.AppendLine("{");
-		interceptorSource.AppendLine($"\tstatic class Interceptor{stubbedComponentGroup.StubClassName}");
+		interceptorSource.AppendLine($"\tinternal static class Interceptor{stubbedComponentGroup.StubClassName}");
 		interceptorSource.AppendLine("\t{");
 
 		foreach (var hit in stubClassGrouped)
 		{
 			interceptorSource.AppendLine(
-				$"\t\t[System.Runtime.CompilerServices.InterceptsLocationAttribute(\"{hit.Path}\", {hit.Line}, {hit.Column})]");
+				$"\t\t[global::System.Runtime.CompilerServices.InterceptsLocationAttribute(\"{hit.Path}\", {hit.Line}, {hit.Column})]");
 		}
 
 		interceptorSource.AppendLine(
-			"\t\tpublic static global::Bunit.ComponentFactoryCollection AddGeneratedStubInterceptor<TComponent>(this global::Bunit.ComponentFactoryCollection factories)");
-		interceptorSource.AppendLine("\t\t\twhere TComponent : Microsoft.AspNetCore.Components.IComponent");
+			"\t\tpublic static global::Bunit.ComponentFactoryCollection AddStubInterceptor<TComponent>(this global::Bunit.ComponentFactoryCollection factories)");
+		interceptorSource.AppendLine("\t\t\twhere TComponent : global::Microsoft.AspNetCore.Components.IComponent");
 		interceptorSource.AppendLine("\t\t{");
 		interceptorSource.AppendLine(
-			$"\t\t\treturn factories.Add<global::{stubbedComponentGroup.TargetType.ToDisplayString()}, {stubbedComponentGroup.TargetTypeNamespace}.{stubbedComponentGroup.StubClassName}>();");
+			$"\t\t\treturn factories.Add<global::{stubbedComponentGroup.TargetType.ToDisplayString()}, global::{stubbedComponentGroup.TargetTypeNamespace}.{stubbedComponentGroup.StubClassName}>();");
 		interceptorSource.AppendLine("\t\t}");
 		interceptorSource.AppendLine("\t}");
 		interceptorSource.AppendLine("}");
