@@ -1,9 +1,9 @@
-using Bunit.Web.AngleSharp;
+using AngleSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Reflection;
 
-namespace Bunit;
+namespace Bunit.Web.AngleSharp;
 
 [UsesVerify]
 public class WrapperElementsGeneratorTest
@@ -19,7 +19,7 @@ public class WrapperElementsGeneratorTest
 
 		var settings = new VerifySettings();
 		settings.AutoVerify();
-		return Verifier.Verify(driver.GetRunResult(), settings);
+		return Verify(driver.GetRunResult(), settings);
 	}
 
 	private static Compilation CreateCompilation()
@@ -30,7 +30,7 @@ public class WrapperElementsGeneratorTest
 			references: new[]
 			{
 				MetadataReference.CreateFromFile(typeof(Binder).GetTypeInfo().Assembly.Location),
-				MetadataReference.CreateFromFile(typeof(AngleSharp.BrowsingContext).Assembly.Location),
+				MetadataReference.CreateFromFile(typeof(BrowsingContext).Assembly.Location),
 			},
 			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 	}
