@@ -21,10 +21,7 @@ public class AddStubGenerator : IIncrementalGenerator
 			.CreateSyntaxProvider(
 				predicate: static (s, _) => s is InvocationExpressionSyntax
 				{
-					Expression: MemberAccessExpressionSyntax
-					{
-						Name.Identifier.Text: "AddStub"
-					}
+					Expression: MemberAccessExpressionSyntax { Name.Identifier.Text: "AddStub" }
 				},
 				transform: static (ctx, _) => GetStubClassInfo(ctx))
 			.Where(static m => m is not null)
@@ -43,29 +40,34 @@ public class AddStubGenerator : IIncrementalGenerator
 			return null;
 		}
 
-		if (invocation?.Expression is MemberAccessExpressionSyntax { Name: GenericNameSyntax { TypeArgumentList.Arguments.Count: 1 } genericName })
+		if (invocation?.Expression is not MemberAccessExpressionSyntax
+		    {
+			    Name: GenericNameSyntax { TypeArgumentList.Arguments.Count: 1 } genericName
+		    })
 		{
-			var typeArgument = genericName.TypeArgumentList.Arguments[0];
-			if (context.SemanticModel.GetSymbolInfo(typeArgument).Symbol is ITypeSymbol symbol)
-			{
-				var path = GetInterceptorFilePath(context.Node.SyntaxTree, context.SemanticModel.Compilation);
-				var lineSpan = context.SemanticModel.SyntaxTree.GetLineSpan(context.Node.Span);
-				var line = lineSpan.StartLinePosition.Line + 1;
-				var column = lineSpan.Span.Start.Character + context.Node.ToString().IndexOf("AddStub", StringComparison.Ordinal) + 1;
-
-				return new AddStubClassInfo
-				{
-					StubClassName = $"{symbol.Name}Stub",
-					TargetTypeNamespace = symbol.ContainingNamespace.ToDisplayString(),
-					TargetType = symbol,
-					Path = path,
-					Line = line,
-					Column = column,
-				};
-			}
+			return null;
 		}
 
-		return null;
+		var typeArgument = genericName.TypeArgumentList.Arguments[0];
+		if (context.SemanticModel.GetSymbolInfo(typeArgument).Symbol is not ITypeSymbol symbol)
+		{
+			return null;
+		}
+
+		var path = GetInterceptorFilePath(context.Node.SyntaxTree, context.SemanticModel.Compilation);
+		var lineSpan = context.SemanticModel.SyntaxTree.GetLineSpan(context.Node.Span);
+		var line = lineSpan.StartLinePosition.Line + 1;
+		var column = lineSpan.Span.Start.Character + context.Node.ToString().IndexOf("AddStub", StringComparison.Ordinal) + 1;
+
+		return new AddStubClassInfo
+		{
+			StubClassName = $"{symbol.Name}Stub",
+			TargetTypeNamespace = symbol.ContainingNamespace.ToDisplayString(),
+			TargetType = symbol,
+			Path = path,
+			Line = line,
+			Column = column,
+		};
 
 		static bool IsComponentFactoryStubMethod(InvocationExpressionSyntax invocation, SemanticModel semanticModel)
 		{
@@ -95,16 +97,12 @@ public class AddStubGenerator : IIncrementalGenerator
 		{
 			var stubbedComponentGroup = stubClassGrouped.First();
 			var didStubComponent = StubComponentBuilder.GenerateStubComponent(stubbedComponentGroup, context);
-			if (didStubComponent is false)
+			if (didStubComponent)
 			{
-				return;
+				GenerateInterceptorCode(stubbedComponentGroup, stubClassGrouped, context);
 			}
-
-			GenerateInterceptorCode(stubbedComponentGroup, stubClassGrouped, context);
 		}
 	}
-
-
 
 	private static void GenerateInterceptorCode(AddStubClassInfo stubbedComponentGroup, IEnumerable<AddStubClassInfo> stubClassGrouped, SourceProductionContext context)
 	{
