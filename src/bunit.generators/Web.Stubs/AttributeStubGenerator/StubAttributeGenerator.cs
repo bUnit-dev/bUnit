@@ -23,7 +23,7 @@ public class StubAttributeGenerator : IIncrementalGenerator
 		var classesToStub = context.SyntaxProvider
 			.ForAttributeWithMetadataName(
 				AttributeFullQualifiedName,
-				predicate: static (s, _) => s is ClassDeclarationSyntax,
+				predicate: static (s, _) => s is ClassDeclarationSyntax c && c.AttributeLists.SelectMany(a => a.Attributes).Any(at => at.Name.ToString() == "Stub"),
 				transform: static (ctx, _) => GetStubClassInfo(ctx))
 			.Where(static m => m is not null);
 

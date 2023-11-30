@@ -19,7 +19,13 @@ public class AddStubGenerator : IIncrementalGenerator
 	{
 		var classesToStub = context.SyntaxProvider
 			.CreateSyntaxProvider(
-				predicate: static (s, _) => s is InvocationExpressionSyntax,
+				predicate: static (s, _) => s is InvocationExpressionSyntax
+				{
+					Expression: MemberAccessExpressionSyntax
+					{
+						Name.Identifier.Text: "AddStub"
+					}
+				},
 				transform: static (ctx, _) => GetStubClassInfo(ctx))
 			.Where(static m => m is not null)
 			.Collect();
