@@ -21,14 +21,14 @@ These sample components, source files, and tests source files are included in th
 The following chapter describes how you can run and view the documentation locally
 
 ### Requirements
-You will need the following tools installed:
+You will need the following tool installed:
 * The [`dotnet serve` tool](https://github.com/natemcmaster/dotnet-serve)
-* [DocFx](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool) to generate the html files
+* [DocFx](https://dotnet.github.io/docfx/tutorial/docfx_getting_started).
 
 ### View the documentation
 
 1. From `docs/site` run `dotnet build`. If you get warnings from running `dotnet build`, try running it again.
-2. From `docs/` run `docfx`. This will generate all the html site based on the markdown files.
+2. Inside `docs/site` run `dotnet run` to start the generation.
 3. From `docs/` run `serve-docs.cmd`. This will start up a local web server, hosting the generated documentation site.
 4. After changing samples from `docs/samples`, run `dotnet test`. This will compile the sample components and run the sample tests.
 
