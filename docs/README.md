@@ -27,10 +27,11 @@ You will need the following tool installed:
 
 ### View the documentation
 
-1. From `docs/site` run `dotnet build`. If you get warnings from running `dotnet build`, try running it again.
-2. Inside `docs/site` run `dotnet run` to start the generation.
-3. From `docs/` run `serve-docs.cmd`. This will start up a local web server, hosting the generated documentation site.
-4. After changing samples from `docs/samples`, run `dotnet test`. This will compile the sample components and run the sample tests.
+1. Build the `bunit.sln` solution in the root folder.
+2. From `docs/site` run `dotnet build`. If you get warnings from running `dotnet build`, try running it again.
+3. Inside `docs/site` run `dotnet run` to start the generation.
+4. From `docs/` run `serve-docs.cmd`. This will start up a local web server, hosting the generated documentation site.
+5. After changing samples from `docs/samples`, run `dotnet test`. This will compile the sample components and run the sample tests.
 
 ## Documentation Writing Rules
 
