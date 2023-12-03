@@ -86,7 +86,7 @@ jobs:
       - name: 🛠️ Building bUnit
         run: dotnet build /p:PublicRelease=true
 
-      - name: 🛠️ Verfiy docs samples
+      - name: 🛠️ Verify docs samples
         run: dotnet test docs/samples/samples.sln
 
       - name: 📄 Building docs
