@@ -218,14 +218,17 @@ jobs:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
 
       - name: 📄 Build bUnit
-        run: dotnet build
+        run: dotnet build -c release
 
       - name: 🧪 Run sample unit tests
         run: dotnet test docs/samples/samples.sln
 
       - name: 📄 Build docs
         working-directory: ./docs/site
-        run: dotnet run Site.csproj
+        run: |
+          dotnet tool install --global docfx --version 2.74.1
+          docfx metadata
+          docfx build
 
   dependency-review:
     runs-on: ubuntu-latest

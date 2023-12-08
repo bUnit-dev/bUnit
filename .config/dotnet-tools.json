@@ -7,6 +7,12 @@
       "commands": [
         "dotnet-serve"
       ]
+    },
+    "docfx": {
+      "version": "2.74.1",
+      "commands": [
+        "docfx"
+      ]
     }
   }
 }
