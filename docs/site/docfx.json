@@ -5,8 +5,8 @@
       "src": [
         {
           "files": [
-            "bunit.core/bunit.core.csproj",
-            "bunit.web/bunit.web.csproj"
+            "bunit.core/**/bin/Release/**.dll",
+            "bunit.web/**/bin/Release/**.dll"
           ],
           "src": "../../src"
         }
