@@ -1,8 +1,7 @@
-{{!Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See LICENSE file in the project root for full license information.}}
+{{!Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license.}}
 {{!include(/^public/.*/)}}
 {{!include(favicon.ico)}}
 {{!include(logo.svg)}}
-{{!include(search-stopwords.json)}}
 <!DOCTYPE html>
 <html {{#_lang}}lang="{{_lang}}"{{/_lang}}>
   <head>
@@ -34,19 +33,28 @@
       {{#_disableNewTab}}<meta name="docfx:disablenewtab" content="true">{{/_disableNewTab}}
       {{#_disableTocFilter}}<meta name="docfx:disabletocfilter" content="true">{{/_disableTocFilter}}
       {{#docurl}}<meta name="docfx:docurl" content="{{docurl}}">{{/docurl}}
-
-      <script type="module">
-        import docfx from './{{_rel}}public/main.js'
-        window.docfx = docfx
-        window.MathJax = {
-          options: {
-            processHtmlClass: ['tex2jax_process', 'math']
-          }
-        }
-      </script>
-      <script type="text/javascript" src="{{_rel}}public/docfx.min.js"></script>
+      <meta name="loc:inThisArticle" content="{{__global.inThisArticle}}">
+      <meta name="loc:searchResultsCount" content="{{__global.searchResultsCount}}">
+      <meta name="loc:searchNoResults" content="{{__global.searchNoResults}}">
+      <meta name="loc:tocFilter" content="{{__global.tocFilter}}">
+      <meta name="loc:nextArticle" content="{{__global.nextArticle}}">
+      <meta name="loc:prevArticle" content="{{__global.prevArticle}}">
+      <meta name="loc:themeLight" content="{{__global.themeLight}}">
+      <meta name="loc:themeDark" content="{{__global.themeDark}}">
+      <meta name="loc:themeAuto" content="{{__global.themeAuto}}">
+      <meta name="loc:changeTheme" content="{{__global.changeTheme}}">
+      <meta name="loc:copy" content="{{__global.copy}}">
+      <meta name="loc:downloadPdf" content="{{__global.downloadPdf}}">
     {{/redirect_url}}
   </head>
+
+  {{^redirect_url}}
+  <script type="module" src="./{{_rel}}public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
 
   {{#_googleAnalyticsTagId}}
   <script async src="https://www.googletagmanager.com/gtag/js?id={{_googleAnalyticsTagId}}"></script>
@@ -58,9 +66,8 @@
   </script>
   {{/_googleAnalyticsTagId}}
 
-  {{^redirect_url}}
-  <body class="tex2jax_ignore" data-layout="{{_layout}}{{layout}}" data-yaml-mime="{{yamlmime}}">
-    <header class="bg-body bg-dark-subtle">
+    <body class="tex2jax_ignore" data-layout="{{_layout}}{{layout}}" data-yaml-mime="{{yamlmime}}">
+    <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
           <a class="navbar-brand" href="{{_appLogoUrl}}{{^_appLogoUrl}}{{_rel}}index.html{{/_appLogoUrl}}">
@@ -115,10 +122,10 @@
         {{^_disableContribution}}
         <div class="contribution d-print-none">
           {{#sourceurl}}
-          <a href="{{sourceurl}}" class="edit-link">Edit this page</a>
+          <a href="{{sourceurl}}" class="edit-link">{{__global.improveThisDoc}}</a>
           {{/sourceurl}}
           {{^sourceurl}}{{#docurl}}
-          <a href="{{docurl}}" class="edit-link">Edit this page</a>
+          <a href="{{docurl}}" class="edit-link">{{__global.improveThisDoc}}</a>
           {{/docurl}}{{/sourceurl}}
         </div>
         {{/_disableContribution}}
@@ -156,7 +163,7 @@
     <div class="container-xxl search-results" id="search-results"></div>
     {{/_enableSearch}}
 
-    <footer class="bg-body-tertiary">
+    <footer class="border-top text-secondary bg-body-tertiary">
       <div class="container-xxl">
         <div class="flex-fill">
           {{{_appFooter}}}{{^_appFooter}}<span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>{{/_appFooter}}

@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Docfx.App" Version="2.74.0" />
+    <PackageReference Include="Docfx.App" Version="2.74.1" />
+    <ProjectReference Include="../../src/bunit.core/bunit.core.csproj" />
+    <ProjectReference Include="../../src/bunit.web/bunit.web.csproj" />
   </ItemGroup>
+
 </Project>
