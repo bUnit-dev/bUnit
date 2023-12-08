@@ -227,8 +227,8 @@ jobs:
         working-directory: ./docs/site
         run: |
           dotnet tool install --global docfx --version 2.74.1
-          docfx metadata
-          docfx build
+          docfx metadata --logLevel error
+          docfx build --logLevel warning --warningsAsErrors
 
   dependency-review:
     runs-on: ubuntu-latest
