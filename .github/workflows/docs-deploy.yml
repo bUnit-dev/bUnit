@@ -93,7 +93,7 @@ jobs:
         working-directory: ./docs/site
         run: |
           dotnet tool install --global docfx --version 2.74.1
-          docfx metadata
+          docfx metadata --logLevel error
           docfx build
 
       - name: 🛠️ Deploy to GitHub Pages
