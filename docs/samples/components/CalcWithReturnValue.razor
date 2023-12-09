@@ -1,0 +1,13 @@
+<output>@result</output>
+
+@code
+{
+  int result = 0;
+
+  public int Calculate(int x, int y)
+  {
+    result = x + y;
+    StateHasChanged();
+    return result;
+  }
+}
