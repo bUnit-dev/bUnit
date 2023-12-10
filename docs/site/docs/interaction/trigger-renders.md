@@ -19,7 +19,7 @@ Let's look at how to use each of these methods to cause a re-render.
 
 The [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponentBase{``0})) method tells the renderer to re-render the component, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods). To use it, do the following:
 
-[!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=17&end=23&highlight=5)]
+[!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=16&end=22&highlight=5)]
 
 The highlighted line shows the call to [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.IRenderedComponentBase{``0})).
 
@@ -30,7 +30,7 @@ The highlighted line shows the call to [`Render()`](xref:Bunit.RenderedComponent
 
 The [`SetParametersAndRender(...)`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods tells the renderer to re-render the component with new parameters, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods), passing the new parameters &mdash; _but only the new parameters_ &mdash; to the `SetParametersAsync()` method. To use it, do the following:
 
-[!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=30&end=40&highlight=7-9)]
+[!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=29&end=39&highlight=7-9)]
 
 The highlighted line shows the call to [`SetParametersAndRender()`](xref:Bunit.RenderedComponentRenderExtensions.SetParametersAndRender``1(Bunit.IRenderedComponentBase{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})), which is also available as a version that takes the zero or more component parameters, e.g. created through the component parameter factory helper methods, if you prefer that method of passing parameters.
 
@@ -51,9 +51,25 @@ Let’s look at an example of this, using the `<Calc>` component listed below:
 
 To invoke the `Calculate()` method on the component instance, do the following:
 
-[!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=47&end=53&highlight=5)]
+[!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=46&end=52&highlight=5)]
 
 The highlighted line shows the call to `InvokeAsync()`, which is passed an `Action` delegate that calls the `Calculate` method.
 
 > [!TIP]
 > The instance of a component under test is available through the <xref:Bunit.IRenderedComponentBase`1.Instance> property.
+
+### Advanced use cases
+
+In some scenarios, the method being invoked may also return a value, as demonstrated in the following example.
+
+[!code-cshtml[CalcWithReturnValue.razor](../../../samples/components/CalcWithReturnValue.razor)]
+
+Testing this scenario follows the same procedure as before, with the addition of using the return value from `InvokeAsync()`:
+
+[!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=59&end=65&highlight=4)]
+
+This can also be used to assert intermediate states during an asynchronous operation, like the example below:
+
+[!code-cshtml[CalcWithLoading.razor](../../../samples/components/CalcWithLoading.razor)]
+
+[!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=71&end=82&highlight=7)]

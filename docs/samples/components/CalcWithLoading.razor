@@ -1,0 +1,16 @@
+<output>@(result is null ? "Loading" : result.ToString())</output>
+
+@code
+{
+  int? result = 0;
+
+  public async Task Calculate(int x, int y)
+  {
+      result = null;
+      StateHasChanged();
+      // Simulate an asynchronous operation, like fetching data.
+      await Task.Delay(500);
+      result = x + y;
+      StateHasChanged();
+  }
+}

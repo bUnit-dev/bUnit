@@ -25,7 +25,7 @@ public class ReRenderTest : TestContext
   [Fact]
   public void RenderAgainUsingSetParametersAndRender()
   {
-    // Arrange - renders the Heading component
+    // Arrange - renders the Item component
     var cut = RenderComponent<Item>(parameters => parameters
       .Add(p => p.Value, "Foo")
     );
@@ -42,7 +42,7 @@ public class ReRenderTest : TestContext
   [Fact]
   public void RendersViaInvokeAsync()
   {
-    // Arrange - renders the Heading component
+    // Arrange - renders the Calc component
     var cut = RenderComponent<Calc>();
 
     // Indirectly re-renders through the call to StateHasChanged
@@ -50,5 +50,35 @@ public class ReRenderTest : TestContext
     cut.InvokeAsync(() => cut.Instance.Calculate(1, 2));
 
     cut.MarkupMatches("<output>3</output>");
+  }
+
+  [Fact]
+  public async Task RendersViaInvokeAsyncWithReturnValue()
+  {
+    // Arrange - renders the CalcWithReturnValue component
+    var cut = RenderComponent<CalcWithReturnValue>();
+
+    // Indirectly re-renders and returns a value.
+    var result = await cut.InvokeAsync(() => cut.Instance.Calculate(1, 2));
+
+    Assert.Equal(3, result);
+    cut.MarkupMatches("<output>3</output>");
+  }
+
+  [Fact]
+  public async Task RendersViaInvokeAsyncWithLoading()
+  {
+    // Arrange - renders the CalcWithLoading component
+    var cut = RenderComponent<CalcWithLoading>();
+
+    // Indirectly re-renders and returns the task returned by Calculate().
+    // The explicit <Task> here is important, otherwise the call to Calculate()
+    // will be awaited automatically.
+    var task = await cut.InvokeAsync<Task>(() => cut.Instance.Calculate(1, 2));
+    cut.MarkupMatches("<output>Loading</output>");
+
+    // Wait for the task to complete.
+    await task;
+    cut.WaitForAssertion(() => cut.MarkupMatches("<output>3</output>"));
   }
 }
