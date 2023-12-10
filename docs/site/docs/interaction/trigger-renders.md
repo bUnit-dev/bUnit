@@ -60,11 +60,11 @@ The highlighted line shows the call to `InvokeAsync()`, which is passed an `Acti
 
 ### Advanced use cases
 
-In certain cases, the method you want to call might also have a return value, like the example below.
+In some scenarios, the method being invoked may also return a value, as demonstrated in the following example.
 
 [!code-cshtml[CalcWithReturnValue.razor](../../../samples/components/CalcWithReturnValue.razor)]
 
-You can test this exactly the same as before, but use the return value from `InvokeAsync()`:
+Testing this scenario follows the same procedure as before, with the addition of using the return value from `InvokeAsync()`:
 
 [!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=59&end=65&highlight=4)]
 
