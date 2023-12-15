@@ -63,7 +63,7 @@ public class AddStubGeneratorTests : TestContext
 	}
 }
 
-[Stub(typeof(ButtonComponent))]
+[ComponentStub<ButtonComponent>]
 public partial class ButtonComponentStub
 {
 }

@@ -52,7 +52,7 @@ To use the generator, the **Interceptor** feature has to be used inside the cspr
 
 This limits the usage to .NET 8 and above.
 
-## `StubAttribute`
+## `ComponentStubAttribute`
 This generator adds the ability to automatically generate stubs for a given type via an attribute.
 The general setup for the given component above looks like this:
 ```csharp
@@ -68,7 +68,7 @@ public class FeatureTests : TestContext
     }    
 }
 
-[Stub(typeof(ThirdPartyText))]
+[ComponentStub<ThirdPartyText>)]
 internal partial class ThidPartyStub { }
 ```
 
