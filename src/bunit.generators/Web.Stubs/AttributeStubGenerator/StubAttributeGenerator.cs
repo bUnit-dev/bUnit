@@ -14,6 +14,7 @@ public class StubAttributeGenerator : IIncrementalGenerator
 {
 	private const string AttributeFullQualifiedName = "Bunit.StubAttribute";
 
+	/// <inheritdoc />
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(

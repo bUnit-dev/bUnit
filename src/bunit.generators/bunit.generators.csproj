@@ -7,6 +7,25 @@
 		<RootNamespace>Bunit</RootNamespace>
 	</PropertyGroup>
 
+	<PropertyGroup Label="Build instructions">
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<!-- Creates a regular package and a symbols package -->
+		<IncludeSymbols>true</IncludeSymbols>
+		<!-- Creates symbol package in the new .snupkg format -->
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<!--
+		Instruct the build system to embed project source files that are not tracked by the source control
+		or imported from a source package to the generated PDB.
+		-->
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
+		<DebugType>embedded</DebugType>
+		<Deterministic>true</Deterministic>
+
+		<EnablePackageValidation>true</EnablePackageValidation>
+		<GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
+	</PropertyGroup>
+
 	<PropertyGroup Label="NuGet package information">
 		<PackageId>bunit.generators</PackageId>
 		<Title>bUnit.generators</Title>
@@ -55,5 +74,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" PrivateAssets="All" />
 	</ItemGroup>
 </Project>
