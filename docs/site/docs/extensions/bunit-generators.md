@@ -60,7 +60,7 @@ To use the generator, the **Interceptor** feature has to be used inside the cspr
 
 Due to the usage of **Interceptors** the generator is only available for .NET 8.0 and above. The generator does create a `partial` class, so it can be extended with custom logic if needed.
 
-## Component stub generator via `StubAttribute`
+## Component stub generator via `ComponentStubAttribute`
 
 This generator adds the ability to automatically generate stubs for a given type via an attribute.
 The general setup for the given component above looks like this:
@@ -77,7 +77,7 @@ public class FeatureTests : TestContext
     }    
 }
 
-[Stub(typeof(ThirdPartyText))]
+[ComponentStub<ThirdPartyText>]
 internal partial class ThidPartyStub { }
 ```
 

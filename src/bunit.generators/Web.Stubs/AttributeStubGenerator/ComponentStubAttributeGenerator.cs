@@ -10,32 +10,36 @@ namespace Bunit.Web.Stubs.AttributeStubGenerator;
 /// Generator that creates a stub of a marked component.
 /// </summary>
 [Generator]
-public class StubAttributeGenerator : IIncrementalGenerator
+public class ComponentStubAttributeGenerator : IIncrementalGenerator
 {
-	private const string AttributeFullQualifiedName = "Bunit.StubAttribute";
+	private const string AttributeFullQualifiedName = "Bunit.ComponentStubAttribute`1";
 
 	/// <inheritdoc />
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"StubAttribute.g.cs",
-			SourceText.From(StubAttribute.StubAttributeSource, Encoding.UTF8)));
+			"ComponentStubAttribute.g.cs",
+			SourceText.From(ComponentStubAttribute.ComponentStubAttributeSource, Encoding.UTF8)));
 
 		var classesToStub = context.SyntaxProvider
 			.ForAttributeWithMetadataName(
 				AttributeFullQualifiedName,
-				predicate: static (s, _) => s is ClassDeclarationSyntax c && c.AttributeLists.SelectMany(a => a.Attributes).Any(at => at.Name.ToString() == "Stub"),
+				predicate: static (s, _) => IsClassWithComponentStubAttribute(s),
 				transform: static (ctx, _) => GetStubClassInfo(ctx))
 			.Where(static m => m is not null);
-
 
 		context.RegisterSourceOutput(
 			classesToStub,
 			static (spc, source) => Execute(source, spc));
 	}
 
+	private static bool IsClassWithComponentStubAttribute(SyntaxNode s) =>
+		s is ClassDeclarationSyntax c && c.AttributeLists.SelectMany(a => a.Attributes)
+			.Any(at => at.Name.ToString().Contains("ComponentStub"));
+
 	private static StubClassInfo GetStubClassInfo(GeneratorAttributeSyntaxContext context)
 	{
+#pragma warning disable RS1035
 		foreach (var attribute in context.TargetSymbol.GetAttributes())
 		{
 			if (context.TargetSymbol is not ITypeSymbol stubbedType)
@@ -47,8 +51,8 @@ public class StubAttributeGenerator : IIncrementalGenerator
 			var className = context.TargetSymbol.Name;
 			var visibility = context.TargetSymbol.DeclaredAccessibility.ToString().ToLower();
 
-			var originalTypeToStub = attribute.ConstructorArguments.FirstOrDefault().Value;
-			if (originalTypeToStub is not ITypeSymbol originalType)
+			var originalTypeToStub = attribute.AttributeClass?.TypeArguments.FirstOrDefault();
+			if (originalTypeToStub is null)
 			{
 				continue;
 			}
@@ -57,7 +61,7 @@ public class StubAttributeGenerator : IIncrementalGenerator
 			{
 				ClassName = className,
 				Namespace = namespaceName,
-				TargetType = originalType,
+				TargetType = originalTypeToStub,
 				Visibility = visibility
 			};
 		}
@@ -107,7 +111,7 @@ public class StubAttributeGenerator : IIncrementalGenerator
 
 		if (hasSomethingToStub)
 		{
-			context.AddSource($"{classInfo.ClassName}Stub.g.cs", sourceBuilder.ToString());
+			context.AddSource($"{classInfo.ClassName}.g.cs", sourceBuilder.ToString());
 		}
 	}
 }
