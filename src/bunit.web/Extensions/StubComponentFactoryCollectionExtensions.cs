@@ -161,28 +161,5 @@ public static class StubComponentFactoryCollectionExtensions
 		factories.Add(new StubComponentFactory(componentTypePredicate, replacementFragment));
 		return factories;
 	}
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	/// Marks a component as a stub component so that a stub gets generated for it. The stub has the same name as the component, but with the suffix "Stub" added.
-	/// </summary>
-	/// <typeparam name="TComponent">The type of component to generate a stub for.</typeparam>
-	/// <remarks>
-	/// When <c>ComponentFactories.AddGeneratedStub&lt;MyButton&gt;()</c> is called, a stub component is generated for the component
-	/// with the name <c>MyButtonStub</c>. The stub component is added to the <see cref="ComponentFactoryCollection"/> and can be used.
-	/// It can also be retrieved via `cut.FindComponent&lt;MyButtonStub&gt;()`.
-	/// This call does the same as <c>ComponentFactories.Add&lt;MyButton, MyButtonStub&gt;()</c>.
-	/// </remarks>
-#pragma warning disable S2326 // Unused type parameters should be removed - this is just the shape for the interceptor
-	public static ComponentFactoryCollection AddGeneratedStub2<TComponent>(this ComponentFactoryCollection factories)
-		where TComponent : IComponent
-#pragma warning restore S2326
-	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
-
-		return factories;
-	}
-#endif
 }
 #endif
