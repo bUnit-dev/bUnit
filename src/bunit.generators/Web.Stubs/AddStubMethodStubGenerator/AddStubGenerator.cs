@@ -107,19 +107,21 @@ public class AddStubGenerator : IIncrementalGenerator
 	private static void GenerateInterceptorCode(AddStubClassInfo stubbedComponentGroup, IEnumerable<AddStubClassInfo> stubClassGrouped, SourceProductionContext context)
 	{
 		// Generate the attribute
-		const string attribute = @"namespace System.Runtime.CompilerServices
-{
-	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-	sealed file class InterceptsLocationAttribute : Attribute
-	{
-		public InterceptsLocationAttribute(string filePath, int line, int column)
-		{
-			_ = filePath;
-			_ = line;
-			_ = column;
-		}
-	}
-}";
+		const string attribute = """
+		                         namespace System.Runtime.CompilerServices
+		                         {
+		                         	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+		                         	sealed file class InterceptsLocationAttribute : Attribute
+		                         	{
+		                         		public InterceptsLocationAttribute(string filePath, int line, int column)
+		                         		{
+		                         			_ = filePath;
+		                         			_ = line;
+		                         			_ = column;
+		                         		}
+		                         	}
+		                         }
+		                         """;
 
 		// Generate the interceptor
 		var interceptorSource = new StringBuilder();
