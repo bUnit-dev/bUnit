@@ -67,7 +67,7 @@ jobs:
       with:
         files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
       env:
-        RELEASE_VERSION: ${{ env.NBGV_NuGetPackageVersion }}
+        RELEASE_VERSION: ${{ NBGV_SimpleVersion }}${{ NBGV_PrereleaseVersion }}
         RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
@@ -218,7 +218,10 @@ jobs:
       - name: 🍥 Replace tokens in files
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+        env:
+          RELEASE_VERSION: ${{ NBGV_SimpleVersion }}${{ NBGV_PrereleaseVersion }}
+          RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
       - name: 📄 Build bUnit
         run: dotnet build -c release
