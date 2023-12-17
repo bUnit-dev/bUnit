@@ -67,7 +67,7 @@ jobs:
       with:
         files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
       env:
-        RELEASE_VERSION: "$NBGV_SimpleVersion$NBGV_PrereleaseVersion"
+        RELEASE_VERSION: ${NBGV_SimpleVersion}${NBGV_PrereleaseVersion}
         RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
@@ -220,7 +220,7 @@ jobs:
         with:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
         env:
-          RELEASE_VERSION: "$NBGV_SimpleVersion$NBGV_PrereleaseVersion"
+          RELEASE_VERSION: ${NBGV_SimpleVersion}${NBGV_PrereleaseVersion}
           RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
       - name: 📄 Build bUnit
