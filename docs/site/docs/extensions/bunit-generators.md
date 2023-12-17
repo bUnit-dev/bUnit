@@ -78,7 +78,7 @@ public class FeatureTests : TestContext
 }
 
 [ComponentStub<ThirdPartyText>]
-internal partial class ThidPartyStub { }
+internal partial class ThirdPartyStub { }
 ```
 
 Current limitations of this approach is that he stubbed type is not allowed to be nested inside the test class.
