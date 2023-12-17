@@ -138,7 +138,7 @@ jobs:
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           if-no-files-found: ignore
           name: test-dumps
