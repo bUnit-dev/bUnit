@@ -248,7 +248,7 @@ jobs:
         uses: actions/dependency-review-action@v3
 
   release-preview:
-    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2'
+    if: github.event_name == 'workflow_dispatch' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2')
     runs-on: ubuntu-latest
     needs: [ validate-nuget, run-test, validate_template, validate-docs ]
     steps:
