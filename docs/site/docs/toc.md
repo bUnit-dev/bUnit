@@ -30,7 +30,7 @@
 ## [Faking IWebAssemblyHostEnvironment](xref:fake-webassemblyhostenvironment)
 ## [Testing with InputFile component](xref:input-file)
 
-# [Extensions][xref:extensions]
+# [Extensions](xref:extensions)
 ## [bunit.generators](xref:bunit-generators)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)
