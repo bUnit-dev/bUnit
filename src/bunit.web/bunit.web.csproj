@@ -4,6 +4,11 @@
 		<TargetFrameworks>netstandard2.1;net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
 		<RootNamespace>Bunit</RootNamespace>
 		<AssemblyName>Bunit.Web</AssemblyName>
+		<!--
+			Remove comment of EmitCompilerGeneratedFiles to see output
+			produced by bunit.web.anglesharp in the obj/generated folder.
+		-->
+		<!-- <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -15,11 +20,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AngleSharp" Version="0.17.1" />
 		<PackageReference Include="AngleSharp.Diffing" Version="0.18.2" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+		<PackageReference Include="AngleSharp" Version="0.17.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet3Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet3Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet3Version)" />
@@ -29,6 +34,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+		<PackageReference Include="AngleSharp" Version="0.17.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet5Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet5Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet5Version)" />
@@ -38,6 +44,8 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="AngleSharp" Version="1.0.7" />
+		<PackageReference Include="AngleSharp.Css" Version="1.0.0-alpha-99" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet6Version)" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(DotNet6Version)" />
@@ -47,6 +55,8 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<PackageReference Include="AngleSharp" Version="1.0.7" />
+		<PackageReference Include="AngleSharp.Css" Version="1.0.0-alpha-99" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet7Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet7Version)" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(DotNet7Version)" />
@@ -56,6 +66,8 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="AngleSharp" Version="1.0.7" />
+		<PackageReference Include="AngleSharp.Css" Version="1.0.0-alpha-99" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet8Version)" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet8Version)" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(DotNet8Version)" />
@@ -65,29 +77,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\AngleSharpWrappers\AngleSharpWrappers.csproj" PrivateAssets="All" />
 		<ProjectReference Include="..\bunit.core\bunit.core.csproj" />
+		<ProjectReference Include="..\bunit.generators.internal\bunit.generators.internal.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
-
-	<!-- The following two elements ensures that AngleSharpWrappers.dll is included in this projects nuget package -->
-	<PropertyGroup>
-		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-	</PropertyGroup>
-
-	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
-		<ItemGroup>
-			<!-- Filter out unnecessary files -->
-			<_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
-		</ItemGroup>
-
-		<!-- Print batches for debug purposes -->
-		<Message Text="Batch for .nupkg: ReferenceCopyLocalPaths = @(_ReferenceCopyLocalPaths), ReferenceCopyLocalPaths.DestinationSubDirectory = %(_ReferenceCopyLocalPaths.DestinationSubDirectory) Filename = %(_ReferenceCopyLocalPaths.Filename) Extension = %(_ReferenceCopyLocalPaths.Extension)" Importance="High" Condition="'@(_ReferenceCopyLocalPaths)' != ''" />
-
-		<ItemGroup>
-			<!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
-			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
-		</ItemGroup>
-	</Target>
 
 	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit'">
 		<Using Include="Microsoft.AspNetCore.Components.Web" />

@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Site": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "workingDirectory": "$(MSBuildProjectDirectory)"
+    }
+  }
+}

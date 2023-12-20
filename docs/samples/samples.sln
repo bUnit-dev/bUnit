@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34310.174
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.samples", "components\bunit.docs.samples.csproj", "{60E2C52E-0DF6-445A-9568-ABA05CB2E6AF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FC897929-3A4D-4276-9AF4-C77B0FAF221E}"
+	ProjectSection(SolutionItems) = preProject
+		tests\Directory.Build.props = tests\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.mstest.samples", "tests\mstest\bunit.docs.mstest.samples.csproj", "{C2060A20-8C56-4678-B65C-DCF52D70223D}"
 EndProject
@@ -13,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.nunit.samples", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.xunit.samples", "tests\xunit\bunit.docs.xunit.samples.csproj", "{3B8B3B0E-CA33-4C76-901D-219F5FF848B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.docs.razor.samples", "tests\razor\bunit.docs.razor.samples.csproj", "{C92CB47E-8A70-409C-9213-8D743BB29366}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.docs.razor.samples", "tests\razor\bunit.docs.razor.samples.csproj", "{C92CB47E-8A70-409C-9213-8D743BB29366}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

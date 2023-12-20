@@ -8,7 +8,6 @@
 
 	<PropertyGroup Label="Compile settings" Condition="$(MSBuildProjectName) != 'bunit.testassets'">
 		<Nullable>annotations</Nullable>
-		<IsPackable>false</IsPackable>
 		<SonarQubeTestProject>true</SonarQubeTestProject>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
@@ -16,8 +15,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AutoFixture" Version="4.18.0" />
-		<PackageReference Include="AutoFixture.Xunit2" Version="4.18.0" />
+		<PackageReference Include="AutoFixture" Version="4.18.1" />
+		<PackageReference Include="AutoFixture.Xunit2" Version="4.18.1" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
 		<PackageReference Include="NSubstitute" Version="5.1.0" />
 		<PackageReference Include="Shouldly" Version="4.2.1" />
@@ -25,7 +24,7 @@
 		<PackageReference Include="Xunit.Combinatorial" Version="1.6.24" />
 	</ItemGroup>
 
-	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.testassets' AND $(MSBuildProjectName) != 'AngleSharpWrappers.Tests'">
+	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.testassets' AND $(MSBuildProjectName) != 'bunit.web.anglesharp.tests'">
 		<Using Include="AutoFixture" />
 		<Using Include="AutoFixture.Xunit2" />
 		<Using Include="Bunit.TestAssets.SampleComponents" />

@@ -6,6 +6,19 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Changed
+
+- Upgraded AngleSharp to 1.0.7.
+
+### Fixed
+
+- When the `TestContext` was disposed, the Blazor Renderer itself didn't dispose components under test. By [@linkdotnet](https://github.com/linkdotnet).
+- When navigating, the `HistoryEntryState` on `NavigationManager` will be populated. By [@linkdotnet](https://github.com/linkdotnet).
+
+### Added
+
+- New overloads for `IRenderedFragmentBase.InvokeAsync` that allow retrieving the work item's return value. By [@jcparkyn](https://github.com/jcparkyn).
+
 ## [1.25.3] - 2023-11-14
 
 -   Upgrade all .NET 8 preview dependencies to .NET 8 stable.

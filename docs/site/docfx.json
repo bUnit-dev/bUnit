@@ -1,11 +1,12 @@
+// "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/v1.0/schema.json#",
 {
   "metadata": [
     {
       "src": [
         {
           "files": [
-            "bunit.core/bunit.core.csproj",
-            "bunit.web/bunit.web.csproj"
+            "bunit.core/**/bin/Release/**.dll",
+            "bunit.web/**/bin/Release/**.dll"
           ],
           "src": "../../src"
         }
@@ -14,7 +15,8 @@
       "includePrivateMembers": false,
       "disableGitFeatures": false,
       "disableDefaultFilter": false,
-      "noRestore": true,
+      "noRestore": false,
+
       "namespaceLayout": "flattened",
       "memberLayout": "samePage",
       "allowCompilationErrors": false

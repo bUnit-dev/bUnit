@@ -1,3 +1,4 @@
+using AngleSharp.Dom;
 using Bunit.TestUtilities;
 
 namespace Bunit;
@@ -72,6 +73,22 @@ public class CompareToDiffingExtensionsTest : TestContext
 		var rf2 = RenderComponent<Simple1>((nameof(Simple1.Header), "BAR"));
 
 		var elm = rf1.Find("h1");
+
 		rf2.Nodes.CompareTo(elm).Count.ShouldBe(1);
+	}
+
+	private static int GetPathIndex(INode node)
+	{
+		var parent = node.Parent;
+		if (parent is not null)
+		{
+			var childNodes = parent.ChildNodes;
+			for (int index = 0; index < childNodes.Length; index++)
+			{
+				if (ReferenceEquals(childNodes[index], node))
+					return index;
+			}
+		}
+		throw new InvalidOperationException("Unexpected node tree state. The node was not found in its parents child nodes collection.");
 	}
 }

@@ -15,6 +15,13 @@ on:
 
   workflow_dispatch:
 
+env:
+  VSTEST_CONNECTION_TIMEOUT: 180
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+  TERM: xterm
+
 jobs:
   deploy:
     name: 📃 Deploy new version bunit.dev
@@ -55,13 +62,14 @@ jobs:
 
       - name: 🛠️ Update tokens in project files
         uses: cschleiden/replace-tokens@v1
-        env:
-          RELEASE-VERSION: ${{ steps.changelog_reader.outputs.version }}
         with:
-          files: '["docs/site/docfx.json", "docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj"]'
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+        env:
+          RELEASE_VERSION: ${{ steps.changelog_reader.outputs.version }}
+          RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
       - name: ⚙️ Setup dotnet versions
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
             3.1.x
@@ -76,15 +84,17 @@ jobs:
           echo "TERM=xterm" >> $GITHUB_ENV
 
       - name: 🛠️ Building bUnit
-        run: dotnet build /p:PublicRelease=true
+        run: dotnet build /p:PublicRelease=true -c release
 
-      - name: 🛠️ Verfiy docs samples
+      - name: 🛠️ Verify docs samples
         run: dotnet test docs/samples/samples.sln
 
-      - name: 🛠️ Building docs
+      - name: 📄 Building docs
+        working-directory: ./docs/site
         run: |
-          dotnet tool update -g docfx --version 2.67.0
-          docfx docs/site/docfx.json
+          dotnet tool install --global docfx --version 2.74.1
+          docfx metadata --logLevel error
+          docfx build
 
       - name: 🛠️ Deploy to GitHub Pages
         if: success()

@@ -21,7 +21,7 @@ public interface IRenderedFragment : IRenderedFragmentBase
 	/// <summary>
 	/// Gets the AngleSharp <see cref="INodeList"/> based
 	/// on the HTML markup from the rendered fragment/component.
-	/// </summary>
+	/// </summary>	
 	INodeList Nodes { get; }
 
 	/// <summary>

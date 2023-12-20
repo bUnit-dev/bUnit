@@ -21,6 +21,10 @@
 		<!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
 		<DebugType>embedded</DebugType>
 		<Deterministic>true</Deterministic>
+
+		<EnablePackageValidation>true</EnablePackageValidation>
+		<GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
+		<PackageValidationBaselineVersion>1.25.3</PackageValidationBaselineVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Label="NuGet package information">
@@ -35,16 +39,31 @@
 		<Product>bUnit</Product>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageIcon>bunit-logo.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReleaseNotes>
+Changes in bUnit #{RELEASE_VERSION}#
+
+#{RELEASE_NOTES}#
+
+See the full changelog at https://github.com/bUnit-dev/bUnit/releases
+		</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\..\bunit-logo.png" Pack="true" PackagePath="" Visible="false" />      
+		<None Include="..\..\bunit-logo.png" Pack="true" PackagePath="" Visible="false" />
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
-	
+
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
 		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" PrivateAssets="All" />
-		
 	</ItemGroup>
-	
+
 </Project>

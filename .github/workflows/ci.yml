@@ -1,0 +1,267 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+      - v2
+    paths:
+      - 'src/**'
+      - 'tests/**'
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+  workflow_dispatch:
+
+concurrency:
+  group: verification-${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.run_id || github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  VSTEST_CONNECTION_TIMEOUT: 180
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  NUGET_DIRECTORY: ${{ github.workspace }}/nuget
+  NUGET_PACKAGES_ARTIFACT: nuget-packages
+  DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+  TERM: xterm
+
+jobs:
+  create-nuget:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
+
+    # Install the .NET SDK indicated in the global.json file
+    - name: ⚙️ Setup dotnet versions
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          3.1.x
+          5.0.x
+          6.0.x
+          7.0.x
+          8.0.x
+
+    - name: ⚙️ Setup GIT versioning
+      uses: dotnet/nbgv@v0.4.1
+      with:
+        setAllVars: true
+
+    - name: 🛠️ Get Changelog Entry
+      id: changelog_reader
+      uses: mindsers/changelog-reader-action@v2
+      with:
+        version: Unreleased
+        path: ./CHANGELOG.md
+
+    - name: 🛠️ Update tokens in project files
+      uses: cschleiden/replace-tokens@v1
+      with:
+        files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+      env:
+        RELEASE_VERSION: ${{ env.NBGV_SimpleVersion }}${{ env.NBGV_PrereleaseVersion }}
+        RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
+
+    # Create the NuGet package in the folder from the environment variable NuGetDirectory
+    - run: |
+        dotnet pack src/bunit/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit.core/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit.web/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit.template/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit.generators/ -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+
+    # Publish the NuGet package as an artifact, so they can be used in the following jobs
+    - uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.NUGET_PACKAGES_ARTIFACT }}
+        if-no-files-found: error
+        compression-level: 0 # nuget files already compressed
+        retention-days: 7
+        path: ${{ env.NUGET_DIRECTORY }}/*.nupkg
+
+  validate-nuget:
+    runs-on: ubuntu-latest
+    needs: [ create-nuget ]
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.NUGET_PACKAGES_ARTIFACT }}
+          path: ${{ env.NUGET_DIRECTORY }}
+
+      - name: Install nuget validator
+        run: dotnet tool update Meziantou.Framework.NuGetPackageValidation.Tool --global
+
+      # Validate metadata and content of the NuGet package
+      # https://www.nuget.org/packages/Meziantou.Framework.NuGetPackageValidation.Tool#readme-body-tab
+      # If some rules are not applicable, you can disable them
+      # using the --excluded-rules or --excluded-rule-ids option
+      - name: Validate package
+        shell: pwsh
+        run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NUGET_DIRECTORY }}/*.nupkg") --excluded-rules IconMustBeSet
+        
+  run-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup dotnet versions
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            3.1.x
+            5.0.x
+            6.0.x
+            7.0.x
+            8.0.x
+
+      - name: 🧪 Run unit tests
+        run: dotnet test -c release --blame --blame-crash --blame-hang
+
+      - name: 📛 Upload hang- and crash-dumps on test failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          if-no-files-found: ignore
+          name: test-dumps
+          path: |
+            **/*hangdump.dmp
+            **/*crashdump.dmp
+
+  validate_template:
+    runs-on: ubuntu-latest
+    needs: [ create-nuget ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.NUGET_PACKAGES_ARTIFACT }}
+          path: ${{ env.NUGET_DIRECTORY }}
+
+      - name: ⚙️ Setup GIT versioning
+        uses: dotnet/nbgv@v0.4.1
+        with:
+          setAllVars: true
+
+      - name: ✳ Install bUnit template
+        run: |
+          dotnet new install bunit.template::${NBGV_SimpleVersion}${NBGV_PrereleaseVersion} --nuget-source ${{ env.NUGET_DIRECTORY }}
+
+      - name: ✔ Verify xUnit template
+        run: |
+          dotnet new bunit --no-restore -o ${{ github.workspace }}/TemplateTestXunit
+          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestXunit/Directory.Build.props
+          dotnet restore ${{ github.workspace }}/TemplateTestXunit --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
+          dotnet test ${{ github.workspace }}/TemplateTestXunit
+
+      - name: ✔ Verify NUnit template
+        run: |
+          dotnet new bunit --framework nunit --no-restore -o ${{ github.workspace }}/TemplateTestNunit
+          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestNunit/Directory.Build.props
+          dotnet restore ${{ github.workspace }}/TemplateTestNunit --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
+          dotnet test ${{ github.workspace }}/TemplateTestNunit
+
+      - name: ✔ Verify MSTest template
+        run: |
+          dotnet new bunit --framework mstest --no-restore -o ${{ github.workspace }}/TemplateTestMstest
+          echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestMstest/Directory.Build.props
+          dotnet restore ${{ github.workspace }}/TemplateTestMstest --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
+          dotnet test ${{ github.workspace }}/TemplateTestMstest
+
+  validate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup dotnet versions
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            3.1.x
+            5.0.x
+            6.0.x
+            7.0.x
+            8.0.x
+
+      - name: ⚙️ Setup GIT versioning
+        uses: dotnet/nbgv@v0.4.1
+        with:
+          setAllVars: true
+
+      - name: 🍥 Replace tokens in files
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+        env:
+          RELEASE_VERSION: ${{ env.NBGV_SimpleVersion }}${{ env.NBGV_PrereleaseVersion }}
+          RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
+
+      - name: 📄 Build bUnit
+        run: dotnet build -c release
+
+      - name: 🧪 Run sample unit tests
+        run: dotnet test docs/samples/samples.sln
+
+      - name: 📄 Build docs
+        working-directory: ./docs/site
+        run: |
+          dotnet tool install --global docfx --version 2.74.1
+          docfx metadata --logLevel error
+          docfx build --logLevel warning --warningsAsErrors
+
+  dependency-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    if: github.event_name == 'pull_request' && github.repository_owner == 'bunit-dev'
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v3
+
+  release-preview:
+    if: github.event_name == 'workflow_dispatch' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2')
+    runs-on: ubuntu-latest
+    needs: [ validate-nuget, run-test, validate_template, validate-docs ]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.NUGET_PACKAGES_ARTIFACT }}
+          path: ${{ env.NUGET_DIRECTORY }}
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+
+      - name: 🛠️ Upload library to GitHub Package Repository
+        run: dotnet nuget push ${{ env.NUGET_DIRECTORY }}/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bunit-dev/index.json --skip-duplicate --no-symbols
+
+      - name: 🛠️ Upload library to NuGet.org repository
+        run: dotnet nuget push ${{ env.NUGET_DIRECTORY }}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols

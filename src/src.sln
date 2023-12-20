@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit", "bunit\bunit.csproj", "{91DF582A-7C2B-4437-AB28-EE9FBED907A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.core", "bunit.core\bunit.core.csproj", "{EC350F53-49A3-498A-B349-59BC6C0EB236}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.template", "bunit.template\bunit.template.csproj", "{1E035DBC-EFCF-4A4B-86A3-A4AA0E3A1EEE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web", "bunit.web\bunit.web.csproj", "{73994570-A89F-4726-8A6F-DFA53947DD29}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.web.query", "bunit.web.query\bunit.web.query.csproj", "{F3C4F8A2-1B48-4E70-B66B-E14E97C38927}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bunit.template (1)", "bunit.template (1)", "{C7995CF2-FFAB-4409-8AFB-74698442B784}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Company.BlazorTests1", "bunit.template\template\Company.BlazorTests1.csproj", "{537418EE-DC2C-4611-B16A-B986D41740EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91DF582A-7C2B-4437-AB28-EE9FBED907A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91DF582A-7C2B-4437-AB28-EE9FBED907A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91DF582A-7C2B-4437-AB28-EE9FBED907A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91DF582A-7C2B-4437-AB28-EE9FBED907A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC350F53-49A3-498A-B349-59BC6C0EB236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC350F53-49A3-498A-B349-59BC6C0EB236}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC350F53-49A3-498A-B349-59BC6C0EB236}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC350F53-49A3-498A-B349-59BC6C0EB236}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E035DBC-EFCF-4A4B-86A3-A4AA0E3A1EEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E035DBC-EFCF-4A4B-86A3-A4AA0E3A1EEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E035DBC-EFCF-4A4B-86A3-A4AA0E3A1EEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E035DBC-EFCF-4A4B-86A3-A4AA0E3A1EEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73994570-A89F-4726-8A6F-DFA53947DD29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73994570-A89F-4726-8A6F-DFA53947DD29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73994570-A89F-4726-8A6F-DFA53947DD29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73994570-A89F-4726-8A6F-DFA53947DD29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3C4F8A2-1B48-4E70-B66B-E14E97C38927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3C4F8A2-1B48-4E70-B66B-E14E97C38927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3C4F8A2-1B48-4E70-B66B-E14E97C38927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3C4F8A2-1B48-4E70-B66B-E14E97C38927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{537418EE-DC2C-4611-B16A-B986D41740EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{537418EE-DC2C-4611-B16A-B986D41740EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{537418EE-DC2C-4611-B16A-B986D41740EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{537418EE-DC2C-4611-B16A-B986D41740EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{537418EE-DC2C-4611-B16A-B986D41740EE} = {C7995CF2-FFAB-4409-8AFB-74698442B784}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {28522EFE-F7F9-42C1-9A91-EC9D8EC08CDB}
+	EndGlobalSection
+EndGlobal

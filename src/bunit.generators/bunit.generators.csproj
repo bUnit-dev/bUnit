@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>12.0</LangVersion>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<RootNamespace>Bunit</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Build instructions">
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<!-- Creates a regular package and a symbols package -->
+		<IncludeSymbols>true</IncludeSymbols>
+		<!-- Creates symbol package in the new .snupkg format -->
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<!--
+		Instruct the build system to embed project source files that are not tracked by the source control
+		or imported from a source package to the generated PDB.
+		-->
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
+		<DebugType>embedded</DebugType>
+		<Deterministic>true</Deterministic>
+
+		<EnablePackageValidation>true</EnablePackageValidation>
+		<GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
+	</PropertyGroup>
+
+	<PropertyGroup Label="NuGet package information">
+		<PackageId>bunit.generators</PackageId>
+		<Title>bUnit.generators</Title>
+		<Description>
+			bUnit.generators is an extension to bUnit that provides code generators for stubbing components.
+		</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/bUnit-dev/bUnit</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://bunit.egilhansen.com</PackageProjectUrl>
+		<PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
+		<Authors>Egil Hansen</Authors>
+		<Company>Egil Hansen</Company>
+		<Copyright>Egil Hansen</Copyright>
+		<Product>bUnit</Product>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<PackageIcon>bunit-logo.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReleaseNotes>
+			Changes in bUnit #{RELEASE_VERSION}#
+
+			#{RELEASE_NOTES}#
+
+			See the full changelog at https://github.com/bUnit-dev/bUnit/releases
+		</PackageReleaseNotes>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\bunit-logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Meziantou.Polyfill" Version="1.0.31">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" PrivateAssets="All" />
+	</ItemGroup>
+</Project>
