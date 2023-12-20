@@ -6,18 +6,20 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.26.64] - 2023-12-20
+
 ### Changed
 
-- Upgraded AngleSharp to 1.0.7.
+-   Upgraded AngleSharp to 1.0.7.
 
 ### Fixed
 
-- When the `TestContext` was disposed, the Blazor Renderer itself didn't dispose components under test. By [@linkdotnet](https://github.com/linkdotnet).
-- When navigating, the `HistoryEntryState` on `NavigationManager` will be populated. By [@linkdotnet](https://github.com/linkdotnet).
+-   When the `TestContext` was disposed, the Blazor Renderer itself didn't dispose components under test. By [@linkdotnet](https://github.com/linkdotnet).
+-   When navigating, the `HistoryEntryState` on `NavigationManager` will be populated. By [@linkdotnet](https://github.com/linkdotnet).
 
 ### Added
 
-- New overloads for `IRenderedFragmentBase.InvokeAsync` that allow retrieving the work item's return value. By [@jcparkyn](https://github.com/jcparkyn).
+-   New overloads for `IRenderedFragmentBase.InvokeAsync` that allow retrieving the work item's return value. By [@jcparkyn](https://github.com/jcparkyn).
 
 ## [1.25.3] - 2023-11-14
 
@@ -1345,7 +1347,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.25.3...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.26.64...HEAD
+
+[1.26.64]: https://github.com/bUnit-dev/bUnit/compare/v1.25.3...v1.26.64
 
 [1.25.3]: https://github.com/bUnit-dev/bUnit/compare/v1.24.10...1.25.3
 
