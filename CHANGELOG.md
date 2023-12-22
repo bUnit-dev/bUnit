@@ -10,7 +10,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Changed
 
--   Upgraded AngleSharp to 1.0.7.
+-   Upgraded AngleSharp to 1.0.7. Info: The usage of `AngleSharpWrappers` is not needed anymore. Any usage of `Unwrap` should not be needed anymore.
 
 ### Fixed
 
