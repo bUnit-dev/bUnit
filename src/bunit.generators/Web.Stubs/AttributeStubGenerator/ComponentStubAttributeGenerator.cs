@@ -73,8 +73,9 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 	{
 		var hasSomethingToStub = false;
 		var targetTypeSymbol = (INamedTypeSymbol)classInfo!.TargetType;
-		var sourceBuilder = new StringBuilder();
+		var sourceBuilder = new StringBuilder(1000);
 
+		sourceBuilder.AppendLine(HeaderProvider.Header);
 		sourceBuilder.AppendLine($"namespace {classInfo.Namespace};");
 
 		sourceBuilder.AppendLine(
@@ -104,7 +105,7 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 				: "\t[global::Microsoft.AspNetCore.Components.CascadingParameter]";
 
 			sourceBuilder.AppendLine(attributeLine);
-			sourceBuilder.AppendLine($"\tpublic {propertyType} {propertyName} {{ get; set; }}");
+			sourceBuilder.AppendLine($"\tpublic {propertyType} {propertyName} {{ get; set; }} = default!;");
 		}
 
 		sourceBuilder.AppendLine("}");

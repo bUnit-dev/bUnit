@@ -13,8 +13,9 @@ internal static class StubComponentBuilder
 	{
 		var hasSomethingToStub = false;
 		var targetTypeSymbol = (INamedTypeSymbol)classInfo!.TargetType;
-		var sourceBuilder = new StringBuilder();
+		var sourceBuilder = new StringBuilder(1000);
 
+		sourceBuilder.AppendLine(HeaderProvider.Header);
 		sourceBuilder.AppendLine($"namespace {classInfo.TargetTypeNamespace};");
 		sourceBuilder.AppendLine();
 		sourceBuilder.AppendLine($"internal partial class {classInfo.StubClassName} : global::Microsoft.AspNetCore.Components.ComponentBase");
@@ -39,7 +40,7 @@ internal static class StubComponentBuilder
 			var attributeLine = GetAttributeLine(member);
 			sourceBuilder.AppendLine(attributeLine);
 
-			sourceBuilder.AppendLine($"\tpublic {propertyType} {propertyName} {{ get; set; }}");
+			sourceBuilder.AppendLine($"\tpublic {propertyType} {propertyName} {{ get; set; }} = default!;");
 		}
 
 		sourceBuilder.AppendLine("}");
