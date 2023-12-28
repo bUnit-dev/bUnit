@@ -124,7 +124,8 @@ public class AddStubGenerator : IIncrementalGenerator
 		                         """;
 
 		// Generate the interceptor
-		var interceptorSource = new StringBuilder();
+		var interceptorSource = new StringBuilder(1000);
+		interceptorSource.AppendLine(HeaderProvider.Header);
 		interceptorSource.AppendLine(attribute);
 		interceptorSource.AppendLine();
 		interceptorSource.AppendLine("namespace Bunit");
