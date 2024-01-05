@@ -39,7 +39,6 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 
 	private static StubClassInfo GetStubClassInfo(GeneratorAttributeSyntaxContext context)
 	{
-#pragma warning disable RS1035
 		foreach (var attribute in context.TargetSymbol.GetAttributes())
 		{
 			if (context.TargetSymbol is not ITypeSymbol stubbedType)
