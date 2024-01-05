@@ -82,3 +82,11 @@ internal partial class ThirdPartyStub { }
 ```
 
 Current limitations of this approach is that he stubbed type is not allowed to be nested inside the test class.
+
+## Reported Diagnostics
+The generators will report a range of diagnostics to help understanding what issue is present. The following table shows the diagnostics that are reported.
+
+| Diagnostic ID | Error                                           | Severity | Description                                                                  |
+| ------------- | ----------------------------------------------- | -------- | ---------------------------------------------------------------------------- |
+| BUNIT0001     | Stubbing nested classes ({0}) is not supported. | Warning  | Types annotated with `ComponentStub` can not be nested inside another class. |
+| BUNIT0002     | Class ({0}) is not partial.                     | Warning  | Types annotated with `ComponentStub` must be partial.                        |
