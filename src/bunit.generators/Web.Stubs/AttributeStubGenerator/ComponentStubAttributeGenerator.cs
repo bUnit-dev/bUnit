@@ -132,13 +132,17 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 
 	private static bool CheckDiagnostics(StubClassInfo classInfo, SourceProductionContext context)
 	{
+		const string helpUrl = "https://bunit.dev/docs/extensions/bunit-generators.html";
+
 		if (classInfo.IsNestedClass)
 		{
 			context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(
 					"BUNIT0001",
 					"Stubbing nested classes is not supported",
 					"Stubbing nested classes ({0}) is not supported.",
-					"Bunit", DiagnosticSeverity.Warning, true),
+					"Bunit", DiagnosticSeverity.Warning,
+					isEnabledByDefault: true,
+					helpLinkUri: helpUrl),
 				Location.None,
 				classInfo.TargetType.ToDisplayString()));
 			return true;
@@ -150,7 +154,9 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 					"BUNIT0002",
 					"Stubbing non-partial classes is not supported",
 					"Class ({0}) is not partial.",
-					"Bunit", DiagnosticSeverity.Warning, true),
+					"Bunit", DiagnosticSeverity.Warning,
+					isEnabledByDefault: true,
+					helpLinkUri: helpUrl),
 				Location.None,
 				classInfo.TargetType.ToDisplayString()));
 			return true;
