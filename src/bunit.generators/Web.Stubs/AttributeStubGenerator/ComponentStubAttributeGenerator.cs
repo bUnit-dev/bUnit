@@ -30,7 +30,7 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 				transform: static (ctx, _) => GetStubClassInfo(ctx))
 			.Where(static m => m is not null);
 
-		context.RegisterImplementationSourceOutput(
+		context.RegisterSourceOutput(
 			classesToStub,
 			static (spc, source) => Execute(source, spc));
 	}
@@ -86,23 +86,13 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.CascadingParameterAttribute");
 		}
 
-		static string GetAttributeLineForMember(ISymbol member)
-		{
-			var isParameterAttribute = member.GetAttributes().Any(attr =>
-				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.ParameterAttribute");
-			var attributeLine = isParameterAttribute
-				? "\t[global::Microsoft.AspNetCore.Components.Parameter]"
-				: "\t[global::Microsoft.AspNetCore.Components.CascadingParameter]";
-			return attributeLine;
-		}
-
 		static StubPropertyInfo CreateFromProperty(IPropertySymbol member)
 		{
 			return new StubPropertyInfo
 			{
 				Name = member.Name,
 				Type = member.Type.ToDisplayString(),
-				AttributeLine = GetAttributeLineForMember(member),
+				AttributeLine = AttributeLineGenerator.GetAttributeLine(member),
 			};
 		}
 	}
