@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -58,65 +59,31 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 				continue;
 			}
 
+			var parameter = attribute.AttributeClass!.TypeArguments
+				.SelectMany(s => s.GetMembers())
+				.OfType<IPropertySymbol>()
+				.Where(IsParameterOrCascadingParameter)
+				.Select(CreateFromProperty)
+				.ToImmutableArray();
+
 			return new StubClassInfo
 			{
 				ClassName = className,
 				Namespace = namespaceName,
-				TargetType = originalTypeToStub,
 				Visibility = visibility,
 				IsNestedClass = context.TargetSymbol.ContainingType is not null,
 				IsPartial = isPartial,
+				Properties = parameter,
 			};
 		}
 
 		return null;
-	}
 
-	private static void Execute(StubClassInfo classInfo, SourceProductionContext context)
-	{
-		if (CheckDiagnostics(classInfo, context))
+		static bool IsParameterOrCascadingParameter(ISymbol member)
 		{
-			return;
-		}
-
-		var hasSomethingToStub = false;
-		var targetTypeSymbol = (INamedTypeSymbol)classInfo!.TargetType;
-		var sourceBuilder = new StringBuilder(1000);
-
-		sourceBuilder.AppendLine(HeaderProvider.Header);
-		sourceBuilder.AppendLine($"namespace {classInfo.Namespace};");
-
-		sourceBuilder.AppendLine(
-			$"{classInfo.Visibility} partial class {classInfo.ClassName} : global::Microsoft.AspNetCore.Components.ComponentBase");
-		sourceBuilder.Append("{");
-
-		foreach (var member in targetTypeSymbol
-			         .GetMembers()
-			         .OfType<IPropertySymbol>()
-			         .Where(p => p.GetAttributes()
-				         .Any(attr =>
-					         attr.AttributeClass?.ToDisplayString() ==
-					         "Microsoft.AspNetCore.Components.ParameterAttribute" ||
-					         attr.AttributeClass?.ToDisplayString() ==
-					         "Microsoft.AspNetCore.Components.CascadingParameterAttribute")))
-		{
-			sourceBuilder.AppendLine();
-
-			hasSomethingToStub = true;
-			var propertyType = member.Type.ToDisplayString();
-			var propertyName = member.Name;
-
-			var attributeLine = GetAttributeLineForMember(member);
-
-			sourceBuilder.AppendLine(attributeLine);
-			sourceBuilder.AppendLine($"\tpublic {propertyType} {propertyName} {{ get; set; }} = default!;");
-		}
-
-		sourceBuilder.AppendLine("}");
-
-		if (hasSomethingToStub)
-		{
-			context.AddSource($"{classInfo.ClassName}.g.cs", sourceBuilder.ToString());
+			return member.GetAttributes().Any(attr =>
+				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.ParameterAttribute" ||
+				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.CascadingParameterAttribute");
 		}
 
 		static string GetAttributeLineForMember(ISymbol member)
@@ -127,6 +94,53 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 				? "\t[global::Microsoft.AspNetCore.Components.Parameter]"
 				: "\t[global::Microsoft.AspNetCore.Components.CascadingParameter]";
 			return attributeLine;
+		}
+
+		static StubPropertyInfo CreateFromProperty(IPropertySymbol member)
+		{
+			return new StubPropertyInfo
+			{
+				Name = member.Name,
+				Type = member.Type.ToDisplayString(),
+				AttributeLine = GetAttributeLineForMember(member),
+			};
+		}
+	}
+
+	private static void Execute(StubClassInfo classInfo, SourceProductionContext context)
+	{
+		if (CheckDiagnostics(classInfo, context))
+		{
+			return;
+		}
+
+		var hasSomethingToStub = false;
+		var sourceBuilder = new StringBuilder(1000);
+
+		sourceBuilder.AppendLine(HeaderProvider.Header);
+		sourceBuilder.AppendLine($"namespace {classInfo.Namespace};");
+
+		sourceBuilder.AppendLine(
+			$"{classInfo.Visibility} partial class {classInfo.ClassName} : global::Microsoft.AspNetCore.Components.ComponentBase");
+		sourceBuilder.Append("{");
+
+		foreach (var member in classInfo.Properties)
+		{
+			sourceBuilder.AppendLine();
+
+			hasSomethingToStub = true;
+			var propertyType = member.Type;
+			var propertyName = member.Name;
+
+			sourceBuilder.AppendLine(member.AttributeLine);
+			sourceBuilder.AppendLine($"\tpublic {propertyType} {propertyName} {{ get; set; }} = default!;");
+		}
+
+		sourceBuilder.AppendLine("}");
+
+		if (hasSomethingToStub)
+		{
+			context.AddSource($"{classInfo.ClassName}.g.cs", sourceBuilder.ToString());
 		}
 	}
 
@@ -144,7 +158,7 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 					isEnabledByDefault: true,
 					helpLinkUri: helpUrl),
 				Location.None,
-				classInfo.TargetType.ToDisplayString()));
+				classInfo.ClassName));
 			return true;
 		}
 
@@ -158,7 +172,7 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 					isEnabledByDefault: true,
 					helpLinkUri: helpUrl),
 				Location.None,
-				classInfo.TargetType.ToDisplayString()));
+				classInfo.ClassName));
 			return true;
 		}
 
@@ -170,8 +184,16 @@ internal sealed record StubClassInfo
 {
 	public string ClassName { get; set; }
 	public string Namespace { get; set; }
-	public ITypeSymbol TargetType { get; set; }
+	public ImmutableArray<StubPropertyInfo> Properties { get; set; } = ImmutableArray<StubPropertyInfo>.Empty;
 	public string Visibility { get; set; }
 	public bool IsNestedClass { get; set; }
 	public bool IsPartial { get; set; }
 }
+
+internal sealed record StubPropertyInfo
+{
+	public string Name { get; set; }
+	public string Type { get; set; }
+	public string AttributeLine { get; set; }
+}
+
