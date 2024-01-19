@@ -29,7 +29,7 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 				transform: static (ctx, _) => GetStubClassInfo(ctx))
 			.Where(static m => m is not null);
 
-		context.RegisterSourceOutput(
+		context.RegisterImplementationSourceOutput(
 			classesToStub,
 			static (spc, source) => Execute(source, spc));
 	}
@@ -166,7 +166,7 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 	}
 }
 
-internal sealed class StubClassInfo
+internal sealed record StubClassInfo
 {
 	public string ClassName { get; set; }
 	public string Namespace { get; set; }

@@ -27,7 +27,7 @@ public class AddStubGenerator : IIncrementalGenerator
 			.Where(static m => m is not null)
 			.Collect();
 
-		context.RegisterSourceOutput(
+		context.RegisterImplementationSourceOutput(
 			classesToStub,
 			static (spc, source) => Execute(source, spc));
 	}
@@ -153,7 +153,7 @@ public class AddStubGenerator : IIncrementalGenerator
 	}
 }
 
-internal sealed class AddStubClassInfo
+internal sealed record AddStubClassInfo
 {
 	public string StubClassName { get; set; }
 	public string TargetTypeNamespace { get; set; }
