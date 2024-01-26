@@ -5,7 +5,6 @@ using System.Reflection;
 
 namespace Bunit.Web.AngleSharp;
 
-[UsesVerify]
 public class WrapperElementsGeneratorTest
 {
 	[Fact]
