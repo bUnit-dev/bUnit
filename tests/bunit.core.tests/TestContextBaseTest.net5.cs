@@ -50,12 +50,16 @@ public partial class TestContextBaseTest : TestContext
 	[Fact(DisplayName = "DisposeComponents captures exceptions from DisposeAsync in Renderer.UnhandledException")]
 	public async Task Test201()
 	{
-		RenderComponent<AsyncThrowExceptionComponent>();
+		var tcs = new TaskCompletionSource();
+		var expected = new NotSupportedException();
+		RenderComponent<AsyncThrowExceptionComponent>(
+			ps => ps.Add(p => p.DisposedTask, tcs.Task));
 
 		DisposeComponents();
 
-		var exception = await Renderer.UnhandledException;
-		exception.ShouldBeOfType<NotSupportedException>();
+		tcs.SetException(expected);
+		var actual = await Renderer.UnhandledException;
+		actual.ShouldBeSameAs(expected);
 	}
 
 	[Fact(DisplayName = "DisposeComponents calls DisposeAsync on rendered components")]
@@ -140,10 +144,12 @@ public partial class TestContextBaseTest : TestContext
 
 	private sealed class AsyncThrowExceptionComponent : ComponentBase, IAsyncDisposable
 	{
+		[Parameter]
+		public Task DisposedTask { get; set; }
+
 		public async ValueTask DisposeAsync()
 		{
-			await Task.Delay(30);
-			throw new NotSupportedException();
+			await DisposedTask;
 		}
 	}
 
