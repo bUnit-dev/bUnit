@@ -51,7 +51,7 @@ jobs:
           8.0.x
 
     - name: ⚙️ Setup GIT versioning
-      uses: dotnet/nbgv@v0.4.1
+      uses: dotnet/nbgv@v0.4.2
       with:
         setAllVars: true
 
@@ -163,7 +163,7 @@ jobs:
           path: ${{ env.NUGET_DIRECTORY }}
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.1
+        uses: dotnet/nbgv@v0.4.2
         with:
           setAllVars: true
 
@@ -211,7 +211,7 @@ jobs:
             8.0.x
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.1
+        uses: dotnet/nbgv@v0.4.2
         with:
           setAllVars: true
 
