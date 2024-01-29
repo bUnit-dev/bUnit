@@ -50,7 +50,7 @@ jobs:
           git config --global commit.gpgsign true
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.1
+        uses: dotnet/nbgv@v0.4.2
         with:
           setAllVars: true
 
