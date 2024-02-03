@@ -25,6 +25,7 @@
 ## [Emulating IJSRuntime](xref:emulating-ijsruntime)
 ## [Faking authorization](xref:faking-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
+## [Mocking Localizer](xref:mocking-localizer)
 ## [Faking PersistentComponentState](xref:faking-persistentcomponentstate)
 ## [Faking NavigationManager](xref:fake-navigation-manager)
 ## [Faking IWebAssemblyHostEnvironment](xref:fake-webassemblyhostenvironment)
