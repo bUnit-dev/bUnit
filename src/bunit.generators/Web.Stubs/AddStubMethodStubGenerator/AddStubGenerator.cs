@@ -99,9 +99,7 @@ public class AddStubGenerator : IIncrementalGenerator
 
 		static bool IsParameterOrCascadingParameter(ISymbol member)
 		{
-			return member.GetAttributes().Any(attr =>
-				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.ParameterAttribute" ||
-				attr.AttributeClass?.ToDisplayString() == "Microsoft.AspNetCore.Components.CascadingParameterAttribute");
+			return member.GetAttributes().Any(SupportedAttributes.IsSupportedAttribute);
 		}
 
 		static StubPropertyInfo CreateFromProperty(IPropertySymbol member)

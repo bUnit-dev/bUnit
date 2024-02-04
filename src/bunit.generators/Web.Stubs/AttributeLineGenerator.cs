@@ -6,19 +6,14 @@ namespace Bunit.Web.Stubs;
 
 internal static class AttributeLineGenerator
 {
-	private const string CascadingParameterAttributeQualifier = "Microsoft.AspNetCore.Components.CascadingParameterAttribute";
-	private const string ParameterAttributeQualifier = "Microsoft.AspNetCore.Components.ParameterAttribute";
-
 	public static string GetAttributeLine(ISymbol member)
 	{
-		var attribute = member.GetAttributes().First(attr =>
-			attr.AttributeClass?.ToDisplayString() == ParameterAttributeQualifier ||
-			attr.AttributeClass?.ToDisplayString() == CascadingParameterAttributeQualifier);
+		var attribute = member.GetAttributes().First(SupportedAttributes.IsSupportedAttribute);
 
 		var attributeLine = new StringBuilder("\t[");
-		if (attribute.AttributeClass?.ToDisplayString() == ParameterAttributeQualifier)
+		if (attribute.AttributeClass?.ToDisplayString() == SupportedAttributes.ParameterAttributeQualifier)
 		{
-			attributeLine.Append($"global::{ParameterAttributeQualifier}");
+			attributeLine.Append($"global::{SupportedAttributes.ParameterAttributeQualifier}");
 			var captureUnmatchedValuesArg = attribute.NamedArguments
 				.FirstOrDefault(arg => arg.Key == "CaptureUnmatchedValues").Value;
 			if (captureUnmatchedValuesArg.Value is bool captureUnmatchedValues)
@@ -27,9 +22,41 @@ internal static class AttributeLineGenerator
 				attributeLine.Append($"(CaptureUnmatchedValues = {captureString})");
 			}
 		}
-		else if (attribute.AttributeClass?.ToDisplayString() == CascadingParameterAttributeQualifier)
+		else if (attribute.AttributeClass?.ToDisplayString() == SupportedAttributes.CascadingParameterAttributeQualifier)
 		{
-			attributeLine.Append($"global::{CascadingParameterAttributeQualifier}");
+			attributeLine.Append($"global::{SupportedAttributes.CascadingParameterAttributeQualifier}");
+			var nameArg = attribute.NamedArguments.FirstOrDefault(arg => arg.Key == "Name").Value;
+			if (!nameArg.IsNull)
+			{
+				attributeLine.Append($"(Name = \"{nameArg.Value}\")");
+			}
+		}
+		else if (attribute.AttributeClass?.ToDisplayString() == SupportedAttributes.SupplyParameterFromQueryAttributeQualifier)
+		{
+			attributeLine.Append($"global::{SupportedAttributes.SupplyParameterFromQueryAttributeQualifier}");
+			var nameArg = attribute.NamedArguments.FirstOrDefault(arg => arg.Key == "Name").Value;
+			if (!nameArg.IsNull)
+			{
+				attributeLine.Append($"(Name = \"{nameArg.Value}\")");
+			}
+		}
+		else if (attribute.AttributeClass?.ToDisplayString() == SupportedAttributes.SupplyParameterFromFormAttributeQualifier)
+		{
+			attributeLine.Append($"global::{SupportedAttributes.SupplyParameterFromFormAttributeQualifier}");
+			var nameArg = attribute.NamedArguments.FirstOrDefault(arg => arg.Key == "Name").Value;
+			if (!nameArg.IsNull)
+			{
+				attributeLine.Append($"(Name = \"{nameArg.Value}\")");
+			}
+			var formNameArg = attribute.NamedArguments.FirstOrDefault(arg => arg.Key == "FormName").Value;
+			if (!formNameArg.IsNull)
+			{
+				attributeLine.Append($", (FormName = \"{formNameArg.Value}\")");
+			}
+		}
+		else if (attribute.AttributeClass?.ToDisplayString() == SupportedAttributes.SupplyParameterFromQueryAttributeQualifier)
+		{
+			attributeLine.Append($"global::{SupportedAttributes.SupplyParameterFromQueryAttributeQualifier}");
 			var nameArg = attribute.NamedArguments.FirstOrDefault(arg => arg.Key == "Name").Value;
 			if (!nameArg.IsNull)
 			{
