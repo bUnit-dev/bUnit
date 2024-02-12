@@ -109,7 +109,7 @@ jobs:
       - name: Validate package
         shell: pwsh
         run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NUGET_DIRECTORY }}/*.nupkg") --excluded-rules IconMustBeSet
-        
+
   run-test:
     strategy:
       fail-fast: false
@@ -134,7 +134,7 @@ jobs:
             8.0.x
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c release
+        run: dotnet test -c release --blame --blame-crash --blame-hang
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()

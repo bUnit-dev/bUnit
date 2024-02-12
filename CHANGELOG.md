@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+- Support for `IKeyedServiceProvider` in net8.0. Reported by [@ViRuSTriNiTy](https://github.com/ViRuSTriNiTy). By [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.26.64] - 2023-12-20
 
 ### Changed
