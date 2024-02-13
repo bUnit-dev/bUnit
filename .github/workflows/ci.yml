@@ -134,7 +134,7 @@ jobs:
             8.0.x
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c release --blame --blame-crash --blame-hang
+        run: dotnet test -c release
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
