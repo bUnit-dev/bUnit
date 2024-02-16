@@ -11,7 +11,7 @@ using URI = Uri;
 /// </summary>
 public sealed class FakeNavigationManager : NavigationManager
 {
-	private readonly ITestRenderer renderer;
+	private readonly TestContextBase testContextBase;
 	private readonly Stack<NavigationHistory> history = new();
 
 	/// <summary>
@@ -27,9 +27,9 @@ public sealed class FakeNavigationManager : NavigationManager
 	/// Initializes a new instance of the <see cref="FakeNavigationManager"/> class.
 	/// </summary>
 	[SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "By design. Fake navigation manager defaults to local host as base URI.")]
-	public FakeNavigationManager(ITestRenderer renderer)
+	public FakeNavigationManager(TestContextBase testContextBase)
 	{
-		this.renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
+		this.testContextBase = testContextBase;
 		Initialize("http://localhost/", "http://localhost/");
 	}
 
@@ -48,7 +48,7 @@ public sealed class FakeNavigationManager : NavigationManager
 		Uri = ToAbsoluteUri(uri).OriginalString;
 		history.Push(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
 
-		renderer.Dispatcher.InvokeAsync(() =>
+		testContextBase.Renderer.Dispatcher.InvokeAsync(() =>
 		{
 			Uri = absoluteUri.OriginalString;
 
@@ -87,9 +87,9 @@ public sealed class FakeNavigationManager : NavigationManager
 
 #if NET7_0_OR_GREATER
 		HistoryEntryState = options.ForceLoad ? null : options.HistoryEntryState;
-		renderer.Dispatcher.InvokeAsync(async () =>
+		testContextBase.Renderer.Dispatcher.InvokeAsync(async () =>
 #else
-		renderer.Dispatcher.InvokeAsync(() =>
+		testContextBase.Renderer.Dispatcher.InvokeAsync(() =>
 #endif
 		{
 			Uri = absoluteUri.OriginalString;

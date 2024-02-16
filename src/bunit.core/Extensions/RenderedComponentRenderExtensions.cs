@@ -29,7 +29,7 @@ public static class RenderedComponentRenderExtensions
 		if (renderedComponent is null)
 			throw new ArgumentNullException(nameof(renderedComponent));
 
-		var renderer = renderedComponent.Services.GetRequiredService<TestRenderer>();
+		var renderer = (TestRenderer)renderedComponent.Services.GetRequiredService<TestContextBase>().Renderer;
 
 		try
 		{

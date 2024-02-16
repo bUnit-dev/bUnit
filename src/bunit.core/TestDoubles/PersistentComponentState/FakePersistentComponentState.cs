@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Infrastructure;
 using Microsoft.AspNetCore.Components.RenderTree;
@@ -23,7 +24,7 @@ public sealed class FakePersistentComponentState
 	};
 	private readonly FakePersistentComponentStateStore store;
 	private readonly Lazy<ComponentStatePersistenceManager> manager;
-	private readonly Lazy<Renderer> renderer;
+	private readonly Lazy<ITestRenderer> renderer;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="FakePersistentComponentState"/> class.
@@ -33,7 +34,7 @@ public sealed class FakePersistentComponentState
 	{
 		store = new FakePersistentComponentStateStore();
 		manager = new Lazy<ComponentStatePersistenceManager>(() => services.GetRequiredService<ComponentStatePersistenceManager>());
-		renderer = new Lazy<Renderer>(() => services.GetRequiredService<Renderer>());
+		renderer = new Lazy<ITestRenderer>(() => services.GetRequiredService<TestContextBase>().Renderer);
 	}
 
 	/// <summary>
@@ -48,7 +49,7 @@ public sealed class FakePersistentComponentState
 	/// </remarks>
 	public void TriggerOnPersisting()
 	{
-		manager.Value.PersistStateAsync(store, renderer.Value);
+		manager.Value.PersistStateAsync(store, (Renderer)renderer.Value);
 		manager.Value.RestoreStateAsync(store);
 	}
 

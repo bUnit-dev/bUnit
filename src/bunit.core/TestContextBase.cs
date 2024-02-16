@@ -19,7 +19,13 @@ public abstract class TestContextBase : IDisposable
 	/// <summary>
 	/// Gets the renderer used by the test context.
 	/// </summary>
-	public ITestRenderer Renderer => testRenderer ??= Services.GetRequiredService<ITestRenderer>();
+	public ITestRenderer Renderer => testRenderer ??= CreateTestRenderer();
+
+	/// <summary>
+	/// Hey YouTube, I'm a comment!
+	/// </summary>
+	/// <returns></returns>
+	protected abstract ITestRenderer CreateTestRenderer();
 
 	/// <summary>
 	/// Gets the service collection and service provider that is used when a

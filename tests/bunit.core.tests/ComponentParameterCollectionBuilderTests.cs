@@ -695,6 +695,38 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 
 		action.ShouldNotThrow();
 	}
+	
+#if NET8_0_OR_GREATER
+	[Fact(DisplayName = "Supplying query string should be reflected in component parameter")]
+	public void Test315()
+	{
+		var navigationManager = Services.GetRequiredService<NavigationManager>();
+		var uri = navigationManager.GetUriWithQueryParameter("Query", "Test");
+		navigationManager.NavigateTo(uri);
+		
+		var cut = RenderComponent<SupplyFromQueryParameterComponent>();
+		
+		cut.Instance.Query.ShouldBe("Test");
+	}
+
+	[Fact(DisplayName = "Throws an exception if a SupplyFromQueryParameter is passed as parameter")]
+	public void Test316()
+	{
+		Action action = () => RenderComponent<SupplyFromQueryParameterComponent>(
+			ps => ps.Add(p => p.Query, "Foo"));
+
+		action.ShouldThrow<ArgumentException>()
+			.Message
+			.ShouldBe("""
+			          To pass a value to a SupplyParameterFromQuery parameter, use the NavigationManager and navigate to the URI.
+			          For example:
+			          
+			          var uri = NavigationManager.GetUriWithQueryParameter("Query", "Foo");
+			          NavigationManager.NavigateTo(uri);
+			          """);
+	}
+	
+#endif
 
 #pragma warning disable S1144 // Unused private types or members should be removed
 	private class Params : ComponentBase
@@ -772,4 +804,18 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		[Parameter] public Expression<Func<string>> FacialExpressionExpression { get; set; }
 	}
 #pragma warning restore S1144 // Unused private types or members should be removed
+	
+#if NET8_0_OR_GREATER
+	private sealed class SupplyFromQueryParameterComponent : ComponentBase
+	{
+		[SupplyParameterFromQuery] public string Query { get; set; }
+		[CascadingParameter] public int Size { get; set; }
+
+		public override Task SetParametersAsync(ParameterView parameters)
+		{
+			Console.WriteLine();
+			return base.SetParametersAsync(parameters);
+		}
+	}
+#endif
 }
