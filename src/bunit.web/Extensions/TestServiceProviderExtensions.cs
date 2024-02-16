@@ -38,7 +38,7 @@ public static class TestServiceProviderExtensions
 
 		// bUnits fake Navigation Manager
 		services.AddSingleton<FakeNavigationManager>();
-		services.AddSingleton<NavigationManager>(s => s.GetRequiredService<FakeNavigationManager>());
+		services.AddScoped<NavigationManager>(s => s.GetRequiredService<FakeNavigationManager>());
 		services.AddSingleton<INavigationInterception, FakeNavigationInterception>();
 
 		// bUnits fake WebAssemblyHostEnvironment
@@ -48,14 +48,11 @@ public static class TestServiceProviderExtensions
 #if NET8_0_OR_GREATER
 		// bUnits fake ScrollToLocationHash
 		services.AddSingleton<IScrollToLocationHash, BunitScrollToLocationHash>();
+		services.AddSupplyValueFromQueryProvider();
 #endif
-		
+
 		// bUnit specific services
-		services.AddSingleton<TestContextBase>(testContext);
-		services.AddSingleton<WebTestRenderer>();
-		services.AddSingleton<TestRenderer>(s => s.GetRequiredService<WebTestRenderer>());
-		services.AddSingleton<Renderer>(s => s.GetRequiredService<WebTestRenderer>());
-		services.AddSingleton<ITestRenderer>(s => s.GetRequiredService<WebTestRenderer>());
+		services.AddSingleton(testContext);
 		services.AddSingleton<HtmlComparer>();
 		services.AddSingleton<BunitHtmlParser>();
 		services.AddSingleton<IRenderedComponentActivator, RenderedComponentActivator>();

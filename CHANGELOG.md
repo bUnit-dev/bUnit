@@ -9,6 +9,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Added
 - Support for `IKeyedServiceProvider` in net8.0. Reported by [@ViRuSTriNiTy](https://github.com/ViRuSTriNiTy). By [@linkdotnet](https://github.com/linkdotnet).
 
+### Fixed
+- Support for `SupplyFromQueryParameter` in net8.0. Reported by [@aayjaychan](https://github.com/aayjaychan). Fixed by [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.26.64] - 2023-12-20
 
 ### Changed

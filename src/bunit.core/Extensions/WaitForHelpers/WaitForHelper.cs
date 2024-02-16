@@ -56,7 +56,8 @@ public abstract class WaitForHelper<T> : IDisposable
 		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
 		renderer = (TestRenderer)renderedFragment
 			.Services
-			.GetRequiredService<ITestRenderer>();
+			.GetRequiredService<TestContextBase>()
+			.Renderer;
 		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
 		timer = new Timer(_ =>
 		{

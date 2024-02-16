@@ -1,6 +1,8 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Bunit.Extensions;
+using Bunit.Rendering;
 
 namespace Bunit;
 
@@ -48,7 +50,11 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, TValue>> parameterSelector, [AllowNull] TValue value)
 	{
+#if !NET8_0_OR_GREATER
 		var (name, cascadingValueName, isCascading) = GetParameterInfo(parameterSelector);
+#else
+		var (name, cascadingValueName, isCascading) = GetParameterInfo(parameterSelector, value);
+#endif
 		return isCascading
 			? AddCascadingValueParameter(cascadingValueName, value)
 			: AddParameter<TValue>(name, value);
@@ -338,7 +344,11 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		Action<TValue> changedAction,
 		Expression<Func<TValue>>? valueExpression = null)
 	{
+		#if !NET8_0_OR_GREATER
 		var (parameterName, _, isCascading) = GetParameterInfo(parameterSelector);
+		#else
+		var (parameterName, _, isCascading) = GetParameterInfo(parameterSelector, initialValue);
+		#endif
 
 		if (isCascading)
 			throw new ArgumentException("Using Bind with a cascading parameter is not allowed.", parameterName);
@@ -393,7 +403,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// or a <see cref="CascadingParameterAttribute"/>.
 	/// </summary>
 	/// <remarks>
-	/// This is an untyped version of the <see cref="Add{TValue}(Expression{Func{TComponent, TValue}}, TValue)"/> method. Always
+	/// This is an untyped version of this method named <see cref="AddUnmatched"/>. Always
 	/// prefer the strongly typed <c>Add</c> methods whenever possible.
 	/// </remarks>
 	/// <typeparam name="TValue">Value type.</typeparam>
@@ -426,7 +436,12 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <returns>The created <see cref="ComponentParameterCollection"/>.</returns>
 	public ComponentParameterCollection Build() => parameters;
 
-	private static (string Name, string? CascadingValueName, bool IsCascading) GetParameterInfo<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
+	private static (string Name, string? CascadingValueName, bool IsCascading) GetParameterInfo<TValue>(
+		Expression<Func<TComponent, TValue>> parameterSelector
+#if NET8_0_OR_GREATER
+		, object? value
+#endif
+		)
 	{
 		if (parameterSelector is null)
 			throw new ArgumentNullException(nameof(parameterSelector));
@@ -439,12 +454,47 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 			: propInfoCandidate;
 
 		var paramAttr = propertyInfo?.GetCustomAttribute<ParameterAttribute>(inherit: true);
+	#if !NET8_0_OR_GREATER
 		var cascadingParamAttr = propertyInfo?.GetCustomAttribute<CascadingParameterAttribute>(inherit: true);
 
 		if (propertyInfo is null || (paramAttr is null && cascadingParamAttr is null))
 			throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter] attribute.", nameof(parameterSelector));
 
 		return (propertyInfo.Name, CascadingValueName: cascadingParamAttr?.Name, IsCascading: cascadingParamAttr is not null);
+	#else
+		var cascadingParamAttrBase = propertyInfo?.GetCustomAttribute<CascadingParameterAttributeBase>(inherit: true);
+
+		if (propertyInfo is null || (paramAttr is null && cascadingParamAttrBase is null))
+			throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter]attribute.", nameof(parameterSelector));
+
+		if (cascadingParamAttrBase is null)
+			return (propertyInfo.Name, CascadingValueName: null, IsCascading: false);
+
+		var name = cascadingParamAttrBase switch
+		{
+			CascadingParameterAttribute cpa => cpa.Name,
+			SupplyParameterFromQueryAttribute s => throw CreateErrorMessageForSupplyFromQuery(value, propertyInfo, s.Name),
+			_ => throw new NotSupportedException($"The type '{cascadingParamAttrBase.GetType()}' is not supported"),
+		};
+
+		return (propertyInfo.Name, CascadingValueName: name, IsCascading: true);
+
+		static ArgumentException CreateErrorMessageForSupplyFromQuery(
+			object? value,
+			MemberInfo propertyInfo,
+			string? name)
+		{
+			var cascadingParameterName = name ?? propertyInfo.Name;
+
+			return new ArgumentException($"""
+			                              To pass a value to a SupplyParameterFromQuery parameter, use the NavigationManager and navigate to the URI.
+			                              For example:
+
+			                              var uri = NavigationManager.GetUriWithQueryParameter("{cascadingParameterName}", "{value}");
+			                              NavigationManager.NavigateTo(uri);
+			                              """);
+		}
+	#endif
 	}
 
 	private static bool HasChildContentParameter()
