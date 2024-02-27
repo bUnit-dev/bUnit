@@ -467,7 +467,11 @@ When rendering a `RenderFragment` using the <xref:Bunit.TestContext.Render(Micro
 ```
 
 ## Passing query parameters (`SupplyParameterFromQuery`) to a component
-Since .NET 6 components can receive parameters from the query string. From .NET 6 until .NET 8 `SupplyParameterFromQuery` also had to be a `Parameter`. The fact that they represent regular Blazor parameters means that <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` can be used. However, from .NET 8 onwards `SupplyParameterFromQuery` can be used without the need to be a `Parameter`. If it used without ther `Parameter` attribute, the <xref:Bunit.TestDoubles.FakeNavigationManager> can be used. 
+In .NET 6 and later, components can receive parameters from a query string if the parameter is annotated with the `[SupplyParameterFromQuery]` attribute in addition to the `[Parameter]` attribute. 
+
+In .NET 8 however, the `[Parameter]` attribute is no longer required, which means a value cannot be passed to the component during testing using the normal methods, e.g. the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, if a component parameter is only annotated with the `[SupplyParameterFromQuery]` attribute. Instead, pass a query string parameters by setting it using the <xref:Bunit.TestDoubles.FakeNavigationManager>.
+
+For example: 
 
 ```razor
 @code {
