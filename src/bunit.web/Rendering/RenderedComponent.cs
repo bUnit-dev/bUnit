@@ -1,6 +1,9 @@
+using System.Diagnostics;
+
 namespace Bunit.Rendering;
 
 /// <inheritdoc/>
+[DebuggerDisplay("Component={typeof(TComponent).Name,nq},RenderCount={RenderCount}")]
 internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent>
 	where TComponent : IComponent
 {
