@@ -3,12 +3,11 @@
 	<PropertyGroup>
 		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<RootNamespace>Bunit</RootNamespace>
-		<AssemblyName>Bunit.Web.Tests</AssemblyName>
+		<AssemblyName>Bunit.Tests</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\bunit.core\bunit.core.csproj" />
-		<ProjectReference Include="..\..\src\bunit.web\bunit.web.csproj" />
+		<ProjectReference Include="..\..\src\bunit\bunit.csproj" />	
 		<ProjectReference Include="..\bunit.testassets\bunit.testassets.csproj" />
 	</ItemGroup>
 
@@ -21,5 +20,5 @@
 			<NoWarn>NU1701</NoWarn>
 		</PackageReference>
 	</ItemGroup>
-	
+
 </Project>
