@@ -22,3 +22,6 @@ public static class Extensions
     }
 }
 ```
+
+## Merge of `bunit.core` and `bunit.web`
+The `bunit.core` and `bunit.web` packages have been merged into a single `bunit` package. If you used either of these packages, you should remove them and install the `bunit` package instead.
