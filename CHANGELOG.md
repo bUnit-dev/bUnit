@@ -6,11 +6,18 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+- Support for `IKeyedServiceProvider` in net8.0. Reported by [@ViRuSTriNiTy](https://github.com/ViRuSTriNiTy). By [@linkdotnet](https://github.com/linkdotnet).
+- Support for `net9.0`. NOTE, there is no commitment as of now to support net9.0 in bUnit v1. However. Support for net9.0 may move to a future v2 release of bUnit and be deprecated in v1. However, allowing bUnit to build and work with net9.0 previews allows our users to keep testing! 
+
+### Fixed
+- Support for `SupplyFromQueryParameter` in net8.0. Reported by [@aayjaychan](https://github.com/aayjaychan). Fixed by [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.26.64] - 2023-12-20
 
 ### Changed
 
--   Upgraded AngleSharp to 1.0.7.
+-   Upgraded AngleSharp to 1.0.7. Info: The usage of `AngleSharpWrappers` is not needed anymore. Any usage of `Unwrap` should not be needed anymore.
 
 ### Fixed
 

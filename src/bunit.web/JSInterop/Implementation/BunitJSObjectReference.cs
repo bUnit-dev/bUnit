@@ -9,7 +9,10 @@ using Microsoft.JSInterop;
 namespace Bunit;
 
 [SuppressMessage("Minor Code Smell", "S1939:Inheritance list should not be redundant", Justification = "By design. To make it obvious that both is implemented.")]
-internal sealed class BunitJSObjectReference : IJSObjectReference, IJSInProcessObjectReference, IJSUnmarshalledObjectReference
+internal sealed class BunitJSObjectReference : IJSObjectReference, IJSInProcessObjectReference
+#if !NET9_0_OR_GREATER
+	, IJSUnmarshalledObjectReference
+#endif
 {
 	private BunitJSInterop JSInterop { get; }
 

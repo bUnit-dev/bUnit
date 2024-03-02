@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1;net5.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
 		<RootNamespace>Bunit</RootNamespace>
 		<AssemblyName>Bunit.Web.Query</AssemblyName>
 	</PropertyGroup>
@@ -42,6 +42,12 @@
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet8Version)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet8Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet8Version)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet9Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet9Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet9Version)" />
 	</ItemGroup>
 
 </Project>

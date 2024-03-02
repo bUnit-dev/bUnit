@@ -59,11 +59,18 @@ public class AddStubGenerator : IIncrementalGenerator
 		var line = lineSpan.StartLinePosition.Line + 1;
 		var column = lineSpan.Span.Start.Character + context.Node.ToString().IndexOf("AddStub", StringComparison.Ordinal) + 1;
 
+		var properties = symbol.GetMembers()
+				.OfType<IPropertySymbol>()
+				.Where(IsParameterOrCascadingParameter)
+				.Select(CreateFromProperty)
+				.ToImmutableArray();
+
 		return new AddStubClassInfo
 		{
 			StubClassName = $"{symbol.Name}Stub",
 			TargetTypeNamespace = symbol.ContainingNamespace.ToDisplayString(),
-			TargetType = symbol,
+			TargetTypeName = symbol.ToDisplayString(),
+			Properties = properties,
 			Path = path,
 			Line = line,
 			Column = column,
@@ -89,6 +96,21 @@ public class AddStubGenerator : IIncrementalGenerator
 		{
 			return compilation.Options.SourceReferenceResolver?.NormalizePath(tree.FilePath, baseFilePath: null) ?? tree.FilePath;
 		}
+
+		static bool IsParameterOrCascadingParameter(ISymbol member)
+		{
+			return member.GetAttributes().Any(SupportedAttributes.IsSupportedAttribute);
+		}
+
+		static StubPropertyInfo CreateFromProperty(IPropertySymbol member)
+		{
+			return new StubPropertyInfo
+			{
+				Name = member.Name,
+				Type = member.Type.ToDisplayString(),
+				AttributeLine = AttributeLineGenerator.GetAttributeLine(member),
+			};
+		}
 	}
 
 	private static void Execute(ImmutableArray<AddStubClassInfo> classInfos, SourceProductionContext context)
@@ -96,7 +118,7 @@ public class AddStubGenerator : IIncrementalGenerator
 		foreach (var stubClassGrouped in classInfos.GroupBy(c => c.UniqueQualifier))
 		{
 			var stubbedComponentGroup = stubClassGrouped.First();
-			var didStubComponent = StubComponentBuilder.GenerateStubComponent(stubbedComponentGroup, context);
+			var didStubComponent = GenerateStubComponent(stubbedComponentGroup, context);
 			if (didStubComponent)
 			{
 				GenerateInterceptorCode(stubbedComponentGroup, stubClassGrouped, context);
@@ -124,7 +146,8 @@ public class AddStubGenerator : IIncrementalGenerator
 		                         """;
 
 		// Generate the interceptor
-		var interceptorSource = new StringBuilder();
+		var interceptorSource = new StringBuilder(1000);
+		interceptorSource.AppendLine(HeaderProvider.Header);
 		interceptorSource.AppendLine(attribute);
 		interceptorSource.AppendLine();
 		interceptorSource.AppendLine("namespace Bunit");
@@ -143,22 +166,65 @@ public class AddStubGenerator : IIncrementalGenerator
 		interceptorSource.AppendLine("\t\t\twhere TComponent : global::Microsoft.AspNetCore.Components.IComponent");
 		interceptorSource.AppendLine("\t\t{");
 		interceptorSource.AppendLine(
-			$"\t\t\treturn factories.Add<global::{stubbedComponentGroup.TargetType.ToDisplayString()}, global::{stubbedComponentGroup.TargetTypeNamespace}.{stubbedComponentGroup.StubClassName}>();");
+			$"\t\t\treturn factories.Add<global::{stubbedComponentGroup.TargetTypeName}, global::{stubbedComponentGroup.TargetTypeNamespace}.{stubbedComponentGroup.StubClassName}>();");
 		interceptorSource.AppendLine("\t\t}");
 		interceptorSource.AppendLine("\t}");
 		interceptorSource.AppendLine("}");
 
 		context.AddSource($"Interceptor{stubbedComponentGroup.StubClassName}.g.cs", interceptorSource.ToString());
 	}
+
+	private static bool GenerateStubComponent(AddStubClassInfo classInfo, SourceProductionContext context)
+	{
+		var hasSomethingToStub = false;
+		var sourceBuilder = new StringBuilder(1000);
+
+		sourceBuilder.AppendLine(HeaderProvider.Header);
+		sourceBuilder.AppendLine($"namespace {classInfo.TargetTypeNamespace};");
+		sourceBuilder.AppendLine();
+		sourceBuilder.AppendLine($"internal partial class {classInfo.StubClassName} : global::Microsoft.AspNetCore.Components.ComponentBase");
+		sourceBuilder.Append("{");
+
+		foreach (var member in classInfo.Properties)
+		{
+			sourceBuilder.AppendLine();
+
+			hasSomethingToStub = true;
+			var propertyType = member.Type;
+			var propertyName = member.Name;
+
+			var attributeLine = member.AttributeLine;
+			sourceBuilder.AppendLine(attributeLine);
+
+			sourceBuilder.AppendLine($"\tpublic {propertyType} {propertyName} {{ get; set; }} = default!;");
+		}
+
+		sourceBuilder.AppendLine("}");
+
+		if (hasSomethingToStub)
+		{
+			context.AddSource($"{classInfo.StubClassName}.g.cs", sourceBuilder.ToString());
+		}
+
+		return hasSomethingToStub;
+	}
 }
 
-internal sealed class AddStubClassInfo
+internal sealed record AddStubClassInfo
 {
 	public string StubClassName { get; set; }
 	public string TargetTypeNamespace { get; set; }
+	public string TargetTypeName { get; set; }
 	public string UniqueQualifier => $"{TargetTypeNamespace}.{StubClassName}";
-	public ITypeSymbol TargetType { get; set; }
+	public ImmutableArray<StubPropertyInfo> Properties { get; set; } = ImmutableArray<StubPropertyInfo>.Empty;
 	public string Path { get; set; }
 	public int Line { get; set; }
 	public int Column { get; set; }
+}
+
+internal sealed record StubPropertyInfo
+{
+	public string Name { get; set; }
+	public string Type { get; set; }
+	public string AttributeLine { get; set; }
 }

@@ -2,7 +2,9 @@ namespace Bunit.Web.Stubs.AttributeStubGenerator;
 
 internal static class ComponentStubAttribute
 {
-	public static string ComponentStubAttributeSource = """
+	public static string ComponentStubAttributeSource = $$"""
+	                                                    {{HeaderProvider.Header}}
+
 	                                                    #if NET5_0_OR_GREATER
 	                                                    namespace Bunit;
 

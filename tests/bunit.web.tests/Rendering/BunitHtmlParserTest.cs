@@ -28,9 +28,8 @@ public class BunitHtmlParserTest
 		// "frame","frameset","image","isindex" // not supported
 	};
 
-	public static readonly IEnumerable<object[]> BodyHtmlAndSpecialElements = BodyHtmlElements
-		.Clone()
-		.AddRange("html", "head", "body");
+	public static readonly IEnumerable<object[]> BodyHtmlAndSpecialElements =
+		TheoryDataExtensions.AddRange(BodyHtmlElements.Clone(), "html", "head", "body");
 
 	public static readonly TheoryData<string> SvgElements = new TheoryData<string>
 	{

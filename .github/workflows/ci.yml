@@ -49,9 +49,10 @@ jobs:
           6.0.x
           7.0.x
           8.0.x
+          9.0.x
 
     - name: ⚙️ Setup GIT versioning
-      uses: dotnet/nbgv@v0.4.1
+      uses: dotnet/nbgv@v0.4.2
       with:
         setAllVars: true
 
@@ -109,7 +110,7 @@ jobs:
       - name: Validate package
         shell: pwsh
         run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NUGET_DIRECTORY }}/*.nupkg") --excluded-rules IconMustBeSet
-        
+
   run-test:
     strategy:
       fail-fast: false
@@ -132,6 +133,7 @@ jobs:
             6.0.x
             7.0.x
             8.0.x
+            9.0.x
 
       - name: 🧪 Run unit tests
         run: dotnet test -c release --blame --blame-crash --blame-hang
@@ -163,7 +165,7 @@ jobs:
           path: ${{ env.NUGET_DIRECTORY }}
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.1
+        uses: dotnet/nbgv@v0.4.2
         with:
           setAllVars: true
 
@@ -209,9 +211,10 @@ jobs:
             6.0.x
             7.0.x
             8.0.x
+            9.0.x
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.1
+        uses: dotnet/nbgv@v0.4.2
         with:
           setAllVars: true
 
@@ -245,7 +248,7 @@ jobs:
       - name: 'Checkout Repository'
         uses: actions/checkout@v4
       - name: 'Dependency Review'
-        uses: actions/dependency-review-action@v3
+        uses: actions/dependency-review-action@v4
 
   release-preview:
     if: github.event_name == 'workflow_dispatch' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2')

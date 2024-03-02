@@ -6,7 +6,11 @@ namespace Bunit;
 /// Represents a <see cref="IServiceProvider"/> and <see cref="IServiceCollection"/>
 /// as a single type used for test purposes.
 /// </summary>
+#if !NET8_0_OR_GREATER
 public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, IDisposable, IAsyncDisposable
+#else
+public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollection, IDisposable, IAsyncDisposable
+#endif
 {
 	private static readonly ServiceProviderOptions DefaultServiceProviderOptions = new() { ValidateScopes = true };
 	private readonly IServiceCollection serviceCollection;
@@ -229,6 +233,35 @@ public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, 
 		CheckInitializedAndThrow();
 		return serviceCollection.Remove(item);
 	}
+
+#if NET8_0_OR_GREATER
+	/// <inheritdoc/>
+	public object? GetKeyedService(Type serviceType, object? serviceKey)
+	{
+		if (serviceProvider is null)
+			InitializeProvider();
+
+		if (serviceProvider is IKeyedServiceProvider keyedServiceProvider)
+		{
+			var value = keyedServiceProvider.GetKeyedService(serviceType, serviceKey);
+			if (value is not null)
+				return value;
+		}
+
+		if (fallbackServiceProvider is IKeyedServiceProvider fallbackKeyedServiceProvider)
+			return fallbackKeyedServiceProvider.GetKeyedService(serviceType, serviceKey);
+
+		return default;
+	}
+
+	/// <inheritdoc/>
+	public object GetRequiredKeyedService(Type serviceType, object? serviceKey)
+	{
+		var service = GetKeyedService(serviceType, serviceKey) ?? throw new InvalidOperationException($"No service for type '{serviceType}' and key '{serviceKey}' has been registered.");
+
+		return service;
+	}
+#endif
 
 	private void CheckInitializedAndThrow()
 	{

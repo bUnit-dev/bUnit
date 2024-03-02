@@ -64,6 +64,4 @@ public class AddStubGeneratorTests : TestContext
 }
 
 [ComponentStub<ButtonComponent>]
-public partial class ButtonComponentStub
-{
-}
+public partial class ButtonComponentStub;

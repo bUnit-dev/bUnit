@@ -7,6 +7,7 @@
 		<DotNet6Version>6.0.*</DotNet6Version>
 		<DotNet7Version>7.0.*</DotNet7Version>
 		<DotNet8Version>8.0.*</DotNet8Version>
+		<DotNet9Version>9.0.0-*</DotNet9Version>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->
@@ -51,7 +52,7 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Label="Code Analyzers">
 		<PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.15.0.81779" PrivateAssets="All" />
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.20.0.85982" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings"

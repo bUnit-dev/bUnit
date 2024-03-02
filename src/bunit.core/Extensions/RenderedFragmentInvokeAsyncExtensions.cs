@@ -18,8 +18,12 @@ public static class RenderedFragmentInvokeAsyncExtensions
 		if (renderedFragment is null)
 			throw new ArgumentNullException(nameof(renderedFragment));
 
-		return renderedFragment.Services.GetRequiredService<ITestRenderer>()
-			.Dispatcher.InvokeAsync(workItem);
+		return renderedFragment
+			.Services
+			.GetRequiredService<TestContextBase>()
+			.Renderer
+			.Dispatcher
+			.InvokeAsync(workItem);
 	}
 
 	/// <summary>
@@ -33,8 +37,12 @@ public static class RenderedFragmentInvokeAsyncExtensions
 		if (renderedFragment is null)
 			throw new ArgumentNullException(nameof(renderedFragment));
 
-		return renderedFragment.Services.GetRequiredService<ITestRenderer>()
-			.Dispatcher.InvokeAsync(workItem);
+		return renderedFragment
+			.Services
+			.GetRequiredService<TestContextBase>()
+			.Renderer
+			.Dispatcher
+			.InvokeAsync(workItem);
 	}
 
 	/// <summary>
@@ -48,8 +56,12 @@ public static class RenderedFragmentInvokeAsyncExtensions
 		if (renderedFragment is null)
 			throw new ArgumentNullException(nameof(renderedFragment));
 
-		return renderedFragment.Services.GetRequiredService<ITestRenderer>()
-			.Dispatcher.InvokeAsync(workItem);
+		return renderedFragment
+			.Services
+			.GetRequiredService<TestContextBase>()
+			.Renderer
+			.Dispatcher
+			.InvokeAsync(workItem);
 	}
 
 	/// <summary>
@@ -63,7 +75,11 @@ public static class RenderedFragmentInvokeAsyncExtensions
 		if (renderedFragment is null)
 			throw new ArgumentNullException(nameof(renderedFragment));
 
-		return renderedFragment.Services.GetRequiredService<ITestRenderer>()
-			.Dispatcher.InvokeAsync(workItem);
+		return renderedFragment
+			.Services
+			.GetRequiredService<TestContextBase>()
+			.Renderer
+			.Dispatcher
+			.InvokeAsync(workItem);
 	}
 }

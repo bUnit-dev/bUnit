@@ -296,6 +296,40 @@ public partial class TestServiceProviderTest
 		dummyServiceProvider.ResolvedTestServices.ShouldContain(result);
 		dummyServiceProvider.ResolvedTestServices.Count.ShouldBe(1);
 	}
+	
+#if NET8_0_OR_GREATER
+	[Fact(DisplayName = "Should resolve keyed service from container")]
+	public void Test040()
+	{
+		using var ctx = new TestContext();
+		ctx.Services.AddKeyedScoped<DummyService>("Key");
+
+		var cut = ctx.RenderComponent<ComponentWithKeyedService>();
+
+		cut.Instance.Service.ShouldNotBeNull();
+	}
+
+	[Fact(DisplayName = "Should resolved keyed service from fallback service provider")]
+	public void Test041()
+	{
+		using var ctx = new TestContext();
+		var fallbackCollection = new ServiceCollection();
+		fallbackCollection.AddKeyedScoped<DummyService>("Key");
+		ctx.Services.AddFallbackServiceProvider(fallbackCollection.BuildServiceProvider());
+		
+		var cut = ctx.RenderComponent<ComponentWithKeyedService>();
+
+		cut.Instance.Service.ShouldNotBeNull();
+	}
+	
+	[Fact(DisplayName = "Throw an exception if required keyed service is not found")]
+	public void Test042()
+	{
+		using var ctx = new TestContext();
+
+		Should.Throw<InvalidOperationException>(() => ctx.RenderComponent<ComponentWithKeyedService>());
+	}
+#endif
 
 	private sealed class DummyService { }
 
@@ -381,4 +415,12 @@ public partial class TestServiceProviderTest
 		public IServiceProvider CreateServiceProvider(DummyServiceProviderFactoryContainerBuilder containerBuilder)
 			=> containerBuilder.Build();
 	}
+	
+#if NET8_0_OR_GREATER
+	private sealed class ComponentWithKeyedService : ComponentBase
+	{
+		[Inject(Key = "Key")]
+		public DummyService Service { get; set; }
+	}
+#endif
 }

@@ -1,4 +1,6 @@
 using Bunit.Extensions;
+using Bunit.Rendering;
+using Microsoft.Extensions.Logging;
 
 namespace Bunit;
 
@@ -78,4 +80,20 @@ public class TestContext : TestContextBase
 	/// C# from .razor files.
 	/// </summary>
 	protected virtual void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) { }
+
+	/// <inheritdoc/>
+	protected override ITestRenderer CreateTestRenderer()
+	{
+		var renderedComponentActivator = Services.GetRequiredService<IRenderedComponentActivator>();
+		var logger = Services.GetRequiredService<ILoggerFactory>();
+#if !NET5_0_OR_GREATER
+		return new WebTestRenderer(renderedComponentActivator, Services, logger);
+#else
+		var componentActivator = Services.GetService<IComponentActivator>();
+		return componentActivator is null
+			? new WebTestRenderer(renderedComponentActivator, Services, logger)
+			: new WebTestRenderer(renderedComponentActivator, Services, logger, componentActivator);
+#endif
+
+	}
 }

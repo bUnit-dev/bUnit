@@ -1,4 +1,4 @@
-#if NET5_0_OR_GREATER
+#if NET5_0_OR_GREATER && !NET9_0_OR_GREATER
 using System;
 using Bunit.JSInterop.Implementation;
 using Microsoft.JSInterop;
