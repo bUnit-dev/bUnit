@@ -51,7 +51,7 @@ public static class RenderedComponentRenderExtensions
 		Render(renderedComponent, ToParameterView(builder.Build()));
 	}
 
-	private static ParameterView ToParameterView(IReadOnlyCollection<ComponentParameter> parameters)
+	private static ParameterView ToParameterView(ComponentParameterCollection parameters)
 	{
 		if (parameters.Count == 0)
 		{

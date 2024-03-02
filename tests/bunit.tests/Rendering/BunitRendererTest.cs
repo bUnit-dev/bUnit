@@ -1,4 +1,5 @@
 using Bunit.Extensions;
+using Bunit.TestAssets.RenderMode;
 
 namespace Bunit.Rendering;
 
@@ -407,14 +408,6 @@ public class BunitRendererTest : TestContext
 		(await Renderer.UnhandledException).ShouldBeOfType<InvalidOperationException>();
 	}
 
-	[Fact(DisplayName = "Can render components that have a RenderMode attribute")]
-	public void Test204()
-	{
-		var cut = Render<RenderModeServerComponent>();
-
-		cut.Find("h3").TextContent.ShouldBe("Hello from Server");
-	}
-
 	[Fact(DisplayName = "Multiple calls to StateHasChanged from OnParametersSet with Render")]
 	public void Test205()
 	{
@@ -452,6 +445,30 @@ public class BunitRendererTest : TestContext
 		cut.Instance.ParametersSetAsyncCount.ShouldBe(2);
 		cut.Instance.AfterRenderCount.ShouldBe(2);
 		cut.Instance.AfterRenderAsyncCount.ShouldBe(2);
+	}
+	
+	[Fact(DisplayName = "Can render components that have a RenderMode InteractiveAuto")]
+	public void Test209()
+	{
+		var cut = Render<InteractiveAutoComponent>();
+
+		cut.Find("h1").TextContent.ShouldBe($"Hello world {RenderMode.InteractiveAuto}");
+	}
+
+	[Fact(DisplayName = "Can render components that have a RenderMode InteractiveServer")]
+	public void Test210()
+	{
+		var cut = Render<InteractiveServerComponent>();
+
+		cut.Find("h1").TextContent.ShouldBe($"Hello world {RenderMode.InteractiveServer}");
+	}
+
+	[Fact(DisplayName = "Can render components that have a RenderMode InteractiveWebAssembly")]
+	public void Test211()
+	{
+		var cut = Render<InteractiveWebAssemblyComponent>();
+
+		cut.Find("h1").TextContent.ShouldBe($"Hello world {RenderMode.InteractiveWebAssembly}");
 	}
 
 	internal sealed class LifeCycleMethodInvokeCounter : ComponentBase
@@ -585,15 +602,6 @@ public class BunitRendererTest : TestContext
 		{
 			await JSRuntime.InvokeVoidAsync("foo");
 			throw new InvalidOperationException();
-		}
-	}
-
-	[RenderModeServer]
-	private sealed class RenderModeServerComponent : ComponentBase
-	{
-		protected override void BuildRenderTree(RenderTreeBuilder builder)
-		{
-			builder.AddMarkupContent(0, "<h3>Hello from Server</h3>");
 		}
 	}
 }
