@@ -1,9 +1,11 @@
+using System.Diagnostics;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 
 namespace Bunit.Rendering;
 
 /// <inheritdoc />
+[DebuggerDisplay("Rendered:{RenderCount}")]
 internal class RenderedFragment : IRenderedFragment
 {
 	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by TestServiceProvider, disposed by it.")]
