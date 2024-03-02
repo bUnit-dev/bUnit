@@ -7,7 +7,7 @@ namespace Bunit;
 /// <summary>
 /// Helper methods dealing with async rendering during testing.
 /// </summary>
-public static class RenderedFragmentWaitForHelperExtensions
+public static partial class RenderedFragmentWaitForHelperExtensions
 {
 	/// <summary>
 	/// Wait until an element matching the <paramref name="cssSelector"/> exists in the <paramref name="renderedFragment"/>,
