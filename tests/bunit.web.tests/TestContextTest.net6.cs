@@ -1,10 +1,3 @@
-#if NET6_0_OR_GREATER
-using AutoFixture.Xunit2;
-using Bunit.TestAssets.SampleComponents;
-using Microsoft.AspNetCore.Components.Web;
-using Shouldly;
-using Xunit;
-
 namespace Bunit;
 
 public partial class TestContextTest : TestContext
@@ -16,4 +9,3 @@ public partial class TestContextTest : TestContext
 		logger.ShouldNotBe(null);
 	}
 }
-#endif

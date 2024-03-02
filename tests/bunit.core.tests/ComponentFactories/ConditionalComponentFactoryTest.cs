@@ -1,5 +1,3 @@
-#if NET5_0_OR_GREATER
-
 namespace Bunit.ComponentFactories;
 
 public class ConditionalComponentFactoryTest : TestContext
@@ -66,4 +64,3 @@ public class ConditionalComponentFactoryTest : TestContext
 		throw new NotImplementedException($"No mock implementation provided for type {type.FullName}");
 	}
 }
-#endif

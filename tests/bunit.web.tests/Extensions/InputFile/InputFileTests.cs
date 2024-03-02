@@ -1,5 +1,4 @@
-﻿#if NET5_0_OR_GREATER
-using System.Text;
+﻿using System.Text;
 using Microsoft.AspNetCore.Components.CompilerServices;
 using Microsoft.AspNetCore.Components.Forms;
 
@@ -175,4 +174,3 @@ public class InputFileTests : TestContext
 		public sealed record File(string Filename, string FileContent, DateTimeOffset LastChanged, long Size, string Type);
 	}
 }
-#endif

@@ -1,6 +1,3 @@
-#if NET6_0_OR_GREATER
-using System;
-using Microsoft.AspNetCore.Components;
 namespace Bunit.JSInterop.InvocationHandlers.Implementation;
 
 /// <summary>
@@ -24,4 +21,3 @@ internal sealed class FocusOnNavigateHandler : JSRuntimeInvocationHandler
 		SetVoidResult();
 	}
 }
-#endif

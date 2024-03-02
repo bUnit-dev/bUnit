@@ -6,7 +6,6 @@ namespace Bunit.TestAssets.SampleComponents
 
 		public WeatherForecast[] Forecasts { get; private set; }
 
-#if NET6_0_OR_GREATER
 		[Inject] public PersistentComponentState State { get; set; }
 
 		protected override void OnInitialized()
@@ -35,7 +34,6 @@ namespace Bunit.TestAssets.SampleComponents
 				new WeatherForecast{ Temperature = 42 },
 			};
 		}
-#endif
 	}
 
 	public record class WeatherForecast

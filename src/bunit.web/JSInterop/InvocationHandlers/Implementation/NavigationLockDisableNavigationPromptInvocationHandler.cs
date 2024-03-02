@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Bunit.JSInterop.InvocationHandlers.Implementation;
 
 internal sealed class NavigationLockDisableNavigationPromptInvocationHandler : JSRuntimeInvocationHandler
@@ -11,4 +10,3 @@ internal sealed class NavigationLockDisableNavigationPromptInvocationHandler : J
 		SetVoidResult();
 	}
 }
-#endif

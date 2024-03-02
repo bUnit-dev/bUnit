@@ -104,22 +104,7 @@ public class FakeNavigationManagerTest : TestContext
 
 		sut.Uri.ShouldEndWith("with%20whitespace");
 	}
-
-#if !NET6_0_OR_GREATER
-		[Theory(DisplayName = "NavigateTo(uri, forceLoad) is saved in history")]
-		[InlineData("/uri", false)]
-		[InlineData("/anotherUri", true)]
-		public void Test100(string uri, bool forceLoad)
-		{
-			var sut = CreateFakeNavigationManager();
-
-			sut.NavigateTo(uri, forceLoad);
-
-			sut.History.ShouldHaveSingleItem()
-				.ShouldBeEquivalentTo(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
-		}
-#endif
-#if NET6_0_OR_GREATER
+	
 	[Theory(DisplayName = "NavigateTo(uri, forceLoad, replaceHistoryEntry) is saved in history")]
 	[InlineData("/uri", false, false)]
 	[InlineData("/uri", true, false)]
@@ -129,17 +114,11 @@ public class FakeNavigationManagerTest : TestContext
 		var sut = CreateFakeNavigationManager();
 
 		sut.NavigateTo(uri, forceLoad, replaceHistoryEntry);
-
-#if NET6_0
-		sut.History.ShouldHaveSingleItem()
-			.ShouldBeEquivalentTo(new NavigationHistory(uri,
-				new NavigationOptions { ForceLoad = forceLoad, ReplaceHistoryEntry = replaceHistoryEntry }));
-#elif NET7_0_OR_GREATER
+		
 		var navigationOptions = new NavigationOptions { ForceLoad = forceLoad, ReplaceHistoryEntry =
  replaceHistoryEntry };
 		sut.History.ShouldHaveSingleItem()
 			.ShouldBeEquivalentTo(new NavigationHistory(uri, navigationOptions, NavigationState.Succeeded));
-#endif
 	}
 
 	[Fact(DisplayName = "NavigateTo with replaceHistoryEntry true replaces previous history entry")]
@@ -150,17 +129,13 @@ public class FakeNavigationManagerTest : TestContext
 		sut.NavigateTo("/firstUrl");
 		sut.NavigateTo("/secondUrl", new NavigationOptions { ReplaceHistoryEntry = true });
 
-#if NET6_0
 		sut.History.ShouldHaveSingleItem()
-			.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl",
-				new NavigationOptions { ReplaceHistoryEntry = true }));
-#elif NET7_0_OR_GREATER
-		sut.History.ShouldHaveSingleItem()
-			.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl",  new NavigationOptions { ReplaceHistoryEntry =
- true }, NavigationState.Succeeded));
-#endif
+			.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl", new NavigationOptions
+			{
+				ReplaceHistoryEntry =
+					true
+			}, NavigationState.Succeeded));
 	}
-#endif
 
 	[Fact(DisplayName = "Navigate to an external url should set BaseUri")]
 	public void Test008()
@@ -187,7 +162,6 @@ public class FakeNavigationManagerTest : TestContext
 		locationChangedInvoked.ShouldBeFalse();
 	}
 
-#if NET7_0_OR_GREATER
 	[Fact(DisplayName = "When component provides NavigationLock, FakeNavigationManager should intercept calls")]
 	public void Test010()
 	{
@@ -363,6 +337,5 @@ public class FakeNavigationManagerTest : TestContext
 
 		[Inject] private NavigationManager NavigationManager { get; set; } = default!;
 	}
-#endif
 }
 

@@ -1,5 +1,3 @@
-#if NET5_0_OR_GREATER
-
 using Microsoft.AspNetCore.Components.Web;
 using Xunit;
 using Bunit;
@@ -25,5 +23,3 @@ namespace Bunit.Docs.Samples
     }
   }
 }
-
-#endif

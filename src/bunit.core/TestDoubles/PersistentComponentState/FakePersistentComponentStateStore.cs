@@ -1,9 +1,3 @@
-#if NET6_0_OR_GREATER
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-
 namespace Bunit.TestDoubles;
 
 internal class FakePersistentComponentStateStore : IPersistentComponentStateStore
@@ -28,4 +22,3 @@ internal class FakePersistentComponentStateStore : IPersistentComponentStateStor
 		return Task.CompletedTask;
 	}
 }
-#endif

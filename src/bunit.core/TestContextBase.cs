@@ -42,7 +42,6 @@ public abstract class TestContextBase : IDisposable
 	/// </remarks>
 	public RootRenderTree RenderTree { get; } = new();
 
-#if NET5_0_OR_GREATER
 	/// <summary>
 	/// Gets the <see cref="ComponentFactoryCollection"/>. Factories added to it
 	/// will be used to create components during testing, starting with the last added
@@ -50,7 +49,6 @@ public abstract class TestContextBase : IDisposable
 	/// then the default Blazor factory is used.
 	/// </summary>
 	public ComponentFactoryCollection ComponentFactories { get; } = new();
-#endif
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TestContextBase"/> class.
@@ -58,9 +56,7 @@ public abstract class TestContextBase : IDisposable
 	protected TestContextBase()
 	{
 		Services = new TestServiceProvider();
-#if NET5_0_OR_GREATER
 		Services.AddSingleton<ComponentFactoryCollection>(_ => ComponentFactories);
-#endif
 	}
 
 	/// <inheritdoc/>

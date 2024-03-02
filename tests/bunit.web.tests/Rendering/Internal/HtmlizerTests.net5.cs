@@ -1,7 +1,3 @@
-#if !NETCOREAPP3_1
-using Shouldly;
-using Xunit;
-
 namespace Bunit.Rendering.Internal;
 
 public partial class HtmlizerTests : TestContext
@@ -16,4 +12,3 @@ public partial class HtmlizerTests : TestContext
 		Htmlizer.IsBlazorAttribute(blazorAttribute).ShouldBeTrue();
 	}
 }
-#endif
