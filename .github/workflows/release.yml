@@ -62,6 +62,7 @@ jobs:
             6.0.x
             7.0.x
             8.0.x
+            9.0.x
 
       - name: 🛠️ Update changelog
         uses: thomaseizinger/keep-a-changelog-new-release@2.0.0

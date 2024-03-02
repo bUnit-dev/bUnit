@@ -7,6 +7,7 @@
 		<DotNet6Version>6.0.*</DotNet6Version>
 		<DotNet7Version>7.0.*</DotNet7Version>
 		<DotNet8Version>8.0.*</DotNet8Version>
+		<DotNet9Version>9.0.0-*</DotNet9Version>
 	</PropertyGroup>
 
 	<!-- Solution wide properties -->

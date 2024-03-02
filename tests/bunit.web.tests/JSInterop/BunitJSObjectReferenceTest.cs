@@ -259,6 +259,7 @@ public class BunitJSObjectReferenceTest : TestContext
 		jsRuntime.ShouldBeAssignableTo<IJSInProcessObjectReference>();
 	}
 
+#if !NET9_0_OR_GREATER
 	[Fact(DisplayName = "IJSObjectReference can be cast to IJSUnmarshalledObjectReference")]
 	public void Test071()
 	{
@@ -268,7 +269,8 @@ public class BunitJSObjectReferenceTest : TestContext
 
 		jsRuntime.ShouldBeAssignableTo<IJSUnmarshalledObjectReference>();
 	}
-
+#endif
+	
 	[Fact(DisplayName = "IJSInProcessObjectReference-invocations is handled by handlers from BunitJSInterop")]
 	public async Task Test080()
 	{
@@ -289,7 +291,8 @@ public class BunitJSObjectReferenceTest : TestContext
 		JSInterop.VerifyInvoke("bar5");
 		JSInterop.VerifyInvoke("bar6").Arguments.ShouldBe(new[] { "baz" });
 	}
-
+	
+#if !NET9_0_OR_GREATER
 	[Fact(DisplayName = "IJSUnmarshalledObjectReference-invocations is handled by handlers from BunitJSInterop")]
 	public async Task Test081()
 	{
@@ -391,6 +394,7 @@ public class BunitJSObjectReferenceTest : TestContext
 				resultType: typeof(string),
 				invocationMethodName: "InvokeUnmarshalled"));
 	}
+#endif
 
 	[Theory(DisplayName = "When calling InvokeVoidAsync, then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test302(string identifier, string[] args, CancellationToken cancellationToken)
