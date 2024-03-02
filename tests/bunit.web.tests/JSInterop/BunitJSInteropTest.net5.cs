@@ -1,4 +1,4 @@
-#if !NETCOREAPP3_1
+#if !NETCOREAPP3_1 && !NET9_0_OR_GREATER
 #pragma warning disable CS0618 // This method is obsolete.
 using System;
 using System.Linq;

@@ -49,6 +49,7 @@ jobs:
           6.0.x
           7.0.x
           8.0.x
+          9.0.x
 
     - name: ⚙️ Setup GIT versioning
       uses: dotnet/nbgv@v0.4.2
@@ -132,6 +133,7 @@ jobs:
             6.0.x
             7.0.x
             8.0.x
+            9.0.x
 
       - name: 🧪 Run unit tests
         run: dotnet test -c release --blame --blame-crash --blame-hang
@@ -209,6 +211,7 @@ jobs:
             6.0.x
             7.0.x
             8.0.x
+            9.0.x
 
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.2

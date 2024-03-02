@@ -48,11 +48,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.testassets", "tests\b
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".workflows", ".workflows", "{3B2F3419-5336-4147-A212-E19091195203}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
 		.github\workflows\docs-deploy.yml = .github\workflows\docs-deploy.yml
 		.github\workflows\prepare-release.yml = .github\workflows\prepare-release.yml
 		.github\workflows\release-preview.yml = .github\workflows\release-preview.yml
 		.github\workflows\release.yml = .github\workflows\release.yml
-		.github\workflows\verification.yml = .github\workflows\verification.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{F6084D31-2A92-4794-A47E-A8F2254E6970}"
@@ -72,7 +72,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.generators.internal",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.generators.tests", "tests\bunit.generators.tests\bunit.generators.tests.csproj", "{09046981-D9EC-4295-8502-721AC54E1F12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bunit.generators", "src\bunit.generators\bunit.generators.csproj", "{A7C6A2AA-FF8F-4ED1-8590-5324FC566059}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bunit.generators", "src\bunit.generators\bunit.generators.csproj", "{A7C6A2AA-FF8F-4ED1-8590-5324FC566059}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
