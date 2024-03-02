@@ -1,5 +1,3 @@
-#if !NETCOREAPP3_1
-
 namespace Bunit.EventDispatchExtensions;
 
 public class DetailsElementEventDispatcherExtensionsTest : TestContext
@@ -15,4 +13,3 @@ public class DetailsElementEventDispatcherExtensionsTest : TestContext
 		cut.FindAll("div > p").Count.ShouldBe(1);
 	}
 }
-#endif

@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using Bunit.ComponentFactories;
 using Bunit.TestDoubles;
 
@@ -19,8 +18,7 @@ public static class StubComponentFactoryCollectionExtensions
 	/// <returns>A <see cref="ComponentFactoryCollection"/>.</returns>
 	public static ComponentFactoryCollection AddStub<TComponent>(this ComponentFactoryCollection factories) where TComponent : IComponent
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
+		ArgumentNullException.ThrowIfNull(factories);
 
 		factories.Add(new StubComponentFactory(CreatePredicate(typeof(TComponent)), null));
 
@@ -53,8 +51,7 @@ public static class StubComponentFactoryCollectionExtensions
 	/// <returns>A <see cref="ComponentFactoryCollection"/>.</returns>
 	public static ComponentFactoryCollection AddStub<TComponent>(this ComponentFactoryCollection factories, RenderFragment replacementFragment) where TComponent : IComponent
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
+		ArgumentNullException.ThrowIfNull(factories);
 
 		factories.Add(new StubComponentFactory(CreatePredicate(typeof(TComponent)), replacementFragment));
 
@@ -95,10 +92,8 @@ public static class StubComponentFactoryCollectionExtensions
 		RenderFragment<CapturedParameterView<TComponent>> replacementTemplate)
 		where TComponent : IComponent
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
-		if (replacementTemplate is null)
-			throw new ArgumentNullException(nameof(replacementTemplate));
+		ArgumentNullException.ThrowIfNull(factories);
+		ArgumentNullException.ThrowIfNull(replacementTemplate);
 
 		factories.Add(new StubComponentFactory(CreatePredicate(typeof(TComponent)), replacementTemplate));
 
@@ -153,13 +148,10 @@ public static class StubComponentFactoryCollectionExtensions
 		Predicate<Type> componentTypePredicate,
 		RenderFragment replacementFragment)
 	{
-		if (factories is null)
-			throw new ArgumentNullException(nameof(factories));
-		if (componentTypePredicate is null)
-			throw new ArgumentNullException(nameof(componentTypePredicate));
+		ArgumentNullException.ThrowIfNull(factories);
+		ArgumentNullException.ThrowIfNull(componentTypePredicate);
 
 		factories.Add(new StubComponentFactory(componentTypePredicate, replacementFragment));
 		return factories;
 	}
 }
-#endif

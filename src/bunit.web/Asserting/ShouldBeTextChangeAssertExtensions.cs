@@ -29,10 +29,8 @@ public static class ShouldBeTextChangeAssertExtensions
 	/// <param name="userMessage">A custom error message to show if the verification fails.</param>
 	public static void ShouldBeTextChange(this IDiff actualChange, string expectedChange, string? userMessage = null)
 	{
-		if (actualChange is null)
-			throw new ArgumentNullException(nameof(actualChange));
-		if (expectedChange is null)
-			throw new ArgumentNullException(nameof(expectedChange));
+		ArgumentNullException.ThrowIfNull(actualChange);
+		ArgumentNullException.ThrowIfNull(expectedChange);
 		if (actualChange is not NodeDiff actual)
 			throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 
@@ -57,8 +55,7 @@ public static class ShouldBeTextChangeAssertExtensions
 	/// <param name="userMessage">A custom error message to show if the verification fails.</param>
 	public static void ShouldBeTextChange(this IDiff actualChange, IRenderedFragment expectedChange, string? userMessage = null)
 	{
-		if (expectedChange is null)
-			throw new ArgumentNullException(nameof(expectedChange));
+		ArgumentNullException.ThrowIfNull(expectedChange);
 		ShouldBeTextChange(actualChange, expectedChange.Nodes, userMessage);
 	}
 
@@ -70,10 +67,8 @@ public static class ShouldBeTextChangeAssertExtensions
 	/// <param name="userMessage">A custom error message to show if the verification fails.</param>
 	public static void ShouldBeTextChange(this IDiff actualChange, INodeList expectedChange, string? userMessage = null)
 	{
-		if (actualChange is null)
-			throw new ArgumentNullException(nameof(actualChange));
-		if (expectedChange is null)
-			throw new ArgumentNullException(nameof(expectedChange));
+		ArgumentNullException.ThrowIfNull(actualChange);
+		ArgumentNullException.ThrowIfNull(expectedChange);
 		if (actualChange is not NodeDiff actual)
 			throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a text change.");
 
@@ -96,12 +91,9 @@ public static class ShouldBeTextChangeAssertExtensions
 	/// <param name="userMessage">A custom user message to show when the verification fails.</param>
 	public static void ShouldBeAttributeChange(this IDiff actualChange, string expectedAttrName, string expectedAttrValue, string? userMessage = null)
 	{
-		if (actualChange is null)
-			throw new ArgumentNullException(nameof(actualChange));
-		if (expectedAttrName is null)
-			throw new ArgumentNullException(nameof(expectedAttrName));
-		if (expectedAttrValue is null)
-			throw new ArgumentNullException(nameof(expectedAttrValue));
+		ArgumentNullException.ThrowIfNull(actualChange);
+		ArgumentNullException.ThrowIfNull(expectedAttrName);
+		ArgumentNullException.ThrowIfNull(expectedAttrValue);
 		if (actualChange is not AttrDiff actual)
 			throw new DiffChangeAssertException(actualChange.Result, DiffResult.Different, "The change was not a attribute change.");
 

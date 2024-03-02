@@ -1,4 +1,3 @@
-#if NET6_0_OR_GREATER
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.TestDoubles;
@@ -31,4 +30,3 @@ internal class BunitErrorBoundaryLogger : IErrorBoundaryLogger
 		return ValueTask.CompletedTask;
 	}
 }
-#endif

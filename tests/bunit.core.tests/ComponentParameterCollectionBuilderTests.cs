@@ -696,7 +696,6 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		action.ShouldNotThrow();
 	}
 	
-#if NET8_0_OR_GREATER
 	[Fact(DisplayName = "Supplying query string should be reflected in component parameter")]
 	public void Test315()
 	{
@@ -725,8 +724,6 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			          NavigationManager.NavigateTo(uri);
 			          """);
 	}
-	
-#endif
 
 #pragma warning disable S1144 // Unused private types or members should be removed
 	private class Params : ComponentBase
@@ -805,7 +802,6 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	}
 #pragma warning restore S1144 // Unused private types or members should be removed
 	
-#if NET8_0_OR_GREATER
 	private sealed class SupplyFromQueryParameterComponent : ComponentBase
 	{
 		[SupplyParameterFromQuery] public string Query { get; set; }
@@ -817,5 +813,4 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			return base.SetParametersAsync(parameters);
 		}
 	}
-#endif
 }

@@ -1,13 +1,6 @@
-#if NET6_0_OR_GREATER
-using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Bunit.Rendering;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Infrastructure;
-using Microsoft.AspNetCore.Components.RenderTree;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit.TestDoubles;
 
@@ -66,8 +59,7 @@ public sealed class FakePersistentComponentState
 	/// <param name="instance">The instance to persist.</param>
 	public void Persist<TValue>(string key, TValue instance)
 	{
-		if (key is null)
-			throw new ArgumentNullException(nameof(key));
+		ArgumentNullException.ThrowIfNull(key);
 
 		store.Add(key, JsonSerializer.SerializeToUtf8Bytes(instance, JsonSerializerOptions));
 		manager.Value.RestoreStateAsync(store);
@@ -88,4 +80,3 @@ public sealed class FakePersistentComponentState
 	public bool TryTake<TValue>(string key, [MaybeNullWhen(false)] out TValue? instance)
 		=> manager.Value.State.TryTakeFromJson<TValue>(key, out instance);
 }
-#endif

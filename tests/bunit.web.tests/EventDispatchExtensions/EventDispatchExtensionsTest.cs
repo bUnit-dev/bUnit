@@ -23,8 +23,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 
 	protected void VerifyEventRaisesCorrectly(MethodInfo helper, TEventArgs expected, params (string MethodName, string EventName)[] methodNameEventMap)
 	{
-		if (helper is null)
-			throw new ArgumentNullException(nameof(helper));
+		ArgumentNullException.ThrowIfNull(helper);
 
 		var eventName = methodNameEventMap.SingleOrDefault(x => x.MethodName.Equals(helper.Name, StringComparison.Ordinal)).EventName
 			?? GetEventNameFromMethod(helper);
@@ -71,8 +70,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 	[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "Event names are used in lower case.")]
 	private static string GetEventNameFromMethod(MethodInfo helper)
 	{
-		if (helper is null)
-			throw new ArgumentNullException(nameof(helper));
+		ArgumentNullException.ThrowIfNull(helper);
 
 		var nameLength = helper.Name.Length;
 
@@ -89,8 +87,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 	[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Can safely be shared")]
 	public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType)
 	{
-		if (helperClassType is null)
-			throw new ArgumentNullException(nameof(helperClassType));
+		ArgumentNullException.ThrowIfNull(helperClassType);
 
 		return helperClassType.GetMethods()
 			.Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement))
@@ -101,8 +98,7 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : TestContext
 	[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Can safely be shared")]
 	public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType, Func<MethodInfo, bool> customFilter)
 	{
-		if (helperClassType is null)
-			throw new ArgumentNullException(nameof(helperClassType));
+		ArgumentNullException.ThrowIfNull(helperClassType);
 
 		return helperClassType.GetMethods()
 			.Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement) && customFilter(x))
