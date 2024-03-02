@@ -1,8 +1,7 @@
-#if NET5_0_OR_GREATER
 namespace Bunit.TestDoubles;
 
 /// <summary>
-/// Represents an exception which is thrown when the 
+/// Represents an exception which is thrown when the
 /// <see cref="CapturedParameterView{TComponent}.Get{TValue}(System.Linq.Expressions.Expression{Func{TComponent, TValue}})"/>
 /// is used to get a parameter that was not passed to the doubled component.
 /// </summary>
@@ -22,4 +21,3 @@ public sealed class ParameterNotFoundException : Exception
 	{
 	}
 }
-#endif

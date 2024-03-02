@@ -119,7 +119,6 @@ public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<Chan
 		VerifySingleBindValue(default(DateTime));
 	}
 
-#if NET6_0_OR_GREATER
 	[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
 	[UseCulture("en-US")]
 	public void Test018(DateTimeOffset value) => VerifySingleBindValue(DateTimeWithoutMillisecond(value));
@@ -131,7 +130,6 @@ public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<Chan
 		VerifySingleBindValue(DateTimeWithoutMillisecond(value));
 		VerifySingleBindValue(default(DateTimeOffset));
 	}
-#endif
 
 	[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
 	public void Test020(Foo value) => VerifySingleBindValue(value);
@@ -140,13 +138,9 @@ public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<Chan
 	public void Test021(Foo? value)
 		=> VerifySingleBindValue(value);
 
-#if NET6_0_OR_GREATER
-
 	[Fact(DisplayName = "Change and Input events are raised correctly for null object")]
 	public void Test022()
 		=> VerifySingleBindValue(default(Foo));
-
-#endif
 
 	[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
 	public void Test023(Cars value) => VerifySingleBindValue(value);
@@ -157,8 +151,6 @@ public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<Chan
 		VerifySingleBindValue(value);
 		VerifySingleBindValue(default(Cars));
 	}
-
-#if NET6_0_OR_GREATER
 
 	[Theory(DisplayName = "Change and Input events are raised correctly"), AutoData]
 	public void Test100(string[] values) => VerifyMultipleBindValue(values);
@@ -287,7 +279,6 @@ public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<Chan
 		cut.Instance.OnChangeValue.ShouldBe(FormatValues(values));
 		cut.Instance.OnInputValue.ShouldBe(FormatValues(values));
 	}
-#endif
 
 	private void VerifySingleBindValue<T>(T value)
 	{

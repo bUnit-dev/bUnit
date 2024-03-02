@@ -18,8 +18,7 @@ public static class TestRendererExtensions
 	public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this ITestRenderer renderer, params ComponentParameter[] parameters)
 		where TComponent : IComponent
 	{
-		if (renderer is null)
-			throw new ArgumentNullException(nameof(renderer));
+		ArgumentNullException.ThrowIfNull(renderer);
 
 		var resultBase = renderer.RenderComponent<TComponent>(new ComponentParameterCollection { parameters });
 		if (resultBase is IRenderedComponent<TComponent> result)
@@ -38,10 +37,8 @@ public static class TestRendererExtensions
 	public static IRenderedComponent<TComponent> RenderComponent<TComponent>(this ITestRenderer renderer, Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
 		where TComponent : IComponent
 	{
-		if (renderer is null)
-			throw new ArgumentNullException(nameof(renderer));
-		if (parameterBuilder is null)
-			throw new ArgumentNullException(nameof(parameterBuilder));
+		ArgumentNullException.ThrowIfNull(renderer);
+		ArgumentNullException.ThrowIfNull(parameterBuilder);
 
 		var builder = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder);
 		var resultBase = renderer.RenderComponent<TComponent>(builder.Build());

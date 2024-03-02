@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 using AngleSharp.Dom;
 
 namespace Bunit.Extensions.WaitForHelpers;
@@ -9,7 +10,7 @@ namespace Bunit.Extensions.WaitForHelpers;
 internal class WaitForElementsHelper : WaitForHelper<IRefreshableElementCollection<IElement>>
 {
 	internal const string TimeoutBeforeFoundMessage = "The CSS selector did not result in any matching element(s) before the timeout period passed.";
-	internal const string TimeoutBeforeFoundWithCountMessage = "The CSS selector did not result in exactly {0} matching element(s) before the timeout period passed.";
+	internal static readonly CompositeFormat TimeoutBeforeFoundWithCountMessage = CompositeFormat.Parse("The CSS selector did not result in exactly {0} matching element(s) before the timeout period passed.");
 	private readonly int? matchElementCount;
 
 	/// <inheritdoc/>

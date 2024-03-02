@@ -1,5 +1,3 @@
-#if NET5_0_OR_GREATER
-
 namespace Bunit.JSInterop.InvocationHandlers.Implementation;
 
 /// <summary>
@@ -15,4 +13,3 @@ internal sealed class LooseModeJSObjectReferenceInvocationHandler : JSRuntimeInv
 		SetResult(new BunitJSObjectReference(parent));
 	}
 }
-#endif

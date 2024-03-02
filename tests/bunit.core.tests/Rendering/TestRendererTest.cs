@@ -16,7 +16,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "RenderFragment re-throws exception from component")]
 	public void Test004()
 	{
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 		RenderFragment throwingFragment = b => { b.OpenComponent<ThrowsDuringSetParams>(0); b.CloseComponent(); };
 
 		Should.Throw<InvalidOperationException>(() => sut.RenderFragment(throwingFragment))
@@ -26,7 +26,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "RenderComponent re-throws exception from component")]
 	public void Test003()
 	{
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		Should.Throw<InvalidOperationException>(() => sut.RenderComponent<ThrowsDuringSetParams>())
 			.Message.ShouldBe(ThrowsDuringSetParams.EXCEPTION.Message);
@@ -36,7 +36,7 @@ public partial class TestRendererTest : TestContext
 	public void Test001()
 	{
 		const string MARKUP = "<h1>hello world</h1>";
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var cut = (IRenderedFragment)sut.RenderFragment(builder => builder.AddMarkupContent(0, MARKUP));
 
@@ -47,7 +47,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "Can render component without children and no parameters")]
 	public void Test002()
 	{
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var cut = sut.RenderComponent<NoChildNoParams>();
 
@@ -60,7 +60,7 @@ public partial class TestRendererTest : TestContext
 	public void Test005()
 	{
 		const string VALUE = "FOO BAR";
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var cut = sut.RenderComponent<HasParams>((nameof(HasParams.Value), VALUE));
 
@@ -73,7 +73,7 @@ public partial class TestRendererTest : TestContext
 		const string PARENT_VALUE = "PARENT";
 		const string CHILD_VALUE = "CHILD";
 
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var cut = sut.RenderComponent<HasParams>(
 			(nameof(HasParams.Value), PARENT_VALUE),
@@ -86,7 +86,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "Rendered component gets RenderCount updated on re-render")]
 	public async Task Test010()
 	{
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var cut = sut.RenderComponent<RenderTrigger>();
 
@@ -102,7 +102,7 @@ public partial class TestRendererTest : TestContext
 	{
 		// arrange
 		const string EXPECTED = "NOW VALUE";
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 		var cut = sut.RenderComponent<RenderTrigger>();
 
 		cut.RenderCount.ShouldBe(1);
@@ -122,7 +122,7 @@ public partial class TestRendererTest : TestContext
 		const string PARENT_VALUE = "PARENT";
 		const string CHILD_VALUE = "CHILD";
 
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var cut = sut.RenderComponent<HasParams>(
 			(nameof(HasParams.Value), PARENT_VALUE),
@@ -139,7 +139,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "FindComponent throws if parentComponent parameter is null")]
 	public void Test021()
 	{
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		Should.Throw<ArgumentNullException>(() => sut.FindComponent<HasParams>(null!));
 	}
@@ -147,7 +147,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "FindComponent throws if component is not found")]
 	public void Test022()
 	{
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 		var cut = sut.RenderComponent<HasParams>();
 
 		Should.Throw<ComponentNotFoundException>(() => sut.FindComponent<HasParams>(cut));
@@ -156,7 +156,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "FindComponent returns same rendered component when called multiple times")]
 	public void Test023()
 	{
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var cut = sut.RenderComponent<HasParams>(
 			ChildContent<HasParams>());
@@ -175,7 +175,7 @@ public partial class TestRendererTest : TestContext
 		const string PARENT_VALUE = nameof(PARENT_VALUE);
 		const string CHILD_VALUE = nameof(CHILD_VALUE);
 
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var cut = sut.RenderComponent<HasParams>(
 			(nameof(HasParams.Value), GRAND_PARENT_VALUE),
@@ -200,7 +200,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "FindComponents throws if parentComponent parameter is null")]
 	public void Test031()
 	{
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		Should.Throw<ArgumentNullException>(() => sut.FindComponents<HasParams>(null!));
 	}
@@ -209,7 +209,7 @@ public partial class TestRendererTest : TestContext
 	public void Test032()
 	{
 		// arrange
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 		var cut = sut.RenderComponent<HasParams>(
 			ChildContent<HasParams>(
 				ChildContent<HasParams>()));
@@ -225,7 +225,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "Retrieved rendered child component with FindComponent gets updated on re-render")]
 	public async Task Test040()
 	{
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var parent = sut.RenderComponent<HasParams>(
 			ChildContent<RenderTrigger>());
@@ -244,7 +244,7 @@ public partial class TestRendererTest : TestContext
 	[Fact(DisplayName = "Retrieved rendered child component with FindComponents gets updated on re-render")]
 	public async Task Test041()
 	{
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var parent = sut.RenderComponent<HasParams>(
 			ChildContent<RenderTrigger>());
@@ -264,7 +264,7 @@ public partial class TestRendererTest : TestContext
 	public async Task Test050()
 	{
 		// arrange
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var cut = sut.RenderComponent<HasParams>(
 			ChildContent<RenderTrigger>());
@@ -282,7 +282,7 @@ public partial class TestRendererTest : TestContext
 	public async Task Test060()
 	{
 		// arrange
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var cut = sut.RenderComponent<ToggleChild>(
 			ChildContent<NoChildNoParams>());
@@ -300,7 +300,7 @@ public partial class TestRendererTest : TestContext
 	public async Task Test061()
 	{
 		// arrange
-		var sut = CreateRenderer();
+		using var sut = CreateRenderer();
 
 		var cut = sut.RenderComponent<ToggleChild>(
 			ChildContent<ToggleChild>(
@@ -490,7 +490,6 @@ public partial class TestRendererTest : TestContext
 		cut.Instance.AfterRenderAsyncCount.ShouldBe(2);
 	}
 
-#if NET8_0_OR_GREATER
 	[Fact(DisplayName = "Can render components that have a RenderMode InteractiveAuto")]
 	public void Test209()
 	{
@@ -514,9 +513,8 @@ public partial class TestRendererTest : TestContext
 
 		cut.Find("h1").TextContent.ShouldBe($"Hello world {RenderMode.InteractiveWebAssembly}");
 	}
-#endif
 
-	private ITestRenderer CreateRenderer() => new WebTestRenderer(
+	private WebTestRenderer CreateRenderer() => new WebTestRenderer(
 		Services.GetRequiredService<IRenderedComponentActivator>(),
 		Services,
 		NullLoggerFactory.Instance);

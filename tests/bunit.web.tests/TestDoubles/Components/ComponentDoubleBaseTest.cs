@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 namespace Bunit.TestDoubles.Components;
 
 public class ComponentDoubleBaseTest : TestContext
@@ -16,4 +15,3 @@ public class ComponentDoubleBaseTest : TestContext
 		cut.Instance.Parameters[attrName].ShouldBe(attrValue);
 	}
 }
-#endif

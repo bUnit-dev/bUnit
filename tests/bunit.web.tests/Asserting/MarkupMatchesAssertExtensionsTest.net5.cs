@@ -1,8 +1,3 @@
-#if !NETCOREAPP3_1
-
-using Bunit.TestAssets.SampleComponents;
-using Xunit;
-
 namespace Bunit.Asserting;
 
 public partial class MarkupMatchesAssertExtensionsTest : TestContext
@@ -15,4 +10,3 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 		cut.MarkupMatches("<h1>Hello Pink World!</h1>");
 	}
 }
-#endif

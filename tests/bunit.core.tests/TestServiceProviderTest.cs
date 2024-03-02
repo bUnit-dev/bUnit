@@ -297,7 +297,6 @@ public partial class TestServiceProviderTest
 		dummyServiceProvider.ResolvedTestServices.Count.ShouldBe(1);
 	}
 	
-#if NET8_0_OR_GREATER
 	[Fact(DisplayName = "Should resolve keyed service from container")]
 	public void Test040()
 	{
@@ -329,7 +328,6 @@ public partial class TestServiceProviderTest
 
 		Should.Throw<InvalidOperationException>(() => ctx.RenderComponent<ComponentWithKeyedService>());
 	}
-#endif
 
 	private sealed class DummyService { }
 
@@ -416,11 +414,9 @@ public partial class TestServiceProviderTest
 			=> containerBuilder.Build();
 	}
 	
-#if NET8_0_OR_GREATER
 	private sealed class ComponentWithKeyedService : ComponentBase
 	{
 		[Inject(Key = "Key")]
 		public DummyService Service { get; set; }
 	}
-#endif
 }

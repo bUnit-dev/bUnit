@@ -1,6 +1,5 @@
 using AngleSharp.Dom;
 
-#if NET8_0_OR_GREATER
 namespace Bunit;
 
 /// <summary>
@@ -28,4 +27,3 @@ public static class DialogEventDispatchExtensions
 	///	</summary>
 	public static Task CloseAsync(this IElement element) => element.TriggerEventAsync("onclose", EventArgs.Empty);
 }
-#endif
