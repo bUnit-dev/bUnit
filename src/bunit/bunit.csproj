@@ -1,9 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-		<NoBuild>true</NoBuild>
-		<IncludeBuildOutput>false</IncludeBuildOutput>
-		<IncludeSymbols>false</IncludeSymbols>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -21,8 +18,30 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\bunit.core\bunit.core.csproj" />
-	  <ProjectReference Include="..\bunit.web\bunit.web.csproj" />
+		<PackageReference Include="AngleSharp" Version="1.1.1" />
+		<PackageReference Include="AngleSharp.Diffing" Version="0.18.2" />
+		<PackageReference Include="AngleSharp.Css" Version="1.0.0-beta.139" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\bunit.generators.internal\bunit.generators.internal.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(DotNet8Version)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="$(DotNet8Version)" />
+	</ItemGroup>
+
+	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template'">
+		<Using Include="Microsoft.AspNetCore.Components.Web" />
+		<Using Include="Microsoft.JSInterop" />
 	</ItemGroup>
 
 </Project>

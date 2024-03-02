@@ -35,7 +35,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\bunit.generators.internal\bunit.generators.internal.csproj" />
 		<ProjectReference Include="..\..\src\bunit.generators\bunit.generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<ProjectReference Include="..\..\src\bunit.web\bunit.web.csproj" />
+		<ProjectReference Include="..\..\src\bunit\bunit.csproj" />
 	</ItemGroup>
 
 </Project>
