@@ -68,7 +68,7 @@ public class TestAuthorizationContextTest : TestContext
 		// assert
 		Assert.True(authContext.IsAuthenticated);
 		Assert.Equal(AuthorizationState.Authorized, authContext.State);
-		Assert.Equal(new[] { "some-role" }, authContext.Roles);
+		Assert.Equal(["some-role"], authContext.Roles);
 		Assert.Empty(authContext.Policies);
 	}
 
@@ -83,7 +83,7 @@ public class TestAuthorizationContextTest : TestContext
 		// assert
 		Assert.True(authContext.IsAuthenticated);
 		Assert.Equal(AuthorizationState.Authorized, authContext.State);
-		Assert.Equal(new[] { "TestPolicy", "Other" }, authContext.Policies);
+		Assert.Equal(["TestPolicy", "Other"], authContext.Policies);
 		Assert.Empty(authContext.Roles);
 	}
 }

@@ -16,8 +16,7 @@ public static class DiffAssertExtensions
 	/// <returns>The expected single <see cref="IDiff"/> in the collection.</returns>
 	public static IDiff ShouldHaveSingleChange(this IEnumerable<IDiff> diffs)
 	{
-		if (diffs is null)
-			throw new ArgumentNullException(nameof(diffs));
+		ArgumentNullException.ThrowIfNull(diffs);
 
 		var diffsArray = diffs.ToArray();
 
@@ -41,10 +40,8 @@ public static class DiffAssertExtensions
 	/// The total number of <see cref="IDiff"/> inspectors must exactly match the number of <see cref="IDiff"/>s in the collection.</param>
 	public static void ShouldHaveChanges(this IEnumerable<IDiff> diffs, params Action<IDiff>[] diffInspectors)
 	{
-		if (diffs is null)
-			throw new ArgumentNullException(nameof(diffs));
-		if (diffInspectors is null)
-			throw new ArgumentNullException(nameof(diffInspectors));
+		ArgumentNullException.ThrowIfNull(diffs);
+		ArgumentNullException.ThrowIfNull(diffInspectors);
 
 		var diffsArray = diffs.ToArray();
 

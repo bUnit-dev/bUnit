@@ -1,10 +1,4 @@
-#if NET5_0_OR_GREATER
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
-using System.Threading.Tasks;
 using Bunit.JSInterop.Implementation;
-using Microsoft.JSInterop;
 
 namespace Bunit;
 
@@ -58,4 +52,3 @@ internal sealed class BunitJSObjectReference : IJSObjectReference, IJSInProcessO
 	/// <inheritdoc/>
 	public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 }
-#endif

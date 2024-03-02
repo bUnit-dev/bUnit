@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System.Text;
 
 namespace Bunit;
@@ -39,8 +38,7 @@ public class InputFileContent
 		DateTimeOffset? lastChanged = null,
 		string? contentType = null)
 	{
-		if (fileContent == null)
-			throw new ArgumentNullException(nameof(fileContent));
+		ArgumentNullException.ThrowIfNull(fileContent);
 
 		return new InputFileContent(Encoding.Default.GetBytes(fileContent), fileName, lastChanged, contentType);
 	}
@@ -58,10 +56,8 @@ public class InputFileContent
 		DateTimeOffset? lastChanged = null,
 		string? contentType = null)
 	{
-		if (fileContent == null)
-			throw new ArgumentNullException(nameof(fileContent));
+		ArgumentNullException.ThrowIfNull(fileContent);
 
 		return new InputFileContent(fileContent, fileName, lastChanged, contentType);
 	}
 }
-#endif

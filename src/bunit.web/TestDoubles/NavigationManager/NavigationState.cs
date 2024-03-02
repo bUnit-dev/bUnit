@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Bunit.TestDoubles;
 
 /// <summary>
@@ -21,4 +20,3 @@ public enum NavigationState
 	/// </summary>
 	Faulted
 }
-#endif

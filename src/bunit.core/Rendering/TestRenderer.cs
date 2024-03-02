@@ -10,17 +10,11 @@ namespace Bunit.Rendering;
 /// </summary>
 public class TestRenderer : Renderer, ITestRenderer
 {
-#if NET8_0_OR_GREATER
 	[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_isBatchInProgress")]
 	extern static ref bool GetIsBatchInProgressField(Renderer renderer);
 
 	[UnsafeAccessor(UnsafeAccessorKind.Method, Name = "SetDirectParameters")]
 	extern static void CallSetDirectParameters(ComponentState componentState, ParameterView parameters);
-#else
-	private static readonly Type RendererType = typeof(Renderer);
-	private static readonly MethodInfo GetRequiredComponentStateMethod = RendererType.GetMethod("GetRequiredComponentState", BindingFlags.Instance | BindingFlags.NonPublic)!;
-	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;
-#endif
 
 	private readonly object renderTreeUpdateLock = new();
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
@@ -36,20 +30,12 @@ public class TestRenderer : Renderer, ITestRenderer
 #pragma warning disable S1144 // Unused private types or members should be removed
 		get
 		{
-#if NET8_0_OR_GREATER
 			return GetIsBatchInProgressField(this);
-#else
-			return (bool)(IsBatchInProgressField.GetValue(this) ?? false);
-#endif
 		}
 #pragma warning restore S1144 // Unused private types or members should be removed
 		set
 		{
-#if NET8_0_OR_GREATER
 			GetIsBatchInProgressField(this) = value;
-#else
-			IsBatchInProgressField.SetValue(this, value);
-#endif
 		}
 	}
 
@@ -64,17 +50,6 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// </summary>
 	internal int RenderCount { get; private set; }
 
-#if NETSTANDARD
-	/// <summary>
-	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
-	/// </summary>
-	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
-		: base(services, loggerFactory)
-	{
-		logger = loggerFactory.CreateLogger<TestRenderer>();
-		this.activator = renderedComponentActivator;
-	}
-#elif NET5_0_OR_GREATER
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
 	/// </summary>
@@ -94,7 +69,6 @@ public class TestRenderer : Renderer, ITestRenderer
 		logger = loggerFactory.CreateLogger<TestRenderer>();
 		this.activator = renderedComponentActivator;
 	}
-#endif
 
 	/// <inheritdoc/>
 	public IRenderedFragmentBase RenderFragment(RenderFragment renderFragment)
@@ -104,8 +78,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	public IRenderedComponentBase<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent
 	{
-		if (parameters is null)
-			throw new ArgumentNullException(nameof(parameters));
+		ArgumentNullException.ThrowIfNull(parameters);
 
 		var renderFragment = parameters.ToRenderFragment<TComponent>();
 		return Render(renderFragment, id => activator.CreateRenderedComponent<TComponent>(id));
@@ -117,29 +90,23 @@ public class TestRenderer : Renderer, ITestRenderer
 		EventFieldInfo fieldInfo,
 		EventArgs eventArgs) => DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
 
+	/// <exception cref="ObjectDisposedException"></exception>
 	/// <inheritdoc/>
-#if !NET8_0_OR_GREATER
-	public Task DispatchEventAsync(
-#else
 	public new Task DispatchEventAsync(
-#endif
 		ulong eventHandlerId,
 		EventFieldInfo fieldInfo,
 		EventArgs eventArgs,
 		bool ignoreUnknownEventHandlers)
 	{
-		if (fieldInfo is null)
-			throw new ArgumentNullException(nameof(fieldInfo));
+		ArgumentNullException.ThrowIfNull(fieldInfo);
 
-		if (disposed)
-			throw new ObjectDisposedException(nameof(TestRenderer));
+		ObjectDisposedException.ThrowIf(disposed, this);
 
 		// Calling base.DispatchEventAsync updates the render tree
 		// if the event contains associated data.
 		lock (renderTreeUpdateLock)
 		{
-			if (disposed)
-				throw new ObjectDisposedException(nameof(TestRenderer));
+			ObjectDisposedException.ThrowIf(disposed, this);
 
 			var result = Dispatcher.InvokeAsync(() =>
 			{
@@ -191,8 +158,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// <inheritdoc />
 	public void DisposeComponents()
 	{
-		if (disposed)
-			throw new ObjectDisposedException(nameof(TestRenderer));
+		ObjectDisposedException.ThrowIf(disposed, this);
 
 		lock (renderTreeUpdateLock)
 		{
@@ -215,7 +181,6 @@ public class TestRenderer : Renderer, ITestRenderer
 		}
 	}
 
-#if NET8_0_OR_GREATER
 	/// <inheritdoc/>
 	protected override IComponent ResolveComponentForRenderMode(Type componentType, int? parentComponentId,
 		IComponentActivator componentActivator, IComponentRenderMode renderMode)
@@ -224,13 +189,11 @@ public class TestRenderer : Renderer, ITestRenderer
 		ArgumentNullException.ThrowIfNull(componentActivator);
 		return componentActivator.CreateInstance(componentType);
 	}
-#endif
 
 	/// <inheritdoc/>
 	internal Task SetDirectParametersAsync(IRenderedFragmentBase renderedComponent, ParameterView parameters)
 	{
-		if (disposed)
-			throw new ObjectDisposedException(nameof(TestRenderer));
+		ObjectDisposedException.ThrowIf(disposed, this);
 
 		var result = Dispatcher.InvokeAsync(() =>
 		{
@@ -260,20 +223,11 @@ public class TestRenderer : Renderer, ITestRenderer
 
 		return result;
 
-#if NET8_0_OR_GREATER
 		static void SetDirectParametersViaComponentState(TestRenderer renderer, int componentId, in ParameterView parameters)
 		{
 			var componentState = renderer.GetComponentState(componentId);
 			CallSetDirectParameters(componentState, parameters);
 		}
-#else
-		static void SetDirectParametersViaComponentState(TestRenderer renderer, int componentId, in ParameterView parameters)
-		{
-			var componentState = GetRequiredComponentStateMethod.Invoke(renderer, new object[] { componentId })!;
-			var setDirectParametersMethod = componentState.GetType().GetMethod("SetDirectParameters", BindingFlags.Public | BindingFlags.Instance)!;
-			setDirectParametersMethod.Invoke(componentState, new object[] { parameters });
-		}
-#endif
 	}
 
 	/// <inheritdoc/>
@@ -447,8 +401,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
 		where TResult : IRenderedFragmentBase
 	{
-		if (disposed)
-			throw new ObjectDisposedException(nameof(TestRenderer));
+		ObjectDisposedException.ThrowIf(disposed, this);
 
 		var renderTask = Dispatcher.InvokeAsync(() =>
 		{
@@ -482,14 +435,12 @@ public class TestRenderer : Renderer, ITestRenderer
 		return result;
 	}
 
-	private IReadOnlyList<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
+	private List<IRenderedComponentBase<TComponent>> FindComponents<TComponent>(IRenderedFragmentBase parentComponent, int resultLimit)
 		where TComponent : IComponent
 	{
-		if (parentComponent is null)
-			throw new ArgumentNullException(nameof(parentComponent));
+		ArgumentNullException.ThrowIfNull(parentComponent);
 
-		if (disposed)
-			throw new ObjectDisposedException(nameof(TestRenderer));
+		ObjectDisposedException.ThrowIf(disposed, this);
 
 		var result = new List<IRenderedComponentBase<TComponent>>();
 		var framesCollection = new RenderTreeFrameDictionary();
@@ -498,8 +449,7 @@ public class TestRenderer : Renderer, ITestRenderer
 		// while this method searches through it.
 		lock (renderTreeUpdateLock)
 		{
-			if (disposed)
-				throw new ObjectDisposedException(nameof(TestRenderer));
+			ObjectDisposedException.ThrowIf(disposed, this);
 
 			FindComponentsInRenderTree(parentComponent.ComponentId);
 		}
