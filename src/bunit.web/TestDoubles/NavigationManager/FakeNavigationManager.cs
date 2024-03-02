@@ -33,42 +33,6 @@ public sealed class FakeNavigationManager : NavigationManager
 		Initialize("http://localhost/", "http://localhost/");
 	}
 
-#if !NET6_0_OR_GREATER
-	/// <inheritdoc/>
-	protected override void NavigateToCore(string uri, bool forceLoad)
-	{
-		var absoluteUri = GetNewAbsoluteUri(uri);
-		var changedBaseUri = HasDifferentBaseUri(absoluteUri);
-
-		if (changedBaseUri)
-		{
-			BaseUri = GetBaseUri(absoluteUri);
-		}
-
-		Uri = ToAbsoluteUri(uri).OriginalString;
-		history.Push(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
-
-		testContextBase.Renderer.Dispatcher.InvokeAsync(() =>
-		{
-			Uri = absoluteUri.OriginalString;
-
-			// Only notify of changes if user navigates within the same
-			// base url (domain). Otherwise, the user navigated away
-			// from the app, and Blazor's NavigationManager would
-			// not notify of location changes.
-			if (!changedBaseUri)
-			{
-				NotifyLocationChanged(isInterceptedLink: false);
-			}
-			else
-			{
-				BaseUri = GetBaseUri(absoluteUri);
-			}
-		});
-	}
-#endif
-
-#if NET6_0_OR_GREATER
 	/// <inheritdoc/>
 	protected override void NavigateToCore(string uri, NavigationOptions options)
 	{
@@ -85,16 +49,11 @@ public sealed class FakeNavigationManager : NavigationManager
 		if (options.ReplaceHistoryEntry && history.Count > 0)
 			history.Pop();
 
-#if NET7_0_OR_GREATER
 		HistoryEntryState = options.ForceLoad ? null : options.HistoryEntryState;
 		testContextBase.Renderer.Dispatcher.InvokeAsync(async () =>
-#else
-		testContextBase.Renderer.Dispatcher.InvokeAsync(() =>
-#endif
 		{
 			Uri = absoluteUri.OriginalString;
 
-#if NET7_0_OR_GREATER
 			var shouldContinueNavigation = false;
 			try
 			{
@@ -112,10 +71,6 @@ public sealed class FakeNavigationManager : NavigationManager
 			{
 				return;
 			}
-#else
-			history.Push(new NavigationHistory(uri, options));
-#endif
-
 
 			// Only notify of changes if user navigates within the same
 			// base url (domain). Otherwise, the user navigated away
@@ -131,16 +86,13 @@ public sealed class FakeNavigationManager : NavigationManager
 			}
 		});
 	}
-#endif
 
-#if NET7_0_OR_GREATER
 	/// <inheritdoc/>
 	protected override void SetNavigationLockState(bool value) {}
 
 	/// <inheritdoc/>
 	protected override void HandleLocationChangingHandlerException(Exception ex, LocationChangingContext context)
 		=> throw ex;
-#endif
 
 	private URI GetNewAbsoluteUri(string uri)
 		=> new URI(uri, UriKind.RelativeOrAbsolute).IsAbsoluteUri

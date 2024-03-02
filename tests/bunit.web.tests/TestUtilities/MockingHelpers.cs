@@ -15,8 +15,7 @@ public static class MockingHelpers
 	/// <returns>An instance of <paramref name="type"/>.</returns>
 	public static object ToMockInstance(this Type type)
 	{
-		if (type is null)
-			throw new ArgumentNullException(nameof(type));
+		ArgumentNullException.ThrowIfNull(type);
 
 		if (type.IsMockable())
 		{
@@ -37,8 +36,7 @@ public static class MockingHelpers
 	/// </summary>
 	public static bool IsMockable(this Type type)
 	{
-		if (type is null)
-			throw new ArgumentNullException(nameof(type));
+		ArgumentNullException.ThrowIfNull(type);
 
 		return !type.IsSealed || type.IsDelegateType();
 	}

@@ -15,8 +15,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing or is suspended by an asynchronous operation.</returns>
 	public static Task InvokeAsync(this IRenderedFragmentBase renderedFragment, Action workItem)
 	{
-		if (renderedFragment is null)
-			throw new ArgumentNullException(nameof(renderedFragment));
+		ArgumentNullException.ThrowIfNull(renderedFragment);
 
 		return renderedFragment
 			.Services
@@ -34,8 +33,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing.</returns>
 	public static Task InvokeAsync(this IRenderedFragmentBase renderedFragment, Func<Task> workItem)
 	{
-		if (renderedFragment is null)
-			throw new ArgumentNullException(nameof(renderedFragment));
+		ArgumentNullException.ThrowIfNull(renderedFragment);
 
 		return renderedFragment
 			.Services
@@ -53,8 +51,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing, with the return value from <paramref name="workItem"/>.</returns>
 	public static Task<T> InvokeAsync<T>(this IRenderedFragmentBase renderedFragment, Func<T> workItem)
 	{
-		if (renderedFragment is null)
-			throw new ArgumentNullException(nameof(renderedFragment));
+		ArgumentNullException.ThrowIfNull(renderedFragment);
 
 		return renderedFragment
 			.Services
@@ -72,8 +69,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing, with the return value from <paramref name="workItem"/>.</returns>
 	public static Task<T> InvokeAsync<T>(this IRenderedFragmentBase renderedFragment, Func<Task<T>> workItem)
 	{
-		if (renderedFragment is null)
-			throw new ArgumentNullException(nameof(renderedFragment));
+		ArgumentNullException.ThrowIfNull(renderedFragment);
 
 		return renderedFragment
 			.Services

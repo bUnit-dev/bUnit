@@ -118,18 +118,12 @@ public sealed class JSRuntimeUnhandledInvocationException : Exception
 		}
 	}
 
-#if NET5_0_OR_GREATER
 	private static bool IsImportModuleInvocation(JSRuntimeInvocation invocation)
 	{
 		const string DefaultImportIdentifier = "import";
 		return string.Equals(invocation.Identifier, DefaultImportIdentifier, StringComparison.Ordinal)
 			&& typeof(IJSObjectReference).IsAssignableFrom(invocation.ResultType);
 	}
-#else
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Method to allow compatibility with netstandard2.1")]
-	private static bool IsImportModuleInvocation(JSRuntimeInvocation runtimeInvocation)
-		=> false;
-#endif
 
 	private static string GetArguments(JSRuntimeInvocation invocation, bool includeIdentifier = true)
 	{

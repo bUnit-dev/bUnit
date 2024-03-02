@@ -1,5 +1,3 @@
-#if NET5_0_OR_GREATER
-
 namespace Bunit.Rendering;
 
 internal class BunitComponentActivator : IComponentActivator
@@ -47,9 +45,8 @@ internal class BunitComponentActivator : IComponentActivator
 
 		/// <inheritdoc />
 		public IComponent CreateInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type componentType)
-		{			
+		{
 			return (IComponent)Activator.CreateInstance(componentType)!;
 		}
 	}
 }
-#endif

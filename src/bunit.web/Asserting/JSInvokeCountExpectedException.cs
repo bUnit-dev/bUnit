@@ -35,21 +35,17 @@ public sealed class JSInvokeCountExpectedException : Exception
 	private JSInvokeCountExpectedException(SerializationInfo serializationInfo, StreamingContext streamingContext)
 		: base(serializationInfo, streamingContext)
 	{
-		if (serializationInfo is null)
-			throw new ArgumentNullException(nameof(serializationInfo));
+		ArgumentNullException.ThrowIfNull(serializationInfo);
 		ExpectedInvocationCount = serializationInfo.GetInt32(nameof(ExpectedInvocationCount));
 		ActualInvocationCount = serializationInfo.GetInt32(nameof(ActualInvocationCount));
 		Identifier = serializationInfo.GetString(nameof(Identifier)) ?? string.Empty;
 	}
 
 	/// <inheritdoc/>
-#if NET8_0_OR_GREATER
 	[Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
 	public override void GetObjectData(SerializationInfo info, StreamingContext context)
 	{
-		if (info is null)
-			throw new ArgumentNullException(nameof(info));
+		ArgumentNullException.ThrowIfNull(info);
 
 		info.AddValue(nameof(ExpectedInvocationCount), ExpectedInvocationCount);
 		info.AddValue(nameof(ActualInvocationCount), ActualInvocationCount);

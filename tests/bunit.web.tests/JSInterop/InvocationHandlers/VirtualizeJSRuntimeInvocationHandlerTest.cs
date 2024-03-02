@@ -1,11 +1,4 @@
-#if !NETCOREAPP3_1
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
-using Shouldly;
-using Xunit;
 
 namespace Bunit.JSInterop.ComponentSupport;
 
@@ -97,7 +90,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 		cut.FindAll(".item").Count.ShouldBe(0);
 	}
 
-	private static ICollection<string> CreateItems(int itemsToCreate)
+	private static string[] CreateItems(int itemsToCreate)
 		=> Enumerable.Range(0, itemsToCreate).Select(_ => Guid.NewGuid().ToString()).ToArray();
 
 	private static ItemsProviderDelegate<string> CreateItemsProvider(int itemsInCollection)
@@ -111,5 +104,3 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 		};
 	}
 }
-
-#endif

@@ -26,8 +26,7 @@ internal sealed class TestOutputSink : ILogEventSink
 
 	public void Emit(LogEvent logEvent)
 	{
-		if (logEvent == null)
-			throw new ArgumentNullException(nameof(logEvent));
+		ArgumentNullException.ThrowIfNull(logEvent);
 
 		using var renderSpace = new StringWriter();
 		textFormatter.Format(logEvent, renderSpace);

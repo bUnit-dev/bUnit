@@ -2,10 +2,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 	<PropertyGroup Label="Configuration variables">
-		<DotNet3Version>3.1.*</DotNet3Version>
-		<DotNet5Version>5.0.*</DotNet5Version>
-		<DotNet6Version>6.0.*</DotNet6Version>
-		<DotNet7Version>7.0.*</DotNet7Version>
 		<DotNet8Version>8.0.*</DotNet8Version>
 		<DotNet9Version>9.0.0-*</DotNet9Version>
 	</PropertyGroup>
@@ -40,7 +36,7 @@
 	<PropertyGroup Label="Analyzer settings">
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisLevel>7</AnalysisLevel>
+		<AnalysisLevel>8</AnalysisLevel>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 

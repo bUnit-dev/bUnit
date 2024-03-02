@@ -51,7 +51,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".workflows", ".workflows", 
 		.github\workflows\ci.yml = .github\workflows\ci.yml
 		.github\workflows\docs-deploy.yml = .github\workflows\docs-deploy.yml
 		.github\workflows\prepare-release.yml = .github\workflows\prepare-release.yml
-		.github\workflows\release-preview.yml = .github\workflows\release-preview.yml
 		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
