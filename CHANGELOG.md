@@ -6,12 +6,16 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.27.17] - 2024-03-02
+
 ### Added
-- Support for `IKeyedServiceProvider` in net8.0. Reported by [@ViRuSTriNiTy](https://github.com/ViRuSTriNiTy). By [@linkdotnet](https://github.com/linkdotnet).
-- Support for `net9.0`. NOTE, there is no commitment as of now to support net9.0 in bUnit v1. However. Support for net9.0 may move to a future v2 release of bUnit and be deprecated in v1. However, allowing bUnit to build and work with net9.0 previews allows our users to keep testing! 
+
+-   Support for `IKeyedServiceProvider` in net8.0. Reported by [@ViRuSTriNiTy](https://github.com/ViRuSTriNiTy). By [@linkdotnet](https://github.com/linkdotnet).
+-   Support for `net9.0`. NOTE, there is no commitment as of now to support net9.0 in bUnit v1. However. Support for net9.0 may move to a future v2 release of bUnit and be deprecated in v1. However, allowing bUnit to build and work with net9.0 previews allows our users to keep testing! 
 
 ### Fixed
-- Support for `SupplyFromQueryParameter` in net8.0. Reported by [@aayjaychan](https://github.com/aayjaychan). Fixed by [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
+
+-   Support for `SupplyFromQueryParameter` in net8.0. Reported by [@aayjaychan](https://github.com/aayjaychan). Fixed by [@egil](https://github.com/egil) and [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.26.64] - 2023-12-20
 
@@ -1354,7 +1358,9 @@ The latest version of the library is availble on NuGet:
 -   **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.26.64...HEAD
+[Unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.27.17...HEAD
+
+[1.27.17]: https://github.com/bUnit-dev/bUnit/compare/v1.26.64...1.27.17
 
 [1.26.64]: https://github.com/bUnit-dev/bUnit/compare/v1.25.3...v1.26.64
 
