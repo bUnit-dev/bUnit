@@ -1,5 +1,4 @@
-﻿#if NET5_0_OR_GREATER
-namespace Bunit.JSInterop.InvocationHandlers.Implementation;
+﻿namespace Bunit.JSInterop.InvocationHandlers.Implementation;
 
 internal sealed class InputFileInvocationHandler : JSRuntimeInvocationHandler
 {
@@ -11,4 +10,3 @@ internal sealed class InputFileInvocationHandler : JSRuntimeInvocationHandler
 		SetVoidResult();
 	}
 }
-#endif

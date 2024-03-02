@@ -50,11 +50,8 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, TValue>> parameterSelector, [AllowNull] TValue value)
 	{
-#if !NET8_0_OR_GREATER
-		var (name, cascadingValueName, isCascading) = GetParameterInfo(parameterSelector);
-#else
 		var (name, cascadingValueName, isCascading) = GetParameterInfo(parameterSelector, value);
-#endif
+
 		return isCascading
 			? AddCascadingValueParameter(cascadingValueName, value)
 			: AddParameter<TValue>(name, value);
@@ -91,8 +88,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, RenderFragment<TValue>?>> parameterSelector, Func<TValue, string> markupFactory)
 	{
-		if (markupFactory is null)
-			throw new ArgumentNullException(nameof(markupFactory));
+		ArgumentNullException.ThrowIfNull(markupFactory);
 		return Add(parameterSelector, v => b => b.AddMarkupContent(0, markupFactory(v)));
 	}
 
@@ -109,8 +105,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	public ComponentParameterCollectionBuilder<TComponent> Add<TChildComponent, TValue>(Expression<Func<TComponent, RenderFragment<TValue>?>> parameterSelector, Func<TValue, Action<ComponentParameterCollectionBuilder<TChildComponent>>> templateFactory)
 		where TChildComponent : IComponent
 	{
-		if (templateFactory is null)
-			throw new ArgumentNullException(nameof(templateFactory));
+		ArgumentNullException.ThrowIfNull(templateFactory);
 		return Add(parameterSelector, value => GetRenderFragment(templateFactory(value)));
 	}
 
@@ -344,17 +339,12 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		Action<TValue> changedAction,
 		Expression<Func<TValue>>? valueExpression = null)
 	{
-		#if !NET8_0_OR_GREATER
-		var (parameterName, _, isCascading) = GetParameterInfo(parameterSelector);
-		#else
 		var (parameterName, _, isCascading) = GetParameterInfo(parameterSelector, initialValue);
-		#endif
 
 		if (isCascading)
 			throw new ArgumentException("Using Bind with a cascading parameter is not allowed.", parameterName);
 
-		if (changedAction is null)
-			throw new ArgumentNullException(nameof(changedAction));
+		ArgumentNullException.ThrowIfNull(changedAction);
 
 		var changedName = $"{parameterName}Changed";
 		var expressionName = $"{parameterName}Expression";
@@ -437,14 +427,10 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	public ComponentParameterCollection Build() => parameters;
 
 	private static (string Name, string? CascadingValueName, bool IsCascading) GetParameterInfo<TValue>(
-		Expression<Func<TComponent, TValue>> parameterSelector
-#if NET8_0_OR_GREATER
-		, object? value
-#endif
+		Expression<Func<TComponent, TValue>> parameterSelector, object? value
 		)
 	{
-		if (parameterSelector is null)
-			throw new ArgumentNullException(nameof(parameterSelector));
+		ArgumentNullException.ThrowIfNull(parameterSelector);
 
 		if (parameterSelector.Body is not MemberExpression { Member: PropertyInfo propInfoCandidate })
 			throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.", nameof(parameterSelector));
@@ -454,14 +440,6 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 			: propInfoCandidate;
 
 		var paramAttr = propertyInfo?.GetCustomAttribute<ParameterAttribute>(inherit: true);
-	#if !NET8_0_OR_GREATER
-		var cascadingParamAttr = propertyInfo?.GetCustomAttribute<CascadingParameterAttribute>(inherit: true);
-
-		if (propertyInfo is null || (paramAttr is null && cascadingParamAttr is null))
-			throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter] attribute.", nameof(parameterSelector));
-
-		return (propertyInfo.Name, CascadingValueName: cascadingParamAttr?.Name, IsCascading: cascadingParamAttr is not null);
-	#else
 		var cascadingParamAttrBase = propertyInfo?.GetCustomAttribute<CascadingParameterAttributeBase>(inherit: true);
 
 		if (propertyInfo is null || (paramAttr is null && cascadingParamAttrBase is null))
@@ -494,7 +472,6 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 			                              NavigationManager.NavigateTo(uri);
 			                              """);
 		}
-	#endif
 	}
 
 	private static bool HasChildContentParameter()

@@ -7,11 +7,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 	private const string CodeIdent = "    ";
 
 	private static readonly Type JSVoidResultType =
-#if !NET6_0_OR_GREATER
-			typeof(object);
-#else
 			typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult);
-#endif
 
 	private static string CreateExpectedErrorMessage(string invocationMethod, string suggestedSetup)
 	{

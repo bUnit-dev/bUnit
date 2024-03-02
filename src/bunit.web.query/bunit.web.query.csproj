@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;net5.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<RootNamespace>Bunit</RootNamespace>
 		<AssemblyName>Bunit.Web.Query</AssemblyName>
 	</PropertyGroup>
@@ -13,34 +13,6 @@
 			bunit.web.query is an experimental package that provides an bUnit version of the https://testing-library.com/ APIs.
 		</Description>
 	</PropertyGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet3Version)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet3Version)" />
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet3Version)" />
-		<PackageReference Include="Meziantou.Polyfill" Version="1.0.37">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet5Version)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet5Version)" />
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet5Version)" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet6Version)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet6Version)" />
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet6Version)" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet7Version)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet7Version)" />
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet7Version)" />
-	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet8Version)" />

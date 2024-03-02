@@ -1,5 +1,3 @@
-#if NET5_0_OR_GREATER
-
 using Bunit.TestDoubles;
 
 namespace Bunit.Rendering;
@@ -57,5 +55,3 @@ public class BunitComponentActivatorTest : TestContext
 		}
 	}
 }
-
-#endif

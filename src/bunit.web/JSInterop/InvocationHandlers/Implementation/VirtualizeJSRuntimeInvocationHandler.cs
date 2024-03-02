@@ -1,11 +1,6 @@
-#if NET5_0_OR_GREATER
-using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
-using Microsoft.JSInterop;
 
 namespace Bunit.JSInterop.InvocationHandlers.Implementation
 {
@@ -38,11 +33,7 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		{ }
 
 		/// <inheritdoc/>
-#if !NET6_0_OR_GREATER
-		protected internal override Task<object> HandleAsync(JSRuntimeInvocation invocation)
-#else
 		protected internal override Task<Microsoft.JSInterop.Infrastructure.IJSVoidResult> HandleAsync(JSRuntimeInvocation invocation)
-#endif
 		{
 			if (!invocation.Identifier.Equals(JsFunctionsPrefix + "dispose", StringComparison.Ordinal))
 			{
@@ -73,4 +64,3 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 		}
 	}
 }
-#endif

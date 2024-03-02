@@ -1,12 +1,5 @@
-#if !NETCOREAPP3_1 && !NET9_0_OR_GREATER
+#if !NET9_0_OR_GREATER
 #pragma warning disable CS0618 // This method is obsolete.
-using System;
-using System.Linq;
-using AutoFixture.Xunit2;
-using Microsoft.JSInterop;
-using Shouldly;
-using Xunit;
-
 namespace Bunit.JSInterop;
 
 public partial class BunitJSInteropTest

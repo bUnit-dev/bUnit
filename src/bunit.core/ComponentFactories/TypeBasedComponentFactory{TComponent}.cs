@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 namespace Bunit.ComponentFactories;
 
 internal sealed class TypeBasedComponentFactory<TComponent> : IComponentFactory
@@ -15,4 +14,3 @@ internal sealed class TypeBasedComponentFactory<TComponent> : IComponentFactory
 	public IComponent Create(Type componentType)
 		=> componentFactory.Invoke();
 }
-#endif
