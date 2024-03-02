@@ -5,7 +5,6 @@ internal static class ComponentStubAttribute
 	public static string ComponentStubAttributeSource = $$"""
 	                                                    {{HeaderProvider.Header}}
 
-	                                                    #if NET5_0_OR_GREATER
 	                                                    namespace Bunit;
 
 	                                                    /// <summary>
@@ -16,6 +15,5 @@ internal static class ComponentStubAttribute
 	                                                        where T : global::Microsoft.AspNetCore.Components.IComponent
 	                                                    {
 	                                                    }
-	                                                    #endif
 	                                                    """;
 }

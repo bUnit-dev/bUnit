@@ -1,7 +1,4 @@
-#if NET5_0_OR_GREATER
-using System.Collections.Generic;
 using Bunit.JSInterop.InvocationHandlers.Implementation;
-using Microsoft.AspNetCore.Components;
 
 namespace Bunit;
 
@@ -29,4 +26,3 @@ public static class FocusAsyncAssertJSInteropExtensions
 	public static IReadOnlyList<JSRuntimeInvocation> VerifyFocusAsyncInvoke(this BunitJSInterop handler, int calledTimes, string? userMessage = null)
 		=> handler.VerifyInvoke(FocusAsyncInvocationHandler.FocusIdentifier, calledTimes, userMessage);
 }
-#endif

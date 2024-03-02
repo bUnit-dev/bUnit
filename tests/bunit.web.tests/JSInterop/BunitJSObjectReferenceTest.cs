@@ -1,4 +1,3 @@
-#if !NETCOREAPP3_1
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -15,11 +14,7 @@ namespace Bunit.JSInterop;
 public class BunitJSObjectReferenceTest : TestContext
 {
 	private static readonly Type JSVoidResultType =
-#if !NET6_0_OR_GREATER
-			typeof(object);
-#else
 			typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult);
-#endif
 
 	[Theory(DisplayName = "Calling Setup<JSObjectReference> or Setup<IJSObjectReference> throws")]
 	[InlineData("import", null)]
@@ -275,7 +270,7 @@ public class BunitJSObjectReferenceTest : TestContext
 	public async Task Test080()
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
-		var jsInProcess = (IJSInProcessObjectReference)GetBunitJSObjectReference();
+		var jsInProcess = GetBunitJSObjectReference();
 
 		await jsInProcess.InvokeAsync<string>("bar1");
 		await jsInProcess.InvokeAsync<string>("bar2", "baz");
@@ -285,11 +280,11 @@ public class BunitJSObjectReferenceTest : TestContext
 		jsInProcess.Invoke<string>("bar6", "baz");
 
 		JSInterop.VerifyInvoke("bar1");
-		JSInterop.VerifyInvoke("bar2").Arguments.ShouldBe(new[] { "baz" });
+		JSInterop.VerifyInvoke("bar2").Arguments.ShouldBe(["baz"]);
 		JSInterop.VerifyInvoke("bar3");
-		JSInterop.VerifyInvoke("bar4").Arguments.ShouldBe(new[] { "baz" });
+		JSInterop.VerifyInvoke("bar4").Arguments.ShouldBe(["baz"]);
 		JSInterop.VerifyInvoke("bar5");
-		JSInterop.VerifyInvoke("bar6").Arguments.ShouldBe(new[] { "baz" });
+		JSInterop.VerifyInvoke("bar6").Arguments.ShouldBe(["baz"]);
 	}
 	
 #if !NET9_0_OR_GREATER
@@ -311,15 +306,15 @@ public class BunitJSObjectReferenceTest : TestContext
 		jsUnmarshalled.InvokeUnmarshalled<string, string, string, string>("bar10", "baz", "boo", "bah");
 
 		JSInterop.VerifyInvoke("bar1");
-		JSInterop.VerifyInvoke("bar2").Arguments.ShouldBe(new[] { "baz" });
+		JSInterop.VerifyInvoke("bar2").Arguments.ShouldBe(["baz"]);
 		JSInterop.VerifyInvoke("bar3");
-		JSInterop.VerifyInvoke("bar4").Arguments.ShouldBe(new[] { "baz" });
+		JSInterop.VerifyInvoke("bar4").Arguments.ShouldBe(["baz"]);
 		JSInterop.VerifyInvoke("bar5");
-		JSInterop.VerifyInvoke("bar6").Arguments.ShouldBe(new[] { "baz" });
+		JSInterop.VerifyInvoke("bar6").Arguments.ShouldBe(["baz"]);
 		JSInterop.VerifyInvoke("bar7");
-		JSInterop.VerifyInvoke("bar8").Arguments.ShouldBe(new[] { "baz" });
-		JSInterop.VerifyInvoke("bar9").Arguments.ShouldBe(new[] { "baz", "boo" });
-		JSInterop.VerifyInvoke("bar10").Arguments.ShouldBe(new[] { "baz", "boo", "bah" });
+		JSInterop.VerifyInvoke("bar8").Arguments.ShouldBe(["baz"]);
+		JSInterop.VerifyInvoke("bar9").Arguments.ShouldBe(["baz", "boo"]);
+		JSInterop.VerifyInvoke("bar10").Arguments.ShouldBe(["baz", "boo", "bah"]);
 	}
 
 	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier), then the invocation should be visible from the Invocations list"), AutoData]
@@ -471,4 +466,3 @@ public class BunitJSObjectReferenceTest : TestContext
 	private BunitJSObjectReference GetBunitJSObjectReference()
 		=> (BunitJSObjectReference)JSInterop.JSRuntime.InvokeAsync<IJSObjectReference>("FOO.js").Result;
 }
-#endif

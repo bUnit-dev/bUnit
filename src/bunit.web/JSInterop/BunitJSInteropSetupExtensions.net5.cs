@@ -1,11 +1,4 @@
-#if NET5_0_OR_GREATER
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Bunit.JSInterop;
-using Bunit.JSInterop.InvocationHandlers;
 using Bunit.JSInterop.InvocationHandlers.Implementation;
-using Microsoft.JSInterop;
 
 namespace Bunit;
 
@@ -33,10 +26,8 @@ public static partial class BunitJSInteropSetupExtensions
 	/// <returns>A <see cref="BunitJSModuleInterop"/>.</returns>
 	public static BunitJSModuleInterop SetupModule(this BunitJSInterop jsInterop, InvocationMatcher invocationMatcher, bool isCatchAllHandler = false)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
-		if (invocationMatcher is null)
-			throw new ArgumentNullException(nameof(invocationMatcher));
+		ArgumentNullException.ThrowIfNull(jsInterop);
+		ArgumentNullException.ThrowIfNull(invocationMatcher);
 
 		var result = new JSObjectReferenceInvocationHandler(jsInterop, invocationMatcher, isCatchAllHandler);
 		jsInterop.AddInvocationHandler(result);
@@ -131,8 +122,7 @@ public static partial class BunitJSInteropSetupExtensions
 	/// <returns>A <see cref="BunitJSModuleInterop"/> or null if no one is found.</returns>
 	public static BunitJSModuleInterop? TryGetModuleJSInterop(this BunitJSInterop jsInterop, string identifier, params object?[]? arguments)
 	{
-		if (jsInterop is null)
-			throw new ArgumentNullException(nameof(jsInterop));
+		ArgumentNullException.ThrowIfNull(jsInterop);
 
 		var invocation = new JSRuntimeInvocation(identifier, default, arguments, typeof(IJSObjectReference), "InvokeAsync");
 
@@ -141,4 +131,3 @@ public static partial class BunitJSInteropSetupExtensions
 		return handler?.JSInterop;
 	}
 }
-#endif

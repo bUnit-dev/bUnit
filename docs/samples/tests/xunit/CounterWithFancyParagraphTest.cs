@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using Xunit;
 using Bunit;
 using Moq;
@@ -38,4 +37,3 @@ namespace Bunit.Docs.Samples
     }
   }
 }
-#endif

@@ -18,8 +18,7 @@ public static class RenderedFragmentExtensions
 	/// <param name="cssSelector">The group of selectors to use.</param>
 	public static IElement Find(this IRenderedFragment renderedFragment, string cssSelector)
 	{
-		if (renderedFragment is null)
-			throw new ArgumentNullException(nameof(renderedFragment));
+		ArgumentNullException.ThrowIfNull(renderedFragment);
 
 		var result = renderedFragment.Nodes.QuerySelector(cssSelector);
 
@@ -40,8 +39,7 @@ public static class RenderedFragmentExtensions
 	/// <returns>An <see cref="IRefreshableElementCollection{IElement}"/>, that can be refreshed to execute the search again.</returns>
 	public static IRefreshableElementCollection<IElement> FindAll(this IRenderedFragment renderedFragment, string cssSelector, bool enableAutoRefresh = false)
 	{
-		if (renderedFragment is null)
-			throw new ArgumentNullException(nameof(renderedFragment));
+		ArgumentNullException.ThrowIfNull(renderedFragment);
 		return new RefreshableElementCollection(renderedFragment, cssSelector) { EnableAutoRefresh = enableAutoRefresh };
 	}
 
@@ -55,8 +53,7 @@ public static class RenderedFragmentExtensions
 	public static IRenderedComponent<TComponent> FindComponent<TComponent>(this IRenderedFragment renderedFragment)
 		where TComponent : IComponent
 	{
-		if (renderedFragment is null)
-			throw new ArgumentNullException(nameof(renderedFragment));
+		ArgumentNullException.ThrowIfNull(renderedFragment);
 
 		var renderer = renderedFragment.Services.GetRequiredService<TestContextBase>().Renderer;
 		return (IRenderedComponent<TComponent>)renderer.FindComponent<TComponent>(renderedFragment);
@@ -71,8 +68,7 @@ public static class RenderedFragmentExtensions
 	public static IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(this IRenderedFragment renderedFragment)
 		where TComponent : IComponent
 	{
-		if (renderedFragment is null)
-			throw new ArgumentNullException(nameof(renderedFragment));
+		ArgumentNullException.ThrowIfNull(renderedFragment);
 
 		var renderer = renderedFragment.Services.GetRequiredService<TestContextBase>().Renderer;
 		var components = renderer.FindComponents<TComponent>(renderedFragment);

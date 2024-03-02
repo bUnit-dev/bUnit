@@ -1,5 +1,3 @@
-#if NET5_0_OR_GREATER
-
 namespace Bunit.ComponentFactories;
 
 public class InstanceComponentFactoryTest : TestContext
@@ -46,4 +44,3 @@ public class InstanceComponentFactoryTest : TestContext
 			.Add<BasicComponent>(p => p.Second)));
 	}
 }
-#endif

@@ -41,10 +41,7 @@ internal static class Htmlizer
 
 	public static bool IsBlazorAttribute(string attributeName)
 	{
-		if (attributeName is null)
-		{
-			throw new ArgumentNullException(nameof(attributeName));
-		}
+		ArgumentNullException.ThrowIfNull(attributeName);
 
 		return attributeName.StartsWith(BlazorAttrPrefix, StringComparison.Ordinal)
 			|| attributeName.StartsWith(BlazorCssScopeAttrPrefix, StringComparison.Ordinal);

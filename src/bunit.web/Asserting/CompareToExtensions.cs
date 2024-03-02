@@ -18,10 +18,8 @@ public static class CompareToExtensions
 	/// <returns>Any differences found.</returns>
 	public static IReadOnlyList<IDiff> CompareTo(this IRenderedFragment actual, string expected)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var htmlParser = actual.Services.GetRequiredService<BunitHtmlParser>();
 		var expectedNodes = htmlParser.Parse(expected);
@@ -38,10 +36,8 @@ public static class CompareToExtensions
 	/// <returns>Any differences found.</returns>
 	public static IReadOnlyList<IDiff> CompareTo(this IRenderedFragment actual, IRenderedFragment expected)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		return actual.Nodes.CompareTo(expected.Nodes);
 	}
@@ -55,10 +51,8 @@ public static class CompareToExtensions
 	/// <returns>Any differences found.</returns>
 	public static IReadOnlyList<IDiff> CompareTo(this INode actual, INodeList expected)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var comparer = actual.GetHtmlComparer();
 
@@ -74,10 +68,8 @@ public static class CompareToExtensions
 	/// <returns>Any differences found.</returns>
 	public static IReadOnlyList<IDiff> CompareTo(this INodeList actual, INode expected)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		var comparer = expected.GetHtmlComparer();
 
@@ -93,10 +85,8 @@ public static class CompareToExtensions
 	/// <returns>Any differences found.</returns>
 	public static IReadOnlyList<IDiff> CompareTo(this INodeList actual, INodeList expected)
 	{
-		if (actual is null)
-			throw new ArgumentNullException(nameof(actual));
-		if (expected is null)
-			throw new ArgumentNullException(nameof(expected));
+		ArgumentNullException.ThrowIfNull(actual);
+		ArgumentNullException.ThrowIfNull(expected);
 
 		if (actual.Length == 0 && expected.Length == 0)
 			return Array.Empty<IDiff>();

@@ -19,12 +19,9 @@ public static class TestServiceProviderExtensions
 	/// </summary>
 	public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services, TestContextBase testContext, BunitJSInterop jsInterop)
 	{
-		if (services is null)
-			throw new System.ArgumentNullException(nameof(services));
-		if (testContext is null)
-			throw new System.ArgumentNullException(nameof(testContext));
-		if (jsInterop is null)
-			throw new System.ArgumentNullException(nameof(jsInterop));
+		ArgumentNullException.ThrowIfNull(services);
+		ArgumentNullException.ThrowIfNull(testContext);
+		ArgumentNullException.ThrowIfNull(jsInterop);
 
 		// Placeholders and defaults for common Blazor services
 		services.AddLogging();
@@ -45,11 +42,9 @@ public static class TestServiceProviderExtensions
 		services.AddSingleton<FakeWebAssemblyHostEnvironment>();
 		services.AddSingleton<IWebAssemblyHostEnvironment>(s => s.GetRequiredService<FakeWebAssemblyHostEnvironment>());
 
-#if NET8_0_OR_GREATER
 		// bUnits fake ScrollToLocationHash
 		services.AddSingleton<IScrollToLocationHash, BunitScrollToLocationHash>();
 		services.AddSupplyValueFromQueryProvider();
-#endif
 
 		// bUnit specific services
 		services.AddSingleton(testContext);
@@ -59,9 +54,7 @@ public static class TestServiceProviderExtensions
 
 		services.AddMemoryCache();
 
-#if NET6_0_OR_GREATER
 		services.AddSingleton<IErrorBoundaryLogger, BunitErrorBoundaryLogger>();
-#endif
 		return services;
 	}
 }

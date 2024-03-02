@@ -1,8 +1,4 @@
-#if NET6_0_OR_GREATER
-using System;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit.TestDoubles;
 
@@ -18,12 +14,10 @@ public static class TestContextBaseExtensions
 	/// <returns>The added <see cref="FakePersistentComponentState"/>.</returns>
 	public static FakePersistentComponentState AddFakePersistentComponentState(this TestContextBase testContext)
 	{
-		if (testContext is null)
-			throw new ArgumentNullException(nameof(testContext));
+		ArgumentNullException.ThrowIfNull(testContext);
 
 		testContext.Services.AddSingleton<ComponentStatePersistenceManager>();
 		testContext.Services.AddSingleton<PersistentComponentState>(s => s.GetRequiredService<ComponentStatePersistenceManager>().State);
 		return new FakePersistentComponentState(testContext.Services);
 	}
 }
-#endif

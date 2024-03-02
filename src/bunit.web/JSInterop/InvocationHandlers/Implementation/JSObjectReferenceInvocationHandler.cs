@@ -1,5 +1,3 @@
-#if NET5_0_OR_GREATER
-
 namespace Bunit.JSInterop.InvocationHandlers.Implementation;
 
 /// <summary>
@@ -25,4 +23,3 @@ internal sealed class JSObjectReferenceInvocationHandler : JSRuntimeInvocationHa
 		SetResult(new BunitJSObjectReference(JSInterop));
 	}
 }
-#endif

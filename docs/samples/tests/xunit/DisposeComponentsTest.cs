@@ -32,7 +32,6 @@ public class DisposeComponentsTest : TestContext
     Assert.Throws<NotSupportedException>(act);
   }
 
-#if NET5_0_OR_GREATER
   [Fact]
   public void ShouldCatchExceptionInDisposeAsync()
   {
@@ -42,5 +41,4 @@ public class DisposeComponentsTest : TestContext
     var exception = Renderer.UnhandledException.Result;
     Assert.IsType<NotSupportedException>(exception);
   }
-#endif
 }
