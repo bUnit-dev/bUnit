@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using System.Collections;
 using System.Collections.Immutable;
 using System.Linq.Expressions;
@@ -68,8 +67,7 @@ public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, obj
 	/// <returns>The <typeparamref name="TValue"/>.</returns>
 	public TValue Get<TValue>(Expression<Func<TComponent, TValue>> parameterSelector)
 	{
-		if (parameterSelector is null)
-			throw new ArgumentNullException(nameof(parameterSelector));
+		ArgumentNullException.ThrowIfNull(parameterSelector);
 
 		if (parameterSelector.Body is not MemberExpression { Member: PropertyInfo propInfoCandidate })
 			throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}'.", nameof(parameterSelector));
@@ -108,4 +106,3 @@ public class CapturedParameterView<TComponent> : IReadOnlyDictionary<string, obj
 	public static CapturedParameterView<TComponent> From(ParameterView parameters)
 		=> new(parameters.ToDictionary()!);
 }
-#endif

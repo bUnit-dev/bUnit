@@ -35,10 +35,8 @@ public static class TestOutputLoggerConfigurationExtensions
 		IFormatProvider formatProvider = null,
 		LoggingLevelSwitch levelSwitch = null)
 	{
-		if (sinkConfiguration == null)
-			throw new ArgumentNullException(nameof(sinkConfiguration));
-		if (messageSink == null)
-			throw new ArgumentNullException(nameof(messageSink));
+		ArgumentNullException.ThrowIfNull(sinkConfiguration);
+		ArgumentNullException.ThrowIfNull(messageSink);
 
 		var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
 
@@ -64,10 +62,8 @@ public static class TestOutputLoggerConfigurationExtensions
 		LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
 		LoggingLevelSwitch levelSwitch = null)
 	{
-		if (sinkConfiguration == null)
-			throw new ArgumentNullException(nameof(sinkConfiguration));
-		if (formatter == null)
-			throw new ArgumentNullException(nameof(formatter));
+		ArgumentNullException.ThrowIfNull(sinkConfiguration);
+		ArgumentNullException.ThrowIfNull(formatter);
 
 		return sinkConfiguration.Sink(new TestOutputSink(messageSink, formatter), restrictedToMinimumLevel, levelSwitch);
 	}
@@ -92,10 +88,8 @@ public static class TestOutputLoggerConfigurationExtensions
 		IFormatProvider formatProvider = null,
 		LoggingLevelSwitch levelSwitch = null)
 	{
-		if (sinkConfiguration == null)
-			throw new ArgumentNullException(nameof(sinkConfiguration));
-		if (testOutputHelper == null)
-			throw new ArgumentNullException(nameof(testOutputHelper));
+		ArgumentNullException.ThrowIfNull(sinkConfiguration);
+		ArgumentNullException.ThrowIfNull(testOutputHelper);
 
 		var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
 
@@ -121,10 +115,8 @@ public static class TestOutputLoggerConfigurationExtensions
 		LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
 		LoggingLevelSwitch levelSwitch = null)
 	{
-		if (sinkConfiguration == null)
-			throw new ArgumentNullException(nameof(sinkConfiguration));
-		if (formatter == null)
-			throw new ArgumentNullException(nameof(formatter));
+		ArgumentNullException.ThrowIfNull(sinkConfiguration);
+		ArgumentNullException.ThrowIfNull(formatter);
 
 		return sinkConfiguration.Sink(new TestOutputSink(testOutputHelper, formatter), restrictedToMinimumLevel, levelSwitch);
 	}

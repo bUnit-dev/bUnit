@@ -6,11 +6,7 @@ namespace Bunit;
 /// Represents a <see cref="IServiceProvider"/> and <see cref="IServiceCollection"/>
 /// as a single type used for test purposes.
 /// </summary>
-#if !NET8_0_OR_GREATER
-public sealed class TestServiceProvider : IServiceProvider, IServiceCollection, IDisposable, IAsyncDisposable
-#else
 public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollection, IDisposable, IAsyncDisposable
-#endif
 {
 	private static readonly ServiceProviderOptions DefaultServiceProviderOptions = new() { ValidateScopes = true };
 	private readonly IServiceCollection serviceCollection;
@@ -77,10 +73,7 @@ public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollect
 	/// <param name="serviceProviderFactory">custom service provider factory</param>
 	public void UseServiceProviderFactory(Func<IServiceCollection, IServiceProvider> serviceProviderFactory)
 	{
-		if (serviceProviderFactory is null)
-		{
-			throw new ArgumentNullException(nameof(serviceProviderFactory));
-		}
+		ArgumentNullException.ThrowIfNull(serviceProviderFactory);
 
 		this.serviceProviderFactory = () => serviceProviderFactory(serviceCollection);
 	}
@@ -96,10 +89,7 @@ public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollect
 	/// <param name="configure">builder configuration action</param>
 	public void UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> serviceProviderFactory, Action<TContainerBuilder>? configure = null) where TContainerBuilder : notnull
 	{
-		if (serviceProviderFactory is null)
-		{
-			throw new ArgumentNullException(nameof(serviceProviderFactory));
-		}
+		ArgumentNullException.ThrowIfNull(serviceProviderFactory);
 
 		UseServiceProviderFactory(serviceCollection =>
 		{
@@ -140,16 +130,9 @@ public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollect
 	/// <returns>A service object of type T or null if there is no such service.</returns>
 	public TService? GetService<TService>() => (TService?)GetService(typeof(TService))!;
 
-#if NETSTANDARD2_1
-	/// <inheritdoc/>
-	[return: MaybeNull]
-	public object GetService(Type serviceType)
-		=> GetServiceInternal(serviceType);
-#else
 	/// <inheritdoc/>
 	public object? GetService(Type serviceType)
 		=> GetServiceInternal(serviceType);
-#endif
 
 	private object? GetServiceInternal(Type serviceType)
 	{
@@ -234,7 +217,6 @@ public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollect
 		return serviceCollection.Remove(item);
 	}
 
-#if NET8_0_OR_GREATER
 	/// <inheritdoc/>
 	public object? GetKeyedService(Type serviceType, object? serviceKey)
 	{
@@ -261,7 +243,6 @@ public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollect
 
 		return service;
 	}
-#endif
 
 	private void CheckInitializedAndThrow()
 	{

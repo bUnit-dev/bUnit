@@ -18,10 +18,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	[MemberData(nameof(GetEventHelperMethods), typeof(GeneralEventDispatchExtensions))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
-		if (helper is null)
-		{
-			throw new ArgumentNullException(nameof(helper));
-		}
+		ArgumentNullException.ThrowIfNull(helper);
 
 		if (helper.Name == nameof(TriggerEventDispatchExtensions.TriggerEventAsync))
 		{
@@ -180,7 +177,6 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 		cut.Instance.GrandParentTriggerCount.ShouldBe(1);
 	}
 
-#if NET6_0_OR_GREATER
 	[Fact(DisplayName = "TriggerEvent can trigger custom events")]
 	public void Test201()
 	{
@@ -194,7 +190,6 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 
 		cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
 	}
-#endif
 
 	[Fact(DisplayName = "TriggerEventAsync throws NoEventHandlerException when invoked with an unknown event handler ID")]
 	public void Test300()

@@ -1,6 +1,3 @@
-#if NET5_0_OR_GREATER
-
-using Bunit.Rendering;
 using Bunit.TestAssets.SampleComponents.DisposeComponents;
 
 namespace Bunit;
@@ -174,4 +171,3 @@ public partial class TestContextBaseTest : TestContext
 		return result;
 	}
 }
-#endif

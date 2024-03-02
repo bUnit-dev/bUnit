@@ -1,5 +1,4 @@
-﻿#if NET5_0_OR_GREATER
-using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components.Forms;
 
 namespace Bunit;
 
@@ -17,11 +16,9 @@ public static class InputFileExtensions
 		this IRenderedComponent<InputFile> inputFileComponent,
 		params InputFileContent[] files)
 	{
-		if (inputFileComponent == null)
-			throw new ArgumentNullException(nameof(inputFileComponent));
-
-		if (!files.Any())
-			throw new ArgumentException("No files were provided to be uploaded.", nameof(files));
+		ArgumentNullException.ThrowIfNull(inputFileComponent);
+		ArgumentNullException.ThrowIfNull(files);
+		ArgumentOutOfRangeException.ThrowIfZero(files.Length);
 
 		var browserFiles = files.Select(file => new BUnitBrowserFile(
 			file.Filename ?? string.Empty,
@@ -38,4 +35,3 @@ public static class InputFileExtensions
 		}
 	}
 }
-#endif

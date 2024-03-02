@@ -13,8 +13,7 @@ public class TriggerEventSpy<TEventArgs>
 
 	public TriggerEventSpy(Func<ComponentParameter[], IRenderedComponent<TriggerTester<TEventArgs>>> componentRenderer, string element, string eventName)
 	{
-		if (componentRenderer is null)
-			throw new ArgumentNullException(nameof(componentRenderer));
+		ArgumentNullException.ThrowIfNull(componentRenderer);
 
 		renderedComponent = componentRenderer(new ComponentParameter[]
 			{
@@ -27,16 +26,14 @@ public class TriggerEventSpy<TEventArgs>
 
 	public void Trigger(Action<IElement> trigger)
 	{
-		if (trigger is null)
-			throw new ArgumentNullException(nameof(trigger));
+		ArgumentNullException.ThrowIfNull(trigger);
 
 		trigger(renderedComponent.Find(element));
 	}
 
 	public Task Trigger(Func<IElement, Task> trigger)
 	{
-		if (trigger is null)
-			throw new ArgumentNullException(nameof(trigger));
+		ArgumentNullException.ThrowIfNull(trigger);
 
 		return trigger(renderedComponent.Find(element));
 	}

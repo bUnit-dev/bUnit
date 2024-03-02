@@ -1,12 +1,3 @@
-#if NET6_0_OR_GREATER
-using System.Threading.Tasks;
-using AutoFixture.Xunit2;
-using Bunit.TestAssets.SampleComponents;
-using Microsoft.AspNetCore.Components;
-using Shouldly;
-using Xunit;
-using Xunit.Abstractions;
-
 namespace Bunit.TestDoubles;
 
 public class FakePersistentComponentStateTest : TestContext
@@ -87,4 +78,3 @@ public class FakePersistentComponentStateTest : TestContext
 		onPersistingCalledTimes.ShouldBe(1);
 	}
 }
-#endif

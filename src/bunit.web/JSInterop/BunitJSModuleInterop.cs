@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 namespace Bunit;
 
 /// <summary>
@@ -44,4 +43,3 @@ public sealed class BunitJSModuleInterop : BunitJSInterop
 		parent.RegisterInvocation(invocation);
 	}
 }
-#endif
