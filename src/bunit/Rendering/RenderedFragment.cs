@@ -26,7 +26,7 @@ public class RenderedFragment : IDisposable
 	public event EventHandler? OnMarkupUpdated;
 
 	/// <summary>
-	/// Gets a value indicating whether the rendered component or fragment has been disposed by the <see cref="TestRenderer"/>.
+	/// Gets a value indicating whether the rendered component or fragment has been disposed by the <see cref="BunitRenderer"/>.
 	/// </summary>
 	public bool IsDisposed { get; private set; }
 
@@ -83,7 +83,7 @@ public class RenderedFragment : IDisposable
 	}
 
 	/// <summary>
-	/// Called by the owning <see cref="TestRenderer"/> when it finishes a render.
+	/// Called by the owning <see cref="BunitRenderer"/> when it finishes a render.
 	/// </summary>
 	/// <param name="renderEvent">A <see cref="RenderEvent"/> that represents a render.</param>
 	public void OnRender(RenderEvent renderEvent)

@@ -6,20 +6,20 @@ using System.Runtime.ExceptionServices;
 namespace Bunit.Rendering;
 
 /// <summary>
-/// Represents a bUnit <see cref="TestRenderer"/> used to render Blazor components and fragments during bUnit tests.
+/// Represents a bUnit <see cref="BunitRenderer"/> used to render Blazor components and fragments during bUnit tests.
 /// </summary>
-public sealed class TestRenderer : Renderer
+public sealed class BunitRenderer : Renderer
 {
 	[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_isBatchInProgress")]
-	extern static ref bool GetIsBatchInProgressField(Renderer renderer);
+	private static extern ref bool GetIsBatchInProgressField(Renderer renderer);
 
 	[UnsafeAccessor(UnsafeAccessorKind.Method, Name = "SetDirectParameters")]
-	extern static void CallSetDirectParameters(ComponentState componentState, ParameterView parameters);
+	private static extern void CallSetDirectParameters(ComponentState componentState, ParameterView parameters);
 
 	private readonly object renderTreeUpdateLock = new();
 	private readonly Dictionary<int, RenderedFragment> renderedComponents = new();
 	private readonly List<RootComponent> rootComponents = new();
-	private readonly ILogger<TestRenderer> logger;
+	private readonly ILogger<BunitRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
 	private bool disposed;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -39,7 +39,10 @@ public sealed class TestRenderer : Renderer
 		}
 	}
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Gets a <see cref="Task{Exception}"/>, which completes when an unhandled exception
+	/// is thrown during the rendering of a component, that is caught by the renderer.
+	/// </summary>
 	public Task<Exception> UnhandledException => unhandledExceptionTsc.Task;
 
 	/// <inheritdoc/>
@@ -51,32 +54,41 @@ public sealed class TestRenderer : Renderer
 	internal int RenderCount { get; private set; }
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
+	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
+	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
 		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), null))
 	{
-		logger = loggerFactory.CreateLogger<TestRenderer>();
+		logger = loggerFactory.CreateLogger<BunitRenderer>();
 		activator = renderedComponentActivator;
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
 	}
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
+	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
 		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), componentActivator))
 	{
-		logger = loggerFactory.CreateLogger<TestRenderer>();
+		logger = loggerFactory.CreateLogger<BunitRenderer>();
 		activator = renderedComponentActivator;
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
 	}
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Renders the <paramref name="renderFragment"/>.
+	/// </summary>
+	/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
+	/// <returns>A <see cref="RenderedFragment"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
 	public RenderedFragment RenderFragment(RenderFragment renderFragment)
 		=> Render(renderFragment, id => activator.CreateRenderedFragment(id));
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Renders a <typeparamref name="TComponent"/> with the <paramref name="parameters"/> passed to it.
+	/// </summary>
+	/// <typeparam name="TComponent">The type of component to render.</typeparam>
+	/// <param name="parameters">The parameters to pass to the component.</param>
+	/// <returns>A <see cref="RenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
 	public RenderedComponent<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent
 	{
@@ -86,14 +98,26 @@ public sealed class TestRenderer : Renderer
 		return Render(renderFragment, id => activator.CreateRenderedComponent<TComponent>(id));
 	}
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Notifies the renderer that an event has occurred.
+	/// </summary>
+	/// <param name="eventHandlerId">The <see cref="RenderTreeFrame.AttributeEventHandlerId"/> value from the original event attribute.</param>
+	/// <param name="fieldInfo">Information that the renderer can use to update the state of the existing render tree to match the UI.</param>
+	/// <param name="eventArgs">Arguments to be passed to the event handler.</param>
+	/// <returns>A <see cref="Task"/> which will complete once all asynchronous processing related to the event has completed.</returns>
 	public new Task DispatchEventAsync(
 		ulong eventHandlerId,
 		EventFieldInfo fieldInfo,
 		EventArgs eventArgs) => DispatchEventAsync(eventHandlerId, fieldInfo, eventArgs, ignoreUnknownEventHandlers: false);
 
-	/// <exception cref="ObjectDisposedException"></exception>
-	/// <inheritdoc/>
+	/// <summary>
+	/// Notifies the renderer that an event has occurred.
+	/// </summary>
+	/// <param name="eventHandlerId">The <see cref="RenderTreeFrame.AttributeEventHandlerId"/> value from the original event attribute.</param>
+	/// <param name="fieldInfo">Information that the renderer can use to update the state of the existing render tree to match the UI.</param>
+	/// <param name="eventArgs">Arguments to be passed to the event handler.</param>
+	/// <param name="ignoreUnknownEventHandlers">Set to true to ignore the <see cref="UnknownEventHandlerIdException"/>.</param>
+	/// <returns>A <see cref="Task"/> which will complete once all asynchronous processing related to the event has completed.</returns>
 	public new Task DispatchEventAsync(
 		ulong eventHandlerId,
 		EventFieldInfo fieldInfo,
@@ -142,7 +166,11 @@ public sealed class TestRenderer : Renderer
 		}
 	}
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Performs a depth-first search for the first <typeparamref name="TComponent"/> child component of the <paramref name="parentComponent"/>.
+	/// </summary>
+	/// <typeparam name="TComponent">Type of component to find.</typeparam>
+	/// <param name="parentComponent">Parent component to search.</param>
 	public RenderedComponent<TComponent> FindComponent<TComponent>(RenderedFragment parentComponent)
 		where TComponent : IComponent
 	{
@@ -152,12 +180,18 @@ public sealed class TestRenderer : Renderer
 			: throw new ComponentNotFoundException(typeof(TComponent));
 	}
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Performs a depth-first search for all <typeparamref name="TComponent"/> child components of the <paramref name="parentComponent"/>.
+	/// </summary>
+	/// <typeparam name="TComponent">Type of components to find.</typeparam>
+	/// <param name="parentComponent">Parent component to search.</param>
 	public IReadOnlyList<RenderedComponent<TComponent>> FindComponents<TComponent>(RenderedFragment parentComponent)
 		where TComponent : IComponent
 		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
 
-	/// <inheritdoc />
+	/// <summary>
+	/// Disposes all components rendered by the <see cref="BunitRenderer" />.
+	/// </summary>
 	public void DisposeComponents()
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
@@ -225,7 +259,7 @@ public sealed class TestRenderer : Renderer
 
 		return result;
 
-		static void SetDirectParametersViaComponentState(TestRenderer renderer, int componentId, in ParameterView parameters)
+		static void SetDirectParametersViaComponentState(BunitRenderer renderer, int componentId, in ParameterView parameters)
 		{
 			var componentState = renderer.GetComponentState(componentId);
 			CallSetDirectParameters(componentState, parameters);
@@ -534,8 +568,10 @@ public sealed class TestRenderer : Renderer
 	}
 
 	/// <inheritdoc/>
-	protected override void HandleException([NotNull] Exception exception)
+	protected override void HandleException(Exception exception)
 	{
+		ArgumentNullException.ThrowIfNull(exception);
+
 		if (disposed)
 			return;
 

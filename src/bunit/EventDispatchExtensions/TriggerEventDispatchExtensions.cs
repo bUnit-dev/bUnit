@@ -63,7 +63,7 @@ public static class TriggerEventDispatchExtensions
 		ArgumentNullException.ThrowIfNull(eventName);
 
 		var renderer = element.GetTestContext()?.Renderer
-			?? throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(TestRenderer)}'.");
+			?? throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(BunitRenderer)}'.");
 
 		// TriggerEventsAsync will traverse the DOM tree to find
 		// all event handlers that needs to be triggered. This is done
@@ -78,7 +78,7 @@ public static class TriggerEventDispatchExtensions
 	}
 
 	[SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "HTML events are standardize to lower case and safe in this context.")]
-	private static Task TriggerEventsAsync(TestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
+	private static Task TriggerEventsAsync(BunitRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var isNonBubblingEvent = NonBubblingEvents.Contains(eventName.ToLowerInvariant());
 		var unwrappedElement = element.Unwrap();
@@ -88,7 +88,7 @@ public static class TriggerEventDispatchExtensions
 			: TriggerBubblingEventAsync(renderer, unwrappedElement, eventName, eventArgs);
 	}
 
-	private static Task TriggerNonBubblingEventAsync(TestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
+	private static Task TriggerNonBubblingEventAsync(BunitRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var eventAttrName = Htmlizer.ToBlazorAttribute(eventName);
 
@@ -105,7 +105,7 @@ public static class TriggerEventDispatchExtensions
 		throw new MissingEventHandlerException(element, eventName);
 	}
 
-	private static Task TriggerBubblingEventAsync(TestRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
+	private static Task TriggerBubblingEventAsync(BunitRenderer renderer, IElement element, string eventName, EventArgs eventArgs)
 	{
 		var eventTasks = GetDispatchEventTasks(renderer, element, eventName, eventArgs);
 
@@ -118,7 +118,7 @@ public static class TriggerEventDispatchExtensions
 	}
 
 	private static List<Task> GetDispatchEventTasks(
-		TestRenderer renderer,
+		BunitRenderer renderer,
 		IElement element,
 		string eventName,
 		EventArgs eventArgs)
