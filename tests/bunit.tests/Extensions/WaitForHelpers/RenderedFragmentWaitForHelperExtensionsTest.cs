@@ -13,7 +13,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	public void Test110()
 	{
 		// Initial state is stopped
-		var cut = RenderComponent<TwoRendersTwoChanges>();
+		var cut = Render<TwoRendersTwoChanges>();
 		var stateElement = cut.Find("#state");
 		stateElement.TextContent.ShouldBe("Stopped");
 
@@ -30,7 +30,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	[Fact(DisplayName = "WaitForAssertion throws assertion exception after timeout")]
 	public void Test011()
 	{
-		var cut = RenderComponent<Simple1>();
+		var cut = Render<Simple1>();
 
 		var expected = Should.Throw<WaitForFailedException>(() =>
 			cut.WaitForAssertion(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(10)));
@@ -41,7 +41,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	[Fact(DisplayName = "WaitForState throws exception after timeout")]
 	public void Test012()
 	{
-		var cut = RenderComponent<Simple1>();
+		var cut = Render<Simple1>();
 
 		var expected = Should.Throw<WaitForFailedException>(() =>
 			cut.WaitForState(() => string.IsNullOrEmpty(cut.Markup), TimeSpan.FromMilliseconds(100)));
@@ -53,7 +53,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	public void Test013()
 	{
 		const string expectedInnerMessage = "INNER MESSAGE";
-		var cut = RenderComponent<TwoRendersTwoChanges>();
+		var cut = Render<TwoRendersTwoChanges>();
 		cut.Find("#tick").Click();
 		cut.Find("#tock").Click();
 
@@ -74,7 +74,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	public void Test100()
 	{
 		// Initial state is stopped
-		var cut = RenderComponent<TwoRendersTwoChanges>();
+		var cut = Render<TwoRendersTwoChanges>();
 
 		// Clicking 'tick' changes the state, and starts a task
 		cut.Find("#tick").Click();
@@ -93,7 +93,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	[Fact(DisplayName = "WaitForState can detect async changes to properties in the CUT")]
 	public void Test200()
 	{
-		var cut = RenderComponent<AsyncRenderChangesProperty>();
+		var cut = Render<AsyncRenderChangesProperty>();
 		cut.Instance.Counter.ShouldBe(0);
 
 		// Clicking 'tick' changes the counter, and starts a task
@@ -111,7 +111,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	[Fact(DisplayName = "WaitForAssertion rethrows unhandled exception from a components async operation's methods")]
 	public void Test300()
 	{
-		var cut = RenderComponent<ThrowsAfterAsyncOperation>();
+		var cut = Render<ThrowsAfterAsyncOperation>();
 
 		// Adding additional wait time to deal with tests sometimes failing for timeout on Windows.
 		Should.Throw<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(
@@ -121,7 +121,7 @@ public class RenderedFragmentWaitForHelperExtensionsTest : TestContext
 	[Fact(DisplayName = "WaitForState rethrows unhandled exception from components async operation's methods")]
 	public void Test301()
 	{
-		var cut = RenderComponent<ThrowsAfterAsyncOperation>();
+		var cut = Render<ThrowsAfterAsyncOperation>();
 
 		// Adding additional wait time to deal with tests sometimes failing for timeout on Windows.
 		Should.Throw<ThrowsAfterAsyncOperation.ThrowsAfterAsyncOperationException>(
