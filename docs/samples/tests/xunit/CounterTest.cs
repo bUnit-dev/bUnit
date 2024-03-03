@@ -9,7 +9,7 @@ public class CounterTest : TestContext
   public void CounterShouldIncrementWhenClicked()
   {
     // Arrange: render the Counter.razor component
-    var cut = RenderComponent<Counter>();
+    var cut = Render<Counter>();
 
     // Act: find and click the <button> element to increment
     // the counter in the <p> element

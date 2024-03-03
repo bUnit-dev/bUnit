@@ -42,3 +42,6 @@ The `AddTestAuthorization` method on `TestContext` has been renamed to `AddAutho
 
 ## Merged `TestContext` and `TestContextBase`
 The `TestContext` and `TestContextBase` classes have been merged into a single `TestContext` class. All references to `TestContextBase` should replace them with `TestContext` to migrate.
+
+## Renamed all `RenderComponent` and `SetParametersAndRender` to `Render`
+To make the API more consistent, `RenderComponent` and `SetParametersAndRender` methods have been renamed to `Render`.

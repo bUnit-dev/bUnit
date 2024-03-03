@@ -34,7 +34,7 @@ public class RootRenderTreeTest : TestContext
 		Should.Throw<ArgumentException>(() =>
 		{
 			RenderTree.Add<Simple1>();
-			RenderComponent<InnerComponent>();
+			Render<InnerComponent>();
 		});
 	}
 
@@ -43,7 +43,7 @@ public class RootRenderTreeTest : TestContext
 	{
 		RenderTree.Add<LayoutComponent>();
 
-		var cut = RenderComponent<InnerComponent>();
+		var cut = Render<InnerComponent>();
 
 		cut.Markup.ShouldBe("<div>LAYOUT VALUE</div>");
 	}
@@ -53,7 +53,7 @@ public class RootRenderTreeTest : TestContext
 	{
 		RenderTree.Add<LayoutComponent>(parameters => parameters.Add(p => p.Value, "ANOTHER VALUE"));
 
-		var cut = RenderComponent<InnerComponent>();
+		var cut = Render<InnerComponent>();
 
 		cut.Markup.ShouldBe("<div>ANOTHER VALUE</div>");
 	}
@@ -64,12 +64,12 @@ public class RootRenderTreeTest : TestContext
 		RenderTree.Add<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "VALUE"));
 		RenderTree.Add<CascadingValue<int>>(parameters => parameters.Add(p => p.Value, 42));
 
-		var cut = RenderComponent<MultipleParametersInnerComponent>();
+		var cut = Render<MultipleParametersInnerComponent>();
 
 		cut.Markup.ShouldBe("<div>VALUE42</div>");
 	}
 
-	[Fact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
+	[Fact(DisplayName = "Render<T> finds correct component when T is also added to render tree")]
 	public void Test113()
 	{
 		RenderTree.Add<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "VALUE"));
@@ -77,18 +77,18 @@ public class RootRenderTreeTest : TestContext
 		RenderTree.Add<CascadingValue<int>>(parameters => parameters.Add(p => p.Value, 42));
 		RenderTree.Add<MultipleParametersInnerComponent>();
 
-		var cut = RenderComponent<MultipleParametersInnerComponent>();
+		var cut = Render<MultipleParametersInnerComponent>();
 
 		cut.Markup.ShouldBe("<div>VALUE42</div>");
 	}
 
-	[Fact(DisplayName = "RenderComponent<T> finds correct component when T is also added to render tree")]
+	[Fact(DisplayName = "Render<T> finds correct component when T is also added to render tree")]
 	public void Test113_2()
 	{
 		RenderTree.Add<CascadingValue<string>>(parameters => parameters.Add(p => p.Value, "VALUE"));
 		RenderTree.Add<CascadingValue<int>>(parameters => parameters.Add(p => p.Value, 42));
 
-		var cut = RenderComponent<CascadingValue<string>>(parameters => parameters
+		var cut = Render<CascadingValue<string>>(parameters => parameters
 			.Add(p => p.Value, "FOO"));
 
 		cut.Instance.Value.ShouldBe("FOO");
@@ -100,7 +100,7 @@ public class RootRenderTreeTest : TestContext
 		RenderTree.Add<LayoutComponent>(parameters => parameters.Add(p => p.Value, "FOO"));
 		RenderTree.Add<LayoutComponent>(parameters => parameters.Add(p => p.Value, "BAR"));
 
-		var cut = RenderComponent<InnerComponent>();
+		var cut = Render<InnerComponent>();
 
 		cut.Markup.ShouldBe($"<div>BAR</div>");
 	}
@@ -111,7 +111,7 @@ public class RootRenderTreeTest : TestContext
 		RenderTree.Add<LayoutComponent>(parameters => parameters.Add(p => p.Value, "FOO"));
 		RenderTree.TryAdd<LayoutComponent>(parameters => parameters.Add(p => p.Value, "BAR"));
 
-		var cut = RenderComponent<InnerComponent>();
+		var cut = Render<InnerComponent>();
 
 		cut.Markup.ShouldBe("<div>FOO</div>");
 	}
