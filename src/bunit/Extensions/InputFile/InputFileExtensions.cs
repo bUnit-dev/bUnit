@@ -13,7 +13,7 @@ public static class InputFileExtensions
 	/// <param name="inputFileComponent">The <see cref="InputFile"/> component which will upload the files.</param>
 	/// <param name="files">Files to upload.</param>
 	public static void UploadFiles(
-		this IRenderedComponent<InputFile> inputFileComponent,
+		this RenderedComponent<InputFile> inputFileComponent,
 		params InputFileContent[] files)
 	{
 		ArgumentNullException.ThrowIfNull(inputFileComponent);

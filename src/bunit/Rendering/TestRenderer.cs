@@ -17,7 +17,7 @@ public sealed class TestRenderer : Renderer
 	extern static void CallSetDirectParameters(ComponentState componentState, ParameterView parameters);
 
 	private readonly object renderTreeUpdateLock = new();
-	private readonly Dictionary<int, IRenderedFragment> renderedComponents = new();
+	private readonly Dictionary<int, RenderedFragment> renderedComponents = new();
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
 	private readonly IRenderedComponentActivator activator;
@@ -73,11 +73,11 @@ public sealed class TestRenderer : Renderer
 	}
 
 	/// <inheritdoc/>
-	public IRenderedFragment RenderFragment(RenderFragment renderFragment)
+	public RenderedFragment RenderFragment(RenderFragment renderFragment)
 		=> Render(renderFragment, id => activator.CreateRenderedFragment(id));
 
 	/// <inheritdoc/>
-	public IRenderedComponent<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
+	public RenderedComponent<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(parameters);
@@ -143,7 +143,7 @@ public sealed class TestRenderer : Renderer
 	}
 
 	/// <inheritdoc/>
-	public IRenderedComponent<TComponent> FindComponent<TComponent>(IRenderedFragment parentComponent)
+	public RenderedComponent<TComponent> FindComponent<TComponent>(RenderedFragment parentComponent)
 		where TComponent : IComponent
 	{
 		var foundComponents = FindComponents<TComponent>(parentComponent, 1);
@@ -153,7 +153,7 @@ public sealed class TestRenderer : Renderer
 	}
 
 	/// <inheritdoc/>
-	public IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragment parentComponent)
+	public IReadOnlyList<RenderedComponent<TComponent>> FindComponents<TComponent>(RenderedFragment parentComponent)
 		where TComponent : IComponent
 		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
 
@@ -193,7 +193,7 @@ public sealed class TestRenderer : Renderer
 	}
 
 	/// <inheritdoc/>
-	internal Task SetDirectParametersAsync(IRenderedFragment renderedComponent, ParameterView parameters)
+	internal Task SetDirectParametersAsync(RenderedFragment renderedComponent, ParameterView parameters)
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
@@ -401,7 +401,7 @@ public sealed class TestRenderer : Renderer
 	}
 
 	private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
-		where TResult : IRenderedFragment
+		where TResult : RenderedFragment
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
@@ -437,14 +437,14 @@ public sealed class TestRenderer : Renderer
 		return result;
 	}
 
-	private List<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedFragment parentComponent, int resultLimit)
+	private List<RenderedComponent<TComponent>> FindComponents<TComponent>(RenderedFragment parentComponent, int resultLimit)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(parentComponent);
 
 		ObjectDisposedException.ThrowIf(disposed, this);
 
-		var result = new List<IRenderedComponent<TComponent>>();
+		var result = new List<RenderedComponent<TComponent>>();
 		var framesCollection = new RenderTreeFrameDictionary();
 
 		// Blocks the renderer from changing the render tree
@@ -484,12 +484,12 @@ public sealed class TestRenderer : Renderer
 		}
 	}
 
-	private IRenderedComponent<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
+	private RenderedComponent<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
 		where TComponent : IComponent
 	{
 		if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
 		{
-			return (IRenderedComponent<TComponent>)renderedComponent;
+			return (RenderedComponent<TComponent>)renderedComponent;
 		}
 
 		LoadRenderTreeFrames(componentId, framesCollection);
