@@ -17,7 +17,7 @@ public sealed class BunitPersistentComponentState
 	};
 	private readonly BunitPersistentComponentStateStore store;
 	private readonly Lazy<ComponentStatePersistenceManager> manager;
-	private readonly Lazy<ITestRenderer> renderer;
+	private readonly Lazy<TestRenderer> renderer;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitPersistentComponentState"/> class.
@@ -27,7 +27,7 @@ public sealed class BunitPersistentComponentState
 	{
 		store = new BunitPersistentComponentStateStore();
 		manager = new Lazy<ComponentStatePersistenceManager>(() => services.GetRequiredService<ComponentStatePersistenceManager>());
-		renderer = new Lazy<ITestRenderer>(() => services.GetRequiredService<TestContext>().Renderer);
+		renderer = new Lazy<TestRenderer>(() => services.GetRequiredService<TestContext>().Renderer);
 	}
 
 	/// <summary>
