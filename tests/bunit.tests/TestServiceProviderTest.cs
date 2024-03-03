@@ -180,7 +180,7 @@ public partial class TestServiceProviderTest
 		ctx.Services.AddFallbackServiceProvider(fallbackServiceProvider);
 
 		// Act and assert
-		Should.NotThrow(() => ctx.RenderComponent<DummyComponentWhichRequiresDummyService>());
+		Should.NotThrow(() => ctx.Render<DummyComponentWhichRequiresDummyService>());
 	}
 
 	[Fact(DisplayName = "Can correctly resolve and dispose of scoped disposable service")]
@@ -303,7 +303,7 @@ public partial class TestServiceProviderTest
 		using var ctx = new TestContext();
 		ctx.Services.AddKeyedScoped<DummyService>("Key");
 
-		var cut = ctx.RenderComponent<ComponentWithKeyedService>();
+		var cut = ctx.Render<ComponentWithKeyedService>();
 
 		cut.Instance.Service.ShouldNotBeNull();
 	}
@@ -316,7 +316,7 @@ public partial class TestServiceProviderTest
 		fallbackCollection.AddKeyedScoped<DummyService>("Key");
 		ctx.Services.AddFallbackServiceProvider(fallbackCollection.BuildServiceProvider());
 		
-		var cut = ctx.RenderComponent<ComponentWithKeyedService>();
+		var cut = ctx.Render<ComponentWithKeyedService>();
 
 		cut.Instance.Service.ShouldNotBeNull();
 	}
@@ -326,7 +326,7 @@ public partial class TestServiceProviderTest
 	{
 		using var ctx = new TestContext();
 
-		Should.Throw<InvalidOperationException>(() => ctx.RenderComponent<ComponentWithKeyedService>());
+		Should.Throw<InvalidOperationException>(() => ctx.Render<ComponentWithKeyedService>());
 	}
 
 	private sealed class DummyService { }

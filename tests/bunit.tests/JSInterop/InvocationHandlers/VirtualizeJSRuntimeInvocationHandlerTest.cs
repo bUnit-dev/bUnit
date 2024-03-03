@@ -13,7 +13,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 	[MemberData(nameof(ItemsInCollection))]
 	public void Test001(int itemsInDataSource)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = Render<Virtualize<string>>(ps => ps
 			.Add(p => p.Items, CreateItems(itemsInDataSource))
 			.Add(p => p.ChildContent, item => $"<p>{item}</p>"));
 
@@ -24,7 +24,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 	[MemberData(nameof(ItemsInCollection))]
 	public void Test002(int itemsInDataSource)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = Render<Virtualize<string>>(ps => ps
 			.Add(p => p.Items, CreateItems(itemsInDataSource))
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>"));
 
@@ -35,7 +35,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 	[MemberData(nameof(ItemsInCollection))]
 	public void Test010(int itemsInDataSource)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = Render<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
 			.Add(p => p.ChildContent, item => $"<p>{item}</p>"));
 
@@ -46,7 +46,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 	[MemberData(nameof(ItemsInCollection))]
 	public void Test011(int itemsInDataSource)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = Render<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>"));
 
@@ -68,7 +68,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 	[MemberData(nameof(ItemCountItemSizeOverscanCount))]
 	public void Test030(int itemsInDataSource, float itemSize, int overscanCount)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = Render<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>")
 			.Add(p => p.ItemSize, itemSize)
@@ -81,7 +81,7 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 	[MemberData(nameof(ItemsInCollection))]
 	public void Test040(int itemsInDataSource)
 	{
-		var cut = RenderComponent<Virtualize<string>>(ps => ps
+		var cut = Render<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, _ => ValueTask.FromResult(new ItemsProviderResult<string>(Array.Empty<string>(), itemsInDataSource)))
 			.Add(p => p.ItemContent, item => @$"<p class=""item"">{item}</p>")
 			.Add(p => p.Placeholder, _ => @"<p class=""placeholder"" />"));

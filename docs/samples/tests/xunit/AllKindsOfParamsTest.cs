@@ -14,25 +14,25 @@ public class AllKindsOfParamsTest : TestContext
   public void NonBlazorParamTypes()
   {
     // Using C# tuple with hardcoded name
-    var cut1 = RenderComponent<NonBlazorTypesParams>(
+    var cut1 = Render<NonBlazorTypesParams>(
       ("Numbers", 42),
       ("Lines", new List<string> { "Hello", "World" })
     );
 
     // Using C# tuple with refactor safe name
-    var cut2 = RenderComponent<NonBlazorTypesParams>(
+    var cut2 = Render<NonBlazorTypesParams>(
       (nameof(NonBlazorTypesParams.Numbers), 42),
       (nameof(NonBlazorTypesParams.Lines), new List<string> { "Hello", "World" })
     );
 
     // Using factory method
-    var cut3 = RenderComponent<NonBlazorTypesParams>(
+    var cut3 = Render<NonBlazorTypesParams>(
       Parameter("Numbers", 42),
       Parameter("Lines", new List<string> { "Hello", "World" })
     );
 
     // Using parameter builder
-    var cut4 = RenderComponent<NonBlazorTypesParams>(parameters => parameters
+    var cut4 = Render<NonBlazorTypesParams>(parameters => parameters
       .Add(p => p.Numbers, 42)
       .Add(p => p.Lines, new List<string> { "Hello", "World" })
     );
@@ -43,7 +43,7 @@ public class AllKindsOfParamsTest : TestContext
   {
 
     // Using factory method with hardcoded name
-    var cut1 = RenderComponent<EventCallbackParams>(
+    var cut1 = Render<EventCallbackParams>(
       EventCallback("OnClick", (MouseEventArgs args) =>
       {
         /* handle callback */
@@ -55,7 +55,7 @@ public class AllKindsOfParamsTest : TestContext
     );
 
     // Using factory method refactor safe name
-    var cut2 = RenderComponent<EventCallbackParams>(
+    var cut2 = Render<EventCallbackParams>(
       EventCallback(nameof(EventCallbackParams.OnClick), (MouseEventArgs args) =>
       {
         /* handle callback */
@@ -67,7 +67,7 @@ public class AllKindsOfParamsTest : TestContext
     );
 
     // Using parameter builder
-    var cut3 = RenderComponent<EventCallbackParams>(parameters => parameters
+    var cut3 = Render<EventCallbackParams>(parameters => parameters
       .Add(p => p.OnClick, args =>
       {
         /* handle callback */
@@ -83,12 +83,12 @@ public class AllKindsOfParamsTest : TestContext
   public void HtmlAsChildContent()
   {
     // Using factory method
-    var cut1 = RenderComponent<ChildContentParams>(
+    var cut1 = Render<ChildContentParams>(
       ChildContent("<h1>Hello World</h1>")
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<ChildContentParams>(parameters => parameters
+    var cut2 = Render<ChildContentParams>(parameters => parameters
       .AddChildContent("<h1>Hello World</h1>")
     );
   }
@@ -97,12 +97,12 @@ public class AllKindsOfParamsTest : TestContext
   public void ComponentAsChildContent()
   {
     // Using factory method
-    var cut1 = RenderComponent<ChildContentParams>(
+    var cut1 = Render<ChildContentParams>(
       ChildContent<Counter>()
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<ChildContentParams>(parameters => parameters
+    var cut2 = Render<ChildContentParams>(parameters => parameters
       .AddChildContent<Counter>()
     );
   }
@@ -111,7 +111,7 @@ public class AllKindsOfParamsTest : TestContext
   public void ComponentWithParamsAsChildContent()
   {
     // Using factory method
-    var cut1 = RenderComponent<ChildContentParams>(
+    var cut1 = Render<ChildContentParams>(
       ChildContent<Alert>(
         ("Heading", "Alert heading"),
         ("Type", AlertType.Warning),
@@ -120,7 +120,7 @@ public class AllKindsOfParamsTest : TestContext
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<ChildContentParams>(parameters => parameters
+    var cut2 = Render<ChildContentParams>(parameters => parameters
       .AddChildContent<Alert>(alertParameters => alertParameters
         .Add(p => p.Heading, "Alert heading")
         .Add(p => p.Type, AlertType.Warning)
@@ -133,7 +133,7 @@ public class AllKindsOfParamsTest : TestContext
   public void ComponentAndMarkupAsChildContent()
   {
     // Using factory method
-    var cut1 = RenderComponent<ChildContentParams>(
+    var cut1 = Render<ChildContentParams>(
       ChildContent("<h1>Below you will find a most interesting alert!</h1>"),
       ChildContent<Alert>(
         ("Heading", "Alert heading"),
@@ -143,7 +143,7 @@ public class AllKindsOfParamsTest : TestContext
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<ChildContentParams>(parameters => parameters
+    var cut2 = Render<ChildContentParams>(parameters => parameters
       .AddChildContent("<h1>Below you will find a most interesting alert!</h1>")
       .AddChildContent<Alert>(childParams => childParams
         .Add(p => p.Heading, "Alert heading")
@@ -157,12 +157,12 @@ public class AllKindsOfParamsTest : TestContext
   public void HtmlAsRenderFragment()
   {
     // Using factory method
-    var cut1 = RenderComponent<RenderFragmentParams>(
+    var cut1 = Render<RenderFragmentParams>(
       RenderFragment("Content", "<h1>Hello World</h1>")
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<RenderFragmentParams>(parameters => parameters
+    var cut2 = Render<RenderFragmentParams>(parameters => parameters
       .Add(p => p.Content, "<h1>Hello World</h1>")
     );
   }
@@ -171,12 +171,12 @@ public class AllKindsOfParamsTest : TestContext
   public void ComponentAsRenderFragment()
   {
     // Using factory method
-    var cut1 = RenderComponent<RenderFragmentParams>(
+    var cut1 = Render<RenderFragmentParams>(
       RenderFragment<Counter>("Content")
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<RenderFragmentParams>(parameters => parameters
+    var cut2 = Render<RenderFragmentParams>(parameters => parameters
       .Add<Counter>(p => p.Content)
     );
   }
@@ -185,7 +185,7 @@ public class AllKindsOfParamsTest : TestContext
   public void ComponentWithParamsAsRenderFragment()
   {
     // Using factory method
-    var cut1 = RenderComponent<RenderFragmentParams>(
+    var cut1 = Render<RenderFragmentParams>(
       RenderFragment<Alert>("Content",
         ("Heading", "Alert heading"),
         ("Type", AlertType.Warning),
@@ -194,7 +194,7 @@ public class AllKindsOfParamsTest : TestContext
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<RenderFragmentParams>(parameters => parameters
+    var cut2 = Render<RenderFragmentParams>(parameters => parameters
       .Add<Alert>(p => p.Content, alertParameters => alertParameters
         .Add(p => p.Heading, "Alert heading")
         .Add(p => p.Type, AlertType.Warning)
@@ -207,7 +207,7 @@ public class AllKindsOfParamsTest : TestContext
   public void ComponentAndMarkupAsRenderFragment()
   {
     // Using factory method
-    var cut1 = RenderComponent<RenderFragmentParams>(
+    var cut1 = Render<RenderFragmentParams>(
       RenderFragment("Content", "<h1>Below you will find a most interesting alert!</h1>"),
       RenderFragment<Alert>("Content",
         ("Heading", "Alert heading"),
@@ -217,7 +217,7 @@ public class AllKindsOfParamsTest : TestContext
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<RenderFragmentParams>(parameters => parameters
+    var cut2 = Render<RenderFragmentParams>(parameters => parameters
       .Add(p => p.Content, "<h1>Below you will find a most interesting alert!</h1>")
       .Add<Alert>(p => p.Content, childParams => childParams
         .Add(p => p.Heading, "Alert heading")
@@ -231,13 +231,13 @@ public class AllKindsOfParamsTest : TestContext
   public void HtmlTemplateParams()
   {
     // Using factory method
-    var cut1 = RenderComponent<TemplateParams<string>>(
+    var cut1 = Render<TemplateParams<string>>(
       ("Items", new string[] { "Foo", "Bar", "Baz" }),
       Template<string>("Template", item => $"<span>{item}</span>")
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<TemplateParams<string>>(parameters => parameters
+    var cut2 = Render<TemplateParams<string>>(parameters => parameters
       .Add(p => p.Items, new[] { "Foo", "Bar", "Baz" })
       .Add(p => p.Template, item => $"<span>{item}</span>")
     );
@@ -247,7 +247,7 @@ public class AllKindsOfParamsTest : TestContext
   public void HtmlAndComponentTemplateParams()
   {
     // Using factory method
-    var cut1 = RenderComponent<TemplateParams<string>>(
+    var cut1 = Render<TemplateParams<string>>(
       ("Items", new string[] { "Foo", "Bar", "Baz" }),
       Template<Item, string>("Template", value => new ComponentParameter[]
       {
@@ -256,7 +256,7 @@ public class AllKindsOfParamsTest : TestContext
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<TemplateParams<string>>(parameters => parameters
+    var cut2 = Render<TemplateParams<string>>(parameters => parameters
       .Add(p => p.Items, new[] { "Foo", "Bar", "Baz" })
       .Add<Item, string>(p => p.Template, value => itemParams => itemParams
         .Add(p => p.Value, value)
@@ -268,12 +268,12 @@ public class AllKindsOfParamsTest : TestContext
   public void UnmatchedParamsTest()
   {
     // Using factory method
-    var cut1 = RenderComponent<UnmatchedParams>(
+    var cut1 = Render<UnmatchedParams>(
       ("some-unknown-param", "a value")
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<UnmatchedParams>(parameters => parameters
+    var cut2 = Render<UnmatchedParams>(parameters => parameters
       .AddUnmatched("some-unknown-param", "a value")
     );
   }
@@ -284,17 +284,17 @@ public class AllKindsOfParamsTest : TestContext
     var isDarkTheme = true;
 
     // Using factory method
-    var cut1 = RenderComponent<CascadingParams>(
+    var cut1 = Render<CascadingParams>(
       CascadingValue(isDarkTheme)
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<CascadingParams>(parameters => parameters
+    var cut2 = Render<CascadingParams>(parameters => parameters
       .AddCascadingValue(isDarkTheme)
     );
 
     // Using parameter builder and selecting unnamed cascading parameter
-    var cut3 = RenderComponent<CascadingParams>(parameters => parameters
+    var cut3 = Render<CascadingParams>(parameters => parameters
       .Add(p => p.IsDarkTheme, isDarkTheme)
     );
   }
@@ -303,12 +303,12 @@ public class AllKindsOfParamsTest : TestContext
   public void NamedCascadingParamsTest()
   {
     // Using factory method
-    var cut1 = RenderComponent<CascadingParams>(
+    var cut1 = Render<CascadingParams>(
       CascadingValue("LoggedInUser", "Egil Hansen")
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<CascadingParams>(parameters => parameters
+    var cut2 = Render<CascadingParams>(parameters => parameters
       .Add(p => p.UserName, "Egil Hansen")
     );
   }
@@ -319,21 +319,21 @@ public class AllKindsOfParamsTest : TestContext
     var isDarkTheme = true;
 
     // Using factory method
-    var cut1 = RenderComponent<CascadingParams>(
+    var cut1 = Render<CascadingParams>(
       CascadingValue(isDarkTheme),
       CascadingValue("LoggedInUser", "Egil Hansen"),
       CascadingValue("LoggedInEmail", "egil@example.com")
     );
 
     // Using parameter builder
-    var cut2 = RenderComponent<CascadingParams>(parameters => parameters
+    var cut2 = Render<CascadingParams>(parameters => parameters
       .AddCascadingValue(isDarkTheme)
       .Add(p => p.UserName, "Egil Hansen")
       .Add(p => p.Email, "egil@example.com")
     );
 
     // Using parameter builder and selecting unnamed cascading parameter
-    var cut3 = RenderComponent<CascadingParams>(parameters => parameters
+    var cut3 = Render<CascadingParams>(parameters => parameters
       .Add(p => p.IsDarkTheme, isDarkTheme)
       .Add(p => p.UserName, "Egil Hansen")
       .Add(p => p.Email, "egil@example.com")

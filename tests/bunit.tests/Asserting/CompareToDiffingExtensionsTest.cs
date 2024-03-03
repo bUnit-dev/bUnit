@@ -41,8 +41,8 @@ public class CompareToDiffingExtensionsTest : TestContext
 	[Fact(DisplayName = "CompareTo with rendered fragment and string")]
 	public void Test002()
 	{
-		var rf1 = RenderComponent<Simple1>((nameof(Simple1.Header), "FOO"));
-		var rf2 = RenderComponent<Simple1>((nameof(Simple1.Header), "BAR"));
+		var rf1 = Render<Simple1>((nameof(Simple1.Header), "FOO"));
+		var rf2 = Render<Simple1>((nameof(Simple1.Header), "BAR"));
 
 		rf1.CompareTo(rf2.Markup).Count.ShouldBe(1);
 	}
@@ -50,8 +50,8 @@ public class CompareToDiffingExtensionsTest : TestContext
 	[Fact(DisplayName = "CompareTo with rendered fragment and rendered fragment")]
 	public void Test003()
 	{
-		var rf1 = RenderComponent<Simple1>((nameof(Simple1.Header), "FOO"));
-		var rf2 = RenderComponent<Simple1>((nameof(Simple1.Header), "BAR"));
+		var rf1 = Render<Simple1>((nameof(Simple1.Header), "FOO"));
+		var rf2 = Render<Simple1>((nameof(Simple1.Header), "BAR"));
 
 		rf1.CompareTo(rf2).Count.ShouldBe(1);
 	}
@@ -59,8 +59,8 @@ public class CompareToDiffingExtensionsTest : TestContext
 	[Fact(DisplayName = "CompareTo with INode and INodeList")]
 	public void Test004()
 	{
-		var rf1 = RenderComponent<Simple1>((nameof(Simple1.Header), "FOO"));
-		var rf2 = RenderComponent<Simple1>((nameof(Simple1.Header), "BAR"));
+		var rf1 = Render<Simple1>((nameof(Simple1.Header), "FOO"));
+		var rf2 = Render<Simple1>((nameof(Simple1.Header), "BAR"));
 
 		var elm = rf1.Find("h1");
 		elm.CompareTo(rf2.Nodes).Count.ShouldBe(1);
@@ -69,8 +69,8 @@ public class CompareToDiffingExtensionsTest : TestContext
 	[Fact(DisplayName = "CompareTo with INodeList and INode")]
 	public void Test005()
 	{
-		var rf1 = RenderComponent<Simple1>((nameof(Simple1.Header), "FOO"));
-		var rf2 = RenderComponent<Simple1>((nameof(Simple1.Header), "BAR"));
+		var rf1 = Render<Simple1>((nameof(Simple1.Header), "FOO"));
+		var rf2 = Render<Simple1>((nameof(Simple1.Header), "BAR"));
 
 		var elm = rf1.Find("h1");
 

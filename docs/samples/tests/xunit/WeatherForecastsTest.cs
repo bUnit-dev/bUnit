@@ -16,9 +16,9 @@ public class WeatherForecastsTest : TestContext
     // Register services
     Services.AddSingleton<IWeatherForecastService>(new WeatherForecastService());
 
-    // RenderComponent will inject the service in the WeatherForecasts component
+    // Render will inject the service in the WeatherForecasts component
     // when it is instantiated and rendered.
-    var cut = RenderComponent<WeatherForecasts>();
+    var cut = Render<WeatherForecasts>();
 
     // Assert that service is injected
     Assert.NotNull(cut.Instance.Forecasts);

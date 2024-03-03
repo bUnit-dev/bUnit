@@ -12,7 +12,7 @@ public class VerifyMarkupExamples : TestContext
   [Fact]
   public void RawMarkupVerify()
   {
-    var cut = RenderComponent<HelloWorld>();
+    var cut = Render<HelloWorld>();
 
     var renderedMarkup = cut.Markup;
     Assert.Equal("<h1>Hello world from Blazor</h1>", renderedMarkup);
@@ -21,7 +21,7 @@ public class VerifyMarkupExamples : TestContext
   [Fact]
   public void MarkupMatchesOnRenderedFragment()
   {
-    var cut = RenderComponent<Heading>();
+    var cut = Render<Heading>();
 
     cut.MarkupMatches(@"<h3 id=""heading-1337"" required>
                             Heading text
@@ -32,7 +32,7 @@ public class VerifyMarkupExamples : TestContext
   [Fact]
   public void MarkupMatchesOnNode()
   {
-    var cut = RenderComponent<Heading>();
+    var cut = Render<Heading>();
 
     var smallElm = cut.Find("small");
     smallElm.MarkupMatches(@"<small class=""mark text-muted"">Secondary text</small>");
@@ -41,7 +41,7 @@ public class VerifyMarkupExamples : TestContext
   [Fact]
   public void MarkupMatchesOnTextNode()
   {
-    var cut = RenderComponent<Heading>();
+    var cut = Render<Heading>();
 
     var smallElmText = cut.Find("small").TextContent;
     smallElmText.MarkupMatches("Secondary text");
@@ -50,7 +50,7 @@ public class VerifyMarkupExamples : TestContext
   [Fact]
   public void FindAndFindAll()
   {
-    var cut = RenderComponent<FancyTable>();
+    var cut = Render<FancyTable>();
 
     var tableCaption = cut.Find("caption");
     var tableCells = cut.FindAll("td:first-child");
