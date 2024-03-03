@@ -14,7 +14,7 @@ public interface IRenderedFragment : IDisposable
 	int RenderCount { get; }
 
 	/// <summary>
-	/// Gets a value indicating whether the rendered component or fragment has been disposed by the <see cref="ITestRenderer"/>.
+	/// Gets a value indicating whether the rendered component or fragment has been disposed by the <see cref="TestRenderer"/>.
 	/// </summary>
 	bool IsDisposed { get; }
 
@@ -24,7 +24,7 @@ public interface IRenderedFragment : IDisposable
 	int ComponentId { get; }
 
 	/// <summary>
-	/// Called by the owning <see cref="ITestRenderer"/> when it finishes a render.
+	/// Called by the owning <see cref="TestRenderer"/> when it finishes a render.
 	/// </summary>
 	/// <param name="renderEvent">A <see cref="RenderEvent"/> that represents a render.</param>
 	void OnRender(RenderEvent renderEvent);
@@ -51,6 +51,6 @@ public interface IRenderedFragment : IDisposable
 	/// <summary>
 	/// Gets the AngleSharp <see cref="INodeList"/> based
 	/// on the HTML markup from the rendered fragment/component.
-	/// </summary>	
+	/// </summary>
 	INodeList Nodes { get; }
 }
