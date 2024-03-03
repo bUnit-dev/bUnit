@@ -9,7 +9,7 @@ Testing Blazor components is a little different from testing regular C# classes:
 
 Use **bUnit** to render the component under test, pass in its parameters, inject required services, and access the rendered component instance and the markup it has produced.
 
-Rendering a component happens through bUnit's <xref:Bunit.TestContext>. The result of the rendering is an `IRenderedComponent`, referred to as a "rendered component", that provides access to the component instance and the markup produced by the component.
+Rendering a component happens through bUnit's <xref:Bunit.TestContext>. The result of the rendering is an `RenderedComponent`, referred to as a "rendered component", that provides access to the component instance and the markup produced by the component.
 
 ## Write tests in `.cs` or `.razor` files
 

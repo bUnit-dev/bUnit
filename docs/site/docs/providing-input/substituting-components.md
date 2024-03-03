@@ -50,7 +50,7 @@ public void Foo_Doesnt_Have_A_Bar_But_Stub()
   ComponentFactories.AddStub<Bar>();
 
   // Render the component under test.
-  IRenderedFragment cut = Render(@<Foo />);
+  RenderedFragment cut = Render(@<Foo />);
   
   // Verify that the Bar component has 
   // been substituted in the render tree.
@@ -97,10 +97,10 @@ public void Foo_Doesnt_Have_A_Bar_But_Stub()
 {
   ComponentFactories.AddStub<Bar>();
 
-  IRenderedFragment cut = Render(@<Foo />);
+  RenderedFragment cut = Render(@<Foo />);
 
   // Find the stubbed component in the render tree
-  IRenderedComponent<Stub<Bar>> barStub = cut.FindComponent<Stub<Bar>>();
+  RenderedComponent<Stub<Bar>> barStub = cut.FindComponent<Stub<Bar>>();
 
   // Access parameters passed to it through the stubbed components
   // Parameters property, using the selector to pick out the parameter.  
@@ -177,11 +177,11 @@ public void Foo_Doesnt_Have_A_Bar_But_Mock()
   ComponentFactories.Add<Bar>(barMock.Object);
   
   // Render the component under test
-  IRenderedFragment cut = Render(@<Foo />);
+  RenderedFragment cut = Render(@<Foo />);
  
   // Verify that the Bar component has 
   // been substituted in the render tree
-  IRenderedComponent<Bar> bar = cut.FindComponent<Bar>();  
+  RenderedComponent<Bar> bar = cut.FindComponent<Bar>();  
   Assert.Same(barMock.Object, bar.Instance);
 }
 ```
@@ -199,11 +199,11 @@ public void Foo_Doesnt_Have_A_Bar_But_Mock()
   ComponentFactories.Add<Bar>(barMock);
   
   // Render the component under test
-  IRenderedFragment cut = Render(@<Foo />);
+  RenderedFragment cut = Render(@<Foo />);
  
   // Verify that the Bar component has 
   // been substituted in the render tree
-  IRenderedComponent<Bar> bar = cut.FindComponent<Bar>();  
+  RenderedComponent<Bar> bar = cut.FindComponent<Bar>();  
   Assert.Same(barMock, bar.Instance);
 }
 ```
