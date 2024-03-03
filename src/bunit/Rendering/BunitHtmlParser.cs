@@ -25,7 +25,7 @@ public sealed class BunitHtmlParser : IDisposable
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitHtmlParser"/> class
-	/// with a AngleSharp context without a <see cref="TestRenderer"/> registered.
+	/// with a AngleSharp context without a <see cref="BunitRenderer"/> registered.
 	/// </summary>
 	public BunitHtmlParser()
 		: this(Configuration.Default.WithCss().With(new HtmlComparer())) { }

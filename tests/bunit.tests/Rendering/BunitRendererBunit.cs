@@ -5,9 +5,9 @@ using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering;
 
-public partial class TestRendererTest : TestContext
+public partial class BunitRendererBunit : TestContext
 {
-	public TestRendererTest(ITestOutputHelper outputHelper)
+	public BunitRendererBunit(ITestOutputHelper outputHelper)
 	{
 		TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(outputHelper);
@@ -513,8 +513,26 @@ public partial class TestRendererTest : TestContext
 
 		cut.Find("h1").TextContent.ShouldBe($"Hello world {RenderMode.InteractiveWebAssembly}");
 	}
+	
+	[Fact(DisplayName = "given a IComponentActivator, " +
+	                    "when passed to constructor," +
+	                    "then it used to create components")]
+	public void Test1000()
+	{
+		var activatorMock = Substitute.For<IComponentActivator>();
+		activatorMock.CreateInstance(typeof(Wrapper)).Returns(new Wrapper());
+		using var renderer = new BunitRenderer(
+			Services.GetService<IRenderedComponentActivator>(),
+			Services,
+			NullLoggerFactory.Instance,
+			activatorMock);
 
-	private TestRenderer CreateRenderer() => new TestRenderer(
+		renderer.RenderComponent<Wrapper>(new ComponentParameterCollection());
+
+		activatorMock.Received(1).CreateInstance(typeof(Wrapper));
+	}
+
+	private BunitRenderer CreateRenderer() => new BunitRenderer(
 		Services.GetRequiredService<IRenderedComponentActivator>(),
 		Services,
 		NullLoggerFactory.Instance);
