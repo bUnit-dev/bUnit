@@ -19,7 +19,7 @@ internal class BunitComponentActivator : IComponentActivator
 		}
 
 		// The FragmentContainer is a bUnit component added to the
-		// render tree to separate the components from the TestContextBase.RenderTree
+		// render tree to separate the components from the TestContext.RenderTree
 		// and the components in the render fragment being rendered.
 		// It should never be replaced by another component, as
 		// this would break bUnits ability to detect the start
