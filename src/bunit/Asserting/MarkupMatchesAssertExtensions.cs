@@ -275,7 +275,6 @@ public static class MarkupMatchesAssertExtensions
 		// TODO: This will be obsolete with: https://github.com/bUnit-dev/bUnit/issues/1018
 		// As the renderer would be transient we don't have to new up an instance
 		using var renderer = new BunitRenderer(
-			actual.Services.GetRequiredService<IRenderedComponentActivator>(),
 			actual.Services.GetRequiredService<TestServiceProvider>(),
 			actual.Services.GetRequiredService<ILoggerFactory>());
 		var renderedFragment = renderer.RenderFragment(expected);
