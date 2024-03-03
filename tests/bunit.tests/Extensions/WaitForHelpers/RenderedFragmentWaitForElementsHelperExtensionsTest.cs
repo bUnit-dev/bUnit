@@ -17,7 +17,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	public void Test001()
 	{
 		var expectedMarkup = "<p>child content</p>";
-		var cut = RenderComponent<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
+		var cut = Render<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
 		var elm = cut.WaitForElement("main > p");
 
@@ -28,7 +28,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	[Trait("Category", "sync")]
 	public void Test002()
 	{
-		var cut = RenderComponent<DelayRenderFragment>();
+		var cut = Render<DelayRenderFragment>();
 
 		var expected = Should.Throw<WaitForFailedException>(() =>
 			cut.WaitForElement("#notHereElm", WaitForTestTimeout));
@@ -41,7 +41,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	public void Test021()
 	{
 		var expectedMarkup = "<p>child content</p>";
-		var cut = RenderComponent<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
+		var cut = Render<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
 		var elms = cut.WaitForElements("main > p");
 
@@ -52,7 +52,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	[Trait("Category", "sync")]
 	public void Test022()
 	{
-		var cut = RenderComponent<DelayRenderFragment>();
+		var cut = Render<DelayRenderFragment>();
 
 		var expected = Should.Throw<WaitForFailedException>(() =>
 			cut.WaitForElements("#notHereElm", WaitForTestTimeout));
@@ -65,7 +65,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	[Trait("Category", "sync")]
 	public void Test023()
 	{
-		var cut = RenderComponent<DelayRenderFragment>();
+		var cut = Render<DelayRenderFragment>();
 
 		var expected = Should.Throw<WaitForFailedException>(() =>
 			cut.WaitForElements("#notHereElm", 2, WaitForTestTimeout));
@@ -79,7 +79,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	public void Test024()
 	{
 		var expectedMarkup = "<p>child content</p><p>child content</p><p>child content</p>";
-		var cut = RenderComponent<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
+		var cut = Render<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
 		var elms = cut.WaitForElements("main > p", matchElementCount: 3);
 
@@ -91,7 +91,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsTest : TestContext
 	public void Test025()
 	{
 		var expectedMarkup = "<p>child content</p>";
-		var cut = RenderComponent<DelayRemovedRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
+		var cut = Render<DelayRemovedRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
 
 		var elms = cut.WaitForElements("main > p", matchElementCount: 0);
 

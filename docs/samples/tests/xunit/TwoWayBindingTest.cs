@@ -9,7 +9,7 @@ public class TwoWayBindingTest : TestContext
   {
     var currentValue = string.Empty;
 
-    RenderComponent<TwoWayBinding>(parameters =>
+    Render<TwoWayBinding>(parameters =>
       parameters.Bind(
         p => p.Value,
         currentValue,

@@ -89,7 +89,7 @@ public sealed class BunitRenderer : Renderer
 	/// <typeparam name="TComponent">The type of component to render.</typeparam>
 	/// <param name="parameters">The parameters to pass to the component.</param>
 	/// <returns>A <see cref="RenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
-	public RenderedComponent<TComponent> RenderComponent<TComponent>(ComponentParameterCollection parameters)
+	public RenderedComponent<TComponent> Render<TComponent>(ComponentParameterCollection parameters)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(parameters);

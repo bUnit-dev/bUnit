@@ -15,7 +15,7 @@ public class UserRightsTest : TestContext
     authContext.SetAuthorized("TEST USER");
 
     // Act
-    var cut = RenderComponent<UserRights>();
+    var cut = Render<UserRights>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Hi TEST USER, you have these claims and rights:</h1>
@@ -31,7 +31,7 @@ public class UserRightsTest : TestContext
     authContext.SetRoles("superuser");
 
     // Act
-    var cut = RenderComponent<UserRights>();
+    var cut = Render<UserRights>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Hi TEST USER, you have these claims and rights:</h1>
@@ -49,7 +49,7 @@ public class UserRightsTest : TestContext
     authContext.SetRoles("admin", "superuser");
 
     // Act
-    var cut = RenderComponent<UserRights>();
+    var cut = Render<UserRights>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Hi TEST USER, you have these claims and rights:</h1>
@@ -68,7 +68,7 @@ public class UserRightsTest : TestContext
     authContext.SetPolicies("content-editor");
 
     // Act
-    var cut = RenderComponent<UserRights>();
+    var cut = Render<UserRights>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Hi TEST USER, you have these claims and rights:</h1>
@@ -86,7 +86,7 @@ public class UserRightsTest : TestContext
     authContext.SetPolicies("content-editor", "approver");
 
     // Act
-    var cut = RenderComponent<UserRights>();
+    var cut = Render<UserRights>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Hi TEST USER, you have these claims and rights:</h1>
@@ -107,7 +107,7 @@ public class UserRightsTest : TestContext
     );
 
     // Act
-    var cut = RenderComponent<UserRights>();
+    var cut = Render<UserRights>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Hi TEST USER, you have these claims and rights:</h1>
@@ -128,7 +128,7 @@ public class UserRightsTest : TestContext
     authContext.SetClaims(new Claim(ClaimTypes.Email, "test@example.com"));
 
     // Act
-    var cut = RenderComponent<UserRights>();
+    var cut = Render<UserRights>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Hi TEST USER, you have these claims and rights:</h1>
@@ -149,7 +149,7 @@ public class UserRightsTest : TestContext
     authContext.SetAuthenticationType("custom-auth-type");
 
     // Act
-    var cut = RenderComponent<UserRights>();
+    var cut = Render<UserRights>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Hi TEST USER, you have these claims and rights:</h1>

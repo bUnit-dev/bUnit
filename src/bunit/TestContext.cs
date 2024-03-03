@@ -37,7 +37,7 @@ public class TestContext : IDisposable
 
 	/// <summary>
 	/// Gets the <see cref="RootRenderTree"/> that all components rendered with the
-	/// <c>RenderComponent&lt;TComponent&gt;()</c> methods, are rendered inside.
+	/// <c>Render&lt;TComponent&gt;()</c> methods, are rendered inside.
 	/// </summary>
 	/// <remarks>
 	/// Use this to add default layout- or root-components which a component under test
@@ -123,7 +123,7 @@ public class TestContext : IDisposable
 	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 	/// <param name="parameters">Parameters to pass to the component when it is rendered.</param>
 	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual RenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)
+	public virtual RenderedComponent<TComponent> Render<TComponent>(params ComponentParameter[] parameters)
 		where TComponent : IComponent
 	{
 		var renderFragment = new ComponentParameterCollection { parameters }
@@ -138,7 +138,7 @@ public class TestContext : IDisposable
 	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 	/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered.</param>
 	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual RenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
+	public virtual RenderedComponent<TComponent> Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
 		where TComponent : IComponent
 	{
 		var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder)

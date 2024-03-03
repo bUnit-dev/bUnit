@@ -11,7 +11,7 @@ public class InputFileTests : TestContext
 	[Fact(DisplayName = "InputFile can upload a single string file")]
 	public void Test001()
 	{
-		var cut = RenderComponent<InputFileComponent>();
+		var cut = Render<InputFileComponent>();
 		var lastModified = new DateTime(1991, 5, 17);
 		var file = InputFileContent.CreateFromText("Hello World", "Hey.txt", lastModified);
 
@@ -26,7 +26,7 @@ public class InputFileTests : TestContext
 	[Fact(DisplayName = "InputFile can upload a single byte file")]
 	public void Test002()
 	{
-		var cut = RenderComponent<InputFileComponent>();
+		var cut = Render<InputFileComponent>();
 		var file = InputFileContent.CreateFromBinary(Encoding.Default.GetBytes("Hello World"));
 
 		cut.FindComponent<InputFile>().UploadFiles(file);
@@ -37,7 +37,7 @@ public class InputFileTests : TestContext
 	[Fact(DisplayName = "InputFile can upload multiple files")]
 	public void Test003()
 	{
-		var cut = RenderComponent<MultipleInputFileComponent>();
+		var cut = Render<MultipleInputFileComponent>();
 		var lastModified = new DateTime(1991, 5, 17);
 		var file1 = InputFileContent.CreateFromText("Hello World", "Hey.txt", lastModified, "test");
 		var file2 = InputFileContent.CreateFromText("World Hey", "Test.txt", lastModified, "unit");
@@ -84,7 +84,7 @@ public class InputFileTests : TestContext
 	[Fact(DisplayName = "Upload no files will result in Exception")]
 	public void Test007()
 	{
-		var cut = RenderComponent<InputFileComponent>();
+		var cut = Render<InputFileComponent>();
 
 		Action act = () => cut.FindComponent<InputFile>().UploadFiles();
 
@@ -95,7 +95,7 @@ public class InputFileTests : TestContext
 	public void Test008()
 	{
 		JSInterop.SetupVoid("Blazor._internal.InputFile.init").SetException(new Exception());
-		var cut = RenderComponent<InputFileComponent>();
+		var cut = Render<InputFileComponent>();
 
 		Action act = () => cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("Hello"));
 

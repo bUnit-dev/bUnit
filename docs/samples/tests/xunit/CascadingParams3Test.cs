@@ -15,7 +15,7 @@ public class CascadingParams3Test : TestContext
   {
     var isDarkTheme = true;
 
-    var cut = RenderComponent<CascadingParams>(parameters => parameters
+    var cut = Render<CascadingParams>(parameters => parameters
       .Add(p => p.IsDarkTheme, isDarkTheme)
       .Add(p => p.UserName, "Name of User")
       .Add(p => p.Email, "user@example.com")

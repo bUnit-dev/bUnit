@@ -13,7 +13,7 @@ public class UnmatchedParamsTest : TestContext
   [Fact]
   public void Test()
   {
-    var cut = RenderComponent<UnmatchedParams>(parameters => parameters
+    var cut = Render<UnmatchedParams>(parameters => parameters
       .AddUnmatched("some-unknown-param", "a value")
     );
   }
