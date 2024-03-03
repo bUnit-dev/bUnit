@@ -10,13 +10,13 @@ namespace Bunit;
 public static class CompareToExtensions
 {
 	/// <summary>
-	/// Compare the rendered markup in the <paramref name="actual"/> <see cref="IRenderedFragment"/>
+	/// Compare the rendered markup in the <paramref name="actual"/> <see cref="RenderedFragment"/>
 	/// with that in the <paramref name="expected"/> markup string.
 	/// </summary>
 	/// <param name="actual">Source of rendered markup to check.</param>
 	/// <param name="expected">Markup to compare with.</param>
 	/// <returns>Any differences found.</returns>
-	public static IReadOnlyList<IDiff> CompareTo(this IRenderedFragment actual, string expected)
+	public static IReadOnlyList<IDiff> CompareTo(this RenderedFragment actual, string expected)
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
@@ -28,13 +28,13 @@ public static class CompareToExtensions
 	}
 
 	/// <summary>
-	/// Compare the rendered markup in the <paramref name="actual"/> <see cref = "IRenderedFragment" /> to
-	/// the rendered markup in the <paramref name="expected"/> <see cref = "IRenderedFragment" />.
+	/// Compare the rendered markup in the <paramref name="actual"/> <see cref = "RenderedFragment" /> to
+	/// the rendered markup in the <paramref name="expected"/> <see cref = "RenderedFragment" />.
 	/// </summary>
 	/// <param name="actual">Source of rendered markup to check.</param>
 	/// <param name="expected">Source of rendered markup to compare with.</param>
 	/// <returns>Any differences found.</returns>
-	public static IReadOnlyList<IDiff> CompareTo(this IRenderedFragment actual, IRenderedFragment expected)
+	public static IReadOnlyList<IDiff> CompareTo(this RenderedFragment actual, RenderedFragment expected)
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);

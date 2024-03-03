@@ -5,10 +5,10 @@ title: Verifying markup from a component
 
 # Verifying markup from a component
 
-When a component is rendered in a test, the result is a <xref:Bunit.IRenderedFragment> or a <xref:Bunit.IRenderedComponent`1>. Through these, it is possible to access the rendered markup (HTML) of the component and, in the case of <xref:Bunit.IRenderedComponent`1>, the instance of the component. 
+When a component is rendered in a test, the result is a <xref:Bunit.RenderedFragment> or a <xref:Bunit.RenderedComponent`1>. Through these, it is possible to access the rendered markup (HTML) of the component and, in the case of <xref:Bunit.RenderedComponent`1>, the instance of the component. 
 
 > [!NOTE]
-> An <xref:Bunit.IRenderedComponent`1> inherits from <xref:Bunit.IRenderedFragment>. This page will only cover features of the <xref:Bunit.IRenderedFragment> type. <xref:Bunit.IRenderedComponent`1> is covered on the <xref:verify-component-state> page.
+> An <xref:Bunit.RenderedComponent`1> inherits from <xref:Bunit.RenderedFragment>. This page will only cover features of the <xref:Bunit.RenderedFragment> type. <xref:Bunit.RenderedComponent`1> is covered on the <xref:verify-component-state> page.
 
 This page covers the following **verification approaches:**
 
@@ -21,7 +21,7 @@ The following sections will cover each of these.
 
 ## Basic verification of raw markup
 
-To access the rendered markup of a component, just use the <xref:Bunit.IRenderedFragment.Markup> property on <xref:Bunit.IRenderedFragment>. This holds the *raw* HTML from the component as a `string`. 
+To access the rendered markup of a component, just use the <xref:Bunit.RenderedFragment.Markup> property on <xref:Bunit.RenderedFragment>. This holds the *raw* HTML from the component as a `string`. 
 
 > [!WARNING]
 > Be aware that all indentions and whitespace in your components (`.razor` files) are included in the raw rendered markup, so it is often wise to normalize the markup string a little. For example, via the string `Trim()` method to make the tests more stable. Otherwise, a change to the formatting in your components might break the tests unnecessarily when it does not need to.
@@ -62,13 +62,13 @@ bUnit's semantic HTML comparer safely ignores things like insignificant whitespa
 
 ### The MarkupMatches() method
 
-The HTML comparer can be easily accessed through `MarkupMatches()` extension methods, available in places that represent HTML fragments in bUnit, i.e. on <xref:Bunit.IRenderedFragment> and the `INode` and `INodeList` types.
+The HTML comparer can be easily accessed through `MarkupMatches()` extension methods, available in places that represent HTML fragments in bUnit, i.e. on <xref:Bunit.RenderedFragment> and the `INode` and `INodeList` types.
 
 In the following examples, the `<Heading>` component listed below will be used as the component under test.
 
 [!code-razor[Heading.razor](../../../samples/components/Heading.razor)]
 
-To use the `MarkupMatches()` method to perform a semantic comparison of the output of the `<Heading>` component through its <xref:Bunit.IRenderedFragment>, do the following:
+To use the `MarkupMatches()` method to perform a semantic comparison of the output of the `<Heading>` component through its <xref:Bunit.RenderedFragment>, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=25&end=30&highlight=3-6)]
 
@@ -93,9 +93,9 @@ Learn more about the customization options on the <xref:semantic-html-comparison
 
 ## Inspecting DOM nodes
 
-The rendered markup from a component is available as a DOM node through the <xref:Bunit.IRenderedFragment.Nodes> property on <xref:Bunit.IRenderedFragment>, as well as the `Find(string cssSelector)` and `FindAll(string cssSelector)` extension methods on <xref:Bunit.IRenderedFragment>.
+The rendered markup from a component is available as a DOM node through the <xref:Bunit.RenderedFragment.Nodes> property on <xref:Bunit.RenderedFragment>, as well as the `Find(string cssSelector)` and `FindAll(string cssSelector)` extension methods on <xref:Bunit.RenderedFragment>.
 
-The <xref:Bunit.IRenderedFragment.Nodes> property and the `FindAll()` method return an [AngleSharp](https://anglesharp.github.io/) `INodeList` type, and the `Find()` method returns an [AngleSharp](https://anglesharp.github.io/) `IElement` type. 
+The <xref:Bunit.RenderedFragment.Nodes> property and the `FindAll()` method return an [AngleSharp](https://anglesharp.github.io/) `INodeList` type, and the `Find()` method returns an [AngleSharp](https://anglesharp.github.io/) `IElement` type. 
 
 The DOM API in AngleSharp follows the W3C DOM API specifications and gives you the same results as a state-of-the-art browser’s implementation of the DOM API in JavaScript. Besides the official DOM API, AngleSharp and bUnit add some useful extension methods on top. This makes working with DOM nodes convenient.
 
@@ -103,10 +103,10 @@ The DOM API in AngleSharp follows the W3C DOM API specifications and gives you t
 
 Users of the famous JavaScript framework [jQuery](https://jquery.com/) will recognize these two methods: 
 
-- [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) takes a "CSS selector" as input and returns an `IElement` as output, or throws an exception if none are found.
-- [`FindAll(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) takes a "CSS selector" as input and returns a list of `IElement` elements.
+- [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.RenderedFragment,System.String)) takes a "CSS selector" as input and returns an `IElement` as output, or throws an exception if none are found.
+- [`FindAll(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.RenderedFragment,System.String,System.Boolean)) takes a "CSS selector" as input and returns a list of `IElement` elements.
 
-Let's see some examples of using the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) and [`FindAll(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) methods to query the `<FancyTable>` component listed below.
+Let's see some examples of using the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.RenderedFragment,System.String)) and [`FindAll(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.RenderedFragment,System.String,System.Boolean)) methods to query the `<FancyTable>` component listed below.
 
 [!code-razor[FancyTable.razor](../../../samples/components/FancyTable.razor)]
 
@@ -120,12 +120,12 @@ Once you have one or more elements, you verify against them,  such as by  inspec
 
 #### Auto-refreshing Find() queries
 
-An element found with the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method will be updated if the component it came from is re-rendered. 
+An element found with the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.RenderedFragment,System.String)) method will be updated if the component it came from is re-rendered. 
 
-However, that does not apply to elements that are found by traversing the DOM tree via the <xref:Bunit.IRenderedFragment.Nodes> property on <xref:Bunit.IRenderedFragment>, for example, as those nodes do not know when their root component is re-rendered. Consequently, they don’t know when they should be updated.
+However, that does not apply to elements that are found by traversing the DOM tree via the <xref:Bunit.RenderedFragment.Nodes> property on <xref:Bunit.RenderedFragment>, for example, as those nodes do not know when their root component is re-rendered. Consequently, they don’t know when they should be updated.
 
-As a result of this, it is always recommended to use the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method when searching for a single element. Alternatively, always reissue the query whenever you need the element.
+As a result of this, it is always recommended to use the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.RenderedFragment,System.String)) method when searching for a single element. Alternatively, always reissue the query whenever you need the element.
 
 #### Auto-refreshable FindAll() queries
 
-The [`FindAll(string cssSelector, bool enableAutoRefresh = false)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.IRenderedFragment,System.String,System.Boolean)) method has an optional parameter, `enableAutoRefresh`, which when set to `true` will return a collection of `IElement`. This automatically refreshes itself when the component the elements came from is re-rendered.
+The [`FindAll(string cssSelector, bool enableAutoRefresh = false)`](xref:Bunit.RenderedFragmentExtensions.FindAll(Bunit.RenderedFragment,System.String,System.Boolean)) method has an optional parameter, `enableAutoRefresh`, which when set to `true` will return a collection of `IElement`. This automatically refreshes itself when the component the elements came from is re-rendered.

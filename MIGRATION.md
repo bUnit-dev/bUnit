@@ -2,7 +2,7 @@
 This document describes the changes that need to be made to migrate from bUnit 1.x to 2.x.
 
 ## Removal of `GetChangesSinceFirstRender` and `GetChangesSinceLastRender` methods
-The `GetChangesSinceFirstRender` and `GetChangesSinceLastRender` methods have been removed from `IRenderedComponent<TComponent>`. There is no one-to-one replacement for these methods, but the general idea is to select the HTML in question via `Find` and assert against that.
+The `GetChangesSinceFirstRender` and `GetChangesSinceLastRender` methods have been removed from `RenderedComponent<TComponent>`. There is no one-to-one replacement for these methods, but the general idea is to select the HTML in question via `Find` and assert against that.
 
 Alternatively, the `IRenderFragment` still offers the `OnMarkupUpdated` event, which can be used to assert against the markup after a render.
 
@@ -28,8 +28,8 @@ The `bunit.core` and `bunit.web` packages have been merged into a single `bunit`
 
 ## Removal of unneeded abstraction
 
-### `IRenderedComponentBase<TComponent>` and `IRenderedFragmentBase`
-`IRenderedComponentBase<TComponent>` and `IRenderedFragmentBase` have been removed. They were used to provide a common base class for `IRenderedComponent<TComponent>` and `IRenderedFragment`, but this is no longer needed (due to the merge of the project). If you used either of these interfaces, you should replace them with `IRenderedComponent<TComponent>` and `IRenderedFragment` respectively.
+### `IRenderedComponentBase<TComponent>` and `RenderedFragmentBase`
+`IRenderedComponentBase<TComponent>` and `RenderedFragmentBase` have been removed. They were used to provide a common base class for `RenderedComponent<TComponent>` and `RenderedFragment`, but this is no longer needed (due to the merge of the project). If you used either of these interfaces, you should replace them with `RenderedComponent<TComponent>` and `RenderedFragment` respectively.
 
 ### `WebTestRender` merged into `TestRender`
 The `WebTestRender` class has been merged into the `TestRender` class. If you used `WebTestRender`, you should replace it with `TestRender`.
