@@ -13,7 +13,7 @@ public class ChildContentParams2Test : TestContext
   [Fact]
   public void Test()
   {
-    var cut = RenderComponent<ChildContentParams>(parameters => parameters
+    var cut = Render<ChildContentParams>(parameters => parameters
       .AddChildContent<Counter>()
     );
   }

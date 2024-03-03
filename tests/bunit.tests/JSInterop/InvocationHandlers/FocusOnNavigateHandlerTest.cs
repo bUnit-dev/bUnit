@@ -6,7 +6,7 @@ public class FocusOnNavigateHandlerTest : TestContext
 	public void Test001()
 	{
 		// <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-		var cut = RenderComponent<App>(ps => ps
+		var cut = Render<App>(ps => ps
 			.Add<FocusOnNavigate, RouteData>(p => p.FoundTemplate, routeData => cps => cps
 				.Add(x => x.RouteData, routeData)
 				.Add(x => x.Selector, "h1")));
@@ -22,7 +22,7 @@ public class FocusOnNavigateHandlerTest : TestContext
 	[Fact(DisplayName = "Will return completed task")]
 	public void Test002()
 	{
-		var cut = RenderComponent<App>(ps => ps
+		var cut = Render<App>(ps => ps
 			.Add<FocusOnNavigateInternal, RouteData>(p => p.FoundTemplate, routeData => cps => cps
 				.Add(x => x.RouteData, routeData)
 				.Add(x => x.Selector, "h1")));

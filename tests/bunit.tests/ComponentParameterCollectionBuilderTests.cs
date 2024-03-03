@@ -703,7 +703,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		var uri = navigationManager.GetUriWithQueryParameter("Query", "Test");
 		navigationManager.NavigateTo(uri);
 
-		var cut = RenderComponent<SupplyFromQueryParameterComponent>();
+		var cut = Render<SupplyFromQueryParameterComponent>();
 
 		cut.Instance.Query.ShouldBe("Test");
 	}
@@ -711,7 +711,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 	[Fact(DisplayName = "Throws an exception if a SupplyFromQueryParameter is passed as parameter")]
 	public void Test316()
 	{
-		Action action = () => RenderComponent<SupplyFromQueryParameterComponent>(
+		Action action = () => Render<SupplyFromQueryParameterComponent>(
 			ps => ps.Add(p => p.Query, "Foo"));
 
 		action.ShouldThrow<ArgumentException>()

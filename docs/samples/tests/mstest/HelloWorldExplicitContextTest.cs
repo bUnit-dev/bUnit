@@ -13,7 +13,7 @@ public class HelloWorldExplicitContext
     using var ctx = new Bunit.TestContext();
 
     // Act
-    var cut = ctx.RenderComponent<HelloWorld>();
+    var cut = ctx.Render<HelloWorld>();
 
     // Assert
     cut.MarkupMatches("<h1>Hello world from Blazor</h1>");

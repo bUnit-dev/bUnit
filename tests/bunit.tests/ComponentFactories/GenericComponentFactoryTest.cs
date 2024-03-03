@@ -11,7 +11,7 @@ public class GenericComponentFactoryTest : TestContext
 	{
 		ComponentFactories.Add<Simple1, FakeSimple1>();
 
-		var cut = RenderComponent<RefToSimple1Child>();
+		var cut = Render<RefToSimple1Child>();
 
 		cut.MarkupMatches(@"<div id=""ref-status"">Has ref = True</div>");
 	}

@@ -12,7 +12,7 @@ public class UserInfoTest : TestContext
     this.AddAuthorization();
 
     // Act
-    var cut = RenderComponent<UserInfo>();
+    var cut = Render<UserInfo>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Please log in!</h1>
@@ -27,7 +27,7 @@ public class UserInfoTest : TestContext
     authContext.SetAuthorizing();
 
     // Act
-    var cut = RenderComponent<UserInfo>();
+    var cut = Render<UserInfo>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Please log in!</h1>
@@ -42,7 +42,7 @@ public class UserInfoTest : TestContext
     authContext.SetAuthorized("TEST USER", AuthorizationState.Unauthorized);
 
     // Act
-    var cut = RenderComponent<UserInfo>();
+    var cut = Render<UserInfo>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Welcome TEST USER</h1>
@@ -57,7 +57,7 @@ public class UserInfoTest : TestContext
     authContext.SetAuthorized("TEST USER");
 
     // Act
-    var cut = RenderComponent<UserInfo>();
+    var cut = Render<UserInfo>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Welcome TEST USER</h1>

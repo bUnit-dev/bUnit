@@ -13,7 +13,7 @@ public class ReRenderTest : TestContext
   public void RenderAgainUsingRender()
   {
     // Arrange - renders the Heading component
-    var cut = RenderComponent<Heading>();
+    var cut = Render<Heading>();
     Assert.Equal(1, cut.RenderCount);
 
     // Re-render without new parameters
@@ -23,16 +23,16 @@ public class ReRenderTest : TestContext
   }
 
   [Fact]
-  public void RenderAgainUsingSetParametersAndRender()
+  public void RenderAgainUsingRenderAgainUsingSetParametersAndRender()
   {
     // Arrange - renders the Item component
-    var cut = RenderComponent<Item>(parameters => parameters
+    var cut = Render<Item>(parameters => parameters
       .Add(p => p.Value, "Foo")
     );
     cut.MarkupMatches("<span>Foo</span>");
 
     // Re-render with new parameters
-    cut.SetParametersAndRender(parameters => parameters
+    cut.Render(parameters => parameters
       .Add(p => p.Value, "Bar")
     );
 
@@ -43,7 +43,7 @@ public class ReRenderTest : TestContext
   public void RendersViaInvokeAsync()
   {
     // Arrange - renders the Calc component
-    var cut = RenderComponent<Calc>();
+    var cut = Render<Calc>();
 
     // Indirectly re-renders through the call to StateHasChanged
     // in the Calculate(x, y) method.
@@ -56,7 +56,7 @@ public class ReRenderTest : TestContext
   public async Task RendersViaInvokeAsyncWithReturnValue()
   {
     // Arrange - renders the CalcWithReturnValue component
-    var cut = RenderComponent<CalcWithReturnValue>();
+    var cut = Render<CalcWithReturnValue>();
 
     // Indirectly re-renders and returns a value.
     var result = await cut.InvokeAsync(() => cut.Instance.Calculate(1, 2));
@@ -69,7 +69,7 @@ public class ReRenderTest : TestContext
   public async Task RendersViaInvokeAsyncWithLoading()
   {
     // Arrange - renders the CalcWithLoading component
-    var cut = RenderComponent<CalcWithLoading>();
+    var cut = Render<CalcWithLoading>();
 
     // Indirectly re-renders and returns the task returned by Calculate().
     // The explicit <Task> here is important, otherwise the call to Calculate()

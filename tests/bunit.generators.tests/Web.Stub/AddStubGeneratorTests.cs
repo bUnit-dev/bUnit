@@ -9,7 +9,7 @@ public class AddStubGeneratorTests : TestContext
 	{
 		ComponentFactories.AddStub<CounterComponent>();
 		
-		var cut = RenderComponent<ParentComponent>();
+		var cut = Render<ParentComponent>();
 
 		var child = cut.FindComponent<CounterComponentStub>();
 		Assert.Equal(2, child.Instance.Count);
@@ -20,7 +20,7 @@ public class AddStubGeneratorTests : TestContext
 	{
 		ComponentFactories.AddStub<CounterComponent>();
 
-		var cut = RenderComponent<ParentComponent>(p => p.AddCascadingValue("Cascading", 3));
+		var cut = Render<ParentComponent>(p => p.AddCascadingValue("Cascading", 3));
 
 		var stub = cut.FindComponent<CounterComponentStub>();
 		Assert.Equal(3, stub.Instance.CascadingCount);
