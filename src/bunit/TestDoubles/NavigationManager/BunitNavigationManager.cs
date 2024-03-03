@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Bunit.Rendering;
 using Microsoft.AspNetCore.Components.Routing;
 
 namespace Bunit.TestDoubles;
@@ -7,17 +6,17 @@ namespace Bunit.TestDoubles;
 using URI = Uri;
 
 /// <summary>
-/// Represents a fake <see cref="NavigationManager"/> that captures calls to
+/// Represents a <see cref="NavigationManager"/> that captures calls to
 /// <see cref="NavigationManager.NavigateTo(string, bool)"/> for testing purposes.
 /// </summary>
 [DebuggerDisplay("Current Uri: {Uri}, History Count: {History.Count}")]
-public sealed class FakeNavigationManager : NavigationManager
+public sealed class BunitNavigationManager : NavigationManager
 {
 	private readonly TestContextBase testContextBase;
 	private readonly Stack<NavigationHistory> history = new();
 
 	/// <summary>
-	/// The navigation history captured by the <see cref="FakeNavigationManager"/>.
+	/// The navigation history captured by the <see cref="BunitNavigationManager"/>.
 	/// This is a stack based collection, so the first element is the latest/current navigation target.
 	/// </summary>
 	/// <remarks>
@@ -26,10 +25,10 @@ public sealed class FakeNavigationManager : NavigationManager
 	public IReadOnlyCollection<NavigationHistory> History => history;
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="FakeNavigationManager"/> class.
+	/// Initializes a new instance of the <see cref="BunitNavigationManager"/> class.
 	/// </summary>
-	[SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "By design. Fake navigation manager defaults to local host as base URI.")]
-	public FakeNavigationManager(TestContextBase testContextBase)
+	[SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "By design. Bunit navigation manager defaults to local host as base URI.")]
+	public BunitNavigationManager(TestContextBase testContextBase)
 	{
 		this.testContextBase = testContextBase;
 		Initialize("http://localhost/", "http://localhost/");

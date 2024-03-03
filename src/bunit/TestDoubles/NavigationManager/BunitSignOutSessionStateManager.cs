@@ -3,11 +3,11 @@
 namespace Bunit.TestDoubles;
 
 /// <summary>
-/// Represents a fake <see cref="SignOutSessionStateManager"/> that captures calls to <see cref="SetSignOutState"/>
+/// Represents bUnit's own <see cref="SignOutSessionStateManager"/> that captures calls to <see cref="SetSignOutState"/>
 /// that will help later to assert if the user was logged out
 /// </summary>
 #pragma warning disable CS0618
-public class FakeSignOutSessionStateManager : SignOutSessionStateManager
+public class BunitSignOutSessionStateManager : SignOutSessionStateManager
 #pragma warning restore CS0618
 {
 	/// <summary>
@@ -16,9 +16,9 @@ public class FakeSignOutSessionStateManager : SignOutSessionStateManager
 	public bool IsSignedOut { get; set; }
 
 	/// <summary>
-	/// Initializes a new instance of <see cref="FakeSignOutSessionStateManager"/>
+	/// Initializes a new instance of <see cref="BunitSignOutSessionStateManager"/>
 	/// </summary>
-	public FakeSignOutSessionStateManager(IJSRuntime jsRuntime) : base(jsRuntime)
+	public BunitSignOutSessionStateManager(IJSRuntime jsRuntime) : base(jsRuntime)
 	{
 	}
 

@@ -1,6 +1,6 @@
 namespace Bunit.TestDoubles;
 
-internal class FakePersistentComponentStateStore : IPersistentComponentStateStore
+internal class BunitPersistentComponentStateStore : IPersistentComponentStateStore
 {
 	private readonly Dictionary<string, byte[]> state = new(StringComparer.Ordinal);
 
