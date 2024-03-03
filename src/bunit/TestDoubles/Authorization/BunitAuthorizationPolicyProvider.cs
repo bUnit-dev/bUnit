@@ -6,7 +6,7 @@ namespace Bunit.TestDoubles;
 /// Test class that provides an implementation of IAuthorizationPolicyProvider that
 /// assists user in testing components that use authentication and authorization.
 /// </summary>
-public class FakeAuthorizationPolicyProvider : IAuthorizationPolicyProvider
+public class BunitAuthorizationPolicyProvider : IAuthorizationPolicyProvider
 {
 	private readonly AuthorizationOptions options = new();
 	private string policySchemeName = "TestScheme";

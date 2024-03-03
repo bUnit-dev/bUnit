@@ -11,10 +11,10 @@ bUnit does, however, come with a few specially crafted test doubles for some of 
 
 The built-in test doubles are described on the following pages:
 
-- <xref:faking-auth>
+- <xref:bunit-auth>
 - <xref:emulating-ijsruntime>
 - <xref:mocking-httpclient>
-- <xref:faking-persistentcomponentstate>
-- <xref:fake-navigation-manager>
-- <xref:fake-webassemblyhostenvironment>
+- <xref:bunit-persistentcomponentstate>
+- <xref:bunit-navigation-manager>
+- <xref:bunit-webassemblyhostenvironment>
 - <xref:input-file>
