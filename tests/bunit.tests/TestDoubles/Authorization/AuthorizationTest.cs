@@ -14,7 +14,7 @@ public class AuthorizationTest : TestContext
 	public void Test001()
 	{
 		// Arrange
-		this.AddTestAuthorization();
+		this.AddAuthorization();
 
 		// Act
 		var cut = RenderComponent<SimpleAuthView>();
@@ -27,7 +27,7 @@ public class AuthorizationTest : TestContext
 	public void Test002()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser", AuthorizationState.Authorized);
 
 		// act
@@ -41,7 +41,7 @@ public class AuthorizationTest : TestContext
 	public void Test003()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser", AuthorizationState.Unauthorized);
 
 		// act
@@ -56,7 +56,7 @@ public class AuthorizationTest : TestContext
 	public async Task Test004()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 
 		// start off unauthenticated.
 		var cut = RenderComponent<SimpleAuthView>();
@@ -76,7 +76,7 @@ public class AuthorizationTest : TestContext
 	public void Test004_Sync()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 
 		// start off unauthenticated.
 		var cut = RenderComponent<SimpleAuthView>();
@@ -95,7 +95,7 @@ public class AuthorizationTest : TestContext
 	public void Test005()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser005", AuthorizationState.Authorized);
 
 		// start off unauthenticated.
@@ -115,18 +115,18 @@ public class AuthorizationTest : TestContext
 	public void Test006()
 	{
 		// act
-		var ex = Assert.Throws<MissingFakeAuthorizationException>(() => RenderComponent<SimpleAuthView>());
+		var ex = Assert.Throws<MissingBunitAuthorizationException>(() => RenderComponent<SimpleAuthView>());
 
 		// assert
 		Assert.Equal("AuthenticationStateProvider", ex.ServiceName);
-		Assert.Equal("https://bunit.egilhansen.com/docs/test-doubles/faking-auth", ex.HelpLink);
+		Assert.Equal("https://bunit.egilhansen.com/docs/test-doubles/bunit-auth", ex.HelpLink);
 	}
 
 	[Fact(DisplayName = "AuthorizeView with set policy with authenticated and authorized user")]
 	public void Test007()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser").SetPolicies("ContentViewer");
 
 		// act
@@ -140,7 +140,7 @@ public class AuthorizationTest : TestContext
 	public void Test008()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser");
 
 		// act
@@ -154,7 +154,7 @@ public class AuthorizationTest : TestContext
 	public void Test0081()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser").SetPolicies("OtherPolicy");
 
 		// act
@@ -168,7 +168,7 @@ public class AuthorizationTest : TestContext
 	public void Test009()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser").SetRoles("Admin");
 
 		// act
@@ -182,7 +182,7 @@ public class AuthorizationTest : TestContext
 	public void Test010()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser");
 
 		// act
@@ -196,7 +196,7 @@ public class AuthorizationTest : TestContext
 	public void Test011()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser").SetRoles("NotAdmin");
 
 		// act
@@ -210,7 +210,7 @@ public class AuthorizationTest : TestContext
 	public void Test012()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorizing();
 
 		// act
@@ -225,7 +225,7 @@ public class AuthorizationTest : TestContext
 	{
 		// arrange
 		var userId = new Guid("{5d5fa9c1-abf9-4ed6-8fb0-3365382b629c}");
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		var emailClaim = new Claim(ClaimTypes.Email, "user@test.com");
 		var uuidClaim = new Claim(ClaimTypes.Sid, userId.ToString());
 		authContext.SetAuthorized("TestUser").SetClaims(uuidClaim, emailClaim);
@@ -244,7 +244,7 @@ public class AuthorizationTest : TestContext
 	public void Test014()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser");
 
 		// act
@@ -259,7 +259,7 @@ public class AuthorizationTest : TestContext
 	public void Test020()
 	{
 		var role = "myTestRole";
-		var authCtx = this.AddTestAuthorization();
+		var authCtx = this.AddAuthorization();
 		authCtx.SetAuthorized("FooBar");
 		authCtx.SetRoles(role);
 
@@ -272,7 +272,7 @@ public class AuthorizationTest : TestContext
 	public void Test021()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser");
 		authContext.SetAuthenticationType("custom-auth-type");
 
@@ -287,7 +287,7 @@ public class AuthorizationTest : TestContext
 	public void Test022()
 	{
 		// arrange
-		var authContext = this.AddTestAuthorization();
+		var authContext = this.AddAuthorization();
 		authContext.SetAuthorized("TestUser");
 
 		// act
