@@ -39,3 +39,6 @@ The `Fake` prefix has been replaced with `Bunit` in many test doubles. For examp
 
 ### Renamed `AddTestAuthorization` to `AddAuthorization`
 The `AddTestAuthorization` method on `TestContext` has been renamed to `AddAuthorization`. If you used `AddTestAuthorization`, you should replace it with `AddAuthorization`.
+
+## Merged `TestContext` and `TestContextBase`
+The `TestContext` and `TestContextBase` classes have been merged into a single `TestContext` class. All references to `TestContextBase` should replace them with `TestContext` to migrate.
