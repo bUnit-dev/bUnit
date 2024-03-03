@@ -1,6 +1,6 @@
 namespace Bunit.TestDoubles.Authorization;
 
-public class FakeAuthenticationStateProviderTest
+public class BunitAuthenticationStateProviderTest
 {
 	[Fact(DisplayName = "Create authenticated AuthenticationState")]
 	public async Task Test001()
@@ -9,7 +9,7 @@ public class FakeAuthenticationStateProviderTest
 		var roles = new List<string> { "User" };
 
 		// act
-		var authProvider = new FakeAuthenticationStateProvider("TestUser", roles);
+		var authProvider = new BunitAuthenticationStateProvider("TestUser", roles);
 		var authState = await authProvider.GetAuthenticationStateAsync();
 
 		// assert
@@ -23,7 +23,7 @@ public class FakeAuthenticationStateProviderTest
 	public async Task Test002()
 	{
 		// act
-		var authProvider = new FakeAuthenticationStateProvider();
+		var authProvider = new BunitAuthenticationStateProvider();
 		var authState = await authProvider.GetAuthenticationStateAsync();
 
 		// assert
@@ -37,7 +37,7 @@ public class FakeAuthenticationStateProviderTest
 	public async Task Test003()
 	{
 		// arrange
-		var authProvider = new FakeAuthenticationStateProvider();
+		var authProvider = new BunitAuthenticationStateProvider();
 		var stateChangeHandled = false;
 		authProvider.AuthenticationStateChanged += _ => stateChangeHandled = true;
 

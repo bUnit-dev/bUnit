@@ -5,26 +5,26 @@ namespace Bunit.TestDoubles;
 
 using static Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers;
 
-public class FakeNavigationManagerTest : TestContext
+public class BunitNavigationManagerTest : TestContext
 {
-	private FakeNavigationManager CreateFakeNavigationManager()
-		=> Services.GetRequiredService<FakeNavigationManager>();
+	private BunitNavigationManager CreateNavigationManager()
+		=> Services.GetRequiredService<BunitNavigationManager>();
 
-	[Fact(DisplayName = "TestContext.Services has NavigationManager registered by default as FakeNavigationManager")]
+	[Fact(DisplayName = "TestContext.Services has NavigationManager registered by default as BunitNavigationManager")]
 	public void Test001()
 	{
 		var nm = Services.GetService<NavigationManager>();
-		var fnm = Services.GetService<FakeNavigationManager>();
+		var fnm = Services.GetService<BunitNavigationManager>();
 
 		nm.ShouldNotBeNull();
 		fnm.ShouldNotBeNull();
 		nm.ShouldBe(fnm);
 	}
 
-	[Fact(DisplayName = "FakeNavigationManager.BaseUrl is set to http://localhost/")]
+	[Fact(DisplayName = "BunitNavigationManager.BaseUrl is set to http://localhost/")]
 	public void Test002()
 	{
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 
 		sut.BaseUri.ShouldBe("http://localhost/");
 	}
@@ -37,7 +37,7 @@ public class FakeNavigationManagerTest : TestContext
 	[InlineData("/#åäö")]
 	public void Test003(string uri)
 	{
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 		var expectedUri = new Uri(new Uri(sut.BaseUri, UriKind.Absolute), new Uri(uri, UriKind.Relative));
 
 		sut.NavigateTo(uri);
@@ -51,7 +51,7 @@ public class FakeNavigationManagerTest : TestContext
 	[InlineData("http://localhost/foo")]
 	public void Test004(string uri)
 	{
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 		var expectedUri = new Uri(uri, UriKind.Absolute);
 
 		sut.NavigateTo(uri);
@@ -67,7 +67,7 @@ public class FakeNavigationManagerTest : TestContext
 		// arrange
 		LocationChangedEventArgs actualLocationChange = default;
 		var navigationUri = "foo";
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 		sut.LocationChanged += Sut_LocationChanged;
 
 		// act
@@ -87,7 +87,7 @@ public class FakeNavigationManagerTest : TestContext
 	[Fact(DisplayName = "LocationChanged is raised on the test renderer's dispatcher")]
 	public void Test006()
 	{
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 		var cut = RenderComponent<PrintCurrentUrl>();
 
 		sut.NavigateTo("foo");
@@ -98,23 +98,23 @@ public class FakeNavigationManagerTest : TestContext
 	[Fact(DisplayName = "Uri should not be unescaped")]
 	public void Test007()
 	{
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 
 		sut.NavigateTo("/with%20whitespace");
 
 		sut.Uri.ShouldEndWith("with%20whitespace");
 	}
-	
+
 	[Theory(DisplayName = "NavigateTo(uri, forceLoad, replaceHistoryEntry) is saved in history")]
 	[InlineData("/uri", false, false)]
 	[InlineData("/uri", true, false)]
 	[InlineData("/uri", false, true)]
 	public void Test200(string uri, bool forceLoad, bool replaceHistoryEntry)
 	{
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 
 		sut.NavigateTo(uri, forceLoad, replaceHistoryEntry);
-		
+
 		var navigationOptions = new NavigationOptions { ForceLoad = forceLoad, ReplaceHistoryEntry =
  replaceHistoryEntry };
 		sut.History.ShouldHaveSingleItem()
@@ -124,7 +124,7 @@ public class FakeNavigationManagerTest : TestContext
 	[Fact(DisplayName = "NavigateTo with replaceHistoryEntry true replaces previous history entry")]
 	public void Test201()
 	{
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 
 		sut.NavigateTo("/firstUrl");
 		sut.NavigateTo("/secondUrl", new NavigationOptions { ReplaceHistoryEntry = true });
@@ -141,7 +141,7 @@ public class FakeNavigationManagerTest : TestContext
 	public void Test008()
 	{
 		const string externalUri = "https://bunit.dev/docs/getting-started/index.html";
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 
 		sut.NavigateTo(externalUri);
 
@@ -154,7 +154,7 @@ public class FakeNavigationManagerTest : TestContext
 	{
 		var locationChangedInvoked = false;
 		const string externalUri = "https://bunit.dev/docs/getting-started/index.html";
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 		sut.LocationChanged += (s, e) => locationChangedInvoked = true;
 
 		sut.NavigateTo(externalUri);
@@ -162,38 +162,38 @@ public class FakeNavigationManagerTest : TestContext
 		locationChangedInvoked.ShouldBeFalse();
 	}
 
-	[Fact(DisplayName = "When component provides NavigationLock, FakeNavigationManager should intercept calls")]
+	[Fact(DisplayName = "When component provides NavigationLock, BunitNavigationManager should intercept calls")]
 	public void Test010()
 	{
-		var fakeNavigationManager = CreateFakeNavigationManager();
+		var navigationManager = CreateNavigationManager();
 		var cut = RenderComponent<InterceptNavigateToCounterComponent>();
 
 		cut.Find("button").Click();
 
 		cut.Instance.NavigationIntercepted.ShouldBeTrue();
-		fakeNavigationManager.History.Single().State.ShouldBe(NavigationState.Prevented);
+		navigationManager.History.Single().State.ShouldBe(NavigationState.Prevented);
 	}
 
 	[Fact(DisplayName = "Intercepting external url's should work")]
 	public void Test011()
 	{
-		var fakeNavigationManager = CreateFakeNavigationManager();
+		var navigationManager = CreateNavigationManager();
 		var cut = RenderComponent<GotoExternalResourceComponent>();
 
 		cut.Find("button").Click();
 
-		fakeNavigationManager.History.ShouldNotBeEmpty();
+		navigationManager.History.ShouldNotBeEmpty();
 	}
 
-	[Fact(DisplayName = "Exception while intercepting is set on FakeNaviationManager")]
+	[Fact(DisplayName = "Exception while intercepting is set on BunitNaviationManager")]
 	public void Test012()
 	{
-		var fakeNavigationManager = CreateFakeNavigationManager();
+		var navigationManager = CreateNavigationManager();
 		var cut = RenderComponent<ThrowsExceptionInInterceptNavigationComponent>();
 
 		cut.Find("button").Click();
 
-		var entry = fakeNavigationManager.History.Single();
+		var entry = navigationManager.History.Single();
 		entry.Exception.ShouldBeOfType<NotSupportedException>();
 		entry.State.ShouldBe(NavigationState.Faulted);
 	}
@@ -201,16 +201,16 @@ public class FakeNavigationManagerTest : TestContext
 	[Fact(DisplayName = "StateFromJson deserialize InteractiveRequestOptions")]
 	public void Test013()
 	{
-		var fakeNavigationManager = CreateFakeNavigationManager();
+		var navigationManager = CreateNavigationManager();
 		var requestOptions = new InteractiveRequestOptions
 		{
 			ReturnUrl = "return", Interaction = InteractionType.SignIn,
 		};
 		requestOptions.TryAddAdditionalParameter("library", "bunit");
 
-		fakeNavigationManager.NavigateToLogin("/some-url", requestOptions);
+		navigationManager.NavigateToLogin("/some-url", requestOptions);
 
-		var options = fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>();
+		var options = navigationManager.History.Last().StateFromJson<InteractiveRequestOptions>();
 		options.ShouldNotBeNull();
 		options.Interaction.ShouldBe(InteractionType.SignIn);
 		options.ReturnUrl.ShouldBe("return");
@@ -221,40 +221,40 @@ public class FakeNavigationManagerTest : TestContext
 	[Fact(DisplayName = "Given no content in state then StateFromJson throws")]
 	public void Test014()
 	{
-		var fakeNavigationManager = CreateFakeNavigationManager();
-		fakeNavigationManager.NavigateTo("/some-url");
+		var navigationManager = CreateNavigationManager();
+		navigationManager.NavigateTo("/some-url");
 
 		Should.Throw<InvalidOperationException>(
-			() => fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>());
+			() => navigationManager.History.Last().StateFromJson<InteractiveRequestOptions>());
 	}
 
 	[Fact(DisplayName = "StateFromJson with invalid json throws")]
 	public void Test015()
 	{
-		var fakeNavigationManager = CreateFakeNavigationManager();
+		var navigationManager = CreateNavigationManager();
 
-		fakeNavigationManager.NavigateTo("/login", new NavigationOptions { HistoryEntryState = "<invalidjson>" });
+		navigationManager.NavigateTo("/login", new NavigationOptions { HistoryEntryState = "<invalidjson>" });
 
 		Should.Throw<JsonException>(
-			() => fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>());
+			() => navigationManager.History.Last().StateFromJson<InteractiveRequestOptions>());
 	}
-	
+
 	[Fact(DisplayName = "Navigate to url with state should set that state on the NavigationManager")]
 	public void Test016()
 	{
 		const string State = "State";
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 
 		sut.NavigateTo("/internal", new NavigationOptions { HistoryEntryState = State });
 
 		sut.HistoryEntryState.ShouldBe(State);
 	}
-	
+
 	[Fact(DisplayName = "Navigate to url with force reload resets state")]
 	public void Test017()
 	{
 		const string State = "State";
-		var sut = CreateFakeNavigationManager();
+		var sut = CreateNavigationManager();
 
 		sut.NavigateTo("/internal", new NavigationOptions { HistoryEntryState = State });
 		sut.NavigateTo("/internal", new NavigationOptions { HistoryEntryState = State, ForceLoad = true});
