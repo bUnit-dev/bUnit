@@ -10,9 +10,9 @@ namespace Bunit.TestDoubles;
 /// </summary>
 public class TestAuthorizationContext
 {
-	private readonly FakeAuthorizationService authService = new();
-	private readonly FakeAuthorizationPolicyProvider policyProvider = new();
-	private readonly FakeAuthenticationStateProvider authProvider = new();
+	private readonly BunitAuthorizationService authService = new();
+	private readonly BunitAuthorizationPolicyProvider policyProvider = new();
+	private readonly BunitAuthenticationStateProvider authProvider = new();
 
 	/// <summary>
 	/// Gets a value indicating whether user is authenticated.

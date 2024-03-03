@@ -1,11 +1,11 @@
 namespace Bunit.TestDoubles;
 
-public class FakeNavigationInterceptionTest
+public class BunitNavigationInterceptionTest
 {
 	[Fact(DisplayName = "EnableNavigationInterceptionAsync returns completed task")]
 	public void Test001()
 	{
-		new FakeNavigationInterception()
+		new BunitNavigationInterception()
 			.EnableNavigationInterceptionAsync()
 			.IsCompletedSuccessfully
 			.ShouldBeTrue();
@@ -16,6 +16,6 @@ public class FakeNavigationInterceptionTest
 	{
 		using var ctx = new TestContext();
 		ctx.Services.GetService<INavigationInterception>()
-			.ShouldBeOfType<FakeNavigationInterception>();
+			.ShouldBeOfType<BunitNavigationInterception>();
 	}
 }
