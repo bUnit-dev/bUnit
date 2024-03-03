@@ -16,7 +16,7 @@ public class EventCallbackParamsTest : TestContext
     Action<MouseEventArgs> onClickHandler = _ => { };
     Action onSomethingHandler = () => { };
 
-    var cut = RenderComponent<EventCallbackParams>(parameters => parameters
+    var cut = Render<EventCallbackParams>(parameters => parameters
       .Add(p => p.OnClick, onClickHandler)
       .Add(p => p.OnSomething, onSomethingHandler)
     );

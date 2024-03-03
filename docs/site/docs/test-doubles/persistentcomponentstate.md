@@ -101,7 +101,7 @@ var state = AddBunitPersistentComponentState();
 state.Persist("weather-data", new [] { new WeatherForecast { Temperature = 42 } });
 
 // Act
-var cut = RenderComponent<FetchData>();
+var cut = Render<FetchData>();
 
 // Assert - verify that the persisted forecast was rendered out
 cut.MarkupMatches("<p>42</p>");
@@ -112,7 +112,7 @@ To test that the `<FetchData>` component correctly persists weather data when it
 ```csharp
 // Arrange
 var state = AddBunitPersistentComponentState();
-var cut = RenderComponent<FetchData>();
+var cut = Render<FetchData>();
 
 // Act - trigger the FetchData components PersistForecasts method
 state.TriggerOnPersisting();

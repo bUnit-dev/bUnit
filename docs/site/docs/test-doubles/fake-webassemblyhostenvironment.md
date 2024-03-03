@@ -38,7 +38,7 @@ var hostEnvironment = Services.GetRequiredService<BunitWebAssemblyHostEnvironmen
 // directly through the hostEnvironment.Environment property.
 hostEnvironment.SetEnvironmentToDevelopment();
 
-var cut = RenderComponent<SimpleUsingWebAssemblyHostEnvironment>();
+var cut = Render<SimpleUsingWebAssemblyHostEnvironment>();
 
 // Assert - inspects markup to verify the message
 cut.Find("#message").MarkupMatches($"<p>Hello Developers.</p>");
@@ -54,7 +54,7 @@ var hostEnvironment = Services.GetRequiredService<BunitWebAssemblyHostEnvironmen
 hostEnvironment.BaseAddress = "myBaseUrl/";
 
 // Act
-var cut = RenderComponent<SimpleUsingWebAssemblyHostEnvironment>();
+var cut = Render<SimpleUsingWebAssemblyHostEnvironment>();
 
 // Assert - inspect markup to verify that the BaseAddress is used correctly.
 cut.Find("#address").MarkupMatches($"<p>The base URL is: myBaseUrl/</p>");

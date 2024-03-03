@@ -2,13 +2,13 @@ namespace Bunit;
 
 public class RenderedComponentRenderExtensionsTest : TestContext
 {
-	[Fact(DisplayName = "SetParametersAndRender rethrows exceptions from SetParameterAsync")]
+	[Fact(DisplayName = "Render rethrows exceptions from SetParameterAsync")]
 	public void Test001()
 	{
-		var cut = RenderComponent<ThrowsOnParameterSet>();
+		var cut = Render<ThrowsOnParameterSet>();
 
 		var exception = Should.Throw<InvalidOperationException>(
-			() => cut.SetParametersAndRender(ps => ps.Add(qt => qt.Value, "something")));
+			() => cut.Render(ps => ps.Add(qt => qt.Value, "something")));
 		exception.InnerException.ShouldBeOfType<ArgumentOutOfRangeException>();
 	}
 }

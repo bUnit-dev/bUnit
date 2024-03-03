@@ -12,7 +12,7 @@ public class NestedComponentTest : TestContext
   [Fact]
   public void Test()
   {
-    var wrapper = RenderComponent<Wrapper>(parameters => parameters
+    var wrapper = Render<Wrapper>(parameters => parameters
       .AddChildContent<HelloWorld>()
     );
     var cut = wrapper.FindComponent<HelloWorld>();

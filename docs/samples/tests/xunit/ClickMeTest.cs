@@ -10,7 +10,7 @@ public class ClickMeTest : TestContext
   public void Test()
   {
     // Arrange
-    var cut = RenderComponent<ClickMe>();
+    var cut = Render<ClickMe>();
     var buttonElement = cut.Find("button");
 
     // Act

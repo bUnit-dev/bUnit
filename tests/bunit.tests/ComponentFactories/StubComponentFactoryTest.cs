@@ -13,7 +13,7 @@ public class StubComponentFactoryTest : TestContext
 	{
 		ComponentFactories.AddStub<CompA>();
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<CompA>());
 
 		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
 	}
@@ -23,7 +23,7 @@ public class StubComponentFactoryTest : TestContext
 	{
 		ComponentFactories.AddStub<CompA>();
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
 
 		cut.HasComponent<Stub<CompDerivedA>>().ShouldBeTrue();
 	}
@@ -34,7 +34,7 @@ public class StubComponentFactoryTest : TestContext
 	{
 		ComponentFactories.AddStub<CompA>($"<h1>{randomText}</h1>");
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
 
 		cut.HasComponent<Stub<CompDerivedA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");
@@ -46,7 +46,7 @@ public class StubComponentFactoryTest : TestContext
 	{
 		ComponentFactories.AddStub<CompA>(b => b.AddMarkupContent(0, $"<h1>{randomText}</h1>"));
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<CompDerivedA>());
 
 		cut.HasComponent<Stub<CompDerivedA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");
@@ -58,7 +58,7 @@ public class StubComponentFactoryTest : TestContext
 	{
 		ComponentFactories.AddStub<AllTypesOfParams<string>>(ps => $"<div>{ps.Get(x => x.RegularParam)}</div>");
 
-		var cut = RenderComponent<Wrapper>(parameters => parameters
+		var cut = Render<Wrapper>(parameters => parameters
 			.AddChildContent<AllTypesOfParams<string>>(ps => ps.Add(p => p.RegularParam, regularParamValue)));
 
 		cut.MarkupMatches($"<div>{regularParamValue}</div>");
@@ -72,7 +72,7 @@ public class StubComponentFactoryTest : TestContext
 			=> builder
 			=> builder.AddMarkupContent(0, $"<div>{ps.Get(x => x.RegularParam)}</div>"));
 
-		var cut = RenderComponent<Wrapper>(parameters => parameters
+		var cut = Render<Wrapper>(parameters => parameters
 			.AddChildContent<AllTypesOfParams<string>>(ps => ps.Add(p => p.RegularParam, regularParamValue)));
 
 		cut.MarkupMatches($"<div>{regularParamValue}</div>");
@@ -83,7 +83,7 @@ public class StubComponentFactoryTest : TestContext
 	{
 		ComponentFactories.AddStub(componentType => componentType == typeof(CompA));
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<CompA>());
 
 		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
 	}
@@ -94,7 +94,7 @@ public class StubComponentFactoryTest : TestContext
 	{
 		ComponentFactories.AddStub(componentType => componentType == typeof(CompA), $"<h1>{randomText}</h1>");
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<CompA>());
 
 		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");
@@ -106,7 +106,7 @@ public class StubComponentFactoryTest : TestContext
 	{
 		ComponentFactories.AddStub(componentType => componentType == typeof(CompA), b => b.AddMarkupContent(1, $"<h1>{randomText}</h1>"));
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<CompA>());
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<CompA>());
 
 		cut.HasComponent<Stub<CompA>>().ShouldBeTrue();
 		cut.MarkupMatches($"<h1>{randomText}</h1>");
