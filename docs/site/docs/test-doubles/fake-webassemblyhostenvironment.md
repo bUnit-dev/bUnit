@@ -1,17 +1,17 @@
 ---
-uid: fake-webassemblyhostenvironment
-title: Faking IWebAssemblyHostEnvironment
+uid: bunit-webassemblyhostenvironment
+title: Adding IWebAssemblyHostEnvironment
 ---
 
-# Faking `IWebAssemblyHostEnvironment`
+# Adding `IWebAssemblyHostEnvironment`
 
-bUnit has a fake implementation of Blazor's `IWebAssemblyHostEnvironment` built-in, which is added by default to bUnit's `TestContext.Services` service provider. That means nothing special is needed to test components that depend on `IWebAssemblyHostEnvironment`, as it is already available by default.
+bUnit has itws own implementation of Blazor's `IWebAssemblyHostEnvironment` built-in, which is added by default to bUnit's `TestContext.Services` service provider. That means nothing special is needed to test components that depend on `IWebAssemblyHostEnvironment`, as it is already available by default.
 
-Out of the box, the fake implementation has its `Environment` property set to `production`, and its `BaseAddress` set to `/`.
+Out of the box, the implementation has its `Environment` property set to `production`, and its `BaseAddress` set to `/`.
 
 ## Setting `Environment` and `BaseAddress`
 
-Lets look at a few examples of how to set the two `IWebAssemblyHostEnvironment` properties `Environment` and `BaseAddress` via the built-in fake.
+Lets look at a few examples of how to set the two `IWebAssemblyHostEnvironment` properties `Environment` and `BaseAddress` via the built-in object.
 
 In the examples, we'll use the following `<HelloWorld>` component:
 
@@ -30,7 +30,7 @@ To verify that the `<HelloWorld>` component correctly says hello to the develope
 
 ```csharp
 // Arrange
-var hostEnvironment = Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();
+var hostEnvironment = Services.GetRequiredService<BunitWebAssemblyHostEnvironment>();
 
 // Sets the environment to "Development". There are two other helper 
 // methods available as well, SetEnvironmentToProduction() and 
@@ -48,7 +48,7 @@ To verify that the `<HelloWorld>` component correctly uses the current `BaseAddr
 
 ```csharp
 // Arrange
-var hostEnvironment = Services.GetRequiredService<FakeWebAssemblyHostEnvironment>();
+var hostEnvironment = Services.GetRequiredService<BunitWebAssemblyHostEnvironment>();
 
 // Sets a new base address directly on the BaseAddress property.
 hostEnvironment.BaseAddress = "myBaseUrl/";
