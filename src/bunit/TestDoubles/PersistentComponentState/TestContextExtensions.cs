@@ -5,14 +5,14 @@ namespace Bunit.TestDoubles;
 /// <summary>
 /// Extensions related to <see cref="BunitPersistentComponentState"/>.
 /// </summary>
-public static class TestContextBaseExtensions
+public static class TestContextExtensions
 {
 	/// <summary>
 	/// Adds and returns a <see cref="BunitPersistentComponentState"/> to the services of the <paramref name="testContext"/>.
 	/// </summary>
 	/// <param name="testContext">The test context to add the <see cref="BunitPersistentComponentState"/> to.</param>
 	/// <returns>The added <see cref="BunitPersistentComponentState"/>.</returns>
-	public static BunitPersistentComponentState AddBunitPersistentComponentState(this TestContextBase testContext)
+	public static BunitPersistentComponentState AddBunitPersistentComponentState(this TestContext testContext)
 	{
 		ArgumentNullException.ThrowIfNull(testContext);
 

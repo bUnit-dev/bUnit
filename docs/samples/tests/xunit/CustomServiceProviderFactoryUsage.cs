@@ -49,10 +49,10 @@ public class CustomServiceProviderFactoryUsage : TestContext
 
     //get a service which was installed in the bUnit ServiceCollection
 
-    var testContextBase = Services.GetService<TestContextBase>();
+    var testContext = Services.GetService<TestContext>();
 
-    Assert.NotNull(testContextBase);
-    Assert.Equal(this, testContextBase);
+    Assert.NotNull(testContext);
+    Assert.Equal(this, testContext);
   }
 
   [Fact]
@@ -81,9 +81,9 @@ public class CustomServiceProviderFactoryUsage : TestContext
 
     //get a service which was installed in the bUnit ServiceCollection
 
-    var testContextBase = Services.GetService<TestContextBase>();
+    var testContext = Services.GetService<TestContext>();
 
-    Assert.NotNull(testContextBase);
-    Assert.Equal(this, testContextBase);
+    Assert.NotNull(testContext);
+    Assert.Equal(this, testContext);
   }
 }
