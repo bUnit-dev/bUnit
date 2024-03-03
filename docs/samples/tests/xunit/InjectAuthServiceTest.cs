@@ -10,7 +10,7 @@ public class InjectAuthServiceTest : TestContext
   public void Test001()
   {
     // arrange
-    var authContext = this.AddAuthorization();
+    var authContext = AddAuthorization();
     authContext.SetAuthorized("TestUserName", AuthorizationState.Authorized);
 
     // act
@@ -24,7 +24,7 @@ public class InjectAuthServiceTest : TestContext
   public void Test002()
   {
     // arrange
-    var authContext = this.AddAuthorization();
+    var authContext = AddAuthorization();
 
     // act
     var cut = Render<InjectAuthService>();
