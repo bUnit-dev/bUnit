@@ -177,12 +177,11 @@ public partial class TestContext : IDisposable
 
 	private BunitRenderer CreateRenderer()
 	{
-		var renderedComponentActivator = Services.GetRequiredService<IRenderedComponentActivator>();
 		var logger = Services.GetRequiredService<ILoggerFactory>();
 
 		var componentActivator = Services.GetService<IComponentActivator>();
 		return componentActivator is null
-			? new BunitRenderer(renderedComponentActivator, Services, logger)
-			: new BunitRenderer(renderedComponentActivator, Services, logger, componentActivator);
+			? new BunitRenderer(Services, logger)
+			: new BunitRenderer(Services, logger, componentActivator);
 	}
 }

@@ -1,4 +1,3 @@
-using Bunit.Rendering;
 using System.Runtime.ExceptionServices;
 
 namespace Bunit;
