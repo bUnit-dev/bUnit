@@ -10,7 +10,7 @@ namespace Bunit;
 public class TestContext : IDisposable
 {
 	private bool disposed;
-	private ITestRenderer? testRenderer;
+	private TestRenderer? testRenderer;
 
 	/// <summary>
 	/// Gets or sets the default wait timeout used by "WaitFor" operations, i.e. <see cref="RenderedFragmentWaitForHelperExtensions.WaitForAssertion(IRenderedFragment, Action, TimeSpan?)"/>.
@@ -21,7 +21,7 @@ public class TestContext : IDisposable
 	/// <summary>
 	/// Gets the renderer used by the test context.
 	/// </summary>
-	public ITestRenderer Renderer => testRenderer ??= CreateTestRenderer();
+	public TestRenderer Renderer => testRenderer ??= CreateTestRenderer();
 
 	/// <summary>
 	/// Gets bUnits JSInterop, that allows setting up handlers for <see cref="IJSRuntime.InvokeAsync{TValue}(string, object[])"/> invocations
