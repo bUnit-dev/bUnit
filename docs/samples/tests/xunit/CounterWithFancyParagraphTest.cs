@@ -15,7 +15,7 @@ namespace Bunit.Docs.Samples
 
       ComponentFactories.Add(mock.Object);
 
-      var cut = RenderComponent<Counter>();
+      var cut = Render<Counter>();
 
       cut.Find("button").Click();
 
@@ -29,7 +29,7 @@ namespace Bunit.Docs.Samples
 
       ComponentFactories.Add(mockComponent);
 
-      var cut = RenderComponent<Counter>();
+      var cut = Render<Counter>();
 
       cut.Find("button").Click();
 

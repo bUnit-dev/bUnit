@@ -11,7 +11,7 @@ public class DisposeComponentsTest : TestContext
   public void DisposeElements()
   {
     var calledTimes = 0;
-    var cut = RenderComponent<DisposableComponent>(parameters => parameters
+    var cut = Render<DisposableComponent>(parameters => parameters
       .Add(p => p.LocationChangedCallback, url => calledTimes++)
     );
 
@@ -25,7 +25,7 @@ public class DisposeComponentsTest : TestContext
   [Fact]
   public void ShouldCatchExceptionInDispose()
   {
-    RenderComponent<ExceptionInDisposeComponent>();
+    Render<ExceptionInDisposeComponent>();
 
     var act = DisposeComponents;
 
@@ -35,7 +35,7 @@ public class DisposeComponentsTest : TestContext
   [Fact]
   public void ShouldCatchExceptionInDisposeAsync()
   {
-    RenderComponent<ExceptionInDisposeAsyncComponent>();
+    Render<ExceptionInDisposeAsyncComponent>();
 
     DisposeComponents();
     var exception = Renderer.UnhandledException.Result;

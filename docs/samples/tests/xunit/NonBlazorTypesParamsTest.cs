@@ -14,7 +14,7 @@ public class NonBlazorTypesParamsTest : TestContext
   {
     var lines = new List<string> { "Hello", "World" };
 
-    var cut = RenderComponent<NonBlazorTypesParams>(parameters => parameters
+    var cut = Render<NonBlazorTypesParams>(parameters => parameters
       .Add(p => p.Numbers, 42)
       .Add(p => p.Lines, lines)
     );

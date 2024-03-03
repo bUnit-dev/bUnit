@@ -103,7 +103,7 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	[Fact(DisplayName = "MarkupMatches combination works with FindAll and FindComponents<T>")]
 	public void Test012()
 	{
-		var cut = RenderComponent<RefToSimple1Child>();
+		var cut = Render<RefToSimple1Child>();
 
 		cut.FindAll("h1").MarkupMatches(cut.FindComponents<Simple1>());
 	}
@@ -111,7 +111,7 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	[Fact(DisplayName = "MarkupMatches combination works with FindAll and a markup string")]
 	public void Test013()
 	{
-		var cut = RenderComponent<NoArgs>();
+		var cut = Render<NoArgs>();
 
 		cut.FindAll("h1").MarkupMatches("<h1>Hello world</h1>");
 	}
@@ -119,7 +119,7 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	[Fact(DisplayName = "MarkupMatches combination works with Find and FindAll")]
 	public void Test014()
 	{
-		var cut = RenderComponent<TwoChildren>();
+		var cut = Render<TwoChildren>();
 
 		cut.Find("div").MarkupMatches(cut.FindAll("div"));
 	}
@@ -127,7 +127,7 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	[Fact(DisplayName = "Handles HtmlUnknownElement when comparing elements")]
 	public void Test015()
 	{
-		var chart = RenderComponent<SimpleSvg>();
+		var chart = Render<SimpleSvg>();
 
 		// the path will be returned as a SvgElement since it is
 		// parsed in the context of a <svg> element.
@@ -147,7 +147,7 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 			<zui-button diff:ignoreAttributes></zui-button>
 		</div>";
 
-		var cut = RenderComponent<CustomElement>();
+		var cut = Render<CustomElement>();
 
 		cut.MarkupMatches(expectedMarkup);
 	}
