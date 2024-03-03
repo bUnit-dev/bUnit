@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 namespace Bunit.TestDoubles;
 
 /// <summary>
-/// Represents a fake <see cref="IWebAssemblyHostEnvironment"/> that makes the <see cref="Environment"/> and <see cref="BaseAddress"/> settable.
+/// Represents bUnit's own <see cref="IWebAssemblyHostEnvironment"/> that makes the <see cref="Environment"/> and <see cref="BaseAddress"/> settable.
 /// </summary>
-public class FakeWebAssemblyHostEnvironment : IWebAssemblyHostEnvironment
+public class BunitWebAssemblyHostEnvironment : IWebAssemblyHostEnvironment
 {
 	/// <summary>
 	/// Gets or sets the name of the environment. Default is <c>Production</c>.
@@ -40,5 +40,4 @@ public class FakeWebAssemblyHostEnvironment : IWebAssemblyHostEnvironment
 	{
 		Environment = "Production";
 	}
-
 }

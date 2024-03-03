@@ -33,3 +33,9 @@ The `bunit.core` and `bunit.web` packages have been merged into a single `bunit`
 
 ### `WebTestRender` merged into `TestRender`
 The `WebTestRender` class has been merged into the `TestRender` class. If you used `WebTestRender`, you should replace it with `TestRender`.
+
+## Renamed `Fake` to `Bunit` in many test doubles
+The `Fake` prefix has been replaced with `Bunit` in many test doubles. For example, `FakeNavigationManager` is now `BunitNavigationManager`. If you reference any of these types explicitly, you need to update your code.
+
+### Renamed `AddTestAuthorization` to `AddAuthorization`
+The `AddTestAuthorization` method on `TestContext` has been renamed to `AddAuthorization`. If you used `AddTestAuthorization`, you should replace it with `AddAuthorization`.
