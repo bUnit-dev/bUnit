@@ -10,7 +10,7 @@ namespace Bunit;
 public class TestContext : IDisposable
 {
 	private bool disposed;
-	private TestRenderer? testRenderer;
+	private BunitRenderer? bunitRenderer;
 
 	/// <summary>
 	/// Gets or sets the default wait timeout used by "WaitFor" operations, i.e. <see cref="RenderedFragmentWaitForHelperExtensions.WaitForAssertion(RenderedFragment, Action, TimeSpan?)"/>.
@@ -21,7 +21,7 @@ public class TestContext : IDisposable
 	/// <summary>
 	/// Gets the renderer used by the test context.
 	/// </summary>
-	public TestRenderer Renderer => testRenderer ??= CreateTestRenderer();
+	public BunitRenderer Renderer => bunitRenderer ??= CreateRenderer();
 
 	/// <summary>
 	/// Gets bUnits JSInterop, that allows setting up handlers for <see cref="IJSRuntime.InvokeAsync{TValue}(string, object[])"/> invocations
@@ -91,7 +91,7 @@ public class TestContext : IDisposable
 		// Ensure the renderer is disposed before all others,
 		// otherwise a render cycle may be ongoing and try to access
 		// the service provider to perform operations.
-		if (testRenderer is IDisposable renderer)
+		if (bunitRenderer is IDisposable renderer)
 		{
 			renderer.Dispose();
 		}
@@ -173,16 +173,16 @@ public class TestContext : IDisposable
 	/// Dummy method required to allow Blazor's compiler to generate
 	/// C# from .razor files.
 	/// </summary>
-	protected virtual void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) { }
+	protected virtual void BuildRenderTree(RenderTreeBuilder builder) { }
 
-	private TestRenderer CreateTestRenderer()
+	private BunitRenderer CreateRenderer()
 	{
 		var renderedComponentActivator = Services.GetRequiredService<IRenderedComponentActivator>();
 		var logger = Services.GetRequiredService<ILoggerFactory>();
 
 		var componentActivator = Services.GetService<IComponentActivator>();
 		return componentActivator is null
-			? new TestRenderer(renderedComponentActivator, Services, logger)
-			: new TestRenderer(renderedComponentActivator, Services, logger, componentActivator);
+			? new BunitRenderer(renderedComponentActivator, Services, logger)
+			: new BunitRenderer(renderedComponentActivator, Services, logger, componentActivator);
 	}
 }
