@@ -6,9 +6,9 @@ using System.Runtime.ExceptionServices;
 namespace Bunit.Rendering;
 
 /// <summary>
-/// Represents a bUnit <see cref="ITestRenderer"/> used to render Blazor components and fragments during bUnit tests.
+/// Represents a bUnit <see cref="TestRenderer"/> used to render Blazor components and fragments during bUnit tests.
 /// </summary>
-public class TestRenderer : Renderer, ITestRenderer
+public sealed class TestRenderer : Renderer
 {
 	[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_isBatchInProgress")]
 	extern static ref bool GetIsBatchInProgressField(Renderer renderer);
