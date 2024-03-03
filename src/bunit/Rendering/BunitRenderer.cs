@@ -10,6 +10,8 @@ namespace Bunit.Rendering;
 /// </summary>
 public sealed class BunitRenderer : Renderer
 {
+	private readonly TestServiceProvider services;
+
 	[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_isBatchInProgress")]
 	private static extern ref bool GetIsBatchInProgressField(Renderer renderer);
 
@@ -20,7 +22,6 @@ public sealed class BunitRenderer : Renderer
 	private readonly Dictionary<int, RenderedFragment> renderedComponents = new();
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<BunitRenderer> logger;
-	private readonly IRenderedComponentActivator activator;
 	private bool disposed;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
@@ -56,22 +57,22 @@ public sealed class BunitRenderer : Renderer
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
+	public BunitRenderer(TestServiceProvider services, ILoggerFactory loggerFactory)
 		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), null))
 	{
+		this.services = services;
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
-		activator = renderedComponentActivator;
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
 	}
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public BunitRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+	public BunitRenderer(TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
 		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), componentActivator))
 	{
+		this.services = services;
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
-		activator = renderedComponentActivator;
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
 	}
 
@@ -81,7 +82,7 @@ public sealed class BunitRenderer : Renderer
 	/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
 	/// <returns>A <see cref="RenderedFragment"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
 	public RenderedFragment RenderFragment(RenderFragment renderFragment)
-		=> Render(renderFragment, id => activator.CreateRenderedFragment(id));
+		=> Render(renderFragment);
 
 	/// <summary>
 	/// Renders a <typeparamref name="TComponent"/> with the <paramref name="parameters"/> passed to it.
@@ -95,7 +96,7 @@ public sealed class BunitRenderer : Renderer
 		ArgumentNullException.ThrowIfNull(parameters);
 
 		var renderFragment = parameters.ToRenderFragment<TComponent>();
-		return Render(renderFragment, id => activator.CreateRenderedComponent<TComponent>(id));
+		return Render(renderFragment).FindComponent<TComponent>();
 	}
 
 	/// <summary>
@@ -226,7 +227,6 @@ public sealed class BunitRenderer : Renderer
 		return componentActivator.CreateInstance(componentType);
 	}
 
-	/// <inheritdoc/>
 	internal Task SetDirectParametersAsync(RenderedFragment renderedComponent, ParameterView parameters)
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
@@ -434,8 +434,7 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	private TResult Render<TResult>(RenderFragment renderFragment, Func<int, TResult> activator)
-		where TResult : RenderedFragment
+	private RenderedFragment Render(RenderFragment renderFragment)
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
@@ -445,14 +444,14 @@ public sealed class BunitRenderer : Renderer
 
 			var root = new RootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
-			var result = activator(rootComponentId);
+			var result = new RenderedFragment(rootComponentId, services);
 			renderedComponents.Add(rootComponentId, result);
 			rootComponents.Add(root);
 			root.Render();
 			return result;
 		});
 
-		TResult result;
+		RenderedFragment result;
 
 		if (!renderTask.IsCompleted)
 		{
@@ -527,7 +526,7 @@ public sealed class BunitRenderer : Renderer
 		}
 
 		LoadRenderTreeFrames(componentId, framesCollection);
-		var result = activator.CreateRenderedComponent(componentId, component, framesCollection);
+		var result = new RenderedComponent<TComponent>(componentId, component, framesCollection, services);
 		renderedComponents.Add(result.ComponentId, result);
 
 		return result;
@@ -558,13 +557,13 @@ public sealed class BunitRenderer : Renderer
 	/// </summary>
 	private ArrayRange<RenderTreeFrame> GetOrLoadRenderTreeFrame(RenderTreeFrameDictionary framesCollection, int componentId)
 	{
-		if (!framesCollection.Contains(componentId))
+		if (!framesCollection.TryGetValue(componentId, out var frames))
 		{
-			var frames = GetCurrentRenderTreeFrames(componentId);
+			frames = GetCurrentRenderTreeFrames(componentId);
 			framesCollection.Add(componentId, frames);
 		}
 
-		return framesCollection[componentId];
+		return frames;
 	}
 
 	/// <inheritdoc/>
