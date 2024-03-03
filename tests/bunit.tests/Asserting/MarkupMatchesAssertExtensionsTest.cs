@@ -8,8 +8,8 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	private const string ExpectedMarkup = "<div>BAR</div>";
 	private static readonly RenderFragment ActualRenderFragment = b => b.AddMarkupContent(0, ActualMarkup);
 	private static readonly RenderFragment ExpectedRenderFragment = b => b.AddMarkupContent(0, ExpectedMarkup);
-	private IRenderedFragment ActualRenderedFragment => Render(ActualRenderFragment);
-	private IRenderedFragment ExpectedRenderedFragment => Render(ExpectedRenderFragment);
+	private RenderedFragment ActualRenderedFragment => Render(ActualRenderFragment);
+	private RenderedFragment ExpectedRenderedFragment => Render(ExpectedRenderFragment);
 	private INodeList ActualNodeList => ActualRenderedFragment.Nodes;
 	private INodeList ExpectedNodeList => ExpectedRenderedFragment.Nodes;
 	private INode ActualNode => ActualNodeList[0];
@@ -23,8 +23,8 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(default(string)!));
 
 		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(ExpectedRenderedFragment));
-		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatches(default(IRenderedFragment)!));
-		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(default(IRenderedFragment)!));
+		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatches(default(RenderedFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(default(RenderedFragment)!));
 
 		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(ExpectedNodeList));
 		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatches(default(INodeList)!));
@@ -42,9 +42,9 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 		Should.Throw<ArgumentNullException>(() => ActualNode.MarkupMatches(default(INodeList)!));
 		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(default(INodeList)!));
 
-		Should.Throw<ArgumentNullException>(() => default(IRenderedFragment)!.MarkupMatches(ExpectedRenderFragment));
+		Should.Throw<ArgumentNullException>(() => default(RenderedFragment)!.MarkupMatches(ExpectedRenderFragment));
 		Should.Throw<ArgumentNullException>(() => ActualRenderedFragment.MarkupMatches(default(RenderFragment)!));
-		Should.Throw<ArgumentNullException>(() => default(IRenderedFragment)!.MarkupMatches(default(RenderFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(RenderedFragment)!.MarkupMatches(default(RenderFragment)!));
 
 		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(ExpectedRenderFragment));
 		Should.Throw<ArgumentNullException>(() => ActualNode.MarkupMatches(default(RenderFragment)!));
@@ -59,7 +59,7 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	public void Test002()
 		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatches(ExpectedMarkup));
 
-	[Fact(DisplayName = "MarkupMatches(string, IRenderedFragment) correctly diffs markup")]
+	[Fact(DisplayName = "MarkupMatches(string, RenderedFragment) correctly diffs markup")]
 	public void Test003()
 		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatches(ExpectedRenderedFragment));
 
@@ -79,7 +79,7 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	public void Test007()
 		=> Should.Throw<HtmlEqualException>(() => ActualNode.MarkupMatches(ExpectedNodeList));
 
-	[Fact(DisplayName = "MarkupMatches(IRenderedFragment, RenderFragment) correctly diffs markup")]
+	[Fact(DisplayName = "MarkupMatches(RenderedFragment, RenderFragment) correctly diffs markup")]
 	public void Test008()
 		=> Should.Throw<HtmlEqualException>(() => ActualRenderedFragment.MarkupMatches(ExpectedRenderFragment));
 
@@ -91,10 +91,10 @@ public partial class MarkupMatchesAssertExtensionsTest : TestContext
 	public void Test0010()
 		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedRenderFragment));
 
-	private IRenderedFragment FindAllRenderedFragment => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
+	private RenderedFragment FindAllRenderedFragment => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
 	private readonly string findAllExpectedRenderFragment = "<p><strong>test</strong></p>";
 
-	[Fact(DisplayName = "MarkupMatches combination works with IRenderedFragment's FindAll extension method")]
+	[Fact(DisplayName = "MarkupMatches combination works with RenderedFragment's FindAll extension method")]
 	public void Test011()
 	{
 		FindAllRenderedFragment.FindAll("p").MarkupMatches(findAllExpectedRenderFragment);

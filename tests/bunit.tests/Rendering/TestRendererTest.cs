@@ -186,7 +186,7 @@ public partial class TestRendererTest : TestContext
 
 		// act
 		var childCuts = sut.FindComponents<HasParams>(cut)
-			.OfType<IRenderedComponent<HasParams>>()
+			.OfType<RenderedComponent<HasParams>>()
 			.ToList();
 
 		// assert
