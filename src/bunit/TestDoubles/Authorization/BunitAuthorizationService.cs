@@ -10,17 +10,17 @@ namespace Bunit.TestDoubles;
 /// assists user in testing components by allowing them to set the authorization
 /// expected authorization response.
 /// </summary>
-public class FakeAuthorizationService : IAuthorizationService
+public class BunitAuthorizationService : IAuthorizationService
 {
 	private AuthorizationState currentState;
 	private IEnumerable<string>? supportedPolicies;
 	private IEnumerable<string> supportedRoles = Array.Empty<string>();
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="FakeAuthorizationService"/> class.
+	/// Initializes a new instance of the <see cref="BunitAuthorizationService"/> class.
 	/// </summary>
 	/// <param name="state">Initial authorization state.</param>
-	public FakeAuthorizationService(AuthorizationState state = AuthorizationState.Authorized)
+	public BunitAuthorizationService(AuthorizationState state = AuthorizationState.Authorized)
 	{
 		currentState = state;
 	}

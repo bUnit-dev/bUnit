@@ -30,19 +30,19 @@ public static class TestServiceProviderExtensions
 		services.AddSingleton<HttpClient, PlaceholderHttpClient>();
 		services.AddSingleton<IStringLocalizer, PlaceholderStringLocalization>();
 
-		// bUnits fake JSInterop
+		// bUnits JSInterop
 		services.AddSingleton(jsInterop.JSRuntime);
 
-		// bUnits fake Navigation Manager
-		services.AddSingleton<FakeNavigationManager>();
-		services.AddSingleton<NavigationManager>(s => s.GetRequiredService<FakeNavigationManager>());
-		services.AddSingleton<INavigationInterception, FakeNavigationInterception>();
+		// bUnits Navigation Manager
+		services.AddSingleton<BunitNavigationManager>();
+		services.AddSingleton<NavigationManager>(s => s.GetRequiredService<BunitNavigationManager>());
+		services.AddSingleton<INavigationInterception, BunitNavigationInterception>();
 
-		// bUnits fake WebAssemblyHostEnvironment
-		services.AddSingleton<FakeWebAssemblyHostEnvironment>();
-		services.AddSingleton<IWebAssemblyHostEnvironment>(s => s.GetRequiredService<FakeWebAssemblyHostEnvironment>());
+		// bUnits WebAssemblyHostEnvironment
+		services.AddSingleton<BunitWebAssemblyHostEnvironment>();
+		services.AddSingleton<IWebAssemblyHostEnvironment>(s => s.GetRequiredService<BunitWebAssemblyHostEnvironment>());
 
-		// bUnits fake ScrollToLocationHash
+		// bUnits ScrollToLocationHash
 		services.AddSingleton<IScrollToLocationHash, BunitScrollToLocationHash>();
 		services.AddSupplyValueFromQueryProvider();
 
