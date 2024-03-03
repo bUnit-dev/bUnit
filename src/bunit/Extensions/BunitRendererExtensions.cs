@@ -24,7 +24,7 @@ public static class BunitRendererExtensions
 		if (resultBase is RenderedComponent<TComponent> result)
 			return result;
 
-		throw new InvalidOperationException($"The renderer did not produce the expected type. Is the test renderer using the expected {nameof(IRenderedComponentActivator)}?");
+		throw new InvalidOperationException($"The renderer did not produce the expected type.");
 	}
 
 	/// <summary>
@@ -45,6 +45,6 @@ public static class BunitRendererExtensions
 		if (resultBase is RenderedComponent<TComponent> result)
 			return result;
 
-		throw new InvalidOperationException($"The renderer did not produce the expected type. Is the test renderer using the expected {nameof(IRenderedComponentActivator)}?");
+		throw new InvalidOperationException($"The renderer did not produce the expected type.");
 	}
 }
