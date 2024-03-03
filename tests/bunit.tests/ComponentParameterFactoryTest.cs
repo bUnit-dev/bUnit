@@ -8,7 +8,7 @@ public class ComponentParameterFactoryTest
 	private const string EXPECTED = nameof(EXPECTED);
 	private static readonly TestContext Context = new();
 
-	private static IRenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
+	private static RenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
 	{
 		return Context.Renderer.RenderFragment(renderFragment);
 	}

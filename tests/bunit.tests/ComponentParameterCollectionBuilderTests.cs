@@ -37,12 +37,12 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		EventCallbackCalled.ShouldBeTrue();
 	}
 
-	private IRenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
+	private RenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
 	{
 		return Renderer.RenderFragment(renderFragment);
 	}
 
-	private IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
+	private RenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
 	{
 		var res = Renderer.RenderFragment(renderFragment);
@@ -695,16 +695,16 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 
 		action.ShouldNotThrow();
 	}
-	
+
 	[Fact(DisplayName = "Supplying query string should be reflected in component parameter")]
 	public void Test315()
 	{
 		var navigationManager = Services.GetRequiredService<NavigationManager>();
 		var uri = navigationManager.GetUriWithQueryParameter("Query", "Test");
 		navigationManager.NavigateTo(uri);
-		
+
 		var cut = RenderComponent<SupplyFromQueryParameterComponent>();
-		
+
 		cut.Instance.Query.ShouldBe("Test");
 	}
 
@@ -719,7 +719,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 			.ShouldBe("""
 			          To pass a value to a SupplyParameterFromQuery parameter, use the NavigationManager and navigate to the URI.
 			          For example:
-			          
+
 			          var uri = NavigationManager.GetUriWithQueryParameter("Query", "Foo");
 			          NavigationManager.NavigateTo(uri);
 			          """);
@@ -801,7 +801,7 @@ public partial class ComponentParameterCollectionBuilderTests : TestContext
 		[Parameter] public Expression<Func<string>> FacialExpressionExpression { get; set; }
 	}
 #pragma warning restore S1144 // Unused private types or members should be removed
-	
+
 	private sealed class SupplyFromQueryParameterComponent : ComponentBase
 	{
 		[SupplyParameterFromQuery] public string Query { get; set; }

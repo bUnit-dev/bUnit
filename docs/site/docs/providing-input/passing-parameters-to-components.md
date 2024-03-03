@@ -377,7 +377,7 @@ It is possible to nest a component under tests inside other components, if that 
 
 [!code-csharp[NestedComponentTest](../../../samples/tests/xunit/NestedComponentTest.cs#L11-L23)]
 
-The example renders the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()` that returns a `IRenderedComponent<HelloWorld>`. This is needed because the `RenderComponent<Wrapper>` method call returns an `IRenderedComponent<Wrapper>` instance, that provides access to the instance of the `<Wrapper>` component, but not the `<HelloWorld>`-component instance.
+The example renders the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()` that returns a `RenderedComponent<HelloWorld>`. This is needed because the `RenderComponent<Wrapper>` method call returns an `RenderedComponent<Wrapper>` instance, that provides access to the instance of the `<Wrapper>` component, but not the `<HelloWorld>`-component instance.
 
 # [Razor test code](#tab/razor)
 
@@ -444,7 +444,7 @@ The solution is to inherit from bUnits `TestContext` instead, i.e.:
 
 ## Limitations of rendering a `RenderFragment` inside a test
   
-When rendering a `RenderFragment` using the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method, the created <xref:Bunit.IRenderedFragment> is static. This means that it will not re-render even if events are triggered.
+When rendering a `RenderFragment` using the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method, the created <xref:Bunit.RenderedFragment> is static. This means that it will not re-render even if events are triggered.
 ```razor
 @inherits TestContext
 

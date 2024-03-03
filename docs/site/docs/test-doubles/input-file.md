@@ -14,10 +14,10 @@ To upload a file, first find the `InputFile` component in the component under te
 InputFileContent fileToUpload = InputFileContent.CreateFromText("Text content", "Filename.txt");
 
 // Render the component under test which contains the InputFile component as a child component
-IRenderedComponent<ComponentUnderTest> cut = RenderComponent<ComponentUnderTest>();
+RenderedComponent<ComponentUnderTest> cut = RenderComponent<ComponentUnderTest>();
 
 // Find the InputFile component
-IRenderedComponent<InputFile> inputFile = cut.FindComponent<InputFile>();
+RenderedComponent<InputFile> inputFile = cut.FindComponent<InputFile>();
 
 // Upload the file to upload to the InputFile component
 inputFile.UploadFile(fileToUpload);
