@@ -54,7 +54,7 @@ public abstract class WaitForHelper<T> : IDisposable
 		this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
 
 		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
-		renderer = (TestRenderer)renderedFragment
+		renderer = renderedFragment
 			.Services
 			.GetRequiredService<TestContext>()
 			.Renderer;
