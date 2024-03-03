@@ -27,7 +27,7 @@ public sealed class BunitPersistentComponentState
 	{
 		store = new BunitPersistentComponentStateStore();
 		manager = new Lazy<ComponentStatePersistenceManager>(() => services.GetRequiredService<ComponentStatePersistenceManager>());
-		renderer = new Lazy<ITestRenderer>(() => services.GetRequiredService<TestContextBase>().Renderer);
+		renderer = new Lazy<ITestRenderer>(() => services.GetRequiredService<TestContext>().Renderer);
 	}
 
 	/// <summary>
@@ -36,7 +36,7 @@ public sealed class BunitPersistentComponentState
 	/// component persistence.
 	/// </summary>
 	/// <remarks>
-	/// Only call this method after all services has been registered with the <see cref="TestContextBase.Services"/>.
+	/// Only call this method after all services has been registered with the <see cref="TestContext.Services"/>.
 	/// Calling this method will lookup dependencies of the <see cref="BunitPersistentComponentState"/>
 	/// from the <see cref="TestServiceProvider"/>, which means no other services can be registered after this point.
 	/// </remarks>
@@ -50,7 +50,7 @@ public sealed class BunitPersistentComponentState
 	/// Persists <paramref name="instance"/> under the given <paramref name="key"/> in the store.
 	/// </summary>
 	/// <remarks>
-	/// Only call this method after all services has been registered with the <see cref="TestContextBase.Services"/>.
+	/// Only call this method after all services has been registered with the <see cref="TestContext.Services"/>.
 	/// Calling this method will lookup dependencies of the <see cref="BunitPersistentComponentState"/>
 	/// from the <see cref="TestServiceProvider"/>, which means no other services can be registered after this point.
 	/// </remarks>
@@ -70,7 +70,7 @@ public sealed class BunitPersistentComponentState
 	/// When the key is present, the state is successfully returned via <paramref name="instance"/>.
 	/// </summary>
 	/// <remarks>
-	/// Only call this method after all services has been registered with the <see cref="TestContextBase.Services"/>.
+	/// Only call this method after all services has been registered with the <see cref="TestContext.Services"/>.
 	/// Calling this method will lookup dependencies of the <see cref="BunitPersistentComponentState"/>
 	/// from the <see cref="TestServiceProvider"/>, which means no other services can be registered after this point.
 	/// </remarks>

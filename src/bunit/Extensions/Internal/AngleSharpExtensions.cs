@@ -65,9 +65,9 @@ internal static class AngleSharpExtensions
 	/// owning context, if one is available.
 	/// </summary>
 	/// <returns>The <see cref="TestContext"/> or null if not found.</returns>
-	public static TestContextBase? GetTestContext(this INode? node)
+	public static TestContext? GetTestContext(this INode? node)
 	{
-		return node?.Owner?.Context.GetService<TestContextBase>();
+		return node?.Owner?.Context.GetService<TestContext>();
 	}
 
 	/// <summary>
@@ -75,7 +75,7 @@ internal static class AngleSharpExtensions
 	/// owning context, if one is available.
 	/// </summary>
 	/// <returns>The <see cref="TestContext"/> or null if not found.</returns>
-	public static TestContextBase? GetTestContext(this INodeList nodes)
+	public static TestContext? GetTestContext(this INodeList nodes)
 	{
 		return nodes?.Length > 0 ? nodes[0].GetTestContext() : null;
 	}
