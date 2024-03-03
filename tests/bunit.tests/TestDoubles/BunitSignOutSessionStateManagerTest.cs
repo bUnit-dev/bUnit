@@ -5,7 +5,7 @@ public class BunitSignOutSessionStateManagerTest : TestContext
 	[Theory, AutoData]
 	public void ShouldSignOut(string randomUserName)
 	{
-		this.AddAuthorization().SetAuthorized(randomUserName);
+		AddAuthorization().SetAuthorized(randomUserName);
 		var cut = Render<SignOutSessionManagerLoginDisplay>();
 
 		cut.Find("button").Click();
