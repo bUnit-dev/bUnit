@@ -15,7 +15,7 @@ public abstract class WaitForHelper<T> : IDisposable
 	private readonly Func<(bool CheckPassed, T Content)> completeChecker;
 	private readonly RenderedFragment renderedFragment;
 	private readonly ILogger<WaitForHelper<T>> logger;
-	private readonly TestRenderer renderer;
+	private readonly BunitRenderer renderer;
 	private bool isDisposed;
 	private int checkCount;
 	private Exception? capturedException;
