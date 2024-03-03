@@ -9,15 +9,15 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 {
 	private static readonly MethodInfo CreateTemplateWrapperMethod = GetCreateTemplateWrapperMethod();
 	private static readonly Type CascadingValueType = typeof(CascadingValue<>);
-	private List<ComponentParameter>? parameters;
+	private readonly List<ComponentParameter> parameters = new();
 
 	/// <summary>
 	/// Gets the number of <see cref="ComponentParameter"/> in the collection.
 	/// </summary>
-	public int Count => parameters?.Count ?? 0;
+	public int Count => parameters.Count;
 
 	/// <inheritdoc />
-	public bool IsReadOnly { get; }
+	public bool IsReadOnly => false;
 
 	/// <summary>
 	/// Adds a <paramref name="item"/> to the collection.
@@ -27,9 +27,6 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 	{
 		if (item.Name is null && item.Value is null)
 			throw new ArgumentException("A component parameter without a name and value is not valid.", nameof(item));
-
-		if (parameters is null)
-			parameters = new List<ComponentParameter>();
 
 		parameters.Add(item);
 	}
@@ -53,16 +50,16 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 	/// </summary>
 	/// <param name="item">Parameter to check with.</param>
 	/// <returns>True if <paramref name="item"/> is in the collection, false otherwise.</returns>
-	public bool Contains(ComponentParameter item) => parameters?.Contains(item) ?? false;
+	public bool Contains(ComponentParameter item) => parameters.Contains(item);
 
 	/// <inheritdoc/>
-	public void Clear() => parameters?.Clear();
+	public void Clear() => parameters.Clear();
 
 	/// <inheritdoc/>
-	public void CopyTo(ComponentParameter[] array, int arrayIndex) => parameters?.CopyTo(array, arrayIndex);
+	public void CopyTo(ComponentParameter[] array, int arrayIndex) => parameters.CopyTo(array, arrayIndex);
 
 	/// <inheritdoc/>
-	public bool Remove(ComponentParameter item) => parameters?.Remove(item) ?? false;
+	public bool Remove(ComponentParameter item) => parameters.Remove(item);
 
 	/// <summary>
 	/// Creates a <see cref="RenderFragment"/> that will render a
@@ -108,9 +105,6 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 
 		void AddAttributes(RenderTreeBuilder builder)
 		{
-			if (parameters is null)
-				return;
-
 			var attrCount = 100;
 
 			foreach (var pgroup in parameters.Where(x => !x.IsCascadingValue).GroupBy(x => x.Name, StringComparer.Ordinal))
@@ -148,7 +142,7 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 
 				var groupType = groupObject?.GetType();
 
-				if (groupType != null && groupType.IsGenericType && groupType.GetGenericTypeDefinition() == typeof(RenderFragment<>))
+				if (groupType is { IsGenericType: true } && groupType.GetGenericTypeDefinition() == typeof(RenderFragment<>))
 				{
 					builder.AddAttribute(
 						attrCount++,
@@ -164,32 +158,22 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 
 		Queue<(ComponentParameter Parameter, Type Type)> GetCascadingValues()
 		{
-			var cascadingValues = parameters?.Where(x => x.IsCascadingValue)
+			var cascadingValues = parameters
+				.Where(x => x.IsCascadingValue)
 				.Select(x => (Parameter: x, Type: GetCascadingValueType(x)))
-				.ToArray() ?? Array.Empty<(ComponentParameter Parameter, Type Type)>();
+				.ToArray();
 
-			// Detect duplicated unnamed values
-			for (var i = 0; i < cascadingValues.Length; i++)
+			var duplicate = cascadingValues
+				.GroupBy(x => new { x.Type, x.Parameter.Name })
+				.FirstOrDefault(g => g.Count() > 1);
+
+			if (duplicate is not null)
 			{
-				for (var j = i + 1; j < cascadingValues.Length; j++)
-				{
-					if (cascadingValues[i].Type == cascadingValues[j].Type)
-					{
-						var iName = cascadingValues[i].Parameter.Name;
-						if (iName is null)
-						{
-							var cascadingValueType = cascadingValues[i].Type.GetGenericArguments()[0];
-							throw new ArgumentException($"Two or more unnamed cascading values with the type '{cascadingValueType.Name}' was added. " +
-														$"Only add one unnamed cascading value of the same type.");
-						}
+				var name = duplicate.Key.Name;
+				var type = duplicate.First().Type.GetGenericArguments()[0];
 
-						if (iName.Equals(cascadingValues[j].Parameter.Name, StringComparison.Ordinal))
-						{
-							throw new ArgumentException($"Two or more named cascading values with the name '{iName}' and the same type was added. " +
-														$"Only add one named cascading value with the same name and type.");
-						}
-					}
-				}
+				throw new ArgumentException($"Two or more unnamed cascading values with the type '{name ?? type.Name}' was added. " +
+				                            $"Only add one unnamed cascading value of the same type.");
 			}
 
 			return new Queue<(ComponentParameter Parameter, Type Type)>(cascadingValues);
@@ -197,16 +181,7 @@ public class ComponentParameterCollection : ICollection<ComponentParameter>, IRe
 	}
 
 	/// <inheritdoc/>
-	public IEnumerator<ComponentParameter> GetEnumerator()
-	{
-		if (parameters is not null)
-		{
-			for (var i = 0; i < parameters.Count; i++)
-			{
-				yield return parameters[i];
-			}
-		}
-	}
+	public IEnumerator<ComponentParameter> GetEnumerator() => parameters.GetEnumerator();
 
 	/// <inheritdoc/>
 	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
