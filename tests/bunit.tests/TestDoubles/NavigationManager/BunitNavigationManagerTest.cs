@@ -88,7 +88,7 @@ public class BunitNavigationManagerTest : TestContext
 	public void Test006()
 	{
 		var sut = CreateNavigationManager();
-		var cut = RenderComponent<PrintCurrentUrl>();
+		var cut = Render<PrintCurrentUrl>();
 
 		sut.NavigateTo("foo");
 
@@ -166,7 +166,7 @@ public class BunitNavigationManagerTest : TestContext
 	public void Test010()
 	{
 		var navigationManager = CreateNavigationManager();
-		var cut = RenderComponent<InterceptNavigateToCounterComponent>();
+		var cut = Render<InterceptNavigateToCounterComponent>();
 
 		cut.Find("button").Click();
 
@@ -178,7 +178,7 @@ public class BunitNavigationManagerTest : TestContext
 	public void Test011()
 	{
 		var navigationManager = CreateNavigationManager();
-		var cut = RenderComponent<GotoExternalResourceComponent>();
+		var cut = Render<GotoExternalResourceComponent>();
 
 		cut.Find("button").Click();
 
@@ -189,7 +189,7 @@ public class BunitNavigationManagerTest : TestContext
 	public void Test012()
 	{
 		var navigationManager = CreateNavigationManager();
-		var cut = RenderComponent<ThrowsExceptionInInterceptNavigationComponent>();
+		var cut = Render<ThrowsExceptionInInterceptNavigationComponent>();
 
 		cut.Find("button").Click();
 

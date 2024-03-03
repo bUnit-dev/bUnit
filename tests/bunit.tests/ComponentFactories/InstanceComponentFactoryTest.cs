@@ -16,7 +16,7 @@ public class InstanceComponentFactoryTest : TestContext
 		var simple1Mock = Substitute.For<Simple1>();
 		ComponentFactories.Add(simple1Mock);
 
-		var cut = RenderComponent<Wrapper>(ps => ps.AddChildContent<Simple1>());
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<Simple1>());
 
 		cut.FindComponent<Simple1>()
 			.Instance.ShouldBeSameAs(simple1Mock);
@@ -28,7 +28,7 @@ public class InstanceComponentFactoryTest : TestContext
 		var simple1Mock = Substitute.For<Simple1>();
 		ComponentFactories.Add(simple1Mock);
 
-		Should.Throw<InvalidOperationException>(() => RenderComponent<TwoComponentWrapper>(ps => ps
+		Should.Throw<InvalidOperationException>(() => Render<TwoComponentWrapper>(ps => ps
 			   .Add<Simple1>(p => p.First)
 			   .Add<Simple1>(p => p.Second)));
 	}
@@ -39,7 +39,7 @@ public class InstanceComponentFactoryTest : TestContext
 		var simple1Mock = Substitute.For<BasicComponent>();
 		ComponentFactories.Add(simple1Mock);
 
-		Should.Throw<InvalidOperationException>(() => RenderComponent<TwoComponentWrapper>(ps => ps
+		Should.Throw<InvalidOperationException>(() => Render<TwoComponentWrapper>(ps => ps
 			.Add<BasicComponent>(p => p.First)
 			.Add<BasicComponent>(p => p.Second)));
 	}

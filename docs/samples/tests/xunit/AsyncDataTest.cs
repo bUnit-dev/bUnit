@@ -13,7 +13,7 @@ public class AsyncDataTest : TestContext
   {
     // Arrange
     var textService = new TaskCompletionSource<string>();
-    var cut = RenderComponent<AsyncData>(parameters => parameters
+    var cut = Render<AsyncData>(parameters => parameters
       .Add(p => p.TextService, textService.Task)
     );
 
@@ -32,7 +32,7 @@ public class AsyncDataTest : TestContext
   {
     // Arrange
     var textService = new TaskCompletionSource<string>();
-    var cut = RenderComponent<AsyncData>(parameters => parameters
+    var cut = Render<AsyncData>(parameters => parameters
       .Add(p => p.TextService, textService.Task)
     );
 
@@ -51,7 +51,7 @@ public class AsyncDataTest : TestContext
   {
     // Arrange
     var textService = new TaskCompletionSource<string>();
-    var cut = RenderComponent<AsyncData>(parameters => parameters
+    var cut = Render<AsyncData>(parameters => parameters
       .Add(p => p.TextService, textService.Task)
     );
 
