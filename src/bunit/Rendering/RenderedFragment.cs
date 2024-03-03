@@ -1,74 +1,78 @@
 using System.Diagnostics;
-using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
+using Bunit.Rendering;
 
-namespace Bunit.Rendering;
+namespace Bunit;
 
-/// <inheritdoc />
+/// <summary>
+/// Represents a rendered fragment.
+/// </summary>
 [DebuggerDisplay("Rendered:{RenderCount}")]
-internal class RenderedFragment : IRenderedFragment
+public class RenderedFragment : IDisposable
 {
 	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by TestServiceProvider, disposed by it.")]
 	private readonly BunitHtmlParser htmlParser;
-	private readonly object markupAccessLock = new();
 	private string markup = string.Empty;
 	private INodeList? latestRenderNodes;
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Adds or removes an event handler that will be triggered after each render of this <see cref="RenderedFragment"/>.
+	/// </summary>
 	public event EventHandler? OnAfterRender;
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// An event that is raised after the markup of the <see cref="RenderedFragment"/> is updated.
+	/// </summary>
 	public event EventHandler? OnMarkupUpdated;
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Gets a value indicating whether the rendered component or fragment has been disposed by the <see cref="TestRenderer"/>.
+	/// </summary>
 	public bool IsDisposed { get; private set; }
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Gets the id of the rendered component or fragment.
+	/// </summary>
 	public int ComponentId { get; protected set; }
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Gets the HTML markup from the rendered fragment/component.
+	/// </summary>
 	public string Markup
 	{
 		get
 		{
 			EnsureComponentNotDisposed();
-
-			// The lock prevents a race condition between the renderers thread
-			// and the test frameworks thread, where one might be reading the Markup
-			// while the other is updating it due to async code in a rendered component.
-			lock (markupAccessLock)
-			{
-				// Volatile read is necessary to ensure the updated markup
-				// is available across CPU cores. Without it, the pointer to the
-				// markup string can be stored in a CPUs register and not
-				// get updated when another CPU changes the string.
-				return Volatile.Read(ref markup);
-			}
+			// Volatile read is necessary to ensure the updated markup
+			// is available across CPU cores. Without it, the pointer to the
+			// markup string can be stored in a CPUs register and not
+			// get updated when another CPU changes the string.
+			return Volatile.Read(ref markup);
 		}
 	}
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Gets the total number times the fragment has been through its render life-cycle.
+	/// </summary>
 	public int RenderCount { get; protected set; }
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Gets the AngleSharp <see cref="INodeList"/> based
+	/// on the HTML markup from the rendered fragment/component.
+	/// </summary>
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 	public INodeList Nodes
 	{
 		get
 		{
 			EnsureComponentNotDisposed();
-
-			// The lock ensures that latest nodes is always based on the latest rendered markup.
-			lock (markupAccessLock)
-			{
-				if (latestRenderNodes is null)
-					latestRenderNodes = htmlParser.Parse(Markup);
-
-				return latestRenderNodes;
-			}
+			return latestRenderNodes ??= htmlParser.Parse(Markup);
 		}
 	}
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Gets the <see cref="IServiceProvider"/> used when rendering the component.
+	/// </summary>
 	public IServiceProvider Services { get; }
 
 	internal RenderedFragment(int componentId, IServiceProvider service)
@@ -78,8 +82,14 @@ internal class RenderedFragment : IRenderedFragment
 		htmlParser = Services.GetRequiredService<BunitHtmlParser>();
 	}
 
-	void IRenderedFragment.OnRender(RenderEvent renderEvent)
+	/// <summary>
+	/// Called by the owning <see cref="TestRenderer"/> when it finishes a render.
+	/// </summary>
+	/// <param name="renderEvent">A <see cref="RenderEvent"/> that represents a render.</param>
+	public void OnRender(RenderEvent renderEvent)
 	{
+		ArgumentNullException.ThrowIfNull(renderEvent);
+
 		if (IsDisposed)
 			return;
 
@@ -91,21 +101,15 @@ internal class RenderedFragment : IRenderedFragment
 			return;
 		}
 
-		// The lock prevents a race condition between the renderers thread
-		// and the test frameworks thread, where one might be reading the Markup
-		// while the other is updating it due to async code in a rendered component.
-		lock (markupAccessLock)
+		if (rendered)
 		{
-			if (rendered)
-			{
-				OnRender(renderEvent);
-				RenderCount++;
-			}
+			OnRenderInternal(renderEvent);
+			RenderCount++;
+		}
 
-			if (changed)
-			{
-				UpdateMarkup(renderEvent.Frames);
-			}
+		if (changed)
+		{
+			UpdateMarkup(renderEvent.Frames);
 		}
 
 		// The order here is important, since consumers of the events
@@ -118,25 +122,25 @@ internal class RenderedFragment : IRenderedFragment
 			OnAfterRender?.Invoke(this, EventArgs.Empty);
 	}
 
+	/// <summary>
+	/// Updates the markup of the rendered fragment.
+	/// </summary>
 	protected void UpdateMarkup(RenderTreeFrameDictionary framesCollection)
 	{
-		// The lock prevents a race condition between the renderers thread
-		// and the test frameworks thread, where one might be reading the Markup
-		// while the other is updating it due to async code in a rendered component.
-		lock (markupAccessLock)
-		{
-			latestRenderNodes = null;
-			var newMarkup = Htmlizer.GetHtml(ComponentId, framesCollection);
+		latestRenderNodes = null;
+		var newMarkup = Htmlizer.GetHtml(ComponentId, framesCollection);
 
-			// Volatile write is necessary to ensure the updated markup
-			// is available across CPU cores. Without it, the pointer to the
-			// markup string can be stored in a CPUs register and not
-			// get updated when another CPU changes the string.
-			Volatile.Write(ref markup, newMarkup);
-		}
+		// Volatile write is necessary to ensure the updated markup
+		// is available across CPU cores. Without it, the pointer to the
+		// markup string can be stored in a CPUs register and not
+		// get updated when another CPU changes the string.
+		Volatile.Write(ref markup, newMarkup);
 	}
 
-	protected virtual void OnRender(RenderEvent renderEvent) { }
+	/// <summary>
+	/// Extension point for the <see cref="OnRender"/> method.
+	/// </summary>
+	protected virtual void OnRenderInternal(RenderEvent renderEvent) { }
 
 	/// <summary>
 	/// Ensures that the underlying component behind the
@@ -171,5 +175,6 @@ internal class RenderedFragment : IRenderedFragment
 		IsDisposed = true;
 		markup = string.Empty;
 		OnAfterRender = null;
+		OnMarkupUpdated = null;
 	}
 }
