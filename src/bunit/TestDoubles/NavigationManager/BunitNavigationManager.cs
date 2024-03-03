@@ -12,7 +12,7 @@ using URI = Uri;
 [DebuggerDisplay("Current Uri: {Uri}, History Count: {History.Count}")]
 public sealed class BunitNavigationManager : NavigationManager
 {
-	private readonly TestContextBase testContextBase;
+	private readonly TestContext testContext;
 	private readonly Stack<NavigationHistory> history = new();
 
 	/// <summary>
@@ -28,9 +28,9 @@ public sealed class BunitNavigationManager : NavigationManager
 	/// Initializes a new instance of the <see cref="BunitNavigationManager"/> class.
 	/// </summary>
 	[SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "By design. Bunit navigation manager defaults to local host as base URI.")]
-	public BunitNavigationManager(TestContextBase testContextBase)
+	public BunitNavigationManager(TestContext testContext)
 	{
-		this.testContextBase = testContextBase;
+		this.testContext = testContext;
 		Initialize("http://localhost/", "http://localhost/");
 	}
 
@@ -51,7 +51,7 @@ public sealed class BunitNavigationManager : NavigationManager
 			history.Pop();
 
 		HistoryEntryState = options.ForceLoad ? null : options.HistoryEntryState;
-		testContextBase.Renderer.Dispatcher.InvokeAsync(async () =>
+		testContext.Renderer.Dispatcher.InvokeAsync(async () =>
 		{
 			Uri = absoluteUri.OriginalString;
 

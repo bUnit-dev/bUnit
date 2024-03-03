@@ -14,7 +14,7 @@ public static class BunitAuthorizationExtensions
 	/// an authenticated user, as well as adding the <see cref="CascadingAuthenticationState"/> component to the
 	/// test contexts render tree.
 	/// </summary>
-	public static TestAuthorizationContext AddAuthorization(this TestContextBase context)
+	public static TestAuthorizationContext AddAuthorization(this TestContext context)
 	{
 		ArgumentNullException.ThrowIfNull(context);
 
