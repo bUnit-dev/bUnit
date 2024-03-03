@@ -23,7 +23,7 @@ bUnit comes with event dispatch helper methods that makes it possible to invoke 
 - [Progress events](xref:Bunit.ProgressEventDispatchExtensions)
 - [Touch event](xref:Bunit.TouchEventDispatchExtensions)
 
-To use these, first find the element in the component under test where the event handler is bound. This is usually done with the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method. Next, invoke the event dispatch helper method of choice. 
+To use these, first find the element in the component under test where the event handler is bound. This is usually done with the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.RenderedFragment,System.String)) method. Next, invoke the event dispatch helper method of choice. 
 
 The following section demonstrates how to do this...
 
@@ -49,7 +49,7 @@ To trigger the `@onclick` `ClickHandler` event handler method in the `<ClickMe>`
 
 This is what happens in the test:
 
-1. In the arrange step of the test, the `<ClickMe>` component is rendered and the `<button>` element is found using the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.IRenderedFragment,System.String)) method.
+1. In the arrange step of the test, the `<ClickMe>` component is rendered and the `<button>` element is found using the [`Find(string cssSelector)`](xref:Bunit.RenderedFragmentExtensions.Find(Bunit.RenderedFragment,System.String)) method.
 2. The act step of the test is the `<button>`'s click event handler. In this case, the `ClickHandler` event handler method is invoked in three different ways:
    - The first and second invocations use the same [`Click`](xref:Bunit.MouseEventDispatchExtensions.Click(AngleSharp.Dom.IElement,System.Int64,System.Double,System.Double,System.Double,System.Double,System.Int64,System.Int64,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.String)) method. It has a number of optional arguments, some of which are passed in the second invocation. If any arguments are provided, they are added to an instance of the `MouseEventArgs` type, which is passed to the event handler if it has it as an argument. 
    - The last invocation uses the [`Click`](xref:Bunit.MouseEventDispatchExtensions.Click(AngleSharp.Dom.IElement,Microsoft.AspNetCore.Components.Web.MouseEventArgs)) method. This takes an instance of the `MouseEventArgs` type, which is passed to the event handler if it has it as an argument.

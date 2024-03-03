@@ -13,7 +13,7 @@ public class TestContext : IDisposable
 	private TestRenderer? testRenderer;
 
 	/// <summary>
-	/// Gets or sets the default wait timeout used by "WaitFor" operations, i.e. <see cref="RenderedFragmentWaitForHelperExtensions.WaitForAssertion(IRenderedFragment, Action, TimeSpan?)"/>.
+	/// Gets or sets the default wait timeout used by "WaitFor" operations, i.e. <see cref="RenderedFragmentWaitForHelperExtensions.WaitForAssertion(RenderedFragment, Action, TimeSpan?)"/>.
 	/// </summary>
 	/// <remarks>The default is 1 second.</remarks>
 	public static TimeSpan DefaultWaitTimeout { get; set; } = TimeSpan.FromSeconds(1);
@@ -123,7 +123,7 @@ public class TestContext : IDisposable
 	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 	/// <param name="parameters">Parameters to pass to the component when it is rendered.</param>
 	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)
+	public virtual RenderedComponent<TComponent> RenderComponent<TComponent>(params ComponentParameter[] parameters)
 		where TComponent : IComponent
 	{
 		var renderFragment = new ComponentParameterCollection { parameters }
@@ -138,7 +138,7 @@ public class TestContext : IDisposable
 	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 	/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered.</param>
 	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual IRenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
+	public virtual RenderedComponent<TComponent> RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
 		where TComponent : IComponent
 	{
 		var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder)
@@ -156,17 +156,17 @@ public class TestContext : IDisposable
 	/// </remarks>
 	/// <typeparam name="TComponent">The type of component to find in the render tree.</typeparam>
 	/// <param name="renderFragment">The render fragment to render.</param>
-	/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
-	public virtual IRenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
+	/// <returns>The <see cref="RenderedComponent{TComponent}"/>.</returns>
+	public virtual RenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
 		=> this.RenderInsideRenderTree<TComponent>(renderFragment);
 
 	/// <summary>
-	/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="IRenderedFragment"/>.
+	/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="RenderedFragment"/>.
 	/// </summary>
 	/// <param name="renderFragment">The render fragment to render.</param>
-	/// <returns>The <see cref="IRenderedFragment"/>.</returns>
-	public virtual IRenderedFragment Render(RenderFragment renderFragment)
+	/// <returns>The <see cref="RenderedFragment"/>.</returns>
+	public virtual RenderedFragment Render(RenderFragment renderFragment)
 		=> this.RenderInsideRenderTree(renderFragment);
 
 	/// <summary>

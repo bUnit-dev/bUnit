@@ -23,7 +23,7 @@ public static partial class RenderedFragmentWaitForHelperExtensions
 		/// <remarks>
 		/// If a debugger is attached the timeout is set to <see cref="Timeout.InfiniteTimeSpan" />, giving the possibility to debug without the timeout triggering.
 		/// </remarks>
-		public static void WaitForState(this IRenderedFragment renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
+		public static void WaitForState(this RenderedFragment renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
 		{
 			using var waiter = new WaitForStateHelper(renderedFragment, statePredicate, timeout);
 
@@ -48,7 +48,7 @@ public static partial class RenderedFragmentWaitForHelperExtensions
 		/// <param name="statePredicate">The predicate to invoke after each render, which must returns <c>true</c> when the desired state has been reached.</param>
 		/// <param name="timeout">The maximum time to wait for the desired state.</param>
 		/// <exception cref="WaitForFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
-		internal static async Task WaitForStateAsync(this IRenderedFragment renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
+		internal static async Task WaitForStateAsync(this RenderedFragment renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
 		{
 			using var waiter = new WaitForStateHelper(renderedFragment, statePredicate, timeout);
 
@@ -66,7 +66,7 @@ public static partial class RenderedFragmentWaitForHelperExtensions
 		/// <param name="timeout">The maximum time to attempt the verification.</param>
 		/// <exception cref="WaitForFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
 		[AssertionMethod]
-		public static void WaitForAssertion(this IRenderedFragment renderedFragment, Action assertion, TimeSpan? timeout = null)
+		public static void WaitForAssertion(this RenderedFragment renderedFragment, Action assertion, TimeSpan? timeout = null)
 		{
 			using var waiter = new WaitForAssertionHelper(renderedFragment, assertion, timeout);
 
@@ -91,7 +91,7 @@ public static partial class RenderedFragmentWaitForHelperExtensions
 		/// <param name="timeout">The maximum time to attempt the verification.</param>
 		/// <exception cref="WaitForFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
 		[AssertionMethod]
-		internal static async Task WaitForAssertionAsync(this IRenderedFragment renderedFragment, Action assertion, TimeSpan? timeout = null)
+		internal static async Task WaitForAssertionAsync(this RenderedFragment renderedFragment, Action assertion, TimeSpan? timeout = null)
 		{
 			using var waiter = new WaitForAssertionHelper(renderedFragment, assertion, timeout);
 

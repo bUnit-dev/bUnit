@@ -15,7 +15,7 @@ internal class WaitForElementHelper : WaitForHelper<IElement>
 	/// <inheritdoc/>
 	protected override bool StopWaitingOnCheckException => false;
 
-	public WaitForElementHelper(IRenderedFragment renderedFragment, string cssSelector, TimeSpan? timeout = null)
+	public WaitForElementHelper(RenderedFragment renderedFragment, string cssSelector, TimeSpan? timeout = null)
 		: base(renderedFragment, () =>
 		{
 			var element = renderedFragment.Find(cssSelector);

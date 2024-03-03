@@ -25,7 +25,7 @@ The following sections will cover each of these.
 When a component is rendered in a test, the result is a <xref:Bunit.IRenderedFragment> or a <xref:Bunit.IRenderedComponent`1>. Through these, it is possible to access the rendered markup (HTML) of the component and, in the case of <xref:Bunit.IRenderedComponent`1>, the instance of the component. 
 
 > [!NOTE]
-> An <xref:Bunit.IRenderedComponent`1> inherits from <xref:Bunit.IRenderedFragment>. This page will only cover features of the <xref:Bunit.IRenderedFragment> type. <xref:Bunit.IRenderedComponent`1> is covered on the <xref:verify-component-state> page.
+> An <xref:Bunit.RenderedComponent`1> inherits from <xref:Bunit.RenderedFragment>. This page will only cover features of the <xref:Bunit.RenderedFragment> type. <xref:Bunit.RenderedComponent`1> is covered on the <xref:verify-component-state> page.
 
 ## Inspecting DOM nodes
 
@@ -91,13 +91,13 @@ bUnit's semantic HTML comparer safely ignores things like insignificant whitespa
 
 ### The MarkupMatches() method
 
-The HTML comparer can be easily accessed through `MarkupMatches()` extension methods, available in places that represent HTML fragments in bUnit, i.e. on <xref:Bunit.IRenderedFragment> and the `INode` and `INodeList` types.
+The HTML comparer can be easily accessed through `MarkupMatches()` extension methods, available in places that represent HTML fragments in bUnit, i.e. on <xref:Bunit.RenderedFragment> and the `INode` and `INodeList` types.
 
 In the following examples, the `<Heading>` component listed below will be used as the component under test.
 
 [!code-razor[Heading.razor](../../../samples/components/Heading.razor)]
 
-To use the `MarkupMatches()` method to perform a semantic comparison of the output of the `<Heading>` component through its <xref:Bunit.IRenderedFragment>, do the following:
+To use the `MarkupMatches()` method to perform a semantic comparison of the output of the `<Heading>` component through its <xref:Bunit.RenderedFragment>, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=25&end=30&highlight=3-6)]
 
