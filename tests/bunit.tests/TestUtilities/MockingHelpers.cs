@@ -1,3 +1,5 @@
+using Bunit.Rendering;
+
 namespace Bunit.TestUtilities;
 
 /// <summary>
@@ -16,6 +18,11 @@ public static class MockingHelpers
 	public static object ToMockInstance(this Type type)
 	{
 		ArgumentNullException.ThrowIfNull(type);
+		
+		if (type == typeof(RenderedFragment))
+		{
+			return new RenderedFragmentFake();
+		}
 
 		if (type.IsMockable())
 		{
@@ -45,4 +52,19 @@ public static class MockingHelpers
 	/// Gets whether a type is a delegate type.
 	/// </summary>
 	public static bool IsDelegateType(this Type type) => type == DelegateType;
+	
+	private sealed class RenderedFragmentFake : RenderedFragment
+	{
+		public RenderedFragmentFake() : base(0, Fake())
+		{
+		}
+
+		private static IServiceProvider Fake()
+		{
+			using var instance = new BunitHtmlParser();
+			var fake = Substitute.For<IServiceProvider>();
+			fake.GetService(typeof(BunitHtmlParser)).Returns(instance);
+			return fake;
+		}
+	}
 }

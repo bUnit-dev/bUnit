@@ -34,14 +34,14 @@ public static class MarkupMatchesAssertExtensions
 
 	/// <summary>
 	/// Verifies that the rendered markup from the <paramref name="actual"/> markup fragment matches
-	/// the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> type.
+	/// the <paramref name="expected"/> <see cref="RenderedFragment"/>, using the <see cref="HtmlComparer"/> type.
 	/// </summary>
 	/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
 	/// <param name="actual">The markup fragment to verify.</param>
-	/// <param name="expected">The expected <see cref="IRenderedFragment"/>.</param>
+	/// <param name="expected">The expected <see cref="RenderedFragment"/>.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches([StringSyntax("Html")]this string actual, IRenderedFragment expected, string? userMessage = null)
+	public static void MarkupMatches([StringSyntax("Html")]this string actual, RenderedFragment expected, string? userMessage = null)
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
@@ -87,7 +87,7 @@ public static class MarkupMatchesAssertExtensions
 	}
 
 	/// <summary>
-	/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragment"/> matches
+	/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="RenderedFragment"/> matches
 	/// the <paramref name="expected"/> markup, using the <see cref="HtmlComparer"/> type.
 	/// </summary>
 	/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -95,7 +95,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected markup.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this IRenderedFragment actual, [StringSyntax("Html")]string expected, string? userMessage = null)
+	public static void MarkupMatches(this RenderedFragment actual, [StringSyntax("Html")]string expected, string? userMessage = null)
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
@@ -105,15 +105,15 @@ public static class MarkupMatchesAssertExtensions
 	}
 
 	/// <summary>
-	/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragment"/> matches
-	/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/> type.
+	/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="RenderedFragment"/> matches
+	/// the rendered markup from the <paramref name="expected"/> <see cref="RenderedFragment"/>, using the <see cref="HtmlComparer"/> type.
 	/// </summary>
 	/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
 	/// <param name="actual">The rendered fragment to verify.</param>
 	/// <param name="expected">The expected rendered fragment.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this IRenderedFragment actual, IRenderedFragment expected, string? userMessage = null)
+	public static void MarkupMatches(this RenderedFragment actual, RenderedFragment expected, string? userMessage = null)
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
@@ -123,7 +123,7 @@ public static class MarkupMatchesAssertExtensions
 
 	/// <summary>
 	/// Verifies that the <paramref name="actual"/> <see cref="INodeList"/> matches
-	/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/>
+	/// the rendered markup from the <paramref name="expected"/> <see cref="RenderedFragment"/>, using the <see cref="HtmlComparer"/>
 	/// type.
 	/// </summary>
 	/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -131,7 +131,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected rendered fragment.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this INodeList actual, IRenderedFragment expected, string? userMessage = null)
+	public static void MarkupMatches(this INodeList actual, RenderedFragment expected, string? userMessage = null)
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
@@ -141,7 +141,7 @@ public static class MarkupMatchesAssertExtensions
 
 	/// <summary>
 	/// Verifies that the <paramref name="actual"/> <see cref="INode"/> matches
-	/// the rendered markup from the <paramref name="expected"/> <see cref="IRenderedFragment"/>, using the <see cref="HtmlComparer"/>
+	/// the rendered markup from the <paramref name="expected"/> <see cref="RenderedFragment"/>, using the <see cref="HtmlComparer"/>
 	/// type.
 	/// </summary>
 	/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -149,7 +149,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected rendered fragment.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this INode actual, IRenderedFragment expected, string? userMessage = null)
+	public static void MarkupMatches(this INode actual, RenderedFragment expected, string? userMessage = null)
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
@@ -259,7 +259,7 @@ public static class MarkupMatchesAssertExtensions
 	}
 
 	/// <summary>
-	/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="IRenderedFragment"/> matches
+	/// Verifies that the rendered markup from the <paramref name="actual"/> <see cref="RenderedFragment"/> matches
 	/// the rendered markup from the <paramref name="expected"/> <see cref="RenderFragment"/>, using the <see cref="HtmlComparer"/> type.
 	/// </summary>
 	/// <exception cref="HtmlEqualException">Thrown when the <paramref name="actual"/> markup does not match the <paramref name="expected"/> markup.</exception>
@@ -267,7 +267,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The render fragment whose output to compare against.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this IRenderedFragment actual, RenderFragment expected, string? userMessage = null)
+	public static void MarkupMatches(this RenderedFragment actual, RenderFragment expected, string? userMessage = null)
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
@@ -296,7 +296,7 @@ public static class MarkupMatchesAssertExtensions
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
 
-		var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as IRenderedFragment
+		var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as RenderedFragment
 			?? AdhocRenderRenderFragment(expected);
 		MarkupMatches(actual, renderedFragment, userMessage);
 	}
@@ -315,7 +315,7 @@ public static class MarkupMatchesAssertExtensions
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
 
-		var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as IRenderedFragment
+		var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as RenderedFragment
 			?? AdhocRenderRenderFragment(expected);
 		MarkupMatches(actual, renderedFragment, userMessage);
 	}
@@ -346,7 +346,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected markup fragments.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this IElement actual, IEnumerable<IRenderedFragment> expected, string? userMessage = null)
+	public static void MarkupMatches(this IElement actual, IEnumerable<RenderedFragment> expected, string? userMessage = null)
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
@@ -384,7 +384,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">The expected markup fragment.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this IEnumerable<IElement> actual, IRenderedFragment expected, string? userMessage = null)
+	public static void MarkupMatches(this IEnumerable<IElement> actual, RenderedFragment expected, string? userMessage = null)
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
@@ -401,7 +401,7 @@ public static class MarkupMatchesAssertExtensions
 	/// <param name="expected">A list of fragments.</param>
 	/// <param name="userMessage">A custom user message to display in case the verification fails.</param>
 	[AssertionMethod]
-	public static void MarkupMatches(this IEnumerable<IElement> actual, IEnumerable<IRenderedFragment> expected, string? userMessage = null)
+	public static void MarkupMatches(this IEnumerable<IElement> actual, IEnumerable<RenderedFragment> expected, string? userMessage = null)
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
@@ -411,7 +411,7 @@ public static class MarkupMatchesAssertExtensions
 		MarkupMatches(actual.ToNodeList(), expectedNodes, userMessage);
 	}
 
-	private static IRenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
+	private static RenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
 	{
 		using var ctx = new TestContext();
 		return ctx.RenderInsideRenderTree(renderFragment);

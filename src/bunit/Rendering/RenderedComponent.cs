@@ -1,15 +1,20 @@
 using System.Diagnostics;
+using Bunit.Rendering;
 
-namespace Bunit.Rendering;
+namespace Bunit;
 
-/// <inheritdoc/>
+/// <summary>
+/// Represents a rendered component.
+/// </summary>
 [DebuggerDisplay("Component={typeof(TComponent).Name,nq},RenderCount={RenderCount}")]
-internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent>
+public sealed class RenderedComponent<TComponent> : RenderedFragment
 	where TComponent : IComponent
 {
 	private TComponent? instance;
 
-	/// <inheritdoc/>
+	/// <summary>
+	/// Gets the component under test.
+	/// </summary>
 	public TComponent Instance
 	{
 		get
@@ -30,7 +35,8 @@ internal sealed class RenderedComponent<TComponent> : RenderedFragment, IRendere
 		UpdateMarkup(componentFrames);
 	}
 
-	protected override void OnRender(RenderEvent renderEvent)
+	/// <inheritdoc/>
+	protected override void OnRenderInternal(RenderEvent renderEvent)
 	{
 		// checks if this is the first render, and if it is
 		// tries to find the TComponent in the render event
