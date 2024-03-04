@@ -41,19 +41,9 @@ public abstract class TestContextWrapper
 	/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
 	/// </summary>
 	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
-	/// <param name="parameters">Parameters to pass to the component when it is rendered.</param>
-	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual RenderedComponent<TComponent> Render<TComponent>(params ComponentParameter[] parameters)
-		where TComponent : IComponent
-		=> TestContext?.Render<TComponent>(parameters) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
-
-	/// <summary>
-	/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
-	/// </summary>
-	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 	/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered.</param>
 	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual RenderedComponent<TComponent> Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>> parameterBuilder)
+	public virtual RenderedComponent<TComponent> Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
 		where TComponent : IComponent
 		=> TestContext?.Render(parameterBuilder) ?? throw new InvalidOperationException("The TestContext has not been initialized.");
 

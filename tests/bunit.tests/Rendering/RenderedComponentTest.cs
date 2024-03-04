@@ -30,7 +30,7 @@ public class RenderedComponentTest : TestContext
 	{
 		var cut = Render<Wrapper>(parameters => parameters.AddChildContent("<div>"));
 
-		cut.Render(ComponentParameterFactory.ChildContent("<p>"));
+		cut.Render(ps => ps.AddChildContent("<p>"));
 
 		cut.Find("p").ShouldNotBeNull();
 	}

@@ -5,7 +5,7 @@ namespace Bunit;
 /// component under test.
 /// </summary>
 [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "No need in this case.")]
-public readonly struct ComponentParameter : IEquatable<ComponentParameter>
+internal readonly record struct ComponentParameter
 {
 	/// <summary>
 	/// Gets the name of the parameter. Can be null if the parameter is for an unnamed cascading value.
@@ -76,24 +76,5 @@ public readonly struct ComponentParameter : IEquatable<ComponentParameter>
 		=> new ComponentParameter(input.Name, input.Value, input.IsCascadingValue);
 
 	/// <inheritdoc/>
-	public bool Equals(ComponentParameter other)
-		=> string.Equals(Name, other.Name, StringComparison.Ordinal)
-		&& ((Value is null && other.Value is null) || (Value?.Equals(other.Value) ?? false))
-		&& IsCascadingValue.Equals(other.IsCascadingValue);
-
-	/// <inheritdoc/>
-	public override bool Equals(object? obj) => obj is ComponentParameter other && Equals(other);
-
-	/// <inheritdoc/>
 	public override int GetHashCode() => HashCode.Combine(Name, Value, IsCascadingValue);
-
-	/// <summary>
-	/// Verify whether the <paramref name="left"/> and <paramref name="right"/> <see cref="ComponentParameter"/> are equal.
-	/// </summary>
-	public static bool operator ==(ComponentParameter left, ComponentParameter right) => left.Equals(right);
-
-	/// <summary>
-	/// Verify whether the <paramref name="left"/> and <paramref name="right"/> <see cref="ComponentParameter"/> are not equal.
-	/// </summary>
-	public static bool operator !=(ComponentParameter left, ComponentParameter right) => !(left == right);
 }
