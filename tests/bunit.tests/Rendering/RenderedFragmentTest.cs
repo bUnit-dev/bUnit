@@ -72,7 +72,7 @@ public class RenderedFragmentTest : TestContext
 
 		cut.Instance.Counter.ShouldBe(1);
 
-		cut.Render((nameof(ToggleClickHandler.HandleClicks), false));
+		cut.Render(ps => ps.Add(p => p.HandleClicks, false));
 
 		cut.Find("#btn").Click();
 
