@@ -39,12 +39,11 @@ public partial class HtmlizerTests : TestContext
 
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 	}
-	
-#if NET8_0_OR_GREATER
+
 	[Fact(DisplayName = "Htmlizer ignores NamedEvents")]
 	public void Test004()
 	{
-		var cut = RenderComponent<FormNameComponent>();
+		var cut = Render<FormNameComponent>();
 
 		cut.MarkupMatches("""
 		                  <form method="post">
@@ -52,8 +51,17 @@ public partial class HtmlizerTests : TestContext
 		                  </form>
 		                  """);
 	}
-#endif
-	
+
+	[Theory(DisplayName = "IsBlazorAttribute correctly identifies Blazor attributes")]
+	[InlineData("b-twl12ishk1=\"\"")]
+	[InlineData("blazor:onclick=\"1\"")]
+	[InlineData("blazor:__internal_stopPropagation_onclick=\"\"")]
+	[InlineData("blazor:__internal_preventDefault_onclick=\"\"")]
+	public void TestNET5_001(string blazorAttribute)
+	{
+		Htmlizer.IsBlazorAttribute(blazorAttribute).ShouldBeTrue();
+	}
+
 	private sealed class Htmlizer01Component : ComponentBase
 	{
 		public ElementReference ButtomElmRef { get; set; }
