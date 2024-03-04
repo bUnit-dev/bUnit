@@ -1,6 +1,6 @@
 namespace Bunit;
 
-public static class ShouldlyExtensions
+internal static class ShouldlyExtensions
 {
 	public static void ShouldSatisfyAllConditions<TCondition>(this TCondition actual, params Action<TCondition>[] conditions)
 	{
