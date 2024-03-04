@@ -11,16 +11,17 @@ public class TriggerEventSpy<TEventArgs>
 
 	public TEventArgs RaisedEvent => receivedEvent!;
 
-	public TriggerEventSpy(Func<ComponentParameter[], RenderedComponent<TriggerTester<TEventArgs>>> componentRenderer, string element, string eventName)
+	public TriggerEventSpy(
+		Func<Action<ComponentParameterCollectionBuilder<TriggerTester<TEventArgs>>>,
+			RenderedComponent<TriggerTester<TEventArgs>>> componentRenderer, string element, string eventName)
 	{
 		ArgumentNullException.ThrowIfNull(componentRenderer);
 
-		renderedComponent = componentRenderer(new ComponentParameter[]
-			{
-					(nameof(TriggerTester<TEventArgs>.Element), element),
-					(nameof(TriggerTester<TEventArgs>.EventName), eventName),
-					(nameof(TriggerTester<TEventArgs>.TriggeredEvent), EventCallback.Factory.Create<TEventArgs>(this, CallbackHandler)),
-			});
+		renderedComponent = componentRenderer(ps => ps
+			.Add(p => p.Element, element)
+			.Add(p => p.EventName, eventName)
+			.Add(p => p.TriggeredEvent, EventCallback.Factory.Create<TEventArgs>(this, CallbackHandler)));
+
 		this.element = element;
 	}
 

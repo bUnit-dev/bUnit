@@ -1,6 +1,5 @@
 using Bunit.Extensions;
 using Bunit.TestAssets.RenderModes;
-using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Rendering;
 
@@ -54,7 +53,7 @@ public class BunitRendererTests : TestContext
 	{
 		const string VALUE = "FOO BAR";
 
-		var cut = Renderer.Render<HasParams>((nameof(HasParams.Value), VALUE));
+		var cut = Renderer.Render<HasParams>(ps => ps.Add(p => p.Value, VALUE));
 
 		cut.Instance.Value.ShouldBe(VALUE);
 	}
@@ -65,9 +64,9 @@ public class BunitRendererTests : TestContext
 		const string PARENT_VALUE = "PARENT";
 		const string CHILD_VALUE = "CHILD";
 
-		var cut = Renderer.Render<HasParams>(
-			(nameof(HasParams.Value), PARENT_VALUE),
-			ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE)));
+		var cut = Renderer.Render<HasParams>(ps => ps
+			.Add(p => p.Value, PARENT_VALUE)
+			.AddChildContent<HasParams>(pps => pps.Add(p => p.Value, CHILD_VALUE)));
 
 		cut.Markup.ShouldStartWith(PARENT_VALUE);
 		cut.Markup.ShouldEndWith(CHILD_VALUE);
@@ -109,9 +108,9 @@ public class BunitRendererTests : TestContext
 		const string PARENT_VALUE = "PARENT";
 		const string CHILD_VALUE = "CHILD";
 
-		var cut = Renderer.Render<HasParams>(
-			(nameof(HasParams.Value), PARENT_VALUE),
-			ChildContent<HasParams>((nameof(HasParams.Value), CHILD_VALUE)));
+		var cut = Renderer.Render<HasParams>(ps => ps
+			.Add(p => p.Value, PARENT_VALUE)
+			.AddChildContent<HasParams>(pps => pps.Add(p => p.Value, CHILD_VALUE)));
 
 		// act
 		var childCut = Renderer.FindComponent<HasParams>(cut);
@@ -138,8 +137,8 @@ public class BunitRendererTests : TestContext
 	[Fact(DisplayName = "FindComponent returns same rendered component when called multiple times")]
 	public void Test023()
 	{
-		var cut = Renderer.Render<HasParams>(
-			ChildContent<HasParams>());
+		var cut = Renderer.Render<HasParams>(ps => ps
+			.AddChildContent<HasParams>());
 
 		var child1 = Renderer.FindComponent<HasParams>(cut);
 		var child2 = Renderer.FindComponent<HasParams>(cut);
@@ -155,12 +154,12 @@ public class BunitRendererTests : TestContext
 		const string PARENT_VALUE = nameof(PARENT_VALUE);
 		const string CHILD_VALUE = nameof(CHILD_VALUE);
 
-		var cut = Renderer.Render<HasParams>(
-			(nameof(HasParams.Value), GRAND_PARENT_VALUE),
-			ChildContent<HasParams>(
-				(nameof(HasParams.Value), PARENT_VALUE),
-				ChildContent<HasParams>(
-					(nameof(HasParams.Value), CHILD_VALUE))));
+		var cut = Renderer.Render<HasParams>(ps => ps
+			.Add(p => p.Value, GRAND_PARENT_VALUE)
+			.AddChildContent<HasParams>(pps => pps
+				.Add(p => p.Value, PARENT_VALUE)
+				.AddChildContent<HasParams>(ppps => ppps
+					.Add(p=>p.Value, CHILD_VALUE))));
 
 		// act
 		var childCuts = Renderer.FindComponents<HasParams>(cut)
@@ -185,9 +184,9 @@ public class BunitRendererTests : TestContext
 	public void Test032()
 	{
 		// arrange
-		var cut = Renderer.Render<HasParams>(
-			ChildContent<HasParams>(
-				ChildContent<HasParams>()));
+		var cut = Renderer.Render<HasParams>(ps => ps
+			.AddChildContent<HasParams>(pps => pps
+				.AddChildContent<HasParams>()));
 
 		// act
 		var childCuts1 = Renderer.FindComponents<HasParams>(cut);
@@ -200,8 +199,8 @@ public class BunitRendererTests : TestContext
 	[Fact(DisplayName = "Retrieved rendered child component with FindComponent gets updated on re-render")]
 	public async Task Test040()
 	{
-		var parent = Renderer.Render<HasParams>(
-			ChildContent<RenderTrigger>());
+		var parent = Renderer.Render<HasParams>(ps => ps
+			.AddChildContent<RenderTrigger>());
 
 		// act
 		var cut = Renderer.FindComponent<RenderTrigger>(parent);
@@ -217,8 +216,8 @@ public class BunitRendererTests : TestContext
 	[Fact(DisplayName = "Retrieved rendered child component with FindComponents gets updated on re-render")]
 	public async Task Test041()
 	{
-		var parent = Renderer.Render<HasParams>(
-			ChildContent<RenderTrigger>());
+		var parent = Renderer.Render<HasParams>(ps => ps
+			.AddChildContent<RenderTrigger>());
 
 		// act
 		var cut = Renderer.FindComponents<RenderTrigger>(parent).Single();
@@ -235,8 +234,8 @@ public class BunitRendererTests : TestContext
 	public async Task Test050()
 	{
 		// arrange
-		var cut = Renderer.Render<HasParams>(
-			ChildContent<RenderTrigger>());
+		var cut = Renderer.Render<HasParams>(ps => ps
+			.AddChildContent<RenderTrigger>());
 		var child = Renderer.FindComponent<RenderTrigger>(cut);
 
 		// act
@@ -251,8 +250,8 @@ public class BunitRendererTests : TestContext
 	public async Task Test060()
 	{
 		// arrange
-		var cut = Renderer.Render<ToggleChild>(
-			ChildContent<NoChildNoParams>());
+		var cut = Renderer.Render<ToggleChild>(ps => ps
+			.AddChildContent<NoChildNoParams>());
 		var child = Renderer.FindComponent<NoChildNoParams>(cut);
 
 		// act
@@ -267,9 +266,9 @@ public class BunitRendererTests : TestContext
 	public async Task Test061()
 	{
 		// arrange
-		var cut = Renderer.Render<ToggleChild>(
-			ChildContent<ToggleChild>(
-				ChildContent<NoChildNoParams>()));
+		var cut = Renderer.Render<ToggleChild>(ps => ps
+			.AddChildContent<ToggleChild>(pps => pps
+				.AddChildContent<NoChildNoParams>()));
 		var child = Renderer.FindComponent<ToggleChild>(cut);
 		var childChild = Renderer.FindComponent<NoChildNoParams>(cut);
 

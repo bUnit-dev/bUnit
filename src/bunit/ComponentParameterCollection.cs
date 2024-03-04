@@ -5,7 +5,7 @@ namespace Bunit;
 /// <summary>
 /// A collection for <see cref="ComponentParameter" />.
 /// </summary>
-public class ComponentParameterCollection : ICollection<ComponentParameter>, IReadOnlyCollection<ComponentParameter>
+internal class ComponentParameterCollection : ICollection<ComponentParameter>, IReadOnlyCollection<ComponentParameter>
 {
 	private static readonly MethodInfo CreateTemplateWrapperMethod = GetCreateTemplateWrapperMethod();
 	private static readonly Type CascadingValueType = typeof(CascadingValue<>);

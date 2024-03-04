@@ -46,3 +46,6 @@ The `TestContext` and `TestContextBase` classes have been merged into a single `
 
 ## Renamed all `RenderComponent` and `SetParametersAndRender` to `Render`
 To make the API more consistent, `RenderComponent` and `SetParametersAndRender` methods have been renamed to `Render`.
+
+## Removal of `ComponentParameter` and method using them
+Using `ComponentParameter` and factory methods to create them is not recommend in V1 and have now been removed in V2. Instead, use the strongly typed builder pattern that enables you to pass parameters to components you render.

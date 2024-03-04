@@ -14,9 +14,9 @@ public class StubTest : TestContext
 	[AutoData]
 	public void Test002(string header, string attrValue)
 	{
-		var cut = Render<Stub<Simple1>>(
-			(nameof(Simple1.Header), header),
-			(nameof(Simple1.AttrValue), attrValue));
+		var cut = Render<Stub<Simple1>>(ps => ps
+			.AddUnmatched(nameof(Simple1.Header), header)
+			.AddUnmatched(nameof(Simple1.AttrValue), attrValue));
 
 		cut.Instance
 			.Parameters
