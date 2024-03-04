@@ -85,21 +85,6 @@ public sealed class BunitRenderer : Renderer
 		=> Render(renderFragment);
 
 	/// <summary>
-	/// Renders a <typeparamref name="TComponent"/> with the <paramref name="parameters"/> passed to it.
-	/// </summary>
-	/// <typeparam name="TComponent">The type of component to render.</typeparam>
-	/// <param name="parameters">The parameters to pass to the component.</param>
-	/// <returns>A <see cref="RenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
-	public RenderedComponent<TComponent> Render<TComponent>(ComponentParameterCollection parameters)
-		where TComponent : IComponent
-	{
-		ArgumentNullException.ThrowIfNull(parameters);
-
-		var renderFragment = parameters.ToRenderFragment<TComponent>();
-		return Render(renderFragment).FindComponent<TComponent>();
-	}
-
-	/// <summary>
 	/// Notifies the renderer that an event has occurred.
 	/// </summary>
 	/// <param name="eventHandlerId">The <see cref="RenderTreeFrame.AttributeEventHandlerId"/> value from the original event attribute.</param>

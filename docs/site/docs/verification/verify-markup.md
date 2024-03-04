@@ -99,13 +99,13 @@ In the following examples, the `<Heading>` component listed below will be used a
 
 To use the `MarkupMatches()` method to perform a semantic comparison of the output of the `<Heading>` component through its <xref:Bunit.RenderedFragment>, do the following:
 
-[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=25&end=30&highlight=3-6)]
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=23&end=28&highlight=3-6)]
 
 The highlighted line shows the call to the `MarkupMatches()` method. This test passes even though the insignificant whitespace is not exactly the same between the expected HTML string and the raw markup produced by the `<Heading>` component. It even works when the CSS class list is not in the same order on the `<small>` element.
 
 The `MarkupMatches()` method is also available on `INode` and `INodeList` types, for example:
 
-[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=36&end=39&highlight=3-4)]
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=34&end=37&highlight=3-4)]
 
 Here we use the `Find(string cssSelector)` method to find the `<small>` element, and only verify it and its content and attributes.
 
@@ -114,7 +114,7 @@ Here we use the `Find(string cssSelector)` method to find the `<small>` element,
 
 Text content can also be verified with the `MarkupMatches()` method, e.g. the text inside the `<small>` element. It has the advantage over regular string comparison in that it removes insignificant whitespace in the text automatically - even between words - where a normal string `Trim()` method isn't enough. For example:
 
-[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=45&end=48&highlight=3)]
+[!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=43&end=46&highlight=3)]
 
 The semantic HTML comparer can be customized to make a test case even more stable and easier to maintain. For example, it is possible to ignore an element or attribute during comparison, or provide a regular expression to the comparer when comparing a specific element or attribute to make the comparer work with generated data.
 

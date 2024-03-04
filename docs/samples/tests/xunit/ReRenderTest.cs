@@ -3,7 +3,6 @@ using Bunit;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Docs.Samples;
 
