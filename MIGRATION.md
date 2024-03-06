@@ -49,3 +49,7 @@ To make the API more consistent, `RenderComponent` and `SetParametersAndRender` 
 
 ## Removal of `ComponentParameter` and method using them
 Using `ComponentParameter` and factory methods to create them is not recommend in V1 and have now been removed in V2. Instead, use the strongly typed builder pattern that enables you to pass parameters to components you render.
+
+## `TestContext` implements `IDisposable` and `IAsyncDisposable`
+The `TestContext` now implements `IDisposable` and `IAsyncDisposable`. In version 1.x, `TestContext` only implemented `IDisposable` and cleaned up asynchronous objects in the synchronous `Dispose` method. This is no longer the case, and asynchronous objects are now cleaned up in the `DisposeAsync` method.
+If you register services into the container that implement `IAsyncDisposable` make sure that the test framework calls the right method.
