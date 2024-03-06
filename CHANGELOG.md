@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Changed
+- `NavigationManager` is again registered as a singleton instead of scoped.
+
 ## [1.27.17] - 2024-03-02
 
 ### Added
