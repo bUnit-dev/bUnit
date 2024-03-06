@@ -207,10 +207,10 @@ public partial class TestContextTest : TestContext
 	}
 
 	[Fact(DisplayName = "Can correctly resolve and dispose of scoped disposable service")]
-	public void Net5Test001()
+	public async Task Net5Test001()
 	{
 		AsyncDisposableService asyncDisposable;
-		using (var sut = new TestContext())
+		await using (var sut = new TestContext())
 		{
 			sut.Services.AddScoped<AsyncDisposableService>();
 			asyncDisposable = sut.Services.GetService<AsyncDisposableService>();
@@ -219,10 +219,10 @@ public partial class TestContextTest : TestContext
 	}
 
 	[Fact(DisplayName = "Can correctly resolve and dispose of transient disposable service")]
-	public void Net5Test002()
+	public async Task Net5Test002()
 	{
 		AsyncDisposableService asyncDisposable;
-		using (var sut = new TestContext())
+		await using (var sut = new TestContext())
 		{
 			sut.Services.AddTransient<AsyncDisposableService>();
 			asyncDisposable = sut.Services.GetService<AsyncDisposableService>();
@@ -231,10 +231,10 @@ public partial class TestContextTest : TestContext
 	}
 
 	[Fact(DisplayName = "Can correctly resolve and dispose of singleton disposable service")]
-	public void Net5Test003()
+	public async Task Net5Test003()
 	{
 		AsyncDisposableService asyncDisposable;
-		using (var sut = new TestContext())
+		await using (var sut = new TestContext())
 		{
 			sut.Services.AddSingleton<AsyncDisposableService>();
 			asyncDisposable = sut.Services.GetService<AsyncDisposableService>();
