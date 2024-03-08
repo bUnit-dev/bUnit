@@ -15,12 +15,12 @@ namespace Bunit.Extensions;
 public static class TestServiceProviderExtensions
 {
 	/// <summary>
-	/// Registers the default services required by the web <see cref="TestContext"/>.
+	/// Registers the default services required by the web <see cref="BunitContext"/>.
 	/// </summary>
-	public static IServiceCollection AddDefaultTestContextServices(this IServiceCollection services, TestContext testContext, BunitJSInterop jsInterop)
+	public static IServiceCollection AddDefaultBunitContextServices(this IServiceCollection services, BunitContext bunitContext, BunitJSInterop jsInterop)
 	{
 		ArgumentNullException.ThrowIfNull(services);
-		ArgumentNullException.ThrowIfNull(testContext);
+		ArgumentNullException.ThrowIfNull(bunitContext);
 		ArgumentNullException.ThrowIfNull(jsInterop);
 
 		// Placeholders and defaults for common Blazor services
@@ -47,7 +47,7 @@ public static class TestServiceProviderExtensions
 		services.AddSupplyValueFromQueryProvider();
 
 		// bUnit specific services
-		services.AddSingleton(testContext);
+		services.AddSingleton(bunitContext);
 		services.AddSingleton<HtmlComparer>();
 		services.AddSingleton<BunitHtmlParser>();
 

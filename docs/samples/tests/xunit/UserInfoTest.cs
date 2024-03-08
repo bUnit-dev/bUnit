@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Bunit.Docs.Samples;
 
-public class UserInfoTest : TestContext
+public class UserInfoTest : BunitContext
 {
   [Fact(DisplayName = "UserInfo with unauthenticated user")]
   public void Test001()

@@ -5,7 +5,7 @@ using NSubstitute;
 
 namespace Bunit.Docs.Samples
 {
-  public class CounterWithFancyParagraphTest : TestContext
+  public class CounterWithFancyParagraphTest : BunitContext
   {
     [Fact]
     public void CounterShouldIncrementWhenClicked_Moq()

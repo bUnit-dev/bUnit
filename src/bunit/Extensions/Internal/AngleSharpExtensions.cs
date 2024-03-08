@@ -61,23 +61,23 @@ internal static class AngleSharpExtensions
 	}
 
 	/// <summary>
-	/// Gets the <see cref="TestContext"/> stored in the <paramref name="node"/>s
+	/// Gets the <see cref="BunitContext"/> stored in the <paramref name="node"/>s
 	/// owning context, if one is available.
 	/// </summary>
-	/// <returns>The <see cref="TestContext"/> or null if not found.</returns>
-	public static TestContext? GetTestContext(this INode? node)
+	/// <returns>The <see cref="BunitContext"/> or null if not found.</returns>
+	public static BunitContext? GetBunitContext(this INode? node)
 	{
-		return node?.Owner?.Context.GetService<TestContext>();
+		return node?.Owner?.Context.GetService<BunitContext>();
 	}
 
 	/// <summary>
-	/// Gets the <see cref="TestContext"/> stored in the <paramref name="nodes"/>s
+	/// Gets the <see cref="BunitContext"/> stored in the <paramref name="nodes"/>s
 	/// owning context, if one is available.
 	/// </summary>
-	/// <returns>The <see cref="TestContext"/> or null if not found.</returns>
-	public static TestContext? GetTestContext(this INodeList nodes)
+	/// <returns>The <see cref="BunitContext"/> or null if not found.</returns>
+	public static BunitContext? GetBunitContext(this INodeList nodes)
 	{
-		return nodes?.Length > 0 ? nodes[0].GetTestContext() : null;
+		return nodes?.Length > 0 ? nodes[0].GetBunitContext() : null;
 	}
 
 	/// <summary>

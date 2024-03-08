@@ -1,6 +1,6 @@
 namespace Bunit.TestDoubles.Authorization;
 
-public class BunitAuthorizationContextBunit : TestContext
+public class BunitAuthorizationContextBunit : BunitContext
 {
 	[Fact(DisplayName = "Register Authorization services with unauthenticated user.")]
 	public void Test003()
