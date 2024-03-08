@@ -8,7 +8,7 @@ using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples;
 
-public class UnmatchedParamsTest : TestContext
+public class UnmatchedParamsTest : BunitContext
 {
   [Fact]
   public void Test()

@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Components.Infrastructure;
 
 namespace Bunit;
 
-public partial class TestContext
+public partial class BunitContext
 {
 	/// <summary>
-	/// Adds and returns a <see cref="BunitPersistentComponentState"/> to the services of this <see cref="TestContext"/>.
+	/// Adds and returns a <see cref="BunitPersistentComponentState"/> to the services of this <see cref="BunitContext"/>.
 	/// </summary>
 	/// <returns>The added <see cref="BunitPersistentComponentState"/>.</returns>
 	public BunitPersistentComponentState AddBunitPersistentComponentState()

@@ -2,7 +2,7 @@
 
 namespace Bunit.Docs.Samples;
 
-public class TwoWayBindingTest : TestContext
+public class TwoWayBindingTest : BunitContext
 {
   [Fact]
   public void Test()

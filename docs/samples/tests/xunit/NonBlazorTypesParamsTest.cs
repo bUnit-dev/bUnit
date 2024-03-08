@@ -7,7 +7,7 @@ using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples;
 
-public class NonBlazorTypesParamsTest : TestContext
+public class NonBlazorTypesParamsTest : BunitContext
 {
   [Fact]
   public void Test()

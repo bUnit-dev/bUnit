@@ -5,12 +5,12 @@ namespace Company.BlazorTests1;
 /// Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating-basic-tests-in-cs-files
 /// </summary>
 #if (testFramework_xunit)
-public class CounterCSharpTests : TestContext
+public class CounterCSharpTests : BunitContext
 #elif (testFramework_nunit)
-public class CounterCSharpTests : BunitTestContext
+public class CounterCSharpTests : BunitContext
 #elif (testFramework_mstest)
 [TestClass]
-public class CounterCSharpTests : BunitTestContext
+public class CounterCSharpTests : BunitContext
 #endif
 {
 #if (testFramework_xunit)

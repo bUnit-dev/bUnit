@@ -7,7 +7,7 @@ title: Substituting (mocking) component
 
 bUnit makes it possible to substitute child components of a component under test with other components, e.g. mock components. This makes it possible to isolate a component under test from other components it depends on, e.g. 3rd party components.
 
-To substitute a component during a test, you must register the substitute, or a substitute factory, with the `ComponentFactories` collection on bUnit's `TestContext`.
+To substitute a component during a test, you must register the substitute, or a substitute factory, with the `ComponentFactories` collection on bUnit's `BunitContext`.
 
 > [!NOTE] 
 > This feature is only available for test projects that target .NET 5 or later.

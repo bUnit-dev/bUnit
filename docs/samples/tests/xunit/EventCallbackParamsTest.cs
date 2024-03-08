@@ -8,7 +8,7 @@ using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples;
 
-public class EventCallbackParamsTest : TestContext
+public class EventCallbackParamsTest : BunitContext
 {
   [Fact]
   public void Test()

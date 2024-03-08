@@ -62,7 +62,7 @@ public static class TriggerEventDispatchExtensions
 		ArgumentNullException.ThrowIfNull(element);
 		ArgumentNullException.ThrowIfNull(eventName);
 
-		var renderer = element.GetTestContext()?.Renderer
+		var renderer = element.GetBunitContext()?.Renderer
 			?? throw new InvalidOperationException($"Blazor events can only be raised on elements rendered with the Blazor test renderer '{nameof(BunitRenderer)}'.");
 
 		// TriggerEventsAsync will traverse the DOM tree to find

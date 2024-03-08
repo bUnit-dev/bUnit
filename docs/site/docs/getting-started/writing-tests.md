@@ -9,7 +9,7 @@ Testing Blazor components is a little different from testing regular C# classes:
 
 Use **bUnit** to render the component under test, pass in its parameters, inject required services, and access the rendered component instance and the markup it has produced.
 
-Rendering a component happens through bUnit's <xref:Bunit.TestContext>. The result of the rendering is an `RenderedComponent`, referred to as a "rendered component", that provides access to the component instance and the markup produced by the component.
+Rendering a component happens through bUnit's <xref:Bunit.BunitContext>. The result of the rendering is an `RenderedComponent`, referred to as a "rendered component", that provides access to the component instance and the markup produced by the component.
 
 ## Write tests in `.cs` or `.razor` files
 
@@ -50,25 +50,15 @@ With that in place, lets look at a simple example that tests the following `<Hel
 
 The test above does the following:
 
-1. Inherits from the bUnit <xref:Bunit.TestContext>. This base class offers the majority of functions.
-2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the `Render(RenderFragment)` method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
+1. Inherits from the bUnit <xref:Bunit.BunitContext>. This base class offers the majority of functions.
+2. Renders the `<HelloWorld>` component using <xref:Bunit.BunitContext>, which is done through the `Render(RenderFragment)` method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
 # [NUnit](#tab/nunit)
 
 [!code-cshtml[HelloWorldRazorTest.razor](../../../samples/tests/nunit/HelloWorldRazorTest.razor)]
 
-Since NUnit instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed below, and use that to hook into NUnit's `[SetUp]` and `[TearDown]` methods, which run before and after each test.
-
-[!code-csharp[BunitTestContext.cs](../../../samples/tests/nunit/BunitTestContext.cs#L3-L13)]
-
-The test above does the following:
-
-1. Inherits from the `BunitTestContext` above. This base class offers the majority of functions.
-2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the `Render(RenderFragment)` method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
-3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
-
-Alternatively, use the [LifeCycle.InstancePerTestCase](https://docs.nunit.org/articles/nunit/writing-tests/attributes/fixturelifecycle.html) attribute (introduced in NUnit 3.13) so that a new instance of the test class is created for each test removing the need for the wrapper.
+Use the [LifeCycle.InstancePerTestCase](https://docs.nunit.org/articles/nunit/writing-tests/attributes/fixturelifecycle.html) attribute (introduced in NUnit 3.13) so that a new instance of the test class is created for each test removing the need for the wrapper.
 
 [!code-csharp[HelloWorldInstancePerTestCase.cs](../../../samples/tests/nunit/HelloWorldInstancePerTestCase.cs#L5-L17)]
 
@@ -76,15 +66,6 @@ Alternatively, use the [LifeCycle.InstancePerTestCase](https://docs.nunit.org/ar
 
 [!code-cshtml[HelloWorldRazorTest.razor](../../../samples/tests/mstest/HelloWorldRazorTest.razor)]
 
-Since MSTest instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed below, and use that to hook into MSTest's `[TestInitialize]` and `[TestCleanup]` methods. This runs before and after each test.
-
-[!code-csharp[BunitTestContext.cs](../../../samples/tests/mstest/BunitTestContext.cs#L3-L13)]
-
-The test above does the following:
-
-1. Inherits from the `BunitTestContext` above. This base class offers the majority of functions.
-2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the `Render(RenderFragment)` method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
-3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
 ***
 
@@ -136,22 +117,18 @@ This is a simple example of writing tests in `.cs` files which tests the followi
 
 The test above does the following:
 
-1. Inherits from the bUnit's `TestContext`. This base class offers the majority of functions.
-2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
+1. Inherits from the bUnit's `BunitContext`. This base class offers the majority of functions.
+2. Renders the `<HelloWorld>` component using <xref:Bunit.BunitContext>, which is done through the <xref:Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
 # [NUnit](#tab/nunit)
 
 [!code-csharp[HelloWorldTest.cs](../../../samples/tests/nunit/HelloWorldTest.cs#L3-L20)]
 
-Since NUnit instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed below, and use that to hook into NUnit's `[SetUp]` and `[TearDown]` methods, which run before and after each test.
-
-[!code-csharp[BunitTestContext.cs](../../../samples/tests/nunit/BunitTestContext.cs#L3-L13)]
-
 The test above does the following:
 
-1. Inherits from the `BunitTestContext` listed above. This base class offers the majority of functions.
-2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
+1. Inherits from the `BunitContext` listed above. This base class offers the majority of functions.
+2. Renders the `<HelloWorld>` component using <xref:Bunit.BunitContext>, which is done through the <xref:Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
 Alternatively, use the [LifeCycle.InstancePerTestCase](https://docs.nunit.org/articles/nunit/writing-tests/attributes/fixturelifecycle.html) attribute (introduced in NUnit 3.13) so that a new instance of the test class is created for each test removing the need for the wrapper.
@@ -162,14 +139,10 @@ Alternatively, use the [LifeCycle.InstancePerTestCase](https://docs.nunit.org/ar
 
 [!code-csharp[HelloWorldTest.cs](../../../samples/tests/mstest/HelloWorldTest.cs#L3-L20)]
 
-Since MSTest instantiates a test class only once for all tests inside it, we cannot simply inherit directly from <xref:Bunit.TestContext> as we want a fresh instance of <xref:Bunit.TestContext> for each test. Instead, we create a helper class, `BunitTestContext`, listed below, and use that to hook into MSTest's `[TestInitialize]` and `[TestCleanup]` methods. This runs before and after each test.
-
-[!code-csharp[BunitTestContext.cs](../../../samples/tests/mstest/BunitTestContext.cs#L3-L13)]
-
 The test above does the following:
 
-1. Inherits from the `BunitTestContext` listed above. This base class offers the majority of functions.
-2. Renders the `<HelloWorld>` component using <xref:Bunit.TestContext>, which is done through the <xref:Bunit.TestContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
+1. Inherits from the `BunitContext` listed above. This base class offers the majority of functions.
+2. Renders the `<HelloWorld>` component using <xref:Bunit.BunitContext>, which is done through the <xref:Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})> method. We cover passing parameters to components on the <xref:passing-parameters-to-components> page.
 3. Verifies the rendered markup from the `<HelloWorld>` component using the `MarkupMatches` method. The `MarkupMatches` method performs a semantic comparison of the expected markup with the rendered markup.
 
 ***
@@ -180,11 +153,11 @@ The test above does the following:
 > [!TIP]
 > In bUnit tests, we like to use the abbreviation `CUT`, short for "component under test", to indicate the component that is being tested. This is inspired by the common testing abbreviation `SUT`, short for "system under test".
 
-### Instantiate TestContext in each test
+### Instantiate BunitContext in each test
 
-If you prefer to instantiate <xref:Bunit.TestContext> in each test, instead of inheriting from it, you can do so. This can be useful if you have your own base class that you want to inherit from, or if you want to use a different test framework than the ones listed here.
+If you prefer to instantiate <xref:Bunit.BunitContext> in each test, instead of inheriting from it, you can do so. This can be useful if you have your own base class that you want to inherit from, or if you want to use a different test framework than the ones listed here.
 
-Just be aware that all examples in the rest of the documentation assumes that you are inheriting from <xref:Bunit.TestContext>, so adjust accordingly.
+Just be aware that all examples in the rest of the documentation assumes that you are inheriting from <xref:Bunit.BunitContext>, so adjust accordingly.
 
 # [xUnit](#tab/xunit)
 
@@ -194,16 +167,9 @@ Just be aware that all examples in the rest of the documentation assumes that yo
 
 [!code-csharp[HelloWorldExplicitContextTest.cs](../../../samples/tests/nunit/HelloWorldExplicitContextTest.cs#L6-L20)]
 
-> [!NOTE]
-> `TestContext` is an ambiguous reference - it could mean `Bunit.TestContext` or `NUnit.Framework.TestContext` - so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.: `using BunitTestContext = Bunit.TestContext;`
-
 # [MSTest](#tab/mstest)
 
 [!code-csharp[HelloWorldImplicitContextTest.cs](../../../samples/tests/mstest/HelloWorldExplicitContextTest.cs#L6-L21)]
-
-> [!NOTE]
-> `TestContext` is an ambiguous reference - it could mean `Bunit.TestContext` or `Microsoft.VisualStudio.TestTools.UnitTesting.TestContext` - so you have to specify the `Bunit` namespace when referencing `TestContext` to resolve the ambiguity for the compiler. Alternatively, you can give bUnit's `TestContext` a different name during import, e.g.:
-> `using BunitTestContext = Bunit.TestContext;`
 
 ## Further reading
 

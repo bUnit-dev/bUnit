@@ -39,10 +39,10 @@ The `WebTestRender` class has been merged into the `TestRender` class. If you us
 The `Fake` prefix has been replaced with `Bunit` in many test doubles. For example, `FakeNavigationManager` is now `BunitNavigationManager`. If you reference any of these types explicitly, you need to update your code.
 
 ### Renamed `AddTestAuthorization` to `AddAuthorization`
-The `AddTestAuthorization` method on `TestContext` has been renamed to `AddAuthorization`. If you used `AddTestAuthorization`, you should replace it with `AddAuthorization`.
+The `AddTestAuthorization` method on `BunitContext` has been renamed to `AddAuthorization`. If you used `AddTestAuthorization`, you should replace it with `AddAuthorization`.
 
-## Merged `TestContext` and `TestContextBase`
-The `TestContext` and `TestContextBase` classes have been merged into a single `TestContext` class. All references to `TestContextBase` should replace them with `TestContext` to migrate.
+## Merged `BunitContext` and `BunitContextBase`
+The `BunitContext` and `BunitContextBase` classes have been merged into a single `BunitContext` class. All references to `BunitContextBase` should replace them with `BunitContext` to migrate.
 
 ## Renamed all `RenderComponent` and `SetParametersAndRender` to `Render`
 To make the API more consistent, `RenderComponent` and `SetParametersAndRender` methods have been renamed to `Render`.
@@ -50,6 +50,29 @@ To make the API more consistent, `RenderComponent` and `SetParametersAndRender` 
 ## Removal of `ComponentParameter` and method using them
 Using `ComponentParameter` and factory methods to create them is not recommend in V1 and have now been removed in V2. Instead, use the strongly typed builder pattern that enables you to pass parameters to components you render.
 
-## `TestContext` implements `IDisposable` and `IAsyncDisposable`
-The `TestContext` now implements `IDisposable` and `IAsyncDisposable`. In version 1.x, `TestContext` only implemented `IDisposable` and cleaned up asynchronous objects in the synchronous `Dispose` method. This is no longer the case, and asynchronous objects are now cleaned up in the `DisposeAsync` method.
+## `BunitContext` implements `IDisposable` and `IAsyncDisposable`
+The `BunitContext` now implements `IDisposable` and `IAsyncDisposable`. In version 1.x, `BunitContext` only implemented `IDisposable` and cleaned up asynchronous objects in the synchronous `Dispose` method. This is no longer the case, and asynchronous objects are now cleaned up in the `DisposeAsync` method.
 If you register services into the container that implement `IAsyncDisposable` make sure that the test framework calls the right method.
+
+## `TestContext` was renamed to `BunitContext`
+The `TestContext` class has been renamed to `BunitContext`. If you used `TestContext`, you should replace it with `BunitContext`.
+
+## `TestContextWrapper` was removed
+The `TestContextWrapper` class has been removed. Either use lifecycle events of the testing framework (like `LifeCycle.InstancePerTestCase` in NUnit).
+```csharp
+[FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
+public class HelloWorldInstancePerTestCase : Bunit.TestContext
+{
+  [Test]
+  public void HelloWorldComponentRendersCorrectly()
+  {
+    // Act
+    var cut = RenderComponent<HelloWorld>();
+
+    // Assert
+    cut.MarkupMatches("<h1>Hello world from Blazor</h1>");
+  }
+}
+```
+
+Or use the `BunitContext` directly and manage the lifecycle yourself.
