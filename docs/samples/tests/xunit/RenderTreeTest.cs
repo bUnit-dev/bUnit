@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit.Docs.Samples;
 
-public class RenderTreeTest : TestContext
+public class RenderTreeTest : BunitContext
 {
   [Fact]
   public void PrintCascadingValueTest()

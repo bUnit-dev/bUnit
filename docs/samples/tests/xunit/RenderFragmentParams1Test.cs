@@ -8,7 +8,7 @@ using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples;
 
-public class RenderFragmentParams1Test : TestContext
+public class RenderFragmentParams1Test : BunitContext
 {
   [Fact]
   public void Test()

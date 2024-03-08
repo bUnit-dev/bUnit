@@ -79,7 +79,7 @@ public sealed class JSRuntimeUnhandledInvocationException : Exception
 		sb.AppendLine();
 		sb.AppendLine("The setup methods are available on an instance of the BunitJSInterop or");
 		sb.AppendLine("BunitJSModuleInterop type. The standard BunitJSInterop is available");
-		sb.AppendLine("through the TestContext.JSInterop property, and a BunitJSModuleInterop");
+		sb.AppendLine("through the BunitContext.JSInterop property, and a BunitJSModuleInterop");
 		sb.AppendLine("instance is returned from calling SetupModule on a BunitJSInterop instance.");
 		return sb.ToString();
 	}

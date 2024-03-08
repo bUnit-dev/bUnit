@@ -295,7 +295,7 @@ public static class MarkupMatchesAssertExtensions
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
 
-		var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as RenderedFragment
+		var renderedFragment = actual.GetBunitContext()?.RenderInsideRenderTree(expected) as RenderedFragment
 			?? AdhocRenderRenderFragment(expected);
 		MarkupMatches(actual, renderedFragment, userMessage);
 	}
@@ -314,7 +314,7 @@ public static class MarkupMatchesAssertExtensions
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
 
-		var renderedFragment = actual.GetTestContext()?.RenderInsideRenderTree(expected) as RenderedFragment
+		var renderedFragment = actual.GetBunitContext()?.RenderInsideRenderTree(expected) as RenderedFragment
 			?? AdhocRenderRenderFragment(expected);
 		MarkupMatches(actual, renderedFragment, userMessage);
 	}
@@ -412,7 +412,7 @@ public static class MarkupMatchesAssertExtensions
 
 	private static RenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
 	{
-		using var ctx = new TestContext();
+		using var ctx = new BunitContext();
 		return ctx.RenderInsideRenderTree(renderFragment);
 	}
 

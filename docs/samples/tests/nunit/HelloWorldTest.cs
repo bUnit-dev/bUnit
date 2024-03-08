@@ -3,7 +3,7 @@ namespace Bunit.Docs.Samples;
 using Bunit;
 using NUnit.Framework;
 
-public class HelloWorldTest : BunitTestContext
+public class HelloWorldTest : BunitContext
 {
     [Test]
     public void HelloWorldComponentRendersCorrectly()

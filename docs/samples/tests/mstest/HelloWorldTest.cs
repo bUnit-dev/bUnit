@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Bunit;
 
 [TestClass]
-public class HelloWorldTest : BunitTestContext
+public class HelloWorldTest : BunitContext
 {
   [TestMethod]
   public void HelloWorldComponentRendersCorrectly()
