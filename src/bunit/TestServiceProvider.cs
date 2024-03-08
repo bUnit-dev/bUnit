@@ -250,7 +250,7 @@ public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollect
 		{
 			throw new InvalidOperationException(
 				"New services/implementations cannot be registered with the " +
-				"Services provider in a TestContext, after the first services has been retrieved " +
+				"Services provider in a BunitContext, after the first services has been retrieved " +
 				"from it using e.g. the GetService or GetRequiredService methods. " +
 				"This typically happens when a component is rendered, so make " +
 				"sure all services are added before that.");

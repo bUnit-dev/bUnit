@@ -3,7 +3,7 @@ using Bunit;
 
 namespace Bunit.Docs.Samples;
 
-public class CounterTest : TestContext
+public class CounterTest : BunitContext
 {
   [Fact]
   public void CounterShouldIncrementWhenClicked()

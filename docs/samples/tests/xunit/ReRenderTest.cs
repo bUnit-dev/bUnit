@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Bunit.Docs.Samples;
 
-public class ReRenderTest : TestContext
+public class ReRenderTest : BunitContext
 {
   [Fact]
   public void RenderAgainUsingRender()

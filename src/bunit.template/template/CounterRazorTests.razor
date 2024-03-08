@@ -1,10 +1,10 @@
 @*#if (testFramework_xunit)*@
-@inherits TestContext
+@inherits BunitContext
 @*#elif (testFramework_nunit)*@
-@inherits BunitTestContext
+@inherits BunitContext
 @*#elif (testFramework_mstest)*@
 @attribute [TestClass]
-@inherits BunitTestContext
+@inherits BunitContext
 @*#endif*@
 
 These tests are written entirely in razor and C# syntax.

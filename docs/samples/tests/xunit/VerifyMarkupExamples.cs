@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Bunit.Docs.Samples;
 
-public class VerifyMarkupExamples : TestContext
+public class VerifyMarkupExamples : BunitContext
 {
   [Fact]
   public void RawMarkupVerify()

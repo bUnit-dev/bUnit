@@ -173,7 +173,7 @@ public partial class TestServiceProviderTest
 	public void Test030()
 	{
 		// Arrange
-		using var ctx = new TestContext();
+		using var ctx = new BunitContext();
 		var fallbackServiceProvider = new ServiceCollection()
 			.AddSingleton(new DummyService())
 			.BuildServiceProvider();
@@ -300,7 +300,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Should resolve keyed service from container")]
 	public void Test040()
 	{
-		using var ctx = new TestContext();
+		using var ctx = new BunitContext();
 		ctx.Services.AddKeyedScoped<DummyService>("Key");
 
 		var cut = ctx.Render<ComponentWithKeyedService>();
@@ -311,7 +311,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Should resolved keyed service from fallback service provider")]
 	public void Test041()
 	{
-		using var ctx = new TestContext();
+		using var ctx = new BunitContext();
 		var fallbackCollection = new ServiceCollection();
 		fallbackCollection.AddKeyedScoped<DummyService>("Key");
 		ctx.Services.AddFallbackServiceProvider(fallbackCollection.BuildServiceProvider());
@@ -324,7 +324,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Throw an exception if required keyed service is not found")]
 	public void Test042()
 	{
-		using var ctx = new TestContext();
+		using var ctx = new BunitContext();
 
 		Should.Throw<InvalidOperationException>(() => ctx.Render<ComponentWithKeyedService>());
 	}

@@ -19,7 +19,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 
 		return renderedFragment
 			.Services
-			.GetRequiredService<TestContext>()
+			.GetRequiredService<BunitContext>()
 			.Renderer
 			.Dispatcher
 			.InvokeAsync(workItem);
@@ -37,7 +37,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 
 		return renderedFragment
 			.Services
-			.GetRequiredService<TestContext>()
+			.GetRequiredService<BunitContext>()
 			.Renderer
 			.Dispatcher
 			.InvokeAsync(workItem);
@@ -55,7 +55,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 
 		return renderedFragment
 			.Services
-			.GetRequiredService<TestContext>()
+			.GetRequiredService<BunitContext>()
 			.Renderer
 			.Dispatcher
 			.InvokeAsync(workItem);
@@ -73,7 +73,7 @@ public static class RenderedFragmentInvokeAsyncExtensions
 
 		return renderedFragment
 			.Services
-			.GetRequiredService<TestContext>()
+			.GetRequiredService<BunitContext>()
 			.Renderer
 			.Dispatcher
 			.InvokeAsync(workItem);

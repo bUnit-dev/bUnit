@@ -56,7 +56,7 @@ public class BunitAuthorizationServiceTest
 	public async Task Test005()
 	{
 		// arrange
-		using var ctx = new TestContext();
+		using var ctx = new BunitContext();
 		var authService = ctx.Services.GetRequiredService<IAuthorizationService>();
 		var requirements = Array.Empty<IAuthorizationRequirement>();
 
@@ -72,7 +72,7 @@ public class BunitAuthorizationServiceTest
 	public async Task Test006()
 	{
 		// arrange
-		using var ctx = new TestContext();
+		using var ctx = new BunitContext();
 		var authService = ctx.Services.GetRequiredService<IAuthorizationService>();
 
 		// act

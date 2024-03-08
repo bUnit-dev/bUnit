@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bunit.Docs.Samples;
 
-public class AsyncDataTest : TestContext
+public class AsyncDataTest : BunitContext
 {
   [Fact]
   public void LoadDataAsync()
