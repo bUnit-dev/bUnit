@@ -5,7 +5,7 @@ title: Adding IWebAssemblyHostEnvironment
 
 # Adding `IWebAssemblyHostEnvironment`
 
-bUnit has itws own implementation of Blazor's `IWebAssemblyHostEnvironment` built-in, which is added by default to bUnit's `TestContext.Services` service provider. That means nothing special is needed to test components that depend on `IWebAssemblyHostEnvironment`, as it is already available by default.
+bUnit has itws own implementation of Blazor's `IWebAssemblyHostEnvironment` built-in, which is added by default to bUnit's `BunitContext.Services` service provider. That means nothing special is needed to test components that depend on `IWebAssemblyHostEnvironment`, as it is already available by default.
 
 Out of the box, the implementation has its `Environment` property set to `production`, and its `BaseAddress` set to `/`.
 

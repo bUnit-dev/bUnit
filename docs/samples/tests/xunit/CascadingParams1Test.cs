@@ -8,7 +8,7 @@ using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples;
 
-public class CascadingParams1Test : TestContext
+public class CascadingParams1Test : BunitContext
 {
   [Fact]
   public void Test()

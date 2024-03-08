@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit.Docs.Samples;
 
-public class WeatherForecastsTest : TestContext
+public class WeatherForecastsTest : BunitContext
 {
   [Fact]
   public void ServicesIsInjectedCorrectly()

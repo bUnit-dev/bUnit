@@ -18,7 +18,7 @@ internal sealed class InstanceComponentFactory<TComponent> : IComponentFactory
 		{
 			throw new InvalidOperationException(
 				$"The instance object passed to the" +
-				$"{nameof(TestContext.ComponentFactories)}.{nameof(ComponentFactoryCollectionExtensions.Add)}<{typeof(TComponent).Name}>(instance) method can only be used to replace " +
+				$"{nameof(BunitContext.ComponentFactories)}.{nameof(ComponentFactoryCollectionExtensions.Add)}<{typeof(TComponent).Name}>(instance) method can only be used to replace " +
 				$"one {typeof(TComponent)} component in the render tree.");
 		}
 

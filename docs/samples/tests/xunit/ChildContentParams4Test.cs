@@ -8,7 +8,7 @@ using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples;
 
-public class ChildContentParams4Test : TestContext
+public class ChildContentParams4Test : BunitContext
 {
   [Fact]
   public void Test()
