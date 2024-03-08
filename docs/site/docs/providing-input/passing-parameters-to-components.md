@@ -221,7 +221,7 @@ Some times you need to pass multiple different types of content to a `RenderFrag
 
 [!code-csharp[RenderFragmentParamsTest.cs](../../../samples/tests/xunit/RenderFragmentParams4Test.cs#L11-L27)]
 
-Passing a mix of markup and components to a `RenderFragment` parameter is simply done by calling the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add()` methods or using the `ChildContent()` factory methods in <xref:Bunit.ComponentParameterFactory>, as seen here.
+Passing a mix of markup and components to a `RenderFragment` parameter is simply done by calling the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add()` methods or using the `AddChildContent` factory methods.
 
 # [Razor test code](#tab/razor)
 
