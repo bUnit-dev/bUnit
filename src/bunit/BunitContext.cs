@@ -170,7 +170,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// <param name="renderFragment">The render fragment to render.</param>
 	/// <returns>The <see cref="RenderedFragment"/>.</returns>
 	public virtual RenderedFragment Render(RenderFragment renderFragment)
-		=> this.RenderInsideRenderTree(renderFragment);
+		=> RenderInsideRenderTree(renderFragment);
 
 	/// <summary>
 	/// Dummy method required to allow Blazor's compiler to generate
@@ -186,5 +186,35 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 		return componentActivator is null
 			? new BunitRenderer(Services, logger)
 			: new BunitRenderer(Services, logger, componentActivator);
+	}
+
+	/// <summary>
+	/// Renders a component, declared in the <paramref name="renderFragment"/>, inside the <see cref="BunitContext.RenderTree"/>.
+	/// </summary>
+	/// <typeparam name="TComponent">The type of component to render.</typeparam>
+	/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> that contains a declaration of the component.</param>
+	/// <returns>A <see cref="RenderedComponent{TComponent}"/>.</returns>
+	private RenderedComponent<TComponent> RenderInsideRenderTree<TComponent>(RenderFragment renderFragment)
+		where TComponent : IComponent
+	{
+		var baseResult = RenderInsideRenderTree(renderFragment);
+		return Renderer.FindComponent<TComponent>(baseResult);
+	}
+
+	/// <summary>
+	/// Renders a fragment, declared in the <paramref name="renderFragment"/>, inside the <see cref="BunitContext.RenderTree"/>.
+	/// </summary>
+	/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> to render.</param>
+	/// <returns>A <see cref="RenderedFragment"/>.</returns>
+	private RenderedComponent<FragmentContainer> RenderInsideRenderTree(RenderFragment renderFragment)
+	{
+		// Wrap fragment in a FragmentContainer so the start of the test supplied
+		// razor fragment can be found after, and then wrap in any layout components
+		// added to the test context.
+		var wrappedInFragmentContainer = FragmentContainer.Wrap(renderFragment);
+		var wrappedInRenderTree = RenderTree.Wrap(wrappedInFragmentContainer);
+		var resultBase = Renderer.RenderFragment(wrappedInRenderTree);
+
+		return Renderer.FindComponent<FragmentContainer>(resultBase);
 	}
 }
