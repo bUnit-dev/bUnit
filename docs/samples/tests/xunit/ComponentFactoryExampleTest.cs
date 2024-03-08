@@ -4,7 +4,7 @@ using Bunit;
 
 namespace Bunit.Docs.Samples
 {
-  public class ComponentFactoryExampleTest : TestContext
+  public class ComponentFactoryExampleTest : BunitContext
   {
     [Fact]
     public void ReplacesFooWithBarDuringTest()

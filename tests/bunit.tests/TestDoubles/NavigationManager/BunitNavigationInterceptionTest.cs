@@ -14,7 +14,7 @@ public class BunitNavigationInterceptionTest
 	[Fact(DisplayName = "FakeNavigationInterception is registered as the default INavigationInterception")]
 	public void Test002()
 	{
-		using var ctx = new TestContext();
+		using var ctx = new BunitContext();
 		ctx.Services.GetService<INavigationInterception>()
 			.ShouldBeOfType<BunitNavigationInterception>();
 	}

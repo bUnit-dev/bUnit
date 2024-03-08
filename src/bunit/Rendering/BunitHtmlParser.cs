@@ -34,11 +34,11 @@ public sealed class BunitHtmlParser : IDisposable
 	/// Initializes a new instance of the <see cref="BunitHtmlParser"/> class
 	/// with a AngleSharp context registered.
 	/// </summary>
-	public BunitHtmlParser(HtmlComparer htmlComparer, TestContext testContext)
+	public BunitHtmlParser(HtmlComparer htmlComparer, BunitContext bunitContext)
 		: this(Configuration.Default.WithCss()
 			  .With(htmlComparer ?? throw new ArgumentNullException(nameof(htmlComparer)))
-			  .With(testContext ?? throw new ArgumentNullException(nameof(testContext)))
-			  .With(testContext.Renderer))
+			  .With(bunitContext ?? throw new ArgumentNullException(nameof(bunitContext)))
+			  .With(bunitContext.Renderer))
 	{ }
 
 	private BunitHtmlParser(IConfiguration angleSharpConfiguration)

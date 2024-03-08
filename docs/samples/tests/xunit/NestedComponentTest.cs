@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Bunit.Docs.Samples;
 
-public class NestedComponentTest : TestContext
+public class NestedComponentTest : BunitContext
 {
   [Fact]
   public void Test()

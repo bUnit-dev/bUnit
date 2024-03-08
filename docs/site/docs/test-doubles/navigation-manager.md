@@ -5,7 +5,7 @@ title: Adding NavigationManager
 
 # Adding `NavigationManager`
 
-bUnit has its own version of Blazor's `NavigationManager` built-in, which is added by default to bUnit's `TestContext.Services` service provider. That means nothing special is needed to test components that depend on `NavigationManager`, as it is already available by default.
+bUnit has its own version of Blazor's `NavigationManager` built-in, which is added by default to bUnit's `BunitContext.Services` service provider. That means nothing special is needed to test components that depend on `NavigationManager`, as it is already available by default.
 
 ## Verify `NavigationManager` interactions
 

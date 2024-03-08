@@ -56,7 +56,7 @@ public abstract class WaitForHelper<T> : IDisposable
 		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
 		renderer = renderedFragment
 			.Services
-			.GetRequiredService<TestContext>()
+			.GetRequiredService<BunitContext>()
 			.Renderer;
 		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
 		timer = new Timer(_ =>
@@ -198,6 +198,6 @@ public abstract class WaitForHelper<T> : IDisposable
 	{
 		return Debugger.IsAttached
 			? Timeout.InfiniteTimeSpan
-			: timeout ?? TestContext.DefaultWaitTimeout;
+			: timeout ?? BunitContext.DefaultWaitTimeout;
 	}
 }
