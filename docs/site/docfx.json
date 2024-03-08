@@ -5,8 +5,7 @@
       "src": [
         {
           "files": [
-            "bunit.core/**/bin/Release/**.dll",
-            "bunit.web/**/bin/Release/**.dll"
+            "bunit/**/bin/Release/**.dll"
           ],
           "src": "../../src"
         }
