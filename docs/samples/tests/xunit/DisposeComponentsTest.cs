@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Bunit.Docs.Samples;
 
-public class DisposeComponentsTest : TestContext
+public class DisposeComponentsTest : BunitContext
 {
   [Fact]
   public void DisposeElements()

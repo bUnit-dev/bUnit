@@ -4,7 +4,7 @@ using Bunit;
 
 namespace Bunit.Docs.Samples;
 
-public class ClickMeTest : TestContext
+public class ClickMeTest : BunitContext
 {
   [Fact]
   public void Test()

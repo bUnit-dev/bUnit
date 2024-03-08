@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Bunit.Docs.Samples;
 
-public class UserRightsTest : TestContext
+public class UserRightsTest : BunitContext
 {
   [Fact(DisplayName = "No roles or policies")]
   public void Test001()

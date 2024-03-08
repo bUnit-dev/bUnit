@@ -87,7 +87,7 @@ With xUnit, this can be done as follows:
 
   namespace MyTests;
   
-  public class MyComponenTest : TestContext
+  public class MyComponenTest : BunitContext
   {
     public MyComponenTest(ITestOutputHelper outputHelper)
     {

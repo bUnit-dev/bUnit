@@ -3,7 +3,7 @@ using NUnit.Framework;
 namespace Bunit.Docs.Samples;
 
 [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
-public class HelloWorldInstancePerTestCase : Bunit.TestContext
+public class HelloWorldInstancePerTestCase : Bunit.BunitContext
 {
   [Test]
   public void HelloWorldComponentRendersCorrectly()

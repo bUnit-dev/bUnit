@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Bunit.Docs.Samples;
 
-public class InjectAuthServiceTest : TestContext
+public class InjectAuthServiceTest : BunitContext
 {
   [Fact(DisplayName = "Use AuthenticationStateProvider service with authenticated and authorized user")]
   public void Test001()
