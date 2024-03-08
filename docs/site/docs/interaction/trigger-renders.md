@@ -17,11 +17,11 @@ Let's look at how to use each of these methods to cause a re-render.
 
 ## Render
 
-The [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0})) method tells the renderer to re-render the component, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods). To use it, do the following:
+The [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) method tells the renderer to re-render the component, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods). To use it, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=15&end=21&highlight=5)]
 
-The highlighted line shows the call to [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0})).
+The highlighted line shows the call to [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})).
 
 > [!TIP]
 > The number of renders a component has been through can be inspected and verified using the <xref:Bunit.RenderedFragment.RenderCount> property.
