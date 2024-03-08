@@ -295,7 +295,7 @@ public static class MarkupMatchesAssertExtensions
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
 
-		var renderedFragment = actual.GetBunitContext()?.RenderInsideRenderTree(expected) as RenderedFragment
+		var renderedFragment = actual.GetBunitContext()?.Render(expected)
 			?? AdhocRenderRenderFragment(expected);
 		MarkupMatches(actual, renderedFragment, userMessage);
 	}
@@ -314,7 +314,7 @@ public static class MarkupMatchesAssertExtensions
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
 
-		var renderedFragment = actual.GetBunitContext()?.RenderInsideRenderTree(expected) as RenderedFragment
+		var renderedFragment = actual.GetBunitContext()?.Render(expected)
 			?? AdhocRenderRenderFragment(expected);
 		MarkupMatches(actual, renderedFragment, userMessage);
 	}
@@ -413,7 +413,7 @@ public static class MarkupMatchesAssertExtensions
 	private static RenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
 	{
 		using var ctx = new BunitContext();
-		return ctx.RenderInsideRenderTree(renderFragment);
+		return ctx.Render(renderFragment);
 	}
 
 	private static INodeList ToNodeList(this string markup, BunitHtmlParser? htmlParser)
