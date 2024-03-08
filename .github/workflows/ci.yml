@@ -8,6 +8,7 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
+      - 'docs/**'
 
   pull_request:
     types:
@@ -18,7 +19,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: verification-${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.run_id || github.event.pull_request.number || github.ref }}
+  group: ci-${{ github.workflow }}-${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2') && github.run_id || github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:
@@ -44,10 +45,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
-          3.1.x
-          5.0.x
-          6.0.x
-          7.0.x
           8.0.x
           9.0.x
 
