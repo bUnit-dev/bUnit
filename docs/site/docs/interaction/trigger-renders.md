@@ -17,25 +17,25 @@ Let's look at how to use each of these methods to cause a re-render.
 
 ## Render
 
-The [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0})) method tells the renderer to re-render the component, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods). To use it, do the following:
+The [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0})) method tells the renderer to re-render the component, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods). To use it, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=15&end=21&highlight=5)]
 
-The highlighted line shows the call to [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0})).
+The highlighted line shows the call to [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0})).
 
 > [!TIP]
 > The number of renders a component has been through can be inspected and verified using the <xref:Bunit.RenderedFragment.RenderCount> property.
 
 ## Render
 
-The [`Render(...)`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods tells the renderer to re-render the component with new parameters, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods), passing the new parameters &mdash; _but only the new parameters_ &mdash; to the `SetParametersAsync()` method. To use it, do the following:
+The [`Render(...)`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods tells the renderer to re-render the component with new parameters, i.e. go through its life-cycle methods (except for `OnInitialized()` and `OnInitializedAsync()` methods), passing the new parameters &mdash; _but only the new parameters_ &mdash; to the `SetParametersAsync()` method. To use it, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/ReRenderTest.cs?start=28&end=38&highlight=7-9)]
 
-The highlighted line shows the call to [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},Action{Bunit.ComponentParameterCollectionBuilder{``0}})), which is also available as a version that takes the zero or more component parameters, e.g. created through the component parameter factory helper methods, if you prefer that method of passing parameters.
+The highlighted line shows the call to [`Render()`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})), which is also available as a version that takes the zero or more component parameters, e.g. created through the component parameter factory helper methods, if you prefer that method of passing parameters.
 
 > [!NOTE]
-> Passing parameters to components through the [`Render(...)`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods is identical to doing it with the `Render<TComponent>(...)` methods, described in detail on the <xref:passing-parameters-to-components> page.
+> Passing parameters to components through the [`Render(...)`](xref:Bunit.RenderedComponentRenderExtensions.Render``1(Bunit.RenderedComponent{``0},System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})) methods is identical to doing it with the `Render<TComponent>(...)` methods, described in detail on the <xref:passing-parameters-to-components> page.
 
 ## InvokeAsync
 
@@ -56,7 +56,7 @@ To invoke the `Calculate()` method on the component instance, do the following:
 The highlighted line shows the call to `InvokeAsync()`, which is passed an `Action` delegate that calls the `Calculate` method.
 
 > [!TIP]
-> The instance of a component under test is available through the <xref:Bunit.IRenderedComponentBase`1.Instance> property.
+> The instance of a component under test is available through the <xref:Bunit.RenderedComponent`1.Instance> property.
 
 ### Advanced use cases
 
