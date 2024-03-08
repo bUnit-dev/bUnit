@@ -15,10 +15,10 @@ The test implementation of Blazor's authentication and authorization can be put 
 - **Authenticated** and **authorized**
 - **Authenticated** and **authorized** with one or more **roles**, **claims**, and/or **policies**
 
-bUnit's authentication and authorization implementation is easily available by calling [`AddAuthorization()`](xref:Bunit.BunitContext.AddAuthorization()) on a test context. This adds the necessary services to the `Services` collection and the `CascadingAuthenticationState` component to the [root render tree](xref:root-render-tree). The method returns an instance of the <xref:Bunit.TestDoubles.BunitAuthorizationContext> type that allows you to control the authentication and authorization state for a test.
+bUnit's authentication and authorization implementation is easily available by calling [`AddAuthorization()`](xref:Bunit.BunitContext.AddAuthorization) on a test context. This adds the necessary services to the `Services` collection and the `CascadingAuthenticationState` component to the [root render tree](xref:root-render-tree). The method returns an instance of the <xref:Bunit.TestDoubles.BunitAuthorizationContext> type that allows you to control the authentication and authorization state for a test.
 
 > [!NOTE]
-> If your test class inherits directly from bUnit's <xref:Bunit.BunitContext> then you need to call the [`AddAuthorization()`](xref:Bunit.BunitContext.AddAuthorization()) method on `this`, since `AddAuthorization()` is an extension method, otherwise it wont be available. E.g.: `AddAuthorization()`.
+> If your test class inherits directly from bUnit's <xref:Bunit.BunitContext> then you need to call the [`AddAuthorization()`](xref:Bunit.BunitContext.AddAuthorization) method on `this`, since `AddAuthorization()` is an extension method, otherwise it wont be available. E.g.: `AddAuthorization()`.
 
 The following sections show how to set each of these states in a test.
 
