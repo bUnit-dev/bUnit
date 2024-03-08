@@ -55,7 +55,7 @@ public static class RenderedFragmentExtensions
 	{
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 
-		var renderer = renderedFragment.Services.GetRequiredService<TestContext>().Renderer;
+		var renderer = renderedFragment.Services.GetRequiredService<BunitContext>().Renderer;
 		return renderer.FindComponent<TComponent>(renderedFragment);
 	}
 
@@ -70,7 +70,7 @@ public static class RenderedFragmentExtensions
 	{
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 
-		var renderer = renderedFragment.Services.GetRequiredService<TestContext>().Renderer;
+		var renderer = renderedFragment.Services.GetRequiredService<BunitContext>().Renderer;
 		var components = renderer.FindComponents<TComponent>(renderedFragment);
 
 		return components.OfType<RenderedComponent<TComponent>>().ToArray();

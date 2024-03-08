@@ -7,7 +7,7 @@ using System.Text;
 using Xunit;
 
 namespace Bunit.Docs.Samples;
-public class CustomServiceProviderFactoryUsage : TestContext
+public class CustomServiceProviderFactoryUsage : BunitContext
 {
   [Fact]
   public void CustomServiceProviderViaFactoryReturns()
@@ -49,10 +49,10 @@ public class CustomServiceProviderFactoryUsage : TestContext
 
     //get a service which was installed in the bUnit ServiceCollection
 
-    var testContext = Services.GetService<TestContext>();
+    var BunitContext = Services.GetService<BunitContext>();
 
-    Assert.NotNull(testContext);
-    Assert.Equal(this, testContext);
+    Assert.NotNull(BunitContext);
+    Assert.Equal(this, BunitContext);
   }
 
   [Fact]
@@ -81,9 +81,9 @@ public class CustomServiceProviderFactoryUsage : TestContext
 
     //get a service which was installed in the bUnit ServiceCollection
 
-    var testContext = Services.GetService<TestContext>();
+    var BunitContext = Services.GetService<BunitContext>();
 
-    Assert.NotNull(testContext);
-    Assert.Equal(this, testContext);
+    Assert.NotNull(BunitContext);
+    Assert.Equal(this, BunitContext);
   }
 }

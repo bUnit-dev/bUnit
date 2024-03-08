@@ -17,7 +17,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 			$"{suggestedSetup}{Environment.NewLine}{Environment.NewLine}" +
 			$"The setup methods are available on an instance of the BunitJSInterop or{Environment.NewLine}" +
 			$"BunitJSModuleInterop type. The standard BunitJSInterop is available{Environment.NewLine}" +
-			$"through the TestContext.JSInterop property, and a BunitJSModuleInterop{Environment.NewLine}" +
+			$"through the BunitContext.JSInterop property, and a BunitJSModuleInterop{Environment.NewLine}" +
 			$"instance is returned from calling SetupModule on a BunitJSInterop instance.{Environment.NewLine}";
 	}
 
@@ -292,7 +292,7 @@ public partial class JSRuntimeUnhandledInvocationExceptionTest
 
 		Assert.Equal(expectedErrorMessage, sut.Message);
 	}
-	
+
 	[Theory(DisplayName = "Message prints correctly when trying to import an unconfigured module")]
 	[AutoData]
 	public void Test036(string moduleName)

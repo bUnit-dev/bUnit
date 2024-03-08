@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Bunit.Docs.Samples;
 
-public class SemanticHtmlTest : TestContext
+public class SemanticHtmlTest : BunitContext
 {
   [Fact]
   public void InitialHtmlIsCorrect()

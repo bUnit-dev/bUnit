@@ -9,7 +9,7 @@ public class HelloWorldExplicitContext
   public void HelloWorldComponentRendersCorrectly()
   {
     // Arrange
-    using var ctx = new TestContext();
+    using var ctx = new BunitContext();
 
     // Act
     var cut = ctx.Render<HelloWorld>();

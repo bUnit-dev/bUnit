@@ -2,13 +2,13 @@ using System.Globalization;
 
 namespace Bunit.Extensions.WaitForHelpers;
 
-public class RenderedFragmentWaitForElementsHelperExtensionsAsyncTest : TestContext
+public class RenderedFragmentWaitForElementsHelperExtensionsAsyncBunit : BunitContext
 {
 	private readonly static TimeSpan WaitForTestTimeout = TimeSpan.FromMilliseconds(5);
 
-	public RenderedFragmentWaitForElementsHelperExtensionsAsyncTest(ITestOutputHelper testOutput)
+	public RenderedFragmentWaitForElementsHelperExtensionsAsyncBunit(ITestOutputHelper testOutput)
 	{
-		TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
+		BunitContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(testOutput);
 	}
 

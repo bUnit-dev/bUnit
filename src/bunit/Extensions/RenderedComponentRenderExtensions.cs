@@ -18,7 +18,7 @@ public static class RenderedComponentRenderExtensions
 	{
 		ArgumentNullException.ThrowIfNull(renderedComponent);
 
-		var renderer = renderedComponent.Services.GetRequiredService<TestContext>().Renderer;
+		var renderer = renderedComponent.Services.GetRequiredService<BunitContext>().Renderer;
 
 		try
 		{
