@@ -76,3 +76,6 @@ public class HelloWorldInstancePerTestCase : Bunit.TestContext
 ```
 
 Or use the `BunitContext` directly and manage the lifecycle yourself.
+
+## `TestServiceProvider` renamed to `BunitTestServiceProvider`
+The `TestServiceProvider` class has been renamed to `BunitTestServiceProvider`. If you used `TestServiceProvider`, you should replace it with `BunitTestServiceProvider`.
