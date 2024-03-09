@@ -3,7 +3,7 @@ using Bunit.TestDoubles;
 
 namespace Bunit;
 
-public partial class BunitContextBunit : BunitContext
+public class BunitContextTest : BunitContext
 {
 	[Fact(DisplayName = "DisposeComponents disposes rendered components in parent to child order")]
 	public void Test101()
