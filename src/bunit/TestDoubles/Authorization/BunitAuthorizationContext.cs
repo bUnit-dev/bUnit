@@ -53,7 +53,7 @@ public class BunitAuthorizationContext
 	/// <summary>
 	/// Creates a new instance of <see cref="BunitAuthorizationContext"/>.
 	/// </summary>
-	internal BunitAuthorizationContext(TestServiceProvider services)
+	internal BunitAuthorizationContext(BunitServiceProvider services)
 	{
 		services.AddSingleton<IAuthorizationService>(authService);
 		services.AddSingleton<IAuthorizationPolicyProvider>(policyProvider);
