@@ -6,7 +6,7 @@ namespace Bunit;
 /// Represents a <see cref="IServiceProvider"/> and <see cref="IServiceCollection"/>
 /// as a single type used for test purposes.
 /// </summary>
-public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollection, IDisposable, IAsyncDisposable
+public sealed class BunitServiceProvider : IKeyedServiceProvider, IServiceCollection, IDisposable, IAsyncDisposable
 {
 	private static readonly ServiceProviderOptions DefaultServiceProviderOptions = new() { ValidateScopes = true };
 	private readonly IServiceCollection serviceCollection;
@@ -18,7 +18,7 @@ public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollect
 	private Func<IServiceProvider> serviceProviderFactory;
 
 	/// <summary>
-	/// Gets a value indicating whether this <see cref="TestServiceProvider"/> has been initialized, and
+	/// Gets a value indicating whether this <see cref="BunitServiceProvider"/> has been initialized, and
 	/// no longer will accept calls to the <c>AddService</c>'s methods.
 	/// </summary>
 	public bool IsProviderInitialized => serviceProvider is not null;
@@ -50,15 +50,15 @@ public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollect
 	}
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="TestServiceProvider"/> class
+	/// Initializes a new instance of the <see cref="BunitServiceProvider"/> class
 	/// and sets its service collection to the provided <paramref name="initialServiceCollection"/>, if any.
 	/// </summary>
-	public TestServiceProvider(IServiceCollection? initialServiceCollection = null)
+	public BunitServiceProvider(IServiceCollection? initialServiceCollection = null)
 		: this(initialServiceCollection ?? new ServiceCollection(), initializeProvider: false)
 	{
 	}
 
-	private TestServiceProvider(IServiceCollection initialServiceCollection, bool initializeProvider)
+	private BunitServiceProvider(IServiceCollection initialServiceCollection, bool initializeProvider)
 	{
 		serviceCollection = initialServiceCollection;
 		serviceProviderFactory = () => serviceCollection.BuildServiceProvider(Options);
@@ -110,7 +110,7 @@ public sealed class TestServiceProvider : IKeyedServiceProvider, IServiceCollect
 	{
 		CheckInitializedAndThrow();
 
-		serviceCollection.AddSingleton<TestServiceProvider>(this);
+		serviceCollection.AddSingleton<BunitServiceProvider>(this);
 		rootServiceProvider = serviceProviderFactory.Invoke();
 		serviceScope = rootServiceProvider.CreateScope();
 		serviceProvider = serviceScope.ServiceProvider;
