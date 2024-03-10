@@ -12,7 +12,7 @@ namespace Bunit.Extensions;
 /// <summary>
 /// Helper methods for correctly registering test dependencies.
 /// </summary>
-public static class TestServiceProviderExtensions
+public static class BunitServiceProviderExtensions
 {
 	/// <summary>
 	/// Registers the default services required by the web <see cref="BunitContext"/>.
