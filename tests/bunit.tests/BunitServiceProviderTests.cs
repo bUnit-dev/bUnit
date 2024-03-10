@@ -2,12 +2,12 @@ using System.Collections;
 
 namespace Bunit;
 
-public partial class TestServiceProviderTest
+public partial class BunitServiceProviderTests
 {
 	[Fact(DisplayName = "Provider initialized without a service collection has zero services by default")]
 	public void Test001()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 
 		sut.Count.ShouldBe(0);
 	}
@@ -17,7 +17,7 @@ public partial class TestServiceProviderTest
 	{
 		var services = new ServiceCollection();
 		services.AddSingleton(new DummyService());
-		using var sut = new TestServiceProvider(services);
+		using var sut = new BunitServiceProvider(services);
 
 		sut.Count.ShouldBe(1);
 		sut[0].ServiceType.ShouldBe(typeof(DummyService));
@@ -26,7 +26,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Services can be registered in the provider like a normal service collection")]
 	public void Test010()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 
 		sut.Add(new ServiceDescriptor(typeof(DummyService), new DummyService()));
 		sut.Insert(0, new ServiceDescriptor(typeof(AnotherDummyService), new AnotherDummyService()));
@@ -40,7 +40,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Services can be removed in the provider like a normal service collection")]
 	public void Test011()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		var descriptor = new ServiceDescriptor(typeof(DummyService), new DummyService());
 		var anotherDescriptor = new ServiceDescriptor(typeof(AnotherDummyService), new AnotherDummyService());
 		var oneMoreDescriptor = new ServiceDescriptor(typeof(OneMoreDummyService), new OneMoreDummyService());
@@ -62,7 +62,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Misc collection methods works as expected")]
 	public void Test012()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		var descriptor = new ServiceDescriptor(typeof(DummyService), new DummyService());
 		var copyToTarget = new ServiceDescriptor[1];
 		sut.Add(descriptor);
@@ -81,7 +81,7 @@ public partial class TestServiceProviderTest
 	{
 		var descriptor = new ServiceDescriptor(typeof(AnotherDummyService), new AnotherDummyService());
 
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		sut.AddSingleton(new DummyService());
 		sut.GetService<DummyService>();
 
@@ -103,7 +103,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Registered services can be retrieved from the provider")]
 	public void Test020()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		var expected = new DummyService();
 		sut.AddSingleton(expected);
 
@@ -115,7 +115,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "No registered service returns null")]
 	public void Test021()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 
 		var result = sut.GetService(typeof(DummyService));
 
@@ -125,7 +125,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Registered fallback service provider returns value")]
 	public void Test022()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		sut.AddFallbackServiceProvider(new FallbackServiceProvider());
 
 		var result = sut.GetService(typeof(object));
@@ -137,7 +137,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Register fallback service with null value")]
 	public void Test023()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		Assert.Throws<ArgumentNullException>(() => sut.AddFallbackServiceProvider(null!));
 	}
 
@@ -146,7 +146,7 @@ public partial class TestServiceProviderTest
 	{
 		const string exceptionStringResult = "exceptionStringResult";
 
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		sut.AddSingleton<string>(exceptionStringResult);
 		sut.AddFallbackServiceProvider(new FallbackServiceProvider());
 
@@ -160,7 +160,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Latest fallback provider is used")]
 	public void Test025()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		sut.AddFallbackServiceProvider(new FallbackServiceProvider());
 		sut.AddFallbackServiceProvider(new AnotherFallbackServiceProvider());
 
@@ -186,7 +186,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Can correctly resolve and dispose of scoped disposable service")]
 	public void Test031()
 	{
-		var sut = new TestServiceProvider();
+		var sut = new BunitServiceProvider();
 		sut.AddScoped<DisposableService>();
 		var disposable = sut.GetService<DisposableService>();
 
@@ -198,7 +198,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Can correctly resolve and dispose of transient disposable service")]
 	public void Test032()
 	{
-		var sut = new TestServiceProvider();
+		var sut = new BunitServiceProvider();
 		sut.AddTransient<DisposableService>();
 		var disposable = sut.GetService<DisposableService>();
 
@@ -210,7 +210,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Can correctly resolve and dispose of singleton disposable service")]
 	public void Test033()
 	{
-		var sut = new TestServiceProvider();
+		var sut = new BunitServiceProvider();
 		sut.AddSingleton<DisposableService>();
 		var disposable = sut.GetService<DisposableService>();
 
@@ -222,7 +222,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Validates that all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is true")]
 	public void Test035()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		sut.Options = new ServiceProviderOptions
 		{
 			ValidateOnBuild = true,
@@ -238,7 +238,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Does not validate all dependencies can be created when the first service is requested, if ServiceProviderOptions.ValidateOnBuild is false")]
 	public void Test036()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		sut.Options = new ServiceProviderOptions
 		{
 			ValidateOnBuild = false,
@@ -255,7 +255,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Does not validate all dependencies can be created when the first service is requested, if no ServiceProviderOptions is provided (backwards compatibility)")]
 	public void Test037()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		sut.AddSingleton<DummyService>();
 		sut.AddSingleton<DummyServiceWithDependencyOnAnotherDummyService>();
 
@@ -267,7 +267,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Test custom service provider factory")]
 	public void Test038()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		sut.AddSingleton<DummyService>();
 		var dummyServiceProviderFactory = new DummyServiceProviderFactory();
 		sut.UseServiceProviderFactory(dummyServiceProviderFactory);
@@ -284,7 +284,7 @@ public partial class TestServiceProviderTest
 	[Fact(DisplayName = "Test custom service provider factory as delegate")]
 	public void Test039()
 	{
-		using var sut = new TestServiceProvider();
+		using var sut = new BunitServiceProvider();
 		sut.AddSingleton<DummyService>();
 		DummyServiceProvider dummyServiceProvider = null;
 		sut.UseServiceProviderFactory(x => dummyServiceProvider = new DummyServiceProvider(x));

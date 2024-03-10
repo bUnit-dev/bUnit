@@ -10,7 +10,7 @@ namespace Bunit;
 [DebuggerDisplay("Rendered:{RenderCount}")]
 public class RenderedFragment : IDisposable
 {
-	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by TestServiceProvider, disposed by it.")]
+	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by BunitServiceProvider, disposed by it.")]
 	private readonly BunitHtmlParser htmlParser;
 	private string markup = string.Empty;
 	private INodeList? latestRenderNodes;

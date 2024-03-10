@@ -28,11 +28,11 @@ The highlighted line shows how the `IWeatherForecastService` is registered in th
 
 ##  Fallback service provider
 
-A fallback service provider can be registered with the built-in `TestServiceProvider`. This enables a few interesting use cases, such as using an alternative IoC container (which should implement the `IServiceProvider` interface), or automatically creating mock services for your Blazor components. The latter can be achieved by using a combination of [AutoFixture](https://github.com/AutoFixture/AutoFixture) and your favorite mocking framework, e.g. Moq, NSubsitute, or Telerik JustMock.
+A fallback service provider can be registered with the built-in `BunitServiceProvider`. This enables a few interesting use cases, such as using an alternative IoC container (which should implement the `IServiceProvider` interface), or automatically creating mock services for your Blazor components. The latter can be achieved by using a combination of [AutoFixture](https://github.com/AutoFixture/AutoFixture) and your favorite mocking framework, e.g. Moq, NSubsitute, or Telerik JustMock.
 
 ### When is the fallback service provider used?
 
-The logic inside the `TestServiceProvider` for using the fallback service provider is as follows:
+The logic inside the `BunitServiceProvider` for using the fallback service provider is as follows:
 
 1. Try resolving the requested service from the standard service provider in bUnit.
 2. If that fails, try resolving from a fallback service provider, if one exists.
@@ -52,7 +52,7 @@ Here is a test where the fallback service provider is used:
 In this example, the `DummyService` is provided by the fallback service provider, since it is not registered in the default service provider.
 
 ## Using a custom IServiceProvider implementation
-A custom service provider factory can be registered with the built-in `TestServiceProvider`. It is used to create the underlying IServiceProvider. This enables a few interesting use cases, such as using an alternative IoC container (which should implement the `IServiceProvider` interface). This approach can be useful if the fallback service provider is not an option. For example, if you have dependencies in the fallback container, that rely on dependencies which are in the main container and vice versa.
+A custom service provider factory can be registered with the built-in `BunitServiceProvider`. It is used to create the underlying IServiceProvider. This enables a few interesting use cases, such as using an alternative IoC container (which should implement the `IServiceProvider` interface). This approach can be useful if the fallback service provider is not an option. For example, if you have dependencies in the fallback container, that rely on dependencies which are in the main container and vice versa.
 
 ### Registering Autofac service provider factory
 The example makes use of `AutofacServiceProviderFactory` and `AutofacServiceProvider` from the package `Autofac.Extensions.DependencyInjection` and shows how to use an Autofac dependency container with bUnit.
