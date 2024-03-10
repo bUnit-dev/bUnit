@@ -11,7 +11,7 @@ using System.Text.Json;
 
 public static class MockHttpClientBunitHelpers
 {
-  public static MockHttpMessageHandler AddMockHttpClient(this TestServiceProvider services)
+  public static MockHttpMessageHandler AddMockHttpClient(this BunitServiceProvider services)
   {
     var mockHttpHandler = new MockHttpMessageHandler();
     var httpClient = mockHttpHandler.ToHttpClient();
