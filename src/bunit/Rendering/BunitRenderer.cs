@@ -10,7 +10,7 @@ namespace Bunit.Rendering;
 /// </summary>
 public sealed class BunitRenderer : Renderer
 {
-	private readonly TestServiceProvider services;
+	private readonly BunitServiceProvider services;
 
 	[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_isBatchInProgress")]
 	private static extern ref bool GetIsBatchInProgressField(Renderer renderer);
@@ -57,7 +57,7 @@ public sealed class BunitRenderer : Renderer
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public BunitRenderer(TestServiceProvider services, ILoggerFactory loggerFactory)
+	public BunitRenderer(BunitServiceProvider services, ILoggerFactory loggerFactory)
 		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), null))
 	{
 		this.services = services;
@@ -68,7 +68,7 @@ public sealed class BunitRenderer : Renderer
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
-	public BunitRenderer(TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
+	public BunitRenderer(BunitServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
 		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), componentActivator))
 	{
 		this.services = services;

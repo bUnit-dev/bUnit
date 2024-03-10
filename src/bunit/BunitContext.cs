@@ -33,7 +33,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// Gets the service collection and service provider that is used when a
 	/// component is rendered by the test context.
 	/// </summary>
-	public TestServiceProvider Services { get; }
+	public BunitServiceProvider Services { get; }
 
 	/// <summary>
 	/// Gets the <see cref="RootRenderTree"/> that all components rendered with the
@@ -58,7 +58,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// </summary>
 	public BunitContext()
 	{
-		Services = new TestServiceProvider();
+		Services = new BunitServiceProvider();
 		Services.AddSingleton<ComponentFactoryCollection>(_ => ComponentFactories);
 		Services.AddDefaultBunitContextServices(this, JSInterop);
 	}

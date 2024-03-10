@@ -38,7 +38,7 @@ public sealed class BunitPersistentComponentState
 	/// <remarks>
 	/// Only call this method after all services has been registered with the <see cref="BunitContext.Services"/>.
 	/// Calling this method will lookup dependencies of the <see cref="BunitPersistentComponentState"/>
-	/// from the <see cref="TestServiceProvider"/>, which means no other services can be registered after this point.
+	/// from the <see cref="BunitServiceProvider"/>, which means no other services can be registered after this point.
 	/// </remarks>
 	public void TriggerOnPersisting()
 	{
@@ -52,7 +52,7 @@ public sealed class BunitPersistentComponentState
 	/// <remarks>
 	/// Only call this method after all services has been registered with the <see cref="BunitContext.Services"/>.
 	/// Calling this method will lookup dependencies of the <see cref="BunitPersistentComponentState"/>
-	/// from the <see cref="TestServiceProvider"/>, which means no other services can be registered after this point.
+	/// from the <see cref="BunitServiceProvider"/>, which means no other services can be registered after this point.
 	/// </remarks>
 	/// <typeparam name="TValue">The <paramref name="instance"/> type.</typeparam>
 	/// <param name="key">The key to use to persist the state.</param>
@@ -72,7 +72,7 @@ public sealed class BunitPersistentComponentState
 	/// <remarks>
 	/// Only call this method after all services has been registered with the <see cref="BunitContext.Services"/>.
 	/// Calling this method will lookup dependencies of the <see cref="BunitPersistentComponentState"/>
-	/// from the <see cref="TestServiceProvider"/>, which means no other services can be registered after this point.
+	/// from the <see cref="BunitServiceProvider"/>, which means no other services can be registered after this point.
 	/// </remarks>
 	/// <param name="key">The key used to persist the instance.</param>
 	/// <param name="instance">The persisted instance.</param>
