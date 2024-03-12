@@ -116,7 +116,7 @@ public class LabelQueryExtensionsTests : TestContext
 	[InlineData("Re-rendered input with Aria Labelledby")]
 	public void Test007(string labelText)
 	{
-		var cut = RenderComponent<LabelQueryComponent>();
+		var cut = RenderComponent<LabelQueryCounter>();
 
 		var input = cut.FindByLabelText(labelText);
 		input.GetAttribute("value").ShouldBe("0");
