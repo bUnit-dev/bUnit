@@ -1,3 +1,4 @@
+using AngleSharp.Html.Dom;
 using Bunit.TestAssets.BlazorE2E;
 
 namespace Bunit.Labels;
@@ -18,7 +19,11 @@ public class LabelQueryExtensionsTests : TestContext
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test001(string htmlElementWithLabel)
 	{
-		var cut = RenderComponent<LabelQueryComponent>();
+		var cut = RenderComponent<Wrapper>(ps =>
+			ps.AddChildContent($"""
+						<label for="{htmlElementWithLabel}-with-label">Label for {htmlElementWithLabel} 1</label>
+						<{htmlElementWithLabel} id="{htmlElementWithLabel}-with-label" />
+						"""));
 
 		var input = cut.FindByLabelText($"Label for {htmlElementWithLabel} 1");
 
@@ -31,7 +36,10 @@ public class LabelQueryExtensionsTests : TestContext
 	public void Test002()
 	{
 		var expectedLabelText = Guid.NewGuid().ToString();
-		var cut = RenderComponent<LabelQueryComponent>();
+		var cut = RenderComponent<Wrapper>(ps =>
+			ps.AddChildContent($"""
+						{Guid.NewGuid()}
+						"""));
 
 		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText))
 			.LabelText.ShouldBe(expectedLabelText);
@@ -41,7 +49,12 @@ public class LabelQueryExtensionsTests : TestContext
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test003(string htmlElementWithLabel)
 	{
-		var cut = RenderComponent<LabelQueryComponent>();
+		var cut = RenderComponent<Wrapper>(ps =>
+			ps.AddChildContent($"""
+					<label>{htmlElementWithLabel} Wrapped Label
+						<{htmlElementWithLabel} id="{htmlElementWithLabel}-wrapped-label" />
+					</label>
+				"""));
 
 		var input = cut.FindByLabelText($"{htmlElementWithLabel} Wrapped Label");
 
@@ -54,7 +67,10 @@ public class LabelQueryExtensionsTests : TestContext
 	public void Test004()
 	{
 		var expectedLabelText = "Label With Missing Input";
-		var cut = RenderComponent<LabelQueryComponent>();
+		var cut = RenderComponent<Wrapper>(ps =>
+			ps.AddChildContent($"""
+					<label>Label With Missing Input</label>
+				"""));
 
 		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText))
 			.LabelText.ShouldBe(expectedLabelText);
@@ -64,7 +80,10 @@ public class LabelQueryExtensionsTests : TestContext
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test005(string htmlElementWithLabel)
 	{
-		var cut = RenderComponent<LabelQueryComponent>();
+		var cut = RenderComponent<Wrapper>(ps =>
+			ps.AddChildContent($"""
+					<{htmlElementWithLabel} id="{htmlElementWithLabel}-with-aria-label" aria-label="{htmlElementWithLabel} Aria Label" />
+				"""));
 
 		var input = cut.FindByLabelText($"{htmlElementWithLabel} Aria Label");
 
