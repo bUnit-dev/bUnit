@@ -9,7 +9,7 @@ namespace Bunit.Web.AngleSharp;
 /// Represents an <see cref="IElement"/> factory, used by a <see cref="WrapperBase{TElement}"/>.
 /// </summary>
 [GeneratedCodeAttribute("Bunit.Web.AngleSharp", "1.0.0.0")]
-internal interface IElementWrapperFactory
+public interface IElementWrapperFactory
 {
 	/// <summary>
 	/// A method that returns the latest version of the element to wrap.
