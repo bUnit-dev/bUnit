@@ -1,9 +1,3 @@
-@* Testing aria-label *@
-@foreach (var htmlElement in htmlElementsThatCanHaveALabel)
-{
-	@((MarkupString) $"""<{htmlElement} id="{htmlElement}-with-aria-label" aria-label="{htmlElement} Aria Label"></{htmlElement}>""")
-}
-
 @* Testing aria-labelledby *@
 @foreach (var htmlElement in htmlElementsThatCanHaveALabel)
 {

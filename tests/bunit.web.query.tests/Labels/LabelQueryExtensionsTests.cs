@@ -96,7 +96,11 @@ public class LabelQueryExtensionsTests : TestContext
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test006(string htmlElementWithLabel)
 	{
-		var cut = RenderComponent<LabelQueryComponent>();
+		var cut = RenderComponent<Wrapper>(ps =>
+			ps.AddChildContent($"""
+							<h2 id="{htmlElementWithLabel}-with-aria-labelledby">{htmlElementWithLabel} Aria Labelled By</h2>
+							<{htmlElementWithLabel} aria-labelledby="{htmlElementWithLabel}-with-aria-labelledby" />
+						"""));
 
 		var input = cut.FindByLabelText($"{htmlElementWithLabel} Aria Labelled By");
 
