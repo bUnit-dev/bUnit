@@ -10,7 +10,7 @@ public class LabelNotFoundException : Exception
 	/// <summary>
 	/// Gets the Label Text used to search with.
 	/// </summary>
-	public string LabelText { get; }
+	public string LabelText { get; } = "";
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LabelNotFoundException"/> class.
