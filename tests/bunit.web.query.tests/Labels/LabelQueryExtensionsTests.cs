@@ -19,13 +19,14 @@ public class LabelQueryExtensionsTests : TestContext
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test001(string htmlElementWithLabel)
 	{
+		var labelText = $"Label for {htmlElementWithLabel} 1";
 		var cut = RenderComponent<Wrapper>(ps =>
 			ps.AddChildContent($"""
-						<label for="{htmlElementWithLabel}-with-label">Label for {htmlElementWithLabel} 1</label>
+						<label for="{htmlElementWithLabel}-with-label">{labelText}</label>
 						<{htmlElementWithLabel} id="{htmlElementWithLabel}-with-label" />
 						"""));
 
-		var input = cut.FindByLabelText($"Label for {htmlElementWithLabel} 1");
+		var input = cut.FindByLabelText(labelText);
 
 		input.ShouldNotBeNull();
 		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
@@ -49,14 +50,15 @@ public class LabelQueryExtensionsTests : TestContext
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test003(string htmlElementWithLabel)
 	{
+		var labelText = $"{htmlElementWithLabel} Wrapped Label";
 		var cut = RenderComponent<Wrapper>(ps =>
 			ps.AddChildContent($"""
-					<label>{htmlElementWithLabel} Wrapped Label
+					<label>{labelText}
 						<{htmlElementWithLabel} id="{htmlElementWithLabel}-wrapped-label" />
 					</label>
 				"""));
 
-		var input = cut.FindByLabelText($"{htmlElementWithLabel} Wrapped Label");
+		var input = cut.FindByLabelText(labelText);
 
 		input.ShouldNotBeNull();
 		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
@@ -80,12 +82,13 @@ public class LabelQueryExtensionsTests : TestContext
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test005(string htmlElementWithLabel)
 	{
+		var labelText = $"{htmlElementWithLabel} Aria Label";
 		var cut = RenderComponent<Wrapper>(ps =>
 			ps.AddChildContent($"""
-					<{htmlElementWithLabel} id="{htmlElementWithLabel}-with-aria-label" aria-label="{htmlElementWithLabel} Aria Label" />
+					<{htmlElementWithLabel} id="{htmlElementWithLabel}-with-aria-label" aria-label="{labelText}" />
 				"""));
 
-		var input = cut.FindByLabelText($"{htmlElementWithLabel} Aria Label");
+		var input = cut.FindByLabelText(labelText);
 
 		input.ShouldNotBeNull();
 		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
@@ -96,13 +99,14 @@ public class LabelQueryExtensionsTests : TestContext
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test006(string htmlElementWithLabel)
 	{
+		var labelText = $"{htmlElementWithLabel} Aria Labelled By";
 		var cut = RenderComponent<Wrapper>(ps =>
 			ps.AddChildContent($"""
-							<h2 id="{htmlElementWithLabel}-with-aria-labelledby">{htmlElementWithLabel} Aria Labelled By</h2>
+							<h2 id="{htmlElementWithLabel}-with-aria-labelledby">{labelText}</h2>
 							<{htmlElementWithLabel} aria-labelledby="{htmlElementWithLabel}-with-aria-labelledby" />
 						"""));
 
-		var input = cut.FindByLabelText($"{htmlElementWithLabel} Aria Labelled By");
+		var input = cut.FindByLabelText(labelText);
 
 		input.ShouldNotBeNull();
 		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
