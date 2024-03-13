@@ -3,7 +3,7 @@ using Bunit.Web.AngleSharp;
 
 namespace Bunit.Labels.Strategies;
 
-internal class LabelTextUsingForAttributeStrategy : ILabelTextQueryStrategy
+internal sealed class LabelTextUsingForAttributeStrategy : ILabelTextQueryStrategy
 {
 	public IElement? FindElement(IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
 	{
