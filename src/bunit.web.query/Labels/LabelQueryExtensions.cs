@@ -3,6 +3,9 @@ using Bunit.Labels.Strategies;
 
 namespace Bunit;
 
+/// <summary>
+/// Extension methods for querying IRenderedFragments by Label
+/// </summary>
 public static class LabelQueryExtensions
 {
 	private static readonly IReadOnlyList<ILabelTextQueryStrategy> LabelTextQueryStrategies = new ILabelTextQueryStrategy[]

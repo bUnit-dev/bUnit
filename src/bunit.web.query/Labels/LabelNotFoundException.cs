@@ -21,4 +21,11 @@ public class LabelNotFoundException : Exception
 	{
 		LabelText = labelText;
 	}
+
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="LabelNotFoundException"/> class.
+	/// </summary>
+	protected LabelNotFoundException(SerializationInfo info, StreamingContext context)
+		: base(info, context) { }
 }
