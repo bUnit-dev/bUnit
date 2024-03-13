@@ -130,10 +130,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// <summary>
 	/// Disposes all components rendered via this <see cref="BunitContext"/>.
 	/// </summary>
-	public void DisposeComponents()
-	{
-		Renderer.DisposeComponents();
-	}
+	public Task DisposeComponentsAsync() => Renderer.DisposeComponents();
 
 	/// <summary>
 	/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
