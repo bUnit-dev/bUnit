@@ -11,6 +11,7 @@ namespace Bunit.Rendering;
 public sealed class BunitRenderer : Renderer
 {
 	private readonly BunitServiceProvider services;
+	private readonly List<Task> disposalTasks = [];
 
 	[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_isBatchInProgress")]
 	private static extern ref bool GetIsBatchInProgressField(Renderer renderer);
@@ -178,17 +179,15 @@ public sealed class BunitRenderer : Renderer
 	/// <summary>
 	/// Disposes all components rendered by the <see cref="BunitRenderer" />.
 	/// </summary>
-	public void DisposeComponents()
+	public Task DisposeComponents()
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
+		Task? returnTask;
+
 		lock (renderTreeUpdateLock)
 		{
-			// The dispatcher will always return a completed task,
-			// when dealing with an IAsyncDisposable.
-			// Therefore checking for a completed task and awaiting it
-			// will only work on IDisposable
-			Dispatcher.InvokeAsync(() =>
+			returnTask = Dispatcher.InvokeAsync(async () =>
 			{
 				ResetUnhandledException();
 
@@ -196,11 +195,16 @@ public sealed class BunitRenderer : Renderer
 				{
 					root.Detach();
 				}
+
+				await Task.WhenAll(disposalTasks).ConfigureAwait(false);
+				disposalTasks.Clear();
 			});
 
 			rootComponents.Clear();
 			AssertNoUnhandledExceptions();
 		}
+
+		return returnTask;
 	}
 
 	/// <inheritdoc/>
@@ -210,6 +214,29 @@ public sealed class BunitRenderer : Renderer
 	{
 		ArgumentNullException.ThrowIfNull(componentActivator);
 		return componentActivator.CreateInstance(componentType);
+	}
+
+	/// <inheritdoc/>
+	protected override void AddPendingTask(ComponentState? componentState, Task task)
+	{
+		if (componentState is null)
+		{
+			ArgumentNullException.ThrowIfNull(task);
+			AddDisposalTaskToQueue();
+		}
+
+		base.AddPendingTask(componentState, task);
+
+		void AddDisposalTaskToQueue()
+		{
+			var t = task;
+			t = task.ContinueWith(_ =>
+			{
+				disposalTasks.Remove(t);
+			}, TaskScheduler.Current);
+
+			disposalTasks.Add(t);
+		}
 	}
 
 	internal Task SetDirectParametersAsync(RenderedFragment renderedComponent, ParameterView parameters)
@@ -412,6 +439,7 @@ public sealed class BunitRenderer : Renderer
 				}
 
 				renderedComponents.Clear();
+				disposalTasks.Clear();
 				unhandledExceptionTsc.TrySetCanceled();
 			}
 
