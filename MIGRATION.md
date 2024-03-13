@@ -79,3 +79,6 @@ Or use the `BunitContext` directly and manage the lifecycle yourself.
 
 ## `TestServiceProvider` renamed to `BunitTestServiceProvider`
 The `TestServiceProvider` class has been renamed to `BunitTestServiceProvider`. If you used `TestServiceProvider`, you should replace it with `BunitTestServiceProvider`.
+
+## `DisposeComponents` is now asynchronous and called `DisposeComponentsAsync`
+`DisposeComponentsAsync` allows to await `DisposeAsync` of components under test. If you used `DisposeComponents`, you should replace it with `DisposeComponentsAsync`.
