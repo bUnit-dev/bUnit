@@ -6,12 +6,12 @@ namespace Bunit;
 public class BunitContextTest : BunitContext
 {
 	[Fact(DisplayName = "DisposeComponents disposes rendered components in parent to child order")]
-	public void Test101()
+	public async Task Test101()
 	{
 		var callStack = new List<string>();
 		Render<ParentDispose>(ps => ps.Add(p => p.CallStack, callStack));
 
-		DisposeComponents();
+		await DisposeComponentsAsync();
 
 		callStack.Count.ShouldBe(2);
 		callStack[0].ShouldBe("ParentDispose");
@@ -19,33 +19,33 @@ public class BunitContextTest : BunitContext
 	}
 
 	[Fact(DisplayName = "DisposeComponents disposes multiple rendered components")]
-	public void Test102()
+	public async Task Test102()
 	{
 		var callStack = new List<string>();
 		Render<ChildDispose>(ps => ps.Add(p => p.CallStack, callStack));
 		Render<ChildDispose>(ps => ps.Add(p => p.CallStack, callStack));
 
-		DisposeComponents();
+		await DisposeComponentsAsync();
 
 		callStack.Count.ShouldBe(2);
 	}
 
 	[Fact(DisplayName = "DisposeComponents rethrows exceptions from Dispose methods in components")]
-	public void Test103()
+	public async Task Test103()
 	{
 		Render<ThrowExceptionComponent>();
-		var action = () => DisposeComponents();
+		Func<Task> action = () => DisposeComponentsAsync();
 
-		action.ShouldThrow<NotSupportedException>();
+		await action.ShouldThrowAsync<NotSupportedException>();
 	}
 
 	[Fact(DisplayName = "DisposeComponents disposes components nested in render fragments")]
-	public void Test104()
+	public async Task Test104()
 	{
 		var callStack = new List<string>();
 		Render(DisposeFragments.ChildDisposeAsFragment(callStack));
 
-		DisposeComponents();
+		await DisposeComponentsAsync();
 
 		callStack.Count.ShouldBe(1);
 	}
@@ -171,16 +171,12 @@ public class BunitContextTest : BunitContext
 	[Fact(DisplayName = "DisposeComponents captures exceptions from DisposeAsync in Renderer.UnhandledException")]
 	public async Task Test201()
 	{
-		var tcs = new TaskCompletionSource();
-		var expected = new NotSupportedException();
-		Render<AsyncThrowExceptionComponent>(
-			ps => ps.Add(p => p.DisposedTask, tcs.Task));
+		Render<AsyncThrowAfterDelayComponent>();
 
-		DisposeComponents();
+		await DisposeComponentsAsync();
 
-		tcs.SetException(expected);
 		var actual = await Renderer.UnhandledException;
-		actual.ShouldBeSameAs(expected);
+		actual.ShouldBeAssignableTo<NotSupportedException>();
 	}
 
 	[Fact(DisplayName = "DisposeComponents calls DisposeAsync on rendered components")]
@@ -189,19 +185,19 @@ public class BunitContextTest : BunitContext
 		var cut = Render<AsyncDisposableComponent>();
 		var wasDisposedTask = cut.Instance.DisposedTask;
 
-		DisposeComponents();
+		await DisposeComponentsAsync();
 
-		await wasDisposedTask.ShouldCompleteWithin(TimeSpan.FromSeconds(1));
+		wasDisposedTask.Status.ShouldBe(TaskStatus.RanToCompletion);
 	}
 
 	[Fact(DisplayName = "DisposeComponents should dispose components added via ComponentFactory")]
-	public void Test203()
+	public async Task Test203()
 	{
 		ComponentFactories.Add<ChildDispose, MyChildDisposeStub>();
 		var cut = Render<ParentDispose>(ps => ps.Add(p => p.CallStack, new List<string>()));
 		var instance = cut.FindComponent<MyChildDisposeStub>().Instance;
 
-		DisposeComponents();
+		await DisposeComponentsAsync();
 
 		instance.WasDisposed.ShouldBeTrue();
 	}
@@ -279,15 +275,13 @@ public class BunitContextTest : BunitContext
 			WasDisposed = true;
 		}
 	}
-
-	private sealed class AsyncThrowExceptionComponent : ComponentBase, IAsyncDisposable
+	
+	private sealed class AsyncThrowAfterDelayComponent : ComponentBase, IAsyncDisposable
 	{
-		[Parameter]
-		public Task DisposedTask { get; set; }
-
 		public async ValueTask DisposeAsync()
 		{
-			await DisposedTask;
+			await Task.Delay(1);
+			throw new NotSupportedException();
 		}
 	}
 

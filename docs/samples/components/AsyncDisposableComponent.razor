@@ -1,0 +1,10 @@
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+@code {
+
+  public async ValueTask DisposeAsync()
+  {
+    await JSRuntime.InvokeVoidAsync("dispose");
+  }
+}
