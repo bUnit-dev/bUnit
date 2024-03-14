@@ -8,7 +8,7 @@ internal sealed class LabelTextUsingForAttributeStrategy : ILabelTextQueryStrate
 	public IElement? FindElement(IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
 	{
 		var matchingLabel = renderedFragment.Nodes.TryQuerySelectorAll("label")
-			.SingleOrDefault(l => l.TextContent.Equals(labelText, options.ComparisonType));
+			.SingleOrDefault(l => l.TextContent.Trim().Equals(labelText, options.ComparisonType));
 
 		if (matchingLabel is null)
 			return null;

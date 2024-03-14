@@ -1,4 +1,3 @@
-using AngleSharp.Html.Dom;
 using Bunit.TestAssets.BlazorE2E;
 
 namespace Bunit.Labels;
@@ -259,5 +258,66 @@ public class LabelQueryExtensionsTests : TestContext
 		input.ShouldNotBeNull();
 		input.NodeName.ShouldBe("INPUT");
 		input.Id.ShouldBe("input-1");
+	}
+
+	[Theory(DisplayName = "Should return back associated element with label when extra spacing exists at the beginning and end of the element")]
+	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
+	public void Test017(string htmlElementWithLabel)
+	{
+		var labelText = $"Label for {htmlElementWithLabel} 1";
+		var cut = RenderComponent<Wrapper>(ps =>
+			ps.AddChildContent($"""
+						<label for="{htmlElementWithLabel}-with-label">
+							{labelText}
+						</label>
+						<{htmlElementWithLabel} id="{htmlElementWithLabel}-with-label" />
+						"""));
+
+		var input = cut.FindByLabelText(labelText);
+
+		input.ShouldNotBeNull();
+		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
+		input.Id.ShouldBe($"{htmlElementWithLabel}-with-label");
+	}
+
+	[Theory(DisplayName = "Should return back element associated with label when label when is wrapped around element with extra spacing at the beginning and end of the element")]
+	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
+	public void Test018(string htmlElementWithLabel)
+	{
+		var labelText = $"{htmlElementWithLabel} Wrapped Label";
+		var cut = RenderComponent<Wrapper>(ps =>
+			ps.AddChildContent($"""
+					<label>
+					    {labelText}
+
+						<{htmlElementWithLabel} id="{htmlElementWithLabel}-wrapped-label" />
+					</label>
+				"""));
+
+		var input = cut.FindByLabelText(labelText);
+
+		input.ShouldNotBeNull();
+		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
+		input.Id.ShouldBe($"{htmlElementWithLabel}-wrapped-label");
+	}
+
+	[Theory(DisplayName = "Should return back element associated with another element that uses aria-labelledby with extra spacing at the beginning and end")]
+	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
+	public void Test019(string htmlElementWithLabel)
+	{
+		var labelText = $"{htmlElementWithLabel} Aria Labelled By";
+		var cut = RenderComponent<Wrapper>(ps =>
+			ps.AddChildContent($"""
+							<h2 id="{htmlElementWithLabel}-with-aria-labelledby">
+								{labelText}
+							</h2>
+							<{htmlElementWithLabel} aria-labelledby="{htmlElementWithLabel}-with-aria-labelledby" />
+						"""));
+
+		var input = cut.FindByLabelText(labelText);
+
+		input.ShouldNotBeNull();
+		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
+		input.GetAttribute("aria-labelledby").ShouldBe($"{htmlElementWithLabel}-with-aria-labelledby");
 	}
 }

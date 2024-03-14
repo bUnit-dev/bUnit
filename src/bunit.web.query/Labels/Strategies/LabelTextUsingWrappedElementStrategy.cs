@@ -8,7 +8,7 @@ internal sealed class LabelTextUsingWrappedElementStrategy : ILabelTextQueryStra
 	public IElement? FindElement(IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
 	{
 		var matchingLabel = renderedFragment.Nodes.TryQuerySelectorAll("label")
-			.SingleOrDefault(l => l.InnerHtml.StartsWith(labelText, options.ComparisonType));
+			.SingleOrDefault(l => l.InnerHtml.Trim().StartsWith(labelText, options.ComparisonType));
 
 		var matchingElement = matchingLabel?
 			.Children
