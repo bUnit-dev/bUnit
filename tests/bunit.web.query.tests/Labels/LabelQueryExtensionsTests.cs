@@ -242,7 +242,7 @@ public class LabelQueryExtensionsTests : TestContext
 			.LabelText.ShouldBe(expectedLabelText);
 	}
 
-	[Theory(DisplayName = "Should return back element associated with label when  ComparisonType is case insensitive and incorrect casing is used with aria-labelledby")]
+	[Theory(DisplayName = "Should return back element associated with label when ComparisonType is case insensitive and incorrect casing is used with aria-labelledby")]
 	[InlineData(StringComparison.OrdinalIgnoreCase)]
 	[InlineData(StringComparison.InvariantCultureIgnoreCase)]
 	[InlineData(StringComparison.CurrentCultureIgnoreCase)]
