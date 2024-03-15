@@ -45,7 +45,7 @@ public class LabelQueryExtensionsTests : TestContext
 			.LabelText.ShouldBe(expectedLabelText);
 	}
 
-	[Theory(DisplayName = "Should return back element associated with label when label when is wrapped around element with the correct casing")]
+	[Theory(DisplayName = "Should return back element associated with label when is wrapped around element with the correct casing")]
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test003(string htmlElementWithLabel)
 	{
