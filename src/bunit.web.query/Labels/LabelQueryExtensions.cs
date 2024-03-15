@@ -9,13 +9,13 @@ namespace Bunit;
 public static class LabelQueryExtensions
 {
 	private static readonly IReadOnlyList<ILabelTextQueryStrategy> LabelTextQueryStrategies = new ILabelTextQueryStrategy[]
-		{
-			// This is intentionally in the order of most likely to minimize strategies tried to find the label
-			new LabelTextUsingForAttributeStrategy(),
-			new LabelTextUsingAriaLabelStrategy(),
-			new LabelTextUsingWrappedElementStrategy(),
-			new LabelTextUsingAriaLabelledByStrategy(),
-		};
+	{
+		// This is intentionally in the order of most likely to minimize strategies tried to find the label
+		new LabelTextUsingForAttributeStrategy(),
+		new LabelTextUsingAriaLabelStrategy(),
+		new LabelTextUsingWrappedElementStrategy(),
+		new LabelTextUsingAriaLabelledByStrategy(),
+	};
 
 	/// <summary>
 	/// Returns the first element (i.e. an input, select, textarea, etc. element) associated with the given label text.
