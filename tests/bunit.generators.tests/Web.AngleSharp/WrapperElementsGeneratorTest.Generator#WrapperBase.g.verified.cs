@@ -12,7 +12,7 @@ namespace Bunit.Web.AngleSharp;
 /// </summary>
 [DebuggerNonUserCode]
 [GeneratedCodeAttribute("Bunit.Web.AngleSharp", "1.0.0.0")]
-internal abstract class WrapperBase<TElement> : IElementWrapper<TElement>
+public abstract class WrapperBase<TElement> : IElementWrapper<TElement>
 	where TElement : class, IElement
 {
 	private readonly IElementWrapperFactory elementFactory;
