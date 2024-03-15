@@ -13,5 +13,5 @@ public record ByLabelTextOptions
 	/// <summary>
 	/// The StringComparison used for comparing the desired Label Text to the resulting HTML. Defaults to Ordinal (case sensitive).
 	/// </summary>
-	public StringComparison ComparisonType { get; set; } = StringComparison.Ordinal;
+	public StringComparison ComparisonType { get; init; } = StringComparison.Ordinal;
 }
