@@ -12,7 +12,7 @@ internal sealed class LabelTextUsingAriaLabelledByStrategy : ILabelTextQueryStra
 		foreach (var element in elementsWithAriaLabelledBy)
 		{
 			var labelElement = renderedFragment.Nodes.TryQuerySelector($"#{element.GetAttribute("aria-labelledby")}");
-			if (labelElement.GetInnerText().Equals(labelText, options.ComparisonType))
+			if (labelElement is not null && labelElement.GetInnerText().Equals(labelText, options.ComparisonType))
 				return element.WrapUsing(new ByLabelTextElementFactory(renderedFragment, labelText, options));
 		}
 
