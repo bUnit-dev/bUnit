@@ -320,4 +320,23 @@ public class LabelQueryExtensionsTests : TestContext
 		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
 		input.GetAttribute("aria-labelledby").ShouldBe($"{htmlElementWithLabel}-with-aria-labelledby");
 	}
+
+	[Theory(DisplayName = "Should return back element associated with label when is wrapped around element with label containing nested html")]
+	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
+	public void Test020(string htmlElementWithLabel)
+	{
+		var cut = RenderComponent<Wrapper>(ps =>
+			ps.AddChildContent($"""
+						<label>
+						   <p><span>Test Label</p></span>	
+						   <{htmlElementWithLabel} id="{htmlElementWithLabel}-wrapped-label" />
+						 </label>
+						"""));
+
+		var input = cut.FindByLabelText("Test Label");
+
+		input.ShouldNotBeNull();
+		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
+		input.Id.ShouldBe($"{htmlElementWithLabel}-wrapped-label");
+	}
 }
