@@ -65,10 +65,16 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 	{
 		source.AppendLine("""namespace Bunit.Web.AngleSharp;""");
 		source.AppendLine();
+		source.AppendLine("/// <summary>");
+		source.AppendLine("/// Provide helpers for wrapped HTML elements.");
+		source.AppendLine("/// </summary>");
 		source.AppendLine("[System.CodeDom.Compiler.GeneratedCodeAttribute(\"Bunit.Web.AngleSharp\", \"1.0.0.0\")]");
-		source.AppendLine($"internal static class WrapperExtensions");
+		source.AppendLine("public static class WrapperExtensions");
 		source.AppendLine("{");
 		source.AppendLine();
+		source.AppendLine("/// <summary>");
+		source.AppendLine("/// Provide wrapper to be used when elements re-render.");
+		source.AppendLine("/// </summary>");
 		source.AppendLine($"\tpublic static global::AngleSharp.Dom.IElement WrapUsing<TElementFactory>(this global::AngleSharp.Dom.IElement element, TElementFactory elementFactory) where TElementFactory : Bunit.Web.AngleSharp.IElementWrapperFactory => element switch");
 		source.AppendLine("\t{");
 

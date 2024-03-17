@@ -8,7 +8,7 @@ namespace Bunit.Web.AngleSharp;
 /// Represents a wrapper around an <typeparamref name="TElement"/>.
 /// </summary>
 [GeneratedCodeAttribute("Bunit.Web.AngleSharp", "1.0.0.0")]
-internal interface IElementWrapper<out TElement> where TElement : class, IElement
+public interface IElementWrapper<out TElement> where TElement : class, IElement
 {
 	/// <summary>
 	/// Gets the wrapped element.

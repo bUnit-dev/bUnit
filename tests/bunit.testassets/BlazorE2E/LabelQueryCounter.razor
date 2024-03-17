@@ -1,0 +1,19 @@
+@* Testing we get back the re-rendered element for an aria-label *@
+<label for="re-rendered-input-with-label">Re-rendered input with label</label>
+<input @bind="@_count" id="re-rendered-input-with-label" />
+
+<label>Re-rendered input with wrapped label
+	<input @bind="@_count" />
+</label>
+
+<input @bind="@_count" aria-label="Re-rendered input With Aria Label" />
+
+<h2 id="re-rendered-input-with-aria-labelledby">Re-rendered input with Aria Labelledby</h2>
+<input aria-labelledby="re-rendered-input-with-aria-labelledby" @bind="@_count" />
+
+<button id="increment-button" @onclick="IncrementCount">Click</button>
+
+@code {
+	private int _count;
+	public void IncrementCount() => _count++;
+}
