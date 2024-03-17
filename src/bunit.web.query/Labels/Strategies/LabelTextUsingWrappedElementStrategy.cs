@@ -14,9 +14,6 @@ internal sealed class LabelTextUsingWrappedElementStrategy : ILabelTextQueryStra
 			.Children
 			.SingleOrDefault(n => n.IsHtmlElementThatCanHaveALabel());
 
-		if (matchingElement is null)
-			return null;
-
-		return matchingElement.WrapUsing(new ByLabelTextElementFactory(renderedFragment, labelText, options));
+		return matchingElement?.WrapUsing(new ByLabelTextElementFactory(renderedFragment, labelText, options));
 	}
 }
