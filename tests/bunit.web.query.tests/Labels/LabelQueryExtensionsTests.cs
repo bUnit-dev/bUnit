@@ -328,7 +328,7 @@ public class LabelQueryExtensionsTests : TestContext
 		var cut = RenderComponent<Wrapper>(ps =>
 			ps.AddChildContent($"""
 						<label>
-						   <p><span>Test Label</p></span>	
+						   <p><span>Test Label</span></p>
 						   <{htmlElementWithLabel} id="{htmlElementWithLabel}-wrapped-label" />
 						 </label>
 						"""));
@@ -338,5 +338,25 @@ public class LabelQueryExtensionsTests : TestContext
 		input.ShouldNotBeNull();
 		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
 		input.Id.ShouldBe($"{htmlElementWithLabel}-wrapped-label");
+	}
+
+	[Theory(DisplayName = "Should return back associated element with label when using the for attribute with label containing nested html")]
+	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
+	public void Test021(string htmlElementWithLabel)
+	{
+		var labelText = $"Label for {htmlElementWithLabel} 1";
+		var cut = RenderComponent<Wrapper>(ps =>
+			ps.AddChildContent($"""
+						<label for="{htmlElementWithLabel}-with-label">
+							<p><span>{labelText}</span></p>
+						</label>
+						<{htmlElementWithLabel} id="{htmlElementWithLabel}-with-label" />
+						"""));
+
+		var input = cut.FindByLabelText(labelText);
+
+		input.ShouldNotBeNull();
+		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
+		input.Id.ShouldBe($"{htmlElementWithLabel}-with-label");
 	}
 }
