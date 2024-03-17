@@ -8,35 +8,33 @@ namespace Bunit;
 /// </summary>
 public static class LabelQueryExtensions
 {
-	private static readonly IReadOnlyList<ILabelTextQueryStrategy> LabelTextQueryStrategies = new ILabelTextQueryStrategy[]
-	{
+	private static readonly IReadOnlyList<ILabelTextQueryStrategy> LabelTextQueryStrategies =
+	[
 		// This is intentionally in the order of most likely to minimize strategies tried to find the label
 		new LabelTextUsingForAttributeStrategy(),
 		new LabelTextUsingAriaLabelStrategy(),
 		new LabelTextUsingWrappedElementStrategy(),
 		new LabelTextUsingAriaLabelledByStrategy(),
-	};
+	];
 
 	/// <summary>
 	/// Returns the first element (i.e. an input, select, textarea, etc. element) associated with the given label text.
 	/// </summary>
 	/// <param name="renderedFragment">The rendered fragment to search.</param>
 	/// <param name="labelText">The text of the label to search (i.e. the InnerText of the Label, such as "First Name" for a `<label>First Name</label>`)</param>
-	/// <param name="options">Options to override the default behavior of FindByLabelText</param>
-	public static IElement FindByLabelText(this IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions? options = null)
+	/// <param name="configureOptions">Method used to override the default behavior of FindByLabelText.</param>
+	public static IElement FindByLabelText(this IRenderedFragment renderedFragment, string labelText, Action<ByLabelTextOptions>? configureOptions = null)
 	{
-		options ??= ByLabelTextOptions.Default;
+		var options = ByLabelTextOptions.Default;
+		if (configureOptions is not null)
+		{
+			options = options with { };
+			configureOptions.Invoke(options);
+		}
 
-		return FindByLabelTextInternal(renderedFragment, labelText, options) ??
-		       throw new LabelNotFoundException(labelText);
+		return FindByLabelTextInternal(renderedFragment, labelText, options) ?? throw new LabelNotFoundException(labelText);
 	}
 
-	/// <summary>
-	/// Returns the first element (i.e. an input, select, textarea, etc. element) associated with the given label text.
-	/// </summary>
-	/// <param name="renderedFragment">The rendered fragment to search.</param>
-	/// <param name="labelText">The text of the label to search (i.e. the InnerText of the Label, such as "First Name" for a `<label>First Name</label>`)</param>
-	/// <param name="options">Options to override the default behavior of FindByLabelText</param>
 	internal static IElement? FindByLabelTextInternal(this IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
 	{
 		foreach (var strategy in LabelTextQueryStrategies)

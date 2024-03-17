@@ -134,12 +134,11 @@ public class LabelQueryExtensionsTests : TestContext
 	[InlineData(StringComparison.CurrentCulture)]
 	public void Test009(StringComparison comparison)
 	{
-		var labelTextOptions = new ByLabelTextOptions { ComparisonType = comparison };
 		var expectedLabelText = "LABEL TEXT";
 		var cut = RenderComponent<Wrapper>(ps => 
 			ps.AddChildContent("""<label for="input-with-label">Label Text</label><input id="input-with-label" />"""));
 
-		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText, labelTextOptions))
+		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText, o => o.ComparisonType = comparison))
 			.LabelText.ShouldBe(expectedLabelText);
 	}
 
@@ -149,12 +148,11 @@ public class LabelQueryExtensionsTests : TestContext
 	[InlineData(StringComparison.CurrentCultureIgnoreCase)]
 	public void Test010(StringComparison comparison)
 	{
-		var labelTextOptions = new ByLabelTextOptions { ComparisonType = comparison };
 		var expectedLabelText = "LABEL TEXT";
 		var cut = RenderComponent<Wrapper>(ps => 
 			ps.AddChildContent("""<label for="input-1">Label Text</label><input id="input-1" />"""));
 
-		var input = cut.FindByLabelText(expectedLabelText, labelTextOptions);
+		var input = cut.FindByLabelText(expectedLabelText, o => o.ComparisonType = comparison);
 
 		input.ShouldNotBeNull();
 		input.NodeName.ShouldBe("INPUT");
@@ -167,12 +165,11 @@ public class LabelQueryExtensionsTests : TestContext
 	[InlineData(StringComparison.CurrentCulture)]
 	public void Test011(StringComparison comparison)
 	{
-		var labelTextOptions = new ByLabelTextOptions { ComparisonType = comparison };
 		var expectedLabelText = "LABEL TEXT";
 		var cut = RenderComponent<Wrapper>(ps => 
 			ps.AddChildContent("""<label>Label Text<input id="input-wrapped-label" /></label>"""));
 
-		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText, labelTextOptions))
+		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText, o => o.ComparisonType = comparison))
 			.LabelText.ShouldBe(expectedLabelText);
 	}
 
@@ -182,12 +179,11 @@ public class LabelQueryExtensionsTests : TestContext
 	[InlineData(StringComparison.CurrentCultureIgnoreCase)]
 	public void Test012(StringComparison comparison)
 	{
-		var labelTextOptions = new ByLabelTextOptions { ComparisonType = comparison };
 		var expectedLabelText = "LABEL TEXT";
 		var cut = RenderComponent<Wrapper>(ps => 
 			ps.AddChildContent("""<label>Label Text<input id="input-1" /></label>"""));
 
-		var input = cut.FindByLabelText(expectedLabelText, labelTextOptions);
+		var input = cut.FindByLabelText(expectedLabelText, o => o.ComparisonType = comparison);
 
 		input.ShouldNotBeNull();
 		input.NodeName.ShouldBe("INPUT");
@@ -200,12 +196,11 @@ public class LabelQueryExtensionsTests : TestContext
 	[InlineData(StringComparison.CurrentCulture)]
 	public void Test013(StringComparison comparison)
 	{
-		var labelTextOptions = new ByLabelTextOptions { ComparisonType = comparison };
 		var expectedLabelText = "LABEL TEXT";
 		var cut = RenderComponent<Wrapper>(ps => 
 			ps.AddChildContent("""<input id="input-1" aria-label="Label Text" />"""));
 
-		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText, labelTextOptions))
+		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText, o => o.ComparisonType = comparison))
 			.LabelText.ShouldBe(expectedLabelText);
 	}
 
@@ -215,12 +210,11 @@ public class LabelQueryExtensionsTests : TestContext
 	[InlineData(StringComparison.CurrentCultureIgnoreCase)]
 	public void Test014(StringComparison comparison)
 	{
-		var labelTextOptions = new ByLabelTextOptions { ComparisonType = comparison };
 		var expectedLabelText = "LABEL TEXT";
 		var cut = RenderComponent<Wrapper>(ps => 
 			ps.AddChildContent("""<input id="input-1" aria-label="Label Text" />"""));
 
-		var input = cut.FindByLabelText(expectedLabelText, labelTextOptions);
+		var input = cut.FindByLabelText(expectedLabelText, o => o.ComparisonType = comparison);
 
 		input.ShouldNotBeNull();
 		input.NodeName.ShouldBe("INPUT");
@@ -233,12 +227,11 @@ public class LabelQueryExtensionsTests : TestContext
 	[InlineData(StringComparison.CurrentCulture)]
 	public void Test015(StringComparison comparison)
 	{
-		var labelTextOptions = new ByLabelTextOptions { ComparisonType = comparison };
 		var expectedLabelText = "LABEL TEXT";
 		var cut = RenderComponent<Wrapper>(ps => 
 			ps.AddChildContent("""<h2 id="heading-1">Label Text</h2><input aria-labelledby="heading-1" />"""));
 
-		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText, labelTextOptions))
+		Should.Throw<LabelNotFoundException>(() => cut.FindByLabelText(expectedLabelText, o => o.ComparisonType = comparison))
 			.LabelText.ShouldBe(expectedLabelText);
 	}
 
@@ -248,12 +241,11 @@ public class LabelQueryExtensionsTests : TestContext
 	[InlineData(StringComparison.CurrentCultureIgnoreCase)]
 	public void Test016(StringComparison comparison)
 	{
-		var labelTextOptions = new ByLabelTextOptions { ComparisonType = comparison };
 		var expectedLabelText = "LABEL TEXT";
 		var cut = RenderComponent<Wrapper>(ps => 
 			ps.AddChildContent("""<h2 id="heading-1">Label Text</h2><input id="input-1" aria-labelledby="heading-1" />"""));
 
-		var input = cut.FindByLabelText(expectedLabelText, labelTextOptions);
+		var input = cut.FindByLabelText(expectedLabelText, o => o.ComparisonType = comparison);
 
 		input.ShouldNotBeNull();
 		input.NodeName.ShouldBe("INPUT");
