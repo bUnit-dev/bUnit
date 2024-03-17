@@ -182,4 +182,4 @@ To get the markup as a string, do the following:
 
 [!code-csharp[](../../../samples/tests/xunit/VerifyMarkupExamples.cs?start=16&end=19&highlight=3)]
 
-You can perform standard string assertions against the markup string, like checking whether it contains a value or is empty.
+Standard string assertions can be performed against the markup string, such as checking whether it contains a value or is empty.
