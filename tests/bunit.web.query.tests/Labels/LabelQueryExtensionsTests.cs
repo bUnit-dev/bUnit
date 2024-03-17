@@ -321,7 +321,7 @@ public class LabelQueryExtensionsTests : TestContext
 		input.GetAttribute("aria-labelledby").ShouldBe($"{htmlElementWithLabel}-with-aria-labelledby");
 	}
 
-	[Theory(DisplayName = "Should return back element associated with label when is wrapped around element with label containing nested html")]
+	[Theory(DisplayName = "Should return back element associated with label when label is wrapped around element with label containing nested html")]
 	[MemberData(nameof(HtmlElementsThatCanHaveALabel))]
 	public void Test020(string htmlElementWithLabel)
 	{
