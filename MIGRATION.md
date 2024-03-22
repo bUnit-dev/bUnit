@@ -4,7 +4,7 @@ This document describes the changes that need to be made to migrate from bUnit 1
 ## Removal of `GetChangesSinceFirstRender` and `GetChangesSinceLastRender` methods
 The `GetChangesSinceFirstRender` and `GetChangesSinceLastRender` methods have been removed from `RenderedComponent<TComponent>`. There is no one-to-one replacement for these methods, but the general idea is to select the HTML in question via `Find` and assert against that.
 
-Alternatively, the `IRenderedFragment` still offers the `OnMarkupUpdated` event, which can be used to assert against the markup after a render.
+Alternatively, the `RenderedFragment` still offers the `OnMarkupUpdated` event, which can be used to assert against the markup after a render.
 
 ## Removal of `IsNullOrEmpty` extension method on `IEnumerable<T>` and `CreateLogger` on `IServiceProvider`
 The `IsNullOrEmpty` extension method on `IEnumerable<T>` has been removed, as well as the `CreateLogger` extension method on `IServiceProvider`. These extension methods are pretty common and conflict with other libraries. These methods can be recreated like this:
@@ -29,7 +29,7 @@ The `bunit.core` and `bunit.web` packages have been merged into a single `bunit`
 ## Removal of unneeded abstraction
 
 ### `IRenderedComponentBase<TComponent>` and `RenderedFragmentBase`
-`IRenderedComponentBase<TComponent>`, `IRenderedComponent<TComponent>`, `IRenderedFragmentBase`, `IRenderedFragment` and `RenderedFragmentBase` have been removed.
+`IRenderedComponentBase<TComponent>`, `IRenderedComponent<TComponent>`, `RenderedFragmentBase`, `RenderedFragment` and `RenderedFragmentBase` have been removed.
 If you used either of these types, you should replace them with `RenderedComponent<TComponent>` or `RenderedFragment` respectively.
 
 ### `WebTestRender` merged into `BunitTestRender`
