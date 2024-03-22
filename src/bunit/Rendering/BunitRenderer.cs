@@ -20,7 +20,7 @@ public sealed class BunitRenderer : Renderer
 	private static extern void CallSetDirectParameters(ComponentState componentState, ParameterView parameters);
 
 	private readonly object renderTreeUpdateLock = new();
-	private readonly Dictionary<int, RenderedFragment> renderedComponents = new();
+	private readonly Dictionary<int, IRenderedComponent<IComponent>> renderedComponents = new();
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private bool disposed;
@@ -82,7 +82,7 @@ public sealed class BunitRenderer : Renderer
 	/// </summary>
 	/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
 	/// <returns>A <see cref="RenderedFragment"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
-	public RenderedFragment RenderFragment(RenderFragment renderFragment)
+	public IRenderedComponent<FragmentContainer> RenderFragment(RenderFragment renderFragment)
 		=> Render(renderFragment);
 
 	/// <summary>
@@ -448,7 +448,7 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	private RenderedFragment Render(RenderFragment renderFragment)
+	private IRenderedComponent<FragmentContainer> Render(RenderFragment renderFragment)
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
@@ -458,14 +458,14 @@ public sealed class BunitRenderer : Renderer
 
 			var root = new RootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
-			var result = new RenderedFragment(rootComponentId, services);
+			var result = new RenderedComponent<FragmentContainer>(rootComponentId, services);
 			renderedComponents.Add(rootComponentId, result);
 			rootComponents.Add(root);
 			root.Render();
 			return result;
 		});
 
-		RenderedFragment result;
+		IRenderedComponent<FragmentContainer> result;
 
 		if (!renderTask.IsCompleted)
 		{
@@ -541,7 +541,7 @@ public sealed class BunitRenderer : Renderer
 
 		LoadRenderTreeFrames(componentId, framesCollection);
 		var result = new RenderedComponent<TComponent>(componentId, component, framesCollection, services);
-		renderedComponents.Add(result.ComponentId, result);
+		renderedComponents.Add(result.ComponentId, (IRenderedComponent<IComponent>)result);
 
 		return result;
 	}
