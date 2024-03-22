@@ -7,7 +7,7 @@ namespace Bunit;
 [DebuggerDisplay("Selector={cssSelector}, AutoRefresh={enableAutoRefresh}")]
 internal sealed class RefreshableElementCollection : IRefreshableElementCollection<IElement>
 {
-	private readonly RenderedFragment renderedFragment;
+	private readonly IRenderedComponent<IComponent> renderedFragment;
 	private readonly string cssSelector;
 	private IHtmlCollection<IElement> elements;
 	private bool enableAutoRefresh;
@@ -35,7 +35,7 @@ internal sealed class RefreshableElementCollection : IRefreshableElementCollecti
 
 	private bool ShouldEnable(bool value) => value && !enableAutoRefresh;
 
-	internal RefreshableElementCollection(RenderedFragment renderedFragment, string cssSelector)
+	internal RefreshableElementCollection(IRenderedComponent<IComponent> renderedFragment, string cssSelector)
 	{
 		this.renderedFragment = renderedFragment;
 		this.cssSelector = cssSelector;

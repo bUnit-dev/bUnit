@@ -8,8 +8,8 @@ public partial class MarkupMatchesAssertExtensionsBunit : BunitContext
 	private const string ExpectedMarkup = "<div>BAR</div>";
 	private static readonly RenderFragment ActualRenderFragment = b => b.AddMarkupContent(0, ActualMarkup);
 	private static readonly RenderFragment ExpectedRenderFragment = b => b.AddMarkupContent(0, ExpectedMarkup);
-	private RenderedFragment ActualRenderedFragment => Render(ActualRenderFragment);
-	private RenderedFragment ExpectedRenderedFragment => Render(ExpectedRenderFragment);
+	private IRenderedComponent<IComponent> ActualRenderedFragment => Render(ActualRenderFragment);
+	private IRenderedComponent<IComponent> ExpectedRenderedFragment => Render(ExpectedRenderFragment);
 	private INodeList ActualNodeList => ActualRenderedFragment.Nodes;
 	private INodeList ExpectedNodeList => ExpectedRenderedFragment.Nodes;
 	private INode ActualNode => ActualNodeList[0];
@@ -91,7 +91,7 @@ public partial class MarkupMatchesAssertExtensionsBunit : BunitContext
 	public void Test0010()
 		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedRenderFragment));
 
-	private RenderedFragment FindAllRenderedFragment => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
+	private IRenderedComponent<IComponent> FindAllRenderedFragment => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
 	private readonly string findAllExpectedRenderFragment = "<p><strong>test</strong></p>";
 
 	[Fact(DisplayName = "MarkupMatches combination works with RenderedFragment's FindAll extension method")]

@@ -16,7 +16,8 @@ public static class CompareToExtensions
 	/// <param name="actual">Source of rendered markup to check.</param>
 	/// <param name="expected">Markup to compare with.</param>
 	/// <returns>Any differences found.</returns>
-	public static IReadOnlyList<IDiff> CompareTo(this RenderedFragment actual, string expected)
+	public static IReadOnlyList<IDiff> CompareTo<TComponent>(this IRenderedComponent<TComponent> actual, string expected)
+		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);
@@ -34,7 +35,9 @@ public static class CompareToExtensions
 	/// <param name="actual">Source of rendered markup to check.</param>
 	/// <param name="expected">Source of rendered markup to compare with.</param>
 	/// <returns>Any differences found.</returns>
-	public static IReadOnlyList<IDiff> CompareTo(this RenderedFragment actual, RenderedFragment expected)
+	public static IReadOnlyList<IDiff> CompareTo<TActualComponent, TExpectedComponent>(this IRenderedComponent<TActualComponent> actual, IRenderedComponent<TExpectedComponent> expected)
+		where TActualComponent : IComponent
+		where TExpectedComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(actual);
 		ArgumentNullException.ThrowIfNull(expected);

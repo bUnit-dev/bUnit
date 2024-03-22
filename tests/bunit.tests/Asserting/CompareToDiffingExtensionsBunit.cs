@@ -8,12 +8,14 @@ public class CompareToDiffingExtensionsBunit : BunitContext
 	/// Returns an array of arrays containing:
 	/// (MethodInfo methodInfo, string argName, object[] methodArgs).
 	/// </summary>
-	public static IEnumerable<object[]> GetCompareToMethods()
+	public static TheoryData<MethodInfo, string, object[]> GetCompareToMethods()
 	{
 		var methods = typeof(CompareToExtensions)
 			.GetMethods()
 			.Where(x => x.Name.Equals(nameof(CompareToExtensions.CompareTo), StringComparison.Ordinal))
 			.ToList();
+
+		var result = new TheoryData<MethodInfo, string, object[]>();
 
 		foreach (var method in methods)
 		{
@@ -22,9 +24,11 @@ public class CompareToDiffingExtensionsBunit : BunitContext
 			object p1 = p1Info.ParameterType.ToMockInstance();
 			object p2 = p2Info.ParameterType.ToMockInstance();
 
-			yield return [method, p1Info.Name!, new[] { null!, p2! }];
-			yield return [method, p2Info.Name!, new[] { p1!, null! }];
+			result.Add(method, p1Info.Name!, [null!, p2!]);
+			result.Add(method, p2Info.Name!, [p1!, null!]);
 		}
+
+		return result;
 	}
 
 	[Theory(DisplayName = "CompareTo null values throws")]

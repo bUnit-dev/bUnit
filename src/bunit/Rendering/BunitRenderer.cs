@@ -172,7 +172,7 @@ public sealed class BunitRenderer : Renderer
 	/// </summary>
 	/// <typeparam name="TComponent">Type of components to find.</typeparam>
 	/// <param name="parentComponent">Parent component to search.</param>
-	public IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(RenderedFragment parentComponent)
+	public IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedComponent<IComponent> parentComponent)
 		where TComponent : IComponent
 		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
 

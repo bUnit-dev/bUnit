@@ -22,7 +22,7 @@ internal static class WaitForHelperLoggerExtensions
 	private static readonly Action<ILogger, int, Exception?> WaiterDisposed
 		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(20, "WaiterDisposed"), "The waiter for component {Id} disposed.");
 
-	internal static void LogCheckingWaitCondition<T>(this ILogger<WaitForHelper<T>> logger, int componentId)
+	internal static void LogCheckingWaitCondition(this ILogger logger, int componentId)
 	{
 		if (logger.IsEnabled(LogLevel.Debug))
 		{
@@ -30,7 +30,7 @@ internal static class WaitForHelperLoggerExtensions
 		}
 	}
 
-	internal static void LogCheckCompleted<T>(this ILogger<WaitForHelper<T>> logger, int componentId)
+	internal static void LogCheckCompleted(this ILogger logger, int componentId)
 	{
 		if (logger.IsEnabled(LogLevel.Debug))
 		{
@@ -38,7 +38,7 @@ internal static class WaitForHelperLoggerExtensions
 		}
 	}
 
-	internal static void LogCheckFailed<T>(this ILogger<WaitForHelper<T>> logger, int componentId)
+	internal static void LogCheckFailed(this ILogger logger, int componentId)
 	{
 		if (logger.IsEnabled(LogLevel.Debug))
 		{
@@ -46,7 +46,7 @@ internal static class WaitForHelperLoggerExtensions
 		}
 	}
 
-	internal static void LogCheckThrow<T>(this ILogger<WaitForHelper<T>> logger, int componentId, Exception exception)
+	internal static void LogCheckThrow(this ILogger logger, int componentId, Exception exception)
 	{
 		if (logger.IsEnabled(LogLevel.Debug))
 		{
@@ -54,7 +54,7 @@ internal static class WaitForHelperLoggerExtensions
 		}
 	}
 
-	internal static void LogWaiterTimedOut<T>(this ILogger<WaitForHelper<T>> logger, int componentId)
+	internal static void LogWaiterTimedOut(this ILogger logger, int componentId)
 	{
 		if (logger.IsEnabled(LogLevel.Debug))
 		{
@@ -62,7 +62,7 @@ internal static class WaitForHelperLoggerExtensions
 		}
 	}
 
-	internal static void LogWaiterDisposed<T>(this ILogger<WaitForHelper<T>> logger, int componentId)
+	internal static void LogWaiterDisposed(this ILogger logger, int componentId)
 	{
 		if (logger.IsEnabled(LogLevel.Debug))
 		{

@@ -7,7 +7,8 @@ namespace Bunit.Extensions.WaitForHelpers;
 /// <summary>
 /// Represents an async wait helper, that will wait for a specified time for element(s) to become available in the DOM.
 /// </summary>
-internal class WaitForElementsHelper : WaitForHelper<IRefreshableElementCollection<IElement>>
+internal class WaitForElementsHelper<TComponent> : WaitForHelper<IRefreshableElementCollection<IElement>, TComponent>
+	where TComponent : IComponent
 {
 	internal const string TimeoutBeforeFoundMessage = "The CSS selector did not result in any matching element(s) before the timeout period passed.";
 	internal static readonly CompositeFormat TimeoutBeforeFoundWithCountMessage = CompositeFormat.Parse("The CSS selector did not result in exactly {0} matching element(s) before the timeout period passed.");
@@ -21,10 +22,10 @@ internal class WaitForElementsHelper : WaitForHelper<IRefreshableElementCollecti
 	/// <inheritdoc/>
 	protected override bool StopWaitingOnCheckException => true;
 
-	public WaitForElementsHelper(RenderedFragment renderedFragment, string cssSelector, int? matchElementCount, TimeSpan? timeout = null)
-		: base(renderedFragment, () =>
+	public WaitForElementsHelper(IRenderedComponent<TComponent> renderedComponent, string cssSelector, int? matchElementCount, TimeSpan? timeout = null)
+		: base(renderedComponent, () =>
 		{
-			var elements = renderedFragment.FindAll(cssSelector);
+			var elements = renderedComponent.FindAll(cssSelector);
 
 			var checkPassed = matchElementCount is null
 				? elements.Count > 0

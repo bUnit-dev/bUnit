@@ -18,16 +18,16 @@ public static class MockingHelpers
 	public static object ToMockInstance(this Type type)
 	{
 		ArgumentNullException.ThrowIfNull(type);
-		
-		if (type == typeof(RenderedFragment))
+
+		if (type.Name == typeof(IRenderedComponent<>).Name)
 		{
-			return new RenderedFragmentFake();
+			var result = Substitute.For<IRenderedComponent<IComponent>>();
+			return result ?? throw new NotSupportedException($"Cannot create an mock of {type.FullName}.");
 		}
 
 		if (type.IsMockable())
 		{
-			var result = Substitute.For(new[] { type }, Array.Empty<object>());
-			return result ?? throw new NotSupportedException($"Cannot create an mock of {type.FullName}.");
+			return Substitute.For([type], []);
 		}
 
 		if (type == StringType)
@@ -53,9 +53,9 @@ public static class MockingHelpers
 	/// </summary>
 	public static bool IsDelegateType(this Type type) => type == DelegateType;
 	
-	private sealed class RenderedFragmentFake : RenderedFragment
+	private sealed class RenderedComponentFake : RenderedFragment
 	{
-		public RenderedFragmentFake() : base(0, Fake())
+		public RenderedComponentFake() : base(0, Fake())
 		{
 		}
 
