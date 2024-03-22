@@ -664,7 +664,7 @@ List of new features.
 
 - Added `Render(RenderFragment)` and `Render<TComponent>(RenderFragment)` methods to `TestContext`, as well as various overloads to the `MarkupMatches` methods, that also takes a `RenderFragment` as the expected value.
 
-          The difference between the generic `Render` method and the non-generic one is that the generic returns an `IRenderedComponent<TComponent>`, whereas the non-generic one returns a `IRenderedFragment`.
+          The difference between the generic `Render` method and the non-generic one is that the generic returns an `IRenderedComponent<TComponent>`, whereas the non-generic one returns a `RenderedFragment`.
 
           Calling `Render<TComponent>(RenderFragent)` is equivalent to calling `Render(RenderFragment).FindComponent<TComponent>()`, e.g. it returns the first component in the render tree of type `TComponent`. This is different from the `RenderComponent<TComponent>()` method, where `TComponent` _is_ the root component of the render tree.
 

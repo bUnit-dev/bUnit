@@ -27,7 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\bunit.web\bunit.web.csproj" />
+	  <ProjectReference Include="..\bunit\bunit.csproj" />
 	</ItemGroup>
 
 </Project>
