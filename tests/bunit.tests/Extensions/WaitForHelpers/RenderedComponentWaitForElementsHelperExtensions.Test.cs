@@ -2,11 +2,11 @@ using System.Globalization;
 
 namespace Bunit.Extensions.WaitForHelpers;
 
-public class RenderedFragmentWaitForElementsHelperExtensionsAsyncBunit : BunitContext
+public class RenderedComponentWaitForElementsHelperExtensions : BunitContext
 {
 	private readonly static TimeSpan WaitForTestTimeout = TimeSpan.FromMilliseconds(5);
 
-	public RenderedFragmentWaitForElementsHelperExtensionsAsyncBunit(ITestOutputHelper testOutput)
+	public RenderedComponentWaitForElementsHelperExtensions(ITestOutputHelper testOutput)
 	{
 		BunitContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(testOutput);
@@ -33,7 +33,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsAsyncBunit : BunitCo
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
 			await cut.WaitForElementAsync("#notHereElm", WaitForTestTimeout));
 
-		expected.Message.ShouldStartWith(WaitForElementHelper.TimeoutBeforeFoundMessage);
+		expected.Message.ShouldStartWith(WaitForElementHelper<DelayRenderFragment>.TimeoutBeforeFoundMessage);
 	}
 
 	[Fact(DisplayName = "WaitForElements waits until cssSelector returns at least one element")]
@@ -57,7 +57,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsAsyncBunit : BunitCo
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
 			await cut.WaitForElementsAsync("#notHereElm", WaitForTestTimeout));
 
-		expected.Message.ShouldStartWith(WaitForElementsHelper.TimeoutBeforeFoundMessage);
+		expected.Message.ShouldStartWith(WaitForElementsHelper<DelayRenderFragment>.TimeoutBeforeFoundMessage);
 		expected.InnerException.ShouldBeNull();
 	}
 
@@ -71,7 +71,7 @@ public class RenderedFragmentWaitForElementsHelperExtensionsAsyncBunit : BunitCo
 		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
 			await cut.WaitForElementsAsync("#notHereElm", 2, WaitForTestTimeout));
 
-		expected.Message.ShouldStartWith(string.Format(CultureInfo.InvariantCulture, WaitForElementsHelper.TimeoutBeforeFoundWithCountMessage, 2));
+		expected.Message.ShouldStartWith(string.Format(CultureInfo.InvariantCulture, WaitForElementsHelper<DelayRenderFragment>.TimeoutBeforeFoundWithCountMessage, 2));
 		expected.InnerException.ShouldBeNull();
 	}
 

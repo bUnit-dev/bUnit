@@ -1,6 +1,6 @@
 namespace Bunit;
 
-public class RenderedComponentRenderExtensionsBunit : BunitContext
+public class RenderedComponentRenderExtensionsTests : BunitContext
 {
 	[Fact(DisplayName = "Render rethrows exceptions from SetParameterAsync")]
 	public void Test001()

@@ -5,16 +5,17 @@ using Microsoft.Extensions.Logging;
 namespace Bunit.Extensions.WaitForHelpers;
 
 /// <summary>
-/// Represents a helper class that can wait for a render notifications from a <see cref="RenderedFragment"/> type,
+/// Represents a helper class that can wait for a render notifications from a <see cref="IRenderedComponent{TComponent}"/> type,
 /// until a specific timeout is reached.
 /// </summary>
-public abstract class WaitForHelper<T> : IDisposable
+public abstract class WaitForHelper<T, TComponent> : IDisposable
+	where TComponent : IComponent
 {
 	private readonly Timer timer;
 	private readonly TaskCompletionSource<T> checkPassedCompletionSource;
 	private readonly Func<(bool CheckPassed, T Content)> completeChecker;
-	private readonly RenderedFragment renderedFragment;
-	private readonly ILogger<WaitForHelper<T>> logger;
+	private readonly IRenderedComponent<TComponent> renderedComponent;
+	private readonly ILogger<WaitForHelper<T, TComponent>> logger;
 	private readonly BunitRenderer renderer;
 	private bool isDisposed;
 	private int checkCount;
@@ -46,27 +47,27 @@ public abstract class WaitForHelper<T> : IDisposable
 	/// Initializes a new instance of the <see cref="WaitForHelper{T}"/> class.
 	/// </summary>
 	protected WaitForHelper(
-		RenderedFragment renderedFragment,
+		IRenderedComponent<TComponent> renderedComponent,
 		Func<(bool CheckPassed, T Content)> completeChecker,
 		TimeSpan? timeout = null)
 	{
-		this.renderedFragment = renderedFragment ?? throw new ArgumentNullException(nameof(renderedFragment));
+		this.renderedComponent = renderedComponent ?? throw new ArgumentNullException(nameof(renderedComponent));
 		this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
 
-		logger = renderedFragment.Services.CreateLogger<WaitForHelper<T>>();
-		renderer = renderedFragment
+		logger = renderedComponent.Services.CreateLogger<WaitForHelper<T, TComponent>>();
+		renderer = renderedComponent
 			.Services
 			.GetRequiredService<BunitContext>()
 			.Renderer;
 		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
 		timer = new Timer(_ =>
 		{
-			logger.LogWaiterTimedOut(renderedFragment.ComponentId);
+			logger.LogWaiterTimedOut(renderedComponent.ComponentId);
 			checkPassedCompletionSource.TrySetException(
 				new WaitForFailedException(
 					TimeoutErrorMessage ?? string.Empty,
 					checkCount,
-					renderedFragment.RenderCount,
+					renderedComponent.RenderCount,
 					renderer.RenderCount,
 					capturedException));
 		});
@@ -102,8 +103,8 @@ public abstract class WaitForHelper<T> : IDisposable
 		isDisposed = true;
 		timer.Dispose();
 		checkPassedCompletionSource.TrySetCanceled();
-		renderedFragment.OnAfterRender -= OnAfterRender;
-		logger.LogWaiterDisposed(renderedFragment.ComponentId);
+		renderedComponent.OnAfterRender -= OnAfterRender;
+		logger.LogWaiterDisposed(renderedComponent.ComponentId);
 	}
 
 	private void InitializeWaiting()
@@ -116,9 +117,9 @@ public abstract class WaitForHelper<T> : IDisposable
 			// This also ensures that checks performed during OnAfterRender,
 			// which are usually not atomic, e.g. search the DOM tree,
 			// can be performed without the DOM tree changing.
-			renderedFragment.InvokeAsync(() =>
+			renderedComponent.InvokeAsync(() =>
 			{
-				// Before subscribing to renderedFragment.OnAfterRender,
+				// Before subscribing to renderedComponent.OnAfterRender,
 				// we need to make sure that the desired state has not already been reached.
 				OnAfterRender(this, EventArgs.Empty);
 				SubscribeToOnAfterRender();
@@ -150,26 +151,26 @@ public abstract class WaitForHelper<T> : IDisposable
 
 		try
 		{
-			logger.LogCheckingWaitCondition(renderedFragment.ComponentId);
+			logger.LogCheckingWaitCondition(renderedComponent.ComponentId);
 
 			var checkResult = completeChecker();
 			checkCount++;
 			if (checkResult.CheckPassed)
 			{
 				checkPassedCompletionSource.TrySetResult(checkResult.Content);
-				logger.LogCheckCompleted(renderedFragment.ComponentId);
+				logger.LogCheckCompleted(renderedComponent.ComponentId);
 				Dispose();
 			}
 			else
 			{
-				logger.LogCheckFailed(renderedFragment.ComponentId);
+				logger.LogCheckFailed(renderedComponent.ComponentId);
 			}
 		}
 		catch (Exception ex)
 		{
 			checkCount++;
 			capturedException = ex;
-			logger.LogCheckThrow(renderedFragment.ComponentId, ex);
+			logger.LogCheckThrow(renderedComponent.ComponentId, ex);
 
 			if (StopWaitingOnCheckException)
 			{
@@ -177,7 +178,7 @@ public abstract class WaitForHelper<T> : IDisposable
 					new WaitForFailedException(
 						CheckThrowErrorMessage ?? string.Empty,
 						checkCount,
-						renderedFragment.RenderCount,
+						renderedComponent.RenderCount,
 						renderer.RenderCount,
 						capturedException));
 				Dispose();
@@ -191,7 +192,7 @@ public abstract class WaitForHelper<T> : IDisposable
 		// been completed, perhaps due to an unhandled exception from the
 		// renderer or from the initial check by the checker.
 		if (!isDisposed && !WaitTask.IsCompleted)
-			renderedFragment.OnAfterRender += OnAfterRender;
+			renderedComponent.OnAfterRender += OnAfterRender;
 	}
 
 	private static TimeSpan GetRuntimeTimeout(TimeSpan? timeout)

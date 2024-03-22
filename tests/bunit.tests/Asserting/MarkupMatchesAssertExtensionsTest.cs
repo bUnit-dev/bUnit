@@ -2,16 +2,16 @@ using AngleSharp.Dom;
 
 namespace Bunit.Asserting;
 
-public partial class MarkupMatchesAssertExtensionsBunit : BunitContext
+public partial class MarkupMatchesAssertExtensionsTest : BunitContext
 {
 	private const string ActualMarkup = "<p>FOO</p>";
 	private const string ExpectedMarkup = "<div>BAR</div>";
 	private static readonly RenderFragment ActualRenderFragment = b => b.AddMarkupContent(0, ActualMarkup);
 	private static readonly RenderFragment ExpectedRenderFragment = b => b.AddMarkupContent(0, ExpectedMarkup);
-	private RenderedFragment ActualRenderedFragment => Render(ActualRenderFragment);
-	private RenderedFragment ExpectedRenderedFragment => Render(ExpectedRenderFragment);
-	private INodeList ActualNodeList => ActualRenderedFragment.Nodes;
-	private INodeList ExpectedNodeList => ExpectedRenderedFragment.Nodes;
+	private IRenderedComponent<IComponent> ActualRenderedComponent => Render(ActualRenderFragment);
+	private IRenderedComponent<IComponent> ExpectedRenderedComponent => Render(ExpectedRenderFragment);
+	private INodeList ActualNodeList => ActualRenderedComponent.Nodes;
+	private INodeList ExpectedNodeList => ExpectedRenderedComponent.Nodes;
 	private INode ActualNode => ActualNodeList[0];
 	private INode ExpectedNode => ExpectedNodeList[0];
 
@@ -22,9 +22,9 @@ public partial class MarkupMatchesAssertExtensionsBunit : BunitContext
 		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatches(default(string)!));
 		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(default(string)!));
 
-		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(ExpectedRenderedFragment));
-		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatches(default(RenderedFragment)!));
-		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(default(RenderedFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(ExpectedRenderedComponent));
+		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatches(default(RenderedComponent<IComponent>)!));
+		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(default(RenderedComponent<IComponent>)!));
 
 		Should.Throw<ArgumentNullException>(() => default(string)!.MarkupMatches(ExpectedNodeList));
 		Should.Throw<ArgumentNullException>(() => ActualMarkup.MarkupMatches(default(INodeList)!));
@@ -42,9 +42,9 @@ public partial class MarkupMatchesAssertExtensionsBunit : BunitContext
 		Should.Throw<ArgumentNullException>(() => ActualNode.MarkupMatches(default(INodeList)!));
 		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(default(INodeList)!));
 
-		Should.Throw<ArgumentNullException>(() => default(RenderedFragment)!.MarkupMatches(ExpectedRenderFragment));
-		Should.Throw<ArgumentNullException>(() => ActualRenderedFragment.MarkupMatches(default(RenderFragment)!));
-		Should.Throw<ArgumentNullException>(() => default(RenderedFragment)!.MarkupMatches(default(RenderFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(RenderedComponent<IComponent>)!.MarkupMatches(ExpectedRenderFragment));
+		Should.Throw<ArgumentNullException>(() => ActualRenderedComponent.MarkupMatches(default(RenderFragment)!));
+		Should.Throw<ArgumentNullException>(() => default(RenderedComponent<IComponent>)!.MarkupMatches(default(RenderFragment)!));
 
 		Should.Throw<ArgumentNullException>(() => default(INode)!.MarkupMatches(ExpectedRenderFragment));
 		Should.Throw<ArgumentNullException>(() => ActualNode.MarkupMatches(default(RenderFragment)!));
@@ -59,9 +59,9 @@ public partial class MarkupMatchesAssertExtensionsBunit : BunitContext
 	public void Test002()
 		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatches(ExpectedMarkup));
 
-	[Fact(DisplayName = "MarkupMatches(string, RenderedFragment) correctly diffs markup")]
+	[Fact(DisplayName = "MarkupMatches(string, IRenderedComponent) correctly diffs markup")]
 	public void Test003()
-		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatches(ExpectedRenderedFragment));
+		=> Should.Throw<HtmlEqualException>(() => ActualMarkup.MarkupMatches(ExpectedRenderedComponent));
 
 	[Fact(DisplayName = "MarkupMatches(string, INodeList) correctly diffs markup")]
 	public void Test004()
@@ -79,9 +79,9 @@ public partial class MarkupMatchesAssertExtensionsBunit : BunitContext
 	public void Test007()
 		=> Should.Throw<HtmlEqualException>(() => ActualNode.MarkupMatches(ExpectedNodeList));
 
-	[Fact(DisplayName = "MarkupMatches(RenderedFragment, RenderFragment) correctly diffs markup")]
+	[Fact(DisplayName = "MarkupMatches(IRenderedComponent, RenderFragment) correctly diffs markup")]
 	public void Test008()
-		=> Should.Throw<HtmlEqualException>(() => ActualRenderedFragment.MarkupMatches(ExpectedRenderFragment));
+		=> Should.Throw<HtmlEqualException>(() => ActualRenderedComponent.MarkupMatches(ExpectedRenderFragment));
 
 	[Fact(DisplayName = "MarkupMatches(INode, RenderFragment) correctly diffs markup")]
 	public void Test009()
@@ -91,13 +91,13 @@ public partial class MarkupMatchesAssertExtensionsBunit : BunitContext
 	public void Test0010()
 		=> Should.Throw<HtmlEqualException>(() => ActualNodeList.MarkupMatches(ExpectedRenderFragment));
 
-	private RenderedFragment FindAllRenderedFragment => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
+	private IRenderedComponent<IComponent> FindAllRenderedComponent => Render(b => b.AddMarkupContent(0, "<div><p><strong>test</strong></p></div>"));
 	private readonly string findAllExpectedRenderFragment = "<p><strong>test</strong></p>";
 
-	[Fact(DisplayName = "MarkupMatches combination works with RenderedFragment's FindAll extension method")]
+	[Fact(DisplayName = "MarkupMatches combination works with RenderedComponents's FindAll extension method")]
 	public void Test011()
 	{
-		FindAllRenderedFragment.FindAll("p").MarkupMatches(findAllExpectedRenderFragment);
+		FindAllRenderedComponent.FindAll("p").MarkupMatches(findAllExpectedRenderFragment);
 	}
 
 	[Fact(DisplayName = "MarkupMatches combination works with FindAll and FindComponents<T>")]

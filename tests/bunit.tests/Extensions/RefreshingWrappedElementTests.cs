@@ -1,6 +1,6 @@
 namespace Bunit.Extensions;
 
-public class RefreshingWrappedElementBunit : BunitContext
+public class RefreshingWrappedElementTests : BunitContext
 {
 	[Fact(DisplayName = "Find() throws when element doesn't exist in DOM")]
 	public void Test001()

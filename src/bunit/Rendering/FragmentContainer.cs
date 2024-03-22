@@ -5,7 +5,7 @@ namespace Bunit.Rendering;
 /// when a fragment is rendered inside a test contexts render tree.
 /// It is primarily used to be able to find the starting point to return.
 /// </summary>
-internal sealed class FragmentContainer : IComponent
+public sealed class FragmentContainer : IComponent
 {
 	private RenderHandle renderHandle;
 

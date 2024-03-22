@@ -2,9 +2,9 @@ using AngleSharp.Dom;
 
 namespace Bunit.Extensions.WaitForHelpers;
 
-public class RenderedFragmentWaitForHelperExtensionsBunit : BunitContext
+public class RenderedComponentWaitForHelperExtensions : BunitContext
 {
-	public RenderedFragmentWaitForHelperExtensionsBunit(ITestOutputHelper testOutput)
+	public RenderedComponentWaitForHelperExtensions(ITestOutputHelper testOutput)
 	{
 		Services.AddXunitLogger(testOutput);
 	}
@@ -35,7 +35,7 @@ public class RenderedFragmentWaitForHelperExtensionsBunit : BunitContext
 		var expected = Should.Throw<WaitForFailedException>(() =>
 			cut.WaitForAssertion(() => cut.Markup.ShouldBeEmpty(), TimeSpan.FromMilliseconds(10)));
 
-		expected.Message.ShouldStartWith(WaitForAssertionHelper.TimeoutMessage);
+		expected.Message.ShouldStartWith(WaitForAssertionHelper<Simple1>.TimeoutMessage);
 	}
 
 	[Fact(DisplayName = "WaitForState throws exception after timeout")]
@@ -46,7 +46,7 @@ public class RenderedFragmentWaitForHelperExtensionsBunit : BunitContext
 		var expected = Should.Throw<WaitForFailedException>(() =>
 			cut.WaitForState(() => string.IsNullOrEmpty(cut.Markup), TimeSpan.FromMilliseconds(100)));
 
-		expected.Message.ShouldStartWith(WaitForStateHelper.TimeoutBeforePassMessage);
+		expected.Message.ShouldStartWith(WaitForStateHelper<Simple1>.TimeoutBeforePassMessage);
 	}
 
 	[Fact(DisplayName = "WaitForState throws exception if statePredicate throws on a later render")]
@@ -65,7 +65,7 @@ public class RenderedFragmentWaitForHelperExtensionsBunit : BunitContext
 				return false;
 			}));
 
-		expected.Message.ShouldStartWith(WaitForStateHelper.ExceptionInPredicateMessage);
+		expected.Message.ShouldStartWith(WaitForStateHelper<Simple1>.ExceptionInPredicateMessage);
 		expected.InnerException.ShouldBeOfType<InvalidOperationException>()
 			.Message.ShouldBe(expectedInnerMessage);
 	}

@@ -3,7 +3,8 @@ namespace Bunit.Extensions.WaitForHelpers;
 /// <summary>
 /// Represents an async wait helper, that will wait for a specified time for a state predicate to pass.
 /// </summary>
-public class WaitForStateHelper : WaitForHelper<object?>
+public class WaitForStateHelper<TComponent> : WaitForHelper<object?, TComponent>
+	where TComponent : IComponent
 {
 	internal const string TimeoutBeforePassMessage = "The state predicate did not pass before the timeout period passed.";
 	internal const string ExceptionInPredicateMessage = "The state predicate throw an unhandled exception.";
@@ -23,14 +24,14 @@ public class WaitForStateHelper : WaitForHelper<object?>
 	/// or the <paramref name="timeout"/> is reached (default is one second).
 	/// </summary>
 	/// <remarks>
-	/// The <paramref name="statePredicate"/> is evaluated initially, and then each time the <paramref name="renderedFragment"/> renders.
+	/// The <paramref name="statePredicate"/> is evaluated initially, and then each time the <paramref name="renderedComponent"/> renders.
 	/// </remarks>
-	/// <param name="renderedFragment">The render fragment or component to attempt to verify state against.</param>
+	/// <param name="renderedComponent">The render fragment or component to attempt to verify state against.</param>
 	/// <param name="statePredicate">The predicate to invoke after each render, which must returns <c>true</c> when the desired state has been reached.</param>
 	/// <param name="timeout">The maximum time to wait for the desired state.</param>
 	/// <exception cref="WaitForFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
-	public WaitForStateHelper(RenderedFragment renderedFragment, Func<bool> statePredicate, TimeSpan? timeout = null)
-		: base(renderedFragment, () => (statePredicate(), default), timeout)
+	public WaitForStateHelper(IRenderedComponent<TComponent> renderedComponent, Func<bool> statePredicate, TimeSpan? timeout = null)
+		: base(renderedComponent, () => (statePredicate(), default), timeout)
 	{
 	}
 }

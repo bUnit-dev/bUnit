@@ -3,7 +3,7 @@ using Bunit.Rendering;
 
 namespace Bunit;
 
-public class RootRenderTreeBunit : BunitContext
+public class RootRenderTreeTests : BunitContext
 {
 	[Fact(DisplayName = "Count returns number of component registrations added")]
 	public void Test010()

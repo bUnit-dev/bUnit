@@ -16,9 +16,9 @@ namespace Bunit.BlazorE2E;
 /// <see cref="BunitContext" />.
 /// https://github.com/dotnet/aspnetcore/blob/master/src/Components/test/E2ETest/Tests/ComponentRenderingTest.cs.
 /// </summary>
-public class ComponentRenderingBunit : BunitContext
+public class ComponentRenderingTest : BunitContext
 {
-	public ComponentRenderingBunit(ITestOutputHelper outputHelper)
+	public ComponentRenderingTest(ITestOutputHelper outputHelper)
 	{
 		BunitContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(outputHelper);

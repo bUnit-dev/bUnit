@@ -3,21 +3,22 @@ using Bunit.Rendering;
 namespace Bunit;
 
 /// <summary>
-/// InvokeAsync extensions methods on <see cref="RenderedFragment"/>.
+/// InvokeAsync extensions methods on <see cref="IRenderedComponent{TComponent}"/>.
 /// </summary>
-public static class RenderedFragmentInvokeAsyncExtensions
+public static class RenderedComponentInvokeAsyncExtensions
 {
 	/// <summary>
 	/// Invokes the given <paramref name="workItem"/> in the context of the associated <see cref="BunitRenderer"/>.
 	/// </summary>
-	/// <param name="renderedFragment">The rendered fragment whose dispatcher to invoke with.</param>
+	/// <param name="renderedComponent">The rendered fragment whose dispatcher to invoke with.</param>
 	/// <param name="workItem">The work item to execute on the renderer's thread.</param>
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing or is suspended by an asynchronous operation.</returns>
-	public static Task InvokeAsync(this RenderedFragment renderedFragment, Action workItem)
+	public static Task InvokeAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, Action workItem)
+		where TComponent : IComponent
 	{
-		ArgumentNullException.ThrowIfNull(renderedFragment);
+		ArgumentNullException.ThrowIfNull(renderedComponent);
 
-		return renderedFragment
+		return renderedComponent
 			.Services
 			.GetRequiredService<BunitContext>()
 			.Renderer
@@ -28,14 +29,15 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <summary>
 	/// Invokes the given <paramref name="workItem"/> in the context of the associated <see cref="BunitRenderer"/>.
 	/// </summary>
-	/// <param name="renderedFragment">The rendered component whose dispatcher to invoke with.</param>
+	/// <param name="renderedComponent">The rendered component whose dispatcher to invoke with.</param>
 	/// <param name="workItem">The work item to execute on the renderer's thread.</param>
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing.</returns>
-	public static Task InvokeAsync(this RenderedFragment renderedFragment, Func<Task> workItem)
+	public static Task InvokeAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, Func<Task> workItem)
+		where TComponent : IComponent
 	{
-		ArgumentNullException.ThrowIfNull(renderedFragment);
+		ArgumentNullException.ThrowIfNull(renderedComponent);
 
-		return renderedFragment
+		return renderedComponent
 			.Services
 			.GetRequiredService<BunitContext>()
 			.Renderer
@@ -46,14 +48,15 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <summary>
 	/// Invokes the given <paramref name="workItem"/> in the context of the associated <see cref="BunitRenderer"/>.
 	/// </summary>
-	/// <param name="renderedFragment">The rendered component whose dispatcher to invoke with.</param>
+	/// <param name="renderedComponent">The rendered component whose dispatcher to invoke with.</param>
 	/// <param name="workItem">The work item to execute on the renderer's thread.</param>
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing, with the return value from <paramref name="workItem"/>.</returns>
-	public static Task<T> InvokeAsync<T>(this RenderedFragment renderedFragment, Func<T> workItem)
+	public static Task<T> InvokeAsync<TComponent, T>(this IRenderedComponent<TComponent> renderedComponent, Func<T> workItem)
+		where TComponent : IComponent
 	{
-		ArgumentNullException.ThrowIfNull(renderedFragment);
+		ArgumentNullException.ThrowIfNull(renderedComponent);
 
-		return renderedFragment
+		return renderedComponent
 			.Services
 			.GetRequiredService<BunitContext>()
 			.Renderer
@@ -64,14 +67,15 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <summary>
 	/// Invokes the given <paramref name="workItem"/> in the context of the associated <see cref="BunitRenderer"/>.
 	/// </summary>
-	/// <param name="renderedFragment">The rendered component whose dispatcher to invoke with.</param>
+	/// <param name="renderedComponent">The rendered component whose dispatcher to invoke with.</param>
 	/// <param name="workItem">The work item to execute on the renderer's thread.</param>
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing, with the return value from <paramref name="workItem"/>.</returns>
-	public static Task<T> InvokeAsync<T>(this RenderedFragment renderedFragment, Func<Task<T>> workItem)
+	public static Task<T> InvokeAsync<TComponent, T>(this IRenderedComponent<TComponent> renderedComponent, Func<Task<T>> workItem)
+		where TComponent : IComponent
 	{
-		ArgumentNullException.ThrowIfNull(renderedFragment);
+		ArgumentNullException.ThrowIfNull(renderedComponent);
 
-		return renderedFragment
+		return renderedComponent
 			.Services
 			.GetRequiredService<BunitContext>()
 			.Renderer

@@ -1,8 +1,9 @@
 using System.Linq.Expressions;
+using Bunit.Rendering;
 
 namespace Bunit;
 
-public partial class ComponentParameterCollectionBuilderBunits : BunitContext
+public partial class ComponentParameterCollectionBuilderTests : BunitContext
 {
 	private ComponentParameterCollectionBuilder<Params> Builder { get; } = new();
 
@@ -37,12 +38,12 @@ public partial class ComponentParameterCollectionBuilderBunits : BunitContext
 		EventCallbackCalled.ShouldBeTrue();
 	}
 
-	private RenderedFragment RenderWithRenderFragment(RenderFragment renderFragment)
+	private IRenderedComponent<IComponent> RenderWithRenderFragment(RenderFragment renderFragment)
 	{
 		return Renderer.RenderFragment(renderFragment);
 	}
 
-	private RenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
+	private IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
 	{
 		var res = Renderer.RenderFragment(renderFragment);

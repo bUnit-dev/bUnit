@@ -2,7 +2,7 @@ using Bunit.TestDoubles;
 
 namespace Bunit.Rendering;
 
-public class BunitComponentActivatorBunit : BunitContext
+public class BunitComponentActivatorTests : BunitContext
 {
 	[Fact(DisplayName = "Default activator")]
 	public void Test001()

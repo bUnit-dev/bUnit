@@ -1,6 +1,6 @@
 namespace Bunit;
 
-public class RefreshableQueryCollectionBunit : BunitContext
+public class RefreshableQueryCollectionTests : BunitContext
 {
 	[Fact(DisplayName = "When the query returns no elements, the collection is empty")]
 	public void Test001()

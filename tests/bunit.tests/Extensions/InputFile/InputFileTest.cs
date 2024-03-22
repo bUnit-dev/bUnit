@@ -6,7 +6,7 @@ namespace Bunit.Extensions.InputFile;
 
 using InputFile = Microsoft.AspNetCore.Components.Forms.InputFile;
 
-public class InputFileBunits : BunitContext
+public class InputFileTest : BunitContext
 {
 	[Fact(DisplayName = "InputFile can upload a single string file")]
 	public void Test001()
@@ -60,7 +60,7 @@ public class InputFileBunits : BunitContext
 	[Fact(DisplayName = "UploadFile throws exception when InputFile is null")]
 	public void Test004()
 	{
-		Action action = () => ((RenderedComponent<InputFile>)null).UploadFiles();
+		Action action = () => ((IRenderedComponent<InputFile>)null).UploadFiles();
 
 		action.ShouldThrow<ArgumentNullException>();
 	}

@@ -1,6 +1,6 @@
 namespace Bunit.ComponentFactories;
 
-public class ConditionalComponentFactoryBunit : BunitContext
+public class ConditionalComponentFactoryTest : BunitContext
 {
 	[Fact(DisplayName = "Add throws when factories is null")]
 	public void Test001()
