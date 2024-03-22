@@ -5,7 +5,7 @@ namespace Bunit.Labels.Strategies;
 
 internal sealed class LabelTextUsingForAttributeStrategy : ILabelTextQueryStrategy
 {
-	public IElement? FindElement(IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
+	public IElement? FindElement(RenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
 	{
 		var matchingLabel = renderedFragment.Nodes.TryQuerySelectorAll("label")
 			.SingleOrDefault(l => l.TextContent.Trim().Equals(labelText, options.ComparisonType));
