@@ -5,12 +5,12 @@ namespace Bunit;
 
 internal sealed class CssSelectorElementFactory : IElementWrapperFactory
 {
-	private readonly RenderedFragment testTarget;
+	private readonly IRenderedComponent<IComponent> testTarget;
 	private readonly string cssSelector;
 
 	public Action? OnElementReplaced { get; set; }
 
-	public CssSelectorElementFactory(RenderedFragment testTarget, string cssSelector)
+	public CssSelectorElementFactory(IRenderedComponent<IComponent> testTarget, string cssSelector)
 	{
 		this.testTarget = testTarget;
 		this.cssSelector = cssSelector;

@@ -13,7 +13,7 @@ The following example of this:
 [!code-csharp[DisposeComponentsTest.cs](../../../samples/tests/xunit/DisposeComponentsTest.cs#L13-L22)]
 
 > [!WARNING]
-> For `IAsyncDisposable` (since .net5) relying on [`WaitForState()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForState(Bunit.RenderedFragment,System.Func{System.Boolean},System.Nullable{System.TimeSpan})) or [`WaitForAssertion()`](xref:Bunit.RenderedFragmentWaitForHelperExtensions.WaitForAssertion(Bunit.RenderedFragment,System.Action,System.Nullable{System.TimeSpan})) will not work as a disposed component will not trigger a new render cycle.
+> For `IAsyncDisposable` (since .net5) relying on [`WaitForState()`](xref:Bunit.RenderedComponentWaitForHelperExtensions.WaitForState``1(Bunit.IRenderedComponent{``0},System.Func{System.Boolean},System.Nullable{System.TimeSpan})) or [`WaitForAssertion()`](xref:Bunit.RenderedComponentWaitForHelperExtensions.WaitForAssertion``1(Bunit.IRenderedComponent{``0},System.Action,System.Nullable{System.TimeSpan})) will not work as a disposed component will not trigger a new render cycle.
 
 ## Disposing components asynchronously
 If a component implements `IAsyncDisposable`, `DisposeComponentsAsync` can be awaited to wait for all asynchronous `DisposeAsync` methods. Sometimes interacting with JavaScript in Blazor WebAssembly requires disposing or resetting state in `DisposeAsync`.
