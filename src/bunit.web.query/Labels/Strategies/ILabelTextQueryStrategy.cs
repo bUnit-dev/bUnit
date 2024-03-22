@@ -4,5 +4,5 @@ namespace Bunit.Labels.Strategies;
 
 internal interface ILabelTextQueryStrategy
 {
-	IElement? FindElement(IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions options);
+	IElement? FindElement(RenderedFragment renderedFragment, string labelText, ByLabelTextOptions options);
 }

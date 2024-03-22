@@ -5,7 +5,7 @@ namespace Bunit.Labels.Strategies;
 
 internal sealed class LabelTextUsingAriaLabelledByStrategy : ILabelTextQueryStrategy
 {
-	public IElement? FindElement(IRenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
+	public IElement? FindElement(RenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
 	{
 		var elementsWithAriaLabelledBy = renderedFragment.Nodes.TryQuerySelectorAll("[aria-labelledby]");
 

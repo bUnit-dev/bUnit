@@ -33,7 +33,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Added
 
--   New overloads for `IRenderedFragmentBase.InvokeAsync` that allow retrieving the work item's return value. By [@jcparkyn](https://github.com/jcparkyn).
+-   New overloads for `RenderedFragmentBase.InvokeAsync` that allow retrieving the work item's return value. By [@jcparkyn](https://github.com/jcparkyn).
 
 ## [1.25.3] - 2023-11-14
 
@@ -65,7 +65,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Fixed
 
--   AngleSharp IElement extension methods do not work with `IRenderedFragment.Find`. Reported by [a2er](https://github.com/a2er). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+-   AngleSharp IElement extension methods do not work with `RenderedFragment.Find`. Reported by [a2er](https://github.com/a2er). Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.22.19] - 2023-07-28
 
@@ -655,7 +655,7 @@ List of new features.
 
 -   Added `Render(RenderFragment)` and `Render<TComponent>(RenderFragment)` methods to `TestContext`, as well as various overloads to the `MarkupMatches` methods, that also takes a `RenderFragment` as the expected value.
 
-          The difference between the generic `Render` method and the non-generic one is that the generic returns an `IRenderedComponent<TComponent>`, whereas the non-generic one returns a `IRenderedFragment`.
+          The difference between the generic `Render` method and the non-generic one is that the generic returns an `IRenderedComponent<TComponent>`, whereas the non-generic one returns a `RenderedFragment`.
 
           Calling `Render<TComponent>(RenderFragent)` is equivalent to calling `Render(RenderFragment).FindComponent<TComponent>()`, e.g. it returns the first component in the render tree of type `TComponent`. This is different from the `RenderComponent<TComponent>()` method, where `TComponent` _is_ the root component of the render tree.
 
@@ -883,7 +883,7 @@ Thanks to [pharry22](https://github.com/pharry22) for submitting fixes and impro
 List of new features.
 
 -   Added `InvokeAsync(Func<Task>)` to `RenderedComponentInvokeAsyncExtensions`. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
--   Added `ITestRenderer Renderer { get ; }` to `IRenderedFragment` to make it possible to simplify the `IRenderedComponentBase<TComponent>` interface. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
+-   Added `ITestRenderer Renderer { get ; }` to `RenderedFragment` to make it possible to simplify the `IRenderedComponentBase<TComponent>` interface. By [@JeroenBos](https://github.com/JeroenBos) in [#151](https://github.com/egil/bUnit/pull/177).
 -   Added support for scoped CSS to `MarkupMatches` and related comparer methods. By [@egil](https://github.com/egil) in [#195](https://github.com/egil/bUnit/pull/195).
 
 ### Changed
@@ -1073,14 +1073,14 @@ Also a big thank to all you who have contributed by raising issues, participated
 
 ### Added
 
--   A new event, `OnAfterRender`, has been added to `IRenderedFragmentBase`, which `IRenderedFragment` inherits from. Subscribers will be invoked each time the rendered fragment is re-rendered. Related issue [#118](https://github.com/egil/bunit/issues/118).
--   A new property, `RenderCount`, has been added to `IRenderedFragmentBase`, which `IRenderedFragment` inherits from. Its represents the number of times a rendered fragment has been rendered. Related issue [#118](https://github.com/egil/bunit/issues/118).
--   A new event, `OnMarkupUpdated`, has been added to `IRenderedFragmentBase`. Subscribers will be notifid each time the rendered fragments markup has been regenerated. Related issue [#118](https://github.com/egil/bunit/issues/118).
+-   A new event, `OnAfterRender`, has been added to `RenderedFragmentBase`, which `RenderedFragment` inherits from. Subscribers will be invoked each time the rendered fragment is re-rendered. Related issue [#118](https://github.com/egil/bunit/issues/118).
+-   A new property, `RenderCount`, has been added to `RenderedFragmentBase`, which `RenderedFragment` inherits from. Its represents the number of times a rendered fragment has been rendered. Related issue [#118](https://github.com/egil/bunit/issues/118).
+-   A new event, `OnMarkupUpdated`, has been added to `RenderedFragmentBase`. Subscribers will be notifid each time the rendered fragments markup has been regenerated. Related issue [#118](https://github.com/egil/bunit/issues/118).
 -   Due to the [concurrency bug discovered](https://github.com/egil/bunit/issues/108), the entire render notification and markup notification system has been changed.
 -   A new overload `RenderComponent()` and `SetParameterAndRender()`, which takes a `Action<ComponentParameterBuilder<TComponent>>` as input. That allows you to pass parameters to a component under test in a strongly typed way. Thanks to [@StefH](https://github.com/StefH) for the work on this. Related issues: [#79](https://github.com/egil/bunit/issues/79) and [#36](https://github.com/egil/bunit/issues/36).
 -   The two razor test types, `<Fixture>` and `<SnapshotTest>`, can now be **skipped**. by setting the `Skip="some reason for skipping"` parameter. Note, this requires support from the test runner, which current only includes bUnit.xUnit. Related issue: [#77](https://github.com/egil/bunit/issues/77).
 -   The two razor test types, `<Fixture>` and `<SnapshotTest>`, can now have a **timeout** specified, by setting the `Timeout="TimeSpan.FromSeconds(2)"` parameter. Note, this requires support from the test runner, which current only includes bUnit.xUnit.
--   An `InvokeAsync` method has been added to the `IRenderedFragmentBase` type, which allows invoking of an action in the context of the associated renderer. Related issue: [#82](https://github.com/egil/bunit/issues/82).
+-   An `InvokeAsync` method has been added to the `RenderedFragmentBase` type, which allows invoking of an action in the context of the associated renderer. Related issue: [#82](https://github.com/egil/bunit/issues/82).
 -   Enabled the "navigate to test" in Test Explorer. Related issue: [#106](https://github.com/egil/bunit/issues/106).
 -   Enabled xUnit to discover and run Razor-based tests. Thanks to [Brad Wilson (@bradwilson)](https://github.com/bradwilson) for his help with this. Related issue: [#4](https://github.com/egil/bunit/issues/4).
 
@@ -1101,7 +1101,7 @@ Also a big thank to all you who have contributed by raising issues, participated
 -   `WaitForRender` has been removed entirely from the library, as the more general purpose `WaitForAssertion` or `WaitForState` covers its use case.
 -   `WaitForAssertion` or `WaitForState` is no longer available on `ITestContext` types. They are _still_ available on rendered components and rendered fragments.
 -   `CreateNodes` method has been removed from `ITextContext`. The ability to convert a markup string to a `INodeList` is available through the `HtmlParser` type registered in `ITextContext.Services` service provider.
--   `RenderEvents` has been removed from `IRenderedFragment`, and replaced by the `OnMarkupUpdated` and `OnAfterRender` events. Related issue [#118](https://github.com/egil/bunit/issues/118).
+-   `RenderEvents` has been removed from `RenderedFragment`, and replaced by the `OnMarkupUpdated` and `OnAfterRender` events. Related issue [#118](https://github.com/egil/bunit/issues/118).
 -   The generic collection assertion methods `ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T, int>[] elementInspectors)` and `ShouldAllBe<T>(this IEnumerable<T> collection, params Action<T>[] elementInspectors)` have been removed from the library.
 
 ### Fixed
@@ -1133,7 +1133,7 @@ The latest version of the library is availble on NuGet:
 
 ### Added
 
--   **`WaitForState(Func<bool> statePredicate, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `IRenderedFragment`.**
+-   **`WaitForState(Func<bool> statePredicate, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `RenderedFragment`.**
           This method will wait (block) until the provided statePredicate returns true, or the timeout is reached (during debugging the timeout is disabled). Each time the renderer in the test context renders, or the rendered fragment renders, the statePredicate is evaluated.
 
           You use this method, if you have a component under test, that requires _one or more asynchronous triggered renders_, to get to a desired state, before the test can continue.
@@ -1174,7 +1174,7 @@ The latest version of the library is availble on NuGet:
     }
     ```
 
--   **`WaitForAssertion(Action assertion, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `IRenderedFragment`.**
+-   **`WaitForAssertion(Action assertion, TimeSpan? timeout = 1 second)` has been added to `ITestContext` and `RenderedFragment`.**
           This method will wait (block) until the provided assertion method passes, i.e. runs without throwing an assert exception, or until the timeout is reached (during debugging the timeout is disabled). Each time the renderer in the test context renders, or the rendered fragment renders, the assertion is attempted.
 
           You use this method, if you have a component under test, that requires _one or more asynchronous triggered renders_, to get to a desired state, before the test can continue.
@@ -1288,12 +1288,12 @@ The latest version of the library is availble on NuGet:
           The namespaces have changed from `Egil.RazorComponents.Testing.Library.*` to simply `Bunit` for the library, and `Bunit.Mocking.JSInterop` for the JSInterop mocking support.
 
 -   **Auto-refreshing `IElement`s returned from `Find()`**
-          `IRenderedFragment.Find(string cssSelector)` now returns a `IElement`, which internally will refresh itself, whenever the rendered fragment it was found in, changes. This means you can now search for an element once in your test and assign it to a variable, and then continue to assert against the same instance, even after triggering renders of the component under test.
+          `RenderedFragment.Find(string cssSelector)` now returns a `IElement`, which internally will refresh itself, whenever the rendered fragment it was found in, changes. This means you can now search for an element once in your test and assign it to a variable, and then continue to assert against the same instance, even after triggering renders of the component under test.
 
           For example, instead of having `cut.Find("p")` in multiple places in the same test, you can do `var p = cut.Find("p")` once, and the use the variable `p` all the places you would otherwise have the `Find(...)` statement.
 
 -   **Refreshable element collection returned from `FindAll`.**
-          The `FindAll` query method on `IRenderedFragment` now returns a new type, the `IRefreshableElementCollection<IElement>` type, and the method also takes a second optional argument now, `bool enableAutoRefresh = false`.
+          The `FindAll` query method on `RenderedFragment` now returns a new type, the `IRefreshableElementCollection<IElement>` type, and the method also takes a second optional argument now, `bool enableAutoRefresh = false`.
 
           The `IRefreshableElementCollection` is a special collection type that can rerun the query to refresh its the collection of elements that are found by the CSS selector. This can either be done manually by calling the `Refresh()` method, or automatically whenever the rendered fragment renders and has changes, by setting the property `EnableAutoRefresh` to `true` (default set to `false`).
 
