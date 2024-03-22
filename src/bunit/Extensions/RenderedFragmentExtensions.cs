@@ -50,7 +50,7 @@ public static class RenderedFragmentExtensions
 	/// <typeparam name="TComponent">Type of component to find.</typeparam>
 	/// <exception cref="ComponentNotFoundException">Thrown if a component of type <typeparamref name="TComponent"/> was not found in the render tree.</exception>
 	/// <returns>The <see cref="RenderedComponent{T}"/>.</returns>
-	public static RenderedComponent<TComponent> FindComponent<TComponent>(this RenderedFragment renderedFragment)
+	public static IRenderedComponent<TComponent> FindComponent<TComponent>(this RenderedFragment renderedFragment)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(renderedFragment);
@@ -65,7 +65,7 @@ public static class RenderedFragmentExtensions
 	/// </summary>
 	/// <typeparam name="TComponent">Type of components to find.</typeparam>
 	/// <returns>The <see cref="RenderedComponent{T}"/>s.</returns>
-	public static IReadOnlyList<RenderedComponent<TComponent>> FindComponents<TComponent>(this RenderedFragment renderedFragment)
+	public static IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(this RenderedFragment renderedFragment)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(renderedFragment);
@@ -73,7 +73,7 @@ public static class RenderedFragmentExtensions
 		var renderer = renderedFragment.Services.GetRequiredService<BunitContext>().Renderer;
 		var components = renderer.FindComponents<TComponent>(renderedFragment);
 
-		return components.OfType<RenderedComponent<TComponent>>().ToArray();
+		return components.OfType<IRenderedComponent<TComponent>>().ToArray();
 	}
 
 	/// <summary>

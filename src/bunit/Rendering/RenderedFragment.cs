@@ -8,7 +8,7 @@ namespace Bunit;
 /// Represents a rendered fragment.
 /// </summary>
 [DebuggerDisplay("Rendered:{RenderCount}")]
-public class RenderedFragment : IDisposable
+public class RenderedFragment : IRenderedComponent<IComponent>
 {
 	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by BunitServiceProvider, disposed by it.")]
 	private readonly BunitHtmlParser htmlParser;
@@ -34,6 +34,9 @@ public class RenderedFragment : IDisposable
 	/// Gets the id of the rendered component or fragment.
 	/// </summary>
 	public int ComponentId { get; protected set; }
+
+	/// <inheritdoc />
+	public virtual IComponent Instance { get; } = default!;
 
 	/// <summary>
 	/// Gets the HTML markup from the rendered fragment/component.

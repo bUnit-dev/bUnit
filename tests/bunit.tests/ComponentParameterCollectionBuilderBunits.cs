@@ -42,7 +42,7 @@ public partial class ComponentParameterCollectionBuilderBunits : BunitContext
 		return Renderer.RenderFragment(renderFragment);
 	}
 
-	private RenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
+	private IRenderedComponent<TComponent> RenderWithRenderFragment<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
 	{
 		var res = Renderer.RenderFragment(renderFragment);

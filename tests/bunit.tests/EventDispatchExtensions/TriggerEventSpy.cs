@@ -5,7 +5,7 @@ namespace Bunit;
 public class TriggerEventSpy<TEventArgs>
 	where TEventArgs : EventArgs, new()
 {
-	private readonly RenderedComponent<TriggerTester<TEventArgs>> renderedComponent;
+	private readonly IRenderedComponent<TriggerTester<TEventArgs>> renderedComponent;
 	private readonly string element;
 	private TEventArgs? receivedEvent;
 
@@ -13,7 +13,7 @@ public class TriggerEventSpy<TEventArgs>
 
 	public TriggerEventSpy(
 		Func<Action<ComponentParameterCollectionBuilder<TriggerTester<TEventArgs>>>,
-			RenderedComponent<TriggerTester<TEventArgs>>> componentRenderer, string element, string eventName)
+			IRenderedComponent<TriggerTester<TEventArgs>>> componentRenderer, string element, string eventName)
 	{
 		ArgumentNullException.ThrowIfNull(componentRenderer);
 

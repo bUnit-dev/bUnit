@@ -7,15 +7,14 @@ namespace Bunit;
 /// Represents a rendered component.
 /// </summary>
 [DebuggerDisplay("Component={typeof(TComponent).Name,nq},RenderCount={RenderCount}")]
-public sealed class RenderedComponent<TComponent> : RenderedFragment
-	where TComponent : IComponent
+public sealed class RenderedComponent<TComponent> : RenderedFragment, IRenderedComponent<TComponent> where TComponent : IComponent
 {
 	private TComponent? instance;
 
 	/// <summary>
 	/// Gets the component under test.
 	/// </summary>
-	public TComponent Instance
+	public new TComponent Instance
 	{
 		get
 		{

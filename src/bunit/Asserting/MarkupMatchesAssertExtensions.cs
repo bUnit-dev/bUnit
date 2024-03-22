@@ -410,7 +410,7 @@ public static class MarkupMatchesAssertExtensions
 		MarkupMatches(actual.ToNodeList(), expectedNodes, userMessage);
 	}
 
-	private static RenderedFragment AdhocRenderRenderFragment(this RenderFragment renderFragment)
+	private static IRenderedComponent<IComponent> AdhocRenderRenderFragment(this RenderFragment renderFragment)
 	{
 		using var ctx = new BunitContext();
 		return ctx.Render(renderFragment);

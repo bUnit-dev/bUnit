@@ -138,7 +138,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// <typeparam name="TComponent">Type of the component to render.</typeparam>
 	/// <param name="parameterBuilder">The ComponentParameterBuilder action to add type safe parameters to pass to the component when it is rendered.</param>
 	/// <returns>The rendered <typeparamref name="TComponent"/>.</returns>
-	public virtual RenderedComponent<TComponent> Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
+	public virtual IRenderedComponent<TComponent> Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
 		where TComponent : IComponent
 	{
 		var renderFragment = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder)
@@ -157,7 +157,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// <typeparam name="TComponent">The type of component to find in the render tree.</typeparam>
 	/// <param name="renderFragment">The render fragment to render.</param>
 	/// <returns>The <see cref="RenderedComponent{TComponent}"/>.</returns>
-	public virtual RenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
+	public virtual IRenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
 		=> this.RenderInsideRenderTree<TComponent>(renderFragment);
 
@@ -166,7 +166,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// </summary>
 	/// <param name="renderFragment">The render fragment to render.</param>
 	/// <returns>The <see cref="RenderedFragment"/>.</returns>
-	public virtual RenderedFragment Render(RenderFragment renderFragment)
+	public virtual IRenderedComponent<FragmentContainer> Render(RenderFragment renderFragment)
 		=> RenderInsideRenderTree(renderFragment);
 
 	/// <summary>
@@ -191,7 +191,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// <typeparam name="TComponent">The type of component to render.</typeparam>
 	/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> that contains a declaration of the component.</param>
 	/// <returns>A <see cref="RenderedComponent{TComponent}"/>.</returns>
-	private RenderedComponent<TComponent> RenderInsideRenderTree<TComponent>(RenderFragment renderFragment)
+	private IRenderedComponent<TComponent> RenderInsideRenderTree<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
 	{
 		var baseResult = RenderInsideRenderTree(renderFragment);
@@ -203,7 +203,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// </summary>
 	/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> to render.</param>
 	/// <returns>A <see cref="RenderedFragment"/>.</returns>
-	private RenderedComponent<FragmentContainer> RenderInsideRenderTree(RenderFragment renderFragment)
+	private IRenderedComponent<FragmentContainer> RenderInsideRenderTree(RenderFragment renderFragment)
 	{
 		// Wrap fragment in a FragmentContainer so the start of the test supplied
 		// razor fragment can be found after, and then wrap in any layout components

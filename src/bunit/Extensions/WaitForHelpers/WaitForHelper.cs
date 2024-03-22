@@ -13,7 +13,7 @@ public abstract class WaitForHelper<T> : IDisposable
 	private readonly Timer timer;
 	private readonly TaskCompletionSource<T> checkPassedCompletionSource;
 	private readonly Func<(bool CheckPassed, T Content)> completeChecker;
-	private readonly RenderedFragment renderedFragment;
+	private readonly IRenderedComponent<IComponent> renderedFragment;
 	private readonly ILogger<WaitForHelper<T>> logger;
 	private readonly BunitRenderer renderer;
 	private bool isDisposed;
@@ -46,7 +46,7 @@ public abstract class WaitForHelper<T> : IDisposable
 	/// Initializes a new instance of the <see cref="WaitForHelper{T}"/> class.
 	/// </summary>
 	protected WaitForHelper(
-		RenderedFragment renderedFragment,
+		IRenderedComponent<IComponent> renderedFragment,
 		Func<(bool CheckPassed, T Content)> completeChecker,
 		TimeSpan? timeout = null)
 	{

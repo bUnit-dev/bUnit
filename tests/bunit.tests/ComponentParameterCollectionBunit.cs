@@ -2,7 +2,7 @@ namespace Bunit;
 
 public class ComponentParameterCollectionBunit : BunitContext
 {
-	private RenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
+	private IRenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
 	{
 		var res = Renderer.RenderFragment(renderFragment);
 		return res.FindComponent<Params>();

@@ -13,7 +13,8 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <param name="renderedFragment">The rendered fragment whose dispatcher to invoke with.</param>
 	/// <param name="workItem">The work item to execute on the renderer's thread.</param>
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing or is suspended by an asynchronous operation.</returns>
-	public static Task InvokeAsync(this RenderedFragment renderedFragment, Action workItem)
+	public static Task InvokeAsync<TComponent>(this IRenderedComponent<TComponent> renderedFragment, Action workItem)
+		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 
@@ -31,7 +32,8 @@ public static class RenderedFragmentInvokeAsyncExtensions
 	/// <param name="renderedFragment">The rendered component whose dispatcher to invoke with.</param>
 	/// <param name="workItem">The work item to execute on the renderer's thread.</param>
 	/// <returns>A <see cref="Task"/> that will be completed when the action has finished executing.</returns>
-	public static Task InvokeAsync(this RenderedFragment renderedFragment, Func<Task> workItem)
+	public static Task InvokeAsync<TComponent>(this RenderedComponent<TComponent> renderedFragment, Func<Task> workItem)
+		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(renderedFragment);
 

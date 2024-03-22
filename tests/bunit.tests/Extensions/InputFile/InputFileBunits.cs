@@ -60,7 +60,7 @@ public class InputFileBunits : BunitContext
 	[Fact(DisplayName = "UploadFile throws exception when InputFile is null")]
 	public void Test004()
 	{
-		Action action = () => ((RenderedComponent<InputFile>)null).UploadFiles();
+		Action action = () => ((IRenderedComponent<InputFile>)null).UploadFiles();
 
 		action.ShouldThrow<ArgumentNullException>();
 	}
