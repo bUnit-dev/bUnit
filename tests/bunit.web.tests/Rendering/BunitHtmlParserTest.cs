@@ -1,5 +1,7 @@
+using System;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
+using Xunit;
 
 namespace Bunit.Rendering;
 
@@ -142,6 +144,29 @@ public class BunitHtmlParserTest
 		actual.ShouldHaveSingleItem()
 			.ShouldBeAssignableTo<IHtmlUnknownElement>()
 			.NodeName.ShouldBe(elementName, StringCompareShould.IgnoreCase);
+	}
+
+	[Fact(DisplayName = "Parse with full HTML markup")]
+	public void Test021()
+	{
+		var actual = Parser.Parse("""
+			<!DOCTYPE html>
+			<html lang="en">
+			  <head>
+			    <meta charset="utf-8">
+			    <title>title</title>
+			    <link rel="stylesheet" href="style.css">
+			    <script src="script.js"></script>
+			  </head>
+			  <body>
+			    <!-- page content -->
+			  </body>
+			</html>
+			""");
+
+		actual.Length.ShouldBe(2);
+		actual[0].ShouldBeAssignableTo<IDocumentType>();
+		actual[1].ShouldBeAssignableTo<IHtmlHtmlElement>();
 	}
 
 	private static void VerifyElementParsedWithId(string expectedElementName, List<INode> actual)
