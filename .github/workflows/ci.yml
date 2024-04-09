@@ -236,9 +236,9 @@ jobs:
       - name: 📄 Build docs
         working-directory: ./docs/site
         run: |
-          dotnet tool install --global docfx --version 2.74.1
-          docfx metadata --logLevel error
-          docfx build --logLevel warning --warningsAsErrors
+          dotnet tool restore
+          dotnet docfx metadata --logLevel error
+          dotnet docfx build --logLevel warning --warningsAsErrors
 
   dependency-review:
     runs-on: ubuntu-latest
