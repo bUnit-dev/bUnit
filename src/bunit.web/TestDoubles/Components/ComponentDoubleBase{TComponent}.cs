@@ -20,8 +20,7 @@ public abstract class ComponentDoubleBase<TComponent> : IComponent
 	/// that this stub replaced in the component tree.
 	/// </summary>
 	[Parameter(CaptureUnmatchedValues = true)]
-	public CapturedParameterView<TComponent> Parameters { get; private set; }
-		= CapturedParameterView<TComponent>.Empty;
+	public CapturedParameterView<TComponent> Parameters { get; set; } = CapturedParameterView<TComponent>.Empty;
 
 	/// <inheritdoc/>
 	public virtual Task SetParametersAsync(ParameterView parameters)
