@@ -8,7 +8,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Fixed
 
-- bUnit's built-in HTML parser did not correctly parse full HTML documents that included a `<!DOCTYPE html>` as the first element. Fixed by [@egil](https://github.com/egil).
+- bUnit's built-in HTML parser did not correctly parse full HTML documents that included a &lt;!DOCTYPE html&gt; as the first element. Fixed by [@egil](https://github.com/egil).
 
 ### Changed
 - `NavigationManager` is again registered as a singleton instead of scoped.
