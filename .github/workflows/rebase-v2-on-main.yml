@@ -1,3 +1,5 @@
+name: rebase-v2-on-main
+
 on:
   push:
     branches:
@@ -6,10 +8,6 @@ on:
   workflow_dispatch:
 
 env:
-  VSTEST_CONNECTION_TIMEOUT: 180
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-  DOTNET_NOLOGO: true
-  DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
   TERM: xterm
 
 jobs:
@@ -38,16 +36,16 @@ jobs:
           git config --global user.signingkey ${{ steps.import_gpg.outputs.keyid }}
           git config --global commit.gpgsign true
 
-      - name: ⏩ Merge stable with main, push to origin
+      - name: ⏩ Rebase v2 on main, push to origin
         id: rebaseV2
         continue-on-error: true
         run: |
+          git fetch --all
           git checkout v2
-          git fetch
-          git rebase origin/main
-          git push origin v2
+          git rebase -S main
+          git push --force-with-lease
 
-      - name: ⏭ Create pull request from main to v2 when direct rebase fails
+      - name: ⏭ Create pull request
         if: steps.rebaseV2.outcome == 'failure'
         uses: thomaseizinger/create-pull-request@1.3.1
         env:
@@ -56,3 +54,7 @@ jobs:
           head: main
           base: v2
           title: Rebase v2 on main
+          body: |
+            This PR is created automatically by the bUnit bot.
+
+            When completing this PR, it's important to use **Rebase and merge** to keep the commit history clean.
