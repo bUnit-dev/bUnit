@@ -43,7 +43,7 @@ jobs:
         continue-on-error: true
         run: |
           git checkout v2
-          git git rebase origin/main
+          git rebase origin/main
           git push origin v2
 
       - name: ⏭ Create pull request from main to v2 when direct rebase fails
