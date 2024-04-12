@@ -43,6 +43,7 @@ jobs:
         continue-on-error: true
         run: |
           git checkout v2
+          git fetch
           git rebase origin/main
           git push origin v2
 
