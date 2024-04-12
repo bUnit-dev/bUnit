@@ -1,27 +1,21 @@
-namespace Bunit.TestAssets.SampleComponents
+namespace Bunit.TestAssets.SampleComponents;
+
+public partial class PersistentComponentStateSample : ComponentBase
 {
-	public partial class PersistentComponentStateSample
+	public const string PersistenceKey = "fetchdata";
+
+	public WeatherForecast[] Forecasts { get; private set; }
+
+	[Inject] public PersistentComponentState State { get; set; }
+
+	protected override void OnInitialized()
 	{
-		public const string PersistenceKey = "fetchdata";
-
-		public WeatherForecast[] Forecasts { get; private set; }
-
-		[Inject] public PersistentComponentState State { get; set; }
-
-		protected override void OnInitialized()
+		State.RegisterOnPersisting(PersistForecasts);
+		if (!State.TryTakeFromJson<WeatherForecast[]>(PersistenceKey, out var data))
 		{
-			State.RegisterOnPersisting(PersistForecasts);
-			if (!State.TryTakeFromJson<WeatherForecast[]>(PersistenceKey, out var data))
-			{
-				Forecasts = CreateForecasts();
-			}
-			else
-			{
-				Forecasts = data;
-			}
+			Forecasts = CreateForecasts();
 		}
-
-		private Task PersistForecasts()
+		else
 		{
 			State.PersistAsJson(PersistenceKey, Forecasts);
 			return Task.CompletedTask;
@@ -36,8 +30,22 @@ namespace Bunit.TestAssets.SampleComponents
 		}
 	}
 
-	public record class WeatherForecast
+	private Task PersistForecasts()
 	{
-		public int Temperature { get; set; }
+		State.PersistAsJson(PersistenceKey, Forecasts);
+		return Task.CompletedTask;
 	}
+
+	private WeatherForecast[] CreateForecasts()
+	{
+		return new WeatherForecast[]
+		{
+			new WeatherForecast{ Temperature = 42 },
+		};
+	}
+}
+
+public record class WeatherForecast
+{
+	public int Temperature { get; set; }
 }

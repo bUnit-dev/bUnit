@@ -57,7 +57,7 @@ public sealed class BunitHtmlParser : IDisposable
 	/// </summary>
 	/// <param name="markup">The markup to parse.</param>
 	/// <returns>The <see cref="INodeList"/>.</returns>
-	public INodeList Parse([StringSyntax("Html")]string markup)
+	public INodeList Parse([StringSyntax("Html")] string markup)
 	{
 		ArgumentNullException.ThrowIfNull(markup);
 
@@ -70,7 +70,7 @@ public sealed class BunitHtmlParser : IDisposable
 			: htmlParser.ParseFragment(markup, ctx!);
 	}
 
-	private SingleNodeNodeList ParseSpecial(string markup, string matchedElement)
+	private INodeList ParseSpecial(string markup, string matchedElement)
 	{
 		var doc = htmlParser.ParseDocument(markup);
 
