@@ -275,7 +275,7 @@ public class BunitContextTest : BunitContext
 			WasDisposed = true;
 		}
 	}
-	
+
 	private sealed class AsyncThrowAfterDelayComponent : ComponentBase, IAsyncDisposable
 	{
 		public async ValueTask DisposeAsync()
