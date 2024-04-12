@@ -7,7 +7,12 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ## [Unreleased]
 
 ### Changed
+
 - `NavigationManager` is again registered as a singleton instead of scoped.
+
+### Added
+
+- More asynchronous extension methods to the `MouseEventDispatcher` to enable awaiting the event handlers. By [@Qwertyluk](https://github.com/Qwertyluk)
 
 ## [1.27.17] - 2024-03-02
 
