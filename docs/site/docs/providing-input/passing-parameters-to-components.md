@@ -444,7 +444,7 @@ The solution is to inherit from bUnits `BunitContext` instead, i.e.:
 
 ## Limitations of rendering a `RenderFragment` inside a test
   
-When rendering a `RenderFragment` using the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method, the created <xref:Bunit.RenderedFragment> is static. This means that it will not re-render even if events are triggered.
+When rendering a `RenderFragment` using the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method, the created <xref:Bunit.IRenderedComponent`1> is static. This means that it will not re-render even if events are triggered.
 ```razor
 @inherits BunitContext
 

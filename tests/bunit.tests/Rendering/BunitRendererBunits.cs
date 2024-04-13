@@ -163,7 +163,7 @@ public class BunitRendererBunits : BunitContext
 
 		// act
 		var childCuts = Renderer.FindComponents<HasParams>(cut)
-			.OfType<RenderedComponent<HasParams>>()
+			.OfType<IRenderedComponent<HasParams>>()
 			.ToList();
 
 		// assert

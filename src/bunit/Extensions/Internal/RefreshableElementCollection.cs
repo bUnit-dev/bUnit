@@ -7,7 +7,7 @@ namespace Bunit;
 [DebuggerDisplay("Selector={cssSelector}, AutoRefresh={enableAutoRefresh}")]
 internal sealed class RefreshableElementCollection : IRefreshableElementCollection<IElement>
 {
-	private readonly RenderedFragment renderedFragment;
+	private readonly IRenderedComponent<IComponent> renderedComponent;
 	private readonly string cssSelector;
 	private IHtmlCollection<IElement> elements;
 	private bool enableAutoRefresh;
@@ -19,12 +19,12 @@ internal sealed class RefreshableElementCollection : IRefreshableElementCollecti
 		{
 			if (ShouldEnable(value))
 			{
-				renderedFragment.OnMarkupUpdated += RefreshInternal;
+				renderedComponent.OnMarkupUpdated += RefreshInternal;
 			}
 
 			if (ShouldDisable(value))
 			{
-				renderedFragment.OnMarkupUpdated -= RefreshInternal;
+				renderedComponent.OnMarkupUpdated -= RefreshInternal;
 			}
 
 			enableAutoRefresh = value;
@@ -35,11 +35,11 @@ internal sealed class RefreshableElementCollection : IRefreshableElementCollecti
 
 	private bool ShouldEnable(bool value) => value && !enableAutoRefresh;
 
-	internal RefreshableElementCollection(RenderedFragment renderedFragment, string cssSelector)
+	internal RefreshableElementCollection(IRenderedComponent<IComponent> renderedComponent, string cssSelector)
 	{
-		this.renderedFragment = renderedFragment;
+		this.renderedComponent = renderedComponent;
 		this.cssSelector = cssSelector;
-		elements = renderedFragment.Nodes.QuerySelectorAll(cssSelector);
+		elements = renderedComponent.Nodes.QuerySelectorAll(cssSelector);
 	}
 
 	public void Refresh() => RefreshInternal(this, EventArgs.Empty);
@@ -54,6 +54,6 @@ internal sealed class RefreshableElementCollection : IRefreshableElementCollecti
 
 	private void RefreshInternal(object? sender, EventArgs args)
 	{
-		elements = renderedFragment.Nodes.QuerySelectorAll(cssSelector);
+		elements = renderedComponent.Nodes.QuerySelectorAll(cssSelector);
 	}
 }

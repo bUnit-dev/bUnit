@@ -20,8 +20,8 @@ public sealed class BunitRenderer : Renderer
 	private static extern void CallSetDirectParameters(ComponentState componentState, ParameterView parameters);
 
 	private readonly object renderTreeUpdateLock = new();
-	private readonly Dictionary<int, RenderedFragment> renderedComponents = new();
-	private readonly List<RootComponent> rootComponents = new();
+	private readonly Dictionary<int, IRenderedComponent> renderedComponents = new();
+	private readonly List<BunitRootComponent> rootComponents = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private bool disposed;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -81,8 +81,8 @@ public sealed class BunitRenderer : Renderer
 	/// Renders the <paramref name="renderFragment"/>.
 	/// </summary>
 	/// <param name="renderFragment">The <see cref="Microsoft.AspNetCore.Components.RenderFragment"/> to render.</param>
-	/// <returns>A <see cref="RenderedFragment"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
-	public RenderedFragment RenderFragment(RenderFragment renderFragment)
+	/// <returns>A <see cref="IRenderedComponent{TComponent}"/> that provides access to the rendered <paramref name="renderFragment"/>.</returns>
+	public IRenderedComponent<IComponent> RenderFragment(RenderFragment renderFragment)
 		=> Render(renderFragment);
 
 	/// <summary>
@@ -158,7 +158,7 @@ public sealed class BunitRenderer : Renderer
 	/// </summary>
 	/// <typeparam name="TComponent">Type of component to find.</typeparam>
 	/// <param name="parentComponent">Parent component to search.</param>
-	public RenderedComponent<TComponent> FindComponent<TComponent>(RenderedFragment parentComponent)
+	public IRenderedComponent<TComponent> FindComponent<TComponent>(IRenderedComponent<IComponent> parentComponent)
 		where TComponent : IComponent
 	{
 		var foundComponents = FindComponents<TComponent>(parentComponent, 1);
@@ -172,7 +172,7 @@ public sealed class BunitRenderer : Renderer
 	/// </summary>
 	/// <typeparam name="TComponent">Type of components to find.</typeparam>
 	/// <param name="parentComponent">Parent component to search.</param>
-	public IReadOnlyList<RenderedComponent<TComponent>> FindComponents<TComponent>(RenderedFragment parentComponent)
+	public IReadOnlyList<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedComponent<IComponent> parentComponent)
 		where TComponent : IComponent
 		=> FindComponents<TComponent>(parentComponent, int.MaxValue);
 
@@ -239,7 +239,8 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	internal Task SetDirectParametersAsync(RenderedFragment renderedComponent, ParameterView parameters)
+	internal Task SetDirectParametersAsync<TComponent>(IRenderedComponent<TComponent> renderedComponent, ParameterView parameters)
+		where TComponent : IComponent
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
@@ -447,7 +448,7 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	private RenderedFragment Render(RenderFragment renderFragment)
+	private RenderedComponent<BunitRootComponent> Render(RenderFragment renderFragment)
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
@@ -455,16 +456,16 @@ public sealed class BunitRenderer : Renderer
 		{
 			ResetUnhandledException();
 
-			var root = new RootComponent(renderFragment);
+			var root = new BunitRootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
-			var result = new RenderedFragment(rootComponentId, services);
+			var result = new RenderedComponent<BunitRootComponent>(rootComponentId, root, services);
 			renderedComponents.Add(rootComponentId, result);
 			rootComponents.Add(root);
 			root.Render();
 			return result;
 		});
 
-		RenderedFragment result;
+		RenderedComponent<BunitRootComponent> result;
 
 		if (!renderTask.IsCompleted)
 		{
@@ -483,14 +484,14 @@ public sealed class BunitRenderer : Renderer
 		return result;
 	}
 
-	private List<RenderedComponent<TComponent>> FindComponents<TComponent>(RenderedFragment parentComponent, int resultLimit)
+	private List<IRenderedComponent<TComponent>> FindComponents<TComponent>(IRenderedComponent<IComponent> parentComponent, int resultLimit)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(parentComponent);
 
 		ObjectDisposedException.ThrowIf(disposed, this);
 
-		var result = new List<RenderedComponent<TComponent>>();
+		var result = new List<IRenderedComponent<TComponent>>();
 		var framesCollection = new RenderTreeFrameDictionary();
 
 		// Blocks the renderer from changing the render tree
@@ -530,12 +531,12 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	private RenderedComponent<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
+	private IRenderedComponent<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
 		where TComponent : IComponent
 	{
 		if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
 		{
-			return (RenderedComponent<TComponent>)renderedComponent;
+			return (IRenderedComponent<TComponent>)renderedComponent;
 		}
 
 		LoadRenderTreeFrames(componentId, framesCollection);

@@ -73,7 +73,7 @@ public class ReRenderTest : BunitContext
     // Indirectly re-renders and returns the task returned by Calculate().
     // The explicit <Task> here is important, otherwise the call to Calculate()
     // will be awaited automatically.
-    var task = await cut.InvokeAsync<Task>(() => cut.Instance.Calculate(1, 2));
+    var task = await cut.InvokeAsync<CalcWithLoading, Task>(() => cut.Instance.Calculate(1, 2));
     cut.MarkupMatches("<output>Loading</output>");
 
     // Wait for the task to complete.
