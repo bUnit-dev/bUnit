@@ -21,7 +21,7 @@ public sealed class BunitRenderer : Renderer
 
 	private readonly object renderTreeUpdateLock = new();
 	private readonly Dictionary<int, IRenderedComponent> renderedComponents = new();
-	private readonly List<RootComponent> rootComponents = new();
+	private readonly List<BunitRootComponent> rootComponents = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private bool disposed;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -448,7 +448,7 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	private RenderedComponent<RootComponent> Render(RenderFragment renderFragment)
+	private RenderedComponent<BunitRootComponent> Render(RenderFragment renderFragment)
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
@@ -456,16 +456,16 @@ public sealed class BunitRenderer : Renderer
 		{
 			ResetUnhandledException();
 
-			var root = new RootComponent(renderFragment);
+			var root = new BunitRootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
-			var result = new RenderedComponent<RootComponent>(rootComponentId, root, services);
+			var result = new RenderedComponent<BunitRootComponent>(rootComponentId, root, services);
 			renderedComponents.Add(rootComponentId, result);
 			rootComponents.Add(root);
 			root.Render();
 			return result;
 		});
 
-		RenderedComponent<RootComponent> result;
+		RenderedComponent<BunitRootComponent> result;
 
 		if (!renderTask.IsCompleted)
 		{
