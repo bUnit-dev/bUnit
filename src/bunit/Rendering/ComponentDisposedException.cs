@@ -1,7 +1,7 @@
 namespace Bunit.Rendering;
 
 /// <summary>
-/// Represents an exception that is thrown when a <see cref="Bunit.RenderedFragment"/>'s
+/// Represents an exception that is thrown when a <see cref="IRenderedComponent{TComponent}"/>'s
 /// properties is accessed after the underlying component has been disposed by the renderer.
 /// </summary>
 [Serializable]

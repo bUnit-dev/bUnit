@@ -5,19 +5,19 @@ namespace Bunit.Labels.Strategies;
 
 internal sealed class LabelTextUsingForAttributeStrategy : ILabelTextQueryStrategy
 {
-	public IElement? FindElement(RenderedFragment renderedFragment, string labelText, ByLabelTextOptions options)
+	public IElement? FindElement(IRenderedComponent<IComponent> renderedComponent, string labelText, ByLabelTextOptions options)
 	{
-		var matchingLabel = renderedFragment.Nodes.TryQuerySelectorAll("label")
+		var matchingLabel = renderedComponent.Nodes.TryQuerySelectorAll("label")
 			.SingleOrDefault(l => l.TextContent.Trim().Equals(labelText, options.ComparisonType));
 
 		if (matchingLabel is null)
 			return null;
 
-		var matchingElement = renderedFragment.Nodes.TryQuerySelector($"#{matchingLabel.GetAttribute("for")}");
+		var matchingElement = renderedComponent.Nodes.TryQuerySelector($"#{matchingLabel.GetAttribute("for")}");
 
 		if (matchingElement is null)
 			return null;
 
-		return matchingElement.WrapUsing(new ByLabelTextElementFactory(renderedFragment, labelText, options));
+		return matchingElement.WrapUsing(new ByLabelTextElementFactory(renderedComponent, labelText, options));
 	}
 }

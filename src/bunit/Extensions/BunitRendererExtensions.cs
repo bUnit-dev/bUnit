@@ -15,14 +15,14 @@ public static class BunitRendererExtensions
 	/// <param name="renderer">The renderer to use.</param>
 	/// <param name="parameterBuilder">The a builder to create parameters to pass to the component.</param>
 	/// <returns>A <see cref="RenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
-	public static RenderedComponent<TComponent> Render<TComponent>(this BunitRenderer renderer, Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
+	public static IRenderedComponent<TComponent> Render<TComponent>(this BunitRenderer renderer, Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(renderer);
 
 		var builder = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder);
 		var renderFragment = builder.Build().ToRenderFragment<TComponent>();
-		var renderedFragment = renderer.RenderFragment(renderFragment);
-		return renderedFragment.FindComponent<TComponent>();
+		var renderedComponent = renderer.RenderFragment(renderFragment);
+		return renderedComponent.FindComponent<TComponent>();
 	}
 }
