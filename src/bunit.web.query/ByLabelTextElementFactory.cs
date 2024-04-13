@@ -5,13 +5,13 @@ namespace Bunit;
 
 internal sealed class ByLabelTextElementFactory : IElementWrapperFactory
 {
-	private readonly RenderedFragment testTarget;
+	private readonly IRenderedComponent<IComponent> testTarget;
 	private readonly string labelText;
 	private readonly ByLabelTextOptions options;
 
 	public Action? OnElementReplaced { get; set; }
 
-	public ByLabelTextElementFactory(RenderedFragment testTarget, string labelText, ByLabelTextOptions options)
+	public ByLabelTextElementFactory(IRenderedComponent<IComponent> testTarget, string labelText, ByLabelTextOptions options)
 	{
 		this.testTarget = testTarget;
 		this.labelText = labelText;

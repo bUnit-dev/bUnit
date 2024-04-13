@@ -24,8 +24,8 @@ internal class BunitComponentActivator : IComponentActivator
 		// It should never be replaced by another component, as
 		// this would break bUnits ability to detect the start
 		// of the component under test.
-		if (typeof(FragmentContainer) == componentType)
-			return new FragmentContainer();
+		if (typeof(ContainerFragment) == componentType)
+			return new ContainerFragment();
 
 		for (int i = factories.Count - 1; i >= 0; i--)
 		{

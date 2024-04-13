@@ -1,9 +1,8 @@
 namespace Bunit.Extensions.WaitForHelpers;
 
 /// <summary>
-/// Represents an exception thrown when the <see cref="WaitForHelper{T}"/> does not complete successfully.
+/// Represents an exception thrown when the <see cref="WaitForHelper{T, TComponent}"/> does not complete successfully.
 /// </summary>
-[Serializable]
 public sealed class WaitForFailedException : Exception
 {
 	/// <summary>
@@ -18,7 +17,4 @@ public sealed class WaitForFailedException : Exception
 		: base(errorMessage + $" Check count: {checkCount}. Component render count: {componentRenderCount}. Total render count: {totalRenderCount}.", innerException)
 	{
 	}
-
-	private WaitForFailedException(SerializationInfo info, StreamingContext context)
-		: base(info, context) { }
 }
