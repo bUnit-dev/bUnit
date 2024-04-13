@@ -1,11 +1,11 @@
 namespace Bunit.Rendering;
 
 /// <summary>
-/// Creates an instance of the <see cref="BunitRootComponent"/>, which is used
+/// Creates an instance of the <see cref="ContainerFragment"/>, which is used
 /// when a fragment is rendered inside a test contexts render tree.
 /// It is primarily used to be able to find the starting point to return.
 /// </summary>
-public sealed class BunitRootComponent : IComponent
+public sealed class ContainerFragment : IComponent
 {
 	private RenderHandle renderHandle;
 
@@ -24,13 +24,13 @@ public sealed class BunitRootComponent : IComponent
 	}
 
 	/// <summary>
-	/// Wraps the <paramref name="wrappingTarget"/> in a <see cref="BunitRootComponent"/>.
+	/// Wraps the <paramref name="wrappingTarget"/> in a <see cref="ContainerFragment"/>.
 	/// </summary>
 	public static RenderFragment Wrap(RenderFragment wrappingTarget)
 	{
 		return builder =>
 		{
-			builder.OpenComponent<BunitRootComponent>(0);
+			builder.OpenComponent<ContainerFragment>(0);
 			builder.AddAttribute(1, "ChildContent", wrappingTarget);
 			builder.CloseComponent();
 		};

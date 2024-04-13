@@ -166,7 +166,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// </summary>
 	/// <param name="renderFragment">The render fragment to render.</param>
 	/// <returns>The <see cref="IRenderedComponent{TComponent}"/>.</returns>
-	public virtual IRenderedComponent<BunitRootComponent> Render(RenderFragment renderFragment)
+	public virtual IRenderedComponent<ContainerFragment> Render(RenderFragment renderFragment)
 		=> RenderInsideRenderTree(renderFragment);
 
 	/// <summary>
@@ -203,15 +203,15 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// </summary>
 	/// <param name="renderFragment">The <see cref="RenderInsideRenderTree"/> to render.</param>
 	/// <returns>A <see cref="IRenderedComponent{TComponent}"/>.</returns>
-	private IRenderedComponent<BunitRootComponent> RenderInsideRenderTree(RenderFragment renderFragment)
+	private IRenderedComponent<ContainerFragment> RenderInsideRenderTree(RenderFragment renderFragment)
 	{
 		// Wrap fragment in a FragmentContainer so the start of the test supplied
 		// razor fragment can be found after, and then wrap in any layout components
 		// added to the test context.
-		var wrappedInFragmentContainer = BunitRootComponent.Wrap(renderFragment);
+		var wrappedInFragmentContainer = ContainerFragment.Wrap(renderFragment);
 		var wrappedInRenderTree = RenderTree.Wrap(wrappedInFragmentContainer);
 		var result = Renderer.RenderFragment(wrappedInRenderTree);
 
-		return Renderer.FindComponent<BunitRootComponent>(result);
+		return Renderer.FindComponent<ContainerFragment>(result);
 	}
 }
