@@ -46,6 +46,7 @@ bUnit is available on NuGet in various incarnations. Most users should just pick
 | [bUnit.web](https://www.nuget.org/packages/bunit.web/) | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) |
 | [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template for bUnit test projects based on xUnit, NUnit or MSTest | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) |
 | [bUnit.generators](https://www.nuget.org/packages/bunit.generators/)|Source code generators to minimize code setup in various situations.|[![Nuget](https://img.shields.io/nuget/dt/bunit.generators?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.generators/)|
+| [bUnit.web.query](https://www.nuget.org/packages/bunit.web.query/)|bUnit implementation of testing-library.com's query APIs.|[![Nuget](https://img.shields.io/nuget/dt/bunit.web.query?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web.query/)|
 
 ## Sponsors
 
@@ -71,14 +72,14 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 
 ## Contributors
 
-Shout outs and a big thank you [to all the contributors](https://github.com/egil/bunit/graphs/contributors) to the library, including those who raise issues, those who provide input to issues, and those who send pull requests.
+Shoutouts and a big thank you [to all the contributors](https://github.com/egil/bunit/graphs/contributors) to the library, including those who raise issues, those who provide input to issues, and those who send pull requests.
 
 **Want to help out? You can help in a number of ways:**
 
 - Provide feedback and input through [issues](https://github.com/egil/bunit/issues), via [Twitter](https://twitter.com/egilhansen) or by using the [bUnit Gitter chat room](https://gitter.im/egil/bunit).
-- Help build the library. Just pick an issue and submit pull-requests.
+- Help build the library. Just pick an issue and submit pull requests.
 - Help write documentation.
-- Create blog posts, presentations or video tutorials. If you do, I'll be happy to showcase them in the [related section](xref:external-resources) on this site.
+- Create blog posts, presentations, or video tutorials. If you do, I'll be happy to showcase them in the [related section](xref:external-resources) on this site.
 
 ## Code of conduct
 

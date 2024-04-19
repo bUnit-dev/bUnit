@@ -1,0 +1,60 @@
+name: rebase-v2-on-main
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+env:
+  TERM: xterm
+
+jobs:
+  rebase:
+    name: 🎁 Rebase V2 on Main
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.BUNIT_BOT_TOKEN }}
+
+      - name: ⚙️ Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.BUNIT_BOT_GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.BUNIT_BOT_GPG_KEY_PASSPHRASE }}
+
+      - name: ⚙️ Setup CI GIT
+        run: |
+          git config user.name "${{ steps.import_gpg.outputs.name }}"
+          git config user.email ${{ steps.import_gpg.outputs.email }}
+          git config --global user.signingkey ${{ steps.import_gpg.outputs.keyid }}
+          git config --global commit.gpgsign true
+
+      - name: ⏩ Rebase v2 on main, push to origin
+        id: rebaseV2
+        continue-on-error: true
+        run: |
+          git fetch --all
+          git checkout v2
+          git rebase -S main
+          git push --force-with-lease
+
+      - name: ⏭ Create pull request
+        if: steps.rebaseV2.outcome == 'failure'
+        uses: thomaseizinger/create-pull-request@1.3.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.BUNIT_BOT_TOKEN }}
+        with:
+          head: main
+          base: v2
+          title: Rebase v2 on main
+          body: |
+            This PR is created automatically by the bUnit bot.
+
+            When completing this PR, it's important to use **Rebase and merge** to keep the commit history clean.

@@ -38,7 +38,7 @@ public static class TestServiceProviderExtensions
 
 		// bUnits fake Navigation Manager
 		services.AddSingleton<FakeNavigationManager>();
-		services.AddScoped<NavigationManager>(s => s.GetRequiredService<FakeNavigationManager>());
+		services.AddSingleton<NavigationManager>(s => s.GetRequiredService<FakeNavigationManager>());
 		services.AddSingleton<INavigationInterception, FakeNavigationInterception>();
 
 		// bUnits fake WebAssemblyHostEnvironment

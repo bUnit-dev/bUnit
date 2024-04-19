@@ -78,6 +78,7 @@ jobs:
         dotnet pack src/bunit.web/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
         dotnet pack src/bunit.template/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
         dotnet pack src/bunit.generators/ -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit.web.query/ -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
 
     # Publish the NuGet package as an artifact, so they can be used in the following jobs
     - uses: actions/upload-artifact@v4
@@ -235,9 +236,9 @@ jobs:
       - name: 📄 Build docs
         working-directory: ./docs/site
         run: |
-          dotnet tool install --global docfx --version 2.74.1
-          docfx metadata --logLevel error
-          docfx build --logLevel warning --warningsAsErrors
+          dotnet tool restore
+          dotnet docfx metadata --logLevel error
+          dotnet docfx build --logLevel warning --warningsAsErrors
 
   dependency-review:
     runs-on: ubuntu-latest

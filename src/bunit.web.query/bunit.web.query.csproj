@@ -18,6 +18,10 @@
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet3Version)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet3Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet3Version)" />
+		<PackageReference Include="Meziantou.Polyfill" Version="1.0.37">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
@@ -48,6 +52,10 @@
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="$(DotNet9Version)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNet9Version)" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="$(DotNet9Version)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\bunit.web\bunit.web.csproj" />
 	</ItemGroup>
 
 </Project>

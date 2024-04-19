@@ -17,7 +17,7 @@ public sealed class BunitHtmlParser : IDisposable
 	private const string ColgroupSubElement = "COL";
 	private static readonly string[] TableSubElements = { "CAPTION", "COLGROUP", "TBODY", "TFOOT", "THEAD", };
 	private static readonly string[] TrSubElements = { "TD", "TH" };
-	private static readonly string[] SpecialHtmlElements = { "HTML", "HEAD", "BODY" };
+	private static readonly string[] SpecialHtmlElements = { "HTML", "HEAD", "BODY", "!DOCTYPE" };
 
 	private readonly IBrowsingContext context;
 	private readonly IHtmlParser htmlParser;
@@ -80,6 +80,7 @@ public sealed class BunitHtmlParser : IDisposable
 			"HTML" => new SingleNodeNodeList(doc.Body?.ParentElement),
 			"HEAD" => new SingleNodeNodeList(doc.Head),
 			"BODY" => new SingleNodeNodeList(doc.Body),
+			"!DOCTYPE" => doc.ChildNodes,
 			_ => throw new InvalidOperationException($"{matchedElement} should not be parsed by {nameof(ParseSpecial)}."),
 		};
 	}

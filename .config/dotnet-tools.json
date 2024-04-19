@@ -3,13 +3,13 @@
   "isRoot": true,
   "tools": {
     "dotnet-serve": {
-      "version": "1.10.172",
+      "version": "1.10.175",
       "commands": [
         "dotnet-serve"
       ]
     },
     "docfx": {
-      "version": "2.75.3",
+      "version": "2.76.0",
       "commands": [
         "docfx"
       ]

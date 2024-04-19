@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
-		<LangVersion>10.0</LangVersion>
+		<TargetFrameworks>netstandard2.0;net5.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
 		<RazorLangVersion>3.0</RazorLangVersion>
 		<RootNamespace>Bunit.Docs.Samples</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -49,5 +49,13 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0" />
 	</ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0-*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.0-*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0-*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0-*" />
+  </ItemGroup>
 
 </Project>

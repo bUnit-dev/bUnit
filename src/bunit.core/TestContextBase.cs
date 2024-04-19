@@ -22,9 +22,8 @@ public abstract class TestContextBase : IDisposable
 	public ITestRenderer Renderer => testRenderer ??= CreateTestRenderer();
 
 	/// <summary>
-	/// Hey YouTube, I'm a comment!
+	/// Creates the renderer.
 	/// </summary>
-	/// <returns></returns>
 	protected abstract ITestRenderer CreateTestRenderer();
 
 	/// <summary>
