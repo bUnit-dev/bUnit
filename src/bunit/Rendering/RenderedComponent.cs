@@ -8,7 +8,7 @@ namespace Bunit;
 /// Represents a rendered component.
 /// </summary>
 [DebuggerDisplay("Component={typeof(TComponent).Name,nq},RenderCount={RenderCount}")]
-internal sealed class RenderedComponent<TComponent> : IRenderedComponent<TComponent>, IRenderedComponent
+internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedComponent<TComponent>, IRenderedComponent
 	where TComponent : IComponent
 {
 	private readonly TComponent instance;
@@ -35,11 +35,6 @@ internal sealed class RenderedComponent<TComponent> : IRenderedComponent<TCompon
 	/// Gets a value indicating whether the rendered component or fragment has been disposed by the <see cref="BunitRenderer"/>.
 	/// </summary>
 	public bool IsDisposed { get; private set; }
-
-	/// <summary>
-	/// Gets the id of the rendered component or fragment.
-	/// </summary>
-	public int ComponentId { get; private set; }
 
 	/// <summary>
 	/// Gets the HTML markup from the rendered fragment/component.
@@ -81,16 +76,27 @@ internal sealed class RenderedComponent<TComponent> : IRenderedComponent<TCompon
 	/// </summary>
 	public IServiceProvider Services { get; }
 
-	internal RenderedComponent(int componentId, TComponent instance, IServiceProvider services)
+	internal RenderedComponent(
+		BunitRenderer renderer,
+		int componentId,
+		TComponent instance,
+		IServiceProvider services,
+		ComponentState? parentComponentState)
+	: base(renderer, componentId, instance, parentComponentState)
 	{
-		ComponentId = componentId;
 		Services = services;
 		this.instance = instance;
 		htmlParser = Services.GetRequiredService<BunitHtmlParser>();
 	}
 
-	internal RenderedComponent(int componentId, TComponent instance, RenderTreeFrameDictionary componentFrames, IServiceProvider services)
-		: this(componentId, instance, services)
+	internal RenderedComponent(
+		BunitRenderer renderer,
+		int componentId,
+		TComponent instance,
+		RenderTreeFrameDictionary componentFrames,
+		IServiceProvider services,
+		ComponentState? parentComponentState)
+		: this(renderer, componentId, instance, services, parentComponentState)
 	{
 		RenderCount++;
 		UpdateMarkup(componentFrames);

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -20,7 +21,7 @@ public sealed class BunitRenderer : Renderer
 	private static extern void CallSetDirectParameters(ComponentState componentState, ParameterView parameters);
 
 	private readonly object renderTreeUpdateLock = new();
-	private readonly Dictionary<int, IRenderedComponent> renderedComponents = new();
+	private readonly Dictionary<int, ComponentState> renderedComponents = new();
 	private readonly List<BunitRootComponent> rootComponents = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private bool disposed;
@@ -205,6 +206,19 @@ public sealed class BunitRenderer : Renderer
 		}
 
 		return returnTask;
+	}
+	/// <inheritdoc/>
+	protected override ComponentState CreateComponentState(int componentId, IComponent component, ComponentState? parentComponentState)
+	{
+		ArgumentNullException.ThrowIfNull(component);
+
+		var TComponent = component.GetType();
+		var renderedComponentType = typeof(RenderedComponent<>).MakeGenericType(TComponent);
+		var renderedComponent = Activator.CreateInstance(renderedComponentType, this, componentId, component, services, parentComponentState);
+
+		Debug.Assert(renderedComponent is not null, "RenderedComponent should not be null");
+
+		return (ComponentState)renderedComponent;
 	}
 
 	/// <inheritdoc/>
@@ -393,7 +407,7 @@ public sealed class BunitRenderer : Renderer
 			if (status.Disposed)
 			{
 				renderedComponents.Remove(componentId);
-				rc.OnRender(renderEvent);
+				((IRenderedComponent)rc).OnRender(renderEvent);
 				renderEvent.SetUpdatedApplied(componentId);
 				logger.LogComponentDisposed(componentId);
 				continue;
@@ -401,7 +415,7 @@ public sealed class BunitRenderer : Renderer
 
 			if (status.UpdateNeeded)
 			{
-				rc.OnRender(renderEvent);
+				((IRenderedComponent)rc).OnRender(renderEvent);
 				renderEvent.SetUpdatedApplied(componentId);
 
 				// RC can replace the instance of the component it is bound
@@ -434,11 +448,6 @@ public sealed class BunitRenderer : Renderer
 
 			if (disposing)
 			{
-				foreach (var rc in renderedComponents.Values)
-				{
-					rc.Dispose();
-				}
-
 				renderedComponents.Clear();
 				disposalTasks.Clear();
 				unhandledExceptionTsc.TrySetCanceled();
@@ -458,7 +467,7 @@ public sealed class BunitRenderer : Renderer
 
 			var root = new BunitRootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
-			var result = new RenderedComponent<BunitRootComponent>(rootComponentId, root, services);
+			var result = new RenderedComponent<BunitRootComponent>(this, rootComponentId, root, services, null);
 			renderedComponents.Add(rootComponentId, result);
 			rootComponents.Add(root);
 			root.Render();
@@ -514,9 +523,9 @@ public sealed class BunitRenderer : Renderer
 				ref var frame = ref frames.Array[i];
 				if (frame.FrameType == RenderTreeFrameType.Component)
 				{
-					if (frame.Component is TComponent component)
+					if (frame.Component is TComponent)
 					{
-						result.Add(GetOrCreateRenderedComponent(framesCollection, frame.ComponentId, component));
+						result.Add(GetRenderedComponent<TComponent>(framesCollection, frame.ComponentId));
 
 						if (result.Count == resultLimit)
 							return;
@@ -531,7 +540,7 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	private IRenderedComponent<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
+	private IRenderedComponent<TComponent> GetRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId)
 		where TComponent : IComponent
 	{
 		if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
@@ -540,10 +549,11 @@ public sealed class BunitRenderer : Renderer
 		}
 
 		LoadRenderTreeFrames(componentId, framesCollection);
-		var result = new RenderedComponent<TComponent>(componentId, component, framesCollection, services);
+
+		var result = GetComponentState(componentId);
 		renderedComponents.Add(result.ComponentId, result);
 
-		return result;
+		return (IRenderedComponent<TComponent>)result;
 	}
 
 	/// <summary>
