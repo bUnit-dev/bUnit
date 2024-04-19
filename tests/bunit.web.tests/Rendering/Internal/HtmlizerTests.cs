@@ -39,7 +39,21 @@ public partial class HtmlizerTests : TestContext
 
 		cut.Find("button").HasAttribute("blazor:elementreference").ShouldBeTrue();
 	}
+	
+#if NET8_0_OR_GREATER
+	[Fact(DisplayName = "Htmlizer ignores NamedEvents")]
+	public void Test004()
+	{
+		var cut = RenderComponent<FormNameComponent>();
 
+		cut.MarkupMatches("""
+		                  <form method="post">
+		                    <button type="submit">Submit</button>
+		                  </form>
+		                  """);
+	}
+#endif
+	
 	private sealed class Htmlizer01Component : ComponentBase
 	{
 		public ElementReference ButtomElmRef { get; set; }

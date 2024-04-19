@@ -9,6 +9,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Fixed
 
 - bUnit's built-in HTML parser did not correctly parse full HTML documents that included a &lt;!DOCTYPE html&gt; as the first element. Fixed by [@egil](https://github.com/egil).
+- `@formname` directive led to an `InvalidOperationException` when used on a form element. Reported by [@suzu2469](https://github.com/suzu2469) in [#1438](https://github.com/bUnit-dev/bUnit/issues/1438).
+  Fixed by [@egil](https://github.com/egil)/[@linkdotnet](https://github.com/linkdotnet).
 
 ### Changed
 - `NavigationManager` is again registered as a singleton instead of scoped.
