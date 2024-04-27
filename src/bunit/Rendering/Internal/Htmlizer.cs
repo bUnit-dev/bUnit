@@ -52,21 +52,21 @@ internal static class Htmlizer
 		return $"{BlazorAttrPrefix}{attributeName}";
 	}
 
-	public static string GetHtml(int componentId, RenderTreeFrameDictionary framesCollection)
+	public static string GetHtml(int componentId, BunitRenderer renderer)
 	{
-		var context = new HtmlRenderingContext(framesCollection);
+		var context = new HtmlRenderingContext(renderer);
 		var frames = context.GetRenderTreeFrames(componentId);
-		var newPosition = RenderFrames(context, frames, 0, frames.Length);
+		var newPosition = RenderFrames(context, frames, 0, frames.Count);
 		Debug.Assert(
-			newPosition == frames.Length,
-			$"frames.Length = {frames.Length}. newPosition = {newPosition}"
+			newPosition == frames.Count,
+			$"frames.Length = {frames.Count}. newPosition = {newPosition}"
 		);
 		return context.Result.ToString();
 	}
 
 	private static int RenderFrames(
 		HtmlRenderingContext context,
-		ReadOnlySpan<RenderTreeFrame> frames,
+		ArrayRange<RenderTreeFrame> frames,
 		int position,
 		int maxElements
 	)
@@ -90,11 +90,11 @@ internal static class Htmlizer
 
 	private static int RenderCore(
 		HtmlRenderingContext context,
-		ReadOnlySpan<RenderTreeFrame> frames,
+		ArrayRange<RenderTreeFrame> frames,
 		int position
 	)
 	{
-		var frame = frames[position];
+		var frame = frames.Array[position];
 		switch (frame.FrameType)
 		{
 			case RenderTreeFrameType.Element:
@@ -117,7 +117,7 @@ internal static class Htmlizer
 			case RenderTreeFrameType.ComponentReferenceCapture:
 				return position + 1;
 #if NET8_0_OR_GREATER
-			 case RenderTreeFrameType.NamedEvent:
+			case RenderTreeFrameType.NamedEvent:
 				return position + 1;
 #endif
 			default:
@@ -129,23 +129,23 @@ internal static class Htmlizer
 
 	private static int RenderChildComponent(
 		HtmlRenderingContext context,
-		ReadOnlySpan<RenderTreeFrame> frames,
+		ArrayRange<RenderTreeFrame> frames,
 		int position
 	)
 	{
-		var frame = frames[position];
+		var frame = frames.Array[position];
 		var childFrames = context.GetRenderTreeFrames(frame.ComponentId);
-		RenderFrames(context, childFrames, 0, childFrames.Length);
+		RenderFrames(context, childFrames, 0, childFrames.Count);
 		return position + frame.ComponentSubtreeLength;
 	}
 
 	private static int RenderElement(
 		HtmlRenderingContext context,
-		ReadOnlySpan<RenderTreeFrame> frames,
+		ArrayRange<RenderTreeFrame> frames,
 		int position
 	)
 	{
-		var frame = frames[position];
+		var frame = frames.Array[position];
 		var result = context.Result;
 		result.Append('<');
 		result.Append(frame.ElementName);
@@ -224,7 +224,7 @@ internal static class Htmlizer
 
 	private static int RenderChildren(
 		HtmlRenderingContext context,
-		ReadOnlySpan<RenderTreeFrame> frames,
+		ArrayRange<RenderTreeFrame> frames,
 		int position,
 		int maxElements
 	)
@@ -239,7 +239,7 @@ internal static class Htmlizer
 
 	private static int RenderAttributes(
 		HtmlRenderingContext context,
-		ReadOnlySpan<RenderTreeFrame> frames,
+		ArrayRange<RenderTreeFrame> frames,
 		int position,
 		int maxElements,
 		out string? capturedValueAttribute
@@ -257,7 +257,7 @@ internal static class Htmlizer
 		for (var i = 0; i < maxElements; i++)
 		{
 			var candidateIndex = position + i;
-			var frame = frames[candidateIndex];
+			var frame = frames.Array[candidateIndex];
 
 			// Added to write ElementReferenceCaptureId to DOM
 			if (frame.FrameType == RenderTreeFrameType.ElementReferenceCapture)
@@ -395,15 +395,15 @@ internal static class Htmlizer
 
 	private sealed class HtmlRenderingContext
 	{
-		private readonly RenderTreeFrameDictionary frames;
+		private readonly BunitRenderer renderer;
 
-		public HtmlRenderingContext(RenderTreeFrameDictionary frames)
+		public HtmlRenderingContext(BunitRenderer renderer)
 		{
-			this.frames = frames;
+			this.renderer = renderer;
 		}
 
-		public ReadOnlySpan<RenderTreeFrame> GetRenderTreeFrames(int componentId) =>
-			new(frames[componentId].Array, 0, frames[componentId].Count);
+		public ArrayRange<RenderTreeFrame> GetRenderTreeFrames(int componentId)
+			=> renderer.GetCurrentRenderTreeFrames(componentId);
 
 		public StringBuilder Result { get; } = new();
 
