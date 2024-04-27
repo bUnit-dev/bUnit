@@ -13,8 +13,7 @@ internal interface IRenderedComponent : IDisposable
 	/// <summary>
 	/// Called by the owning <see cref="BunitRenderer"/> when it finishes a render.
 	/// </summary>
-	/// <param name="renderEvent">A <see cref="RenderEvent"/> that represents a render.</param>
-	void OnRender(RenderEvent renderEvent);
+	void UpdateState(bool hasRendered, bool isMarkupGenerationRequired);
 }
 
 /// <summary>
@@ -68,10 +67,4 @@ public interface IRenderedComponent<out TComponent> : IDisposable
 	/// An event that is raised after the markup of the <see cref="IRenderedComponent{TComponent}"/> is updated.
 	/// </summary>
 	event EventHandler? OnMarkupUpdated;
-
-	/// <summary>
-	/// Called by the owning <see cref="BunitRenderer"/> when it finishes a render.
-	/// </summary>
-	/// <param name="renderEvent">A <see cref="RenderEvent"/> that represents a render.</param>
-	void OnRender(RenderEvent renderEvent);
 }
