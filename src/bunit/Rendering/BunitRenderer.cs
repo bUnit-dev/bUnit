@@ -1,7 +1,8 @@
-using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
 
@@ -20,7 +21,8 @@ public sealed class BunitRenderer : Renderer
 	private static extern void CallSetDirectParameters(ComponentState componentState, ParameterView parameters);
 
 	private readonly object renderTreeUpdateLock = new();
-	private readonly Dictionary<int, IRenderedComponent> renderedComponents = new();
+
+	private readonly HashSet<int> returnedRenderedComponentIds = new();
 	private readonly List<BunitRootComponent> rootComponents = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private bool disposed;
@@ -182,7 +184,6 @@ public sealed class BunitRenderer : Renderer
 	public Task DisposeComponents()
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
-
 		Task? returnTask;
 
 		lock (renderTreeUpdateLock)
@@ -205,6 +206,19 @@ public sealed class BunitRenderer : Renderer
 		}
 
 		return returnTask;
+	}
+	/// <inheritdoc/>
+	protected override ComponentState CreateComponentState(int componentId, IComponent component, ComponentState? parentComponentState)
+	{
+		ArgumentNullException.ThrowIfNull(component);
+
+		var TComponent = component.GetType();
+		var renderedComponentType = typeof(RenderedComponent<>).MakeGenericType(TComponent);
+		var renderedComponent = Activator.CreateInstance(renderedComponentType, this, componentId, component, services, parentComponentState);
+
+		Debug.Assert(renderedComponent is not null, "RenderedComponent should not be null");
+
+		return (ComponentState)renderedComponent;
 	}
 
 	/// <inheritdoc/>
@@ -307,117 +321,73 @@ public sealed class BunitRenderer : Renderer
 	/// <inheritdoc/>
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
-		var renderEvent = new RenderEvent();
-		PrepareRenderEvent(renderBatch);
-		ApplyRenderEvent(renderEvent);
+		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
+		{
+			var id = renderBatch.DisposedComponentIDs.Array[i];
+			returnedRenderedComponentIds.Remove(id);
+		}
+
+		for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
+		{
+			var diff = renderBatch.UpdatedComponents.Array[i];
+			var componentState = GetComponentState(diff.ComponentId);
+			var renderedComponent = (IRenderedComponent)componentState;
+
+			if (returnedRenderedComponentIds.Contains(diff.ComponentId))
+			{
+				renderedComponent.UpdateState(hasRendered: true, isMarkupGenerationRequired: diff.Edits.Count > 0);
+			}
+			else
+			{
+				renderedComponent.UpdateState(hasRendered: true, false);
+			}
+
+			UpdateParents(diff.Edits.Count > 0, componentState, in renderBatch);
+		}
 
 		return Task.CompletedTask;
 
-		void PrepareRenderEvent(in RenderBatch renderBatch)
+		void UpdateParents(bool hasChanges, ComponentState componentState, in RenderBatch renderBatch)
 		{
-			for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
+			var parent = componentState.ParentComponentState;
+			if (parent is null)
 			{
-				var id = renderBatch.DisposedComponentIDs.Array[i];
-				renderEvent.SetDisposed(id);
-			}
-
-			for (int i = 0; i < renderBatch.UpdatedComponents.Count; i++)
-			{
-				ref var update = ref renderBatch.UpdatedComponents.Array[i];
-				renderEvent.SetUpdated(update.ComponentId, update.Edits.Count > 0);
-			}
-
-			foreach (var (_, rc) in renderedComponents)
-			{
-				LoadChangesIntoRenderEvent(rc.ComponentId);
-			}
-		}
-
-		void LoadChangesIntoRenderEvent(int componentId)
-		{
-			var status = renderEvent.GetOrCreateStatus(componentId);
-			if (status.FramesLoaded || status.Disposed)
 				return;
+			}
 
-			var frames = GetCurrentRenderTreeFrames(componentId);
-			renderEvent.AddFrames(componentId, frames);
-
-			for (var i = 0; i < frames.Count; i++)
+			if (!IsParentComponentAlreadyUpdated(parent.ComponentId, in renderBatch))
 			{
-				ref var frame = ref frames.Array[i];
-				if (frame.FrameType == RenderTreeFrameType.Component)
+				if (returnedRenderedComponentIds.Contains(parent.ComponentId))
 				{
-					// If a child component of the current components has been
-					// disposed, there is no reason to load the disposed components
-					// render tree frames. This can also cause a stack overflow if
-					// the current component was previously a child of the disposed
-					// component (is that possible?)
-					var childStatus = renderEvent.GetOrCreateStatus(frame.ComponentId);
-					if (childStatus.Disposed)
-					{
-						logger.LogDisposedChildInRenderTreeFrame(componentId, frame.ComponentId);
-					}
-					// The assumption is that a component cannot be in multiple places at
-					// once. However, in case this is not a correct assumption, this
-					// ensures that a child components frames are only loaded once.
-					else if (!renderEvent.GetOrCreateStatus(frame.ComponentId).FramesLoaded)
-					{
-						LoadChangesIntoRenderEvent(frame.ComponentId);
-					}
-
-					if (childStatus.Rendered || childStatus.Changed || childStatus.Disposed)
-					{
-						status.Rendered = status.Rendered || childStatus.Rendered;
-
-						// The current component should also be marked as changed if the child component is
-						// either changed or disposed, as there is a good chance that the child component
-						// contained markup which is no longer visible.
-						status.Changed = status.Changed || childStatus.Changed || childStatus.Disposed;
-					}
+					((IRenderedComponent)parent).UpdateState(hasRendered: true, isMarkupGenerationRequired: hasChanges);
 				}
+				else
+				{
+					((IRenderedComponent)parent).UpdateState(hasRendered: true, false);
+				}
+
+				UpdateParents(hasChanges, parent, in renderBatch);
 			}
 		}
-	}
 
-	private void ApplyRenderEvent(RenderEvent renderEvent)
-	{
-		RenderCount++;
-
-		foreach (var (componentId, status) in renderEvent.Statuses)
+		static bool IsParentComponentAlreadyUpdated(int componentId, in RenderBatch renderBatch)
 		{
-			if (status.UpdatesApplied || !renderedComponents.TryGetValue(componentId, out var rc))
+			for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
 			{
-				continue;
-			}
-
-			if (status.Disposed)
-			{
-				renderedComponents.Remove(componentId);
-				rc.OnRender(renderEvent);
-				renderEvent.SetUpdatedApplied(componentId);
-				logger.LogComponentDisposed(componentId);
-				continue;
-			}
-
-			if (status.UpdateNeeded)
-			{
-				rc.OnRender(renderEvent);
-				renderEvent.SetUpdatedApplied(componentId);
-
-				// RC can replace the instance of the component it is bound
-				// to while processing the update event, e.g. during the
-				// initial render of a component.
-				if (componentId != rc.ComponentId)
+				var diff = renderBatch.UpdatedComponents.Array[i];
+				if (diff.ComponentId == componentId)
 				{
-					renderedComponents.Remove(componentId);
-					renderedComponents.Add(rc.ComponentId, rc);
-					renderEvent.SetUpdatedApplied(rc.ComponentId);
+					return diff.Edits.Count > 0;
 				}
-
-				logger.LogComponentRendered(rc.ComponentId);
 			}
+
+			return false;
 		}
 	}
+
+	/// <inheritdoc/>
+	internal new ArrayRange<RenderTreeFrame> GetCurrentRenderTreeFrames(int componentId)
+		=> base.GetCurrentRenderTreeFrames(componentId);
 
 	/// <inheritdoc/>
 	protected override void Dispose(bool disposing)
@@ -434,12 +404,7 @@ public sealed class BunitRenderer : Renderer
 
 			if (disposing)
 			{
-				foreach (var rc in renderedComponents.Values)
-				{
-					rc.Dispose();
-				}
-
-				renderedComponents.Clear();
+				returnedRenderedComponentIds.Clear();
 				disposalTasks.Clear();
 				unhandledExceptionTsc.TrySetCanceled();
 			}
@@ -448,7 +413,7 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	private RenderedComponent<BunitRootComponent> Render(RenderFragment renderFragment)
+	private IRenderedComponent<BunitRootComponent> Render(RenderFragment renderFragment)
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
 
@@ -458,24 +423,25 @@ public sealed class BunitRenderer : Renderer
 
 			var root = new BunitRootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
-			var result = new RenderedComponent<BunitRootComponent>(rootComponentId, root, services);
-			renderedComponents.Add(rootComponentId, result);
+			returnedRenderedComponentIds.Add(rootComponentId);
 			rootComponents.Add(root);
 			root.Render();
-			return result;
+			return rootComponentId;
 		});
 
-		RenderedComponent<BunitRootComponent> result;
+		int componentId = -1;
 
 		if (!renderTask.IsCompleted)
 		{
 			logger.LogAsyncInitialRender();
-			result = renderTask.GetAwaiter().GetResult();
+			componentId = renderTask.GetAwaiter().GetResult();
 		}
 		else
 		{
-			result = renderTask.Result;
+			componentId = renderTask.Result;
 		}
+
+		var result = GetRenderedComponent<BunitRootComponent>(componentId);
 
 		logger.LogInitialRenderCompleted(result.ComponentId);
 
@@ -488,35 +454,38 @@ public sealed class BunitRenderer : Renderer
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(parentComponent);
-
 		ObjectDisposedException.ThrowIf(disposed, this);
 
-		var result = new List<IRenderedComponent<TComponent>>();
-		var framesCollection = new RenderTreeFrameDictionary();
+		var result = resultLimit == int.MaxValue
+			? new List<IRenderedComponent<TComponent>>()
+			: new List<IRenderedComponent<TComponent>>(resultLimit);
 
 		// Blocks the renderer from changing the render tree
 		// while this method searches through it.
 		lock (renderTreeUpdateLock)
 		{
 			ObjectDisposedException.ThrowIf(disposed, this);
-
 			FindComponentsInRenderTree(parentComponent.ComponentId);
+			foreach (var rc in result)
+			{
+				((IRenderedComponent)rc).UpdateState(hasRendered: false, isMarkupGenerationRequired: true);
+			}
 		}
 
 		return result;
 
 		void FindComponentsInRenderTree(int componentId)
 		{
-			var frames = GetOrLoadRenderTreeFrame(framesCollection, componentId);
+			var frames = GetCurrentRenderTreeFrames(componentId);
 
 			for (var i = 0; i < frames.Count; i++)
 			{
 				ref var frame = ref frames.Array[i];
 				if (frame.FrameType == RenderTreeFrameType.Component)
 				{
-					if (frame.Component is TComponent component)
+					if (frame.Component is TComponent)
 					{
-						result.Add(GetOrCreateRenderedComponent(framesCollection, frame.ComponentId, component));
+						result.Add(GetRenderedComponent<TComponent>(frame.ComponentId));
 
 						if (result.Count == resultLimit)
 							return;
@@ -531,19 +500,12 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
-	private IRenderedComponent<TComponent> GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
+	private IRenderedComponent<TComponent> GetRenderedComponent<TComponent>(int componentId)
 		where TComponent : IComponent
 	{
-		if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
-		{
-			return (IRenderedComponent<TComponent>)renderedComponent;
-		}
-
-		LoadRenderTreeFrames(componentId, framesCollection);
-		var result = new RenderedComponent<TComponent>(componentId, component, framesCollection, services);
-		renderedComponents.Add(result.ComponentId, result);
-
-		return result;
+		var result = GetComponentState(componentId);
+		returnedRenderedComponentIds.Add(result.ComponentId);
+		return (IRenderedComponent<TComponent>)result;
 	}
 
 	/// <summary>
