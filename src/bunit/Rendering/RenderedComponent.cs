@@ -8,9 +8,10 @@ namespace Bunit;
 /// Represents a rendered component.
 /// </summary>
 [DebuggerDisplay("Component={typeof(TComponent).Name,nq},RenderCount={RenderCount}")]
-internal sealed class RenderedComponent<TComponent> : IRenderedComponent<TComponent>, IRenderedComponent
+internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedComponent<TComponent>, IRenderedComponent
 	where TComponent : IComponent
 {
+	private readonly BunitRenderer renderer;
 	private readonly TComponent instance;
 
 	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by BunitServiceProvider, disposed by it.")]
@@ -35,11 +36,6 @@ internal sealed class RenderedComponent<TComponent> : IRenderedComponent<TCompon
 	/// Gets a value indicating whether the rendered component or fragment has been disposed by the <see cref="BunitRenderer"/>.
 	/// </summary>
 	public bool IsDisposed { get; private set; }
-
-	/// <summary>
-	/// Gets the id of the rendered component or fragment.
-	/// </summary>
-	public int ComponentId { get; private set; }
 
 	/// <summary>
 	/// Gets the HTML markup from the rendered fragment/component.
@@ -81,19 +77,18 @@ internal sealed class RenderedComponent<TComponent> : IRenderedComponent<TCompon
 	/// </summary>
 	public IServiceProvider Services { get; }
 
-	internal RenderedComponent(int componentId, TComponent instance, IServiceProvider services)
+	public RenderedComponent(
+		BunitRenderer renderer,
+		int componentId,
+		IComponent instance,
+		IServiceProvider services,
+		ComponentState? parentComponentState)
+		: base(renderer, componentId, instance, parentComponentState)
 	{
-		ComponentId = componentId;
 		Services = services;
-		this.instance = instance;
+		this.renderer = renderer;
+		this.instance = (TComponent)instance;
 		htmlParser = Services.GetRequiredService<BunitHtmlParser>();
-	}
-
-	internal RenderedComponent(int componentId, TComponent instance, RenderTreeFrameDictionary componentFrames, IServiceProvider services)
-		: this(componentId, instance, services)
-	{
-		RenderCount++;
-		UpdateMarkup(componentFrames);
 	}
 
 	/// <summary>
@@ -109,49 +104,36 @@ internal sealed class RenderedComponent<TComponent> : IRenderedComponent<TCompon
 	/// <summary>
 	/// Called by the owning <see cref="BunitRenderer"/> when it finishes a render.
 	/// </summary>
-	/// <param name="renderEvent">A <see cref="RenderEvent"/> that represents a render.</param>
-	public void OnRender(RenderEvent renderEvent)
+	public void UpdateState(bool hasRendered, bool isMarkupGenerationRequired)
 	{
-		ArgumentNullException.ThrowIfNull(renderEvent);
-
 		if (IsDisposed)
 			return;
 
-		var (rendered, changed, disposed) = renderEvent.GetRenderStatus(this);
-
-		if (disposed)
-		{
-			Dispose();
-			return;
-		}
-
-		if (rendered)
+		if (hasRendered)
 		{
 			RenderCount++;
 		}
 
-		if (changed)
+		if (isMarkupGenerationRequired)
 		{
-			UpdateMarkup(renderEvent.Frames);
+			UpdateMarkup();
+			OnMarkupUpdated?.Invoke(this, EventArgs.Empty);
 		}
 
 		// The order here is important, since consumers of the events
 		// expect that markup has indeed changed when OnAfterRender is invoked
 		// (assuming there are markup changes)
-		if (changed)
-			OnMarkupUpdated?.Invoke(this, EventArgs.Empty);
-
-		if (rendered)
+		if (hasRendered)
 			OnAfterRender?.Invoke(this, EventArgs.Empty);
 	}
 
 	/// <summary>
 	/// Updates the markup of the rendered fragment.
 	/// </summary>
-	private void UpdateMarkup(RenderTreeFrameDictionary framesCollection)
+	private void UpdateMarkup()
 	{
 		latestRenderNodes = null;
-		var newMarkup = Htmlizer.GetHtml(ComponentId, framesCollection);
+		var newMarkup = Htmlizer.GetHtml(ComponentId, renderer);
 
 		// Volatile write is necessary to ensure the updated markup
 		// is available across CPU cores. Without it, the pointer to the
@@ -180,5 +162,11 @@ internal sealed class RenderedComponent<TComponent> : IRenderedComponent<TCompon
 		markup = string.Empty;
 		OnAfterRender = null;
 		OnMarkupUpdated = null;
+	}
+
+	public override ValueTask DisposeAsync()
+	{
+		Dispose();
+		return base.DisposeAsync();
 	}
 }
