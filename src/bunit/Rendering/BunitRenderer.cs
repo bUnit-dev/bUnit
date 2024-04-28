@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -13,6 +14,7 @@ public sealed class BunitRenderer : Renderer
 {
 	private readonly BunitServiceProvider services;
 	private readonly List<Task> disposalTasks = [];
+	private static readonly ConcurrentDictionary<Type, ConstructorInfo> componentActivatorCache = new();
 
 	[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_isBatchInProgress")]
 	private static extern ref bool GetIsBatchInProgressField(Renderer renderer);
@@ -214,11 +216,28 @@ public sealed class BunitRenderer : Renderer
 
 		var TComponent = component.GetType();
 		var renderedComponentType = typeof(RenderedComponent<>).MakeGenericType(TComponent);
-		var renderedComponent = Activator.CreateInstance(renderedComponentType, this, componentId, component, services, parentComponentState);
+		var renderedComponent = CreateComponentInstance();
 
 		Debug.Assert(renderedComponent is not null, "RenderedComponent should not be null");
 
 		return (ComponentState)renderedComponent;
+
+		object CreateComponentInstance()
+		{
+			var constructorInfo = componentActivatorCache.GetOrAdd(renderedComponentType, type
+				=> type.GetConstructor(
+			[
+				typeof(BunitRenderer),
+				typeof(int),
+				typeof(IComponent),
+				typeof(IServiceProvider),
+				typeof(ComponentState)
+			])!);
+
+			Debug.Assert(constructorInfo is not null, "Could not find ConstructorInfo");
+
+			return constructorInfo.Invoke([this, componentId, component, services, parentComponentState]);
+		}
 	}
 
 	/// <inheritdoc/>
