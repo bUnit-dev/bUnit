@@ -55,21 +55,35 @@ internal static class Htmlizer
 	public static string GetHtml(int componentId, BunitRenderer renderer)
 	{
 		var context = new HtmlRenderingContext(renderer);
+		var componentState = renderer.GetRenderedComponent(componentId);
 		var frames = context.GetRenderTreeFrames(componentId);
 		var newPosition = RenderFrames(context, frames, 0, frames.Count);
+
+		componentState.SetMarkupIndices(0, context.Result.Length);
+
 		Debug.Assert(
 			newPosition == frames.Count,
 			$"frames.Length = {frames.Count}. newPosition = {newPosition}"
 		);
+
 		return context.Result.ToString();
+	}
+
+	private static RenderTreeFrame RenderComponent(HtmlRenderingContext context, in RenderTreeFrame frame)
+	{
+		var startIndex = context.Result.Length;
+		var frames = context.GetRenderTreeFrames(frame.ComponentId);
+		RenderFrames(context, frames, 0, frames.Count);
+		var endIndex = context.Result.Length;
+		context.GetRenderedComponent(frame.ComponentId).SetMarkupIndices(startIndex, endIndex);
+		return frame;
 	}
 
 	private static int RenderFrames(
 		HtmlRenderingContext context,
 		ArrayRange<RenderTreeFrame> frames,
 		int position,
-		int maxElements
-	)
+		int maxElements)
 	{
 		var nextPosition = position;
 		var endPosition = position + maxElements;
@@ -130,12 +144,10 @@ internal static class Htmlizer
 	private static int RenderChildComponent(
 		HtmlRenderingContext context,
 		ArrayRange<RenderTreeFrame> frames,
-		int position
-	)
+		int position)
 	{
 		var frame = frames.Array[position];
-		var childFrames = context.GetRenderTreeFrames(frame.ComponentId);
-		RenderFrames(context, childFrames, 0, childFrames.Count);
+		frame = RenderComponent(context, in frame);
 		return position + frame.ComponentSubtreeLength;
 	}
 
@@ -404,6 +416,9 @@ internal static class Htmlizer
 
 		public ArrayRange<RenderTreeFrame> GetRenderTreeFrames(int componentId)
 			=> renderer.GetCurrentRenderTreeFrames(componentId);
+
+		public IRenderedComponent GetRenderedComponent(int componentId)
+			=> renderer.GetRenderedComponent(componentId);
 
 		public StringBuilder Result { get; } = new();
 
