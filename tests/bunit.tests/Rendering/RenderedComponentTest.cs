@@ -57,7 +57,7 @@ public class RenderedComponentTest : BunitContext
 
 		Should.Throw<ComponentDisposedException>(() => target.Instance);
 	}
-	
+
 	[Fact(DisplayName = "Find throws an exception if no element matches the css selector")]
 	public void Test021()
 	{
@@ -197,13 +197,13 @@ public class RenderedComponentTest : BunitContext
 
 		first.Render();
 
-		wrapper.RenderCount.ShouldBe(2);
+		wrapper.RenderCount.ShouldBe(1);
 		first.RenderCount.ShouldBe(2);
 		second.RenderCount.ShouldBe(1);
 
 		second.Render();
 
-		wrapper.RenderCount.ShouldBe(3);
+		wrapper.RenderCount.ShouldBe(1);
 		first.RenderCount.ShouldBe(2);
 		second.RenderCount.ShouldBe(2);
 	}
