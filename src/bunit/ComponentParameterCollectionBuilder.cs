@@ -168,6 +168,26 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
 
 	/// <summary>
+	/// Adds a component parameter for an <see cref="EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
+	/// where the <paramref name="callback"/> is used as value.
+	/// </summary>
+	/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
+	/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
+	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
+	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback>> parameterSelector, Func<object, Task> callback)
+		=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+
+	/// <summary>
+	/// Adds a component parameter for a nullable <see cref="EventCallback"/> parameter selected with <paramref name="parameterSelector"/>,
+	/// where the <paramref name="callback"/> is used as value.
+	/// </summary>
+	/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
+	/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
+	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
+	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, EventCallback?>> parameterSelector, Func<object, Task> callback)
+		=> Add(parameterSelector, EventCallback.Factory.Create(callback?.Target!, callback!));
+
+	/// <summary>
 	/// Adds a component parameter for an <see cref="EventCallback{TValue}"/> parameter selected with <paramref name="parameterSelector"/>,
 	/// where the <paramref name="callback"/> is used as value.
 	/// </summary>
@@ -231,6 +251,28 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
 	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>?>> parameterSelector, Func<Task> callback)
+		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
+
+	/// <summary>
+	/// Adds a component parameter for an <see cref="EventCallback{TValue}"/> parameter selected with <paramref name="parameterSelector"/>,
+	/// where the <paramref name="callback"/> is used as value.
+	/// </summary>
+	/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
+	/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
+	/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
+	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
+	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>>> parameterSelector, Func<TValue, Task> callback)
+		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
+
+	/// <summary>
+	/// Adds a component parameter for a nullable <see cref="EventCallback{TValue}"/> parameter selected with <paramref name="parameterSelector"/>,
+	/// where the <paramref name="callback"/> is used as value.
+	/// </summary>
+	/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
+	/// <param name="callback">The callback to pass to the <see cref="EventCallback"/>.</param>
+	/// <typeparam name="TValue">The value returned in the <see cref="EventCallback{TValue}"/>.</typeparam>
+	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
+	public ComponentParameterCollectionBuilder<TComponent> Add<TValue>(Expression<Func<TComponent, EventCallback<TValue>?>> parameterSelector, Func<TValue, Task> callback)
 		=> Add(parameterSelector, EventCallback.Factory.Create<TValue>(callback?.Target!, callback!));
 
 	/// <summary>
