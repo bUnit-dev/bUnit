@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Bunit.Rendering;
 
 namespace Bunit;
 
@@ -115,7 +114,7 @@ public partial class ComponentParameterCollectionBuilderTests : BunitContext
 	[Fact(DisplayName = "Null to EventCallback throws")]
 	public void Test011()
 	{
-		Should.Throw<ArgumentNullException>(() => Builder.Add(x => x.EC, null!));
+		Should.Throw<ArgumentNullException>(() => Builder.Add(x => x.EC, (Func<Task>)null!));
 	}
 
 	[Fact(DisplayName = "Null for EventCallback? with parameter selector")]
@@ -222,6 +221,34 @@ public partial class ComponentParameterCollectionBuilderTests : BunitContext
 	public async Task Test025()
 	{
 		Builder.Add(x => x.NullableECWithArgs, () => { EventCallbackCalled = true; return Task.CompletedTask; });
+		await VerifyEventCallbackAsync<EventArgs>("NullableECWithArgs");
+	}
+
+	[Fact(DisplayName = "Func<object, Task> to EventCallback with parameter selector")]
+	public async Task Test026()
+	{
+		Builder.Add(x => x.EC, _ => { EventCallbackCalled = true; return Task.CompletedTask; });
+		await VerifyEventCallbackAsync("EC");
+	}
+
+	[Fact(DisplayName = "Func<object, Task> to EventCallback? with parameter selector")]
+	public async Task Test027()
+	{
+		Builder.Add(x => x.NullableEC, _ => { EventCallbackCalled = true; return Task.CompletedTask; });
+		await VerifyEventCallbackAsync("NullableEC");
+	}
+
+	[Fact(DisplayName = "Func<T, Task> to EventCallback<T> with parameter selector")]
+	public async Task Test028()
+	{
+		Builder.Add(x => x.ECWithArgs, _ => { EventCallbackCalled = true; return Task.CompletedTask; });
+		await VerifyEventCallbackAsync<EventArgs>("ECWithArgs");
+	}
+
+	[Fact(DisplayName = "Func<T, Task> to EventCallback<T>? with parameter selector")]
+	public async Task Test029()
+	{
+		Builder.Add(x => x.NullableECWithArgs, _ => { EventCallbackCalled = true; return Task.CompletedTask; });
 		await VerifyEventCallbackAsync<EventArgs>("NullableECWithArgs");
 	}
 
