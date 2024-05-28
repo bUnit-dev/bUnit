@@ -3,11 +3,11 @@ using Bunit.TestAssets.RenderModes;
 
 namespace Bunit.Rendering;
 
-public class BunitRendererBunits : BunitContext
+public class BunitRendererTest : BunitContext
 {
-	public BunitRendererBunits(ITestOutputHelper outputHelper)
+	public BunitRendererTest(ITestOutputHelper outputHelper)
 	{
-		DefaultWaitTimeout = TimeSpan.FromSeconds(30);
+		//DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(outputHelper);
 	}
 
@@ -159,7 +159,7 @@ public class BunitRendererBunits : BunitContext
 			.AddChildContent<HasParams>(pps => pps
 				.Add(p => p.Value, PARENT_VALUE)
 				.AddChildContent<HasParams>(ppps => ppps
-					.Add(p=>p.Value, CHILD_VALUE))));
+					.Add(p => p.Value, CHILD_VALUE))));
 
 		// act
 		var childCuts = Renderer.FindComponents<HasParams>(cut)
@@ -226,22 +226,6 @@ public class BunitRendererBunits : BunitContext
 
 		await cut.Instance.TriggerWithValue("X");
 
-		cut.RenderCount.ShouldBe(2);
-		cut.Markup.ShouldBe("X");
-	}
-
-	[Fact(DisplayName = "Rendered component updates on re-renders from child components with changes in render tree")]
-	public async Task Test050()
-	{
-		// arrange
-		var cut = Renderer.Render<HasParams>(ps => ps
-			.AddChildContent<RenderTrigger>());
-		var child = Renderer.FindComponent<RenderTrigger>(cut);
-
-		// act
-		await child.Instance.TriggerWithValue("X");
-
-		// assert
 		cut.RenderCount.ShouldBe(2);
 		cut.Markup.ShouldBe("X");
 	}
@@ -506,6 +490,9 @@ public class BunitRendererBunits : BunitContext
 	{
 		[Parameter] public string? Value { get; set; }
 		[Parameter] public RenderFragment? ChildContent { get; set; }
+
+		public override Task SetParametersAsync(ParameterView parameters)
+			=> base.SetParametersAsync(parameters);
 
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{

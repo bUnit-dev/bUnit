@@ -16,9 +16,13 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 
 	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by BunitServiceProvider, disposed by it.")]
 	private readonly BunitHtmlParser htmlParser;
-
+	private int renderCount;
 	private string markup = string.Empty;
+	private int markupStartIndex;
+	private int markupEndIndex;
 	private INodeList? latestRenderNodes;
+
+	public bool IsDirty { get; set; }
 
 	/// <summary>
 	/// Gets the component under test.
@@ -54,9 +58,21 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	}
 
 	/// <summary>
+	/// Adds or removes an event handler that will be triggered after
+	/// each render of this <see cref="RenderedComponent{T}"/>.
+	/// </summary>
+	public event EventHandler? OnAfterRender;
+
+	/// <summary>
+	/// An event that is raised after the markup of the
+	/// <see cref="RenderedComponent{T}"/> is updated.
+	/// </summary>
+	public event EventHandler? OnMarkupUpdated;
+
+	/// <summary>
 	/// Gets the total number times the fragment has been through its render life-cycle.
 	/// </summary>
-	public int RenderCount { get; private set; }
+	public int RenderCount => renderCount;
 
 	/// <summary>
 	/// Gets the AngleSharp <see cref="INodeList"/> based
@@ -77,6 +93,10 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	/// </summary>
 	public IServiceProvider Services { get; }
 
+	int IRenderedComponent.RenderCount { get => renderCount; set { renderCount = value; } }
+
+	public IRenderedComponent? Root { get; }
+
 	public RenderedComponent(
 		BunitRenderer renderer,
 		int componentId,
@@ -89,57 +109,76 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		this.renderer = renderer;
 		this.instance = (TComponent)instance;
 		htmlParser = Services.GetRequiredService<BunitHtmlParser>();
+		var parentRenderedComponent = parentComponentState as IRenderedComponent;
+		Root = parentRenderedComponent?.Root ?? parentRenderedComponent;
 	}
 
-	/// <summary>
-	/// Adds or removes an event handler that will be triggered after each render of this <see cref="RenderedComponent{T}"/>.
-	/// </summary>
-	public event EventHandler? OnAfterRender;
-
-	/// <summary>
-	/// An event that is raised after the markup of the <see cref="RenderedComponent{T}"/> is updated.
-	/// </summary>
-	public event EventHandler? OnMarkupUpdated;
-
-	/// <summary>
-	/// Called by the owning <see cref="BunitRenderer"/> when it finishes a render.
-	/// </summary>
-	public void UpdateState(bool hasRendered, bool isMarkupGenerationRequired)
+	/// <inheritdoc/>
+	public void Dispose()
 	{
 		if (IsDisposed)
 			return;
 
-		if (hasRendered)
-		{
-			RenderCount++;
-		}
+		if (Root is not null)
+			Root.IsDirty = true;
 
-		if (isMarkupGenerationRequired)
-		{
-			UpdateMarkup();
-			OnMarkupUpdated?.Invoke(this, EventArgs.Empty);
-		}
+		IsDisposed = true;
+		markup = string.Empty;
+		OnAfterRender = null;
+		OnMarkupUpdated = null;
+	}
 
-		// The order here is important, since consumers of the events
-		// expect that markup has indeed changed when OnAfterRender is invoked
-		// (assuming there are markup changes)
-		if (hasRendered)
-			OnAfterRender?.Invoke(this, EventArgs.Empty);
+	/// <inheritdoc/>
+	public override ValueTask DisposeAsync()
+	{
+		Dispose();
+		return base.DisposeAsync();
+	}
+
+	public void SetMarkupIndices(int start, int end)
+	{
+		markupStartIndex = start;
+		markupEndIndex = end;
+		IsDirty = true;
 	}
 
 	/// <summary>
-	/// Updates the markup of the rendered fragment.
+	/// Called by the owning <see cref="BunitRenderer"/> when it finishes a render.
 	/// </summary>
-	private void UpdateMarkup()
+	public void UpdateMarkup()
 	{
-		latestRenderNodes = null;
-		var newMarkup = Htmlizer.GetHtml(ComponentId, renderer);
+		if (IsDisposed)
+			return;
 
-		// Volatile write is necessary to ensure the updated markup
-		// is available across CPU cores. Without it, the pointer to the
-		// markup string can be stored in a CPUs register and not
-		// get updated when another CPU changes the string.
-		Volatile.Write(ref markup, newMarkup);
+		if (Root is RenderedComponent<BunitRootComponent> root)
+		{
+			var newMarkup = root.markup[markupStartIndex..markupEndIndex];
+			if (markup != newMarkup)
+			{
+				Volatile.Write(ref markup, newMarkup);
+				latestRenderNodes = null;
+				OnMarkupUpdated?.Invoke(this, EventArgs.Empty);
+			}
+			else
+			{
+				// no change
+			}
+		}
+		else
+		{
+			var newMarkup = Htmlizer.GetHtml(ComponentId, renderer);
+
+			// Volatile write is necessary to ensure the updated markup
+			// is available across CPU cores. Without it, the pointer to the
+			// markup string can be stored in a CPUs register and not
+			// get updated when another CPU changes the string.
+			Volatile.Write(ref markup, newMarkup);
+			latestRenderNodes = null;
+			OnMarkupUpdated?.Invoke(this, EventArgs.Empty);
+		}
+
+		IsDirty = false;
+		OnAfterRender?.Invoke(this, EventArgs.Empty);
 	}
 
 	/// <summary>
@@ -151,22 +190,5 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		if (IsDisposed)
 			throw new ComponentDisposedException(ComponentId);
 	}
-
-	/// <inheritdoc/>
-	public void Dispose()
-	{
-		if (IsDisposed)
-			return;
-
-		IsDisposed = true;
-		markup = string.Empty;
-		OnAfterRender = null;
-		OnMarkupUpdated = null;
-	}
-
-	public override ValueTask DisposeAsync()
-	{
-		Dispose();
-		return base.DisposeAsync();
-	}
 }
+

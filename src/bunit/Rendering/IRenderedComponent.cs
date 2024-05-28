@@ -11,9 +11,17 @@ internal interface IRenderedComponent : IDisposable
 	int ComponentId { get; }
 
 	/// <summary>
-	/// Called by the owning <see cref="BunitRenderer"/> when it finishes a render.
+	/// Gets the total number times the fragment has been through its render life-cycle.
 	/// </summary>
-	void UpdateState(bool hasRendered, bool isMarkupGenerationRequired);
+	int RenderCount { get; set; }
+
+	void UpdateMarkup();
+
+	void SetMarkupIndices(int start, int end);
+
+	bool IsDirty { get; set; }
+
+	IRenderedComponent? Root { get; }
 }
 
 /// <summary>

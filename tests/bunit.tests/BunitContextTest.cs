@@ -93,7 +93,7 @@ public class BunitContextTest : BunitContext
 			.ShouldBe("FOO");
 	}
 
-	[Fact(DisplayName = "Render<TComponent>(builder) renders TComponent inside RenderTreee")]
+	[Fact(DisplayName = "Render<TComponent>(builder) renders TComponent inside RenderTree")]
 	public void Test032()
 	{
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));
@@ -104,7 +104,7 @@ public class BunitContextTest : BunitContext
 			.ShouldBe("FOO");
 	}
 
-	[Fact(DisplayName = "Render<TComponent>(factories) renders TComponent inside RenderTreee")]
+	[Fact(DisplayName = "Render<TComponent>(factories) renders TComponent inside RenderTree")]
 	public void Test033()
 	{
 		RenderTree.Add<CascadingValue<string>>(ps => ps.Add(p => p.Value, "FOO"));

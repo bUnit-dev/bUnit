@@ -14,7 +14,7 @@ public sealed class BunitRenderer : Renderer
 {
 	private readonly BunitServiceProvider services;
 	private readonly List<Task> disposalTasks = [];
-	private static readonly ConcurrentDictionary<Type, ConstructorInfo> componentActivatorCache = new();
+	private static readonly ConcurrentDictionary<Type, ConstructorInfo> ComponentActivatorCache = new();
 
 	[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_isBatchInProgress")]
 	private static extern ref bool GetIsBatchInProgressField(Renderer renderer);
@@ -224,7 +224,7 @@ public sealed class BunitRenderer : Renderer
 
 		object CreateComponentInstance()
 		{
-			var constructorInfo = componentActivatorCache.GetOrAdd(renderedComponentType, type
+			var constructorInfo = ComponentActivatorCache.GetOrAdd(renderedComponentType, type
 				=> type.GetConstructor(
 			[
 				typeof(BunitRenderer),
@@ -349,64 +349,49 @@ public sealed class BunitRenderer : Renderer
 		for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
 		{
 			var diff = renderBatch.UpdatedComponents.Array[i];
-			var componentState = GetComponentState(diff.ComponentId);
-			var renderedComponent = (IRenderedComponent)componentState;
+			var componentState = GetRenderedComponent(diff.ComponentId);
+			componentState.RenderCount++;
 
-			if (returnedRenderedComponentIds.Contains(diff.ComponentId))
-			{
-				renderedComponent.UpdateState(hasRendered: true, isMarkupGenerationRequired: diff.Edits.Count > 0);
-			}
-			else
-			{
-				renderedComponent.UpdateState(hasRendered: true, false);
-			}
+			componentState.IsDirty = true;
 
-			UpdateParents(diff.Edits.Count > 0, componentState, in renderBatch);
+			if (componentState.Root is not null)
+			{
+				componentState.Root.IsDirty = true;
+			}
+		}
+
+		foreach (var item in rootComponents)
+		{
+			var root = GetRenderedComponent(item);
+			if (root.IsDirty)
+			{
+				root.UpdateMarkup();
+			}
+		}
+
+		foreach (var renderedComponentId in returnedRenderedComponentIds)
+		{
+			var renderedComponent = GetRenderedComponent(renderedComponentId);
+			if (renderedComponent.IsDirty)
+			{
+				renderedComponent.UpdateMarkup();
+			}
 		}
 
 		return Task.CompletedTask;
-
-		void UpdateParents(bool hasChanges, ComponentState componentState, in RenderBatch renderBatch)
-		{
-			var parent = componentState.ParentComponentState;
-			if (parent is null)
-			{
-				return;
-			}
-
-			if (!IsParentComponentAlreadyUpdated(parent.ComponentId, in renderBatch))
-			{
-				if (returnedRenderedComponentIds.Contains(parent.ComponentId))
-				{
-					((IRenderedComponent)parent).UpdateState(hasRendered: true, isMarkupGenerationRequired: hasChanges);
-				}
-				else
-				{
-					((IRenderedComponent)parent).UpdateState(hasRendered: true, false);
-				}
-
-				UpdateParents(hasChanges, parent, in renderBatch);
-			}
-		}
-
-		static bool IsParentComponentAlreadyUpdated(int componentId, in RenderBatch renderBatch)
-		{
-			for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
-			{
-				var diff = renderBatch.UpdatedComponents.Array[i];
-				if (diff.ComponentId == componentId)
-				{
-					return diff.Edits.Count > 0;
-				}
-			}
-
-			return false;
-		}
 	}
 
 	/// <inheritdoc/>
 	internal new ArrayRange<RenderTreeFrame> GetCurrentRenderTreeFrames(int componentId)
 		=> base.GetCurrentRenderTreeFrames(componentId);
+
+	/// <inheritdoc/>
+	internal IRenderedComponent GetRenderedComponent(int componentId)
+		=> (IRenderedComponent)GetComponentState(componentId);
+
+	/// <inheritdoc/>
+	internal IRenderedComponent GetRenderedComponent(IComponent component)
+		=> (IRenderedComponent)GetComponentState(component);
 
 	/// <inheritdoc/>
 	protected override void Dispose(bool disposing)
@@ -487,7 +472,7 @@ public sealed class BunitRenderer : Renderer
 			FindComponentsInRenderTree(parentComponent.ComponentId);
 			foreach (var rc in result)
 			{
-				((IRenderedComponent)rc).UpdateState(hasRendered: false, isMarkupGenerationRequired: true);
+				((IRenderedComponent)rc).UpdateMarkup();
 			}
 		}
 
