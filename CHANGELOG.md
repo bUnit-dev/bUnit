@@ -12,6 +12,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 - CI build changes to force running verification on x64 based AMD CPUs.
 
+### Added
+
+- New overloads for `ComponentParameterCollectionBuilder.Add` that allow passing arguments for asynchronous callback parameters. Reported by [springy76](https://github.com/springy76). By [@Qwertyluk](https://github.com/Qwertyluk).
+
 ## [1.28.9] - 2024-04-19
 
 ### Fixed
