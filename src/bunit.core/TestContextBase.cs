@@ -106,7 +106,9 @@ public abstract class TestContextBase : IDisposable
 
 		// The service provider should dispose of any
 		// disposable object it has created, when it is disposed.
+#pragma warning disable S3966 // On purpose to dispose synchronously and asynchronously
 		Services.Dispose();
+#pragma warning restore S3966
 	}
 
 	/// <summary>
