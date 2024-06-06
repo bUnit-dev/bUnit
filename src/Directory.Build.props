@@ -63,7 +63,7 @@ See the full changelog at https://github.com/bUnit-dev/bUnit/releases
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" PrivateAssets="All" />
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.139" PrivateAssets="All" />
 	</ItemGroup>
 
 </Project>
