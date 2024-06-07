@@ -228,10 +228,10 @@ jobs:
           RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
       - name: 📄 Build bUnit
-        run: dotnet build docs/samples/samples.sln -c release
+        run: dotnet build -c release
 
       - name: 🧪 Run sample unit tests
-        run: dotnet test docs/samples/samples.sln -c release -p:VSTestUseMSBuildOutput=false -f net8.0
+        run: dotnet test docs/samples/samples.sln -p:VSTestUseMSBuildOutput=false -f net8.0
 
       - name: 📄 Build docs
         working-directory: ./docs/site
