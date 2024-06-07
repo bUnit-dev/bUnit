@@ -137,7 +137,17 @@ jobs:
             9.0.x
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c release --blame --blame-crash --blame-hang -p:VSTestUseMSBuildOutput=false
+        if: matrix.os != 'macos-latest'
+        run: |
+          dotnet test -c release --blame --blame-crash --blame-hang -p:VSTestUseMSBuildOutput=false -f netcoreapp3.1 
+          dotnet test -c release --blame --blame-crash --blame-hang -p:VSTestUseMSBuildOutput=false -f net5.0
+
+      - name: 🧪 Run unit tests
+        run: |
+          dotnet test -c release --blame --blame-crash --blame-hang -p:VSTestUseMSBuildOutput=false -f net6.0
+          dotnet test -c release --blame --blame-crash --blame-hang -p:VSTestUseMSBuildOutput=false -f net7.0
+          dotnet test -c release --blame --blame-crash --blame-hang -p:VSTestUseMSBuildOutput=false -f net8.0
+          dotnet test -c release --blame --blame-crash --blame-hang -p:VSTestUseMSBuildOutput=false -f net9.0
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
