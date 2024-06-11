@@ -24,6 +24,13 @@ Here are some resources to help you get started on how to contribute code or new
 * ["Help wanted" issues](https://github.com/egil/bunit/labels/help%20wanted) - these issues are up for grabs if you want to create a fix. To do this, simply comment on the issue you want to fix.
 * ["Good first issue" issues](https://github.com/egil/bunit/labels/good%20first%20issue) - these are good for newcomers. Good first issues are small, usually require just a few hours of work, and do not require a deep technical knowledge of bUnit. This is a good place to start if you want to become familiar with bUnit’s inner workings and maybe take on bigger issues later.
 
+### Using Codespaces
+
+bUnit offers predefined Codespaces to enable contributing to the project without having to set up a local development environment. 
+The Codespace is pre-configured with the necessary tools and dependencies to build and run the project including the .NET SDK but also serves the documentation site.
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/bUnit-dev/bUnit?quickstart=1)
+
 ### Identifying the Scale of a Contribution
 
 If you would like to contribute to bUnit, first identify the scale of what you would like to contribute. If it is small (grammar/spelling or a bug fix), feel free to start working on a fix. If you are submitting a feature or substantial code contribution, please discuss it with us first. 
