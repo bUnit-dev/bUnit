@@ -1,0 +1,22 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Serve Docs (Without Build)",
+            "type": "shell",
+            "command": "docfx metadata docs/site/docfx.json && docfx docs/site/docfx.json --serve"
+        },
+        {
+            "label": "Serve Docs (With Build for API Documentation)",
+            "type": "shell",
+            "command": "dotnet build -c Release && docfx metadata docs/site/docfx.json && docfx docs/site/docfx.json --serve"
+        },
+        {
+            "label": "Run all tests (Release Mode)",
+            "type": "shell",
+            "command": "dotnet test -c Release"
+        }
+    ]
+}
