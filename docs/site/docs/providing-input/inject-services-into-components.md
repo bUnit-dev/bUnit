@@ -80,6 +80,41 @@ Here is a test where the custom service provider is used via delegate:
 
 [!code-csharp[](../../../samples/tests/xunit/CustomServiceProviderFactoryUsage.cs?start=25&end=29)]
 
+## Using libraries like AutoMocker as fallback provider
+It is possible to use libraries that automatically create mock services as fallback service providers. Here is an example implementation that utilizes the AutoMocker
+
+```csharp
+public class MockServiceProvider : IServiceProvider
+{
+    private readonly AutoMocker _autoMocker = new AutoMocker();
+
+    public object GetService(Type serviceType)
+    {
+        return _autoMocker.Get(serviceType);
+    }
+}
+```
+
+> [!WARNING]
+> An exception has to be made for `IComponentActivator`, if "Loose" mode is used. Otherwise, runtime exception can be thrown.
+
+```csharp
+public class MockServiceProvider : IServiceProvider
+{
+    private readonly AutoMocker _autoMocker = new AutoMocker(MockBehavior.Loose);
+
+    public object GetService(Type serviceType)
+    {
+        if (serviceType == typeof(IComponentActivator))
+        {
+            return null;
+        }
+
+        return _autoMocker.Get(serviceType);
+    }
+}
+```
+
 ## Further reading
 
 A closely related topic is mocking. To learn more about mocking in bUnit, go to the <xref:test-doubles> page.
