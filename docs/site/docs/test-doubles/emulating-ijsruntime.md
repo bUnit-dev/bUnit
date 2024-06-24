@@ -88,6 +88,13 @@ var moduleInterop = JSInterop.SetupModule("hello.js");
 moduleInterop.SetupVoid("world");
 ```
 
+If you are testing methods that themselves return a `IJSObjectReference`, such as `await JsRuntime.InvokeAsync<IJSObjectReference>("SomeModule.GetInstance")` you can use the same process with the identifier assocaited with the interoperation and configure the `IJSObjectRefernce` the same way you would a module.
+
+```csharp
+var objectReference = JSInterop.SetupModule(matcher => matcher.Identifier == "SomeModule.GetInstance");
+objectReference.SetupVoid("world");
+```
+
 ### Module Interop Mode
 
 By default, a module Interop inherits the `Mode` setting from the root JSInterop in bUnit. However, you can override it explicitly and have it in a different mode from another module's Interop or the root JSInterop. Just set the `Mode` property, e.g.:
