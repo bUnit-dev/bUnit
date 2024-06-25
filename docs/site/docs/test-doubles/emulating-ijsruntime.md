@@ -88,7 +88,7 @@ var moduleInterop = JSInterop.SetupModule("hello.js");
 moduleInterop.SetupVoid("world");
 ```
 
-If you are testing methods that themselves return a `IJSObjectReference`, such as `await JsRuntime.InvokeAsync<IJSObjectReference>("SomeModule.GetInstance")` you can use the same process with the identifier assocaited with the interoperation and configure the `IJSObjectRefernce` the same way you would a module.
+When testing methods that return an `IJSObjectReference`, such as `await JsRuntime.InvokeAsync<IJSObjectReference>("SomeModule.GetInstance")`, the same process can be used with the identifier associated with the interoperation, configuring the `IJSObjectReference` in the same manner as a module.
 
 ```csharp
 var objectReference = JSInterop.SetupModule(matcher => matcher.Identifier == "SomeModule.GetInstance");
