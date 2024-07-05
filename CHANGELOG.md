@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.29.5] - 2024-07-05
+
 ### Fixed
 
 - CI build changes to force running verification on x64 based AMD CPUs.
@@ -521,32 +523,32 @@ List of now removed features.
   1. Add the following packages to your test project: `Serilog`, `Serilog.Extensions.Logging`, and `Serilog.Sinks.XUnit`.
   2. Add the following class/extension method to your test project (which replicates the signature of the removed `AddXunitLogger` method):
 
-         ```csharp
-         using Microsoft.Extensions.DependencyInjection;
-         using Microsoft.Extensions.Logging;
-         using Serilog;
-         using Serilog.Events;
-         using Xunit.Abstractions;
+     ```csharp
+     using Microsoft.Extensions.DependencyInjection;
+     using Microsoft.Extensions.Logging;
+     using Serilog;
+     using Serilog.Events;
+     using Xunit.Abstractions;
 
-         namespace Bunit
-         {
-         	public static class ServiceCollectionLoggingExtensions
-         	{
-         		public static IServiceCollection AddXunitLogger(this IServiceCollection services, ITestOutputHelper outputHelper)
-         		{
-         			var serilogLogger = new LoggerConfiguration()
-         				.MinimumLevel.Verbose()
-         				.WriteTo.TestOutput(outputHelper, LogEventLevel.Verbose)
-         				.CreateLogger();
+     namespace Bunit
+     {
+     	public static class ServiceCollectionLoggingExtensions
+     	{
+     		public static IServiceCollection AddXunitLogger(this IServiceCollection services, ITestOutputHelper outputHelper)
+     		{
+     			var serilogLogger = new LoggerConfiguration()
+     				.MinimumLevel.Verbose()
+     				.WriteTo.TestOutput(outputHelper, LogEventLevel.Verbose)
+     				.CreateLogger();
 
-         			services.AddSingleton<ILoggerFactory>(new LoggerFactory().AddSerilog(serilogLogger, dispose: true));
-         			services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+     			services.AddSingleton<ILoggerFactory>(new LoggerFactory().AddSerilog(serilogLogger, dispose: true));
+     			services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 
-         			return services;
-         		}
-         	}
-         }
-         ```
+     			return services;
+     		}
+     	}
+     }
+     ```
 
 - The `bunit.xunit` package has been removed, since it is no longer needed (there is no code left in it).
 
@@ -1374,7 +1376,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.28.9...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.29.5...HEAD
+[1.29.5]: https://github.com/bUnit-dev/bUnit/compare/v1.28.9...1.29.5
 [1.28.9]: https://github.com/bUnit-dev/bUnit/compare/v1.27.17...v1.28.9
 [1.27.17]: https://github.com/bUnit-dev/bUnit/compare/v1.26.64...1.27.17
 [1.26.64]: https://github.com/bUnit-dev/bUnit/compare/v1.25.3...v1.26.64
