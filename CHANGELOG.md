@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## Fixed
+
+- CI build changes to force running verification on x64 based AMD CPUs.
+
 ## [1.28.9] - 2024-04-19
 
 ### Fixed
