@@ -48,3 +48,4 @@ dotnet_diagnostic.xUnit1034.severity = none			# xUnit1034: Null should not be us
 dotnet_diagnostic.S1144.severity = suggestion		# S1144: Unused private types or members should be removed
 dotnet_diagnostic.S2094.severity = suggestion		# S2094: Classes should not be empty
 dotnet_diagnostic.S6562.severity = suggestion		# "Provide the "DateTimeKind" when creating this object.
+dotnet_diagnostic.S6966.severity = suggestion		# S6966: Await method instead
