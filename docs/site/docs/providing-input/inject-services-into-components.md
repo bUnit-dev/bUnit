@@ -88,7 +88,7 @@ public class MockServiceProvider : IServiceProvider
 {
     private readonly AutoMocker _autoMocker = new AutoMocker();
 
-    public object GetService(Type serviceType)
+    public object? GetService(Type serviceType)
     {
         return _autoMocker.Get(serviceType);
     }
