@@ -6,7 +6,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
-## Fixed
+### Fixed
 
 - CI build changes to force running verification on x64 based AMD CPUs.
 
