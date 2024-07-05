@@ -173,7 +173,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
   <ItemGroup>
     <PackageReference Include="bunit" Version="#{RELEASE_VERSION}#" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageReference Include="xunit" Version="2.6.2" />
+		<PackageReference Include="xunit" Version="2.8.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
