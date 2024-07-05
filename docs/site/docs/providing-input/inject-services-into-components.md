@@ -103,7 +103,7 @@ public class MockServiceProvider : IServiceProvider
 {
     private readonly AutoMocker _autoMocker = new AutoMocker(MockBehavior.Loose);
 
-    public object GetService(Type serviceType)
+    public object? GetService(Type serviceType)
     {
         if (serviceType == typeof(IComponentActivator))
         {
