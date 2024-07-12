@@ -8,11 +8,10 @@ public class RenderedComponentTest : BunitContext
 	public void Test001()
 	{
 		var cut = Render<Wrapper>(parameters => parameters.AddChildContent("<div>"));
-		var initialRenderCount = cut.RenderCount;
 
 		cut.Render();
 
-		cut.RenderCount.ShouldBe(initialRenderCount + 1);
+		cut.RenderCount.ShouldBe(2);
 	}
 
 	[Fact(DisplayName = "Call to Render(builder) provides the parameters to component")]
@@ -218,5 +217,19 @@ public class RenderedComponentTest : BunitContext
 		cut.Render(ps => ps.Add(p => p.ShowChild, false));
 
 		Should.Throw<ComponentDisposedException>(() => target.Markup);
+	}
+
+	[Fact(DisplayName = "Render nodes")]
+	public void Test011()
+	{
+		var wrapper = Render<TwoComponentWrapper>(parameters => parameters
+			.Add<Simple1>(p => p.First, pps => pps.Add(x => x.Header, "FIRST"))
+			.Add<Simple1>(p => p.Second, pps => pps.Add(x => x.Header, "SECOND")));
+		var cuts = wrapper.FindComponents<Simple1>();
+		var first = cuts[0];
+		var second = cuts[1];
+
+		first.Nodes.ShouldHaveSingleItem().TextContent.ShouldBe("FIRST");
+		second.Nodes.ShouldHaveSingleItem().TextContent.ShouldBe("SECOND");
 	}
 }

@@ -214,8 +214,11 @@ public sealed class BunitRenderer : Renderer
 	{
 		ArgumentNullException.ThrowIfNull(component);
 
-		var TComponent = component.GetType();
-		var renderedComponentType = typeof(RenderedComponent<>).MakeGenericType(TComponent);
+		if (component is BunitRootComponent)
+		{
+			return new RenderedRootComponent(this, componentId, component, services, parentComponentState);
+		}
+
 		var renderedComponent = CreateComponentInstance();
 
 		Debug.Assert(renderedComponent is not null, "RenderedComponent should not be null");
@@ -224,15 +227,20 @@ public sealed class BunitRenderer : Renderer
 
 		object CreateComponentInstance()
 		{
-			var constructorInfo = ComponentActivatorCache.GetOrAdd(renderedComponentType, type
-				=> type.GetConstructor(
-			[
-				typeof(BunitRenderer),
-				typeof(int),
-				typeof(IComponent),
-				typeof(IServiceProvider),
-				typeof(ComponentState)
-			])!);
+			var constructorInfo = ComponentActivatorCache.GetOrAdd(
+				component.GetType(),
+				componentType =>
+				{
+					var renderedComponentForComponent = typeof(RenderedComponent<>).MakeGenericType(componentType);
+					return renderedComponentForComponent.GetConstructor(
+					[
+						typeof(BunitRenderer),
+						typeof(int),
+						typeof(IComponent),
+						typeof(IServiceProvider),
+						typeof(ComponentState)
+					])!;
+				});
 
 			Debug.Assert(constructorInfo is not null, "Could not find ConstructorInfo");
 
@@ -340,6 +348,8 @@ public sealed class BunitRenderer : Renderer
 	/// <inheritdoc/>
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
+		RenderCount++;
+
 		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
 		{
 			var id = renderBatch.DisposedComponentIDs.Array[i];
@@ -350,31 +360,16 @@ public sealed class BunitRenderer : Renderer
 		{
 			var diff = renderBatch.UpdatedComponents.Array[i];
 			var componentState = GetRenderedComponent(diff.ComponentId);
-			componentState.RenderCount++;
-
 			componentState.IsDirty = true;
-
-			if (componentState.Root is not null)
-			{
-				componentState.Root.IsDirty = true;
-			}
+			componentState.Root.IsDirty = true;
 		}
 
 		foreach (var item in rootComponents)
 		{
-			var root = GetRenderedComponent(item);
+			var root = GetRenderedRootComponent(item);
 			if (root.IsDirty)
 			{
-				root.UpdateMarkup();
-			}
-		}
-
-		foreach (var renderedComponentId in returnedRenderedComponentIds)
-		{
-			var renderedComponent = GetRenderedComponent(renderedComponentId);
-			if (renderedComponent.IsDirty)
-			{
-				renderedComponent.UpdateMarkup();
+				root.RegenerateMarkup();
 			}
 		}
 
@@ -392,6 +387,9 @@ public sealed class BunitRenderer : Renderer
 	/// <inheritdoc/>
 	internal IRenderedComponent GetRenderedComponent(IComponent component)
 		=> (IRenderedComponent)GetComponentState(component);
+
+	internal RenderedRootComponent GetRenderedRootComponent(IComponent component)
+		=> (RenderedRootComponent)GetComponentState(component);
 
 	/// <inheritdoc/>
 	protected override void Dispose(bool disposing)

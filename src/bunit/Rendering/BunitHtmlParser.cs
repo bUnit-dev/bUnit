@@ -48,6 +48,11 @@ public sealed class BunitHtmlParser : IDisposable
 		var parseOptions = new HtmlParserOptions
 		{
 			IsKeepingSourceReferences = true,
+			IsAcceptingCustomElementsEverywhere = true,
+			IsStrictMode = false,
+			OnCreated = (elm, pos) =>
+			{
+			},
 		};
 		htmlParser = new HtmlParser(parseOptions, context);
 	}

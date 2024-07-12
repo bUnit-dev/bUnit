@@ -5,23 +5,13 @@ namespace Bunit;
 
 internal interface IRenderedComponent : IDisposable
 {
-	/// <summary>
-	/// Gets the id of the rendered component or fragment.
-	/// </summary>
-	int ComponentId { get; }
-
-	/// <summary>
-	/// Gets the total number times the fragment has been through its render life-cycle.
-	/// </summary>
-	int RenderCount { get; set; }
-
 	void UpdateMarkup();
 
 	void SetMarkupIndices(int start, int end);
 
 	bool IsDirty { get; set; }
 
-	IRenderedComponent? Root { get; }
+	RenderedRootComponent Root { get; }
 }
 
 /// <summary>

@@ -1,4 +1,7 @@
+using System.Collections;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using AngleSharp;
 using AngleSharp.Dom;
 using Bunit.Rendering;
 
@@ -11,16 +14,25 @@ namespace Bunit;
 internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedComponent<TComponent>, IRenderedComponent
 	where TComponent : IComponent
 {
-	private readonly BunitRenderer renderer;
 	private readonly TComponent instance;
-
-	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by BunitServiceProvider, disposed by it.")]
-	private readonly BunitHtmlParser htmlParser;
-	private int renderCount;
 	private string markup = string.Empty;
 	private int markupStartIndex;
 	private int markupEndIndex;
 	private INodeList? latestRenderNodes;
+	private bool isDirty;
+
+	public bool IsDirty
+	{
+		get => isDirty; set
+		{
+			if (value)
+			{
+				RenderCount++;
+			}
+
+			isDirty = value;
+		}
+	}
 
 	public bool IsDirty { get; set; }
 
@@ -49,6 +61,7 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		get
 		{
 			EnsureComponentNotDisposed();
+
 			// Volatile read is necessary to ensure the updated markup
 			// is available across CPU cores. Without it, the pointer to the
 			// markup string can be stored in a CPUs register and not
@@ -72,7 +85,7 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	/// <summary>
 	/// Gets the total number times the fragment has been through its render life-cycle.
 	/// </summary>
-	public int RenderCount => renderCount;
+	public int RenderCount { get; internal set; }
 
 	/// <summary>
 	/// Gets the AngleSharp <see cref="INodeList"/> based
@@ -93,9 +106,9 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	/// </summary>
 	public IServiceProvider Services { get; }
 
-	int IRenderedComponent.RenderCount { get => renderCount; set { renderCount = value; } }
+	private readonly BunitHtmlParser htmlParser;
 
-	public IRenderedComponent? Root { get; }
+	public RenderedRootComponent Root { get; }
 
 	public RenderedComponent(
 		BunitRenderer renderer,
@@ -106,11 +119,11 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		: base(renderer, componentId, instance, parentComponentState)
 	{
 		Services = services;
-		this.renderer = renderer;
+		htmlParser = services.GetRequiredService<BunitHtmlParser>();
 		this.instance = (TComponent)instance;
-		htmlParser = Services.GetRequiredService<BunitHtmlParser>();
-		var parentRenderedComponent = parentComponentState as IRenderedComponent;
-		Root = parentRenderedComponent?.Root ?? parentRenderedComponent;
+		Root = (parentComponentState as IRenderedComponent)?.Root
+			?? parentComponentState as RenderedRootComponent
+			?? throw new ArgumentNullException(nameof(parentComponentState), "A rendered component must have a root/parent");
 	}
 
 	/// <inheritdoc/>
@@ -119,9 +132,7 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		if (IsDisposed)
 			return;
 
-		if (Root is not null)
-			Root.IsDirty = true;
-
+		Root.IsDirty = true;
 		IsDisposed = true;
 		markup = string.Empty;
 		OnAfterRender = null;
@@ -139,7 +150,6 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	{
 		markupStartIndex = start;
 		markupEndIndex = end;
-		IsDirty = true;
 	}
 
 	/// <summary>
@@ -150,34 +160,14 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		if (IsDisposed)
 			return;
 
-		if (Root is RenderedComponent<BunitRootComponent> root)
+		var newMarkup = Root.Markup[markupStartIndex..markupEndIndex];
+		if (markup != newMarkup)
 		{
-			var newMarkup = root.markup[markupStartIndex..markupEndIndex];
-			if (markup != newMarkup)
-			{
-				Volatile.Write(ref markup, newMarkup);
-				latestRenderNodes = null;
-				OnMarkupUpdated?.Invoke(this, EventArgs.Empty);
-			}
-			else
-			{
-				// no change
-			}
-		}
-		else
-		{
-			var newMarkup = Htmlizer.GetHtml(ComponentId, renderer);
-
-			// Volatile write is necessary to ensure the updated markup
-			// is available across CPU cores. Without it, the pointer to the
-			// markup string can be stored in a CPUs register and not
-			// get updated when another CPU changes the string.
 			Volatile.Write(ref markup, newMarkup);
 			latestRenderNodes = null;
 			OnMarkupUpdated?.Invoke(this, EventArgs.Empty);
 		}
 
-		IsDirty = false;
 		OnAfterRender?.Invoke(this, EventArgs.Empty);
 	}
 
@@ -190,5 +180,95 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		if (IsDisposed)
 			throw new ComponentDisposedException(ComponentId);
 	}
+}
+
+
+/// <summary>
+/// Represents a list of Node instances or nodes.
+/// </summary>
+internal sealed class NodeList : INodeList
+{
+	#region Fields
+
+	private readonly List<INode> entries;
+
+	/// <summary>
+	/// Gets an empty node-list. Shouldn't be modified.
+	/// </summary>
+	internal static readonly NodeList Empty = [];
+
+	#endregion
+
+	#region ctor
+
+	internal NodeList()
+	{
+		entries = [];
+	}
+
+	#endregion
+
+	#region Index
+
+	public INode this[Int32 index]
+	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => entries[index];
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		set => entries[index] = value;
+	}
+
+	INode INodeList.this[Int32 index]
+	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => this[index];
+	}
+
+	#endregion
+
+	#region Properties
+
+	public Int32 Length
+	{
+		get => entries.Count;
+	}
+
+	#endregion
+
+	#region Internal Methods
+
+	internal void Add(INode node) => entries.Add(node);
+
+	internal void AddRange(NodeList nodeList) => entries.AddRange(nodeList.entries);
+
+	internal void Insert(Int32 index, Node node) => entries.Insert(index, node);
+
+	internal void Remove(INode node) => entries.Remove(node);
+
+	internal void RemoveAt(Int32 index) => entries.RemoveAt(index);
+
+	internal Boolean Contains(INode node) => entries.Contains(node);
+
+	#endregion
+
+	#region Methods
+
+	public void ToHtml(TextWriter writer, IMarkupFormatter formatter)
+	{
+		for (var i = 0; i < entries.Count; i++)
+		{
+			entries[i].ToHtml(writer, formatter);
+		}
+	}
+
+	#endregion
+
+	#region IEnumerable Implementation
+
+	public List<INode>.Enumerator GetEnumerator() => entries.GetEnumerator();
+	IEnumerator<INode> IEnumerable<INode>.GetEnumerator() => entries.GetEnumerator();
+	IEnumerator IEnumerable.GetEnumerator() => entries.GetEnumerator();
+
+	#endregion
 }
 
