@@ -1,4 +1,5 @@
 ﻿#if NET5_0_OR_GREATER
+using System.Runtime.ExceptionServices;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace Bunit;
@@ -35,6 +36,11 @@ public static class InputFileExtensions
 		if (!uploadTask.IsCompleted)
 		{
 			uploadTask.GetAwaiter().GetResult();
+		}
+
+		if (uploadTask.Exception is { InnerException: not null } e)
+		{
+			ExceptionDispatchInfo.Capture(e.InnerException).Throw();
 		}
 	}
 }

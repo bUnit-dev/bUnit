@@ -27,6 +27,11 @@ internal class BUnitBrowserFile : IBrowserFile
 
 	public Stream OpenReadStream(long maxAllowedSize = 512000, CancellationToken cancellationToken = default)
 	{
+		if (Size > maxAllowedSize)
+		{
+			throw new IOException($"Supplied file with size {Size} bytes exceeds the maximum of {maxAllowedSize} bytes.");
+		}
+
 		return new MemoryStream(Content);
 	}
 }
