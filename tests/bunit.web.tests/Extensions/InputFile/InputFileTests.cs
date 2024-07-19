@@ -102,9 +102,23 @@ public class InputFileTests : TestContext
 
 		act.ShouldNotThrow();
 	}
+	
+	[Fact(DisplayName = "Uploading file exceeding the maximum file size will throw an exception")]
+	public void Test009()
+	{
+		var cut = RenderComponent<InputFileComponent>(ps => ps.Add(p => p.MaxFileSize, 512));
+		var file = InputFileContent.CreateFromText(new string('a', 513));
+
+		Action act = () => cut.FindComponent<InputFile>().UploadFiles(file);
+
+		act.ShouldThrow<IOException>();
+	}
 
 	private sealed class InputFileComponent : ComponentBase
 	{
+		[Parameter]
+		public long MaxFileSize { get; set; } = 512000;
+		
 		public string? Filename { get; private set; }
 		public string? Content { get; private set; }
 		public DateTimeOffset? LastChanged { get; private set; }
@@ -127,7 +141,7 @@ public class InputFileTests : TestContext
 			Filename = file.Name;
 			LastChanged = file.LastModified;
 			Size = file.Size;
-			using var stream = new StreamReader(file.OpenReadStream());
+			using var stream = new StreamReader(file.OpenReadStream(MaxFileSize));
 			Content = stream.ReadToEnd();
 		}
 	}
