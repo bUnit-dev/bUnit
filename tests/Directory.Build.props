@@ -13,6 +13,14 @@
 		<IsTestProject>true</IsTestProject>
 		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 	</PropertyGroup>
+	
+	<PropertyGroup>
+		<!-- 
+		Because of a CVE in System.Text.Json we get NU1903.
+		As this is a test project, we can ignore this warning for the time being.
+		 -->
+		<NoWarn>NU1903</NoWarn>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AutoFixture" Version="4.18.1" />
