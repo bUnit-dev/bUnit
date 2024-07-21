@@ -105,7 +105,7 @@ public class InputFileTest : BunitContext
 	[Fact(DisplayName = "Uploading file exceeding the maximum file size will throw an exception")]
 	public void Test009()
 	{
-		var cut = RenderComponent<InputFileComponent>(ps => ps.Add(p => p.MaxFileSize, 512));
+		var cut = Render<InputFileComponent>(ps => ps.Add(p => p.MaxFileSize, 512));
 		var file = InputFileContent.CreateFromText(new string('a', 513));
 
 		Action act = () => cut.FindComponent<InputFile>().UploadFiles(file);

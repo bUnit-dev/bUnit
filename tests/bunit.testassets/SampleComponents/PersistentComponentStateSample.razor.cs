@@ -18,10 +18,9 @@ public partial class PersistentComponentStateSample : ComponentBase
 		else
 		{
 			State.PersistAsJson(PersistenceKey, Forecasts);
-			return Task.CompletedTask;
 		}
-
-		private WeatherForecast[] CreateForecasts()
+		
+		WeatherForecast[] CreateForecasts()
 		{
 			return new WeatherForecast[]
 			{
