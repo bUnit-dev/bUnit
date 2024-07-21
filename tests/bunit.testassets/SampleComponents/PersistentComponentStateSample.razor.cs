@@ -32,7 +32,7 @@ namespace Bunit.TestAssets.SampleComponents
 		{
 			return new WeatherForecast[]
 			{
-			new WeatherForecast{ Temperature = 42 },
+				new WeatherForecast{ Temperature = 42 },
 			};
 		}
 #endif

@@ -222,7 +222,7 @@ jobs:
       - name: 🍥 Replace tokens in files
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props", "docs/site/docfx.json"]'
         env:
           RELEASE_VERSION: ${{ env.NBGV_SimpleVersion }}${{ env.NBGV_PrereleaseVersion }}
           RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
