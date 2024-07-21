@@ -57,7 +57,7 @@ public sealed class BunitRenderer : Renderer
 	/// <summary>
 	/// Gets the number of render cycles that has been performed.
 	/// </summary>
-	internal int RenderCount { get; private set; }
+	internal int RenderCount { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
