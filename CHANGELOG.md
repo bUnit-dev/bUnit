@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.30.3] - 2024-07-21
+
 ### Fixed
 
 - `UploadFile` doesn't throw an exception when the file size exceeds the maximum allowed size. Reported by [@MorneZaayman](https://github.com/MorneZaayman) in [#1503](https://github.com/bUnit-dev/bUnit/issues/1503). Fixed by [@linkdotnet](https://github.com/linkdotnet).
@@ -1380,7 +1382,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.29.5...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.30.3...HEAD
+[1.30.3]: https://github.com/bUnit-dev/bUnit/compare/v1.29.5...v1.30.3
 [1.29.5]: https://github.com/bUnit-dev/bUnit/compare/v1.28.9...1.29.5
 [1.28.9]: https://github.com/bUnit-dev/bUnit/compare/v1.27.17...v1.28.9
 [1.27.17]: https://github.com/bUnit-dev/bUnit/compare/v1.26.64...1.27.17
