@@ -47,9 +47,15 @@ namespace Bunit.JSInterop.InvocationHandlers.Implementation
 			if (!invocation.Identifier.Equals(JsFunctionsPrefix + "dispose", StringComparison.Ordinal))
 			{
 				// Assert expectations about the internals of the <Virtualize> component
+#if !NET9_0_OR_GREATER
 				Debug.Assert(invocation.Identifier.Equals(JsFunctionsPrefix + "init", StringComparison.Ordinal), "Received an unexpected invocation identifier from the <Virtualize> component.");
 				Debug.Assert(invocation.Arguments.Count == 3, "Received an unexpected amount of arguments from the <Virtualize> component.");
 				Debug.Assert(invocation.Arguments[0] is not null, "Received an unexpected null argument, expected an DotNetObjectReference<VirtualizeJsInterop> instance.");
+#else
+				Debug.Assert(invocation.Identifier.Equals(JsFunctionsPrefix + "init", StringComparison.Ordinal));
+				Debug.Assert(invocation.Arguments.Count == 3);
+				Debug.Assert(invocation.Arguments[0] is not null);
+#endif
 
 				InvokeOnSpacerBeforeVisible(invocation.Arguments[0]!);
 

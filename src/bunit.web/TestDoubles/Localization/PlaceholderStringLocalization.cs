@@ -17,7 +17,9 @@ internal sealed class PlaceholderStringLocalization : IStringLocalizer
 	/// <summary>
 	/// Will throw exception to prompt the user.
 	/// </summary>
+#pragma warning disable S2325 // "WithCulture" is public API and can't be changed
 	public IStringLocalizer WithCulture(CultureInfo culture)
+#pragma warning restore S2325
 		=> throw new MissingMockStringLocalizationException(nameof(WithCulture), culture);
 
 	/// <summary>
