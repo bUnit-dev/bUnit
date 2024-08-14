@@ -38,9 +38,9 @@ public static class InputFileExtensions
 			uploadTask.GetAwaiter().GetResult();
 		}
 
-		if (uploadTask.Exception is { InnerException: not null } e)
+		if (uploadTask.Exception?.InnerException is IOException e)
 		{
-			ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+			ExceptionDispatchInfo.Capture(e).Throw();
 		}
 	}
 }
