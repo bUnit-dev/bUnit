@@ -356,7 +356,7 @@ public class FakeNavigationManagerTest : TestContext
 			builder.CloseComponent();
 		}
 
-		private void InterceptNavigation(LocationChangingContext context)
+		private static void InterceptNavigation(LocationChangingContext context)
 		{
 			throw new NotSupportedException("Don't intercept");
 		}
