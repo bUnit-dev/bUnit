@@ -3,6 +3,7 @@ using Xunit.Sdk;
 
 namespace Xunit;
 
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 public sealed class RepeatAttribute : DataAttribute
 {
 	public int Count { get; }

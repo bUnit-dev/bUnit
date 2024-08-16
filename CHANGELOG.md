@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- `UploadFile` should only throw an exception when the file size exceeds the maximum allowed size. Reported by [@candritzky](https://github.com/candritzky). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.30.3] - 2024-07-21
 
 ### Fixed

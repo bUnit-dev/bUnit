@@ -105,7 +105,11 @@ public sealed class BunitHtmlParser : IDisposable
 		int startIndex,
 		IDocument document)
 	{
+#if !NET9_0_OR_GREATER
 		Debug.Assert(document.Body is not null, "Body of the document should never be null at this point.");
+#else
+		Debug.Assert(document.Body is not null);
+#endif
 
 		IElement? result = null;
 
