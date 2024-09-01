@@ -8,7 +8,7 @@ internal class RenderedFragment : IRenderedFragment
 {
 	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by TestServiceProvider, disposed by it.")]
 	private readonly BunitHtmlParser htmlParser;
-	private readonly object markupAccessLock = new();
+	private readonly Lock markupAccessLock = new();
 	private string markup = string.Empty;
 	private string? snapshotMarkup;
 

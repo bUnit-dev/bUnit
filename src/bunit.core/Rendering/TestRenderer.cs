@@ -22,7 +22,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	private static readonly FieldInfo IsBatchInProgressField = RendererType.GetField("_isBatchInProgress", BindingFlags.Instance | BindingFlags.NonPublic)!;
 #endif
 
-	private readonly object renderTreeUpdateLock = new();
+	private readonly Lock renderTreeUpdateLock = new();
 	private readonly Dictionary<int, IRenderedFragmentBase> renderedComponents = new();
 	private readonly List<RootComponent> rootComponents = new();
 	private readonly ILogger<TestRenderer> logger;
