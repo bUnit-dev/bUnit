@@ -111,9 +111,7 @@ jobs:
         run: git push origin stable
 
       - name: 🛠️ Create GitHub release
-        uses: thomaseizinger/create-release@1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: thomaseizinger/create-release@2.0.0
         with:
           tag_name: v${{ env.NBGV_SemVer2 }}
           target_commitish: ${{ env.RELEASE_COMMIT_HASH }}
@@ -121,6 +119,7 @@ jobs:
           body: ${{ steps.changelog_reader.outputs.changes }}
           draft: false
           prerelease: ${{ env.NBGV_PublicRelease == 'False' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⏩ Merge stable with main, push to origin
         id: mergeMainline
