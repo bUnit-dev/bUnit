@@ -466,7 +466,8 @@ When rendering a `RenderFragment` using the <xref:Bunit.TestContext.Render(Micro
 }
 ```
 
-## Passing query parameters (`SupplyParameterFromQuery`) to a component
+## Passing query parameters (`SupplyParameterFromQuery`) to a component
+
 In .NET 6 and later, components can receive parameters from a query string if the parameter is annotated with the `[SupplyParameterFromQuery]` attribute in addition to the `[Parameter]` attribute. 
 
 In .NET 8 however, the `[Parameter]` attribute is no longer required, which means a value cannot be passed to the component during testing using the normal methods, e.g. the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, if a component parameter is only annotated with the `[SupplyParameterFromQuery]` attribute. Instead, pass a query string parameters by setting it using the <xref:Bunit.TestDoubles.FakeNavigationManager>.
