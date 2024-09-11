@@ -60,10 +60,10 @@ jobs:
         with:
           path: ./CHANGELOG.md
 
-      - name: 🛠️ Update tokens in project files
+      - name: 🛠️ Update tokens in files
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/docfx.json", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
         env:
           RELEASE_VERSION: ${{ steps.changelog_reader.outputs.version }}
           RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
