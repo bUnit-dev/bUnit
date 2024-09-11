@@ -11,10 +11,10 @@ namespace Bunit.JSInterop.ComponentSupport;
 
 public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 {
-	public static readonly IEnumerable<object[]> ItemsInCollection =
-	[
-		[0], [7], [30], [60], [100], [300], [500],
-	];
+	public static readonly TheoryData<int> ItemsInCollection = new()
+	{
+		0, 7, 30, 60, 100, 300, 500,
+	};
 
 	[Theory(DisplayName = "Can render component using <Virtualize Items> with ChildContent")]
 	[MemberData(nameof(ItemsInCollection))]
@@ -72,12 +72,51 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
 	}
 
-	public static readonly IEnumerable<object[]> ItemCountItemSizeOverscanCount =
-		ItemsInCollection.Select(x => new object[][]
-		{
-			[x[0], 1, 3], [x[0], 1_000_000, 3], [x[0], 50, 1], [x[0], 50, 1_000_000], [x[0], 1, 1], [x[0], 1_000_000, 1_000_000
-			],
-		}).SelectMany(x => x);
+	public static readonly TheoryData<int, float, int> ItemCountItemSizeOverscanCount = new()
+	{
+		{ 0, 1, 3 },
+		{ 0, 1_000_000, 3 },
+		{ 0, 50, 1 },
+		{ 0, 50, 1_000_000 },
+		{ 0, 1, 1 },
+		{ 0, 1_000_000, 1_000_000 },
+		{ 7, 1, 3 },
+		{ 7, 1_000_000, 3 },
+		{ 7, 50, 1 },
+		{ 7, 50, 1_000_000 },
+		{ 7, 1, 1 },
+		{ 7, 1_000_000, 1_000_000 },
+		{ 30, 1, 3 },
+		{ 30, 1_000_000, 3 },
+		{ 30, 50, 1 },
+		{ 30, 50, 1_000_000 },
+		{ 30, 1, 1 },
+		{ 30, 1_000_000, 1_000_000 },
+		{ 60, 1, 3 },
+		{ 60, 1_000_000, 3 },
+		{ 60, 50, 1 },
+		{ 60, 50, 1_000_000 },
+		{ 60, 1, 1 },
+		{ 60, 1_000_000, 1_000_000 },
+		{ 100, 1, 3 },
+		{ 100, 1_000_000, 3 },
+		{ 100, 50, 1 },
+		{ 100, 50, 1_000_000 },
+		{ 100, 1, 1 },
+		{ 100, 1_000_000, 1_000_000 },
+		{ 300, 1, 3 },
+		{ 300, 1_000_000, 3 },
+		{ 300, 50, 1 },
+		{ 300, 50, 1_000_000 },
+		{ 300, 1, 1 },
+		{ 300, 1_000_000, 1_000_000 },
+		{ 500, 1, 3 },
+		{ 500, 1_000_000, 3 },
+		{ 500, 50, 1 },
+		{ 500, 50, 1_000_000 },
+		{ 500, 1, 1 },
+		{ 500, 1_000_000, 1_000_000 }
+	};
 
 	[Theory(DisplayName = "Can render component using <Virtualize Items> and different ItemSize and OverscanCount")]
 	[MemberData(nameof(ItemCountItemSizeOverscanCount))]
