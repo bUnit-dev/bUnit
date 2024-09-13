@@ -149,7 +149,7 @@ jobs:
             **/*hangdump.dmp
             **/*crashdump.dmp
 
-  validate_template:
+  validate-template:
     runs-on: ubuntu-latest
     needs: [ create-nuget ]
     steps:
@@ -178,6 +178,7 @@ jobs:
         run: |
           dotnet new bunit --no-restore -o ${{ github.workspace }}/TemplateTestXunit
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestXunit/Directory.Build.props
+          echo '<Project><PropertyGroup><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally></PropertyGroup></Project>' >> ${{ github.workspace }}/TemplateTestXunit/Directory.Packages.props
           dotnet restore ${{ github.workspace }}/TemplateTestXunit --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
           dotnet test ${{ github.workspace }}/TemplateTestXunit
 
@@ -185,6 +186,7 @@ jobs:
         run: |
           dotnet new bunit --framework nunit --no-restore -o ${{ github.workspace }}/TemplateTestNunit
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestNunit/Directory.Build.props
+          echo '<Project><PropertyGroup><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally></PropertyGroup></Project>' >> ${{ github.workspace }}/TemplateTestNunit/Directory.Packages.props
           dotnet restore ${{ github.workspace }}/TemplateTestNunit --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
           dotnet test ${{ github.workspace }}/TemplateTestNunit
 
@@ -192,6 +194,7 @@ jobs:
         run: |
           dotnet new bunit --framework mstest --no-restore -o ${{ github.workspace }}/TemplateTestMstest
           echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestMstest/Directory.Build.props
+          echo '<Project><PropertyGroup><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally></PropertyGroup></Project>' >> ${{ github.workspace }}/TemplateTestMstest/Directory.Packages.props
           dotnet restore ${{ github.workspace }}/TemplateTestMstest --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
           dotnet test ${{ github.workspace }}/TemplateTestMstest
 
@@ -254,7 +257,7 @@ jobs:
   release-preview:
     if: github.event_name == 'workflow_dispatch' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2')
     runs-on: ubuntu-latest
-    needs: [ validate-nuget, run-test, validate_template, validate-docs ]
+    needs: [ validate-nuget, run-test, validate-template, validate-docs ]
     steps:
       - uses: actions/download-artifact@v4
         with:

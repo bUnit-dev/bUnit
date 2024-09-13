@@ -21,7 +21,7 @@ namespace Bunit.Docs.Samples
       // Assert that there are no <Foo> in render tree,
       // but there is one <Bar> in the render tree.
       Assert.Empty(cut.FindComponents<Foo>());
-      Assert.Equal(1, cut.FindComponents<Bar>().Count);
+      Assert.Single(cut.FindComponents<Bar>());
     }
   }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -32,14 +33,15 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 
 		context.RegisterSourceOutput(
 			classesToStub,
-			static (spc, source) => Execute(source, spc));
+			static (spc, source) => Execute(source!, spc));
 	}
 
 	private static bool IsClassWithComponentStubAttribute(SyntaxNode s) =>
 		s is ClassDeclarationSyntax c && c.AttributeLists.SelectMany(a => a.Attributes)
 			.Any(at => at.Name.ToString().Contains("ComponentStub"));
 
-	private static StubClassInfo GetStubClassInfo(GeneratorAttributeSyntaxContext context)
+	[SuppressMessage("Bug", "CA1308: Normalize strings to uppercase", Justification = "On purpose")]
+	private static StubClassInfo? GetStubClassInfo(GeneratorAttributeSyntaxContext context)
 	{
 		foreach (var attribute in context.TargetSymbol.GetAttributes())
 		{
@@ -50,7 +52,7 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 
 			var namespaceName = stubbedType.ContainingNamespace.ToDisplayString();
 			var className = context.TargetSymbol.Name;
-			var visibility = context.TargetSymbol.DeclaredAccessibility.ToString().ToLower();
+			var visibility = context.TargetSymbol.DeclaredAccessibility.ToString().ToLowerInvariant();
 			var isPartial = ((ClassDeclarationSyntax)context.TargetNode).Modifiers.Any(SyntaxKind.PartialKeyword);
 
 			var originalTypeToStub = attribute.AttributeClass?.TypeArguments.FirstOrDefault();
@@ -110,7 +112,7 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 
 		sourceBuilder.AppendLine(
 			$"{classInfo.Visibility} partial class {classInfo.ClassName} : global::Microsoft.AspNetCore.Components.ComponentBase");
-		sourceBuilder.Append("{");
+		sourceBuilder.Append('{');
 
 		foreach (var member in classInfo.Properties)
 		{
@@ -170,18 +172,18 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 
 internal sealed record StubClassInfo
 {
-	public string ClassName { get; set; }
-	public string Namespace { get; set; }
+	public required string ClassName { get; set; }
+	public required string Namespace { get; set; }
 	public ImmutableArray<StubPropertyInfo> Properties { get; set; } = ImmutableArray<StubPropertyInfo>.Empty;
-	public string Visibility { get; set; }
+	public required string Visibility { get; set; }
 	public bool IsNestedClass { get; set; }
 	public bool IsPartial { get; set; }
 }
 
 internal sealed record StubPropertyInfo
 {
-	public string Name { get; set; }
-	public string Type { get; set; }
-	public string AttributeLine { get; set; }
+	public required string Name { get; set; }
+	public required string Type { get; set; }
+	public required string AttributeLine { get; set; }
 }
 
