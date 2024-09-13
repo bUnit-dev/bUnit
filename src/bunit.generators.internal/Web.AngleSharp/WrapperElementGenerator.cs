@@ -64,7 +64,7 @@ internal static class WrapperElementGenerator
 		var methodParts = method.ToDisplayParts(GeneratorConfig.SymbolFormat);
 
 		// It seems that the ToDisplayParts will return ...
-		// 
+		//
 		//    public global::AngleSharp.Dom.IShadowRoot AttachShadow(global::AngleSharp.Dom.ShadowRootMode mode = 0)
 		//
 		// when called on a method with a default enum parameters specified.
@@ -171,18 +171,6 @@ internal static class WrapperElementGenerator
 		{
 			yield return item;
 		}
-	}
-
-	private static StringBuilder AppendInputArguments(this StringBuilder source, ImmutableArray<IParameterSymbol> parameters)
-	{
-		for (int i = 0; i < parameters.Length; i++)
-		{
-			if (i > 0)
-				source.Append(", ");
-
-			source.Append($"{parameters[i].Type.ToDisplayString(GeneratorConfig.SymbolFormat)} {parameters[i].Name}");
-		}
-		return source;
 	}
 
 	private static StringBuilder AppendCallParameters(this StringBuilder source, ImmutableArray<IParameterSymbol> parameters)

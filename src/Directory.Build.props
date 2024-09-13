@@ -21,7 +21,9 @@
 		<!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
 		<DebugType>embedded</DebugType>
 		<Deterministic>true</Deterministic>
+	</PropertyGroup>
 
+	<PropertyGroup Label="Package Validation" Condition="$(MSBuildProjectName) != 'bunit.generators'">
 		<EnablePackageValidation>true</EnablePackageValidation>
 		<GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
 		<PackageValidationBaselineVersion>1.25.3</PackageValidationBaselineVersion>
@@ -51,10 +53,6 @@ See the full changelog at https://github.com/bUnit-dev/bUnit/releases
 
 	<ItemGroup>
 		<None Include="..\..\bunit-logo.png" Pack="true" PackagePath="" Visible="false" />
-		<None Include="..\..\README.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
 		<None Include="..\..\LICENSE">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
@@ -62,8 +60,14 @@ See the full changelog at https://github.com/bUnit-dev/bUnit/releases
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.143" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Nerdbank.GitVersioning">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 </Project>

@@ -453,6 +453,7 @@ dotnet_diagnostic.S112.severity = none # S112: General exceptions should never b
 dotnet_diagnostic.S1075.severity = suggestion # S1075: URIs should not be hardcoded
 dotnet_diagnostic.S1186.severity = suggestion # S1186: Methods should not be empty
 dotnet_diagnostic.S2292.severity = suggestion # S2292: Trivial properties should be auto-implemented
+dotnet_diagnostic.S3267.severity = suggestion # S3267: Convert foreach loop to LINQ query
 dotnet_diagnostic.S4158.severity = none # BUGGY with C#9 code - doesnt understand local methods
 
 # Razor specific rules

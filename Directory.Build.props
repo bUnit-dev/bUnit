@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<PropertyGroup Label="Configuration variables">
-		<DotNet3Version>3.1.*</DotNet3Version>
-		<DotNet5Version>5.0.*</DotNet5Version>
-		<DotNet6Version>6.0.*</DotNet6Version>
-		<DotNet7Version>7.0.*</DotNet7Version>
-		<DotNet8Version>8.0.*</DotNet8Version>
-		<DotNet9Version>9.0.0-*</DotNet9Version>
-	</PropertyGroup>
-
 	<!-- Solution wide properties -->
 	<PropertyGroup Label="Assembly Naming">
 		<Company>Egil Hansen</Company>
@@ -49,14 +40,7 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
-	<!-- Shared code analyzers used for all projects in the solution -->
-	<ItemGroup Label="Code Analyzers">
-		<PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.32.0.97167" PrivateAssets="All" />
-	</ItemGroup>
-
-	<ItemGroup Label="Implicit usings"
-						 Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit' AND $(MSBuildProjectName) != 'AngleSharpWrappers.Tests'">
+	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit' AND $(MSBuildProjectName) != 'bunit.generators'">
 		<Using Include="Microsoft.AspNetCore.Components" />
 		<Using Include="Microsoft.AspNetCore.Components.RenderTree" />
 		<Using Include="Microsoft.AspNetCore.Components.Rendering" />
