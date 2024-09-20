@@ -137,7 +137,7 @@
 		<PackageVersion Include="RichardSzalay.MockHttp" Version="7.0.0" />
 		<PackageVersion Include="Serilog.Extensions.Logging" Version="8.0.0" />
 		<PackageVersion Include="Shouldly" Version="4.2.1"/>
-		<PackageVersion Include="Verify.SourceGenerators" Version="2.4.1"/>
+		<PackageVersion Include="Verify.SourceGenerators" Version="2.5.0"/>
 		<PackageVersion Include="Verify.Xunit" Version="26.4.4"/>
 		<PackageVersion Include="Xunit.Combinatorial" Version="1.6.24"/>
 		<PackageVersion Include="coverlet.collector" Version="6.0.2" />
@@ -151,7 +151,7 @@
 	</ItemGroup>
 
 	<ItemGroup Label="Test Dependencies - Legacy" Condition="'$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0'">
-		<PackageVersion Update="xunit.runner.visualstudio" Version="2.4.5"/>
+		<PackageVersion Update="xunit.runner.visualstudio" Version="2.8.2"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Source Code Generators">
