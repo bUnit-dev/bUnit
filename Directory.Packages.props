@@ -111,18 +111,18 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-		<PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0-rc.1.24431.7"/>
-		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-rc.1.24431.7"/>
+		<PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0-rc.2.24423.10"/>
+		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-rc.2.24423.10"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="9.0.0-rc.1.24452.1"/>
 
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0-rc.1.24452.1"/>
 		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.0-rc.1.24452.1"/>
-		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0-rc.1.24431.7"/>
+		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0-rc.2.24423.10"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0-rc.1.24452.1"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0-rc.1.24452.1"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.0-rc.1.24452.1"/>
 
-		<PackageVersion Include="System.Text.Json" Version="9.0.0-rc.1.24431.7" />
+		<PackageVersion Include="System.Text.Json" Version="8.0.4" />
 	</ItemGroup>
 
 	<ItemGroup Label="Test Dependencies">
@@ -137,16 +137,16 @@
 		<PackageVersion Include="RichardSzalay.MockHttp" Version="7.0.0" />
 		<PackageVersion Include="Serilog.Extensions.Logging" Version="8.0.0" />
 		<PackageVersion Include="Shouldly" Version="4.2.1"/>
-		<PackageVersion Include="Verify.SourceGenerators" Version="2.4.1"/>
-		<PackageVersion Include="Verify.Xunit" Version="26.4.4"/>
+		<PackageVersion Include="Verify.SourceGenerators" Version="2.5.0"/>
+		<PackageVersion Include="Verify.Xunit" Version="26.6.0"/>
 		<PackageVersion Include="Xunit.Combinatorial" Version="1.6.24"/>
 		<PackageVersion Include="coverlet.collector" Version="6.0.2" />
 		<PackageVersion Include="coverlet.msbuild" Version="6.0.2" />
 		<PackageVersion Include="nunit" Version="4.2.2" />
-		<PackageVersion Include="xunit" Version="2.9.0"/>
+		<PackageVersion Include="xunit" Version="2.9.1"/>
 		<PackageVersion Include="xunit.abstractions" Version="2.0.3"/>
-		<PackageVersion Include="xunit.assert" Version="2.9.0"/>
-		<PackageVersion Include="xunit.extensibility.execution" Version="2.9.0"/>
+		<PackageVersion Include="xunit.assert" Version="2.9.1"/>
+		<PackageVersion Include="xunit.extensibility.execution" Version="2.9.1"/>
 		<PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2"/>
 	</ItemGroup>
 
