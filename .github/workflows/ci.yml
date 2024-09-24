@@ -32,8 +32,66 @@ env:
   TERM: xterm
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            3.1.x
+            5.0.x
+            6.0.x
+            7.0.x
+            8.0.x
+            9.0.x
+
+      - name: ⚙️ Setup GIT versioning
+        id: nbgv
+        uses: dotnet/nbgv@v0.4.2
+        with:
+          setAllVars: true
+
+      - name: 🛠️ Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          version: Unreleased
+          path: ./CHANGELOG.md
+
+      - name: 🛠️ Update tokens in project files
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+        env:
+          RELEASE_VERSION: ${{ steps.nbgv.outputs.SimpleVersion }}${{ steps.nbgv.outputs.PrereleaseVersion }}
+          RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
+
+      - name: ⚙️ Restore packages and tools
+        run: |
+          dotnet restore
+          dotnet tool restore
+
+      - name: 🏗️ Build project
+        run: |
+          dotnet build -c release
+          dotnet build -c release docs/samples/samples.sln
+
+      - name: 📦 Upload build artifacts
+        uses: actions/upload-artifact@v4.4.0
+        with:
+          name: build-artifacts
+          path: |
+            **/bin/Release
+            **/obj/Release
+
   create-nuget:
     runs-on: ubuntu-latest
+    needs: build
     steps:
     - uses: actions/checkout@v4
       with:
@@ -51,34 +109,20 @@ jobs:
           8.0.x
           9.0.x
 
-    - name: ⚙️ Setup GIT versioning
-      uses: dotnet/nbgv@v0.4.2
+    - name: 📥 Download build artifacts
+      uses: actions/download-artifact@v4.1.8
       with:
-        setAllVars: true
-
-    - name: 🛠️ Get Changelog Entry
-      id: changelog_reader
-      uses: mindsers/changelog-reader-action@v2
-      with:
-        version: Unreleased
-        path: ./CHANGELOG.md
-
-    - name: 🛠️ Update tokens in project files
-      uses: cschleiden/replace-tokens@v1
-      with:
-        files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
-      env:
-        RELEASE_VERSION: ${{ env.NBGV_SimpleVersion }}${{ env.NBGV_PrereleaseVersion }}
-        RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
+        name: build-artifacts
+        path: .
 
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
     - run: |
-        dotnet pack src/bunit/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-        dotnet pack src/bunit.core/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-        dotnet pack src/bunit.web/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-        dotnet pack src/bunit.template/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-        dotnet pack src/bunit.generators/ -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-        dotnet pack src/bunit.web.query/ -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit/ -c Release --no-build --no-restore --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit.core/ -c Release --no-build --no-restore --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit.web/ -c Release --no-build --no-restore --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit.template/ -c Release --no-build --no-restore --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit.generators/ -c release --no-build --no-restore --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit.web.query/ -c release --no-build --no-restore--output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
 
     # Publish the NuGet package as an artifact, so they can be used in the following jobs
     - uses: actions/upload-artifact@v4
@@ -113,6 +157,7 @@ jobs:
         run: meziantou.validate-nuget-package (Get-ChildItem "${{ env.NUGET_DIRECTORY }}/*.nupkg") --excluded-rules IconMustBeSet
 
   run-test:
+    needs: build
     strategy:
       fail-fast: false
       matrix:
@@ -136,13 +181,17 @@ jobs:
             8.0.x
             9.0.x
 
-      - name: ⚙️ Setup GIT versioning
-        run: |
-          dotnet restore
-          dotnet tool restore
+      - name: 📥 Download build artifacts
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: build-artifacts
+          path: .
+
+      - name: ⚙️ Restore packages and tools
+        run: dotnet tool restore
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c release --no-restore -p:VSTestUseMSBuildOutput=false --logger "trx"
+        run: dotnet test -c release --no-build --no-restore -p:VSTestUseMSBuildOutput=false --logger "trx"
 
       - name: Test Report
         uses: dorny/test-reporter@v1
@@ -216,6 +265,7 @@ jobs:
 
   validate-docs:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v4
@@ -233,24 +283,14 @@ jobs:
             8.0.x
             9.0.x
 
-      - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.2
+      - name: 📥 Download build artifacts
+        uses: actions/download-artifact@v4.1.8
         with:
-          setAllVars: true
-
-      - name: 🍥 Replace tokens in files
-        uses: cschleiden/replace-tokens@v1
-        with:
-          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props", "docs/site/docfx.json"]'
-        env:
-          RELEASE_VERSION: ${{ env.NBGV_SimpleVersion }}${{ env.NBGV_PrereleaseVersion }}
-          RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
-
-      - name: 📄 Build bUnit
-        run: dotnet build -c release
+          name: build-artifacts
+          path: .
 
       - name: 🧪 Run sample unit tests
-        run: dotnet test docs/samples/samples.sln -p:VSTestUseMSBuildOutput=false -f net8.0
+        run: dotnet test docs/samples/samples.sln -p:VSTestUseMSBuildOutput=false -f net8.0 --no-build --no-restore
 
       - name: 📄 Build docs
         working-directory: ./docs/site

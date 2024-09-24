@@ -50,6 +50,7 @@ jobs:
 
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.2
+        id: nbgv
         with:
           setAllVars: true
 
@@ -67,7 +68,7 @@ jobs:
       - name: 🛠️ Update changelog
         uses: thomaseizinger/keep-a-changelog-new-release@3.1.0
         with:
-          version: ${{ env.NBGV_SemVer2 }}
+          version: ${{ steps.nbgv.outputs.SemVer2 }}
 
       - name: 🛠️ Update changelog compare URLs
         shell: bash
@@ -78,14 +79,14 @@ jobs:
       - name: 🛠️ Commit CHANGELOG.md to stable branch
         run: |
           git add CHANGELOG.md
-          git commit -S -m "Updated CHANGELOG.md for ${{ env.NBGV_SimpleVersion }} release"
+          git commit -S -m "Updated CHANGELOG.md for ${{ steps.nbgv.outputs.SimpleVersion }} release"
           echo "RELEASE_COMMIT_HASH=$(git rev-parse stable)" >> $GITHUB_ENV
 
       - name: 🛠️ Get Changelog Entry
         id: changelog_reader
         uses: mindsers/changelog-reader-action@v2
         with:
-          version: ${{ env.NBGV_SemVer2 }}
+          version: ${{ steps.nbgv.outputs.SemVer2 }}
           path: ./CHANGELOG.md
 
       - name: 🛠️ Update tokens in project files
@@ -93,7 +94,7 @@ jobs:
         with:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
         env:
-          RELEASE_VERSION: ${{ env.NBGV_NuGetPackageVersion }}
+          RELEASE_VERSION: ${{ steps.nbgv.outputs.NuGetPackageVersion }}
           RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
       - name: 🛠️ Packing library in release mode
@@ -113,13 +114,13 @@ jobs:
       - name: 🛠️ Create GitHub release
         uses: thomaseizinger/create-release@2.0.0
         with:
-          tag_name: v${{ env.NBGV_SemVer2 }}
+          tag_name: v${{ steps.nbgv.outputs.SemVer2 }}
           target_commitish: ${{ env.RELEASE_COMMIT_HASH }}
-          name: ${{ env.NBGV_SemVer2 }}
+          name: ${{ steps.nbgv.outputs.SemVer2 }}
           body: ${{ steps.changelog_reader.outputs.changes }}
           draft: false
-          prerelease: ${{ env.NBGV_PublicRelease == 'False' }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: ${{ steps.nbgv.outputs.PublicRelease == 'False' }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⏩ Merge stable with main, push to origin
         id: mergeMainline
@@ -132,12 +133,11 @@ jobs:
       - name: ⏭ Create pull request from stable to main when direct merge fails
         if: steps.mergeMainline.outcome == 'failure'
         uses: thomaseizinger/create-pull-request@1.4.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.BUNIT_BOT_TOKEN }}
         with:
+          github_token: ${{ secrets.BUNIT_BOT_TOKEN }}
           head: stable
           base: main
-          title: Update main with changes in stable after v${{ env.NBGV_SemVer2 }} release
+          title: Update main with changes in stable after v${{ steps.nbgv.outputs.SemVer2 }} release
           reviewers: ${{ github.actor }} # By default, we request a review from the person who triggered the workflow.
           body: |
             Hi @${{ github.actor }}
