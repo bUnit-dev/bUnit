@@ -136,29 +136,34 @@ jobs:
             8.0.x
             9.0.x
 
-      - name: 🧪 Run unit tests
-        run: dotnet test -c release -p:VSTestUseMSBuildOutput=false --verbosity normal --logger trx --results-directory TestResults --collect "XPlat Code Coverage"
+      - name: ⚙️ Setup GIT versioning
+        run: |
+          dotnet restore
+          dotnet tool restore
 
-      - name: Test Reports
-        uses: bibipkins/dotnet-test-reporter@v1.4.1
-        if: always()
+      - name: 🧪 Run unit tests
+        run: dotnet test -c release --no-restore -p:VSTestUseMSBuildOutput=false --logger "trx"
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          comment-title: "Unit Test Results"
-          results-path: ./TestResults/*.trx
-          coverage-path: ./TestResults/**/coverage.cobertura.xml
-          coverage-type: cobertura
-          coverage-threshold: 0.00
+          name: 'CI Test Results ${{ matrix.os }}'
+          reporter: 'dotnet-trx'
+          list-tests: 'failed'
+          list-suites: 'failed'
+          path: '**/*.trx'
+          fail-on-error: false
 
       - name: 📛 Upload hang- and crash-dumps on test failure
-        if: failure()
+        if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
           if-no-files-found: ignore
           name: test-dumps
           path: |
-            **/*hangdump.dmp
-            **/*crashdump.dmp
+            **/*.dmp
+            **/*.dmp
 
   validate-template:
     runs-on: ubuntu-latest
