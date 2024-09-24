@@ -30,4 +30,8 @@
 		<ProjectReference Include="..\..\src\bunit.web\bunit.web.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Content Include="../xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
 </Project>

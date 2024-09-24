@@ -137,7 +137,7 @@ jobs:
             9.0.x
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c release -p:VSTestUseMSBuildOutput=false
+        run: dotnet test -c release -p:VSTestUseMSBuildOutput=false --logger "console;verbosity=normal"
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()

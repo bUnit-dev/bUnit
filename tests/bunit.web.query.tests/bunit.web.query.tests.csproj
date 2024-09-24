@@ -13,4 +13,8 @@
 		<ProjectReference Include="..\bunit.testassets\bunit.testassets.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Content Include="../xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
 </Project>
