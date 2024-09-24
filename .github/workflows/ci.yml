@@ -137,7 +137,18 @@ jobs:
             9.0.x
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c release -p:VSTestUseMSBuildOutput=false --logger "console;verbosity=normal"
+        run: dotnet test -c release -p:VSTestUseMSBuildOutput=false --verbosity normal --logger trx --results-directory TestResults --collect "XPlat Code Coverage"
+
+      - name: Test Reports
+        uses: bibipkins/dotnet-test-reporter@v1.4.1
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-title: "Unit Test Results"
+          results-path: ./TestResults/*.trx
+          coverage-path: ./TestResults/**/coverage.cobertura.xml
+          coverage-type: cobertura
+          coverage-threshold: 0.00
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: failure()
