@@ -53,6 +53,7 @@ jobs:
 
     - name: ⚙️ Setup GIT versioning
       uses: dotnet/nbgv@v0.4.2
+      id: nbgv
       with:
         setAllVars: true
 
@@ -68,7 +69,7 @@ jobs:
       with:
         files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
       env:
-        RELEASE_VERSION: ${{ env.NBGV_SimpleVersion }}${{ env.NBGV_PrereleaseVersion }}
+        RELEASE_VERSION: ${{ steps.nbgv.outputs.SimpleVersion }}${{ steps.nbgv.outputs.PrereleaseVersion }}
         RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
@@ -235,15 +236,23 @@ jobs:
 
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.2
+        id: nbgv
         with:
           setAllVars: true
+
+      - name: 🛠️ Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          version: Unreleased
+          path: ./CHANGELOG.md
 
       - name: 🍥 Replace tokens in files
         uses: cschleiden/replace-tokens@v1
         with:
           files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props", "docs/site/docfx.json"]'
         env:
-          RELEASE_VERSION: ${{ env.NBGV_SimpleVersion }}${{ env.NBGV_PrereleaseVersion }}
+          RELEASE_VERSION: ${{ steps.nbgv.outputs.SimpleVersion }}${{ steps.nbgv.outputs.PrereleaseVersion }}
           RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
       - name: 📄 Build bUnit
