@@ -136,7 +136,7 @@ jobs:
             8.0.x
             9.0.x
 
-      - name: ⚙️ Setup GIT versioning
+      - name: ⚙️ Restore packages and tools
         run: |
           dotnet restore
           dotnet tool restore
@@ -144,7 +144,7 @@ jobs:
       - name: 🧪 Run unit tests
         run: dotnet test -c release --no-restore -p:VSTestUseMSBuildOutput=false --logger "trx"
 
-      - name: Test Report
+      - name: 🛒 Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
