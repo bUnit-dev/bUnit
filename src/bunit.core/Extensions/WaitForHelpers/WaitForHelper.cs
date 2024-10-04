@@ -59,19 +59,24 @@ public abstract class WaitForHelper<T> : IDisposable
 			.GetRequiredService<TestContextBase>()
 			.Renderer;
 		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
-		timer = new Timer(_ =>
-		{
-			logger.LogWaiterTimedOut(renderedFragment.ComponentId);
-			checkPassedCompletionSource.TrySetException(
-				new WaitForFailedException(
-					TimeoutErrorMessage ?? string.Empty,
-					checkCount,
-					renderedFragment.RenderCount,
-					renderer.RenderCount,
-					capturedException));
-		});
+
 		WaitTask = CreateWaitTask();
-		timer.Change(GetRuntimeTimeout(timeout), Timeout.InfiniteTimeSpan);
+		timer = new Timer(
+			static (state) =>
+			{
+				var @this = (WaitForHelper<T>)state!;
+				@this.logger.LogWaiterTimedOut(@this.renderedFragment.ComponentId);
+				@this.checkPassedCompletionSource.TrySetException(
+					new WaitForFailedException(
+						@this.TimeoutErrorMessage ?? string.Empty,
+						@this.checkCount,
+						@this.renderedFragment.RenderCount,
+						@this.renderer.RenderCount,
+						@this.capturedException));
+			},
+			this,
+			GetRuntimeTimeout(timeout),
+			Timeout.InfiniteTimeSpan);
 
 		InitializeWaiting();
 	}
