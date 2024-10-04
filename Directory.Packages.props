@@ -146,12 +146,12 @@
 		<PackageVersion Include="xunit" Version="2.9.1"/>
 		<PackageVersion Include="xunit.abstractions" Version="2.0.3"/>
 		<PackageVersion Include="xunit.assert" Version="2.9.1"/>
-		<PackageVersion Include="xunit.extensibility.execution" Version="2.9.1"/>
+		<PackageVersion Include="xunit.extensibility.execution" Version="2.9.2"/>
 		<PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Test Dependencies - Legacy" Condition="'$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0'">
-		<PackageVersion Update="xunit.runner.visualstudio" Version="2.4.5"/>
+		<PackageVersion Update="xunit.runner.visualstudio" Version="2.8.2"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Source Code Generators">
