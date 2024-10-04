@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- Ensure that a check in `WaitForAssertion` and related methods is always performed at once before the wait timer is started. If not, the timeout could occure before a wait-for check-condition had been attempted, causing tests to fail without reason. Fixed by [@egil](https://github.com/egil).
+
 ## [1.31.3] - 2024-08-16
 
 ### Fixed
