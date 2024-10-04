@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.32.7] - 2024-10-04
+
 ### Fixed
 
 - Ensure that a check in `WaitForAssertion` and related methods is always performed at once before the wait timer is started. If not, the timeout could occure before a wait-for check-condition had been attempted, causing tests to fail without reason. Fixed by [@egil](https://github.com/egil).
@@ -1392,7 +1394,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.31.3...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.32.7...HEAD
+[1.32.7]: https://github.com/bUnit-dev/bUnit/compare/v1.31.3...v1.32.7
 [1.31.3]: https://github.com/bUnit-dev/bUnit/compare/v1.30.3...1.31.3
 [1.30.3]: https://github.com/bUnit-dev/bUnit/compare/v1.29.5...v1.30.3
 [1.29.5]: https://github.com/bUnit-dev/bUnit/compare/v1.28.9...1.29.5
