@@ -143,10 +143,10 @@
 		<PackageVersion Include="coverlet.collector" Version="6.0.2" />
 		<PackageVersion Include="coverlet.msbuild" Version="6.0.2" />
 		<PackageVersion Include="nunit" Version="4.2.2" />
-		<PackageVersion Include="xunit" Version="2.9.1"/>
+		<PackageVersion Include="xunit" Version="2.9.2"/>
 		<PackageVersion Include="xunit.abstractions" Version="2.0.3"/>
-		<PackageVersion Include="xunit.assert" Version="2.9.1"/>
-		<PackageVersion Include="xunit.extensibility.execution" Version="2.9.1"/>
+		<PackageVersion Include="xunit.assert" Version="2.9.2"/>
+		<PackageVersion Include="xunit.extensibility.execution" Version="2.9.2"/>
 		<PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2"/>
 	</ItemGroup>
 
