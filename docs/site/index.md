@@ -63,11 +63,6 @@ A huge thank you to the [sponsors of my work with bUnit](https://github.com/spon
 		<br />
 		Syncfusion
 	</a>
-	<a href="https://github.com/aws" class="d-block p-3 text-center">
-		<img class="avatar avatar rounded-circle" src="https://avatars.githubusercontent.com/u/2232217?s=200&v=4" width="72" height="72" alt="@aws" />
-		<br />
-		Amazon Web Services
-	</a>
 </div>
 
 ## Contributors

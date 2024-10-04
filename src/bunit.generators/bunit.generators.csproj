@@ -32,54 +32,29 @@
 		<Description>
 			bUnit.generators is an extension to bUnit that provides code generators for stubbing components.
 		</Description>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<RepositoryUrl>https://github.com/bUnit-dev/bUnit</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://bunit.egilhansen.com</PackageProjectUrl>
-		<PackageTags>bUnit;razor components;blazor components;unit testing;testing blazor components;blazor server;blazor wasm</PackageTags>
-		<Authors>Egil Hansen</Authors>
-		<Company>Egil Hansen</Company>
-		<Copyright>Egil Hansen</Copyright>
-		<Product>bUnit</Product>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<PackageIcon>bunit-logo.png</PackageIcon>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageReleaseNotes>
-			Changes in bUnit #{RELEASE_VERSION}#
-
-			#{RELEASE_NOTES}#
-
-			See the full changelog at https://github.com/bUnit-dev/bUnit/releases
-		</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\..\bunit-logo.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-		<None Include="..\..\README.md">
-			<Pack>True</Pack>
+		<None Include="README.md">
+			<Pack>true</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
 
 	<ItemGroup>
 		<!-- Package the generator in the analyzer directory of the nuget package -->
-		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Meziantou.Polyfill" Version="1.0.39">
+		<PackageReference Include="Meziantou.Polyfill">
 			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.141" PrivateAssets="All" />
 	</ItemGroup>
 </Project>

@@ -51,6 +51,7 @@ jobs:
 
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.2
+        id: nbgv
         with:
           setAllVars: true
 
@@ -60,10 +61,10 @@ jobs:
         with:
           path: ./CHANGELOG.md
 
-      - name: 🛠️ Update tokens in project files
+      - name: 🛠️ Update tokens in files
         uses: cschleiden/replace-tokens@v1
         with:
-          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/*.tmpl.partial", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
+          files: '["docs/site/*.md", "docs/**/*.md", "docs/**/docfx.json", "*.csproj", "**/*.csproj", "src/Directory.Build.props"]'
         env:
           RELEASE_VERSION: ${{ steps.changelog_reader.outputs.version }}
           RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
@@ -123,9 +124,8 @@ jobs:
       - name: ⏭ Create pull request from stable to main when direct merge fails
         if: steps.mergeMainline.outcome == 'failure'
         uses: thomaseizinger/create-pull-request@1.4.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.BUNIT_BOT_TOKEN }}
         with:
+          github_token: ${{ secrets.BUNIT_BOT_TOKEN }}
           head: stable
           base: main
           title: Update main with documentation in stable

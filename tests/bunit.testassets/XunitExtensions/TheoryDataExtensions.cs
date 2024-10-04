@@ -7,7 +7,7 @@ public static class TheoryDataExtensions
 		var result = new TheoryData<T>();
 		foreach (var item in existing)
 		{
-			result.Add((T)item[0]);
+			result.Add(item);
 		}
 		return result;
 	}

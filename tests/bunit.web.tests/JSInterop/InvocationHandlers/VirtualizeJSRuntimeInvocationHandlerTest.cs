@@ -11,9 +11,9 @@ namespace Bunit.JSInterop.ComponentSupport;
 
 public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 {
-	public static readonly IEnumerable<object[]> ItemsInCollection = new object[][]
+	public static readonly TheoryData<int> ItemsInCollection = new()
 	{
-			new object[] { 0 }, new object[] { 7 }, new object[] { 30 }, new object[] { 60 }, new object[] { 100 }, new object[] { 300 }, new object[] { 500 },
+		0, 7, 30, 60, 100, 300, 500,
 	};
 
 	[Theory(DisplayName = "Can render component using <Virtualize Items> with ChildContent")]
@@ -22,6 +22,9 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 	{
 		var cut = RenderComponent<Virtualize<string>>(ps => ps
 			.Add(p => p.Items, CreateItems(itemsInDataSource))
+#if NET9_0_OR_GREATER
+			.Add(p => p.MaxItemCount, itemsInDataSource)
+#endif
 			.Add(p => p.ChildContent, item => $"<p>{item}</p>"));
 
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
@@ -33,6 +36,9 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 	{
 		var cut = RenderComponent<Virtualize<string>>(ps => ps
 			.Add(p => p.Items, CreateItems(itemsInDataSource))
+#if NET9_0_OR_GREATER
+			.Add(p => p.MaxItemCount, itemsInDataSource)
+#endif
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>"));
 
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
@@ -44,6 +50,9 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 	{
 		var cut = RenderComponent<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
+#if NET9_0_OR_GREATER
+			.Add(p => p.MaxItemCount, itemsInDataSource)
+#endif
 			.Add(p => p.ChildContent, item => $"<p>{item}</p>"));
 
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
@@ -55,21 +64,59 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 	{
 		var cut = RenderComponent<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
+#if NET9_0_OR_GREATER
+			.Add(p => p.MaxItemCount, itemsInDataSource)
+#endif
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>"));
 
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
 	}
 
-	public static readonly IEnumerable<object[]> ItemCountItemSizeOverscanCount =
-		ItemsInCollection.Select(x => new object[][]
-		{
-				new object[] { x[0], 1, 3 },
-				new object[] { x[0], 1_000_000, 3 },
-				new object[] { x[0], 50, 1 },
-				new object[] { x[0], 50, 1_000_000 },
-				new object[] { x[0], 1, 1 },
-				new object[] { x[0], 1_000_000, 1_000_000 },
-		}).SelectMany(x => x);
+	public static readonly TheoryData<int, float, int> ItemCountItemSizeOverscanCount = new()
+	{
+		{ 0, 1, 3 },
+		{ 0, 1_000_000, 3 },
+		{ 0, 50, 1 },
+		{ 0, 50, 1_000_000 },
+		{ 0, 1, 1 },
+		{ 0, 1_000_000, 1_000_000 },
+		{ 7, 1, 3 },
+		{ 7, 1_000_000, 3 },
+		{ 7, 50, 1 },
+		{ 7, 50, 1_000_000 },
+		{ 7, 1, 1 },
+		{ 7, 1_000_000, 1_000_000 },
+		{ 30, 1, 3 },
+		{ 30, 1_000_000, 3 },
+		{ 30, 50, 1 },
+		{ 30, 50, 1_000_000 },
+		{ 30, 1, 1 },
+		{ 30, 1_000_000, 1_000_000 },
+		{ 60, 1, 3 },
+		{ 60, 1_000_000, 3 },
+		{ 60, 50, 1 },
+		{ 60, 50, 1_000_000 },
+		{ 60, 1, 1 },
+		{ 60, 1_000_000, 1_000_000 },
+		{ 100, 1, 3 },
+		{ 100, 1_000_000, 3 },
+		{ 100, 50, 1 },
+		{ 100, 50, 1_000_000 },
+		{ 100, 1, 1 },
+		{ 100, 1_000_000, 1_000_000 },
+		{ 300, 1, 3 },
+		{ 300, 1_000_000, 3 },
+		{ 300, 50, 1 },
+		{ 300, 50, 1_000_000 },
+		{ 300, 1, 1 },
+		{ 300, 1_000_000, 1_000_000 },
+		{ 500, 1, 3 },
+		{ 500, 1_000_000, 3 },
+		{ 500, 50, 1 },
+		{ 500, 50, 1_000_000 },
+		{ 500, 1, 1 },
+		{ 500, 1_000_000, 1_000_000 }
+	};
 
 	[Theory(DisplayName = "Can render component using <Virtualize Items> and different ItemSize and OverscanCount")]
 	[MemberData(nameof(ItemCountItemSizeOverscanCount))]
@@ -79,6 +126,9 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>")
 			.Add(p => p.ItemSize, itemSize)
+#if NET9_0_OR_GREATER
+			.Add(p => p.MaxItemCount, itemsInDataSource)
+#endif
 			.Add(p => p.OverscanCount, overscanCount));
 
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
@@ -91,6 +141,9 @@ public class VirtualizeJSRuntimeInvocationHandlerTest : TestContext
 		var cut = RenderComponent<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, _ => ValueTask.FromResult(new ItemsProviderResult<string>(Array.Empty<string>(), itemsInDataSource)))
 			.Add(p => p.ItemContent, item => @$"<p class=""item"">{item}</p>")
+#if NET9_0_OR_GREATER
+			.Add(p => p.MaxItemCount, itemsInDataSource)
+#endif
 			.Add(p => p.Placeholder, _ => @"<p class=""placeholder"" />"));
 
 		cut.FindAll(".placeholder").Count.ShouldBe(itemsInDataSource);
