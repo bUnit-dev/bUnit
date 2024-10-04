@@ -4,6 +4,7 @@
 		<NoBuild>true</NoBuild>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<IncludeSymbols>false</IncludeSymbols>
+		<NoWarn>$(NoWarn);NU5128</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup>
