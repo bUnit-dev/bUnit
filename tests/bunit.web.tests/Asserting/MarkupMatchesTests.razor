@@ -7,41 +7,30 @@
     public MarkupMatchesTests(ITestOutputHelper outputHelper)
     {
         this.outputHelper = outputHelper;
+        TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
     }
 
     [Fact]
-    public async Task MarkupMatchesShouldNotBeBlockedByRenderer()
+    public void MarkupMatchesShouldNotBeBlockedByRenderer()
     {
-        await DumpCapture.OnFailureAsync(() =>
-        {
-            var tcs = new TaskCompletionSource<object?>();
+        var tcs = new TaskCompletionSource<object?>();
+        var cut = Render(@<LoadingComponent Task="@tcs.Task" />    );
+        cut.MarkupMatches(@<span>loading</span>  );
 
-            var cut = Render(@<LoadingComponent Task="@tcs.Task" />    );
+        tcs.SetResult(true);
 
-            cut.MarkupMatches(@<span>loading</span>  );
-
-            tcs.SetResult(true);
-
-            cut.WaitForAssertion(() => cut.MarkupMatches(@<span>done</span>));
-        },
-        outputHelper);
+        cut.WaitForAssertion(() => cut.MarkupMatches(@<span>done</span>));
     }
 
     [Fact]
-    public async Task MarkupMatchesShouldNotBeBlockedByRendererComplex()
+    public void MarkupMatchesShouldNotBeBlockedByRendererComplex()
     {
-        await DumpCapture.OnFailureAsync(() =>
-        {
-            var tcs = new TaskCompletionSource<object?>();
+        var tcs = new TaskCompletionSource<object?>();
+        var cut = Render(@<InvokeAsyncInsideContinueWith Task="@tcs.Task" /> );
+        cut.MarkupMatches(@<span>waiting</span>);
 
-            var cut = Render(@<InvokeAsyncInsideContinueWith Task="@tcs.Task" /> );
+        tcs.SetResult(true);
 
-            cut.MarkupMatches(@<span>waiting</span>);
-
-            tcs.SetResult(true);
-
-            cut.WaitForAssertion(() => cut.MarkupMatches(@<span>done</span>));
-        },
-        outputHelper);
+        cut.WaitForAssertion(() => cut.MarkupMatches(@<span>done</span>));
     }
 }
