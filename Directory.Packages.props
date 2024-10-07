@@ -7,7 +7,7 @@
 	<ItemGroup Condition="!$(MSBuildProjectName.EndsWith('samples'))">
 		<GlobalPackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="9.32.0.97167" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
-		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
 		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.39" />
 	</ItemGroup>
 
@@ -33,7 +33,7 @@
 		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.32"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="3.1.32"/>
 
-		<PackageVersion Update="AngleSharp" Version="0.17.1"/>
+		<PackageVersion Update="AngleSharp" Version="1.1.2"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.32"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="3.1.32"/>
 		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="3.1.32"/>
@@ -50,7 +50,7 @@
 		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="5.0.17"/>
 
-		<PackageVersion Update="AngleSharp" Version="0.17.1"/>
+		<PackageVersion Update="AngleSharp" Version="1.1.2"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.17"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="5.0.17"/>
 		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="5.0.17"/>
