@@ -7,7 +7,7 @@
 	<ItemGroup Condition="!$(MSBuildProjectName.EndsWith('samples'))">
 		<GlobalPackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="9.32.0.97167" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
-		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
 		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.39" />
 	</ItemGroup>
 
@@ -20,7 +20,7 @@
 		<PackageVersion Include="AngleSharp.Diffing" Version="0.18.2"/>
 
 		<PackageVersion Include="AngleSharp" Version="1.1.2"/>
-		<PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.139"/>
+		<PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.144"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Package Versioning">
