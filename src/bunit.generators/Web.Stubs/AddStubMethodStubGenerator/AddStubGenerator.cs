@@ -31,8 +31,7 @@ public class AddStubGenerator : IIncrementalGenerator
 
 	private static AddStubClassInfo? GetStubClassInfo(GeneratorSyntaxContext context)
 	{
-		var invocation = context.Node as InvocationExpressionSyntax;
-		if (invocation is null || !IsComponentFactoryStubMethod(invocation, context.SemanticModel))
+		if (context.Node is not InvocationExpressionSyntax invocation || !IsComponentFactoryStubMethod(invocation, context.SemanticModel))
 		{
 			return null;
 		}
@@ -56,7 +55,7 @@ public class AddStubGenerator : IIncrementalGenerator
 		var line = lineSpan.StartLinePosition.Line + 1;
 		var column = lineSpan.Span.Start.Character + context.Node.ToString().IndexOf("AddStub", StringComparison.Ordinal) + 1;
 
-		var properties = symbol.GetMembers()
+		var properties = symbol.GetAllMembersRecursively()
 				.OfType<IPropertySymbol>()
 				.Where(IsParameterOrCascadingParameter)
 				.Select(CreateFromProperty)

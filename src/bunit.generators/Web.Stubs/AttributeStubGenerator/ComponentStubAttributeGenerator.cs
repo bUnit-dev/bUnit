@@ -62,7 +62,7 @@ public class ComponentStubAttributeGenerator : IIncrementalGenerator
 			}
 
 			var parameter = attribute.AttributeClass!.TypeArguments
-				.SelectMany(s => s.GetMembers())
+				.SelectMany(s => s.GetAllMembersRecursively())
 				.OfType<IPropertySymbol>()
 				.Where(IsParameterOrCascadingParameter)
 				.Select(CreateFromProperty)
