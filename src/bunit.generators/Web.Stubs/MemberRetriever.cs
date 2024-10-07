@@ -7,7 +7,7 @@ internal static class MemberRetriever
 	public static IEnumerable<ISymbol> GetAllMembersRecursively(this ITypeSymbol type)
 	{
 		var currentType = type;
-		while (currentType != null)
+		while (currentType is not null)
 		{
 			foreach (var member in currentType.GetMembers())
 			{
