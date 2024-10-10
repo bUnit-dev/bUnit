@@ -57,4 +57,14 @@ public class RenderedComponentTest : TestContext
 
 		Should.Throw<ComponentDisposedException>(() => target.Instance);
 	}
+	#if NET9_0_OR_GREATER
+	
+	[Fact(DisplayName = "Component with constructor dependencies is resolved when rendered")]
+	public void Test021()
+	{
+		var cut = RenderComponent<ConstructorInjectionComponent>();
+
+		cut.Instance.JSRuntime.ShouldNotBeNull();
+	}
+	#endif
 }

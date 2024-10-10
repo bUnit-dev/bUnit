@@ -7,10 +7,13 @@ internal class BunitComponentActivator : IComponentActivator
 	private readonly ComponentFactoryCollection factories;
 	private readonly IComponentActivator componentActivator;
 
-	public BunitComponentActivator(ComponentFactoryCollection factories, IComponentActivator? externalComponentActivator)
+	public BunitComponentActivator(
+		IServiceProvider serviceProvider,
+		ComponentFactoryCollection factories,
+		IComponentActivator? externalComponentActivator)
 	{
 		this.factories = factories ?? throw new ArgumentNullException(nameof(factories));
-		this.componentActivator = externalComponentActivator ?? DefaultComponentActivator.Instance;
+		this.componentActivator = externalComponentActivator ?? new DefaultComponentActivator(serviceProvider);
 	}
 
 	public IComponent CreateInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type componentType)
@@ -43,12 +46,17 @@ internal class BunitComponentActivator : IComponentActivator
 
 	private sealed class DefaultComponentActivator : IComponentActivator
 	{
-		public static IComponentActivator Instance { get; } = new DefaultComponentActivator();
+		private readonly IServiceProvider serviceProvider;
+
+		public DefaultComponentActivator(IServiceProvider serviceProvider)
+		{
+			this.serviceProvider = serviceProvider;
+		}
 
 		/// <inheritdoc />
 		public IComponent CreateInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type componentType)
-		{			
-			return (IComponent)Activator.CreateInstance(componentType)!;
+		{
+			return (IComponent)ActivatorUtilities.CreateInstance(serviceProvider, componentType);
 		}
 	}
 }

@@ -79,7 +79,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
 	/// </summary>
 	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory)
-		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), null))
+		: base(services, loggerFactory, new BunitComponentActivator(services, services.GetRequiredService<ComponentFactoryCollection>(), null))
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
 		this.activator = renderedComponentActivator;
@@ -89,7 +89,7 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
 	/// </summary>
 	public TestRenderer(IRenderedComponentActivator renderedComponentActivator, TestServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
-		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), componentActivator))
+		: base(services, loggerFactory, new BunitComponentActivator(services, services.GetRequiredService<ComponentFactoryCollection>(), componentActivator))
 	{
 		logger = loggerFactory.CreateLogger<TestRenderer>();
 		this.activator = renderedComponentActivator;
