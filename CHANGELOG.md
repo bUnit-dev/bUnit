@@ -6,6 +6,15 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- `bunit.generators` respect parameters from the base class.
+- Supports components using constructor injection in `net9.0`.
+
+### Fixed
+
+- Use latest `System.Text.Json` due to CVE in `8.0.4`.
+
 ## [1.32.7] - 2024-10-04
 
 ### Fixed

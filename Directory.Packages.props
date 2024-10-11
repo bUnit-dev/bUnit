@@ -7,8 +7,8 @@
 	<ItemGroup Condition="!$(MSBuildProjectName.EndsWith('samples'))">
 		<GlobalPackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="9.32.0.97167" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
-		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
-		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.39" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
+		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.40" />
 	</ItemGroup>
 
 	<ItemGroup Label="Shared">
@@ -20,12 +20,17 @@
 		<PackageVersion Include="AngleSharp.Diffing" Version="0.18.2"/>
 
 		<PackageVersion Include="AngleSharp" Version="1.1.2"/>
-		<PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.139"/>
+		<PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.144"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Package Versioning">
 		<PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
 		<PackageVersion Include="Nerdbank.GitVersioning" Version="3.6.143" />
+	</ItemGroup>
+
+	<ItemGroup Label="System.Text.Json Vulnerability">
+		<!-- Due to a CVE in System.Text.Json we explicitly reference the latest version of System.Text.Json -->
+		<PackageVersion Include="System.Text.Json" Version="8.0.5"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
@@ -40,9 +45,6 @@
 		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="3.1.32"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.1"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="3.2.1"/>
-
-		<!-- Due to a CVE in System.Text.Json we explicitly reference the latest version of System.Text.Json -->
-		<PackageVersion Include="System.Text.Json" Version="6.0.9"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
@@ -57,9 +59,6 @@
 		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.17"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="5.0.17"/>
-
-		<!-- Due to a CVE in System.Text.Json we explicitly reference the latest version of System.Text.Json -->
-		<PackageVersion Include="System.Text.Json" Version="6.0.9"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
@@ -73,9 +72,6 @@
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="6.0.33"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.33"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.33"/>
-
-		<!-- Due to a CVE in System.Text.Json we explicitly reference the latest version of System.Text.Json -->
-		<PackageVersion Include="System.Text.Json" Version="6.0.9"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
@@ -89,9 +85,6 @@
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="7.0.20"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.20"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.20"/>
-
-		<!-- Due to a CVE in System.Text.Json we explicitly reference the latest version of System.Text.Json -->
-		<PackageVersion Include="System.Text.Json" Version="8.0.4"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
@@ -105,9 +98,6 @@
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="8.0.8"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.8"/>
-
-		<!-- Due to a CVE in System.Text.Json we explicitly reference the latest version of System.Text.Json -->
-		<PackageVersion Include="System.Text.Json" Version="8.0.4"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
@@ -121,8 +111,6 @@
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0-rc.1.24452.1"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0-rc.1.24452.1"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.0-rc.1.24452.1"/>
-
-		<PackageVersion Include="System.Text.Json" Version="8.0.4" />
 	</ItemGroup>
 
 	<ItemGroup Label="Test Dependencies">

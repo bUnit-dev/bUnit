@@ -61,7 +61,42 @@ public class AddStubGeneratorTests : TestContext
 		var stub = cut.FindComponent<ButtonComponentStub>();
 		Assert.Equal("test", stub.Instance.Text);
 	}
+	
+	[Fact]
+	public void Generated_Stub_respects_base_class_parameters()
+	{
+		ComponentFactories.AddStub<DerivedComponent>();
+
+		var cut = RenderComponent<ContainerComponent>(c => c.AddChildContent<DerivedComponent>());
+
+		var stub = cut.FindComponent<DerivedComponentStub>();
+		Assert.Equal(0, stub.Instance.BaseCount);
+	}
+	
+	[Fact]
+	public void Generated_stub_via_attribute_respects_base_class_parameters()
+	{
+		ComponentFactories.Add<DerivedComponent, DerivedComponentStubViaAttributeAnnotation>();
+
+		var cut = RenderComponent<ContainerComponent>(c => c.AddChildContent<DerivedComponent>());
+
+		var stub = cut.FindComponent<DerivedComponentStubViaAttributeAnnotation>();
+		Assert.Equal(0, stub.Instance.BaseCount);
+	}
 }
 
 [ComponentStub<ButtonComponent>]
 public partial class ButtonComponentStub;
+
+public abstract class BaseComponent : ComponentBase
+{
+	[Parameter] public int BaseCount { get; set; }
+}
+
+public class DerivedComponent : BaseComponent
+{
+	[Parameter] public int DerivedCount { get; set; }
+}
+
+[ComponentStub<DerivedComponent>]
+public partial class DerivedComponentStubViaAttributeAnnotation;
