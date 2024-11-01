@@ -1,0 +1,14 @@
+@{
+#if NET9_0_OR_GREATER
+}
+
+<div>@(ChildContent is not null ? "Parent assigned" : "Assigned") render mode: @AssignedRenderMode?.GetType().Name</div>
+@ChildContent
+
+@code {
+	[Parameter] public RenderFragment? ChildContent { get; set; }
+}
+
+@{
+#endif
+}
