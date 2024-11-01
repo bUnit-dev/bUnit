@@ -16,6 +16,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Fixed
 
 - Use latest `System.Text.Json` due to CVE in `8.0.4`.
+- Fixed other packages that have a CVE like `Microsoft.Extensions.Caching.Memory`. Reported by [@polajenko](https://github.com/polajenko). Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.32.7] - 2024-10-04
 
