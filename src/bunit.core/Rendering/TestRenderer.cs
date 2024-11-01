@@ -64,6 +64,21 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// </summary>
 	internal int RenderCount { get; private set; }
 
+#if NET9_0_OR_GREATER
+	private RendererInfo? rendererInfo;
+
+	/// <inheritdoc/>
+	[SuppressMessage("Design", "CA1065:Do not raise exceptions in unexpected locations", Justification = "The exception is raised to guide users.")]
+	protected override RendererInfo RendererInfo => rendererInfo ?? throw new MissingRendererInfoException();
+
+	/// <inheritdoc/>
+	public void SetRendererInfo(RendererInfo? rendererInfo)
+	{
+		this.rendererInfo = rendererInfo;
+	}
+
+#endif
+
 #if NETSTANDARD
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TestRenderer"/> class.
