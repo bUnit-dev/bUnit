@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.34.0] - 2024-11-01
+
 ### Fixed
 
 - Fixed other packages that have a CVE like `Microsoft.Extensions.Caching.Memory`. Reported by [@polajenko](https://github.com/polajenko). Fixed by [@linkdotnet](https://github.com/linkdotnet).
@@ -20,6 +22,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Fixed
 
 - Use latest `System.Text.Json` due to CVE in `8.0.4`.
+
 ## [1.32.7] - 2024-10-04
 
 ### Fixed
@@ -1408,7 +1411,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.33.3...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.34.0...HEAD
+[1.34.0]: https://github.com/bUnit-dev/bUnit/compare/v1.33.3...v1.34.0
 [1.33.3]: https://github.com/bUnit-dev/bUnit/compare/v1.32.7...1.33.3
 [1.32.7]: https://github.com/bUnit-dev/bUnit/compare/v1.31.3...v1.32.7
 [1.31.3]: https://github.com/bUnit-dev/bUnit/compare/v1.30.3...1.31.3
