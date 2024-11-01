@@ -241,6 +241,27 @@ public class TestRenderer : Renderer, ITestRenderer
 	}
 #endif
 
+#if NET9_0_OR_GREATER
+	/// <inheritdoc/>
+	protected override IComponentRenderMode? GetComponentRenderMode(IComponent component)
+	{
+		ArgumentNullException.ThrowIfNull(component);
+
+		var renderModeAttribute = component.GetType()
+			.GetCustomAttribute<RenderModeAttribute>();
+
+		if (renderModeAttribute is not null)
+		{
+			return renderModeAttribute.Mode;
+		}
+
+		var parentComponentState = GetComponentState(component).ParentComponentState;
+		return parentComponentState is not null
+			? GetComponentRenderMode(parentComponentState.Component)
+			: null;
+	}
+#endif
+
 	/// <inheritdoc/>
 	internal Task SetDirectParametersAsync(IRenderedFragmentBase renderedComponent, ParameterView parameters)
 	{
