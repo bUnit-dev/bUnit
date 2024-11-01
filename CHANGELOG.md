@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+- Added support for `RendererInfo` (`.net9.0`).
+
 ## [1.36.0] - 2024-11-12
 
 ### Added
