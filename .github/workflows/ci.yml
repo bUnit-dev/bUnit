@@ -163,8 +163,11 @@ jobs:
         with:
           fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
 
-      - name: Setup .NET
+      - name: ⚙️ Setup dotnet
         uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            9.0.x
 
       - uses: actions/download-artifact@v4
         with:
