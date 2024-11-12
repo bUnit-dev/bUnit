@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.36.0] - 2024-11-12
+
 ### Added
 
 - Bumped .NET 9 version dependencies to stable packages.
@@ -1421,7 +1423,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.35.3...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.36.0...HEAD
+[1.36.0]: https://github.com/bUnit-dev/bUnit/compare/v1.35.3...v1.36.0
 [1.35.3]: https://github.com/bUnit-dev/bUnit/compare/v1.34.0...1.35.3
 [1.34.0]: https://github.com/bUnit-dev/bUnit/compare/v1.33.3...v1.34.0
 [1.33.3]: https://github.com/bUnit-dev/bUnit/compare/v1.32.7...1.33.3
