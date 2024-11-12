@@ -6,7 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.35.3] - 2024-11-12
+
 ### Added
+
 - Extension packages (`bunit.generators` and `bunit.web.query`) are flagged as stable.
 
 ## [1.34.0] - 2024-11-01
@@ -1414,7 +1417,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.34.0...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.35.3...HEAD
+[1.35.3]: https://github.com/bUnit-dev/bUnit/compare/v1.34.0...1.35.3
 [1.34.0]: https://github.com/bUnit-dev/bUnit/compare/v1.33.3...v1.34.0
 [1.33.3]: https://github.com/bUnit-dev/bUnit/compare/v1.32.7...1.33.3
 [1.32.7]: https://github.com/bUnit-dev/bUnit/compare/v1.31.3...v1.32.7
