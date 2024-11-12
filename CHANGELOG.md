@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+- Extension packages (`bunit.generators` and `bunit.web.query`) are flagged as stable.
+
 ## [1.34.0] - 2024-11-01
 
 ### Fixed
