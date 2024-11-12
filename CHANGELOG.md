@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- Bumped .NET 9 version dependencies to stable packages.
+
 ## [1.35.3] - 2024-11-12
 
 ### Added

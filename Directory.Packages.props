@@ -97,16 +97,16 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-		<PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0-rc.2.24473.5"/>
-		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-rc.2.24473.5"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="9.0.0-rc.2.24474.3"/>
+		<PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0"/>
+		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="9.0.0"/>
 
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0-rc.2.24474.3"/>
-		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.0-rc.2.24474.3"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0"/>
+		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.0"/>
 		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0-rc.2.24473.5"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0-rc.2.24474.3"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0-rc.2.24474.3"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.0-rc.2.24474.3"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.0"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Test Dependencies">
