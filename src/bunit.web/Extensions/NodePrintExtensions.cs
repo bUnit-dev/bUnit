@@ -109,6 +109,7 @@ public static class NodePrintExtensions
 		if (element is null)
 			throw new ArgumentNullException(nameof(element));
 
+		var diffMarkupFormatter = new DiffMarkupFormatter();
 		var result = new StringBuilder();
 		result.Append(Symbols.LessThan);
 
@@ -120,7 +121,7 @@ public static class NodePrintExtensions
 
 		foreach (var attribute in element.Attributes)
 		{
-			result.Append(' ').Append(DiffMarkupFormatter.Instance.ConvertToString(attribute));
+			result.Append(' ').Append(diffMarkupFormatter.ConvertToString(attribute));
 		}
 
 		if (element.HasChildNodes)

@@ -16,6 +16,7 @@ public class DiffMarkupFormatter : PrettyMarkupFormatter, IMarkupFormatter
 	/// The <see cref="DiffMarkupFormatter"/> is not thread safe, so using this singleton
 	/// instance to format elements may not result in the desired effect.
 	/// </remarks>
+	[Obsolete("This instance is not thread safe, use a new instance instead.")]
 	public static new readonly DiffMarkupFormatter Instance = new();
 
 	/// <summary>
