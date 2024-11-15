@@ -1,7 +1,7 @@
-using Microsoft.Extensions.Logging;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
 
@@ -247,18 +247,55 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		ArgumentNullException.ThrowIfNull(component);
 
-		var renderModeAttribute = component.GetType()
-			.GetCustomAttribute<RenderModeAttribute>();
+		// Search from the current component all the way up the render tree.
+		// All components must have the same render mode specified (or none at all).
+		// Return the render mode that is found after checking the full tree.
+		return GetAndValidateRenderMode(component, childRenderMode: null);
 
-		if (renderModeAttribute is not null)
+		IComponentRenderMode? GetAndValidateRenderMode(IComponent component, IComponentRenderMode? childRenderMode)
 		{
-			return renderModeAttribute.Mode;
+			var componentState = GetComponentState(component);
+			var renderMode = GetRenderModeForComponent(componentState);
+
+			if (childRenderMode is not null && renderMode is not null && childRenderMode != renderMode)
+			{
+				throw new RenderModeMisMatchException();
+			}
+
+			return componentState.ParentComponentState is null
+				? renderMode ?? childRenderMode
+				: GetAndValidateRenderMode(componentState.ParentComponentState.Component, renderMode ?? childRenderMode);
 		}
 
-		var parentComponentState = GetComponentState(component).ParentComponentState;
-		return parentComponentState is not null
-			? GetComponentRenderMode(parentComponentState.Component)
-			: null;
+		IComponentRenderMode? GetRenderModeForComponent(ComponentState componentState)
+		{
+			var renderModeAttribute = componentState.Component.GetType().GetCustomAttribute<RenderModeAttribute>();
+			if (renderModeAttribute is { Mode: not null })
+			{
+				return renderModeAttribute.Mode;
+			}
+
+			if (componentState.ParentComponentState is not null)
+			{
+				var parentFrames = GetCurrentRenderTreeFrames(componentState.ParentComponentState.ComponentId);
+				var foundComponentStart = false;
+				for (var i = 0; i < parentFrames.Count; i++)
+				{
+					ref var frame = ref parentFrames.Array[i];
+
+					if (frame.FrameType is RenderTreeFrameType.Component)
+					{
+						foundComponentStart = frame.ComponentId == componentState.ComponentId;
+					}
+					else if (foundComponentStart && frame.FrameType is RenderTreeFrameType.ComponentRenderMode)
+					{
+						return frame.ComponentRenderMode;
+					}
+				}
+			}
+
+			return null;
+		}
 	}
 #endif
 

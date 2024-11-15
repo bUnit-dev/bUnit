@@ -1,0 +1,12 @@
+@{
+#if NET9_0_OR_GREATER
+}
+
+<Microsoft.AspNetCore.Components.Sections.SectionOutlet SectionId="1" @rendermode="RenderMode.InteractiveWebAssembly" />
+<Microsoft.AspNetCore.Components.Sections.SectionContent SectionId="1">
+	<ComponentThatPrintsAssignedRenderMode/>
+</Microsoft.AspNetCore.Components.Sections.SectionContent>
+
+@{
+#endif
+}
