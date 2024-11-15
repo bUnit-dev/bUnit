@@ -20,6 +20,7 @@
 		<PackageReference Include="xunit.abstractions" />		
 		<PackageReference Include="xunit.assert"  />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" />
 		<PackageReference Include="System.Text.Json" />

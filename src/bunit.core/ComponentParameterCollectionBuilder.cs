@@ -78,7 +78,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
 	/// <param name="markup">The markup string to pass to the <see cref="RenderFragment"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, RenderFragment?>> parameterSelector, [StringSyntax("Html")]string markup)
+	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, RenderFragment?>> parameterSelector, [StringSyntax("Html")] string markup)
 		=> Add(parameterSelector, markup.ToMarkupRenderFragment());
 
 	/// <summary>
@@ -266,7 +266,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// </summary>
 	/// <param name="markup">The markup string to pass the ChildContent parameter wrapped in a <see cref="RenderFragment"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-	public ComponentParameterCollectionBuilder<TComponent> AddChildContent([StringSyntax("Html")]string markup)
+	public ComponentParameterCollectionBuilder<TComponent> AddChildContent([StringSyntax("Html")] string markup)
 		=> AddChildContent(markup.ToMarkupRenderFragment());
 
 	/// <summary>
@@ -344,11 +344,11 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		Action<TValue> changedAction,
 		Expression<Func<TValue>>? valueExpression = null)
 	{
-		#if !NET8_0_OR_GREATER
+#if !NET8_0_OR_GREATER
 		var (parameterName, _, isCascading) = GetParameterInfo(parameterSelector);
-		#else
+#else
 		var (parameterName, _, isCascading) = GetParameterInfo(parameterSelector, initialValue);
-		#endif
+#endif
 
 		if (isCascading)
 			throw new ArgumentException("Using Bind with a cascading parameter is not allowed.", parameterName);
@@ -396,6 +396,19 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 			? source.Remove(source.LastIndexOf(value, StringComparison.Ordinal))
 			: source;
 	}
+
+#if NET9_0_OR_GREATER
+	/// <summary>
+	/// Sets (or unsets) the <see cref="IComponentRenderMode"/> for the component and child components.
+	/// </summary>
+	/// <param name="renderMode">The render mode to assign to the component, e.g. <c>RenderMode.InteractiveServer</c>, or <see langword="null"/>, to not assign a specific render mode.</param>
+	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
+	public ComponentParameterCollectionBuilder<TComponent> SetAssignedRenderMode(IComponentRenderMode? renderMode)
+	{
+		parameters.RenderMode = renderMode;
+		return this;
+	}
+#endif
 
 	/// <summary>
 	/// Try to add a <paramref name="value"/> for a parameter with the <paramref name="name"/>, if
@@ -454,14 +467,14 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 			: propInfoCandidate;
 
 		var paramAttr = propertyInfo?.GetCustomAttribute<ParameterAttribute>(inherit: true);
-	#if !NET8_0_OR_GREATER
+#if !NET8_0_OR_GREATER
 		var cascadingParamAttr = propertyInfo?.GetCustomAttribute<CascadingParameterAttribute>(inherit: true);
 
 		if (propertyInfo is null || (paramAttr is null && cascadingParamAttr is null))
 			throw new ArgumentException($"The parameter selector '{parameterSelector}' does not resolve to a public property on the component '{typeof(TComponent)}' with a [Parameter] or [CascadingParameter] attribute.", nameof(parameterSelector));
 
 		return (propertyInfo.Name, CascadingValueName: cascadingParamAttr?.Name, IsCascading: cascadingParamAttr is not null);
-	#else
+#else
 		var cascadingParamAttrBase = propertyInfo?.GetCustomAttribute<CascadingParameterAttributeBase>(inherit: true);
 
 		if (propertyInfo is null || (paramAttr is null && cascadingParamAttrBase is null))
@@ -494,7 +507,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 			                              NavigationManager.NavigateTo(uri);
 			                              """);
 		}
-	#endif
+#endif
 	}
 
 	private static bool HasChildContentParameter()
