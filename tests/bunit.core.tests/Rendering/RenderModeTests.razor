@@ -1,7 +1,9 @@
+@code{
+    #if NET9_0_OR_GREATER
+}
 @using Bunit.TestAssets.RenderModes;
 @inherits TestContext
 @code {
-#if NET9_0_OR_GREATER
 	[Fact(DisplayName = "TestRenderer provides RendererInfo")]
 	public void Test001()
 	{
@@ -104,7 +106,7 @@
 	public void Test009()
 	{
 		// See: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/sections?view=aspnetcore-8.0#section-interaction-with-other-blazor-features
-		var cut = Render(@<SectionOutletComponent />);
+		var cut = Render(@<SectionOutletComponent><ComponentThatPrintsAssignedRenderMode/></SectionOutletComponent>);
 
 		cut.MarkupMatches(@<p>Assigned Render Mode: InteractiveWebAssemblyRenderMode</p>);
     }
@@ -125,6 +127,36 @@
             </text>);
 	}
 
+    [Fact(DisplayName = "SetAssignedRenderMode on root component")]
+    public void Test011()
+    {
+        var cut = RenderComponent<ComponentThatPrintsAssignedRenderMode>(ps => ps.SetAssignedRenderMode(RenderMode.InteractiveServer));
+        cut.MarkupMatches(@<p>Assigned Render Mode: InteractiveServerRenderMode</p>);
+    }
+
+    [Fact(DisplayName = "SetAssignedRenderMode on parent component cascades to children")]
+    public void Test012()
+    {
+        var cut = RenderComponent<ComponentWithChildContent>(ps => ps
+            .SetAssignedRenderMode(RenderMode.InteractiveWebAssembly)
+            .AddChildContent<ComponentThatPrintsAssignedRenderMode>());
+
+        cut.MarkupMatches(@<p>Assigned Render Mode: InteractiveWebAssemblyRenderMode</p>);
+    }
+
+    [Fact(DisplayName = "SetAssignedRenderMode child components")]
+    public void Test013()
+    {
+        var cut = RenderComponent<ComponentWithChildContent>(ps => ps
+            .AddChildContent<ComponentThatPrintsAssignedRenderMode>(pps => pps.SetAssignedRenderMode(RenderMode.InteractiveServer))
+            .AddChildContent<ComponentThatPrintsAssignedRenderMode>(pps => pps.SetAssignedRenderMode(RenderMode.InteractiveWebAssembly)));
+
+        cut.MarkupMatches(
+            @<text>
+                <p>Assigned Render Mode: InteractiveServerRenderMode</p>
+                <p>Assigned Render Mode: InteractiveWebAssemblyRenderMode</p>
+            </text>);
+    }
 
     [Fact(DisplayName = "Different assigned RenderMode between child and parent throws")]
 	public void Test020()
@@ -138,5 +170,7 @@
 
 		act.ShouldThrow<RenderModeMisMatchException>(); // todo: figure out good exception to use
     }
-#endif
+}
+@code{
+    #endif
 }
