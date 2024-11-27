@@ -14,6 +14,7 @@
 ## [Trigger renders](xref:trigger-renders)
 ## [Awaiting an async state change](xref:awaiting-async-state)
 ## [Disposing components](xref:dispose-components)
+## [Support for render modes and renderer info ](xref:render-modes)
 
 # [Verifying output](xref:verification)
 ## [Verify markup](xref:verify-markup)

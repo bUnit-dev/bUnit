@@ -7,7 +7,7 @@ title: Support for render modes and renderer info
 Render modes in Blazor Web Apps determine the hosting model and interactivity of components. The render mode for example can be applied to a component using the `@rendermode` directive. The [`RendererInfo`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.rendererinfo?view=aspnetcore-9.0) allows the application to determine the interactivity and location of the component. For more details, check out the [Blazor render modes](https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-modes?view=aspnetcore-9.0) documentation.
 
 ## Setting the render mode for a component under test
-Setting the render mode can be done via the <xref:Bunit.TestContext.SetAssignedRenderMode(Microsoft.AspNetCore.Components.IComponentRenderMode)> method. The `SetAssignedRenderMode` method takes an [`IComponentRenderMode`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.icomponentrendermode?view=aspnetcore-9.0) object as a parameter. Normally this is one of the following types:
+Setting the render mode can be done via the <xref:Bunit.ComponentParameterCollectionBuilder`1.SetAssignedRenderMode(Microsoft.AspNetCore.Components.IComponentRenderMode)> method. The `SetAssignedRenderMode` method takes an [`IComponentRenderMode`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.icomponentrendermode?view=aspnetcore-9.0) object as a parameter. Normally this is one of the following types:
  * [`InteractiveAutoRenderMode`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.web.interactiveautorendermode?view=aspnetcore-9.0)
  * [`InteractiveServerRendeMode`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.web.interactiveserverrendermode?view=aspnetcore-9.0)
  * [`InteractiveWebAssemblyRenderMode`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.web.interactivewebassemblyrendermode?view=aspnetcore-9.0)
@@ -32,7 +32,7 @@ This methods emulates the behavior of the `@rendermode` directive in a test envi
 ```
 
 ## Setting the `RendererInfo` for a component under test
-To set the `RendererInfo` for a component under test, use the `SetRendererInfo` method on the `TestContext` class. The `SetRendererInfo` method takes an optional `RendererInfo` object as a parameter. A component might check if interactivity is given to enable a button:
+To set the `RendererInfo` for a component under test, use the <xref:Bunit.TestContextBase.SetRendererInfo(Microsoft.AspNetCore.Components.RendererInfo)> method on the `TestContext` class. The `SetRendererInfo` method takes an optional `RendererInfo` object as a parameter. A component might check if interactivity is given to enable a button:
 
 ```razor
 <button @onclick="Send" disabled="@(!RendererInfo.IsInteractive)">
