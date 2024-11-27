@@ -83,6 +83,13 @@ public abstract class TestContextWrapper
 	/// </summary>
 	public virtual void DisposeComponents() => TestContext?.DisposeComponents();
 
+#if NET9_0_OR_GREATER
+	/// <summary>
+	/// Sets the <see cref="RendererInfo"/> for the renderer.
+	/// </summary>
+	public virtual void SetRendererInfo(RendererInfo? rendererInfo) => TestContext?.SetRendererInfo(rendererInfo);
+#endif
+
 	/// <summary>
 	/// Dummy method required to allow Blazor's compiler to generate
 	/// C# from .razor files.
