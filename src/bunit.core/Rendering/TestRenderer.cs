@@ -1,7 +1,7 @@
-using Microsoft.Extensions.Logging;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
 
@@ -63,6 +63,21 @@ public class TestRenderer : Renderer, ITestRenderer
 	/// Gets the number of render cycles that has been performed.
 	/// </summary>
 	internal int RenderCount { get; private set; }
+
+#if NET9_0_OR_GREATER
+	private RendererInfo? rendererInfo;
+
+	/// <inheritdoc/>
+	[SuppressMessage("Design", "CA1065:Do not raise exceptions in unexpected locations", Justification = "The exception is raised to guide users.")]
+	protected override RendererInfo RendererInfo => rendererInfo ?? throw new MissingRendererInfoException();
+
+	/// <inheritdoc/>
+	public void SetRendererInfo(RendererInfo? rendererInfo)
+	{
+		this.rendererInfo = rendererInfo;
+	}
+
+#endif
 
 #if NETSTANDARD
 	/// <summary>
@@ -223,6 +238,64 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		ArgumentNullException.ThrowIfNull(componentActivator);
 		return componentActivator.CreateInstance(componentType);
+	}
+#endif
+
+#if NET9_0_OR_GREATER
+	/// <inheritdoc/>
+	protected override IComponentRenderMode? GetComponentRenderMode(IComponent component)
+	{
+		ArgumentNullException.ThrowIfNull(component);
+
+		// Search from the current component all the way up the render tree.
+		// All components must have the same render mode specified (or none at all).
+		// Return the render mode that is found after checking the full tree.
+		return GetAndValidateRenderMode(component, childRenderMode: null);
+
+		IComponentRenderMode? GetAndValidateRenderMode(IComponent component, IComponentRenderMode? childRenderMode)
+		{
+			var componentState = GetComponentState(component);
+			var renderMode = GetRenderModeForComponent(componentState);
+
+			if (childRenderMode is not null && renderMode is not null && childRenderMode != renderMode)
+			{
+				throw new RenderModeMisMatchException();
+			}
+
+			return componentState.ParentComponentState is null
+				? renderMode ?? childRenderMode
+				: GetAndValidateRenderMode(componentState.ParentComponentState.Component, renderMode ?? childRenderMode);
+		}
+
+		IComponentRenderMode? GetRenderModeForComponent(ComponentState componentState)
+		{
+			var renderModeAttribute = componentState.Component.GetType().GetCustomAttribute<RenderModeAttribute>();
+			if (renderModeAttribute is { Mode: not null })
+			{
+				return renderModeAttribute.Mode;
+			}
+
+			if (componentState.ParentComponentState is not null)
+			{
+				var parentFrames = GetCurrentRenderTreeFrames(componentState.ParentComponentState.ComponentId);
+				var foundComponentStart = false;
+				for (var i = 0; i < parentFrames.Count; i++)
+				{
+					ref var frame = ref parentFrames.Array[i];
+
+					if (frame.FrameType is RenderTreeFrameType.Component)
+					{
+						foundComponentStart = frame.ComponentId == componentState.ComponentId;
+					}
+					else if (foundComponentStart && frame.FrameType is RenderTreeFrameType.ComponentRenderMode)
+					{
+						return frame.ComponentRenderMode;
+					}
+				}
+			}
+
+			return null;
+		}
 	}
 #endif
 
