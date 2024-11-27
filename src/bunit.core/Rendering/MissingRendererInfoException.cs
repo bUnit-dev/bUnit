@@ -18,16 +18,19 @@ public sealed class MissingRendererInfoException : Exception
 		       public class SomeTestClass : TestContext
 		       {
 		         [Fact]
-		       	 public void SomeTestCase()
-		       	 {
-		       	   Renderer.SetRendererInfo(new RendererInfo("Server", true));
-		       	   ...
+		         public void SomeTestCase()
+		         {
+		           SetRendererInfo(new RendererInfo("Server", true));
+		           ...
 		         }
 		       }
-
+		       
 		       The four built in render names are 'Static', 'Server', 'WebAssembly', and 'WebView'.
+		       
+		       Go to https://bunit.dev/docs/interaction/render-modes for more information.
 		       """)
 	{
+		HelpLink = "https://bunit.dev/docs/interaction/render-modes";
 	}
 }
 #endif

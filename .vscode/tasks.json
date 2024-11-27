@@ -6,12 +6,12 @@
         {
             "label": "Serve Docs (Without Build)",
             "type": "shell",
-            "command": "docfx metadata docs/site/docfx.json && docfx docs/site/docfx.json --serve"
+            "command": "dotnet docfx metadata docs/site/docfx.json && dotnet docfx docs/site/docfx.json --serve"
         },
         {
             "label": "Serve Docs (With Build for API Documentation)",
             "type": "shell",
-            "command": "dotnet build -c Release && docfx metadata docs/site/docfx.json && docfx docs/site/docfx.json --serve"
+            "command": "dotnet build -c Release && dotnet docfx metadata docs/site/docfx.json && docfx docs/site/docfx.json --serve"
         },
         {
             "label": "Run all tests (Release Mode)",
