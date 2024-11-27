@@ -7,7 +7,7 @@
 	[Fact(DisplayName = "TestRenderer provides RendererInfo")]
 	public void Test001()
 	{
-		Renderer.SetRendererInfo(new RendererInfo("Server", true));
+		SetRendererInfo(new RendererInfo("Server", true));
 		var cut = RenderComponent<RendererInfoComponent>();
 
 		cut.MarkupMatches(

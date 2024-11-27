@@ -11,3 +11,4 @@ This section covers the various ways to interact with a component under test, e.
 - **<xref:trigger-renders>:** This covers how to manually trigger a render cycle for a component under test.
 - **<xref:awaiting-async-state>:** This covers how to await one or more asynchronous changes to the state of a component under test before continuing the test.
 - **<xref:dispose-components>:** This covers how to dispose components and their children.
+- **<xref:render-modes>:** This covers the different render modes and their interaction with bUnit.

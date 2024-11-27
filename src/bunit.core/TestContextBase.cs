@@ -118,4 +118,14 @@ public abstract class TestContextBase : IDisposable
 	{
 		Renderer.DisposeComponents();
 	}
+
+#if NET9_0_OR_GREATER
+	/// <summary>
+	/// Sets the <see cref="RendererInfo"/> for the renderer.
+	/// </summary>
+	public void SetRendererInfo(RendererInfo? rendererInfo)
+	{
+		Renderer.SetRendererInfo(rendererInfo);
+	}
+#endif
 }
