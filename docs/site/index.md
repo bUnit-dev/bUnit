@@ -50,14 +50,9 @@ bUnit is available on NuGet in various incarnations. Most users should just pick
 
 ## Sponsors
 
-A huge thank you to the [sponsors of my work with bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
+A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
 
 <div class="d-flex flex-row mb-3">
-	<a href="https://github.com/Progress-Telerik" class="d-block p-3 text-center">
-		<img src="https://avatars.githubusercontent.com/u/57092419?s=460" alt="@Progress-Telerik" class="avatar avatar rounded-circle" width="72" height="72" />
-		<br />
-		Progress Telerik
-	</a>
 	<a href="https://github.com/syncfusion" class="d-block p-3 text-center">
 		<img class="avatar avatar rounded-circle" src="https://avatars.githubusercontent.com/u/1699795?s=460" width="72" height="72" alt="@syncfusion" />
 		<br />
