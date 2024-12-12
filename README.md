@@ -4,13 +4,6 @@
 
 # bUnit - a testing library for Blazor components
 
-<a href="https://www.telerik.com/blazor-ui?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message#gh-light-mode-only">
-<img align="right" width="300" src="https://raw.githubusercontent.com/bUnit-dev/bUnit/main/docs/site/sponsors/progress-ad-2022-light-mode.svg#gh-light-mode-only" />
-</a>
-<a href="https://www.telerik.com/blazor-ui?utm_source=egilhansen&utm_medium=cpm&utm_campaign=blazor-trial-readme-sponsored-message#gh-dark-mode-only">
-<img align="right" width="300" src="https://raw.githubusercontent.com/bUnit-dev/bUnit/main/docs/site/sponsors/progress-ad-2022-dark-mode.svg#gh-dark-mode-only" />
-</a>
-
 **bUnit** is a testing library for Blazor Components. Its goal is to make it easy to write _comprehensive, stable_ unit tests. With bUnit, you can:
 
 - Setup and define components under tests using C# or Razor syntax
@@ -40,22 +33,22 @@ To get started, head to the [getting started documentation](https://bunit.dev/do
 
 ## Sponsors
 
-A huge thank you to the [sponsors of my work with bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
+A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
 
 <table border="0">
 	<tr>
-		<td align="center" width="120">
-			<a href="https://github.com/Progress-Telerik">
-				<img src="https://avatars.githubusercontent.com/u/57092419?s=460" alt="@Progress-Telerik" class="avatar" width="72" height="72" />
-				<br />
-				Progress Telerik
-			</a>
-		</td>
 		<td align="center" width="120">
 			<a href="https://github.com/syncfusion">
 				<img class="avatar" src="https://avatars.githubusercontent.com/u/1699795?s=460" width="72" height="72" alt="@syncfusion" />
 				<br />
 				Syncfusion
+			</a>
+		</td>
+		<td align="center" width="120">
+			<a href="https://github.com/JetBrainsOfficial">
+				<img class="avatar" src="https://avatars.githubusercontent.com/u/60931315?v=4" width="72" height="72" alt="@JetBrainsOfficial" />
+				<br />
+				JetBrains
 			</a>
 		</td>
 	</tr>
