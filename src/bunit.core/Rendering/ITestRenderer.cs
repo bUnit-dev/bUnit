@@ -78,4 +78,11 @@ public interface ITestRenderer
 	/// Disposes all components rendered by the <see cref="ITestRenderer" />.
 	/// </summary>
 	void DisposeComponents();
+
+#if NET9_0_OR_GREATER
+	/// <summary>
+	/// Sets the <see cref="RendererInfo"/> for the renderer.
+	/// </summary>
+	void SetRendererInfo(RendererInfo? rendererInfo);
+#endif
 }

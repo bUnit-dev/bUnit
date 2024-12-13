@@ -1,0 +1,176 @@
+@code{
+    #if NET9_0_OR_GREATER
+}
+@using Bunit.TestAssets.RenderModes;
+@inherits TestContext
+@code {
+	[Fact(DisplayName = "TestRenderer provides RendererInfo")]
+	public void Test001()
+	{
+		SetRendererInfo(new RendererInfo("Server", true));
+		var cut = RenderComponent<RendererInfoComponent>();
+
+		cut.MarkupMatches(
+            @<text>
+                <p>Is interactive: True</p>
+                <p>Rendermode: Server</p>
+            </text>);
+	}
+
+	[Fact(DisplayName = "Renderer throws exception if RendererInfo is not specified")]
+	public void Test002()
+	{
+		Action act = () => RenderComponent<RendererInfoComponent>();
+
+		act.ShouldThrow<MissingRendererInfoException>();
+	}
+
+	[Fact(DisplayName = "Renderer should set the RenderModeAttribute on the component")]
+	public void Test003()
+	{
+		var cut = RenderComponent<ComponentWithServerRenderMode>();
+
+		cut.MarkupMatches(@<div>Assigned render mode: InteractiveServerRenderMode</div>);
+	}
+
+	[Fact(DisplayName = "The AssignedRenderMode is based on the RenderModeAttribute in the component hierarchy where parent component has no RenderMode")]
+	public void Test004()
+    {
+        var cut = Render(
+            @<ComponentWithoutRenderMode>
+                <ComponentWithWebAssemblyRenderMode />
+            </ComponentWithoutRenderMode>);
+
+		cut.MarkupMatches(
+            @<text>
+                <div>Parent assigned render mode: </div>
+                <div>Assigned render mode: InteractiveWebAssemblyRenderMode</div>
+            </text>);
+	}
+
+	[Fact(DisplayName = "Parent and child render mode is specified")]
+	public void Test005()
+	{
+		var cut = Render(
+            @<ComponentWithServerRenderMode>
+                <ComponentWithServerRenderMode />
+            </ComponentWithServerRenderMode>);
+
+		cut.MarkupMatches(
+            @<text>
+                <div>Parent assigned render mode: InteractiveServerRenderMode</div>
+                <div>Assigned render mode: InteractiveServerRenderMode</div>
+            </text>);
+	}
+
+	[Fact(DisplayName = "Parent and child render mode is not specified")]
+	public void Test006()
+	{
+		var cut = Render(
+            @<ComponentWithoutRenderMode>
+                <ComponentWithoutRenderMode />
+            </ComponentWithoutRenderMode>);
+
+		cut.MarkupMatches(
+            @<text>
+                <div>Parent assigned render mode: </div>
+                <div>Assigned render mode: </div>
+            </text>);
+	}
+
+	[Fact(DisplayName = "Rendermode specified on child")]
+	public void Test007()
+	{
+		var cut = Render(
+            @<ComponentWithChildContent>
+                <ComponentThatPrintsAssignedRenderMode @rendermode="RenderMode.InteractiveServer" />
+            </ComponentWithChildContent>);
+
+		cut.MarkupMatches(@<p>Assigned Render Mode: InteractiveServerRenderMode</p>);
+	}
+
+	[Fact(DisplayName = "Assigned Render Mode is inherited all the way down the component hierarchy")]
+	public void Test008()
+	{
+		var cut = Render(
+            @<ComponentWithChildContent @rendermode="RenderMode.InteractiveServer">
+                <ComponentWithChildContent>
+                    <ComponentThatPrintsAssignedRenderMode />
+                </ComponentWithChildContent>
+            </ComponentWithChildContent>);
+
+		cut.MarkupMatches(@<p>Assigned Render Mode: InteractiveServerRenderMode</p>);
+	}
+
+	[Fact(DisplayName = "Having a component with section outlet and RenderMode is specifying for child component")]
+	public void Test009()
+	{
+		// See: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/sections?view=aspnetcore-8.0#section-interaction-with-other-blazor-features
+		var cut = Render(@<SectionOutletComponent><ComponentThatPrintsAssignedRenderMode/></SectionOutletComponent>);
+
+		cut.MarkupMatches(@<p>Assigned Render Mode: InteractiveWebAssemblyRenderMode</p>);
+    }
+
+    [Fact(DisplayName = "Assigned Render Mode on siblings")]
+	public void Test010()
+	{
+		var cut = Render(
+            @<ComponentWithChildContent>
+                <ComponentThatPrintsAssignedRenderMode @rendermode="RenderMode.InteractiveServer"/>
+                <ComponentThatPrintsAssignedRenderMode @rendermode="RenderMode.InteractiveWebAssembly"/>
+            </ComponentWithChildContent>);
+
+		cut.MarkupMatches(
+            @<text>
+                <p>Assigned Render Mode: InteractiveServerRenderMode</p>
+                <p>Assigned Render Mode: InteractiveWebAssemblyRenderMode</p>
+            </text>);
+	}
+
+    [Fact(DisplayName = "SetAssignedRenderMode on root component")]
+    public void Test011()
+    {
+        var cut = RenderComponent<ComponentThatPrintsAssignedRenderMode>(ps => ps.SetAssignedRenderMode(RenderMode.InteractiveServer));
+        cut.MarkupMatches(@<p>Assigned Render Mode: InteractiveServerRenderMode</p>);
+    }
+
+    [Fact(DisplayName = "SetAssignedRenderMode on parent component cascades to children")]
+    public void Test012()
+    {
+        var cut = RenderComponent<ComponentWithChildContent>(ps => ps
+            .SetAssignedRenderMode(RenderMode.InteractiveWebAssembly)
+            .AddChildContent<ComponentThatPrintsAssignedRenderMode>());
+
+        cut.MarkupMatches(@<p>Assigned Render Mode: InteractiveWebAssemblyRenderMode</p>);
+    }
+
+    [Fact(DisplayName = "SetAssignedRenderMode child components")]
+    public void Test013()
+    {
+        var cut = RenderComponent<ComponentWithChildContent>(ps => ps
+            .AddChildContent<ComponentThatPrintsAssignedRenderMode>(pps => pps.SetAssignedRenderMode(RenderMode.InteractiveServer))
+            .AddChildContent<ComponentThatPrintsAssignedRenderMode>(pps => pps.SetAssignedRenderMode(RenderMode.InteractiveWebAssembly)));
+
+        cut.MarkupMatches(
+            @<text>
+                <p>Assigned Render Mode: InteractiveServerRenderMode</p>
+                <p>Assigned Render Mode: InteractiveWebAssemblyRenderMode</p>
+            </text>);
+    }
+
+    [Fact(DisplayName = "Different assigned RenderMode between child and parent throws")]
+	public void Test020()
+	{
+		var act = () => Render(
+            @<ComponentWithChildContent @rendermode="RenderMode.InteractiveServer">
+                <ComponentWithChildContent @rendermode="RenderMode.InteractiveWebAssembly">
+                    <ComponentThatPrintsAssignedRenderMode />
+                </ComponentWithChildContent>
+            </ComponentWithChildContent>);
+
+		act.ShouldThrow<RenderModeMisMatchException>(); // todo: figure out good exception to use
+    }
+}
+@code{
+    #endif
+}
