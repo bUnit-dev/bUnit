@@ -191,6 +191,14 @@ jobs:
           dotnet restore ${{ github.workspace }}/TemplateTestXunit --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
           dotnet test ${{ github.workspace }}/TemplateTestXunit
 
+      - name: ✔ Verify xUnit.v3 template
+        run: |
+            dotnet new bunit --framework xunitv3 --no-restore -o ${{ github.workspace }}/TemplateTestXunitv3
+            echo '<?xml version="1.0" encoding="utf-8"?><Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"></Project>' >> ${{ github.workspace }}/TemplateTestXunitv3/Directory.Build.props
+            echo '<Project><PropertyGroup><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally></PropertyGroup></Project>' >> ${{ github.workspace }}/TemplateTestXunitv3/Directory.Packages.props
+            dotnet restore ${{ github.workspace }}/TemplateTestXunitv3 --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
+            dotnet test ${{ github.workspace }}/TemplateTestXunitv3
+
       - name: ✔ Verify NUnit template
         run: |
           dotnet new bunit --framework nunit --no-restore -o ${{ github.workspace }}/TemplateTestNunit

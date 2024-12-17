@@ -5,6 +5,8 @@
 @using Bunit.TestDoubles
 @*#if (testFramework_xunit)*@
 @using Xunit
+@*#elif (testFramework_xunitv3)*@
+@using Xunit
 @*#elif (testFramework_nunit)*@
 @using NUnit.Framework
 @*#elif (testFramework_mstest)*@
