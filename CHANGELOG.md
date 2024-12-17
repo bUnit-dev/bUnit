@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- Added support for xunit v3 in the bunit.template. By [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.37.7] - 2024-12-13
 
 ### Added

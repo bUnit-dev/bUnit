@@ -24,7 +24,7 @@
 			"modifiers": [
 				{
 					"exclude": [ "BunitTestContext.cs" ],
-					"condition": "(testFramework_xunit)"
+					"condition": "(testFramework_xunit || testFramework_xunitv3)"
 				}
 			]
 		}
@@ -59,6 +59,11 @@
 					"displayName": "xUnit"
 				},
 				{
+					"choice": "xunitv3",
+					"description": "xUnit v3 unit testing framework",
+					"displayName": "xUnit v3"
+				},
+				{
 					"choice": "mstest",
 					"description": "MSTest unit testing framework",
 					"displayName": "MSTest"
@@ -73,6 +78,10 @@
 			"type": "computed",
 			"value": "UnitTestFramework == \"xunit\""
 		},
+		"testFramework_xunitv3": {
+			"type": "computed",
+			"value": "UnitTestFramework == \"xunitv3\""
+		},
 		"testFramework_mstest": {
 			"type": "computed",
 			"value": "UnitTestFramework == \"mstest\""
@@ -85,16 +94,6 @@
 			"defaultValue": "net9.0",
 			"replaces": "targetSdk",
 			"choices": [
-				{
-					"choice": "net6.0",
-					"description": ".net 6.0",
-					"displayName": ".net 6.0"
-				},
-				{
-					"choice": "net7.0",
-					"description": ".net 7.0",
-					"displayName": ".net 7.0"
-				},
 				{
 					"choice": "net8.0",
 					"description": ".net 8.0",

@@ -1,5 +1,7 @@
-@*#if (testFramework_xunit)*@
+@*#if (testFramework_xunit) *@
 @inherits TestContext
+@*#elif (testFramework_xunitv3)*@
+@inherits Bunit.TestContext
 @*#elif (testFramework_nunit)*@
 @inherits BunitTestContext
 @*#elif (testFramework_mstest)*@
@@ -13,6 +15,8 @@ Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating
 
 @code {
 @*#if (testFramework_xunit)*@
+    [Fact]
+@*#elif (testFramework_xunitv3)*@
     [Fact]
 @*#elif (testFramework_nunit)*@
     [Test]
@@ -28,6 +32,8 @@ Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating
 		cut.Find("p").MarkupMatches(@<p>Current count: 0</p>);
 	}
 @*#if (testFramework_xunit)*@
+    [Fact]
+@*#elif (testFramework_xunitv3)*@
     [Fact]
 @*#elif (testFramework_nunit)*@
     [Test]
