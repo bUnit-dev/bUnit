@@ -1,6 +1,7 @@
 @*#if (testFramework_xunit) *@
 @inherits TestContext
 @*#elif (testFramework_xunitv3)*@
+@* The full qualified namespace for bUnit TestContext is used here as xunit v3 also offers a TestContext class *@
 @inherits Bunit.TestContext
 @*#elif (testFramework_nunit)*@
 @inherits BunitTestContext
