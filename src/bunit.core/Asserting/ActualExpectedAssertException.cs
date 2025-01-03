@@ -1,10 +1,12 @@
+using Bunit.Internal.XUnitExceptions;
+
 namespace Bunit.Asserting;
 
 /// <summary>
 /// Represents a generic assert exception used when an actual result does not match an expected result.
 /// </summary>
 [Serializable]
-public class ActualExpectedAssertException : Exception
+public class ActualExpectedAssertException : Exception, IAssertionException
 {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ActualExpectedAssertException"/> class.
