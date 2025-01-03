@@ -1,7 +1,7 @@
 namespace Bunit.RazorTesting;
 
 /// <summary>
-/// Represents an missing or invalid Blazor parameter on a Blazor component.
+/// Represents a missing or invalid Blazor parameter on a Blazor component.
 /// </summary>
 [Serializable]
 public sealed class ParameterException : ArgumentException
