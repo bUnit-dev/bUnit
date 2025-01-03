@@ -2,7 +2,7 @@ namespace Bunit;
 
 /// <summary>
 /// Represents an exception that is thrown when trying to access an element
-/// that was previous found in the DOM.
+/// that was previously found in the DOM.
 /// </summary>
 [Serializable]
 public sealed class ElementRemovedFromDomException : ElementNotFoundException
