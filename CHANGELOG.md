@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.38.5] - 2025-01-12
+
 ### Added
 
 - Added support for xunit v3 in the bunit.template. By [@linkdotnet](https://github.com/linkdotnet).
@@ -1433,7 +1435,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.37.7...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.38.5...HEAD
+[1.38.5]: https://github.com/bUnit-dev/bUnit/compare/v1.37.7...v1.38.5
 [1.37.7]: https://github.com/bUnit-dev/bUnit/compare/v1.36.0...1.37.7
 [1.36.0]: https://github.com/bUnit-dev/bUnit/compare/v1.35.3...v1.36.0
 [1.35.3]: https://github.com/bUnit-dev/bUnit/compare/v1.34.0...1.35.3
