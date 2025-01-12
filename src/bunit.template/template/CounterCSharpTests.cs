@@ -6,6 +6,9 @@ namespace Company.BlazorTests1;
 /// </summary>
 #if (testFramework_xunit)
 public class CounterCSharpTests : TestContext
+#elif (testFramework_xunitv3)
+// The full qualified namespace for bUnit TestContext is used here as xunit v3 also offers a TestContext class
+public class CounterCSharpTests : Bunit.TestContext
 #elif (testFramework_nunit)
 public class CounterCSharpTests : BunitTestContext
 #elif (testFramework_mstest)
@@ -14,6 +17,8 @@ public class CounterCSharpTests : BunitTestContext
 #endif
 {
 #if (testFramework_xunit)
+	[Fact]
+#elif (testFramework_xunitv3)
 	[Fact]
 #elif (testFramework_nunit)
 	[Test]
@@ -30,6 +35,8 @@ public class CounterCSharpTests : BunitTestContext
 	}
 
 #if (testFramework_xunit)
+	[Fact]
+#elif (testFramework_xunitv3)
 	[Fact]
 #elif (testFramework_nunit)
 	[Test]
