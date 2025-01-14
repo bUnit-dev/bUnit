@@ -80,8 +80,6 @@ public sealed class FakeNavigationManager : NavigationManager
 			BaseUri = GetBaseUri(absoluteUri);
 		}
 
-		Uri = ToAbsoluteUri(uri).OriginalString;
-
 		if (options.ReplaceHistoryEntry && history.Count > 0)
 			history.Pop();
 
@@ -92,7 +90,6 @@ public sealed class FakeNavigationManager : NavigationManager
 		testContextBase.Renderer.Dispatcher.InvokeAsync(() =>
 #endif
 		{
-			Uri = absoluteUri.OriginalString;
 
 #if NET7_0_OR_GREATER
 			var shouldContinueNavigation = false;
@@ -112,8 +109,13 @@ public sealed class FakeNavigationManager : NavigationManager
 			{
 				return;
 			}
+			else
+			{
+				Uri = ToAbsoluteUri(uri).OriginalString;
+			}
 #else
 			history.Push(new NavigationHistory(uri, options));
+			Uri = absoluteUri.OriginalString;
 #endif
 
 
@@ -135,7 +137,7 @@ public sealed class FakeNavigationManager : NavigationManager
 
 #if NET7_0_OR_GREATER
 	/// <inheritdoc/>
-	protected override void SetNavigationLockState(bool value) {}
+	protected override void SetNavigationLockState(bool value) { }
 
 	/// <inheritdoc/>
 	protected override void HandleLocationChangingHandlerException(Exception ex, LocationChangingContext context)
