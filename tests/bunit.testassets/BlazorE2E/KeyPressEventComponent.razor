@@ -9,7 +9,7 @@ Type here: <input @onkeypress=OnKeyPressed />
 </ul>
 
 @code {
-    List<string> keysPressed = new List<string>();
+	private readonly List<string> keysPressed = new List<string>();
 
     void OnKeyPressed(KeyboardEventArgs eventArgs)
     {
