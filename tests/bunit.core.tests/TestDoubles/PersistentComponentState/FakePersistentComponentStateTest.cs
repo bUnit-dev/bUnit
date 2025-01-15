@@ -67,7 +67,7 @@ public class FakePersistentComponentStateTest : TestContext
 	{
 		var fakeState = this.AddFakePersistentComponentState();
 
-		fakeState.TryTake<string>(key, out var actual).ShouldBeFalse();
+		fakeState.TryTake<string>(key, out _).ShouldBeFalse();
 	}
 
 	[Fact(DisplayName = "TriggerOnPersisting triggers OnPersisting callbacks added to store")]

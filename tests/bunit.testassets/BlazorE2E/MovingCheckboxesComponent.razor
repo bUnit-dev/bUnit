@@ -41,7 +41,7 @@
 
 @code {
     #nullable disable
-    List<TodoItem> items = new List<TodoItem>
+    private readonly List<TodoItem> items = new List<TodoItem>
     {
         new TodoItem { Text = "Alpha" },
         new TodoItem { Text = "Beta" },
@@ -49,7 +49,7 @@
         new TodoItem { Text = "Delta", IsDone = true },
     };
 
-    class TodoItem
+    private sealed class TodoItem
     {
         public bool IsDone { get; set; }
         public string Text { get; set; }

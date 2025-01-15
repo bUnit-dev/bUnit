@@ -1,13 +1,9 @@
-@using Bunit.TestAssets
 @using Bunit.TestAssets.SampleComponents
 @inherits TestContext
 @code {
-    private readonly ITestOutputHelper outputHelper;
-
-    public MarkupMatchesTests(ITestOutputHelper outputHelper)
+    public MarkupMatchesTests()
     {
-        this.outputHelper = outputHelper;
-        TestContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
+        DefaultWaitTimeout = TimeSpan.FromSeconds(30);
     }
 
     [Fact]
