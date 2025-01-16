@@ -107,18 +107,18 @@ public class FakeNavigationManagerTest : TestContext
 	}
 
 #if !NET6_0_OR_GREATER
-		[Theory(DisplayName = "NavigateTo(uri, forceLoad) is saved in history")]
-		[InlineData("/uri", false)]
-		[InlineData("/anotherUri", true)]
-		public void Test100(string uri, bool forceLoad)
-		{
-			var sut = CreateFakeNavigationManager();
+	[Theory(DisplayName = "NavigateTo(uri, forceLoad) is saved in history")]
+	[InlineData("/uri", false)]
+	[InlineData("/anotherUri", true)]
+	public void Test100(string uri, bool forceLoad)
+	{
+		var sut = CreateFakeNavigationManager();
 
-			sut.NavigateTo(uri, forceLoad);
+		sut.NavigateTo(uri, forceLoad);
 
-			sut.History.ShouldHaveSingleItem()
-				.ShouldBeEquivalentTo(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
-		}
+		sut.History.ShouldHaveSingleItem()
+			.ShouldBeEquivalentTo(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
+	}
 #endif
 #if NET6_0_OR_GREATER
 	[Theory(DisplayName = "NavigateTo(uri, forceLoad, replaceHistoryEntry) is saved in history")]
@@ -297,18 +297,22 @@ public class FakeNavigationManagerTest : TestContext
 		sut.HistoryEntryState.ShouldBe(null);
 	}
 
-	[Fact(DisplayName = "Preventing Navigation does not change Uri")]
-	public void Test018()
+	[Theory(DisplayName = "Preventing Navigation does not change Uri or BaseUri")]
+	[InlineData("/prevented-path")]
+	[InlineData("https://bunit.dev/uri")]
+	public void Test018(string navToUri)
 	{
 		var sut = CreateFakeNavigationManager();
-		string expectedUri = new Uri(new Uri(sut.BaseUri, UriKind.Absolute), new Uri("/expected-path", UriKind.Relative)).AbsoluteUri;
+		Uri expectedUri = new Uri(new Uri(sut.BaseUri, UriKind.Absolute), new Uri("/expected-path", UriKind.Relative));
+		string expectedBaseUri = sut.BaseUri;
 
-		sut.NavigateTo("/expected-path");
+		sut.NavigateTo(expectedUri.AbsoluteUri);
 		using var handler = sut.RegisterLocationChangingHandler(LocationChangingHandler);
-		sut.NavigateTo("/prevented-path");
+		sut.NavigateTo(navToUri);
 
 		sut.History.First().State.ShouldBe(NavigationState.Prevented);
-		sut.Uri.ShouldBe(expectedUri);
+		sut.BaseUri.ShouldBe(expectedBaseUri);
+		sut.Uri.ShouldBe(expectedUri.AbsoluteUri);
 
 		ValueTask LocationChangingHandler(LocationChangingContext arg)
 		{

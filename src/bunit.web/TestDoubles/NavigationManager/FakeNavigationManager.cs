@@ -75,11 +75,6 @@ public sealed class FakeNavigationManager : NavigationManager
 		var absoluteUri = GetNewAbsoluteUri(uri);
 		var changedBaseUri = HasDifferentBaseUri(absoluteUri);
 
-		if (changedBaseUri)
-		{
-			BaseUri = GetBaseUri(absoluteUri);
-		}
-
 		if (options.ReplaceHistoryEntry && history.Count > 0)
 			history.Pop();
 
@@ -109,15 +104,16 @@ public sealed class FakeNavigationManager : NavigationManager
 			{
 				return;
 			}
-			else
-			{
-				Uri = ToAbsoluteUri(uri).OriginalString;
-			}
 #else
 			history.Push(new NavigationHistory(uri, options));
-			Uri = absoluteUri.OriginalString;
 #endif
 
+			if (changedBaseUri)
+			{
+				BaseUri = GetBaseUri(absoluteUri);
+			}
+
+			Uri = absoluteUri.OriginalString;
 
 			// Only notify of changes if user navigates within the same
 			// base url (domain). Otherwise, the user navigated away
@@ -126,10 +122,6 @@ public sealed class FakeNavigationManager : NavigationManager
 			if (!changedBaseUri)
 			{
 				NotifyLocationChanged(isInterceptedLink: false);
-			}
-			else
-			{
-				BaseUri = GetBaseUri(absoluteUri);
 			}
 		});
 	}
