@@ -75,13 +75,6 @@ public sealed class FakeNavigationManager : NavigationManager
 		var absoluteUri = GetNewAbsoluteUri(uri);
 		var changedBaseUri = HasDifferentBaseUri(absoluteUri);
 
-		if (changedBaseUri)
-		{
-			BaseUri = GetBaseUri(absoluteUri);
-		}
-
-		Uri = ToAbsoluteUri(uri).OriginalString;
-
 		if (options.ReplaceHistoryEntry && history.Count > 0)
 			history.Pop();
 
@@ -92,7 +85,6 @@ public sealed class FakeNavigationManager : NavigationManager
 		testContextBase.Renderer.Dispatcher.InvokeAsync(() =>
 #endif
 		{
-			Uri = absoluteUri.OriginalString;
 
 #if NET7_0_OR_GREATER
 			var shouldContinueNavigation = false;
@@ -116,6 +108,12 @@ public sealed class FakeNavigationManager : NavigationManager
 			history.Push(new NavigationHistory(uri, options));
 #endif
 
+			if (changedBaseUri)
+			{
+				BaseUri = GetBaseUri(absoluteUri);
+			}
+
+			Uri = absoluteUri.OriginalString;
 
 			// Only notify of changes if user navigates within the same
 			// base url (domain). Otherwise, the user navigated away
@@ -125,17 +123,13 @@ public sealed class FakeNavigationManager : NavigationManager
 			{
 				NotifyLocationChanged(isInterceptedLink: false);
 			}
-			else
-			{
-				BaseUri = GetBaseUri(absoluteUri);
-			}
 		});
 	}
 #endif
 
 #if NET7_0_OR_GREATER
 	/// <inheritdoc/>
-	protected override void SetNavigationLockState(bool value) {}
+	protected override void SetNavigationLockState(bool value) { }
 
 	/// <inheritdoc/>
 	protected override void HandleLocationChangingHandlerException(Exception ex, LocationChangingContext context)

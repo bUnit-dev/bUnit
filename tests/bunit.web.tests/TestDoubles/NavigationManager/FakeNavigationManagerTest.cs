@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Shouldly.ShouldlyExtensionMethods;
 
 namespace Bunit.TestDoubles;
 
@@ -106,18 +107,18 @@ public class FakeNavigationManagerTest : TestContext
 	}
 
 #if !NET6_0_OR_GREATER
-		[Theory(DisplayName = "NavigateTo(uri, forceLoad) is saved in history")]
-		[InlineData("/uri", false)]
-		[InlineData("/anotherUri", true)]
-		public void Test100(string uri, bool forceLoad)
-		{
-			var sut = CreateFakeNavigationManager();
+	[Theory(DisplayName = "NavigateTo(uri, forceLoad) is saved in history")]
+	[InlineData("/uri", false)]
+	[InlineData("/anotherUri", true)]
+	public void Test100(string uri, bool forceLoad)
+	{
+		var sut = CreateFakeNavigationManager();
 
-			sut.NavigateTo(uri, forceLoad);
+		sut.NavigateTo(uri, forceLoad);
 
-			sut.History.ShouldHaveSingleItem()
-				.ShouldBeEquivalentTo(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
-		}
+		sut.History.ShouldHaveSingleItem()
+			.ShouldBeEquivalentTo(new NavigationHistory(uri, new NavigationOptions(forceLoad)));
+	}
 #endif
 #if NET6_0_OR_GREATER
 	[Theory(DisplayName = "NavigateTo(uri, forceLoad, replaceHistoryEntry) is saved in history")]
@@ -135,8 +136,12 @@ public class FakeNavigationManagerTest : TestContext
 			.ShouldBeEquivalentTo(new NavigationHistory(uri,
 				new NavigationOptions { ForceLoad = forceLoad, ReplaceHistoryEntry = replaceHistoryEntry }));
 #elif NET7_0_OR_GREATER
-		var navigationOptions = new NavigationOptions { ForceLoad = forceLoad, ReplaceHistoryEntry =
- replaceHistoryEntry };
+		var navigationOptions = new NavigationOptions
+		{
+			ForceLoad = forceLoad,
+			ReplaceHistoryEntry =
+ replaceHistoryEntry
+		};
 		sut.History.ShouldHaveSingleItem()
 			.ShouldBeEquivalentTo(new NavigationHistory(uri, navigationOptions, NavigationState.Succeeded));
 #endif
@@ -156,8 +161,11 @@ public class FakeNavigationManagerTest : TestContext
 				new NavigationOptions { ReplaceHistoryEntry = true }));
 #elif NET7_0_OR_GREATER
 		sut.History.ShouldHaveSingleItem()
-			.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl",  new NavigationOptions { ReplaceHistoryEntry =
- true }, NavigationState.Succeeded));
+			.ShouldBeEquivalentTo(new NavigationHistory("/secondUrl", new NavigationOptions
+			{
+				ReplaceHistoryEntry =
+ true
+			}, NavigationState.Succeeded));
 #endif
 	}
 #endif
@@ -230,7 +238,8 @@ public class FakeNavigationManagerTest : TestContext
 		var fakeNavigationManager = CreateFakeNavigationManager();
 		var requestOptions = new InteractiveRequestOptions
 		{
-			ReturnUrl = "return", Interaction = InteractionType.SignIn,
+			ReturnUrl = "return",
+			Interaction = InteractionType.SignIn,
 		};
 		requestOptions.TryAddAdditionalParameter("library", "bunit");
 
@@ -264,7 +273,7 @@ public class FakeNavigationManagerTest : TestContext
 		Should.Throw<JsonException>(
 			() => fakeNavigationManager.History.Last().StateFromJson<InteractiveRequestOptions>());
 	}
-	
+
 	[Fact(DisplayName = "Navigate to url with state should set that state on the NavigationManager")]
 	public void Test016()
 	{
@@ -275,7 +284,7 @@ public class FakeNavigationManagerTest : TestContext
 
 		sut.HistoryEntryState.ShouldBe(State);
 	}
-	
+
 	[Fact(DisplayName = "Navigate to url with force reload resets state")]
 	public void Test017()
 	{
@@ -283,9 +292,30 @@ public class FakeNavigationManagerTest : TestContext
 		var sut = CreateFakeNavigationManager();
 
 		sut.NavigateTo("/internal", new NavigationOptions { HistoryEntryState = State });
-		sut.NavigateTo("/internal", new NavigationOptions { HistoryEntryState = State, ForceLoad = true});
+		sut.NavigateTo("/internal", new NavigationOptions { HistoryEntryState = State, ForceLoad = true });
 
 		sut.HistoryEntryState.ShouldBe(null);
+	}
+
+	[Theory(DisplayName = "Preventing Navigation does not change Uri or BaseUri")]
+	[InlineData("/prevented-path")]
+	[InlineData("https://bunit.dev/uri")]
+	public void Test018(string navToUri)
+	{
+		var sut = CreateFakeNavigationManager();
+		using var handler = sut.RegisterLocationChangingHandler(LocationChangingHandler);
+		
+		sut.NavigateTo(navToUri);
+
+		sut.History.First().State.ShouldBe(NavigationState.Prevented);
+		sut.BaseUri.ShouldBe("http://localhost/");
+		sut.Uri.ShouldBe("http://localhost/");
+
+		ValueTask LocationChangingHandler(LocationChangingContext arg)
+		{
+			arg.PreventNavigation();
+			return ValueTask.CompletedTask;
+		}
 	}
 
 	private sealed class InterceptNavigateToCounterComponent : ComponentBase
