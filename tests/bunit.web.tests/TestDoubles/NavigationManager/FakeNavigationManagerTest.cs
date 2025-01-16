@@ -303,16 +303,13 @@ public class FakeNavigationManagerTest : TestContext
 	public void Test018(string navToUri)
 	{
 		var sut = CreateFakeNavigationManager();
-		Uri expectedUri = new Uri(new Uri(sut.BaseUri, UriKind.Absolute), new Uri("/expected-path", UriKind.Relative));
-		string expectedBaseUri = sut.BaseUri;
-
-		sut.NavigateTo(expectedUri.AbsoluteUri);
 		using var handler = sut.RegisterLocationChangingHandler(LocationChangingHandler);
+		
 		sut.NavigateTo(navToUri);
 
 		sut.History.First().State.ShouldBe(NavigationState.Prevented);
-		sut.BaseUri.ShouldBe(expectedBaseUri);
-		sut.Uri.ShouldBe(expectedUri.AbsoluteUri);
+		sut.BaseUri.ShouldBe("http://localhost/");
+		sut.Uri.ShouldBe("http://localhost/");
 
 		ValueTask LocationChangingHandler(LocationChangingContext arg)
 		{
