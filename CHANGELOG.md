@@ -8,7 +8,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Fixed
 
-- Do not set the `Uri` property on the `FakeNavigationManager` if navigation is prevented by a handler on `net7.0` or greater.
+- Do not set the `Uri` or `BaseUri` property on the `FakeNavigationManager` if navigation is prevented by a handler on `net7.0` or greater.
 
 ## [1.38.5] - 2025-01-12
 
