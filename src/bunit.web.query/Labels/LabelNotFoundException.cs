@@ -4,13 +4,12 @@ namespace Bunit;
 /// Represents a failure to find an element in the searched target
 /// using the Label's text.
 /// </summary>
-[Serializable]
-public class LabelNotFoundException : Exception
+public sealed class LabelNotFoundException : Exception
 {
 	/// <summary>
 	/// Gets the Label Text used to search with.
 	/// </summary>
-	public string LabelText { get; } = "";
+	public string LabelText { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LabelNotFoundException"/> class.
@@ -21,11 +20,4 @@ public class LabelNotFoundException : Exception
 	{
 		LabelText = labelText;
 	}
-
-
-	/// <summary>
-	/// Initializes a new instance of the <see cref="LabelNotFoundException"/> class.
-	/// </summary>
-	protected LabelNotFoundException(SerializationInfo info, StreamingContext context)
-		: base(info, context) { }
 }

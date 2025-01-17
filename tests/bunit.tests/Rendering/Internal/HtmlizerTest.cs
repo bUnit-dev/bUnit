@@ -1,6 +1,6 @@
 namespace Bunit.Rendering.Internal;
 
-public partial class HtmlizerBunits : BunitContext
+public partial class HtmlizerTest : BunitContext
 {
 	[Theory(DisplayName = "Htmlizer correctly prefixed stopPropagation and preventDefault attributes")]
 	[InlineData(false, true)]

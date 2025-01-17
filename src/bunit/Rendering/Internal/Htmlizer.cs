@@ -57,10 +57,7 @@ internal static class Htmlizer
 		var context = new HtmlRenderingContext(renderer);
 		var frames = context.GetRenderTreeFrames(componentId);
 		var newPosition = RenderFrames(context, frames, 0, frames.Count);
-		Debug.Assert(
-			newPosition == frames.Count,
-			$"frames.Length = {frames.Count}. newPosition = {newPosition}"
-		);
+		Debug.Assert(newPosition == frames.Count);
 		return context.Result.ToString();
 	}
 
@@ -215,10 +212,7 @@ internal static class Htmlizer
 			result.Append('>');
 		}
 
-		Debug.Assert(
-			afterAttributes == position + frame.ElementSubtreeLength,
-			$"afterAttributes = {afterAttributes}. position = {position}. frame.ElementSubtreeLength = {frame.ElementSubtreeLength}"
-		);
+		Debug.Assert(afterAttributes == position + frame.ElementSubtreeLength);
 		return afterAttributes;
 	}
 

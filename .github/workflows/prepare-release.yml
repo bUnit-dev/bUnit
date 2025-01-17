@@ -28,6 +28,12 @@ jobs:
           version: Unreleased
           path: ./CHANGELOG.md
 
+      - name: ⚙️ Setup GIT versioning
+        uses: dotnet/nbgv@v0.4.2
+        id: nbgv
+        with:
+          setAllVars: true
+
       - name: ☑ Check that release contains changes
         if: steps.changelog_reader.outputs.changes == ''
         run: |
@@ -85,12 +91,11 @@ jobs:
 
       - name: ⏭ Create pull request for release branch
         uses: thomaseizinger/create-pull-request@1.4.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.BUNIT_BOT_TOKEN }}
         with:
-          head: release/v${{ env.NBGV_MajorMinorVersion }}
+          github_token: ${{ secrets.BUNIT_BOT_TOKEN }}
+          head: release/v${{ steps.nbgv.outputs.MajorMinorVersion }}
           base: stable
-          title: Release of new ${{ github.event.inputs.versionIncrement }} version v${{ env.NBGV_MajorMinorVersion }}
+          title: Release of new ${{ github.event.inputs.versionIncrement }} version v${{ steps.nbgv.outputs.MajorMinorVersion }}
           body: |
             This PR was created in response to a manual trigger of the [prepare-release workflow](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 

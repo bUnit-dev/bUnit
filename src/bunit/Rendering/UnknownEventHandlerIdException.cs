@@ -4,7 +4,6 @@ namespace Bunit.Rendering;
 /// Represents an exception that is thrown when the Blazor <see cref="Renderer"/>
 /// does not have any event handler with the specified a given ID.
 /// </summary>
-[Serializable]
 public sealed class UnknownEventHandlerIdException : Exception
 {
 	/// <summary>
@@ -14,9 +13,6 @@ public sealed class UnknownEventHandlerIdException : Exception
 		: base(CreateMessage(eventHandlerId, fieldInfo), innerException)
 	{
 	}
-
-	private UnknownEventHandlerIdException(SerializationInfo serializationInfo, StreamingContext streamingContext)
-		: base(serializationInfo, streamingContext) { }
 
 	private static string CreateMessage(ulong eventHandlerId, EventFieldInfo fieldInfo)
 		=> $"There is no event handler with ID '{eventHandlerId}' associated with the '{fieldInfo.FieldValue}' event " +

@@ -2,11 +2,11 @@ using System.Globalization;
 
 namespace Bunit.Extensions.WaitForHelpers;
 
-public class RenderedComponentWaitForElementsHelperExtensionsBunit : BunitContext
+public class RenderedComponentWaitForElementsHelperExtensionsTest : BunitContext
 {
 	private readonly static TimeSpan WaitForTestTimeout = TimeSpan.FromMilliseconds(5);
 
-	public RenderedComponentWaitForElementsHelperExtensionsBunit(ITestOutputHelper testOutput)
+	public RenderedComponentWaitForElementsHelperExtensionsTest(ITestOutputHelper testOutput)
 	{
 		BunitContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(testOutput);
@@ -61,7 +61,7 @@ public class RenderedComponentWaitForElementsHelperExtensionsBunit : BunitContex
 		expected.InnerException.ShouldBeNull();
 	}
 
-	[Fact(DisplayName = "WaitForElements with specific count N throws exception after timeout when cssSelector does not result in N matching elements", Skip = "Need to figure out how to make this deterministic.")]
+	[Fact(DisplayName = "WaitForElements with specific count N throws exception after timeout when cssSelector does not result in N matching elements")]
 	[Trait("Category", "sync")]
 	public void Test023()
 	{

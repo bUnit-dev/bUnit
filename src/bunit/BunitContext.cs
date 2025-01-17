@@ -169,6 +169,16 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	public virtual IRenderedComponent<ContainerFragment> Render(RenderFragment renderFragment)
 		=> RenderInsideRenderTree(renderFragment);
 
+#if NET9_0_OR_GREATER
+	/// <summary>
+	/// Sets the <see cref="RendererInfo"/> for the renderer.
+	/// </summary>
+	public void SetRendererInfo(RendererInfo? rendererInfo)
+	{
+		Renderer.SetRendererInfo(rendererInfo);
+	}
+#endif
+
 	/// <summary>
 	/// Dummy method required to allow Blazor's compiler to generate
 	/// C# from .razor files.

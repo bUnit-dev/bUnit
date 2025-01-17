@@ -2,8 +2,11 @@
 
 @code {
     public int RenderCount { get; private set; }
-    
-    void IncreaseCount() { }
+
+    void IncreaseCount()
+    {
+	    // Left empty on purpose
+    }
 
     protected override void OnAfterRender(bool firstRender) => RenderCount++;
 }

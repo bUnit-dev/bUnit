@@ -59,11 +59,36 @@ public sealed class BunitRenderer : Renderer
 	/// </summary>
 	internal int RenderCount { get; }
 
+#if NET9_0_OR_GREATER
+    private RendererInfo? rendererInfo;
+
+    /// <inheritdoc/>
+    [SuppressMessage(
+        "Design",
+        "CA1065:Do not raise exceptions in unexpected locations",
+        Justification = "The exception is raised to guide users."
+    )]
+    protected override RendererInfo RendererInfo =>
+        rendererInfo ?? throw new MissingRendererInfoException();
+
+    /// <inheritdoc/>
+    public void SetRendererInfo(RendererInfo? rendererInfo)
+    {
+        this.rendererInfo = rendererInfo;
+    }
+#endif
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
 	public BunitRenderer(BunitServiceProvider services, ILoggerFactory loggerFactory)
-		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), null))
+		: base(
+			services,
+			loggerFactory,
+			new BunitComponentActivator(
+				services,
+				services.GetRequiredService<ComponentFactoryCollection>(),
+				externalComponentActivator: null))
 	{
 		this.services = services;
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
@@ -74,7 +99,13 @@ public sealed class BunitRenderer : Renderer
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
 	/// </summary>
 	public BunitRenderer(BunitServiceProvider services, ILoggerFactory loggerFactory, IComponentActivator componentActivator)
-		: base(services, loggerFactory, new BunitComponentActivator(services.GetRequiredService<ComponentFactoryCollection>(), componentActivator))
+		: base(
+			services,
+			loggerFactory,
+			new BunitComponentActivator(
+				services,
+				services.GetRequiredService<ComponentFactoryCollection>(),
+				componentActivator))
 	{
 		this.services = services;
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
@@ -209,6 +240,7 @@ public sealed class BunitRenderer : Renderer
 
 		return returnTask;
 	}
+
 	/// <inheritdoc/>
 	protected override ComponentState CreateComponentState(int componentId, IComponent component, ComponentState? parentComponentState)
 	{
@@ -218,7 +250,7 @@ public sealed class BunitRenderer : Renderer
 		var renderedComponentType = typeof(RenderedComponent<>).MakeGenericType(TComponent);
 		var renderedComponent = CreateComponentInstance();
 
-		Debug.Assert(renderedComponent is not null, "RenderedComponent should not be null");
+		Debug.Assert(renderedComponent is not null);
 
 		return (ComponentState)renderedComponent;
 
@@ -234,7 +266,7 @@ public sealed class BunitRenderer : Renderer
 				typeof(ComponentState)
 			])!);
 
-			Debug.Assert(constructorInfo is not null, "Could not find ConstructorInfo");
+			Debug.Assert(constructorInfo is not null);
 
 			return constructorInfo.Invoke([this, componentId, component, services, parentComponentState]);
 		}
@@ -248,6 +280,81 @@ public sealed class BunitRenderer : Renderer
 		ArgumentNullException.ThrowIfNull(componentActivator);
 		return componentActivator.CreateInstance(componentType);
 	}
+
+#if NET9_0_OR_GREATER
+    /// <inheritdoc/>
+    protected override IComponentRenderMode? GetComponentRenderMode(IComponent component)
+    {
+        ArgumentNullException.ThrowIfNull(component);
+
+        // Search from the current component all the way up the render tree.
+        // All components must have the same render mode specified (or none at all).
+        // Return the render mode that is found after checking the full tree.
+        return GetAndValidateRenderMode(component, childRenderMode: null);
+
+        IComponentRenderMode? GetAndValidateRenderMode(
+            IComponent component,
+            IComponentRenderMode? childRenderMode
+        )
+        {
+            var componentState = GetComponentState(component);
+            var renderMode = GetRenderModeForComponent(componentState);
+
+            if (
+                childRenderMode is not null
+                && renderMode is not null
+                && childRenderMode != renderMode
+            )
+            {
+                throw new RenderModeMisMatchException();
+            }
+
+            return componentState.ParentComponentState is null
+                ? renderMode ?? childRenderMode
+                : GetAndValidateRenderMode(
+                    componentState.ParentComponentState.Component,
+                    renderMode ?? childRenderMode
+                );
+        }
+
+        IComponentRenderMode? GetRenderModeForComponent(ComponentState componentState)
+        {
+            var renderModeAttribute = componentState.Component
+                .GetType()
+                .GetCustomAttribute<RenderModeAttribute>();
+            if (renderModeAttribute is { Mode: not null })
+            {
+                return renderModeAttribute.Mode;
+            }
+
+            if (componentState.ParentComponentState is not null)
+            {
+                var parentFrames = GetCurrentRenderTreeFrames(
+                    componentState.ParentComponentState.ComponentId
+                );
+                var foundComponentStart = false;
+                for (var i = 0; i < parentFrames.Count; i++)
+                {
+                    ref var frame = ref parentFrames.Array[i];
+
+                    if (frame.FrameType is RenderTreeFrameType.Component)
+                    {
+                        foundComponentStart = frame.ComponentId == componentState.ComponentId;
+                    }
+                    else if (
+                        foundComponentStart
+                        && frame.FrameType is RenderTreeFrameType.ComponentRenderMode
+                    )
+                    {
+                        return frame.ComponentRenderMode;
+                    }
+                }
+            }
+
+            return null;
+        }
+    }
+#endif
 
 	/// <inheritdoc/>
 	protected override void AddPendingTask(ComponentState? componentState, Task task)

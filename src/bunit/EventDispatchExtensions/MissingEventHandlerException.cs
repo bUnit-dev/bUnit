@@ -5,7 +5,6 @@ namespace Bunit;
 /// <summary>
 /// Represents an exception that is thrown when triggering an event handler failed because it wasn't available on the targeted <see cref="IElement"/>.
 /// </summary>
-[Serializable]
 public sealed class MissingEventHandlerException : Exception
 {
 	/// <summary>
@@ -33,7 +32,4 @@ public sealed class MissingEventHandlerException : Exception
 
 		return $"{result}{suggestAlternatives}";
 	}
-
-	private MissingEventHandlerException(SerializationInfo serializationInfo, StreamingContext streamingContext)
-		: base(serializationInfo, streamingContext) { }
 }

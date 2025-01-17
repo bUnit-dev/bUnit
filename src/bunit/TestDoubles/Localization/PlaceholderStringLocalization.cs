@@ -1,4 +1,3 @@
-using System.Globalization;
 using Microsoft.Extensions.Localization;
 
 namespace Bunit.TestDoubles;
@@ -13,12 +12,6 @@ internal sealed class PlaceholderStringLocalization : IStringLocalizer
 	/// </summary>
 	public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
 		=> throw new MissingMockStringLocalizationException(nameof(GetAllStrings), includeParentCultures);
-
-	/// <summary>
-	/// Will throw exception to prompt the user.
-	/// </summary>
-	public IStringLocalizer WithCulture(CultureInfo culture)
-		=> throw new MissingMockStringLocalizationException(nameof(WithCulture), culture);
 
 	/// <summary>
 	/// Will throw exception to prompt the user.

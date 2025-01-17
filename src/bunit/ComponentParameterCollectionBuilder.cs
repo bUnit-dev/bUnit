@@ -73,7 +73,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// <param name="parameterSelector">A lambda function that selects the parameter.</param>
 	/// <param name="markup">The markup string to pass to the <see cref="RenderFragment"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, RenderFragment?>> parameterSelector, [StringSyntax("Html")]string markup)
+	public ComponentParameterCollectionBuilder<TComponent> Add(Expression<Func<TComponent, RenderFragment?>> parameterSelector, [StringSyntax("Html")] string markup)
 		=> Add(parameterSelector, markup.ToMarkupRenderFragment());
 
 	/// <summary>
@@ -301,7 +301,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 	/// </summary>
 	/// <param name="markup">The markup string to pass the ChildContent parameter wrapped in a <see cref="RenderFragment"/>.</param>
 	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
-	public ComponentParameterCollectionBuilder<TComponent> AddChildContent([StringSyntax("Html")]string markup)
+	public ComponentParameterCollectionBuilder<TComponent> AddChildContent([StringSyntax("Html")] string markup)
 		=> AddChildContent(markup.ToMarkupRenderFragment());
 
 	/// <summary>
@@ -427,6 +427,19 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 			: source;
 	}
 
+#if NET9_0_OR_GREATER
+	/// <summary>
+	/// Sets (or unsets) the <see cref="IComponentRenderMode"/> for the component and child components.
+	/// </summary>
+	/// <param name="renderMode">The render mode to assign to the component, e.g. <c>RenderMode.InteractiveServer</c>, or <see langword="null"/>, to not assign a specific render mode.</param>
+	/// <returns>This <see cref="ComponentParameterCollectionBuilder{TComponent}"/>.</returns>
+	public ComponentParameterCollectionBuilder<TComponent> SetAssignedRenderMode(IComponentRenderMode? renderMode)
+	{
+		parameters.RenderMode = renderMode;
+		return this;
+	}
+#endif
+
 	/// <summary>
 	/// Try to add a <paramref name="value"/> for a parameter with the <paramref name="name"/>, if
 	/// <typeparamref name="TComponent"/> has a property with that name, AND that property has a <see cref="ParameterAttribute"/>
@@ -507,7 +520,7 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 			return new ArgumentException($"""
 			                              To pass a value to a SupplyParameterFromQuery parameter, use the NavigationManager and navigate to the URI.
 			                              For example:
-
+			                              
 			                              var uri = NavigationManager.GetUriWithQueryParameter("{cascadingParameterName}", "{value}");
 			                              NavigationManager.NavigateTo(uri);
 			                              """);

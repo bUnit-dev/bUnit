@@ -1,6 +1,6 @@
 namespace Bunit;
 
-public class ComponentParameterCollectionBunit : BunitContext
+public class ComponentParameterCollectionTest : BunitContext
 {
 	private IRenderedComponent<Params> RenderWithRenderFragment(RenderFragment renderFragment)
 	{

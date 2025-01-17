@@ -3,9 +3,9 @@ using Bunit.TestAssets.RenderModes;
 
 namespace Bunit.Rendering;
 
-public class BunitRendererBunits : BunitContext
+public class BunitRendererTest : BunitContext
 {
-	public BunitRendererBunits(ITestOutputHelper outputHelper)
+	public BunitRendererTest(ITestOutputHelper outputHelper)
 	{
 		DefaultWaitTimeout = TimeSpan.FromSeconds(30);
 		Services.AddXunitLogger(outputHelper);

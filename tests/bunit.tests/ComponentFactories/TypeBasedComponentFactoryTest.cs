@@ -1,6 +1,6 @@
 namespace Bunit.ComponentFactories;
 
-public class TypeBasedComponentFactoryBunit : BunitContext
+public class TypeBasedComponentFactoryTest : BunitContext
 {
 	[Fact(DisplayName = "Add throws when factories is null")]
 	public void Test001()

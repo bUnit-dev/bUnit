@@ -3,7 +3,6 @@ namespace Bunit;
 /// <summary>
 /// Represents a number of unexpected invocation to a <see cref="BunitJSInterop"/>.
 /// </summary>
-[Serializable]
 public sealed class JSInvokeCountExpectedException : Exception
 {
 	/// <summary>
@@ -30,27 +29,6 @@ public sealed class JSInvokeCountExpectedException : Exception
 		ExpectedInvocationCount = expectedCount;
 		ActualInvocationCount = actualCount;
 		Identifier = identifier;
-	}
-
-	private JSInvokeCountExpectedException(SerializationInfo serializationInfo, StreamingContext streamingContext)
-		: base(serializationInfo, streamingContext)
-	{
-		ArgumentNullException.ThrowIfNull(serializationInfo);
-		ExpectedInvocationCount = serializationInfo.GetInt32(nameof(ExpectedInvocationCount));
-		ActualInvocationCount = serializationInfo.GetInt32(nameof(ActualInvocationCount));
-		Identifier = serializationInfo.GetString(nameof(Identifier)) ?? string.Empty;
-	}
-
-	/// <inheritdoc/>
-	[Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-	public override void GetObjectData(SerializationInfo info, StreamingContext context)
-	{
-		ArgumentNullException.ThrowIfNull(info);
-
-		info.AddValue(nameof(ExpectedInvocationCount), ExpectedInvocationCount);
-		info.AddValue(nameof(ActualInvocationCount), ActualInvocationCount);
-		info.AddValue(nameof(Identifier), Identifier);
-		base.GetObjectData(info, context);
 	}
 
 	private static string CreateMessage(string identifier, int expectedCount, int actualCount, string assertMethod, string? userMessage = null)

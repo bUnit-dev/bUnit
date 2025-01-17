@@ -11,7 +11,7 @@ public partial class PersistentComponentStateSample : ComponentBase
 	protected override void OnInitialized()
 	{
 		State.RegisterOnPersisting(PersistForecasts);
-		if (!State.TryTakeFromJson<WeatherForecast[]>(PersistenceKey, out var data))
+		if (!State.TryTakeFromJson<WeatherForecast[]>(PersistenceKey, out var _))
 		{
 			Forecasts = CreateForecasts();
 		}
@@ -19,7 +19,7 @@ public partial class PersistentComponentStateSample : ComponentBase
 		{
 			State.PersistAsJson(PersistenceKey, Forecasts);
 		}
-		
+
 		WeatherForecast[] CreateForecasts()
 		{
 			return new WeatherForecast[]

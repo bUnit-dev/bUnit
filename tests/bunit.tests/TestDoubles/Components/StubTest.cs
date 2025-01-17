@@ -1,6 +1,6 @@
 namespace Bunit.TestDoubles.Components;
 
-public class StubBunit : BunitContext
+public class StubTest : BunitContext
 {
 	[Fact(DisplayName = "Stub<TComponent> renders nothing without a replacement template")]
 	public void Test001()

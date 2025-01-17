@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
@@ -6,6 +6,8 @@ namespace Bunit.Web.Stubs;
 
 internal static class AttributeLineGenerator
 {
+	[SuppressMessage("SonarLint", "S1862: Unused method parameters should be removed", Justification = "False Positive")]
+	[SuppressMessage("SonarLint", "S1871: Either merge this branch with the identical one", Justification = "False Positive")]
 	public static string GetAttributeLine(ISymbol member)
 	{
 		var attribute = member.GetAttributes().First(SupportedAttributes.IsSupportedAttribute);
@@ -64,7 +66,7 @@ internal static class AttributeLineGenerator
 			}
 		}
 
-		attributeLine.Append("]");
+		attributeLine.Append(']');
 		return attributeLine.ToString();
 	}
 }

@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<PropertyGroup Label="Configuration variables">
-		<DotNet8Version>8.0.*</DotNet8Version>
-		<DotNet9Version>9.0.0-*</DotNet9Version>
-	</PropertyGroup>
-
 	<!-- Solution wide properties -->
 	<PropertyGroup Label="Assembly Naming">
 		<Company>Egil Hansen</Company>
@@ -21,16 +16,13 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<NoWarn>CA1014,NU5104,NETSDK1138,SYSLIB0051</NoWarn>
 		<CheckEolTargetFramework>false</CheckEolTargetFramework>
+		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 
 		<!-- Used by code coverage -->
 		<DebugType>full</DebugType>
 		<DebugSymbols>true</DebugSymbols>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>../../key.snk</AssemblyOriginatorKeyFile>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1' OR '$(TargetFramework)' == 'netcoreapp3.1'">
-		<RazorLangVersion>3.0</RazorLangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Label="Analyzer settings">
@@ -45,14 +37,7 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
-	<!-- Shared code analyzers used for all projects in the solution -->
-	<ItemGroup Label="Code Analyzers">
-		<PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.29.0.95321" PrivateAssets="All" />
-	</ItemGroup>
-
-	<ItemGroup Label="Implicit usings"
-						 Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'AngleSharpWrappers.Tests'">
+	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit.generators'">
 		<Using Include="Microsoft.AspNetCore.Components" />
 		<Using Include="Microsoft.AspNetCore.Components.RenderTree" />
 		<Using Include="Microsoft.AspNetCore.Components.Rendering" />

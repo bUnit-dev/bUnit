@@ -1,6 +1,6 @@
 namespace Bunit.JSInterop.InvocationHandlers;
 
-public class FocusOnNavigateHandlerBunit : BunitContext
+public class FocusOnNavigateHandlerTest : BunitContext
 {
 	[Fact(DisplayName = "Can render components that calls FocusOnNavigate")]
 	public void Test001()

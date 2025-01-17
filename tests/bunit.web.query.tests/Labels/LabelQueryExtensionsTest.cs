@@ -2,7 +2,7 @@ using Bunit.TestAssets.BlazorE2E;
 
 namespace Bunit.Labels;
 
-public class LabelQueryExtensionsTests : BunitContext
+public class LabelQueryExtensionsTest : BunitContext
 {
 	public static TheoryData<string> HtmlElementsThatCanHaveALabel { get; } = new()
 	{

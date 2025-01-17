@@ -1,4 +1,7 @@
-@*#if (testFramework_xunit)*@
+@*#if (testFramework_xunit) *@
+@inherits BunitContext
+@*#elif (testFramework_xunitv3)*@
+@* The full qualified namespace for bUnit TestContext is used here as xunit v3 also offers a TestContext class *@
 @inherits BunitContext
 @*#elif (testFramework_nunit)*@
 @inherits BunitContext
@@ -14,6 +17,8 @@ Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating
 @code {
 @*#if (testFramework_xunit)*@
     [Fact]
+@*#elif (testFramework_xunitv3)*@
+    [Fact]
 @*#elif (testFramework_nunit)*@
     [Test]
 @*#elif (testFramework_mstest)*@
@@ -28,6 +33,8 @@ Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating
 		cut.Find("p").MarkupMatches(@<p>Current count: 0</p>);
 	}
 @*#if (testFramework_xunit)*@
+    [Fact]
+@*#elif (testFramework_xunitv3)*@
     [Fact]
 @*#elif (testFramework_nunit)*@
     [Test]

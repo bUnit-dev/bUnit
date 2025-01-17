@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 namespace Bunit;
 
-public partial class ComponentParameterCollectionBuilderTests : BunitContext
+public partial class ComponentParameterCollectionBuilderTest : BunitContext
 {
 	private ComponentParameterCollectionBuilder<Params> Builder { get; } = new();
 
@@ -750,7 +750,8 @@ public partial class ComponentParameterCollectionBuilderTests : BunitContext
 
 			          var uri = NavigationManager.GetUriWithQueryParameter("Query", "Foo");
 			          NavigationManager.NavigateTo(uri);
-			          """);
+			          """,
+					  StringCompareShould.IgnoreLineEndings);
 	}
 
 #pragma warning disable S1144 // Unused private types or members should be removed

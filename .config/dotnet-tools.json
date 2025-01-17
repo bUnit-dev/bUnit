@@ -6,13 +6,22 @@
       "version": "1.10.175",
       "commands": [
         "dotnet-serve"
-      ]
+      ],
+      "rollForward": false
     },
     "docfx": {
-      "version": "2.76.0",
+      "version": "2.78.2",
       "commands": [
         "docfx"
-      ]
+      ],
+      "rollForward": false
+    },
+    "dotnet-dump": {
+      "version": "9.0.553101",
+      "commands": [
+        "dotnet-dump"
+      ],
+      "rollForward": false
     }
   }
 }

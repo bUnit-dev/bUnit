@@ -1,11 +1,9 @@
 using Bunit.JSInterop.InvocationHandlers.Implementation;
 using Microsoft.JSInterop.Implementation;
 
-#pragma warning disable CS0618 // This method is obsolete.
-
 namespace Bunit.JSInterop;
 
-public class BunitJsObjectReferenceBunit : BunitContext
+public class BunitJsObjectReferenceTest : BunitContext
 {
 	private static readonly Type JSVoidResultType =
 			typeof(Microsoft.JSInterop.Infrastructure.IJSVoidResult);
@@ -259,7 +257,7 @@ public class BunitJsObjectReferenceBunit : BunitContext
 		jsRuntime.ShouldBeAssignableTo<IJSUnmarshalledObjectReference>();
 	}
 #endif
-	
+
 	[Fact(DisplayName = "IJSInProcessObjectReference-invocations is handled by handlers from BunitJSInterop")]
 	public async Task Test080()
 	{
@@ -280,9 +278,10 @@ public class BunitJsObjectReferenceBunit : BunitContext
 		JSInterop.VerifyInvoke("bar5");
 		JSInterop.VerifyInvoke("bar6").Arguments.ShouldBe(["baz"]);
 	}
-	
+
 #if !NET9_0_OR_GREATER
 	[Fact(DisplayName = "IJSUnmarshalledObjectReference-invocations is handled by handlers from BunitJSInterop")]
+	[Obsolete("Because we are calling obsolete methods in test.")]
 	public async Task Test081()
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -312,6 +311,7 @@ public class BunitJsObjectReferenceBunit : BunitContext
 	}
 
 	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier), then the invocation should be visible from the Invocations list"), AutoData]
+	[Obsolete("Because we are calling obsolete methods in test.")]
 	public void Test310(string identifier)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -330,6 +330,7 @@ public class BunitJsObjectReferenceBunit : BunitContext
 	}
 
 	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0), then the invocation should be visible from the Invocations list"), AutoData]
+	[Obsolete("Because we are calling obsolete methods in test.")]
 	public void Test306(string identifier, string arg0)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -348,6 +349,7 @@ public class BunitJsObjectReferenceBunit : BunitContext
 	}
 
 	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1), then the invocation should be visible from the Invocations list"), AutoData]
+	[Obsolete("Because we are calling obsolete methods in test.")]
 	public void Test307(string identifier, string arg0, string arg1)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;
@@ -366,6 +368,7 @@ public class BunitJsObjectReferenceBunit : BunitContext
 	}
 
 	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1, arg2), then the invocation should be visible from the Invocations list"), AutoData]
+	[Obsolete("Because we are calling obsolete methods in test.")]
 	public void Test308(string identifier, string arg0, string arg1, string arg2)
 	{
 		JSInterop.Mode = JSRuntimeMode.Loose;

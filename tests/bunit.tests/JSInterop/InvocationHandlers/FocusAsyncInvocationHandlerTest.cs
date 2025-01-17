@@ -1,6 +1,7 @@
 namespace Bunit.JSInterop.InvocationHandlers;
 
-public class FocusAsyncInvocationHandlerBunit : BunitContext
+public class FocusAsyncInvocationHandlerTest
+	: BunitContext
 {
 	[Fact(DisplayName = "Can render components that calls FocusAsync")]
 	public void Test001()

@@ -48,9 +48,8 @@ jobs:
       - name: ⏭ Create pull request
         if: steps.rebaseV2.outcome == 'failure'
         uses: thomaseizinger/create-pull-request@1.4.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.BUNIT_BOT_TOKEN }}
         with:
+          github_token: ${{ secrets.BUNIT_BOT_TOKEN }}
           head: main
           base: v2
           title: Rebase v2 on main

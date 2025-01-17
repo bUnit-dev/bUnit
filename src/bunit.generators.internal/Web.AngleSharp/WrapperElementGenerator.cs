@@ -173,18 +173,6 @@ internal static class WrapperElementGenerator
 		}
 	}
 
-	private static StringBuilder AppendInputArguments(this StringBuilder source, ImmutableArray<IParameterSymbol> parameters)
-	{
-		for (int i = 0; i < parameters.Length; i++)
-		{
-			if (i > 0)
-				source.Append(", ");
-
-			source.Append($"{parameters[i].Type.ToDisplayString(GeneratorConfig.SymbolFormat)} {parameters[i].Name}");
-		}
-		return source;
-	}
-
 	private static StringBuilder AppendCallParameters(this StringBuilder source, ImmutableArray<IParameterSymbol> parameters)
 	{
 		for (int i = 0; i < parameters.Length; i++)

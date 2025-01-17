@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -29,18 +26,17 @@ public class AddStubGenerator : IIncrementalGenerator
 
 		context.RegisterSourceOutput(
 			classesToStub,
-			static (spc, source) => Execute(source, spc));
+			static (spc, source) => Execute(source!, spc));
 	}
 
-	private static AddStubClassInfo GetStubClassInfo(GeneratorSyntaxContext context)
+	private static AddStubClassInfo? GetStubClassInfo(GeneratorSyntaxContext context)
 	{
-		var invocation = context.Node as InvocationExpressionSyntax;
-		if (!IsComponentFactoryStubMethod(invocation, context.SemanticModel))
+		if (context.Node is not InvocationExpressionSyntax invocation || !IsComponentFactoryStubMethod(invocation, context.SemanticModel))
 		{
 			return null;
 		}
 
-		if (invocation?.Expression is not MemberAccessExpressionSyntax
+		if (invocation.Expression is not MemberAccessExpressionSyntax
 		    {
 			    Name: GenericNameSyntax { TypeArgumentList.Arguments.Count: 1 } genericName
 		    })
@@ -59,7 +55,7 @@ public class AddStubGenerator : IIncrementalGenerator
 		var line = lineSpan.StartLinePosition.Line + 1;
 		var column = lineSpan.Span.Start.Character + context.Node.ToString().IndexOf("AddStub", StringComparison.Ordinal) + 1;
 
-		var properties = symbol.GetMembers()
+		var properties = symbol.GetAllMembersRecursively()
 				.OfType<IPropertySymbol>()
 				.Where(IsParameterOrCascadingParameter)
 				.Select(CreateFromProperty)
@@ -183,7 +179,7 @@ public class AddStubGenerator : IIncrementalGenerator
 		sourceBuilder.AppendLine($"namespace {classInfo.TargetTypeNamespace};");
 		sourceBuilder.AppendLine();
 		sourceBuilder.AppendLine($"internal partial class {classInfo.StubClassName} : global::Microsoft.AspNetCore.Components.ComponentBase");
-		sourceBuilder.Append("{");
+		sourceBuilder.Append('{');
 
 		foreach (var member in classInfo.Properties)
 		{
@@ -212,19 +208,19 @@ public class AddStubGenerator : IIncrementalGenerator
 
 internal sealed record AddStubClassInfo
 {
-	public string StubClassName { get; set; }
-	public string TargetTypeNamespace { get; set; }
-	public string TargetTypeName { get; set; }
+	public required string StubClassName { get; set; }
+	public required string TargetTypeNamespace { get; set; }
+	public required string TargetTypeName { get; set; }
 	public string UniqueQualifier => $"{TargetTypeNamespace}.{StubClassName}";
 	public ImmutableArray<StubPropertyInfo> Properties { get; set; } = ImmutableArray<StubPropertyInfo>.Empty;
-	public string Path { get; set; }
+	public required string Path { get; set; }
 	public int Line { get; set; }
 	public int Column { get; set; }
 }
 
 internal sealed record StubPropertyInfo
 {
-	public string Name { get; set; }
-	public string Type { get; set; }
-	public string AttributeLine { get; set; }
+	public required string Name { get; set; }
+	public required string Type { get; set; }
+	public required string AttributeLine { get; set; }
 }

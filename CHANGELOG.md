@@ -6,6 +6,63 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- Do not set the `Uri` or `BaseUri` property on the `FakeNavigationManager` if navigation is prevented by a handler on `net7.0` or greater. Reported and fixed by [@ayyron-dev](https://github.com/ayyron-dev) in [#1647](https://github.com/bUnit-dev/bUnit/issues/1647)
+
+## [1.38.5] - 2025-01-12
+
+### Added
+
+- Added support for xunit v3 in the bunit.template. By [@linkdotnet](https://github.com/linkdotnet).
+
+## [1.37.7] - 2024-12-13
+
+### Added
+
+- Added support for `RendererInfo` and `AssignedRenderMode` (`.net9.0`).
+
+## [1.36.0] - 2024-11-12
+
+### Added
+
+- Bumped .NET 9 version dependencies to stable packages.
+
+## [1.35.3] - 2024-11-12
+
+### Added
+
+- Extension packages (`bunit.generators` and `bunit.web.query`) are flagged as stable.
+
+## [1.34.0] - 2024-11-01
+
+### Fixed
+
+- Fixed other packages that have a CVE like `Microsoft.Extensions.Caching.Memory`. Reported by [@polajenko](https://github.com/polajenko). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
+## [1.33.3] - 2024-10-11
+
+### Added
+
+- `bunit.generators` respect parameters from the base class.
+- Supports components using constructor injection in `net9.0`.
+
+### Fixed
+
+- Use latest `System.Text.Json` due to CVE in `8.0.4`.
+
+## [1.32.7] - 2024-10-04
+
+### Fixed
+
+- Ensure that a check in `WaitForAssertion` and related methods is always performed at once before the wait timer is started. If not, the timeout could occure before a wait-for check-condition had been attempted, causing tests to fail without reason. Fixed by [@egil](https://github.com/egil).
+
+## [1.31.3] - 2024-08-16
+
+### Fixed
+
+- `UploadFile` should only throw an exception when the file size exceeds the maximum allowed size. Reported by [@candritzky](https://github.com/candritzky). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [1.30.3] - 2024-07-21
 
 ### Fixed
@@ -1386,7 +1443,15 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.30.3...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.38.5...HEAD
+[1.38.5]: https://github.com/bUnit-dev/bUnit/compare/v1.37.7...v1.38.5
+[1.37.7]: https://github.com/bUnit-dev/bUnit/compare/v1.36.0...1.37.7
+[1.36.0]: https://github.com/bUnit-dev/bUnit/compare/v1.35.3...v1.36.0
+[1.35.3]: https://github.com/bUnit-dev/bUnit/compare/v1.34.0...1.35.3
+[1.34.0]: https://github.com/bUnit-dev/bUnit/compare/v1.33.3...v1.34.0
+[1.33.3]: https://github.com/bUnit-dev/bUnit/compare/v1.32.7...1.33.3
+[1.32.7]: https://github.com/bUnit-dev/bUnit/compare/v1.31.3...v1.32.7
+[1.31.3]: https://github.com/bUnit-dev/bUnit/compare/v1.30.3...1.31.3
 [1.30.3]: https://github.com/bUnit-dev/bUnit/compare/v1.29.5...v1.30.3
 [1.29.5]: https://github.com/bUnit-dev/bUnit/compare/v1.28.9...1.29.5
 [1.28.9]: https://github.com/bUnit-dev/bUnit/compare/v1.27.17...v1.28.9

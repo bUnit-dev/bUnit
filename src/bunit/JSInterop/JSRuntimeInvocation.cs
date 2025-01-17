@@ -3,7 +3,6 @@ namespace Bunit;
 /// <summary>
 /// Represents an invocation of JavaScript via the JSRuntime Mock.
 /// </summary>
-[Serializable]
 public readonly struct JSRuntimeInvocation : IEquatable<JSRuntimeInvocation>
 {
 	/// <summary>

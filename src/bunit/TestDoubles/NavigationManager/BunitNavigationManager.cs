@@ -40,20 +40,12 @@ public sealed class BunitNavigationManager : NavigationManager
 		var absoluteUri = GetNewAbsoluteUri(uri);
 		var changedBaseUri = HasDifferentBaseUri(absoluteUri);
 
-		if (changedBaseUri)
-		{
-			BaseUri = GetBaseUri(absoluteUri);
-		}
-
-		Uri = ToAbsoluteUri(uri).OriginalString;
-
 		if (options.ReplaceHistoryEntry && history.Count > 0)
 			history.Pop();
 
 		HistoryEntryState = options.ForceLoad ? null : options.HistoryEntryState;
 		bunitContext.Renderer.Dispatcher.InvokeAsync(async () =>
 		{
-			Uri = absoluteUri.OriginalString;
 
 			var shouldContinueNavigation = false;
 			try
@@ -73,6 +65,13 @@ public sealed class BunitNavigationManager : NavigationManager
 				return;
 			}
 
+			if (changedBaseUri)
+			{
+				BaseUri = GetBaseUri(absoluteUri);
+			}
+
+			Uri = absoluteUri.OriginalString;
+
 			// Only notify of changes if user navigates within the same
 			// base url (domain). Otherwise, the user navigated away
 			// from the app, and Blazor's NavigationManager would
@@ -81,15 +80,11 @@ public sealed class BunitNavigationManager : NavigationManager
 			{
 				NotifyLocationChanged(isInterceptedLink: false);
 			}
-			else
-			{
-				BaseUri = GetBaseUri(absoluteUri);
-			}
 		});
 	}
 
 	/// <inheritdoc/>
-	protected override void SetNavigationLockState(bool value) {}
+	protected override void SetNavigationLockState(bool value) { }
 
 	/// <inheritdoc/>
 	protected override void HandleLocationChangingHandlerException(Exception ex, LocationChangingContext context)
