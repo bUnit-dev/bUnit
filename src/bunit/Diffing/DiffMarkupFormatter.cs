@@ -10,16 +10,6 @@ namespace Bunit.Diffing;
 public class DiffMarkupFormatter : PrettyMarkupFormatter, IMarkupFormatter
 {
 	/// <summary>
-	/// Gets an instance of the <see cref="DiffMarkupFormatter"/>.
-	/// </summary>
-	/// <remarks>
-	/// The <see cref="DiffMarkupFormatter"/> is not thread safe, so using this singleton
-	/// instance to format elements may not result in the desired effect.
-	/// </remarks>
-	[Obsolete("This instance is not thread safe, use a new instance instead.")]
-	public static new readonly DiffMarkupFormatter Instance = new();
-
-	/// <summary>
 	/// Initializes a new instance of the <see cref="DiffMarkupFormatter"/> class.
 	/// </summary>
 	public DiffMarkupFormatter()
