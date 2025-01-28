@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
+<Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute</Target>
+    <Left>lib/net6.0/Bunit.Core.dll</Left>
+    <Right>lib/net7.0/Bunit.Core.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0005</DiagnosticId>
+    <Target>M:Bunit.TestContextBase.CreateTestRenderer</Target>
+    <Left>lib/net5.0/Bunit.Core.dll</Left>
+    <Right>lib/net5.0/Bunit.Core.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0005</DiagnosticId>
+    <Target>M:Bunit.TestContextBase.CreateTestRenderer</Target>
+    <Left>lib/net6.0/Bunit.Core.dll</Left>
+    <Right>lib/net6.0/Bunit.Core.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0005</DiagnosticId>
+    <Target>M:Bunit.TestContextBase.CreateTestRenderer</Target>
+    <Left>lib/net7.0/Bunit.Core.dll</Left>
+    <Right>lib/net7.0/Bunit.Core.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0005</DiagnosticId>
+    <Target>M:Bunit.TestContextBase.CreateTestRenderer</Target>
+    <Left>lib/net8.0/Bunit.Core.dll</Left>
+    <Right>lib/net8.0/Bunit.Core.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0005</DiagnosticId>
+    <Target>M:Bunit.TestContextBase.CreateTestRenderer</Target>
+    <Left>lib/netstandard2.1/Bunit.Core.dll</Left>
+    <Right>lib/netstandard2.1/Bunit.Core.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0006</DiagnosticId>
+    <Target>M:Bunit.Rendering.ITestRenderer.SetRendererInfo(Microsoft.AspNetCore.Components.RendererInfo)</Target>
+    <Left>lib/net8.0/Bunit.Core.dll</Left>
+    <Right>lib/net9.0/Bunit.Core.dll</Right>
+  </Suppression>
+</Suppressions>

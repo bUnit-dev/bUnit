@@ -1,29 +1,29 @@
 {
-  "$schema": "http://json.schemastore.org/template",
-  "author": "Egil Hansen",
-  "classifications": [
-    "Test",
-    "bUnit",
-    "Blazor"
-  ],
-  "name": "bUnit Test Project",
-  "description": "A project for a testing Blazor/Razor components using the bUnit library.",
-  "generatorVersions": "[1.0.0.0-*)",
-  "identity": "BunitProject",
-  "groupIdentity": "Bunit",
-  "shortName": "bunit",
-  "tags": {
-    "language": "C#",
-    "type": "project"
-  },
-  "sourceName": "Company.BlazorTests1",
-  "defaultName": "BlazorTestProject1",
+	"$schema": "http://json.schemastore.org/template",
+	"author": "Egil Hansen",
+	"classifications": [
+		"Test",
+		"bUnit",
+		"Blazor"
+	],
+	"name": "bUnit Test Project",
+	"description": "A project for testing Blazor/Razor components using the bUnit library.",
+	"generatorVersions": "[1.0.0.0-*)",
+	"identity": "BunitProject",
+	"groupIdentity": "Bunit",
+	"shortName": "bunit",
+	"tags": {
+		"language": "C#",
+		"type": "project"
+	},
+	"sourceName": "Company.BlazorTests1",
+	"defaultName": "BlazorTestProject1",
 	"preferNameDirectory": true,
 	"sources": [
 		{
 			"modifiers": [
 				{
-					"exclude": [ "BunitTestContext.cs" ],
+					"exclude": ["BunitTestContext.cs"],
 					"condition": "(testFramework_xunit || testFramework_xunitv3)"
 				}
 			]
@@ -107,10 +107,10 @@
 			]
 		}
 	},
-  "primaryOutputs": [
-    { "path": "Company.BlazorTests1.csproj" }
-  ],
-  "postActions": [
+	"primaryOutputs": [
+		{ "path": "Company.BlazorTests1.csproj" }
+	],
+	"postActions": [
 		{
 			"condition": "(!skipRestore)",
 			"description": "Restore NuGet packages required by this project.",
@@ -118,5 +118,5 @@
 			"actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
 			"continueOnError": true
 		}
-  ]
+	]
 }

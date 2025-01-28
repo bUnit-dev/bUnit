@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<AssemblyName>Bunit.Template</AssemblyName>
+		<Version>1.39.2-preview</Version>
 		<RootNamespace>Bunit</RootNamespace>
 		<IncludeSymbols>false</IncludeSymbols>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
