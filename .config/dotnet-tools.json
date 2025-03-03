@@ -10,14 +10,14 @@
       "rollForward": false
     },
     "docfx": {
-      "version": "2.78.2",
+      "version": "2.78.3",
       "commands": [
         "docfx"
       ],
       "rollForward": false
     },
     "dotnet-dump": {
-      "version": "9.0.553101",
+      "version": "9.0.607501",
       "commands": [
         "dotnet-dump"
       ],
