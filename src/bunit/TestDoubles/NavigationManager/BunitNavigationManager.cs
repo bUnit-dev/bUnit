@@ -14,6 +14,7 @@ public sealed class BunitNavigationManager : NavigationManager
 {
 	private readonly BunitContext bunitContext;
 	private readonly Stack<NavigationHistory> history = new();
+	private readonly ComponentRouteParameterService componentRouteParameterService;
 
 	/// <summary>
 	/// The navigation history captured by the <see cref="BunitNavigationManager"/>.
@@ -31,6 +32,7 @@ public sealed class BunitNavigationManager : NavigationManager
 	public BunitNavigationManager(BunitContext bunitContext)
 	{
 		this.bunitContext = bunitContext;
+		componentRouteParameterService = new ComponentRouteParameterService(bunitContext);
 		Initialize("http://localhost/", "http://localhost/");
 	}
 
@@ -71,6 +73,7 @@ public sealed class BunitNavigationManager : NavigationManager
 			}
 
 			Uri = absoluteUri.OriginalString;
+			componentRouteParameterService.UpdateComponentsWithRouteParameters(absoluteUri);
 
 			// Only notify of changes if user navigates within the same
 			// base url (domain). Otherwise, the user navigated away

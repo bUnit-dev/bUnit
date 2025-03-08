@@ -19,6 +19,7 @@ For a migration guide, see [Upgrading bUnit](https://bunit.dev/docs/migrations/i
 
 - Improved renderer logic that catches more edge cases.
 - Improved developer experience in relation to JSInterop.
+- Implemented feature to map route templates to parameters using NavigationManager. This allows parameters to be set based on the route template when navigating to a new location. Reported by [JamesNK](https://github.com/JamesNK) in [#1580](https://github.com/bUnit-dev/bUnit/issues/1580). By [@linkdotnet](https://github.com/linkdotnet).
 
 ## [1.40.0] - 2025-06-14
 
