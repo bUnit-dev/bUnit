@@ -54,6 +54,11 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	public ComponentFactoryCollection ComponentFactories { get; } = new();
 
 	/// <summary>
+	/// TODO.
+	/// </summary>
+	internal ISet<IRenderedComponent<IComponent>> ReturnedRenderedComponents { get; } = new HashSet<IRenderedComponent<IComponent>>();
+
+	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitContext"/> class.
 	/// </summary>
 	public BunitContext()
@@ -130,7 +135,11 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// <summary>
 	/// Disposes all components rendered via this <see cref="BunitContext"/>.
 	/// </summary>
-	public Task DisposeComponentsAsync() => Renderer.DisposeComponents();
+	public Task DisposeComponentsAsync()
+	{
+		ReturnedRenderedComponents.Clear();
+		return Renderer.DisposeComponents();
+	}
 
 	/// <summary>
 	/// Instantiates and performs a first render of a component of type <typeparamref name="TComponent"/>.
@@ -205,7 +214,9 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 		where TComponent : IComponent
 	{
 		var baseResult = RenderInsideRenderTree(renderFragment);
-		return Renderer.FindComponent<TComponent>(baseResult);
+		var component = Renderer.FindComponent<TComponent>(baseResult);
+		ReturnedRenderedComponents.Add((IRenderedComponent<IComponent>)component);
+		return component;
 	}
 
 	/// <summary>
