@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+- Implemented feature to map route templates to parameters using NavigationManager. This allows parameters to be set based on the route template when navigating to a new location. Reported by [JamesNK](https://github.com/JamesNK) in [#1580](https://github.com/bUnit-dev/bUnit/issues/1580). By [@linkdotnet](https://github.com/linkdotnet).
+
 ### Fixed
 
 - Do not set the `Uri` or `BaseUri` property on the `FakeNavigationManager` if navigation is prevented by a handler on `net7.0` or greater. Reported and fixed by [@ayyron-dev](https://github.com/ayyron-dev) in [#1647](https://github.com/bUnit-dev/bUnit/issues/1647)
