@@ -12,6 +12,24 @@ public class RoleQueryExtensionsTest : BunitContext
 
 		var exception = Should.Throw<RoleNotFoundException>(() => cut.FindByRole(AriaRole.Article));
 		exception.Message.ShouldContain("Unable to find element with role 'article'");
-		exception.Message.ShouldContain("Available roles: heading");
+		exception.Message.ShouldContain("heading");
+	}
+
+	[Fact(DisplayName = "when hidden: true logs available roles when it fails")]
+	public void Test002()
+	{
+		var cut = Render<Wrapper>(ps => ps.AddChildContent(
+			"""
+			<div hidden>
+				<h1>Hi</h1>
+			</div>
+			"""));
+
+		var exception = Should.Throw<RoleNotFoundException>(() => cut.FindByRole(AriaRole.Article, new() { Hidden = true }));
+		exception.Message.ShouldContain("Unable to find element with role 'article'");
+		exception.Message.ShouldContain("heading");
+		exception.Message.ShouldContain("Name \"Hi\":");
+		exception.Message.ShouldContain("<h1 />");
+		exception.Message.ShouldContain("Ignored nodes: comments, script, style");
 	}
 }

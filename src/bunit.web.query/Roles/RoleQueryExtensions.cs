@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AngleSharp.Css.Dom;
 
 namespace Bunit.Roles;
 
@@ -17,20 +18,29 @@ public static class RoleQueryExtensions
 		new ImplicitRoleStrategy(),
 	];
 
-	public static IElement FindByRole(this IRenderedComponent<IComponent> renderedComponent, AriaRole role)
+	public static IElement FindByRole(this IRenderedComponent<IComponent> renderedComponent, AriaRole role, FindByRoleOptions? options = null)
 	{
+		options ??= new FindByRoleOptions();
+
 		foreach (var strategy in RoleQueryStrategies)
 		{
 			var element = strategy.FindElement(renderedComponent, role);
-			if (element is not null)
+			if (element is not null && (options.Hidden || !IsHidden(element)))
 				return element;
 		}
 
-		var availableRoles = GetAvailableRoles(renderedComponent);
-		throw new RoleNotFoundException(role, availableRoles);
+		var availableRoles = GetAvailableRoles(renderedComponent, options);
+		throw new RoleNotFoundException(role, availableRoles, renderedComponent.Nodes);
 	}
 
-	private static IReadOnlyList<string> GetAvailableRoles(IRenderedComponent<IComponent> renderedComponent)
+	private static bool IsHidden(IElement element)
+	{
+		return element.HasAttribute("hidden") || 
+			   element.GetAttribute("aria-hidden") == "true" ||
+			   element.ComputeStyle().GetDisplay() == "none";
+	}
+
+	private static IReadOnlyList<string> GetAvailableRoles(IRenderedComponent<IComponent> renderedComponent, FindByRoleOptions options)
 	{
 		var roles = new HashSet<string>();
 
@@ -38,9 +48,12 @@ public static class RoleQueryExtensions
 		var elementsWithRole = renderedComponent.Nodes.TryQuerySelectorAll("[role]");
 		foreach (var element in elementsWithRole)
 		{
-			var role = element.GetAttribute("role");
-			if (role is not null)
-				roles.Add(role);
+			if (options.Hidden || !IsHidden(element))
+			{
+				var role = element.GetAttribute("role");
+				if (role is not null)
+					roles.Add(role);
+			}
 		}
 
 		// Get implicit roles
@@ -51,7 +64,7 @@ public static class RoleQueryExtensions
 				foreach (var role in implicitStrategy.GetImplicitRoles())
 				{
 					var elements = renderedComponent.Nodes.TryQuerySelectorAll(role);
-					if (elements.Any())
+					if (elements.Any(e => options.Hidden || !IsHidden(e)))
 					{
 						// Find the ARIA role that corresponds to this element
 						foreach (var (ariaRole, elementNames) in ImplicitRoleStrategy.ImplicitRoles)
