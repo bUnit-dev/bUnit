@@ -7,16 +7,17 @@ public class RoleNotFoundException : Exception
 {
     public IReadOnlyList<string> AvailableRoles { get; }
     public INodeList Nodes { get; }
+    public bool HiddenOptionEnabled { get; }
 
-    public RoleNotFoundException(AriaRole role, IReadOnlyList<string> availableRoles, INodeList nodes)
-        : base(BuildMessage(role, availableRoles, nodes))
+    public RoleNotFoundException(AriaRole role, IReadOnlyList<string> availableRoles, INodeList nodes, bool hiddenOptionEnabled)
+        : base(BuildMessage(role, availableRoles, nodes, hiddenOptionEnabled))
     {
         AvailableRoles = availableRoles;
         Nodes = nodes;
-        System.Diagnostics.Debug.WriteLine($"Actual message:\n{Message}");
+        HiddenOptionEnabled = hiddenOptionEnabled;
     }
 
-    private static string BuildMessage(AriaRole role, IReadOnlyList<string> availableRoles, INodeList nodes)
+    private static string BuildMessage(AriaRole role, IReadOnlyList<string> availableRoles, INodeList nodes, bool hiddenOptionEnabled)
     {
         var sb = new StringBuilder();
         sb.AppendLine($"Unable to find element with role '{role.ToString().ToLowerInvariant()}'");
@@ -24,7 +25,14 @@ public class RoleNotFoundException : Exception
 
         if (!availableRoles.Any())
         {
-            sb.AppendLine("There are no accessible roles. But there might be some inaccessible roles. If you wish to access them, then set the `hidden` option to `true`. Learn more about this here: https://testing-library.com/docs/dom-testing-library/api-queries#byrole");
+            if (!hiddenOptionEnabled)
+            {
+                sb.AppendLine("There are no accessible roles. But there might be some inaccessible roles. If you wish to access them, then set the `hidden` option to `true`. Learn more about this here: https://testing-library.com/docs/dom-testing-library/api-queries#byrole");
+            }
+            else
+            {
+                sb.AppendLine("There are no available roles.");
+            }
             sb.AppendLine();
         }
         else

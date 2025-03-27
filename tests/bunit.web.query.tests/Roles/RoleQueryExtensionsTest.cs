@@ -1,4 +1,3 @@
-
 namespace Bunit.Roles;
 
 public class RoleQueryExtensionsTest : BunitContext
@@ -38,6 +37,18 @@ public class RoleQueryExtensionsTest : BunitContext
 			"""));
 
 		var exception = Should.Throw<RoleNotFoundException>(() => cut.FindByRole(AriaRole.Article));
+		await Verify(exception.Message);
+	}
+
+	[Fact(DisplayName = "logs a different error if inaccessible roles should be included")]
+	public async Task Test004Async()
+	{
+		var cut = Render<Wrapper>(ps => ps.AddChildContent(
+			"""
+			<div />
+			"""));
+
+		var exception = Should.Throw<RoleNotFoundException>(() => cut.FindByRole(AriaRole.Article, new() { Hidden = true }));
 		await Verify(exception.Message);
 	}
 }

@@ -30,7 +30,7 @@ public static class RoleQueryExtensions
 		}
 
 		var availableRoles = GetAvailableRoles(renderedComponent, options);
-		throw new RoleNotFoundException(role, availableRoles, renderedComponent.Nodes);
+		throw new RoleNotFoundException(role, availableRoles, renderedComponent.Nodes, options.Hidden);
 	}
 
 	private static bool IsHidden(IElement element)
