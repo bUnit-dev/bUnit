@@ -2,11 +2,12 @@ namespace Bunit.Roles;
 
 public enum AriaRole
 {
+	Article,
     Button,
-    Listbox,
     Combobox,
-    Heading,
-    Group,
     Dialog,
-    Menuitem
+    Group,
+    Heading,
+    Listbox,
+    Menuitem,
 }
