@@ -1,13 +1,1 @@
-﻿Unable to find element with role 'article'
-
-Here are the available roles:
-
-  heading:
-
-  Name "Hi":
-  <h1 />
-
---------------------------------------------------
-
-Ignored nodes: comments, script, style
-<h1>Hi</h1>
+﻿Unable to find an element with role 'article'. No roles are available in the document.

@@ -1,78 +1,45 @@
 using AngleSharp.Dom;
-using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Bunit.Roles;
 
-public class RoleNotFoundException : Exception
+/// <summary>
+/// Exception thrown when an element with the specified role is not found.
+/// </summary>
+public class RoleNotFoundException : System.Exception
 {
-    public IReadOnlyList<string> AvailableRoles { get; }
-    public INodeList Nodes { get; }
-    public bool HiddenOptionEnabled { get; }
-
-    public RoleNotFoundException(AriaRole role, IReadOnlyList<string> availableRoles, INodeList nodes, bool hiddenOptionEnabled)
-        : base(BuildMessage(role, availableRoles, nodes, hiddenOptionEnabled))
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RoleNotFoundException"/> class.
+    /// </summary>
+    /// <param name="role">The ARIA role that was searched for.</param>
+    /// <param name="name">The accessible name that was searched for (if any).</param>
+    /// <param name="availableRoles">A list of available roles in the DOM.</param>
+    public RoleNotFoundException(AriaRole role, string? name, IEnumerable<string> availableRoles)
+        : base(BuildMessage(role, name, availableRoles))
     {
-        AvailableRoles = availableRoles;
-        Nodes = nodes;
-        HiddenOptionEnabled = hiddenOptionEnabled;
     }
 
-    private static string BuildMessage(AriaRole role, IReadOnlyList<string> availableRoles, INodeList nodes, bool hiddenOptionEnabled)
+    private static string BuildMessage(AriaRole role, string? name, IEnumerable<string> availableRoles)
     {
-        var sb = new StringBuilder();
-        sb.AppendLine($"Unable to find element with role '{role.ToString().ToLowerInvariant()}'");
-        sb.AppendLine();
+        var roleStr = role.ToString().ToLowerInvariant();
+        var message = $"Unable to find an element with role '{roleStr}'";
 
-        if (!availableRoles.Any())
+        if (!string.IsNullOrEmpty(name))
         {
-            if (!hiddenOptionEnabled)
-            {
-                sb.AppendLine("There are no accessible roles. But there might be some inaccessible roles. If you wish to access them, then set the `hidden` option to `true`. Learn more about this here: https://testing-library.com/docs/dom-testing-library/api-queries#byrole");
-            }
-            else
-            {
-                sb.AppendLine("There are no available roles.");
-            }
-            sb.AppendLine();
+            message += $" and name '{name}'";
+        }
+
+        if (availableRoles.Any())
+        {
+            var availableRolesStr = string.Join(", ", availableRoles);
+            message += $". Available roles are: {availableRolesStr}";
         }
         else
         {
-            sb.AppendLine("Here are the available roles:");
-            sb.AppendLine();
-
-            foreach (var availableRole in availableRoles)
-            {
-                sb.AppendLine($"  {availableRole}:");
-                sb.AppendLine();
-
-                // Find elements with this role
-                var elements = nodes.TryQuerySelectorAll($"[role='{availableRole}'], h1, h2, h3, h4, h5, h6");
-                foreach (var element in elements)
-                {
-                    var name = element.TextContent.Trim();
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        sb.AppendLine($"  Name \"{name}\":");
-                    }
-                    sb.AppendLine($"  <{element.TagName.ToLowerInvariant()} />");
-                    sb.AppendLine();
-                }
-            }
+            message += ". No roles are available in the document.";
         }
 
-        sb.AppendLine("--------------------------------------------------");
-        sb.AppendLine();
-        sb.AppendLine("Ignored nodes: comments, script, style");
-        
-        // Serialize the HTML properly
-        foreach (var node in nodes)
-        {
-            if (node is IElement element)
-            {
-                sb.AppendLine(element.OuterHtml);
-            }
-        }
-
-        return sb.ToString();
+        return message;
     }
 } 

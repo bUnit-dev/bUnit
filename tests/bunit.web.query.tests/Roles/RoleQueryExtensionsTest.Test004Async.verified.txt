@@ -1,8 +1,1 @@
-﻿Unable to find element with role 'article'
-
-There are no available roles.
-
---------------------------------------------------
-
-Ignored nodes: comments, script, style
-<div></div>
+﻿Unable to find an element with role 'article'. No roles are available in the document.
