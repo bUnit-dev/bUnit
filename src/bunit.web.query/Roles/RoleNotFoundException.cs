@@ -13,6 +13,7 @@ public class RoleNotFoundException : Exception
     {
         AvailableRoles = availableRoles;
         Nodes = nodes;
+        System.Diagnostics.Debug.WriteLine($"Actual message:\n{Message}");
     }
 
     private static string BuildMessage(AriaRole role, IReadOnlyList<string> availableRoles, INodeList nodes)
@@ -54,7 +55,15 @@ public class RoleNotFoundException : Exception
         sb.AppendLine("--------------------------------------------------");
         sb.AppendLine();
         sb.AppendLine("Ignored nodes: comments, script, style");
-        sb.AppendLine(nodes.ToString());
+        
+        // Serialize the HTML properly
+        foreach (var node in nodes)
+        {
+            if (node is IElement element)
+            {
+                sb.AppendLine(element.OuterHtml);
+            }
+        }
 
         return sb.ToString();
     }

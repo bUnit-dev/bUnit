@@ -1,9 +1,10 @@
+
 namespace Bunit.Roles;
 
 public class RoleQueryExtensionsTest : BunitContext
 {
 	[Fact(DisplayName = "by default logs accessible roles when it fails")]
-	public void Test001()
+	public async Task Test001Async()
 	{
 		var cut = Render<Wrapper>(ps => ps.AddChildContent(
 			"""
@@ -11,12 +12,11 @@ public class RoleQueryExtensionsTest : BunitContext
 			"""));
 
 		var exception = Should.Throw<RoleNotFoundException>(() => cut.FindByRole(AriaRole.Article));
-		exception.Message.ShouldContain("Unable to find element with role 'article'");
-		exception.Message.ShouldContain("heading");
+		await Verify(exception.Message);
 	}
 
 	[Fact(DisplayName = "when hidden: true logs available roles when it fails")]
-	public void Test002()
+	public async Task Test002Async()
 	{
 		var cut = Render<Wrapper>(ps => ps.AddChildContent(
 			"""
@@ -26,15 +26,11 @@ public class RoleQueryExtensionsTest : BunitContext
 			"""));
 
 		var exception = Should.Throw<RoleNotFoundException>(() => cut.FindByRole(AriaRole.Article, new() { Hidden = true }));
-		exception.Message.ShouldContain("Unable to find element with role 'article'");
-		exception.Message.ShouldContain("heading");
-		exception.Message.ShouldContain("Name \"Hi\":");
-		exception.Message.ShouldContain("<h1 />");
-		exception.Message.ShouldContain("Ignored nodes: comments, script, style");
+		await Verify(exception.Message);
 	}
 
 	[Fact(DisplayName = "logs error when there are no accessible roles")]
-	public void Test003()
+	public async Task Test003Async()
 	{
 		var cut = Render<Wrapper>(ps => ps.AddChildContent(
 			"""
@@ -42,9 +38,6 @@ public class RoleQueryExtensionsTest : BunitContext
 			"""));
 
 		var exception = Should.Throw<RoleNotFoundException>(() => cut.FindByRole(AriaRole.Article));
-		exception.Message.ShouldContain("Unable to find element with role 'article'");
-		exception.Message.ShouldContain("There are no accessible roles");
-		exception.Message.ShouldContain("If you wish to access them, then set the `hidden` option to `true`");
-		exception.Message.ShouldContain("Ignored nodes: comments, script, style");
+		await Verify(exception.Message);
 	}
 }
