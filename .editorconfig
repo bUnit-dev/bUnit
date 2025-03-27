@@ -256,12 +256,12 @@ dotnet_naming_style.prefix_type_parameters_with_t_style.capitalization = pascal_
 dotnet_naming_style.prefix_type_parameters_with_t_style.required_prefix = T
 # disallowed_style - Anything that has this style applied is marked as disallowed
 dotnet_naming_style.disallowed_style.capitalization  = pascal_case
-dotnet_naming_style.disallowed_style.required_prefix = 
-dotnet_naming_style.disallowed_style.required_suffix = 
+dotnet_naming_style.disallowed_style.required_prefix =
+dotnet_naming_style.disallowed_style.required_suffix =
 # internal_error_style - This style should never occur... if it does, it indicates a bug in file or in the parser using the file
 dotnet_naming_style.internal_error_style.capitalization  = pascal_case
-dotnet_naming_style.internal_error_style.required_prefix = 
-dotnet_naming_style.internal_error_style.required_suffix = 
+dotnet_naming_style.internal_error_style.required_prefix =
+dotnet_naming_style.internal_error_style.required_suffix =
 
 ##########################################
 # .NET Design Guideline Field Naming Rules
@@ -509,3 +509,13 @@ dotnet_diagnostic.S3871.severity = none # S3871: Exception types should be "publ
 dotnet_diagnostic.S1186.severity = none # S1186: Methods should not be empty
 dotnet_diagnostic.S1133.severity = none # S1133: Deprecated code should be removed
 dotnet_diagnostic.S3963.severity = none # S3963: "static" fields should be initialized inline (covered by CA1810)
+
+# Verify
+[*.{received,verified}.{cs,txt}]
+charset = "utf-8-bom"
+end_of_line = lf
+indent_size = unset
+indent_style = unset
+insert_final_newline = false
+tab_width = unset
+trim_trailing_whitespace = false
