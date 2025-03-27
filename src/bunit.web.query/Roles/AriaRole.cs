@@ -1,88 +1,12 @@
-namespace Bunit.Roles
+namespace Bunit.Roles;
+
+public enum AriaRole
 {
-    public static class AriaRole
-    {
-        public const string Alert = "alert";
-        public const string Alertdialog = "alertdialog";
-        public const string Application = "application";
-        public const string Article = "article";
-        public const string Banner = "banner";
-        public const string Blockquote = "blockquote";
-        public const string Button = "button";
-        public const string Caption = "caption";
-        public const string Cell = "cell";
-        public const string Checkbox = "checkbox";
-        public const string Code = "code";
-        public const string Columnheader = "columnheader";
-        public const string Combobox = "combobox";
-        public const string Complementary = "complementary";
-        public const string Contentinfo = "contentinfo";
-        public const string Definition = "definition";
-        public const string Deletion = "deletion";
-        public const string Dialog = "dialog";
-        public const string Directory = "directory";
-        public const string Document = "document";
-        public const string Emphasis = "emphasis";
-        public const string Feed = "feed";
-        public const string Figure = "figure";
-        public const string Form = "form";
-        public const string Generic = "generic";
-        public const string Grid = "grid";
-        public const string Gridcell = "gridcell";
-        public const string Group = "group";
-        public const string Heading = "heading";
-        public const string Img = "img";
-        public const string Insertion = "insertion";
-        public const string Link = "link";
-        public const string List = "list";
-        public const string Listbox = "listbox";
-        public const string Listitem = "listitem";
-        public const string Log = "log";
-        public const string Main = "main";
-        public const string Marquee = "marquee";
-        public const string Math = "math";
-        public const string Meter = "meter";
-        public const string Menu = "menu";
-        public const string Menubar = "menubar";
-        public const string Menuitem = "menuitem";
-        public const string Menuitemcheckbox = "menuitemcheckbox";
-        public const string Menuitemradio = "menuitemradio";
-        public const string Navigation = "navigation";
-        public const string None = "none";
-        public const string Note = "note";
-        public const string Option = "option";
-        public const string Paragraph = "paragraph";
-        public const string Presentation = "presentation";
-        public const string Progressbar = "progressbar";
-        public const string Radio = "radio";
-        public const string Radiogroup = "radiogroup";
-        public const string Region = "region";
-        public const string Row = "row";
-        public const string Rowgroup = "rowgroup";
-        public const string Rowheader = "rowheader";
-        public const string Scrollbar = "scrollbar";
-        public const string Search = "search";
-        public const string Searchbox = "searchbox";
-        public const string Separator = "separator";
-        public const string Slider = "slider";
-        public const string Spinbutton = "spinbutton";
-        public const string Status = "status";
-        public const string Strong = "strong";
-        public const string Subscript = "subscript";
-        public const string Superscript = "superscript";
-        public const string Switch = "switch";
-        public const string Tab = "tab";
-        public const string Table = "table";
-        public const string Tablist = "tablist";
-        public const string Tabpanel = "tabpanel";
-        public const string Term = "term";
-        public const string Textbox = "textbox";
-        public const string Time = "time";
-        public const string Timer = "timer";
-        public const string Toolbar = "toolbar";
-        public const string Tooltip = "tooltip";
-        public const string Tree = "tree";
-        public const string Treegrid = "treegrid";
-        public const string Treeitem = "treeitem";
-    }
+    Button,
+    Listbox,
+    Combobox,
+    Heading,
+    Group,
+    Dialog,
+    Menuitem
 }
