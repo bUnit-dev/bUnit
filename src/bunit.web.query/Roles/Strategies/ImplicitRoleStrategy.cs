@@ -5,7 +5,7 @@ namespace Bunit.Roles.Strategies;
 
 internal sealed class ImplicitRoleStrategy : IRoleQueryStrategy
 {
-    private static readonly IReadOnlyDictionary<AriaRole, string[]> ImplicitRoles = new Dictionary<AriaRole, string[]>
+    internal static readonly IReadOnlyDictionary<AriaRole, string[]> ImplicitRoles = new Dictionary<AriaRole, string[]>
     {
         [AriaRole.Button] = ["button"],
         [AriaRole.Listbox] = ["select"],
@@ -40,5 +40,10 @@ internal sealed class ImplicitRoleStrategy : IRoleQueryStrategy
         }
 
         return null;
+    }
+
+    public IReadOnlyList<string> GetImplicitRoles()
+    {
+        return ImplicitRoles.Values.SelectMany(x => x).Distinct().ToList();
     }
 } 

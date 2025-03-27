@@ -26,6 +26,47 @@ public static class RoleQueryExtensions
 				return element;
 		}
 
-		throw new InvalidOperationException($"Unable to find element with role '{role.ToString().ToLowerInvariant()}'");
+		var availableRoles = GetAvailableRoles(renderedComponent);
+		throw new RoleNotFoundException(role, availableRoles);
+	}
+
+	private static IReadOnlyList<string> GetAvailableRoles(IRenderedComponent<IComponent> renderedComponent)
+	{
+		var roles = new HashSet<string>();
+
+		// Get explicit roles
+		var elementsWithRole = renderedComponent.Nodes.TryQuerySelectorAll("[role]");
+		foreach (var element in elementsWithRole)
+		{
+			var role = element.GetAttribute("role");
+			if (role is not null)
+				roles.Add(role);
+		}
+
+		// Get implicit roles
+		foreach (var strategy in RoleQueryStrategies)
+		{
+			if (strategy is ImplicitRoleStrategy implicitStrategy)
+			{
+				foreach (var role in implicitStrategy.GetImplicitRoles())
+				{
+					var elements = renderedComponent.Nodes.TryQuerySelectorAll(role);
+					if (elements.Any())
+					{
+						// Find the ARIA role that corresponds to this element
+						foreach (var (ariaRole, elementNames) in ImplicitRoleStrategy.ImplicitRoles)
+						{
+							if (elementNames.Contains(role))
+							{
+								roles.Add(ariaRole.ToString().ToLowerInvariant());
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return roles.OrderBy(x => x).ToList();
 	}
 }
