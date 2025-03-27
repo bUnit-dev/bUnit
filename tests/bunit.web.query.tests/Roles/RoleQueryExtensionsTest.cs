@@ -32,4 +32,19 @@ public class RoleQueryExtensionsTest : BunitContext
 		exception.Message.ShouldContain("<h1 />");
 		exception.Message.ShouldContain("Ignored nodes: comments, script, style");
 	}
+
+	[Fact(DisplayName = "logs error when there are no accessible roles")]
+	public void Test003()
+	{
+		var cut = Render<Wrapper>(ps => ps.AddChildContent(
+			"""
+			<div />
+			"""));
+
+		var exception = Should.Throw<RoleNotFoundException>(() => cut.FindByRole(AriaRole.Article));
+		exception.Message.ShouldContain("Unable to find element with role 'article'");
+		exception.Message.ShouldContain("There are no accessible roles");
+		exception.Message.ShouldContain("If you wish to access them, then set the `hidden` option to `true`");
+		exception.Message.ShouldContain("Ignored nodes: comments, script, style");
+	}
 }

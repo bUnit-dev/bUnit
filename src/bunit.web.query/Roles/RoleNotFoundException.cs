@@ -20,25 +20,34 @@ public class RoleNotFoundException : Exception
         var sb = new StringBuilder();
         sb.AppendLine($"Unable to find element with role '{role.ToString().ToLowerInvariant()}'");
         sb.AppendLine();
-        sb.AppendLine("Here are the available roles:");
-        sb.AppendLine();
 
-        foreach (var availableRole in availableRoles)
+        if (!availableRoles.Any())
         {
-            sb.AppendLine($"  {availableRole}:");
+            sb.AppendLine("There are no accessible roles. But there might be some inaccessible roles. If you wish to access them, then set the `hidden` option to `true`. Learn more about this here: https://testing-library.com/docs/dom-testing-library/api-queries#byrole");
+            sb.AppendLine();
+        }
+        else
+        {
+            sb.AppendLine("Here are the available roles:");
             sb.AppendLine();
 
-            // Find elements with this role
-            var elements = nodes.TryQuerySelectorAll($"[role='{availableRole}'], h1, h2, h3, h4, h5, h6");
-            foreach (var element in elements)
+            foreach (var availableRole in availableRoles)
             {
-                var name = element.TextContent.Trim();
-                if (!string.IsNullOrEmpty(name))
-                {
-                    sb.AppendLine($"  Name \"{name}\":");
-                }
-                sb.AppendLine($"  <{element.TagName.ToLowerInvariant()} />");
+                sb.AppendLine($"  {availableRole}:");
                 sb.AppendLine();
+
+                // Find elements with this role
+                var elements = nodes.TryQuerySelectorAll($"[role='{availableRole}'], h1, h2, h3, h4, h5, h6");
+                foreach (var element in elements)
+                {
+                    var name = element.TextContent.Trim();
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        sb.AppendLine($"  Name \"{name}\":");
+                    }
+                    sb.AppendLine($"  <{element.TagName.ToLowerInvariant()} />");
+                    sb.AppendLine();
+                }
             }
         }
 
