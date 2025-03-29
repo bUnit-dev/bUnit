@@ -53,11 +53,16 @@ bUnit is available on NuGet in various incarnations. Most users should just pick
 A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
 
 <div class="d-flex flex-row mb-3">
-	<a href="https://github.com/syncfusion" class="d-block p-3 text-center">
+	<a href="https://www.syncfusion.com/blazor-components?utm_source=bunit&utm_medium=cpc&utm_campaign=bunit_blazor_bancy25" class="d-block p-3 text-center">
 		<img class="avatar avatar rounded-circle" src="https://avatars.githubusercontent.com/u/1699795?s=460" width="72" height="72" alt="@syncfusion" />
 		<br />
 		Syncfusion
 	</a>
+  <a href="https://github.com/JetBrainsOfficial" class="d-block p-3 text-center">
+    <img class="avatar avatar rounded-circle" src="https://avatars.githubusercontent.com/u/60931315?v=4" width="72" height="72" alt="@JetBrainsOfficial" />
+		<br />
+		JetBrains
+  </a>
 </div>
 
 ## Contributors

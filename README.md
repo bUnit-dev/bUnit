@@ -36,7 +36,7 @@ A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/egil). T
 <table border="0">
 	<tr>
 		<td align="center" width="120">
-			<a href="https://github.com/syncfusion">
+			<a href="https://www.syncfusion.com/blazor-components?utm_source=bunit&utm_medium=cpc&utm_campaign=bunit_blazor_bancy25">
 				<img class="avatar" src="https://avatars.githubusercontent.com/u/1699795?s=460" width="72" height="72" alt="@syncfusion" />
 				<br />
 				Syncfusion
