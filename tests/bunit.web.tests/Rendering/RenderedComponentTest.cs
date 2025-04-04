@@ -1,3 +1,6 @@
+using AngleSharp;
+using AngleSharp.Css;
+using AngleSharp.Dom;
 using Bunit.Rendering;
 
 namespace Bunit;
@@ -67,4 +70,14 @@ public class RenderedComponentTest : TestContext
 		cut.Instance.JSRuntime.ShouldNotBeNull();
 	}
 	#endif
+
+	[Fact(DisplayName = "Using relative units in style attribute can be retrieved")]
+	public void Test022()
+	{
+		var cut = RenderComponent<ComponentWithRelativeUnitAsWidth>();
+		
+		var text = cut.Find(".my-component").GetInnerText();
+
+		text.ShouldNotBeNull();
+	}
 }

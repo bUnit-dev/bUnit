@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Diagnostics;
 using AngleSharp;
+using AngleSharp.Css;
 using AngleSharp.Dom;
 using AngleSharp.Html.Parser;
 using Bunit.Diffing;
@@ -28,7 +29,8 @@ public sealed class BunitHtmlParser : IDisposable
 	/// with a AngleSharp context without a <see cref="TestRenderer"/> registered.
 	/// </summary>
 	public BunitHtmlParser()
-		: this(Configuration.Default.WithCss().With(new HtmlComparer())) { }
+		: this(Configuration.Default.WithCss()
+			.With(new HtmlComparer())) { }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitHtmlParser"/> class
@@ -43,7 +45,13 @@ public sealed class BunitHtmlParser : IDisposable
 
 	private BunitHtmlParser(IConfiguration angleSharpConfiguration)
 	{
-		var config = angleSharpConfiguration.With(this);
+		var config = angleSharpConfiguration
+			.With(this)
+			.WithRenderDevice(new DefaultRenderDevice
+			{
+				ViewPortWidth = 1920,
+				ViewPortHeight = 1080,
+			});
 		context = BrowsingContext.New(config);
 		var parseOptions = new HtmlParserOptions
 		{
