@@ -28,7 +28,7 @@
     #nullable disable
     bool changeOutput;
 
-    string myMarkup = "<p class='markup-string-value'>This is a <em>markup string</em>.</p>";
+    private readonly string myMarkup = "<p class='markup-string-value'>This is a <em>markup string</em>.</p>";
 
     void EmitMarkupBlock(RenderTreeBuilder builder)
     {
