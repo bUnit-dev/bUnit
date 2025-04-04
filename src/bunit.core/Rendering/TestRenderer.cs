@@ -610,7 +610,13 @@ public class TestRenderer : Renderer, ITestRenderer
 	{
 		if (renderedComponents.TryGetValue(componentId, out var renderedComponent))
 		{
-			return (IRenderedComponentBase<TComponent>)renderedComponent;
+			if (renderedComponent is IRenderedComponentBase<TComponent> typedComponent)
+			{
+				return typedComponent;
+			}
+
+			renderedComponent.Dispose();
+			renderedComponents.Remove(componentId);
 		}
 
 		LoadRenderTreeFrames(componentId, framesCollection);
