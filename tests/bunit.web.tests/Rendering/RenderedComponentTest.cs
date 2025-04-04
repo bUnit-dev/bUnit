@@ -69,6 +69,36 @@ public class RenderedComponentTest : TestContext
 
 		cut.Instance.JSRuntime.ShouldNotBeNull();
 	}
+	
+	[Fact(DisplayName = "Searching first for derived component and then base component finds correct (#1691)")]
+	public void Test023()
+	{
+		var cut = RenderComponent<Wrapper>(
+			ps => ps.AddChildContent<BaseComponent>()
+				.AddChildContent<DerivedComponent>());
+
+		Should.NotThrow(() =>
+		{
+			cut.FindComponents<BaseComponent>();
+			cut.FindComponents<DerivedComponent>();
+		});
+	}
+
+	private class BaseComponent : ComponentBase
+	{
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.AddContent(0, "base");
+		}
+	}
+
+	private sealed class DerivedComponent : BaseComponent
+	{
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.AddContent(0, "derived");
+		}
+	}
 	#endif
 
 	[Fact(DisplayName = "Using relative units in style attribute can be retrieved")]

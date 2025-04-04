@@ -10,6 +10,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 - Do not set the `Uri` or `BaseUri` property on the `FakeNavigationManager` if navigation is prevented by a handler on `net7.0` or greater. Reported and fixed by [@ayyron-dev](https://github.com/ayyron-dev) in [#1647](https://github.com/bUnit-dev/bUnit/issues/1647)
 - Use default renderer properties for AngleSharp. Reported by [@jtleaming](https://github.com/jtleaming) in [#1692].
+- `FindComponents` throws an exception, when a base and derived class was searched for. Reported by [@BlueDragon709](https://github.com/BlueDragon709) in [#1691].
 
 ## [1.38.5] - 2025-01-12
 
