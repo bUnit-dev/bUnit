@@ -60,6 +60,7 @@ jobs:
           dotnet-version: |
             8.0.x
             9.0.x
+            10.0.x
 
       - name: 🛠️ Update changelog
         uses: thomaseizinger/keep-a-changelog-new-release@3.1.0
@@ -96,7 +97,7 @@ jobs:
       - name: 🛠️ Packing library in release mode
         run: |
           dotnet pack src/bunit/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-          dotnet pack src/bunit.template/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true          
+          dotnet pack src/bunit.template/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
           dotnet pack src/bunit.generators/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
           dotnet pack src/bunit.web.query/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
 
