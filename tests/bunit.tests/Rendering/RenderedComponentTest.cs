@@ -1,3 +1,4 @@
+using AngleSharp.Dom;
 using Bunit.Rendering;
 
 namespace Bunit;
@@ -218,5 +219,45 @@ public class RenderedComponentTest : BunitContext
 		cut.Render(ps => ps.Add(p => p.ShowChild, false));
 
 		Should.Throw<ComponentDisposedException>(() => target.Markup);
+	}
+	
+	[Fact(DisplayName = "Searching first for derived component and then base component finds correct (#1691)")]
+	public void Test023()
+	{
+		var cut = Render<Wrapper>(
+			ps => ps.AddChildContent<BaseComponent>()
+				.AddChildContent<DerivedComponent>());
+
+		Should.NotThrow(() =>
+		{
+			cut.FindComponents<BaseComponent>();
+			cut.FindComponents<DerivedComponent>();
+		});
+	}
+	
+	[Fact(DisplayName = "Using relative units in style attribute can be retrieved")]
+	public void Test024()
+	{
+		var cut = Render<ComponentWithRelativeUnitAsWidth>();
+		
+		var text = cut.Find(".my-component").GetInnerText();
+
+		text.ShouldNotBeNull();
+	}
+	
+	private class BaseComponent : ComponentBase
+	{
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.AddContent(0, "base");
+		}
+	}
+
+	private sealed class DerivedComponent : BaseComponent
+	{
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.AddContent(0, "derived");
+		}
 	}
 }
