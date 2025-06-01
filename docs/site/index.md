@@ -42,8 +42,6 @@ bUnit is available on NuGet in various incarnations. Most users should just pick
 | Name | Description | NuGet Download Link |
 | ----- | ----- | ---- |
 | [bUnit](https://www.nuget.org/packages/bunit/) | Includes the bUnit.core and bUnit.web packages. | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) |
-| [bUnit.core](https://www.nuget.org/packages/bunit.core/) | Core library that enables rendering a Blazor component in a test context. | [![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.core/) |
-| [bUnit.web](https://www.nuget.org/packages/bunit.web/) | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) |
 | [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template for bUnit test projects based on xUnit, NUnit or MSTest | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) |
 | [bUnit.generators](https://www.nuget.org/packages/bunit.generators/)|Source code generators to minimize code setup in various situations.|[![Nuget](https://img.shields.io/nuget/dt/bunit.generators?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.generators/)|
 | [bUnit.web.query](https://www.nuget.org/packages/bunit.web.query/)|bUnit implementation of testing-library.com's query APIs.|[![Nuget](https://img.shields.io/nuget/dt/bunit.web.query?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web.query/)|
