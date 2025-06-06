@@ -105,7 +105,7 @@ Here are the customization options you have available to you:
   ```html
   <header>
     <h1 id="head-1" diff:ignoreCase>HeLLo <em>world</em></h1>
-  </header
+  </header>
   ```
 
   To perform case insensitive comparison of the text inside the `id` attribute, do the following:

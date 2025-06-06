@@ -6,9 +6,13 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [1.39.5] - 2025-04-04
+
 ### Fixed
 
 - Do not set the `Uri` or `BaseUri` property on the `FakeNavigationManager` if navigation is prevented by a handler on `net7.0` or greater. Reported and fixed by [@ayyron-dev](https://github.com/ayyron-dev) in [#1647](https://github.com/bUnit-dev/bUnit/issues/1647)
+- Use default renderer properties for AngleSharp. Reported by [@jtleaming](https://github.com/jtleaming) in [#1692].
+- `FindComponents` throws an exception, when a base and derived class was searched for. Reported by [@BlueDragon709](https://github.com/BlueDragon709) in [#1691].
 
 ## [1.38.5] - 2025-01-12
 
@@ -1443,7 +1447,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.38.5...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.39.5...HEAD
+[1.39.5]: https://github.com/bUnit-dev/bUnit/compare/v1.38.5...1.39.5
 [1.38.5]: https://github.com/bUnit-dev/bUnit/compare/v1.37.7...v1.38.5
 [1.37.7]: https://github.com/bUnit-dev/bUnit/compare/v1.36.0...1.37.7
 [1.36.0]: https://github.com/bUnit-dev/bUnit/compare/v1.35.3...v1.36.0

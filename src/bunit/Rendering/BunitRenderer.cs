@@ -634,40 +634,6 @@ public sealed class BunitRenderer : Renderer
 		return (IRenderedComponent<TComponent>)result;
 	}
 
-	/// <summary>
-	/// Populates the <paramref name="framesCollection"/> with <see cref="ArrayRange{RenderTreeFrame}"/>
-	/// starting with the one that belongs to the component with ID <paramref name="componentId"/>.
-	/// </summary>
-	private void LoadRenderTreeFrames(int componentId, RenderTreeFrameDictionary framesCollection)
-	{
-		var frames = GetOrLoadRenderTreeFrame(framesCollection, componentId);
-
-		for (var i = 0; i < frames.Count; i++)
-		{
-			ref var frame = ref frames.Array[i];
-
-			if (frame.FrameType == RenderTreeFrameType.Component && !framesCollection.Contains(frame.ComponentId))
-			{
-				LoadRenderTreeFrames(frame.ComponentId, framesCollection);
-			}
-		}
-	}
-
-	/// <summary>
-	/// Gets the <see cref="ArrayRange{RenderTreeFrame}"/> from the <paramref name="framesCollection"/>.
-	/// If the <paramref name="framesCollection"/> does not contain the frames, they are loaded into it first.
-	/// </summary>
-	private ArrayRange<RenderTreeFrame> GetOrLoadRenderTreeFrame(RenderTreeFrameDictionary framesCollection, int componentId)
-	{
-		if (!framesCollection.TryGetValue(componentId, out var frames))
-		{
-			frames = GetCurrentRenderTreeFrames(componentId);
-			framesCollection.Add(componentId, frames);
-		}
-
-		return frames;
-	}
-
 	/// <inheritdoc/>
 	protected override void HandleException(Exception exception)
 	{
