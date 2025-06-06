@@ -35,6 +35,9 @@
 # [Extensions](xref:extensions)
 ## [bunit.generators](xref:bunit-generators)
 
+# [Migrations](xref:migrations)
+## [1.x to 2.x](xref:migrating-from-1-to-2)
+
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External resources](xref:external-resources)
 # [Contribute](xref:contribute)
