@@ -58,10 +58,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
-            3.1.x
-            5.0.x
-            6.0.x
-            7.0.x
             8.0.x
             9.0.x
 
@@ -102,7 +98,6 @@ jobs:
           dotnet pack src/bunit/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
           dotnet pack src/bunit.core/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
           dotnet pack src/bunit.web/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-          dotnet pack src/bunit.generators/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
           dotnet pack src/bunit.web.query/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
 
       - name: 🛠️ Upload library to NuGet.org repository
