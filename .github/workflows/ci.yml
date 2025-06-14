@@ -44,10 +44,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
-          3.1.x
-          5.0.x
-          6.0.x
-          7.0.x
           8.0.x
           9.0.x
 
@@ -118,6 +114,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-13, windows-latest]
+        framework: [net8.0, net9.0]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -130,10 +127,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
-            3.1.x
-            5.0.x
-            6.0.x
-            7.0.x
             8.0.x
             9.0.x
 
@@ -143,7 +136,7 @@ jobs:
           dotnet tool restore
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c release --no-restore
+        run: dotnet test -c release --no-restore -f ${{ matrix.framework }}
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: success() || failure()
