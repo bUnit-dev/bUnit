@@ -6,81 +6,76 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Condition="!$(MSBuildProjectName.EndsWith('samples'))">
 		<GlobalPackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
-		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.5.0.109200" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
-		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
-		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.42" />
+		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.11.0.117924" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
+		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.0.0-1.25277.114" />
+		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.49" />
 	</ItemGroup>
 
 	<ItemGroup Label="Shared">
-		<PackageVersion Include="Autofac" Version="8.1.0" />
+		<PackageVersion Include="Autofac" Version="8.3.0" />
 		<PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
 
-		<PackageVersion Include="Serilog" Version="4.2.0"/>
+		<PackageVersion Include="Serilog" Version="4.3.0"/>
 		<PackageVersion Include="Serilog.Expressions" Version="5.0.0"/>
 		<PackageVersion Include="AngleSharp.Diffing" Version="1.0.0"/>
 		<PackageVersion Include="AngleSharp" Version="1.2.0"/>
-		<PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.144"/>
+		<PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.154"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Package Versioning">
 		<PackageVersion Include="Nerdbank.GitVersioning" Version="3.7.115" />
 	</ItemGroup>
 
-	<ItemGroup Label="System.Text.Json Vulnerability">
-		<!-- Due to a CVE in System.Text.Json we explicitly reference the latest version of System.Text.Json -->
-		<PackageVersion Include="System.Text.Json" Version="9.0.1"/>
-	</ItemGroup>
-
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<PackageVersion Include="Microsoft.Extensions.Logging" Version="3.1.32"/>
 		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.32"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="3.1.32"/>
-
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.32"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="3.1.32"/>
 		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="3.1.32"/>
 		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="3.1.32"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.1"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="3.2.1"/>
+		<PackageVersion Include="System.Text.Json" Version="8.0.5"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
 		<PackageVersion Include="Microsoft.Extensions.Logging" Version="5.0.0"/>
 		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="5.0.17"/>
-
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.17"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="5.0.17"/>
 		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="5.0.17"/>
 		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.17"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="5.0.17"/>
+		<PackageVersion Include="System.Text.Json" Version="8.0.5"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<PackageVersion Include="Microsoft.Extensions.Logging" Version="6.0.1"/>
 		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.4"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="6.0.36"/>
-
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.36"/>
 		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="6.0.36"/>
 		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="6.0.3"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="6.0.36"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.36"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.36"/>
+		<PackageVersion Include="System.Text.Json" Version="8.0.5"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
 		<PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0"/>
 		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="7.0.20"/>
-
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.20"/>
 		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="7.0.20"/>
 		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="7.0.20"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.20"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.20"/>
+		<PackageVersion Include="System.Text.Json" Version="8.0.5"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
@@ -94,39 +89,40 @@
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="8.0.11"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.11"/>
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.11"/>
+		<PackageVersion Include="System.Text.Json" Version="8.0.5"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-		<PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.1"/>
-		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="9.0.1"/>
-
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.1"/>
-		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.1"/>
-		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.1"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.1"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.1"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.1"/>
+		<PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.5"/>
+		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="9.0.5"/>
+		<PackageVersion Include="System.Text.Json" Version="9.0.5"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.5"/>
+		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.5"/>
+		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.5"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.5"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.5"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.5"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Test Dependencies">
 		<PackageVersion Include="AutoFixture" Version="4.18.1"/>
 		<PackageVersion Include="AutoFixture.Xunit2" Version="4.18.1"/>
-		<PackageVersion Include="MSTest.TestAdapter" Version="3.6.0" />
-		<PackageVersion Include="MSTest.TestFramework" Version="3.6.0" />
+		<PackageVersion Include="MSTest.TestAdapter" Version="3.9.1" />
+		<PackageVersion Include="MSTest.TestFramework" Version="3.9.1" />
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0"/>
 		<PackageVersion Include="Moq" Version="4.20.72" />
 		<PackageVersion Include="NSubstitute" Version="5.3.0" />
-		<PackageVersion Include="NUnit3TestAdapter" Version="4.6.0" />
+		<PackageVersion Include="NUnit3TestAdapter" Version="5.0.0" />
 		<PackageVersion Include="RichardSzalay.MockHttp" Version="7.0.0" />
-		<PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.0" />
-		<PackageVersion Include="Shouldly" Version="4.2.1"/>
+		<PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.2" />
+		<PackageVersion Include="Shouldly" Version="4.3.0"/>
 		<PackageVersion Include="Verify.SourceGenerators" Version="2.5.0"/>
-		<PackageVersion Include="Verify.Xunit" Version="28.9.0"/>
+		<PackageVersion Include="Verify.Xunit" Version="30.3.1"/>
 		<PackageVersion Include="Xunit.Combinatorial" Version="1.6.24"/>
-		<PackageVersion Include="coverlet.collector" Version="6.0.3" />
-		<PackageVersion Include="coverlet.msbuild" Version="6.0.3" />
-		<PackageVersion Include="nunit" Version="4.2.2" />
+		<PackageVersion Include="coverlet.collector" Version="6.0.4" />
+		<PackageVersion Include="coverlet.msbuild" Version="6.0.4" />
+		<PackageVersion Include="nunit" Version="4.3.2" />
 		<PackageVersion Include="xunit" Version="2.9.3"/>
 		<PackageVersion Include="xunit.abstractions" Version="2.0.3"/>
 		<PackageVersion Include="xunit.assert" Version="2.9.3"/>

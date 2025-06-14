@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- Aligned Microsoft packages to their TFM version
+
 ## [1.39.5] - 2025-04-04
 
 ### Fixed
