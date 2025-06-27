@@ -1,0 +1,24 @@
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+else
+{
+    @foreach (var item in Items)
+    {
+        <ListItem Value="@item" />
+    }
+}
+
+@code {
+    [Parameter] public List<string> Items { get; set; } = new();
+
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate async loading
+        await Task.Delay(100);
+        isLoading = false;
+    }
+}

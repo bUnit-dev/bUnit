@@ -36,7 +36,7 @@ public static partial class RenderedComponentWaitForHelperExtensions
 		where TComponent : IComponent
 	{
 		renderedComponent.WaitForState(
-			() => renderedComponent.FindComponents<TComponent>().Count == matchComponentCount,
+			() => renderedComponent.FindComponents<TComponent>().Count >= matchComponentCount,
 			timeout);
 		return renderedComponent.FindComponents<TComponent>();
 	}
