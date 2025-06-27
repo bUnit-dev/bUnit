@@ -447,15 +447,23 @@ public sealed class BunitRenderer : Renderer
 	/// <inheritdoc/>
 	protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
 	{
+		var disposedComponentIds = new HashSet<int>();
 		for (var i = 0; i < renderBatch.DisposedComponentIDs.Count; i++)
 		{
 			var id = renderBatch.DisposedComponentIDs.Array[i];
+			disposedComponentIds.Add(id);
 			returnedRenderedComponentIds.Remove(id);
 		}
 
 		for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
 		{
 			var diff = renderBatch.UpdatedComponents.Array[i];
+
+			if (disposedComponentIds.Contains(diff.ComponentId))
+			{
+				continue;
+			}
+
 			var componentState = GetComponentState(diff.ComponentId);
 			var renderedComponent = (IRenderedComponent)componentState;
 
