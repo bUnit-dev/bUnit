@@ -244,6 +244,17 @@ public class RenderedComponentTest : BunitContext
 
 		text.ShouldNotBeNull();
 	}
+
+	[Fact(DisplayName = "Form submission with DataAnnotationsValidator and model recreation works correctly")]
+	public void Test025()
+	{
+		var cut = Render<FormWithValidation>();
+		cut.Find("#title").Change("title");
+
+		cut.Find("form").Submit();
+
+		cut.Instance.Invoked.ShouldBeTrue();
+	}
 	
 	private class BaseComponent : ComponentBase
 	{

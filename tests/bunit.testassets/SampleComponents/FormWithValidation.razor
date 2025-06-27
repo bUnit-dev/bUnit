@@ -1,0 +1,26 @@
+<EditForm Model="model" OnValidSubmit="SetInvoked">
+	<DataAnnotationsValidator /> 
+	
+	<InputText id="title" @bind-Value="model.Title" />
+	<button>Submit</button>
+</EditForm>
+
+@code {
+
+	[Parameter]
+	public bool Invoked { get; set; }
+
+	private Model model = new();
+	
+	private void SetInvoked()
+	{
+		Invoked = true;
+		model = new Model();
+	}
+	
+	public sealed class Model
+	{
+		public string? Title { get; set; }
+	}
+
+}
