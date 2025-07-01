@@ -2,71 +2,48 @@ using Microsoft.Extensions.Logging;
 
 namespace Bunit.Extensions.WaitForHelpers;
 
-internal static class WaitForHelperLoggerExtensions
+internal static partial class WaitForHelperLoggerExtensions
 {
-	private static readonly Action<ILogger, int, Exception?> CheckingWaitCondition
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(1, "CheckingWaitCondition"), "Checking the wait condition for component {Id}.");
+	[LoggerMessage(
+		EventId = 1,
+		EventName = "CheckingWaitCondition",
+		Level = LogLevel.Debug,
+		Message = "Checking the wait condition for component {ComponentId}.")]
 
-	private static readonly Action<ILogger, int, Exception?> CheckCompleted
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(2, "CheckCompleted"), "The check completed successfully for component {Id}.");
+	internal static partial void LogCheckingWaitCondition(this ILogger logger, int componentId);
 
-	private static readonly Action<ILogger, int, Exception?> CheckFailed
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(3, "CheckFailed"), "The check failed for component {Id}.");
+	[LoggerMessage(
+		EventId = 2,
+		EventName = "CheckCompleted",
+		Level = LogLevel.Debug,
+		Message = "The check completed successfully for component {ComponentId}.")]
+	internal static partial void LogCheckCompleted(this ILogger logger, int componentId);
 
-	private static readonly Action<ILogger, int, Exception> CheckThrow
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(4, "CheckThrow"), "The checker for component {Id} throw an exception.");
+	[LoggerMessage(
+		EventId = 3,
+		EventName = "CheckFailed",
+		Level = LogLevel.Debug,
+		Message = "The check failed for component {ComponentId}.")]
+	internal static partial void LogCheckFailed(this ILogger logger, int componentId);
 
-	private static readonly Action<ILogger, int, Exception?> WaiterTimedOut
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(10, "WaiterTimedOut"), "The waiter for component {Id} timed out.");
+	[LoggerMessage(
+		EventId = 4,
+		EventName = "CheckThrow",
+		Level = LogLevel.Debug,
+		Message = "The checker for component {ComponentId} throw an exception.")]
+	internal static partial void LogCheckThrow(this ILogger logger, int componentId, Exception exception);
 
-	private static readonly Action<ILogger, int, Exception?> WaiterDisposed
-		= LoggerMessage.Define<int>(LogLevel.Debug, new EventId(20, "WaiterDisposed"), "The waiter for component {Id} disposed.");
+	[LoggerMessage(
+		EventId = 10,
+		EventName = "WaiterTimedOut",
+		Level = LogLevel.Debug,
+		Message = "The waiter for component {ComponentId} timed out.")]
+	internal static partial void LogWaiterTimedOut(this ILogger logger, int componentId);
 
-	internal static void LogCheckingWaitCondition(this ILogger logger, int componentId)
-	{
-		if (logger.IsEnabled(LogLevel.Debug))
-		{
-			CheckingWaitCondition(logger, componentId, null);
-		}
-	}
-
-	internal static void LogCheckCompleted(this ILogger logger, int componentId)
-	{
-		if (logger.IsEnabled(LogLevel.Debug))
-		{
-			CheckCompleted(logger, componentId, null);
-		}
-	}
-
-	internal static void LogCheckFailed(this ILogger logger, int componentId)
-	{
-		if (logger.IsEnabled(LogLevel.Debug))
-		{
-			CheckFailed(logger, componentId, null);
-		}
-	}
-
-	internal static void LogCheckThrow(this ILogger logger, int componentId, Exception exception)
-	{
-		if (logger.IsEnabled(LogLevel.Debug))
-		{
-			CheckThrow(logger, componentId, exception);
-		}
-	}
-
-	internal static void LogWaiterTimedOut(this ILogger logger, int componentId)
-	{
-		if (logger.IsEnabled(LogLevel.Debug))
-		{
-			WaiterTimedOut(logger, componentId, null);
-		}
-	}
-
-	internal static void LogWaiterDisposed(this ILogger logger, int componentId)
-	{
-		if (logger.IsEnabled(LogLevel.Debug))
-		{
-			WaiterDisposed(logger, componentId, null);
-		}
-	}
+	[LoggerMessage(
+		EventId = 20,
+		EventName = "WaiterDisposed",
+		Level = LogLevel.Debug,
+		Message = "The waiter for component {ComponentId} disposed.")]
+	internal static partial void LogWaiterDisposed(this ILogger logger, int componentId);
 }
