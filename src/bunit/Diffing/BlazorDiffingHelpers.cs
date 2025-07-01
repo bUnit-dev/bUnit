@@ -7,7 +7,7 @@ namespace Bunit.Diffing;
 /// <summary>
 /// Blazor Diffing Helpers.
 /// </summary>
-public static class BlazorDiffingHelpers
+internal static class BlazorDiffingHelpers
 {
 	/// <summary>
 	/// Represents a diffing filter that removes all special Blazor attributes added by the /<see cref="Htmlizer"/>.

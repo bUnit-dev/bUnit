@@ -11,7 +11,7 @@ namespace Bunit.Rendering;
 /// A AngleSharp based HTML Parse that can parse markup strings
 /// into a <see cref="INodeList"/>.
 /// </summary>
-public sealed class BunitHtmlParser : IDisposable
+internal sealed class BunitHtmlParser : IDisposable
 {
 	private const string TbodySubElements = "TR";
 	private const string ColgroupSubElement = "COL";
