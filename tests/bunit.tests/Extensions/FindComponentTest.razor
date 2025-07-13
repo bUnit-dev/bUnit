@@ -1,0 +1,166 @@
+@inherits BunitContext
+
+@code {
+	[Fact]
+	public void FindComponentByElementHoldsInstance()
+	{
+		var cut = Render<ButtonComponent>();
+		var button = cut.Find("button");
+
+		var component = button.FindComponent<ButtonComponent>();
+
+		component.ShouldNotBeNull();
+	}
+	
+	[Fact]
+	public void MarkupShouldNotBeModifiedWhenFindingAComponent()
+	{
+		var cut = Render<ButtonComponent>();
+		var button = cut.Find("button");
+		
+		var component = button.FindComponent<ButtonComponent>();
+
+		component.MarkupMatches(@<button>button content</button>);
+	}
+
+	[Fact]
+	public void FindComponentByElementReturnsCorrectInstance()
+	{
+		var cut = Render<CounterComponent>();
+		var button = cut.Find("button");
+		button.Click();
+		
+		var component = button.FindComponent<CounterComponent>();
+		
+		component.ShouldNotBeNull();
+		component.Instance.Count.ShouldBe(1);
+	}
+
+	[Fact]
+	public void FindingInstanceBeforeActionStillReflectsState()
+	{
+		var cut = Render<CounterComponent>();
+		var button = cut.Find("button");
+		var component = button.FindComponent<CounterComponent>();
+
+		button.Click();
+		
+		component.Instance.Count.ShouldBe(1);
+	}
+
+	[Fact]
+	public void RetrievingNestedComponentFromParentComponentIsSameInstance()
+	{
+		var cut = Render<ParentComponentThatHasCounter>();
+		var button = cut.Find("button");
+		button.Click();
+		
+		var component = button.FindComponent<CounterComponent>();
+		var componentFromInner = cut.FindComponent<CounterComponent>().Find("button").FindComponent<CounterComponent>();
+		
+		component.Instance.ShouldBeSameAs(componentFromInner.Instance);
+		component.Instance.Count.ShouldBe(1);
+	}
+
+	[Fact]
+	public void FindComponentWorksWithElementReferences()
+	{
+		var cut = Render<ComponentWithElementRef>();
+		var button = cut.Find("button");
+		
+		button.HasAttribute("blazor:elementReference").ShouldBeTrue();
+		
+		var component = button.FindComponent<ComponentWithElementRef>();
+		
+		component.ShouldNotBeNull();
+		component.Instance.ShouldNotBeNull();
+		component.Instance.GetButtonText().ShouldBe("Click me!");
+	}
+	
+	[Fact]
+    public void CantFindComponentThatChildOfElement()
+	{
+		var cut = Render<ParentComponentWithButtonAndCounter>();
+		var button = cut.Find("button");
+		
+		Action act = () => button.FindComponent<CounterComponent>();
+
+		act.ShouldThrow<InvalidOperationException>();
+	}
+	
+	private sealed class ButtonComponent : ComponentBase
+	{
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.OpenElement(0, "button");
+			builder.AddContent(1, "button content");
+			builder.CloseElement();
+		}
+	}
+	
+	private sealed class CounterComponent : ComponentBase
+	{
+		public int Count { get; private set; }
+
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.OpenElement(0, "button");
+			builder.AddAttribute(1, "onclick", EventCallback.Factory.Create(this, Increment));
+			builder.AddContent(2, $"Count: {Count}");
+			builder.CloseElement();
+		}
+		
+		public void Increment() => Count++;
+	}
+	
+	private sealed class ParentComponentThatHasCounter : ComponentBase
+	{
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.OpenComponent<CounterComponent>(0);
+			builder.CloseComponent();
+		}
+	}
+
+	private sealed class ComponentWithElementRef : ComponentBase
+	{
+		private ElementReference buttonRef;
+		private bool isInitialized = false;
+
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.OpenElement(0, "div");
+			builder.AddContent(1, "Component with element ref:");
+			
+			builder.OpenElement(2, "button");
+			builder.AddElementReferenceCapture(3, value => buttonRef = value);
+			builder.AddContent(4, "Click me!");
+			builder.CloseElement();
+			
+			builder.CloseElement();
+		}
+
+		protected override void OnAfterRender(bool firstRender)
+		{
+			if (firstRender)
+			{
+				isInitialized = true;
+			}
+		}
+
+		public string GetButtonText() => isInitialized ? "Click me!" : "Not ready";
+	}
+
+	private sealed class ParentComponentWithButtonAndCounter : ComponentBase
+	{
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.OpenElement(1, "button");
+			builder.AddContent(2, "Increment Counter");
+			builder.CloseElement();
+			
+			builder.OpenComponent<CounterComponent>(3);
+			builder.CloseComponent();
+		}
+	}
+}

@@ -3,12 +3,14 @@ using Bunit.Web.AngleSharp;
 
 namespace Bunit;
 
-internal sealed class CssSelectorElementFactory : IElementWrapperFactory
+internal sealed class CssSelectorElementFactory : IElementWrapperFactory, IComponentAccessor
 {
 	private readonly IRenderedComponent<IComponent> testTarget;
 	private readonly string cssSelector;
 
 	public Action? OnElementReplaced { get; set; }
+
+	public IRenderedComponent<IComponent> Component => testTarget;
 
 	public CssSelectorElementFactory(IRenderedComponent<IComponent> testTarget, string cssSelector)
 	{
