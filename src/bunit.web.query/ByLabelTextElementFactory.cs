@@ -3,13 +3,15 @@ using Bunit.Web.AngleSharp;
 
 namespace Bunit;
 
-internal sealed class ByLabelTextElementFactory : IElementWrapperFactory
+internal sealed class ByLabelTextElementFactory : IElementWrapperFactory, IComponentAccessor
 {
 	private readonly IRenderedComponent<IComponent> testTarget;
 	private readonly string labelText;
 	private readonly ByLabelTextOptions options;
 
 	public Action? OnElementReplaced { get; set; }
+
+	public IRenderedComponent<IComponent> Component => testTarget;
 
 	public ByLabelTextElementFactory(IRenderedComponent<IComponent> testTarget, string labelText, ByLabelTextOptions options)
 	{
