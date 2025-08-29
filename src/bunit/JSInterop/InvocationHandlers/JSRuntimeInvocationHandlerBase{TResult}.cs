@@ -3,10 +3,13 @@ namespace Bunit;
 /// <summary>
 /// Represents an invocation handler for <see cref="JSRuntimeInvocation"/> instances.
 /// </summary>
-public abstract class JSRuntimeInvocationHandlerBase<TResult>
+public abstract class JSRuntimeInvocationHandlerBase<TResult> : IDisposable
 {
 	private readonly InvocationMatcher invocationMatcher;
 	private TaskCompletionSource<TResult> completionSource;
+	private Timer? timeoutTimer;
+	private JSRuntimeInvocation? currentInvocation;
+	private bool disposed;
 
 	/// <summary>
 	/// Gets a value indicating whether this handler is set up to handle calls to <c>InvokeVoidAsync(string, object[])</c>.
@@ -40,6 +43,7 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult>
 	/// </summary>
 	protected void SetCanceledBase()
 	{
+		ClearTimeoutTimer();
 		if (completionSource.Task.IsCompleted)
 			completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -53,6 +57,7 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult>
 	protected void SetExceptionBase<TException>(TException exception)
 		where TException : Exception
 	{
+		ClearTimeoutTimer();
 		if (completionSource.Task.IsCompleted)
 			completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -65,6 +70,7 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult>
 	/// <param name="result">The type of result to pass to the callers.</param>
 	protected void SetResultBase(TResult result)
 	{
+		ClearTimeoutTimer();
 		if (completionSource.Task.IsCompleted)
 			completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -82,7 +88,19 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult>
 	protected internal virtual Task<TResult> HandleAsync(JSRuntimeInvocation invocation)
 	{
 		Invocations.RegisterInvocation(invocation);
-		return completionSource.Task;
+
+		var task = completionSource.Task;
+		if (task is { IsCanceled: false, IsFaulted: false, IsCompletedSuccessfully: false })
+		{
+			if (BunitContext.DefaultWaitTimeout <= TimeSpan.Zero)
+			{
+				throw new JSRuntimeInvocationNotSetException(invocation);
+			}
+
+			StartTimeoutTimer(invocation);
+		}
+
+		return task;
 	}
 
 	/// <summary>
@@ -91,4 +109,47 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult>
 	/// <param name="invocation">Invocation to check.</param>
 	/// <returns>True if the handler can handle the invocation, false otherwise.</returns>
 	internal bool CanHandle(JSRuntimeInvocation invocation) => invocationMatcher(invocation);
+
+	/// <inheritdoc/>
+	public void Dispose()
+	{
+		Dispose(disposing: true);
+		GC.SuppressFinalize(this);
+	}
+
+	/// <inheritdoc/>
+	protected virtual void Dispose(bool disposing)
+	{
+		if (!disposed && disposing)
+		{
+			ClearTimeoutTimer();
+			disposed = true;
+		}
+	}
+
+	private void StartTimeoutTimer(JSRuntimeInvocation invocation)
+	{
+		ClearTimeoutTimer();
+
+		currentInvocation = invocation;
+		timeoutTimer = new Timer(OnTimeoutElapsed, null, BunitContext.DefaultWaitTimeout, Timeout.InfiniteTimeSpan);
+	}
+
+	private void ClearTimeoutTimer()
+	{
+		timeoutTimer?.Dispose();
+		timeoutTimer = null;
+		currentInvocation = null;
+	}
+
+	private void OnTimeoutElapsed(object? state)
+	{
+		if (!completionSource.Task.IsCompleted && currentInvocation.HasValue)
+		{
+			var exception = new JSRuntimeInvocationNotSetException(currentInvocation.Value);
+			completionSource.TrySetException(exception);
+		}
+
+		ClearTimeoutTimer();
+	}
 }
