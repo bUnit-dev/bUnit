@@ -74,7 +74,6 @@ jobs:
     - run: |
         dotnet pack src/bunit/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
         dotnet pack src/bunit.template/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-        dotnet pack src/bunit.generators/ -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
         dotnet pack src/bunit.web.query/ -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
 
     # Publish the NuGet package as an artifact, so they can be used in the following jobs
@@ -136,7 +135,7 @@ jobs:
           dotnet tool restore
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c release --no-restore
+        run: dotnet test -c release --no-restore -f ${{ matrix.framework }}
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: success() || failure()
