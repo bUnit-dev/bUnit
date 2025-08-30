@@ -25,10 +25,6 @@ internal sealed class BunitJSObjectReference : IJSObjectReference, IJSInProcessO
 
 #if NET10_0_OR_GREATER
 	/// <inheritdoc/>
-	public ValueTask<IJSObjectReference> InvokeNewAsync(string identifier, object?[]? args) => throw new NotImplementedException();
-
-	/// <inheritdoc/>
-	public ValueTask<IJSObjectReference> InvokeNewAsync(string identifier, CancellationToken cancellationToken, object?[]? args) => throw new NotImplementedException();
 
 	/// <inheritdoc/>
 	public ValueTask<TValue> GetValueAsync<TValue>(string identifier) => throw new NotImplementedException();
@@ -41,9 +37,6 @@ internal sealed class BunitJSObjectReference : IJSObjectReference, IJSInProcessO
 
 	/// <inheritdoc/>
 	public ValueTask SetValueAsync<TValue>(string identifier, TValue value, CancellationToken cancellationToken) => throw new NotImplementedException();
-
-	/// <inheritdoc/>
-	public IJSInProcessObjectReference InvokeNew(string identifier, object?[]? args) => throw new NotImplementedException();
 
 	/// <inheritdoc/>
 	public TValue GetValue<TValue>(string identifier) => throw new NotImplementedException();
