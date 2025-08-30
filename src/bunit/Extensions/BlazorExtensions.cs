@@ -3,7 +3,7 @@ namespace Bunit.Extensions;
 /// <summary>
 /// Extensions for Blazor types.
 /// </summary>
-public static class BlazorExtensions
+internal static class BlazorExtensions
 {
 	/// <summary>
 	/// Creates a <see cref="RenderFragment"/> that will render the <paramref name="markup"/>.

@@ -7,7 +7,7 @@ namespace Bunit.Diffing;
 /// <summary>
 /// A markup formatter, that skips any special Blazor attributes added by the <see cref="Htmlizer"/>.
 /// </summary>
-public class DiffMarkupFormatter : PrettyMarkupFormatter, IMarkupFormatter
+internal class DiffMarkupFormatter : PrettyMarkupFormatter, IMarkupFormatter
 {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="DiffMarkupFormatter"/> class.
