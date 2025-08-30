@@ -26,11 +26,6 @@
 		<PackageVersion Include="Nerdbank.GitVersioning" Version="3.7.115" />
 	</ItemGroup>
 
-	<ItemGroup Label="System.Text.Json Vulnerability">
-		<!-- Due to a CVE in System.Text.Json we explicitly reference the latest version of System.Text.Json -->
-		<PackageVersion Include="System.Text.Json" Version="9.0.5"/>
-	</ItemGroup>
-
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
 		<PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.1"/>
 		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3"/>
@@ -106,7 +101,6 @@
 	</ItemGroup>
 
 	<ItemGroup Label="Source Code Generators">
-		<PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.12.0"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.12.0"/>
