@@ -29,6 +29,14 @@ bUnit is available on NuGet in various incarnations. Most should just pick the [
 
 To get started, head to the [getting started documentation](https://bunit.dev/docs/getting-started) to learn more.
 
+## bUnit and .NET version compatibility matrix
+| bUnit version | .NET version                    |
+| ------------- | ------------------------------- |
+| 1.x           | &ge; .netcore3.1 && &le; .net 9 |
+| 2.x           | &ge; .net8                      |
+
+For a migration guide, see [Upgrading bUnit](https://bunit.dev/docs/migrations/index.html).
+
 ## Sponsors
 
 A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:

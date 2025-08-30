@@ -6,6 +6,20 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+This major release focuses on platform updates and API simplifications.
+
+For a migration guide, see [Upgrading bUnit](https://bunit.dev/docs/migrations/index.html).
+
+### Changed
+
+- Target framework support updated: added support for .NET 10 (`net10.0`) and dropped all versions prior to .NET 8 (`net8.0`).
+- Cleanup of the API with simplifications of many API calls and methods. This also includes renaming of some objects to better reflect their purpose.
+
+### Added
+
+- Improved renderer logic that catches more edge cases.
+- Improved developer experience in relation to JSInterop.
+
 ## [1.40.0] - 2025-06-14
 
 ### Fixed
