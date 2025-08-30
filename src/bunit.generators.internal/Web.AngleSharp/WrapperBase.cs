@@ -34,6 +34,16 @@ public abstract class WrapperBase<TElement> : IElementWrapper<TElement>
 	}
 
 	/// <summary>
+	/// Gets the element wrapper factory used by this wrapper.
+	/// </summary>
+	[DebuggerNonUserCode]
+	public IElementWrapperFactory Factory
+	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => elementFactory;
+	}
+
+	/// <summary>
 	/// Creates an instance of the <see cref="WrapperBase{T}"/> class.
 	/// </summary>
 	protected WrapperBase(

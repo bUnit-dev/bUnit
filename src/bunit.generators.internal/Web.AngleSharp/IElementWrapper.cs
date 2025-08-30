@@ -14,5 +14,10 @@ public interface IElementWrapper<out TElement> where TElement : class, IElement
 	/// Gets the wrapped element.
 	/// </summary>
 	TElement WrappedElement { get; }
+
+	/// <summary>
+	/// Gets the element wrapper factory used by this wrapper.
+	/// </summary>
+	IElementWrapperFactory Factory { get; }
 }
 #nullable restore

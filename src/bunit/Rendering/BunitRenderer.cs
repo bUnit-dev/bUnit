@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using AngleSharp.Dom;
 using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
@@ -26,6 +27,7 @@ public sealed class BunitRenderer : Renderer
 
 	private readonly HashSet<int> returnedRenderedComponentIds = new();
 	private readonly List<BunitRootComponent> rootComponents = new();
+	private readonly Dictionary<string, int> elementReferenceToComponentId = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private bool disposed;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -453,6 +455,7 @@ public sealed class BunitRenderer : Renderer
 			var id = renderBatch.DisposedComponentIDs.Array[i];
 			disposedComponentIds.Add(id);
 			returnedRenderedComponentIds.Remove(id);
+			RemoveElementReferencesForComponent(id);
 		}
 
 		for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
@@ -466,6 +469,8 @@ public sealed class BunitRenderer : Renderer
 
 			var componentState = GetComponentState(diff.ComponentId);
 			var renderedComponent = (IRenderedComponent)componentState;
+
+			TrackElementReferencesForComponent(diff.ComponentId);
 
 			if (returnedRenderedComponentIds.Contains(diff.ComponentId))
 			{
@@ -517,6 +522,101 @@ public sealed class BunitRenderer : Renderer
 
 			return false;
 		}
+	}
+
+	private void TrackElementReferencesForComponent(int componentId)
+	{
+		var frames = GetCurrentRenderTreeFrames(componentId);
+		TrackElementReferencesInFrames(frames, componentId);
+	}
+
+	private void TrackElementReferencesInFrames(ArrayRange<RenderTreeFrame> frames, int componentId)
+	{
+		for (var i = 0; i < frames.Count; i++)
+		{
+			ref var frame = ref frames.Array[i];
+
+			if (frame.FrameType == RenderTreeFrameType.ElementReferenceCapture)
+			{
+				var elementReferenceId = frame.ElementReferenceCaptureId;
+				if (elementReferenceId != null)
+				{
+					elementReferenceToComponentId[elementReferenceId] = componentId;
+				}
+			}
+			else if (frame.FrameType == RenderTreeFrameType.Component)
+			{
+				TrackElementReferencesForComponent(frame.ComponentId);
+			}
+		}
+	}
+
+	private void RemoveElementReferencesForComponent(int componentId)
+	{
+		var keysToRemove = elementReferenceToComponentId
+			.Where(kvp => kvp.Value == componentId)
+			.Select(kvp => kvp.Key)
+			.ToList();
+
+		foreach (var key in keysToRemove)
+		{
+			elementReferenceToComponentId.Remove(key);
+		}
+	}
+
+	internal IRenderedComponent<TComponent>? FindComponentForElement<TComponent>(IElement element)
+		where TComponent : IComponent
+	{
+		var elementReferenceId = element.GetAttribute("blazor:elementReference");
+		if (elementReferenceId is not null && elementReferenceToComponentId.TryGetValue(elementReferenceId, out var componentId))
+		{
+			return GetRenderedComponent<TComponent>(componentId);
+		}
+
+		return FindComponentByElementContainment<TComponent>(element);
+	}
+
+	private IRenderedComponent<TComponent>? FindComponentByElementContainment<TComponent>(IElement element)
+		where TComponent : IComponent
+	{
+		List<int> renderedComponentIdsWhenStarted = [..returnedRenderedComponentIds];
+		var components = new List<IRenderedComponent<TComponent>>(returnedRenderedComponentIds.Count);
+
+		foreach (var parentComponent in renderedComponentIdsWhenStarted.Select(GetRenderedComponent<IComponent>))
+		{
+			components.AddRange(FindComponents<TComponent>(parentComponent));
+		}
+
+		return components.FirstOrDefault(component => ComponentContainsElement(component, element));
+	}
+
+	private static bool ComponentContainsElement<TComponent>(IRenderedComponent<TComponent> component, IElement element)
+		where TComponent : IComponent
+	{
+		foreach (var node in component.Nodes)
+		{
+			if (node is IElement nodeElement && nodeElement.Equals(element))
+			{
+				return true;
+			}
+			if (IsDescendantOf(element, node))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static bool IsDescendantOf(IElement element, INode potentialAncestor)
+	{
+		var current = element.Parent;
+		while (current is not null)
+		{
+			if (current == potentialAncestor)
+				return true;
+			current = current.Parent;
+		}
+		return false;
 	}
 
 	/// <inheritdoc/>
