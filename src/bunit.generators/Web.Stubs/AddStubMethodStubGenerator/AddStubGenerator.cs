@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp; // For GetInterceptableLocation API and InterceptableLocation type
 
 namespace Bunit.Web.Stubs.AddStubMethodStubGenerator;
 
@@ -50,10 +51,11 @@ public class AddStubGenerator : IIncrementalGenerator
 			return null;
 		}
 
-		var path = GetInterceptorFilePath(context.Node.SyntaxTree, context.SemanticModel.Compilation);
-		var lineSpan = context.SemanticModel.SyntaxTree.GetLineSpan(context.Node.Span);
-		var line = lineSpan.StartLinePosition.Line + 1;
-		var column = lineSpan.Span.Start.Character + context.Node.ToString().IndexOf("AddStub", StringComparison.Ordinal) + 1;
+		var interceptableLocation = context.SemanticModel.GetInterceptableLocation(invocation);
+		if (interceptableLocation is null)
+		{
+			return null;
+		}
 
 		var properties = symbol.GetAllMembersRecursively()
 				.OfType<IPropertySymbol>()
@@ -67,9 +69,7 @@ public class AddStubGenerator : IIncrementalGenerator
 			TargetTypeNamespace = symbol.ContainingNamespace.ToDisplayString(),
 			TargetTypeName = symbol.ToDisplayString(),
 			Properties = properties,
-			Path = path,
-			Line = line,
-			Column = column,
+			Location = interceptableLocation,
 		};
 
 		static bool IsComponentFactoryStubMethod(InvocationExpressionSyntax invocation, SemanticModel semanticModel)
@@ -86,11 +86,6 @@ public class AddStubGenerator : IIncrementalGenerator
 			}
 
 			return semanticModel.GetSymbolInfo(invocation).Symbol is IMethodSymbol { IsExtensionMethod: true, ReceiverType.Name: "ComponentFactoryCollection" };
-		}
-
-		static string GetInterceptorFilePath(SyntaxTree tree, Compilation compilation)
-		{
-			return compilation.Options.SourceReferenceResolver?.NormalizePath(tree.FilePath, baseFilePath: null) ?? tree.FilePath;
 		}
 
 		static bool IsParameterOrCascadingParameter(ISymbol member)
@@ -124,27 +119,21 @@ public class AddStubGenerator : IIncrementalGenerator
 
 	private static void GenerateInterceptorCode(AddStubClassInfo stubbedComponentGroup, IEnumerable<AddStubClassInfo> stubClassGrouped, SourceProductionContext context)
 	{
-		// Generate the attribute
-		const string attribute = """
-		                         namespace System.Runtime.CompilerServices
-		                         {
-		                         	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-		                         	sealed file class InterceptsLocationAttribute : Attribute
-		                         	{
-		                         		public InterceptsLocationAttribute(string filePath, int line, int column)
-		                         		{
-		                         			_ = filePath;
-		                         			_ = line;
-		                         			_ = column;
-		                         		}
-		                         	}
-		                         }
-		                         """;
-
 		// Generate the interceptor
 		var interceptorSource = new StringBuilder(1000);
 		interceptorSource.AppendLine(HeaderProvider.Header);
-		interceptorSource.AppendLine(attribute);
+		interceptorSource.AppendLine("namespace System.Runtime.CompilerServices");
+		interceptorSource.AppendLine("{");
+		interceptorSource.AppendLine("\t[global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = true)]");
+		interceptorSource.AppendLine("\tsealed file class InterceptsLocationAttribute : global::System.Attribute");
+		interceptorSource.AppendLine("\t{");
+		interceptorSource.AppendLine("\t\tpublic InterceptsLocationAttribute(int version, string data)");
+		interceptorSource.AppendLine("\t\t{");
+		interceptorSource.AppendLine("\t\t\t_ = version;");
+		interceptorSource.AppendLine("\t\t\t_ = data;");
+		interceptorSource.AppendLine("\t\t}");
+		interceptorSource.AppendLine("\t}");
+		interceptorSource.AppendLine("}");
 		interceptorSource.AppendLine();
 		interceptorSource.AppendLine("namespace Bunit");
 		interceptorSource.AppendLine("{");
@@ -153,8 +142,7 @@ public class AddStubGenerator : IIncrementalGenerator
 
 		foreach (var hit in stubClassGrouped)
 		{
-			interceptorSource.AppendLine(
-				$"\t\t[global::System.Runtime.CompilerServices.InterceptsLocationAttribute(@\"{hit.Path}\", {hit.Line}, {hit.Column})]");
+			interceptorSource.AppendLine($"\t\t{hit.Location.GetInterceptsLocationAttributeSyntax()}");
 		}
 
 		interceptorSource.AppendLine(
@@ -213,9 +201,7 @@ internal sealed record AddStubClassInfo
 	public required string TargetTypeName { get; set; }
 	public string UniqueQualifier => $"{TargetTypeNamespace}.{StubClassName}";
 	public ImmutableArray<StubPropertyInfo> Properties { get; set; } = ImmutableArray<StubPropertyInfo>.Empty;
-	public required string Path { get; set; }
-	public int Line { get; set; }
-	public int Column { get; set; }
+	public required InterceptableLocation Location { get; set; }
 }
 
 internal sealed record StubPropertyInfo

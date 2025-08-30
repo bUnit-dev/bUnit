@@ -101,10 +101,10 @@
 	</ItemGroup>
 
 	<ItemGroup Label="Source Code Generators">
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0"/>
-		<PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.12.0"/>
-		<PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.12.0"/>
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.12.0"/>
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0"/>
+		<PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0"/>
+		<PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.14.0"/>
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit" Version="1.1.2" />
 	</ItemGroup>
 </Project>
