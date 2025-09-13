@@ -16,9 +16,8 @@
 	<ItemGroup>
 		<PackageReference Include="Serilog" />
 		<PackageReference Include="Serilog.Expressions" />
-		<PackageReference Include="xunit.extensibility.execution" />
-		<PackageReference Include="xunit.abstractions" />		
-		<PackageReference Include="xunit.assert"  />
+		<PackageReference Include="xunit.v3.extensibility.core" />
+		<PackageReference Include="xunit.v3.assert"  />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />

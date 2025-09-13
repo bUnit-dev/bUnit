@@ -31,7 +31,8 @@ public class BunitHtmlParserTest
 	};
 
 	public static readonly IEnumerable<object[]> BodyHtmlAndSpecialElements =
-		TheoryDataExtensions.AddRange(BodyHtmlElements.Clone(), "html", "head", "body");
+		TheoryDataExtensions.AddRange(BodyHtmlElements.Clone(), "html", "head", "body")
+			.Select(data => new object[] { data });
 
 	public static readonly TheoryData<string> SvgElements = new TheoryData<string>
 	{

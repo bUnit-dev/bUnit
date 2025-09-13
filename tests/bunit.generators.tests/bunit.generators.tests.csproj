@@ -15,12 +15,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Verify.SourceGenerators" />
-		<PackageReference Include="Verify.Xunit" />
+		<PackageReference Include="Verify.XunitV3" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Common" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" />
 	</ItemGroup>
 
 	<ItemGroup>

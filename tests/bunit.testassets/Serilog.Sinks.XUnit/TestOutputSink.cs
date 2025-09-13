@@ -1,8 +1,9 @@
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting;
-using Xunit.Abstractions;
+using Xunit;
 using Xunit.Sdk;
+using Xunit.v3;
 
 namespace Serilog.Sinks.XUnit;
 
