@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Reflection;
 using Xunit.Sdk;
+using Xunit.v3;
 
 namespace Xunit;
 
@@ -62,7 +63,7 @@ public sealed class UseCultureAttribute : BeforeAfterTestAttribute
 	/// and replaces them with the new cultures defined in the constructor.
 	/// </summary>
 	/// <param name="methodUnderTest">The method under test</param>
-	public override void Before(MethodInfo methodUnderTest)
+	public override void Before(MethodInfo methodUnderTest, IXunitTest test)
 	{
 		originalCulture = Thread.CurrentThread.CurrentCulture;
 		originalUICulture = Thread.CurrentThread.CurrentUICulture;
@@ -79,7 +80,7 @@ public sealed class UseCultureAttribute : BeforeAfterTestAttribute
 	/// <see cref="CultureInfo.CurrentUICulture" /> to <see cref="Thread.CurrentPrincipal" />
 	/// </summary>
 	/// <param name="methodUnderTest">The method under test</param>
-	public override void After(MethodInfo methodUnderTest)
+	public override void After(MethodInfo methodUnderTest, IXunitTest test)
 	{
 		Thread.CurrentThread.CurrentCulture = originalCulture;
 		Thread.CurrentThread.CurrentUICulture = originalUICulture;

@@ -14,7 +14,7 @@ public class WrapperElementsGeneratorTest
 		var generator = new WrapperElementsGenerator();
 
 		GeneratorDriver driver = CSharpGeneratorDriver.Create(generator);
-		driver = driver.RunGenerators(inputCompilation);
+		driver = driver.RunGenerators(inputCompilation, Xunit.TestContext.Current.CancellationToken);
 
 		var settings = new VerifySettings();
 		settings.AutoVerify();
