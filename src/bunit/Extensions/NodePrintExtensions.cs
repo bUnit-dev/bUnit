@@ -10,7 +10,7 @@ namespace Bunit;
 /// <summary>
 /// Helper methods for pretty printing markup from <see cref="INode"/> and <see cref="INodeList"/>.
 /// </summary>
-public static class NodePrintExtensions
+internal static class NodePrintExtensions
 {
 	/// <summary>
 	/// Writes the serialization of the node guided by the formatter.
@@ -30,21 +30,6 @@ public static class NodePrintExtensions
 
 	/// <summary>
 	/// Uses the <see cref="DiffMarkupFormatter"/> to generate a HTML markup string
-	/// from a <see cref="IEnumerable{INode}"/> <paramref name="nodes"/>.
-	/// The generated HTML markup will NOT include the internal Blazor attributes
-	/// added to elements.
-	/// </summary>
-	public static string ToDiffMarkup(this IEnumerable<INode> nodes)
-	{
-		ArgumentNullException.ThrowIfNull(nodes);
-
-		using var sw = new StringWriter();
-		nodes.ToHtml(sw, new DiffMarkupFormatter());
-		return sw.ToString();
-	}
-
-	/// <summary>
-	/// Uses the <see cref="DiffMarkupFormatter"/> to generate a HTML markup string
 	/// from a <see cref="IMarkupFormattable"/> <paramref name="markupFormattable"/>.
 	/// The generated HTML markup will NOT include the internal Blazor attributes
 	/// added to elements.
@@ -55,42 +40,6 @@ public static class NodePrintExtensions
 
 		using var sw = new StringWriter();
 		markupFormattable.ToHtml(sw, new DiffMarkupFormatter());
-		return sw.ToString();
-	}
-
-	/// <summary>
-	/// Uses the <see cref="PrettyMarkupFormatter"/> to generate a HTML markup string
-	/// from a <see cref="IEnumerable{INode}"/> <paramref name="nodes"/>.
-	/// </summary>
-	public static string ToMarkup(this IEnumerable<INode> nodes)
-	{
-		ArgumentNullException.ThrowIfNull(nodes);
-
-		using var sw = new StringWriter();
-		var formatter = new PrettyMarkupFormatter
-		{
-			NewLine = Environment.NewLine,
-			Indentation = "  ",
-		};
-		nodes.ToHtml(sw, formatter);
-		return sw.ToString();
-	}
-
-	/// <summary>
-	/// Uses the <see cref="PrettyMarkupFormatter"/> to generate a HTML markup
-	/// from a <see cref="IMarkupFormattable"/> <paramref name="markupFormattable"/>.
-	/// </summary>
-	public static string ToMarkup(this IMarkupFormattable markupFormattable)
-	{
-		ArgumentNullException.ThrowIfNull(markupFormattable);
-
-		using var sw = new StringWriter();
-		var formatter = new PrettyMarkupFormatter
-		{
-			NewLine = Environment.NewLine,
-			Indentation = "  ",
-		};
-		markupFormattable.ToHtml(sw, formatter);
 		return sw.ToString();
 	}
 
