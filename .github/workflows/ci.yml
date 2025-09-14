@@ -41,7 +41,7 @@ jobs:
 
     # Install the .NET SDK indicated in the global.json file
     - name: ⚙️ Setup dotnet versions
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
           8.0.x
@@ -90,7 +90,7 @@ jobs:
     needs: [ create-nuget ]
     steps:
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
 
       - uses: actions/download-artifact@v4
         with:
@@ -122,7 +122,7 @@ jobs:
           fetch-depth: 0
 
       - name: ⚙️ Setup dotnet versions
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             8.0.x
@@ -156,7 +156,7 @@ jobs:
           fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
 
       - name: ⚙️ Setup dotnet
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             9.0.x
@@ -216,7 +216,7 @@ jobs:
           fetch-depth: 0
 
       - name: ⚙️ Setup dotnet versions
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             8.0.x
@@ -279,7 +279,7 @@ jobs:
           path: ${{ env.NUGET_DIRECTORY }}
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
 
       - name: 🛠️ Upload library to GitHub Package Repository
         run: dotnet nuget push ${{ env.NUGET_DIRECTORY }}/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bunit-dev/index.json --skip-duplicate --no-symbols
