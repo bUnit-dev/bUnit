@@ -4,7 +4,7 @@ concurrency: 'release'
 on:
   pull_request:
     branches:
-      - stable
+      - v1
     types:
       - closed
     paths-ignore:
@@ -23,7 +23,7 @@ jobs:
   release:
     name: 🎁 Publish new release
     # Only run on manual dispatch or on merged 'release-' pull requests
-    if: github.ref == 'refs/heads/stable' ||
+    if: github.ref == 'refs/heads/v1' ||
         github.event.pull_request.merged == true && contains(github.head_ref, 'release/v') == true
     runs-on: ubuntu-latest
     steps:
@@ -117,25 +117,3 @@ jobs:
           draft: false
           prerelease: ${{ steps.nbgv.outputs.PublicRelease == 'False' }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: ⏩ Merge stable with main, push to origin
-        id: mergeMainline
-        continue-on-error: true
-        run: |
-          git checkout main
-          git merge -S stable
-          git push origin main
-
-      - name: ⏭ Create pull request from stable to main when direct merge fails
-        if: steps.mergeMainline.outcome == 'failure'
-        uses: thomaseizinger/create-pull-request@1.4.0
-        with:
-          github_token: ${{ secrets.BUNIT_BOT_TOKEN }}
-          head: stable
-          base: main
-          title: Update main with changes in stable after v${{ steps.nbgv.outputs.SemVer2 }} release
-          reviewers: ${{ github.actor }} # By default, we request a review from the person who triggered the workflow.
-          body: |
-            Hi @${{ github.actor }}
-
-            This PR was created because the [release workflow](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed to automatically merge stable into main.

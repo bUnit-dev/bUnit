@@ -13,7 +13,7 @@ jobs:
   prepare-release:
     name: 🚚 Prepare new release
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && contains(fromJson('["major","minor"]'), github.event.inputs.versionIncrement)
+    if: github.ref == 'refs/heads/v1' && contains(fromJson('["major","minor"]'), github.event.inputs.versionIncrement)
     steps:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v4

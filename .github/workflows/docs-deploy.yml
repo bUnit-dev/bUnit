@@ -4,12 +4,12 @@ concurrency: "docs-deploy"
 on:
   push:
     branches:
-      - stable
+      - v1
     paths:
       - 'docs/**'
 
   workflow_run:
-    branches: [ main ]
+    branches: [ v1 ]
     workflows: [ 'release' ]
     types: [ completed ]
 
@@ -25,7 +25,7 @@ env:
 jobs:
   deploy:
     name: 📃 Deploy new version bunit.dev
-    if: github.ref == 'refs/heads/stable' || ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: github.ref == 'refs/heads/v1' || ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
 
@@ -100,7 +100,7 @@ jobs:
         with:
           build_dir: docs/site/_site
           fqdn: bunit.dev
-          repo: bUnit-dev/bUnit-dev.github.io
+          repo: bUnit-dev/v1.bunit.dev
           target_branch: main
           keep_history: false
           jekyll: false
@@ -108,25 +108,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_PAT: ${{ secrets.BUNIT_BOT_TOKEN }}
-
-      - name: ⏩ Merge stable with main, push origin
-        id: mergeMainline
-        continue-on-error: true
-        run: |
-          git checkout main
-          git merge -S stable
-          git push origin main
-
-      - name: ⏭ Create pull request from stable to main when direct merge fails
-        if: steps.mergeMainline.outcome == 'failure'
-        uses: thomaseizinger/create-pull-request@1.4.0
-        with:
-          github_token: ${{ secrets.BUNIT_BOT_TOKEN }}
-          head: stable
-          base: main
-          title: Update main with documentation in stable
-          reviewers: ${{ github.actor }} # By default, we request a review from the person who triggered the workflow.
-          body: |
-            Hi @${{ github.actor }}
-
-            This PR was created because the [docs-deploy](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed to automatically merge stable into main.
