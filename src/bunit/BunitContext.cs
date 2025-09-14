@@ -55,7 +55,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	public ComponentFactoryCollection ComponentFactories { get; } = new();
 
 	/// <summary>
-	/// TODO.
+	/// Gets the components that has been rendered by this <see cref="BunitContext"/>.
 	/// </summary>
 	internal ISet<IRenderedComponent<IComponent>> ReturnedRenderedComponents { get; } = new HashSet<IRenderedComponent<IComponent>>();
 
