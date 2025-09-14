@@ -232,9 +232,10 @@ public sealed class BunitRenderer : Renderer
 
 				await Task.WhenAll(disposalTasks).ConfigureAwait(false);
 				disposalTasks.Clear();
+				rootComponents.Clear();
+
 			});
 
-			rootComponents.Clear();
 			AssertNoUnhandledExceptions();
 		}
 
