@@ -108,7 +108,7 @@ public void StaticRendering()
 ***
 
 ## Setting the `RendererInfo` during testing
-To control the `ComponentBase.RendererInfo` property during testing, use the <xref:Bunit.TestContextBase.SetRendererInfo(Microsoft.AspNetCore.Components.RendererInfo)> method on the `TestContext` class. The `SetRendererInfo` method takes an nullable `RendererInfo` object as a parameter. Passing `null` will set the `ComponentBase.RendererInfo` to `null`. 
+To control the `ComponentBase.RendererInfo` property during testing, use the <xref:Bunit.BunitContext.SetRendererInfo(Microsoft.AspNetCore.Components.RendererInfo)> method on the `TestContext` class. The `SetRendererInfo` method takes an nullable `RendererInfo` object as a parameter. Passing `null` will set the `ComponentBase.RendererInfo` to `null`. 
 
 A component (`AssistentComponent.razor`) might check if interactivity is given to enable a button:
 

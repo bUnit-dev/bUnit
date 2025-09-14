@@ -8,12 +8,12 @@ using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples;
 
-public class RenderFragmentParams1Test : TestContext
+public class RenderFragmentParams1Test : BunitContext
 {
   [Fact]
   public void Test()
   {
-    var cut = RenderComponent<RenderFragmentParams>(parameters => parameters
+    var cut = Render<RenderFragmentParams>(parameters => parameters
       .Add(p => p.Content, "<h1>Hello World</h1>")
     );
   }

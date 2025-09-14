@@ -3,7 +3,7 @@ using Bunit;
 
 namespace Bunit.Docs.Samples;
 
-public class FallBackServiceProviderUsageExample : TestContext
+public class FallBackServiceProviderUsageExample : BunitContext
 {
   [Fact]
   public void FallBackServiceProviderReturns()

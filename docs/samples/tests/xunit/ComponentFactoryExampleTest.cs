@@ -1,12 +1,10 @@
-#if NET5_0_OR_GREATER
-
 using Microsoft.AspNetCore.Components.Web;
 using Xunit;
 using Bunit;
 
 namespace Bunit.Docs.Samples
 {
-  public class ComponentFactoryExampleTest : TestContext
+  public class ComponentFactoryExampleTest : BunitContext
   {
     [Fact]
     public void ReplacesFooWithBarDuringTest()
@@ -15,7 +13,7 @@ namespace Bunit.Docs.Samples
       ComponentFactories.Add(new FooBarComponentFactory());
 
       // Act
-      var cut = RenderComponent<Wrapper>(parameters => parameters
+      var cut = Render<Wrapper>(parameters => parameters
         .AddChildContent<Foo>());
 
       // Assert that there are no <Foo> in render tree,
@@ -25,5 +23,3 @@ namespace Bunit.Docs.Samples
     }
   }
 }
-
-#endif

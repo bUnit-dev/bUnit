@@ -8,12 +8,12 @@ using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples;
 
-public class TemplateParams2Test : TestContext
+public class TemplateParams2Test : BunitContext
 {
   [Fact]
   public void Test()
   {
-    var cut = RenderComponent<TemplateParams<string>>(parameters => parameters
+    var cut = Render<TemplateParams<string>>(parameters => parameters
       .Add(p => p.Items, new[] { "Foo", "Bar", "Baz" })
       .Add<Item, string>(p => p.Template, value => itemParams => itemParams
         .Add(p => p.Value, value)

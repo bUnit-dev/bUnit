@@ -1,5 +1,6 @@
 using System.Reflection;
 using Xunit.Sdk;
+using Xunit.v3;
 
 namespace Xunit;
 
@@ -20,11 +21,12 @@ public sealed class RepeatAttribute : DataAttribute
 		Count = count;
 	}
 
-	public override IEnumerable<object[]> GetData(MethodInfo testMethod)
+	public override ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData(MethodInfo testMethod,
+		DisposalTracker disposalTracker)
 	{
-		for (int count = 1; count <= Count; count++)
-		{
-			yield return new object[] { count };
-		}
+		var rows = Enumerable.Range(1, Count).Select(i => new TheoryDataRow(new object[] { i })).ToArray();
+		return new ValueTask<IReadOnlyCollection<ITheoryDataRow>>(rows);
 	}
+
+	public override bool SupportsDiscoveryEnumeration() => false;
 }

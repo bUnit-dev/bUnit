@@ -143,7 +143,7 @@ To verify that the `FocusAsync` has been called in the `<ClickToFocus>` componen
 Do the following:
 
 ```csharp
-var cut = RenderComponent<ClickToFocus>();
+var cut = Render<ClickToFocus>();
 var inputElement = cut.Find("input");
 
 cut.Find("button").Click(); // Triggers onclick handler that sets focus of input element

@@ -6,6 +6,20 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+This major release focuses on platform updates and API simplifications.
+
+For a migration guide, see [Upgrading bUnit](https://bunit.dev/docs/migrations/index.html).
+
+### Changed
+
+- Target framework support updated: added support for .NET 10 (`net10.0`) and dropped all versions prior to .NET 8 (`net8.0`).
+- Cleanup of the API with simplifications of many API calls and methods. This also includes renaming of some objects to better reflect their purpose.
+
+### Added
+
+- Improved renderer logic that catches more edge cases.
+- Improved developer experience in relation to JSInterop.
+
 ## [1.40.0] - 2025-06-14
 
 ### Fixed
@@ -84,6 +98,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Fixed
 
 - CI build changes to force running verification on x64 based AMD CPUs.
+
+### Added
+
+- New overloads for `ComponentParameterCollectionBuilder.Add` that allow passing arguments for asynchronous callback parameters. Reported by [springy76](https://github.com/springy76). By [@Qwertyluk](https://github.com/Qwertyluk).
 
 ## [1.28.9] - 2024-04-19
 
@@ -743,7 +761,7 @@ List of new features.
 
 - Added `Render(RenderFragment)` and `Render<TComponent>(RenderFragment)` methods to `TestContext`, as well as various overloads to the `MarkupMatches` methods, that also takes a `RenderFragment` as the expected value.
 
-          The difference between the generic `Render` method and the non-generic one is that the generic returns an `IRenderedComponent<TComponent>`, whereas the non-generic one returns a `IRenderedFragment`.
+          The difference between the generic `Render` method and the non-generic one is that the generic returns an `IRenderedComponent<TComponent>`, whereas the non-generic one returns a `RenderedFragment`.
 
           Calling `Render<TComponent>(RenderFragent)` is equivalent to calling `Render(RenderFragment).FindComponent<TComponent>()`, e.g. it returns the first component in the render tree of type `TComponent`. This is different from the `RenderComponent<TComponent>()` method, where `TComponent` _is_ the root component of the render tree.
 

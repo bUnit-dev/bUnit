@@ -8,7 +8,7 @@ using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples;
 
-public class EventCallbackParamsTest : TestContext
+public class EventCallbackParamsTest : BunitContext
 {
   [Fact]
   public void Test()
@@ -16,7 +16,7 @@ public class EventCallbackParamsTest : TestContext
     Action<MouseEventArgs> onClickHandler = _ => { };
     Action onSomethingHandler = () => { };
 
-    var cut = RenderComponent<EventCallbackParams>(parameters => parameters
+    var cut = Render<EventCallbackParams>(parameters => parameters
       .Add(p => p.OnClick, onClickHandler)
       .Add(p => p.OnSomething, onSomethingHandler)
     );

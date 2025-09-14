@@ -6,7 +6,7 @@ title: Mocking Localization via IStringLocalizer
 <p>There are just two steps. First in your setup add the following:</p>
 
 ```csharp
-TestContext.Services.AddLocalization();
+BunitContext.Services.AddLocalization();
 ```
 
 <p>Then in your test code, when you need the localized string to compare, you write the following:</p>

@@ -1,4 +1,3 @@
-#if NET5_0_OR_GREATER
 using Xunit;
 using Bunit;
 using Moq;
@@ -6,7 +5,7 @@ using NSubstitute;
 
 namespace Bunit.Docs.Samples
 {
-  public class CounterWithFancyParagraphTest : TestContext
+  public class CounterWithFancyParagraphTest : BunitContext
   {
     [Fact]
     public void CounterShouldIncrementWhenClicked_Moq()
@@ -16,7 +15,7 @@ namespace Bunit.Docs.Samples
 
       ComponentFactories.Add(mock.Object);
 
-      var cut = RenderComponent<Counter>();
+      var cut = Render<Counter>();
 
       cut.Find("button").Click();
 
@@ -30,7 +29,7 @@ namespace Bunit.Docs.Samples
 
       ComponentFactories.Add(mockComponent);
 
-      var cut = RenderComponent<Counter>();
+      var cut = Render<Counter>();
 
       cut.Find("button").Click();
 
@@ -38,4 +37,3 @@ namespace Bunit.Docs.Samples
     }
   }
 }
-#endif

@@ -1,5 +1,5 @@
 [![GitHub tag](https://img.shields.io/github/v/tag/bUnit-dev/bUnit?include_prereleases&logo=github&style=flat-square)](https://github.com/bUnit-dev/bUnit/releases)
-[![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
+[![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)
 [![Issues Open](https://img.shields.io/github/issues/bUnit-dev/bUnit.svg?style=flat-square&logo=github)](https://github.com/bUnit-dev/bUnit/issues)
 
 # bUnit - a testing library for Blazor components
@@ -12,7 +12,7 @@
 - Pass parameters, cascading values and inject services into components under test
 - Mock `IJSRuntime`, Blazor authentication and authorization, and others
 
-bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which run the Blazor component tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run.
+bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, MSTest and TUnit, which run the Blazor component tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run.
 
 **Go to [bUnit.dev](https://bunit.dev) to learn more.**
 
@@ -22,14 +22,20 @@ bUnit is available on NuGet in various incarnations. Most should just pick the [
 
 | Name | Description | NuGet Download Link |
 | ----- | ----- | ---- |
-| [bUnit](https://www.nuget.org/packages/bunit/) | Includes the bUnit.core and bUnit.web packages. | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) |
-| [bUnit.core](https://www.nuget.org/packages/bunit.core/) | Core library that enables rendering a Blazor component in a test context. | [![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.core/) |
-| [bUnit.web](https://www.nuget.org/packages/bunit.web/) | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) |
+| [bUnit](https://www.nuget.org/packages/bunit/) | Adds support for testing Blazor components. | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) |
 | [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template, which currently creates xUnit-based bUnit test projects only. | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) |
 | [bUnit.generators](https://www.nuget.org/packages/bunit.generators/)|Source code generators to minimize code setup in various situations.|[![Nuget](https://img.shields.io/nuget/dt/bunit.generators?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.generators/)|
 | [bUnit.web.query](https://www.nuget.org/packages/bunit.web.query/)|bUnit implementation of testing-library.com's query APIs.|[![Nuget](https://img.shields.io/nuget/dt/bunit.web.query?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web.query/)|
 
 To get started, head to the [getting started documentation](https://bunit.dev/docs/getting-started) to learn more.
+
+## bUnit and .NET version compatibility matrix
+| bUnit version | .NET version                    |
+| ------------- | ------------------------------- |
+| 1.x           | &ge; .netcore3.1 && &le; .net 9 |
+| 2.x           | &ge; .net8                      |
+
+For a migration guide, see [Upgrading bUnit](https://bunit.dev/docs/migrations/index.html).
 
 ## Sponsors
 

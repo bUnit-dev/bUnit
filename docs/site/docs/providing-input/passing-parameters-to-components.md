@@ -11,15 +11,15 @@ bUnit comes with a number of ways to pass parameters to components under test:
 
 2. In tests written in `.cs` files, bUnit includes a strongly typed builder. There are two methods in bUnit that allow passing parameters in C#-based test code:
 
-   - `RenderComponent` method on the test context, which is used to render a component initially.
-   - `SetParametersAndRender` method on a rendered component, which is used to pass new parameters to an already rendered component.
+   - `Render` method on the test context, which is used to render a component initially.
+   - `Render` method on a rendered component, which is used to pass new parameters to an already rendered component.
 
 In the following sub sections, we will show both `.cs`- and `.razor`-based test code; just click between them using the tabs.
 
 > [!NOTE]
 > The examples below are written using **xUnit**, but the code is the same with **NUnit** and **MSTest**.
 >
-> The example tests are inheriting from the `TestContext` as described in the <xref:writing-tests> page. If your test class is not inheriting from the `TestContext`, then you should explicitly instantiate the `TestContext` in your tests. The recommended way is to inherit from the `TestContext`. An example below will demonstrate how to instantiate a `TestContext` per test method.
+> The example tests are inheriting from the `BunitContext` as described in the <xref:writing-tests> page. If your test class is not inheriting from the `BunitContext`, then you should explicitly instantiate the `BunitContext` in your tests. The recommended way is to inherit from the `BunitContext`. An example below will demonstrate how to instantiate a `BunitContext` per test method.
 
 ## Regular parameters
 
@@ -65,7 +65,7 @@ The example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` 
 
 [!code-cshtml[EventCallbackParamsTest.razor](../../../samples/tests/razor/EventCallbackParamsTest.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The parameters to the component is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The parameters to the component is just passed like normal in Razor code.
 
 ***
 
@@ -89,7 +89,7 @@ The example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddCh
 
 [!code-cshtml[ChildContentParamsTest.razor](../../../samples/tests/razor/ChildContentParams1Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some HTML markup, is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some HTML markup, is just passed like normal in Razor code.
 
 ***
 
@@ -107,7 +107,7 @@ The example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddCh
 
 [!code-cshtml[ChildContentParamsTest.razor](../../../samples/tests/razor/ChildContentParams2Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some Razor markup, is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some Razor markup, is just passed like normal in Razor code.
 
 ***
 
@@ -127,7 +127,7 @@ The example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `AddCh
 
 [!code-cshtml[ChildContentParamsTest.razor](../../../samples/tests/razor/ChildContentParams3Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some Razor markup, and parameters to the child component, is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some Razor markup, and parameters to the child component, is just passed like normal in Razor code.
 
 ***
 
@@ -145,7 +145,7 @@ Passing a mix of markup and components to a `ChildContent` parameter is done by 
 
 [!code-cshtml[ChildContentParamsTest.razor](../../../samples/tests/razor/ChildContentParams4Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some Razor markup, and parameters to the child component, is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some Razor markup, and parameters to the child component, is just passed like normal in Razor code.
 
 ***
 
@@ -171,7 +171,7 @@ The example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` 
 
 [!code-cshtml[RenderFragmentParamsTest.razor](../../../samples/tests/razor/RenderFragmentParams1Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some HTML markup, is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some HTML markup, is just passed like normal in Razor code.
 
 ***
 
@@ -189,7 +189,7 @@ The example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<T
 
 [!code-cshtml[RenderFragmentParamsTest.razor](../../../samples/tests/razor/RenderFragmentParams2Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some Razor markup, is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some Razor markup, is just passed like normal in Razor code.
 
 ***
 
@@ -209,7 +209,7 @@ The example uses the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add<T
 
 [!code-cshtml[RenderFragmentParamsTest.razor](../../../samples/tests/razor/RenderFragmentParams3Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some Razor markup, and parameters to the child component, is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some Razor markup, and parameters to the child component, is just passed like normal in Razor code.
 
 ***
 
@@ -221,13 +221,13 @@ Some times you need to pass multiple different types of content to a `RenderFrag
 
 [!code-csharp[RenderFragmentParamsTest.cs](../../../samples/tests/xunit/RenderFragmentParams4Test.cs#L11-L27)]
 
-Passing a mix of markup and components to a `RenderFragment` parameter is simply done by calling the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add()` methods or using the `ChildContent()` factory methods in <xref:Bunit.ComponentParameterFactory>, as seen here.
+Passing a mix of markup and components to a `RenderFragment` parameter is simply done by calling the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add()` methods or using the `AddChildContent` factory methods.
 
 # [Razor test code](#tab/razor)
 
 [!code-cshtml[RenderFragmentParamsTest.razor](../../../samples/tests/razor/RenderFragmentParams4Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some HTML and Razor markup, and parameters to the child component, is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child content, some HTML and Razor markup, and parameters to the child component, is just passed like normal in Razor code.
 
 ***
 
@@ -257,7 +257,7 @@ The delegate creates a simple markup string in the example.
 
 [!code-cshtml[TemplateParamsTest.razor](../../../samples/tests/razor/TemplateParams1Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child template content, some HTML markup, is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child template content, some HTML markup, is just passed like normal in Razor code.
 
 **NOTE:** Before the .NET 6 version of the Blazor compiler, this example does not work.
 
@@ -279,7 +279,7 @@ The example creates a template with the `<Item>` component listed above.
 
 [!code-cshtml[TemplateParamsTest.razor](../../../samples/tests/razor/TemplateParams2Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child template content, some HTML and Razor markup, is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The child template content, some HTML and Razor markup, is just passed like normal in Razor code.
 
 **NOTE:** Before the .NET 6 version of the Blazor compiler, this example does not work.
 
@@ -303,7 +303,7 @@ The examples passes in the parameter `some-unknown-param` with the value `a valu
 
 [!code-cshtml[UnmatchedParamsTest.razor](../../../samples/tests/razor/UnmatchedParamsTest.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The parameter is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The parameter is just passed like normal in Razor code.
 
 ***
 
@@ -329,7 +329,7 @@ The example pass the variable `isDarkTheme` to the cascading parameter `IsDarkTh
 
 [!code-cshtml[CascadingParamsTest.razor](../../../samples/tests/razor/CascadingParams1Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The cascading value is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The cascading value is just passed like normal in Razor code.
 
 ***
 
@@ -347,7 +347,7 @@ The example pass in the value `Name of User` to the cascading parameter with the
 
 [!code-cshtml[CascadingParamsTest.razor](../../../samples/tests/razor/CascadingParams2Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The cascading value is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The cascading value is just passed like normal in Razor code.
 
 ***
 
@@ -365,7 +365,7 @@ The example passes both the unnamed `IsDarkTheme` cascading parameter and the tw
 
 [!code-cshtml[CascadingParamsTest.razor](../../../samples/tests/razor/CascadingParams3Test.razor)]
 
-The example passes a inline Razor template to the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The cascading value is just passed like normal in Razor code.
+The example passes a inline Razor template to the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method. The cascading value is just passed like normal in Razor code.
 
 ***
 
@@ -375,9 +375,9 @@ It is possible to nest a component under tests inside other components, if that 
 
 # [C# test code](#tab/csharp)
 
-[!code-csharp[NestedComponentTest](../../../samples/tests/xunit/NestedComponentTest.cs#L11-L23)]
+[!code-csharp[NestedComponentTest](../../../samples/tests/xunit/NestedComponentTest.cs#L11-L18)]
 
-The example renders the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()` that returns a `IRenderedComponent<HelloWorld>`. This is needed because the `RenderComponent<Wrapper>` method call returns an `IRenderedComponent<Wrapper>` instance, that provides access to the instance of the `<Wrapper>` component, but not the `<HelloWorld>`-component instance.
+The example renders the `<HelloWorld>` component inside the `<Wrapper>` component. What is special in both cases is the use of the `FindComponent<HelloWorld>()` that returns a `RenderedComponent<HelloWorld>`. This is needed because the `Render<Wrapper>` method call returns an `RenderedComponent<Wrapper>` instance, that provides access to the instance of the `<Wrapper>` component, but not the `<HelloWorld>`-component instance.
 
 # [Razor test code](#tab/razor)
 
@@ -406,11 +406,11 @@ The example uses the `Bind` method to setup two-way binding between the `Value` 
 The example uses the standard `@bind-Value` directive in Blazor to set up two way binding between the `Value` parameter and `ValueChanged` parameter and the local variable in the test method (`currentValue`).
 
 > [!WARNING]
-> When using `@bind` in conjunction with razor test-files the razor component should **not** inherit from `ComponentBase` (which is the default). The simplest solution would be to inherit from `TestContext` (as seen in the example above) which also brings the benefits as described on top of this page.
+> When using `@bind` in conjunction with razor test-files the razor component should **not** inherit from `ComponentBase` (which is the default). The simplest solution would be to inherit from `BunitContext` (as seen in the example above) which also brings the benefits as described on top of this page.
 ***
 
-## `TestContext` per test method
-There are scenarios where it is not possible or not desirable to inherit from `TestContext` in the test class. In those cases, it is possible to create a new `TestContext` instance per test method. As the `TestContext` class implements `IDisposable`, it is recommended to use the `using` statement to ensure that the instance is disposed of after the test method has run.
+## `BunitContext` per test method
+There are scenarios where it is not possible or not desirable to inherit from `BunitContext` in the test class. In those cases, it is possible to create a new `BunitContext` instance per test method. As the `BunitContext` class implements `IDisposable`, it is recommended to use the `using` statement to ensure that the instance is disposed of after the test method has run.
 
 # [C# test code](#tab/csharp)
 
@@ -429,9 +429,9 @@ When the razor syntax is used and the test throws the following exception:
 
 This usually means that the test class (Blazor component where the tests is declared in) is direclty inheriting from `ComponentBase`, as is the default for all Blazor components.
 
-The solution is to inherit from bUnits `TestContext` instead, i.e.:
+The solution is to inherit from bUnits `BunitContext` instead, i.e.:
 ```razor
-@inherits TestContext
+@inherits BunitContext
 
 @code {
     [Fact]
@@ -444,9 +444,9 @@ The solution is to inherit from bUnits `TestContext` instead, i.e.:
 
 ## Limitations of rendering a `RenderFragment` inside a test
   
-When rendering a `RenderFragment` using the <xref:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method, the created <xref:Bunit.IRenderedFragment> is static. This means that it will not re-render even if events are triggered.
+When rendering a `RenderFragment` using the <xref:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)> method, the created <xref:Bunit.IRenderedComponent`1> is static. This means that it will not re-render even if events are triggered.
 ```razor
-@inherits TestContext
+@inherits BunitContext
 
 @code {
   [Fact]
@@ -470,7 +470,7 @@ When rendering a `RenderFragment` using the <xref:Bunit.TestContext.Render(Micro
 
 In .NET 6 and later, components can receive parameters from a query string if the parameter is annotated with the `[SupplyParameterFromQuery]` attribute in addition to the `[Parameter]` attribute. 
 
-In .NET 8 however, the `[Parameter]` attribute is no longer required, which means a value cannot be passed to the component during testing using the normal methods, e.g. the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, if a component parameter is only annotated with the `[SupplyParameterFromQuery]` attribute. Instead, pass a query string parameters by setting it using the <xref:Bunit.TestDoubles.FakeNavigationManager>.
+In .NET 8 however, the `[Parameter]` attribute is no longer required, which means a value cannot be passed to the component during testing using the normal methods, e.g. the <xref:Bunit.ComponentParameterCollectionBuilder`1>'s `Add` method, if a component parameter is only annotated with the `[SupplyParameterFromQuery]` attribute. Instead, pass a query string parameters by setting it using the <xref:Bunit.TestDoubles.BunitNavigationManager>.
 
 For example: 
 
@@ -484,7 +484,7 @@ For example:
 A simple example of how to test a component that receives parameters from the query string:
 
 ```razor
-@inherits TestContext
+@inherits BunitContext
 
 @code {
   [Fact]
@@ -494,7 +494,7 @@ A simple example of how to test a component that receives parameters from the qu
     var uri = navigationManager.GetUriWithQueryParameter("Name", "bUnit");
     navigationManager.NavigateTo(uri);
 
-    var cut = RenderComponent<SupplyFromQueryParameterComponent>();
+    var cut = Render<SupplyFromQueryParameterComponent>();
 
     cut.Instance.Name.ShouldBe("bUnit");
   }

@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Bunit.Docs.Samples;
 
-public class RenderTreeTest : TestContext
+public class RenderTreeTest : BunitContext
 {
   [Fact]
   public void PrintCascadingValueTest()
@@ -19,7 +19,7 @@ public class RenderTreeTest : TestContext
 
     // The component will be rendered as a child of last
     // component added to the RenderTree property.
-    var cut = RenderComponent<PrintCascadingValue>();
+    var cut = Render<PrintCascadingValue>();
 
     // Verify that the cascading value was passed correctly.
     cut.MarkupMatches($"Cascading value: FOO");
@@ -35,7 +35,7 @@ public class RenderTreeTest : TestContext
 
     // The component will be rendered as a child of last
     // component added to the RenderTree property.
-    var cut = RenderComponent<PrintCascadingValue>();
+    var cut = Render<PrintCascadingValue>();
 
     // Verify that the cascading value was passed correctly.
     cut.MarkupMatches($"Cascading value: BAR?");

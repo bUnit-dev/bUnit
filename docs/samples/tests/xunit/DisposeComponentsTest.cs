@@ -5,17 +5,17 @@ using Xunit;
 
 namespace Bunit.Docs.Samples;
 
-public class DisposeComponentsTest : TestContext
+public class DisposeComponentsTest : BunitContext
 {
   [Fact]
-  public void DisposeElements()
+  public async Task DisposeElements()
   {
     var calledTimes = 0;
-    var cut = RenderComponent<DisposableComponent>(parameters => parameters
+    var cut = Render<DisposableComponent>(parameters => parameters
       .Add(p => p.LocationChangedCallback, url => calledTimes++)
     );
 
-    DisposeComponents();
+    await DisposeComponentsAsync();
 
     Services.GetRequiredService<NavigationManager>().NavigateTo("newurl");
 
@@ -23,24 +23,33 @@ public class DisposeComponentsTest : TestContext
   }
 
   [Fact]
-  public void ShouldCatchExceptionInDispose()
+  public async Task ShouldCatchExceptionInDispose()
   {
-    RenderComponent<ExceptionInDisposeComponent>();
+    Render<ExceptionInDisposeComponent>();
 
-    var act = DisposeComponents;
+    Func<Task> act = () => DisposeComponentsAsync();
 
-    Assert.Throws<NotSupportedException>(act);
+    await Assert.ThrowsAsync<NotSupportedException>(act);
   }
 
-#if NET5_0_OR_GREATER
   [Fact]
-  public void ShouldCatchExceptionInDisposeAsync()
+  public async Task ShouldCatchExceptionInDisposeAsync()
   {
-    RenderComponent<ExceptionInDisposeAsyncComponent>();
+    Render<ExceptionInDisposeAsyncComponent>();
 
-    DisposeComponents();
+    await DisposeComponentsAsync();
     var exception = Renderer.UnhandledException.Result;
     Assert.IsType<NotSupportedException>(exception);
   }
-#endif
+
+  [Fact]
+  public async Task ShouldDisposeJSObject()
+  {
+    JSInterop.SetupVoid("dispose").SetVoidResult();
+    Render<AsyncDisposableComponent>();
+
+    await DisposeComponentsAsync();
+
+    JSInterop.VerifyInvoke("dispose");
+  }
 }

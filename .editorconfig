@@ -454,6 +454,7 @@ dotnet_diagnostic.S1075.severity = suggestion # S1075: URIs should not be hardco
 dotnet_diagnostic.S1186.severity = suggestion # S1186: Methods should not be empty
 dotnet_diagnostic.S2292.severity = suggestion # S2292: Trivial properties should be auto-implemented
 dotnet_diagnostic.S3267.severity = suggestion # S3267: Convert foreach loop to LINQ query
+dotnet_diagnostic.S2743.severity = suggestion # S2743: A static field in a generic type is not shared among instances
 dotnet_diagnostic.S4158.severity = none # BUGGY with C#9 code - doesnt understand local methods
 
 # Razor specific rules
@@ -491,6 +492,7 @@ dotnet_diagnostic.CA1062.severity = none # CA1062: Validate arguments of public 
 dotnet_diagnostic.CA1707.severity = none # CA1707: Identifiers should not contain underscores
 dotnet_diagnostic.CA1812.severity = none # CA1812: Avoid uninstantiated internal classes - components under test are never instantiated directly.
 dotnet_diagnostic.CA1822.severity = suggestion # CA1822: Mark members as static
+dotnet_diagnostic.CA1859.severity = none # CA1859: Change return type of method
 dotnet_diagnostic.CA2007.severity = none # CA2007: Consider calling ConfigureAwait on the awaited task
 
 # Microsoft - FxCop

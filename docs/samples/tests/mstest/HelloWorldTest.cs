@@ -4,13 +4,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Bunit;
 
 [TestClass]
-public class HelloWorldTest : BunitTestContext
+public class HelloWorldTest : BunitContext
 {
   [TestMethod]
   public void HelloWorldComponentRendersCorrectly()
   {
     // Act
-    var cut = RenderComponent<HelloWorld>();
+    var cut = Render<HelloWorld>();
 
     // Assert
     cut.MarkupMatches("<h1>Hello world from Blazor</h1>");

@@ -67,7 +67,7 @@ The general setup for the given component above looks like this:
 ```csharp
 namespace MyTest;
 
-public class FeatureTests : TestContext
+public class FeatureTests : BunitContext
 {
     [Fact]
     public void Test()

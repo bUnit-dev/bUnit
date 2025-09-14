@@ -1,8 +1,9 @@
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting;
-using Xunit.Abstractions;
+using Xunit;
 using Xunit.Sdk;
+using Xunit.v3;
 
 namespace Serilog.Sinks.XUnit;
 
@@ -26,8 +27,7 @@ internal sealed class TestOutputSink : ILogEventSink
 
 	public void Emit(LogEvent logEvent)
 	{
-		if (logEvent == null)
-			throw new ArgumentNullException(nameof(logEvent));
+		ArgumentNullException.ThrowIfNull(logEvent);
 
 		using var renderSpace = new StringWriter();
 		textFormatter.Format(logEvent, renderSpace);

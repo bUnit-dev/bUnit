@@ -4,13 +4,13 @@ using Bunit;
 
 namespace Bunit.Docs.Samples;
 
-public class ClickMeTest : TestContext
+public class ClickMeTest : BunitContext
 {
   [Fact]
   public void Test()
   {
     // Arrange
-    var cut = RenderComponent<ClickMe>();
+    var cut = Render<ClickMe>();
     var buttonElement = cut.Find("button");
 
     // Act

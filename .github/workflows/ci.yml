@@ -8,6 +8,7 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
+      - 'docs/**'
 
   pull_request:
     types:
@@ -18,7 +19,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: verification-${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.run_id || github.event.pull_request.number || github.ref }}
+  group: ci-${{ github.workflow }}-${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2') && github.run_id || github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:
@@ -46,6 +47,7 @@ jobs:
         dotnet-version: |
           8.0.x
           9.0.x
+          10.0.x
 
     - name: ⚙️ Setup GIT versioning
       uses: dotnet/nbgv@v0.4.2
@@ -71,10 +73,9 @@ jobs:
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
     - run: |
         dotnet pack src/bunit/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-        dotnet pack src/bunit.core/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-        dotnet pack src/bunit.web/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
         dotnet pack src/bunit.template/ -c Release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
         dotnet pack src/bunit.web.query/ -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+        dotnet pack src/bunit.generators/ -c release --output ${{ env.NUGET_DIRECTORY }} -p:ContinuousIntegrationBuild=true -p:publicrelease=true
 
     # Publish the NuGet package as an artifact, so they can be used in the following jobs
     - uses: actions/upload-artifact@v4
@@ -112,8 +113,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-13, windows-latest]
-        framework: [net8.0, net9.0]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -128,6 +128,7 @@ jobs:
           dotnet-version: |
             8.0.x
             9.0.x
+            10.0.x
 
       - name: ⚙️ Restore packages and tools
         run: |
@@ -135,7 +136,7 @@ jobs:
           dotnet tool restore
 
       - name: 🧪 Run unit tests
-        run: dotnet test -c release --no-restore -f ${{ matrix.framework }}
+        run: dotnet test -c release --no-restore
 
       - name: 📛 Upload hang- and crash-dumps on test failure
         if: success() || failure()
@@ -219,12 +220,9 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
-            3.1.x
-            5.0.x
-            6.0.x
-            7.0.x
             8.0.x
             9.0.x
+            10.0.x
 
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.2

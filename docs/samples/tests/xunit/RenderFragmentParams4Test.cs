@@ -8,12 +8,12 @@ using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples;
 
-public class RenderFragmentParams4Test : TestContext
+public class RenderFragmentParams4Test : BunitContext
 {
   [Fact]
   public void Test()
   {
-    var cut = RenderComponent<RenderFragmentParams>(parameters => parameters
+    var cut = Render<RenderFragmentParams>(parameters => parameters
       .Add(p => p.Content, "<h1>Below you will find a most interesting alert!</h1>")
       .Add<Alert>(p => p.Content, childParams => childParams
         .Add(p => p.Heading, "Alert heading")
