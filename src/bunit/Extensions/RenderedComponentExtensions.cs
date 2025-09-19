@@ -21,12 +21,7 @@ public static class RenderedComponentExtensions
 	{
 		ArgumentNullException.ThrowIfNull(renderedComponent);
 
-		var result = renderedComponent.Nodes.QuerySelector(cssSelector);
-
-		if (result is null)
-			throw new ElementNotFoundException(cssSelector);
-
-		return result.WrapUsing(new CssSelectorElementFactory((IRenderedComponent<IComponent>)renderedComponent, cssSelector));
+		return renderedComponent.FindAsync(cssSelector, timeout: TimeSpan.Zero).GetAwaiter().GetResult();
 	}
 
 	/// <summary>
@@ -36,13 +31,13 @@ public static class RenderedComponentExtensions
 	/// </summary>
 	/// <param name="renderedComponent">The rendered fragment to search.</param>
 	/// <param name="cssSelector">The group of selectors to use.</param>
-	/// <param name="enableAutoRefresh">If true, the returned <see cref="IRefreshableElementCollection{IElement}"/> will automatically refresh its <see cref="IElement"/>s whenever the <paramref name="renderedComponent"/> changes.</param>
-	/// <returns>An <see cref="IRefreshableElementCollection{IElement}"/>, that can be refreshed to execute the search again.</returns>
-	public static IRefreshableElementCollection<IElement> FindAll<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector, bool enableAutoRefresh = false)
+	/// <param name="enableAutoRefresh">Obsolete: This parameter is no longer used and will be removed in a future version.</param>
+	public static IReadOnlyList<IElement> FindAll<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector, bool enableAutoRefresh = false)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(renderedComponent);
-		return new RefreshableElementCollection((IRenderedComponent<IComponent>)renderedComponent, cssSelector) { EnableAutoRefresh = enableAutoRefresh };
+
+		return renderedComponent.FindAllAsync(cssSelector, TimeSpan.Zero).GetAwaiter().GetResult();
 	}
 
 	/// <summary>
@@ -87,4 +82,15 @@ public static class RenderedComponentExtensions
 	/// <returns>True if the <paramref name="renderedComponent"/> contains the <typeparamref name="TChildComponent"/>; otherwise false.</returns>
 	public static bool HasComponent<TChildComponent>(this IRenderedComponent<IComponent> renderedComponent)
 		where TChildComponent : IComponent => FindComponents<TChildComponent>(renderedComponent).Count > 0;
+
+	/// <summary>
+	/// Finds all elements from the rendered fragment or component under test,
+	/// </summary>
+	internal static IReadOnlyList<IElement> FindAllInternal<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector)
+		where TComponent : IComponent
+	{
+		ArgumentNullException.ThrowIfNull(renderedComponent);
+
+		return renderedComponent.FindAllAsync(cssSelector).GetAwaiter().GetResult();
+	}
 }

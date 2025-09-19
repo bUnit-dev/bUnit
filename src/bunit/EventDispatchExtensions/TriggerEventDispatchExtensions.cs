@@ -67,7 +67,7 @@ public static class TriggerEventDispatchExtensions
 
 		// TriggerEventsAsync will traverse the DOM tree to find
 		// all event handlers that needs to be triggered. This is done
-		// in the renderes synchronization context to avoid a race condition
+		// in the renderer synchronization context to avoid a race condition
 		// between the DOM tree being updated and traversed.
 		var result = renderer.Dispatcher.InvokeAsync(
 			() => TriggerEventsAsync(renderer, element, eventName, eventArgs));

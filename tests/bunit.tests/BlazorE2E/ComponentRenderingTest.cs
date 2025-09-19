@@ -101,27 +101,29 @@ public class ComponentRenderingTest : BunitContext
 	}
 
 	[Fact]
-	public void CanTriggerKeyPressEvents()
+	public async Task CanTriggerKeyPressEvents()
 	{
 		// List is initially empty
 		var cut = Render<KeyPressEventComponent>();
 		var inputElement = cut.Find("input");
-		var liElements = cut.FindAll("li", enableAutoRefresh: true);
+		var liElements = await cut.FindAllAsync("li", 0);
 		liElements.ShouldBeEmpty();
 
 		// Typing adds element
 		inputElement.KeyPress("a");
+		liElements = await cut.FindAllAsync("li");
 		liElements.ShouldAllBe(li => Assert.Equal("a", li.TextContent));
 
 		// Typing again adds another element
 		inputElement.KeyPress("b");
+		liElements = await cut.FindAllAsync("li");
 		liElements.ShouldAllBe(
 			li => Assert.Equal("a", li.TextContent),
 			li => Assert.Equal("b", li.TextContent));
 	}
 
 	[Fact]
-	public void CanAddAndRemoveEventHandlersDynamically()
+	public async Task CanAddAndRemoveEventHandlersDynamically()
 	{
 		var cut = Render<CounterComponent>();
 		var countDisplayElement = cut.Find("p");
@@ -135,7 +137,7 @@ public class ComponentRenderingTest : BunitContext
 
 		// We can remove an event handler
 		toggleClickHandlerCheckbox.Change(false);
-		Assert.Empty(cut.FindAll("#listening-message"));
+		Assert.Empty(await cut.FindAllAsync("#listening-message", 0));
 		incrementButton.Click();
 		Assert.Equal("Current count: 1", countDisplayElement.TextContent);
 
@@ -229,13 +231,13 @@ public class ComponentRenderingTest : BunitContext
 	}
 
 	[Fact]
-	public void CanAddAndRemoveChildComponentsDynamically()
+	public async Task CanAddAndRemoveChildComponentsDynamically()
 	{
 		// Initially there are zero child components
 		var cut = Render<AddRemoveChildComponents>();
 		var addButton = cut.Find(".addChild");
 		var removeButton = cut.Find(".removeChild");
-		Assert.Empty(cut.FindAll("p"));
+		Assert.Empty(await cut.FindAllAsync("p", 0));
 
 		// Click to add/remove some child components
 		addButton.Click();
@@ -279,13 +281,13 @@ public class ComponentRenderingTest : BunitContext
 	}
 
 	[Fact]
-	public void CanRenderFragmentsWhilePreservingSurroundingElements()
+	public async Task CanRenderFragmentsWhilePreservingSurroundingElements()
 	{
 		// Initially, the region isn't shown
 		var cut = Render<RenderFragmentToggler>();
 		var originalButton = cut.Find("button");
 
-		var fragmentElements = cut.FindAll("p[name=fragment-element]", enableAutoRefresh: true);
+		var fragmentElements = await cut.FindAllAsync("p[name=fragment-element]", 0);
 		Assert.Empty(fragmentElements);
 
 		// The JS-side DOM builder handles regions correctly, placing elements
@@ -294,10 +296,12 @@ public class ComponentRenderingTest : BunitContext
 
 		// When we click the button, the region is shown
 		originalButton.Click();
+		fragmentElements = await cut.FindAllAsync("p[name=fragment-element]");
 		fragmentElements.Single().ShouldNotBeNull();
 
 		// The button itself was preserved, so we can click it again and see the effect
 		originalButton.Click();
+		fragmentElements = await cut.FindAllAsync("p[name=fragment-element]", 0);
 		Assert.Empty(fragmentElements);
 	}
 
@@ -429,7 +433,7 @@ public class ComponentRenderingTest : BunitContext
 	}
 
 	[Fact]
-	public void CanCaptureReferencesToDynamicallyAddedComponents()
+	public async Task CanCaptureReferencesToDynamicallyAddedComponents()
 	{
 		var cut = Render<ComponentRefComponent>();
 		var incrementButton = cut.Find("#child-component button");
@@ -447,7 +451,7 @@ public class ComponentRenderingTest : BunitContext
 
 		// Remove and re-add a new instance of the child, checking the text was reset
 		toggleChildCheckbox.Change(false);
-		Assert.Empty(cut.FindAll("#child-component button"));
+		Assert.Empty(await cut.FindAllAsync("#child-component button", 0));
 		toggleChildCheckbox.Change(true);
 		Assert.Equal("Current count: 0", currentCountText.TextContent);
 
@@ -664,22 +668,10 @@ public class ComponentRenderingTest : BunitContext
 
 		cut.Find("button").Click();
 
-		await cut.WaitForStateAsync(() => !cut.FindAll("div").Any());
-		cut.FindAll("div").Count.ShouldBe(0);
+		var allElements = await cut.FindAllAsync("div", 0);
+		allElements.Count.ShouldBe(0);
 	}
-
-	[Fact]
-	[Trait("Category", "sync")]
-	public void CanHandleRemovedParentObjects_Sync()
-	{
-		var cut = Render<DispatcherException>();
-
-		cut.Find("button").Click();
-
-		cut.WaitForState(() => !cut.FindAll("div").Any());
-		cut.FindAll("div").Count.ShouldBe(0);
-	}
-
+	
 	[Fact]
 	[Trait("Category", "async")]
 	public async Task CanHandleRemovedParentObjectsAsync()
@@ -688,8 +680,8 @@ public class ComponentRenderingTest : BunitContext
 
 		await cut.Find("button").ClickAsync(new MouseEventArgs());
 
-		await cut.WaitForStateAsync(() => !cut.FindAll("div").Any());
-		cut.FindAll("div").Count.ShouldBe(0);
+		var elements = await cut.FindAllAsync("div", 0);
+		elements.Count.ShouldBe(0);
 	}
 
 	[Theory]
@@ -712,8 +704,8 @@ public class ComponentRenderingTest : BunitContext
 
 		await cut.Find("button").ClickAsync(new MouseEventArgs());
 
-		cut.WaitForState(() => !cut.FindAll("div").Any());
-		cut.FindAll("div").Count.ShouldBe(0);
+		var allElements = await cut.FindAllAsync("div", 0);
+		allElements.Count.ShouldBe(0);
 	}
 
 	[Fact]

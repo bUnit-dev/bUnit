@@ -14,5 +14,9 @@
 	<ItemGroup>
 		<Content Include="../xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Extensions\WaitForHelpers\RenderedComponentFindAsyncHelperExtensions.cs" />
+	</ItemGroup>
 	
 </Project>

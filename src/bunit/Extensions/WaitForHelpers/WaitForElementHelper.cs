@@ -1,4 +1,5 @@
 using AngleSharp.Dom;
+using Bunit.Web.AngleSharp;
 
 namespace Bunit.Extensions.WaitForHelpers;
 
@@ -19,9 +20,19 @@ internal class WaitForElementHelper<TComponent> : WaitForHelper<IElement, TCompo
 	public WaitForElementHelper(IRenderedComponent<TComponent> renderedComponent, string cssSelector, TimeSpan? timeout = null)
 		: base(renderedComponent, () =>
 		{
-			var element = renderedComponent.Find(cssSelector);
+			var element = FindElement(renderedComponent, cssSelector);
 			return (true, element);
 		}, timeout)
 	{
+	}
+
+	private static IElement FindElement(IRenderedComponent<TComponent> renderedComponent, string cssSelector)
+	{
+		var result = renderedComponent.Nodes.QuerySelector(cssSelector);
+
+		if (result is null)
+			throw new ElementNotFoundException(cssSelector);
+
+		return result.WrapUsing(new CssSelectorElementFactory((IRenderedComponent<IComponent>)renderedComponent, cssSelector));
 	}
 }

@@ -1,13 +1,14 @@
 using System.Globalization;
 using System.Text;
 using AngleSharp.Dom;
+using Bunit.Web.AngleSharp;
 
 namespace Bunit.Extensions.WaitForHelpers;
 
 /// <summary>
 /// Represents an async wait helper, that will wait for a specified time for element(s) to become available in the DOM.
 /// </summary>
-internal class WaitForElementsHelper<TComponent> : WaitForHelper<IRefreshableElementCollection<IElement>, TComponent>
+internal class WaitForElementsHelper<TComponent> : WaitForHelper<IHtmlCollection<IElement>, TComponent>
 	where TComponent : IComponent
 {
 	internal const string TimeoutBeforeFoundMessage = "The CSS selector did not result in any matching element(s) before the timeout period passed.";
@@ -25,15 +26,18 @@ internal class WaitForElementsHelper<TComponent> : WaitForHelper<IRefreshableEle
 	public WaitForElementsHelper(IRenderedComponent<TComponent> renderedComponent, string cssSelector, int? matchElementCount, TimeSpan? timeout = null)
 		: base(renderedComponent, () =>
 		{
-			var elements = renderedComponent.FindAll(cssSelector);
+			var elements = FindAllElements(renderedComponent, cssSelector);
 
 			var checkPassed = matchElementCount is null
-				? elements.Count > 0
-				: elements.Count == matchElementCount;
+				? elements.Length > 0
+				: elements.Length == matchElementCount;
 
 			return (checkPassed, elements);
 		}, timeout)
 	{
 		this.matchElementCount = matchElementCount;
 	}
+
+	private static IHtmlCollection<IElement> FindAllElements(IRenderedComponent<TComponent> renderedComponent, string cssSelector)
+		=> renderedComponent.Nodes.QuerySelectorAll(cssSelector);
 }
