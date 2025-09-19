@@ -6,7 +6,7 @@ namespace Bunit;
 /// <summary>
 /// Input event dispatch helper extension methods.
 /// </summary>
-public static class InputEventDispatchExtensions
+public static partial class InputEventDispatchExtensions
 {
 	/// <summary>
 	/// Raises the <c>@onchange</c> event on <paramref name="element"/>,  passing the provided
@@ -18,22 +18,16 @@ public static class InputEventDispatchExtensions
 		=> _ = ChangeAsync(element, CreateFrom(value));
 
 	/// <summary>
-	/// Raises the <c>@onchange</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
-	/// to the event handler.
+	/// Raises the <c>@onchange</c> event on the element returned by <paramref name="elementTask"/>,  passing the provided
+	/// properties to the event handler via a <see cref="ChangeEventArgs"/> object.
 	/// </summary>
-	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-	public static void Change(this IElement element, ChangeEventArgs eventArgs)
-		=> _ = ChangeAsync(element, eventArgs);
-
-	/// <summary>
-	/// Raises the <c>@onchange</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
-	/// to the event handler.
-	/// </summary>
-	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-	/// <returns>A task that completes when the event handler is done.</returns>
-	public static Task ChangeAsync(this IElement element, ChangeEventArgs eventArgs) => element.TriggerEventAsync("onchange", eventArgs);
+	/// <param name="elementTask">A task that returns the element to raise the event on.</param>
+	/// <param name="value">The new value.</param>
+	public static async Task Change<T>(this Task<IElement> elementTask, T value)
+	{
+		var element = await elementTask;
+		await ChangeAsync(element, CreateFrom(value));
+	}
 
 	/// <summary>
 	/// Raises the <c>@oninput</c> event on <paramref name="element"/>,  passing the provided
@@ -45,37 +39,16 @@ public static class InputEventDispatchExtensions
 		=> _ = InputAsync(element, CreateFrom(value));
 
 	/// <summary>
-	/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
-	/// to the event handler.
+	/// Raises the <c>@oninput</c> event on the element returned by <paramref name="elementTask"/>,  passing the provided
+	/// properties to the event handler via a <see cref="ChangeEventArgs"/> object.
 	/// </summary>
-	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-	public static void Input(this IElement element, ChangeEventArgs eventArgs)
-		=> _ = InputAsync(element, eventArgs);
-
-	/// <summary>
-	/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
-	/// to the event handler.
-	/// </summary>
-	/// <param name="element">The element to raise the event on.</param>
-	public static void Input(this IElement element) => _ = InputAsync(element);
-
-	/// <summary>
-	/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
-	/// to the event handler.
-	/// </summary>
-	/// <param name="element">The element to raise the event on.</param>
-	/// <returns>A task that completes when the event handler is done.</returns>
-	public static Task InputAsync(this IElement element) => element.TriggerEventAsync("oninput", EventArgs.Empty);
-
-	/// <summary>
-	/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing the provided <paramref name="eventArgs"/>
-	/// to the event handler.
-	/// </summary>
-	/// <param name="element">The element to raise the event on.</param>
-	/// <param name="eventArgs">The event arguments to pass to the event handler.</param>
-	/// <returns>A task that completes when the event handler is done.</returns>
-	public static Task InputAsync(this IElement element, ChangeEventArgs eventArgs) => element.TriggerEventAsync("oninput", eventArgs);
+	/// <param name="elementTask">A task that returns the element to raise the event on.</param>
+	/// <param name="value">The new value.</param>
+	public static async Task Input<T>(this Task<IElement> elementTask, T value)
+	{
+		var element = await elementTask;
+		await InputAsync(element, CreateFrom(value));
+	}
 
 	/// <summary>
 	/// Raises the <c>@oninvalid</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -93,6 +66,19 @@ public static class InputEventDispatchExtensions
 	public static Task InvalidAsync(this IElement element) => element.TriggerEventAsync("oninvalid", EventArgs.Empty);
 
 	/// <summary>
+	/// Raises the <c>@oninvalid</c> event on the element returned by <paramref name="elementTask"/>, passing an empty (<see cref="EventArgs.Empty"/>)
+	/// to the event handler.
+	/// </summary>
+	/// <param name="elementTask">A task that returns the element to raise the event on.</param>
+	/// <returns>A task that completes when the event handler is done.</returns>
+	public static async Task InvalidAsync(this Task<IElement> elementTask)
+	{
+		var element = await elementTask;
+		await InvalidAsync(element);
+	}
+
+
+	/// <summary>
 	/// Raises the <c>@onreset</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 	/// to the event handler.
 	/// </summary>
@@ -106,6 +92,18 @@ public static class InputEventDispatchExtensions
 	/// <param name="element">The element to raise the event on.</param>
 	/// <returns>A task that completes when the event handler is done.</returns>
 	public static Task ResetAsync(this IElement element) => element.TriggerEventAsync("onreset", EventArgs.Empty);
+
+	/// <summary>
+	/// Raises the <c>@onreset</c> event on the element returned by <paramref name="elementTask"/>, passing an empty (<see cref="EventArgs.Empty"/>)
+	/// to the event handler.
+	/// </summary>
+	/// <param name="elementTask">A task that returns the element to raise the event on.</param>
+	/// <returns>A task that completes when the event handler is done.</returns>
+	public static async Task ResetAsync(this Task<IElement> elementTask)
+	{
+		var element = await elementTask;
+		await ResetAsync(element);
+	}
 
 	/// <summary>
 	/// Raises the <c>@onselect</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -123,6 +121,18 @@ public static class InputEventDispatchExtensions
 	public static Task SelectAsync(this IElement element) => element.TriggerEventAsync("onselect", EventArgs.Empty);
 
 	/// <summary>
+	/// Raises the <c>@onselect</c> event on the element returned by <paramref name="elementTask"/>, passing an empty (<see cref="EventArgs.Empty"/>)
+	/// to the event handler.
+	/// </summary>
+	/// <param name="elementTask">A task that returns the element to raise the event on.</param>
+	/// <returns>A task that completes when the event handler is done.</returns>
+	public static async Task SelectAsync(this Task<IElement> elementTask)
+	{
+		var element = await elementTask;
+		await SelectAsync(element);
+	}
+
+	/// <summary>
 	/// Raises the <c>@onselectstart</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 	/// to the event handler.
 	/// </summary>
@@ -136,6 +146,18 @@ public static class InputEventDispatchExtensions
 	/// <param name="element">The element to raise the event on.</param>
 	/// <returns>A task that completes when the event handler is done.</returns>
 	public static Task SelectStartAsync(this IElement element) => element.TriggerEventAsync("onselectstart", EventArgs.Empty);
+
+	/// <summary>
+	/// Raises the <c>@onselectstart</c> event on <paramref name="elementTask"/>, passing an empty (<see cref="EventArgs.Empty"/>)
+	/// to the event handler.
+	/// </summary>
+	/// <param name="elementTask">The element to raise the event on.</param>
+	/// <returns>A task that completes when the event handler is done.</returns>
+	public static async Task SelectStartAsync(this Task<IElement> elementTask)
+	{
+		var element = await elementTask;
+		await SelectStartAsync(element);
+	}
 
 	/// <summary>
 	/// Raises the <c>@onselectionchange</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
@@ -153,6 +175,18 @@ public static class InputEventDispatchExtensions
 	public static Task SelectionChangeAsync(this IElement element) => element.TriggerEventAsync("onselectionchange", EventArgs.Empty);
 
 	/// <summary>
+	/// Raises the <c>@onselectionchange</c> event on <paramref name="elementTask"/>, passing an empty (<see cref="EventArgs.Empty"/>)
+	/// to the event handler.
+	/// </summary>
+	/// <param name="elementTask">The element to raise the event on.</param>
+	/// <returns>A task that completes when the event handler is done.</returns>
+	public static async Task SelectionChangeAsync(this Task<IElement> elementTask)
+	{
+		var element = await elementTask;
+		await SelectionChangeAsync(element);
+	}
+
+	/// <summary>
 	/// Raises the <c>@onsubmit</c> event on <paramref name="element"/>, passing an empty (<see cref="EventArgs.Empty"/>)
 	/// to the event handler.
 	/// </summary>
@@ -167,19 +201,26 @@ public static class InputEventDispatchExtensions
 	/// <returns>A task that completes when the event handler is done.</returns>
 	public static Task SubmitAsync(this IElement element) => element.TriggerEventAsync("onsubmit", EventArgs.Empty);
 
-	private static ChangeEventArgs CreateFrom<T>(T value)
+	/// <summary>
+	/// Raises the <c>@onsubmit</c> event on <paramref name="elementTask"/>, passing an empty (<see cref="EventArgs.Empty"/>)
+	/// to the event handler.
+	/// </summary>
+	/// <param name="elementTask">The element to raise the event on.</param>
+	/// <returns>A task that completes when the event handler is done.</returns>
+	public static async Task SubmitAsync(this Task<IElement> elementTask)
 	{
-		var result = new ChangeEventArgs();
-		result.Value = FormatValue(value);
-		return result;
+		var element = await elementTask;
+		await SubmitAsync(element);
 	}
+
+	private static ChangeEventArgs CreateFrom<T>(T value) => new() { Value = FormatValue(value) };
 
 	private static object? FormatValue<T>(T value)
 		=> value switch
 		{
 			null => null,
 			bool _ => value,
-			String _ => value,
+			string _ => value,
 			ICollection values => FormatValues(values),
 			IEnumerable values => FormatValues(values),
 			_ => BindConverter.FormatValue(value)

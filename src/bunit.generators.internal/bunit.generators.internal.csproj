@@ -21,4 +21,8 @@
 		<PackageReference Include="Meziantou.Polyfill" PrivateAssets="all" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs\$(AssemblyName).dll" Visible="false" />
+	</ItemGroup>
+
 </Project>
