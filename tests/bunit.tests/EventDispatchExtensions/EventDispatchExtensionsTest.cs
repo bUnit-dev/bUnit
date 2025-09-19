@@ -85,23 +85,21 @@ public abstract class EventDispatchExtensionsTest<TEventArgs> : BunitContext
 	}
 
 	[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Can safely be shared")]
-	public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType)
+	public static IEnumerable<object[]> GetEventHelperMethods()
 	{
-		ArgumentNullException.ThrowIfNull(helperClassType);
-
-		return helperClassType.GetMethods()
+		return typeof(EventHandlerDispatchExtensions).GetMethods()
 			.Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement))
+			.Where(x => x.GetParameters().Skip(1).FirstOrDefault()?.ParameterType == typeof(TEventArgs))
 			.Select(x => new[] { x })
 			.ToArray();
 	}
 
 	[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Can safely be shared")]
-	public static IEnumerable<object[]> GetEventHelperMethods(Type helperClassType, Func<MethodInfo, bool> customFilter)
+	public static IEnumerable<object[]> GetEventHelperMethods(Func<MethodInfo, bool> customFilter)
 	{
-		ArgumentNullException.ThrowIfNull(helperClassType);
-
-		return helperClassType.GetMethods()
+		return typeof(EventHandlerDispatchExtensions).GetMethods()
 			.Where(x => x.GetParameters().FirstOrDefault()?.ParameterType == typeof(IElement) && customFilter(x))
+			.Where(x => x.GetParameters().Skip(1).FirstOrDefault()?.ParameterType == typeof(TEventArgs))
 			.Select(x => new[] { x })
 			.ToArray();
 	}

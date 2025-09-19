@@ -9,19 +9,7 @@ Blazor makes it possible to bind many event handlers to elements in a Blazor com
 
 bUnit comes with event dispatch helper methods that makes it possible to invoke event handlers for all event types supported by Blazor.
 
-**The built-in dispatch event helpers are:**
-
-- [Clipboard events](xref:Bunit.ClipboardEventDispatchExtensions)
-- [Drag events](xref:Bunit.DragEventDispatchExtensions)
-- [Focus events](xref:Bunit.FocusEventDispatchExtensions)
-- [General events](xref:Bunit.GeneralEventDispatchExtensions)
-- [Input events](xref:Bunit.InputEventDispatchExtensions)
-- [Keyboard events](xref:Bunit.KeyboardEventDispatchExtensions)
-- [Media events](xref:Bunit.MediaEventDispatchExtensions)
-- [Mouse events](xref:Bunit.MouseEventDispatchExtensions)
-- [Pointer events](xref:Bunit.PointerEventDispatchExtensions)
-- [Progress events](xref:Bunit.ProgressEventDispatchExtensions)
-- [Touch event](xref:Bunit.TouchEventDispatchExtensions)
+**The built-in dispatch event helpers are:** [here](xref:Bunit.EventHandlerDispatchExtensions).
 
 To use these, first find the element in the component under test where the event handler is bound. This is usually done with the [`Find(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.Find``1(Bunit.IRenderedComponent{``0},System.String)) method. Next, invoke the event dispatch helper method of choice. 
 
@@ -50,9 +38,7 @@ To trigger the `@onclick` `ClickHandler` event handler method in the `<ClickMe>`
 This is what happens in the test:
 
 1. In the arrange step of the test, the `<ClickMe>` component is rendered and the `<button>` element is found using the [`Find(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.Find``1(Bunit.IRenderedComponent{``0},System.String)) method.
-2. The act step of the test is the `<button>`'s click event handler. In this case, the `ClickHandler` event handler method is invoked in three different ways:
-   - The first and second invocations use the same [`Click`](xref:Bunit.MouseEventDispatchExtensions.Click(AngleSharp.Dom.IElement,System.Int64,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int64,System.Int64,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.String)) method. It has a number of optional arguments, some of which are passed in the second invocation. If any arguments are provided, they are added to an instance of the `MouseEventArgs` type, which is passed to the event handler if it has it as an argument. 
-   - The last invocation uses the [`Click`](xref:Bunit.MouseEventDispatchExtensions.Click(AngleSharp.Dom.IElement,Microsoft.AspNetCore.Components.Web.MouseEventArgs)) method. This takes an instance of the `MouseEventArgs` type, which is passed to the event handler if it has it as an argument.
+2. The act step of the test is the `<button>`'s click event handler. In this case, the `ClickHandler` event handler method is invoked by calling the [`Click`](xref:Bunit.EventHandlerDispatchExtensions.Click(AngleSharp.Dom.IElement,Microsoft.AspNetCore.Components.Web.MouseEventArgs)) extension method on the found `<button>` element. The method takes an optional `MouseEventArgs` argument, which, if not supplied, will be initialized with default values.
 
 All the event dispatch helper methods have the same two overloads: one that takes a number of optional arguments, and one that takes one of the `EventArgs` types provided by Blazor.
 
@@ -110,4 +96,13 @@ cut.Find("input").TriggerEvent("oncustompaste", new CustomPasteEventArgs
 
 // Assert that the custom event data was passed correctly
 cut.Find("p:last-child").MarkupMatches("<p>You pasted: FOO</p>");
+```
+
+## Using the `Async` version
+All event dispatch helper methods have an `Async` version that returns a `Task`. Important to note is that the `Async` version will await the event handler callback **but not** the rendercycle that may be triggered by the event handler.
+
+Example:
+
+```csharp
+await cut.Find("button").ClickAsync();
 ```

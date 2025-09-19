@@ -7,7 +7,7 @@ public class WheelEventDispatchExtensionsTest : EventDispatchExtensionsTest<Whee
 	}
 
 	public static IEnumerable<object[]> Helpers { get; }
-		= GetEventHelperMethods(typeof(MouseEventDispatchExtensions), x => x.Name.Contains("Wheel", StringComparison.OrdinalIgnoreCase));
+		= GetEventHelperMethods(x => x.Name.Contains("Wheel", StringComparison.OrdinalIgnoreCase));
 
 	protected override string ElementName => "button";
 

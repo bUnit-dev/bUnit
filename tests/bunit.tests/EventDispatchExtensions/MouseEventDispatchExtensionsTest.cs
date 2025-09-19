@@ -8,7 +8,6 @@ public class MouseEventDispatchExtensionsTest : EventDispatchExtensionsTest<Mous
 
 	public static IEnumerable<object[]> Helpers { get; }
 		= GetEventHelperMethods(
-			typeof(MouseEventDispatchExtensions),
 			x => !x.Name.Contains("Wheel", StringComparison.OrdinalIgnoreCase)
 			  && !x.Name.Contains("DoubleClick", StringComparison.OrdinalIgnoreCase));
 
