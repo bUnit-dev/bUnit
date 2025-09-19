@@ -6,6 +6,9 @@ namespace Bunit;
 
 public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<EventArgs>
 {
+	public static IEnumerable<object[]> Helpers { get; }
+		= GetEventHelperMethods(x => !x.Name.Contains("submit", StringComparison.OrdinalIgnoreCase));
+	
 	protected override string ElementName => "p";
 
 	public GeneralEventDispatchExtensionsTest(ITestOutputHelper outputHelper)
@@ -15,7 +18,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	}
 
 	[Theory(DisplayName = "General events are raised correctly through helpers")]
-	[MemberData(nameof(GetEventHelperMethods), typeof(GeneralEventDispatchExtensions))]
+	[MemberData(nameof(Helpers))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
 		ArgumentNullException.ThrowIfNull(helper);

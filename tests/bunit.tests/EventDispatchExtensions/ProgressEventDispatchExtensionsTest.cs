@@ -9,7 +9,7 @@ public class ProgressEventDispatchExtensionsTest : EventDispatchExtensionsTest<P
 	protected override string ElementName => "div";
 
 	[Theory(DisplayName = "Progress events are raised correctly through helpers")]
-	[MemberData(nameof(GetEventHelperMethods), typeof(ProgressEventDispatchExtensions))]
+	[MemberData(nameof(GetEventHelperMethods))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
 		var expected = new ProgressEventArgs

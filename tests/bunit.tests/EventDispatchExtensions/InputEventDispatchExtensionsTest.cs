@@ -2,9 +2,12 @@ namespace Bunit;
 
 public class InputEventDispatchExtensionsTest : EventDispatchExtensionsTest<ChangeEventArgs>
 {
-	private static readonly string[] ExcludedMethodsFromGenericTests = new[] { "Change", "Input", "Submit" };
+	// ChangeEventArgs naturally translates only to "change" and "input" but not submit
+	// See: https://source.dot.net/#Microsoft.AspNetCore.Components.Web/Web/EventHandlers.cs
+	// Therefore, we add those explicitly here.
+	private static readonly string[] UseEventHandlers = ["Change", "Input", "Submit"];
 	public static IEnumerable<object[]> Helpers { get; }
-		= GetEventHelperMethods(typeof(InputEventDispatchExtensions), x => !ExcludedMethodsFromGenericTests
+		= GetEventHelperMethods(x => UseEventHandlers
 		.Contains(x.Name.Replace("Async", string.Empty, StringComparison.Ordinal)));
 
 	private static readonly Fixture Fixture = new();

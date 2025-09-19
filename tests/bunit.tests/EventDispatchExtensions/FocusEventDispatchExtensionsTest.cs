@@ -9,7 +9,7 @@ public class FocusEventDispatchExtensionsTest : EventDispatchExtensionsTest<Focu
 	protected override string ElementName => "p";
 
 	[Theory(DisplayName = "Focus events are raised correctly through helpers")]
-	[MemberData(nameof(GetEventHelperMethods), typeof(FocusEventDispatchExtensions))]
+	[MemberData(nameof(GetEventHelperMethods))]
 	public void CanRaiseEvents(MethodInfo helper)
 	{
 		var expected = new FocusEventArgs
