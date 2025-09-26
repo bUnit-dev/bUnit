@@ -26,6 +26,8 @@ jobs:
     if: github.ref == 'refs/heads/stable' ||
         github.event.pull_request.merged == true && contains(github.head_ref, 'release/v') == true
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
 
       - name: 🛒 Checkout repository
