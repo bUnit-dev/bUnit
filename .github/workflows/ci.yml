@@ -272,6 +272,8 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2')
     runs-on: ubuntu-latest
     needs: [ validate-nuget, run-test, validate-template, validate-docs ]
+    permissions:
+      id-token: write
     steps:
       - uses: actions/download-artifact@v5
         with:
@@ -284,5 +286,11 @@ jobs:
       - name: 🛠️ Upload library to GitHub Package Repository
         run: dotnet nuget push ${{ env.NUGET_DIRECTORY }}/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bunit-dev/index.json --skip-duplicate --no-symbols
 
+      - name: 🛠️ NuGet login
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: 🛠️ Upload library to NuGet.org repository
-        run: dotnet nuget push ${{ env.NUGET_DIRECTORY }}/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
+        run: dotnet nuget push ${{ env.NUGET_DIRECTORY }}/*.nupkg -k ${{ steps.nuget-login.outputs.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
