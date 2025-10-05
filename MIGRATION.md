@@ -82,3 +82,26 @@ The `TestServiceProvider` class has been renamed to `BunitTestServiceProvider`. 
 
 ## `DisposeComponents` is now asynchronous and called `DisposeComponentsAsync`
 `DisposeComponentsAsync` allows to await `DisposeAsync` of components under test. If you used `DisposeComponents`, you should replace it with `DisposeComponentsAsync`.
+
+## `IRefreshableElementCollection` was removed
+
+The `IRefreshableElementCollection` interface has been removed. With this the `FindAll` method does not accept a `bool enableRefresh` parameter anymore. Code like this:
+
+```csharp
+var items = cut.FindAll("li", enableRefresh: true);
+
+cut.Find("button").Click(); // Some action that causes items to change
+
+Assert.Equal(3, items.Count);
+```
+
+Should be changed to this:
+
+```csharp
+var items = cut.FindAll("li");
+
+cut.Find("button").Click(); // Some action that causes items to change
+
+items = cut.FindAll("li"); // Re-query the items
+Assert.Equal(3, items.Count);
+```

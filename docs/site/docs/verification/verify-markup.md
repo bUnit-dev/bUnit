@@ -37,9 +37,9 @@ bUnit supports multiple different ways of searching and querying the rendered HT
 
 - `FindByLabelText(string labelText)` that takes a text string used to label an input element and returns an `IElement` as output, or throws an exception if none are found (this is included in the experimental library [bunit.web.query](https://www.nuget.org/packages/bunit.web.query)). Use this method when possible compared to the generic `Find` and `FindAll` methods.
 - [`Find(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.Find``1(Bunit.IRenderedComponent{``0},System.String)) takes a "CSS selector" as input and returns an `IElement` as output, or throws an exception if none are found.
-- [`FindAll(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.FindAll``1(Bunit.IRenderedComponent{``0},System.String,System.Boolean)) takes a "CSS selector" as input and returns a list of `IElement` elements.
+- [`FindAll(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.FindAll``1(Bunit.IRenderedComponent{``0},System.String)) takes a "CSS selector" as input and returns a list of `IElement` elements.
 
-Let's see some examples of using the [`Find(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.Find``1(Bunit.IRenderedComponent{``0},System.String)) and [`FindAll(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.FindAll``1(Bunit.IRenderedComponent{``0},System.String,System.Boolean)) methods to query the `<FancyTable>` component listed below.
+Let's see some examples of using the [`Find(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.Find``1(Bunit.IRenderedComponent{``0},System.String)) and [`FindAll(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.FindAll``1(Bunit.IRenderedComponent{``0},System.String)) methods to query the `<FancyTable>` component listed below.
 
 [!code-razor[FancyTable.razor](../../../samples/components/FancyTable.razor)]
 
@@ -58,10 +58,6 @@ An element found with the [`Find(string cssSelector)`](xref:Bunit.RenderedCompon
 However, that does not apply to elements that are found by traversing the DOM tree via the <xref:Bunit.IRenderedComponent`1.Nodes> property on <xref:Bunit.IRenderedComponent`1>, for example, as those nodes do not know when their root component is re-rendered. Consequently, they don’t know when they should be updated.
 
 As a result of this, it is always recommended to use the [`Find(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.Find``1(Bunit.IRenderedComponent{``0},System.String)) method when searching for a single element. Alternatively, always reissue the query whenever you need the element.
-
-#### Auto-refreshable FindAll() queries
-
-The [`FindAll(string cssSelector, bool enableAutoRefresh = false)`](xref:Bunit.RenderedComponentExtensions.FindAll``1(Bunit.IRenderedComponent{``0},System.String,System.Boolean)) method has an optional parameter, `enableAutoRefresh`, which when set to `true` will return a collection of `IElement`. This automatically refreshes itself when the component the elements came from is re-rendered.
 
 ## Semantic comparison of markup
 

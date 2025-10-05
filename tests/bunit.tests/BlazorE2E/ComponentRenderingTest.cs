@@ -106,15 +106,17 @@ public class ComponentRenderingTest : BunitContext
 		// List is initially empty
 		var cut = Render<KeyPressEventComponent>();
 		var inputElement = cut.Find("input");
-		var liElements = cut.FindAll("li", enableAutoRefresh: true);
+		var liElements = cut.FindAll("li");
 		liElements.ShouldBeEmpty();
 
 		// Typing adds element
 		inputElement.KeyPress("a");
+		liElements = cut.FindAll("li");
 		liElements.ShouldAllBe(li => Assert.Equal("a", li.TextContent));
 
 		// Typing again adds another element
 		inputElement.KeyPress("b");
+		liElements = cut.FindAll("li");
 		liElements.ShouldAllBe(
 			li => Assert.Equal("a", li.TextContent),
 			li => Assert.Equal("b", li.TextContent));
@@ -285,7 +287,7 @@ public class ComponentRenderingTest : BunitContext
 		var cut = Render<RenderFragmentToggler>();
 		var originalButton = cut.Find("button");
 
-		var fragmentElements = cut.FindAll("p[name=fragment-element]", enableAutoRefresh: true);
+		var fragmentElements = cut.FindAll("p[name=fragment-element]");
 		Assert.Empty(fragmentElements);
 
 		// The JS-side DOM builder handles regions correctly, placing elements
@@ -294,10 +296,12 @@ public class ComponentRenderingTest : BunitContext
 
 		// When we click the button, the region is shown
 		originalButton.Click();
+		fragmentElements = cut.FindAll("p[name=fragment-element]");
 		fragmentElements.Single().ShouldNotBeNull();
 
 		// The button itself was preserved, so we can click it again and see the effect
 		originalButton.Click();
+		fragmentElements = cut.FindAll("p[name=fragment-element]");
 		Assert.Empty(fragmentElements);
 	}
 
@@ -516,11 +520,12 @@ public class ComponentRenderingTest : BunitContext
 			e => Assert.Equal("Col2", e.TextContent),
 			e => Assert.Equal("Col3", e.TextContent));
 
-		var tfootElements = cut.FindAll("table tfoot td", enableAutoRefresh: true);
+		var tfootElements = cut.FindAll("table tfoot td");
 		Assert.Empty(tfootElements);
 		var toggle = cut.Find("#toggle");
 		toggle.Change(true);
 
+		tfootElements = cut.FindAll("table tfoot td");
 		Assert.Collection(
 			tfootElements,
 			e => Assert.Equal("The", e.TextContent),
