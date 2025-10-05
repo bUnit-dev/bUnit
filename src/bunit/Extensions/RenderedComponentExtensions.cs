@@ -36,13 +36,13 @@ public static class RenderedComponentExtensions
 	/// </summary>
 	/// <param name="renderedComponent">The rendered fragment to search.</param>
 	/// <param name="cssSelector">The group of selectors to use.</param>
-	/// <param name="enableAutoRefresh">If true, the returned <see cref="IRefreshableElementCollection{IElement}"/> will automatically refresh its <see cref="IElement"/>s whenever the <paramref name="renderedComponent"/> changes.</param>
-	/// <returns>An <see cref="IRefreshableElementCollection{IElement}"/>, that can be refreshed to execute the search again.</returns>
-	public static IRefreshableElementCollection<IElement> FindAll<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector, bool enableAutoRefresh = false)
+	/// <returns>An <see cref="IReadOnlyList{IElement}"/>, that can be refreshed to execute the search again.</returns>
+	public static IReadOnlyList<IElement> FindAll<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector)
 		where TComponent : IComponent
 	{
 		ArgumentNullException.ThrowIfNull(renderedComponent);
-		return new RefreshableElementCollection((IRenderedComponent<IComponent>)renderedComponent, cssSelector) { EnableAutoRefresh = enableAutoRefresh };
+
+		return renderedComponent.Nodes.QuerySelectorAll(cssSelector).ToArray();
 	}
 
 	/// <summary>

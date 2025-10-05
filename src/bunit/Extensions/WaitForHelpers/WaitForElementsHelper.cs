@@ -7,7 +7,7 @@ namespace Bunit.Extensions.WaitForHelpers;
 /// <summary>
 /// Represents an async wait helper, that will wait for a specified time for element(s) to become available in the DOM.
 /// </summary>
-internal class WaitForElementsHelper<TComponent> : WaitForHelper<IRefreshableElementCollection<IElement>, TComponent>
+internal class WaitForElementsHelper<TComponent> : WaitForHelper<IReadOnlyList<IElement>, TComponent>
 	where TComponent : IComponent
 {
 	internal const string TimeoutBeforeFoundMessage = "The CSS selector did not result in any matching element(s) before the timeout period passed.";
