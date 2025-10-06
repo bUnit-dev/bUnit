@@ -280,7 +280,7 @@ public class BunitContextTest : BunitContext
 	{
 		public async ValueTask DisposeAsync()
 		{
-			await Task.Delay(1);
+			await Task.Delay(1).ConfigureAwait(ConfigureAwaitOptions.ForceYielding);
 			throw new NotSupportedException();
 		}
 	}
