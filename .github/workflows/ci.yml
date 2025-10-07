@@ -283,9 +283,6 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v5
 
-      - name: 🛠️ Upload library to GitHub Package Repository
-        run: dotnet nuget push ${{ env.NUGET_DIRECTORY }}/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/bunit-dev/index.json --skip-duplicate --no-symbols
-
       - name: 🛠️ NuGet login
         uses: NuGet/login@v1
         id: nuget-login
