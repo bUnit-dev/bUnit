@@ -27,9 +27,9 @@ public class DisposeComponentsTest : BunitContext
   {
     Render<ExceptionInDisposeComponent>();
 
-    Func<Task> act = () => DisposeComponentsAsync();
-
-    await Assert.ThrowsAsync<NotSupportedException>(act);
+    await DisposeComponentsAsync();
+    var exception = await Renderer.UnhandledException;
+    Assert.IsType<NotSupportedException>(exception);
   }
 
   [Fact]
@@ -38,7 +38,7 @@ public class DisposeComponentsTest : BunitContext
     Render<ExceptionInDisposeAsyncComponent>();
 
     await DisposeComponentsAsync();
-    var exception = Renderer.UnhandledException.Result;
+    var exception = await Renderer.UnhandledException;
     Assert.IsType<NotSupportedException>(exception);
   }
 

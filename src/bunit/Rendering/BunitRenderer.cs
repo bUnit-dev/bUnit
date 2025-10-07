@@ -235,7 +235,6 @@ public sealed class BunitRenderer : Renderer
 			});
 
 			rootComponents.Clear();
-			AssertNoUnhandledExceptions();
 		}
 
 		return returnTask;

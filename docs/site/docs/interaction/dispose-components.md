@@ -27,10 +27,14 @@ _ = DisposeComponentsAsync();
 ```
 
 ## Checking for exceptions
-`Dispose` as well as `DisposeAsync` can throw exceptions which can be asserted as well. If a component under test throws an exception in `Dispose` the [`DisposeComponents`](xref:Bunit.BunitContext.DisposeComponentsAsync) will throw the exception to the user code:
+Both `Dispose` and `DisposeAsync` can throw exceptions, which can be asserted during tests. When a component under test throws an exception in either `Dispose` or `DisposeAsync`, the exception is caught by the renderer and made available via the `Renderer.UnhandledException` task. The `DisposeComponentsAsync` method itself will not throw the exception.
 
-[!code-csharp[DisposeComponentsTest.cs](../../../samples/tests/xunit/DisposeComponentsTest.cs#L28-L32)]
+This allows for consistent testing of exceptions during disposal, regardless of whether the disposal is synchronous or asynchronous.
 
-`DisposeAsync` behaves a bit different. The following example will demonstrate how to assert an exception in `DisposeAsync`:
+The following examples demonstrate how to assert that an exception was thrown during disposal:
 
-[!code-csharp[DisposeComponentsTest.cs](../../../samples/tests/xunit/DisposeComponentsTest.cs#L38-L42)]
+**Asserting exception in `Dispose`:**
+[!code-csharp[DisposeComponentsTest.cs](../../../samples/tests/xunit/DisposeComponentsTest.cs#L24-L32)]
+
+**Asserting exception in `DisposeAsync`:**
+[!code-csharp[DisposeComponentsTest.cs](../../../samples/tests/xunit/DisposeComponentsTest.cs#L34-L42)]
