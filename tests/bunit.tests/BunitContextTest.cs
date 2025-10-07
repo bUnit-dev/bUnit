@@ -30,13 +30,15 @@ public class BunitContextTest : BunitContext
 		callStack.Count.ShouldBe(2);
 	}
 
-	[Fact(DisplayName = "DisposeComponents rethrows exceptions from Dispose methods in components")]
+	[Fact(DisplayName = "DisposeComponents captures exceptions from Dispose in Renderer.UnhandledException")]
 	public async Task Test103()
 	{
 		Render<ThrowExceptionComponent>();
-		Func<Task> action = () => DisposeComponentsAsync();
+		
+		await DisposeComponentsAsync();
 
-		await action.ShouldThrowAsync<NotSupportedException>();
+		var actual = await Renderer.UnhandledException;
+		actual.ShouldBeAssignableTo<NotSupportedException>();
 	}
 
 	[Fact(DisplayName = "DisposeComponents disposes components nested in render fragments")]
