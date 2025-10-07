@@ -8,7 +8,7 @@ public class RenderedComponentWaitForElementsHelperExtensionsTest : BunitContext
 
 	public RenderedComponentWaitForElementsHelperExtensionsTest(ITestOutputHelper testOutput)
 	{
-		BunitContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
+		BunitContext.DefaultWaitTimeout = TimeSpan.FromSeconds(10);
 		Services.AddXunitLogger(testOutput);
 	}
 

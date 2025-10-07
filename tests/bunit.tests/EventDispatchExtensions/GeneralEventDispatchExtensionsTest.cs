@@ -14,7 +14,7 @@ public class GeneralEventDispatchExtensionsTest : EventDispatchExtensionsTest<Ev
 	public GeneralEventDispatchExtensionsTest(ITestOutputHelper outputHelper)
 		: base(outputHelper)
 	{
-		BunitContext.DefaultWaitTimeout = TimeSpan.FromSeconds(30);
+		BunitContext.DefaultWaitTimeout = TimeSpan.FromSeconds(10);
 	}
 
 	[Theory(DisplayName = "General events are raised correctly through helpers")]
