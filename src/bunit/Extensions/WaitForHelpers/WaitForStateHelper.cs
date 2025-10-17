@@ -3,7 +3,7 @@ namespace Bunit.Extensions.WaitForHelpers;
 /// <summary>
 /// Represents an async wait helper, that will wait for a specified time for a state predicate to pass.
 /// </summary>
-public class WaitForStateHelper<TComponent> : WaitForHelper<object?, TComponent>
+internal class WaitForStateHelper<TComponent> : WaitForHelper<object?, TComponent>
 	where TComponent : IComponent
 {
 	internal const string TimeoutBeforePassMessage = "The state predicate did not pass before the timeout period passed.";

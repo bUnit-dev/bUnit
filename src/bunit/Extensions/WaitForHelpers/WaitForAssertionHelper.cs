@@ -3,7 +3,7 @@ namespace Bunit.Extensions.WaitForHelpers;
 /// <summary>
 /// Represents an async wait helper, that will wait for a specified time for an assertion to pass.
 /// </summary>
-public class WaitForAssertionHelper<TComponent> : WaitForHelper<object?, TComponent>
+internal class WaitForAssertionHelper<TComponent> : WaitForHelper<object?, TComponent>
 	where TComponent : IComponent
 {
 	internal const string TimeoutMessage = "The assertion did not pass within the timeout period.";

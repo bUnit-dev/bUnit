@@ -8,7 +8,7 @@ namespace Bunit.Extensions.WaitForHelpers;
 /// Represents a helper class that can wait for a render notifications from a <see cref="IRenderedComponent{TComponent}"/> type,
 /// until a specific timeout is reached.
 /// </summary>
-public abstract class WaitForHelper<T, TComponent> : IDisposable
+internal abstract class WaitForHelper<T, TComponent> : IDisposable
 	where TComponent : IComponent
 {
 	private readonly TaskCompletionSource<T> checkPassedCompletionSource;
