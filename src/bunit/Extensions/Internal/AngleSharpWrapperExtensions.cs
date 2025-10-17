@@ -5,7 +5,7 @@ namespace Bunit.Web.AngleSharp;
 /// <summary>
 /// Extensions for <see cref="IElement"/> wrapped inside <see cref="WrapperBase{TElement}" /> types.
 /// </summary>
-public static class AngleSharpWrapperExtensions
+internal static class AngleSharpWrapperExtensions
 {
 	/// <summary>
 	/// Unwraps a wrapped AngleSharp object, if it has been wrapped.
