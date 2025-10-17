@@ -40,20 +40,6 @@ public static partial class EventHandlerDispatchExtensions
 	}
 
 	/// <summary>
-	/// Raises the <c>@onkeydown</c> event on <paramref name="elementTask"/>, passing the provided <paramref name="key"/>
-	/// to the event handler.
-	/// </summary>
-	/// <param name="elementTask">The element to raise the event on.</param>
-	/// <param name="key">The keyboard key to pass to the event handler.</param>
-	/// <param name="repeat"><c>true</c> if a key has been depressed long enough to trigger key repetition, otherwise <c>false</c>.</param>
-	/// <param name="type">The type of the event.</param>
-	public static async Task KeyDownAsync(this Task<IElement> elementTask, Key key, bool repeat = default, string? type = default)
-	{
-		var element = await elementTask;
-		await KeyDownAsync(element, key, repeat, type);
-	}
-
-	/// <summary>
 	/// Raises the <c>@onkeyup</c> event on <paramref name="element"/>, passing the provided <paramref name="key"/>
 	/// to the event handler.
 	/// </summary>
@@ -86,20 +72,6 @@ public static partial class EventHandlerDispatchExtensions
 	}
 
 	/// <summary>
-	/// Raises the <c>@onkeyup</c> event on <paramref name="elementTask"/>, passing the provided <paramref name="key"/>
-	/// to the event handler.
-	/// </summary>
-	/// <param name="elementTask">The element to raise the event on.</param>
-	/// <param name="key">The keyboard key to pass to the event handler.</param>
-	/// <param name="repeat"><c>true</c> if a key has been depressed long enough to trigger key repetition, otherwise <c>false</c>.</param>
-	/// <param name="type">The type of the event.</param>
-	public static async Task KeyUpAsync(this Task<IElement> elementTask, Key key, bool repeat = default, string? type = default)
-	{
-		var element = await elementTask;
-		await KeyUpAsync(element, key, repeat, type);
-	}
-
-	/// <summary>
 	/// Raises the <c>@onkeypress</c> event on <paramref name="element"/>, passing the provided <paramref name="key"/>
 	/// to the event handler.
 	/// </summary>
@@ -129,19 +101,5 @@ public static partial class EventHandlerDispatchExtensions
 		eventArgs.Repeat = repeat;
 		eventArgs.Type = type!; // Type property missing annotation
 		return KeyPressAsync(element, eventArgs);
-	}
-
-	/// <summary>
-	/// Raises the <c>@onkeypress</c> event on <paramref name="elementTask"/>, passing the provided <paramref name="key"/>
-	/// to the event handler.
-	/// </summary>
-	/// <param name="elementTask">The element to raise the event on.</param>
-	/// <param name="key">The keyboard key to pass to the event handler.</param>
-	/// <param name="repeat"><c>true</c> if a key has been depressed long enough to trigger key repetition, otherwise <c>false</c>.</param>
-	/// <param name="type">The type of the event.</param>
-	public static async Task KeyPressAsync(this Task<IElement> elementTask, Key key, bool repeat = default, string? type = default)
-	{
-		var element = await elementTask;
-		await KeyPressAsync(element, key, repeat, type);
 	}
 }

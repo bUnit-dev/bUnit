@@ -202,19 +202,5 @@ public class EventDispatcherExtensionGenerator : IIncrementalGenerator
 		sourceBuilder.AppendLine("\t/// <returns>A task that completes when the event handler is done.</returns>");
 		sourceBuilder.AppendLine($"\tpublic static Task {methodName}Async(this IElement element, {eventArgsType}? eventArgs = null) => element.TriggerEventAsync(\"{eventName}\", eventArgs ?? {defaultArgs});");
 		sourceBuilder.AppendLine();
-
-		sourceBuilder.AppendLine("\t/// <summary>");
-		sourceBuilder.AppendLine($"\t/// Raises the <c>@{eventName}</c> event on the element returned by <paramref name=\"elementTask\"/>, passing the provided <paramref name=\"eventArgs\"/>");
-		sourceBuilder.AppendLine($"\t/// to the event handler. If <paramref name=\"eventArgs\"/> is null, a new instance of {eventArgsType} will be created.");
-		sourceBuilder.AppendLine("\t/// </summary>");
-		sourceBuilder.AppendLine("\t/// <param name=\"elementTask\">A task that returns the element to raise the element on.</param>");
-		sourceBuilder.AppendLine("\t/// <param name=\"eventArgs\">The event arguments to pass to the event handler.</param>");
-		sourceBuilder.AppendLine("\t/// <returns>A task that completes when the event handler is done.</returns>");
-		sourceBuilder.AppendLine($"\tpublic static async Task {methodName}Async(this Task<IElement> elementTask, {eventArgsType}? eventArgs = null)");
-		sourceBuilder.AppendLine("\t{");
-		sourceBuilder.AppendLine("\t\tvar element = await elementTask;");
-		sourceBuilder.AppendLine($"\t\tawait {methodName}Async(element, eventArgs);");
-		sourceBuilder.AppendLine("\t}");
-		sourceBuilder.AppendLine();
 	}
 }
