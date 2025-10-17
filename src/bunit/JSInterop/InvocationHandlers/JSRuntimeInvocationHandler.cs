@@ -3,8 +3,7 @@ namespace Bunit;
 /// <summary>
 /// Represents a handler for an invocation of a JavaScript function which returns nothing, with specific arguments.
 /// </summary>
-public class JSRuntimeInvocationHandler
-		: JSRuntimeInvocationHandlerBase<Microsoft.JSInterop.Infrastructure.IJSVoidResult>
+public class JSRuntimeInvocationHandler : JSRuntimeInvocationHandlerBase<Microsoft.JSInterop.Infrastructure.IJSVoidResult>
 {
 	/// <inheritdoc/>
 	public override sealed bool IsVoidResultHandler => true;

@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
-using Microsoft.Extensions.Logging;
 
 namespace Bunit.Rendering;
 
@@ -12,9 +12,10 @@ namespace Bunit.Rendering;
 /// </summary>
 public sealed class BunitRenderer : Renderer
 {
+	private static readonly ConcurrentDictionary<Type, ConstructorInfo> ComponentActivatorCache = new();
+
 	private readonly BunitServiceProvider services;
 	private readonly List<Task> disposalTasks = [];
-	private static readonly ConcurrentDictionary<Type, ConstructorInfo> componentActivatorCache = new();
 
 	[UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_isBatchInProgress")]
 	private static extern ref bool GetIsBatchInProgressField(Renderer renderer);
@@ -60,22 +61,22 @@ public sealed class BunitRenderer : Renderer
 	internal int RenderCount { get; }
 
 #if NET9_0_OR_GREATER
-    private RendererInfo? rendererInfo;
+	private RendererInfo? rendererInfo;
 
-    /// <inheritdoc/>
-    [SuppressMessage(
-        "Design",
-        "CA1065:Do not raise exceptions in unexpected locations",
-        Justification = "The exception is raised to guide users."
-    )]
-    protected override RendererInfo RendererInfo =>
-        rendererInfo ?? throw new MissingRendererInfoException();
+	/// <inheritdoc/>
+	[SuppressMessage(
+		"Design",
+		"CA1065:Do not raise exceptions in unexpected locations",
+		Justification = "The exception is raised to guide users."
+	)]
+	protected override RendererInfo RendererInfo =>
+		rendererInfo ?? throw new MissingRendererInfoException();
 
-    /// <inheritdoc/>
-    public void SetRendererInfo(RendererInfo? rendererInfo)
-    {
-        this.rendererInfo = rendererInfo;
-    }
+	/// <inheritdoc/>
+	public void SetRendererInfo(RendererInfo? rendererInfo)
+	{
+		this.rendererInfo = rendererInfo;
+	}
 #endif
 
 	/// <summary>
@@ -110,6 +111,21 @@ public sealed class BunitRenderer : Renderer
 		this.services = services;
 		logger = loggerFactory.CreateLogger<BunitRenderer>();
 		ElementReferenceContext = new WebElementReferenceContext(services.GetRequiredService<IJSRuntime>());
+	}
+
+	/// <summary>
+	/// Renders a <typeparamref name="TComponent"/> with the parameters build with the <paramref name="parameterBuilder"/> passed to it.
+	/// </summary>
+	/// <typeparam name = "TComponent" > The type of component to render.</typeparam>
+	/// <param name="parameterBuilder">The a builder to create parameters to pass to the component.</param>
+	/// <returns>A <see cref="RenderedComponent{TComponent}"/> that provides access to the rendered component.</returns>
+	public IRenderedComponent<TComponent> Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>? parameterBuilder = null)
+		where TComponent : IComponent
+	{
+		var builder = new ComponentParameterCollectionBuilder<TComponent>(parameterBuilder);
+		var renderFragment = builder.Build().ToRenderFragment<TComponent>();
+		var renderedComponent = RenderFragment(renderFragment);
+		return renderedComponent.FindComponent<TComponent>();
 	}
 
 	/// <summary>
@@ -255,7 +271,7 @@ public sealed class BunitRenderer : Renderer
 
 		object CreateComponentInstance()
 		{
-			var constructorInfo = componentActivatorCache.GetOrAdd(renderedComponentType, type
+			var constructorInfo = ComponentActivatorCache.GetOrAdd(renderedComponentType, type
 				=> type.GetConstructor(
 			[
 				typeof(BunitRenderer),
@@ -281,78 +297,78 @@ public sealed class BunitRenderer : Renderer
 	}
 
 #if NET9_0_OR_GREATER
-    /// <inheritdoc/>
-    protected override IComponentRenderMode? GetComponentRenderMode(IComponent component)
-    {
-        ArgumentNullException.ThrowIfNull(component);
+	/// <inheritdoc/>
+	protected override IComponentRenderMode? GetComponentRenderMode(IComponent component)
+	{
+		ArgumentNullException.ThrowIfNull(component);
 
-        // Search from the current component all the way up the render tree.
-        // All components must have the same render mode specified (or none at all).
-        // Return the render mode that is found after checking the full tree.
-        return GetAndValidateRenderMode(component, childRenderMode: null);
+		// Search from the current component all the way up the render tree.
+		// All components must have the same render mode specified (or none at all).
+		// Return the render mode that is found after checking the full tree.
+		return GetAndValidateRenderMode(component, childRenderMode: null);
 
-        IComponentRenderMode? GetAndValidateRenderMode(
-            IComponent component,
-            IComponentRenderMode? childRenderMode
-        )
-        {
-            var componentState = GetComponentState(component);
-            var renderMode = GetRenderModeForComponent(componentState);
+		IComponentRenderMode? GetAndValidateRenderMode(
+			IComponent component,
+			IComponentRenderMode? childRenderMode
+		)
+		{
+			var componentState = GetComponentState(component);
+			var renderMode = GetRenderModeForComponent(componentState);
 
-            if (
-                childRenderMode is not null
-                && renderMode is not null
-                && childRenderMode != renderMode
-            )
-            {
-                throw new RenderModeMisMatchException();
-            }
+			if (
+				childRenderMode is not null
+				&& renderMode is not null
+				&& childRenderMode != renderMode
+			)
+			{
+				throw new RenderModeMisMatchException();
+			}
 
-            return componentState.ParentComponentState is null
-                ? renderMode ?? childRenderMode
-                : GetAndValidateRenderMode(
-                    componentState.ParentComponentState.Component,
-                    renderMode ?? childRenderMode
-                );
-        }
+			return componentState.ParentComponentState is null
+				? renderMode ?? childRenderMode
+				: GetAndValidateRenderMode(
+					componentState.ParentComponentState.Component,
+					renderMode ?? childRenderMode
+				);
+		}
 
-        IComponentRenderMode? GetRenderModeForComponent(ComponentState componentState)
-        {
-            var renderModeAttribute = componentState.Component
-                .GetType()
-                .GetCustomAttribute<RenderModeAttribute>();
-            if (renderModeAttribute is { Mode: not null })
-            {
-                return renderModeAttribute.Mode;
-            }
+		IComponentRenderMode? GetRenderModeForComponent(ComponentState componentState)
+		{
+			var renderModeAttribute = componentState.Component
+				.GetType()
+				.GetCustomAttribute<RenderModeAttribute>();
+			if (renderModeAttribute is { Mode: not null })
+			{
+				return renderModeAttribute.Mode;
+			}
 
-            if (componentState.ParentComponentState is not null)
-            {
-                var parentFrames = GetCurrentRenderTreeFrames(
-                    componentState.ParentComponentState.ComponentId
-                );
-                var foundComponentStart = false;
-                for (var i = 0; i < parentFrames.Count; i++)
-                {
-                    ref var frame = ref parentFrames.Array[i];
+			if (componentState.ParentComponentState is not null)
+			{
+				var parentFrames = GetCurrentRenderTreeFrames(
+					componentState.ParentComponentState.ComponentId
+				);
+				var foundComponentStart = false;
+				for (var i = 0; i < parentFrames.Count; i++)
+				{
+					ref var frame = ref parentFrames.Array[i];
 
-                    if (frame.FrameType is RenderTreeFrameType.Component)
-                    {
-                        foundComponentStart = frame.ComponentId == componentState.ComponentId;
-                    }
-                    else if (
-                        foundComponentStart
-                        && frame.FrameType is RenderTreeFrameType.ComponentRenderMode
-                    )
-                    {
-                        return frame.ComponentRenderMode;
-                    }
-                }
-            }
+					if (frame.FrameType is RenderTreeFrameType.Component)
+					{
+						foundComponentStart = frame.ComponentId == componentState.ComponentId;
+					}
+					else if (
+						foundComponentStart
+						&& frame.FrameType is RenderTreeFrameType.ComponentRenderMode
+					)
+					{
+						return frame.ComponentRenderMode;
+					}
+				}
+			}
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 #endif
 
 	/// <inheritdoc/>
