@@ -170,49 +170,12 @@ public static class TriggerEventDispatchExtensions
 			return false;
 		}
 
-		// Check if this is a submit element
-		var isSubmitElement = element switch
+		var form = element switch
 		{
-			IHtmlInputElement input => string.Equals(input.Type, "submit", StringComparison.OrdinalIgnoreCase),
-			// Button defaults to type="submit" if not specified, so we check if it's NOT "button" or "reset"
-			IHtmlButtonElement button => !string.Equals(button.Type, "button", StringComparison.OrdinalIgnoreCase) 
-				&& !string.Equals(button.Type, "reset", StringComparison.OrdinalIgnoreCase),
-			_ => false
-		};
-
-		if (!isSubmitElement)
-		{
-			return false;
-		}
-
-		// Try to get the associated form, first via the Form property
-		IHtmlFormElement? form = element switch
-		{
-			IHtmlInputElement { Form: not null } input => input.Form,
-			IHtmlButtonElement { Form: not null } button => button.Form,
+			IHtmlInputElement { Type: "submit", Form: not null } input => input.Form,
+			IHtmlButtonElement { Type: "submit", Form: not null } button => button.Form,
 			_ => null
 		};
-
-		// If Form property is null but element has a form attribute, try to find the form by ID
-		// This handles the case where a button/input is outside the form but associated via form attribute
-		if (form is null && element.HasAttribute("form"))
-		{
-			var formId = element.GetAttribute("form");
-			if (!string.IsNullOrEmpty(formId) && element.Owner is not null)
-			{
-				var foundElement = element.Owner.GetElementById(formId);
-				// Unwrap in case it's wrapped
-				form = (foundElement as IElement)?.Unwrap() as IHtmlFormElement;
-				
-				// Debug
-				System.Diagnostics.Debug.WriteLine($"Looking for form with ID '{formId}'. Found: {foundElement != null}, Is IHtmlFormElement: {form != null}");
-				if (form != null)
-				{
-					var hasOnsubmit = form.TryGetEventId(Htmlizer.ToBlazorAttribute("onsubmit"), out var testEventId);
-					System.Diagnostics.Debug.WriteLine($"Form has onsubmit event: {hasOnsubmit}, eventId: {testEventId}");
-				}
-			}
-		}
 
 		return form is not null
 			&& form.TryGetEventId(Htmlizer.ToBlazorAttribute("onsubmit"), out eventId);
