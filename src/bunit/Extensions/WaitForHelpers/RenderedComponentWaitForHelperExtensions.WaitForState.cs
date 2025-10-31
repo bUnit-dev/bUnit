@@ -30,7 +30,7 @@ public static partial class RenderedComponentWaitForHelperExtensions
 
 			try
 			{
-				waiter.WaitTask.GetAwaiter().GetResult();
+				waiter.WaitTask.ConfigureAwait(false).GetAwaiter().GetResult();
 			}
 			catch (AggregateException e) when (e.InnerExceptions.Count == 1)
 			{
@@ -49,11 +49,10 @@ public static partial class RenderedComponentWaitForHelperExtensions
 		/// <param name="statePredicate">The predicate to invoke after each render, which must returns <c>true</c> when the desired state has been reached.</param>
 		/// <param name="timeout">The maximum time to wait for the desired state.</param>
 		/// <exception cref="WaitForFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
-		internal static async Task WaitForStateAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, Func<bool> statePredicate, TimeSpan? timeout = null)
+		public static async Task WaitForStateAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, Func<bool> statePredicate, TimeSpan? timeout = null)
 			where TComponent : IComponent
 		{
 			using var waiter = new WaitForStateHelper<TComponent>(renderedComponent, statePredicate, timeout);
-
 			await waiter.WaitTask;
 		}
 
@@ -75,7 +74,7 @@ public static partial class RenderedComponentWaitForHelperExtensions
 
 			try
 			{
-				waiter.WaitTask.GetAwaiter().GetResult();
+				waiter.WaitTask.ConfigureAwait(false).GetAwaiter().GetResult();
 			}
 			catch (AggregateException e) when (e.InnerExceptions.Count == 1)
 			{
@@ -94,11 +93,10 @@ public static partial class RenderedComponentWaitForHelperExtensions
 		/// <param name="timeout">The maximum time to attempt the verification.</param>
 		/// <exception cref="WaitForFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
 		[AssertionMethod]
-		internal static async Task WaitForAssertionAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, Action assertion, TimeSpan? timeout = null)
+		public static async Task WaitForAssertionAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, Action assertion, TimeSpan? timeout = null)
 			where TComponent : IComponent
 		{
 			using var waiter = new WaitForAssertionHelper<TComponent>(renderedComponent, assertion, timeout);
-
 			await waiter.WaitTask;
 		}
 }

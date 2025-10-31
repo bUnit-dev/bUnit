@@ -91,7 +91,7 @@ public static partial class RenderedComponentWaitForHelperExtensions
 	/// <param name="cssSelector">The CSS selector to use to search for the element.</param>
 	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout. See the inner exception for details.</exception>
 	/// <returns>The <see cref="IElement"/>.</returns>
-	internal static Task<IElement> WaitForElementAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector)
+	public static Task<IElement> WaitForElementAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector)
 		where TComponent : IComponent => WaitForElementCoreAsync(renderedComponent, cssSelector, timeout: null);
 
 	/// <summary>
@@ -103,7 +103,7 @@ public static partial class RenderedComponentWaitForHelperExtensions
 	/// <param name="timeout">The maximum time to wait for the element to appear.</param>
 	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout. See the inner exception for details.</exception>
 	/// <returns>The <see cref="IElement"/>.</returns>
-	internal static Task<IElement> WaitForElementAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector, TimeSpan timeout)
+	public static Task<IElement> WaitForElementAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector, TimeSpan timeout)
 		where TComponent : IComponent
 		=> WaitForElementCoreAsync(renderedComponent, cssSelector, timeout: timeout);
 
@@ -116,7 +116,7 @@ public static partial class RenderedComponentWaitForHelperExtensions
 	/// <param name="matchElementCount">The exact number of elements to that the <paramref name="cssSelector"/> should match.</param>
 	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
 	/// <returns>The <see cref="IReadOnlyList{IElement}"/>.</returns>
-	internal static Task<IReadOnlyList<IElement>> WaitForElementsAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector, int matchElementCount)
+	public static Task<IReadOnlyList<IElement>> WaitForElementsAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector, int matchElementCount)
 		where TComponent : IComponent
 		=> WaitForElementsCoreAsync(renderedComponent, cssSelector, matchElementCount: matchElementCount, timeout: null);
 
@@ -129,7 +129,7 @@ public static partial class RenderedComponentWaitForHelperExtensions
 	/// <param name="timeout">The maximum time to wait for elements to appear.</param>
 	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
 	/// <returns>The <see cref="IReadOnlyList{IElement}"/>.</returns>
-	internal static Task<IReadOnlyList<IElement>> WaitForElementsAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector, TimeSpan timeout)
+	public static Task<IReadOnlyList<IElement>> WaitForElementsAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector, TimeSpan timeout)
 		where TComponent : IComponent
 		=> WaitForElementsCoreAsync(renderedComponent, cssSelector, matchElementCount: null, timeout: timeout);
 
@@ -143,7 +143,7 @@ public static partial class RenderedComponentWaitForHelperExtensions
 	/// <param name="timeout">The maximum time to wait for elements to appear.</param>
 	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
 	/// <returns>The <see cref="IReadOnlyList{IElement}"/>.</returns>
-	internal static Task<IReadOnlyList<IElement>> WaitForElementsAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector, int matchElementCount, TimeSpan timeout)
+	public static Task<IReadOnlyList<IElement>> WaitForElementsAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector, int matchElementCount, TimeSpan timeout)
 		where TComponent : IComponent
 		=> WaitForElementsCoreAsync(renderedComponent, cssSelector, matchElementCount: matchElementCount, timeout: timeout);
 
@@ -155,7 +155,7 @@ public static partial class RenderedComponentWaitForHelperExtensions
 	/// <param name="cssSelector">The CSS selector to use to search for elements.</param>
 	/// <exception cref="WaitForFailedException">Thrown if no elements is found matching the <paramref name="cssSelector"/> within the default timeout.</exception>
 	/// <returns>The <see cref="IReadOnlyList{IElement}"/>.</returns>
-	internal static Task<IReadOnlyList<IElement>> WaitForElementsAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector)
+	public static Task<IReadOnlyList<IElement>> WaitForElementsAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector)
 		where TComponent : IComponent
 		=> WaitForElementsCoreAsync<TComponent>(renderedComponent, cssSelector, matchElementCount: null, timeout: null);
 
@@ -166,7 +166,7 @@ public static partial class RenderedComponentWaitForHelperExtensions
 
 		try
 		{
-			return waiter.WaitTask.GetAwaiter().GetResult();
+			return waiter.WaitTask.ConfigureAwait(false).GetAwaiter().GetResult();
 		}
 		catch (AggregateException e) when (e.InnerExceptions.Count == 1)
 		{
@@ -196,7 +196,7 @@ public static partial class RenderedComponentWaitForHelperExtensions
 
 		try
 		{
-			return waiter.WaitTask.GetAwaiter().GetResult();
+			return waiter.WaitTask.ConfigureAwait(false).GetAwaiter().GetResult();
 		}
 		catch (AggregateException e) when (e.InnerExceptions.Count == 1)
 		{
