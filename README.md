@@ -20,12 +20,12 @@ bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, MS
 
 bUnit is available on NuGet in various incarnations. Most should just pick the [bUnit](https://www.nuget.org/packages/bunit/) package:
 
-| Name | Description | NuGet Download Link |
-| ----- | ----- | ---- |
-| [bUnit](https://www.nuget.org/packages/bunit/) | Adds support for testing Blazor components. | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) |
-| [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template, which currently creates xUnit-based bUnit test projects only. | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) |
-| [bUnit.generators](https://www.nuget.org/packages/bunit.generators/)|Source code generators to minimize code setup in various situations.|[![Nuget](https://img.shields.io/nuget/dt/bunit.generators?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.generators/)|
-| [bUnit.web.query](https://www.nuget.org/packages/bunit.web.query/)|bUnit implementation of testing-library.com's query APIs.|[![Nuget](https://img.shields.io/nuget/dt/bunit.web.query?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web.query/)|
+| Name                                                                 | Description                                                             | NuGet Download Link                                                                                                                         |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| [bUnit](https://www.nuget.org/packages/bunit/)                       | Adds support for testing Blazor components.                             | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)                       |
+| [bUnit.template](https://www.nuget.org/packages/bunit.template/)     | Template, which currently creates xUnit-based bUnit test projects only. | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/)     |
+| [bUnit.generators](https://www.nuget.org/packages/bunit.generators/) | Source code generators to minimize code setup in various situations.    | [![Nuget](https://img.shields.io/nuget/dt/bunit.generators?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.generators/) |
+| [bUnit.web.query](https://www.nuget.org/packages/bunit.web.query/)   | bUnit implementation of testing-library.com's query APIs.               | [![Nuget](https://img.shields.io/nuget/dt/bunit.web.query?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web.query/)   |
 
 To get started, head to the [getting started documentation](https://bunit.dev/docs/getting-started) to learn more.
 
@@ -39,7 +39,7 @@ For a migration guide, see [Upgrading bUnit](https://bunit.dev/docs/migrations/i
 
 ## Sponsors
 
-A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
+A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/bUnit-dev). The higher tier sponsors are:
 
 <table border="0">
 	<tr>
@@ -50,11 +50,11 @@ A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/egil). T
 				Syncfusion
 			</a>
 		</td>
-		<td align="center" width="120">
-			<a href="https://github.com/JetBrainsOfficial">
-				<img class="avatar" src="https://avatars.githubusercontent.com/u/60931315?v=4" width="72" height="72" alt="@JetBrainsOfficial" />
+		<td align="center" width="250">
+			<a href="https://www.lambdatest.com/?utm_source=bunit&utm_medium=sponsor" target="_blank">
+				<img src="https://www.lambdatest.com/blue-logo.png" style="vertical-align: middle;" width="250" height="45" />
 				<br />
-				JetBrains
+				LambdaTest				
 			</a>
 		</td>
 	</tr>
