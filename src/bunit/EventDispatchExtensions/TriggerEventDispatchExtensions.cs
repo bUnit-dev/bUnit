@@ -205,17 +205,9 @@ public static class TriggerEventDispatchExtensions
 	
 	private static IHtmlFormElement? FindFormById(IElement element, string formId)
 	{
-		// First try the owner's GetElementById (most efficient if it works)
-		var formByOwner = element.Owner?.GetElementById(formId) as IHtmlFormElement;
-		if (formByOwner is not null)
-		{
-			return formByOwner;
-		}
-		
-		// If GetElementById didn't work (which can happen when AngleSharp's document ID indexing
-		// doesn't include all elements), traverse up the DOM tree to find a common ancestor
-		// and search its children. This handles cases where the button and form are siblings
-		// or in different subtrees.
+		// Traverse up the DOM tree to find a common ancestor and search its children
+		// for the form with the matching ID. This handles cases where the button and
+		// form are siblings or in different subtrees.
 		var current = element.Parent as IElement;
 		while (current is not null)
 		{
