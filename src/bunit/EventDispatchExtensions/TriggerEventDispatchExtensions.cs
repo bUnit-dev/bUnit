@@ -205,19 +205,20 @@ public static class TriggerEventDispatchExtensions
 	
 	private static IHtmlFormElement? FindFormById(IElement element, string formId)
 	{
-		// First try the owner's GetElementById
+		// First try the owner's GetElementById (most efficient if it works)
 		var formByOwner = element.Owner?.GetElementById(formId) as IHtmlFormElement;
 		if (formByOwner is not null)
 		{
 			return formByOwner;
 		}
 		
-		// If that didn't work, traverse up to find a common ancestor and search its children
-		// Start from the parent
+		// If GetElementById didn't work (which can happen with Blazor's incremental DOM rendering),
+		// traverse up the DOM tree to find a common ancestor and search its children
+		// This handles cases where the button and form are siblings or in different subtrees
 		var current = element.Parent as IElement;
 		while (current is not null)
 		{
-			// Search children of current element for the form
+			// Search children of current element for the form with matching ID
 			foreach (var child in current.Children)
 			{
 				if ((child.Id == formId || child.GetAttribute("id") == formId) && child is IHtmlFormElement htmlForm)
@@ -226,7 +227,7 @@ public static class TriggerEventDispatchExtensions
 				}
 			}
 			
-			// Move up to parent
+			// Move up to parent to widen the search
 			current = current.Parent as IElement;
 		}
 		
