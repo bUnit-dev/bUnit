@@ -176,9 +176,61 @@ public static class TriggerEventDispatchExtensions
 			IHtmlButtonElement { Type: "submit", Form: not null } button => button.Form,
 			_ => null
 		};
+		
+		// If form is still null, try to find it by the form attribute for submit buttons/inputs
+		if (form is null && element.HasAttribute("form"))
+		{
+			var isSubmitElement = element switch
+			{
+				IHtmlInputElement { Type: "submit" } => true,
+				IHtmlButtonElement { Type: "submit" } => true,
+				_ => false
+			};
+			
+			if (isSubmitElement)
+			{
+				var formId = element.GetAttribute("form");
+				if (!string.IsNullOrEmpty(formId))
+				{
+					// Try to find the form element by traversing up to find a common ancestor
+					// and then searching down for the form
+					form = FindFormById(element, formId);
+				}
+			}
+		}
 
 		return form is not null
 			&& form.TryGetEventId(Htmlizer.ToBlazorAttribute("onsubmit"), out eventId);
+	}
+	
+	private static IHtmlFormElement? FindFormById(IElement element, string formId)
+	{
+		// First try the owner's GetElementById
+		var formByOwner = element.Owner?.GetElementById(formId) as IHtmlFormElement;
+		if (formByOwner is not null)
+		{
+			return formByOwner;
+		}
+		
+		// If that didn't work, traverse up to find a common ancestor and search its children
+		// Start from the parent
+		var current = element.Parent as IElement;
+		while (current is not null)
+		{
+			// Search children of current element for the form
+			foreach (var child in current.Children)
+			{
+				if ((child.Id == formId || child.GetAttribute("id") == formId) && child is IHtmlFormElement htmlForm)
+				{
+					return htmlForm;
+				}
+			}
+			
+			// Move up to parent
+			current = current.Parent as IElement;
+		}
+		
+		return null;
 	}
 
 	private static bool EventIsDisabled(this IElement element, string eventName)
