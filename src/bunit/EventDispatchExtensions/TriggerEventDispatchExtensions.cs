@@ -212,9 +212,10 @@ public static class TriggerEventDispatchExtensions
 			return formByOwner;
 		}
 		
-		// If GetElementById didn't work (which can happen with Blazor's incremental DOM rendering),
-		// traverse up the DOM tree to find a common ancestor and search its children
-		// This handles cases where the button and form are siblings or in different subtrees
+		// If GetElementById didn't work (which can happen when AngleSharp's document ID indexing
+		// doesn't include all elements), traverse up the DOM tree to find a common ancestor
+		// and search its children. This handles cases where the button and form are siblings
+		// or in different subtrees.
 		var current = element.Parent as IElement;
 		while (current is not null)
 		{
