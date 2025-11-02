@@ -17,6 +17,7 @@ For a migration guide, see [Upgrading bUnit](https://bunit.dev/docs/migrations/i
 
 ### Added
 
+- Support for form submission from submit buttons and inputs that are outside the form element but associated via the HTML5 `form` attribute. Reported and fixed in [#1766](https://github.com/bUnit-dev/bUnit/issues/1766).
 - Improved renderer logic that catches more edge cases.
 - Improved developer experience in relation to JSInterop.
 
