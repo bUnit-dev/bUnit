@@ -41,4 +41,24 @@ public class FormDispatchExtensionTest : BunitContext
 
 		cut.Instance.SubmitWasCalled.ShouldBeTrue();
 	}
+
+	[Fact]
+	public void ClickingOnSubmitButtonOutsideWithFormAttributeTriggersOnsubmit()
+	{
+		var cut = Render<FormWithSubmitElementsOutside>();
+
+		cut.Find("#submit-button").Click();
+
+		cut.Instance.SubmitWasCalled.ShouldBeTrue();
+	}
+
+	[Fact]
+	public void ClickingOnSubmitInputOutsideWithFormAttributeTriggersOnsubmit()
+	{
+		var cut = Render<FormWithSubmitElementsOutside>();
+
+		cut.Find("#submit-input").Click();
+
+		cut.Instance.SubmitWasCalled.ShouldBeTrue();
+	}
 }
