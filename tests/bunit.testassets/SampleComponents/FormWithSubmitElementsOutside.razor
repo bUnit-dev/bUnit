@@ -1,0 +1,13 @@
+<form @onsubmit="Callback" id="form1">
+</form>
+<button type="submit" form="form1" id="submit-button">Submit Button</button>
+<input type="submit" form="form1" id="submit-input" value="Submit Input" />
+
+@code {
+	public bool SubmitWasCalled { get; private set; }
+	
+	private void Callback()
+	{
+		SubmitWasCalled = true;
+	}
+}
