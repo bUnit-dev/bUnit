@@ -12,6 +12,7 @@
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
 		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+        <OutputType>Exe</OutputType>
 	</PropertyGroup>
 	
 	<PropertyGroup>
@@ -24,19 +25,19 @@
 
 	<ItemGroup Condition="$(MSBuildProjectName) != 'bunit.testassets'">
 		<PackageReference Include="AutoFixture" />
-		<PackageReference Include="AutoFixture.Xunit2" />
+		<PackageReference Include="AutoFixture.Xunit3" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk"/>
 		<PackageReference Include="NSubstitute" />
 		<PackageReference Include="Shouldly"/>
 		<PackageReference Include="coverlet.msbuild" />
 		<PackageReference Include="Xunit.Combinatorial" />
-		<PackageReference Include="xunit" />
+		<PackageReference Include="xunit.v3" />
 		<PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers" />
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.testassets' AND $(MSBuildProjectName) != 'bunit.generators.tests'">
 		<Using Include="AutoFixture" />
-		<Using Include="AutoFixture.Xunit2" />
+		<Using Include="AutoFixture.Xunit3" />
 		<Using Include="Bunit.TestAssets.SampleComponents" />
 		<Using Include="Bunit.TestAssets.SampleComponents.Data" />
 		<Using Include="Microsoft.JSInterop" />
@@ -46,7 +47,6 @@
 		<Using Include="NSubstitute" />
 		<Using Include="Shouldly" />
 		<Using Include="Xunit" />
-		<Using Include="Xunit.Abstractions" />
 	</ItemGroup>
 
 </Project>

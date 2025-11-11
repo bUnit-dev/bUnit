@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+		<RootNamespace>Bunit</RootNamespace>
+		<AssemblyName>Bunit.Tests</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\bunit\bunit.csproj" />	
+		<ProjectReference Include="..\bunit.testassets\bunit.testassets.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="../xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+	
+</Project>

@@ -2,7 +2,6 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Templates;
-using Xunit.Abstractions;
 
 namespace Xunit;
 

@@ -1,0 +1,109 @@
+using System.Diagnostics;
+using Microsoft.AspNetCore.Components.Routing;
+
+namespace Bunit.TestDoubles;
+
+using URI = Uri;
+
+/// <summary>
+/// Represents a <see cref="NavigationManager"/> that captures calls to
+/// <see cref="NavigationManager.NavigateTo(string, bool)"/> for testing purposes.
+/// </summary>
+[DebuggerDisplay("Current Uri: {Uri}, History Count: {History.Count}")]
+public sealed class BunitNavigationManager : NavigationManager
+{
+	private readonly BunitContext bunitContext;
+	private readonly Stack<NavigationHistory> history = new();
+
+	/// <summary>
+	/// The navigation history captured by the <see cref="BunitNavigationManager"/>.
+	/// This is a stack based collection, so the first element is the latest/current navigation target.
+	/// </summary>
+	/// <remarks>
+	/// The initial Uri is not added to the history.
+	/// </remarks>
+	public IReadOnlyCollection<NavigationHistory> History => history;
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="BunitNavigationManager"/> class.
+	/// </summary>
+	[SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "By design. Bunit navigation manager defaults to local host as base URI.")]
+	public BunitNavigationManager(BunitContext bunitContext)
+	{
+		this.bunitContext = bunitContext;
+		Initialize("http://localhost/", "http://localhost/");
+	}
+
+	/// <inheritdoc/>
+	protected override void NavigateToCore(string uri, NavigationOptions options)
+	{
+		var absoluteUri = GetNewAbsoluteUri(uri);
+		var changedBaseUri = HasDifferentBaseUri(absoluteUri);
+
+		if (options.ReplaceHistoryEntry && history.Count > 0)
+			history.Pop();
+
+		HistoryEntryState = options.ForceLoad ? null : options.HistoryEntryState;
+		bunitContext.Renderer.Dispatcher.InvokeAsync(async () =>
+		{
+
+			var shouldContinueNavigation = false;
+			try
+			{
+				shouldContinueNavigation = await NotifyLocationChangingAsync(uri, options.HistoryEntryState, isNavigationIntercepted: false).ConfigureAwait(false);
+			}
+			catch (Exception exception)
+			{
+				history.Push(new NavigationHistory(uri, options, NavigationState.Faulted, exception));
+				return;
+			}
+
+			history.Push(new NavigationHistory(uri, options, shouldContinueNavigation ? NavigationState.Succeeded : NavigationState.Prevented));
+
+			if (!shouldContinueNavigation)
+			{
+				return;
+			}
+
+			if (changedBaseUri)
+			{
+				BaseUri = GetBaseUri(absoluteUri);
+			}
+
+			Uri = absoluteUri.OriginalString;
+
+			// Only notify of changes if user navigates within the same
+			// base url (domain). Otherwise, the user navigated away
+			// from the app, and Blazor's NavigationManager would
+			// not notify of location changes.
+			if (!changedBaseUri)
+			{
+				NotifyLocationChanged(isInterceptedLink: false);
+			}
+		});
+	}
+
+	/// <inheritdoc/>
+	protected override void SetNavigationLockState(bool value) { }
+
+	/// <inheritdoc/>
+	protected override void HandleLocationChangingHandlerException(Exception ex, LocationChangingContext context)
+		=> throw ex;
+
+	private URI GetNewAbsoluteUri(string uri)
+		=> new URI(uri, UriKind.RelativeOrAbsolute).IsAbsoluteUri
+			? new URI(uri, UriKind.RelativeOrAbsolute) : ToAbsoluteUri(uri);
+
+	private bool HasDifferentBaseUri(URI absoluteUri)
+		=> URI.Compare(
+			new URI(BaseUri, UriKind.Absolute),
+			absoluteUri,
+			UriComponents.SchemeAndServer,
+			UriFormat.Unescaped,
+			StringComparison.OrdinalIgnoreCase) != 0;
+
+	private static string GetBaseUri(URI uri)
+	{
+		return uri.Scheme + "://" + uri.Authority + "/";
+	}
+}

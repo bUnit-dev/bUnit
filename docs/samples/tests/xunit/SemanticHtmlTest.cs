@@ -3,17 +3,16 @@ using Bunit;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Docs.Samples;
 
-public class SemanticHtmlTest : TestContext
+public class SemanticHtmlTest : BunitContext
 {
   [Fact]
   public void InitialHtmlIsCorrect()
   {
     // Arrange - renders the Heading component
-    var cut = RenderComponent<Heading>();
+    var cut = Render<Heading>();
 
     // Assert
     // Here we specify expected HTML from CUT.

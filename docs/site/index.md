@@ -17,7 +17,7 @@ title: bUnit - a testing library for Blazor components
 - Pass parameters, cascading values and inject services into components under test
 - Mock `IJSRuntime`, Blazor authentication and authorization, and others
 
-bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, and MSTest, which run the Blazor components tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run.
+bUnit builds on top of existing unit testing frameworks such as xUnit, NUnit, MSTest and TUnit, which run the Blazor components tests in just the same way as any normal unit test. bUnit runs a test in milliseconds, compared to browser-based UI tests which usually take seconds to run.
 
 **Go to the [Documentation](xref:getting-started) pages to learn more.**
 
@@ -39,29 +39,27 @@ This test uses bUnit's test context to render the `Counter` component with the `
 
 bUnit is available on NuGet in various incarnations. Most users should just pick the [bUnit](https://www.nuget.org/packages/bunit/) package:
 
-| Name | Description | NuGet Download Link |
-| ----- | ----- | ---- |
-| [bUnit](https://www.nuget.org/packages/bunit/) | Includes the bUnit.core and bUnit.web packages. | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/) |
-| [bUnit.core](https://www.nuget.org/packages/bunit.core/) | Core library that enables rendering a Blazor component in a test context. | [![Nuget](https://img.shields.io/nuget/dt/bunit.core?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.core/) |
-| [bUnit.web](https://www.nuget.org/packages/bunit.web/) | Adds support for testing Blazor components for the web. This includes bUnit.core. | [![Nuget](https://img.shields.io/nuget/dt/bunit.web?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web/) |
-| [bUnit.template](https://www.nuget.org/packages/bunit.template/) | Template for bUnit test projects based on xUnit, NUnit or MSTest | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/) |
-| [bUnit.generators](https://www.nuget.org/packages/bunit.generators/)|Source code generators to minimize code setup in various situations.|[![Nuget](https://img.shields.io/nuget/dt/bunit.generators?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.generators/)|
-| [bUnit.web.query](https://www.nuget.org/packages/bunit.web.query/)|bUnit implementation of testing-library.com's query APIs.|[![Nuget](https://img.shields.io/nuget/dt/bunit.web.query?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web.query/)|
+| Name                                                                 | Description                                                          | NuGet Download Link                                                                                                                         |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| [bUnit](https://www.nuget.org/packages/bunit/)                       | Includes the bUnit.core and bUnit.web packages.                      | [![Nuget](https://img.shields.io/nuget/dt/bunit?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit/)                       |
+| [bUnit.template](https://www.nuget.org/packages/bunit.template/)     | Template for bUnit test projects based on xUnit, NUnit or MSTest     | [![Nuget](https://img.shields.io/nuget/dt/bunit.template?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.template/)     |
+| [bUnit.generators](https://www.nuget.org/packages/bunit.generators/) | Source code generators to minimize code setup in various situations. | [![Nuget](https://img.shields.io/nuget/dt/bunit.generators?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.generators/) |
+| [bUnit.web.query](https://www.nuget.org/packages/bunit.web.query/)   | bUnit implementation of testing-library.com's query APIs.            | [![Nuget](https://img.shields.io/nuget/dt/bunit.web.query?logo=nuget&style=flat-square)](https://www.nuget.org/packages/bunit.web.query/)   |
 
 ## Sponsors
 
 A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
 
-<div class="d-flex flex-row mb-3">
-	<a href="https://www.syncfusion.com/blazor-components?utm_source=bunit&utm_medium=cpc&utm_campaign=bunit_blazor_bancy25" class="d-block p-3 text-center">
+<div class="d-flex flex-row mb-3 align-items-center">
+	<a href="https://www.syncfusion.com/blazor-components?utm_source=bunit&utm_medium=cpc&utm_campaign=bunit_blazor_bancy25" target="_blank" class="d-block p-3 text-center">
 		<img class="avatar avatar rounded-circle" src="https://avatars.githubusercontent.com/u/1699795?s=460" width="72" height="72" alt="@syncfusion" />
 		<br />
 		Syncfusion
 	</a>
-  <a href="https://github.com/JetBrainsOfficial" class="d-block p-3 text-center">
-    <img class="avatar avatar rounded-circle" src="https://avatars.githubusercontent.com/u/60931315?v=4" width="72" height="72" alt="@JetBrainsOfficial" />
-		<br />
-		JetBrains
+  <a href="https://www.lambdatest.com/?utm_source=bunit&utm_medium=sponsor" target="_blank" class="d-block p-3 text-center">
+    <img src="https://www.lambdatest.com/blue-logo.png" style="vertical-align: middle;" width="250" height="45" />
+    <br />
+    LambdaTest				
   </a>
 </div>
 

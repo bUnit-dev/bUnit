@@ -30,7 +30,7 @@ jobs:
     steps:
 
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           token: ${{ secrets.BUNIT_BOT_TOKEN }}
@@ -70,11 +70,12 @@ jobs:
           RELEASE_NOTES: ${{ steps.changelog_reader.outputs.changes }}
 
       - name: ⚙️ Setup dotnet versions
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             8.0.x
             9.0.x
+            10.0.x
 
       - name: 🎨 Setup color
         run: |

@@ -8,12 +8,12 @@ using Bunit.Rendering;
 
 namespace Bunit.Docs.Samples;
 
-public class CascadingParams2Test : TestContext
+public class CascadingParams2Test : BunitContext
 {
   [Fact]
   public void Test()
   {
-    var cut = RenderComponent<CascadingParams>(parameters => parameters
+    var cut = Render<CascadingParams>(parameters => parameters
       .Add(p => p.UserName, "Name of User")
     );
   }

@@ -4,18 +4,18 @@ using Bunit;
 
 namespace Bunit.Docs.Samples;
 
-public class ClickMeTest : TestContext
+public class ClickMeTest : BunitContext
 {
   [Fact]
   public void Test()
   {
     // Arrange
-    var cut = RenderComponent<ClickMe>();
+    var cut = Render<ClickMe>();
     var buttonElement = cut.Find("button");
 
     // Act
     buttonElement.Click();
-    buttonElement.Click(detail: 3, ctrlKey: true);
+    buttonElement.Click(new MouseEventArgs { Detail = 3, CtrlKey = true });
     buttonElement.Click(new MouseEventArgs());
 
     // Assert

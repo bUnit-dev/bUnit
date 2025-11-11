@@ -3,13 +3,13 @@ namespace Bunit.Docs.Samples;
 using Bunit;
 using NUnit.Framework;
 
-public class HelloWorldTest : BunitTestContext
+public class HelloWorldTest : BunitContext
 {
     [Test]
     public void HelloWorldComponentRendersCorrectly()
     {
         // Act
-        var cut = RenderComponent<HelloWorld>();
+        var cut = Render<HelloWorld>();
 
         // Assert
         cut.MarkupMatches("<h1>Hello world from Blazor</h1>");

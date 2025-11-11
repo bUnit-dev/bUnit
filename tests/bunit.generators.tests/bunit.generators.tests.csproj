@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
 		<RootNamespace>Bunit</RootNamespace>
 		<AssemblyName>Bunit.Generator.Tests</AssemblyName>
 		<ImplicitUsings>true</ImplicitUsings>
@@ -14,19 +14,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Text.RegularExpressions" />
 		<PackageReference Include="Verify.SourceGenerators" />
-		<PackageReference Include="Verify.Xunit" />
+		<PackageReference Include="Verify.XunitV3" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Common" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\bunit.generators.internal\bunit.generators.internal.csproj" />
-		<ProjectReference Include="..\..\src\bunit.web\bunit.web.csproj" />
+		<ProjectReference Include="..\..\src\bunit.generators\bunit.generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\src\bunit\bunit.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

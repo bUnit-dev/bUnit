@@ -143,4 +143,4 @@ Let’s look at a few examples where we use the semantic comparison options list
 
 In this case, we want to verify that the markup is rendered correctly, using something such as RegEx to verify the `id` attribute (it might be generated) and ignoring the `<small>` element.  In tests we can do this like so with the `MarkupMatches()` method:
 
-[!code-csharp[SemanticHtmlTest.cs](../../../samples/tests/xunit/SemanticHtmlTest.cs#L16-L28)]
+[!code-csharp[SemanticHtmlTest.cs](../../../samples/tests/xunit/SemanticHtmlTest.cs#L15-L27)]

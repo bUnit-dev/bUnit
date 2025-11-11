@@ -1,0 +1,11 @@
+using Microsoft.AspNetCore.Components.Authorization;
+
+namespace Bunit.TestDoubles;
+
+internal sealed class PlaceholderAuthenticationStateProvider : AuthenticationStateProvider
+{
+	public override Task<AuthenticationState> GetAuthenticationStateAsync()
+	{
+		throw new MissingBunitAuthorizationException(nameof(AuthenticationStateProvider));
+	}
+}

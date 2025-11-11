@@ -24,16 +24,19 @@
 
 # [Test doubles](xref:test-doubles)
 ## [Emulating IJSRuntime](xref:emulating-ijsruntime)
-## [Faking authorization](xref:faking-auth)
+## [Adding Authorization](xref:bunit-auth)
 ## [Mocking HttpClient](xref:mocking-httpclient)
 ## [Mocking Localizer](xref:mocking-localizer)
-## [Faking PersistentComponentState](xref:faking-persistentcomponentstate)
-## [Faking NavigationManager](xref:fake-navigation-manager)
-## [Faking IWebAssemblyHostEnvironment](xref:fake-webassemblyhostenvironment)
+## [Adding PersistentComponentState](xref:bunit-persistentcomponentstate)
+## [Adding NavigationManager](xref:bunit-navigation-manager)
+## [Adding IWebAssemblyHostEnvironment](xref:bunit-webassemblyhostenvironment)
 ## [Testing with InputFile component](xref:input-file)
 
 # [Extensions](xref:extensions)
 ## [bunit.generators](xref:bunit-generators)
+
+# [Migrations](xref:migrations)
+## [1.x to 2.x](xref:migrating-from-1-to-2)
 
 # [Miscellaneous testing tips](xref:misc-test-tips)
 # [External resources](xref:external-resources)

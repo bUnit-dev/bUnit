@@ -1,0 +1,24 @@
+<form @onsubmit="Callback">
+	@if (HasSubmitType)
+	{
+		<button type="submit" id="submitter">Submit</button>
+	}
+	else
+	{
+		<button id="other" type="button" @onclick="() => { }">Other button</button>
+		<button id="submitter">Submit</button>
+	}
+</form>
+
+@code {
+	public bool SubmitWasCalled { get; private set; }
+	
+	[Parameter]
+    public bool HasSubmitType { get; set; } = true;
+
+	private void Callback()
+	{
+		SubmitWasCalled = true;
+	}
+}
+      

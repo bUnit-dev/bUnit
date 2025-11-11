@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
-using static Bunit.ComponentParameterFactory;
 
 namespace Bunit.Docs.Samples;
 
-public class WeatherForecastsTest : TestContext
+public class WeatherForecastsTest : BunitContext
 {
   [Fact]
   public void ServicesIsInjectedCorrectly()
@@ -16,9 +15,9 @@ public class WeatherForecastsTest : TestContext
     // Register services
     Services.AddSingleton<IWeatherForecastService>(new WeatherForecastService());
 
-    // RenderComponent will inject the service in the WeatherForecasts component
+    // Render will inject the service in the WeatherForecasts component
     // when it is instantiated and rendered.
-    var cut = RenderComponent<WeatherForecasts>();
+    var cut = Render<WeatherForecasts>();
 
     // Assert that service is injected
     Assert.NotNull(cut.Instance.Forecasts);

@@ -26,10 +26,12 @@ jobs:
     if: github.ref == 'refs/heads/stable' ||
         github.event.pull_request.merged == true && contains(github.head_ref, 'release/v') == true
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
 
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           token: ${{ secrets.BUNIT_BOT_TOKEN }}
@@ -55,11 +57,12 @@ jobs:
           setAllVars: true
 
       - name: ⚙️ Setup dotnet versions
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             8.0.x
             9.0.x
+            10.0.x
 
       - name: 🛠️ Update changelog
         uses: thomaseizinger/keep-a-changelog-new-release@3.1.0
@@ -96,13 +99,19 @@ jobs:
       - name: 🛠️ Packing library in release mode
         run: |
           dotnet pack src/bunit/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-          dotnet pack src/bunit.core/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
-          dotnet pack src/bunit.web/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+          dotnet pack src/bunit.template/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
           dotnet pack src/bunit.web.query/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+          dotnet pack src/bunit.generators/ -c Release --property:PackageOutputPath=${GITHUB_WORKSPACE}/packages -p:ContinuousIntegrationBuild=true -p:publicrelease=true
+
+      - name: 🛠️ NuGet login
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: ${{ secrets.NUGET_USER }}
 
       - name: 🛠️ Upload library to NuGet.org repository
         run: |
-          dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
+          dotnet nuget push ${GITHUB_WORKSPACE}/packages/*.nupkg -k ${{ steps.nuget-login.outputs.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
 
       - name: ⏩ Push stable branch
         run: git push origin stable

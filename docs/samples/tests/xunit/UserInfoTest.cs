@@ -3,16 +3,16 @@ using Xunit;
 
 namespace Bunit.Docs.Samples;
 
-public class UserInfoTest : TestContext
+public class UserInfoTest : BunitContext
 {
   [Fact(DisplayName = "UserInfo with unauthenticated user")]
   public void Test001()
   {
     // Arrange
-    this.AddTestAuthorization();
+    AddAuthorization();
 
     // Act
-    var cut = RenderComponent<UserInfo>();
+    var cut = Render<UserInfo>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Please log in!</h1>
@@ -23,11 +23,11 @@ public class UserInfoTest : TestContext
   public void Test004()
   {
     // Arrange
-    var authContext = this.AddTestAuthorization();
+    var authContext = AddAuthorization();
     authContext.SetAuthorizing();
 
     // Act
-    var cut = RenderComponent<UserInfo>();
+    var cut = Render<UserInfo>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Please log in!</h1>
@@ -38,11 +38,11 @@ public class UserInfoTest : TestContext
   public void Test002()
   {
     // Arrange
-    var authContext = this.AddTestAuthorization();
+    var authContext = AddAuthorization();
     authContext.SetAuthorized("TEST USER", AuthorizationState.Unauthorized);
 
     // Act
-    var cut = RenderComponent<UserInfo>();
+    var cut = Render<UserInfo>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Welcome TEST USER</h1>
@@ -53,11 +53,11 @@ public class UserInfoTest : TestContext
   public void Test003()
   {
     // Arrange
-    var authContext = this.AddTestAuthorization();
+    var authContext = AddAuthorization();
     authContext.SetAuthorized("TEST USER");
 
     // Act
-    var cut = RenderComponent<UserInfo>();
+    var cut = Render<UserInfo>();
 
     // Assert
     cut.MarkupMatches(@"<h1>Welcome TEST USER</h1>

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Bunit.Docs.Samples;
 
-public class AsyncDataTest : TestContext
+public class AsyncDataTest : BunitContext
 {
   [Fact]
   public void LoadDataAsync()
   {
     // Arrange
     var textService = new TaskCompletionSource<string>();
-    var cut = RenderComponent<AsyncData>(parameters => parameters
+    var cut = Render<AsyncData>(parameters => parameters
       .Add(p => p.TextService, textService.Task)
     );
 
@@ -32,7 +32,7 @@ public class AsyncDataTest : TestContext
   {
     // Arrange
     var textService = new TaskCompletionSource<string>();
-    var cut = RenderComponent<AsyncData>(parameters => parameters
+    var cut = Render<AsyncData>(parameters => parameters
       .Add(p => p.TextService, textService.Task)
     );
 
@@ -51,7 +51,7 @@ public class AsyncDataTest : TestContext
   {
     // Arrange
     var textService = new TaskCompletionSource<string>();
-    var cut = RenderComponent<AsyncData>(parameters => parameters
+    var cut = Render<AsyncData>(parameters => parameters
       .Add(p => p.TextService, textService.Task)
     );
 

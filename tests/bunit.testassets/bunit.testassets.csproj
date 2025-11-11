@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;net5.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
 		<RootNamespace>Bunit.TestAssets</RootNamespace>
 		<AssemblyName>Bunit.TestAssets</AssemblyName>
 		<OutputType>Library</OutputType>
@@ -16,14 +16,12 @@
 	<ItemGroup>
 		<PackageReference Include="Serilog" />
 		<PackageReference Include="Serilog.Expressions" />
-		<PackageReference Include="xunit.extensibility.execution" />
-		<PackageReference Include="xunit.abstractions" />		
-		<PackageReference Include="xunit.assert"  />
+		<PackageReference Include="xunit.v3.extensibility.core" />
+		<PackageReference Include="xunit.v3.assert"  />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" />
-		<PackageReference Include="System.Text.Json" />
 		<PackageReference Include="Serilog.Extensions.Logging" />
 	</ItemGroup>
 
