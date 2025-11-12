@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [2.0.66] - 2025-11-11
+
 This major release focuses on platform updates and API simplifications.
 
 For a migration guide, see [Upgrading bUnit](https://bunit.dev/docs/migrations/index.html).
@@ -1468,7 +1470,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v1.40.0...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.0.66...HEAD
+[2.0.66]: https://github.com/bUnit-dev/bUnit/compare/v1.40.0...2.0.66
 [1.40.0]: https://github.com/bUnit-dev/bUnit/compare/v1.39.5...v1.40.0
 [1.39.5]: https://github.com/bUnit-dev/bUnit/compare/v1.38.5...1.39.5
 [1.38.5]: https://github.com/bUnit-dev/bUnit/compare/v1.37.7...v1.38.5
