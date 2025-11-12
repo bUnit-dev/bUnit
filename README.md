@@ -43,13 +43,6 @@ A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/bUnit-de
 
 <table border="0">
 	<tr>
-		<td align="center" width="120">
-			<a href="https://www.syncfusion.com/blazor-components?utm_source=bunit&utm_medium=cpc&utm_campaign=bunit_blazor_bancy25">
-				<img class="avatar" src="https://avatars.githubusercontent.com/u/1699795?s=460" width="72" height="72" alt="@syncfusion" />
-				<br />
-				Syncfusion
-			</a>
-		</td>
 		<td align="center" width="250">
 			<a href="https://www.lambdatest.com/?utm_source=bunit&utm_medium=sponsor" target="_blank">
 				<img src="https://www.lambdatest.com/blue-logo.png" style="vertical-align: middle;" width="250" height="45" />
