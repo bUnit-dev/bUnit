@@ -7,6 +7,7 @@ namespace Bunit.TestDoubles;
 /// that will help later to assert if the user was logged out
 /// </summary>
 #pragma warning disable CS0618
+[RemovedInFutureVersion("SignOutSessionStateManager is obsolete")]
 public class BunitSignOutSessionStateManager : SignOutSessionStateManager
 #pragma warning restore CS0618
 {

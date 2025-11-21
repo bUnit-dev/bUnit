@@ -11,9 +11,10 @@ public partial class BunitContext
 	/// an authenticated user, as well as adding the <see cref="CascadingAuthenticationState"/> component to the
 	/// test contexts render tree.
 	/// </summary>
+	[RemovedInFutureVersion("SignOutSessionStateManager should be removed from the container.")]
 	public BunitAuthorizationContext AddAuthorization()
 	{
-		RenderTree.TryAdd<CascadingAuthenticationState>();
+		Services.AddCascadingAuthenticationState();
 		Services.AddSingleton<BunitSignOutSessionStateManager>();
 #pragma warning disable CS0618
 		Services.AddSingleton<SignOutSessionStateManager>(s => s.GetRequiredService<BunitSignOutSessionStateManager>());
