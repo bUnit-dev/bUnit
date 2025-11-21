@@ -1,7 +1,9 @@
+#nullable enable
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,26 +16,37 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		// Finds the AngleSharp assembly referenced by the target project
-		// This should prevent the source generator from running unless a
-		// new symbol is returned.
-		var angleSharpAssemblyReference = context
+		// and collects element interface type names into cacheable records.
+		var elementInterfaces = context
 			.CompilationProvider
 			.Select((compilation, cancellationToken) =>
 			{
 				var meta = compilation.References.FirstOrDefault(x => x.Display?.EndsWith($"{Path.DirectorySeparatorChar}AngleSharp.dll", StringComparison.Ordinal) ?? false);
-				return compilation.GetAssemblyOrModuleSymbol(meta);
+				var assembly = compilation.GetAssemblyOrModuleSymbol(meta);
+				
+				if (assembly is not IAssemblySymbol angleSharpAssembly)
+					return null;
+
+				var elementInterfaceTypes = FindElementInterfaces(angleSharpAssembly);
+				// Create cacheable records with just the essential info needed for generation
+				return new ElementInterfacesData(
+					angleSharpAssembly,
+					elementInterfaceTypes.Select(t => new ElementTypeInfo(
+						t.Name,
+						t.ToDisplayString(GeneratorConfig.SymbolFormat)
+					)).ToImmutableArray());
 			});
 
 		// Output the hardcoded source files
-		context.RegisterSourceOutput(angleSharpAssemblyReference, GenerateStaticContent);
+		context.RegisterSourceOutput(elementInterfaces, GenerateStaticContent);
 
 		// Output the generated wrapper types
-		context.RegisterSourceOutput(angleSharpAssemblyReference, GenerateWrapperTypes);
+		context.RegisterSourceOutput(elementInterfaces, GenerateWrapperTypes);
 	}
 
-	private static void GenerateStaticContent(SourceProductionContext context, ISymbol assembly)
+	private static void GenerateStaticContent(SourceProductionContext context, ElementInterfacesData? data)
 	{
-		if (assembly is not IAssemblySymbol)
+		if (data is null)
 			return;
 
 		context.AddSource("IElementWrapperFactory.g.cs", ReadEmbeddedResource("Bunit.Web.AngleSharp.IElementWrapperFactory.cs"));
@@ -41,15 +54,20 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 		context.AddSource("WrapperBase.g.cs", ReadEmbeddedResource("Bunit.Web.AngleSharp.WrapperBase.cs"));
 	}
 
-	private static void GenerateWrapperTypes(SourceProductionContext context, ISymbol assembly)
+	private static void GenerateWrapperTypes(SourceProductionContext context, ElementInterfacesData? data)
 	{
-		if (assembly is not IAssemblySymbol angleSharpAssembly)
+		if (data is null)
 			return;
 
-		var elementInterfacetypes = FindElementInterfaces(angleSharpAssembly);
+		// Retrieve the actual symbols from the assembly for code generation
+		var elementSymbols = data.ElementTypes
+			.Select(t => data.Assembly.GetTypeByMetadataName(t.FullyQualifiedName.Replace("global::", "")))
+			.Where(s => s is not null)
+			.Cast<INamedTypeSymbol>()
+			.ToList();
 
 		var source = new StringBuilder();
-		foreach (var elm in elementInterfacetypes)
+		foreach (var elm in elementSymbols)
 		{
 			source.Clear();
 			var name = WrapperElementGenerator.GenerateWrapperTypeSource(source, elm);
@@ -57,11 +75,11 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 		}
 
 		source.Clear();
-		GenerateWrapperFactory(source, elementInterfacetypes);
+		GenerateWrapperFactory(source, data.ElementTypes);
 		context.AddSource($"WrapperExtensions.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
 	}
 
-	private static void GenerateWrapperFactory(StringBuilder source, IEnumerable<INamedTypeSymbol> elementInterfacetypes)
+	private static void GenerateWrapperFactory(StringBuilder source, ImmutableArray<ElementTypeInfo> elementTypes)
 	{
 		source.AppendLine("""namespace Bunit.Web.AngleSharp;""");
 		source.AppendLine();
@@ -78,10 +96,10 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 		source.AppendLine($"\tpublic static global::AngleSharp.Dom.IElement WrapUsing<TElementFactory>(this global::AngleSharp.Dom.IElement element, TElementFactory elementFactory) where TElementFactory : Bunit.Web.AngleSharp.IElementWrapperFactory => element switch");
 		source.AppendLine("\t{");
 
-		foreach (var elm in elementInterfacetypes)
+		foreach (var elm in elementTypes)
 		{
 			var wrapperName = $"{elm.Name.Substring(1)}Wrapper";
-			source.AppendLine($"\t\t{elm.ToDisplayString(GeneratorConfig.SymbolFormat)} e => new {wrapperName}(e, elementFactory),");
+			source.AppendLine($"\t\t{elm.FullyQualifiedName} e => new {wrapperName}(e, elementFactory),");
 		}
 
 		source.AppendLine($"\t\t_ => new ElementWrapper(element, elementFactory),");
@@ -103,6 +121,9 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 
 		var elementInterfaceSymbol = angleSharpAssembly
 			.GetTypeByMetadataName("AngleSharp.Dom.IElement");
+
+		if (elementInterfaceSymbol is null)
+			return Array.Empty<INamedTypeSymbol>();
 
 		var result = htmlDomNamespace
 			.GetTypeMembers()
@@ -139,3 +160,13 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 		return reader.ReadToEnd();
 	}
 }
+
+// Cacheable data structure that stores minimal information about element interfaces
+// This allows the incremental generator to cache and reuse results across builds
+internal sealed record ElementInterfacesData(
+	IAssemblySymbol Assembly,
+	ImmutableArray<ElementTypeInfo> ElementTypes);
+
+internal sealed record ElementTypeInfo(
+	string Name,
+	string FullyQualifiedName);
