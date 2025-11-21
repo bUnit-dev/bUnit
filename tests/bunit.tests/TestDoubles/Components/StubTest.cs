@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components.Authorization;
+
 namespace Bunit.TestDoubles.Components;
 
 public class StubTest : BunitContext
@@ -24,5 +26,22 @@ public class StubTest : BunitContext
 				ps => ps.ShouldContain(x => x.Key == nameof(Simple1.Header) && header.Equals(x.Value)),
 				ps => ps.ShouldContain(x => x.Key == nameof(Simple1.AttrValue) && attrValue.Equals(x.Value)),
 				ps => ps.Count.ShouldBe(2));
+	}
+
+	[Fact(DisplayName = "Stubbing everything except cut keeps cascading AuthenticationState")]
+	public void Test003()
+	{
+		AddAuthorization();
+		ComponentFactories.AddStub(c => c != typeof(AuthTestComponent));
+		
+		var cut = Render<AuthTestComponent>();
+
+		cut.Instance.Auth.ShouldNotBeNull();
+	}
+
+	private sealed class AuthTestComponent : ComponentBase
+	{
+		[CascadingParameter]
+		public Task<AuthenticationState> Auth { get; set; } = null!;
 	}
 }

@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Changed
+- Registering `AuthenticationState` in the services container rather than as part of the RenderTree. Fixes [#1774](https://github.com/bUnit-dev/bUnit/issues/1774) reported by [@aayjaychan](https://github.com/aayjaychan).
+
 ## [2.0.66] - 2025-11-11
 
 This major release focuses on platform updates and API simplifications.
