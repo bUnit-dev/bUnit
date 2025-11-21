@@ -6,7 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [2.1.1] - 2025-11-21
+
 ### Changed
+
 - Registering `AuthenticationState` in the services container rather than as part of the RenderTree. Fixes [#1774](https://github.com/bUnit-dev/bUnit/issues/1774) reported by [@aayjaychan](https://github.com/aayjaychan).
 
 ## [2.0.66] - 2025-11-11
@@ -1473,7 +1476,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.0.66...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/bUnit-dev/bUnit/compare/v2.0.66...v2.1.1
 [2.0.66]: https://github.com/bUnit-dev/bUnit/compare/v1.40.0...2.0.66
 [1.40.0]: https://github.com/bUnit-dev/bUnit/compare/v1.39.5...v1.40.0
 [1.39.5]: https://github.com/bUnit-dev/bUnit/compare/v1.38.5...1.39.5
