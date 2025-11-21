@@ -110,7 +110,10 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 
 		foreach (var elm in elementTypes)
 		{
-			var wrapperName = $"{elm.Name.Substring(1)}Wrapper";
+			// Element interface names start with 'I' (e.g., IElement -> ElementWrapper)
+			var wrapperName = elm.Name.Length > 1 && elm.Name.StartsWith("I", StringComparison.Ordinal)
+				? $"{elm.Name[1..]}Wrapper"
+				: $"{elm.Name}Wrapper";
 			source.AppendLine($"\t\t{elm.FullyQualifiedName} e => new {wrapperName}(e, elementFactory),");
 		}
 
