@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -10,7 +11,10 @@ internal static class WrapperElementGenerator
 {
 	internal static string GenerateWrapperTypeSource(StringBuilder source, INamedTypeSymbol elm)
 	{
-		var name = $"{elm.Name.Substring(1)}Wrapper";
+		// Element interface names start with 'I' (e.g., IElement -> ElementWrapper)
+		var name = elm.Name.Length > 1 && elm.Name.StartsWith("I", StringComparison.Ordinal)
+			? $"{elm.Name[1..]}Wrapper"
+			: $"{elm.Name}Wrapper";
 		var wrappedTypeName = elm.ToDisplayString(GeneratorConfig.SymbolFormat);
 
 		source.AppendLine("#nullable enable");
