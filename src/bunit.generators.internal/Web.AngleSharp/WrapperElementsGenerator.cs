@@ -29,19 +29,23 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 
 				var elementInterfaceTypes = FindElementInterfaces(angleSharpAssembly);
 				// Create cacheable records with just the essential info needed for generation
+				// Store metadata names instead of symbols for cacheability
 				return new ElementInterfacesData(
-					angleSharpAssembly,
 					elementInterfaceTypes.Select(t => new ElementTypeInfo(
 						t.Name,
-						t.ToDisplayString(GeneratorConfig.SymbolFormat)
+						t.ToDisplayString(GeneratorConfig.SymbolFormat),
+						GetMetadataName(t)
 					)).ToImmutableArray());
 			});
+
+		// Combine with compilation to retrieve symbols during execution
+		var elementInterfacesWithCompilation = elementInterfaces.Combine(context.CompilationProvider);
 
 		// Output the hardcoded source files
 		context.RegisterSourceOutput(elementInterfaces, GenerateStaticContent);
 
 		// Output the generated wrapper types
-		context.RegisterSourceOutput(elementInterfaces, GenerateWrapperTypes);
+		context.RegisterSourceOutput(elementInterfacesWithCompilation, GenerateWrapperTypes);
 	}
 
 	private static void GenerateStaticContent(SourceProductionContext context, ElementInterfacesData? data)
@@ -54,14 +58,22 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 		context.AddSource("WrapperBase.g.cs", ReadEmbeddedResource("Bunit.Web.AngleSharp.WrapperBase.cs"));
 	}
 
-	private static void GenerateWrapperTypes(SourceProductionContext context, ElementInterfacesData? data)
+	private static void GenerateWrapperTypes(SourceProductionContext context, (ElementInterfacesData? data, Compilation compilation) input)
 	{
+		var (data, compilation) = input;
 		if (data is null)
+			return;
+
+		// Find the AngleSharp assembly in the compilation
+		var meta = compilation.References.FirstOrDefault(x => x.Display?.EndsWith($"{Path.DirectorySeparatorChar}AngleSharp.dll", StringComparison.Ordinal) ?? false);
+		var assembly = compilation.GetAssemblyOrModuleSymbol(meta);
+		
+		if (assembly is not IAssemblySymbol angleSharpAssembly)
 			return;
 
 		// Retrieve the actual symbols from the assembly for code generation
 		var elementSymbols = data.ElementTypes
-			.Select(t => data.Assembly.GetTypeByMetadataName(t.FullyQualifiedName.Replace("global::", "")))
+			.Select(t => angleSharpAssembly.GetTypeByMetadataName(t.MetadataName))
 			.Where(s => s is not null)
 			.Cast<INamedTypeSymbol>()
 			.ToList();
@@ -106,6 +118,17 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 
 		source.AppendLine("\t};");
 		source.AppendLine("}");
+	}
+
+	private static string GetMetadataName(INamedTypeSymbol typeSymbol)
+	{
+		// Get the full metadata name that can be used with GetTypeByMetadataName
+		// This is the fully qualified name without the "global::" prefix
+		var containingNamespace = typeSymbol.ContainingNamespace;
+		var namespacePrefix = containingNamespace?.IsGlobalNamespace == false 
+			? containingNamespace.ToDisplayString() + "."
+			: "";
+		return namespacePrefix + typeSymbol.Name;
 	}
 
 	private static IReadOnlyList<INamedTypeSymbol> FindElementInterfaces(IAssemblySymbol angleSharpAssembly)
@@ -164,9 +187,9 @@ public class WrapperElementsGenerator : IIncrementalGenerator
 // Cacheable data structure that stores minimal information about element interfaces
 // This allows the incremental generator to cache and reuse results across builds
 internal sealed record ElementInterfacesData(
-	IAssemblySymbol Assembly,
 	ImmutableArray<ElementTypeInfo> ElementTypes);
 
 internal sealed record ElementTypeInfo(
 	string Name,
-	string FullyQualifiedName);
+	string FullyQualifiedName,
+	string MetadataName);
