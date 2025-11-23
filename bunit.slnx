@@ -1,0 +1,44 @@
+<Solution>
+  <Folder Name="/.items/">
+    <File Path=".config/dotnet-tools.json" />
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="version.json" />
+  </Folder>
+  <Folder Name="/.text/">
+    <File Path="CHANGELOG.md" />
+    <File Path="MIGRATION.md" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/.workflows/">
+    <File Path=".github/workflows/ci.yml" />
+    <File Path=".github/workflows/docs-deploy.yml" />
+    <File Path=".github/workflows/prepare-release.yml" />
+    <File Path=".github/workflows/release.yml" />
+  </Folder>
+  <Folder Name="/src/">
+    <File Path="src/.editorconfig" />
+    <File Path="src/Directory.Build.props" />
+    <Project Path="src/bunit.generators.internal/bunit.generators.internal.csproj" />
+    <Project Path="src/bunit.generators/bunit.generators.csproj" />
+    <Project Path="src/bunit.template/bunit.template.csproj">
+      <Build Project="false" />
+    </Project>
+    <Project Path="src/bunit.web.query/bunit.web.query.csproj" />
+    <Project Path="src/bunit/bunit.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <File Path="tests/.editorconfig" />
+    <File Path="tests/Directory.Build.props" />
+    <File Path="tests/run-tests.ps1" />
+    <File Path="tests/xunit.runner.json" />
+    <Project Path="tests/bunit.generators.tests/bunit.generators.tests.csproj" />
+    <Project Path="tests/bunit.testassets/bunit.testassets.csproj" />
+    <Project Path="tests/bunit.tests/bunit.tests.csproj" />
+    <Project Path="tests/bunit.web.query.tests/bunit.web.query.tests.csproj" />
+  </Folder>
+</Solution>

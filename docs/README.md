@@ -28,7 +28,7 @@ The following tools are required to build and view the documentation locally:
 
 ### View the documentation
 
-1. Build the `bunit.sln` solution in the root folder in release configuration `dotnet build -c Release`.
+1. Build the `bunit.slxn` solution in the root folder in release configuration `dotnet build -c Release`.
 2. From `docs/site` run `docfx metadata` to generate the documentation site's metadata.
 3. After that run `docfx build` to generate the documentation site.
 4. From `docs/` run `serve-docs.cmd`. This will start up a local web server (using `dotnet serve`), hosting the generated documentation site.
