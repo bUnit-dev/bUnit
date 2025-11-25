@@ -351,4 +351,146 @@ public class LabelQueryExtensionsTest : BunitContext
 		input.NodeName.ShouldBe(htmlElementWithLabel, StringCompareShould.IgnoreCase);
 		input.Id.ShouldBe($"{htmlElementWithLabel}-with-label");
 	}
+
+	[Fact(DisplayName = "FindAllByLabelText should return empty collection when no elements match")]
+	public void Test100()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("<div>No labels here</div>"));
+
+		var elements = cut.FindAllByLabelText("Non-existent label");
+
+		elements.ShouldBeEmpty();
+	}
+
+	[Fact(DisplayName = "FindAllByLabelText should return multiple elements with same label text using for attribute")]
+	public void Test101()
+	{
+		var labelText = "Same Label";
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent($"""
+				<label for="input-1">{labelText}</label>
+				<input id="input-1" />
+				<label for="input-2">{labelText}</label>
+				<input id="input-2" />
+				"""));
+
+		var elements = cut.FindAllByLabelText(labelText);
+
+		elements.Count.ShouldBe(2);
+		elements[0].Id.ShouldBe("input-1");
+		elements[1].Id.ShouldBe("input-2");
+	}
+
+	[Fact(DisplayName = "FindAllByLabelText should return multiple elements with same aria-label")]
+	public void Test102()
+	{
+		var labelText = "Aria Label";
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent($"""
+				<input id="input-1" aria-label="{labelText}" />
+				<input id="input-2" aria-label="{labelText}" />
+				<button id="button-1" aria-label="{labelText}" />
+				"""));
+
+		var elements = cut.FindAllByLabelText(labelText);
+
+		elements.Count.ShouldBe(3);
+		elements[0].Id.ShouldBe("input-1");
+		elements[1].Id.ShouldBe("input-2");
+		elements[2].Id.ShouldBe("button-1");
+	}
+
+	[Fact(DisplayName = "FindAllByLabelText should return multiple elements wrapped in labels")]
+	public void Test103()
+	{
+		var labelText = "Wrapped Label";
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent($"""
+				<label>{labelText}<input id="input-1" /></label>
+				<label>{labelText}<input id="input-2" /></label>
+				"""));
+
+		var elements = cut.FindAllByLabelText(labelText);
+
+		elements.Count.ShouldBe(2);
+		elements[0].Id.ShouldBe("input-1");
+		elements[1].Id.ShouldBe("input-2");
+	}
+
+	[Fact(DisplayName = "FindAllByLabelText should return multiple elements using aria-labelledby")]
+	public void Test104()
+	{
+		var labelText = "Aria Labelled By";
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent($"""
+				<h2 id="heading-1">{labelText}</h2>
+				<input id="input-1" aria-labelledby="heading-1" />
+				<input id="input-2" aria-labelledby="heading-1" />
+				"""));
+
+		var elements = cut.FindAllByLabelText(labelText);
+
+		elements.Count.ShouldBe(2);
+		elements[0].Id.ShouldBe("input-1");
+		elements[1].Id.ShouldBe("input-2");
+	}
+
+	[Fact(DisplayName = "FindAllByLabelText should return elements from different strategies")]
+	public void Test105()
+	{
+		var labelText = "Mixed Label";
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent($"""
+				<label for="input-for">{labelText}</label>
+				<input id="input-for" />
+				<input id="input-aria" aria-label="{labelText}" />
+				<label>{labelText}<input id="input-wrapped" /></label>
+				<h2 id="heading-1">{labelText}</h2>
+				<input id="input-labelledby" aria-labelledby="heading-1" />
+				"""));
+
+		var elements = cut.FindAllByLabelText(labelText);
+
+		elements.Count.ShouldBe(4);
+		var ids = elements.Select(e => e.Id).ToList();
+		ids.ShouldContain("input-for");
+		ids.ShouldContain("input-aria");
+		ids.ShouldContain("input-wrapped");
+		ids.ShouldContain("input-labelledby");
+	}
+
+	[Fact(DisplayName = "FindAllByLabelText should deduplicate elements matched by multiple strategies")]
+	public void Test106()
+	{
+		var labelText = "Duplicate Label";
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent($"""
+				<label for="input-1">{labelText}</label>
+				<input id="input-1" aria-label="{labelText}" />
+				"""));
+
+		var elements = cut.FindAllByLabelText(labelText);
+
+		// The same input is matched by both 'for' attribute and 'aria-label' strategies
+		// but should only appear once in the result
+		elements.Count.ShouldBe(1);
+		elements[0].Id.ShouldBe("input-1");
+	}
+
+	[Fact(DisplayName = "FindAllByLabelText should respect case-insensitive comparison option")]
+	public void Test107()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<label for="input-1">Label Text</label>
+				<input id="input-1" />
+				<label for="input-2">LABEL TEXT</label>
+				<input id="input-2" />
+				"""));
+
+		var elements = cut.FindAllByLabelText("label text", o => o.ComparisonType = StringComparison.OrdinalIgnoreCase);
+
+		elements.Count.ShouldBe(2);
+	}
 }

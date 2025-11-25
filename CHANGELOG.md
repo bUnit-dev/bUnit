@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## Added
+- Added `FindByAllByLabel` to `bunit.web.query` package. By [@linkdotnet](https://github.com/linkdotnet).
+
 ## [2.1.1] - 2025-11-21
 
 ### Changed
