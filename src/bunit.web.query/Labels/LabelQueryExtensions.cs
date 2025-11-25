@@ -1,5 +1,6 @@
 using AngleSharp.Dom;
 using Bunit.Labels.Strategies;
+using Bunit.Web.AngleSharp;
 
 namespace Bunit;
 
@@ -35,6 +36,25 @@ public static class LabelQueryExtensions
 		return FindByLabelTextInternal(renderedComponent, labelText, options) ?? throw new LabelNotFoundException(labelText);
 	}
 
+	/// <summary>
+	/// Returns all elements (i.e. input, select, textarea, etc. elements) associated with the given label text.
+	/// </summary>
+	/// <param name="renderedComponent">The rendered fragment to search.</param>
+	/// <param name="labelText">The text of the label to search (i.e. the InnerText of the Label, such as "First Name" for a `<label>First Name</label>`)</param>
+	/// <param name="configureOptions">Method used to override the default behavior of FindAllByLabelText.</param>
+	/// <returns>A read-only collection of elements matching the label text. Returns an empty collection if no matches are found.</returns>
+	public static IReadOnlyList<IElement> FindAllByLabelText(this IRenderedComponent<IComponent> renderedComponent, string labelText, Action<ByLabelTextOptions>? configureOptions = null)
+	{
+		var options = ByLabelTextOptions.Default;
+		if (configureOptions is not null)
+		{
+			options = options with { };
+			configureOptions.Invoke(options);
+		}
+
+		return FindAllByLabelTextInternal(renderedComponent, labelText, options);
+	}
+
 	internal static IElement? FindByLabelTextInternal(this IRenderedComponent<IComponent> renderedComponent, string labelText, ByLabelTextOptions options)
 	{
 		foreach (var strategy in LabelTextQueryStrategies)
@@ -46,5 +66,29 @@ public static class LabelQueryExtensions
 		}
 
 		return null;
+	}
+
+	internal static IReadOnlyList<IElement> FindAllByLabelTextInternal(this IRenderedComponent<IComponent> renderedComponent, string labelText, ByLabelTextOptions options)
+	{
+		var results = new List<IElement>();
+
+		foreach (var strategy in LabelTextQueryStrategies)
+		{
+			results.AddRange(strategy.FindElements(renderedComponent, labelText, options));
+		}
+
+		var seen = new HashSet<IElement>();
+		var distinctResults = new List<IElement>();
+
+		foreach (var element in results)
+		{
+			var underlyingElement = element.Unwrap();
+			if (seen.Add(underlyingElement))
+			{
+				distinctResults.Add(element);
+			}
+		}
+
+		return distinctResults;
 	}
 }
