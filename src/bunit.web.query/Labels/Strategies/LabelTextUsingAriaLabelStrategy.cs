@@ -5,7 +5,7 @@ namespace Bunit.Labels.Strategies;
 
 internal sealed class LabelTextUsingAriaLabelStrategy : ILabelTextQueryStrategy
 {
-	public IElement? FindElement(IRenderedComponent<IComponent> renderedComponent, string labelText, ByLabelTextOptions options)
+	public IEnumerable<IElement> FindElements(IRenderedComponent<IComponent> renderedComponent, string labelText, ByLabelTextOptions options)
 	{
 		var caseSensitivityQualifier = options.ComparisonType switch
 		{
@@ -15,11 +15,11 @@ internal sealed class LabelTextUsingAriaLabelStrategy : ILabelTextQueryStrategy
 			_ => ""
 		};
 
-		var element = renderedComponent.Nodes.TryQuerySelector($"[aria-label='{labelText}'{caseSensitivityQualifier}]");
+		var elements = renderedComponent.Nodes.TryQuerySelectorAll($"[aria-label='{labelText}'{caseSensitivityQualifier}]");
 
-		if (element is null)
-			return null;
-
-		return element.WrapUsing(new ByLabelTextElementFactory(renderedComponent, labelText, options));
+		foreach (var element in elements)
+		{
+			yield return element.WrapUsing(new ByLabelTextElementFactory(renderedComponent, labelText, options));
+		}
 	}
 }
