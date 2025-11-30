@@ -1,4 +1,5 @@
 using System.Globalization;
+using AngleSharp.Html.Dom;
 
 namespace Bunit.Extensions.WaitForHelpers;
 
@@ -96,5 +97,56 @@ public class RenderedComponentWaitForElementsHelperExtensionsTest : BunitContext
 		var elms = cut.WaitForElements("main > p", matchElementCount: 0);
 
 		elms.ShouldBeEmpty();
+	}
+
+	[Fact(DisplayName = "WaitForElement<TElement> waits until element of specified type matching cssSelector appears")]
+	[Trait("Category", "sync")]
+	public void Test026()
+	{
+		var expectedMarkup = "<input type='text' id='myInput' />";
+		var cut = Render<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
+
+		var elm = cut.WaitForElement<DelayRenderFragment, IHtmlInputElement>("#myInput");
+
+		elm.ShouldNotBeNull();
+		elm.Type.ShouldBe("text");
+	}
+
+	[Fact(DisplayName = "WaitForElement<TElement> throws exception when element type does not match")]
+	[Trait("Category", "sync")]
+	public void Test027()
+	{
+		var cut = Render<DelayRenderFragment>(ps => ps.AddChildContent("<div id='myDiv'></div>"));
+
+		var expected = Should.Throw<WaitForFailedException>(() =>
+			cut.WaitForElement<DelayRenderFragment, IHtmlInputElement>("#myDiv", WaitForTestTimeout));
+
+		expected.InnerException.ShouldBeOfType<ElementNotFoundException>();
+	}
+
+	[Fact(DisplayName = "WaitForElements<TElement> waits until elements of specified type matching cssSelector appear")]
+	[Trait("Category", "sync")]
+	public void Test028()
+	{
+		var expectedMarkup = "<input type='text' /><div></div><input type='checkbox' />";
+		var cut = Render<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
+
+		var elms = cut.WaitForElements<DelayRenderFragment, IHtmlInputElement>("main input");
+
+		elms.Count.ShouldBe(2);
+		elms[0].ShouldBeAssignableTo<IHtmlInputElement>();
+		elms[1].ShouldBeAssignableTo<IHtmlInputElement>();
+	}
+
+	[Fact(DisplayName = "WaitForElements<TElement> with count waits until exactly N elements of specified type appear")]
+	[Trait("Category", "sync")]
+	public void Test029()
+	{
+		var expectedMarkup = "<input type='text' /><input type='checkbox' /><input type='password' />";
+		var cut = Render<DelayRenderFragment>(ps => ps.AddChildContent(expectedMarkup));
+
+		var elms = cut.WaitForElements<DelayRenderFragment, IHtmlInputElement>("main input", matchElementCount: 3);
+
+		elms.Count.ShouldBe(3);
 	}
 }

@@ -1,4 +1,5 @@
 using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 using Bunit.Rendering;
 
 namespace Bunit;
@@ -255,7 +256,47 @@ public class RenderedComponentTest : BunitContext
 
 		cut.Instance.Invoked.ShouldBeTrue();
 	}
-	
+
+	[Fact(DisplayName = "Find<TElement> returns element of specified type when it matches")]
+	public void Test026()
+	{
+		var cut = Render<Wrapper>(x => x.AddChildContent("<input type='text' id='myInput' />"));
+
+		var result = cut.Find<Wrapper, IHtmlInputElement>("#myInput");
+
+		result.ShouldNotBeNull();
+		result.Type.ShouldBe("text");
+	}
+
+	[Fact(DisplayName = "Find<TElement> throws ElementNotFoundException when no element matches selector")]
+	public void Test027()
+	{
+		var cut = Render<Wrapper>(x => x.AddChildContent("<div></div>"));
+
+		Should.Throw<ElementNotFoundException>(() => cut.Find<Wrapper, IHtmlInputElement>("#nonexistent"));
+	}
+
+	[Fact(DisplayName = "FindAll<TElement> returns only elements of specified type")]
+	public void Test028()
+	{
+		var cut = Render<Wrapper>(x => x.AddChildContent("<input type='text' /><div></div><input type='checkbox' />"));
+
+		var results = cut.FindAll<Wrapper, IHtmlInputElement>("*");
+
+		results.Count.ShouldBe(2);
+		results.ShouldAllBe(e => e is IHtmlInputElement);
+	}
+
+	[Fact(DisplayName = "FindAll<TElement> returns empty list when no elements match the type")]
+	public void Test029()
+	{
+		var cut = Render<Wrapper>(x => x.AddChildContent("<div></div><span></span>"));
+
+		var results = cut.FindAll<Wrapper, IHtmlInputElement>("*");
+
+		results.ShouldBeEmpty();
+	}
+
 	private class BaseComponent : ComponentBase
 	{
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
