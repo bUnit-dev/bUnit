@@ -6,6 +6,12 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+- Added `FindByAllByLabel` to `bunit.web.query` package. By [@linkdotnet](https://github.com/linkdotnet).
+
+### Fixed
+- Updated `AngleSharp.Diffing` to fix a bug related to unknown HTML elements. Reported by [@md-at-slashwhy](https://github.com/md-at-slashwhy).
+
 ## [2.1.1] - 2025-11-21
 
 ### Changed
