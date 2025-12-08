@@ -6,10 +6,14 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [2.2.2] - 2025-12-08
+
 ### Added
+
 - Added `FindByAllByLabel` to `bunit.web.query` package. By [@linkdotnet](https://github.com/linkdotnet).
 
 ### Fixed
+
 - Updated `AngleSharp.Diffing` to fix a bug related to unknown HTML elements. Reported by [@md-at-slashwhy](https://github.com/md-at-slashwhy).
 
 ## [2.1.1] - 2025-11-21
@@ -1482,7 +1486,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.1.1...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.2.2...HEAD
+[2.2.2]: https://github.com/bUnit-dev/bUnit/compare/v2.1.1...2.2.2
 [2.1.1]: https://github.com/bUnit-dev/bUnit/compare/v2.0.66...v2.1.1
 [2.0.66]: https://github.com/bUnit-dev/bUnit/compare/v1.40.0...2.0.66
 [1.40.0]: https://github.com/bUnit-dev/bUnit/compare/v1.39.5...v1.40.0
