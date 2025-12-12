@@ -11,7 +11,7 @@ on:
         options:
           - major
           - minor
-          -build
+          - build
         default: 'minor'
 
 jobs:
