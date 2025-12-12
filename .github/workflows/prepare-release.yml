@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       versionIncrement:
-        description: 'The version increment. Allowed values are "major" and "minor".'
+        description: 'The version increment. Allowed values are "major", "minor" and "build".'
         required: true
         default: 'minor'
 
@@ -13,7 +13,7 @@ jobs:
   prepare-release:
     name: 🚚 Prepare new release
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && contains(fromJson('["major","minor"]'), github.event.inputs.versionIncrement)
+    if: github.ref == 'refs/heads/main' && contains(fromJson('["major","minor","build"]'), github.event.inputs.versionIncrement)
     steps:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v6
