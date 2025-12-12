@@ -6,7 +6,12 @@ on:
     inputs:
       versionIncrement:
         description: 'The version increment. Allowed values are "major", "minor" and "build".'
+        type: choice
         required: true
+        options:
+          - major
+          - minor
+          -build
         default: 'minor'
 
 jobs:
