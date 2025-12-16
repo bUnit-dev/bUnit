@@ -9,7 +9,7 @@ namespace Bunit;
 public static partial class EventHandlerDispatchExtensions
 {
 	/// <summary>
-	/// Raises the <c>@onchange</c> event on <paramref name="element"/>,  passing the provided
+	/// Raises the <c>@onchange</c> event on <paramref name="element"/>, passing the provided
 	/// properties to the event handler via a <see cref="ChangeEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
@@ -18,12 +18,30 @@ public static partial class EventHandlerDispatchExtensions
 		=> _ = ChangeAsync(element, CreateFrom(value));
 
 	/// <summary>
-	/// Raises the <c>@oninput</c> event on <paramref name="element"/>,  passing the provided
+	/// Raises the <c>@onchange</c> event on <paramref name="element"/>, passing the provided
+	/// properties to the event handler via a <see cref="ChangeEventArgs"/> object.
+	/// </summary>
+	/// <param name="element">The element to raise the event on.</param>
+	/// <param name="value">The new value.</param>
+	public static void ChangeAsync<T>(this IElement element, T value)
+		=> _ = ChangeAsync(element, CreateFrom(value));
+
+	/// <summary>
+	/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing the provided
 	/// properties to the event handler via a <see cref="ChangeEventArgs"/> object.
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
 	/// <param name="value">The new value.</param>
 	public static void Input<T>(this IElement element, T value)
+		=> _ = InputAsync(element, CreateFrom(value));
+
+	/// <summary>
+	/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing the provided
+	/// properties to the event handler via a <see cref="ChangeEventArgs"/> object.
+	/// </summary>
+	/// <param name="element">The element to raise the event on.</param>
+	/// <param name="value">The new value.</param>
+	public static void InputAsync<T>(this IElement element, T value)
 		=> _ = InputAsync(element, CreateFrom(value));
 
 	private static ChangeEventArgs CreateFrom<T>(T value) => new() { Value = FormatValue(value) };
