@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [2.3.4] - 2025-12-18
+
 ### Added
 
 - Added generic overloads `Find{TComponent, TElement}` and `FindAll{TComponent, TElement}` to query for specific element types (e.g., `IHtmlInputElement`). By [@linkdotnet](https://github.com/linkdotnet).
@@ -1495,7 +1497,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.2.2...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.3.4...HEAD
+[2.3.4]: https://github.com/bUnit-dev/bUnit/compare/v2.2.2...v2.3.4
 [2.2.2]: https://github.com/bUnit-dev/bUnit/compare/v2.1.1...2.2.2
 [2.1.1]: https://github.com/bUnit-dev/bUnit/compare/v2.0.66...v2.1.1
 [2.0.66]: https://github.com/bUnit-dev/bUnit/compare/v1.40.0...2.0.66
