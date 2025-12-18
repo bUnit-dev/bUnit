@@ -18,6 +18,21 @@ public static class RenderedComponentExtensions
 	/// <param name="cssSelector">The group of selectors to use.</param>
 	public static IElement Find<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector)
 		where TComponent : IComponent
+		=> Find<TComponent, IElement>(renderedComponent, cssSelector);
+
+	/// <summary>
+	/// Returns the first element of type <typeparamref name="TElement"/> from the rendered fragment or component under test,
+	/// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal
+	/// of the rendered nodes.
+	/// </summary>
+	/// <typeparam name="TComponent">The type of the component under test.</typeparam>
+	/// <typeparam name="TElement">The type of element to find (e.g., IHtmlInputElement).</typeparam>
+	/// <param name="renderedComponent">The rendered fragment to search.</param>
+	/// <param name="cssSelector">The group of selectors to use.</param>
+	/// <exception cref="ElementNotFoundException">Thrown if no element matches the <paramref name="cssSelector"/>.</exception>
+	public static TElement Find<TComponent, TElement>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector)
+		where TComponent : IComponent
+		where TElement : class, IElement
 	{
 		ArgumentNullException.ThrowIfNull(renderedComponent);
 
@@ -26,7 +41,11 @@ public static class RenderedComponentExtensions
 		if (result is null)
 			throw new ElementNotFoundException(cssSelector);
 
-		return result.WrapUsing(new CssSelectorElementFactory((IRenderedComponent<IComponent>)renderedComponent, cssSelector));
+		if (result is not TElement)
+			throw new ElementNotFoundException(
+				$"The element matching '{cssSelector}' is of type '{result.GetType().Name}', not '{typeof(TElement).Name}'.");
+
+		return (TElement)result.WrapUsing(new CssSelectorElementFactory((IRenderedComponent<IComponent>)renderedComponent, cssSelector));
 	}
 
 	/// <summary>
@@ -39,10 +58,25 @@ public static class RenderedComponentExtensions
 	/// <returns>An <see cref="IReadOnlyList{IElement}"/>, that can be refreshed to execute the search again.</returns>
 	public static IReadOnlyList<IElement> FindAll<TComponent>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector)
 		where TComponent : IComponent
+		=> FindAll<TComponent, IElement>(renderedComponent, cssSelector);
+
+	/// <summary>
+	/// Returns a collection of elements of type <typeparamref name="TElement"/> from the rendered fragment or component under test,
+	/// using the provided <paramref name="cssSelector"/>, in a depth-first pre-order traversal
+	/// of the rendered nodes. Only elements matching the type <typeparamref name="TElement"/> are returned.
+	/// </summary>
+	/// <typeparam name="TComponent">The type of the component under test.</typeparam>
+	/// <typeparam name="TElement">The type of elements to find (e.g., IHtmlInputElement).</typeparam>
+	/// <param name="renderedComponent">The rendered fragment to search.</param>
+	/// <param name="cssSelector">The group of selectors to use.</param>
+	/// <returns>An <see cref="IReadOnlyList{TElement}"/> containing only elements matching the specified type.</returns>
+	public static IReadOnlyList<TElement> FindAll<TComponent, TElement>(this IRenderedComponent<TComponent> renderedComponent, string cssSelector)
+		where TComponent : IComponent
+		where TElement : class, IElement
 	{
 		ArgumentNullException.ThrowIfNull(renderedComponent);
 
-		return renderedComponent.Nodes.QuerySelectorAll(cssSelector).ToArray();
+		return renderedComponent.Nodes.QuerySelectorAll(cssSelector).OfType<TElement>().ToArray();
 	}
 
 	/// <summary>

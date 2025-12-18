@@ -26,7 +26,7 @@
 	<PropertyGroup Label="Package Validation" Condition="$(MSBuildProjectName) != 'bunit.generators'">
 		<EnablePackageValidation>true</EnablePackageValidation>
 		<GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
-		<PackageValidationBaselineVersion>1.25.3</PackageValidationBaselineVersion>
+		<PackageValidationBaselineVersion>2.0.66</PackageValidationBaselineVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Label="NuGet package information">

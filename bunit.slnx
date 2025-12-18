@@ -11,7 +11,6 @@
   </Folder>
   <Folder Name="/.text/">
     <File Path="CHANGELOG.md" />
-    <File Path="MIGRATION.md" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/.workflows/">
