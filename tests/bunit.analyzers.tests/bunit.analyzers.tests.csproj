@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+		<RootNamespace>Bunit</RootNamespace>
+		<AssemblyName>Bunit.Analyzers.Tests</AssemblyName>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<SonarQubeTestProject>true</SonarQubeTestProject>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+		<SignAssembly>false</SignAssembly>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk"/>
+		<PackageReference Include="xunit.v3" />
+		<PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\bunit.analyzers\bunit.analyzers.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="../xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
+</Project>

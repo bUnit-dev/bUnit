@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>12.0</LangVersion>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<RootNamespace>Bunit</RootNamespace>
+		<ImplicitUsings>disable</ImplicitUsings>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Build instructions">
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<!-- Creates a regular package and a symbols package -->
+		<IncludeSymbols>true</IncludeSymbols>
+		<!-- Creates symbol package in the new .snupkg format -->
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<!--
+		Instruct the build system to embed project source files that are not tracked by the source control
+		or imported from a source package to the generated PDB.
+		-->
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
+		<DebugType>embedded</DebugType>
+		<Deterministic>true</Deterministic>
+
+		<EnablePackageValidation>false</EnablePackageValidation>
+		<GenerateCompatibilitySuppressionFile>false</GenerateCompatibilitySuppressionFile>
+	</PropertyGroup>
+
+	<PropertyGroup Label="NuGet package information">
+		<PackageId>bunit.analyzers</PackageId>
+		<Title>bUnit.analyzers</Title>
+		<Description>
+			bUnit.analyzers is an extension to bUnit that provides Roslyn analyzers to help identify common mistakes and anti-patterns when writing bUnit tests.
+		</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="README.md">
+			<Pack>true</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Package the analyzer in the analyzer directory of the nuget package -->
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Meziantou.Polyfill">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+</Project>
