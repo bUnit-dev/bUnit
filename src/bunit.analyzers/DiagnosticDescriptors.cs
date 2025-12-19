@@ -4,6 +4,7 @@ namespace Bunit.Analyzers;
 
 /// <summary>
 /// Diagnostic descriptors for bUnit analyzers.
+/// Public to allow testing frameworks to reference diagnostic IDs and descriptors.
 /// </summary>
 public static class DiagnosticDescriptors
 {
