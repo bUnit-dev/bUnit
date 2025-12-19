@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AngleSharp.Dom;
 
 namespace Bunit.Web.AngleSharp;
@@ -5,7 +6,7 @@ namespace Bunit.Web.AngleSharp;
 /// <summary>
 /// Extensions for <see cref="IElement"/> wrapped inside <see cref="WrapperBase{TElement}" /> types.
 /// </summary>
-internal static class AngleSharpWrapperExtensions
+public static class AngleSharpWrapperExtensions
 {
 	/// <summary>
 	/// Unwraps a wrapped AngleSharp object, if it has been wrapped.

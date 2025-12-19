@@ -44,8 +44,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\bunit.generators.internal\bunit.generators.internal.csproj"
-			OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\bunit.anglesharp\bunit.anglesharp.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Label="Implicit usings">

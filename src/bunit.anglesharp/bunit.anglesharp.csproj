@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+		<RootNamespace>Bunit.Web.AngleSharp</RootNamespace>
+		<IsPackable>false</IsPackable>
+		<ImplicitUsings>disable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AngleSharp" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\bunit.generators.internal\bunit.generators.internal.csproj"
+			OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+</Project>
