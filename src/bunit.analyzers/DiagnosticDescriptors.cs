@@ -5,7 +5,7 @@ namespace Bunit.Analyzers;
 /// <summary>
 /// Diagnostic descriptors for bUnit analyzers.
 /// </summary>
-internal static class DiagnosticDescriptors
+public static class DiagnosticDescriptors
 {
 	private const string Category = "Usage";
 

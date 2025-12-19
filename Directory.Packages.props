@@ -102,5 +102,6 @@
 		<PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.14.0"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" Version="1.1.2" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.XUnit" Version="1.1.2" />
 	</ItemGroup>
 </Project>
