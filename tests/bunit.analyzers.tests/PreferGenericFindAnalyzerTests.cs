@@ -57,7 +57,7 @@ namespace TestNamespace
 	}
 
 	[Fact]
-	public async Task NoDiagnostic_WhenFindIsNotFromRenderedFragment()
+	public async Task NoDiagnostic_WhenFindIsNotFromRenderedComponent()
 	{
 		const string code = @"
 namespace TestNamespace
@@ -81,7 +81,7 @@ namespace TestNamespace
 	}
 
 	[Fact]
-	public async Task Diagnostic_WhenCastingFindResultFromIRenderedFragment()
+	public async Task Diagnostic_WhenCastingFindResultFromIRenderedComponent()
 	{
 		const string code = @"
 namespace TestNamespace
@@ -92,17 +92,17 @@ namespace TestNamespace
 	{
 		public void TestMethod()
 		{
-			var cut = new MockRenderedFragment();
+			var cut = new MockRenderedComponent();
 			IMyElement elem = {|#0:(IMyElement)cut.Find(""a"")|};
 		}
 	}
 
-	public interface IRenderedFragment
+	public interface IRenderedComponent
 	{
 		object Find(string selector);
 	}
 
-	public class MockRenderedFragment : IRenderedFragment
+	public class MockRenderedComponent : IRenderedComponent
 	{
 		public object Find(string selector) => null;
 	}
@@ -151,7 +151,7 @@ namespace TestNamespace
 	}
 
 	[Fact]
-	public async Task Diagnostic_WhenCastingFindResultFromRenderedFragmentType()
+	public async Task Diagnostic_WhenCastingFindResultFromRenderedComponentType()
 	{
 		const string code = @"
 namespace TestNamespace
@@ -162,12 +162,12 @@ namespace TestNamespace
 	{
 		public void TestMethod()
 		{
-			var cut = new RenderedFragment();
+			var cut = new RenderedComponent();
 			var button = {|#0:(IMyElement)cut.Find(""button"")|};
 		}
 	}
 
-	public class RenderedFragment
+	public class RenderedComponent
 	{
 		public object Find(string selector) => null;
 	}
@@ -192,17 +192,17 @@ namespace TestNamespace
 	{
 		public void TestMethod()
 		{
-			var cut = new MockRenderedFragment();
+			var cut = new MockRenderedComponent();
 			var link = {|#0:(IMyElement)cut.Find(""a.nav-link[href='/home']"")|};
 		}
 	}
 
-	public interface IRenderedFragment
+	public interface IRenderedComponent
 	{
 		object Find(string selector);
 	}
 
-	public class MockRenderedFragment : IRenderedFragment
+	public class MockRenderedComponent : IRenderedComponent
 	{
 		public object Find(string selector) => null;
 	}

@@ -26,42 +26,42 @@ The analyzers will automatically run during compilation and provide warnings or 
 **Severity**: Info  
 **Category**: Usage
 
-This analyzer detects when you cast the result of `Find(selector)` and suggests using the generic `Find<T>(selector)` method instead. Using the generic method is more concise, type-safe, and expresses intent more clearly.
+This analyzer detects when a cast is applied to the result of `Find(selector)` and suggests using the generic `Find<T>(selector)` method instead. Using the generic method is more concise, type-safe, and expresses intent more clearly.
 
 #### Examples
 
-**❌ Incorrect** - triggers BUNIT0002:
+**Incorrect** - triggers BUNIT0002:
 ```csharp
 using AngleSharp.Dom;
 
-var cut = RenderComponent<MyComponent>();
+var cut = Render<MyComponent>();
 IHtmlAnchorElement link = (IHtmlAnchorElement)cut.Find("a");
 ```
 
-**✅ Correct**:
+**Correct**:
 ```csharp
 using AngleSharp.Dom;
 
-var cut = RenderComponent<MyComponent>();
+var cut = Render<MyComponent>();
 var link = cut.Find<IHtmlAnchorElement>("a");
 ```
 
 #### When to Use
 
-Use `Find<T>()` whenever you need a specific element type:
+`Find<T>()` should be used whenever a specific element type is needed:
 - When working with AngleSharp element interfaces (`IHtmlAnchorElement`, `IHtmlButtonElement`, etc.)
-- When you need to access type-specific properties or methods
-- When you want clearer, more maintainable test code
+- When type-specific properties or methods need to be accessed
+- When clearer, more maintainable test code is desired
 
 ### BUNIT0001: Razor test files should inherit from BunitContext
 
-**Status**: 🚧 Planned for future release
+**Status**: Planned for future release
 
-This analyzer will detect when Razor test files (`.razor` files) use variables or event callbacks from the test code without inheriting from `BunitContext`. Without the proper inheritance, you may encounter the error "The render handle is not yet assigned."
+This analyzer will detect when Razor test files (`.razor` files) use variables or event callbacks from the test code without inheriting from `BunitContext`. Without the proper inheritance, the error "The render handle is not yet assigned" may be encountered.
 
 #### Planned Examples
 
-**❌ Incorrect** - will trigger BUNIT0001 in the future:
+**Incorrect** - will trigger BUNIT0001 in the future:
 ```razor
 @code
 {
@@ -78,7 +78,7 @@ This analyzer will detect when Razor test files (`.razor` files) use variables o
 }
 ```
 
-**✅ Correct**:
+**Correct**:
 ```razor
 @inherits BunitContext
 @code
@@ -101,7 +101,7 @@ This analyzer will detect when Razor test files (`.razor` files) use variables o
 
 ## Configuration
 
-The analyzers can be configured in your project's `.editorconfig` file or using ruleset files. For example, to change the severity of BUNIT0002:
+The analyzers can be configured in a project's `.editorconfig` file or using ruleset files. For example, to change the severity of BUNIT0002:
 
 ```ini
 # .editorconfig
