@@ -6,6 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+- Use proper return typed for `InputAsync` and `ChangeAsync` methods.
+
 ## [2.3.4] - 2025-12-18
 
 ### Added

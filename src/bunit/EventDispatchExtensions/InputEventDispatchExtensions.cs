@@ -23,8 +23,8 @@ public static partial class EventHandlerDispatchExtensions
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
 	/// <param name="value">The new value.</param>
-	public static void ChangeAsync<T>(this IElement element, T value)
-		=> _ = ChangeAsync(element, CreateFrom(value));
+	public static Task ChangeAsync<T>(this IElement element, T value)
+		=> ChangeAsync(element, CreateFrom(value));
 
 	/// <summary>
 	/// Raises the <c>@oninput</c> event on <paramref name="element"/>, passing the provided
@@ -41,8 +41,8 @@ public static partial class EventHandlerDispatchExtensions
 	/// </summary>
 	/// <param name="element">The element to raise the event on.</param>
 	/// <param name="value">The new value.</param>
-	public static void InputAsync<T>(this IElement element, T value)
-		=> _ = InputAsync(element, CreateFrom(value));
+	public static Task InputAsync<T>(this IElement element, T value)
+		=> InputAsync(element, CreateFrom(value));
 
 	private static ChangeEventArgs CreateFrom<T>(T value) => new() { Value = FormatValue(value) };
 
