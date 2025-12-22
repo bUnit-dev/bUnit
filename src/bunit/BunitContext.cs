@@ -1,3 +1,6 @@
+#if NET9_0_OR_GREATER
+using System.Runtime.CompilerServices;
+#endif
 using Bunit.Extensions;
 using Bunit.Rendering;
 using Microsoft.Extensions.Logging;
@@ -158,9 +161,12 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// <typeparam name="TComponent">The type of component to find in the render tree.</typeparam>
 	/// <param name="renderFragment">The render fragment to render.</param>
 	/// <returns>The <see cref="RenderedComponent{TComponent}"/>.</returns>
+#if NET9_0_OR_GREATER
+	[OverloadResolutionPriority(1)]
+#endif
 	public virtual IRenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
-		=> this.RenderInsideRenderTree<TComponent>(renderFragment);
+		=> RenderInsideRenderTree<TComponent>(renderFragment);
 
 	/// <summary>
 	/// Renders the <paramref name="renderFragment"/> and returns it as a <see cref="IRenderedComponent{TComponent}"/>.
