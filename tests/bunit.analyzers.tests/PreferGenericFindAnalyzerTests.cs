@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
+using Microsoft.CodeAnalysis.Testing.Verifiers;
 using Xunit;
-using VerifyCS = Microsoft.CodeAnalysis.CSharp.Testing.XUnit.AnalyzerVerifier<Bunit.Analyzers.PreferGenericFindAnalyzer>;
 
 namespace Bunit.Analyzers.Tests;
 
@@ -12,206 +12,218 @@ public class PreferGenericFindAnalyzerTests
 	public async Task NoDiagnostic_WhenUsingGenericFind()
 	{
 		const string code = @"
-namespace TestNamespace
+namespace TestNamespace;
+
+public class TestClass
 {
-	public class TestClass
+	public void TestMethod()
 	{
-		public void TestMethod()
-		{
-			var cut = new TestHelper();
-			var elem = cut.Find<string>(""a"");
-		}
+		var cut = new TestHelper();
+		var elem = cut.Find<string>(""a"");
 	}
+}
 
-	public class TestHelper
-	{
-		public T Find<T>(string selector) => default(T);
-	}
-}";
+public class TestHelper
+{
+	public T Find<T>(string selector) => default(T);
+}
+";
 
-		await VerifyCS.VerifyAnalyzerAsync(code);
+		await VerifyAnalyzerAsync(code);
 	}
 
 	[Fact]
 	public async Task NoDiagnostic_WhenCastingNonFindMethod()
 	{
 		const string code = @"
-namespace TestNamespace
+namespace TestNamespace;
+
+public class TestClass
 {
-	public class TestClass
+	public void TestMethod()
 	{
-		public void TestMethod()
-		{
-			var obj = new TestHelper();
-			var elem = (string)obj.GetSomething();
-		}
+		var obj = new TestHelper();
+		var elem = (string)obj.GetSomething();
 	}
+}
 
-	public class TestHelper
-	{
-		public object GetSomething() => null;
-	}
-}";
+public class TestHelper
+{
+	public object GetSomething() => null;
+}
+";
 
-		await VerifyCS.VerifyAnalyzerAsync(code);
+		await VerifyAnalyzerAsync(code);
 	}
 
 	[Fact]
 	public async Task NoDiagnostic_WhenFindIsNotFromRenderedComponent()
 	{
 		const string code = @"
-namespace TestNamespace
+namespace TestNamespace;
+
+public class TestClass
 {
-	public class TestClass
+	public void TestMethod()
 	{
-		public void TestMethod()
-		{
-			var helper = new UnrelatedHelper();
-			var result = (string)helper.Find(""test"");
-		}
+		var helper = new UnrelatedHelper();
+		var result = (string)helper.Find(""test"");
 	}
+}
 
-	public class UnrelatedHelper
-	{
-		public object Find(string selector) => null;
-	}
-}";
+public class UnrelatedHelper
+{
+	public object Find(string selector) => null;
+}
+";
 
-		await VerifyCS.VerifyAnalyzerAsync(code);
+		await VerifyAnalyzerAsync(code);
 	}
 
 	[Fact]
 	public async Task Diagnostic_WhenCastingFindResultFromIRenderedComponent()
 	{
 		const string code = @"
-namespace TestNamespace
+namespace TestNamespace;
+
+public interface IMyElement { }
+
+public class TestClass
 {
-	public interface IMyElement { }
-
-	public class TestClass
+	public void TestMethod()
 	{
-		public void TestMethod()
-		{
-			var cut = new MockRenderedComponent();
-			IMyElement elem = {|#0:(IMyElement)cut.Find(""a"")|};
-		}
+		var cut = new MockRenderedComponent();
+		IMyElement elem = {|#0:(IMyElement)cut.Find(""a"")|};
 	}
+}
 
-	public interface IRenderedComponent
-	{
-		object Find(string selector);
-	}
+public interface IRenderedComponent
+{
+	object Find(string selector);
+}
 
-	public class MockRenderedComponent : IRenderedComponent
-	{
-		public object Find(string selector) => null;
-	}
-}";
+public class MockRenderedComponent : IRenderedComponent
+{
+	public object Find(string selector) => null;
+}
+";
 
-		var expected = VerifyCS.Diagnostic(DiagnosticDescriptors.PreferGenericFind.Id)
+		var expected = new DiagnosticResult(DiagnosticDescriptors.PreferGenericFind)
 			.WithLocation(0)
 			.WithArguments("IMyElement", "\"a\"");
 
-		await VerifyCS.VerifyAnalyzerAsync(code, expected);
+		await VerifyAnalyzerAsync(code, expected);
 	}
 
 	[Fact]
 	public async Task Diagnostic_WhenCastingFindResultFromRenderedComponent()
 	{
 		const string code = @"
-namespace TestNamespace
+namespace TestNamespace;
+
+public interface IMyElement { }
+
+public class TestClass
 {
-	public interface IMyElement { }
-
-	public class TestClass
+	public void TestMethod()
 	{
-		public void TestMethod()
-		{
-			var cut = new MockRenderedComponent();
-			var elem = {|#0:(IMyElement)cut.Find(""div"")|};
-		}
+		var cut = new MockRenderedComponent();
+		var elem = {|#0:(IMyElement)cut.Find(""div"")|};
 	}
+}
 
-	public interface IRenderedComponent
-	{
-		object Find(string selector);
-	}
+public interface IRenderedComponent
+{
+	object Find(string selector);
+}
 
-	public class MockRenderedComponent : IRenderedComponent
-	{
-		public object Find(string selector) => null;
-	}
-}";
+public class MockRenderedComponent : IRenderedComponent
+{
+	public object Find(string selector) => null;
+}
+";
 
-		var expected = VerifyCS.Diagnostic(DiagnosticDescriptors.PreferGenericFind.Id)
+		var expected = new DiagnosticResult(DiagnosticDescriptors.PreferGenericFind)
 			.WithLocation(0)
 			.WithArguments("IMyElement", "\"div\"");
 
-		await VerifyCS.VerifyAnalyzerAsync(code, expected);
+		await VerifyAnalyzerAsync(code, expected);
 	}
 
 	[Fact]
 	public async Task Diagnostic_WhenCastingFindResultFromRenderedComponentType()
 	{
 		const string code = @"
-namespace TestNamespace
+namespace TestNamespace;
+
+public interface IMyElement { }
+
+public class TestClass
 {
-	public interface IMyElement { }
-
-	public class TestClass
+	public void TestMethod()
 	{
-		public void TestMethod()
-		{
-			var cut = new RenderedComponent();
-			var button = {|#0:(IMyElement)cut.Find(""button"")|};
-		}
+		var cut = new RenderedComponent();
+		var button = {|#0:(IMyElement)cut.Find(""button"")|};
 	}
+}
 
-	public class RenderedComponent
-	{
-		public object Find(string selector) => null;
-	}
-}";
+public class RenderedComponent
+{
+	public object Find(string selector) => null;
+}
+";
 
-		var expected = VerifyCS.Diagnostic(DiagnosticDescriptors.PreferGenericFind.Id)
+		var expected = new DiagnosticResult(DiagnosticDescriptors.PreferGenericFind)
 			.WithLocation(0)
 			.WithArguments("IMyElement", "\"button\"");
 
-		await VerifyCS.VerifyAnalyzerAsync(code, expected);
+		await VerifyAnalyzerAsync(code, expected);
 	}
 
 	[Fact]
 	public async Task Diagnostic_WithComplexSelector()
 	{
 		const string code = @"
-namespace TestNamespace
+namespace TestNamespace;
+
+public interface IMyElement { }
+
+public class TestClass
 {
-	public interface IMyElement { }
-
-	public class TestClass
+	public void TestMethod()
 	{
-		public void TestMethod()
-		{
-			var cut = new MockRenderedComponent();
-			var link = {|#0:(IMyElement)cut.Find(""a.nav-link[href='/home']"")|};
-		}
+		var cut = new MockRenderedComponent();
+		var link = {|#0:(IMyElement)cut.Find(""a.nav-link[href='/home']"")|};
 	}
+}
 
-	public interface IRenderedComponent
-	{
-		object Find(string selector);
-	}
+public interface IRenderedComponent
+{
+	object Find(string selector);
+}
 
-	public class MockRenderedComponent : IRenderedComponent
-	{
-		public object Find(string selector) => null;
-	}
-}";
+public class MockRenderedComponent : IRenderedComponent
+{
+	public object Find(string selector) => null;
+}
+";
 
-		var expected = VerifyCS.Diagnostic(DiagnosticDescriptors.PreferGenericFind.Id)
+		var expected = new DiagnosticResult(DiagnosticDescriptors.PreferGenericFind)
 			.WithLocation(0)
 			.WithArguments("IMyElement", "\"a.nav-link[href='/home']\"");
 
-		await VerifyCS.VerifyAnalyzerAsync(code, expected);
+		await VerifyAnalyzerAsync(code, expected);
+	}
+
+	private static Task VerifyAnalyzerAsync(string source, params DiagnosticResult[] expected)
+	{
+		var test = new CSharpAnalyzerTest<PreferGenericFindAnalyzer, DefaultVerifier>
+		{
+			TestCode = source,
+			ReferenceAssemblies = ReferenceAssemblies.Net.Net80
+		};
+
+		test.ExpectedDiagnostics.AddRange(expected);
+		return test.RunAsync();
 	}
 }
