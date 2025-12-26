@@ -23,7 +23,7 @@
 		<NoWarn>NU1903</NoWarn>
 	</PropertyGroup>
 
-	<ItemGroup Condition="$(MSBuildProjectName) != 'bunit.testassets'">
+	<ItemGroup Condition="$(MSBuildProjectName) != 'bunit.testassets' AND $(MSBuildProjectName) != 'bunit.analyzers.tests'">
 		<PackageReference Include="AutoFixture" />
 		<PackageReference Include="AutoFixture.Xunit3" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk"/>
@@ -35,7 +35,7 @@
 		<PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers" />
 	</ItemGroup>
 
-	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.testassets' AND $(MSBuildProjectName) != 'bunit.generators.tests'">
+	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.testassets' AND $(MSBuildProjectName) != 'bunit.generators.tests' AND $(MSBuildProjectName) != 'bunit.analyzers.tests'">
 		<Using Include="AutoFixture" />
 		<Using Include="AutoFixture.Xunit3" />
 		<Using Include="Bunit.TestAssets.SampleComponents" />
