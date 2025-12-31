@@ -9,13 +9,13 @@ public sealed class TestIdNotFoundException : Exception
 	/// <summary>
 	/// Gets the test id used to search with.
 	/// </summary>
-	public string? TestId { get; }
+	public string TestId { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TestIdNotFoundException"/> class.
 	/// </summary>
 	/// <param name="testId">The test id that was searched for.</param>
-	public TestIdNotFoundException(string? testId = null)
+	public TestIdNotFoundException(string testId)
 		: base($"Unable to find an element with the Test ID '{testId}'.")
 	{
 		TestId = testId;
