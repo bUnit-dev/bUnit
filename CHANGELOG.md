@@ -9,6 +9,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Added
 
 - `Render(RenderFragment)` is preferred via the `OverloadResolutionAttribute`. Reported by [@ScarletKuro](https://github.com/ScarletKuro) in #1800. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+- `FindByTestId` to `bunit.web.query` to gather elements by a given test id. By [@jimSampica](https://github.com/jimSampica)
 
 ## [2.4.2] - 2025-12-21
 
