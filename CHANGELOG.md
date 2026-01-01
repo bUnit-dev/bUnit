@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- `FindByTestId` to `bunit.web.query` to gather elements by a given test id. By [@jimSampica](https://github.com/jimSampica)
+
 ## [2.4.2] - 2025-12-21
 
 ### Fixed
