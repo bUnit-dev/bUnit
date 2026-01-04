@@ -22,6 +22,7 @@
   <Folder Name="/src/">
     <File Path="src/.editorconfig" />
     <File Path="src/Directory.Build.props" />
+    <Project Path="src/bunit.analyzers/bunit.analyzers.csproj" />
     <Project Path="src/bunit.generators.internal/bunit.generators.internal.csproj" />
     <Project Path="src/bunit.generators/bunit.generators.csproj" />
     <Project Path="src/bunit.template/bunit.template.csproj">
@@ -35,6 +36,7 @@
     <File Path="tests/Directory.Build.props" />
     <File Path="tests/run-tests.ps1" />
     <File Path="tests/xunit.runner.json" />
+    <Project Path="tests/bunit.analyzers.tests/bunit.analyzers.tests.csproj" />
     <Project Path="tests/bunit.generators.tests/bunit.generators.tests.csproj" />
     <Project Path="tests/bunit.testassets/bunit.testassets.csproj" />
     <Project Path="tests/bunit.tests/bunit.tests.csproj" />
