@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [2.5.3] - 2026-01-08
+
 ### Added
 
 - `Render(RenderFragment)` is preferred via the `OverloadResolutionAttribute`. Reported by [@ScarletKuro](https://github.com/ScarletKuro) in #1800. Fixed by [@linkdotnet](https://github.com/linkdotnet).
@@ -1508,7 +1510,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.4.2...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.5.3...HEAD
+[2.5.3]: https://github.com/bUnit-dev/bUnit/compare/v2.4.2...v2.5.3
 [2.4.2]: https://github.com/bUnit-dev/bUnit/compare/v2.3.4...2.4.2
 [2.3.4]: https://github.com/bUnit-dev/bUnit/compare/v2.2.2...v2.3.4
 [2.2.2]: https://github.com/bUnit-dev/bUnit/compare/v2.1.1...2.2.2
