@@ -37,7 +37,7 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
-	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit.generators'">
+	<ItemGroup Label="Implicit usings" Condition="$(MSBuildProjectName) != 'bunit.template' AND $(MSBuildProjectName) != 'bunit.generators' AND $(MSBuildProjectName) != 'bunit.analyzers' AND $(MSBuildProjectName) != 'bunit.analyzers.tests'">
 		<Using Include="Microsoft.AspNetCore.Components" />
 		<Using Include="Microsoft.AspNetCore.Components.RenderTree" />
 		<Using Include="Microsoft.AspNetCore.Components.Rendering" />
