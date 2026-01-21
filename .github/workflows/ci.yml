@@ -41,12 +41,12 @@ jobs:
 
     # Install the .NET SDK indicated in the global.json file
     - name: ⚙️ Setup dotnet versions
-      uses: actions/setup-dotnet@v5
+      uses: fast-actions/setup-dotnet@v1
       with:
-        dotnet-version: |
+        sdk-version: 10.0.x
+        aspnetcore-version: |
           8.0.x
           9.0.x
-          10.0.x
 
     - name: ⚙️ Setup GIT versioning
       uses: dotnet/nbgv@v0.4.2
@@ -90,7 +90,9 @@ jobs:
     needs: [ create-nuget ]
     steps:
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: fast-actions/setup-dotnet@v1
+        with:
+          sdk-version: 10.x
 
       - uses: actions/download-artifact@v7
         with:
@@ -122,12 +124,12 @@ jobs:
           fetch-depth: 0
 
       - name: ⚙️ Setup dotnet versions
-        uses: actions/setup-dotnet@v5
+        uses: fast-actions/setup-dotnet@v1
         with:
-          dotnet-version: |
+          sdk-version: 10.0.x
+          aspnetcore-version: |
             8.0.x
             9.0.x
-            10.0.x
 
       - name: ⚙️ Restore packages and tools
         run: |
@@ -156,10 +158,9 @@ jobs:
           fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
 
       - name: ⚙️ Setup dotnet
-        uses: actions/setup-dotnet@v5
+        uses: fast-actions/setup-dotnet@v1
         with:
-          dotnet-version: |
-            9.0.x
+          sdk-version: 10.0.x
 
       - uses: actions/download-artifact@v7
         with:
@@ -216,12 +217,12 @@ jobs:
           fetch-depth: 0
 
       - name: ⚙️ Setup dotnet versions
-        uses: actions/setup-dotnet@v5
+        uses: fast-actions/setup-dotnet@v1
         with:
-          dotnet-version: |
+          sdk-version: 10.0.x
+          aspnetcore-version: |
             8.0.x
             9.0.x
-            10.0.x
 
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.2
@@ -281,7 +282,9 @@ jobs:
           path: ${{ env.NUGET_DIRECTORY }}
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v5
+        uses: fast-actions/setup-dotnet@v1
+        with:
+          sdk-version: 10.0.x
 
       - name: 🛠️ NuGet login
         uses: NuGet/login@v1
