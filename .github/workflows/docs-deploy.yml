@@ -72,7 +72,6 @@ jobs:
       - name: ⚙️ Setup dotnet versions
         uses: fast-actions/setup-dotnet@v1
         with:
-          sdk-version: 10.0.x
           aspnetcore-version: |
             8.0.x
             9.0.x

@@ -43,7 +43,6 @@ jobs:
     - name: ⚙️ Setup dotnet versions
       uses: fast-actions/setup-dotnet@v1
       with:
-        sdk-version: 10.0.x
         aspnetcore-version: |
           8.0.x
           9.0.x
@@ -91,8 +90,6 @@ jobs:
     steps:
       - name: Setup .NET
         uses: fast-actions/setup-dotnet@v1
-        with:
-          sdk-version: 10.x
 
       - uses: actions/download-artifact@v7
         with:
@@ -126,7 +123,6 @@ jobs:
       - name: ⚙️ Setup dotnet versions
         uses: fast-actions/setup-dotnet@v1
         with:
-          sdk-version: 10.0.x
           aspnetcore-version: |
             8.0.x
             9.0.x
@@ -159,8 +155,6 @@ jobs:
 
       - name: ⚙️ Setup dotnet
         uses: fast-actions/setup-dotnet@v1
-        with:
-          sdk-version: 10.0.x
 
       - uses: actions/download-artifact@v7
         with:
@@ -219,7 +213,6 @@ jobs:
       - name: ⚙️ Setup dotnet versions
         uses: fast-actions/setup-dotnet@v1
         with:
-          sdk-version: 10.0.x
           aspnetcore-version: |
             8.0.x
             9.0.x
@@ -283,8 +276,6 @@ jobs:
 
       - name: Setup .NET Core
         uses: fast-actions/setup-dotnet@v1
-        with:
-          sdk-version: 10.0.x
 
       - name: 🛠️ NuGet login
         uses: NuGet/login@v1
