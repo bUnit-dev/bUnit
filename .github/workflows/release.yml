@@ -60,12 +60,7 @@ jobs:
           setAllVars: true
 
       - name: ⚙️ Setup dotnet versions
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: |
-            8.0.x
-            9.0.x
-            10.0.x
+        uses: fast-actions/setup-dotnet@v1
 
       - name: 🛠️ Update changelog
         uses: thomaseizinger/keep-a-changelog-new-release@3.1.0
