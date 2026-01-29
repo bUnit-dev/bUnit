@@ -88,6 +88,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ create-nuget ]
     steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
       - name: Setup .NET
         uses: fast-actions/setup-dotnet@v1
 
@@ -155,6 +158,8 @@ jobs:
 
       - name: ⚙️ Setup dotnet
         uses: fast-actions/setup-dotnet@v1
+        with:
+          runtime-version: '9.x' # template requires .NET 9 Runtime
 
       - uses: actions/download-artifact@v7
         with:
