@@ -51,7 +51,7 @@ bUnit is available on NuGet in various incarnations. Most users should just pick
 A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/egil). The higher tier sponsors are:
 
 <div class="d-flex flex-row mb-3 align-items-center">
-  <a href="https://www.testmu.ai/?utm_source=bunit&utm_medium=sponsor" target="_blank" class="d-block p-3 text-center">
+  <a href="https://www.testmuai.com/?utm_medium=sponsor&utm_source=bunit" target="_blank" class="d-block p-3 text-center">
     <img src="sponsors/testmu.png" style="vertical-align: middle;" width="250" height="45" />
     <br />
     TestMu AI
