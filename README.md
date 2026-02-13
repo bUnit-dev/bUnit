@@ -44,7 +44,7 @@ A huge thank you to the [sponsors of bUnit](https://github.com/sponsors/bUnit-de
 <table border="0">
 	<tr>
 		<td align="center" width="250">
-			<a href="https://www.testmu.ai/?utm_source=bunit&utm_medium=sponsor" target="_blank">
+			<a href="https://www.testmuai.com/?utm_medium=sponsor&utm_source=bunit" target="_blank">
 				<img src="docs/site/sponsors/testmu.png" style="vertical-align: middle;" width="250" height="45" />
 				<br />
 				TestMu AI
