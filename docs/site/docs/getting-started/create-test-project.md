@@ -147,7 +147,7 @@ dotnet add package bunit --version #{NBGV_NuGetPackageVersion}#
 
 The test projects setting needs to be set to the following:
 
-- the project's SDK needs to be set to `Microsoft.NET.Sdk.Razor` (this does not work with **TUnit** - a more detailed explanation can be found below)
+- the project's SDK needs to be set to `Microsoft.NET.Sdk.Razor` (for **TUnit** this only works in reflection mode - a more detailed explanation can be found below)
 - set the `<TargetFramework>` to `net8.0`
 
 > [!NOTE]
@@ -313,7 +313,39 @@ The result should be a test project with a `.csproj` that looks like this (non b
 ```
 
 > [!WARNING]
-> **TUnit** and the `Microsoft.NET.Sdk.Razor` both utilize source code generators. Source generators can not see or interact with the output of another generator. Therefore **TUnit** does not work with `razor` files. Using `cs` based tests is working perfectly fine. For more information regarding the setup of **TUnit** head over to: https://github.com/thomhurst/TUnit
+> **TUnit** and the `Microsoft.NET.Sdk.Razor` SDK both utilize source code generators. Source generators cannot see or interact with the output of another generator. Therefore **TUnit** only works with `.razor` files in **reflection mode**. However `.cs`-based tests work as expected in the default mode. For more information regarding the setup of **TUnit** head over to: https://github.com/thomhurst/TUnit
+
+To set up TUnit for use with `.razor` files, the `TUNIT_EXECUTION_MODE` environment variable must be set to `reflection` so that the TUnit test runner can discover these tests.
+
+A straightforward way to configure this is by creating a `.runsettings` file in the test project and referencing it from the `.csproj`.
+
+**.runsettings**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <EnvironmentVariables>
+      <TUNIT_EXECUTION_MODE>reflection</TUNIT_EXECUTION_MODE>
+    </EnvironmentVariables>
+  </RunConfiguration>
+</RunSettings>
+```
+
+Add the following `RunSettingsFilePath` property to the `.csproj`:
+
+```xml
+<PropertyGroup>
+  <RunSettingsFilePath>$(MSBuildProjectDirectory)\.runsettings</RunSettingsFilePath>
+</PropertyGroup>
+```
+
+With this setup, all bUnit `.razor` tests are discovered and run consistently in Visual Studio and other supported environments.
+
+> [!NOTE]
+> Running in reflection mode is slower than the default execution mode. It is therefore recommended to keep bUnit tests in a separate test project, so they don’t affect the performance of other test runs.
+
+For more information on reflection mode, see: https://tunit.dev/docs/execution/engine-modes/.
 
 ***
 
