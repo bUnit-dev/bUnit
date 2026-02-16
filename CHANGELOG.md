@@ -27,6 +27,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 - Added generic overloads `Find{TComponent, TElement}` and `FindAll{TComponent, TElement}` to query for specific element types (e.g., `IHtmlInputElement`). By [@linkdotnet](https://github.com/linkdotnet).
 - Added generic overloads `WaitForElement{TComponent, TElement}` and `WaitForElements{TComponent, TElement}` to wait for specific element types. By [@linkdotnet](https://github.com/linkdotnet).
+- Added `FindByRole` and `FindAllByRole` to `bunit.web.query` package. By [@linkdotnet](https://github.com/linkdotnet).
 
 ### Fixed
 
@@ -37,6 +38,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Added
 
 - Added `FindByAllByLabel` to `bunit.web.query` package. By [@linkdotnet](https://github.com/linkdotnet).
+- Added `FindByRole` and `FindAllByRole` to `bunit.web.query` package. By [@linkdotnet](https://github.com/linkdotnet).
 
 ### Fixed
 
