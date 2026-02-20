@@ -31,6 +31,6 @@
 
     async Task MakeInteropCall()
     {
-        await JSRuntime.InvokeAsync<object>("setElementValue", _myInput, $"Clicks: {++_count}");
+        await JSRuntime.InvokeVoidAsync("setElementValue", _myInput, $"Clicks: {++_count}");
     }
 }

@@ -1,3 +1,4 @@
+#if !NET11_0_OR_GREATER
 namespace Bunit.TestDoubles;
 
 public class BunitSignOutSessionStateManagerTest : BunitContext
@@ -27,3 +28,4 @@ public class BunitSignOutSessionStateManagerTest : BunitContext
 		cut.IsSignedOut.ShouldBeFalse();
 	}
 }
+#endif

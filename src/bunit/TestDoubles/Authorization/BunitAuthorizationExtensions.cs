@@ -15,10 +15,12 @@ public partial class BunitContext
 	public BunitAuthorizationContext AddAuthorization()
 	{
 		Services.AddCascadingAuthenticationState();
+#if !NET11_0_OR_GREATER
 		Services.AddSingleton<BunitSignOutSessionStateManager>();
 #pragma warning disable CS0618
 		Services.AddSingleton<SignOutSessionStateManager>(s => s.GetRequiredService<BunitSignOutSessionStateManager>());
 #pragma warning restore CS0618
+#endif
 		var authCtx = new BunitAuthorizationContext(Services);
 		return authCtx;
 	}
