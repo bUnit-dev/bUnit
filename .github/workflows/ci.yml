@@ -47,6 +47,7 @@ jobs:
           8.0.x
           9.0.x
           10.0.x
+          11.0.x
 
     - name: ⚙️ Setup GIT versioning
       uses: dotnet/nbgv@v0.4.2
@@ -128,6 +129,7 @@ jobs:
             8.0.x
             9.0.x
             10.0.x
+            11.0.x
 
       - name: ⚙️ Restore packages and tools
         run: |
@@ -159,7 +161,7 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
-            9.0.x
+            10.0.x
 
       - uses: actions/download-artifact@v7
         with:
@@ -222,6 +224,7 @@ jobs:
             8.0.x
             9.0.x
             10.0.x
+            11.0.x
 
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.2

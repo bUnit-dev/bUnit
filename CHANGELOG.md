@@ -6,7 +6,9 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
-## [2.5.3] - 2026-01-21
+### Added
+
+- net11.0 support
 
 ## [2.5.3] - 2026-01-08
 
