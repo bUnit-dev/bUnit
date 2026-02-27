@@ -34,7 +34,7 @@ jobs:
           path: ./CHANGELOG.md
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.2
+        uses: dotnet/nbgv@v0.5.1
         id: nbgv
         with:
           setAllVars: true
@@ -60,7 +60,7 @@ jobs:
           git config --global commit.gpgsign true
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.2
+        uses: dotnet/nbgv@v0.5.1
         with:
           setAllVars: true
 

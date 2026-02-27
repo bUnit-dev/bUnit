@@ -47,9 +47,10 @@ jobs:
           8.0.x
           9.0.x
           10.0.x
+          11.0.x
 
     - name: ⚙️ Setup GIT versioning
-      uses: dotnet/nbgv@v0.4.2
+      uses: dotnet/nbgv@v0.5.1
       id: nbgv
       with:
         setAllVars: true
@@ -128,6 +129,7 @@ jobs:
             8.0.x
             9.0.x
             10.0.x
+            11.0.x
 
       - name: ⚙️ Restore packages and tools
         run: |
@@ -159,7 +161,7 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
-            9.0.x
+            10.0.x
 
       - uses: actions/download-artifact@v7
         with:
@@ -167,7 +169,7 @@ jobs:
           path: ${{ env.NUGET_DIRECTORY }}
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.2
+        uses: dotnet/nbgv@v0.5.1
         with:
           setAllVars: true
 
@@ -222,9 +224,10 @@ jobs:
             8.0.x
             9.0.x
             10.0.x
+            11.0.x
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.4.2
+        uses: dotnet/nbgv@v0.5.1
         id: nbgv
         with:
           setAllVars: true

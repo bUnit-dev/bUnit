@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+﻿#if !NET11_0_OR_GREATER
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace Bunit.TestDoubles;
 
@@ -38,3 +39,4 @@ public class BunitSignOutSessionStateManager : SignOutSessionStateManager
 		return Task.FromResult(wasSignedOut);
 	}
 }
+#endif
