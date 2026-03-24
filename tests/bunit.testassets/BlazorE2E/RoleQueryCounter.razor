@@ -1,0 +1,9 @@
+@* Testing we get back the re-rendered element for role-based queries *@
+<h2>Re-rendered heading</h2>
+<input type="text" value="@_count" aria-label="Re-rendered input" />
+<button id="increment-button" @onclick="IncrementCount">Click</button>
+
+@code {
+	private int _count;
+	public void IncrementCount() => _count++;
+}
