@@ -10,7 +10,7 @@
 		<PackageId>bunit.web.query</PackageId>
 		<Title>bunit.web.query</Title>
 		<Description>
-			bunit.web.query is an experimental package that provides an bUnit version of the https://testing-library.com/ APIs.
+			bunit.web.query is a package that provides an bUnit version of the https://testing-library.com/ APIs.
 		</Description>
 	</PropertyGroup>
 

@@ -9,7 +9,7 @@ Generally, the strategy for verifying markup produced by components depends on w
 
 With a **reusable component library**, the markup produced may be considered part of the externally observable behavior of the component, and that should thus be verified, since users of the component may depend on the markup having a specific structure. Consider using `MarkupMatches` and semantic comparison described below to get the best protection against regressions and good maintainability.
 
-When **building components for a Blazor app**, the externally observable behavior of components are how they visibly look and behave from an end-users point of view, e.g. what the user sees and interact with in a browser. In this scenario, consider use `FindByLabelText` and related methods described below to inspect and assert against individual elements look and feel, for a good balance between protection against regressions and maintainability. Learn more about this testing approach at https://testing-library.com.
+When **building components for a Blazor app**, the externally observable behavior of components are how they visibly look and behave from an end-users point of view, e.g. what the user sees and interact with in a browser. In this scenario, consider using `FindByRole`, `FindByLabelText`, and related methods described below to inspect and assert against individual elements look and feel, for a good balance between protection against regressions and maintainability. Learn more about this testing approach at https://testing-library.com.
 
 This page covers the following **verification approaches:**
 
@@ -35,7 +35,8 @@ The rendered markup from a component is available as a DOM node through the <xre
 
 bUnit supports multiple different ways of searching and querying the rendered HTML elements:
 
-- `FindByLabelText(string labelText)` that takes a text string used to label an input element and returns an `IElement` as output, or throws an exception if none are found (this is included in the experimental library [bunit.web.query](https://www.nuget.org/packages/bunit.web.query)). Use this method when possible compared to the generic `Find` and `FindAll` methods.
+- `FindByRole(AriaRole role)` that finds elements by their WAI-ARIA role, either implicit (e.g. `<button>` has role "button") or explicit (via the `role` attribute). Supports filtering by accessible name, heading level, and states like checked, pressed, selected, expanded, and disabled. Throws an exception if none are found. `FindAllByRole` returns all matches. This is the recommended query method for accessing non-form fields, following the [testing-library.com](https://testing-library.com/docs/queries/byrole/) approach. (Included in the library [bunit.web.query](https://www.nuget.org/packages/bunit.web.query).)
+- `FindByLabelText(string labelText)` that takes a text string to retrieve an element by its label and returns an `IElement` as output, or throws an exception if none are found which is an accessibility violation (this is included in the library [bunit.web.query](https://www.nuget.org/packages/bunit.web.query)). This is recommended for accessing form elements.
 - [`Find(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.Find``1(Bunit.IRenderedComponent{``0},System.String)) takes a "CSS selector" as input and returns an `IElement` as output, or throws an exception if none are found.
 - [`FindAll(string cssSelector)`](xref:Bunit.RenderedComponentExtensions.FindAll``1(Bunit.IRenderedComponent{``0},System.String)) takes a "CSS selector" as input and returns a list of `IElement` elements.
 
