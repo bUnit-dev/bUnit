@@ -8,7 +8,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ### Added
 
-- `FindByRole` and `FindAllByRole` to `bunit.web.query` to find elements by their WAI-ARIA role, mirroring Playwright's `GetByRole` API. Supports implicit roles from semantic HTML (e.g. `<button>` → button, `<a href>` → link, `<h1>` → heading), explicit `role` attributes, and filtering by accessible name, level, checked, pressed, selected, expanded, and disabled states.
+- `FindByRole` and `FindAllByRole` to `bunit.web.query` to find elements by their WAI-ARIA role, mirroring Playwright's `GetByRole` API. Supports implicit roles from semantic HTML (e.g. button, anchor with href, heading elements), explicit `role` attributes, and filtering by accessible name, level, checked, pressed, selected, expanded, and disabled states.
 
 ## [2.6.2] - 2026-02-27
 

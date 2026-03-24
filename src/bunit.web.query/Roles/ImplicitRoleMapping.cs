@@ -84,7 +84,7 @@ internal static class ImplicitRoleMapping
 	private static AriaRole? GetImgRole(IElement element)
 	{
 		var alt = element.GetAttribute("alt");
-		return alt == string.Empty ? AriaRole.Presentation : AriaRole.Img;
+		return alt is not null && alt.Length == 0 ? AriaRole.Presentation : AriaRole.Img;
 	}
 
 	private static bool HasAccessibleName(IElement element)

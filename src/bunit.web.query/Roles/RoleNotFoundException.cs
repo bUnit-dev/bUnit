@@ -35,15 +35,15 @@ public sealed class RoleNotFoundException : Exception
 		if (options.Level.HasValue)
 			filters.Add($"level: {options.Level.Value}");
 		if (options.Checked.HasValue)
-			filters.Add($"checked: {(options.Checked.Value == true ? "true" : "false")}");
+			filters.Add($"checked: {(options.Checked.Value ? "true" : "false")}");
 		if (options.Pressed.HasValue)
-			filters.Add($"pressed: {(options.Pressed.Value == true ? "true" : "false")}");
+			filters.Add($"pressed: {(options.Pressed.Value ? "true" : "false")}");
 		if (options.Selected.HasValue)
-			filters.Add($"selected: {(options.Selected.Value == true ? "true" : "false")}");
+			filters.Add($"selected: {(options.Selected.Value ? "true" : "false")}");
 		if (options.Expanded.HasValue)
-			filters.Add($"expanded: {(options.Expanded.Value == true ? "true" : "false")}");
+			filters.Add($"expanded: {(options.Expanded.Value ? "true" : "false")}");
 		if (options.Disabled.HasValue)
-			filters.Add($"disabled: {(options.Disabled.Value == true ? "true" : "false")}");
+			filters.Add($"disabled: {(options.Disabled.Value ? "true" : "false")}");
 
 		if (filters.Count > 0)
 			message += $" ({string.Join(", ", filters)})";

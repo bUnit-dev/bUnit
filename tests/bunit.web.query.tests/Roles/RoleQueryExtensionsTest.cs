@@ -391,6 +391,264 @@ public class RoleQueryExtensionsTest : BunitContext
 			.ShouldContain(b => b.GetAttribute("data-testid") == "inside-fieldset-element");
 	}
 
+	[Fact(DisplayName = "should throw ArgumentNullException when renderedComponent is null")]
+	public void Should_throw_when_rendered_component_is_null()
+	{
+		IRenderedComponent<IComponent>? nullComponent = null;
+
+		Should.Throw<ArgumentNullException>(() => nullComponent!.FindByRole(AriaRole.Button));
+		Should.Throw<ArgumentNullException>(() => nullComponent!.FindAllByRole(AriaRole.Button));
+	}
+
+	[Fact(DisplayName = "should support case-insensitive explicit roles")]
+	public void Should_support_case_insensitive_explicit_roles()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<div role="BUTTON">Upper</div>
+				<div role="Button">Mixed</div>
+				<div role="button">Lower</div>
+				"""));
+
+		var buttons = cut.FindAllByRole(AriaRole.Button);
+		buttons.Count.ShouldBe(3);
+	}
+
+	[Fact(DisplayName = "should map img with empty alt to presentation role")]
+	public void Should_map_img_with_empty_alt_to_presentation()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<img alt="" />
+				<img alt="A photo" />
+				<img />
+				"""));
+
+		var presentations = cut.FindAllByRole(AriaRole.Presentation);
+		presentations.Count.ShouldBe(1);
+		presentations[0].GetAttribute("alt").ShouldBe(string.Empty);
+
+		var images = cut.FindAllByRole(AriaRole.Img);
+		images.Count.ShouldBe(2);
+	}
+
+	[Fact(DisplayName = "should map anchor with href to link and without to generic")]
+	public void Should_map_anchor_with_and_without_href()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<a href="/home">Home</a>
+				<a>No link</a>
+				"""));
+
+		var links = cut.FindAllByRole(AriaRole.Link);
+		links.Count.ShouldBe(1);
+		links[0].TextContent.ShouldBe("Home");
+
+		var generics = cut.FindAllByRole(AriaRole.Generic);
+		generics.ShouldContain(e => e.TextContent == "No link");
+	}
+
+	[Fact(DisplayName = "should map input types to correct roles")]
+	public void Should_map_input_types_to_correct_roles()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<input type="text" />
+				<input type="email" />
+				<input type="tel" />
+				<input type="url" />
+				<input type="password" />
+				<input />
+				<input type="checkbox" />
+				<input type="radio" />
+				<input type="range" />
+				<input type="number" />
+				<input type="search" />
+				<input type="button" />
+				<input type="submit" />
+				<input type="reset" />
+				<input type="image" alt="img" />
+				<input type="hidden" />
+				"""));
+
+		// text, email, tel, url, password, and default (no type) all map to Textbox
+		cut.FindAllByRole(AriaRole.Textbox).Count.ShouldBe(6);
+
+		cut.FindAllByRole(AriaRole.Checkbox).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Radio).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Slider).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Spinbutton).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Searchbox).Count.ShouldBe(1);
+
+		// button, submit, reset, image all map to Button
+		cut.FindAllByRole(AriaRole.Button).Count.ShouldBe(4);
+	}
+
+	[Fact(DisplayName = "should not map hidden input to any role")]
+	public void Should_not_map_hidden_input_to_any_role()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""<input type="hidden" />"""));
+
+		cut.FindAllByRole(AriaRole.Textbox).ShouldBeEmpty();
+	}
+
+	[Fact(DisplayName = "should map form with accessible name to form role")]
+	public void Should_map_form_with_accessible_name_to_form_role()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<form aria-label="Search">Search form</form>
+				<form>Unlabelled form</form>
+				"""));
+
+		var forms = cut.FindAllByRole(AriaRole.Form);
+		forms.Count.ShouldBe(1);
+		forms[0].TextContent.ShouldBe("Search form");
+	}
+
+	[Fact(DisplayName = "should map section with accessible name to region role")]
+	public void Should_map_section_with_accessible_name_to_region_role()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<section aria-label="Main content">Content</section>
+				<section>Unlabelled</section>
+				"""));
+
+		var regions = cut.FindAllByRole(AriaRole.Region);
+		regions.Count.ShouldBe(1);
+		regions[0].TextContent.ShouldBe("Content");
+	}
+
+	[Fact(DisplayName = "should map semantic HTML elements to implicit roles")]
+	public void Should_map_semantic_html_elements()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<nav>Nav</nav>
+				<article>Article</article>
+				<aside>Aside</aside>
+				<footer>Footer</footer>
+				<header>Header</header>
+				<hr />
+				<figure>Figure</figure>
+				<main>Main</main>
+				<li>ListItem</li>
+				"""));
+
+		cut.FindAllByRole(AriaRole.Navigation).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Article).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Complementary).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.ContentInfo).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Banner).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Separator).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Figure).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Main).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Listitem).Count.ShouldBe(1);
+	}
+
+	[Fact(DisplayName = "should map list elements to list role")]
+	public void Should_map_list_elements_to_list_role()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<ul><li>a</li></ul>
+				<ol><li>b</li></ol>
+				<menu><li>c</li></menu>
+				"""));
+
+		cut.FindAllByRole(AriaRole.List).Count.ShouldBe(3);
+	}
+
+	[Fact(DisplayName = "should map table elements to correct roles")]
+	public void Should_map_table_elements_to_correct_roles()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<table>
+					<thead><tr><th>Header</th></tr></thead>
+					<tbody><tr><td>Cell</td></tr></tbody>
+					<tfoot><tr><td>Footer</td></tr></tfoot>
+				</table>
+				"""));
+
+		cut.FindAllByRole(AriaRole.Table).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Rowgroup).Count.ShouldBe(3);
+		cut.FindAllByRole(AriaRole.Row).Count.ShouldBe(3);
+		cut.FindAllByRole(AriaRole.ColumnHeader).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Cell).Count.ShouldBe(2);
+	}
+
+	[Fact(DisplayName = "should map meter, progress, textarea, and datalist")]
+	public void Should_map_additional_elements()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<meter value="0.5">50%</meter>
+				<progress value="0.5">50%</progress>
+				<textarea></textarea>
+				<datalist><option>One</option></datalist>
+				"""));
+
+		cut.FindAllByRole(AriaRole.Meter).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Progressbar).Count.ShouldBe(1);
+		cut.FindAllByRole(AriaRole.Textbox).Count.ShouldBe(1);
+	}
+
+	[Fact(DisplayName = "should use first token of space-separated role attribute")]
+	public void Should_use_first_token_of_space_separated_role()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<div role="button link">Multi-role</div>
+				"""));
+
+		var buttons = cut.FindAllByRole(AriaRole.Button);
+		buttons.Count.ShouldBe(1);
+		buttons[0].TextContent.ShouldBe("Multi-role");
+
+		// Should NOT match the second token
+		cut.FindAllByRole(AriaRole.Link).ShouldBeEmpty();
+	}
+
+	[Fact(DisplayName = "should support native details open as expanded")]
+	public void Should_support_native_details_open_as_expanded()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""
+				<details><summary>Closed</summary></details>
+				<details open><summary>Open</summary></details>
+				"""));
+
+		var expanded = cut.FindAllByRole(AriaRole.Group, o => o.Expanded = true);
+		expanded.Count.ShouldBe(1);
+
+		var collapsed = cut.FindAllByRole(AriaRole.Group, o => o.Expanded = false);
+		collapsed.Count.ShouldBe(1);
+	}
+
+	[Fact(DisplayName = "should include filter details in RoleNotFoundException message")]
+	public void Should_include_filter_details_in_exception_message()
+	{
+		var cut = Render<Wrapper>(ps =>
+			ps.AddChildContent("""<div>Nothing</div>"""));
+
+		var exception = Should.Throw<RoleNotFoundException>(() =>
+			cut.FindByRole(AriaRole.Checkbox, o =>
+			{
+				o.Name = "Accept";
+				o.Checked = true;
+				o.Disabled = false;
+			}));
+
+		exception.Message.ShouldContain("checkbox");
+		exception.Message.ShouldContain("name: 'Accept'");
+		exception.Message.ShouldContain("checked: true");
+		exception.Message.ShouldContain("disabled: false");
+	}
+
 	[Fact(DisplayName = "should reflect latest value when element rerenders")]
 	public void Should_reflect_latest_value_when_element_rerenders()
 	{

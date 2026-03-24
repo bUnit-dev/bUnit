@@ -17,6 +17,8 @@ public static class RoleQueryExtensions
 	/// <param name="configureOptions">Method used to override the default behavior of FindByRole.</param>
 	public static IElement FindByRole(this IRenderedComponent<IComponent> renderedComponent, AriaRole role, Action<ByRoleOptions>? configureOptions = null)
 	{
+		ArgumentNullException.ThrowIfNull(renderedComponent);
+
 		var options = ByRoleOptions.Default;
 		if (configureOptions is not null)
 		{
@@ -36,6 +38,8 @@ public static class RoleQueryExtensions
 	/// <returns>A read-only collection of elements matching the role. Returns an empty collection if no matches are found.</returns>
 	public static IReadOnlyList<IElement> FindAllByRole(this IRenderedComponent<IComponent> renderedComponent, AriaRole role, Action<ByRoleOptions>? configureOptions = null)
 	{
+		ArgumentNullException.ThrowIfNull(renderedComponent);
+
 		var options = ByRoleOptions.Default;
 		if (configureOptions is not null)
 		{
@@ -48,7 +52,8 @@ public static class RoleQueryExtensions
 
 	internal static IElement? FindByRoleInternal(this IRenderedComponent<IComponent> renderedComponent, AriaRole role, ByRoleOptions options)
 	{
-		return FindAllByRoleInternal(renderedComponent, role, options).FirstOrDefault();
+		var results = FindAllByRoleInternal(renderedComponent, role, options);
+		return results.Count > 0 ? results[0] : null;
 	}
 
 	internal static IReadOnlyList<IElement> FindAllByRoleInternal(this IRenderedComponent<IComponent> renderedComponent, AriaRole role, ByRoleOptions options)
@@ -149,7 +154,7 @@ public static class RoleQueryExtensions
 		if (!string.IsNullOrEmpty(explicitRole))
 		{
 			// role attribute can have space-separated values; take the first token
-			var firstToken = explicitRole.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0].ToLowerInvariant();
+			var firstToken = explicitRole.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0].ToUpperInvariant();
 			return ParseRoleString(firstToken);
 		}
 
@@ -158,89 +163,89 @@ public static class RoleQueryExtensions
 
 	private static AriaRole? ParseRoleString(string roleString) => roleString switch
 	{
-		"alert" => AriaRole.Alert,
-		"alertdialog" => AriaRole.AlertDialog,
-		"application" => AriaRole.Application,
-		"article" => AriaRole.Article,
-		"banner" => AriaRole.Banner,
-		"blockquote" => AriaRole.Blockquote,
-		"button" => AriaRole.Button,
-		"caption" => AriaRole.Caption,
-		"cell" => AriaRole.Cell,
-		"checkbox" => AriaRole.Checkbox,
-		"code" => AriaRole.Code,
-		"columnheader" => AriaRole.ColumnHeader,
-		"combobox" => AriaRole.Combobox,
-		"complementary" => AriaRole.Complementary,
-		"contentinfo" => AriaRole.ContentInfo,
-		"definition" => AriaRole.Definition,
-		"deletion" => AriaRole.Deletion,
-		"dialog" => AriaRole.Dialog,
-		"directory" => AriaRole.Directory,
-		"document" => AriaRole.Document,
-		"emphasis" => AriaRole.Emphasis,
-		"feed" => AriaRole.Feed,
-		"figure" => AriaRole.Figure,
-		"form" => AriaRole.Form,
-		"generic" => AriaRole.Generic,
-		"grid" => AriaRole.Grid,
-		"gridcell" => AriaRole.GridCell,
-		"group" => AriaRole.Group,
-		"heading" => AriaRole.Heading,
-		"img" => AriaRole.Img,
-		"insertion" => AriaRole.Insertion,
-		"link" => AriaRole.Link,
-		"list" => AriaRole.List,
-		"listbox" => AriaRole.Listbox,
-		"listitem" => AriaRole.Listitem,
-		"log" => AriaRole.Log,
-		"main" => AriaRole.Main,
-		"mark" => AriaRole.Mark,
-		"marquee" => AriaRole.Marquee,
-		"math" => AriaRole.Math,
-		"menu" => AriaRole.Menu,
-		"menubar" => AriaRole.Menubar,
-		"menuitem" => AriaRole.Menuitem,
-		"menuitemcheckbox" => AriaRole.Menuitemcheckbox,
-		"menuitemradio" => AriaRole.Menuitemradio,
-		"meter" => AriaRole.Meter,
-		"navigation" => AriaRole.Navigation,
-		"none" => AriaRole.None,
-		"note" => AriaRole.Note,
-		"option" => AriaRole.Option,
-		"paragraph" => AriaRole.Paragraph,
-		"presentation" => AriaRole.Presentation,
-		"progressbar" => AriaRole.Progressbar,
-		"radio" => AriaRole.Radio,
-		"radiogroup" => AriaRole.Radiogroup,
-		"region" => AriaRole.Region,
-		"row" => AriaRole.Row,
-		"rowgroup" => AriaRole.Rowgroup,
-		"rowheader" => AriaRole.Rowheader,
-		"scrollbar" => AriaRole.Scrollbar,
-		"search" => AriaRole.Search,
-		"searchbox" => AriaRole.Searchbox,
-		"separator" => AriaRole.Separator,
-		"slider" => AriaRole.Slider,
-		"spinbutton" => AriaRole.Spinbutton,
-		"status" => AriaRole.Status,
-		"strong" => AriaRole.Strong,
-		"subscript" => AriaRole.Subscript,
-		"superscript" => AriaRole.Superscript,
-		"switch" => AriaRole.Switch,
-		"tab" => AriaRole.Tab,
-		"table" => AriaRole.Table,
-		"tablist" => AriaRole.Tablist,
-		"tabpanel" => AriaRole.Tabpanel,
-		"term" => AriaRole.Term,
-		"textbox" => AriaRole.Textbox,
-		"time" => AriaRole.Time,
-		"timer" => AriaRole.Timer,
-		"toolbar" => AriaRole.Toolbar,
-		"tooltip" => AriaRole.Tooltip,
-		"tree" => AriaRole.Tree,
-		"treegrid" => AriaRole.Treegrid,
-		"treeitem" => AriaRole.Treeitem,
+		"ALERT" => AriaRole.Alert,
+		"ALERTDIALOG" => AriaRole.AlertDialog,
+		"APPLICATION" => AriaRole.Application,
+		"ARTICLE" => AriaRole.Article,
+		"BANNER" => AriaRole.Banner,
+		"BLOCKQUOTE" => AriaRole.Blockquote,
+		"BUTTON" => AriaRole.Button,
+		"CAPTION" => AriaRole.Caption,
+		"CELL" => AriaRole.Cell,
+		"CHECKBOX" => AriaRole.Checkbox,
+		"CODE" => AriaRole.Code,
+		"COLUMNHEADER" => AriaRole.ColumnHeader,
+		"COMBOBOX" => AriaRole.Combobox,
+		"COMPLEMENTARY" => AriaRole.Complementary,
+		"CONTENTINFO" => AriaRole.ContentInfo,
+		"DEFINITION" => AriaRole.Definition,
+		"DELETION" => AriaRole.Deletion,
+		"DIALOG" => AriaRole.Dialog,
+		"DIRECTORY" => AriaRole.Directory,
+		"DOCUMENT" => AriaRole.Document,
+		"EMPHASIS" => AriaRole.Emphasis,
+		"FEED" => AriaRole.Feed,
+		"FIGURE" => AriaRole.Figure,
+		"FORM" => AriaRole.Form,
+		"GENERIC" => AriaRole.Generic,
+		"GRID" => AriaRole.Grid,
+		"GRIDCELL" => AriaRole.GridCell,
+		"GROUP" => AriaRole.Group,
+		"HEADING" => AriaRole.Heading,
+		"IMG" => AriaRole.Img,
+		"INSERTION" => AriaRole.Insertion,
+		"LINK" => AriaRole.Link,
+		"LIST" => AriaRole.List,
+		"LISTBOX" => AriaRole.Listbox,
+		"LISTITEM" => AriaRole.Listitem,
+		"LOG" => AriaRole.Log,
+		"MAIN" => AriaRole.Main,
+		"MARK" => AriaRole.Mark,
+		"MARQUEE" => AriaRole.Marquee,
+		"MATH" => AriaRole.Math,
+		"MENU" => AriaRole.Menu,
+		"MENUBAR" => AriaRole.Menubar,
+		"MENUITEM" => AriaRole.Menuitem,
+		"MENUITEMCHECKBOX" => AriaRole.Menuitemcheckbox,
+		"MENUITEMRADIO" => AriaRole.Menuitemradio,
+		"METER" => AriaRole.Meter,
+		"NAVIGATION" => AriaRole.Navigation,
+		"NONE" => AriaRole.None,
+		"NOTE" => AriaRole.Note,
+		"OPTION" => AriaRole.Option,
+		"PARAGRAPH" => AriaRole.Paragraph,
+		"PRESENTATION" => AriaRole.Presentation,
+		"PROGRESSBAR" => AriaRole.Progressbar,
+		"RADIO" => AriaRole.Radio,
+		"RADIOGROUP" => AriaRole.Radiogroup,
+		"REGION" => AriaRole.Region,
+		"ROW" => AriaRole.Row,
+		"ROWGROUP" => AriaRole.Rowgroup,
+		"ROWHEADER" => AriaRole.Rowheader,
+		"SCROLLBAR" => AriaRole.Scrollbar,
+		"SEARCH" => AriaRole.Search,
+		"SEARCHBOX" => AriaRole.Searchbox,
+		"SEPARATOR" => AriaRole.Separator,
+		"SLIDER" => AriaRole.Slider,
+		"SPINBUTTON" => AriaRole.Spinbutton,
+		"STATUS" => AriaRole.Status,
+		"STRONG" => AriaRole.Strong,
+		"SUBSCRIPT" => AriaRole.Subscript,
+		"SUPERSCRIPT" => AriaRole.Superscript,
+		"SWITCH" => AriaRole.Switch,
+		"TAB" => AriaRole.Tab,
+		"TABLE" => AriaRole.Table,
+		"TABLIST" => AriaRole.Tablist,
+		"TABPANEL" => AriaRole.Tabpanel,
+		"TERM" => AriaRole.Term,
+		"TEXTBOX" => AriaRole.Textbox,
+		"TIME" => AriaRole.Time,
+		"TIMER" => AriaRole.Timer,
+		"TOOLBAR" => AriaRole.Toolbar,
+		"TOOLTIP" => AriaRole.Tooltip,
+		"TREE" => AriaRole.Tree,
+		"TREEGRID" => AriaRole.Treegrid,
+		"TREEITEM" => AriaRole.Treeitem,
 		_ => null,
 	};
 
@@ -317,12 +322,8 @@ public static class RoleQueryExtensions
 		var parent = element.ParentElement;
 		while (parent is not null)
 		{
-			if (parent.NodeName == "FIELDSET" && parent.HasAttribute("disabled"))
-			{
-				// Exception: elements in the first <legend> of a disabled fieldset are NOT disabled
-				if (!IsInFirstLegend(element, parent))
-					return true;
-			}
+			if (parent.NodeName == "FIELDSET" && parent.HasAttribute("disabled") && !IsInFirstLegend(element, parent))
+				return true;
 
 			parent = parent.ParentElement;
 		}
