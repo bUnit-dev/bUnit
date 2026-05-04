@@ -19,7 +19,7 @@
 		<PackageVersion Include="Serilog.Expressions" Version="5.0.0"/>
 		<PackageVersion Include="AngleSharp.Diffing" Version="1.1.1"/>
 		<PackageVersion Include="AngleSharp" Version="1.4.0"/>
-		<PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.157"/>
+		<PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.213"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Package Versioning">
