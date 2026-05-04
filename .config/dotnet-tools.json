@@ -17,7 +17,7 @@
       "rollForward": false
     },
     "dotnet-dump": {
-      "version": "9.0.553101",
+      "version": "9.0.661903",
       "commands": [
         "dotnet-dump"
       ],
