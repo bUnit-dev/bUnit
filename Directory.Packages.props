@@ -102,7 +102,7 @@
 		<PackageVersion Include="Verify.XunitV3" Version="31.8.0"/>
 		<PackageVersion Include="Xunit.Combinatorial" Version="2.0.24"/>
 		<PackageVersion Include="coverlet.collector" Version="6.0.4" />
-		<PackageVersion Include="coverlet.msbuild" Version="6.0.4" />
+		<PackageVersion Include="coverlet.msbuild" Version="10.0.0" />
 		<PackageVersion Include="nunit" Version="4.4.0" />
 		<PackageVersion Include="xunit" Version="2.9.3"/>
 		<PackageVersion Include="xunit.v3" Version="3.2.1"/>
