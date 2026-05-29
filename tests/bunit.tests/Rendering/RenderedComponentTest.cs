@@ -312,4 +312,127 @@ public class RenderedComponentTest : BunitContext
 			builder.AddContent(0, "derived");
 		}
 	}
+
+	[Fact(DisplayName = "FindComponent child button click triggers parent form onsubmit (#983)")]
+	public void Test030()
+	{
+		var cut = Render<FormWrapperWithChildSubmitButton>();
+		var child = cut.FindComponent<ChildSubmitButton>();
+
+		child.Find("#child-submit-button").Click();
+
+		cut.Instance.FormSubmitted.ShouldBeTrue();
+	}
+
+	[Fact(DisplayName = "FindComponent child nodes have correct parent form element (#983)")]
+	public void Test031()
+	{
+		var cut = Render<FormWrapperWithChildSubmitButton>();
+		var child = cut.FindComponent<ChildSubmitButton>();
+
+		var button = child.Find("#child-submit-button");
+		var parentForm = button.Closest("form");
+
+		parentForm.ShouldNotBeNull();
+		parentForm.ShouldBeAssignableTo<IHtmlFormElement>();
+	}
+
+	[Fact(DisplayName = "FindComponent child Markup only contains child own HTML")]
+	public void Test032()
+	{
+		var cut = Render<FormWrapperWithChildSubmitButton>();
+		var child = cut.FindComponent<ChildSubmitButton>();
+
+		child.Markup.ShouldNotContain("<form");
+		child.Markup.ShouldContain("child-submit-button");
+	}
+
+	[Fact(DisplayName = "FindComponent root Nodes still work correctly")]
+	public void Test033()
+	{
+		var cut = Render<FormWrapperWithChildSubmitButton>();
+
+		var form = cut.Find("form");
+
+		form.ShouldNotBeNull();
+		form.ShouldBeAssignableTo<IHtmlFormElement>();
+	}
+
+	[Fact(DisplayName = "FindComponent child nodes have parent context after parent re-render")]
+	public void Test034()
+	{
+		var cut = Render<FormWrapperWithChildSubmitButton>();
+		var child = cut.FindComponent<ChildSubmitButton>();
+
+		child.Find("#child-submit-button").Click();
+		cut.Instance.FormSubmitted.ShouldBeTrue();
+
+		var button = child.Find("#child-submit-button");
+		button.Closest("form").ShouldNotBeNull();
+	}
+
+	[Fact(DisplayName = "FindComponent direct Find on parent still triggers form submit")]
+	public void Test035()
+	{
+		var cut = Render<FormWrapperWithChildSubmitButton>();
+
+		cut.Find("#child-submit-button").Click();
+
+		cut.Instance.FormSubmitted.ShouldBeTrue();
+	}
+
+	[Fact(DisplayName = "Nested FindComponent preserves root DOM context")]
+	public void Test036()
+	{
+		var wrapper = Render<TwoComponentWrapper>(builder => builder
+			.Add<Wrapper>(p => p.First, wrapper => wrapper
+				.AddChildContent<Simple1>(simple1 => simple1
+					.Add(p => p.Header, "nested")))
+			.Add<Simple1>(p => p.Second, simple1 => simple1
+				.Add(p => p.Header, "Second")));
+
+		var wrapperComponent = wrapper.FindComponent<Wrapper>();
+		var simple1 = wrapperComponent.FindComponent<Simple1>();
+
+		simple1.Instance.Header.ShouldBe("nested");
+		simple1.Find("h1").TextContent.ShouldBe("nested");
+	}
+
+	[Fact(DisplayName = "FindComponent child Nodes length matches isolated rendering")]
+	public void Test037()
+	{
+		var cut = Render<FormWrapperWithChildSubmitButton>();
+		var child = cut.FindComponent<ChildSubmitButton>();
+
+		child.Nodes.Length.ShouldBeGreaterThan(0);
+		child.Find("#child-submit-button").ShouldNotBeNull();
+	}
+
+	[Fact(DisplayName = "Multiple FindComponent calls return components with correct shared DOM")]
+	public void Test038()
+	{
+		var wrapper = Render<TwoComponentWrapper>(builder => builder
+			.Add<Simple1>(p => p.First, s => s.Add(p => p.Header, "First"))
+			.Add<Simple1>(p => p.Second, s => s.Add(p => p.Header, "Second")));
+
+		var components = wrapper.FindComponents<Simple1>();
+
+		components.Count.ShouldBe(2);
+		components[0].Find("h1").TextContent.ShouldBe("First");
+		components[1].Find("h1").TextContent.ShouldBe("Second");
+	}
+
+	[Fact(DisplayName = "FindComponent child has parent element from root DOM tree")]
+	public void Test039()
+	{
+		var wrapper = Render<TwoComponentWrapper>(builder => builder
+			.Add<Simple1>(p => p.First, s => s.Add(p => p.Header, "InDiv"))
+			.Add<Simple1>(p => p.Second));
+
+		var child = wrapper.FindComponent<Simple1>();
+		var heading = child.Find("h1");
+
+		heading.ParentElement.ShouldNotBeNull();
+		heading.ParentElement!.LocalName.ShouldBe("div");
+	}
 }
