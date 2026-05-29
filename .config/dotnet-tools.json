@@ -3,21 +3,21 @@
   "isRoot": true,
   "tools": {
     "dotnet-serve": {
-      "version": "1.10.175",
+      "version": "1.10.194",
       "commands": [
         "dotnet-serve"
       ],
       "rollForward": false
     },
     "docfx": {
-      "version": "2.78.2",
+      "version": "2.78.5",
       "commands": [
         "docfx"
       ],
       "rollForward": false
     },
     "dotnet-dump": {
-      "version": "9.0.553101",
+      "version": "9.0.661903",
       "commands": [
         "dotnet-dump"
       ],

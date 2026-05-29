@@ -50,7 +50,7 @@ jobs:
           11.0.x
 
     - name: ⚙️ Setup GIT versioning
-      uses: dotnet/nbgv@v0.5.1
+      uses: dotnet/nbgv@v0.5.2
       id: nbgv
       with:
         setAllVars: true
@@ -169,7 +169,7 @@ jobs:
           path: ${{ env.NUGET_DIRECTORY }}
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.5.1
+        uses: dotnet/nbgv@v0.5.2
         with:
           setAllVars: true
 
@@ -227,7 +227,7 @@ jobs:
             11.0.x
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.5.1
+        uses: dotnet/nbgv@v0.5.2
         id: nbgv
         with:
           setAllVars: true
@@ -269,7 +269,7 @@ jobs:
       - name: 'Checkout Repository'
         uses: actions/checkout@v6
       - name: 'Dependency Review'
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v5
 
   release-preview:
     if: github.event_name == 'workflow_dispatch' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2')

@@ -19,7 +19,7 @@
 		<PackageVersion Include="Serilog.Expressions" Version="5.0.0"/>
 		<PackageVersion Include="AngleSharp.Diffing" Version="1.1.1"/>
 		<PackageVersion Include="AngleSharp" Version="1.4.0"/>
-		<PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.157"/>
+		<PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.213"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Package Versioning">
@@ -101,8 +101,8 @@
 		<PackageVersion Include="Verify.SourceGenerators" Version="2.5.0"/>
 		<PackageVersion Include="Verify.XunitV3" Version="31.8.0"/>
 		<PackageVersion Include="Xunit.Combinatorial" Version="2.0.24"/>
-		<PackageVersion Include="coverlet.collector" Version="6.0.4" />
-		<PackageVersion Include="coverlet.msbuild" Version="6.0.4" />
+		<PackageVersion Include="coverlet.collector" Version="10.0.1" />
+		<PackageVersion Include="coverlet.msbuild" Version="10.0.1" />
 		<PackageVersion Include="nunit" Version="4.4.0" />
 		<PackageVersion Include="xunit" Version="2.9.3"/>
 		<PackageVersion Include="xunit.v3" Version="3.2.1"/>
