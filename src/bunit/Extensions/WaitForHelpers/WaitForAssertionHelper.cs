@@ -37,4 +37,28 @@ internal class WaitForAssertionHelper<TComponent> : WaitForHelper<object?, TComp
 			  },
 			  timeout)
 	{ }
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="WaitForAssertionHelper{TComponent}"/> class,
+	/// which will wait until the provided asynchronous <paramref name="assertion"/> passes (i.e. does not throw an
+	/// exception), or the <paramref name="timeout"/> is reached (default is one second).
+	///
+	/// The <paramref name="assertion"/> is attempted initially, and then each time the <paramref name="renderedComponent"/> renders.
+	/// </summary>
+	/// <param name="renderedComponent">The rendered fragment to wait for renders from and assert against.</param>
+	/// <param name="assertion">The asynchronous verification or assertion to perform.</param>
+	/// <param name="timeout">The maximum time to attempt the verification.</param>
+	/// <remarks>
+	/// If a debugger is attached the timeout is set to <see cref="Timeout.InfiniteTimeSpan" />, giving the possibility to debug without the timeout triggering.
+	/// </remarks>
+	public WaitForAssertionHelper(IRenderedComponent<TComponent> renderedComponent, Func<Task> assertion, TimeSpan? timeout = null)
+		: base(
+			  renderedComponent,
+			  async () =>
+			  {
+				  await assertion();
+				  return (true, default);
+			  },
+			  timeout)
+	{ }
 }
