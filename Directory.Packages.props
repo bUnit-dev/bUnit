@@ -8,7 +8,7 @@
 		<GlobalPackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.27.0.140913" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
-		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.150" />
+		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.151" />
 	</ItemGroup>
 
 	<ItemGroup Label="Shared">
