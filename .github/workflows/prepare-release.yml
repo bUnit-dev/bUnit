@@ -21,7 +21,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && contains(fromJson('["major","minor","build"]'), github.event.inputs.versionIncrement)
     steps:
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           token: ${{ secrets.BUNIT_BOT_TOKEN }}
