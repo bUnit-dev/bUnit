@@ -23,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup Label="Package Versioning">
-		<PackageVersion Include="Nerdbank.GitVersioning" Version="3.9.50" />
+		<PackageVersion Include="Nerdbank.GitVersioning" Version="3.10.85" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
