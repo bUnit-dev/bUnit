@@ -99,7 +99,7 @@
 		<PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
 		<PackageVersion Include="Shouldly" Version="4.3.0"/>
 		<PackageVersion Include="Verify.SourceGenerators" Version="2.5.0"/>
-		<PackageVersion Include="Verify.XunitV3" Version="31.19.1"/>
+		<PackageVersion Include="Verify.XunitV3" Version="31.20.0"/>
 		<PackageVersion Include="Xunit.Combinatorial" Version="2.0.24"/>
 		<PackageVersion Include="coverlet.collector" Version="10.0.1" />
 		<PackageVersion Include="coverlet.msbuild" Version="10.0.1" />
