@@ -1,0 +1,14 @@
+@namespace Bunit.TestAssets.SampleComponents
+
+<form @onsubmit="OnFormSubmit">
+	<ChildSubmitButton />
+</form>
+
+@code {
+	public bool FormSubmitted { get; private set; }
+
+	private void OnFormSubmit()
+	{
+		FormSubmitted = true;
+	}
+}
