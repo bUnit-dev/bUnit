@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using AngleSharp.Dom;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
@@ -586,6 +587,25 @@ public sealed class BunitRenderer : Renderer
 	internal new ArrayRange<RenderTreeFrame> GetCurrentRenderTreeFrames(int componentId)
 		=> base.GetCurrentRenderTreeFrames(componentId);
 
+	private readonly Dictionary<int, INodeList> boundaryNodesCache = new();
+
+	internal INodeList GetBoundaryNodesForComponent(int componentId)
+	{
+		if (boundaryNodesCache.TryGetValue(componentId, out var cached))
+		{
+			return cached;
+		}
+
+		var htmlParser = services.GetRequiredService<BunitHtmlParser>();
+		var boundaryHtml = Htmlizer.GetHtmlWithComponentBoundaries(componentId, this);
+		var nodes = htmlParser.Parse(boundaryHtml);
+		boundaryNodesCache[componentId] = nodes;
+		return nodes;
+	}
+
+	internal void InvalidateBoundaryNodesCache(int componentId)
+		=> boundaryNodesCache.Remove(componentId);
+
 	/// <inheritdoc/>
 	protected override void Dispose(bool disposing)
 	{
@@ -663,6 +683,7 @@ public sealed class BunitRenderer : Renderer
 		{
 			ObjectDisposedException.ThrowIf(disposed, this);
 			FindComponentsInRenderTree(parentComponent.ComponentId);
+
 			foreach (var rc in result)
 			{
 				((IRenderedComponent)rc).UpdateState(hasRendered: false, isMarkupGenerationRequired: true);
