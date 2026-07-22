@@ -6,6 +6,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- New overloads to WaitForHelpers to have async assertions and predicates. Reported by [@radmorecameron](https://github.com/radmorecameron) in #1833. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+- `AddAsset` to `BunitContext` to seed the `ResourceAssetCollection` exposed via `ComponentBase.Assets`. Reported by [LasseHerget](https://github.com/LasseHerget) in #1846. Implemented by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [2.7.2] - 2026-03-31
 
 ### Fixed

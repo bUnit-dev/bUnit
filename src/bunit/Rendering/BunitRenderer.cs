@@ -77,6 +77,54 @@ public sealed class BunitRenderer : Renderer
 	{
 		this.rendererInfo = rendererInfo;
 	}
+
+	private readonly List<ResourceAsset> resourceAssets = [];
+	private ResourceAssetCollection? resourceAssetCollection;
+
+	/// <inheritdoc/>
+	protected override ResourceAssetCollection Assets
+		=> resourceAssets.Count == 0
+			? ResourceAssetCollection.Empty
+			: resourceAssetCollection ??= new ResourceAssetCollection(resourceAssets);
+
+	/// <summary>
+	/// Adds an asset to the <see cref="ResourceAssetCollection"/> returned by the renderers <see cref="Assets"/> property,
+	/// which components rendered by this renderer can access through their <see cref="ComponentBase.Assets"/> property.
+	/// </summary>
+	/// <remarks>
+	/// Pass a <paramref name="label"/> to map a stable asset key to its (fingerprinted) <paramref name="url"/>,
+	/// i.e. <c>AddAsset("img.abc123.png", label: "img.png")</c> makes <c>Assets["img.png"]</c> return <c>img.abc123.png</c>.
+	/// Adding multiple assets with the same label results in an <see cref="InvalidOperationException"/>
+	/// when the <see cref="Assets"/> property is first accessed.
+	/// </remarks>
+	/// <param name="url">The url of the asset.</param>
+	/// <param name="label">The label of the asset, used as the lookup key by the <see cref="ResourceAssetCollection"/> indexer. Pass <see langword="null"/> to add the asset without a label.</param>
+	/// <param name="properties">Additional properties to associate with the asset.</param>
+	[SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "Using string to align with ResourceAsset")]
+	public void AddAsset(string url, string? label = null, params ResourceAssetProperty[] properties)
+	{
+		ArgumentException.ThrowIfNullOrEmpty(url);
+		ArgumentNullException.ThrowIfNull(properties);
+
+		var props = new List<ResourceAssetProperty>(properties.Length + 1);
+		if (label is not null)
+		{
+			ArgumentException.ThrowIfNullOrWhiteSpace(label);
+			const string labelMarker = "label";
+
+			if (properties.Any(static property => string.Equals(property.Name, labelMarker, StringComparison.Ordinal)))
+			{
+				throw new ArgumentException("The label property is reserved when a label is provided.", nameof(properties));
+			}
+
+			props.Add(new ResourceAssetProperty(labelMarker, label));
+		}
+
+		props.AddRange(properties);
+
+		resourceAssets.Add(new ResourceAsset(url, props.Count > 0 ? props : null));
+		resourceAssetCollection = null;
+	}
 #endif
 
 	/// <summary>

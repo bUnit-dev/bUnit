@@ -8,6 +8,7 @@
 ## [Controlling the root render tree](xref:root-render-tree)
 ## [Substituting (mocking) component](xref:substituting-components)
 ## [Configure 3rd party libraries](xref:configure-3rd-party-libs)
+## [Seeding static assets](xref:seeding-assets)
 
 # [Interaction](xref:interaction)
 ## [Trigger event handlers](xref:trigger-event-handlers)

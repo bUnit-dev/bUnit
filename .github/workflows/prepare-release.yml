@@ -21,7 +21,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && contains(fromJson('["major","minor","build"]'), github.event.inputs.versionIncrement)
     steps:
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           token: ${{ secrets.BUNIT_BOT_TOKEN }}
@@ -34,7 +34,7 @@ jobs:
           path: ./CHANGELOG.md
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.5.1
+        uses: dotnet/nbgv@v0.5.2
         id: nbgv
         with:
           setAllVars: true
@@ -60,7 +60,7 @@ jobs:
           git config --global commit.gpgsign true
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.5.1
+        uses: dotnet/nbgv@v0.5.2
         with:
           setAllVars: true
 
