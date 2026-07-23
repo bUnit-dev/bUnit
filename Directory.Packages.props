@@ -6,7 +6,7 @@
 	<!-- Shared code analyzers used for all projects in the solution -->
 	<ItemGroup Condition="!$(MSBuildProjectName.EndsWith('samples'))">
 		<GlobalPackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
-		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.29.0.143774" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
+		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.30.0.144632" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
 		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.157" />
 	</ItemGroup>
