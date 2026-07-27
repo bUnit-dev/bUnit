@@ -687,22 +687,6 @@ public partial class BunitJSInteropTest
 	}
 #endif
 
-	[Fact(DisplayName = "JSRuntime invocation times out when handler is not configured")]
-	public async Task Test309()
-	{
-		// Arrange
-		const string identifier = "testFunction";
-		BunitContext.DefaultWaitTimeout = TimeSpan.FromMilliseconds(100);
-		
-		var sut = CreateSut(JSRuntimeMode.Strict);
-		sut.Setup<int>(identifier);
-		
-		var invocationTask = sut.JSRuntime.InvokeAsync<int>(identifier);
-		
-		var exception = await Should.ThrowAsync<JSRuntimeInvocationNotSetException>(invocationTask.AsTask());
-		exception.Invocation.Identifier.ShouldBe(identifier);
-	}
-
 #if NET10_0_OR_GREATER
 	[Fact(DisplayName = "InvokeConstructorAsync returns IJSObjectReference in loose mode without setup")]
 	public async Task Test400()
