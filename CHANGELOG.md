@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [2.8.6] - 2026-07-27
+
 ### Added
 
 - New overloads to WaitForHelpers to have async assertions and predicates. Reported by [@radmorecameron](https://github.com/radmorecameron) in #1833. Fixed by [@linkdotnet](https://github.com/linkdotnet).
@@ -1527,7 +1529,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.7.2...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.8.6...HEAD
+[2.8.6]: https://github.com/bUnit-dev/bUnit/compare/v2.7.2...v2.8.6
 [2.7.2]: https://github.com/bUnit-dev/bUnit/compare/v2.6.2...2.7.2
 [2.6.2]: https://github.com/bUnit-dev/bUnit/compare/v2.5.3...v2.6.2
 [2.5.3]: https://github.com/bUnit-dev/bUnit/compare/v2.5.3...2.5.3
