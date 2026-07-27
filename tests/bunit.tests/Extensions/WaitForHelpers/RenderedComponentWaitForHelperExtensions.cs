@@ -128,6 +128,118 @@ public class RenderedComponentWaitForHelperExtensions : BunitContext
 			() => cut.WaitForState(() => false, TimeSpan.FromSeconds(5)));
 	}
 
+	[Fact(DisplayName = "WaitForStateAsync with an async predicate can wait for multiple renders and changes to occur")]
+	public async Task Test400()
+	{
+		var cut = Render<AsyncRenderChangesProperty>();
+		cut.Instance.Counter.ShouldBe(0);
+
+		// Clicking 'tick' changes the counter, and starts a task
+		cut.Find("#tick").Click();
+		cut.Instance.Counter.ShouldBe(1);
+
+		// Clicking 'tock' completes the task, which updates the counter
+		// This click causes two renders, thus something is needed to await here.
+		cut.Find("#tock").Click();
+		await cut.WaitForStateAsync(async () =>
+		{
+			await Task.Yield();
+			return cut.Instance.Counter == 2;
+		});
+
+		cut.Instance.Counter.ShouldBe(2);
+	}
+
+	[Fact(DisplayName = "WaitForAssertionAsync with an async assertion can wait for multiple renders and changes to occur")]
+	public async Task Test401()
+	{
+		// Initial state is stopped
+		var cut = Render<TwoRendersTwoChanges>();
+		cut.Find("#state").TextContent.ShouldBe("Stopped");
+
+		// Clicking 'tick' changes the state, and starts a task
+		cut.Find("#tick").Click();
+		cut.Find("#state").TextContent.ShouldBe("Started");
+
+		// Clicking 'tock' completes the task, which updates the state
+		// This click causes two renders, thus something is needed to await here.
+		cut.Find("#tock").Click();
+		await cut.WaitForAssertionAsync(async () =>
+		{
+			await Task.Yield();
+			cut.Find("#state").TextContent.ShouldBe("Stopped");
+		});
+	}
+
+	[Fact(DisplayName = "WaitForStateAsync throws WaitForFailedException after timeout when the async predicate never passes")]
+	public async Task Test402()
+	{
+		var cut = Render<Simple1>();
+
+		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
+			await cut.WaitForStateAsync(async () =>
+			{
+				await Task.Yield();
+				return false;
+			}, TimeSpan.FromMilliseconds(50)));
+
+		expected.Message.ShouldStartWith(WaitForStateHelper<Simple1>.TimeoutBeforePassMessage);
+	}
+
+	[Fact(DisplayName = "WaitForStateAsync throws WaitForFailedException if the async predicate throws")]
+	public async Task Test403()
+	{
+		const string expectedInnerMessage = "INNER ASYNC MESSAGE";
+		var cut = Render<Simple1>();
+
+		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
+			await cut.WaitForStateAsync(async () =>
+			{
+				await Task.Yield();
+				throw new InvalidOperationException(expectedInnerMessage);
+			}));
+
+		expected.Message.ShouldStartWith(WaitForStateHelper<Simple1>.ExceptionInPredicateMessage);
+		expected.InnerException.ShouldBeOfType<InvalidOperationException>()
+			.Message.ShouldBe(expectedInnerMessage);
+	}
+
+	[Fact(DisplayName = "WaitForStateAsync does not deadlock when the async predicate awaits work on the renderer dispatcher")]
+	public async Task Test405()
+	{
+		var cut = Render<AsyncRenderChangesProperty>();
+
+		// Clicking 'tick' then 'tock' causes the counter to reach 2 across two renders.
+		cut.Find("#tick").Click();
+		cut.Find("#tock").Click();
+
+		// The predicate awaits work routed through the renderer's dispatcher. A naive
+		// sync-over-async implementation (e.g. blocking the dispatcher with .GetResult())
+		// would deadlock here; awaiting on the dispatcher does not.
+		await cut.WaitForStateAsync(async () =>
+		{
+			var counter = await cut.InvokeAsync(() => cut.Instance.Counter);
+			return counter == 2;
+		});
+
+		cut.Instance.Counter.ShouldBe(2);
+	}
+
+	[Fact(DisplayName = "WaitForAssertionAsync throws WaitForFailedException after timeout when the async assertion never passes")]
+	public async Task Test404()
+	{
+		var cut = Render<Simple1>();
+
+		var expected = await Should.ThrowAsync<WaitForFailedException>(async () =>
+			await cut.WaitForAssertionAsync(async () =>
+			{
+				await Task.Yield();
+				cut.Markup.ShouldBeEmpty();
+			}, TimeSpan.FromMilliseconds(50)));
+
+		expected.Message.ShouldStartWith(WaitForAssertionHelper<Simple1>.TimeoutMessage);
+	}
+
 	private sealed class ThrowsAfterAsyncOperation : ComponentBase
 	{
 		protected override async Task OnInitializedAsync()

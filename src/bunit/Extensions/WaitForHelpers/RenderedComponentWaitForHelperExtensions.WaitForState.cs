@@ -57,6 +57,31 @@ public static partial class RenderedComponentWaitForHelperExtensions
 		}
 
 		/// <summary>
+		/// Wait until the provided asynchronous <paramref name="statePredicate"/> returns true,
+		/// or the <paramref name="timeout"/> is reached (default is one second).
+		///
+		/// The <paramref name="statePredicate"/> is evaluated initially, and then each time
+		/// the <paramref name="renderedComponent"/> renders.
+		/// </summary>
+		/// <param name="renderedComponent">The render fragment or component to attempt to verify state against.</param>
+		/// <param name="statePredicate">The asynchronous predicate to invoke after each render, which must return <c>true</c> when the desired state has been reached.</param>
+		/// <param name="timeout">The maximum time to wait for the desired state.</param>
+		/// <exception cref="WaitForFailedException">Throws if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
+		/// <remarks>
+		/// The predicate is awaited on the renderer's dispatcher. Because awaiting yields the dispatcher,
+		/// a render may interleave at each <c>await</c> point, so the predicate is not guaranteed an atomic
+		/// view of the DOM across awaits. Use this overload when the check itself must <c>await</c> (for
+		/// example an async service or JavaScript interop call); prefer the synchronous <see cref="WaitForState{TComponent}(IRenderedComponent{TComponent}, Func{bool}, TimeSpan?)"/>
+		/// overload for pure DOM or markup checks.
+		/// </remarks>
+		public static async Task WaitForStateAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, Func<Task<bool>> statePredicate, TimeSpan? timeout = null)
+			where TComponent : IComponent
+		{
+			using var waiter = new WaitForStateHelper<TComponent>(renderedComponent, statePredicate, timeout);
+			await waiter.WaitTask;
+		}
+
+		/// <summary>
 		/// Wait until the provided <paramref name="assertion"/> passes (i.e. does not throw an
 		/// exception), or the <paramref name="timeout"/> is reached (default is one second).
 		///
@@ -94,6 +119,31 @@ public static partial class RenderedComponentWaitForHelperExtensions
 		/// <exception cref="WaitForFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
 		[AssertionMethod]
 		public static async Task WaitForAssertionAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, Action assertion, TimeSpan? timeout = null)
+			where TComponent : IComponent
+		{
+			using var waiter = new WaitForAssertionHelper<TComponent>(renderedComponent, assertion, timeout);
+			await waiter.WaitTask;
+		}
+
+		/// <summary>
+		/// Wait until the provided asynchronous <paramref name="assertion"/> passes (i.e. does not throw an
+		/// exception), or the <paramref name="timeout"/> is reached (default is one second).
+		///
+		/// The <paramref name="assertion"/> is attempted initially, and then each time the <paramref name="renderedComponent"/> renders.
+		/// </summary>
+		/// <param name="renderedComponent">The rendered fragment to wait for renders from and assert against.</param>
+		/// <param name="assertion">The asynchronous verification or assertion to perform.</param>
+		/// <param name="timeout">The maximum time to attempt the verification.</param>
+		/// <exception cref="WaitForFailedException">Thrown if the timeout has been reached. See the inner exception to see the captured assertion exception.</exception>
+		/// <remarks>
+		/// The assertion is awaited on the renderer's dispatcher. Because awaiting yields the dispatcher,
+		/// a render may interleave at each <c>await</c> point, so the assertion is not guaranteed an atomic
+		/// view of the DOM across awaits. Use this overload when the assertion itself must <c>await</c> (for
+		/// example an async service or JavaScript interop call); prefer the synchronous <see cref="WaitForAssertion{TComponent}(IRenderedComponent{TComponent}, Action, TimeSpan?)"/>
+		/// overload for pure DOM or markup assertions.
+		/// </remarks>
+		[AssertionMethod]
+		public static async Task WaitForAssertionAsync<TComponent>(this IRenderedComponent<TComponent> renderedComponent, Func<Task> assertion, TimeSpan? timeout = null)
 			where TComponent : IComponent
 		{
 			using var waiter = new WaitForAssertionHelper<TComponent>(renderedComponent, assertion, timeout);

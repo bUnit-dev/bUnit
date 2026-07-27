@@ -479,6 +479,7 @@ csharp_style_pattern_local_over_anonymous_function = false # IDE0039: Use local 
 # AsyncFixer
 # http://www.asyncfixer.com
 dotnet_diagnostic.AsyncFixer01.severity = none # AsyncFixer01: Unnecessary async/await usage
+dotnet_diagnostic.AsyncFixer04.severity = none # 'cts' is not awaited inside a using block - the resource may be disposed before the async operation completes. Add 'await' to ensure proper resource lifetime.
 
 # Meziantou
 # https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm

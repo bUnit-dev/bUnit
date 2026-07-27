@@ -30,7 +30,7 @@ jobs:
     steps:
 
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           token: ${{ secrets.BUNIT_BOT_TOKEN }}
@@ -50,7 +50,7 @@ jobs:
           git config --global commit.gpgsign true
 
       - name: ⚙️ Setup GIT versioning
-        uses: dotnet/nbgv@v0.5.1
+        uses: dotnet/nbgv@v0.5.2
         id: nbgv
         with:
           setAllVars: true

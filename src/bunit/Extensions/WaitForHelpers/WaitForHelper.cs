@@ -12,12 +12,14 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 	where TComponent : IComponent
 {
 	private readonly TaskCompletionSource<T> checkPassedCompletionSource;
-	private readonly Func<(bool CheckPassed, T Content)> completeChecker;
+	private readonly Func<ValueTask<(bool CheckPassed, T Content)>> completeChecker;
 	private readonly IRenderedComponent<TComponent> renderedComponent;
 	private readonly ILogger<WaitForHelper<T, TComponent>> logger;
 	private readonly BunitRenderer renderer;
 	private readonly Timer? timer;
 	private bool isDisposed;
+	private bool isChecking;
+	private bool isDirty;
 	private int checkCount;
 	private Exception? capturedException;
 
@@ -44,11 +46,30 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 	public Task<T> WaitTask { get; }
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="WaitForHelper{T, TComponent}"/> class.
+	/// Initializes a new instance of the <see cref="WaitForHelper{T, TComponent}"/> class
+	/// with a synchronous check. The check is wrapped into a completed <see cref="ValueTask{TResult}"/>,
+	/// so it is still evaluated synchronously (with no render interleaving) on the renderer's dispatcher.
 	/// </summary>
 	protected WaitForHelper(
 		IRenderedComponent<TComponent> renderedComponent,
 		Func<(bool CheckPassed, T Content)> completeChecker,
+		TimeSpan? timeout = null)
+		: this(renderedComponent, WrapSynchronousChecker(completeChecker), timeout)
+	{
+	}
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="WaitForHelper{T, TComponent}"/> class.
+	/// </summary>
+	/// <remarks>
+	/// The <paramref name="completeChecker"/> is awaited on the renderer's dispatcher after each render.
+	/// A synchronous check (see the other constructor) wraps into an already-completed <see cref="ValueTask{TResult}"/>
+	/// and therefore resumes synchronously without yielding the dispatcher; a genuinely asynchronous check yields the
+	/// dispatcher at each <c>await</c>, so a render may interleave and the check is not guaranteed an atomic view of the DOM.
+	/// </remarks>
+	protected WaitForHelper(
+		IRenderedComponent<TComponent> renderedComponent,
+		Func<ValueTask<(bool CheckPassed, T Content)>> completeChecker,
 		TimeSpan? timeout = null)
 	{
 		this.renderedComponent = renderedComponent ?? throw new ArgumentNullException(nameof(renderedComponent));
@@ -166,40 +187,87 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 		if (isDisposed || WaitTask.IsCompleted)
 			return;
 
+		// The check may be asynchronous, so it cannot be awaited inside this synchronous
+		// event handler. Kick it off without blocking the dispatcher. A synchronous check
+		// completes inline (see RunCheckAsync). If a check is already in flight, mark the
+		// state dirty so the running check re-evaluates once it completes, ensuring the
+		// final render is never missed.
+		if (isChecking)
+		{
+			isDirty = true;
+			return;
+		}
+
+		isChecking = true;
+		_ = RunCheckAsync();
+	}
+
+	private async Task RunCheckAsync()
+	{
+		// Runs on the renderer's dispatcher. A synchronous check wraps into an already-completed
+		// ValueTask, so the await below resumes inline without yielding - preserving the atomic,
+		// no-render-interleaving behaviour synchronous checks rely on. A genuinely asynchronous
+		// check yields the dispatcher; the default await captures and resumes on the dispatcher's
+		// synchronization context, so isChecking/isDirty are only ever touched on the single
+		// dispatcher thread and need no locking.
 		try
 		{
-			logger.LogCheckingWaitCondition(renderedComponent.ComponentId);
+			do
+			{
+				isDirty = false;
 
-			var checkResult = completeChecker();
-			checkCount++;
-			if (checkResult.CheckPassed)
-			{
-				checkPassedCompletionSource.TrySetResult(checkResult.Content);
-				logger.LogCheckCompleted(renderedComponent.ComponentId);
-				Dispose();
+				if (isDisposed || WaitTask.IsCompleted)
+					return;
+
+				try
+				{
+					logger.LogCheckingWaitCondition(renderedComponent.ComponentId);
+
+					var checkResult = await completeChecker();
+					checkCount++;
+
+					if (isDisposed || WaitTask.IsCompleted)
+						return;
+
+					if (checkResult.CheckPassed)
+					{
+						checkPassedCompletionSource.TrySetResult(checkResult.Content);
+						logger.LogCheckCompleted(renderedComponent.ComponentId);
+						Dispose();
+						return;
+					}
+
+					logger.LogCheckFailed(renderedComponent.ComponentId);
+				}
+				catch (Exception ex)
+				{
+					checkCount++;
+					capturedException = ex;
+					logger.LogCheckThrow(renderedComponent.ComponentId, ex);
+
+					if (StopWaitingOnCheckException)
+					{
+						if (!isDisposed && !WaitTask.IsCompleted)
+						{
+							checkPassedCompletionSource.TrySetException(
+								new WaitForFailedException(
+									CheckThrowErrorMessage ?? string.Empty,
+									checkCount,
+									renderedComponent.RenderCount,
+									renderer.RenderCount,
+									capturedException));
+							Dispose();
+						}
+
+						return;
+					}
+				}
 			}
-			else
-			{
-				logger.LogCheckFailed(renderedComponent.ComponentId);
-			}
+			while (isDirty && !isDisposed && !WaitTask.IsCompleted);
 		}
-		catch (Exception ex)
+		finally
 		{
-			checkCount++;
-			capturedException = ex;
-			logger.LogCheckThrow(renderedComponent.ComponentId, ex);
-
-			if (StopWaitingOnCheckException)
-			{
-				checkPassedCompletionSource.TrySetException(
-					new WaitForFailedException(
-						CheckThrowErrorMessage ?? string.Empty,
-						checkCount,
-						renderedComponent.RenderCount,
-						renderer.RenderCount,
-						capturedException));
-				Dispose();
-			}
+			isChecking = false;
 		}
 	}
 
@@ -217,5 +285,15 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 		return Debugger.IsAttached
 			? Timeout.InfiniteTimeSpan
 			: timeout ?? BunitContext.DefaultWaitTimeout;
+	}
+
+	private static Func<ValueTask<(bool CheckPassed, T Content)>> WrapSynchronousChecker(Func<(bool CheckPassed, T Content)> completeChecker)
+	{
+		ArgumentNullException.ThrowIfNull(completeChecker);
+
+		// Wrap the synchronous check in an already-completed ValueTask so the single check
+		// pipeline can await it. Awaiting a completed ValueTask resumes inline, so the check
+		// still runs synchronously on the dispatcher with no render interleaving.
+		return () => new ValueTask<(bool CheckPassed, T Content)>(completeChecker());
 	}
 }

@@ -1,0 +1,15 @@
+@{
+#if NET9_0_OR_GREATER
+}
+@foreach (var asset in Assets)
+{
+	<ul data-url="@asset.Url">
+		@foreach (var property in asset.Properties ?? Array.Empty<ResourceAssetProperty>())
+		{
+			<li>@property.Name=@property.Value</li>
+		}
+	</ul>
+}
+@{
+#endif
+}

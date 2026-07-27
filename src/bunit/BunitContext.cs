@@ -184,6 +184,23 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	{
 		Renderer.SetRendererInfo(rendererInfo);
 	}
+
+	/// <summary>
+	/// Adds an asset to the <see cref="ResourceAssetCollection"/> that components
+	/// rendered with this <see cref="BunitContext"/> can access through their <see cref="ComponentBase.Assets"/> property.
+	/// </summary>
+	/// <remarks>
+	/// Pass a <paramref name="label"/> to map a stable asset key to its (fingerprinted) <paramref name="url"/>,
+	/// i.e. <c>AddAsset("img.abc123.png", label: "img.png")</c> makes <c>Assets["img.png"]</c> return <c>img.abc123.png</c>.
+	/// Adding multiple assets with the same label results in an <see cref="InvalidOperationException"/>
+	/// when the <see cref="Renderer.Assets"/> property is first accessed.
+	/// </remarks>
+	/// <param name="url">The url of the asset.</param>
+	/// <param name="label">The label of the asset, used as the lookup key by the <see cref="ResourceAssetCollection"/> indexer. Pass <see langword="null"/> to add the asset without a label.</param>
+	/// <param name="properties">Additional properties to associate with the asset.</param>
+	[SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "Using string to align with ResourceAsset")]
+	public void AddAsset(string url, string? label = null, params ResourceAssetProperty[] properties)
+		=> Renderer.AddAsset(url, label, properties);
 #endif
 
 	/// <summary>

@@ -1,0 +1,106 @@
+@code{
+    #if NET9_0_OR_GREATER
+}
+@using Bunit.TestAssets.Assets;
+@inherits BunitContext
+@code {
+	[Fact(DisplayName = "Assets defaults to an empty collection where the indexer returns the key unchanged")]
+	public void Test001()
+	{
+		var cut = Render<AssetsIndexerComponent>();
+
+		cut.MarkupMatches(@<img src="img.png" />);
+	}
+
+	[Fact(DisplayName = "Iterating Assets without any added assets renders nothing")]
+	public void Test002()
+	{
+		var cut = Render<AssetsIterationComponent>();
+
+		cut.MarkupMatches(string.Empty);
+	}
+
+	[Fact(DisplayName = "AddAsset with label maps the asset key to the fingerprinted url")]
+	public void Test003()
+	{
+		AddAsset("img.abc123.png", label: "img.png");
+
+		var cut = Render<AssetsIndexerComponent>();
+
+		cut.MarkupMatches(@<img src="img.abc123.png" />);
+	}
+
+	[Fact(DisplayName = "Components can iterate added assets and read their label property")]
+	public void Test004()
+	{
+		AddAsset("css/app.abc123.css", label: "css/app.css");
+		AddAsset("js/app.def456.js", label: "js/app.js");
+
+		var cut = Render<AssetsIterationComponent>();
+
+		cut.MarkupMatches(
+            @<text>
+                <span>css/app.css</span>
+                <span>js/app.js</span>
+            </text>);
+	}
+
+	[Fact(DisplayName = "AddAsset without label does not map the asset key")]
+	public void Test005()
+	{
+		AddAsset("img.png");
+
+		var cut = Render<AssetsIndexerComponent>();
+
+		cut.MarkupMatches(@<img src="img.png" />);
+	}
+
+	[Fact(DisplayName = "AddAsset exposes additional properties to components")]
+	public void Test006()
+	{
+		AddAsset("js/app.js", label: "app.js", new ResourceAssetProperty("integrity", "sha256-abc"));
+
+		var cut = Render<AssetsPropertiesComponent>();
+
+		cut.MarkupMatches(
+            @<ul data-url="js/app.js">
+                <li>label=app.js</li>
+                <li>integrity=sha256-abc</li>
+            </ul>);
+	}
+
+	[Fact(DisplayName = "Assets added after the initial render are available to components rendered afterwards")]
+	public void Test007()
+	{
+		var first = Render<AssetsIterationComponent>();
+		first.MarkupMatches(string.Empty);
+
+		AddAsset("img.abc123.png", label: "img.png");
+
+		var second = Render<AssetsIterationComponent>();
+		second.MarkupMatches(@<span>img.png</span>);
+	}
+
+	[Theory(DisplayName = "AddAsset rejects empty or whitespace-only labels")]
+	[InlineData("")]
+	[InlineData(" ")]
+	[InlineData("\t")]
+	public void Test008(string label)
+	{
+		var ex = Assert.Throws<ArgumentException>(() => AddAsset("app.js", label: label));
+
+		ex.ParamName.ShouldBe("label");
+	}
+
+	[Fact(DisplayName = "AddAsset rejects explicit label properties when label is provided")]
+	public void Test009()
+	{
+		var ex = Assert.Throws<ArgumentException>(
+			() => AddAsset("app.js", label: "app.js", new ResourceAssetProperty("label", "other")));
+
+		ex.ParamName.ShouldBe("properties");
+	}
+}
+@code{
+    #endif
+}

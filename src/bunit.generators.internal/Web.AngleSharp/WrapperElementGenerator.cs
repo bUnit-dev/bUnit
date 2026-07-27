@@ -185,18 +185,16 @@ internal static class WrapperElementGenerator
 		return source;
 	}
 
-	private static StringBuilder AppendInheritDoc(this StringBuilder source)
+	private static void AppendInheritDoc(this StringBuilder source)
 	{
 		source.AppendLine("\t/// <inheritdoc/>");
-		return source;
 	}
 
-	private static StringBuilder AppendDefaultAttributes(this StringBuilder source, string tabs = "\t\t")
+	private static void AppendDefaultAttributes(this StringBuilder source, string tabs = "\t\t")
 	{
 		source.Append(tabs).AppendLine("[System.Diagnostics.DebuggerHidden]");
 		source.Append(tabs).AppendLine("[System.Diagnostics.DebuggerStepThrough]");
 		source.Append(tabs).AppendLine("[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]");
-		return source;
 	}
 
 	private static bool IsSpecialMethod(string methodName)

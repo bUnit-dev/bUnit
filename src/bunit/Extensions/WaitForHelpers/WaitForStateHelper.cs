@@ -34,4 +34,21 @@ internal class WaitForStateHelper<TComponent> : WaitForHelper<object?, TComponen
 		: base(renderedComponent, () => (statePredicate(), default), timeout)
 	{
 	}
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="WaitForStateHelper{TComponent}"/> class,
+	/// which will wait until the provided asynchronous <paramref name="statePredicate"/> returns true,
+	/// or the <paramref name="timeout"/> is reached (default is one second).
+	/// </summary>
+	/// <remarks>
+	/// The <paramref name="statePredicate"/> is evaluated initially, and then each time the <paramref name="renderedComponent"/> renders.
+	/// </remarks>
+	/// <param name="renderedComponent">The render fragment or component to attempt to verify state against.</param>
+	/// <param name="statePredicate">The asynchronous predicate to invoke after each render, which must return <c>true</c> when the desired state has been reached.</param>
+	/// <param name="timeout">The maximum time to wait for the desired state.</param>
+	/// <exception cref="WaitForFailedException">Thrown if the <paramref name="statePredicate"/> throw an exception during invocation, or if the timeout has been reached. See the inner exception for details.</exception>
+	public WaitForStateHelper(IRenderedComponent<TComponent> renderedComponent, Func<Task<bool>> statePredicate, TimeSpan? timeout = null)
+		: base(renderedComponent, async () => (await statePredicate(), default), timeout)
+	{
+	}
 }
