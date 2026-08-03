@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Changed
+
+- Update to stable package of `AngleSharp.Css`
+
 ## [2.8.6] - 2026-07-27
 
 ### Added
