@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [2.9.0] - 2026-08-03
+
 ### Changed
 
 - Update to stable package of `AngleSharp.Css`
@@ -1533,7 +1535,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.8.6...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.9.0...HEAD
+[2.9.0]: https://github.com/bUnit-dev/bUnit/compare/v2.8.6...2.9.0
 [2.8.6]: https://github.com/bUnit-dev/bUnit/compare/v2.7.2...v2.8.6
 [2.7.2]: https://github.com/bUnit-dev/bUnit/compare/v2.6.2...2.7.2
 [2.6.2]: https://github.com/bUnit-dev/bUnit/compare/v2.5.3...v2.6.2
