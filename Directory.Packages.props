@@ -8,7 +8,7 @@
 		<GlobalPackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.29.0.143774" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
-		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.157" />
+		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.158" />
 	</ItemGroup>
 
 	<ItemGroup Label="Shared">
@@ -18,8 +18,8 @@
 		<PackageVersion Include="Serilog" Version="4.4.0"/>
 		<PackageVersion Include="Serilog.Expressions" Version="5.0.0"/>
 		<PackageVersion Include="AngleSharp.Diffing" Version="1.1.1"/>
-		<PackageVersion Include="AngleSharp" Version="1.5.2"/>
-		<PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.228"/>
+		<PackageVersion Include="AngleSharp" Version="1.7.0"/>
+		<PackageVersion Include="AngleSharp.Css" Version="1.0.1"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Package Versioning">
@@ -99,7 +99,7 @@
 		<PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
 		<PackageVersion Include="Shouldly" Version="4.3.0"/>
 		<PackageVersion Include="Verify.SourceGenerators" Version="2.5.0"/>
-		<PackageVersion Include="Verify.XunitV3" Version="31.27.0"/>
+		<PackageVersion Include="Verify.XunitV3" Version="31.28.0"/>
 		<PackageVersion Include="Xunit.Combinatorial" Version="2.0.24"/>
 		<PackageVersion Include="coverlet.collector" Version="10.0.1" />
 		<PackageVersion Include="coverlet.msbuild" Version="10.0.1" />
