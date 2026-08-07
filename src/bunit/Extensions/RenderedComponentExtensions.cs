@@ -92,7 +92,9 @@ public static class RenderedComponentExtensions
 		ArgumentNullException.ThrowIfNull(renderedComponent);
 
 		var renderer = renderedComponent.Services.GetRequiredService<BunitContext>().Renderer;
-		return renderer.FindComponent<TChildComponent>(renderedComponent);
+		var found = renderer.FindComponent<TChildComponent>(renderedComponent);
+		SetupSharedDom(renderedComponent, found);
+		return found;
 	}
 
 	/// <summary>
@@ -109,6 +111,11 @@ public static class RenderedComponentExtensions
 		var renderer = renderedComponent.Services.GetRequiredService<BunitContext>().Renderer;
 		var components = renderer.FindComponents<TChildComponent>(renderedComponent);
 
+		foreach (var component in components)
+		{
+			SetupSharedDom(renderedComponent, component);
+		}
+
 		return components.ToArray();
 	}
 
@@ -121,4 +128,13 @@ public static class RenderedComponentExtensions
 	/// <returns>True if the <paramref name="renderedComponent"/> contains the <typeparamref name="TChildComponent"/>; otherwise false.</returns>
 	public static bool HasComponent<TChildComponent>(this IRenderedComponent<IComponent> renderedComponent)
 		where TChildComponent : IComponent => FindComponents<TChildComponent>(renderedComponent).Count > 0;
+
+	private static void SetupSharedDom<TChildComponent>(IRenderedComponent<IComponent> parentComponent, IRenderedComponent<TChildComponent> childComponent)
+		where TChildComponent : IComponent
+	{
+		var parent = (IRenderedComponent)parentComponent;
+		var child = (IRenderedComponent)childComponent;
+		var effectiveRootId = parent.RootComponentId ?? parentComponent.ComponentId;
+		child.SetRootComponentId(effectiveRootId);
+	}
 }

@@ -61,6 +61,15 @@ internal static class Htmlizer
 		return context.Result.ToString();
 	}
 
+	public static string GetHtmlWithComponentBoundaries(int componentId, BunitRenderer renderer)
+	{
+		var context = new HtmlRenderingContext(renderer) { IncludeComponentBoundaries = true };
+		var frames = context.GetRenderTreeFrames(componentId);
+		var newPosition = RenderFrames(context, frames, 0, frames.Count);
+		Debug.Assert(newPosition == frames.Count);
+		return context.Result.ToString();
+	}
+
 	private static int RenderFrames(
 		HtmlRenderingContext context,
 		ArrayRange<RenderTreeFrame> frames,
@@ -131,8 +140,26 @@ internal static class Htmlizer
 	)
 	{
 		var frame = frames.Array[position];
+
+		if (context.IncludeComponentBoundaries)
+		{
+			context.Result
+				.Append("<!--")
+				.Append(ComponentBoundaryNodeExtractor.StartMarkerFor(frame.ComponentId))
+				.Append("-->");
+		}
+
 		var childFrames = context.GetRenderTreeFrames(frame.ComponentId);
 		RenderFrames(context, childFrames, 0, childFrames.Count);
+
+		if (context.IncludeComponentBoundaries)
+		{
+			context.Result
+				.Append("<!--")
+				.Append(ComponentBoundaryNodeExtractor.EndMarkerFor(frame.ComponentId))
+				.Append("-->");
+		}
+
 		return position + frame.ComponentSubtreeLength;
 	}
 
@@ -402,5 +429,7 @@ internal static class Htmlizer
 		public StringBuilder Result { get; } = new();
 
 		public string? ClosestSelectValueAsString { get; set; }
+
+		public bool IncludeComponentBoundaries { get; init; }
 	}
 }

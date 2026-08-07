@@ -19,6 +19,7 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 
 	private string markup = string.Empty;
 	private INodeList? latestRenderNodes;
+	private int? rootComponentId;
 
 	/// <summary>
 	/// Gets the component under test.
@@ -68,6 +69,12 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		get
 		{
 			EnsureComponentNotDisposed();
+
+			if (rootComponentId.HasValue)
+			{
+				return latestRenderNodes ??= ResolveNodesFromRootDom();
+			}
+
 			return latestRenderNodes ??= htmlParser.Parse(Markup);
 		}
 	}
@@ -133,6 +140,7 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	private void UpdateMarkup()
 	{
 		latestRenderNodes = null;
+		renderer.InvalidateBoundaryNodesCache(ComponentId);
 		var newMarkup = Htmlizer.GetHtml(ComponentId, renderer);
 
 		// Volatile write is necessary to ensure the updated markup
@@ -140,6 +148,20 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		// markup string can be stored in a CPUs register and not
 		// get updated when another CPU changes the string.
 		Volatile.Write(ref markup, newMarkup);
+	}
+
+	public int? RootComponentId => rootComponentId;
+
+	public void SetRootComponentId(int rootComponentId)
+	{
+		this.rootComponentId = rootComponentId;
+		latestRenderNodes = null;
+	}
+
+	private INodeList ResolveNodesFromRootDom()
+	{
+		var fullDom = renderer.GetBoundaryNodesForComponent(rootComponentId!.Value);
+		return ComponentBoundaryNodeExtractor.Extract(fullDom, ComponentId);
 	}
 
 	/// <summary>
