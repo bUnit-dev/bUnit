@@ -112,8 +112,8 @@
 	</ItemGroup>
 
 	<ItemGroup Label="Source Code Generators">
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0"/>
-		<PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0"/>
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0"/>
+		<PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="5.6.0"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.14.0"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" Version="1.1.4" />
