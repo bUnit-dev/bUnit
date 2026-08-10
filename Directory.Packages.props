@@ -93,7 +93,7 @@
 		<PackageVersion Include="MSTest.TestFramework" Version="3.6.0" />
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1"/>
 		<PackageVersion Include="Moq" Version="4.20.72" />
-		<PackageVersion Include="NSubstitute" Version="6.0.0" />
+		<PackageVersion Include="NSubstitute" Version="6.1.0" />
 		<PackageVersion Include="NUnit3TestAdapter" Version="5.0.0" />
 		<PackageVersion Include="RichardSzalay.MockHttp" Version="7.0.0" />
 		<PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
