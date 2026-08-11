@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Xunit;
@@ -168,6 +171,51 @@ public class BunitHtmlParserTest
 		actual.Length.ShouldBe(2);
 		actual[0].ShouldBeAssignableTo<IDocumentType>();
 		actual[1].ShouldBeAssignableTo<IHtmlHtmlElement>();
+	}
+
+	[Fact]
+	public async Task Dispose_does_not_throw_while_another_thread_is_parsing()
+	{
+		var disposeExceptions = new ConcurrentBag<Exception>();
+
+		for (var i = 0; i < 100; i++)
+		{
+			using var cts = new CancellationTokenSource();
+			using var parser = new BunitHtmlParser();
+
+			var parsing = Task.Run(
+				() =>
+				{
+					while (!cts.IsCancellationRequested)
+					{
+						try
+						{
+							parser.Parse("<p>Hello world</p>");
+						}
+						catch (Exception)
+						{
+							// This loop deliberately races Dispose(), so its own
+							// failures are expected and are not what is under test.
+							// Only Dispose() itself is asserted on below.
+						}
+					}
+				},
+				Xunit.TestContext.Current.CancellationToken);
+
+			// Give the parsing loop a moment to get into Parse().
+			await Task.Delay(1, Xunit.TestContext.Current.CancellationToken);
+
+			var exception = Record.Exception(parser.Dispose);
+			if (exception is not null)
+			{
+				disposeExceptions.Add(exception);
+			}
+
+			await cts.CancelAsync();
+			await parsing;
+		}
+
+		disposeExceptions.ShouldBeEmpty();
 	}
 
 	private static void VerifyElementParsedWithId(string expectedElementName, List<INode> actual)

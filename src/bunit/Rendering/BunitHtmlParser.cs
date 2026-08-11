@@ -23,6 +23,7 @@ internal sealed class BunitHtmlParser : IDisposable
 	private readonly IBrowsingContext context;
 	private readonly HtmlParser htmlParser;
 	private readonly List<IDocument> documents = new();
+	private readonly object documentsLock = new();
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitHtmlParser"/> class
@@ -151,7 +152,12 @@ internal sealed class BunitHtmlParser : IDisposable
 	private async Task<IDocument> GetNewDocumentAsync()
 	{
 		var result = await context.OpenNewAsync().ConfigureAwait(false);
-		documents.Add(result);
+
+		lock (documentsLock)
+		{
+			documents.Add(result);
+		}
+
 		return result;
 	}
 
@@ -159,7 +165,21 @@ internal sealed class BunitHtmlParser : IDisposable
 	public void Dispose()
 	{
 		context.Dispose();
-		foreach (var doc in documents)
+
+		// Parse() can be running on another thread while this executes, e.g. a
+		// WaitForAssertion/WaitForState condition being evaluated on the
+		// renderer's dispatcher while the test's BunitContext is being
+		// disposed. Take a snapshot under the lock instead of enumerating the
+		// live list, which would otherwise throw "Collection was modified" if a
+		// parse completed mid-loop.
+		IDocument[] documentsToDispose;
+		lock (documentsLock)
+		{
+			documentsToDispose = documents.ToArray();
+			documents.Clear();
+		}
+
+		foreach (var doc in documentsToDispose)
 		{
 			doc.Dispose();
 		}
