@@ -18,7 +18,7 @@
 		<PackageVersion Include="Serilog" Version="4.4.0"/>
 		<PackageVersion Include="Serilog.Expressions" Version="5.0.0"/>
 		<PackageVersion Include="AngleSharp.Diffing" Version="1.1.1"/>
-		<PackageVersion Include="AngleSharp" Version="1.7.1"/>
+		<PackageVersion Include="AngleSharp" Version="1.7.2"/>
 		<PackageVersion Include="AngleSharp.Css" Version="1.0.1"/>
 	</ItemGroup>
 
