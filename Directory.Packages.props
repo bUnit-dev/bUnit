@@ -8,7 +8,7 @@
 		<GlobalPackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.29.0.143774" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
-		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.160" />
+		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.164" />
 	</ItemGroup>
 
 	<ItemGroup Label="Shared">
@@ -18,12 +18,12 @@
 		<PackageVersion Include="Serilog" Version="4.4.0"/>
 		<PackageVersion Include="Serilog.Expressions" Version="5.0.0"/>
 		<PackageVersion Include="AngleSharp.Diffing" Version="1.1.1"/>
-		<PackageVersion Include="AngleSharp" Version="1.7.1"/>
-		<PackageVersion Include="AngleSharp.Css" Version="1.0.1"/>
+		<PackageVersion Include="AngleSharp" Version="1.7.2"/>
+		<PackageVersion Include="AngleSharp.Css" Version="1.0.2"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Package Versioning">
-		<PackageVersion Include="Nerdbank.GitVersioning" Version="3.10.91" />
+		<PackageVersion Include="Nerdbank.GitVersioning" Version="3.10.94" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
