@@ -64,7 +64,7 @@ public sealed class JSRuntimeInvocationNotSetException : Exception
 
 	private static string GetArguments(JSRuntimeInvocation invocation)
 	{
-		if (!invocation.Arguments.Any())
+		if (invocation.Arguments.Count == 0)
 			return $"\"{invocation.Identifier}\"";
 
 		var argStrings = invocation.Arguments.Select(FormatArgument).Prepend($"\"{invocation.Identifier}\"");

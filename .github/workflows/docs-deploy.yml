@@ -87,7 +87,8 @@ jobs:
         run: dotnet build /p:PublicRelease=true -c release
 
       - name: 🛠️ Verify docs samples
-        run: dotnet test docs/samples/samples.sln
+        working-directory: docs/samples
+        run: dotnet test samples.sln
 
       - name: 📄 Building docs
         working-directory: ./docs/site
