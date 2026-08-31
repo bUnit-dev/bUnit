@@ -60,7 +60,7 @@ public sealed class JSRuntimeUnhandledInvocationException : Exception
 				sb.AppendLine(FormattableString.Invariant($"    Setup<{GetReturnTypeName(invocation.ResultType)}>({GetArguments(invocation)})"));
 			}
 
-			if (invocation.Arguments.Any())
+			if (invocation.Arguments.Count > 0)
 			{
 				sb.AppendLine("or the following, to match any arguments:");
 				if (invocation.IsVoidResultInvocation)
