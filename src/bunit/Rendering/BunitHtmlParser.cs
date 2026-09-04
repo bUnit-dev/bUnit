@@ -23,6 +23,8 @@ internal sealed class BunitHtmlParser : IDisposable
 	private readonly IBrowsingContext context;
 	private readonly HtmlParser htmlParser;
 	private readonly List<IDocument> documents = new();
+	private readonly object parserLock = new();
+	private bool disposed;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitHtmlParser"/> class
@@ -69,13 +71,16 @@ internal sealed class BunitHtmlParser : IDisposable
 	{
 		ArgumentNullException.ThrowIfNull(markup);
 
-		var document = GetNewDocumentAsync().GetAwaiter().GetResult();
+		lock (parserLock)
+		{
+			var document = GetNewDocumentAsync().GetAwaiter().GetResult();
 
-		var (ctx, matchedElement) = GetParseContext(markup, document);
+			var (ctx, matchedElement) = GetParseContext(markup, document);
 
-		return ctx is null && matchedElement is not null
-			? ParseSpecial(markup, matchedElement)
-			: htmlParser.ParseFragment(markup, ctx!);
+			return ctx is null && matchedElement is not null
+				? ParseSpecial(markup, matchedElement)
+				: htmlParser.ParseFragment(markup, ctx!);
+		}
 	}
 
 	private INodeList ParseSpecial(string markup, string matchedElement)
@@ -158,10 +163,18 @@ internal sealed class BunitHtmlParser : IDisposable
 	/// <inheritdoc/>
 	public void Dispose()
 	{
-		context.Dispose();
-		foreach (var doc in documents)
+		lock (parserLock)
 		{
-			doc.Dispose();
+			if (disposed)
+				return;
+
+			disposed = true;
+
+			context.Dispose();
+			foreach (var doc in documents)
+			{
+				doc.Dispose();
+			}
 		}
 	}
 

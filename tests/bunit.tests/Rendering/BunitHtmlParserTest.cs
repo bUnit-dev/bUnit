@@ -170,6 +170,63 @@ public class BunitHtmlParserTest
 		actual[1].ShouldBeAssignableTo<IHtmlHtmlElement>();
 	}
 
+	[Fact(DisplayName = "Dispose() does not throw while another thread is parsing")]
+	public async Task DisposeDoesNotThrowWhileAnotherThreadIsParsing()
+	{
+		using var cts = new CancellationTokenSource();
+		using var parser = new BunitHtmlParser();
+		var parseCount = 0;
+		Exception? parseException = null;
+
+		var parsing = Task.Run(
+			() =>
+			{
+				while (!cts.IsCancellationRequested)
+				{
+					try
+					{
+						parser.Parse("<p>Hello world</p>");
+						Interlocked.Increment(ref parseCount);
+					}
+					catch (InvalidOperationException ex)
+					{
+						// "Collection was modified" - the race this test guards against.
+						parseException = ex;
+						return;
+					}
+					catch (Exception)
+					{
+						// Expected once Dispose() has completed: parsing against a
+						// disposed AngleSharp browsing context.
+					}
+				}
+			},
+			CancellationToken.None);
+
+		// Let the parser build up a sizeable document list, so the enumeration in
+		// Dispose() is long enough to overlap with a concurrent call to Parse().
+		while (Volatile.Read(ref parseCount) < 100)
+		{
+			await Task.Yield();
+		}
+
+		Should.NotThrow(parser.Dispose);
+
+		await cts.CancelAsync();
+		await parsing;
+
+		parseException.ShouldBeNull();
+	}
+
+	[Fact(DisplayName = "Dispose() is idempotent")]
+	public void DisposeIsIdempotent()
+	{
+		using var parser = new BunitHtmlParser();
+		parser.Dispose();
+
+		Should.NotThrow(parser.Dispose);
+	}
+
 	private static void VerifyElementParsedWithId(string expectedElementName, List<INode> actual)
 	{
 		var elm = actual.OfType<IElement>()
