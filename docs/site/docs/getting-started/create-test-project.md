@@ -148,10 +148,10 @@ dotnet add package bunit --version #{NBGV_NuGetPackageVersion}#
 The test projects setting needs to be set to the following:
 
 - the project's SDK needs to be set to `Microsoft.NET.Sdk.Razor` (this does not work with **TUnit** - a more detailed explanation can be found below)
-- set the `<TargetFramework>` to `net8.0`
+- set the `<TargetFramework>` to `net10.0`
 
 > [!NOTE]
-> bUnit works with `net8.0` and above as well.
+> bUnit works with `net10.0` and above as well.
 
 To do so, change the first part of the test projects `.csproj` file to look like this.:
 
@@ -159,7 +159,7 @@ To do so, change the first part of the test projects `.csproj` file to look like
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>  ...
 
 </Project>
@@ -182,7 +182,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -211,7 +211,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <OutputType>Exe</OutputType>
@@ -241,7 +241,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -267,7 +267,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -293,7 +293,7 @@ The result should be a test project with a `.csproj` that looks like this (non b
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestingPlatformApplication>false</IsTestingPlatformApplication>

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.Threading;
 
 namespace Bunit.Rendering;
 
@@ -23,7 +24,7 @@ public sealed class BunitRenderer : Renderer
 	[UnsafeAccessor(UnsafeAccessorKind.Method, Name = "SetDirectParameters")]
 	private static extern void CallSetDirectParameters(ComponentState componentState, ParameterView parameters);
 
-	private readonly object renderTreeUpdateLock = new();
+	private readonly Lock renderTreeUpdateLock = new();
 
 	private readonly HashSet<int> returnedRenderedComponentIds = new();
 	private readonly List<BunitRootComponent> rootComponents = new();
@@ -60,7 +61,6 @@ public sealed class BunitRenderer : Renderer
 	/// </summary>
 	internal int RenderCount { get; }
 
-#if NET9_0_OR_GREATER
 	private RendererInfo? rendererInfo;
 
 	/// <inheritdoc/>
@@ -125,7 +125,6 @@ public sealed class BunitRenderer : Renderer
 		resourceAssets.Add(new ResourceAsset(url, props.Count > 0 ? props : null));
 		resourceAssetCollection = null;
 	}
-#endif
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitRenderer"/> class.
@@ -344,7 +343,6 @@ public sealed class BunitRenderer : Renderer
 		return componentActivator.CreateInstance(componentType);
 	}
 
-#if NET9_0_OR_GREATER
 	/// <inheritdoc/>
 	protected override IComponentRenderMode? GetComponentRenderMode(IComponent component)
 	{
@@ -417,7 +415,6 @@ public sealed class BunitRenderer : Renderer
 			return null;
 		}
 	}
-#endif
 
 	/// <inheritdoc/>
 	protected override void AddPendingTask(ComponentState? componentState, Task task)

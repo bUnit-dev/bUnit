@@ -45,12 +45,12 @@ To use the generator, the **Interceptor** feature has to be used inside the cspr
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<!-- This line is required to enable the generator and interceptor -->
 		<InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Bunit</InterceptorsPreviewNamespaces>
 ```
 
-This limits the usage to .NET 8 and above.
+This limits the usage to .NET 10 and above, matching bUnit's minimum supported target framework.
 
 ## `ComponentStubAttribute`
 This generator adds the ability to automatically generate stubs for a given type via an attribute.

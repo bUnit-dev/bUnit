@@ -49,11 +49,7 @@ public static class DumpCapture
 
 	private static async Task CaptureDump(string testName, string testFilePath, ITestOutputHelper outputHelper)
 	{
-#if NETSTANDARD2_1
-		var processId = Process.GetCurrentProcess().Id;
-#else
 		var processId = Environment.ProcessId;
-#endif
 		var dumpFilePath = Path.Combine(Directory.GetCurrentDirectory(), $"{Path.GetFileNameWithoutExtension(testFilePath)}-{testName}-wait-failed-{Guid.NewGuid()}.dmp");
 		// Attempt to start the dotnet-dump process
 		var startInfo = new ProcessStartInfo
@@ -72,11 +68,7 @@ public static class DumpCapture
 			return;
 		}
 
-#if NETSTANDARD2_1
-		process.WaitForExit();
-#else
 		await process.WaitForExitAsync();
-#endif
 		var output = await process.StandardOutput.ReadToEndAsync();
 		var error = await process.StandardError.ReadToEndAsync();
 		outputHelper.WriteLine($"Dump status: {{process.ExitCode}}. Dump file: {dumpFilePath}");

@@ -15,9 +15,7 @@ public class VirtualizeJsRuntimeInvocationHandlerTest : BunitContext
 	{
 		var cut = Render<Virtualize<string>>(ps => ps
 			.Add(p => p.Items, CreateItems(itemsInDataSource))
-#if NET9_0_OR_GREATER
 			.Add(p => p.MaxItemCount, itemsInDataSource)
-#endif
 			.Add(p => p.ChildContent, item => $"<p>{item}</p>"));
 
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
@@ -29,9 +27,7 @@ public class VirtualizeJsRuntimeInvocationHandlerTest : BunitContext
 	{
 		var cut = Render<Virtualize<string>>(ps => ps
 			.Add(p => p.Items, CreateItems(itemsInDataSource))
-#if NET9_0_OR_GREATER
 			.Add(p => p.MaxItemCount, itemsInDataSource)
-#endif
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>"));
 
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
@@ -43,9 +39,7 @@ public class VirtualizeJsRuntimeInvocationHandlerTest : BunitContext
 	{
 		var cut = Render<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
-#if NET9_0_OR_GREATER
 			.Add(p => p.MaxItemCount, itemsInDataSource)
-#endif
 			.Add(p => p.ChildContent, item => $"<p>{item}</p>"));
 
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
@@ -57,9 +51,7 @@ public class VirtualizeJsRuntimeInvocationHandlerTest : BunitContext
 	{
 		var cut = Render<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
-#if NET9_0_OR_GREATER
 			.Add(p => p.MaxItemCount, itemsInDataSource)
-#endif
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>"));
 
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
@@ -119,9 +111,7 @@ public class VirtualizeJsRuntimeInvocationHandlerTest : BunitContext
 			.Add(p => p.ItemsProvider, CreateItemsProvider(itemsInDataSource))
 			.Add(p => p.ItemContent, item => $"<p>{item}</p>")
 			.Add(p => p.ItemSize, itemSize)
-#if NET9_0_OR_GREATER
 			.Add(p => p.MaxItemCount, itemsInDataSource)
-#endif
 			.Add(p => p.OverscanCount, overscanCount));
 
 		cut.FindAll("p").Count.ShouldBe(itemsInDataSource);
@@ -134,9 +124,7 @@ public class VirtualizeJsRuntimeInvocationHandlerTest : BunitContext
 		var cut = Render<Virtualize<string>>(ps => ps
 			.Add(p => p.ItemsProvider, _ => ValueTask.FromResult(new ItemsProviderResult<string>(Array.Empty<string>(), itemsInDataSource)))
 			.Add(p => p.ItemContent, item => @$"<p class=""item"">{item}</p>")
-#if NET9_0_OR_GREATER
 			.Add(p => p.MaxItemCount, itemsInDataSource)
-#endif
 			.Add(p => p.Placeholder, _ => @"<p class=""placeholder"" />"));
 
 		cut.FindAll(".placeholder").Count.ShouldBe(itemsInDataSource);

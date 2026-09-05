@@ -1,4 +1,3 @@
-#if NET10_0_OR_GREATER
 using Bunit.JSInterop.Implementation;
 
 namespace Bunit.JSInterop;
@@ -16,4 +15,3 @@ internal sealed partial class BunitJSRuntime
 	ValueTask<IJSObjectReference> IJSRuntime.InvokeConstructorAsync(string identifier, CancellationToken cancellationToken, object?[]? args)
 		=> JSInterop.HandleInvokeConstructorAsync(identifier, cancellationToken, args);
 }
-#endif
