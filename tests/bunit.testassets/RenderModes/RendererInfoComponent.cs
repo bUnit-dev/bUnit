@@ -1,5 +1,3 @@
-#if NET9_0_OR_GREATER
-
 namespace Bunit.TestAssets.RenderModes;
 
 public class RendererInfoComponent : ComponentBase
@@ -17,4 +15,3 @@ public class RendererInfoComponent : ComponentBase
 		builder.CloseElement();
 	}
 }
-#endif

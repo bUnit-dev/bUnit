@@ -5,7 +5,7 @@ title: Seeding static assets (Assets)
 
 # Seeding static assets (`Assets`)
 
-This article explains how to seed the `Assets` property of components under test in bUnit. This is supported for .NET 9 and later.
+This article explains how to seed the `Assets` property of components under test in bUnit.
 
 Since .NET 9, components can access static assets mapped by [`MapStaticAssets`](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/map-static-files?view=aspnetcore-9.0) through the [`ComponentBase.Assets`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.componentbase.assets?view=aspnetcore-9.0) property, e.g. to resolve fingerprinted URLs:
 

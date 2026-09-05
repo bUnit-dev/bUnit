@@ -1,4 +1,3 @@
-#if NET9_0_OR_GREATER
 namespace Bunit.Rendering;
 
 /// <summary>
@@ -19,4 +18,3 @@ public sealed class RenderModeMisMatchException : Exception
 		HelpLink = "https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-modes?view=aspnetcore-9.0#render-mode-propagation";
 	}
 }
-#endif
