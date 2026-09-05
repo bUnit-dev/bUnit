@@ -20,7 +20,7 @@ public class ComponentRenderingTest : BunitContext
 {
 	public ComponentRenderingTest(ITestOutputHelper outputHelper)
 	{
-		BunitContext.DefaultWaitTimeout = TimeSpan.FromSeconds(10);
+		DefaultWaitTimeout = TimeSpan.FromSeconds(10);
 		Services.AddXunitLogger(outputHelper);
 		JSInterop.Mode = JSRuntimeMode.Loose;
 	}
