@@ -1,0 +1,7 @@
+<form id="parent-form" @onsubmit="() => SubmitCount++">
+	<ChildWithButton ButtonType="submit" />
+</form>
+
+@code {
+	public int SubmitCount { get; set; }
+}

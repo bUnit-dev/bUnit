@@ -1,0 +1,9 @@
+<div id="grand-parent-div" @onclick="() => ClickCount++">
+	<ParentDivWithChildButton StopPropagation="StopPropagation" />
+</div>
+
+@code {
+	[Parameter] public bool StopPropagation { get; set; }
+
+	public int ClickCount { get; set; }
+}
