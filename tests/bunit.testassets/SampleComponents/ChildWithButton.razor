@@ -1,0 +1,7 @@
+<button id="child-button" type="@ButtonType" @onclick="() => ClickCount++">Child</button>
+
+@code {
+	[Parameter] public string ButtonType { get; set; } = "button";
+
+	public int ClickCount { get; set; }
+}
