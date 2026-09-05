@@ -1,6 +1,4 @@
-#if NET9_0_OR_GREATER
 using System.Runtime.CompilerServices;
-#endif
 using Bunit.Extensions;
 using Bunit.Rendering;
 using Microsoft.Extensions.Logging;
@@ -161,9 +159,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	/// <typeparam name="TComponent">The type of component to find in the render tree.</typeparam>
 	/// <param name="renderFragment">The render fragment to render.</param>
 	/// <returns>The <see cref="RenderedComponent{TComponent}"/>.</returns>
-#if NET9_0_OR_GREATER
 	[OverloadResolutionPriority(1)]
-#endif
 	public virtual IRenderedComponent<TComponent> Render<TComponent>(RenderFragment renderFragment)
 		where TComponent : IComponent
 		=> RenderInsideRenderTree<TComponent>(renderFragment);
@@ -176,7 +172,6 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	public virtual IRenderedComponent<ContainerFragment> Render(RenderFragment renderFragment)
 		=> RenderInsideRenderTree(renderFragment);
 
-#if NET9_0_OR_GREATER
 	/// <summary>
 	/// Sets the <see cref="RendererInfo"/> for the renderer.
 	/// </summary>
@@ -201,7 +196,6 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	[SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "Using string to align with ResourceAsset")]
 	public void AddAsset(string url, string? label = null, params ResourceAssetProperty[] properties)
 		=> Renderer.AddAsset(url, label, properties);
-#endif
 
 	/// <summary>
 	/// Dummy method required to allow Blazor's compiler to generate

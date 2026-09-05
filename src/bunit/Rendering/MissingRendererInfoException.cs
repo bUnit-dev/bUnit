@@ -1,4 +1,3 @@
-#if NET9_0_OR_GREATER
 namespace Bunit.Rendering;
 
 /// <summary>
@@ -33,4 +32,3 @@ public sealed class MissingRendererInfoException : Exception
 		HelpLink = "https://bunit.dev/docs/interaction/render-modes";
 	}
 }
-#endif

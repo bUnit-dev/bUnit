@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Diagnostics;
+using System.Threading;
 using AngleSharp;
 using AngleSharp.Css;
 using AngleSharp.Dom;
@@ -23,7 +24,7 @@ internal sealed class BunitHtmlParser : IDisposable
 	private readonly IBrowsingContext context;
 	private readonly HtmlParser htmlParser;
 	private readonly List<IDocument> documents = new();
-	private readonly object parserLock = new();
+	private readonly Lock parserLock = new();
 	private bool disposed;
 
 	/// <summary>

@@ -427,7 +427,6 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 			: source;
 	}
 
-#if NET9_0_OR_GREATER
 	/// <summary>
 	/// Sets (or unsets) the <see cref="IComponentRenderMode"/> for the component and child components.
 	/// </summary>
@@ -438,7 +437,6 @@ public sealed class ComponentParameterCollectionBuilder<TComponent>
 		parameters.RenderMode = renderMode;
 		return this;
 	}
-#endif
 
 	/// <summary>
 	/// Try to add a <paramref name="value"/> for a parameter with the <paramref name="name"/>, if
