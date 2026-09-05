@@ -113,10 +113,8 @@ internal static class Htmlizer
 			case RenderTreeFrameType.ElementReferenceCapture:
 			case RenderTreeFrameType.ComponentReferenceCapture:
 				return position + 1;
-#if NET8_0_OR_GREATER
 			case RenderTreeFrameType.NamedEvent:
 				return position + 1;
-#endif
 			default:
 				throw new InvalidOperationException(
 					$"Invalid element frame type '{frame.FrameType}'."

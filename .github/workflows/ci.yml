@@ -45,8 +45,6 @@ jobs:
       uses: actions/setup-dotnet@v6
       with:
         dotnet-version: |
-          8.0.x
-          9.0.x
           10.0.x
           11.0.x
 
@@ -127,8 +125,6 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            8.0.x
-            9.0.x
             10.0.x
             11.0.x
 
@@ -226,8 +222,6 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            8.0.x
-            9.0.x
             10.0.x
             11.0.x
 
@@ -257,7 +251,7 @@ jobs:
 
       - name: 🧪 Run sample unit tests
         working-directory: docs/samples
-        run: dotnet test samples.sln -p:VSTestUseMSBuildOutput=false -f net8.0
+        run: dotnet test samples.sln -p:VSTestUseMSBuildOutput=false -f net10.0
 
       - name: 📄 Build docs
         working-directory: ./docs/site
