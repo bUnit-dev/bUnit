@@ -1,3 +1,4 @@
+using AngleSharp.Dom;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -25,8 +26,14 @@ public sealed class BunitRenderer : Renderer
 
 	private readonly object renderTreeUpdateLock = new();
 
-	private readonly HashSet<int> returnedRenderedComponentIds = new();
+	private readonly Dictionary<int, IRenderedComponent> returnedRenderedComponents = new();
 	private readonly List<BunitRootComponent> rootComponents = new();
+
+	// Unlike rootComponents this is never cleared, so a node from a document created
+	// before DisposeComponents can still be traced back to its component.
+	private readonly List<IRenderedComponentRoot> renderTreeRoots = new();
+	private readonly ConditionalWeakTable<IDocument, IRenderedComponent> privateDocuments = new();
+	private readonly HashSet<IRenderedComponentRoot> rootsDirtiedByDisposal = new();
 	private readonly ILogger<BunitRenderer> logger;
 	private bool disposed;
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -309,6 +316,11 @@ public sealed class BunitRenderer : Renderer
 	{
 		ArgumentNullException.ThrowIfNull(component);
 
+		if (component is BunitRootComponent)
+		{
+			return new RootRenderedComponent(this, componentId, component, services);
+		}
+
 		var TComponent = component.GetType();
 		var renderedComponentType = typeof(RenderedComponent<>).MakeGenericType(TComponent);
 		var renderedComponent = CreateComponentInstance();
@@ -515,8 +527,17 @@ public sealed class BunitRenderer : Renderer
 		{
 			var id = renderBatch.DisposedComponentIDs.Array[i];
 			disposedComponentIds.Add(id);
-			returnedRenderedComponentIds.Remove(id);
+			returnedRenderedComponents.Remove(id);
 		}
+
+		var dirtyRoots = CollectDirtyRoots(in renderBatch, disposedComponentIds);
+
+		foreach (var root in dirtyRoots)
+		{
+			root.RegenerateMarkup();
+		}
+
+		RaiseMarkupUpdatedForComponentsIn(dirtyRoots);
 
 		for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
 		{
@@ -528,23 +549,14 @@ public sealed class BunitRenderer : Renderer
 			}
 
 			var componentState = GetComponentState(diff.ComponentId);
-			var renderedComponent = (IRenderedComponent)componentState;
+			((IRenderedComponent)componentState).UpdateState(hasRendered: true);
 
-			if (returnedRenderedComponentIds.Contains(diff.ComponentId))
-			{
-				renderedComponent.UpdateState(hasRendered: true, isMarkupGenerationRequired: diff.Edits.Count > 0);
-			}
-			else
-			{
-				renderedComponent.UpdateState(hasRendered: true, false);
-			}
-
-			UpdateParents(diff.Edits.Count > 0, componentState, in renderBatch);
+			UpdateParents(componentState, in renderBatch);
 		}
 
 		return Task.CompletedTask;
 
-		void UpdateParents(bool hasChanges, ComponentState componentState, in RenderBatch renderBatch)
+		void UpdateParents(ComponentState componentState, in RenderBatch renderBatch)
 		{
 			var parent = componentState.ParentComponentState;
 			if (parent is null)
@@ -554,16 +566,9 @@ public sealed class BunitRenderer : Renderer
 
 			if (!IsParentComponentAlreadyUpdated(parent.ComponentId, in renderBatch))
 			{
-				if (returnedRenderedComponentIds.Contains(parent.ComponentId))
-				{
-					((IRenderedComponent)parent).UpdateState(hasRendered: true, isMarkupGenerationRequired: hasChanges);
-				}
-				else
-				{
-					((IRenderedComponent)parent).UpdateState(hasRendered: true, false);
-				}
+				((IRenderedComponent)parent).UpdateState(hasRendered: true);
 
-				UpdateParents(hasChanges, parent, in renderBatch);
+				UpdateParents(parent, in renderBatch);
 			}
 		}
 
@@ -582,9 +587,137 @@ public sealed class BunitRenderer : Renderer
 		}
 	}
 
+	private HashSet<IRenderedComponentRoot> CollectDirtyRoots(in RenderBatch renderBatch, HashSet<int> disposedComponentIds)
+	{
+		var dirtyRoots = new HashSet<IRenderedComponentRoot>(rootsDirtiedByDisposal);
+		rootsDirtiedByDisposal.Clear();
+
+		for (var i = 0; i < renderBatch.UpdatedComponents.Count; i++)
+		{
+			var diff = renderBatch.UpdatedComponents.Array[i];
+
+			if (diff.Edits.Count == 0 || disposedComponentIds.Contains(diff.ComponentId))
+			{
+				continue;
+			}
+
+			dirtyRoots.Add(((IRenderedComponent)GetComponentState(diff.ComponentId)).Root);
+		}
+
+		return dirtyRoots;
+	}
+
+	/// <summary>
+	/// Regenerating a root replaces the document all components in its render tree
+	/// read from, which invalidates every element previously handed out from it -
+	/// including elements of components whose own markup did not change.
+	/// </summary>
+	private void RaiseMarkupUpdatedForComponentsIn(HashSet<IRenderedComponentRoot> dirtyRoots)
+	{
+		if (dirtyRoots.Count == 0)
+		{
+			return;
+		}
+
+		// Handlers are user code that can call FindComponent, which adds to the dictionary.
+		foreach (var renderedComponent in returnedRenderedComponents.Values.ToArray())
+		{
+			if (renderedComponent.IsDisposed)
+			{
+				continue;
+			}
+
+			if (dirtyRoots.Contains(renderedComponent.Root))
+			{
+				renderedComponent.RaiseMarkupUpdated();
+			}
+		}
+	}
+
+	internal void OnRenderedComponentDisposed(IRenderedComponent renderedComponent)
+	{
+		lock (renderTreeUpdateLock)
+		{
+			returnedRenderedComponents.Remove(renderedComponent.ComponentId);
+
+			if (!renderedComponent.Root.IsDisposed)
+			{
+				rootsDirtiedByDisposal.Add(renderedComponent.Root);
+			}
+		}
+	}
+
 	/// <inheritdoc/>
 	internal new ArrayRange<RenderTreeFrame> GetCurrentRenderTreeFrames(int componentId)
 		=> base.GetCurrentRenderTreeFrames(componentId);
+
+	internal IRenderedComponent<IComponent> GetRenderedComponent(int componentId)
+		=> (IRenderedComponent<IComponent>)GetComponentState(componentId);
+
+	internal IRenderedComponentRoot? FindRenderTreeRoot(IDocument? document)
+	{
+		if (document is null)
+		{
+			return null;
+		}
+
+		IRenderedComponentRoot[] roots;
+		lock (renderTreeUpdateLock)
+		{
+			roots = renderTreeRoots.ToArray();
+		}
+
+		foreach (var root in roots)
+		{
+			if (!root.IsDisposed && ReferenceEquals(root.MarkupSnapshot?.Document, document))
+			{
+				return root;
+			}
+		}
+
+		return null;
+	}
+
+	/// <summary>
+	/// Records a document holding the markup of a single component, parsed because
+	/// that markup could not be located in its render tree's shared document.
+	/// </summary>
+	internal void RegisterPrivateDocument(IDocument document, IRenderedComponent renderedComponent)
+		=> privateDocuments.AddOrUpdate(document, renderedComponent);
+
+	internal IRenderedComponent? FindPrivateDocumentOwner(IDocument? document)
+		=> document is not null && privateDocuments.TryGetValue(document, out var owner) && !owner.IsDisposed
+			? owner
+			: null;
+
+	/// <summary>
+	/// Gets the directly rendered child components, in render order. Unlike
+	/// <see cref="FindComponents{TComponent}(IRenderedComponent{IComponent})"/> this does
+	/// not descend into the children's own render trees.
+	/// </summary>
+	internal IReadOnlyList<IRenderedComponent<IComponent>> GetChildComponents(int componentId)
+	{
+		ObjectDisposedException.ThrowIf(disposed, this);
+
+		var result = new List<IRenderedComponent<IComponent>>();
+
+		lock (renderTreeUpdateLock)
+		{
+			ObjectDisposedException.ThrowIf(disposed, this);
+
+			var frames = GetCurrentRenderTreeFrames(componentId);
+			for (var i = 0; i < frames.Count; i++)
+			{
+				ref var frame = ref frames.Array[i];
+				if (frame.FrameType == RenderTreeFrameType.Component)
+				{
+					result.Add(GetRenderedComponent(frame.ComponentId));
+				}
+			}
+		}
+
+		return result;
+	}
 
 	/// <inheritdoc/>
 	protected override void Dispose(bool disposing)
@@ -601,7 +734,9 @@ public sealed class BunitRenderer : Renderer
 
 			if (disposing)
 			{
-				returnedRenderedComponentIds.Clear();
+				returnedRenderedComponents.Clear();
+				renderTreeRoots.Clear();
+				rootsDirtiedByDisposal.Clear();
 				disposalTasks.Clear();
 				unhandledExceptionTsc.TrySetCanceled();
 			}
@@ -620,7 +755,6 @@ public sealed class BunitRenderer : Renderer
 
 			var root = new BunitRootComponent(renderFragment);
 			var rootComponentId = AssignRootComponentId(root);
-			returnedRenderedComponentIds.Add(rootComponentId);
 			rootComponents.Add(root);
 			root.Render();
 			return rootComponentId;
@@ -663,10 +797,6 @@ public sealed class BunitRenderer : Renderer
 		{
 			ObjectDisposedException.ThrowIf(disposed, this);
 			FindComponentsInRenderTree(parentComponent.ComponentId);
-			foreach (var rc in result)
-			{
-				((IRenderedComponent)rc).UpdateState(hasRendered: false, isMarkupGenerationRequired: true);
-			}
 		}
 
 		return result;
@@ -700,8 +830,18 @@ public sealed class BunitRenderer : Renderer
 	private IRenderedComponent<TComponent> GetRenderedComponent<TComponent>(int componentId)
 		where TComponent : IComponent
 	{
-		var result = GetComponentState(componentId);
-		returnedRenderedComponentIds.Add(result.ComponentId);
+		var result = (IRenderedComponent)GetComponentState(componentId);
+
+		lock (renderTreeUpdateLock)
+		{
+			returnedRenderedComponents[result.ComponentId] = result;
+
+			if (result is IRenderedComponentRoot root && !renderTreeRoots.Contains(root))
+			{
+				renderTreeRoots.Add(root);
+			}
+		}
+
 		return (IRenderedComponent<TComponent>)result;
 	}
 

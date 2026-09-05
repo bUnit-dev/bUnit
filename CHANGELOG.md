@@ -6,8 +6,23 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- `INode.GetOwningComponent()` and its generic overload, which return the rendered component that rendered a DOM node. Reported by [@egil](https://github.com/egil) in #153.
+- `Parent()`, `Root()`, `GetAncestors()`, `GetChildren()` and its generic overload on `IRenderedComponent`, for navigating the component tree. Reported by [@egil](https://github.com/egil) in #1180.
+
+### Changed
+
+- **Breaking:** all rendered components in a render tree now share a single DOM. Previously each rendered component parsed its own markup into its own document, so an element found through a child component had no ancestors outside that child. Consequences:
+  - Events raised on an element found through a child component now bubble into the markup rendered by its ancestor components, as they do in a browser. Reported by [@JelleHissink](https://github.com/JelleHissink) in #983.
+  - `Find` and `FindAll` on a child component evaluate positional and combinator selectors (`:first-child`, `+`, `~`, ...) against the whole tree rather than the component's markup in isolation.
+  - An `option` element rendered by a child component, inside a `select` element rendered by an ancestor with a matching `value` attribute, now renders as `selected`, matching what the ancestor's markup shows.
+
+  A component whose markup starts or ends with text, or that the HTML parser relocates, still falls back to its own document, since its nodes cannot be identified in the shared one.
+
 ### Fixed
 
+- Events raised on an element obtained through `FindComponent` no longer stop at the child component's own markup, so a submit button in a child component triggers the `@onsubmit` handler on the `form` element rendered by its parent. Reported by [@JelleHissink](https://github.com/JelleHissink) in #983.
 - `BunitHtmlParser.Dispose()` no longer throws `InvalidOperationException: Collection was modified` when a parse is in flight on another thread during test teardown. Reported by [@thimobuchheister](https://github.com/thimobuchheister) in #1892. Fixed by [@linkdotnet](https://github.com/linkdotnet).
 
 ## [2.9.0] - 2026-08-03

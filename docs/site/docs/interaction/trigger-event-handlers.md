@@ -106,3 +106,25 @@ Example:
 ```csharp
 await cut.Find("button").ClickAsync();
 ```
+## Events bubble across component boundaries
+
+Every component in a render tree shares one DOM, so an element found through a child
+component still has its ancestors from the parent components around it. Events therefore
+bubble the same way whether the element was found from the component under test or from
+one of its children:
+
+```csharp
+var cut = Render<OuterSubmitForm>();
+
+// Both of these trigger the @onsubmit handler on the <form>
+// rendered by <OuterSubmitForm>.
+cut.Find("button").Click();
+cut.FindComponent<InnerSubmitForm>().Find("button").Click();
+```
+
+Use `GetOwningComponent()` on any element to get the component that rendered it, which is
+covered in <xref:find-owning-component>:
+
+```csharp
+IRenderedComponent<InnerSubmitForm> inner = cut.Find("button").GetOwningComponent<InnerSubmitForm>();
+```

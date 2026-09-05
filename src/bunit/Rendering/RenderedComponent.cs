@@ -7,18 +7,24 @@ namespace Bunit;
 /// <summary>
 /// Represents a rendered component.
 /// </summary>
+/// <remarks>
+/// The markup and the AngleSharp document belong to the root of the render tree and are
+/// shared by every component in it; this type exposes the slice of both that this
+/// component rendered. See <see cref="RootMarkupSnapshot"/>.
+/// </remarks>
 [DebuggerDisplay("Component={typeof(TComponent).Name,nq},RenderCount={RenderCount}")]
-internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedComponent<TComponent>, IRenderedComponent
+internal class RenderedComponent<TComponent> : ComponentState, IRenderedComponent<TComponent>, IRenderedComponent
 	where TComponent : IComponent
 {
-	private readonly BunitRenderer renderer;
 	private readonly TComponent instance;
+	private readonly object sliceGate = new();
+	private readonly IRenderedComponentRoot? renderTreeRoot;
+	private Slice? slice;
+
+	private protected BunitRenderer OwningRenderer { get; }
 
 	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by BunitServiceProvider, disposed by it.")]
-	private readonly BunitHtmlParser htmlParser;
-
-	private string markup = string.Empty;
-	private INodeList? latestRenderNodes;
+	private protected BunitHtmlParser HtmlParser { get; }
 
 	/// <summary>
 	/// Gets the component under test.
@@ -37,6 +43,10 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	/// </summary>
 	public bool IsDisposed { get; private set; }
 
+	/// <inheritdoc/>
+	public virtual IRenderedComponentRoot Root => renderTreeRoot
+		?? throw new InvalidOperationException("A rendered component that is not a render tree root always has a parent.");
+
 	/// <summary>
 	/// Gets the HTML markup from the rendered fragment/component.
 	/// </summary>
@@ -45,11 +55,7 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		get
 		{
 			EnsureComponentNotDisposed();
-			// Volatile read is necessary to ensure the updated markup
-			// is available across CPU cores. Without it, the pointer to the
-			// markup string can be stored in a CPUs register and not
-			// get updated when another CPU changes the string.
-			return Volatile.Read(ref markup);
+			return GetSlice()?.Markup ?? string.Empty;
 		}
 	}
 
@@ -68,7 +74,7 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		get
 		{
 			EnsureComponentNotDisposed();
-			return latestRenderNodes ??= htmlParser.Parse(Markup);
+			return GetSlice()?.GetNodes(HtmlParser) ?? NodeRangeList.Empty;
 		}
 	}
 
@@ -86,9 +92,10 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		: base(renderer, componentId, instance, parentComponentState)
 	{
 		Services = services;
-		this.renderer = renderer;
+		OwningRenderer = renderer;
+		HtmlParser = services.GetRequiredService<BunitHtmlParser>();
 		this.instance = (TComponent)instance;
-		htmlParser = Services.GetRequiredService<BunitHtmlParser>();
+		renderTreeRoot = (parentComponentState as IRenderedComponent)?.Root;
 	}
 
 	/// <summary>
@@ -101,10 +108,17 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	/// </summary>
 	public event EventHandler? OnMarkupUpdated;
 
-	/// <summary>
-	/// Called by the owning <see cref="BunitRenderer"/> when it finishes a render.
-	/// </summary>
-	public void UpdateState(bool hasRendered, bool isMarkupGenerationRequired)
+	/// <inheritdoc/>
+	public void RaiseMarkupUpdated()
+	{
+		if (IsDisposed)
+			return;
+
+		OnMarkupUpdated?.Invoke(this, EventArgs.Empty);
+	}
+
+	/// <inheritdoc/>
+	public void UpdateState(bool hasRendered)
 	{
 		if (IsDisposed)
 			return;
@@ -112,34 +126,30 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		if (hasRendered)
 		{
 			RenderCount++;
-		}
-
-		if (isMarkupGenerationRequired)
-		{
-			UpdateMarkup();
-			OnMarkupUpdated?.Invoke(this, EventArgs.Empty);
-		}
-
-		// The order here is important, since consumers of the events
-		// expect that markup has indeed changed when OnAfterRender is invoked
-		// (assuming there are markup changes)
-		if (hasRendered)
 			OnAfterRender?.Invoke(this, EventArgs.Empty);
+		}
 	}
 
 	/// <summary>
-	/// Updates the markup of the rendered fragment.
+	/// Gets this component's slice of the current snapshot, recomputing it when
+	/// the snapshot has been replaced.
 	/// </summary>
-	private void UpdateMarkup()
+	private Slice? GetSlice()
 	{
-		latestRenderNodes = null;
-		var newMarkup = Htmlizer.GetHtml(ComponentId, renderer);
+		lock (sliceGate)
+		{
+			var current = Root.MarkupSnapshot;
 
-		// Volatile write is necessary to ensure the updated markup
-		// is available across CPU cores. Without it, the pointer to the
-		// markup string can be stored in a CPUs register and not
-		// get updated when another CPU changes the string.
-		Volatile.Write(ref markup, newMarkup);
+			if (current is null)
+				return null;
+
+			if (slice is null || !ReferenceEquals(slice.Snapshot, current))
+			{
+				slice = new Slice(current, this, OwningRenderer);
+			}
+
+			return slice;
+		}
 	}
 
 	/// <summary>
@@ -155,18 +165,74 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	/// <inheritdoc/>
 	public void Dispose()
 	{
-		if (IsDisposed)
+		Dispose(disposing: true);
+		GC.SuppressFinalize(this);
+	}
+
+	protected virtual void Dispose(bool disposing)
+	{
+		if (!disposing || IsDisposed)
 			return;
 
 		IsDisposed = true;
-		markup = string.Empty;
+		slice = null;
 		OnAfterRender = null;
 		OnMarkupUpdated = null;
+		OwningRenderer.OnRenderedComponentDisposed(this);
 	}
 
 	public override ValueTask DisposeAsync()
 	{
 		Dispose();
 		return base.DisposeAsync();
+	}
+
+	/// <summary>
+	/// One component's view of a <see cref="RootMarkupSnapshot"/>.
+	/// </summary>
+	private sealed class Slice
+	{
+		private readonly RootMarkupSnapshot snapshot;
+		private readonly IRenderedComponent owner;
+		private readonly BunitRenderer renderer;
+		private readonly object gate = new();
+		private INodeList? nodes;
+
+		public RootMarkupSnapshot Snapshot => snapshot;
+
+		public string Markup { get; }
+
+		public Slice(RootMarkupSnapshot snapshot, IRenderedComponent owner, BunitRenderer renderer)
+		{
+			this.snapshot = snapshot;
+			this.owner = owner;
+			this.renderer = renderer;
+			Markup = snapshot.GetMarkup(owner.ComponentId);
+		}
+
+		public INodeList GetNodes(BunitHtmlParser htmlParser)
+		{
+			lock (gate)
+			{
+				if (nodes is not null)
+					return nodes;
+
+				if (snapshot.TryGetNodeView(owner.ComponentId, out var view))
+				{
+					nodes = view;
+					return nodes;
+				}
+
+				// Registered so nodes from this private document can still be traced
+				// back to a component by GetOwningComponent.
+				nodes = htmlParser.Parse(Markup);
+				if (nodes.Length > 0 && nodes[0].Owner is { } document)
+				{
+					renderer.RegisterPrivateDocument(document, owner);
+				}
+
+				return nodes;
+			}
+		}
 	}
 }
