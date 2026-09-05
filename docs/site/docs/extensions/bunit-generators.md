@@ -53,12 +53,12 @@ To use the generator, the **Interceptor** feature has to be used inside the cspr
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<!-- This line is required to enable the generator and interceptor -->
 		<InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Bunit</InterceptorsPreviewNamespaces>
 ```
 
-Due to the usage of **Interceptors** the generator is only available for .NET 8.0 and above. The generator does create a `partial` class, so it can be extended with custom logic if needed.
+Due to the usage of **Interceptors** the generator requires .NET 10.0 and above, matching bUnit's minimum supported target framework. The generator does create a `partial` class, so it can be extended with custom logic if needed.
 
 ## Component stub generator via `ComponentStubAttribute`
 

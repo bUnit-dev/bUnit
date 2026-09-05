@@ -19,13 +19,11 @@ internal class ComponentParameterCollection : ICollection<ComponentParameter>, I
 	/// <inheritdoc />
 	public bool IsReadOnly => false;
 
-#if NET9_0_OR_GREATER
 	/// <summary>
 	/// Gets or sets the <see cref="IComponentRenderMode"/> that will be specified in
 	/// the render tree for component the parameters are being passed to.
 	/// </summary>
 	public IComponentRenderMode? RenderMode { get; set; }
-#endif
 
 	/// <summary>
 	/// Adds a <paramref name="item"/> to the collection.
@@ -108,9 +106,7 @@ internal class ComponentParameterCollection : ICollection<ComponentParameter>, I
 		{
 			builder.OpenComponent<TComponent>(0);
 			AddAttributes(builder);
-#if NET9_0_OR_GREATER
 			builder.AddComponentRenderMode(RenderMode);
-#endif
 			builder.CloseComponent();
 		}
 

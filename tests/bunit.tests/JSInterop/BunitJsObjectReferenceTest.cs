@@ -246,18 +246,6 @@ public class BunitJsObjectReferenceTest : BunitContext
 		jsRuntime.ShouldBeAssignableTo<IJSInProcessObjectReference>();
 	}
 
-#if !NET9_0_OR_GREATER
-	[Fact(DisplayName = "IJSObjectReference can be cast to IJSUnmarshalledObjectReference")]
-	public void Test071()
-	{
-		JSInterop.Mode = JSRuntimeMode.Loose;
-
-		var jsRuntime = GetBunitJSObjectReference();
-
-		jsRuntime.ShouldBeAssignableTo<IJSUnmarshalledObjectReference>();
-	}
-#endif
-
 	[Fact(DisplayName = "IJSInProcessObjectReference-invocations is handled by handlers from BunitJSInterop")]
 	public async Task Test080()
 	{
@@ -279,114 +267,6 @@ public class BunitJsObjectReferenceTest : BunitContext
 		JSInterop.VerifyInvoke("bar6").Arguments.ShouldBe(["baz"]);
 	}
 
-#if !NET9_0_OR_GREATER
-	[Fact(DisplayName = "IJSUnmarshalledObjectReference-invocations is handled by handlers from BunitJSInterop")]
-	[Obsolete("Because we are calling obsolete methods in test.")]
-	public async Task Test081()
-	{
-		JSInterop.Mode = JSRuntimeMode.Loose;
-		var jsUnmarshalled = (IJSUnmarshalledObjectReference)GetBunitJSObjectReference();
-
-		await jsUnmarshalled.InvokeAsync<string>("bar1");
-		await jsUnmarshalled.InvokeAsync<string>("bar2", "baz");
-		await jsUnmarshalled.InvokeVoidAsync("bar3");
-		await jsUnmarshalled.InvokeVoidAsync("bar4", "baz");
-		jsUnmarshalled.Invoke<string>("bar5");
-		jsUnmarshalled.Invoke<string>("bar6", "baz");
-		jsUnmarshalled.InvokeUnmarshalled<string>("bar7");
-		jsUnmarshalled.InvokeUnmarshalled<string, string>("bar8", "baz");
-		jsUnmarshalled.InvokeUnmarshalled<string, string, string>("bar9", "baz", "boo");
-		jsUnmarshalled.InvokeUnmarshalled<string, string, string, string>("bar10", "baz", "boo", "bah");
-
-		JSInterop.VerifyInvoke("bar1");
-		JSInterop.VerifyInvoke("bar2").Arguments.ShouldBe(["baz"]);
-		JSInterop.VerifyInvoke("bar3");
-		JSInterop.VerifyInvoke("bar4").Arguments.ShouldBe(["baz"]);
-		JSInterop.VerifyInvoke("bar5");
-		JSInterop.VerifyInvoke("bar6").Arguments.ShouldBe(["baz"]);
-		JSInterop.VerifyInvoke("bar7");
-		JSInterop.VerifyInvoke("bar8").Arguments.ShouldBe(["baz"]);
-		JSInterop.VerifyInvoke("bar9").Arguments.ShouldBe(["baz", "boo"]);
-		JSInterop.VerifyInvoke("bar10").Arguments.ShouldBe(["baz", "boo", "bah"]);
-	}
-
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier), then the invocation should be visible from the Invocations list"), AutoData]
-	[Obsolete("Because we are calling obsolete methods in test.")]
-	public void Test310(string identifier)
-	{
-		JSInterop.Mode = JSRuntimeMode.Loose;
-		var jsUnmarshalledRuntime = (IJSUnmarshalledObjectReference)GetBunitJSObjectReference();
-
-		jsUnmarshalledRuntime.InvokeUnmarshalled<string>(identifier);
-
-		JSInterop.Invocations[identifier]
-			.ShouldHaveSingleItem()
-			.ShouldBe(new JSRuntimeInvocation(
-				identifier,
-				cancellationToken: null,
-				args: Array.Empty<object>(),
-				resultType: typeof(string),
-				invocationMethodName: "InvokeUnmarshalled"));
-	}
-
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0), then the invocation should be visible from the Invocations list"), AutoData]
-	[Obsolete("Because we are calling obsolete methods in test.")]
-	public void Test306(string identifier, string arg0)
-	{
-		JSInterop.Mode = JSRuntimeMode.Loose;
-		var jsUnmarshalledRuntime = (IJSUnmarshalledObjectReference)GetBunitJSObjectReference();
-
-		jsUnmarshalledRuntime.InvokeUnmarshalled<string, string>(identifier, arg0);
-
-		JSInterop.Invocations[identifier]
-			.ShouldHaveSingleItem()
-			.ShouldBe(new JSRuntimeInvocation(
-				identifier,
-				cancellationToken: null,
-				args: new[] { arg0 },
-				resultType: typeof(string),
-				invocationMethodName: "InvokeUnmarshalled"));
-	}
-
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1), then the invocation should be visible from the Invocations list"), AutoData]
-	[Obsolete("Because we are calling obsolete methods in test.")]
-	public void Test307(string identifier, string arg0, string arg1)
-	{
-		JSInterop.Mode = JSRuntimeMode.Loose;
-		var jsUnmarshalledRuntime = (IJSUnmarshalledObjectReference)GetBunitJSObjectReference();
-
-		jsUnmarshalledRuntime.InvokeUnmarshalled<string, string, string>(identifier, arg0, arg1);
-
-		JSInterop.Invocations[identifier]
-			.ShouldHaveSingleItem()
-			.ShouldBe(new JSRuntimeInvocation(
-				identifier,
-				cancellationToken: null,
-				args: new[] { arg0, arg1 },
-				resultType: typeof(string),
-				invocationMethodName: "InvokeUnmarshalled"));
-	}
-
-	[Theory(DisplayName = "When calling InvokeUnmarshalled(identifier, arg0, arg1, arg2), then the invocation should be visible from the Invocations list"), AutoData]
-	[Obsolete("Because we are calling obsolete methods in test.")]
-	public void Test308(string identifier, string arg0, string arg1, string arg2)
-	{
-		JSInterop.Mode = JSRuntimeMode.Loose;
-		var jsUnmarshalledRuntime = (IJSUnmarshalledObjectReference)GetBunitJSObjectReference();
-
-		jsUnmarshalledRuntime.InvokeUnmarshalled<string, string, string, string>(
-			identifier, arg0, arg1, arg2);
-
-		JSInterop.Invocations[identifier]
-			.ShouldHaveSingleItem()
-			.ShouldBe(new JSRuntimeInvocation(
-				identifier,
-				cancellationToken: null,
-				args: new[] { arg0, arg1, arg2 },
-				resultType: typeof(string),
-				invocationMethodName: "InvokeUnmarshalled"));
-	}
-#endif
 
 	[Theory(DisplayName = "When calling InvokeVoidAsync, then the invocation should be visible from the Invocations list"), AutoData]
 	public void Test302(string identifier, string[] args, CancellationToken cancellationToken)

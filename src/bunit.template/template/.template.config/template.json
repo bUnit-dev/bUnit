@@ -95,16 +95,6 @@
 			"replaces": "targetSdk",
 			"choices": [
 				{
-					"choice": "net8.0",
-					"description": ".net 8.0",
-					"displayName": ".net 8.0"
-				},
-				{
-					"choice": "net9.0",
-					"description": ".net 9.0",
-					"displayName": ".net 9.0"
-				},
-				{
 					"choice": "net10.0",
 					"description": ".net 10.0",
 					"displayName": ".net 10.0"

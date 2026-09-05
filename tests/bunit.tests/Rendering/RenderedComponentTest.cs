@@ -304,7 +304,7 @@ public class RenderedComponentTest : BunitContext
 		_ = cut.Nodes;
 		cut.Render(ps => ps.AddChildContent("<p>1</p>"));
 		// Holding the parser's lock pauses the reader after it captured the old markup but before it caches the parsed nodes.
-		var parserLock = typeof(BunitHtmlParser)
+		var parserLock = (Lock)typeof(BunitHtmlParser)
 			.GetField("parserLock", BindingFlags.NonPublic | BindingFlags.Instance)!
 			.GetValue(Services.GetRequiredService<BunitHtmlParser>())!;
 		var reader = new Thread(() => _ = cut.Nodes);

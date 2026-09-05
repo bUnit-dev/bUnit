@@ -4,9 +4,6 @@ namespace Bunit;
 
 [SuppressMessage("Minor Code Smell", "S1939:Inheritance list should not be redundant", Justification = "By design. To make it obvious that both is implemented.")]
 internal sealed class BunitJSObjectReference : IJSObjectReference, IJSInProcessObjectReference
-#if !NET9_0_OR_GREATER
-	, IJSUnmarshalledObjectReference
-#endif
 {
 	private BunitJSInterop JSInterop { get; }
 
@@ -23,7 +20,6 @@ internal sealed class BunitJSObjectReference : IJSObjectReference, IJSInProcessO
 	public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
 		=> JSInterop.HandleInvokeAsync<TValue>(identifier, cancellationToken, args);
 
-#if NET10_0_OR_GREATER
 	/// <inheritdoc/>
 	public ValueTask<IJSObjectReference> InvokeConstructorAsync(string identifier, object?[]? args)
 		=> JSInterop.HandleInvokeConstructorAsync(identifier, args);
@@ -49,7 +45,6 @@ internal sealed class BunitJSObjectReference : IJSObjectReference, IJSInProcessO
 
 	/// <inheritdoc/>
 	public void SetValue<TValue>(string identifier, TValue value) => throw new NotImplementedException();
-#endif
 
 	/// <inheritdoc/>
 	public TValue Invoke<TValue>(string identifier, params object?[]? args)
