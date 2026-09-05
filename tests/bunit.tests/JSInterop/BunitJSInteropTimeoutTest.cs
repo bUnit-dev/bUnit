@@ -2,12 +2,6 @@ using System.Diagnostics;
 
 namespace Bunit.JSInterop;
 
-[CollectionDefinition(nameof(DefaultWaitTimeoutTestGroup), DisableParallelization = true)]
-public sealed class DefaultWaitTimeoutTestGroup
-{
-}
-
-[Collection(nameof(DefaultWaitTimeoutTestGroup))]
 public class BunitJSInteropTimeoutTest
 {
 	[Fact(DisplayName = "JSRuntime invocation times out when handler is not configured")]
@@ -15,34 +9,28 @@ public class BunitJSInteropTimeoutTest
 	{
 		const string identifier = "testFunction";
 
-		await WithDefaultWaitTimeout(TimeSpan.FromMilliseconds(100), async () =>
-		{
-			var sut = new BunitJSInterop { Mode = JSRuntimeMode.Strict };
-			sut.Setup<int>(identifier);
+		var sut = new BunitJSInterop { Mode = JSRuntimeMode.Strict, DefaultWaitTimeout = TimeSpan.FromMilliseconds(100) };
+		sut.Setup<int>(identifier);
 
-			var invocationTask = sut.JSRuntime.InvokeAsync<int>(identifier);
+		var invocationTask = sut.JSRuntime.InvokeAsync<int>(identifier);
 
-			var exception = await Should.ThrowAsync<JSRuntimeInvocationNotSetException>(invocationTask.AsTask());
-			exception.Invocation.Identifier.ShouldBe(identifier);
-		});
+		var exception = await Should.ThrowAsync<JSRuntimeInvocationNotSetException>(invocationTask.AsTask());
+		exception.Invocation.Identifier.ShouldBe(identifier);
 	}
 
 	[Fact(DisplayName = "Each pending invocation times out with its own invocation")]
 	public async Task Test310()
 	{
-		await WithDefaultWaitTimeout(TimeSpan.FromMilliseconds(100), async () =>
-		{
-			var sut = new BunitJSInterop { Mode = JSRuntimeMode.Strict };
-			sut.Setup<int>(_ => true);
+		var sut = new BunitJSInterop { Mode = JSRuntimeMode.Strict, DefaultWaitTimeout = TimeSpan.FromMilliseconds(100) };
+		sut.Setup<int>(_ => true);
 
-			var first = sut.JSRuntime.InvokeAsync<int>("first").AsTask();
-			var second = sut.JSRuntime.InvokeAsync<int>("second").AsTask();
+		var first = sut.JSRuntime.InvokeAsync<int>("first").AsTask();
+		var second = sut.JSRuntime.InvokeAsync<int>("second").AsTask();
 
-			(await Should.ThrowAsync<JSRuntimeInvocationNotSetException>(first))
-				.Invocation.Identifier.ShouldBe("first");
-			(await Should.ThrowAsync<JSRuntimeInvocationNotSetException>(second))
-				.Invocation.Identifier.ShouldBe("second");
-		});
+		(await Should.ThrowAsync<JSRuntimeInvocationNotSetException>(first))
+			.Invocation.Identifier.ShouldBe("first");
+		(await Should.ThrowAsync<JSRuntimeInvocationNotSetException>(second))
+			.Invocation.Identifier.ShouldBe("second");
 	}
 
 	[Fact(DisplayName = "A timed out invocation does not affect later invocations")]
@@ -50,18 +38,15 @@ public class BunitJSInteropTimeoutTest
 	{
 		const string identifier = "testFunction";
 
-		await WithDefaultWaitTimeout(TimeSpan.FromMilliseconds(100), async () =>
-		{
-			var sut = new BunitJSInterop { Mode = JSRuntimeMode.Strict };
-			var handler = sut.Setup<int>(identifier);
+		var sut = new BunitJSInterop { Mode = JSRuntimeMode.Strict, DefaultWaitTimeout = TimeSpan.FromMilliseconds(100) };
+		var handler = sut.Setup<int>(identifier);
 
-			await Should.ThrowAsync<JSRuntimeInvocationNotSetException>(
-				sut.JSRuntime.InvokeAsync<int>(identifier).AsTask());
+		await Should.ThrowAsync<JSRuntimeInvocationNotSetException>(
+			sut.JSRuntime.InvokeAsync<int>(identifier).AsTask());
 
-			handler.SetResult(42);
+		handler.SetResult(42);
 
-			(await sut.JSRuntime.InvokeAsync<int>(identifier)).ShouldBe(42);
-		});
+		(await sut.JSRuntime.InvokeAsync<int>(identifier)).ShouldBe(42);
 	}
 
 	[Fact(DisplayName = "Setting a result while the timeout elapses does not crash the test host")]
@@ -70,21 +55,18 @@ public class BunitJSInteropTimeoutTest
 		const string identifier = "testFunction";
 		var timeout = TimeSpan.FromMilliseconds(2);
 
-		await WithDefaultWaitTimeout(timeout, async () =>
-		{
-			var workers = Enumerable
-				.Range(0, Math.Max(4, Environment.ProcessorCount))
-				.Select(_ => Task.Run(() => RaceResultAgainstTimeout(identifier, timeout, iterations: 250)));
+		var workers = Enumerable
+			.Range(0, Math.Max(4, Environment.ProcessorCount))
+			.Select(_ => Task.Run(() => RaceResultAgainstTimeout(identifier, timeout, iterations: 250)));
 
-			await Task.WhenAll(workers);
-		});
+		await Task.WhenAll(workers);
 	}
 
 	private static async Task RaceResultAgainstTimeout(string identifier, TimeSpan timeout, int iterations)
 	{
 		for (var i = 0; i < iterations; i++)
 		{
-			var sut = new BunitJSInterop { Mode = JSRuntimeMode.Strict };
+			var sut = new BunitJSInterop { Mode = JSRuntimeMode.Strict, DefaultWaitTimeout = timeout };
 			var handler = sut.Setup<int>(identifier);
 
 			var invocationTask = sut.JSRuntime.InvokeAsync<int>(identifier).AsTask();
@@ -103,20 +85,6 @@ public class BunitJSInteropTimeoutTest
 
 			if (invocationTask.Exception is { } exception)
 				exception.InnerException.ShouldBeOfType<JSRuntimeInvocationNotSetException>();
-		}
-	}
-
-	private static async Task WithDefaultWaitTimeout(TimeSpan timeout, Func<Task> test)
-	{
-		var originalTimeout = BunitContext.DefaultWaitTimeout;
-		BunitContext.DefaultWaitTimeout = timeout;
-		try
-		{
-			await test();
-		}
-		finally
-		{
-			BunitContext.DefaultWaitTimeout = originalTimeout;
 		}
 	}
 }
