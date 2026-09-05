@@ -10,11 +10,11 @@ public sealed class MissingRendererInfoException : Exception
 	/// </summary>
 	public MissingRendererInfoException()
 		: base("""
-		       A component under test is trying to access the 'RendererInfo' property, which has not been specified. Set it via TestContext.Renderer.SetRendererInfo.
+		       A component under test is trying to access the 'RendererInfo' property, which has not been specified. Set it via BunitContext.Renderer.SetRendererInfo.
 
 		       For example:
 
-		       public class SomeTestClass : TestContext
+		       public class SomeTestClass : BunitContext
 		       {
 		         [Fact]
 		         public void SomeTestCase()
