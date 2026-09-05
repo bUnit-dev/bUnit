@@ -75,7 +75,7 @@ public void StaticRendering()
 # [Razor test code](#tab/razor)
 
 ```razor
-@inherits TestContext
+@inherits BunitContext
 @code {
   [Fact]
   public void InteractiveServer()
@@ -108,7 +108,7 @@ public void StaticRendering()
 ***
 
 ## Setting the `RendererInfo` during testing
-To control the `ComponentBase.RendererInfo` property during testing, use the <xref:Bunit.BunitContext.SetRendererInfo(Microsoft.AspNetCore.Components.RendererInfo)> method on the `TestContext` class. The `SetRendererInfo` method takes an nullable `RendererInfo` object as a parameter. Passing `null` will set the `ComponentBase.RendererInfo` to `null`. 
+To control the `ComponentBase.RendererInfo` property during testing, use the <xref:Bunit.BunitContext.SetRendererInfo(Microsoft.AspNetCore.Components.RendererInfo)> method on the `BunitContext` class. The `SetRendererInfo` method takes an nullable `RendererInfo` object as a parameter. Passing `null` will set the `ComponentBase.RendererInfo` to `null`. 
 
 A component (`AssistentComponent.razor`) might check if interactivity is given to enable a button:
 
@@ -154,4 +154,4 @@ public void SimulatingInteractiveServerRendering()
 ```
 
 > [!NOTE]
-> If a component under test uses the `ComponentBase.RendererInfo` property and the `SetRendererInfo` on `TestContext` hasn't been passed in a `RendererInfo` object, the renderer will throw an exception.
+> If a component under test uses the `ComponentBase.RendererInfo` property and the `SetRendererInfo` on `BunitContext` hasn't been passed in a `RendererInfo` object, the renderer will throw an exception.

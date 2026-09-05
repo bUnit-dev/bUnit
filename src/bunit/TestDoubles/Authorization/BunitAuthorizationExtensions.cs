@@ -1,6 +1,5 @@
 using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace Bunit;
 
@@ -11,16 +10,9 @@ public partial class BunitContext
 	/// an authenticated user, as well as adding the <see cref="CascadingAuthenticationState"/> component to the
 	/// test contexts render tree.
 	/// </summary>
-	[RemovedInFutureVersion("SignOutSessionStateManager should be removed from the container.")]
 	public BunitAuthorizationContext AddAuthorization()
 	{
 		Services.AddCascadingAuthenticationState();
-#if !NET11_0_OR_GREATER
-		Services.AddSingleton<BunitSignOutSessionStateManager>();
-#pragma warning disable CS0618
-		Services.AddSingleton<SignOutSessionStateManager>(s => s.GetRequiredService<BunitSignOutSessionStateManager>());
-#pragma warning restore CS0618
-#endif
 		var authCtx = new BunitAuthorizationContext(Services);
 		return authCtx;
 	}
