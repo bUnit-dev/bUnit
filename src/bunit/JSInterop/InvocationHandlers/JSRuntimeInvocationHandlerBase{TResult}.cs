@@ -16,6 +16,7 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult> : IDisposable
 	private long nextInvocationId;
 	private Task<TResult>? outcome;
 	private bool disposed;
+	private BunitJSInterop? owner;
 
 	/// <summary>
 	/// Gets a value indicating whether this handler is set up to handle calls to <c>InvokeVoidAsync(string, object[])</c>.
@@ -79,7 +80,7 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult> : IDisposable
 		if (Volatile.Read(ref outcome) is { } configured)
 			return configured;
 
-		var timeout = BunitContext.DefaultWaitTimeout;
+		var timeout = DefaultWaitTimeout;
 		if (timeout <= TimeSpan.Zero)
 		{
 			throw new JSRuntimeInvocationNotSetException(invocation);
@@ -107,6 +108,11 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult> : IDisposable
 	/// <param name="invocation">Invocation to check.</param>
 	/// <returns>True if the handler can handle the invocation, false otherwise.</returns>
 	internal bool CanHandle(JSRuntimeInvocation invocation) => invocationMatcher(invocation);
+
+	/// <summary>
+	/// Attaches this handler to its owning <see cref="BunitJSInterop"/>.
+	/// </summary>
+	internal void AttachTo(BunitJSInterop jsInterop) => owner = jsInterop;
 
 	/// <inheritdoc/>
 	public void Dispose()
@@ -143,6 +149,8 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult> : IDisposable
 			}
 		}
 	}
+
+	private TimeSpan DefaultWaitTimeout => owner?.DefaultWaitTimeout ?? TimeSpan.FromSeconds(1);
 
 	private void OnTimeoutElapsed(object? state)
 	{

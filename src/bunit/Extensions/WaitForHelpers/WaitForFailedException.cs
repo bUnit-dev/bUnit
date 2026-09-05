@@ -38,7 +38,7 @@ public sealed class WaitForFailedException : Exception, ITestTimeoutException
 			and see if they match what is expected. If they do not,
 			consider increasing the timeout, either at the individual
 			method call level, e.g. WaitForElement("div", TimeSpan.FromSeconds(15)),
-			or via the static BunitContext.DefaultWaitTimeout property.
+			or via the BunitContext.DefaultWaitTimeout property.
 
 			Check count: {checkCount}.
 			Component render count: {componentRenderCount}.
