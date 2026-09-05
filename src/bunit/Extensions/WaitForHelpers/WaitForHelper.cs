@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Bunit.Rendering;
 using Microsoft.Extensions.Logging;
 
@@ -15,6 +16,9 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 	private readonly Func<ValueTask<(bool CheckPassed, T Content)>> completeChecker;
 	private readonly IRenderedComponent<TComponent> renderedComponent;
 	private readonly ILogger<WaitForHelper<T, TComponent>> logger;
+
+	[SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by the test, not by this helper.")]
+	private readonly BunitContext bunitContext;
 	private readonly BunitRenderer renderer;
 	private readonly Timer? timer;
 	private bool isDisposed;
@@ -76,10 +80,8 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 		this.completeChecker = completeChecker ?? throw new ArgumentNullException(nameof(completeChecker));
 
 		logger = renderedComponent.Services.CreateLogger<WaitForHelper<T, TComponent>>();
-		renderer = renderedComponent
-			.Services
-			.GetRequiredService<BunitContext>()
-			.Renderer;
+		bunitContext = renderedComponent.Services.GetRequiredService<BunitContext>();
+		renderer = bunitContext.Renderer;
 		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
 
 		// Create the wait task and run the initial check
@@ -280,11 +282,11 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 			renderedComponent.OnAfterRender += OnAfterRender;
 	}
 
-	private static TimeSpan GetRuntimeTimeout(TimeSpan? timeout)
+	private TimeSpan GetRuntimeTimeout(TimeSpan? timeout)
 	{
 		return Debugger.IsAttached
 			? Timeout.InfiniteTimeSpan
-			: timeout ?? BunitContext.DefaultWaitTimeout;
+			: timeout ?? bunitContext.DefaultWaitTimeout;
 	}
 
 	private static Func<ValueTask<(bool CheckPassed, T Content)>> WrapSynchronousChecker(Func<(bool CheckPassed, T Content)> completeChecker)

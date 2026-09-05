@@ -14,11 +14,10 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 	private BunitRenderer? bunitRenderer;
 
 	/// <summary>
-	/// Gets or sets the default wait timeout used by "WaitFor" operations, i.e. <see cref="RenderedComponentWaitForHelperExtensions.WaitForAssertion{TComponent}(IRenderedComponent{TComponent}, Action, TimeSpan?)"/>,
-	/// and JSInterop invocation handlers that have not been configured with results.
+	/// Gets or sets the default wait timeout used by "WaitFor" operations and JSInterop invocation
+	/// handlers that have not been configured with results. Default is 1 second.
 	/// </summary>
-	/// <remarks>The default is 1 second.</remarks>
-	public static TimeSpan DefaultWaitTimeout { get; set; } = TimeSpan.FromSeconds(1);
+	public TimeSpan DefaultWaitTimeout { get; set; } = TimeSpan.FromSeconds(1);
 
 	/// <summary>
 	/// Gets the renderer used by the test context.
@@ -63,6 +62,7 @@ public partial class BunitContext : IDisposable, IAsyncDisposable
 		Services = new BunitServiceProvider();
 		Services.AddSingleton<ComponentFactoryCollection>(_ => ComponentFactories);
 		Services.AddDefaultBunitContextServices(this, JSInterop);
+		JSInterop.AttachToContext(this);
 	}
 
 	/// <inheritdoc/>

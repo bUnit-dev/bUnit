@@ -10,6 +10,8 @@ public class BunitJSInterop
 {
 	private readonly Dictionary<Type, List<object>> handlers = new();
 	private JSRuntimeMode mode;
+	private BunitContext? owningContext;
+	private TimeSpan standaloneDefaultWaitTimeout = TimeSpan.FromSeconds(1);
 
 	/// <summary>
 	/// Gets a dictionary of all <see cref="List{JSRuntimeInvocation}"/> this mock has observed.
@@ -26,6 +28,27 @@ public class BunitJSInterop
 	/// Gets the mocked <see cref="IJSRuntime"/> instance.
 	/// </summary>
 	public IJSRuntime JSRuntime { get; }
+
+	/// <summary>
+	/// Gets or sets the timeout used by unconfigured invocation handlers. Defers to the owning
+	/// <see cref="BunitContext.DefaultWaitTimeout"/> when attached.
+	/// </summary>
+	internal TimeSpan DefaultWaitTimeout
+	{
+		get => owningContext?.DefaultWaitTimeout ?? standaloneDefaultWaitTimeout;
+		set
+		{
+			if (owningContext is not null)
+				owningContext.DefaultWaitTimeout = value;
+			else
+				standaloneDefaultWaitTimeout = value;
+		}
+	}
+
+	/// <summary>
+	/// Attaches this instance to its owning <see cref="BunitContext"/>.
+	/// </summary>
+	internal void AttachToContext(BunitContext context) => owningContext = context;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitJSInterop"/> class.
@@ -51,6 +74,7 @@ public class BunitJSInterop
 			handlers.Add(resultType, new List<object>());
 
 		handlers[resultType].Add(handler);
+		handler.AttachTo(this);
 	}
 
 	internal ValueTask<TValue> HandleInvocation<TValue>(JSRuntimeInvocation invocation)
