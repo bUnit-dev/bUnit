@@ -20,6 +20,7 @@
 # [Verifying output](xref:verification)
 ## [Verify markup](xref:verify-markup)
 ## [Verify component state](xref:verify-component-state)
+## [Find the component that rendered an element](xref:find-owning-component)
 ## [Customizing semantic comparison](xref:semantic-html-comparison)
 ## [Assertion of asynchronous changes](xref:async-assertion)
 
