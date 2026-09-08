@@ -8,7 +8,7 @@
 		<GlobalPackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.29.0.143774" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
-		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.158" />
+		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.164" />
 	</ItemGroup>
 
 	<ItemGroup Label="Shared">
@@ -18,12 +18,12 @@
 		<PackageVersion Include="Serilog" Version="4.4.0"/>
 		<PackageVersion Include="Serilog.Expressions" Version="5.0.0"/>
 		<PackageVersion Include="AngleSharp.Diffing" Version="1.1.1"/>
-		<PackageVersion Include="AngleSharp" Version="1.7.0"/>
-		<PackageVersion Include="AngleSharp.Css" Version="1.0.1"/>
+		<PackageVersion Include="AngleSharp" Version="1.8.0"/>
+		<PackageVersion Include="AngleSharp.Css" Version="1.1.0"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Package Versioning">
-		<PackageVersion Include="Nerdbank.GitVersioning" Version="3.10.91" />
+		<PackageVersion Include="Nerdbank.GitVersioning" Version="3.10.94" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
@@ -91,24 +91,24 @@
 		<PackageVersion Include="AutoFixture.Xunit3" Version="4.19.0"/>
 		<PackageVersion Include="MSTest.TestAdapter" Version="3.6.0" />
 		<PackageVersion Include="MSTest.TestFramework" Version="3.6.0" />
-		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1"/>
+		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0"/>
 		<PackageVersion Include="Moq" Version="4.20.72" />
-		<PackageVersion Include="NSubstitute" Version="6.0.0" />
+		<PackageVersion Include="NSubstitute" Version="6.2.0" />
 		<PackageVersion Include="NUnit3TestAdapter" Version="5.0.0" />
 		<PackageVersion Include="RichardSzalay.MockHttp" Version="7.0.0" />
 		<PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
 		<PackageVersion Include="Shouldly" Version="4.3.0"/>
 		<PackageVersion Include="Verify.SourceGenerators" Version="2.5.0"/>
-		<PackageVersion Include="Verify.XunitV3" Version="31.28.0"/>
+		<PackageVersion Include="Verify.XunitV3" Version="32.0.0"/>
 		<PackageVersion Include="Xunit.Combinatorial" Version="2.0.24"/>
 		<PackageVersion Include="coverlet.collector" Version="10.0.1" />
 		<PackageVersion Include="coverlet.msbuild" Version="10.0.1" />
 		<PackageVersion Include="nunit" Version="4.4.0" />
 		<PackageVersion Include="xunit" Version="2.9.3"/>
-		<PackageVersion Include="xunit.v3" Version="3.2.2"/>
-		<PackageVersion Include="xunit.v3.extensibility.core" Version="3.2.2" />
-		<PackageVersion Include="xunit.v3.assert" Version="3.2.2"/>
-		<PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5"/>
+		<PackageVersion Include="xunit.v3" Version="4.0.0"/>
+		<PackageVersion Include="xunit.v3.extensibility.core" Version="4.0.0" />
+		<PackageVersion Include="xunit.v3.assert" Version="4.0.0"/>
+		<PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Source Code Generators">

@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- `BunitHtmlParser.Dispose()` no longer throws `InvalidOperationException: Collection was modified` when a parse is in flight on another thread during test teardown. Reported by [@thimobuchheister](https://github.com/thimobuchheister) in #1892. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [2.9.0] - 2026-08-03
 
 ### Changed
