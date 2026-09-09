@@ -35,10 +35,15 @@ internal sealed class VirtualizeJSRuntimeInvocationHandler : JSRuntimeInvocation
 	/// <inheritdoc/>
 	protected internal override Task<Microsoft.JSInterop.Infrastructure.IJSVoidResult> HandleAsync(JSRuntimeInvocation invocation)
 	{
-		if (!invocation.Identifier.Equals(JsFunctionsPrefix + "dispose", StringComparison.Ordinal))
+		if (!invocation.Identifier.Equals(JsFunctionsPrefix + "dispose", StringComparison.Ordinal) &&
+			!invocation.Identifier.Equals(JsFunctionsPrefix + "refreshObservers", StringComparison.Ordinal))
 		{
 			Debug.Assert(invocation.Identifier.Equals(JsFunctionsPrefix + "init", StringComparison.Ordinal));
+#if NET11_0_OR_GREATER
+			Debug.Assert(invocation.Arguments.Count == 4);
+#else
 			Debug.Assert(invocation.Arguments.Count == 3);
+#endif
 			Debug.Assert(invocation.Arguments[0] is not null);
 
 			InvokeOnSpacerBeforeVisible(invocation.Arguments[0]!);
@@ -59,7 +64,7 @@ internal sealed class VirtualizeJSRuntimeInvocationHandler : JSRuntimeInvocation
 			0f, /* spacerSeparation */
 			1_000_000_000f, /* containerSize - very large number to ensure all items are loaded at once */
 #if NET11_0_OR_GREATER
-			3, /* RenderedContentMeasurement */
+			0, /* UserScroll <see cref="SpacerVisibilityReason" /> */
 #endif
 
 		};

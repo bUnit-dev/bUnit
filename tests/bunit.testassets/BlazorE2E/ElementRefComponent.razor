@@ -31,6 +31,12 @@
 
     async Task MakeInteropCall()
     {
-        await JSRuntime.InvokeVoidAsync("setElementValue", _myInput, $"Clicks: {++_count}");
+        try {
+            await JSRuntime.InvokeVoidAsync("setElementValue", _myInput, $"Clicks: {++_count}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error invoking JS: {ex.Message}");
+        }
     }
 }

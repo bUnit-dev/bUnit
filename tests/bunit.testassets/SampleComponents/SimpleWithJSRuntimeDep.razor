@@ -1,4 +1,4 @@
-﻿@inject IJSRuntime jsRuntime
+@inject IJSRuntime jsRuntime
 <p>@name</p>
 @code{
     string name = string.Empty;
@@ -7,8 +7,14 @@
     {
         if (firstRender)
         {
-            name = await jsRuntime.InvokeAsync<string>("getdata");
-            StateHasChanged();
+            try {
+                name = await jsRuntime.InvokeAsync<string>("getdata");
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error invoking JS: {ex.Message}");
+            }
         }
     }
 }
