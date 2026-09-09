@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Components.Web.Virtualization;
 using System.Diagnostics;
 using System.Reflection;
+using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 namespace Bunit.JSInterop.InvocationHandlers.Implementation;
 
@@ -58,7 +58,12 @@ internal sealed class VirtualizeJSRuntimeInvocationHandler : JSRuntimeInvocation
 			0f, /* spacerSize */
 			0f, /* spacerSeparation */
 			1_000_000_000f, /* containerSize - very large number to ensure all items are loaded at once */
+#if NET11_0_OR_GREATER
+			3, /* RenderedContentMeasurement */
+#endif
+
 		};
+
 		onSpacerBeforeVisibleMethodInfo.Invoke(virtualizeJsInterop, parameters);
 	}
 }
