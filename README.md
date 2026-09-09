@@ -33,7 +33,8 @@ To get started, head to the [getting started documentation](https://bunit.dev/do
 | bUnit version | .NET version                    |
 | ------------- | ------------------------------- |
 | 1.x           | &ge; .netcore3.1 && &le; .net 9 |
-| 2.x           | &ge; .net8                      |
+| 2.x           | &ge; .net8 && &le; .net 11      |
+| 3.x           | &ge; .net10 |
 
 For a migration guide, see [Upgrading bUnit](https://bunit.dev/docs/migrations/index.html).
 
