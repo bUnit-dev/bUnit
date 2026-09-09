@@ -45,12 +45,30 @@
 
     }
 
+    /// <summary />
     public void Dispose()
     {
-        if (!disposed)
-        {
-            AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
-            disposed = true;
-        }
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
+
+    /// <summary />
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposed)
+        {
+            return;
+        }
+
+        if (disposing)
+        {
+            // dispose managed resources
+            AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
+        }
+
+        // no unmanaged resources to release
+
+        disposed = true;
+    }
+
 }
