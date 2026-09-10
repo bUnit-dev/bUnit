@@ -31,7 +31,7 @@
 		<PackageReference Include="Shouldly"/>
 		<PackageReference Include="coverlet.msbuild" />
 		<PackageReference Include="Xunit.Combinatorial" />
-		<PackageReference Include="xunit.v3.mtp-v2" />
+		<PackageReference Include="xunit.v3" />
 		<PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers" />
 	</ItemGroup>
 

@@ -1,6 +1,5 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
-@implements IDisposable
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <AuthorizeView>
@@ -17,18 +16,11 @@
 </AuthorizeView>
 
     @code {
-    bool disposed;
     string userName = "";
     string? userEmail = "";
     string? userId = "";
     bool hasUserEmail => userEmail != null;
     bool hasUserId => userId != null;
-
-    public SimpleAuthViewWithClaims()
-    {
-        AuthenticationStateProvider.AuthenticationStateChanged += OnAuthenticationStateChanged;
-    }
-
 
     protected override async Task OnParametersSetAsync()
     {
@@ -37,38 +29,4 @@
         userEmail = state?.User?.FindFirst(ClaimTypes.Email)?.Value;
         userId = state?.User?.FindFirst(ClaimTypes.Sid)?.Value;
     }
-
-    private async void OnAuthenticationStateChanged(Task<AuthenticationState> task)
-    {
-        // Exists just to prevent BL0013 'SimpleAuthViewWithClaims' calls GetAuthenticationStateAsync on AuthenticationStateProvider
-        // without subscribing to the AuthenticationStateChanged event. This may result in using stale authentication state.
-
-    }
-
-    /// <summary />
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    /// <summary />
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposed)
-        {
-            return;
-        }
-
-        if (disposing)
-        {
-            // dispose managed resources
-            AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
-        }
-
-        // no unmanaged resources to release
-
-        disposed = true;
-    }
-
 }

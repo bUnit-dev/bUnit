@@ -7,10 +7,9 @@ namespace Bunit.TestDoubles;
 /// Represents a implementation of AuthenticationStateProvider for testing purposes that allows
 /// user to test components that use authentication and authorization.
 /// </summary>
-public class BunitAuthenticationStateProvider : AuthenticationStateProvider, IDisposable
+public class BunitAuthenticationStateProvider : AuthenticationStateProvider
 {
 	private TaskCompletionSource<AuthenticationState> authState = new();
-	private bool disposed;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitAuthenticationStateProvider"/> class
@@ -147,31 +146,5 @@ public class BunitAuthenticationStateProvider : AuthenticationStateProvider, IDi
 		// Exists just to prevent BL0013 'BunitAuthenticationStateProvider' calls GetAuthenticationStateAsync on AuthenticationStateProvider
 		// without subscribing to the AuthenticationStateChanged event. This may result in using stale authentication state.
 
-	}
-
-	/// <summary />
-	public void Dispose()
-	{
-		Dispose(true);
-		GC.SuppressFinalize(this);
-	}
-
-	/// <summary />
-	protected virtual void Dispose(bool disposing)
-	{
-		if (disposed)
-		{
-			return;
-		}
-
-		if (disposing)
-		{
-			// dispose managed resources
-			AuthenticationStateChanged -= OnAuthenticationStateChanged;
-		}
-
-		// no unmanaged resources to release
-
-		disposed = true;
 	}
 }

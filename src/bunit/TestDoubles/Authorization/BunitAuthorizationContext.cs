@@ -7,12 +7,11 @@ namespace Bunit.TestDoubles;
 /// <summary>
 /// Root authorization service that manages different authentication/authorization state in the system.
 /// </summary>
-public class BunitAuthorizationContext : IDisposable
+public class BunitAuthorizationContext
 {
 	private readonly BunitAuthorizationService authService = new();
 	private readonly BunitAuthorizationPolicyProvider policyProvider = new();
 	private readonly BunitAuthenticationStateProvider authProvider = new();
-	private bool disposed;
 
 	/// <summary>
 	/// Gets a value indicating whether user is authenticated.
@@ -159,31 +158,5 @@ public class BunitAuthorizationContext : IDisposable
 	{
 		this.authProvider.TriggerAuthenticationStateChanged(this.UserName, this.Roles, this.Claims, authenticationType);
 		return this;
-	}
-
-	/// <summary />
-	public void Dispose()
-	{
-		Dispose(true);
-		GC.SuppressFinalize(this);
-	}
-
-	/// <summary />
-	protected virtual void Dispose(bool disposing)
-	{
-		if (disposed)
-		{
-			return;
-		}
-
-		if (disposing)
-		{
-			// dispose managed resources
-			authProvider.Dispose();
-		}
-
-		// no unmanaged resources to release
-
-		disposed = true;
 	}
 }

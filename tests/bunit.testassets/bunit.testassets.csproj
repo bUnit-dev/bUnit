@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFrameworks>net8.0;net9.0;net10.0;net11.0</TargetFrameworks>
@@ -11,6 +11,7 @@
 		<IsTestProject>false</IsTestProject>
 		<EmitCompilerGeneratedFiles>false</EmitCompilerGeneratedFiles>
 		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+		<NoWarn>BL0013;BL0016</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
