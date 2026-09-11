@@ -1,14 +1,20 @@
+using System.Collections.Concurrent;
+
 namespace Bunit;
 
+// Invocation tracking mirrors ASP.NET Core's JSRuntime: no per-invocation state lives in instance
+// fields. Each call gets its own TaskCompletionSource in a ConcurrentDictionary keyed by an
+// Interlocked id, and the timeout closes over that entry alone, so an elapsing timeout can never
+// race a concurrently set result. See https://github.com/dotnet/aspnetcore/blob/main/src/JSInterop/Microsoft.JSInterop/src/JSRuntime.cs
 /// <summary>
 /// Represents an invocation handler for <see cref="JSRuntimeInvocation"/> instances.
 /// </summary>
 public abstract class JSRuntimeInvocationHandlerBase<TResult> : IDisposable
 {
 	private readonly InvocationMatcher invocationMatcher;
-	private TaskCompletionSource<TResult> completionSource;
-	private Timer? timeoutTimer;
-	private JSRuntimeInvocation? currentInvocation;
+	private readonly ConcurrentDictionary<long, PendingInvocation> pendingInvocations = new();
+	private long nextInvocationId;
+	private Task<TResult>? outcome;
 	private bool disposed;
 
 	/// <summary>
@@ -34,7 +40,6 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult> : IDisposable
 	protected JSRuntimeInvocationHandlerBase(InvocationMatcher matcher, bool isCatchAllHandler)
 	{
 		invocationMatcher = matcher ?? throw new ArgumentNullException(nameof(matcher));
-		completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 		IsCatchAllHandler = isCatchAllHandler;
 	}
 
@@ -42,13 +47,7 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult> : IDisposable
 	/// Marks the <see cref="Task{TResult}"/> that invocations will receive as canceled.
 	/// </summary>
 	protected void SetCanceledBase()
-	{
-		ClearTimeoutTimer();
-		if (completionSource.Task.IsCompleted)
-			completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
-
-		completionSource.SetCanceled();
-	}
+		=> CompleteAll(Task.FromCanceled<TResult>(new CancellationToken(canceled: true)));
 
 	/// <summary>
 	/// Sets the <typeparamref name="TException"/> exception that invocations will receive.
@@ -56,26 +55,14 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult> : IDisposable
 	/// <param name="exception">The type of exception to pass to the callers.</param>
 	protected void SetExceptionBase<TException>(TException exception)
 		where TException : Exception
-	{
-		ClearTimeoutTimer();
-		if (completionSource.Task.IsCompleted)
-			completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
-
-		completionSource.SetException(exception);
-	}
+		=> CompleteAll(Task.FromException<TResult>(exception));
 
 	/// <summary>
 	/// Sets the <typeparamref name="TResult"/> result that invocations will receive.
 	/// </summary>
 	/// <param name="result">The type of result to pass to the callers.</param>
 	protected void SetResultBase(TResult result)
-	{
-		ClearTimeoutTimer();
-		if (completionSource.Task.IsCompleted)
-			completionSource = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
-
-		completionSource.SetResult(result);
-	}
+		=> CompleteAll(Task.FromResult(result));
 
 	/// <summary>
 	/// Call this to have the this handler handle the <paramref name="invocation"/>.
@@ -89,18 +76,29 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult> : IDisposable
 	{
 		Invocations.RegisterInvocation(invocation);
 
-		var task = completionSource.Task;
-		if (task is { IsCanceled: false, IsFaulted: false, IsCompletedSuccessfully: false })
-		{
-			if (BunitContext.DefaultWaitTimeout <= TimeSpan.Zero)
-			{
-				throw new JSRuntimeInvocationNotSetException(invocation);
-			}
+		if (Volatile.Read(ref outcome) is { } configured)
+			return configured;
 
-			StartTimeoutTimer(invocation);
+		var timeout = BunitContext.DefaultWaitTimeout;
+		if (timeout <= TimeSpan.Zero)
+		{
+			throw new JSRuntimeInvocationNotSetException(invocation);
 		}
 
-		return task;
+		var id = Interlocked.Increment(ref nextInvocationId);
+		var pending = new PendingInvocation(id, invocation);
+		pendingInvocations[id] = pending;
+
+		if (Volatile.Read(ref outcome) is { } raced && pendingInvocations.TryRemove(id, out _))
+		{
+			Transfer(raced, pending.CompletionSource);
+		}
+		else
+		{
+			pending.StartTimeout(OnTimeoutElapsed, timeout);
+		}
+
+		return pending.CompletionSource.Task;
 	}
 
 	/// <summary>
@@ -122,34 +120,71 @@ public abstract class JSRuntimeInvocationHandlerBase<TResult> : IDisposable
 	{
 		if (!disposed && disposing)
 		{
-			ClearTimeoutTimer();
+			foreach (var id in pendingInvocations.Keys)
+			{
+				if (pendingInvocations.TryRemove(id, out var pending))
+					pending.Dispose();
+			}
+
 			disposed = true;
 		}
 	}
 
-	private void StartTimeoutTimer(JSRuntimeInvocation invocation)
+	private void CompleteAll(Task<TResult> next)
 	{
-		ClearTimeoutTimer();
+		Volatile.Write(ref outcome, next);
 
-		currentInvocation = invocation;
-		timeoutTimer = new Timer(OnTimeoutElapsed, null, BunitContext.DefaultWaitTimeout, Timeout.InfiniteTimeSpan);
-	}
-
-	private void ClearTimeoutTimer()
-	{
-		timeoutTimer?.Dispose();
-		timeoutTimer = null;
-		currentInvocation = null;
+		foreach (var id in pendingInvocations.Keys)
+		{
+			if (pendingInvocations.TryRemove(id, out var pending))
+			{
+				pending.Dispose();
+				Transfer(next, pending.CompletionSource);
+			}
+		}
 	}
 
 	private void OnTimeoutElapsed(object? state)
 	{
-		if (!completionSource.Task.IsCompleted && currentInvocation.HasValue)
+		if (state is not PendingInvocation pending || !pendingInvocations.TryRemove(pending.Id, out _))
+			return;
+
+		pending.Dispose();
+		pending.CompletionSource.TrySetException(new JSRuntimeInvocationNotSetException(pending.Invocation));
+	}
+
+	private static void Transfer(Task<TResult> from, TaskCompletionSource<TResult> to)
+	{
+		if (from.IsCanceled)
+			to.TrySetCanceled();
+		else if (from.Exception is { } exception)
+			to.TrySetException(exception.InnerExceptions);
+		else
+			to.TrySetResult(from.Result);
+	}
+
+	private sealed class PendingInvocation : IDisposable
+	{
+		private Timer? timeoutTimer;
+
+		public long Id { get; }
+
+		public JSRuntimeInvocation Invocation { get; }
+
+		public TaskCompletionSource<TResult> CompletionSource { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+		public PendingInvocation(long id, JSRuntimeInvocation invocation)
 		{
-			var exception = new JSRuntimeInvocationNotSetException(currentInvocation.Value);
-			completionSource.TrySetException(exception);
+			Id = id;
+			Invocation = invocation;
 		}
 
-		ClearTimeoutTimer();
+		public void StartTimeout(TimerCallback callback, TimeSpan timeout)
+		{
+			timeoutTimer = new Timer(callback, this, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+			timeoutTimer.Change(timeout, Timeout.InfiniteTimeSpan);
+		}
+
+		public void Dispose() => timeoutTimer?.Dispose();
 	}
 }
