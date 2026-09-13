@@ -5,7 +5,6 @@ public class MultipleStateHasChangedInOnParametersSet : ComponentBase
 	[Parameter]
 	public int Value { get; set; }
 
-#pragma warning disable BL0012
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
@@ -13,6 +12,5 @@ public class MultipleStateHasChangedInOnParametersSet : ComponentBase
 		StateHasChanged();
 		StateHasChanged();
 	}
-#pragma warning restore BL0012
 }
 
