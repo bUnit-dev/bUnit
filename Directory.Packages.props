@@ -8,7 +8,7 @@
 		<GlobalPackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.29.0.143774" PrivateAssets="All" IncludeAssets="Runtime;Build;Native;contentFiles;Analyzers"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
-		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.164" />
+		<PackageVersion Include="Meziantou.Polyfill" Version="1.0.165" />
 	</ItemGroup>
 
 	<ItemGroup Label="Shared">
@@ -18,8 +18,8 @@
 		<PackageVersion Include="Serilog" Version="4.4.0"/>
 		<PackageVersion Include="Serilog.Expressions" Version="5.0.0"/>
 		<PackageVersion Include="AngleSharp.Diffing" Version="1.1.1"/>
-		<PackageVersion Include="AngleSharp" Version="1.8.0"/>
-		<PackageVersion Include="AngleSharp.Css" Version="1.1.0"/>
+		<PackageVersion Include="AngleSharp" Version="1.8.1"/>
+		<PackageVersion Include="AngleSharp.Css" Version="1.1.2"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Package Versioning">
@@ -72,18 +72,18 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net11.0'">
-		<PackageVersion Include="Microsoft.Extensions.Logging" Version="11.0.0-preview.6.26359.118"/>
-		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0-preview.6.26359.118"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="11.0.0-preview.6.26359.118"/>
+		<PackageVersion Include="Microsoft.Extensions.Logging" Version="11.0.0-rc.1.26425.128"/>
+		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0-rc.1.26425.128"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="11.0.0-rc.1.26425.128"/>
 
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="11.0.0-preview.6.26359.118"/>
-		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0-preview.6.26359.118"/>
-		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="11.0.0-preview.6.26359.118"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="11.0.0-preview.6.26359.118"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="11.0.0-preview.6.26359.118"/>
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="11.0.0-preview.6.26359.118"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="11.0.0-rc.1.26425.128"/>
+		<PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0-rc.1.26425.128"/>
+		<PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="11.0.0-rc.1.26425.128"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="11.0.0-rc.1.26425.128"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="11.0.0-rc.1.26425.128"/>
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="11.0.0-rc.1.26425.128"/>
 
-		<PackageVersion Include="System.Text.Json" Version="11.0.0-preview.6.26359.118"/>
+		<PackageVersion Include="System.Text.Json" Version="11.0.0-rc.1.26425.128"/>
 	</ItemGroup>
 
 	<ItemGroup Label="Test Dependencies">
@@ -91,7 +91,7 @@
 		<PackageVersion Include="AutoFixture.Xunit3" Version="4.19.0"/>
 		<PackageVersion Include="MSTest.TestAdapter" Version="3.6.0" />
 		<PackageVersion Include="MSTest.TestFramework" Version="3.6.0" />
-		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0"/>
+		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.0"/>
 		<PackageVersion Include="Moq" Version="4.20.72" />
 		<PackageVersion Include="NSubstitute" Version="6.2.0" />
 		<PackageVersion Include="NUnit3TestAdapter" Version="5.0.0" />

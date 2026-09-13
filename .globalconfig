@@ -1,0 +1,6 @@
+# Razor compiler diagnostics reported on .razor files are not matched by .editorconfig
+# path sections, so their severity can only be configured globally.
+is_global = true
+
+dotnet_diagnostic.BL0013.severity = none
+dotnet_diagnostic.BL0016.severity = none

@@ -467,6 +467,7 @@ dotnet_diagnostic.BL0005.severity = none
 dotnet_diagnostic.BL0006.severity = none
 dotnet_diagnostic.BL0007.severity = none
 dotnet_diagnostic.BL0010.severity = none
+dotnet_diagnostic.BL0012.severity = none
 
 ##########################################
 # Custom Test Code Analyzers Rules

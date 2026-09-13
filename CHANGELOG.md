@@ -6,6 +6,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- `InvokeOnSpacerBeforeVisible` now uses 4 parameters on .NET 11.0. Reported by [@vnbaaij](https://github.com/vnbaaij) in #1915. Fixed by [@vnbaaij](https://github.com/vnbaaij) in #1919.
+- A JSInterop timeout elapsing while a result was set could crash the test host with `InvalidOperationException: Nullable object must have a value`. Reported by [@calebcwells](https://github.com/calebcwells) in [#1920](https://github.com/bUnit-dev/bUnit/issues/1920). Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [2.10.3] - 2026-09-08
 
 ### Fixed
