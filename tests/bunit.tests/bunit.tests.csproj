@@ -7,12 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\bunit\bunit.csproj" />	
+		<ProjectReference Include="..\..\src\bunit\bunit.csproj" />
 		<ProjectReference Include="..\bunit.testassets\bunit.testassets.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="../xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
-	
+
 </Project>

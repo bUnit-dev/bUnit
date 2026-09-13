@@ -3,30 +3,30 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <AuthorizeView>
-	<div>Authorized!</div>
-	<div>Name: @userName</div>
-	@if (hasUserEmail)
-	{
-		<div>Email: @userEmail</div>
-	}
-	@if (hasUserId)
-	{
-		<div>Id: @userId</div>
-	}
+    <div>Authorized!</div>
+    <div>Name: @userName</div>
+    @if (hasUserEmail)
+    {
+        <div>Email: @userEmail</div>
+    }
+    @if (hasUserId)
+    {
+        <div>Id: @userId</div>
+    }
 </AuthorizeView>
 
 @code {
-	string userName = "";
-	string? userEmail = "";
-	string? userId = "";
-	bool hasUserEmail => userEmail != null;
-	bool hasUserId => userId != null;
+    string userName = "";
+    string? userEmail = "";
+    string? userId = "";
+    bool hasUserEmail => userEmail != null;
+    bool hasUserId => userId != null;
 
-	protected override async Task OnParametersSetAsync()
-	{
-		var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-		userName = state?.User?.Identity?.Name ?? string.Empty;
-		userEmail = state?.User?.FindFirst(ClaimTypes.Email)?.Value;
-		userId = state?.User?.FindFirst(ClaimTypes.Sid)?.Value;
-	}
+    protected override async Task OnParametersSetAsync()
+    {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userName = state?.User?.Identity?.Name ?? string.Empty;
+        userEmail = state?.User?.FindFirst(ClaimTypes.Email)?.Value;
+        userId = state?.User?.FindFirst(ClaimTypes.Sid)?.Value;
+    }
 }

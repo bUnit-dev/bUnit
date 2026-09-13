@@ -14,9 +14,9 @@
 		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
         <OutputType>Exe</OutputType>
 	</PropertyGroup>
-	
+
 	<PropertyGroup>
-		<!-- 
+		<!--
 		Because of a CVE in System.Text.Json we get NU1903.
 		As this is a test project, we can ignore this warning for the time being.
 		 -->
