@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- `InvokeOnSpacerBeforeVisible` now uses 4 parameters on .NET 11.0. Reported by [@vnbaaij](https://github.com/vnbaaij) in #1915. Fixed by [@vnbaaij](https://github.com/vnbaaij) in #1919.
+
 ## [2.10.3] - 2026-09-08
 
 ### Fixed
