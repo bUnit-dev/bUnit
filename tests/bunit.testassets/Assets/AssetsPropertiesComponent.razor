@@ -1,6 +1,3 @@
-@{
-#if NET9_0_OR_GREATER
-}
 @foreach (var asset in Assets)
 {
 	<ul data-url="@asset.Url">
@@ -9,7 +6,4 @@
 			<li>@property.Name=@property.Value</li>
 		}
 	</ul>
-}
-@{
-#endif
 }
