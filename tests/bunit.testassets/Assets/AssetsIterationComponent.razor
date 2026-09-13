@@ -1,15 +1,8 @@
-@{
-#if NET9_0_OR_GREATER
-}
 @foreach (var name in SubresourceNames)
 {
 	<span>@name</span>
 }
-@{
-#endif
-}
 @code {
-#if NET9_0_OR_GREATER
 	private IReadOnlyList<string> SubresourceNames { get; set; } = Array.Empty<string>();
 
 	protected override void OnInitialized()
@@ -17,5 +10,4 @@
 			.Select(asset => asset.Properties?.SingleOrDefault(property => property.Name == "label")?.Value)
 			.OfType<string>()
 			.ToList();
-#endif
 }
