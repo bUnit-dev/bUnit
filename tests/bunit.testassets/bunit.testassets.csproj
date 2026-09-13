@@ -11,7 +11,6 @@
 		<IsTestProject>false</IsTestProject>
 		<EmitCompilerGeneratedFiles>false</EmitCompilerGeneratedFiles>
 		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
-		<NoWarn>BL0013;BL0016</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

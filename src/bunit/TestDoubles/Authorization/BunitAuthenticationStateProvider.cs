@@ -24,10 +24,7 @@ public class BunitAuthenticationStateProvider : AuthenticationStateProvider
 		IEnumerable<string>? roles = null,
 		IEnumerable<Claim>? claims = null,
 		string? authenticationType = null)
-	{
-		AuthenticationStateChanged += OnAuthenticationStateChanged;
-		SetAuthenticatedState(userName, roles, claims, authenticationType);
-	}
+		=> SetAuthenticatedState(userName, roles, claims, authenticationType);
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BunitAuthenticationStateProvider"/> class.
@@ -137,14 +134,5 @@ public class BunitAuthenticationStateProvider : AuthenticationStateProvider
 	{
 		var principal = new ClaimsPrincipal(new ClaimsIdentity());
 		return new AuthenticationState(principal);
-	}
-
-#pragma warning disable AsyncFixer03 // Fire-and-forget async-void methods or delegates
-	private async void OnAuthenticationStateChanged(Task<AuthenticationState> task)
-#pragma warning restore AsyncFixer03 // Fire-and-forget async-void methods or delegates
-	{
-		// Exists just to prevent BL0013 'BunitAuthenticationStateProvider' calls GetAuthenticationStateAsync on AuthenticationStateProvider
-		// without subscribing to the AuthenticationStateChanged event. This may result in using stale authentication state.
-
 	}
 }

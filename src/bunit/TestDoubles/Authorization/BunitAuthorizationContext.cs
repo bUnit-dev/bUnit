@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 namespace Bunit.TestDoubles;
 
 /// <summary>
-/// Root authorization service that manages different authentication/authorization state in the system.
+/// Root authorization service that manages different authentication/authorization state
+/// in the system.
 /// </summary>
 public class BunitAuthorizationContext
 {
