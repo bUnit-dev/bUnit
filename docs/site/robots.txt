@@ -1,0 +1,38 @@
+# robots.txt for https://bunit.dev
+# bUnit is open source (MIT) and its documentation is meant to be read and
+# referenced freely by people, search engines, and AI agents alike.
+
+User-agent: *
+Allow: /
+# Declare AI/content usage preferences for the rules above.
+# See https://contentsignals.org/ and
+# https://datatracker.ietf.org/doc/draft-romm-aipref-contentsignals/
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+
+# Explicit rules for known AI crawlers. The documentation is public and may be
+# indexed, referenced, and used to answer questions about bUnit.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://bunit.dev/sitemap.xml
