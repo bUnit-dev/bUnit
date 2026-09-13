@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [2.11.3] - 2026-09-13
+
 ### Fixed
 
 - `InvokeOnSpacerBeforeVisible` now uses 4 parameters on .NET 11.0. Reported by [@vnbaaij](https://github.com/vnbaaij) in #1915. Fixed by [@vnbaaij](https://github.com/vnbaaij) in #1919.
@@ -1546,7 +1548,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.10.3...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.11.3...HEAD
+[2.11.3]: https://github.com/bUnit-dev/bUnit/compare/v2.10.3...2.11.3
 [2.10.3]: https://github.com/bUnit-dev/bUnit/compare/v2.9.0...v2.10.3
 [2.9.0]: https://github.com/bUnit-dev/bUnit/compare/v2.8.6...2.9.0
 [2.8.6]: https://github.com/bUnit-dev/bUnit/compare/v2.7.2...v2.8.6
