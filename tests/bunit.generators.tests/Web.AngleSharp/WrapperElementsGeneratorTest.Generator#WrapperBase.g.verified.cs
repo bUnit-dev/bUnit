@@ -27,10 +27,8 @@ public abstract class WrapperBase<TElement> : IElementWrapper<TElement>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get
 		{
-			if (element is null)
-				element = elementFactory.GetElement<TElement>();
-
-			return element;
+			// Read the field once: a re-render on another thread can reset it to null between two reads.
+			return element ??= elementFactory.GetElement<TElement>();
 		}
 	}
 

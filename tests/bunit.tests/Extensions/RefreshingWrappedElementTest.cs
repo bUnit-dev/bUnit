@@ -76,6 +76,30 @@ public class RefreshingWrappedElementTest : BunitContext
 		Should.Throw<ElementRemovedFromDomException>(() => btn.TextContent);
 	}
 
+	[Fact(DisplayName = "Found element is never null while the component re-renders on another thread")]
+	public async Task Test040()
+	{
+		var cut = Render<Counter>();
+		var elm = cut.Find("span");
+		using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
+		var renders = Task.Run(async () =>
+		{
+			while (!cts.IsCancellationRequested)
+				await cut.InvokeAsync(cut.Instance.Increment);
+		});
+
+		try
+		{
+			while (!cts.IsCancellationRequested)
+				_ = elm.TextContent;
+		}
+		finally
+		{
+			await cts.CancelAsync();
+			await renders;
+		}
+	}
+
 	private sealed class Markup : ComponentBase
 	{
 		[Parameter] public string Base { get; set; } = string.Empty;
@@ -87,6 +111,24 @@ public class RefreshingWrappedElementTest : BunitContext
 			builder.AddMarkupContent(0, Base);
 			if (ShowOptional)
 				builder.AddMarkupContent(1, Optional);
+		}
+	}
+
+	private sealed class Counter : ComponentBase
+	{
+		private int count;
+
+		public void Increment()
+		{
+			count++;
+			StateHasChanged();
+		}
+
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.OpenElement(0, "span");
+			builder.AddContent(1, count);
+			builder.CloseElement();
 		}
 	}
 }

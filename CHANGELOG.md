@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- An element returned by `Find()` could be `null` for a moment when the component re-rendered on another thread, so using it threw a `NullReferenceException`, for example from `GetBunitContext` in `ClickAsync`. Reported and fixed by [@psu-prog](https://github.com/psu-prog).
+
 ## [2.11.3] - 2026-09-13
 
 ### Fixed
