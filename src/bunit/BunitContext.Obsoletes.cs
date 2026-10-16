@@ -1,5 +1,6 @@
 namespace Bunit;
 
+[RemovedInFutureVersion("Obsolete in v2, removed in future version")]
 public partial class BunitContext
 {
 	/// <summary>
