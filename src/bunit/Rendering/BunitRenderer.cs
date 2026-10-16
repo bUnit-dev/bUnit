@@ -281,27 +281,21 @@ public sealed class BunitRenderer : Renderer
 	public Task DisposeComponents()
 	{
 		ObjectDisposedException.ThrowIf(disposed, this);
-		Task? returnTask;
 
-		lock (renderTreeUpdateLock)
+		return Dispatcher.InvokeAsync(async () =>
 		{
-			returnTask = Dispatcher.InvokeAsync(async () =>
-			{
-				ResetUnhandledException();
+			ResetUnhandledException();
 
-				foreach (var root in rootComponents)
-				{
-					root.Detach();
-				}
-
-				await Task.WhenAll(disposalTasks).ConfigureAwait(false);
-				disposalTasks.Clear();
-			});
-
+			var roots = rootComponents.ToArray();
 			rootComponents.Clear();
-		}
 
-		return returnTask;
+			foreach (var root in roots)
+			{
+				root.Detach();
+			}
+
+			await Task.WhenAll(disposalTasks.ToArray()).ConfigureAwait(false);
+		});
 	}
 
 	/// <inheritdoc/>
@@ -425,21 +419,11 @@ public sealed class BunitRenderer : Renderer
 		if (componentState is null)
 		{
 			ArgumentNullException.ThrowIfNull(task);
-			AddDisposalTaskToQueue();
+			disposalTasks.RemoveAll(static t => t.IsCompleted);
+			disposalTasks.Add(task);
 		}
 
 		base.AddPendingTask(componentState, task);
-
-		void AddDisposalTaskToQueue()
-		{
-			var t = task;
-			t = task.ContinueWith(_ =>
-			{
-				disposalTasks.Remove(t);
-			}, TaskScheduler.Current);
-
-			disposalTasks.Add(t);
-		}
 	}
 
 	internal Task SetDirectParametersAsync<TComponent>(IRenderedComponent<TComponent> renderedComponent, ParameterView parameters)
@@ -602,7 +586,6 @@ public sealed class BunitRenderer : Renderer
 			if (disposing)
 			{
 				returnedRenderedComponentIds.Clear();
-				disposalTasks.Clear();
 				unhandledExceptionTsc.TrySetCanceled();
 			}
 
