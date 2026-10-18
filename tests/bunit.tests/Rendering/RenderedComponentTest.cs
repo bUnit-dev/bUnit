@@ -298,20 +298,26 @@ public class RenderedComponentTest : BunitContext
 	}
 
 	[Fact(DisplayName = "Nodes reflects the latest markup after a render on another thread (#1938)")]
-	public async Task Test030()
+	public void Test030()
 	{
 		var cut = Render<Wrapper>(ps => ps.AddChildContent("<p>0</p>"));
+		_ = cut.Nodes;
+		cut.Render(ps => ps.AddChildContent("<p>1</p>"));
+		// Holding the parser's lock pauses the reader after it captured the old markup but before it caches the parsed nodes.
+		var parserLock = typeof(BunitHtmlParser)
+			.GetField("parserLock", BindingFlags.NonPublic | BindingFlags.Instance)!
+			.GetValue(Services.GetRequiredService<BunitHtmlParser>())!;
+		var reader = new Thread(() => _ = cut.Nodes);
 
-		for (var i = 1; i <= 50; i++)
+		lock (parserLock)
 		{
-			var content = $"<p>{i}</p>";
-			var render = Task.Run(() => cut.Render(ps => ps.AddChildContent(content)), Xunit.TestContext.Current.CancellationToken);
-			while (!render.IsCompleted)
-				_ = cut.Nodes;
-			await render;
-
-			cut.Find("p").TextContent.ShouldBe(i.ToString(System.Globalization.CultureInfo.InvariantCulture));
+			reader.Start();
+			SpinWait.SpinUntil(() => reader.ThreadState.HasFlag(ThreadState.WaitSleepJoin), TimeSpan.FromSeconds(5)).ShouldBeTrue();
+			cut.Render(ps => ps.AddChildContent("<p>2</p>"));
 		}
+
+		reader.Join();
+		cut.Find("p").TextContent.ShouldBe("2");
 	}
 
 	private class BaseComponent : ComponentBase
