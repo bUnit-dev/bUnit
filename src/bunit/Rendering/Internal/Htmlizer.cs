@@ -52,13 +52,17 @@ internal static class Htmlizer
 		return $"{BlazorAttrPrefix}{attributeName}";
 	}
 
-	public static string GetHtml(int componentId, BunitRenderer renderer)
+	public static HtmlizerResult GetHtml(int componentId, BunitRenderer renderer)
 	{
 		var context = new HtmlRenderingContext(renderer);
 		var frames = context.GetRenderTreeFrames(componentId);
 		var newPosition = RenderFrames(context, frames, 0, frames.Count);
 		Debug.Assert(newPosition == frames.Count);
-		return context.Result.ToString();
+
+		// Added after the child components, which keeps the list in post-order.
+		context.Ranges.Add(new ComponentMarkupRange(componentId, 0, context.Result.Length));
+
+		return new HtmlizerResult(context.Result.ToString(), context.Ranges);
 	}
 
 	private static int RenderFrames(
@@ -137,8 +141,10 @@ internal static class Htmlizer
 			return position + frame.ComponentSubtreeLength;
 		}
 
+		var startIndex = context.Result.Length;
 		var childFrames = context.GetRenderTreeFrames(frame.ComponentId);
 		RenderFrames(context, childFrames, 0, childFrames.Count);
+		context.Ranges.Add(new ComponentMarkupRange(frame.ComponentId, startIndex, context.Result.Length));
 		return position + frame.ComponentSubtreeLength;
 	}
 
@@ -406,6 +412,8 @@ internal static class Htmlizer
 			=> renderer.GetCurrentRenderTreeFrames(componentId);
 
 		public StringBuilder Result { get; } = new();
+
+		public List<ComponentMarkupRange> Ranges { get; } = new();
 
 		public string? ClosestSelectValueAsString { get; set; }
 	}
