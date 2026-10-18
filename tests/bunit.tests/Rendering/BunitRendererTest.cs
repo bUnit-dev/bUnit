@@ -450,6 +450,27 @@ public class BunitRendererTest : BunitContext
 		cut.Find("h1").TextContent.ShouldBe($"Hello world {RenderMode.InteractiveWebAssembly}");
 	}
 
+	[Fact(DisplayName = "Markup generation skips child components whose instantiation threw during a render")]
+	public async Task Test212()
+	{
+		var cut = Render<ShowsThrowingChild>();
+		var trigger = cut.FindComponent<RenderTrigger>();
+		await cut.Instance.ShowThrowingChild();
+
+		await trigger.Instance.TriggerWithValue("after");
+
+		cut.Markup.ShouldBe("after");
+	}
+
+	[Fact(DisplayName = "FindComponents skips child components whose instantiation threw during a render")]
+	public async Task Test213()
+	{
+		var cut = Render<ShowsThrowingChild>();
+		await cut.Instance.ShowThrowingChild();
+
+		cut.FindComponents<RenderTrigger>().Count.ShouldBe(1);
+	}
+
 	internal sealed class LifeCycleMethodInvokeCounter : ComponentBase
 	{
 		public int InitilizedCount { get; private set; }
@@ -529,6 +550,33 @@ public class BunitRendererTest : BunitContext
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
 			builder.AddMarkupContent(0, Value);
+		}
+	}
+
+	internal sealed class ThrowsOnConstruction : ComponentBase
+	{
+		public ThrowsOnConstruction() => throw new InvalidOperationException("THROWS ON PURPOSE");
+	}
+
+	internal sealed class ShowsThrowingChild : ComponentBase
+	{
+		private bool showThrowing;
+
+		public Task ShowThrowingChild()
+		{
+			showThrowing = true;
+			return InvokeAsync(StateHasChanged);
+		}
+
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.OpenComponent<RenderTrigger>(0);
+			builder.CloseComponent();
+			if (showThrowing)
+			{
+				builder.OpenComponent<ThrowsOnConstruction>(1);
+				builder.CloseComponent();
+			}
 		}
 	}
 

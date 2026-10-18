@@ -661,7 +661,7 @@ public sealed class BunitRenderer : Renderer
 			for (var i = 0; i < frames.Count; i++)
 			{
 				ref var frame = ref frames.Array[i];
-				if (frame.FrameType == RenderTreeFrameType.Component)
+				if (frame.FrameType == RenderTreeFrameType.Component && frame.Component is not null)
 				{
 					if (frame.Component is TComponent)
 					{

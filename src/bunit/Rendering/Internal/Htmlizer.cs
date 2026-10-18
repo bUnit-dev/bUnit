@@ -131,6 +131,14 @@ internal static class Htmlizer
 	)
 	{
 		var frame = frames.Array[position];
+
+		// A component frame is left uninstantiated (ComponentId 0) when the render that added it threw mid-diff.
+		// Following that id would recurse into the first root component, which can be an ancestor.
+		if (frame.Component is null)
+		{
+			return position + frame.ComponentSubtreeLength;
+		}
+
 		var childFrames = context.GetRenderTreeFrames(frame.ComponentId);
 		RenderFrames(context, childFrames, 0, childFrames.Count);
 		return position + frame.ComponentSubtreeLength;
