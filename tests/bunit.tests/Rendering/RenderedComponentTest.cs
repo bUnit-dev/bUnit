@@ -297,6 +297,29 @@ public class RenderedComponentTest : BunitContext
 		results.ShouldBeEmpty();
 	}
 
+	[Fact(DisplayName = "Nodes reflects the latest markup after a render on another thread (#1938)")]
+	public void Test030()
+	{
+		var cut = Render<Wrapper>(ps => ps.AddChildContent("<p>0</p>"));
+		_ = cut.Nodes;
+		cut.Render(ps => ps.AddChildContent("<p>1</p>"));
+		// Holding the parser's lock pauses the reader after it captured the old markup but before it caches the parsed nodes.
+		var parserLock = typeof(BunitHtmlParser)
+			.GetField("parserLock", BindingFlags.NonPublic | BindingFlags.Instance)!
+			.GetValue(Services.GetRequiredService<BunitHtmlParser>())!;
+		var reader = new Thread(() => _ = cut.Nodes);
+
+		lock (parserLock)
+		{
+			reader.Start();
+			SpinWait.SpinUntil(() => reader.ThreadState.HasFlag(ThreadState.WaitSleepJoin), TimeSpan.FromSeconds(5)).ShouldBeTrue();
+			cut.Render(ps => ps.AddChildContent("<p>2</p>"));
+		}
+
+		reader.Join();
+		cut.Find("p").TextContent.ShouldBe("2");
+	}
+
 	private class BaseComponent : ComponentBase
 	{
 		protected override void BuildRenderTree(RenderTreeBuilder builder)

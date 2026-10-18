@@ -18,7 +18,7 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	private readonly BunitHtmlParser htmlParser;
 
 	private string markup = string.Empty;
-	private INodeList? latestRenderNodes;
+	private MarkupNodes? latestRenderNodes;
 
 	/// <summary>
 	/// Gets the component under test.
@@ -68,7 +68,17 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		get
 		{
 			EnsureComponentNotDisposed();
-			return latestRenderNodes ??= htmlParser.Parse(Markup);
+			// A render can finish while Markup is parsed; keying on the markup reference stops that stale parse from being cached (#1938).
+			// Not needed in v3: the shared render tree (#1910) binds nodes to an immutable markup snapshot.
+			var currentMarkup = Markup;
+			var cached = latestRenderNodes;
+			if (cached is null || !ReferenceEquals(cached.Markup, currentMarkup))
+			{
+				cached = new MarkupNodes(currentMarkup, htmlParser.Parse(currentMarkup));
+				latestRenderNodes = cached;
+			}
+
+			return cached.Nodes;
 		}
 	}
 
@@ -169,4 +179,6 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		Dispose();
 		return base.DisposeAsync();
 	}
+
+	private sealed record MarkupNodes(string Markup, INodeList Nodes);
 }
