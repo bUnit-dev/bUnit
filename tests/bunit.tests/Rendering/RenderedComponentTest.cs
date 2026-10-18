@@ -297,6 +297,23 @@ public class RenderedComponentTest : BunitContext
 		results.ShouldBeEmpty();
 	}
 
+	[Fact(DisplayName = "Nodes reflects the latest markup after a render on another thread (#1938)")]
+	public async Task Test030()
+	{
+		var cut = Render<Wrapper>(ps => ps.AddChildContent("<p>0</p>"));
+
+		for (var i = 1; i <= 50; i++)
+		{
+			var content = $"<p>{i}</p>";
+			var render = Task.Run(() => cut.Render(ps => ps.AddChildContent(content)), Xunit.TestContext.Current.CancellationToken);
+			while (!render.IsCompleted)
+				_ = cut.Nodes;
+			await render;
+
+			cut.Find("p").TextContent.ShouldBe(i.ToString(System.Globalization.CultureInfo.InvariantCulture));
+		}
+	}
+
 	private class BaseComponent : ComponentBase
 	{
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
