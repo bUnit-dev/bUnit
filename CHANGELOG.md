@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [2.12.5] - 2026-10-19
+
 ### Fixed
 
 - `WrapperBase.WrappedElement` could return `null` and throw `NullReferenceException` when an element was accessed concurrently with component re-renders. Reported by [@psu-prog](https://github.com/psu-prog) in #1937. Fixed by [@Nacl-HCl](https://github.com/Nacl-HCl).
@@ -1555,7 +1557,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.11.3...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.12.5...HEAD
+[2.12.5]: https://github.com/bUnit-dev/bUnit/compare/v2.11.3...v2.12.5
 [2.11.3]: https://github.com/bUnit-dev/bUnit/compare/v2.10.3...2.11.3
 [2.10.3]: https://github.com/bUnit-dev/bUnit/compare/v2.9.0...v2.10.3
 [2.9.0]: https://github.com/bUnit-dev/bUnit/compare/v2.8.6...2.9.0
