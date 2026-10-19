@@ -117,6 +117,6 @@
 		<PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.14.0"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0"/>
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" Version="1.1.4" />
-		<PackageVersion Include="System.Security.Cryptography.Pkcs" Version="9.0.21" />
+		<PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
 	</ItemGroup>
 </Project>
