@@ -1,0 +1,5 @@
+# Razor SDK 11 moves component declarations into *_razor.decl.g.cs, where Sonar flags @implements IDisposable.
+# .editorconfig path sections do not match generated files, so this must be global.
+is_global = true
+
+dotnet_diagnostic.S3881.severity = none

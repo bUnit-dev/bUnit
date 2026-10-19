@@ -6,6 +6,13 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- `WrapperBase.WrappedElement` could return `null` and throw `NullReferenceException` when an element was accessed concurrently with component re-renders. Reported by [@psu-prog](https://github.com/psu-prog) in #1937. Fixed by [@Nacl-HCl](https://github.com/Nacl-HCl).
+- `DisposeComponentsAsync()` could dispose nothing when the renderer's dispatcher was busy, e.g. with a timer calling `InvokeAsync`. Reported by [@xfunc-tim-schneider](https://github.com/xfunc-tim-schneider) in #1939. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+- Markup generation and `FindComponents` could recurse until the test host crashed with a stack overflow when a render threw while instantiating a child component. Reported in #1935. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+- `Find()` could keep returning DOM nodes from the previous render when a render, e.g. from a timer, happened while the nodes were parsed, causing `UnknownEventHandlerIdException`. Reported by [@xfunc-tim-schneider](https://github.com/xfunc-tim-schneider) in #1938. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [2.11.3] - 2026-09-13
 
 ### Fixed

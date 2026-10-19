@@ -24,13 +24,7 @@ public abstract class WrapperBase<TElement> : IElementWrapper<TElement>
 	public TElement WrappedElement
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get
-		{
-			if (element is null)
-				element = elementFactory.GetElement<TElement>();
-
-			return element;
-		}
+		get => element ??= elementFactory.GetElement<TElement>();
 	}
 
 	/// <summary>

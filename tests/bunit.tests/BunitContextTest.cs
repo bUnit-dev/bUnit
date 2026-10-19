@@ -52,6 +52,28 @@ public class BunitContextTest : BunitContext
 		callStack.Count.ShouldBe(1);
 	}
 
+	[Fact(DisplayName = "DisposeComponents disposes components while the dispatcher is busy")]
+	public async Task Test105()
+	{
+		var callStack = new List<string>();
+		Render<ChildDispose>(ps => ps.Add(p => p.CallStack, callStack));
+		using var entered = new ManualResetEventSlim();
+		using var release = new ManualResetEventSlim();
+		var blocker = Task.Run(() => Renderer.Dispatcher.InvokeAsync(() =>
+		{
+			entered.Set();
+			release.Wait();
+		}), Xunit.TestContext.Current.CancellationToken);
+		entered.Wait(Xunit.TestContext.Current.CancellationToken);
+
+		var disposeTask = DisposeComponentsAsync();
+		release.Set();
+		await disposeTask;
+		await blocker;
+
+		callStack.Count.ShouldBe(1);
+	}
+
 	[Fact(DisplayName = "The test service provider should register a placeholder HttpClient which throws exceptions")]
 	public void Test024()
 	{

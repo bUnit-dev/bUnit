@@ -76,6 +76,53 @@ public class RefreshingWrappedElementTest : BunitContext
 		Should.Throw<ElementRemovedFromDomException>(() => btn.TextContent);
 	}
 
+	[Fact(DisplayName = "Found element is never null when accessed concurrently with component re-renders")]
+	public async Task Test040()
+	{
+		var cut = Render<Counter>();
+		var elm = cut.Find("span");
+		using var cts = CancellationTokenSource.CreateLinkedTokenSource(Xunit.TestContext.Current.CancellationToken);
+		cts.CancelAfter(TimeSpan.FromSeconds(1));
+		var renders = Task.Run(async () =>
+		{
+			while (!cts.IsCancellationRequested)
+			{
+				await cut.InvokeAsync(cut.Instance.Increment);
+			}
+		}, Xunit.TestContext.Current.CancellationToken);
+
+		try
+		{
+			while (!cts.IsCancellationRequested)
+			{
+				elm.TextContent.ShouldNotBeNull();
+			}
+		}
+		finally
+		{
+			await cts.CancelAsync();
+			await renders;
+		}
+	}
+
+	private sealed class Counter : ComponentBase
+	{
+		private int count;
+
+		public void Increment()
+		{
+			count++;
+			StateHasChanged();
+		}
+
+		protected override void BuildRenderTree(RenderTreeBuilder builder)
+		{
+			builder.OpenElement(0, "span");
+			builder.AddContent(1, count);
+			builder.CloseElement();
+		}
+	}
+
 	private sealed class Markup : ComponentBase
 	{
 		[Parameter] public string Base { get; set; } = string.Empty;
