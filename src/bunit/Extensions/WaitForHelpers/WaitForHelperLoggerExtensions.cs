@@ -37,8 +37,8 @@ internal static partial class WaitForHelperLoggerExtensions
 		EventId = 10,
 		EventName = "WaiterTimedOut",
 		Level = LogLevel.Debug,
-		Message = "The waiter for component {ComponentId} timed out.")]
-	internal static partial void LogWaiterTimedOut(this ILogger logger, int componentId);
+		Message = "The waiter for component {ComponentId} timed out. Configured: {ConfiguredMs}ms, actual: {ElapsedMs}ms, pool threads: {PoolThreads}, pending pool items: {PendingItems}.")]
+	internal static partial void LogWaiterTimedOut(this ILogger logger, int componentId, double configuredMs, long elapsedMs, int poolThreads, long pendingItems);
 
 	[LoggerMessage(
 		EventId = 20,

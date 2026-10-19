@@ -240,6 +240,45 @@ public class RenderedComponentWaitForHelperExtensions : BunitContext
 		expected.Message.ShouldStartWith(WaitForAssertionHelper<Simple1>.TimeoutMessage);
 	}
 
+	[Fact(DisplayName = "WaitForElementAsync runs the initial check before the timeout starts when the dispatcher is busy")]
+	public async Task Test500()
+	{
+		var cut = Render<Simple1>();
+		var cancellationToken = Xunit.TestContext.Current.CancellationToken;
+		using var dispatcherEntered = new ManualResetEventSlim();
+		using var releaseDispatcher = new ManualResetEventSlim();
+		var blocker = Task.Run(() => cut.InvokeAsync(() =>
+		{
+			dispatcherEntered.Set();
+			releaseDispatcher.Wait();
+		}), cancellationToken);
+
+		Task<IElement> waitTask;
+		try
+		{
+			dispatcherEntered.Wait(cancellationToken);
+			waitTask = cut.WaitForElementAsync("#notHere", TimeSpan.FromMilliseconds(5));
+			await Task.Delay(50, cancellationToken);
+		}
+		finally
+		{
+			releaseDispatcher.Set();
+			await blocker;
+		}
+
+		var expected = await Should.ThrowAsync<WaitForFailedException>(waitTask);
+		expected.InnerException.ShouldBeOfType<ElementNotFoundException>();
+	}
+
+	[Fact(DisplayName = "WaitForStateAsync throws instead of hanging when the timeout is invalid")]
+	public async Task Test501()
+	{
+		var cut = Render<Simple1>();
+
+		await Should.ThrowAsync<ArgumentOutOfRangeException>(
+			cut.WaitForStateAsync(() => false, TimeSpan.FromMilliseconds(-2)).WaitAsync(TimeSpan.FromSeconds(5), Xunit.TestContext.Current.CancellationToken));
+	}
+
 	private sealed class ThrowsAfterAsyncOperation : ComponentBase
 	{
 		protected override async Task OnInitializedAsync()

@@ -16,7 +16,8 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 	private readonly IRenderedComponent<TComponent> renderedComponent;
 	private readonly ILogger<WaitForHelper<T, TComponent>> logger;
 	private readonly BunitRenderer renderer;
-	private readonly Timer? timer;
+	private readonly TimeSpan runtimeTimeout;
+	private Timer? timer;
 	private bool isDisposed;
 	private bool isChecking;
 	private bool isDirty;
@@ -82,37 +83,14 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 			.Renderer;
 		checkPassedCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-		// Create the wait task and run the initial check
-		// and subscribe to the OnAfterRender event.
-		// This must happen before the timer is started,
-		// as the check happens inside the renderers synchronization context,
-		// and that may be blocked longer than the timeout on overloaded systems,
-		// resulting in the timer completing before a single check has
-		// has a chance to complete.
+		runtimeTimeout = GetRuntimeTimeout(timeout);
+
+		// Create the wait task, run the initial check and subscribe to the OnAfterRender event.
+		// The timer is only started after the initial check ran on the renderers synchronization context,
+		// as that may be blocked longer than the timeout on overloaded systems,
+		// resulting in the timer completing before a single check has had a chance to run.
 		WaitTask = CreateWaitTask();
 		CheckAndInitializeWaiting();
-
-		// If the initial check did not complete successfully,
-		// start the timer and recheck after every render until the timer expires.
-		if (!WaitTask.IsCompleted)
-		{
-			timer = new Timer(
-				static (state) =>
-				{
-					var @this = (WaitForHelper<T, TComponent>)state!;
-					@this.logger.LogWaiterTimedOut(@this.renderedComponent.ComponentId);
-					@this.checkPassedCompletionSource.TrySetException(
-						new WaitForFailedException(
-							@this.TimeoutErrorMessage ?? string.Empty,
-							@this.checkCount,
-							@this.renderedComponent.RenderCount,
-							@this.renderer.RenderCount,
-							@this.capturedException));
-				},
-				this,
-				GetRuntimeTimeout(timeout),
-				Timeout.InfiniteTimeSpan);
-		}
 	}
 
 	/// <summary>
@@ -138,8 +116,12 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 		if (isDisposed || !disposing)
 			return;
 
-		isDisposed = true;
-		timer?.Dispose();
+		lock (checkPassedCompletionSource)
+		{
+			isDisposed = true;
+			timer?.Dispose();
+		}
+
 		checkPassedCompletionSource.TrySetCanceled();
 		renderedComponent.OnAfterRender -= OnAfterRender;
 		logger.LogWaiterDisposed(renderedComponent.ComponentId);
@@ -159,9 +141,47 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 			{
 				// Before subscribing to renderedFragment.OnAfterRender,
 				// we need to make sure that the desired state has not already been reached.
-				OnAfterRender(this, EventArgs.Empty);
-				SubscribeToOnAfterRender();
+				// The returned task is discarded, so failures, e.g. an invalid timeout, must be forwarded to the WaitTask,
+				// otherwise the waiter would hang without a timer.
+				try
+				{
+					OnAfterRender(this, EventArgs.Empty);
+					SubscribeToOnAfterRender();
+					StartTimer();
+				}
+				catch (Exception ex)
+				{
+					checkPassedCompletionSource.TrySetException(ex);
+					Dispose();
+				}
 			});
+		}
+	}
+
+	private void StartTimer()
+	{
+		lock (checkPassedCompletionSource)
+		{
+			if (isDisposed || WaitTask.IsCompleted)
+				return;
+
+			var started = Stopwatch.StartNew();
+			timer = new Timer(
+				static (state) =>
+				{
+					var (@this, started) = ((WaitForHelper<T, TComponent>, Stopwatch))state!;
+					@this.logger.LogWaiterTimedOut(@this.renderedComponent.ComponentId, @this.runtimeTimeout.TotalMilliseconds, started.ElapsedMilliseconds, ThreadPool.ThreadCount, ThreadPool.PendingWorkItemCount);
+					@this.checkPassedCompletionSource.TrySetException(
+						new WaitForFailedException(
+							@this.TimeoutErrorMessage ?? string.Empty,
+							@this.checkCount,
+							@this.renderedComponent.RenderCount,
+							@this.renderer.RenderCount,
+							@this.capturedException));
+				},
+				(this, started),
+				runtimeTimeout,
+				Timeout.InfiniteTimeSpan);
 		}
 	}
 
