@@ -20,6 +20,7 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 	private bool isDisposed;
 	private bool isChecking;
 	private bool isDirty;
+	private bool isCheckStarted;
 	private int checkCount;
 	private Exception? capturedException;
 
@@ -100,11 +101,12 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 				static (state) =>
 				{
 					var @this = (WaitForHelper<T, TComponent>)state!;
+					var checks = Volatile.Read(ref @this.checkCount);
 					@this.logger.LogWaiterTimedOut(@this.renderedComponent.ComponentId);
 					@this.checkPassedCompletionSource.TrySetException(
 						new WaitForFailedException(
-							@this.TimeoutErrorMessage ?? string.Empty,
-							@this.checkCount,
+							@this.CreateTimeoutErrorMessage(checks),
+							checks,
 							@this.renderedComponent.RenderCount,
 							@this.renderer.RenderCount,
 							@this.capturedException));
@@ -159,10 +161,25 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 			{
 				// Before subscribing to renderedFragment.OnAfterRender,
 				// we need to make sure that the desired state has not already been reached.
+				Volatile.Write(ref isCheckStarted, true);
 				OnAfterRender(this, EventArgs.Empty);
 				SubscribeToOnAfterRender();
 			});
 		}
+	}
+
+	// Called from the timer on a thread pool thread, while the check fields are written on the dispatcher.
+	private string CreateTimeoutErrorMessage(int completedCheckCount)
+	{
+		var message = TimeoutErrorMessage ?? string.Empty;
+		if (completedCheckCount > 0)
+			return message;
+
+		var reason = Volatile.Read(ref isCheckStarted)
+			? WaitForFailedException.CheckNotCompletedMessage
+			: WaitForFailedException.CheckNotStartedMessage;
+
+		return $"{message}{Environment.NewLine}{Environment.NewLine}{reason}";
 	}
 
 	private Task<T> CreateWaitTask()
