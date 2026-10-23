@@ -47,12 +47,18 @@
           "site.webmanifest",
           "*.png",
           "CNAME",
+          "robots.txt",
           "sponsors/**",
           "favicon.ico"
         ]
       }
     ],
     "dest": "_site",
+    "sitemap": {
+      "baseUrl": "https://bunit.dev",
+      "changefreq": "weekly",
+      "priority": 0.5
+    },
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
