@@ -7,6 +7,33 @@ namespace Bunit.Extensions.WaitForHelpers;
 /// </summary>
 public sealed class WaitForFailedException : Exception, ITestTimeoutException
 {
+	internal const string CheckNotStartedMessage = """
+		The wait condition was never checked, because the renderer's dispatcher did not run the check before the timeout.
+		This points to the test setup rather than the component under test: the thread pool may be starved,
+		e.g. by many tests blocking threads with synchronous WaitFor* or Click calls in parallel, or other work is blocking the dispatcher.
+
+		Consider one of the following:
+		- Increase the timeout per call, e.g. WaitForElement("div", TimeSpan.FromSeconds(15)),
+		  or globally via BunitContext.DefaultWaitTimeout.
+		- Prefer the async WaitFor*Async overloads, which do not block a thread pool thread while waiting.
+		- Raise the thread pool minimum once for the test assembly, e.g.:
+
+		    internal static class ThreadPoolSetup
+		    {
+		        [System.Runtime.CompilerServices.ModuleInitializer]
+		        internal static void RaiseMinThreads()
+		        {
+		            ThreadPool.GetMinThreads(out var workers, out var io);
+		            ThreadPool.SetMinThreads(Math.Max(workers, Environment.ProcessorCount * 4), io);
+		        }
+		    }
+		""";
+
+	internal const string CheckNotCompletedMessage =
+		"The wait condition check started but did not complete before the timeout. " +
+		"The asynchronous check is most likely awaiting something that never completes, or that takes longer than the timeout. " +
+		"This usually indicates a problem in the test itself.";
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="WaitForFailedException"/> class.
 	/// </summary>

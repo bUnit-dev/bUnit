@@ -240,6 +240,61 @@ public class RenderedComponentWaitForHelperExtensions : BunitContext
 		expected.Message.ShouldStartWith(WaitForAssertionHelper<Simple1>.TimeoutMessage);
 	}
 
+	[Fact(DisplayName = "WaitForStateAsync reports a setup problem when the dispatcher never runs the check before the timeout")]
+	public async Task Test500()
+	{
+		var cut = Render<Simple1>();
+		var cancellationToken = Xunit.TestContext.Current.CancellationToken;
+		using var dispatcherEntered = new ManualResetEventSlim();
+		using var releaseDispatcher = new ManualResetEventSlim();
+		var blocker = Task.Run(() => cut.InvokeAsync(() =>
+		{
+			dispatcherEntered.Set();
+			releaseDispatcher.Wait(cancellationToken);
+		}), cancellationToken);
+
+		try
+		{
+			dispatcherEntered.Wait(cancellationToken);
+
+			var expected = await Should.ThrowAsync<WaitForFailedException>(
+				cut.WaitForStateAsync(() => true, TimeSpan.FromMilliseconds(50)));
+
+			expected.Message.ShouldContain(WaitForFailedException.CheckNotStartedMessage);
+			expected.Message.ShouldContain("Check count: 0.");
+		}
+		finally
+		{
+			releaseDispatcher.Set();
+			await blocker;
+		}
+	}
+
+	[Fact(DisplayName = "WaitForStateAsync reports a test problem when the async check never completes before the timeout")]
+	public async Task Test501()
+	{
+		var cut = Render<Simple1>();
+		var neverCompletes = new TaskCompletionSource<bool>();
+
+		var expected = await Should.ThrowAsync<WaitForFailedException>(
+			cut.WaitForStateAsync(() => neverCompletes.Task, TimeSpan.FromMilliseconds(50)));
+
+		expected.Message.ShouldContain(WaitForFailedException.CheckNotCompletedMessage);
+		expected.Message.ShouldContain("Check count: 0.");
+	}
+
+	[Fact(DisplayName = "WaitForState timeout after completed checks does not report a setup or test problem")]
+	public void Test502()
+	{
+		var cut = Render<Simple1>();
+
+		var expected = Should.Throw<WaitForFailedException>(() =>
+			cut.WaitForState(() => false, TimeSpan.FromMilliseconds(50)));
+
+		expected.Message.ShouldNotContain(WaitForFailedException.CheckNotStartedMessage);
+		expected.Message.ShouldNotContain(WaitForFailedException.CheckNotCompletedMessage);
+	}
+
 	private sealed class ThrowsAfterAsyncOperation : ComponentBase
 	{
 		protected override async Task OnInitializedAsync()
