@@ -94,7 +94,11 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 
 		// If the initial check did not complete successfully,
 		// start the timer and recheck after every render until the timer expires.
-		if (!WaitTask.IsCompleted)
+		// A check that completed synchronously has already disposed this helper
+		// before WaitTask, which completes on the thread pool, reflects it. A timer
+		// started after that would never be disposed, and would keep this helper,
+		// and through it the renderer, alive until the timeout elapsed.
+		if (!isDisposed && !WaitTask.IsCompleted)
 		{
 			timer = new Timer(
 				static (state) =>
@@ -112,6 +116,12 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 				this,
 				GetRuntimeTimeout(timeout),
 				Timeout.InfiniteTimeSpan);
+
+			// The check may have completed on the renderer's dispatcher, and disposed
+			// this helper while the timer field was still null, between the test above
+			// and the assignment. Dispose(bool) found no timer to stop in that case.
+			if (isDisposed)
+				timer.Dispose();
 		}
 	}
 
