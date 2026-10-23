@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- A `WaitFor*` call whose first check passed left its timeout timer running, which kept the helper, the renderer and everything the renderer holds alive until the timeout elapsed. With a long `DefaultWaitTimeout`, a test suite could hold every rendered component in memory for its whole run. Fixed by [@xaviergxf](https://github.com/xaviergxf).
+
 ## [2.12.5] - 2026-10-19
 
 ### Fixed
