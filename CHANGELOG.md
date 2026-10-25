@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- `Find` threw `TypeLoadException` with AngleSharp 1.8.6 because `HtmlSelectElementWrapper` did not implement the new `SelectedIndex` setter. Reported by [@poxet](https://github.com/poxet) in #1957. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [2.12.5] - 2026-10-19
 
 ### Fixed

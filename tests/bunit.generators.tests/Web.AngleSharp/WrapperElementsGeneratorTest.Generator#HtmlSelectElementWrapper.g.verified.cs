@@ -1572,6 +1572,10 @@ internal sealed class HtmlSelectElementWrapper : WrapperBase<global::AngleSharp.
 		[System.Diagnostics.DebuggerStepThrough]
 		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get => WrappedElement.SelectedIndex;
+		[System.Diagnostics.DebuggerHidden]
+		[System.Diagnostics.DebuggerStepThrough]
+		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+		set => WrappedElement.SelectedIndex = value;
 	}
 
 	/// <inheritdoc/>
