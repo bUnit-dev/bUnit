@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [2.13.3] - 2026-10-25
+
 ### Fixed
 
 - `Find` threw `TypeLoadException` with AngleSharp 1.8.6 because `HtmlSelectElementWrapper` did not implement the new `SelectedIndex` setter. Reported by [@poxet](https://github.com/poxet) in #1957. Fixed by [@linkdotnet](https://github.com/linkdotnet).
@@ -1562,7 +1564,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.12.5...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.13.3...HEAD
+[2.13.3]: https://github.com/bUnit-dev/bUnit/compare/v2.12.5...2.13.3
 [2.12.5]: https://github.com/bUnit-dev/bUnit/compare/v2.11.3...v2.12.5
 [2.11.3]: https://github.com/bUnit-dev/bUnit/compare/v2.10.3...2.11.3
 [2.10.3]: https://github.com/bUnit-dev/bUnit/compare/v2.9.0...v2.10.3
