@@ -20,6 +20,7 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 	private bool isDisposed;
 	private bool isChecking;
 	private bool isDirty;
+	private bool isCheckStarted;
 	private int checkCount;
 	private Exception? capturedException;
 
@@ -94,17 +95,22 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 
 		// If the initial check did not complete successfully,
 		// start the timer and recheck after every render until the timer expires.
-		if (!WaitTask.IsCompleted)
+		// A check that completed synchronously has already disposed this helper
+		// before WaitTask, which completes on the thread pool, reflects it. A timer
+		// started after that would never be disposed, and would keep this helper,
+		// and through it the renderer, alive until the timeout elapsed.
+		if (!isDisposed && !WaitTask.IsCompleted)
 		{
 			timer = new Timer(
 				static (state) =>
 				{
 					var @this = (WaitForHelper<T, TComponent>)state!;
+					var checks = Volatile.Read(ref @this.checkCount);
 					@this.logger.LogWaiterTimedOut(@this.renderedComponent.ComponentId);
 					@this.checkPassedCompletionSource.TrySetException(
 						new WaitForFailedException(
-							@this.TimeoutErrorMessage ?? string.Empty,
-							@this.checkCount,
+							@this.CreateTimeoutErrorMessage(checks),
+							checks,
 							@this.renderedComponent.RenderCount,
 							@this.renderer.RenderCount,
 							@this.capturedException));
@@ -112,6 +118,12 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 				this,
 				GetRuntimeTimeout(timeout),
 				Timeout.InfiniteTimeSpan);
+
+			// The check may have completed on the renderer's dispatcher, and disposed
+			// this helper while the timer field was still null, between the test above
+			// and the assignment. Dispose(bool) found no timer to stop in that case.
+			if (isDisposed)
+				timer.Dispose();
 		}
 	}
 
@@ -159,10 +171,25 @@ internal abstract class WaitForHelper<T, TComponent> : IDisposable
 			{
 				// Before subscribing to renderedFragment.OnAfterRender,
 				// we need to make sure that the desired state has not already been reached.
+				Volatile.Write(ref isCheckStarted, true);
 				OnAfterRender(this, EventArgs.Empty);
 				SubscribeToOnAfterRender();
 			});
 		}
+	}
+
+	// Called from the timer on a thread pool thread, while the check fields are written on the dispatcher.
+	private string CreateTimeoutErrorMessage(int completedCheckCount)
+	{
+		var message = TimeoutErrorMessage ?? string.Empty;
+		if (completedCheckCount > 0)
+			return message;
+
+		var reason = Volatile.Read(ref isCheckStarted)
+			? WaitForFailedException.CheckNotCompletedMessage
+			: WaitForFailedException.CheckNotStartedMessage;
+
+		return $"{message}{Environment.NewLine}{Environment.NewLine}{reason}";
 	}
 
 	private Task<T> CreateWaitTask()

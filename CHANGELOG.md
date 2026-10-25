@@ -6,6 +6,11 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Fixed
+
+- `Find` threw `TypeLoadException` with AngleSharp 1.8.6 because `HtmlSelectElementWrapper` did not implement the new `SelectedIndex` setter. Reported by [@poxet](https://github.com/poxet) in #1957. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+- A `WaitFor*` call whose first check passed left its timeout timer running, which kept the helper, the renderer and everything the renderer holds alive until the timeout elapsed. With a long `DefaultWaitTimeout`, a test suite could hold every rendered component in memory for its whole run. Fixed by [@xaviergxf](https://github.com/xaviergxf).
+
 ## [2.12.5] - 2026-10-19
 
 ### Fixed

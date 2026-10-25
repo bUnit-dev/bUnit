@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using AngleSharp.Dom;
 
 namespace Bunit.Extensions.WaitForHelpers;
@@ -238,6 +239,110 @@ public class RenderedComponentWaitForHelperExtensions : BunitContext
 			}, TimeSpan.FromMilliseconds(50)));
 
 		expected.Message.ShouldStartWith(WaitForAssertionHelper<Simple1>.TimeoutMessage);
+	}
+
+	[Fact(DisplayName = "WaitForStateAsync reports a setup problem when the dispatcher never runs the check before the timeout")]
+	public async Task Test500()
+	{
+		var cut = Render<Simple1>();
+		var cancellationToken = Xunit.TestContext.Current.CancellationToken;
+		using var dispatcherEntered = new ManualResetEventSlim();
+		using var releaseDispatcher = new ManualResetEventSlim();
+		var blocker = Task.Run(() => cut.InvokeAsync(() =>
+		{
+			dispatcherEntered.Set();
+			releaseDispatcher.Wait(cancellationToken);
+		}), cancellationToken);
+
+		try
+		{
+			dispatcherEntered.Wait(cancellationToken);
+
+			var expected = await Should.ThrowAsync<WaitForFailedException>(
+				cut.WaitForStateAsync(() => true, TimeSpan.FromMilliseconds(50)));
+
+			expected.Message.ShouldContain(WaitForFailedException.CheckNotStartedMessage);
+			expected.Message.ShouldContain("Check count: 0.");
+		}
+		finally
+		{
+			releaseDispatcher.Set();
+			await blocker;
+		}
+	}
+
+	[Fact(DisplayName = "WaitForStateAsync reports a test problem when the async check never completes before the timeout")]
+	public async Task Test501()
+	{
+		var cut = Render<Simple1>();
+		var neverCompletes = new TaskCompletionSource<bool>();
+
+		var expected = await Should.ThrowAsync<WaitForFailedException>(
+			cut.WaitForStateAsync(() => neverCompletes.Task, TimeSpan.FromMilliseconds(50)));
+
+		expected.Message.ShouldContain(WaitForFailedException.CheckNotCompletedMessage);
+		expected.Message.ShouldContain("Check count: 0.");
+	}
+
+	[Fact(DisplayName = "WaitForState timeout after completed checks does not report a setup or test problem")]
+	public void Test502()
+	{
+		var cut = Render<Simple1>();
+
+		var expected = Should.Throw<WaitForFailedException>(() =>
+			cut.WaitForState(() => false, TimeSpan.FromMilliseconds(50)));
+
+		expected.Message.ShouldNotContain(WaitForFailedException.CheckNotStartedMessage);
+		expected.Message.ShouldNotContain(WaitForFailedException.CheckNotCompletedMessage);
+	}
+
+	[Fact(DisplayName = "WaitForAssertion does not keep the renderer alive after the first check passes")]
+	public async Task Test503()
+	{
+		// The first call is slow while it is being JIT compiled, which is enough for the wait task
+		// to complete before the helper decides whether to start its timer, so it is not measured.
+		RenderAndWaitForAssertionThatPassesAtOnce();
+
+		var renderers = Enumerable.Range(0, 10)
+			.Select(_ => RenderAndWaitForAssertionThatPassesAtOnce())
+			.ToList();
+
+		// Disposing a context queues work that still references the renderer: cancelling its
+		// unhandled exception task wakes the helper's failure continuation on the thread pool, and
+		// the renderer's own base disposal goes through the dispatcher. On a busy test host that
+		// can still be queued when the first collection runs, so the collection is retried for a
+		// short while. A timer left running roots the renderer for ten minutes, so no number of
+		// retries makes the leaking case pass.
+		var alive = renderers.Count;
+		for (var attempt = 0; attempt < 20 && alive > 0; attempt++)
+		{
+			if (attempt > 0)
+				await Task.Delay(50, Xunit.TestContext.Current.CancellationToken);
+
+#pragma warning disable S1215 // A full collection is what proves the renderers are no longer rooted.
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+			GC.Collect();
+#pragma warning restore S1215
+
+			alive = renderers.Count(r => r.IsAlive);
+		}
+
+		alive.ShouldBe(0, "a wait whose first check passed should leave no timer running");
+	}
+
+	// Kept out of the test method so that nothing on its stack frame keeps the context alive.
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static WeakReference RenderAndWaitForAssertionThatPassesAtOnce()
+	{
+		using var context = new BunitContext();
+		var cut = context.Render<Simple1>();
+
+		// A timeout far longer than the test: a timer left running roots the helper,
+		// and through it the renderer, until it fires.
+		cut.WaitForAssertion(() => { }, TimeSpan.FromMinutes(10));
+
+		return new WeakReference(context.Renderer);
 	}
 
 	private sealed class ThrowsAfterAsyncOperation : ComponentBase
