@@ -102,3 +102,61 @@ With xUnit, this can be done as follows:
 ## Easier HTML copying/pasting
 
 When writing tests in `.cs` files, you may want to copy/paste HTML into C# strings from something like a Razor file, for example. This is tedious to do manually as you have to escape quotes and other special characters, for example `<div class="alert">` needs to be written as `"<div class=\"alert\">"`. The extension [SmartPaster](https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster) automatically escapes any characters that need to be escaped when it is used to copy strings.
+
+## Testing components that use native dependencies
+
+Blazor WebAssembly apps can call [native code compiled to WebAssembly](https://learn.microsoft.com/en-us/aspnet/core/blazor/webassembly-native-dependencies) through `[DllImport]`. bUnit does not run tests in WebAssembly. Tests run on the regular .NET runtime of the machine running them, the same way a Blazor Server app does. A native library that is only built for WebAssembly, for example C files added with `<NativeFileReference>`, is therefore not available in a test, and calling it throws a `DllNotFoundException`.
+
+bUnit cannot load native code on its own, so there are two ways to test such components:
+
+- **Ship a native binary for the operating system the tests run on.** If the library or NuGet package includes native binaries for Windows, Linux or macOS, for example in the [architecture-specific folders](https://learn.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders) of a NuGet package, the `[DllImport]` calls work in bUnit like in any other .NET app. Make sure there is a binary for every OS your tests run on, including CI.
+- **Wrap the native calls in a service.** Put the `[DllImport]` calls behind an interface, inject it into the component, and register a fake implementation in the test. The component can then be tested on any OS, and the native code is not called at all.
+
+For example, a component that calls a native `fibonacci` function can depend on an `IFibonacci` service instead:
+
+```csharp
+public interface IFibonacci
+{
+  int Calculate(int n);
+}
+
+public sealed class NativeFibonacci : IFibonacci
+{
+  [DllImport("Test")]
+  private static extern int fibonacci(int n);
+
+  public int Calculate(int n) => fibonacci(n);
+}
+```
+
+The app registers the native implementation, for example with `builder.Services.AddSingleton<IFibonacci, NativeFibonacci>()`, and the component injects the interface:
+
+```razor
+@inject IFibonacci Fibonacci
+
+<p>@Fibonacci.Calculate(8)</p>
+```
+
+The test registers a fake implementation instead, so the native library is never loaded:
+
+```csharp
+public class FibonacciComponentTest : BunitContext
+{
+  private sealed class FakeFibonacci : IFibonacci
+  {
+    public int Calculate(int n) => 21;
+  }
+
+  [Fact]
+  public void RendersCalculatedValue()
+  {
+    Services.AddSingleton<IFibonacci, FakeFibonacci>();
+
+    var cut = Render<FibonacciComponent>();
+
+    cut.MarkupMatches("<p>21</p>");
+  }
+}
+```
+
+Learn more about registering services in the test context on the <xref:inject-services> page.
