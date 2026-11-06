@@ -6,6 +6,14 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Changed
+
+- Updated AngleSharp to 1.10.0 and AngleSharp.Css to 1.4.0.
+
+### Fixed
+
+- `Find` threw `TypeLoadException` with AngleSharp 1.10.0 because the generated element wrappers did not implement the new `BeforeToggle` event. Reported by [@ryanbaas83-collab](https://github.com/ryanbaas83-collab) in #1968. Fixed by [@linkdotnet](https://github.com/linkdotnet).
+
 ## [2.13.3] - 2026-10-25
 
 ### Fixed
