@@ -25,6 +25,17 @@ internal sealed class HtmlSelectElementWrapper : WrapperBase<global::AngleSharp.
 	}
 
 	/// <inheritdoc/>
+	public event global::AngleSharp.Dom.DomEventHandler BeforeToggle
+	{
+		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[System.Diagnostics.DebuggerHidden]
+		add => Unsafe.As<global::AngleSharp.Dom.Events.IGlobalEventHandlers>(WrappedElement).BeforeToggle += value;
+		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[System.Diagnostics.DebuggerHidden]
+		remove => Unsafe.As<global::AngleSharp.Dom.Events.IGlobalEventHandlers>(WrappedElement).BeforeToggle -= value;
+	}
+
+	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Blurred
 	{
 		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1572,10 +1583,6 @@ internal sealed class HtmlSelectElementWrapper : WrapperBase<global::AngleSharp.
 		[System.Diagnostics.DebuggerStepThrough]
 		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get => WrappedElement.SelectedIndex;
-		[System.Diagnostics.DebuggerHidden]
-		[System.Diagnostics.DebuggerStepThrough]
-		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
-		set => WrappedElement.SelectedIndex = value;
 	}
 
 	/// <inheritdoc/>

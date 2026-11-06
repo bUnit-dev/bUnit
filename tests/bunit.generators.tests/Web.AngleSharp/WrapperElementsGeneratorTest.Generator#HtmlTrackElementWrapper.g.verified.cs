@@ -25,6 +25,17 @@ internal sealed class HtmlTrackElementWrapper : WrapperBase<global::AngleSharp.H
 	}
 
 	/// <inheritdoc/>
+	public event global::AngleSharp.Dom.DomEventHandler BeforeToggle
+	{
+		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[System.Diagnostics.DebuggerHidden]
+		add => Unsafe.As<global::AngleSharp.Dom.Events.IGlobalEventHandlers>(WrappedElement).BeforeToggle += value;
+		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[System.Diagnostics.DebuggerHidden]
+		remove => Unsafe.As<global::AngleSharp.Dom.Events.IGlobalEventHandlers>(WrappedElement).BeforeToggle -= value;
+	}
+
+	/// <inheritdoc/>
 	public event global::AngleSharp.Dom.DomEventHandler Blurred
 	{
 		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.AggressiveInlining)]
