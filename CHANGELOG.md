@@ -6,6 +6,8 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+## [2.15.2] - 2026-11-10
+
 ### Added
 
 - Support for .NET 11 GA. The `net11.0` target now references the final .NET 11 packages and is compiled with runtime async. By [@linkdotnet](https://github.com/linkdotnet).
@@ -1587,7 +1589,8 @@ The latest version of the library is availble on NuGet:
 - **Wrong casing on keyboard event dispatch helpers.**
           The helper methods for the keyboard events was not probably cased, so that has been updated. E.g. from `Keypress(...)` to `KeyPress(...)`.
 
-[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.14.0...HEAD
+[unreleased]: https://github.com/bUnit-dev/bUnit/compare/v2.15.2...HEAD
+[2.15.2]: https://github.com/bUnit-dev/bUnit/compare/v2.14.0...2.15.2
 [2.14.0]: https://github.com/bUnit-dev/bUnit/compare/v2.13.3...v2.14.0
 [2.13.3]: https://github.com/bUnit-dev/bUnit/compare/v2.12.5...2.13.3
 [2.12.5]: https://github.com/bUnit-dev/bUnit/compare/v2.11.3...v2.12.5
