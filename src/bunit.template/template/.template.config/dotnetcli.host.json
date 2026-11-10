@@ -8,15 +8,15 @@
 			"longName": "framework",
 			"shortName": ""
 		},
-		"TargetSdk": {
+		"targetSdk": {
 			"longName": "sdk",
 			"shortName": ""
 		}
 	},
 	"usageExamples": [
-		"--framework xunit --sdk net8.0",
-		"--framework xunitv3 --sdk net8.0",
-		"--framework nunit --sdk net8.0",
-		"--framework mstest --sdk net8.0"
+		"--framework xunit --sdk net11.0",
+		"--framework xunitv3 --sdk net11.0",
+		"--framework nunit --sdk net11.0",
+		"--framework mstest --sdk net11.0"
 	]
 }
