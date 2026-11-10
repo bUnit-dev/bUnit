@@ -161,7 +161,7 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            10.0.x
+            11.0.x
 
       - uses: actions/download-artifact@v8
         with:
@@ -212,6 +212,11 @@ jobs:
           echo '{"sdk":{"rollForward":"latestMajor","allowPrerelease":true}}' >> ${{ github.workspace }}/TemplateTestMstest/global.json
           dotnet restore ${{ github.workspace }}/TemplateTestMstest --source https://api.nuget.org/v3/index.json --source ${{ env.NUGET_DIRECTORY }}
           cd ${{ github.workspace }}/TemplateTestMstest && dotnet test
+
+      - name: ✔ Verify template --sdk option
+        run: |
+          dotnet new bunit --sdk net10.0 --no-restore -o ${{ github.workspace }}/TemplateTestSdk
+          grep -q '<TargetFramework>net10.0</TargetFramework>' ${{ github.workspace }}/TemplateTestSdk/TemplateTestSdk.csproj
 
   validate-docs:
     runs-on: ubuntu-latest

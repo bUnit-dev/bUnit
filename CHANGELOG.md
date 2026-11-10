@@ -6,6 +6,19 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Added
+
+- Support for .NET 11 GA. The `net11.0` target now references the final .NET 11 packages and is compiled with runtime async. By [@linkdotnet](https://github.com/linkdotnet).
+
+### Changed
+
+- The `bunit.template` now targets `net11.0` by default.
+- Updated AngleSharp to 1.10.1 and AngleSharp.Css to 1.4.1.
+
+### Fixed
+
+- The `bunit.template` option to choose the target framework is now `--sdk` as documented, instead of `--targetSdk`. By [@linkdotnet](https://github.com/linkdotnet).
+
 ## [2.14.0] - 2026-11-06
 
 ### Changed
