@@ -13,6 +13,7 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 ### Changed
 
 - The `bunit.template` now targets `net11.0` by default.
+- Updated AngleSharp to 1.10.1 and AngleSharp.Css to 1.4.1.
 
 ### Fixed
 
