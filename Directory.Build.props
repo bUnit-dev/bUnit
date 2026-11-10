@@ -25,6 +25,10 @@
 		<AssemblyOriginatorKeyFile>../../key.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net11.0'">
+		<Features>$(Features);runtime-async=on</Features>
+	</PropertyGroup>
+
 	<PropertyGroup Label="Analyzer settings">
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>

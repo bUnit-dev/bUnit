@@ -74,6 +74,12 @@ The `--framework` option in the `dotnet new` command above is used to specify th
 - `nunit` - [NUnit](https://nunit.org/),
 - `mstest` - [MSTest](https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest)
 
+The `--sdk` option sets the target framework of the test project. If omitted, `net11.0` is used. Supported options are `net8.0`, `net9.0`, `net10.0`, and `net11.0`, e.g.:
+
+```dotnetcli
+dotnet new bunit --framework xunitv3 --sdk net10.0 -o <NAME OF TEST PROJECT>
+```
+
 **3. Add the test project to your solution**
 
 If using Visual Studio, add the test project to your solution (`.sln`), and add a reference between the test project and the project containing the components that should be tested:
