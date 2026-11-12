@@ -6,6 +6,10 @@ All notable changes to **bUnit** will be documented in this file. The project ad
 
 ## [Unreleased]
 
+### Changed
+
+- The markup of a rendered component is generated when it is read (`Markup`, `Nodes`, `Find`) instead of after every render batch. A component returned to a test was notified once per changed child in a batch and regenerated its full markup each time; on large components this dominated test run time. `OnMarkupUpdated` is still raised after each render that changes the markup.
+
 ## [2.15.2] - 2026-11-10
 
 ### Added
