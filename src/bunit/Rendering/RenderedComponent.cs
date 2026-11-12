@@ -20,6 +20,12 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	private string markup = string.Empty;
 	private MarkupNodes? latestRenderNodes;
 
+	// Set when a render changed this component's subtree; the markup is generated on the next read of
+	// Markup instead of after every render batch. A component returned to a test (cut, FindComponent)
+	// is notified once per changed child in a batch, so eager generation rebuilt the same markup many
+	// times per batch (measured: a 100 KB page regenerated 44-284 times per state change).
+	private volatile bool markupStale;
+
 	/// <summary>
 	/// Gets the component under test.
 	/// </summary>
@@ -45,6 +51,25 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 		get
 		{
 			EnsureComponentNotDisposed();
+
+			if (markupStale)
+			{
+				// Generated under the renderer's render tree lock, like FindComponents, so no batch can
+				// change the tree while it is read. The flag is re-checked inside the lock: another
+				// thread may have generated the markup meanwhile.
+				return renderer.ReadRenderTree(
+					() =>
+					{
+						if (markupStale)
+						{
+							UpdateMarkup();
+						}
+
+						return Volatile.Read(ref markup);
+					},
+					Volatile.Read(ref markup));
+			}
+
 			// Volatile read is necessary to ensure the updated markup
 			// is available across CPU cores. Without it, the pointer to the
 			// markup string can be stored in a CPUs register and not
@@ -126,7 +151,9 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 
 		if (isMarkupGenerationRequired)
 		{
-			UpdateMarkup();
+			// Only mark the markup as stale; Markup generates it on the next read. Subscribers of
+			// OnMarkupUpdated (e.g. the WaitFor helpers) read it and so still see the new markup.
+			markupStale = true;
 			OnMarkupUpdated?.Invoke(this, EventArgs.Empty);
 		}
 
@@ -142,6 +169,7 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 	/// </summary>
 	private void UpdateMarkup()
 	{
+		markupStale = false;
 		latestRenderNodes = null;
 		var newMarkup = Htmlizer.GetHtml(ComponentId, renderer);
 
@@ -169,6 +197,7 @@ internal sealed class RenderedComponent<TComponent> : ComponentState, IRenderedC
 			return;
 
 		IsDisposed = true;
+		markupStale = false;
 		markup = string.Empty;
 		OnAfterRender = null;
 		OnMarkupUpdated = null;

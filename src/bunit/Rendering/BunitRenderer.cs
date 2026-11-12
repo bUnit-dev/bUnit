@@ -32,6 +32,20 @@ public sealed class BunitRenderer : Renderer
 	private TaskCompletionSource<Exception> unhandledExceptionTsc = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private Exception? capturedUnhandledException;
 
+	/// <summary>
+	/// Runs <paramref name="read"/> while no render batch can change the render tree, e.g. to generate
+	/// the markup of a rendered component on demand. Re-entrant: a caller that already holds the lock,
+	/// such as an <c>OnMarkupUpdated</c> handler invoked from <see cref="UpdateDisplayAsync"/>, runs directly.
+	/// Returns <paramref name="fallback"/> once the renderer is disposed.
+	/// </summary>
+	internal T ReadRenderTree<T>(Func<T> read, T fallback)
+	{
+		lock (renderTreeUpdateLock)
+		{
+			return disposed ? fallback : read();
+		}
+	}
+
 	private bool IsBatchInProgress
 	{
 #pragma warning disable S1144 // Unused private types or members should be removed
