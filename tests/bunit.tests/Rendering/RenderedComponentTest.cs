@@ -320,6 +320,56 @@ public class RenderedComponentTest : BunitContext
 		cut.Find("p").TextContent.ShouldBe("2");
 	}
 
+	[Fact(DisplayName = "Markup returns the same instance on repeated reads when nothing rendered in between")]
+	public void Test031()
+	{
+		var cut = Render<ClickCounter>();
+
+		var first = cut.Markup;
+		var second = cut.Markup;
+
+		second.ShouldBeSameAs(first);
+	}
+
+	[Fact(DisplayName = "Markup reflects the last of several renders that were not read in between")]
+	public void Test032()
+	{
+		var cut = Render<ClickCounter>();
+		var button = cut.Find("button");
+
+		button.Click();
+		button.Click();
+		button.Click();
+
+		cut.Find("p").TextContent.ShouldBe("3");
+	}
+
+	[Fact(DisplayName = "OnMarkupUpdated subscribers read the updated markup")]
+	public void Test033()
+	{
+		var cut = Render<ClickCounter>();
+		var markupSeenBySubscriber = new List<string>();
+		cut.OnMarkupUpdated += (_, _) => markupSeenBySubscriber.Add(cut.Markup);
+
+		cut.Find("button").Click();
+
+		markupSeenBySubscriber.ShouldNotBeEmpty();
+		markupSeenBySubscriber[^1].ShouldContain("<p>1</p>");
+	}
+
+	[Fact(DisplayName = "Markup of a parent reflects a render of a child component found via FindComponent")]
+	public void Test034()
+	{
+		var cut = Render<Wrapper>(ps => ps.AddChildContent<ClickCounter>());
+		_ = cut.Markup;
+		var child = cut.FindComponent<ClickCounter>();
+
+		child.Find("button").Click();
+
+		child.Find("p").TextContent.ShouldBe("1");
+		cut.Find("p").TextContent.ShouldBe("1");
+	}
+
 	private class BaseComponent : ComponentBase
 	{
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
